@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { configure, storiesOf } from '@storybook/react';
+import { configure, storiesOf, addParameters } from '@storybook/react';
+import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+
+addParameters({
+  docsContainer: DocsContainer,
+  docs: DocsPage,
+});
 
 configure(() => {
   storiesOf('Component 1', module).add('Story 1', () => <div>Component 1 - Story 1</div>);
