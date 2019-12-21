@@ -3,6 +3,7 @@ const parser = require('@babel/parser');
 const generate = require('@babel/generator').default;
 const camelCase = require('lodash/camelCase');
 const jsStringEscape = require('js-string-escape');
+const { toId, storyNameFromExport } = require('@storybook/csf');
 
 // Generate the MDX as is, but append named exports for every
 // story in the contents
@@ -17,17 +18,22 @@ function getAttr(elt, what) {
   return attr && attr.value;
 }
 
-function getStoryFn(name, counter) {
-  if (name) {
-    const storyFn = camelCase(name.replace(/[^a-z0-9-]/g, '-'));
-    if (storyFn.length > 1 && !RESERVED.exec(storyFn)) {
-      return storyFn;
-    }
-  }
-  return `story${counter}`;
-}
+const isReserved = name => RESERVED.exec(name);
+const startsWithNumber = name => /^\d/.exec(name);
 
-function genStoryExport(ast, counter) {
+const sanitizeName = name => {
+  let key = camelCase(name);
+  if (startsWithNumber(key)) {
+    key = `_${key}`;
+  } else if (isReserved(key)) {
+    key = `${key}Story`;
+  }
+  return key;
+};
+
+const getStoryKey = (name, counter) => (name ? sanitizeName(name) : `story${counter}`);
+
+function genStoryExport(ast, context) {
   let storyName = getAttr(ast.openingElement, 'name');
   let storyId = getAttr(ast.openingElement, 'id');
   storyName = storyName && storyName.value;
@@ -45,10 +51,11 @@ function genStoryExport(ast, counter) {
   // console.log('genStoryExport', JSON.stringify(ast, null, 2));
 
   const statements = [];
-  const storyKey = getStoryFn(storyName, counter);
+  const storyKey = getStoryKey(storyName, context.counter);
 
   let body = ast.children.find(n => n.type !== 'JSXText');
   let storyCode = null;
+
   if (!body) {
     // plain text node
     const { code } = generate(ast.children[0], {});
@@ -61,20 +68,29 @@ function genStoryExport(ast, counter) {
     const { code } = generate(body, {});
     storyCode = code;
   }
-  if (storyCode.trim().startsWith('() =>')) {
-    statements.push(`export const ${storyKey} = ${storyCode}`);
-  } else {
-    statements.push(
-      `export const ${storyKey} = () => (
+
+  let storyVal = null;
+  switch (body && body.type) {
+    // We don't know what type the identifier is, but this code
+    // assumes it's a function from CSF. Let's see who complains!
+    case 'Identifier':
+      storyVal = `assertIsFn(${storyCode})`;
+      break;
+    case 'ArrowFunctionExpression':
+      storyVal = `(${storyCode})`;
+      break;
+    default:
+      storyVal = `() => (
         ${storyCode}
-      );`
-    );
+      )`;
+      break;
   }
+
+  statements.push(`export const ${storyKey} = ${storyVal};`);
   statements.push(`${storyKey}.story = {};`);
 
-  if (storyName !== storyKey) {
-    statements.push(`${storyKey}.story.name = '${storyName}';`);
-  }
+  // always preserve the name, since CSF exports can get modified by displayName
+  statements.push(`${storyKey}.story.name = '${storyName}';`);
 
   let parameters = getAttr(ast.openingElement, 'parameters');
   parameters = parameters && parameters.expression;
@@ -94,34 +110,55 @@ function genStoryExport(ast, counter) {
     statements.push(`${storyKey}.story.decorators = ${decos};`);
   }
 
+  // eslint-disable-next-line no-param-reassign
+  context.storyNameToKey[storyName] = storyKey;
+
   return {
     [storyKey]: statements.join('\n'),
   };
 }
 
-function genPreviewExports(ast, counter) {
+function genPreviewExports(ast, context) {
   // console.log('genPreviewExports', JSON.stringify(ast, null, 2));
 
-  let localCounter = counter;
   const previewExports = {};
   for (let i = 0; i < ast.children.length; i += 1) {
     const child = ast.children[i];
     if (child.type === 'JSXElement' && child.openingElement.name.name === 'Story') {
-      const storyExport = genStoryExport(child, localCounter);
+      const storyExport = genStoryExport(child, context);
       if (storyExport) {
         Object.assign(previewExports, storyExport);
-        localCounter += 1;
+        // eslint-disable-next-line no-param-reassign
+        context.counter += 1;
       }
     }
   }
   return previewExports;
 }
 
-function genMeta(ast) {
+function genMeta(ast, options) {
   let title = getAttr(ast.openingElement, 'title');
+  let id = getAttr(ast.openingElement, 'id');
   let parameters = getAttr(ast.openingElement, 'parameters');
   let decorators = getAttr(ast.openingElement, 'decorators');
-  title = title && `'${title.value}'`;
+  if (title) {
+    if (title.type === 'StringLiteral') {
+      title = "'".concat(jsStringEscape(title.value), "'");
+    } else {
+      try {
+        // generate code, so the expression is evaluated by the CSF compiler
+        const { code } = generate(title, {});
+        // remove the curly brackets at start and end of code
+        title = code.replace(/^\{(.+)\}$/, '$1');
+      } catch (e) {
+        // eat exception if title parsing didn't go well
+        // eslint-disable-next-line no-console
+        console.warn('Invalid title:', options.filepath);
+        title = undefined;
+      }
+    }
+  }
+  id = id && `'${id.value}'`;
   if (parameters && parameters.expression) {
     const { code: params } = generate(parameters.expression, {});
     parameters = params;
@@ -132,12 +169,13 @@ function genMeta(ast) {
   }
   return {
     title,
+    id,
     parameters,
     decorators,
   };
 }
 
-function getExports(node, counter) {
+function getExports(node, counter, options) {
   const { value, type } = node;
   if (type === 'jsx') {
     if (STORY_REGEX.exec(value)) {
@@ -154,7 +192,7 @@ function getExports(node, counter) {
     if (META_REGEX.exec(value)) {
       // Preview, possibly containing multiple stories
       const ast = parser.parseExpression(value, { plugins: ['jsx'] });
-      return { meta: genMeta(ast) };
+      return { meta: genMeta(ast, options) };
     }
   }
   return null;
@@ -163,12 +201,16 @@ function getExports(node, counter) {
 // insert `mdxKind` into the context so that we can know what "kind" we're rendering into
 // when we render <Story name="xxx">...</Story>, since this MDX can be attached to any `selectedKind`!
 const wrapperJs = `
-const mdxKind = componentMeta.title;
 componentMeta.parameters = componentMeta.parameters || {};
-componentMeta.parameters.docsContainer = ({ context, children }) => <DocsContainer context={{...context, mdxKind}}>{children}</DocsContainer>;
-componentMeta.parameters.docs = MDXContent;
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: () => <AddContext mdxStoryNameToId={mdxStoryNameToId}><MDXContent /></AddContext>,
+};
 `.trim();
 
+// Use this rather than JSON.stringify because `Meta`'s attributes
+// are already valid code strings, so we want to insert them raw
+// rather than add an extra set of quotes
 function stringifyMeta(meta) {
   let result = '{ ';
   Object.entries(meta).forEach(([key, val]) => {
@@ -180,22 +222,85 @@ function stringifyMeta(meta) {
   return result;
 }
 
+const hasStoryChild = node => {
+  if (node.openingElement && node.openingElement.name.name === 'Story') {
+    return node;
+  }
+  if (node.children && node.children.length > 0) {
+    return node.children.find(child => hasStoryChild(child));
+  }
+  return null;
+};
+
 function extractExports(node, options) {
+  node.children.forEach(child => {
+    if (child.type === 'jsx') {
+      try {
+        const ast = parser.parseExpression(child.value, { plugins: ['jsx'] });
+        if (
+          ast.openingElement &&
+          ast.openingElement.type === 'JSXOpeningElement' &&
+          ast.openingElement.name.name === 'Preview' &&
+          !hasStoryChild(ast)
+        ) {
+          const previewAst = ast.openingElement;
+          previewAst.attributes.push({
+            type: 'JSXAttribute',
+            name: {
+              type: 'JSXIdentifier',
+              name: 'mdxSource',
+            },
+            value: {
+              type: 'StringLiteral',
+              value: encodeURI(
+                ast.children
+                  .map(
+                    el =>
+                      generate(el, {
+                        quotes: 'double',
+                      }).code
+                  )
+                  .join('\n')
+              ),
+            },
+          });
+        }
+        const { code } = generate(ast, {});
+        // eslint-disable-next-line no-param-reassign
+        child.value = code;
+      } catch {
+        /** catch erroneous child.value string where the babel parseExpression makes exception
+         * https://github.com/mdx-js/mdx/issues/767
+         * eg <button>
+         *      <div>hello world</div>
+         *
+         *    </button>
+         * generates error
+         * 1. child.value =`<button>\n  <div>hello world</div`
+         * 2. child.value =`\n`
+         * 3. child.value =`</button>`
+         *
+         */
+      }
+    }
+  });
   // we're overriding default export
   const defaultJsx = mdxToJsx.toJSX(node, {}, { ...options, skipExport: true });
   const storyExports = [];
   const includeStories = [];
   let metaExport = null;
-  let counter = 0;
+  const context = {
+    counter: 0,
+    storyNameToKey: {},
+  };
   node.children.forEach(n => {
-    const exports = getExports(n, counter);
+    const exports = getExports(n, context, options);
     if (exports) {
       const { stories, meta } = exports;
       if (stories) {
         Object.entries(stories).forEach(([key, story]) => {
           includeStories.push(key);
           storyExports.push(story);
-          counter += 1;
         });
       }
       if (meta) {
@@ -208,22 +313,32 @@ function extractExports(node, options) {
   });
   if (metaExport) {
     if (!storyExports.length) {
-      storyExports.push(
-        'export const storybookDocsOnly = () => { throw new Error("Docs-only story"); };'
-      );
-      storyExports.push('storybookDocsOnly.story = { parameters: { docsOnly: true } };');
-      includeStories.push('storybookDocsOnly');
+      storyExports.push('export const __page = () => { throw new Error("Docs-only story"); };');
+      storyExports.push('__page.story = { parameters: { docsOnly: true } };');
+      includeStories.push('__page');
     }
   } else {
     metaExport = {};
   }
   metaExport.includeStories = JSON.stringify(includeStories);
 
+  const { title, id: componentId } = metaExport;
+  const mdxStoryNameToId = Object.entries(context.storyNameToKey).reduce(
+    (acc, [storyName, storyKey]) => {
+      if (title) {
+        acc[storyName] = toId(componentId || title, storyNameFromExport(storyKey));
+      }
+      return acc;
+    },
+    {}
+  );
+
   const fullJsx = [
-    'import { DocsContainer } from "@storybook/addon-docs/blocks";',
+    'import { assertIsFn, AddContext } from "@storybook/addon-docs/blocks";',
     defaultJsx,
     ...storyExports,
     `const componentMeta = ${stringifyMeta(metaExport)};`,
+    `const mdxStoryNameToId = ${JSON.stringify(mdxStoryNameToId)};`,
     wrapperJs,
     'export default componentMeta;',
   ].join('\n\n');

@@ -1,3 +1,4 @@
+import { HooksContext } from './hooks';
 import { Addon } from './index';
 
 export enum types {
@@ -26,6 +27,7 @@ export interface StoryContext {
   kind: string;
   [key: string]: any;
   parameters: Parameters;
+  hooks?: HooksContext;
 }
 
 export interface WrapperSettings {
@@ -39,6 +41,7 @@ export interface OptionsParameter extends Object {
   storySort?: any;
   hierarchyRootSeparator?: string;
   hierarchySeparator?: RegExp;
+  showRoots?: boolean;
   theme?: {
     base: string;
     brandTitle?: string;
