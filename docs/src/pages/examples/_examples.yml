@@ -20,7 +20,7 @@ carbon:
   thumbnail: carbon.png
   title: Carbon Components
   description: IBM's Carbon Design System implemented in React.
-  source: https://github.com/carbon-design-system/carbon-components-react
+  source: https://github.com/carbon-design-system/carbon/tree/master/packages/react
   demo: http://react.carbondesignsystem.com
   site: http://carbondesignsystem.com
 lonelyplanet:
@@ -191,3 +191,16 @@ reactPakistan:
   description: A series of reuseable React Commons, UI/UX components, icons, logos and more by React Pakistan.
   demo: https://taimoormk.github.io/react-commons-collection/?path=/docs/react-pakistan-intro--page
   site: https://www.npmjs.com/package/@react-pakistan/react-commons-collection
+bbc:
+  thumbnail: bbc.jpg
+  title: BBC Psammead
+  description: React component library for BBC World Service and more
+  demo: https://bbc.github.io/psammead/
+  source: https://github.com/bbc/psammead
+pxblue:
+  thumbnail: pxblue.png
+  title: Power Xpert Blue
+  description: A design system for Eaton applications, including component libraries for React, Angular, and React Native
+  demo: https://pxblue-components.github.io/
+  source: https://github.com/pxblue/react-component-library/tree/master/demos/storybook
+  site: https://pxblue.github.io

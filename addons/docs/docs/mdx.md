@@ -1,10 +1,8 @@
 <center>
-  <img src="./media/mdx-hero.png" width="100%" />
+  <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-hero.png" width="100%" />
 </center>
 
-# Storybook Docs MDX
-
-> ⚠️ MDX support is an experimental feature in Storybook 5.2. The API may change in 5.3 outside of the normal semver rules. Be forewarned!
+<h1>Storybook Docs MDX</h1>
 
 `MDX` is the syntax [Storybook Docs](../README.md) uses to capture long-form markdown documentation and stories in one file. You can also write pure documentation pages in `MDX` and add them to Storybook alongside your stories.
 
@@ -46,7 +44,7 @@ markdown documentation.
 And here's how that's rendered in Storybook:
 
 <center>
-  <img src="./media/mdx-simple.png" width="100%" />
+  <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-simple.png" width="100%" />
 </center>
 
 As you can see there's a lot going on here. We're writing Markdown, we're writing JSX, and somehow we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
@@ -130,7 +128,7 @@ with unique URLs and isolated snapshot tests.
 And here's how that gets rendered in Storybook:
 
 <center>
-  <img src="./media/mdx-page.png" width="100%" />
+  <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-page.png" width="100%" />
 </center>
 
 ## Embedding stories
@@ -185,7 +183,7 @@ If you don't define a `Meta`, you can write Markdown and associate with an exist
 To get a "documentation-only story", in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
 
 <center>
-  <img src="./media/mdx-documentation-only.png" width="100%" />
+  <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-documentation-only.png" width="100%" />
 </center>
 
 ## MDX file names
@@ -196,10 +194,7 @@ Be sure to update your Storybook config file to load `.stories.mdx` stories, as 
 
 ## More resources
 
-`MDX` is an experimental feature and there's a lot more that hasn't been documented yet. Here are some more articles on Storybook Docs that contain more information:
-
-- References: [README](../README.md) / [DocsPage](docspage.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md)
-- Vision: [Storybook Docs sneak peak](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a)
-- Announcement: [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf)
+- References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
+- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
+- Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)
-- [Technical preview guide](https://docs.google.com/document/d/1un6YX7xDKEKl5-MVb-egnOYN8dynb5Hf7mq0hipk8JE/edit?usp=sharing)

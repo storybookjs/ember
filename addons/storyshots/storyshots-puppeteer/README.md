@@ -8,9 +8,11 @@ Add the following modules into your app.
 npm install @storybook/addon-storyshots-puppeteer puppeteer --save-dev
 ```
 
+⚠️ As of Storybook 5.3 `puppeteer` is no more included in addon dependencies and must be added to your project directly.
+
 ## Configure Storyshots for Puppeteeer tests
 
-/\*\ **React-native** is **not supported** by this test function.
+⚠️ **React-native** is **not supported** by this test function.
 
 When willing to run Puppeteer tests for your stories, you have two options:
 
@@ -20,6 +22,7 @@ When willing to run Puppeteer tests for your stories, you have two options:
 Then you will need to reference the storybook URL (`file://...` if local, `http(s)://...` if served)
 
 ## _puppeteerTest_
+
 Allows to define arbitrary Puppeteer tests as `story.parameters.puppeteerTest` function.
 
 You can either create a new Storyshots instance or edit the one you previously used:
@@ -32,17 +35,16 @@ initStoryshots({ suite: 'Puppeteer storyshots', test: puppeteerTest() });
 ```
 
 Then, in your stories:
+
 ```js
 export const myExample = () => {
   ...
 };
-myExample.story = {
-  parameters: {
-    async puppeteerTest(page) {
-      const element = await page.$('<some-selector>');
-      await element.click();
-      expect(something).toBe(something);
-    },
+myExample.parameters = {
+  async puppeteerTest(page) {
+    const element = await page.$('<some-selector>');
+    await element.click();
+    expect(something).toBe(something);
   },
 };
 ```
@@ -78,7 +80,10 @@ import { puppeteerTest } from '@storybook/addon-storyshots-puppeteer';
 
 initStoryshots({
   suite: 'Puppeteer storyshots',
-  test: puppeteerTest({ storybookUrl: 'file:///path/to/my/storybook-static' }),
+  test: puppeteerTest({
+    storybookUrl: 'file:///path/to/my/storybook-static',
+    // storybookUrl: 'file://${path.resolve(__dirname, '../storybook-static')}'
+  }),
 });
 ```
 
@@ -88,12 +93,14 @@ You might use `getGotoOptions` to specify options when the storybook is navigati
 
 ```js
 import initStoryshots from '@storybook/addon-storyshots';
-import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer';
+import { puppeteerTest } from '@storybook/addon-storyshots-puppeteer';
+
 const getGotoOptions = ({ context, url }) => {
   return {
     waitUntil: 'networkidle0',
   };
 };
+
 initStoryshots({
   suite: 'Puppeteer storyshots',
   test: puppeteerTest({ storybookUrl: 'http://localhost:6006', getGotoOptions }),
@@ -125,7 +132,7 @@ import initStoryshots from '@storybook/addon-storyshots';
 import { puppeteerTest } from '@storybook/addon-storyshots-puppeteer';
 import puppeteer from 'puppeteer';
 
-(async function() {
+(async function () {
   initStoryshots({
     suite: 'Puppeteer storyshots',
     test: puppeteerTest({
@@ -209,18 +216,20 @@ This can be achieved by adding a step before running the test ie: `npm run build
 If you run the Puppeteer storyshots against a running Storybook in dev mode, you don't have to worry about the stories being up-to-date because the dev-server is watching changes and rebuilds automatically.
 
 ## _axeTest_
+
 Runs [Axe](https://www.deque.com/axe/) accessibility checks and verifies that they pass using [jest-puppeteer-axe](https://github.com/WordPress/gutenberg/tree/master/packages/jest-puppeteer-axe).
 
 ```js
 import initStoryshots from '@storybook/addon-storyshots';
 import { axeTest } from '@storybook/addon-storyshots-puppeteer';
 
-axeTest({ suite: 'A11y checks', test: axeTest() });
+initStoryshots({ suite: 'A11y checks', test: axeTest() });
 ```
 
 For configuration, it uses the same `story.parameters.a11y` parameter as [`@storybook/addon-a11y`](https://github.com/storybookjs/storybook/tree/next/addons/a11y#parameters)
 
 ## _imageSnapshots_
+
 Generates and compares screenshots of your stories using [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot).
 
 ```js
@@ -246,14 +255,14 @@ const getMatchOptions = ({ context: { kind, story }, url }) => {
   };
 };
 const beforeScreenshot = (page, { context: { kind, story }, url }) => {
-  return new Promise(resolve =>
+  return new Promise((resolve) =>
     setTimeout(() => {
       resolve();
     }, 600)
   );
 };
 const afterScreenshot = ({ image, context }) => {
-  return new Promise(resolve =>
+  return new Promise((resolve) =>
     setTimeout(() => {
       resolve();
     }, 600)
@@ -261,7 +270,12 @@ const afterScreenshot = ({ image, context }) => {
 };
 initStoryshots({
   suite: 'Image storyshots',
-  test: imageSnapshot({ storybookUrl: 'http://localhost:6006', getMatchOptions, beforeScreenshot, afterScreenshot }),
+  test: imageSnapshot({
+    storybookUrl: 'http://localhost:6006',
+    getMatchOptions,
+    beforeScreenshot,
+    afterScreenshot,
+  }),
 });
 ```
 

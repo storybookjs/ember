@@ -21,37 +21,19 @@ interface Output {
   files: string[];
 }
 
-const getPreviewFile = (configDir: string): string | false => {
-  const preview = path.join(configDir, 'preview.js');
-  const previewTS = path.join(configDir, 'preview.ts');
-  const config = path.join(configDir, 'config.js');
-  const configTS = path.join(configDir, 'config.ts');
+const supportedExtensions = ['ts', 'tsx', 'js', 'jsx'];
 
-  if (isFile(previewTS)) {
-    return previewTS;
-  }
-  if (isFile(preview)) {
-    return preview;
-  }
-  if (isFile(configTS)) {
-    return configTS;
-  }
-  if (isFile(config)) {
-    return config;
-  }
+const resolveFile = (configDir: string, supportedFilenames: string[]) =>
+  supportedFilenames
+    .flatMap((filename) =>
+      supportedExtensions.map((ext) => path.join(configDir, `${filename}.${ext}`))
+    )
+    .find(isFile) || false;
 
-  return false;
-};
+export const getPreviewFile = (configDir: string): string | false =>
+  resolveFile(configDir, ['preview', 'config']);
 
-const getMainFile = (configDir: string): string | false => {
-  const main = path.join(configDir, 'main.js');
-
-  if (isFile(main)) {
-    return main;
-  }
-
-  return false;
-};
+export const getMainFile = (configDir: string): string | false => resolveFile(configDir, ['main']);
 
 function getConfigPathParts(input: string): Output {
   const configDir = path.resolve(input);
@@ -66,18 +48,15 @@ function getConfigPathParts(input: string): Output {
       output.files.push(preview);
     }
     if (main) {
-      const { stories = [] } = require.requireActual(main);
+      const { stories = [] } = jest.requireActual(main);
 
       output.stories = stories.map(
         (pattern: string | { path: string; recursive: boolean; match: string }) => {
           const { path: basePath, recursive, match } = toRequireContext(pattern);
+          const regex = new RegExp(match);
+
           // eslint-disable-next-line no-underscore-dangle
-          return global.__requireContext(
-            configDir,
-            basePath,
-            recursive,
-            new RegExp(match.slice(1, -1))
-          );
+          return global.__requireContext(configDir, basePath, recursive, regex);
         }
       );
     }
@@ -102,8 +81,8 @@ function configure(
 
   const { files, stories } = getConfigPathParts(configPath);
 
-  files.forEach(f => {
-    require.requireActual(f);
+  files.forEach((f) => {
+    jest.requireActual(f);
   });
 
   if (stories && stories.length) {

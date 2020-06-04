@@ -45,14 +45,15 @@ You'll also need to install `svelte-loader` if you haven't already.
 npm install svelte-loader --save-dev
 ```
 
-## Step 2: Add a npm script
+## Step 2: Add npm scripts
 
-Then add the following NPM script to your `package.json` in order to start the storybook later in this guide:
+Then add the following scripts to your `package.json` in order to start the storybook later in this guide:
 
 ```json
 {
   "scripts": {
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "build-storybook": "build-storybook"
   }
 }
 ```
@@ -64,8 +65,8 @@ For a basic Storybook configuration, the only thing you need to do is tell Story
 To do that, create a file at `.storybook/main.js` with the following content:
 
 ```js
-module.exports {
-  stories: ['../src/**/*.stories.[tj]s'],
+module.exports = {
+  stories: ['../src/**/*.stories.@(ts|js)'],
 };
 ```
 
@@ -104,7 +105,7 @@ So you can create a story "view" file, which is essentially a .svelte file to lo
 <!-- MyButtonView  -->
 <MyButton {rounded} on:click>
   {buttonText}
-</Button>
+</MyButton>
 ```
 
 In this example, the `on:click` that is heard on the `MyButton` component is passed up to the containing component `MyButtonView` using the svelte shorthand.

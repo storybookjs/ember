@@ -15,7 +15,6 @@ const Label = styled.div<{}>(({ theme }) => ({
 }));
 
 const Sample = styled.div({
-  lineHeight: 1,
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
@@ -53,7 +52,7 @@ export const Typeset: FunctionComponent<TypesetProps> = ({
   ...props
 }) => (
   <Wrapper {...props} className="docblock-typeset">
-    {fontSizes.map(size => (
+    {fontSizes.map((size) => (
       <TypeSpecimen key={size}>
         <Label>{size}</Label>
         <Sample

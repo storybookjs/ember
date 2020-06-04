@@ -1,8 +1,8 @@
-type KnobsOptions = {
+interface KnobsOptions {
   addDecorator?: boolean;
-};
+}
 
-export function addons(entry: any[] = [], options: any) {
+export function managerEntries(entry: any[] = [], options: any) {
   return [...entry, require.resolve('../register')];
 }
 

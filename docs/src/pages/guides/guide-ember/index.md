@@ -35,15 +35,15 @@ If you don't have `package.json` in your project, you'll need to init it first:
 npm init
 ```
 
-Then add the following NPM script to your `package.json` in order to start the storybook later in this guide:
+Then add the following npm scripts to your `package.json` in order to start the storybook later in this guide:
 
 > In order for your storybook to run properly be sure to be either run `ember serve` or `ember build` before running any storybook commands. Running `ember serve` before storybook will enable live reloading.
 
 ```json
 {
   "scripts": {
-    "build-storybook": "ember build && build-storybook -p 9001 -s dist",
-    "storybook": "ember serve & start-storybook -p 9001 -s dist"
+    "storybook": "ember serve & start-storybook -p 9001 -s dist",
+    "build-storybook": "ember build && build-storybook -s dist"
   }
 }
 ```
@@ -59,12 +59,12 @@ For a basic Storybook configuration, the only thing you need to do is tell Story
 To do that, create a file at `.storybook/main.js` with the following content:
 
 ```js
-module.exports {
-  stories: ['../src/**/*.stories.[tj]s'],
+module.exports = {
+  stories: ['../app/**/*.stories.@(ts|js)'],
 };
 ```
 
-That will load all the stories underneath your `../src` directory that match the pattern `*.stories.js`. We recommend co-locating your stories with your source files, but you can place them wherever you choose.
+That will load all the stories underneath your `../app` directory that match the pattern `*.stories.js`. We recommend co-locating your stories with your source files, but you can place them wherever you choose.
 
 ## Write your stories
 
@@ -73,7 +73,7 @@ Now you can write some stories inside the `../stories/index.stories.js` file, li
 > It is important that you import the `hbs` function that is provided by a babel plugin in `@storybook/ember`
 
 ```js
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 
 export default { title: 'Demo' };
 

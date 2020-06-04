@@ -32,14 +32,14 @@ const SelectType: FunctionComponent<SelectTypeProps> & {
   const { options } = knob;
 
   const callbackReduceArrayOptions = (acc: any, option: any, i: number) => {
-    if (typeof option !== 'object') return { ...acc, [option]: option };
+    if (typeof option !== 'object' || option === null) return { ...acc, [option]: option };
     const label = option.label || option.key || i;
     return { ...acc, [label]: option };
   };
 
   const entries = Array.isArray(options) ? options.reduce(callbackReduceArrayOptions, {}) : options;
 
-  const selectedKey = Object.keys(entries).find(key => {
+  const selectedKey = Object.keys(entries).find((key) => {
     const { value: knobVal } = knob;
     const entryVal = entries[key];
 
@@ -69,7 +69,7 @@ const SelectType: FunctionComponent<SelectTypeProps> & {
 
 SelectType.defaultProps = {
   knob: {} as any,
-  onChange: value => value,
+  onChange: (value) => value,
 };
 
 SelectType.propTypes = {

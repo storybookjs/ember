@@ -44,7 +44,7 @@ export const Story3 = () => {
     </style>
   `;
 };
-Story3.story = { name: 'Color Selection' };
+Story3.storyName = 'Color Selection';
 
 export const Story4 = () => {
   const name = text('Name', 'Jane');
@@ -84,17 +84,13 @@ export const Story4 = () => {
       <p>${stockMessage}</p>
       <p>Also, I have:</p>
       <ul>
-        ${items.map(
-          item => html`
-            <li>${item}</li>
-          `
-        )}
+        ${items.map((item) => html` <li>${item}</li> `)}
       </ul>
       <p>${salutation}</p>
     </div>
   `;
 };
-Story4.story = { name: 'All knobs' };
+Story4.storyName = 'All knobs';
 
 export const XssSafety = () => {
   const content = text('content', '<img src=x onerror="alert(\'XSS Attack\')" >');

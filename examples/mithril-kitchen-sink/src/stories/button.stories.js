@@ -1,7 +1,6 @@
 import m from 'mithril';
 
 import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 
 import Button from '../Button';
 
@@ -15,7 +14,7 @@ export default {
 export const Story1 = () => ({
   view: () => m(Button, { onclick: action('clicked') }, 'Hello Button'),
 });
-Story1.story = { name: 'with text' };
+Story1.storyName = 'with text';
 
 export const Story2 = () => ({
   view: () =>
@@ -25,4 +24,4 @@ export const Story2 = () => ({
       m('span', { role: 'img', ariaLabel: 'so cool' }, '😀 😎 👍 💯')
     ),
 });
-Story2.story = { name: 'with some emoji' };
+Story2.storyName = 'with some emoji';

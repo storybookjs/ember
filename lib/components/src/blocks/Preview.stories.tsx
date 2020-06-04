@@ -89,7 +89,7 @@ export const withToolbar = () => (
   </Preview>
 );
 
-const Horizontal = styled(props => <Spaced col={1} {...props} />)({
+const Horizontal = styled((props) => <Spaced col={1} {...props} />)({
   display: 'grid',
   gridTemplateColumns: '100px calc(100vw + 100px) 100px',
 });
@@ -108,5 +108,31 @@ export const withToolbarMulti = () => (
   <Preview withToolbar>
     <Story inline storyFn={buttonFn} title="story1" />
     <Story inline storyFn={buttonFn} title="story2" />
+  </Preview>
+);
+
+export const withFullscreenSingle = () => (
+  <Preview withToolbar>
+    <Story inline storyFn={buttonFn} title="story1" parameters={{ layout: 'fullscreen' }} />
+  </Preview>
+);
+
+export const withFullscreenMulti = () => (
+  <Preview withToolbar>
+    <Story inline storyFn={buttonFn} title="story1" parameters={{ layout: 'fullscreen' }} />
+    <Story inline storyFn={buttonFn} title="story2" parameters={{ layout: 'fullscreen' }} />
+  </Preview>
+);
+
+export const withCenteredSingle = () => (
+  <Preview withToolbar>
+    <Story inline storyFn={buttonFn} title="story1" parameters={{ layout: 'centered' }} />
+  </Preview>
+);
+
+export const withCenteredMulti = () => (
+  <Preview withToolbar>
+    <Story inline storyFn={buttonFn} title="story1" parameters={{ layout: 'centered' }} />
+    <Story inline storyFn={buttonFn} title="story2" parameters={{ layout: 'centered' }} />
   </Preview>
 );

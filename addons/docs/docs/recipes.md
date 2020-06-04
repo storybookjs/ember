@@ -1,4 +1,4 @@
-# Storybook Docs Recipes
+<h1>Storybook Docs Recipes</h1>
 
 [Storybook Docs](../README.md) consists of two basic mechanisms, [DocsPage](docspage.md) and [MDX](mdx.md). But how should you use them in your project?
 
@@ -13,6 +13,9 @@
 - [Disabling docs stories](#disabling-docs-stories)
   - [DocsPage](#docspage)
   - [MDX Stories](#mdx-stories)
+- [Controlling a story's view mode](#controlling-a-storys-view-mode)
+- [Customizing source snippets](#customizing-source-snippets)
+- [Overwriting docs container](#overwriting-docs-container)
 - [More resources](#more-resources)
 
 ## Component Story Format (CSF) with DocsPage
@@ -48,8 +51,8 @@ export default {
 };
 
 export const basic = () => <Button>Basic</Button>;
-basic.story = {
-  parameters: { foo: 'bar' },
+basic.parameters = {
+  foo: 'bar',
 };
 ```
 
@@ -57,7 +60,7 @@ basic.story = {
 
 ```md
 import { Meta, Story } from '@storybook/addon-docs/blocks';
-import * as stories from './Button.stories.js';
+import \* as stories from './Button.stories.js';
 import { SomeComponent } from 'path/to/SomeComponent';
 
 <Meta title="Demo/Button" component={Button} />
@@ -76,9 +79,7 @@ And I can also embed arbitrary markdown & JSX in this file.
 What's happening here:
 
 - Your stories are defined in CSF, but because of `includeStories: []`, they are not actually added to Storybook.
-- The MDX file is adding the stories to Storybook, and using the story function defined in CSF.
-- The MDX loader is using story metadata from CSF, such as name, decorators, parameters, but will give giving preference to anything defined in the MDX file.
-- The MDX file is using the Meta `default` defined in the CSF.
+- The MDX file is simply importing stories as functions in the MDX, and other aspects of the CSF file, such as decorators, parameters, and any other metadata should be applied as needed in the MDX from the import.
 
 ## CSF Stories with arbitrary MDX
 
@@ -138,8 +139,8 @@ const loadFn = () => {
   const req = require.context('../src', true, /\.stories\.js$/);
   return req
     .keys()
-    .map(fname => req(fname))
-    .filter(exp => !!exp.default);
+    .map((fname) => req(fname))
+    .filter((exp) => !!exp.default);
 };
 
 configure(loadFn, module);
@@ -198,7 +199,7 @@ User defines stories in CSF and renders docs using DocsPage, but wishes to exclu
 
 ```js
 export const foo = () => <Button>foo</Button>;
-foo.story = { parameters: { docs: { disable: true } } };
+foo.parameters = { docs: { disable: true } };
 ```
 
 ### MDX Stories
@@ -206,17 +207,122 @@ foo.story = { parameters: { docs: { disable: true } } };
 User writes documentation & stories side-by-side in a single MDX file, and wants those stories to show up in the canvas but not in the docs themselves. They want something similar to the recipe "CSF stories with MDX docs" but want to do everything in MDX:
 
 ```js
-<Story name="foo" parameters={{ docs: { disable: true }} >
+<Story name="foo" parameters={{ docs: { disable: true } }}>
   <Button>foo</Button>
 </Story>
 ```
 
+## Controlling a story's view mode
+
+Storybook's default story navigation behavior is to preserve the existing view mode. In other words, if a user is viewing a story in "docs" mode, and clicks on another story, they will navigate to the other story in "docs" mode. If they are viewing a story in "story" mode (i.e. "canvas" in the UI) they will navigate to another story in "story" mode (with the exception of "docs-only" pages, which are always shown in "docs" mode).
+
+Based on user feedback, it's also possible to control the view mode for an individual story using the `viewMode` story parameter. In the following example, the nav link will always set the view mode to story:
+
+```js
+export const Foo = () => <Component />;
+Foo.parameters = {
+  // reset the view mode to "story" whenever the user navigates to this story
+  viewMode: 'story',
+};
+```
+
+This can also be applied globally in `preview.js`:
+
+```js
+// always reset the view mode to "docs" whenever the user navigates
+addParameters({
+  viewMode: 'docs',
+});
+```
+
+## Customizing source snippets
+
+As of SB 6.0, there are two ways to customize how Docs renders source code, via story parameter or via a formatting function.
+
+If you override the `docs.source.code` parameter, the `Source` block will render whatever string is added:
+
+```js
+const Example = () => <Button />;
+Example.parameters = {
+  docs: { source: { code: 'some arbitrary string' } },
+};
+```
+
+Alternatively, you can provide a function in the `docs.transformSource` parameter. For example, the following snippet in `.storybook/preview.js` globally removes the arrow at the beginning of a function that returns a string:
+
+```js
+const SOURCE_REGEX = /^\(\) => `(.*)`$/;
+export const parameters = {
+  docs: {
+    transformSource: (src, storyId) => {
+      const match = SOURCE_REGEX.exec(src);
+      return match ? match[1] : src;
+    },
+  },
+};
+```
+
+These two methods are complementary. The former is useful for story-specific, and the latter is useful for global formatting.
+
+## Overwriting docs container
+
+What happens if you want to add some wrapper for your MDX page, or add some other kind of React context?
+
+When you're writing stories you can do this by adding a [decorator](https://storybook.js.org/docs/basics/writing-stories/#decorators), but when you're adding arbitrary JSX to your MDX documentation outside of a `<Story>` block, decorators no longer apply, and you need to use the `docs.container` parameter.
+
+The closest Docs equivalent of a decorator is the `container`, a wrapper element that is rendered around the page that is being rendered. Here's an example of adding a solid red border around the page. It uses Storybook's default page container (that sets up various contexts and other magic) and then inserts its own logic between that container and the contents of the page:
+
+```js
+import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+
+<Meta
+  title="Addons/Docs/container-override"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+          <div style={{ border: '5px solid red' }}>{children}</div>
+        </DocsContainer>
+      ),
+    },
+  }}
+/>
+
+# Title
+
+Rest of your file...
+```
+
+This is especially useful if you are using `styled-components` and need to wrap your JSX with a `ThemeProvider` to have access to your theme:
+
+```js
+import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+import { ThemeProvider } from 'styled-components'
+import { theme } from '../path/to/theme'
+
+<Meta
+  title="Addons/Docs/container-override"
+  parameters={{
+    docs: {
+      container: ({ children, context }) => (
+        <DocsContainer context={context}>
+          <ThemeProvider theme={theme}>
+            {children}
+          </ThemeProvider>
+        </DocsContainer>
+      ),
+    },
+  }}
+/>
+
+# Title
+
+Rest of your file...
+```
+
 ## More resources
 
-Want to learn more? Here are some more articles on Storybook Docs:
-
-- References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Theming](theming.md)
-- Vision: [Storybook Docs sneak peak](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a)
-- Announcement: [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf)
+- References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
+- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
+- Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)
-- [Technical preview guide](https://docs.google.com/document/d/1un6YX7xDKEKl5-MVb-egnOYN8dynb5Hf7mq0hipk8JE/edit?usp=sharing)

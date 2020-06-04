@@ -1,4 +1,4 @@
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 import { linkTo } from '@storybook/addon-links';
 
 export default {
@@ -12,6 +12,4 @@ export const GoToWelcome = () => ({
   },
 });
 
-GoToWelcome.story = {
-  name: 'Go to welcome',
-};
+GoToWelcome.storyName = 'Go to welcome';

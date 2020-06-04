@@ -25,6 +25,26 @@ How you like them apples?!
   }}
 </Story>
 
+## Custom source
+
+<Preview>
+  <Story name="custom source" height="100px" parameters={{ docs: { source: { code: 'hello' } } }}>
+    {'<h1>Custom source</h1>'}
+  </Story>
+</Preview>
+
+## Transformed source
+
+<Preview>
+  <Story
+    name="transformed source"
+    height="100px"
+    parameters={{ docs: { transformSource: (src) => `transformed: ${src}` } }}
+  >
+    {'<h1>Some source</h1>'}
+  </Story>
+</Preview>
+
 ## Story reference
 
 You can also reference an existing story from within your MDX file.

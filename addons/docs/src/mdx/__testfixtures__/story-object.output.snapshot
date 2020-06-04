@@ -8,7 +8,7 @@ import { Story, Meta } from '@storybook/addon-docs/blocks';
 import { Welcome, Button } from '@storybook/angular/demo';
 import { linkTo } from '@storybook/addon-links';
 
-const makeShortcode = name =>
+const makeShortcode = (name) =>
   function MDXDefaultShortcode(props) {
     console.warn(
       'Component ' +
@@ -51,22 +51,23 @@ export const toStorybook = () => ({
     declarations: [Welcome],
   },
 });
-toStorybook.story = {};
-toStorybook.story.name = 'to storybook';
-toStorybook.story.parameters = {
-  mdxSource:
-    '{\\\\n  template: \`<storybook-welcome-component (showApp)=\\"showApp()\\"></storybook-welcome-component>\`,\\\\n  props: {\\\\n    showApp: linkTo(\\\\'Button\\\\')\\\\n  },\\\\n  moduleMetadata: {\\\\n    declarations: [Welcome]\\\\n  }\\\\n}',
+toStorybook.storyName = 'to storybook';
+toStorybook.parameters = {
+  storySource: {
+    source:
+      '{\\\\n  template: \`<storybook-welcome-component (showApp)=\\"showApp()\\"></storybook-welcome-component>\`,\\\\n  props: {\\\\n    showApp: linkTo(\\\\'Button\\\\')\\\\n  },\\\\n  moduleMetadata: {\\\\n    declarations: [Welcome]\\\\n  }\\\\n}',
+  },
 };
 
 const componentMeta = { title: 'MDX|Welcome', includeStories: ['toStorybook'] };
 
-const mdxStoryNameToId = { 'to storybook': 'mdx-welcome--to-storybook' };
+const mdxStoryNameToKey = { 'to storybook': 'toStorybook' };
 
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
   page: () => (
-    <AddContext mdxStoryNameToId={mdxStoryNameToId}>
+    <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentMeta={componentMeta}>
       <MDXContent />
     </AddContext>
   ),

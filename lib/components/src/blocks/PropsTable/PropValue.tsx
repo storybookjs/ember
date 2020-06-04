@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { isNil } from 'lodash';
 import { styled } from '@storybook/theming';
 import memoize from 'memoizerific';
 import { PropSummaryValue } from './PropDef';
@@ -68,16 +67,21 @@ const PropText: FC<PropTextProps> = ({ text }) => {
 const calculateDetailWidth = memoize(1000)((detail: string): string => {
   const lines = detail.split(/\r?\n/);
 
-  return `${Math.max(...lines.map(x => x.length))}ch`;
+  return `${Math.max(...lines.map((x) => x.length))}ch`;
 });
 
 const PropSummary: FC<PropSummaryProps> = ({ value }) => {
   const { summary, detail } = value;
 
   const [isOpen, setIsOpen] = useState(false);
-
-  if (isNil(detail)) {
-    return <PropText text={summary} />;
+  // summary is used for the default value
+  // below check fixes not displaying default values for boolean typescript vars
+  const summaryAsString =
+    summary !== undefined && summary !== null && typeof summary.toString === 'function'
+      ? summary.toString()
+      : summary;
+  if (detail == null) {
+    return <PropText text={summaryAsString} />;
   }
 
   return (
@@ -86,7 +90,7 @@ const PropSummary: FC<PropSummaryProps> = ({ value }) => {
       trigger="click"
       placement="bottom"
       tooltipShown={isOpen}
-      onVisibilityChange={isVisible => {
+      onVisibilityChange={(isVisible) => {
         setIsOpen(isVisible);
       }}
       tooltip={
@@ -98,7 +102,7 @@ const PropSummary: FC<PropSummaryProps> = ({ value }) => {
       }
     >
       <Expandable className="sbdocs-expandable">
-        <span>{summary}</span>
+        <span>{summaryAsString}</span>
         <ArrowIcon icon={isOpen ? 'arrowup' : 'arrowdown'} />
       </Expandable>
     </WithTooltipPure>
@@ -106,5 +110,5 @@ const PropSummary: FC<PropSummaryProps> = ({ value }) => {
 };
 
 export const PropValue: FC<PropValueProps> = ({ value }) => {
-  return isNil(value) ? <EmptyProp /> : <PropSummary value={value} />;
+  return value == null ? <EmptyProp /> : <PropSummary value={value} />;
 };

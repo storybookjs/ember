@@ -9,8 +9,11 @@ import * as descriptionStories from './Description.stories';
 export default {
   title: 'Docs/DocsPage',
   component: DocsWrapper,
+  parameters: {
+    layout: 'fullscreen',
+  },
   decorators: [
-    storyFn => (
+    (storyFn) => (
       <DocsWrapper>
         <DocsContent>{storyFn()}</DocsContent>
       </DocsWrapper>
@@ -30,7 +33,7 @@ export const withSubtitle = () => (
     {sourceStories.jsx()}
   </>
 );
-withSubtitle.story = { name: 'with subtitle' };
+withSubtitle.storyName = 'with subtitle';
 
 export const empty = () => (
   <>
@@ -48,7 +51,7 @@ export const noText = () => (
     {sourceStories.jsx()}
   </>
 );
-noText.story = { name: 'no text' };
+noText.storyName = 'no text';
 
 export const text = () => (
   <>

@@ -3,6 +3,8 @@ id: 'writing-stories'
 title: 'Writing Stories'
 ---
 
+> migration guide: This page documents the method to configure storybook introduced recently in 5.3.0, consult the [migration guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) if you want to migrate to this format of configuring storybook.
+
 A Storybook is a collection of stories. Each story represents a single visual state of a component.
 
 > Technically, a story is a function that returns something that can be rendered to screen.
@@ -157,14 +159,14 @@ import { configure } from '@storybook/react';
 const loaderFn = () => {
   const allExports = [require('./welcome.stories.js')];
   const req = require.context('../src/components', true, /\.stories\.js$/);
-  req.keys().forEach(fname => allExports.push(req(fname)));
+  req.keys().forEach((fname) => allExports.push(req(fname)));
   return allExports;
 };
 
 configure(loaderFn, module);
 ```
 
-Storybook uses Webpack's [require.context](https://webpack.js.org/guides/dependency-management/#require-context) to load modules dynamically. Take a look at the relevant Webpack [docs](https://webpack.js.org/guides/dependency-management/#require-context) to learn more about how to use `require.context`.
+Storybook uses Webpack's [require.context](https://webpack.js.org/guides/dependency-management/#requirecontext) to load modules dynamically. Take a look at the relevant Webpack [docs](https://webpack.js.org/guides/dependency-management/#requirecontext) to learn more about how to use `require.context`.
 
 If you are using the `storiesOf` API directly, or are using `@storybook/react-native` where CSF is unavailable, you should use a loader function with **no return value**:
 
@@ -178,7 +180,7 @@ const loaderFn = () => {
 
   // dynamic loading, unavailable in react-native
   const req = require.context('../src/components', true, /\.stories\.js$/);
-  req.keys().forEach(fname => req(fname));
+  req.keys().forEach((fname) => req(fname));
 };
 
 configure(loaderFn, module);
@@ -198,16 +200,25 @@ Here is an example of a global decorator which centers every story in the `.stor
 import React from 'react';
 import { addDecorator } from '@storybook/react';
 
-addDecorator(storyFn => <div style={{ textAlign: 'center' }}>{storyFn()}</div>);
+addDecorator((storyFn) => <div style={{ textAlign: 'center' }}>{storyFn()}</div>);
 ```
 
 > \* In Vue projects you have to use the special component `<story/>` instead of the function parameter `storyFn` that is used in React projects, even if you are using JSX, for example:
+>
 > ```jsx
-> var decoratorVueJsx = () => ({ render() { return <div style={{ textAlign: 'center' }}><story/></div>} })
-> addDecorator(decoratorVueJsx)
-> 
-> var decoratorVueTemplate = () => { return { template: `<div style="text-align:center"><story/></div>` }
-> addDecorator(decoratorVueTemplate)
+> var decoratorVueJsx = () => ({
+>   render() {
+>     return (
+>       <div style={{ textAlign: 'center' }}>
+>         <story />
+>       </div>
+>     );
+>   },
+> });
+> addDecorator(decoratorVueJsx);
+>
+> var decoratorVueTemplate = () => ({ template: `<div style="text-align:center"><story/></div>` });
+> addDecorator(decoratorVueTemplate);
 > ```
 
 And here's an example of component/local decorators. The component decorator wraps all the stories in a yellow frame, and the story decorator wraps a single story in an additional red frame.
@@ -218,14 +229,12 @@ import MyComponent from './MyComponent';
 
 export default {
   title: 'MyComponent',
-  decorators: [storyFn => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>],
+  decorators: [(storyFn) => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>],
 };
 
 export const normal = () => <MyComponent />;
 export const special = () => <MyComponent text="The Boss" />;
-special.story = {
-  decorators: [storyFn => <div style={{ border: '5px solid red' }}>{storyFn()}</div>],
-};
+special.decorators = [(storyFn) => <div style={{ border: '5px solid red' }}>{storyFn()}</div>];
 ```
 
 Decorators are not only for story formatting, they are generally useful for any kind of context needed by a story.
@@ -267,8 +276,8 @@ export default {
 export const small = () => <MyComponent text="small" />;
 export const medium = () => <MyComponent text="medium" />;
 export const special = () => <MyComponent text="The Boss" />;
-special.story = {
-  parameters: { notes: specialNotes },
+special.parameters = {
+  notes: specialNotes,
 };
 ```
 
@@ -280,8 +289,8 @@ By default, search results will show up based on the file name of your stories. 
 
 ```jsx
 export const callout = () => <Callout>Some children</Callout>;
-callout.story = {
-  parameters: { notes: 'popover tooltip' },
+callout.parameters = {
+  notes: 'popover tooltip',
 };
 ```
 
@@ -349,3 +358,33 @@ Multiple storybooks can be built for different kinds of stories or components in
   }
 }
 ```
+
+## Permalinking to stories
+
+Sometimes you might wish to change the name of a story or its position in the hierarchy, but preserve the link to the story or its documentation. Here's how to do it.
+
+Consider the following story:
+
+```js
+export default {
+  title: 'Foo/Bar',
+};
+
+export const Baz = () => <MyComponent />;
+```
+
+Storybook's ID-generation logic will give this the ID `foo-bar--baz`, so the link would be `?path=/story/foo-bar--baz`.
+
+Now suppose you want to change the position in the hierarchy to `OtherFoo/Bar` and the story name to `Moo`. Here's how to do that:
+
+```js
+export default {
+  title: 'OtherFoo/Bar',
+  id: 'Foo/Bar', // or 'foo-bar' if you prefer
+};
+
+export const Baz = () => <MyComponent />;
+Baz.storyName = 'Moo';
+```
+
+Storybook will prioritize the `id` over the title for ID generation, if provided, and will prioritize the `story.name` over the export key for display.

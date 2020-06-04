@@ -4,33 +4,29 @@ aliases:
   - &defaults
     working_directory: /tmp/storybook
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-browsers
 
 jobs:
-  build:
+  install:
     <<: *defaults
     steps:
       - checkout
       - restore_cache:
           name: Restore core dependencies cache
           keys:
-            - core-dependencies-v4-{{ checksum "yarn.lock" }}
+            - core-dependencies-v5-{{ checksum "yarn.lock" }}
+            - core-dependencies-v5-
       - run:
           name: Install dependencies
           command: yarn install
       - run:
           name: Check that yarn.lock is not corrupted
           command: yarn repo-dirty-check
-      - run:
-          name: Bootstrap
-          command: yarn bootstrap --core
       - save_cache:
           name: Cache core dependencies
-          key: core-dependencies-v4-{{ checksum "yarn.lock" }}
+          key: core-dependencies-v5-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache
             - node_modules
-            - /root/.cache
       - persist_to_workspace:
           root: .
           paths:
@@ -40,67 +36,34 @@ jobs:
             - dev-kits
             - app
             - lib
-  chromatic:
+  build:
     <<: *defaults
     steps:
       - checkout
       - attach_workspace:
           at: .
       - run:
-          name: Run chromatic on the pre-built official example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/official-storybook" --exit-zero-on-changes --app-code="ab7m45tp9p"
+          name: Bootstrap
+          command: yarn bootstrap --core
+      - persist_to_workspace:
+          root: .
+          paths:
+            - examples
+            - addons
+            - dev-kits
+            - app
+            - lib
+  chromatic:
+    <<: *defaults
+    parallelism: 11
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
-          name: Run chromatic on the pre-built angular example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/angular-cli" --app-code="tl92yzsj6w"
-      - run:
-          name: Run chromatic on the pre-built cra-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/cra-kitchen-sink" --app-code="tg55gajmdt"
-      - run:
-          name: Run chromatic on the pre-built cra-react15 example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/cra-react15" --app-code="gxk7iqej3wt"
-      - run:
-          name: Run chromatic on the pre-built cra-ts-essentials example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/cra-ts-essentials" --app-code="b311ypk6of"
-      - run:
-          name: Run chromatic on the pre-built cra-ts-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/cra-ts-kitchen-sink" --app-code="19whyj1tlac"
-      - run:
-          name: Run chromatic on the pre-built dev-kits example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/dev-kits" --app-code="7yykp9ifdxx"
-      - run:
-          name: Run chromatic on the pre-built ember-cli example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/ember-cli" --app-code="19z23qxndju"
-      - run:
-          name: Run chromatic on the pre-built html-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/html-kitchen-sink" --app-code="e8zolxoyg8o"
-      - run:
-          name: Run chromatic on the pre-built marko-cli example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/marko-cli" --app-code="qaegx64axu"
-      - run:
-          name: Run chromatic on the pre-built mithril-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/mithril-kitchen-sink" --app-code="8adgm46jzk8"
-      - run:
-          name: Run chromatic on the pre-built polymer-cli example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/polymer-cli" --app-code="o6jl9kmh0qd"
-      - run:
-          name: Run chromatic on the pre-built preact-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/preact-kitchen-sink" --app-code="ls0ikhnwqt"
-      - run:
-          name: Run chromatic on the pre-built rax-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/rax-kitchen-sink" --app-code="4co6vptx8qo"
-      - run:
-          name: Run chromatic on the pre-built riot-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/riot-kitchen-sink" --app-code="g2dp3lnr34a"
-      - run:
-          name: Run chromatic on the pre-built svelte-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/svelte-kitchen-sink" --app-code="8ob73wgl995"
-      - run:
-          name: Run chromatic on the pre-built vue-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/vue-kitchen-sink" --app-code="cyxj0e38bqj"
-      - run:
-          name: Run chromatic on the pre-built web-components-kitchen-sink example
-          command: yarn chromatic --storybook-build-dir="built-storybooks/web-components-kitchen-sink" --app-code="npm5gsofwkf"
-
+          name: examples
+          command: |
+            yarn run-chromatics
   packtracker:
     <<: *defaults
     steps:
@@ -114,7 +77,7 @@ jobs:
             yarn packtracker
   examples:
     <<: *defaults
-    parallelism: 4
+    parallelism: 11
     steps:
       - checkout
       - attach_workspace:
@@ -127,26 +90,89 @@ jobs:
           root: .
           paths:
             - built-storybooks
+  publish:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: running local registry
+          command: yarn local-registry --publish
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .verdaccio-cache
+  examples-v2:
+    docker:
+      - image: cypress/included:4.7.0
+        environment:
+          TERM: xterm
+    working_directory: /tmp/storybook
+    parallelism: 10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: running local registry
+          command: yarn local-registry --port 6000 --open
+          background: true
+      - run:
+          name: wait for registry
+          command: yarn wait-on http://localhost:6000
+      - run:
+          name: set registry
+          command: yarn config set registry http://localhost:6000/
+      - run:
+          name: test local registry
+          command: yarn info @storybook/core
+      - run:
+          name: run e2e tests
+          command: yarn test:e2e-framework
+      - store_artifacts:
+          path: /tmp/storybook/cypress
+          destination: cypress
+  examples-v2-yarn-2:
+    docker:
+      - image: cypress/included:4.7.0
+        environment:
+          TERM: xterm
+    working_directory: /tmp/storybook
+    # parallelism: 10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: running local registry
+          command: yarn local-registry --port 6000 --open
+          background: true
+      - run:
+          name: wait for registry
+          command: yarn wait-on http://localhost:6000
+      - run:
+          name: set registry
+          command: yarn config set registry http://localhost:6000/
+      - run:
+          name: test local registry
+          command: yarn info @storybook/core
+      - run:
+          name: run e2e tests
+          command: yarn test:e2e-framework yarn2Cra
+      - store_artifacts:
+          path: /tmp/storybook/cypress
+          destination: cypress
   e2e:
     working_directory: /tmp/storybook
     docker:
-      - image: cypress/base:8
+      - image: cypress/included:4.7.0
         environment:
           TERM: xterm
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: install cypress
-          command: yarn cypress install
-      - save_cache:
-          name: Cache core dependencies
-          key: core-dependencies-v4-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache
-            - node_modules
-            - /root/.cache
       - run:
           name: running example
           command: yarn serve-storybooks
@@ -156,7 +182,7 @@ jobs:
           command: yarn await-serve-storybooks
       - run:
           name: cypress run
-          command: yarn cypress run
+          command: yarn test:e2e
 
   smoke-tests:
     <<: *defaults
@@ -195,11 +221,6 @@ jobs:
             cd examples/ember-cli
             yarn storybook --smoke-test --quiet
       - run:
-          name: Run polymer-cli (smoke test)
-          command: |
-            cd examples/polymer-cli
-            yarn storybook --smoke-test --quiet
-      - run:
           name: Run marko-cli (smoke test)
           command: |
             cd examples/marko-cli
@@ -229,24 +250,6 @@ jobs:
           command: |
             cd examples/cra-react15
             yarn storybook --smoke-test --quiet
-  native-smoke-tests:
-    <<: *defaults
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Bootstrap
-          command: yarn bootstrap --core
-      - run:
-          name: Run React-Native-App example
-          command: |
-            cd examples-native/crna-kitchen-sink
-            yarn storybook --smoke-test
-      - run:
-          name: Publish React-Native-App example
-          command: |
-            ./scripts/crna-publish.js
   frontpage:
     <<: *defaults
     steps:
@@ -254,7 +257,7 @@ jobs:
       - restore_cache:
           name: Restore core dependencies cache
           keys:
-            - core-dependencies-v4-{{ checksum "yarn.lock" }}
+            - core-dependencies-v5-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn bootstrap --install
@@ -265,10 +268,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          name: Restore docs dependencies cache
-          keys:
-            - docs-dependencies-v2-{{ checksum "docs/yarn.lock" }}
       - run:
           name: Install dependencies
           command: |
@@ -279,11 +278,6 @@ jobs:
           command: |
             cd docs
             yarn build
-      - save_cache:
-          name: Cache docs dependencies
-          key: docs-dependencies-v2-{{ checksum "docs/yarn.lock" }}
-          paths:
-            - ~/.cache
   lint:
     <<: *defaults
     steps:
@@ -315,10 +309,14 @@ jobs:
       - run:
           name: Upload coverage
           command: yarn coverage
+
 workflows:
   test:
     jobs:
-      - build
+      - install
+      - build:
+          requires:
+            - install
       - lint:
           requires:
             - build
@@ -334,9 +332,6 @@ workflows:
       - packtracker:
           requires:
             - build
-      - native-smoke-tests:
-          requires:
-            - build
       - test:
           requires:
             - build
@@ -346,6 +341,15 @@ workflows:
       - chromatic:
           requires:
             - examples
+      - publish:
+          requires:
+            - build
+      - examples-v2:
+          requires:
+            - publish
+      - examples-v2-yarn-2:
+          requires:
+            - publish
   deploy:
     jobs:
       - docs

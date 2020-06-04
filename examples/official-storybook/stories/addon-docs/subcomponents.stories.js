@@ -5,11 +5,12 @@ import { ButtonGroup } from '../../components/ButtonGroup';
 export default {
   title: 'Addons/Docs/ButtonGroup',
   component: ButtonGroup,
+  parameters: { viewMode: 'docs' },
   subcomponents: { DocgenButton },
 };
 
-export const basic = () => (
-  <ButtonGroup>
+export const Basic = () => (
+  <ButtonGroup background="#eee">
     <DocgenButton label="foo" />
     <DocgenButton label="bar" />
   </ButtonGroup>

@@ -11,17 +11,13 @@ export default {
 
 export const ActionOnly = () => <Button onclick={action('log')}>Click me to log the action</Button>;
 
-ActionOnly.story = {
-  name: 'Action only',
-};
+ActionOnly.storyName = 'Action only';
 
 export const MultipleActions = () => (
   <Button {...actions('onclick', 'ondblclick')}>(Double) click me to log the action</Button>
 );
 
-MultipleActions.story = {
-  name: 'Multiple actions',
-};
+MultipleActions.storyName = 'Multiple actions';
 
 export const MultipleActionsObject = () => (
   <Button {...actions({ onclick: 'click', ondblclick: 'double-click' })}>
@@ -29,13 +25,11 @@ export const MultipleActionsObject = () => (
   </Button>
 );
 
-MultipleActionsObject.story = {
-  name: 'Multiple actions, object',
-};
+MultipleActionsObject.storyName = 'Multiple actions, object';
 
 export const ActionAndMethod = () => (
   <Button
-    onclick={event => {
+    onclick={(event) => {
       event.preventDefault();
       action('method-log')(event.target);
     }}
@@ -44,6 +38,4 @@ export const ActionAndMethod = () => (
   </Button>
 );
 
-ActionAndMethod.story = {
-  name: 'Action and method',
-};
+ActionAndMethod.storyName = 'Action and method';

@@ -5,6 +5,12 @@ title: 'Storybook for React'
 
 ## Automatic setup
 
+Before trying the below commands, you should try the following command. In most cases, Storybook will detect that you're using `react` or `react-scripts`, and install the appropriate packages.
+
+```sh
+npx -p @storybook/cli sb init
+```
+
 You may have tried to use our quick start guide to setup your project for Storybook.
 If it failed because it couldn't detect you're using React, you could try forcing it to use React:
 
@@ -12,13 +18,13 @@ If it failed because it couldn't detect you're using React, you could try forcin
 npx -p @storybook/cli sb init --type react
 ```
 
-Note: be sure you have a `package.json` in your project or the above command will fail.
-
-If you're using [Create React App](https://create-react-app.dev/), use:
+If you're using [Create React App](https://create-react-app.dev/) (or a fork of `react-scripts`), you should use this command instead:
 
 ```sh
 npx -p @storybook/cli sb init --type react_scripts
 ```
+
+Note: You must have a `package.json` in your project or the above commands will fail.
 
 ## Manual setup
 
@@ -47,14 +53,15 @@ npm install react react-dom --save
 npm install babel-loader @babel/core --save-dev
 ```
 
-## Step 2: Add an npm script
+## Step 2: Add npm scripts
 
-Then add the following NPM script to your `package.json` in order to start the storybook later in this guide:
+Then add the following scripts to your `package.json` in order to start the storybook later in this guide:
 
 ```json
 {
   "scripts": {
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "build-storybook": "build-storybook"
   }
 }
 ```
@@ -67,7 +74,7 @@ To do that, create a file at `.storybook/main.js` with the following content:
 
 ```js
 module.exports = {
-  stories: ['../src/**/*.stories.[tj]s'],
+  stories: ['../src/**/*.stories.@(ts|js)'],
 };
 ```
 

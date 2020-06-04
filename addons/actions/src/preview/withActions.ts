@@ -1,8 +1,13 @@
 // Based on http://backbonejs.org/docs/backbone.html#section-164
 import { document, Element } from 'global';
 import { useEffect } from '@storybook/client-api';
+import deprecate from 'util-deprecate';
+import dedent from 'ts-dedent';
 
+import { makeDecorator } from '@storybook/addons';
 import { actions } from './actions';
+
+import { PARAM_KEY } from '../constants';
 
 const delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
@@ -22,8 +27,8 @@ const hasMatchInAncestry = (element: any, selector: any): boolean => {
   return hasMatchInAncestry(parent, selector);
 };
 
-const createHandlers = (actionsFn: (...arg: any[]) => object, ...args: any[]) => {
-  const actionsObject = actionsFn(...args);
+const createHandlers = (actionsFn: (...arg: any[]) => object, ...handles: any[]) => {
+  const actionsObject = actionsFn(...handles);
   return Object.entries(actionsObject).map(([key, action]) => {
     const [_, eventName, selector] = key.match(delegateEventSplitter);
     return {
@@ -37,18 +42,46 @@ const createHandlers = (actionsFn: (...arg: any[]) => object, ...args: any[]) =>
   });
 };
 
-export const createDecorator = (actionsFn: any) => (...args: any[]) => (storyFn: () => any) => {
-  useEffect(() => {
-    if (root != null) {
-      const handlers = createHandlers(actionsFn, ...args);
-      handlers.forEach(({ eventName, handler }) => root.addEventListener(eventName, handler));
-      return () =>
-        handlers.forEach(({ eventName, handler }) => root.removeEventListener(eventName, handler));
-    }
-    return undefined;
-  }, [root, actionsFn, args]);
+const applyEventHandlers = deprecate(
+  (actionsFn: any, ...handles: any[]) => {
+    useEffect(() => {
+      if (root != null) {
+        const handlers = createHandlers(actionsFn, ...handles);
+        handlers.forEach(({ eventName, handler }) => root.addEventListener(eventName, handler));
+        return () =>
+          handlers.forEach(({ eventName, handler }) =>
+            root.removeEventListener(eventName, handler)
+          );
+      }
+      return undefined;
+    }, [root, actionsFn, handles]);
+  },
+  dedent`
+    withActions(options) is deprecated, please configure addon-actions using the addParameter api:
 
-  return storyFn();
+    addParameters({
+      actions: {
+        handles: options
+      },
+    });
+  `
+);
+
+const applyDeprecatedOptions = (actionsFn: any, options: any[]) => {
+  if (options) {
+    applyEventHandlers(actionsFn, options);
+  }
 };
 
-export const withActions = createDecorator(actions);
+export const withActions = makeDecorator({
+  name: 'withActions',
+  parameterName: PARAM_KEY,
+  skipIfNoParametersOrOptions: true,
+  wrapper: (getStory, context, { parameters, options }) => {
+    applyDeprecatedOptions(actions, options as any[]);
+
+    if (parameters && parameters.handles) applyEventHandlers(actions, ...parameters.handles);
+
+    return getStory(context);
+  },
+});

@@ -14,9 +14,9 @@ const EVENTS = {
 const emitter = new EventEmitter();
 const emit = emitter.emit.bind(emitter);
 
-const eventHandler = name => payload => emit(Logger.LOG_EVENT, { name, payload });
+const eventHandler = (name) => (payload) => emit(Logger.LOG_EVENT, { name, payload });
 
-Object.keys(EVENTS).forEach(event => emitter.on(EVENTS[event], eventHandler(EVENTS[event])));
+Object.keys(EVENTS).forEach((event) => emitter.on(EVENTS[event], eventHandler(EVENTS[event])));
 
 const events = [
   {
@@ -77,6 +77,4 @@ export default {
 };
 
 export const logger = () => <Logger emitter={emitter} />;
-logger.story = {
-  name: 'Logger',
-};
+logger.storyName = 'Logger';

@@ -3,7 +3,9 @@ id: 'custom-webpack-config'
 title: 'Custom Webpack Config'
 ---
 
-You can customize Storybook's webpack setup by providing a `webpack` field in `main.js` file.
+> migration guide: This page documents the method to configure storybook introduced recently in 5.3.0, consult the [migration guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) if you want to migrate to this format of configuring storybook.
+
+You can customize Storybook's webpack setup by providing a `webpackFinal` field in `main.js` file.
 The value should be an async function that receives a webpack config and eventually returns a webpack config.
 
 Storybook has its own Webpack setup and a dev server.
@@ -157,7 +159,7 @@ The webpack config [is configurable](/configurations/custom-webpack-config#webpa
 - Edit its contents:
   ```js
   module.exports = {
-    webpack: (config) => console.dir(config, { depth: null }) || config,
+    webpackFinal: (config) => console.dir(config, { depth: null }) || config,
   };
   ```
 - Then run storybook:
@@ -171,14 +173,14 @@ The console should log the entire config, for you to inspect.
 
 The value should export a `function`, it's first argument, is the config that storybook would use, if you were to not customize it. The second argument is an options object from storybook, this will have information about where config came from, whether we're in production of development mode etc.
 
-For example, here's a `.storybook/main.js` to add [SASS](http://sass-lang.com/) support:
+For example, here's a `.storybook/main.js` to add [Sass](https://sass-lang.com/) support:
 
 ```js
 const path = require('path');
 
 // Export a function. Accept the base config as the only param.
 module.exports = {
-  webpack: async (config, { configType }) => {
+  webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
@@ -207,7 +209,7 @@ Furthermore, `config` requires the `HtmlWebpackplugin` to generate the preview p
 
 ```js
 module.exports = {
-  webpack: (config) => {
+  webpackFinal: (config) => {
     config.plugins.push(...);
     return config;
   },
@@ -220,9 +222,7 @@ If you're using a non-standard Storybook config directory, you should put `main.
 
 ## Using Your Existing Config
 
-If you have an existing webpack config for your project and want to reuse this app's configuration, you can either:
-
-- Import your main webpack config into Storybook's `.storybook/main.js` and merge the 2 configs.
+If you have an existing webpack config for your project and want to reuse this app's configuration, you can import your main webpack config into Storybook's `.storybook/main.js` and merge the 2 configs:
 
 **Example**
 _replacing the loaders from storybook with the loaders from your app's `webpack.config.js`_
@@ -234,7 +234,7 @@ const path = require('path');
 const custom = require('../webpack.config.js');
 
 module.exports = {
-  webpack: (config) => {
+  webpackFinal: (config) => {
     return { ...config, module: { ...config.module, rules: custom.module.rules } };
   },
 };

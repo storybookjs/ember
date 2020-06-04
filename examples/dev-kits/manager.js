@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Button } from '@storybook/react/demo';
 import { addons } from '@storybook/addons';
-import { useAddonState } from '@storybook/api';
+import { useAddonState, useGlobalArgs } from '@storybook/api';
 import { themes } from '@storybook/theming';
 import { AddonPanel } from '@storybook/components';
 
+import logo from './logo.svg';
+
 addons.setConfig({
-  theme: themes.dark,
+  theme: {
+    brandImage: logo,
+    brandTitle: 'Custom - Storybook',
+    ...themes.dark,
+    appContentBg: 'white',
+  },
   panelPosition: 'bottom',
   selectedPanel: 'storybook/roundtrip',
 });
@@ -43,4 +50,41 @@ addons.addPanel('useAddonState', {
   id: 'useAddonState',
   title: 'useAddonState',
   render: StatePanel,
+});
+
+const GlobalArgsPanel = ({ active, key }) => {
+  const [globalArgs, updateGlobalArgs] = useGlobalArgs();
+  const [globalArgsInput, updateGlobalArgsInput] = useState(JSON.stringify(globalArgs));
+  return (
+    <AddonPanel key={key} active={active}>
+      <div>
+        <h2>Global Args</h2>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateGlobalArgs(JSON.parse(globalArgsInput));
+          }}
+        >
+          <textarea
+            value={globalArgsInput}
+            onChange={(e) => updateGlobalArgsInput(e.target.value)}
+          />
+          <br />
+          <button type="submit">Change</button>
+        </form>
+      </div>
+    </AddonPanel>
+  );
+};
+
+GlobalArgsPanel.propTypes = {
+  active: PropTypes.bool.isRequired,
+  key: PropTypes.string.isRequired,
+};
+
+addons.addPanel('useGlobalArgs', {
+  id: 'useGlobalArgs',
+  title: 'useGlobalArgs',
+  render: GlobalArgsPanel,
 });

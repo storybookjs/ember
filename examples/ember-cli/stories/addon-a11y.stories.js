@@ -1,9 +1,7 @@
-import hbs from 'htmlbars-inline-precompile';
-import { checkA11y } from '@storybook/addon-a11y';
+import { hbs } from 'ember-cli-htmlbars';
 
 export default {
   title: 'Addon/a11y',
-  decorators: [checkA11y],
 
   parameters: {
     options: { selectedPanel: '@storybook/a11y/panel' },
@@ -17,6 +15,4 @@ export const Disabled = () => hbs`<button disabled>Testing the a11y addon</butto
 export const InvalidContrast = () =>
   hbs`<button style="color: black; background-color: brown;">Testing the a11y addon</button>`;
 
-InvalidContrast.story = {
-  name: 'Invalid contrast',
-};
+InvalidContrast.storyName = 'Invalid contrast';

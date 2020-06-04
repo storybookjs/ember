@@ -1,18 +1,16 @@
-import { clickAddon, visitExample } from '../helper';
+import { clickAddon, visit } from '../helper';
 
 describe('Knobs', () => {
   beforeEach(() => {
-    visitExample('official-storybook', '?path=/story/addons-knobs-withknobs--tweaks-static-values');
+    visit('official-storybook/?path=/story/addons-knobs-withknobs--tweaks-static-values');
   });
 
   it('[text] it should change a string value', () => {
     clickAddon('Knobs');
 
-    cy.get('#Name')
-      .clear()
-      .type('John Doe');
+    cy.get('#Name').clear().type('John Doe');
 
-    cy.preview()
+    cy.getStoryElement()
       .console('info')
       .find('p')
       .eq(0)

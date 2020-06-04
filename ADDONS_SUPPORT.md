@@ -1,25 +1,32 @@
 ## Addon / Framework Support Table
 
-| | [React](app/react)|[React Native](app/react-native)|[Vue](app/vue)|[Angular](app/angular)| [Polymer](app/polymer)| [Mithril](app/mithril)| [HTML](app/html)| [Marko](app/marko)| [Svelte](app/svelte)| [Riot](app/riot)| [Ember](app/ember)| [Preact](app/preact)|
-| ----------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
-|[a11y](addons/a11y)                         |+| |+|+|+|+|+|+|+|+|+|+|
-|[actions](addons/actions)                   |+|+*|+|+|+|+|+|+|+|+|+|+|
-|[backgrounds](addons/backgrounds)           |+|*|+|+|+|+|+|+|+|+|+|+|
-|[centered](addons/centered)                 |+| |+|+| |+|+| |+| |+|+|
-|[contexts](addons/contexts)                 |+| |+| | | | | | | | |+|
-|[events](addons/events)                     |+| |+|+|+|+|+|+| | |+|+|
-|[design assets](addons/design-assets)       |+| |+|+|+|+|+|+|+|+|+|+|
-|[graphql](addons/graphql)                   |+| | | | | | | | | | | |
-|[google-analytics](addons/google-analytics) |+|+|+|+|+|+|+|+|+|+|+|+|
-|[info](addons/info)                         |+| | | | | | | | | | | |
-|[jest](addons/jest)                         |+|+|+|+|+|+|+|+|+|+|+|+|
-|[knobs](addons/knobs)                       |+|+*|+|+|+|+|+|+|+|+|+|+|
-|[links](addons/links)                       |+|+|+|+|+|+|+| |+|+|+|+|
-|[notes](addons/notes)                       |+|+*|+|+|+|+|+| |+|+|+|+|
-|[options](addons/options)                   |+|+|+|+|+|+|+| |+|+|+|+|
-|[cssresources](addons/cssresources)         |+| |+|+|+|+|+|+|+|+|+|+|
-|[storyshots](addons/storyshots)             |+|+|+|+| | |+| |+|+| |+|
-|[storysource](addons/storysource)           |+| |+|+|+|+|+|+|+|+|+|+|
-|[viewport](addons/viewport)                 |+| |+|+|+|+|+|+|+|+|+|+|
+|                                             | [React](app/react) | [React Native](app/react-native) | [Vue](app/vue) | [Angular](app/angular) | [Mithril](app/mithril) | [HTML](app/html) | [Marko](app/marko) | [Svelte](app/svelte) | [Riot](app/riot) | [Ember](app/ember) | [Preact](app/preact) | [Rax](app/rax) |
+| ------------------------------------------- | :----------------: | :------------------------------: | :------------: | :--------------------: | :--------------------: | :--------------: | :----------------: | :------------------: | :--------------: | :----------------: | :------------------: | -------------- |
+| [a11y](addons/a11y)                         |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [actions](addons/actions)                   |         +          |               +\*                |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [backgrounds](addons/backgrounds)           |         +          |                \*                |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [cssresources](addons/cssresources)         |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [design assets](addons/design-assets)       |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [docs](addons/docs)                         |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [events](addons/events)                     |         +          |                                  |       +        |           +            |           +            |        +         |         +          |                      |                  |         +          |          +           | +              |
+| [google-analytics](addons/google-analytics) |         +          |                +                 |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [graphql](addons/graphql)                   |         +          |                                  |                |                        |                        |                  |                    |                      |                  |                    |                      |                |
+| [jest](addons/jest)                         |         +          |                +                 |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [knobs](addons/knobs)                       |         +          |               +\*                |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [links](addons/links)                       |         +          |                +                 |       +        |           +            |           +            |        +         |                    |          +           |        +         |         +          |          +           | +              |
+| [options](addons/options)                   |         +          |                +                 |       +        |           +            |           +            |        +         |                    |          +           |        +         |         +          |          +           | +              |
+| [query params](addons/queryparams)          |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [storyshots](addons/storyshots)             |         +          |                +                 |       +        |           +            |                        |        +         |                    |          +           |        +         |                    |          +           | +              |
+| [storysource](addons/storysource)           |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
+| [viewport](addons/viewport)                 |         +          |                                  |       +        |           +            |           +            |        +         |         +          |          +           |        +         |         +          |          +           | +              |
 
-`*` - React Native on device addon (addons/onDevice-\<name>) 
+`*`  - React Native on device addon (addons/onDevice-\<name>)
+
+## Deprecated Addons
+
+|                                             | [React](app/react) | [React Native](app/react-native) | [Vue](app/vue) | [Angular](app/angular) | [Mithril](app/mithril) | [HTML](app/html) | [Marko](app/marko) | [Svelte](app/svelte) | [Riot](app/riot) | [Ember](app/ember) | [Preact](app/preact) | [Rax](app/rax) |
+| ------------------------------------------- | :----------------: | :------------------------------: | :------------: | :--------------------: | :--------------------: | :--------------: | :----------------: | :------------------: | :--------------: | :----------------: | :------------------: | -------------- |
+| [info](https://github.com/storybookjs/storybook/tree/master/addons/info)                     |         +          |                                  |                |                        |                        |                  |                    |                      |                  |                    |                      |                |
+| [notes](https://github.com/storybookjs/storybook/tree/master/addons/notes)                   |         +          |               +\*                |       +        |           +            |           +            |        +         |                    |          +           |        +         |         +          |          +           | +              |
+
+`*`  - React Native on device addon (addons/onDevice-\<name>)

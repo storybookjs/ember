@@ -31,6 +31,7 @@ module.exports = {
       },
     ],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-proposal-private-methods', { loose: true }],
     '@babel/plugin-proposal-export-default-from',
     '@babel/plugin-syntax-dynamic-import',
     ['@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: true }],
@@ -43,17 +44,10 @@ module.exports = {
   overrides: [
     {
       test: './examples/vue-kitchen-sink',
-      presets: ['babel-preset-vue'],
+      presets: ['@vue/babel-preset-jsx'],
       env: {
         test: withTests,
       },
-    },
-    {
-      test: './examples/rax-kitchen-sink',
-      presets: [
-        ['@babel/preset-env', { shippedProposals: true, useBuiltIns: 'usage', corejs: '3' }],
-        ['babel-preset-rax', { development: process.env.BABEL_ENV === 'development' }],
-      ],
     },
     {
       test: './lib',
@@ -74,11 +68,6 @@ module.exports = {
       env: {
         test: withTests,
       },
-    },
-    {
-      test: './app/react-native',
-      presets: ['module:metro-react-native-babel-preset'],
-      plugins: ['babel-plugin-macros', ['emotion', { sourceMap: true, autoLabel: true }]],
     },
     {
       test: [
@@ -104,6 +93,10 @@ module.exports = {
       plugins: [
         'emotion',
         'babel-plugin-macros',
+        '@babel/plugin-transform-arrow-functions',
+        '@babel/plugin-transform-shorthand-properties',
+        '@babel/plugin-transform-block-scoping',
+        '@babel/plugin-transform-destructuring',
         ['@babel/plugin-proposal-class-properties', { loose: true }],
         '@babel/plugin-proposal-object-rest-spread',
         '@babel/plugin-proposal-export-default-from',

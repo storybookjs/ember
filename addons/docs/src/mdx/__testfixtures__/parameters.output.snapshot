@@ -7,7 +7,7 @@ import { assertIsFn, AddContext } from '@storybook/addon-docs/blocks';
 import { Button } from '@storybook/react/demo';
 import { Story, Meta } from '@storybook/addon-docs/blocks';
 
-const makeShortcode = name =>
+const makeShortcode = (name) =>
   function MDXDefaultShortcode(props) {
     console.warn(
       'Component ' +
@@ -49,15 +49,13 @@ function MDXContent({ components, ...props }) {
 MDXContent.isMDXComponent = true;
 
 export const componentNotes = () => <Button>Component notes</Button>;
-componentNotes.story = {};
-componentNotes.story.name = 'component notes';
-componentNotes.story.parameters = { mdxSource: '<Button>Component notes</Button>' };
+componentNotes.storyName = 'component notes';
+componentNotes.parameters = { storySource: { source: '<Button>Component notes</Button>' } };
 
 export const storyNotes = () => <Button>Story notes</Button>;
-storyNotes.story = {};
-storyNotes.story.name = 'story notes';
-storyNotes.story.parameters = {
-  mdxSource: '<Button>Story notes</Button>',
+storyNotes.storyName = 'story notes';
+storyNotes.parameters = {
+  storySource: { source: '<Button>Story notes</Button>' },
   ...{
     notes: 'story notes',
   },
@@ -68,19 +66,17 @@ const componentMeta = {
   parameters: {
     notes: 'component notes',
   },
+  component: Button,
   includeStories: ['componentNotes', 'storyNotes'],
 };
 
-const mdxStoryNameToId = {
-  'component notes': 'button--component-notes',
-  'story notes': 'button--story-notes',
-};
+const mdxStoryNameToKey = { 'component notes': 'componentNotes', 'story notes': 'storyNotes' };
 
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
   page: () => (
-    <AddContext mdxStoryNameToId={mdxStoryNameToId}>
+    <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentMeta={componentMeta}>
       <MDXContent />
     </AddContext>
   ),

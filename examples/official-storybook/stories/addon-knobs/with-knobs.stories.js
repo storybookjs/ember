@@ -26,7 +26,7 @@ const ItemLoader = ({ isLoading, items }) => {
   }
   return (
     <ul>
-      {items.map(i => (
+      {items.map((i) => (
         <li key={i}>{i}</li>
       ))}
     </ul>
@@ -43,6 +43,12 @@ let injectedIsLoading = false;
 export default {
   title: 'Addons/Knobs/withKnobs',
   decorators: [withKnobs],
+};
+
+export const selectKnob = () => {
+  const value = select('value', [1, 2, 3, undefined, null], 1);
+
+  return <div>{JSON.stringify({ value: String(value) }, null, 2)}</div>;
 };
 
 export const TweaksStaticValues = () => {
@@ -108,7 +114,7 @@ export const TweaksStaticValues = () => {
       <p>My wallet contains: ${dollars.toFixed(2)}</p>
       <p>In my backpack, I have:</p>
       <ul>
-        {items.map(item => (
+        {items.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
@@ -119,9 +125,7 @@ export const TweaksStaticValues = () => {
     </div>
   );
 };
-TweaksStaticValues.story = {
-  name: 'tweaks static values',
-};
+TweaksStaticValues.storyName = 'tweaks static values';
 
 export const TweaksStaticValuesOrganizedInGroups = () => {
   const GROUP_IDS = {
@@ -198,7 +202,7 @@ export const TweaksStaticValuesOrganizedInGroups = () => {
       <p>Other Fruit: {otherFruit}</p>
       <p>Items:</p>
       <ul>
-        {items.map(item => (
+        {items.map((item) => (
           <li key={`${item}`}>{item}</li>
         ))}
       </ul>
@@ -206,9 +210,7 @@ export const TweaksStaticValuesOrganizedInGroups = () => {
     </div>
   );
 };
-TweaksStaticValuesOrganizedInGroups.story = {
-  name: 'tweaks static values organized in groups',
-};
+TweaksStaticValuesOrganizedInGroups.storyName = 'tweaks static values organized in groups';
 
 export const DynamicKnobs = () => {
   const showOptional = select('Show optional', ['yes', 'no'], 'yes');
@@ -219,9 +221,7 @@ export const DynamicKnobs = () => {
     </Fragment>
   );
 };
-DynamicKnobs.story = {
-  name: 'dynamic knobs',
-};
+DynamicKnobs.storyName = 'dynamic knobs';
 
 export const ComplexSelect = () => {
   const m = select(
@@ -243,9 +243,7 @@ export const ComplexSelect = () => {
     </pre>
   );
 };
-ComplexSelect.story = {
-  name: 'complex select',
-};
+ComplexSelect.storyName = 'complex select';
 
 export const OptionsKnob = () => {
   const valuesRadio = {
@@ -302,19 +300,19 @@ export const OptionsKnob = () => {
       <p>Month: {optionSelect}</p>
       <p>Fruit:</p>
       <ul>
-        {optionsMultiSelect.map(item => (
+        {optionsMultiSelect.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
       <p>Vegetables:</p>
       <ul>
-        {optionsCheck.map(item => (
+        {optionsCheck.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
       <p>Dairy:</p>
       <ul>
-        {optionsInlineCheck.map(item => (
+        {optionsInlineCheck.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
@@ -346,9 +344,7 @@ export const TriggersActionsViaButton = () => {
     </Fragment>
   );
 };
-TriggersActionsViaButton.story = {
-  name: 'triggers actions via button',
-};
+TriggersActionsViaButton.storyName = 'triggers actions via button';
 
 export const ButtonWithReactUseState = () => {
   const [counter, setCounter] = React.useState(0);
@@ -365,20 +361,16 @@ export const XssSafety = () => (
     }}
   />
 );
-XssSafety.story = {
-  name: 'XSS safety',
-};
+XssSafety.storyName = 'XSS safety';
 
 export const AcceptsStoryParameters = () => <div>{text('Rendered string', '<h1>Hello</h1>')}</div>;
-AcceptsStoryParameters.story = {
-  name: 'accepts story parameters',
+AcceptsStoryParameters.storyName = 'accepts story parameters';
 
-  parameters: {
-    knobs: { escapeHTML: false },
-  },
+AcceptsStoryParameters.parameters = {
+  knobs: { escapeHTML: false },
 };
 
 export const WithDuplicateDecorator = () => {
   return text('Text', 'Hello');
 };
-WithDuplicateDecorator.story = { decorators: [withKnobs] };
+WithDuplicateDecorator.decorators = [withKnobs];

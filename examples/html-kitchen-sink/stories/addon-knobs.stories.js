@@ -42,7 +42,7 @@ export const Story3 = () => {
   cachedContainer.style.color = textColor;
   return cachedContainer;
 };
-Story3.story = { name: 'CSS transitions' };
+Story3.storyName = 'CSS transitions';
 
 export const Story4 = () => {
   const name = text('Name', 'Jane');
@@ -80,12 +80,12 @@ export const Story4 = () => {
         <h3>today is ${new Date(today).toLocaleDateString('en-US', dateOptions)}</h3>
         <p>${stockMessage}</p>
         <p>Also, I have:</p>
-        <ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>
+        <ul>${items.map((item) => `<li>${item}</li>`).join('')}</ul>
         <p>${salutation}</p>
       </div>
     `;
 };
-Story4.story = { name: 'All knobs' };
+Story4.storyName = 'All knobs';
 
 export const Story5 = () => text('Rendered string', '<img src=x onerror="alert(\'XSS Attack\')" >');
-Story5.story = { name: 'XSS safety' };
+Story5.storyName = 'XSS safety';

@@ -90,10 +90,18 @@ You can even run these tests inside a CI box.
 With this addon, you can showcase multiple components (or varying component states) within 1 story.
 Break your stories down into smaller categories (chapters) and subcategories (sections) for more organizational goodness.
 
+### [Paddings](https://github.com/rbardini/storybook-addon-paddings)
+
+Add different paddings to your preview. Useful for checking how components behave when surrounded with white space.
+
 ### [Props Combinations](https://github.com/evgenykochetkov/react-storybook-addon-props-combinations)
 
 Given possible values for each prop, renders your component with all combinations of prop values.
 Useful for finding edge cases or seeing all component states at once.
+
+### [Performance](https://github.com/atlassian-labs/storybook-addon-performance)
+
+This addon will help you better understand and debug performance for `React` components.
 
 ### [Material-UI](https://github.com/sm-react/storybook-addon-material-ui)
 

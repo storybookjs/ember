@@ -7,7 +7,7 @@ import { assertIsFn, AddContext } from '@storybook/addon-docs/blocks';
 import { Meta, Story } from '@storybook/addon-docs/blocks';
 import { titleFunction } from '../title-generators';
 
-const makeShortcode = name =>
+const makeShortcode = (name) =>
   function MDXDefaultShortcode(props) {
     console.warn(
       'Component ' +
@@ -33,17 +33,17 @@ export const __page = () => {
   throw new Error('Docs-only story');
 };
 
-__page.story = { parameters: { docsOnly: true } };
+__page.parameters = { docsOnly: true };
 
 const componentMeta = { title: \`\${titleFunction('template')}\`, includeStories: ['__page'] };
 
-const mdxStoryNameToId = {};
+const mdxStoryNameToKey = {};
 
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
   page: () => (
-    <AddContext mdxStoryNameToId={mdxStoryNameToId}>
+    <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentMeta={componentMeta}>
       <MDXContent />
     </AddContext>
   ),

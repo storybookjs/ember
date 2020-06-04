@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 
 const text = 'Testing the a11y addon';
-const href = 'javascript:void 0';
+const href = 'http://example.com';
 
 export default {
   title: 'Addons/A11y/Typography',
@@ -21,24 +21,16 @@ export const Correct = () => (
 
 export const EmptyHeading = () => <h1 />;
 
-EmptyHeading.story = {
-  name: 'Empty Heading',
-};
+EmptyHeading.storyName = 'Empty Heading';
 
 export const EmptyParagraph = () => <p />;
 
-EmptyParagraph.story = {
-  name: 'Empty Paragraph',
-};
+EmptyParagraph.storyName = 'Empty Paragraph';
 
 export const EmptyLink = () => <a href={href} />;
 
-EmptyLink.story = {
-  name: 'Empty Link',
-};
+EmptyLink.storyName = 'Empty Link';
 
 export const LinkWithoutHref = () => <a>{`${text}...`}</a>;
 
-LinkWithoutHref.story = {
-  name: 'Link without href',
-};
+LinkWithoutHref.storyName = 'Link without href';

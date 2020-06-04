@@ -2,7 +2,19 @@
 /* global window */
 
 import { PropDef } from '@storybook/components';
-import { Argument, CompodocJson, Component, Method, Property, Directive } from './types';
+import { ArgType, ArgTypes } from '@storybook/api';
+import { logger } from '@storybook/client-logger';
+import {
+  Argument,
+  Class,
+  CompodocJson,
+  Component,
+  Injectable,
+  Method,
+  Pipe,
+  Property,
+  Directive,
+} from './types';
 
 type Sections = Record<string, PropDef[]>;
 
@@ -30,10 +42,6 @@ export const checkValidCompodocJson = (compodocJson: CompodocJson) => {
   }
 };
 
-function isEmpty(obj: any) {
-  return Object.entries(obj).length === 0 && obj.constructor === Object;
-}
-
 const hasDecorator = (item: Property, decoratorName: string) =>
   item.decorators && item.decorators.find((x: any) => x.name === decoratorName);
 
@@ -55,12 +63,14 @@ const mapPropertyToSection = (key: string, item: Property) => {
 
 const mapItemToSection = (key: string, item: Method | Property): string => {
   switch (key) {
+    case 'methods':
     case 'methodsClass':
       return 'methods';
     case 'inputsClass':
       return 'inputs';
     case 'outputsClass':
       return 'outputs';
+    case 'properties':
     case 'propertiesClass':
       if (isMethod(item)) {
         throw new Error("Cannot be of type Method if key === 'propertiesClass'");
@@ -71,6 +81,13 @@ const mapItemToSection = (key: string, item: Method | Property): string => {
   }
 };
 
+export const findComponentByName = (name: string, compodocJson: CompodocJson) =>
+  compodocJson.components.find((c: Component) => c.name === name) ||
+  compodocJson.directives.find((c: Directive) => c.name === name) ||
+  compodocJson.pipes.find((c: Pipe) => c.name === name) ||
+  compodocJson.injectables.find((c: Injectable) => c.name === name) ||
+  compodocJson.classes.find((c: Class) => c.name === name);
+
 const getComponentData = (component: Component | Directive) => {
   if (!component) {
     return null;
@@ -79,10 +96,7 @@ const getComponentData = (component: Component | Directive) => {
   const compodocJson = getCompdocJson();
   checkValidCompodocJson(compodocJson);
   const { name } = component;
-  return (
-    compodocJson.components.find((c: Component) => c.name === name) ||
-    compodocJson.directives.find((c: Directive) => c.name === name)
-  );
+  return findComponentByName(name, compodocJson);
 };
 
 const displaySignature = (item: Method): string => {
@@ -92,36 +106,94 @@ const displaySignature = (item: Method): string => {
   return `(${args.join(', ')}) => ${item.returnType}`;
 };
 
-export const extractProps = (component: Component | Directive) => {
-  const componentData = getComponentData(component);
-  if (!componentData) {
+const extractTypeFromValue = (defaultValue: any) => {
+  const valueType = typeof defaultValue;
+  return defaultValue || valueType === 'boolean' ? valueType : null;
+};
+
+const extractEnumValues = (compodocType: any) => {
+  if (typeof compodocType !== 'string' || compodocType.indexOf('|') === -1) {
     return null;
   }
 
-  const sectionToItems: Sections = {};
-  const compodocClasses = ['propertiesClass', 'methodsClass', 'inputsClass', 'outputsClass'];
-  type COMPODOC_CLASS = 'propertiesClass' | 'methodsClass' | 'inputsClass' | 'outputsClass';
+  try {
+    return compodocType.split('|').map((value) => JSON.parse(value));
+  } catch (e) {
+    return null;
+  }
+};
+
+export const extractType = (property: Property, defaultValue: any) => {
+  const compodocType = property.type || extractTypeFromValue(defaultValue);
+  switch (compodocType) {
+    case 'string':
+    case 'boolean':
+    case 'number':
+      return { name: compodocType };
+    case undefined:
+    case null:
+      return { name: 'void' };
+    default: {
+      const enumValues = extractEnumValues(compodocType);
+      return enumValues ? { name: 'enum', value: enumValues } : { name: 'object' };
+    }
+  }
+};
+
+const extractDefaultValue = (property: Property) => {
+  try {
+    // eslint-disable-next-line no-eval
+    const value = eval(property.defaultValue);
+    return value;
+  } catch (err) {
+    logger.debug(`Error extracting ${property.name}: ${property.defaultValue}`);
+    return undefined;
+  }
+};
+
+export const extractArgTypesFromData = (componentData: Class | Directive | Injectable | Pipe) => {
+  const sectionToItems: Record<string, ArgType[]> = {};
+  const compodocClasses = ['component', 'directive'].includes(componentData.type)
+    ? ['propertiesClass', 'methodsClass', 'inputsClass', 'outputsClass']
+    : ['properties', 'methods'];
+  type COMPODOC_CLASS =
+    | 'properties'
+    | 'methods'
+    | 'propertiesClass'
+    | 'methodsClass'
+    | 'inputsClass'
+    | 'outputsClass';
 
   compodocClasses.forEach((key: COMPODOC_CLASS) => {
-    const data = componentData[key] || [];
+    const data = (componentData as any)[key] || [];
     data.forEach((item: Method | Property) => {
-      const sectionItem: PropDef = {
+      const section = mapItemToSection(key, item);
+      const defaultValue = isMethod(item) ? undefined : extractDefaultValue(item as Property);
+      const type =
+        isMethod(item) || section !== 'inputs'
+          ? { name: 'void' }
+          : extractType(item as Property, defaultValue);
+      const argType = {
         name: item.name,
-        type: { summary: isMethod(item) ? displaySignature(item) : item.type },
-        required: isMethod(item) ? false : !item.optional,
         description: item.description,
-        defaultValue: { summary: isMethod(item) ? '' : item.defaultValue },
+        defaultValue,
+        type,
+        table: {
+          category: section,
+          type: {
+            summary: isMethod(item) ? displaySignature(item) : item.type,
+            required: isMethod(item) ? false : !item.optional,
+          },
+        },
       };
 
-      const section = mapItemToSection(key, item);
       if (!sectionToItems[section]) {
         sectionToItems[section] = [];
       }
-      sectionToItems[section].push(sectionItem);
+      sectionToItems[section].push(argType);
     });
   });
 
-  // sort the sections
   const SECTIONS = [
     'inputs',
     'outputs',
@@ -132,15 +204,22 @@ export const extractProps = (component: Component | Directive) => {
     'content child',
     'content children',
   ];
-  const sections: Sections = {};
-  SECTIONS.forEach(section => {
+  const argTypes: ArgTypes = {};
+  SECTIONS.forEach((section) => {
     const items = sectionToItems[section];
     if (items) {
-      sections[section] = items;
+      items.forEach((argType) => {
+        argTypes[argType.name] = argType;
+      });
     }
   });
 
-  return isEmpty(sections) ? null : { sections };
+  return argTypes;
+};
+
+export const extractArgTypes = (component: Component | Directive) => {
+  const componentData = getComponentData(component);
+  return componentData && extractArgTypesFromData(componentData);
 };
 
 export const extractComponentDescription = (component: Component | Directive) => {
@@ -148,5 +227,5 @@ export const extractComponentDescription = (component: Component | Directive) =>
   if (!componentData) {
     return null;
   }
-  return componentData.rawdescription;
+  return componentData.rawdescription || componentData.description;
 };

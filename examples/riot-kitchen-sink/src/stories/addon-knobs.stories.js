@@ -64,7 +64,7 @@ export const AllKnobs = () => {
             <p>${stockMessage}</p>
             <p>Also, I have:</p>
             <ul>
-              ${items.map(item => `<li key="${item}">${item}</li>`).join('')}
+              ${items.map((item) => `<li key="${item}">${item}</li>`).join('')}
             </ul>
             <p>${salutation}</p>
           </div></WhatIGot>
@@ -73,9 +73,7 @@ export const AllKnobs = () => {
   };
 };
 
-AllKnobs.story = {
-  name: 'All knobs',
-};
+AllKnobs.storyName = 'All knobs';
 
 export const XssSafety = () => ({
   tags: [
@@ -87,6 +85,4 @@ export const XssSafety = () => ({
   ],
 });
 
-XssSafety.story = {
-  name: 'XSS safety',
-};
+XssSafety.storyName = 'XSS safety';

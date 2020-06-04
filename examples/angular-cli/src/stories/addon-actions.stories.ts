@@ -13,15 +13,13 @@ export const ActionOnly = () => ({
   },
 });
 
-ActionOnly.story = {
-  name: 'Action only',
-};
+ActionOnly.storyName = 'Action only';
 
 export const ActionAndMethod = () => ({
   component: Button,
   props: {
     text: 'Action and Method',
-    onClick: e => {
+    onClick: (e) => {
       console.log(e);
       e.preventDefault();
       action('log2')(e.target);
@@ -29,6 +27,4 @@ export const ActionAndMethod = () => ({
   },
 });
 
-ActionAndMethod.story = {
-  name: 'Action and method',
-};
+ActionAndMethod.storyName = 'Action and method';

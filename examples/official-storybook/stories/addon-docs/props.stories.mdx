@@ -1,18 +1,153 @@
-import { Meta, Props } from '@storybook/addon-docs/blocks';
+import { Meta, Preview, Story, Props } from '@storybook/addon-docs/blocks';
+import range from 'lodash/range';
 import { DocgenButton } from '../../components/DocgenButton';
+import { ButtonGroup, SubGroup } from '../../components/ButtonGroup';
 import { ForwardRefButton } from '../../components/ForwardRefButton';
 import { MemoButton } from '../../components/MemoButton';
 
-<Meta title="Addons/Docs/props" />
+<Meta
+  title="Addons/Docs/props"
+  component={ButtonGroup}
+  parameters={{ controls: { expanded: false } }}
+/>
 
-## Docgen
+export const ArgsDisplay = (args = {}) => (
+  <table>
+    <tbody>
+      {Object.entries(args).map(([key, val]) => (
+        <tr key={key}>
+          <td>{key}</td>
+          <td>{val && val.toString()}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+);
+
+## ArgTypes
+
+<Preview>
+  <Story
+    name="ArgTypes"
+    args={{
+      boolArg: true,
+      stringArg: 'overwritten',
+      arrayArg: ['a', 'b'],
+    }}
+    argTypes={{
+      boolArg: { name: 'boolArg', type: { name: 'boolean' }, description: 'bool description' },
+      stringArg: {
+        name: 'stringArg',
+        type: { name: 'string' },
+        description: 'bar description',
+        defaultValue: 'bar default',
+        table: {
+          defaultValue: {
+            summary: 'bar def',
+            detail: 'some long bar default',
+          },
+        },
+      },
+      arrayArg: {
+        name: 'arrayArg',
+        type: { name: 'array', value: { name: 'string' } },
+        description: 'baz description',
+      },
+      selectArg: {
+        name: 'selectArg',
+        type: { name: 'enum' },
+        defaultValue: 2,
+        control: {
+          type: 'select',
+          options: {
+            a: 1,
+            b: 2,
+            c: 3,
+          },
+        },
+      },
+    }}
+  >
+    {(args) => <ArgsDisplay {...args} />}
+  </Story>
+</Preview>
+
+<Props story="ArgTypes" />
+
+## ArgTypes w/ Components
+
+<Props story="ArgTypes" showComponents />
+
+## Args
+
+<Preview>
+  <Story
+    name="Args"
+    args={{
+      foo: false,
+      bar: '',
+    }}
+  >
+    {(args) => <ArgsDisplay {...args} />}
+  </Story>
+</Preview>
+
+<Props story="Args" />
+
+## Component Story
+
+<Preview>
+  <Story
+    name="Component"
+    argTypes={{
+      background: { control: { type: 'color' } },
+    }}
+  >
+    {({ background, children }) => {
+      const contents = children && children.length > 0 ? children : <DocgenButton label="child" />;
+      return <ButtonGroup background={background}>{contents}</ButtonGroup>;
+    }}
+  </Story>
+</Preview>
+
+<Props story="Component" />
+
+## Controls Story
+
+<Preview>
+  <Story
+    name="Controls"
+    args={{
+      background: '#ff0',
+      label: 'apple',
+      count: 5,
+    }}
+    argTypes={{
+      count: { control: { type: 'range', min: 0, max: 10 } },
+      label: {
+        control: { type: 'select', options: ['apple', 'banana', 'cherry'] },
+      },
+      background: { control: { type: 'color' } },
+    }}
+  >
+    {({ background, label, count }) => {
+      return (
+        <ButtonGroup background={background}>
+          {range(count).map((i) => (
+            <DocgenButton label={`${label} ${i}`} />
+          ))}
+        </ButtonGroup>
+      );
+    }}
+  </Story>
+</Preview>
+
+<Props story="Controls" />
+
+## Components
+
+<Props components={{ ButtonGroup, SubGroup }} />
+
+## Component
 
 <Props of={DocgenButton} />
-
-## React.forwardRef
-
-<Props of={ForwardRefButton} />
-
-## React.memo
-
-<Props of={MemoButton} />

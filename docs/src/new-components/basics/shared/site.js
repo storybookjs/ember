@@ -37,7 +37,7 @@ export const url = {
     mithril: `${npmApiBase}/@storybook/mithril`,
     marko: `${npmApiBase}/@storybook/marko`,
     riot: `${npmApiBase}/@storybook/riot`,
-    polymer: `${npmApiBase}/@storybook/polymer`,
+    'web-components': `${npmApiBase}/@storybook/web-components`,
     preact: `${npmApiBase}/@storybook/preact`,
   },
 
@@ -79,6 +79,7 @@ export const url = {
     mithril: `${docsUrl}/guides/guide-mithril/`,
     marko: `${docsUrl}/guides/guide-marko/`,
     riot: `${docsUrl}/guides/guide-riot/`,
+    webComponents: `${docsUrl}/guides/guide-web-components/`,
   },
 
   // Official addons

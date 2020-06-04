@@ -3,6 +3,8 @@ id: 'using-addons'
 title: 'Using Addons'
 ---
 
+> migration guide: This page documents the method to configure storybook introduced recently in 5.3.0, consult the [migration guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) if you want to migrate to this format of configuring storybook.
+
 Storybook comes with a variety of "core" addons developed and maintained alongside Storybook. Most examples in this site use [actions](https://github.com/storybookjs/storybook/tree/master/addons/actions) and [links](https://github.com/storybookjs/storybook/tree/master/addons/links). But you can use any third party addons distributed via NPM.
 
 Here's how to do it.
@@ -12,18 +14,14 @@ We are going to use an addon called [Notes](https://github.com/storybookjs/story
 First, we need to install the addons:
 
 ```sh
-yarn add -D @storybook/addons @storybook/addon-actions @storybook/addon-knobs @storybook/addon-notes
+yarn add -D @storybook/addons @storybook/addon-actions @storybook/addon-knobs
 ```
 
 within `.storybook/main.js`:
 
 ```js
 module.exports = {
-  addons: [
-    '@storybook/addon-actions/register',
-    '@storybook/addon-knobs/register',
-    '@storybook/addon-notes/register',
-  ],
+  addons: ['@storybook/addon-actions', '@storybook/addon-knobs'],
 };
 ```
 
@@ -57,10 +55,8 @@ export const buttonWithEmoji = () => (
     </span>
   </Button>
 );
-buttonWithEmoji.story = {
-  parameters: {
-    notes: 'A small component',
-  },
+buttonWithEmoji.parameters = {
+  notes: 'A small component',
 };
 ```
 
@@ -88,10 +84,8 @@ export const buttonWithEmoji = () => (
     </span>
   </Button>
 );
-buttonWithEmoji.story = {
-  parameters: {
-    notes: { disabled: true }
-  }
+buttonWithEmoji.parameters = {
+  notes: { disabled: true },
 };
 ```
 

@@ -10,7 +10,6 @@ const FRAMEWORKS = [
   'html',
   'marko',
   'mithril',
-  'polymer',
   'preact',
   'rax',
   'react',
@@ -26,5 +25,5 @@ export const getFrameworks = ({ dependencies, devDependencies }: PackageJson): s
   Object.assign(allDeps, dependencies || {});
   Object.assign(allDeps, devDependencies || {});
 
-  return FRAMEWORKS.filter(f => !!allDeps[`@storybook/${f}`]);
+  return FRAMEWORKS.filter((f) => !!allDeps[`@storybook/${f}`]);
 };

@@ -1,10 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { addParameters } from '@storybook/client-api';
-import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import { DocsContainer, DocsPage } from '../../blocks';
+import { enhanceArgTypes } from './enhanceArgTypes';
 
-addParameters({
+export const parameters = {
   docs: {
+    inlineStories: false,
     container: DocsContainer,
     page: DocsPage,
+    iframeHeight: 100,
   },
-});
+};
+
+export const argTypesEnhancers = [enhanceArgTypes];

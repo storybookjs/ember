@@ -1,4 +1,4 @@
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 import { withKnobs, text, color, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
@@ -34,6 +34,4 @@ export const WithText = () => ({
   },
 });
 
-WithText.story = {
-  name: 'with text',
-};
+WithText.storyName = 'with text';
