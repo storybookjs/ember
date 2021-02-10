@@ -7383,18 +7383,41 @@ __metadata:
     webpack-dev-middleware: ^3.7.3
     window-size: ^1.1.1
   dependenciesMeta:
+    "@compodoc/compodoc":
+      built: false
     "@cypress/webpack-preprocessor":
       optional: true
+    core-js:
+      built: false
+    core-js-pure:
+      built: false
     cypress:
       optional: true
+    ejs:
+      built: false
+    level:
+      built: false
+    node-uuid:
+      built: false
+      unplugged: false
+    nodemon:
+      built: false
+    parcel:
+      built: false
+    preact:
+      built: false
     puppeteer:
       optional: true
+    styled-components:
+      built: false
     ts-loader:
       optional: true
     verdaccio:
       optional: true
     verdaccio-auth-memory:
       optional: true
+    yorkie:
+      built: false
   languageName: unknown
   linkType: soft
 

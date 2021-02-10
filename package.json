@@ -323,5 +323,41 @@
         "Other"
       ]
     ]
+  },
+  "dependenciesMeta": {
+    "@compodoc/compodoc": {
+      "built": false
+    },
+    "core-js": {
+      "built": false
+    },
+    "core-js-pure": {
+      "built": false
+    },
+    "ejs": {
+      "built": false
+    },
+    "level": {
+      "built": false
+    },
+    "node-uuid": {
+      "built": false,
+      "unplugged": false
+    },
+    "nodemon": {
+      "built": false
+    },
+    "parcel": {
+      "built": false
+    },
+    "preact": {
+      "built": false
+    },
+    "styled-components": {
+      "built": false
+    },
+    "yorkie": {
+      "built": false
+    }
   }
 }
