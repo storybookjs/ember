@@ -31,6 +31,7 @@ import riotGenerator from './generators/RIOT';
 import preactGenerator from './generators/PREACT';
 import svelteGenerator from './generators/SVELTE';
 import raxGenerator from './generators/RAX';
+import serverGenerator from './generators/SERVER';
 import { warn } from './warn';
 import { JsPackageManagerFactory, readPackageJson } from './js-package-manager';
 import { NpmOptions } from './NpmOptions';
@@ -229,6 +230,11 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
       case ProjectType.AURELIA:
         return aureliaGenerator(packageManager, npmOptions, generatorOptions)
           .then(commandLog('Adding Storybook support to your "Aurelia" app'))
+          .then(end);
+
+      case ProjectType.SERVER:
+        return serverGenerator(packageManager, npmOptions, generatorOptions)
+          .then(commandLog('Adding Storybook support to your "Server" app'))
           .then(end);
 
       case ProjectType.UNSUPPORTED:

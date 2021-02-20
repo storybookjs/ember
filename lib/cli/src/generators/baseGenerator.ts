@@ -18,9 +18,13 @@ export interface FrameworkOptions {
   addComponents?: boolean;
   addBabel?: boolean;
   addESLint?: boolean;
+<<<<<<< HEAD
   extraMain?: any;
   extensions?: string[];
   commonJs?: boolean;
+=======
+  configureOptions?: any;
+>>>>>>> Support Server in cli generator - fixes #12077
 }
 
 export type Generator = (
@@ -37,9 +41,13 @@ const defaultOptions: FrameworkOptions = {
   addComponents: true,
   addBabel: true,
   addESLint: false,
+<<<<<<< HEAD
   extraMain: undefined,
   extensions: undefined,
   commonJs: false,
+=======
+  configureOptions: {},
+>>>>>>> Support Server in cli generator - fixes #12077
 };
 
 export async function baseGenerator(
@@ -57,8 +65,12 @@ export async function baseGenerator(
     addComponents,
     addBabel,
     addESLint,
+<<<<<<< HEAD
     extraMain,
     extensions,
+=======
+    configureOptions,
+>>>>>>> Support Server in cli generator - fixes #12077
   } = {
     ...defaultOptions,
     ...options,
@@ -95,6 +107,7 @@ export async function baseGenerator(
 
   const versionedPackages = await packageManager.getVersionedPackages(...packages);
 
+<<<<<<< HEAD
   const mainOptions =
     builder !== Builder.Webpack4
       ? {
@@ -110,6 +123,9 @@ export async function baseGenerator(
     commonJs: options.commonJs,
     ...mainOptions,
   });
+=======
+  configure(framework, [...addons, ...extraAddons], configureOptions);
+>>>>>>> Support Server in cli generator - fixes #12077
   if (addComponents) {
     copyComponents(framework, language);
   }
