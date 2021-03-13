@@ -201,6 +201,9 @@ export const parameters = {
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
 
+#### Components Without Selectors
+When the new Angular renderer is used, all Angular Story components must either have a selector, or be added to the `entryComponents` array of the story's `moduleMetadata`. If the component has any `Input`s or `Output`s to be controlled with `args`, a selector should be added.
+
 ### 6.2 Deprecations
 
 #### Deprecated implicit PostCSS loader
