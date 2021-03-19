@@ -183,11 +183,7 @@ export default async ({
         es6Transpiler() as any,
         {
           test: /\.md$/,
-          use: [
-            {
-              loader: require.resolve('raw-loader'),
-            },
-          ],
+          type: 'asset/source',
         },
       ],
     },
