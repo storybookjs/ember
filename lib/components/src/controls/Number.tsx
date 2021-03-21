@@ -34,6 +34,7 @@ export const NumberControl: FC<NumberProps> = ({
   return (
     <Wrapper>
       <Form.Input
+        id={name}
         type="number"
         onChange={handleChange}
         size="flex"

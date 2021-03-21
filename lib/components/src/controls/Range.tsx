@@ -168,6 +168,7 @@ export const RangeControl: FC<RangeProps> = ({
     <RangeWrapper>
       <RangeLabel>{min}</RangeLabel>
       <RangeInput
+        id={name}
         type="range"
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}

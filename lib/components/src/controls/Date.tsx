@@ -99,15 +99,15 @@ export const DateControl: FC<DateProps> = ({ name, value, onChange, onFocus, onB
         type="date"
         max="9999-12-31" // I do this because of a rendering bug in chrome
         ref={dateRef as RefObject<HTMLInputElement>}
-        id={`${name}date`}
-        name={`${name}date`}
+        id={`${name}-date`}
+        name={`${name}-date`}
         onChange={onDateChange}
         {...{ onFocus, onBlur }}
       />
       <Form.Input
         type="time"
-        id={`${name}time`}
-        name={`${name}time`}
+        id={`${name}-time`}
+        name={`${name}-time`}
         ref={timeRef as RefObject<HTMLInputElement>}
         onChange={onTimeChange}
         {...{ onFocus, onBlur }}

@@ -253,6 +253,7 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch round style={{ background: currentValue || '#000000' }} />
       </PickerTooltip>
       <Input
+        id={name}
         value={currentValue}
         onChange={(e: any) => onChange(e.target.value)}
         onFocus={(e) => e.target.select()}

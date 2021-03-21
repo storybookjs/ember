@@ -97,7 +97,7 @@ const SingleSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
   return (
     <SelectWrapper>
       <Icons icon="arrowdown" />
-      <OptionsSelect value={selection} onChange={handleChange}>
+      <OptionsSelect id={name} value={selection} onChange={handleChange}>
         <option key="no-selection" disabled>
           {NO_SELECTION}
         </option>
@@ -120,7 +120,7 @@ const MultiSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
 
   return (
     <SelectWrapper>
-      <OptionsSelect multiple value={selection} onChange={handleChange}>
+      <OptionsSelect id={name} multiple value={selection} onChange={handleChange}>
         {Object.keys(options).map((key) => (
           <option key={key}>{key}</option>
         ))}
