@@ -62,7 +62,6 @@ export async function createDefaultWebpackConfig(
         },
         {
           test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
-          loader: require.resolve('url-loader'),
           type: 'asset',
           parser: {
             dataUrlCondition: {
