@@ -9,6 +9,7 @@ import { TooltipNote } from '../tooltip/TooltipNote';
 import { WithTooltip } from '../tooltip/lazy-WithTooltip';
 import { Form } from '../form';
 import { Icons } from '../icon/icon';
+import { getControlId } from './helpers';
 
 enum ColorSpace {
   RGB = 'rgb',
@@ -216,6 +217,7 @@ export const ColorControl: FC<ColorProps> = ({
         : arr
     );
   }, []);
+  const controlId = getControlId(name);
 
   return (
     <Wrapper>
@@ -253,7 +255,7 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch round style={{ background: currentValue || '#000000' }} />
       </PickerTooltip>
       <Input
-        id={name}
+        id={controlId}
         value={currentValue}
         onChange={(e: any) => onChange(e.target.value)}
         onFocus={(e) => e.target.select()}
