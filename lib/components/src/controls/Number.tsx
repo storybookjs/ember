@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, NumberValue, NumberConfig } from './types';
 
 const Wrapper = styled.label({
@@ -31,10 +32,12 @@ export const NumberControl: FC<NumberProps> = ({
     onChange(parse(event.target.value));
   };
 
+  const controlId = getControlId(name);
+
   return (
     <Wrapper>
       <Form.Input
-        id={name}
+        id={controlId}
         type="number"
         onChange={handleChange}
         size="flex"

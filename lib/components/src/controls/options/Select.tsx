@@ -3,6 +3,7 @@ import { styled, CSSObject } from '@storybook/theming';
 import { ControlProps, OptionsSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey, selectedKeys, selectedValues } from './helpers';
 import { Icons } from '../../icon/icon';
+import { getControlId } from '../helpers';
 
 const styleResets: CSSObject = {
   // resets
@@ -93,11 +94,12 @@ const SingleSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
     onChange(options[e.currentTarget.value]);
   };
   const selection = selectedKey(value, options) || NO_SELECTION;
+  const controlId = getControlId(name);
 
   return (
     <SelectWrapper>
       <Icons icon="arrowdown" />
-      <OptionsSelect id={name} value={selection} onChange={handleChange}>
+      <OptionsSelect id={controlId} value={selection} onChange={handleChange}>
         <option key="no-selection" disabled>
           {NO_SELECTION}
         </option>
@@ -117,10 +119,11 @@ const MultiSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
     onChange(selectedValues(selection, options));
   };
   const selection = selectedKeys(value, options);
+  const controlId = getControlId(name);
 
   return (
     <SelectWrapper>
-      <OptionsSelect id={name} multiple value={selection} onChange={handleChange}>
+      <OptionsSelect id={controlId} multiple value={selection} onChange={handleChange}>
         {Object.keys(options).map((key) => (
           <option key={key}>{key}</option>
         ))}

@@ -217,6 +217,7 @@ export const ColorControl: FC<ColorProps> = ({
         : arr
     );
   }, []);
+
   const controlId = getControlId(name);
 
   return (

@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { styled } from '@storybook/theming';
 import { opacify, transparentize } from 'polished';
 
+import { getControlId } from './helpers';
 import { ControlProps, BooleanValue, BooleanConfig } from './types';
 
 const Label = styled.label(({ theme }) => ({
@@ -80,16 +81,20 @@ const format = (value: BooleanValue): string | null => (value ? String(value) : 
 const parse = (value: string | null) => value === 'true';
 
 export type BooleanProps = ControlProps<BooleanValue> & BooleanConfig;
-export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => (
-  <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
-    <input
-      id={name}
-      type="checkbox"
-      onChange={(e) => onChange(e.target.checked)}
-      checked={value || false}
-      {...{ name, onBlur, onFocus }}
-    />
-    <span>True</span>
-    <span>False</span>
-  </Label>
-);
+export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => {
+  const controlId = getControlId(name);
+
+  return (
+    <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
+      <input
+        id={controlId}
+        type="checkbox"
+        onChange={(e) => onChange(e.target.checked)}
+        checked={value || false}
+        {...{ name, onBlur, onFocus }}
+      />
+      <span>True</span>
+      <span>False</span>
+    </Label>
+  );
+};

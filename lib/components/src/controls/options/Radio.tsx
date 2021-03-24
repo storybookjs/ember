@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { styled } from '@storybook/theming';
 import { ControlProps, OptionsSingleSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey } from './helpers';
+import { getControlId } from '../helpers';
 
 const Wrapper = styled.div<{ isInline: boolean }>(({ isInline }) =>
   isInline
@@ -49,10 +50,12 @@ type RadioConfig = NormalizedOptionsConfig & { isInline: boolean };
 type RadioProps = ControlProps<OptionsSingleSelection> & RadioConfig;
 export const RadioControl: FC<RadioProps> = ({ name, options, value, onChange, isInline }) => {
   const selection = selectedKey(value, options);
+  const controlId = getControlId(name);
+
   return (
     <Wrapper isInline={isInline}>
       {Object.keys(options).map((key) => {
-        const id = `${name}-${key}`;
+        const id = `${controlId}-${key}`;
         return (
           <Label key={id} htmlFor={id}>
             <input

@@ -3,6 +3,7 @@ import { styled } from '@storybook/theming';
 import { ControlProps } from './types';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 
 export interface FilesControlProps extends ControlProps<string[]> {
   accept?: string;
@@ -35,8 +36,11 @@ export const FilesControl: FunctionComponent<FilesControlProps> = ({
     revokeOldUrls(value);
   }
 
+  const controlId = getControlId(name);
+
   return (
     <FileInput
+      id={controlId}
       type="file"
       name={name}
       multiple
