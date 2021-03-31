@@ -8,9 +8,7 @@ import { getControlId } from './helpers';
 const parseDate = (value: string) => {
   const [year, month, day] = value.split('-');
   const result = new Date();
-  result.setFullYear(parseInt(year, 10));
-  result.setMonth(parseInt(month, 10) - 1);
-  result.setDate(parseInt(day, 10));
+  result.setFullYear(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
   return result;
 };
 
@@ -76,9 +74,7 @@ export const DateControl: FC<DateProps> = ({ name, value, onChange, onFocus, onB
   const onDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const parsed = parseDate(e.target.value);
     const result = new Date(value);
-    result.setFullYear(parsed.getFullYear());
-    result.setMonth(parsed.getMonth());
-    result.setDate(parsed.getDate());
+    result.setFullYear(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
     const time = result.getTime();
     if (time) onChange(time);
     setValid(!!time);

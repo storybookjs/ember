@@ -1,10 +1,10 @@
-import { addParameters } from '@storybook/angular';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
-import { prepareForInline } from '@storybook/addon-docs/angular/inline';
 import addCssWarning from '../src/cssWarning';
 
+/* eslint-disable import/extensions, import/no-unresolved */
 // @ts-ignore
 import docJson from '../documentation.json';
+/* eslint-enable import/extensions, import/no-unresolved */
 // remove ButtonComponent to test #12009
 const filtered = !docJson?.components
   ? docJson
@@ -16,17 +16,16 @@ setCompodocJson(filtered);
 
 addCssWarning();
 
-addParameters({
+export const parameters = {
   docs: {
     inlineStories: true,
-    prepareForInline,
   },
   options: {
     storySort: {
       order: ['Welcome', 'Core ', 'Addons ', 'Basics '],
     },
   },
-});
+};
 
 export const globalTypes = {
   theme: {
