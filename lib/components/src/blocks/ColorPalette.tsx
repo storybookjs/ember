@@ -53,9 +53,32 @@ const SwatchLabels = styled.div({
   flexDirection: 'row',
 });
 
-const Swatch = styled.div({
+interface SwatchProps {
+  background: string;
+}
+
+const Swatch = styled.div<SwatchProps>(({ background }) => ({
+  position: 'relative',
   flex: 1,
-});
+  backgroundColor: 'white',
+  backgroundImage: `
+  linear-gradient(45deg, #ccc 25%, transparent 25%),
+  linear-gradient(-45deg, #ccc 25%, transparent 25%),
+  linear-gradient(45deg, transparent 75%, #ccc 75%),
+  linear-gradient(-45deg, transparent 75%, #ccc 75%)`,
+  backgroundSize: '20px 20px',
+  backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0',
+
+  '&::before': {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background,
+    content: '""',
+  },
+}));
 
 const SwatchColors = styled.div(({ theme }) => ({
   ...getBlockBackgroundStyle(theme),
@@ -122,15 +145,7 @@ interface ColorProps {
 }
 
 function renderSwatch(color: string) {
-  return (
-    <Swatch
-      key={color}
-      title={color}
-      style={{
-        background: color,
-      }}
-    />
-  );
+  return <Swatch key={color} title={color} background={color} />;
 }
 
 function renderSwatchLabel(color: string, colorDescription?: string) {
