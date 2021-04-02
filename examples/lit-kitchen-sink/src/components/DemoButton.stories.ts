@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { DemoButton } from './DemoButton';
 
 export default {
@@ -7,7 +7,7 @@ export default {
   argTypes: { onClick: { action: 'click ' } },
 };
 
-const Template = (args: any) => html`<demo-button ...=${args}></demo-button>`;
+const Template = (args: any) => html`<demo-button ${args}></demo-button>`;
 
 export const Default = Template.bind({});
 
