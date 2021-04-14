@@ -9,6 +9,7 @@ import { add } from './add';
 import { migrate } from './migrate';
 import { extract } from './extract';
 import { upgrade } from './upgrade';
+import { repro } from './repro';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
@@ -85,6 +86,18 @@ program
   .description('extract stories.json from a built version')
   .action((location = 'storybook-static', output = path.join(location, 'stories.json')) =>
     extract(location, output).catch((e) => {
+      logger.error(e);
+      process.exit(1);
+    })
+  );
+
+program
+  .command('repro [outputDirectory]')
+  .description('Create a reproduction from a set of possible templates')
+  .option('-t --template <template>', 'Use the given template')
+  .option('-l --list', 'List available templates')
+  .action((outputDirectory, { template, list }) =>
+    repro({ outputDirectory, template, list }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })
