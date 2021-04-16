@@ -218,14 +218,17 @@ const useColorInput = (initialValue: string, onChange: (value: string) => string
     colorSpace,
   ]);
 
-  const updateValue = useCallback((update: string) => {
-    const parsed = parseValue(update);
-    setValue(parsed?.value || update || '');
-    if (!parsed) return;
-    setColor(parsed);
-    setColorSpace(parsed.colorSpace);
-    onChange(parsed.value);
-  }, []);
+  const updateValue = useCallback(
+    (update: string) => {
+      const parsed = parseValue(update);
+      setValue(parsed?.value || update || '');
+      if (!parsed) return;
+      setColor(parsed);
+      setColorSpace(parsed.colorSpace);
+      onChange(parsed.value);
+    },
+    [onChange]
+  );
 
   const cycleColorSpace = useCallback(() => {
     let next = COLOR_SPACES.indexOf(colorSpace) + 1;
@@ -234,7 +237,7 @@ const useColorInput = (initialValue: string, onChange: (value: string) => string
     const update = color?.[COLOR_SPACES[next]] || '';
     setValue(update);
     onChange(update);
-  }, [color, colorSpace]);
+  }, [color, colorSpace, onChange]);
 
   return { value, realValue, updateValue, color, colorSpace, cycleColorSpace };
 };
@@ -246,7 +249,7 @@ const usePresets = (
   currentColor: ParsedColor,
   colorSpace: ColorSpace
 ) => {
-  const [selectedColors, setSelectedColors] = useState(currentColor ? [currentColor] : []);
+  const [selectedColors, setSelectedColors] = useState(currentColor?.valid ? [currentColor] : []);
 
   const presets = useMemo(() => {
     const initialPresets = (presetColors || []).map((preset) => {
@@ -294,7 +297,10 @@ export const ColorControl: FC<ColorProps> = ({
         onVisibilityChange={() => addPreset(color)}
         tooltip={
           <TooltipContent>
-            <Picker {...{ color: realValue, onChange: updateValue, onFocus, onBlur }} />
+            <Picker
+              color={realValue === 'transparent' ? '#000000' : realValue}
+              {...{ onChange: updateValue, onFocus, onBlur }}
+            />
             {presets.length > 0 && (
               <Swatches>
                 {presets.map((preset) => (

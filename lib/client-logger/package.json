@@ -1,6 +1,6 @@
 {
   "name": "@storybook/client-logger",
-  "version": "6.2.0-rc.12",
+  "version": "6.3.0-alpha.8",
   "description": "",
   "keywords": [
     "storybook"
@@ -42,5 +42,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5ee73396dba34362f070dbb6b8508fe18a3775dd"
+  "gitHead": "2459eb428208887e4eafab91256c72389e60d934"
 }
