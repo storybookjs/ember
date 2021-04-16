@@ -62,6 +62,9 @@
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
+  "devDependencies": {
+    "@types/webpack": "^4.41.26"
+  },
   "peerDependencies": {
     "@babel/core": "*",
     "babel-loader": "^7.0.0 || ^8.0.0",
