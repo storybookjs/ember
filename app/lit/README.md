@@ -1,8 +1,15 @@
-# Storybook for web-components
+⚠️️
+
+⚠️️ @storybook/lit is currently experimental and everything related to it is subject to breaking changes at any time. Please DO NOT use it in real projects.
+
+⚠️
+️
+
+# Storybook for lit
 
 ---
 
-Storybook for web-components is a UI development environment for your plain web-component snippets.
+Storybook for lit is a UI development environment for your lit web-component snippets.
 With it, you can visualize different states of your UI components and develop them interactively.
 
 ![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/master/media/storybook-intro.gif)
@@ -14,7 +21,9 @@ So you can develop UI components in isolation without worrying about app specifi
 
 ```sh
 cd my-app
-npx -p @storybook/cli sb init -t web_components
+
+⚠️️ NOT WORKING FOR NOW
+npx -p @storybook/cli sb init -t lit
 ```
 
 For more information visit: [storybook.js.org](https://storybook.js.org)
@@ -23,32 +32,6 @@ For more information visit: [storybook.js.org](https://storybook.js.org)
 
 Storybook also comes with a lot of [addons](https://storybook.js.org/docs/web-components/configure/storybook-addons) and a great API to customize as you wish.
 You can also build a [static version](https://storybook.js.org/docs/web-components/workflows/publish-storybook) of your storybook and deploy it anywhere you want.
-
-# Setup page reload via HMR
-
-As web components register on a global registry which only accepts a certain name/class once it can lead to errors when using classical HMR.
-There are ideas on how to archive HMR with a static registry but there is no proven solution yet.
-
-Therefore the best approach for now is to do full page reloads.
-If you keep your stories to specific states of components (which we would recommend anyways) this usually means it is fast.
-To activate full page reload
-
-```js
-// ==> REPLACE
-configure(require.context('../stories', true, /\.stories\.(js|mdx)$/), module);
-
-// ==> WITH
-// force full reload to not reregister web components
-const req = require.context('../stories', true, /\.stories\.(js|mdx)$/);
-configure(req, module);
-if (module.hot) {
-  module.hot.accept(req.id, () => {
-    const currentLocationHref = window.location.href;
-    window.history.pushState(null, null, currentLocationHref);
-    window.location.reload();
-  });
-}
-```
 
 # Setup es6/7 dependencies
 
