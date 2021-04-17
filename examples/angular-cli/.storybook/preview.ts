@@ -1,10 +1,9 @@
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import addCssWarning from '../src/cssWarning';
 
-/* eslint-disable import/extensions, import/no-unresolved */
 // @ts-ignore
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import docJson from '../documentation.json';
-/* eslint-enable import/extensions, import/no-unresolved */
 // remove ButtonComponent to test #12009
 const filtered = !docJson?.components
   ? docJson
