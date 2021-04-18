@@ -54,8 +54,8 @@ export const RadioControl: FC<RadioProps> = ({ name, options, value, onChange, i
 
   return (
     <Wrapper isInline={isInline}>
-      {Object.keys(options).map((key) => {
-        const id = `${controlId}-${key}`;
+      {Object.keys(options).map((key, index) => {
+        const id = `${controlId}-${index}`;
         return (
           <Label key={id} htmlFor={id}>
             <input

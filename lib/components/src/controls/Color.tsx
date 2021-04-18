@@ -290,8 +290,6 @@ export const ColorControl: FC<ColorProps> = ({
   const { presets, addPreset } = usePresets(presetColors, color, colorSpace);
   const Picker = ColorPicker[colorSpace];
 
-  const controlId = getControlId(name);
-
   return (
     <Wrapper>
       <PickerTooltip
@@ -328,7 +326,7 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch value={realValue} style={{ margin: 4 }} />
       </PickerTooltip>
       <Input
-        id={controlId}
+        id={getControlId(name)}
         value={value}
         onChange={(e: any) => updateValue(e.target.value)}
         onFocus={(e) => e.target.select()}

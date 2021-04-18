@@ -36,11 +36,9 @@ export const FilesControl: FunctionComponent<FilesControlProps> = ({
     revokeOldUrls(value);
   }
 
-  const controlId = getControlId(name);
-
   return (
     <FileInput
-      id={controlId}
+      id={getControlId(name)}
       type="file"
       name={name}
       multiple

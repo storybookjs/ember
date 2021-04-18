@@ -33,12 +33,10 @@ export const ArrayControl: FC<ArrayProps> = ({
     [onChange]
   );
 
-  const controlId = getControlId(name);
-
   return (
     <Wrapper>
       <Form.Textarea
-        id={controlId}
+        id={getControlId(name)}
         value={format(value, separator)}
         onChange={handleChange}
         size="flex"

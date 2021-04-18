@@ -18,12 +18,10 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
     onChange(event.target.value);
   };
 
-  const controlId = getControlId(name);
-
   return (
     <Wrapper>
       <Form.Textarea
-        id={controlId}
+        id={getControlId(name)}
         onChange={handleChange}
         size="flex"
         placeholder="Adjust string dynamically"

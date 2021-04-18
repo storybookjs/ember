@@ -166,13 +166,11 @@ export const RangeControl: FC<RangeProps> = ({
     onChange(parse(event.target.value));
   };
 
-  const controlId = getControlId(name);
-
   return (
     <RangeWrapper>
       <RangeLabel>{min}</RangeLabel>
       <RangeInput
-        id={controlId}
+        id={getControlId(name)}
         type="range"
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}

@@ -32,12 +32,10 @@ export const NumberControl: FC<NumberProps> = ({
     onChange(parse(event.target.value));
   };
 
-  const controlId = getControlId(name);
-
   return (
     <Wrapper>
       <Form.Input
-        id={controlId}
+        id={getControlId(name)}
         type="number"
         onChange={handleChange}
         size="flex"

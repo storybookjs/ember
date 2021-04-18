@@ -249,11 +249,9 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     [onChange]
   );
 
-  const controlId = getControlId(name);
-
   const rawJSONForm = (
     <RawInput
-      id={controlId}
+      id={getControlId(name)}
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
