@@ -199,8 +199,16 @@ export default async ({
       alias: {
         ...themingPaths,
         ...storybookPaths,
-        react: path.dirname(require.resolve('react/package.json')),
-        'react-dom': path.dirname(require.resolve('react-dom/package.json')),
+        react: path.dirname(
+          require.resolve('react/package.json', {
+            paths: [require.resolve(`@storybook/${framework}`)],
+          })
+        ),
+        'react-dom': path.dirname(
+          require.resolve('react-dom/package.json', {
+            paths: [require.resolve(`@storybook/${framework}`)],
+          })
+        ),
       },
 
       plugins: [
