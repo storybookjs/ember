@@ -7061,6 +7061,7 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
+    webpack: "*"
   languageName: unknown
   linkType: soft
 
@@ -7438,31 +7439,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/lit@6.3.0-alpha.8, @storybook/lit@workspace:app/lit":
+"@storybook/lit@workspace:app/lit":
   version: 0.0.0-use.local
   resolution: "@storybook/lit@workspace:app/lit"
   dependencies:
-    "@babel/plugin-syntax-dynamic-import": ^7.8.3
-    "@babel/plugin-syntax-import-meta": ^7.10.4
-    "@babel/preset-env": ^7.12.11
     "@storybook/addons": 6.3.0-alpha.8
     "@storybook/client-api": 6.3.0-alpha.8
     "@storybook/core": 6.3.0-alpha.8
     "@storybook/core-common": 6.3.0-alpha.8
     "@types/webpack": ^4.41.26
     "@types/webpack-env": ^1.16.0
-    babel-plugin-bundled-import-meta: ^0.3.1
     core-js: ^3.8.2
     global: ^4.4.0
     lit: ^2.0.0-pre.2
     react: 16.14.0
     react-dom: 16.14.0
     read-pkg-up: ^7.0.1
-    regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    "@babel/core": "*"
-    babel-loader: ^7.0.0 || ^8.0.0
     lit: ^2.0.0-pre.2
   bin:
     build-storybook: ./bin/build.js
@@ -30674,35 +30668,6 @@ fsevents@2.1.2:
   checksum: 718f04e8fe6c3f46744827eaccbdf28db4143fa5fc3763e09727123618380dc875cac26d83269fa05ad19b684a334c06626b8c26e509f43a1bef1b06ffca0936
   languageName: node
   linkType: hard
-
-"lit-kitchen-sink@workspace:examples/lit-kitchen-sink":
-  version: 0.0.0-use.local
-  resolution: "lit-kitchen-sink@workspace:examples/lit-kitchen-sink"
-  dependencies:
-    "@storybook/addon-a11y": 6.3.0-alpha.8
-    "@storybook/addon-actions": 6.3.0-alpha.8
-    "@storybook/addon-backgrounds": 6.3.0-alpha.8
-    "@storybook/addon-controls": 6.3.0-alpha.8
-    "@storybook/addon-docs": 6.3.0-alpha.8
-    "@storybook/addon-events": 6.3.0-alpha.8
-    "@storybook/addon-jest": 6.3.0-alpha.8
-    "@storybook/addon-links": 6.3.0-alpha.8
-    "@storybook/addon-storyshots": 6.3.0-alpha.8
-    "@storybook/addon-storysource": 6.3.0-alpha.8
-    "@storybook/addon-viewport": 6.3.0-alpha.8
-    "@storybook/addons": 6.3.0-alpha.8
-    "@storybook/client-api": 6.3.0-alpha.8
-    "@storybook/core": 6.3.0-alpha.8
-    "@storybook/core-events": 6.3.0-alpha.8
-    "@storybook/lit": 6.3.0-alpha.8
-    "@storybook/source-loader": 6.3.0-alpha.8
-    babel-loader: ^8.2.2
-    eventemitter3: ^4.0.7
-    format-json: ^1.0.3
-    global: ^4.4.0
-    lit: ^2.0.0-pre.2
-  languageName: unknown
-  linkType: soft
 
 "lit@npm:^2.0.0-pre.2":
   version: 2.0.0-pre.2

@@ -41,6 +41,7 @@
       "dev-kits/*",
       "examples-native/*",
       "examples/*",
+      "!examples/lit-kitchen-sink",
       "lib/*",
       "lib/cli/test/run/*"
     ]

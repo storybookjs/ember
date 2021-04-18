@@ -3,9 +3,10 @@
   "version": "6.3.0-alpha.8",
   "description": "Storybook for lit: View web components snippets in isolation with Hot Reloading.",
   "keywords": [
+    "lit",
+    "lit-element",
     "lit-html",
     "storybook",
-    "lit-element",
     "web-components"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/master/app/lit",
@@ -44,34 +45,27 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/preset-env": "^7.12.11",
     "@storybook/addons": "6.3.0-alpha.8",
     "@storybook/client-api": "6.3.0-alpha.8",
     "@storybook/core": "6.3.0-alpha.8",
     "@storybook/core-common": "6.3.0-alpha.8",
     "@types/webpack-env": "^1.16.0",
-    "babel-plugin-bundled-import-meta": "^0.3.1",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
-    "lit": "^2.0.0-pre.2",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "read-pkg-up": "^7.0.1",
-    "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "@types/webpack": "^4.41.26"
+    "@types/webpack": "^4.41.26",
+    "lit": "^2.0.0-pre.2"
   },
   "peerDependencies": {
-    "@babel/core": "*",
-    "babel-loader": "^7.0.0 || ^8.0.0",
     "lit": "^2.0.0-pre.2"
   },
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12"
   },
   "publishConfig": {
     "access": "public"
