@@ -183,6 +183,24 @@ describe('jsxDecorator', () => {
     );
   });
 
+  it('should render dynamically when provided a component', () => {
+    const Component = ({ className }: { className: string }) => (
+      <div className={className}>component</div>
+    );
+    const storyFn = (args: any) => <Component {...args} />;
+    const context = makeContext(
+      'args',
+      { __isArgsStory: true, component: Component },
+      { className: 'test' }
+    );
+    jsxDecorator(storyFn, context);
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'jsx-test--args',
+      '<Component className="test" />'
+    );
+  });
+
   it('should skip dynamic rendering for no-args stories', () => {
     const storyFn = () => <div>classic story</div>;
     const context = makeContext('classic', {}, {});

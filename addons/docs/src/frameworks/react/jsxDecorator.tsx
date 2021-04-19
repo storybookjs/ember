@@ -166,8 +166,14 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
     ...(context?.parameters.jsx || {}),
   } as Required<JSXOptions>;
 
+  let storyOrComponent = story;
+  const { parameters, args } = context;
+  if (parameters.component) {
+    storyOrComponent = React.createElement(parameters.component, { ...args });
+  }
+
   let jsx = '';
-  const rendered = renderJsx(story, options);
+  const rendered = renderJsx(storyOrComponent, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }
