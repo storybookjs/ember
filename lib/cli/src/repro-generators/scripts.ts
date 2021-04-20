@@ -24,6 +24,10 @@ export interface Parameters {
   typescript?: boolean;
 }
 
+interface Configuration {
+  installer: 'npx' | 'yarn dlx';
+}
+
 const useYarn2Pnp = false;
 const useLocalSbCli = true;
 
@@ -44,40 +48,6 @@ export const exec = async (command: string, options: ExecOptions = {}) =>
       }
     });
   });
-
-const prepareDirectory = async (_: Options): Promise<boolean> => {
-  return false;
-  // const siblingExists = await pathExists(creationPath);
-
-  // if (!siblingExists) {
-  //   await ensureDir(creationPath);
-  // }
-
-  // await exec('git init', { cwd: creationPath });
-  // await exec('npm init -y', { cwd: creationPath });
-  // await writeFile(path.join(creationPath, '.gitignore'), 'node_modules\n');
-
-  // const cwdExists = await pathExists(cwd);
-
-  // if (cwdExists) {
-  //   return true;
-  // }
-
-  // if (ensureDirOption) {
-  //   await ensureDir(cwd);
-  // }
-
-  // return false;
-};
-
-// const cleanDirectory = async ({ cwd, creationPath }: Options): Promise<void> => {
-//   await remove(cwd);
-//   await remove(path.join(creationPath, 'node_modules'));
-//   await remove(path.join(creationPath, 'package.json'));
-//   await remove(path.join(creationPath, 'yarn.lock'));
-//   await remove(path.join(creationPath, '.yarnrc.yml'));
-//   await remove(path.join(creationPath, '.yarn'));
-// };
 
 const installYarn2 = async ({ cwd }: Options) => {
   const commands = [`yarn set version berry`, `yarn config set enableGlobalCache true`];
@@ -105,17 +75,17 @@ const configureYarn2 = async ({ cwd }: Options) => {
     `touch yarn.lock`,
     // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1
     // `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
-    // // Some required magic to be able to fetch deps from local registry
-    // `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
-    // // Disable fallback mode to make sure everything is required correctly
-    // `yarn config set pnpFallbackMode none`,
-    // `yarn config set enableGlobalCache true`,
-    // // We need to be able to update lockfile when bootstrapping the examples
-    // `yarn config set enableImmutableInstalls false`,
-    // // Add package extensions
-    // // https://github.com/facebook/create-react-app/pull/9872
-    // `yarn config set "packageExtensions.react-scripts@*.peerDependencies.react" "*"`,
-    // `yarn config set "packageExtensions.react-scripts@*.dependencies.@pmmmwh/react-refresh-webpack-plugin" "*"`,
+    // Some required magic to be able to fetch deps from local registry
+    `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
+    // Disable fallback mode to make sure everything is required correctly
+    `yarn config set pnpFallbackMode none`,
+    `yarn config set enableGlobalCache true`,
+    // We need to be able to update lockfile when bootstrapping the examples
+    `yarn config set enableImmutableInstalls false`,
+    // Add package extensions
+    // https://github.com/facebook/create-react-app/pull/9872
+    `yarn config set "packageExtensions.react-scripts@*.peerDependencies.react" "*"`,
+    `yarn config set "packageExtensions.react-scripts@*.dependencies.@pmmmwh/react-refresh-webpack-plugin" "*"`,
   ];
 
   if (!useYarn2Pnp) {
@@ -219,7 +189,8 @@ const doTask = async (
 
 export const createAndInit = async (
   cwd: string,
-  { name, version, ensureDir: ensureDirOption = true, ...rest }: Parameters
+  { name, version, ensureDir: ensureDirOption = true, ...rest }: Parameters,
+  { installer }: Configuration
 ) => {
   const options = {
     name,
@@ -227,7 +198,7 @@ export const createAndInit = async (
     ensureDir: ensureDirOption,
     appName: path.basename(cwd),
     creationPath: ensureDirOption ? path.join(cwd, '..') : cwd,
-    installer: useYarn2Pnp ? (`yarn dlx` as const) : ('npx' as const),
+    installer,
     cwd,
     ...rest,
   };

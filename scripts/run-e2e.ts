@@ -31,6 +31,8 @@ export interface Parameters {
   additionalDeps?: string[];
   /** Add typescript dependency and creates a tsconfig.json file */
   typescript?: boolean;
+  framework?: string;
+  useReproCli?: boolean;
 }
 
 export interface Options extends Parameters {
@@ -256,30 +258,40 @@ const runTests = async ({ name, version, ...rest }: Parameters) => {
   logger.log();
 
   if (!(await prepareDirectory(options))) {
-    // We need to install Yarn 2 to be able to bootstrap the different apps used
-    // for the tests with `yarn dlx`
-    await installYarn2({ ...options, cwd: siblingDir });
+    if (options.useReproCli) {
+      // Call repro cli
+      const sbCLICommand = useLocalSbCli
+        ? 'node ../storybook/lib/cli/bin'
+        : 'yarn dlx -p @storybook/cli sb';
+      const command = `${sbCLICommand} repro ./${name}-${version} --framework ${options.framework} --template ${options.name} --e2e`;
+      logger.debug(command);
+      await exec(command, { cwd: siblingDir });
+    } else {
+      // We need to install Yarn 2 to be able to bootstrap the different apps used
+      // for the tests with `yarn dlx`
+      await installYarn2({ ...options, cwd: siblingDir });
 
-    await generate({ ...options, cwd: siblingDir });
-    logger.log();
+      await generate({ ...options, cwd: siblingDir });
+      logger.log();
 
-    // Configure Yarn 2 in the bootstrapped project to make it use the local
-    // verdaccio registry
-    await configureYarn2(options);
+      // Configure Yarn 2 in the bootstrapped project to make it use the local
+      // verdaccio registry
+      await configureYarn2(options);
 
-    if (options.typescript) {
-      await addTypescript(options);
+      if (options.typescript) {
+        await addTypescript(options);
+        logger.log();
+      }
+
+      await addRequiredDeps(options);
+      logger.log();
+
+      await initStorybook(options);
+      logger.log();
+
+      await buildStorybook(options);
       logger.log();
     }
-
-    await addRequiredDeps(options);
-    logger.log();
-
-    await initStorybook(options);
-    logger.log();
-
-    await buildStorybook(options);
-    logger.log();
   }
 
   const server = await serveStorybook(options, '4000');

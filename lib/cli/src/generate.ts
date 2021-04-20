@@ -94,10 +94,12 @@ program
 program
   .command('repro [outputDirectory]')
   .description('Create a reproduction from a set of possible templates')
+  .option('-f --framework <framework>', 'filter on given framework')
   .option('-t --template <template>', 'Use the given template')
   .option('-l --list', 'List available templates')
-  .action((outputDirectory, { template, list }) =>
-    repro({ outputDirectory, template, list }).catch((e) => {
+  .option('--e2e', 'Used in e2e context')
+  .action((outputDirectory, { framework, template, list, e2e }) =>
+    repro({ outputDirectory, framework, template, list, e2e }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })

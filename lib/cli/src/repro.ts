@@ -7,8 +7,10 @@ import { SupportedFrameworks } from './project_types';
 
 interface ReproOptions {
   outputDirectory: string;
+  framework?: SupportedFrameworks;
   list?: boolean;
   template?: string;
+  e2e?: boolean;
 }
 
 const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Parameters[]>>(
@@ -19,13 +21,13 @@ const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Par
   {} as Record<SupportedFrameworks, Parameters[]>
 );
 
-export const repro = async ({ outputDirectory, list, template }: ReproOptions) => {
+export const repro = async ({ outputDirectory, list, template, framework, e2e }: ReproOptions) => {
   if (list) {
     logger.info('Available templates');
-    Object.entries(FRAMEWORKS).forEach(([framework, templates]) => {
-      logger.info(framework);
+    Object.entries(FRAMEWORKS).forEach(([fmwrk, templates]) => {
+      logger.info(fmwrk);
       templates.forEach((t) => logger.info(`- ${t.name}`));
-      if (framework === 'other') {
+      if (fmwrk === 'other') {
         logger.info('- blank');
       }
     });
@@ -46,16 +48,17 @@ export const repro = async ({ outputDirectory, list, template }: ReproOptions) =
   }
 
   let selectedTemplate = template;
-  let framework: SupportedFrameworks;
-  if (!selectedTemplate) {
-    const { framework: selectedFramework } = await prompts({
+  let selectedFramework = framework;
+  if (!selectedFramework) {
+    const { framework: frameworkOpt } = await prompts({
       type: 'select',
       message: 'Select the repro framework',
       name: 'framework',
       choices: Object.keys(FRAMEWORKS).map((f) => ({ title: f, value: f })),
     });
-
-    framework = selectedFramework;
+    selectedFramework = frameworkOpt;
+  }
+  if (!selectedTemplate) {
     selectedTemplate = (
       await prompts({
         type: 'select',
@@ -79,7 +82,9 @@ export const repro = async ({ outputDirectory, list, template }: ReproOptions) =
   logger.info(`Running ${selectedTemplate} into ${path.join(process.cwd(), selectedDirectory)}`);
 
   try {
-    await createAndInit(path.join(process.cwd(), selectedDirectory), selectedConfig);
+    await createAndInit(path.join(process.cwd(), selectedDirectory), selectedConfig, {
+      installer: e2e ? 'yarn dlx' : 'npx',
+    });
   } catch (error) {
     logger.error('Failed to create repro');
   }

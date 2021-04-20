@@ -112,6 +112,7 @@ export const react_typescript: Parameters = {
 
 // TODO: issue in @storybook/cli init
 export const cra: Parameters = {
+  framework: 'react',
   name: 'cra',
   version: 'latest',
   generator: [
@@ -119,12 +120,15 @@ export const cra: Parameters = {
     'cd {{name}}-{{version}}',
     'echo "FAST_REFRESH=true" > .env',
   ].join(' && '),
+  useReproCli: true,
 };
 
 export const cra_typescript: Parameters = {
+  framework: 'react',
   name: 'cra_typescript',
   version: 'latest',
   generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
+  useReproCli: true,
 };
 
 // TODO: there is a compatibility issue with riot@4
