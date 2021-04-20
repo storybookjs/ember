@@ -169,7 +169,7 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
   let storyOrComponent = story;
   const { parameters, args } = context;
   if (parameters.component) {
-    storyOrComponent = React.createElement(parameters.component, { ...args });
+    storyOrComponent = React.createElement(parameters.component, args);
   }
 
   let jsx = '';
