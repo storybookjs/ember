@@ -1,4 +1,5 @@
 import fse from 'fs-extra';
+import fs from 'fs';
 import { SupportedFrameworks } from '../project_types';
 
 interface ConfigureMainOptions {
@@ -43,6 +44,13 @@ function configureMain({
 }
 
 function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
+  const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
+
+  // If the framework template included a preview then we have nothing to do
+  if (fs.existsSync(previewPath)) {
+    return;
+  }
+
   const parameters = `
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -64,9 +72,7 @@ setCompodocJson(docJson);
 ${parameters}`
       : parameters;
 
-  fse.writeFileSync(`./.storybook/preview.${commonJs ? 'cjs' : 'js'}`, preview, {
-    encoding: 'utf8',
-  });
+  fse.writeFileSync(previewPath, preview, { encoding: 'utf8' });
 }
 
 export function configure(framework: SupportedFrameworks, mainOptions: ConfigureMainOptions) {

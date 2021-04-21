@@ -181,14 +181,8 @@ export function copyTemplate(templateRoot: string, storyFormat: StoryFormat) {
 
     throw new Error(`Unsupported story format: ${storyFormat}`);
   }
-  fse.copySync(templateDir, '.', { overwrite: true });
-}
 
-export function storiesPath() {
-  if (fse.existsSync('./src')) {
-    return './src/stories';
-  }
-  return './stories';
+  fse.copySync(templateDir, '.', { overwrite: true });
 }
 
 export function copyComponents(framework: SupportedFrameworks, language: SupportedLanguage) {
@@ -219,7 +213,14 @@ export function copyComponents(framework: SupportedFrameworks, language: Support
     throw new Error(`Unsupported framework: ${framework}`);
   };
 
-  const destinationPath = storiesPath();
+  const targetPath = () => {
+    if (fse.existsSync('./src')) {
+      return './src/stories';
+    }
+    return './stories';
+  };
+
+  const destinationPath = targetPath();
   fse.copySync(componentsPath(), destinationPath, { overwrite: true });
   fse.copySync(path.resolve(__dirname, 'frameworks/common'), destinationPath, { overwrite: true });
 }

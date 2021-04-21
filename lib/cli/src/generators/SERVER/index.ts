@@ -1,11 +1,9 @@
 import { baseGenerator, Generator } from '../baseGenerator';
-import { copyTemplate, storiesPath } from '../../helpers';
+import { copyTemplate } from '../../helpers';
 
 const generator: Generator = async (packageManager, npmOptions, options) => {
-  const stories = [`${storiesPath()}/**/*.stories.json`];
-
   baseGenerator(packageManager, npmOptions, options, 'server', {
-    extraMain: { stories },
+    extensions: ['json'],
   });
 
   copyTemplate(__dirname, options.storyFormat);
