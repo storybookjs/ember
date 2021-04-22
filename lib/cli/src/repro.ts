@@ -51,16 +51,16 @@ export const repro = async ({ outputDirectory, list, template, framework, e2e }:
 
   let selectedTemplate = template;
   let selectedFramework = framework;
-  if (!selectedFramework) {
-    const { framework: frameworkOpt } = await prompts({
-      type: 'select',
-      message: 'Select the repro framework',
-      name: 'framework',
-      choices: Object.keys(FRAMEWORKS).map((f) => ({ title: f, value: f })),
-    });
-    selectedFramework = frameworkOpt;
-  }
   if (!selectedTemplate) {
+    if (!selectedFramework) {
+      const { framework: frameworkOpt } = await prompts({
+        type: 'select',
+        message: 'Select the repro framework',
+        name: 'framework',
+        choices: Object.keys(FRAMEWORKS).map((f) => ({ title: f, value: f })),
+      });
+      selectedFramework = frameworkOpt;
+    }
     selectedTemplate = (
       await prompts({
         type: 'select',
