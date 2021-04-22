@@ -13,6 +13,8 @@ interface ReproOptions {
   e2e?: boolean;
 }
 
+const TEMPLATES = configs as Record<string, Parameters>;
+
 const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Parameters[]>>(
   (acc, cur) => {
     acc[cur.framework] = [...(acc[cur.framework] || []), cur];
@@ -64,7 +66,7 @@ export const repro = async ({ outputDirectory, list, template, framework, e2e }:
         type: 'select',
         message: 'Select the repro base template',
         name: 'template',
-        choices: FRAMEWORKS[framework as SupportedFrameworks].map((f) => ({
+        choices: FRAMEWORKS[selectedFramework as SupportedFrameworks].map((f) => ({
           title: f.name,
           value: f.name,
         })),
@@ -72,9 +74,7 @@ export const repro = async ({ outputDirectory, list, template, framework, e2e }:
     ).template;
   }
 
-  const selectedConfig = FRAMEWORKS[framework as SupportedFrameworks].find(
-    (t) => t.name === selectedTemplate
-  );
+  const selectedConfig = TEMPLATES[selectedTemplate];
 
   if (!selectedConfig) {
     throw new Error('Repro: please specify a valid template type');
