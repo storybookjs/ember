@@ -7,7 +7,8 @@ export default {
   argTypes: { onClick: { action: 'click ' } },
 };
 
-const Template = (args: any) => html`<demo-button ${args}></demo-button>`;
+const Template = ({ label, primary, value }: { label: string; primary: boolean; value: string }) =>
+  html`<demo-button .label="${label}" ?primary="${primary}" .value="${value}"></demo-button>`;
 
 export const Default = Template.bind({});
 

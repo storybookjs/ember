@@ -1,6 +1,6 @@
 {
   "name": "lit-kitchen-sink",
-  "version": "6.3.0-alpha.8",
+  "version": "6.3.0-alpha.14",
   "private": true,
   "description": "",
   "keywords": [],
@@ -47,7 +47,7 @@
     "@storybook/ui": "portal:../../lib/ui"
   },
   "dependencies": {
-    "lit": "^2.0.0-pre.2"
+    "lit": "^2.0.0-rc.1"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "*",
