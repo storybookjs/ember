@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { logger } from '@storybook/node-logger';
 import path from 'path';
-import { createAndInit, Parameters } from './repro-generators/scripts';
+import { createAndInit, Parameters, exec } from './repro-generators/scripts';
 import * as configs from './repro-generators/configs';
 import { SupportedFrameworks } from './project_types';
 
@@ -23,7 +23,7 @@ const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Par
   {} as Record<SupportedFrameworks, Parameters[]>
 );
 
-export const repro = async ({ outputDirectory, list, template, framework, e2e }: ReproOptions) => {
+export const repro = async ({ outputDirectory, list, template, framework }: ReproOptions) => {
   if (list) {
     logger.info('Available templates');
     Object.entries(FRAMEWORKS).forEach(([fmwrk, templates]) => {
@@ -82,9 +82,13 @@ export const repro = async ({ outputDirectory, list, template, framework, e2e }:
   logger.info(`Running ${selectedTemplate} into ${path.join(process.cwd(), selectedDirectory)}`);
 
   try {
-    await createAndInit(path.join(process.cwd(), selectedDirectory), selectedConfig, {
-      installer: e2e ? 'yarn dlx' : 'npx',
+    const cwd = path.join(process.cwd(), selectedDirectory);
+    await createAndInit(cwd, selectedConfig, {
+      installer: 'npx',
     });
+    await exec('git add --all', { cwd });
+    await exec('git commit -am "added storybook"', { cwd });
+    await exec('git tag repro-base', { cwd });
   } catch (error) {
     logger.error('Failed to create repro');
   }

@@ -72,16 +72,16 @@ const installYarn2 = async ({ cwd }: Options) => {
 const configureYarn2 = async ({ cwd }: Options) => {
   const commands = [
     // Create file to ensure yarn will be ok to set some config in the current directory and not in the parent
-    `touch yarn.lock`,
+    // NOT NEEDED ANYMORE?`touch yarn.lock`,
     // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1
     // `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
     // Some required magic to be able to fetch deps from local registry
-    `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
+    // ONLY E2E `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
     // Disable fallback mode to make sure everything is required correctly
-    `yarn config set pnpFallbackMode none`,
-    `yarn config set enableGlobalCache true`,
+    // ONLY E2E `yarn config set pnpFallbackMode none`,
+    // ONLY E2E `yarn config set enableGlobalCache true`,
     // We need to be able to update lockfile when bootstrapping the examples
-    `yarn config set enableImmutableInstalls false`,
+    // ONLY E2E `yarn config set enableImmutableInstalls false`,
     // Add package extensions
     // https://github.com/facebook/create-react-app/pull/9872
     `yarn config set "packageExtensions.react-scripts@*.peerDependencies.react" "*"`,
@@ -209,13 +209,12 @@ export const createAndInit = async (
   logger.debug(options);
   logger.log();
 
-  await doTask(
-    installYarn2,
-    { ...options, cwd: options.creationPath },
-    options.installer === 'yarn dlx'
-  );
   await doTask(generate, { ...options, cwd: options.creationPath });
-  await doTask(configureYarn2, options, options.installer === 'yarn dlx');
+
+  await doTask(installYarn2, options);
+  // Only e2e
+  await doTask(configureYarn2, options);
+
   await doTask(addTypescript, options, options.typescript);
   await doTask(addRequiredDeps, options);
   await doTask(initStorybook, options);
