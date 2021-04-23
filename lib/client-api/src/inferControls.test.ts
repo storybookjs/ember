@@ -1,4 +1,5 @@
 import { StoryContext } from '@storybook/addons';
+import { logger } from '@storybook/client-logger';
 import { inferControls } from './inferControls';
 
 const getStoryContext = (customParams = {}): StoryContext => ({
@@ -20,6 +21,68 @@ const getStoryContext = (customParams = {}): StoryContext => ({
 });
 
 describe('inferControls', () => {
+  describe('with custom matchers', () => {
+    let warnSpy: jest.SpyInstance;
+    beforeEach(() => {
+      warnSpy = jest.spyOn(logger, 'warn');
+      warnSpy.mockImplementation(() => {});
+    });
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    it('should return color type when matching color', () => {
+      // passing a string, should return control type color
+      const inferredControls = inferControls(
+        getStoryContext({
+          argTypes: {
+            background: {
+              type: {
+                name: 'string',
+                value: 'red',
+              },
+              name: 'background',
+            },
+          },
+          controls: {
+            matchers: {
+              color: /background/,
+            },
+          },
+        })
+      );
+
+      expect(inferredControls.background.control.type).toEqual('color');
+    });
+
+    it('should return inferred type when matches color but arg is not a string', () => {
+      // passing an object which is unsupported, should infer the type to object
+      const inferredControls = inferControls(
+        getStoryContext({
+          argTypes: {
+            background: {
+              type: {
+                name: 'object',
+                value: {
+                  rgb: [255, 255, 0],
+                },
+              },
+              name: 'background',
+            },
+          },
+          controls: {
+            matchers: {
+              color: /background/,
+            },
+          },
+        })
+      );
+
+      expect(warnSpy).toHaveBeenCalled();
+      expect(inferredControls.background.control.type).toEqual('object');
+    });
+  });
+
   it('should return argTypes as is when no exclude or include is passed', () => {
     const controls = inferControls(getStoryContext());
     expect(Object.keys(controls)).toEqual(['label', 'labelName', 'borderWidth']);
