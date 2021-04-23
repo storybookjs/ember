@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-alpha.8",
+  "version": "6.3.0-alpha.14",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/angular"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/ts3.9/client/index.js",
@@ -41,11 +45,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.8",
-    "@storybook/api": "6.3.0-alpha.8",
-    "@storybook/core": "6.3.0-alpha.8",
-    "@storybook/core-common": "6.3.0-alpha.8",
-    "@storybook/node-logger": "6.3.0-alpha.8",
+    "@storybook/addons": "6.3.0-alpha.14",
+    "@storybook/api": "6.3.0-alpha.14",
+    "@storybook/core": "6.3.0-alpha.14",
+    "@storybook/core-common": "6.3.0-alpha.14",
+    "@storybook/node-logger": "6.3.0-alpha.14",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -120,5 +124,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "2459eb428208887e4eafab91256c72389e60d934"
+  "gitHead": "eb1e3a913f3c5329539a7a908e7cb955ffaa8100"
 }

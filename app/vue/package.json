@@ -1,6 +1,6 @@
 {
   "name": "@storybook/vue",
-  "version": "6.3.0-alpha.8",
+  "version": "6.3.0-alpha.14",
   "description": "Storybook for Vue: Develop Vue Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/vue"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/cjs/client/index.js",
@@ -41,9 +45,9 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.8",
-    "@storybook/core": "6.3.0-alpha.8",
-    "@storybook/core-common": "6.3.0-alpha.8",
+    "@storybook/addons": "6.3.0-alpha.14",
+    "@storybook/core": "6.3.0-alpha.14",
+    "@storybook/core-common": "6.3.0-alpha.14",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -77,5 +81,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "2459eb428208887e4eafab91256c72389e60d934"
+  "gitHead": "eb1e3a913f3c5329539a7a908e7cb955ffaa8100"
 }
