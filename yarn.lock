@@ -1474,6 +1474,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-block-scoping@npm:^7.13.16":
+  version: 7.14.2
+  resolution: "@babel/plugin-transform-block-scoping@npm:7.14.2"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.13.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: e3980820ef7bde48205f62f996aa44b51108ca95fb196abb12047ad999c30eac626e3d34eb331fe05d815d0f4bc7cb8755994773daef966a1d3dbaf97c002c98
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-classes@npm:^7.12.1, @babel/plugin-transform-classes@npm:^7.13.0, @babel/plugin-transform-classes@npm:^7.9.0":
   version: 7.13.0
   resolution: "@babel/plugin-transform-classes@npm:7.13.0"
@@ -1510,6 +1521,17 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: b888043d061e98b16989700b7fceb432b07cb2f32da89a478a9b7cd1535f85afc6494273d88fbfc1b70853268753e5728f5f38e74e05021c9e28d8f09a9fe343
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-transform-destructuring@npm:^7.13.17":
+  version: 7.13.17
+  resolution: "@babel/plugin-transform-destructuring@npm:7.13.17"
+  dependencies:
+    "@babel/helper-plugin-utils": ^7.13.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: ce8cab689f37f5d9855e989b91e8656e8c8853c11d8b1961266537f66c61505aa72af6cca020c458565ce648f07d3452669fdfa7782c51b999c43d5dbe479f2d
   languageName: node
   linkType: hard
 
@@ -7014,6 +7036,10 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": ^7.12.1
     "@babel/plugin-proposal-private-methods": ^7.12.1
     "@babel/plugin-syntax-dynamic-import": ^7.8.3
+    "@babel/plugin-transform-arrow-functions": ^7.13.0
+    "@babel/plugin-transform-block-scoping": ^7.13.16
+    "@babel/plugin-transform-destructuring": ^7.13.17
+    "@babel/plugin-transform-shorthand-properties": ^7.12.13
     "@babel/preset-env": ^7.12.11
     "@babel/preset-flow": ^7.12.1
     "@babel/preset-react": ^7.12.10
