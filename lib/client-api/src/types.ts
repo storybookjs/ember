@@ -31,11 +31,12 @@ export interface StoryMetadata {
 }
 export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
 
-type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 
 export interface StoreSelectionSpecifier {
   storySpecifier: StorySpecifier;
   viewMode: ViewMode;
+  singleStory: boolean;
   args?: Args;
 }
 

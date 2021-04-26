@@ -31,7 +31,7 @@ import {
   GetStorybookKind,
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
-  StoreSelection,
+  StoreSelection, StorySpecifier,
 } from './types';
 import { combineArgs, mapArgsToTypes, validateOptions } from './args';
 import { HooksContext } from './hooks';
@@ -648,12 +648,25 @@ export default class StoryStore {
     this._selectionSpecifier = selectionSpecifier;
   }
 
+  getSelectionSpecifier(): StoreSelectionSpecifier {
+    return this._selectionSpecifier;
+  }
+
   setSelection(selection: StoreSelection): void {
     this._selection = selection;
 
     if (this._channel) {
       this._channel.emit(Events.CURRENT_STORY_WAS_SET, this._selection);
     }
+  }
+
+  isSingleStoryMode(): boolean {
+    if (!this._selectionSpecifier) {
+      return false;
+    }
+
+    const { singleStory, storySpecifier } = this._selectionSpecifier;
+    return storySpecifier && storySpecifier !== '*' && singleStory;
   }
 
   getSelection = (): StoreSelection => this._selection;

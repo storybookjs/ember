@@ -30,9 +30,15 @@ afterEach(() => {
   doHMRDispose();
 });
 
-function makeMocks() {
+function makeMocks(singleStory?:boolean, storyId?:string) {
   const configApi = ({ configure: (x: Function) => x() } as unknown) as ConfigApi;
   const storyStore = ({
+    isSingleStoryMode: jest.fn(() => !!singleStory),
+    getSelectionSpecifier: jest.fn(() => ({
+      storySpecifier: storyId || '',
+      singleStory: !!singleStory,
+      viewMode: 'story'
+    })),
     removeStoryKind: jest.fn(),
   } as unknown) as StoryStore;
   const clientApi = ({
@@ -90,6 +96,36 @@ describe('core.preview.loadCsf', () => {
     const bApi = mockedStoriesOf.mock.results[1].value;
     expect(bApi.add).toHaveBeenCalledWith('1', input.b[1], { __id: 'b--1', ...extras });
     expect(bApi.add).toHaveBeenCalledWith('two', input.b[2], { __id: 'b--2', ...extras });
+  });
+
+  it('calls storiesOf and add correctly from CSF exports when singleStory mode is switched on', () => {
+    const { configure, clientApi } = makeMocks(true, 'a--1');
+
+    const input = {
+      a: {
+        default: {
+          title: 'a',
+        },
+        1: () => 0,
+        2: () => 0,
+      },
+      b: {
+        default: {
+          title: 'b',
+        },
+        1: () => 0,
+        2: Object.assign(() => 0, { storyName: 'two' }),
+      },
+    };
+    configure('react', makeRequireContext(input), mod);
+
+    const mockedStoriesOf = clientApi.storiesOf as jest.Mock;
+    expect(mockedStoriesOf).toHaveBeenCalledTimes(1);
+    expect(mockedStoriesOf).toHaveBeenCalledWith('a', true);
+    const aApi = mockedStoriesOf.mock.results[0].value;
+    const extras: any = { decorators: [], args: {}, argTypes: {}, loaders: [] };
+    expect(aApi.add).toHaveBeenCalledTimes(1);
+    expect(aApi.add).toHaveBeenCalledWith('1', input.a[1], { __id: 'a--1', ...extras });
   });
 
   it('adds stories in the right order if __namedExportsOrder is supplied', () => {
@@ -162,6 +198,31 @@ describe('core.preview.loadCsf', () => {
 
   it('allows setting componentId', () => {
     const { configure, clientApi } = makeMocks();
+
+    const input = {
+      a: {
+        default: {
+          title: 'a',
+          id: 'random',
+        },
+        x: () => 0,
+      },
+    };
+    configure('react', makeRequireContext(input), mod);
+
+    const mockedStoriesOf = clientApi.storiesOf as jest.Mock;
+    const aApi = mockedStoriesOf.mock.results[0].value;
+    expect(aApi.add).toHaveBeenCalledWith('X', input.a.x, {
+      __id: 'random--x',
+      decorators: [],
+      args: {},
+      argTypes: {},
+      loaders: [],
+    });
+  });
+
+  it('allows setting componentId when single mode is switch on', () => {
+    const { configure, clientApi } = makeMocks(true, 'random--x');
 
     const input = {
       a: {
