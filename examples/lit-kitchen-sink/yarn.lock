@@ -2213,6 +2213,12 @@ __metadata:
     webpack-filter-warnings-plugin: ^1.2.1
     webpack-hot-middleware: ^2.25.0
     webpack-virtual-modules: ^0.2.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   languageName: node
   linkType: soft
 
@@ -2280,6 +2286,12 @@ __metadata:
     webpack-dev-middleware: ^4.1.0
     webpack-hot-middleware: ^2.25.0
     webpack-virtual-modules: ^0.4.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   languageName: node
   linkType: soft
 
@@ -2402,6 +2414,9 @@ __metadata:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
     webpack: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   languageName: node
   linkType: soft
 
