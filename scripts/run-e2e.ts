@@ -15,24 +15,18 @@ import * as configs from './run-e2e-config';
 const logger = console;
 
 export interface Parameters {
-  /** E2E configuration name */
+  /** Targeted framework */
+  framework?: string;
+  /** CLI repro template to use  */
   name: string;
   /** framework version */
   version: string;
-  /** CLI to bootstrap the project */
-  generator: string;
-  /** Use storybook framework detection */
-  autoDetect?: boolean;
+  /** Use custom generator in repro */
+  generator?: string;
   /** Pre-build hook */
   preBuildCommand?: string;
   /** When cli complains when folder already exists */
   ensureDir?: boolean;
-  /** Dependencies to add before building Storybook */
-  additionalDeps?: string[];
-  /** Add typescript dependency and creates a tsconfig.json file */
-  typescript?: boolean;
-  framework?: string;
-  useReproCli?: boolean;
 }
 
 export interface Options extends Parameters {
@@ -76,134 +70,6 @@ const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
   await remove(path.join(siblingDir, 'yarn.lock'));
   await remove(path.join(siblingDir, '.yarnrc.yml'));
   await remove(path.join(siblingDir, '.yarn'));
-};
-
-const installYarn2 = async ({ cwd }: Options) => {
-  const commands = [`yarn set version berry`, `yarn config set enableGlobalCache true`];
-
-  if (!useYarn2Pnp) {
-    commands.push('yarn config set nodeLinker node-modules');
-  }
-
-  const command = commands.join(' && ');
-
-  logger.info(`🧶 Installing Yarn 2`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Installing Yarn 2 failed`);
-    throw e;
-  }
-};
-
-const configureYarn2 = async ({ cwd }: Options) => {
-  const commands = [
-    // Create file to ensure yarn will be ok to set some config in the current directory and not in the parent
-    `touch yarn.lock`,
-    // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1
-    `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
-    // Some required magic to be able to fetch deps from local registry
-    `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
-    // Disable fallback mode to make sure everything is required correctly
-    `yarn config set pnpFallbackMode none`,
-    `yarn config set enableGlobalCache true`,
-    // We need to be able to update lockfile when bootstrapping the examples
-    `yarn config set enableImmutableInstalls false`,
-    // Add package extensions
-    // https://github.com/facebook/create-react-app/pull/9872
-    `yarn config set "packageExtensions.react-scripts@*.peerDependencies.react" "*"`,
-    `yarn config set "packageExtensions.react-scripts@*.dependencies.@pmmmwh/react-refresh-webpack-plugin" "*"`,
-  ];
-
-  if (!useYarn2Pnp) {
-    commands.push('yarn config set nodeLinker node-modules');
-  }
-
-  const command = commands.join(' && ');
-  logger.info(`🎛 Configuring Yarn 2`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Configuring Yarn 2 failed`);
-    throw e;
-  }
-};
-
-const generate = async ({ cwd, name, version, generator }: Options) => {
-  let command = generator.replace(/{{name}}/g, name).replace(/{{version}}/g, version);
-  if (useYarn2Pnp) {
-    command = command.replace(/npx/g, `yarn dlx`);
-  }
-
-  logger.info(`🏗  Bootstrapping ${name} project`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Bootstrapping ${name} failed`);
-    throw e;
-  }
-};
-
-const initStorybook = async ({ cwd, autoDetect = true, name }: Options) => {
-  logger.info(`🎨 Initializing Storybook with @storybook/cli`);
-  try {
-    const type = autoDetect ? '' : `--type ${name}`;
-
-    const sbCLICommand = useLocalSbCli
-      ? 'node ../../storybook/lib/cli/dist/esm/generate'
-      : 'yarn dlx -p @storybook/cli sb';
-
-    await exec(`${sbCLICommand} init --yes ${type}`, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Storybook initialization failed`);
-    throw e;
-  }
-};
-
-const addRequiredDeps = async ({ cwd, additionalDeps }: Options) => {
-  logger.info(`🌍 Adding needed deps & installing all deps`);
-  try {
-    if (additionalDeps && additionalDeps.length > 0) {
-      await exec(`yarn add -D ${additionalDeps.join(' ')}`, {
-        cwd,
-      });
-    } else {
-      await exec(`yarn install`, {
-        cwd,
-      });
-    }
-  } catch (e) {
-    logger.error(`🚨 Dependencies installation failed`);
-    throw e;
-  }
-};
-
-const addTypescript = async ({ cwd }: Options) => {
-  logger.info(`👮🏻 Adding typescript and tsconfig.json`);
-  try {
-    await exec(`yarn add -D typescript@latest`, { cwd });
-    const tsConfig = {
-      compilerOptions: {
-        baseUrl: '.',
-        esModuleInterop: true,
-        jsx: 'preserve',
-        skipLibCheck: true,
-        strict: true,
-      },
-      include: ['src/*'],
-    };
-    const tsConfigJsonPath = path.resolve(cwd, 'tsconfig.json');
-    await writeJSON(tsConfigJsonPath, tsConfig, { encoding: 'utf8', spaces: 2 });
-  } catch (e) {
-    logger.error(`🚨 Creating tsconfig.json failed`);
-    throw e;
-  }
 };
 
 const buildStorybook = async ({ cwd, preBuildCommand }: Options) => {
@@ -258,40 +124,21 @@ const runTests = async ({ name, version, ...rest }: Parameters) => {
   logger.log();
 
   if (!(await prepareDirectory(options))) {
-    if (options.useReproCli) {
-      // Call repro cli
-      const sbCLICommand = useLocalSbCli
-        ? 'node ../storybook/lib/cli/bin'
-        : 'yarn dlx -p @storybook/cli sb';
-      const command = `${sbCLICommand} repro ./${name}-${version} --framework ${options.framework} --template ${options.name} --e2e`;
-      logger.debug(command);
-      await exec(command, { cwd: siblingDir });
-    } else {
-      // We need to install Yarn 2 to be able to bootstrap the different apps used
-      // for the tests with `yarn dlx`
-      await installYarn2({ ...options, cwd: siblingDir });
+    // Call repro cli
+    const sbCLICommand = useLocalSbCli
+      ? 'node ../storybook/lib/cli/bin'
+      : 'yarn dlx -p @storybook/cli sb';
 
-      await generate({ ...options, cwd: siblingDir });
-      logger.log();
+    const commandArgs = options.framework
+      ? `--framework ${options.framework} --template ${options.name}`
+      : `--generator "${options.generator}"`;
 
-      // Configure Yarn 2 in the bootstrapped project to make it use the local
-      // verdaccio registry
-      await configureYarn2(options);
+    const command = `${sbCLICommand} repro ./${name}-${version} ${commandArgs} --e2e`;
+    logger.debug(command);
+    await exec(command, { cwd: siblingDir });
 
-      if (options.typescript) {
-        await addTypescript(options);
-        logger.log();
-      }
-
-      await addRequiredDeps(options);
-      logger.log();
-
-      await initStorybook(options);
-      logger.log();
-
-      await buildStorybook(options);
-      logger.log();
-    }
+    await buildStorybook(options);
+    logger.log();
   }
 
   const server = await serveStorybook(options, '4000');

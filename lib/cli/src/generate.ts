@@ -97,9 +97,10 @@ program
   .option('-f --framework <framework>', 'filter on given framework')
   .option('-t --template <template>', 'Use the given template')
   .option('-l --list', 'List available templates')
+  .option('-g --generator <generator>', 'use custom generator command')
   .option('--e2e', 'Used in e2e context')
-  .action((outputDirectory, { framework, template, list, e2e }) =>
-    repro({ outputDirectory, framework, template, list, e2e }).catch((e) => {
+  .action((outputDirectory, { framework, template, list, e2e, generator }) =>
+    repro({ outputDirectory, framework, template, list, e2e, generator }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })

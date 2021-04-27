@@ -1,24 +1,9 @@
 import { Parameters } from './run-e2e';
 
-const fromDeps = (...args: string[]): string =>
-  [
-    'cd {{name}}-{{version}}',
-    // Create `yarn.lock` to force Yarn to consider adding deps in this directory
-    // and not look for a yarn workspace in parent directory
-    'touch yarn.lock',
-    'yarn init --yes',
-    args.length && `yarn add ${args.join(' ')}`,
-  ]
-    .filter(Boolean)
-    .join(' && ');
-
 const baseAngular: Parameters = {
+  framework: 'angular',
   name: 'angular',
   version: 'latest',
-  generator: [
-    `yarn dlx --package @angular/cli@{{version}} ng new {{name}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
-    `cd {{name}}-{{version}}`,
-  ].join(' && '),
 };
 
 export const angularv10: Parameters = {
@@ -39,10 +24,9 @@ export const angular: Parameters = baseAngular;
 // };
 
 export const html: Parameters = {
+  framework: 'html',
   name: 'html',
   version: 'latest',
-  generator: fromDeps(),
-  autoDetect: false,
 };
 
 // TODO: broken
@@ -71,37 +55,34 @@ export const html: Parameters = {
 // };
 
 export const mithril: Parameters = {
+  framework: 'mithril',
   name: 'mithril',
   version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
 };
 
 export const preact: Parameters = {
+  framework: 'preact',
   name: 'preact',
   version: 'latest',
-  generator:
-    'npx preact-cli@{{version}} create preactjs-templates/default {{name}}-{{version}} --yarn --install=false --git=false',
   ensureDir: false,
 };
 
 export const rax: Parameters = {
+  framework: 'rax',
   name: 'rax',
   version: 'latest',
-  // Rax versions are inconsistent 1.1.0-1 for some
-  generator: fromDeps('rax', 'rax-image', 'rax-link', 'rax-text', 'rax-view'),
 };
 
 export const react: Parameters = {
+  framework: 'react',
   name: 'react',
   version: 'latest',
-  generator: fromDeps('react', 'react-dom'),
 };
 
 export const react_typescript: Parameters = {
+  framework: 'react',
   name: 'react_typescript',
   version: 'latest',
-  generator: fromDeps('react', 'react-dom'),
-  typescript: true,
 };
 
 // export const reactNative: Parameters = {
@@ -115,20 +96,12 @@ export const cra: Parameters = {
   framework: 'react',
   name: 'cra',
   version: 'latest',
-  generator: [
-    'yarn dlx create-react-app@{{version}} {{name}}-{{version}}',
-    'cd {{name}}-{{version}}',
-    'echo "FAST_REFRESH=true" > .env',
-  ].join(' && '),
-  useReproCli: true,
 };
 
 export const cra_typescript: Parameters = {
   framework: 'react',
   name: 'cra_typescript',
   version: 'latest',
-  generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
-  useReproCli: true,
 };
 
 // TODO: there is a compatibility issue with riot@4
@@ -139,67 +112,50 @@ export const cra_typescript: Parameters = {
 // };
 
 export const sfcVue: Parameters = {
+  framework: 'vue',
   name: 'sfcVue',
   version: 'latest',
-  generator: fromDeps('vue', 'vue-loader', 'vue-template-compiler', 'webpack@webpack-4'),
 };
 
 export const svelte: Parameters = {
+  framework: 'svelte',
   name: 'svelte',
   version: 'latest',
-  generator: 'yarn dlx degit sveltejs/template {{name}}-{{version}}',
 };
 
 export const vue: Parameters = {
+  framework: 'vue',
   name: 'vue',
   version: 'latest',
-  generator: [
-    `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
-    // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
-    `rm package.json`,
-    `yarn dlx -p @vue/cli@{{version}} vue create {{name}}-{{version}} --default --packageManager=yarn --no-git --force`,
-  ].join(' && '),
 };
 
 export const vue3: Parameters = {
+  framework: 'vue3',
   name: 'vue3',
   version: 'next',
-  // Vue CLI v4 utilizes webpack 4, and the 5-alpha uses webpack 5 so we force ^4 here
-  generator: [
-    `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
-    // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
-    `rm package.json`,
-    `yarn dlx -p @vue/cli@^4 vue create {{name}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
-  ].join(' && '),
 };
 
 export const web_components: Parameters = {
+  framework: 'web_components',
   name: 'web_components',
   version: 'latest',
-  generator: fromDeps('lit-element'),
 };
 
 export const web_components_typescript: Parameters = {
   ...web_components,
   name: 'web_components_typescript',
-  typescript: true,
 };
 
 export const webpack_react: Parameters = {
+  framework: 'react',
   name: 'webpack_react',
   version: 'latest',
-  generator: fromDeps('react', 'react-dom', 'webpack@webpack-4'),
 };
 
 export const react_in_yarn_workspace: Parameters = {
+  framework: 'react',
   name: 'react_in_yarn_workspace',
   version: 'latest',
-  generator: [
-    'cd {{name}}-{{version}}',
-    'echo "{ \\"name\\": \\"workspace-root\\", \\"private\\": true, \\"workspaces\\": [] }" > package.json',
-    'touch yarn.lock',
-    `yarn add react react-dom`,
-  ].join(' && '),
 };
 
 // View results at: https://datastudio.google.com/reporting/c34f64ee-400f-4d06-ad4f-5c2133e226da

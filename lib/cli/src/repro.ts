@@ -11,6 +11,7 @@ interface ReproOptions {
   list?: boolean;
   template?: string;
   e2e?: boolean;
+  generator?: string;
 }
 
 const TEMPLATES = configs as Record<string, Parameters>;
@@ -23,7 +24,13 @@ const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Par
   {} as Record<SupportedFrameworks, Parameters[]>
 );
 
-export const repro = async ({ outputDirectory, list, template, framework }: ReproOptions) => {
+export const repro = async ({
+  outputDirectory,
+  list,
+  template,
+  framework,
+  generator,
+}: ReproOptions) => {
   if (list) {
     logger.info('Available templates');
     Object.entries(FRAMEWORKS).forEach(([fmwrk, templates]) => {
@@ -51,7 +58,7 @@ export const repro = async ({ outputDirectory, list, template, framework }: Repr
 
   let selectedTemplate = template;
   let selectedFramework = framework;
-  if (!selectedTemplate) {
+  if (!selectedTemplate && !generator) {
     if (!selectedFramework) {
       const { framework: frameworkOpt } = await prompts({
         type: 'select',
@@ -74,7 +81,13 @@ export const repro = async ({ outputDirectory, list, template, framework }: Repr
     ).template;
   }
 
-  const selectedConfig = TEMPLATES[selectedTemplate];
+  const selectedConfig = !generator
+    ? TEMPLATES[selectedTemplate]
+    : {
+        name: 'custom',
+        version: 'custom',
+        generator,
+      };
 
   if (!selectedConfig) {
     throw new Error('Repro: please specify a valid template type');
