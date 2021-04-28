@@ -10,6 +10,7 @@ import { migrate } from './migrate';
 import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
+import { link } from './link';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
@@ -101,6 +102,16 @@ program
   .option('--e2e', 'Used in e2e context')
   .action((outputDirectory, { framework, template, list, e2e, generator }) =>
     repro({ outputDirectory, framework, template, list, e2e, generator }).catch((e) => {
+      logger.error(e);
+      process.exit(1);
+    })
+  );
+
+program
+  .command('link <repro-url>')
+  .description('Pull down a repro from a URL, link it, and run storybook')
+  .action((reproUrl) =>
+    link({ reproUrl }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })
