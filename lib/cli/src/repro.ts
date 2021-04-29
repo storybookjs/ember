@@ -30,6 +30,7 @@ export const repro = async ({
   template,
   framework,
   generator,
+  e2e,
 }: ReproOptions) => {
   if (list) {
     logger.info('Available templates');
@@ -95,9 +96,11 @@ export const repro = async ({
   logger.info(`Running ${selectedTemplate} into ${path.join(process.cwd(), selectedDirectory)}`);
 
   try {
-    const cwd = path.join(process.cwd(), selectedDirectory);
+    const cwd = path.isAbsolute(selectedDirectory)
+      ? selectedDirectory
+      : path.join(process.cwd(), selectedDirectory);
     await createAndInit(cwd, selectedConfig, {
-      installer: 'npx',
+      installer: e2e ? 'yarn dlx' : 'npx',
     });
     await exec('git add --all', { cwd });
     await exec('git commit -am "added storybook"', { cwd });

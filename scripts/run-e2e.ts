@@ -133,7 +133,8 @@ const runTests = async ({ name, version, ...rest }: Parameters) => {
       ? `--framework ${options.framework} --template ${options.name}`
       : `--generator "${options.generator}"`;
 
-    const command = `${sbCLICommand} repro ./${name}-${version} ${commandArgs} --e2e`;
+    const targetFolder = path.join(siblingDir, `${name}-${version}`);
+    const command = `${sbCLICommand} repro ${targetFolder} ${commandArgs} --e2e`;
     logger.debug(command);
     await exec(command, { cwd: siblingDir });
 

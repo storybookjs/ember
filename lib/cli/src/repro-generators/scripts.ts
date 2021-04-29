@@ -215,7 +215,7 @@ export const createAndInit = async (
   // Only e2e
   await doTask(configureYarn2, options);
 
-  await doTask(addTypescript, options, options.typescript);
+  await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);
   await doTask(initStorybook, options);
 };
