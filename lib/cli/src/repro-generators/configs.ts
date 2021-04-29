@@ -38,7 +38,7 @@ export const cra: Parameters = {
   name: 'cra',
   version: 'latest',
   generator: [
-    '{{installer}} create-react-app@{{version}} {{appName}}',
+    'npx create-react-app@{{version}} {{appName}}',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
   ].join(' && '),
@@ -48,7 +48,7 @@ export const cra_typescript: Parameters = {
   framework: 'react',
   name: 'cra_typescript',
   version: 'latest',
-  generator: '{{installer}} create-react-app@{{version}} {{appName}} --template typescript',
+  generator: 'npx create-react-app@{{version}} {{appName}} --template typescript',
 };
 
 export const react: Parameters = {
@@ -93,7 +93,7 @@ const baseAngular: Parameters = {
   name: 'angular',
   version: 'latest',
   generator: [
-    `{{installer}} --package @angular/cli@{{version}} ng new {{name}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
+    `npx --package @angular/cli@{{version}} ng new {{name}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
     `cd {{name}}-{{version}}`,
   ].join(' && '),
 };
@@ -134,7 +134,7 @@ export const vue: Parameters = {
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
     `rm package.json`,
-    `{{installer}} -p @vue/cli@{{version}} vue create {{name}}-{{version}} --default --packageManager=yarn --no-git --force`,
+    `npx -p @vue/cli@{{version}} vue create {{name}}-{{version}} --default --packageManager=yarn --no-git --force`,
   ].join(' && '),
 };
 
@@ -147,7 +147,7 @@ export const vue3: Parameters = {
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
     `rm package.json`,
-    `{{installer}} -p @vue/cli@^4 vue create {{name}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
+    `npx -p @vue/cli@^4 vue create {{name}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
   ].join(' && '),
 };
 
@@ -196,5 +196,5 @@ export const svelte: Parameters = {
   framework: 'svelte',
   name: 'svelte',
   version: 'latest',
-  generator: '{{installer}} degit sveltejs/template {{name}}-{{version}}',
+  generator: 'npx degit sveltejs/template {{name}}-{{version}}',
 };

@@ -25,15 +25,14 @@ export interface Parameters {
 }
 
 interface Configuration {
-  installer: 'npx' | 'yarn dlx';
+  e2e: boolean;
 }
 
-const useYarn2Pnp = false;
+const useYarnPnP = false;
 const useLocalSbCli = true;
 
 export interface Options extends Parameters {
   appName: string;
-  installer: 'npx' | 'yarn dlx';
   creationPath: string;
   cwd?: string;
 }
@@ -50,11 +49,12 @@ export const exec = async (command: string, options: ExecOptions = {}) =>
   });
 
 const installYarn2 = async ({ cwd }: Options) => {
-  const commands = [`yarn set version berry`, `yarn config set enableGlobalCache true`];
-
-  if (!useYarn2Pnp) {
-    commands.push('yarn config set nodeLinker node-modules');
-  }
+  const commands = [
+    `yarn set version berry`,
+    `yarn config set enableGlobalCache true`,
+    // TODO: add a flag in `sb repro` command to enable Yarn Plug n Play mode
+    `yarn config set nodeLinker ${useYarnPnP ? 'pnp' : 'node-modules'}`,
+  ];
 
   const command = commands.join(' && ');
 
@@ -69,28 +69,17 @@ const installYarn2 = async ({ cwd }: Options) => {
   }
 };
 
-const configureYarn2 = async ({ cwd }: Options) => {
+const configureYarn2ForE2E = async ({ cwd }: Options) => {
   const commands = [
-    // Create file to ensure yarn will be ok to set some config in the current directory and not in the parent
-    // NOT NEEDED ANYMORE?`touch yarn.lock`,
     // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1
-    // `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
+    `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
     // Some required magic to be able to fetch deps from local registry
-    // ONLY E2E `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
+    `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
     // Disable fallback mode to make sure everything is required correctly
-    // ONLY E2E `yarn config set pnpFallbackMode none`,
-    // ONLY E2E `yarn config set enableGlobalCache true`,
+    `yarn config set pnpFallbackMode none`,
     // We need to be able to update lockfile when bootstrapping the examples
-    // ONLY E2E `yarn config set enableImmutableInstalls false`,
-    // Add package extensions
-    // https://github.com/facebook/create-react-app/pull/9872
-    `yarn config set "packageExtensions.react-scripts@*.peerDependencies.react" "*"`,
-    `yarn config set "packageExtensions.react-scripts@*.dependencies.@pmmmwh/react-refresh-webpack-plugin" "*"`,
+    `yarn config set enableImmutableInstalls false`,
   ];
-
-  if (!useYarn2Pnp) {
-    commands.push('yarn config set nodeLinker node-modules');
-  }
 
   const command = commands.join(' && ');
   logger.info(`🎛 Configuring Yarn 2`);
@@ -104,11 +93,8 @@ const configureYarn2 = async ({ cwd }: Options) => {
   }
 };
 
-const generate = async ({ cwd, name, version, generator, installer, appName }: Options) => {
-  const command = generator
-    .replace(/{{appName}}/g, appName)
-    .replace(/{{version}}/g, version)
-    .replace(/{{installer}}/, installer);
+const generate = async ({ cwd, name, version, generator, appName }: Options) => {
+  const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
 
   logger.info(`🏗  Bootstrapping ${name} project`);
   logger.debug(command);
@@ -121,13 +107,13 @@ const generate = async ({ cwd, name, version, generator, installer, appName }: O
   }
 };
 
-const initStorybook = async ({ cwd, autoDetect = true, name, installer }: Options) => {
+const initStorybook = async ({ cwd, autoDetect = true, name }: Options) => {
   logger.info(`🎨 Initializing Storybook with @storybook/cli`);
   try {
     const type = autoDetect ? '' : `--type ${name}`;
     const sbCLICommand = useLocalSbCli
       ? `node ${path.join(__dirname, '../../esm/generate')}`
-      : `${installer} -p @storybook/cli sb`;
+      : `yarn dlx -p @storybook/cli sb`;
 
     await exec(`${sbCLICommand} init --yes ${type}`, { cwd });
   } catch (e) {
@@ -141,10 +127,6 @@ const addRequiredDeps = async ({ cwd, additionalDeps }: Options) => {
   try {
     if (additionalDeps && additionalDeps.length > 0) {
       await exec(`yarn add -D ${additionalDeps.join(' ')}`, {
-        cwd,
-      });
-    } else {
-      await exec(`yarn install`, {
         cwd,
       });
     }
@@ -190,7 +172,7 @@ const doTask = async (
 export const createAndInit = async (
   cwd: string,
   { name, version, ensureDir: ensureDirOption = true, ...rest }: Parameters,
-  { installer }: Configuration
+  { e2e }: Configuration
 ) => {
   const options = {
     name,
@@ -198,7 +180,6 @@ export const createAndInit = async (
     ensureDir: ensureDirOption,
     appName: path.basename(cwd),
     creationPath: ensureDirOption ? path.join(cwd, '..') : cwd,
-    installer,
     cwd,
     ...rest,
   };
@@ -212,8 +193,10 @@ export const createAndInit = async (
   await doTask(generate, { ...options, cwd: options.creationPath });
 
   await doTask(installYarn2, options);
-  // Only e2e
-  await doTask(configureYarn2, options);
+
+  if (e2e) {
+    await doTask(configureYarn2ForE2E, options);
+  }
 
   await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);

@@ -127,7 +127,8 @@ const runTests = async ({ name, version, ...rest }: Parameters) => {
     // Call repro cli
     const sbCLICommand = useLocalSbCli
       ? 'node ../storybook/lib/cli/bin'
-      : 'yarn dlx -p @storybook/cli sb';
+      : // Need to use npx because at this time we don't have Yarn 2 installed
+        'npx -p @storybook/cli sb';
 
     const commandArgs = options.framework
       ? `--framework ${options.framework} --template ${options.name}`

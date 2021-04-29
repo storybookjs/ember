@@ -100,7 +100,7 @@ export const repro = async ({
       ? selectedDirectory
       : path.join(process.cwd(), selectedDirectory);
     await createAndInit(cwd, selectedConfig, {
-      installer: e2e ? 'yarn dlx' : 'npx',
+      e2e: !!e2e,
     });
     await exec('git add --all', { cwd });
     await exec('git commit -am "added storybook"', { cwd });
