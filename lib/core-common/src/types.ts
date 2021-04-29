@@ -142,7 +142,7 @@ export interface CLIOptions {
   docsDll?: boolean;
   uiDll?: boolean;
   debugWebpack?: boolean;
-  webpackStatsJson?: string;
+  webpackStatsJson?: string | boolean;
   outputDir?: string;
 }
 
@@ -229,6 +229,14 @@ export interface StorybookConfig {
         options?: any;
       }
   >;
+  core?: CoreConfig;
+  logLevel?: string;
+  /**
+   * Allows to disable deprecated implicit PostCSS loader.
+   */
+  features?: {
+    postcss?: boolean;
+  };
   /**
    * Tells Storybook where to find stories.
    *
