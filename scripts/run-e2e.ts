@@ -46,6 +46,10 @@ const prepareDirectory = async ({
     await ensureDir(siblingDir);
   }
 
+  await exec('git init', { cwd: siblingDir });
+  await exec('npm init -y', { cwd: siblingDir });
+  await writeFile(path.join(siblingDir, '.gitignore'), 'node_modules\n');
+
   const cwdExists = await pathExists(cwd);
 
   if (cwdExists) {
@@ -61,6 +65,11 @@ const prepareDirectory = async ({
 
 const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
   await remove(cwd);
+  await remove(path.join(siblingDir, 'node_modules'));
+  await remove(path.join(siblingDir, 'package.json'));
+  await remove(path.join(siblingDir, 'yarn.lock'));
+  await remove(path.join(siblingDir, '.yarnrc.yml'));
+  await remove(path.join(siblingDir, '.yarn'));
 };
 
 const buildStorybook = async ({ cwd, preBuildCommand }: Options) => {
