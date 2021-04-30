@@ -58,9 +58,7 @@ const startVerdaccio = (port: number) => {
 };
 const registryUrl = (command: string, url?: string) =>
   new Promise<string>((res, rej) => {
-    const args = url
-      ? ['config', 'set', 'npmRegistryServer', url]
-      : ['config', 'get', 'npmRegistryServer'];
+    const args = url ? ['config', 'set', 'registry', url] : ['config', 'get', 'registry'];
     exec(`${command} ${args.join(' ')}`, (e, stdout) => {
       if (e) {
         rej(e);
