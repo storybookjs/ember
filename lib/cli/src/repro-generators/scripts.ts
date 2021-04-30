@@ -79,6 +79,8 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
     `yarn config set pnpFallbackMode none`,
     // We need to be able to update lockfile when bootstrapping the examples
     `yarn config set enableImmutableInstalls false`,
+    // Discard all YN0013 - FETCH_NOT_CACHED messages
+    `yarn config set logFilters --json '[ { "code": "YN0013", "level": "discard" } ]'`,
   ];
 
   const command = commands.join(' && ');
@@ -93,8 +95,8 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
   }
 };
 
-const generate = async ({ cwd, name, version, generator, appName }: Options) => {
-  const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
+const generate = async ({ cwd, name, version, generator }: Options) => {
+  const command = generator.replace(/{{appName}}/g, name).replace(/{{version}}/g, version);
 
   logger.info(`🏗  Bootstrapping ${name} project`);
   logger.debug(command);
@@ -125,8 +127,14 @@ const initStorybook = async ({ cwd, autoDetect = true, name }: Options) => {
 const addRequiredDeps = async ({ cwd, additionalDeps }: Options) => {
   logger.info(`🌍 Adding needed deps & installing all deps`);
   try {
+    // Remove any lockfile generated without Yarn 2
+    shell.rm(path.join(cwd, 'package-lock.json'), path.join(cwd, 'yarn.lock'));
     if (additionalDeps && additionalDeps.length > 0) {
       await exec(`yarn add -D ${additionalDeps.join(' ')}`, {
+        cwd,
+      });
+    } else {
+      await exec(`yarn install`, {
         cwd,
       });
     }

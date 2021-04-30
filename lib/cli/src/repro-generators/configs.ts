@@ -38,8 +38,9 @@ export const cra: Parameters = {
   name: 'cra',
   version: 'latest',
   generator: [
-    'npx create-react-app@{{version}} {{appName}}',
-    'cd {{appName}}',
+    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
+    'npx create-react-app@{{version}} {{appName}}-{{version}} --use-npm',
+    'cd {{appName}}-{{version}}',
     'echo "FAST_REFRESH=true" > .env',
   ].join(' && '),
 };
@@ -48,7 +49,10 @@ export const cra_typescript: Parameters = {
   framework: 'react',
   name: 'cra_typescript',
   version: 'latest',
-  generator: 'npx create-react-app@{{version}} {{appName}} --template typescript',
+  generator: [
+    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
+    'npx create-react-app@{{version}} {{appName}}-{{version}} --template typescript --use-npm',
+  ].join(' && '),
 };
 
 export const react: Parameters = {
@@ -100,8 +104,7 @@ const baseAngular: Parameters = {
 
 export const angularv10: Parameters = {
   ...baseAngular,
-  // There is no `v10-lts` tag for now, to update as soon as one is published
-  version: 'v10',
+  version: 'v10-lts',
 };
 
 export const angular: Parameters = baseAngular;
