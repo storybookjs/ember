@@ -22,7 +22,7 @@ export interface Parameters {
 
 const fromDeps = (...args: string[]): string =>
   [
-    'cd {{name}}-{{version}}',
+    'cd {{appName}}-{{version}}',
     // Create `yarn.lock` to force Yarn to consider adding deps in this directory
     // and not look for a yarn workspace in parent directory
     'touch yarn.lock',
@@ -78,7 +78,7 @@ export const react_in_yarn_workspace: Parameters = {
   name: 'react_in_yarn_workspace',
   version: 'latest',
   generator: [
-    'cd {{name}}-{{version}}',
+    'cd {{appName}}-{{version}}',
     'echo "{ \\"name\\": \\"workspace-root\\", \\"private\\": true, \\"workspaces\\": [] }" > package.json',
     'touch yarn.lock',
     `yarn add react react-dom`,
@@ -93,8 +93,8 @@ const baseAngular: Parameters = {
   name: 'angular',
   version: 'latest',
   generator: [
-    `npx --package @angular/cli@{{version}} ng new {{name}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
-    `cd {{name}}-{{version}}`,
+    `npx --package @angular/cli@{{version}} ng new {{appName}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
+    `cd {{appName}}-{{version}}`,
   ].join(' && '),
 };
 
@@ -134,7 +134,7 @@ export const vue: Parameters = {
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
     `rm package.json`,
-    `npx -p @vue/cli@{{version}} vue create {{name}}-{{version}} --default --packageManager=yarn --no-git --force`,
+    `npx -p @vue/cli@{{version}} vue create {{appName}}-{{version}} --default --packageManager=yarn --no-git --force`,
   ].join(' && '),
 };
 
@@ -147,7 +147,7 @@ export const vue3: Parameters = {
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
     `rm package.json`,
-    `npx -p @vue/cli@^4 vue create {{name}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
+    `npx -p @vue/cli@^4 vue create {{appName}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
   ].join(' && '),
 };
 
@@ -173,7 +173,7 @@ export const preact: Parameters = {
   name: 'preact',
   version: 'latest',
   generator:
-    'npx preact-cli@{{version}} create preactjs-templates/default {{name}}-{{version}} --yarn --install=false --git=false',
+    'npx preact-cli@{{version}} create preactjs-templates/default {{appName}}-{{version}} --yarn --install=false --git=false',
   ensureDir: false,
 };
 
@@ -196,5 +196,5 @@ export const svelte: Parameters = {
   framework: 'svelte',
   name: 'svelte',
   version: 'latest',
-  generator: 'npx degit sveltejs/template {{name}}-{{version}}',
+  generator: 'npx degit sveltejs/template {{appName}}-{{version}}',
 };
