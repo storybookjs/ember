@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { Meta, Story } from '@storybook/react';
+import { Meta, Story, ComponentStory } from '@storybook/react';
 import TsButton from '../../components/TsButton';
 
 export default {
@@ -22,8 +22,7 @@ Basic.args = {
   children: 'basic',
 };
 
-type ButtonProps = ComponentProps<typeof TsButton>;
-const TypedTemplate: Story<ButtonProps> = (args) => <TsButton {...args} />;
+const TypedTemplate: ComponentStory<typeof TsButton> = (args) => <TsButton {...args} />;
 
 export const Typed = TypedTemplate.bind({});
 Typed.args = {
