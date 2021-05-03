@@ -163,7 +163,7 @@ export const cra_bench: Parameters = {
   name: 'cra_bench',
   version: 'latest',
   generator: [
-    'yarn dlx create-react-app@{{version}} {{name}}-{{version}}',
+    'npx create-react-app@{{version}} {{name}}-{{version}}',
     'cd {{name}}-{{version}}',
     // TODO: Move from `npx` to `yarn dlx`, it is not working out of the box
     // because of the fancy things done in `@storybook/bench` to investigate 🔎
