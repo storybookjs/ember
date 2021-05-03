@@ -135,9 +135,8 @@ export const vue: Parameters = {
   version: 'latest',
   generator: [
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
-    // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
-    `rm package.json`,
-    `npx -p @vue/cli@{{version}} vue create {{appName}}-{{version}} --default --packageManager=yarn --no-git --force`,
+    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
+    `npx -p @vue/cli@{{version}} vue create {{appName}}-{{version}} --default --packageManager=npm --no-git --force`,
   ].join(' && '),
 };
 
@@ -148,9 +147,8 @@ export const vue3: Parameters = {
   // Vue CLI v4 utilizes webpack 4, and the 5-alpha uses webpack 5 so we force ^4 here
   generator: [
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
-    // Need to remove this file otherwise there is an issue when vue-cli is trying to install the dependency in the bootstrapped folder
-    `rm package.json`,
-    `npx -p @vue/cli@^4 vue create {{appName}}-{{version}} --preset=__default_vue_3__ --packageManager=yarn --no-git --force`,
+    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
+    `npx -p @vue/cli@^4 vue create {{appName}}-{{version}} --preset=__default_vue_3__ --packageManager=npm --no-git --force`,
   ].join(' && '),
 };
 
