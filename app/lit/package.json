@@ -1,6 +1,6 @@
 {
   "name": "@storybook/lit",
-  "version": "6.3.0-alpha.8",
+  "version": "6.3.0-alpha.19",
   "description": "Storybook for lit: View web components snippets in isolation with Hot Reloading.",
   "keywords": [
     "lit",
@@ -45,10 +45,10 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.8",
-    "@storybook/client-api": "6.3.0-alpha.8",
-    "@storybook/core": "6.3.0-alpha.8",
-    "@storybook/core-common": "6.3.0-alpha.8",
+    "@storybook/addons": "6.3.0-alpha.19",
+    "@storybook/client-api": "6.3.0-alpha.19",
+    "@storybook/core": "6.3.0-alpha.19",
+    "@storybook/core-common": "6.3.0-alpha.19",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -59,10 +59,10 @@
   },
   "devDependencies": {
     "@types/webpack": "^4.41.26",
-    "lit": "^2.0.0-pre.2"
+    "lit": "^2.0.0-rc.1"
   },
   "peerDependencies": {
-    "lit": "^2.0.0-pre.2"
+    "lit": "^2.0.0-rc.1"
   },
   "engines": {
     "node": ">=12"

@@ -1,3 +1,72 @@
+## 6.3.0-alpha.19 (May 3, 2021)
+
+### Features
+
+- Addon-toolbars: Add optional label for toolbar items ([#14776](https://github.com/storybookjs/storybook/pull/14776))
+
+### Maintenance
+
+- Core: Remove spurious package.json warning ([#14785](https://github.com/storybookjs/storybook/pull/14785))
+
+## 6.3.0-alpha.18 (May 2, 2021)
+
+### Features
+
+- Angular: Filter out args whose argType are missing a control or action ([#14779](https://github.com/storybookjs/storybook/pull/14779))
+
+### Maintenance
+
+- Addon-docs: Allow doc blocks to CJS imported ([#14769](https://github.com/storybookjs/storybook/pull/14769))
+
+## 6.3.0-alpha.17 (April 30, 2021)
+
+### Features
+
+- Core: Add option to include story names when sorting ([#12520](https://github.com/storybookjs/storybook/pull/12520))
+- Addon-actions: Add 'New Action' indicator ([#14728](https://github.com/storybookjs/storybook/pull/14728))
+- Addon-docs: Add parameter to show code by default ([#14729](https://github.com/storybookjs/storybook/pull/14729))
+
+### Bug Fixes
+
+- Addon-docs: Add classnames for Preview block ([#14685](https://github.com/storybookjs/storybook/pull/14685))
+- UI: Fix toolbar text using theme color ([#14308](https://github.com/storybookjs/storybook/pull/14308))
+
+### Maintenance
+
+- Core: Protect core metadata from decorators ([#13512](https://github.com/storybookjs/storybook/pull/13512))
+- Addon-a11y: Reorder color blindness types by most common ([#14768](https://github.com/storybookjs/storybook/pull/14768))
+
+## 6.3.0-alpha.16 (April 29, 2021)
+
+### Bug Fixes
+
+- Core: Fix `features`, `core`, `logLevel` in main.js config types ([#14745](https://github.com/storybookjs/storybook/pull/14745))
+- Angular: Fix windows path for tsconfig ([#14747](https://github.com/storybookjs/storybook/pull/14747))
+
+### Maintenance
+
+- Build: Change nx cloud access token to read-only token ([#14744](https://github.com/storybookjs/storybook/pull/14744))
+
+### Dependency Upgrades
+
+- Addon-a11y/Storyshots: Upgrade axe-core to 4.2.0 and related dependencies ([#14749](https://github.com/storybookjs/storybook/pull/14749))
+
+## 6.3.0-alpha.15 (April 28, 2021)
+
+### Features
+
+- Storyshots: Add `beforeAxeTest` hook ([#14563](https://github.com/storybookjs/storybook/pull/14563))
+- API: Add addon keyboard shortcuts & create shortcuts for addon-viewport ([#14658](https://github.com/storybookjs/storybook/pull/14658))
+
+### Bug Fixes
+
+- Storyshots/Preact: Add pragma @jsxRuntime classic ([#13849](https://github.com/storybookjs/storybook/pull/13849))
+- Core: Don't recreate a bound story function each time we call a decorated story ([#14692](https://github.com/storybookjs/storybook/pull/14692))
+
+### Maintenance
+
+- Build: Add NX bootstrap optimization ([#14535](https://github.com/storybookjs/storybook/pull/14535))
+
 ## 6.2.9 (April 23, 2021)
 
 ### Bug Fixes
