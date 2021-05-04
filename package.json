@@ -171,7 +171,6 @@
     "@storybook/preact": "workspace:*",
     "@storybook/rax": "workspace:*",
     "@storybook/react": "workspace:*",
-    "@storybook/riot": "workspace:*",
     "@storybook/root": "workspace:*",
     "@storybook/router": "workspace:*",
     "@storybook/semver": "^7.3.2",

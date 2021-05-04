@@ -7845,39 +7845,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/riot@6.3.0-alpha.19, @storybook/riot@workspace:*, @storybook/riot@workspace:app/riot":
-  version: 0.0.0-use.local
-  resolution: "@storybook/riot@workspace:app/riot"
-  dependencies:
-    "@storybook/core": 6.3.0-alpha.19
-    "@storybook/core-common": 6.3.0-alpha.19
-    "@types/riot": ^3.6.2
-    core-js: ^3.8.2
-    global: ^4.4.0
-    raw-loader: ^4.0.2
-    react: 16.14.0
-    react-dom: 16.14.0
-    read-pkg-up: ^7.0.1
-    regenerator-runtime: ^0.13.7
-    riot: ^3.13.2
-    riot-compiler: ^3.6.0
-    riot-hot-reload: ^1.0.0
-    riot-tag-loader: ^2.1.0
-    ts-dedent: ^2.0.0
-  peerDependencies:
-    "@babel/core": "*"
-    riot: ^3.0.0 || ^4.0.0
-    riot-compiler: ^3.5.1 || ^4.0.0
-    riot-hot-reload: ^1.0.0
-    riot-tag-loader: ^2.0.0 || ^3.0.0
-    webpack: "*"
-  bin:
-    build-storybook: ./bin/build.js
-    start-storybook: ./bin/index.js
-    storybook-server: ./bin/index.js
-  languageName: unknown
-  linkType: soft
-
 "@storybook/root@workspace:*, @storybook/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@storybook/root@workspace:."
@@ -7953,7 +7920,6 @@ __metadata:
     "@storybook/preact": "workspace:*"
     "@storybook/rax": "workspace:*"
     "@storybook/react": "workspace:*"
-    "@storybook/riot": "workspace:*"
     "@storybook/root": "workspace:*"
     "@storybook/router": "workspace:*"
     "@storybook/semver": ^7.3.2
@@ -9813,13 +9779,6 @@ __metadata:
     "@types/glob": "*"
     "@types/node": "*"
   checksum: 9bb5ee50cc44a545d9ce83fb9b607b84ef6908cd0766aaed9070a51a08a1b6cccffa7115a307e245e6bec1123064b6dd7507837afdf809f5b876ad5db8f85e75
-  languageName: node
-  linkType: hard
-
-"@types/riot@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@types/riot@npm:3.6.2"
-  checksum: d1b5dfb332d18e416f082d82e3dd6af03c66fffd5cccb4b956c6aa84f0c0178ec9ebf72e95a3853f48cacbd19ee93dbc317eedb1f7c22c40b7b45174bb8f6678
   languageName: node
   linkType: hard
 
@@ -41044,7 +41003,7 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"riot-compiler@npm:^3.5.1, riot-compiler@npm:^3.5.2, riot-compiler@npm:^3.6.0":
+"riot-compiler@npm:^3.5.1, riot-compiler@npm:^3.5.2":
   version: 3.6.0
   resolution: "riot-compiler@npm:3.6.0"
   dependencies:
@@ -41052,45 +41011,6 @@ resolve@1.19.0:
     source-map: ^0.7.2
     string-similarity: ^1.2.0
   checksum: 7103995dcab6860c51bbc6e022fa3ea72bcaecc4deb2afbb8681323d4d3721827bfd709f9e54915e0869c767c6063062aed2e57d2508c0d601faef114cb481e9
-  languageName: node
-  linkType: hard
-
-"riot-example@workspace:examples/riot-kitchen-sink":
-  version: 0.0.0-use.local
-  resolution: "riot-example@workspace:examples/riot-kitchen-sink"
-  dependencies:
-    "@babel/core": ^7.12.10
-    "@storybook/addon-a11y": 6.3.0-alpha.19
-    "@storybook/addon-actions": 6.3.0-alpha.19
-    "@storybook/addon-backgrounds": 6.3.0-alpha.19
-    "@storybook/addon-knobs": 6.3.0-alpha.19
-    "@storybook/addon-links": 6.3.0-alpha.19
-    "@storybook/addon-storyshots": 6.3.0-alpha.19
-    "@storybook/addon-storysource": 6.3.0-alpha.19
-    "@storybook/addon-viewport": 6.3.0-alpha.19
-    "@storybook/addons": 6.3.0-alpha.19
-    "@storybook/riot": 6.3.0-alpha.19
-    "@storybook/source-loader": 6.3.0-alpha.19
-    babel-loader: ^8.2.2
-    cross-env: ^7.0.3
-    file-loader: ^6.2.0
-    raw-loader: ^4.0.2
-    riot: ^3.13.2
-    riot-compiler: ^3.6.0
-    riot-hot-reload: ^1.0.0
-    riot-tag-loader: ^2.1.0
-    svg-url-loader: ^7.1.1
-    webpack: 4
-    webpack-dev-server: ^3.11.2
-  languageName: unknown
-  linkType: soft
-
-"riot-hot-reload@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "riot-hot-reload@npm:1.0.0"
-  peerDependencies:
-    riot: ^3.0.7
-  checksum: d1c05264b5fafbbfdef4721cbd7e451593475dad245d1b3212b64126fff9f64426eee1f0d03048f97e88749f444a223b61229b2ddc86682860cc950bd446a229
   languageName: node
   linkType: hard
 
@@ -41111,17 +41031,6 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"riot-tag-loader@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "riot-tag-loader@npm:2.1.0"
-  dependencies:
-    loader-utils: ^1.1.0
-  peerDependencies:
-    riot-compiler: ^3.3.0
-  checksum: 053efb18ada0e9b206198df755da26828fe1fd162e5190409ed37143dc13ee3e87aa9eccc118efd82085e7dd51246853b933b4b34fa055205eaece8d999d7a56
-  languageName: node
-  linkType: hard
-
 "riot-tmpl@npm:^3.0.8":
   version: 3.0.8
   resolution: "riot-tmpl@npm:3.0.8"
@@ -41131,7 +41040,7 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"riot@npm:^3.13.2, riot@npm:^3.3.1":
+"riot@npm:^3.3.1":
   version: 3.13.2
   resolution: "riot@npm:3.13.2"
   dependencies:
