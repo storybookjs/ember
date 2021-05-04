@@ -11,7 +11,6 @@ describe.each([
   ['marko'],
   ['mithril'],
   ['preact'],
-  ['rax'],
   ['react'],
   ['riot'],
   ['server'],
