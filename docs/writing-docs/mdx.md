@@ -179,7 +179,9 @@ You can also use anchors to target a specific section of a page:
 [Go to the conclusion of the documentation page](?path=/docs/some--id#conclusion)
 ```
 
-Note that when using the Controls addon, anchors are ignored by the Canvas tab since the URL gets rewritten to track the args values.
+<div class="aside">
+💡 <strong>Note:</> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+</div>
 
 ![MDX anchor example](./mdx-anchor.webp)
 
