@@ -7592,35 +7592,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/marionette@workspace:*, @storybook/marionette@workspace:app/marionette":
-  version: 0.0.0-use.local
-  resolution: "@storybook/marionette@workspace:app/marionette"
-  dependencies:
-    "@storybook/core": 6.3.0-alpha.19
-    "@storybook/core-common": 6.3.0-alpha.19
-    "@types/backbone.marionette": ^3.3.12
-    "@types/common-tags": ^1.8.0
-    backbone.marionette: "*"
-    common-tags: ^1.8.0
-    core-js: ^3.8.2
-    global: ^4.4.0
-    html-loader: ^1.3.2
-    react: 16.14.0
-    react-dom: 16.14.0
-    read-pkg-up: ^7.0.1
-    regenerator-runtime: ^0.13.7
-  peerDependencies:
-    "@babel/core": "*"
-    backbone: "*"
-    backbone.marionette: "*"
-    underscore: "*"
-  bin:
-    build-storybook: ./bin/build.js
-    start-storybook: ./bin/index.js
-    storybook-server: ./bin/index.js
-  languageName: unknown
-  linkType: soft
-
 "@storybook/marko@6.3.0-alpha.19, @storybook/marko@workspace:*, @storybook/marko@workspace:app/marko":
   version: 0.0.0-use.local
   resolution: "@storybook/marko@workspace:app/marko"
@@ -7945,7 +7916,6 @@ __metadata:
     "@storybook/eslint-config-storybook": ^2.4.0
     "@storybook/html": "workspace:*"
     "@storybook/linter-config": ^2.5.0
-    "@storybook/marionette": "workspace:*"
     "@storybook/marko": "workspace:*"
     "@storybook/mithril": "workspace:*"
     "@storybook/node-logger": "workspace:*"
@@ -8792,37 +8762,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/backbone.marionette@npm:^3.3.12":
-  version: 3.3.13
-  resolution: "@types/backbone.marionette@npm:3.3.13"
-  dependencies:
-    "@types/backbone": "*"
-    "@types/backbone.radio": "*"
-    "@types/jquery": "*"
-    "@types/underscore": "*"
-  checksum: c0a8d0fcc6215478a02036ed8964b621a4fd0f68d1488b115d8fc564f93247fc994810be46f224ee72afbd9dee47abded97f4aaf8ae8a1bbf11ee900f2f7acfd
-  languageName: node
-  linkType: hard
-
-"@types/backbone.radio@npm:*":
-  version: 0.8.37
-  resolution: "@types/backbone.radio@npm:0.8.37"
-  dependencies:
-    "@types/backbone": "*"
-  checksum: 23e3caa7b635027f9cab27eeac906ffd4ff55dd781ab4d3ad3b692e96be0f93a07660469f74350c7451c7ffd9f509d91e853e6900d81a05f7a061f362c0961d5
-  languageName: node
-  linkType: hard
-
-"@types/backbone@npm:*":
-  version: 1.4.10
-  resolution: "@types/backbone@npm:1.4.10"
-  dependencies:
-    "@types/jquery": "*"
-    "@types/underscore": "*"
-  checksum: 843d4356936868bd05eadc57702f1ca1df0b04d1a9273bcc6b52f2f4b2b1a0fcbcddaf5c0cd30091307b6b5421fd8d152a52fa110e69ef03d3219d3a6a060a86
-  languageName: node
-  linkType: hard
-
 "@types/body-parser@npm:*":
   version: 1.19.0
   resolution: "@types/body-parser@npm:1.19.0"
@@ -8904,13 +8843,6 @@ __metadata:
   version: 1.1.1
   resolution: "@types/color-name@npm:1.1.1"
   checksum: 2abeac8d8d833e0622c66f21487cc8b522792abb2eff2e40df0e3e53261728cb65bab590edf24953eb8d8653ec88044dc801d9a4e58c489a0f10c025de522868
-  languageName: node
-  linkType: hard
-
-"@types/common-tags@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@types/common-tags@npm:1.8.0"
-  checksum: 4f58d0c521bee06c153d70b1a5af48843ac844e0f3e095e98b30398b2da061a548d6fed63afce99c6db6ad31a27c8a4709273f60a0a4d858c13664161ea14b53
   languageName: node
   linkType: hard
 
@@ -9316,15 +9248,6 @@ __metadata:
   version: 23.3.14
   resolution: "@types/jest@npm:23.3.14"
   checksum: 174691a3e838e96a3fbda641c9c9ca811b3cc8d65f21a913eddf6aa75596f66758224ffe6cc95cf113d7d09c278130f08b5600036e218d8457ca9e0ffdc8bde0
-  languageName: node
-  linkType: hard
-
-"@types/jquery@npm:*":
-  version: 3.5.5
-  resolution: "@types/jquery@npm:3.5.5"
-  dependencies:
-    "@types/sizzle": "*"
-  checksum: 6f845060380357aa9b56e915e912c79baf41470eb60df89c42c16b07db401b28174eab567ee97880092981aff508849608fb801b48a8abd2ecb337b07dbc9332
   languageName: node
   linkType: hard
 
@@ -9889,7 +9812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sizzle@npm:*, @types/sizzle@npm:^2.3.2":
+"@types/sizzle@npm:^2.3.2":
   version: 2.3.2
   resolution: "@types/sizzle@npm:2.3.2"
   checksum: 7ec60a7c26c61cef6a6362bde5ea8341af64a47b68509e62b4e2cc3376d269dca2168fafd0abe3c14d4c4056d2b71c0d8a9dbf5e65a98ecf16aedb625c840261
@@ -9977,13 +9900,6 @@ __metadata:
   dependencies:
     source-map: ^0.6.1
   checksum: f3919a368ddcdbcdb9a2f055d58dc349f14fc8ac33fc203dae3f413ec116301c74b5be3ff8ca44da7ab4abbaa9b4d6c49490d0a23ea7fc95abeea2d698e83423
-  languageName: node
-  linkType: hard
-
-"@types/underscore@npm:*":
-  version: 1.10.24
-  resolution: "@types/underscore@npm:1.10.24"
-  checksum: 79824d2ded78c5e7ef1f5d04b6f89e8e33002870782b406584fd84f96fd65bf2056c56d3cba756a1b7c35e4196d507e07cc956de947c832980735666f0168f1f
   languageName: node
   linkType: hard
 
@@ -13979,28 +13895,6 @@ __metadata:
   bin:
     babylon: ./bin/babylon.js
   checksum: 9b1bf946e16782deadb1f5414c1269efa6044eb1e97a3de2051f09a3f2a54e97be3542d4242b28d23de0ef67816f519d38ce1ec3ddb7be306131c39a60e5a667
-  languageName: node
-  linkType: hard
-
-"backbone.marionette@npm:*":
-  version: 4.1.3
-  resolution: "backbone.marionette@npm:4.1.3"
-  dependencies:
-    backbone.radio: ^2.0.0
-  peerDependencies:
-    backbone: ^1.3.3
-    underscore: ^1.8.3
-  checksum: 0ec531601af4d2a945e7614ea30bbd4136f7be3cfc5bf86004bf8d511957945f6784f648507772a6e990b70f9619f78f2dc17e79856aa0c1f1dfe83e371c051b
-  languageName: node
-  linkType: hard
-
-"backbone.radio@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "backbone.radio@npm:2.0.0"
-  peerDependencies:
-    backbone: ^1.3.3
-    underscore: ^1.8.3
-  checksum: 13280197cb169d59b9869e3860a9ac9a371103e95f6a8243665913de00c07858dae1958590aa11bf3a670f5813576934f4dd5fc246bb8a26be8fbcad096d865c
   languageName: node
   linkType: hard
 

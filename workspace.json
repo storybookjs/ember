@@ -97,10 +97,6 @@
       "root": "app/html",
       "type": "library"
     },
-    "@storybook/marionette": {
-      "root": "app/marionette",
-      "type": "library"
-    },
     "@storybook/marko": {
       "root": "app/marko",
       "type": "library"

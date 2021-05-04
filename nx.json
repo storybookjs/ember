@@ -10,18 +10,8 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare"
-        ],
-        "strictlyOrderedTargets": [
-          "build",
-          "package",
-          "prepare"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "NGVmYTkxMmItYzY3OS00MjkxLTk1ZDktZDFmYTFmNmVlNGY4fHJlYWQ=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -99,9 +89,6 @@
       "implicitDependencies": []
     },
     "@storybook/html": {
-      "implicitDependencies": []
-    },
-    "@storybook/marionette": {
       "implicitDependencies": []
     },
     "@storybook/marko": {

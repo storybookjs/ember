@@ -45,13 +45,6 @@ export const html: Parameters = {
   autoDetect: false,
 };
 
-// TODO: broken
-// export const marionette: Parameters = {
-//   name: 'marionette',
-//   version: 'latest',
-//   generator: fromDeps('backbone.marionette@{{version}}'),
-// };
-
 // TODO: not working on start-storybook
 //  - Marko CLI is failing with Node 12 and looks to work with Node 10
 //  - Demo components of @storybook/marko must be updated
