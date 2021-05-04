@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
-import notes from './notes/notes.md';
 import mdxNotes from './notes/notes.mdx';
 
 export default {
@@ -29,14 +28,3 @@ export const DocsDisable = () => html`<div>This story shouldn't show up in DocsP
 DocsDisable.parameters = {
   docs: { disable: true },
 };
-
-// ⬇️ Not working for now
-// export const WithNotes = () => html`<div>Click docs tab to see DocsPage docs</div>`;
-// WithNotes.storyName = 'with notes';
-// WithNotes.parameters = { notes };
-//
-// export const WithInfo = () => html`<div>Click docs tab to see DocsPage docs</div>`;
-// WithInfo.storyName = 'with info';
-// WithInfo.parameters = {
-//   info: 'some user info string',
-// };
