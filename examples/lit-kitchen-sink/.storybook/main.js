@@ -10,6 +10,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-storysource',
     '@storybook/addon-viewport',
+    '@storybook/addon-toolbars',
   ],
   core: {
     builder: 'webpack5',
