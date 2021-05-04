@@ -10,18 +10,8 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare"
-        ],
-        "strictlyOrderedTargets": [
-          "build",
-          "package",
-          "prepare"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "NGVmYTkxMmItYzY3OS00MjkxLTk1ZDktZDFmYTFmNmVlNGY4fHJlYWQ=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -104,9 +94,6 @@
     "@storybook/marionette": {
       "implicitDependencies": []
     },
-    "@storybook/marko": {
-      "implicitDependencies": []
-    },
     "@storybook/mithril": {
       "implicitDependencies": []
     },
@@ -174,9 +161,6 @@
       "implicitDependencies": []
     },
     "html-kitchen-sink": {
-      "implicitDependencies": []
-    },
-    "marko-cli": {
       "implicitDependencies": []
     },
     "mithril-example": {

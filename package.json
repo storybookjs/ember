@@ -164,7 +164,6 @@
     "@storybook/html": "workspace:*",
     "@storybook/linter-config": "^2.5.0",
     "@storybook/marionette": "workspace:*",
-    "@storybook/marko": "workspace:*",
     "@storybook/mithril": "workspace:*",
     "@storybook/node-logger": "workspace:*",
     "@storybook/postinstall": "workspace:*",

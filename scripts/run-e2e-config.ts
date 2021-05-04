@@ -52,17 +52,6 @@ export const html: Parameters = {
 //   generator: fromDeps('backbone.marionette@{{version}}'),
 // };
 
-// TODO: not working on start-storybook
-//  - Marko CLI is failing with Node 12 and looks to work with Node 10
-//  - Demo components of @storybook/marko must be updated
-//  - Marko Story templates of @storybook/cli must be updated
-// export const marko: Parameters = {
-//   name: 'marko',
-//   version: 'latest',
-//   generator: 'npx marko-cli@{{version}} create {{name}}-{{version}}',
-//   ensureDir: false,
-// };
-
 // TODO: need to install meteor first
 // export const meteor: Parameters = {
 //   name: 'meteor',

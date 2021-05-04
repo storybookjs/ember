@@ -101,10 +101,6 @@
       "root": "app/marionette",
       "type": "library"
     },
-    "@storybook/marko": {
-      "root": "app/marko",
-      "type": "library"
-    },
     "@storybook/mithril": {
       "root": "app/mithril",
       "type": "library"
@@ -195,10 +191,6 @@
     },
     "html-kitchen-sink": {
       "root": "examples/html-kitchen-sink",
-      "type": "library"
-    },
-    "marko-cli": {
-      "root": "examples/marko-cli",
       "type": "library"
     },
     "mithril-example": {
