@@ -52,11 +52,5 @@ module.exports = {
         'spaced-comment': 'off',
       },
     },
-    {
-      files: ['**/mithril/**/*'],
-      rules: {
-        'react/no-unknown-property': 'off', // Need to deactivate otherwise eslint replaces some unknown properties with React ones
-      },
-    },
   ],
 };

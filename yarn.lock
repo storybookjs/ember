@@ -7648,35 +7648,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/mithril@6.3.0-alpha.19, @storybook/mithril@workspace:*, @storybook/mithril@workspace:app/mithril":
-  version: 0.0.0-use.local
-  resolution: "@storybook/mithril@workspace:app/mithril"
-  dependencies:
-    "@babel/core": ^7.12.10
-    "@babel/plugin-transform-react-jsx": ^7.12.12
-    "@storybook/addons": 6.3.0-alpha.19
-    "@storybook/core": 6.3.0-alpha.19
-    "@storybook/core-common": 6.3.0-alpha.19
-    "@types/mithril": ^2.0.6
-    "@types/webpack-env": ^1.16.0
-    core-js: ^3.8.2
-    global: ^4.4.0
-    mithril: ^1.1.7
-    react: 16.14.0
-    react-dom: 16.14.0
-    read-pkg-up: ^7.0.1
-    regenerator-runtime: ^0.13.7
-    ts-dedent: ^2.0.0
-  peerDependencies:
-    "@babel/core": "*"
-    mithril: ^1.1.6 || ^2.0.0
-  bin:
-    build-storybook: ./bin/build.js
-    start-storybook: ./bin/index.js
-    storybook-server: ./bin/index.js
-  languageName: unknown
-  linkType: soft
-
 "@storybook/node-logger@6.3.0-alpha.19, @storybook/node-logger@workspace:*, @storybook/node-logger@workspace:lib/node-logger":
   version: 0.0.0-use.local
   resolution: "@storybook/node-logger@workspace:lib/node-logger"
@@ -7947,7 +7918,6 @@ __metadata:
     "@storybook/linter-config": ^2.5.0
     "@storybook/marionette": "workspace:*"
     "@storybook/marko": "workspace:*"
-    "@storybook/mithril": "workspace:*"
     "@storybook/node-logger": "workspace:*"
     "@storybook/postinstall": "workspace:*"
     "@storybook/preact": "workspace:*"
@@ -9436,13 +9406,6 @@ __metadata:
   version: 1.2.1
   resolution: "@types/minimist@npm:1.2.1"
   checksum: 1e738442b41e0a366c16121fb18b0496cee7f1de4469ed8155ccb995c5b8dbd483c9d4b4ee1291ecede094ed3b5521473afded6b581167be016d88c5ef4d4763
-  languageName: node
-  linkType: hard
-
-"@types/mithril@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "@types/mithril@npm:2.0.6"
-  checksum: b72b93bba5cc75813eb1645548f2782071bb72562aea79e94366f6e1b11ef807ba213c02d7a2671040384c26a79f14629fe8ae6dd36736d6e338dbf14f895c52
   languageName: node
   linkType: hard
 
@@ -32970,36 +32933,6 @@ fsevents@2.1.2:
     stream-each: ^1.1.0
     through2: ^2.0.0
   checksum: 97424a331ce1b9f789a0d3fa47d725dad9adfe5e0ead8bc458ba9fb51c4d2630df6b0966ca9dcbb4c90db48737d58126cbf0e3c170697bf41c265606efa91103
-  languageName: node
-  linkType: hard
-
-"mithril-example@workspace:examples/mithril-kitchen-sink":
-  version: 0.0.0-use.local
-  resolution: "mithril-example@workspace:examples/mithril-kitchen-sink"
-  dependencies:
-    "@storybook/addon-a11y": 6.3.0-alpha.19
-    "@storybook/addon-actions": 6.3.0-alpha.19
-    "@storybook/addon-backgrounds": 6.3.0-alpha.19
-    "@storybook/addon-knobs": 6.3.0-alpha.19
-    "@storybook/addon-links": 6.3.0-alpha.19
-    "@storybook/addon-storyshots": 6.3.0-alpha.19
-    "@storybook/addon-storysource": 6.3.0-alpha.19
-    "@storybook/addon-viewport": 6.3.0-alpha.19
-    "@storybook/addons": 6.3.0-alpha.19
-    "@storybook/mithril": 6.3.0-alpha.19
-    "@storybook/source-loader": 6.3.0-alpha.19
-    mithril: ^1.1.7
-    webpack: 4
-  languageName: unknown
-  linkType: soft
-
-"mithril@npm:^1.1.7":
-  version: 1.1.7
-  resolution: "mithril@npm:1.1.7"
-  bin:
-    bundle: ./bundler/bin/bundle
-    ospec: ./ospec/bin/ospec
-  checksum: 6a726acf27f9d4bcadbff343146ab88e41b7200029a4aa5f885ef0fcf7369fd4c4fc85b761cfe9438caaea4307c5cf3b77d0236916555bcab7d793f21bd27869
   languageName: node
   linkType: hard
 

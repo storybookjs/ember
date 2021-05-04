@@ -70,12 +70,6 @@ export const html: Parameters = {
 //   generator: 'meteor create {{name}}-{{version}} --minimal --react',
 // };
 
-export const mithril: Parameters = {
-  name: 'mithril',
-  version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
-};
-
 export const preact: Parameters = {
   name: 'preact',
   version: 'latest',
