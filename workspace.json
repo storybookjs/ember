@@ -113,10 +113,6 @@
       "root": "app/preact",
       "type": "library"
     },
-    "@storybook/rax": {
-      "root": "app/rax",
-      "type": "library"
-    },
     "@storybook/react": {
       "root": "app/react",
       "type": "library"
@@ -211,10 +207,6 @@
     },
     "preact-example": {
       "root": "examples/preact-kitchen-sink",
-      "type": "library"
-    },
-    "rax-kitchen-sink": {
-      "root": "examples/rax-kitchen-sink",
       "type": "library"
     },
     "@storybook/example-react-ts": {

@@ -169,7 +169,6 @@
     "@storybook/node-logger": "workspace:*",
     "@storybook/postinstall": "workspace:*",
     "@storybook/preact": "workspace:*",
-    "@storybook/rax": "workspace:*",
     "@storybook/react": "workspace:*",
     "@storybook/riot": "workspace:*",
     "@storybook/root": "workspace:*",
