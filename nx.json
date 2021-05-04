@@ -92,9 +92,6 @@
     "@storybook/angular": {
       "implicitDependencies": []
     },
-    "@storybook/aurelia": {
-      "implicitDependencies": []
-    },
     "@storybook/ember": {
       "implicitDependencies": []
     },
@@ -150,9 +147,6 @@
       "implicitDependencies": []
     },
     "angular-cli": {
-      "implicitDependencies": []
-    },
-    "aurelia-kitchen-sink": {
       "implicitDependencies": []
     },
     "cra-kitchen-sink": {
