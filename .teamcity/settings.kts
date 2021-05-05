@@ -388,9 +388,6 @@ object SmokeTests : BuildType({
                 cd ../ember-cli
                 yarn storybook --smoke-test --quiet
                 
-                cd ../marko-cli
-                yarn storybook --smoke-test --quiet
-                
                 cd ../official-storybook
                 yarn storybook --smoke-test --quiet
                 
