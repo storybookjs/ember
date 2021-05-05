@@ -45,7 +45,7 @@
     "@babel/plugin-transform-classes": "^7.12.1",
     "@storybook/addons": "6.3.0-alpha.19",
     "@storybook/api": "6.3.0-alpha.19",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.0.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "graphiql": "^0.17.5",

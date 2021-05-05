@@ -6127,7 +6127,7 @@ __metadata:
     acorn: ^7.4.1
     acorn-jsx: ^5.3.1
     acorn-walk: ^7.2.0
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-react-docgen: ^4.2.1
     core-js: ^3.8.2
     cross-spawn: ^7.0.3
@@ -6302,7 +6302,7 @@ __metadata:
     "@babel/plugin-transform-classes": ^7.12.1
     "@storybook/addons": 6.3.0-alpha.19
     "@storybook/api": 6.3.0-alpha.19
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     core-js: ^3.8.2
     global: ^4.4.0
     graphiql: ^0.17.5
@@ -6539,7 +6539,7 @@ __metadata:
     "@types/glob": ^7.1.3
     "@types/jest": ^26.0.16
     "@types/jest-specific-snapshot": ^0.5.3
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-require-context-hook: ^1.0.0
     core-js: ^3.8.2
     enzyme: ^3.11.0
@@ -6896,7 +6896,7 @@ __metadata:
     "@types/webpack-hot-middleware": ^2.25.3
     "@types/webpack-virtual-modules": ^0.1.0
     autoprefixer: ^9.8.6
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-macros: ^2.8.0
     babel-plugin-polyfill-corejs3: ^0.1.0
     case-sensitive-paths-webpack-plugin: ^2.3.0
@@ -6982,7 +6982,7 @@ __metadata:
     "@types/webpack-dev-middleware": ^4.1.0
     "@types/webpack-hot-middleware": ^2.25.3
     "@types/webpack-virtual-modules": ^0.1.0
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-macros: ^3.0.1
     babel-plugin-polyfill-corejs3: ^0.1.0
     case-sensitive-paths-webpack-plugin: ^2.3.0
@@ -7251,7 +7251,7 @@ __metadata:
     "@types/mock-fs": ^4.13.0
     "@types/node": ^14.0.10
     "@types/pretty-hrtime": ^1.0.0
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-macros: ^3.0.1
     babel-plugin-polyfill-corejs3: ^0.1.0
     chalk: ^4.1.0
@@ -7321,7 +7321,7 @@ __metadata:
     "@types/webpack-dev-middleware": ^3.7.3
     "@types/webpack-virtual-modules": ^0.1.0
     airbnb-js-shims: ^2.2.1
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     better-opn: ^2.1.1
     boxen: ^4.2.0
     case-sensitive-paths-webpack-plugin: ^2.3.0
@@ -7988,7 +7988,7 @@ __metadata:
     babel-core: ^7.0.0-bridge.0
     babel-eslint: ^10.1.0
     babel-jest: ^26.6.3
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     babel-plugin-add-react-displayname: ^0.0.5
     babel-plugin-dynamic-import-node: ^2.3.3
     babel-plugin-emotion: ^10.0.33
@@ -8232,7 +8232,7 @@ __metadata:
     "@storybook/theming": 6.3.0-alpha.19
     "@testing-library/react": ^11.2.2
     "@types/markdown-to-jsx": ^6.11.3
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     chromatic: ^5.6.0
     copy-to-clipboard: ^3.3.1
     core-js: ^3.8.2
@@ -13281,7 +13281,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-loader@npm:8.2.2, babel-loader@npm:^8, babel-loader@npm:^8.0.6, babel-loader@npm:^8.1.0, babel-loader@npm:^8.2.2":
+"babel-loader@npm:8.2.2, babel-loader@npm:^8, babel-loader@npm:^8.0.0, babel-loader@npm:^8.0.6, babel-loader@npm:^8.1.0, babel-loader@npm:^8.2.2":
   version: 8.2.2
   resolution: "babel-loader@npm:8.2.2"
   dependencies:
@@ -17804,7 +17804,7 @@ __metadata:
     "@storybook/react": 6.3.0-alpha.19
     "@storybook/theming": 6.3.0-alpha.19
     babel-core: 6
-    babel-loader: 8.2.2
+    babel-loader: ^8.0.0
     babel-runtime: 6
     global: ^4.4.0
     react: ^15.7.0
@@ -37111,7 +37111,7 @@ fsevents@2.1.2:
     "@types/prop-types": ^15.7.3
     "@types/react": ^17
     "@types/react-dom": ^17
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     cross-env: ^7.0.3
     enzyme-adapter-preact: ^0.2.0
     file-loader: ^6.2.0
@@ -41071,7 +41071,7 @@ resolve@1.19.0:
     "@storybook/addons": 6.3.0-alpha.19
     "@storybook/riot": 6.3.0-alpha.19
     "@storybook/source-loader": 6.3.0-alpha.19
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     cross-env: ^7.0.3
     file-loader: ^6.2.0
     raw-loader: ^4.0.2
@@ -46884,7 +46884,7 @@ typescript@4.1.3:
     "@vue/cli-plugin-typescript": ~4.5.0
     "@vue/cli-service": ~4.5.0
     "@vue/compiler-sfc": ^3.0.0
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     core-js: ^3.8.2
     typescript: ~3.9.3
     vue: ^3.0.0
@@ -46976,7 +46976,7 @@ typescript@4.1.3:
     "@storybook/source-loader": 6.3.0-alpha.19
     "@storybook/vue": 6.3.0-alpha.19
     "@vue/babel-preset-jsx": ^1.2.4
-    babel-loader: ^8.2.2
+    babel-loader: ^8.0.0
     cross-env: ^7.0.3
     file-loader: ^6.2.0
     prop-types: ^15.7.2
