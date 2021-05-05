@@ -24,7 +24,7 @@ const theme: ThemeVars = {
   textMutedColor: color.dark,
 
   // Toolbar default and active colors
-  barTextColor: color.mediumdark,
+  barTextColor: color.dark,
   barSelectedColor: color.secondary,
   barBg: color.lightest,
 
