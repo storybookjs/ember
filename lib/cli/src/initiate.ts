@@ -47,6 +47,7 @@ type CommandOptions = {
   parser?: string;
   yes?: boolean;
   builder?: Builder;
+  linkable?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -68,6 +69,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
     storyFormat: options.storyFormat || defaultStoryFormat,
     language,
     builder: options.builder || Builder.Webpack4,
+    linkable: !!options.linkable,
   };
 
   const end = () => {

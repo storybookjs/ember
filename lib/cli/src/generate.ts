@@ -27,6 +27,7 @@ program
   .option('--story-format <csf | csf-ts | mdx >', 'Generate stories in a specified format')
   .option('-y --yes', 'Answer yes to all prompts')
   .option('-b --builder <webpack4 | webpack5>', 'Builder library')
+  .option('-l --linkable', 'Prepare installation for link (contributor helper)')
   .action((options) => initiate(options, pkg));
 
 program

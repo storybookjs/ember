@@ -35,6 +35,7 @@ export interface Options extends Parameters {
   appName: string;
   creationPath: string;
   cwd?: string;
+  e2e: boolean;
 }
 
 export const exec = async (command: string, options: ExecOptions = {}) =>
@@ -109,15 +110,16 @@ const generate = async ({ cwd, name, version, generator }: Options) => {
   }
 };
 
-const initStorybook = async ({ cwd, autoDetect = true, name }: Options) => {
+const initStorybook = async ({ cwd, autoDetect = true, name, e2e }: Options) => {
   logger.info(`🎨 Initializing Storybook with @storybook/cli`);
   try {
     const type = autoDetect ? '' : `--type ${name}`;
+    const linkable = e2e ? '' : '--linkable';
     const sbCLICommand = useLocalSbCli
       ? `node ${path.join(__dirname, '../../esm/generate')}`
       : `yarn dlx -p @storybook/cli sb`;
 
-    await exec(`${sbCLICommand} init --yes ${type}`, { cwd });
+    await exec(`${sbCLICommand} init --yes ${type} ${linkable}`, { cwd });
   } catch (e) {
     logger.error(`🚨 Storybook initialization failed`);
     throw e;
@@ -189,6 +191,7 @@ export const createAndInit = async (
     appName: path.basename(cwd),
     creationPath: ensureDirOption ? path.join(cwd, '..') : cwd,
     cwd,
+    e2e,
     ...rest,
   };
 
