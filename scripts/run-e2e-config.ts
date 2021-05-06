@@ -67,13 +67,6 @@ export const preact: Parameters = {
   ensureDir: false,
 };
 
-export const rax: Parameters = {
-  name: 'rax',
-  version: 'latest',
-  // Rax versions are inconsistent 1.1.0-1 for some
-  generator: fromDeps('rax', 'rax-image', 'rax-link', 'rax-text', 'rax-view'),
-};
-
 export const react: Parameters = {
   name: 'react',
   version: 'latest',

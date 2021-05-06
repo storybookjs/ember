@@ -9,7 +9,6 @@ describe.each([
   ['html'],
   ['marionette'],
   ['preact'],
-  ['rax'],
   ['react'],
   ['server'],
   ['svelte'],

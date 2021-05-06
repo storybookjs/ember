@@ -97,9 +97,6 @@
     "@storybook/preact": {
       "implicitDependencies": []
     },
-    "@storybook/rax": {
-      "implicitDependencies": []
-    },
     "@storybook/react": {
       "implicitDependencies": []
     },
@@ -161,9 +158,6 @@
       "implicitDependencies": []
     },
     "preact-example": {
-      "implicitDependencies": []
-    },
-    "rax-kitchen-sink": {
       "implicitDependencies": []
     },
     "@storybook/example-react-ts": {
