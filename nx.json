@@ -91,22 +91,10 @@
     "@storybook/html": {
       "implicitDependencies": []
     },
-    "@storybook/marko": {
-      "implicitDependencies": []
-    },
-    "@storybook/mithril": {
-      "implicitDependencies": []
-    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
-    "@storybook/rax": {
-      "implicitDependencies": []
-    },
     "@storybook/react": {
-      "implicitDependencies": []
-    },
-    "@storybook/riot": {
       "implicitDependencies": []
     },
     "@storybook/server": {
@@ -163,28 +151,16 @@
     "html-kitchen-sink": {
       "implicitDependencies": []
     },
-    "marko-cli": {
-      "implicitDependencies": []
-    },
-    "mithril-example": {
-      "implicitDependencies": []
-    },
     "official-storybook": {
       "implicitDependencies": []
     },
     "preact-example": {
       "implicitDependencies": []
     },
-    "rax-kitchen-sink": {
-      "implicitDependencies": []
-    },
     "@storybook/example-react-ts": {
       "implicitDependencies": []
     },
     "@storybook/example-react-ts-webpack4": {
-      "implicitDependencies": []
-    },
-    "riot-example": {
       "implicitDependencies": []
     },
     "server-kitchen-sink": {
