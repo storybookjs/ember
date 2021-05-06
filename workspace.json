@@ -93,32 +93,12 @@
       "root": "app/html",
       "type": "library"
     },
-    "@storybook/marionette": {
-      "root": "app/marionette",
-      "type": "library"
-    },
-    "@storybook/marko": {
-      "root": "app/marko",
-      "type": "library"
-    },
-    "@storybook/mithril": {
-      "root": "app/mithril",
-      "type": "library"
-    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"
     },
-    "@storybook/rax": {
-      "root": "app/rax",
-      "type": "library"
-    },
     "@storybook/react": {
       "root": "app/react",
-      "type": "library"
-    },
-    "@storybook/riot": {
-      "root": "app/riot",
       "type": "library"
     },
     "@storybook/server": {
@@ -189,14 +169,6 @@
       "root": "examples/html-kitchen-sink",
       "type": "library"
     },
-    "marko-cli": {
-      "root": "examples/marko-cli",
-      "type": "library"
-    },
-    "mithril-example": {
-      "root": "examples/mithril-kitchen-sink",
-      "type": "library"
-    },
     "official-storybook": {
       "root": "examples/official-storybook",
       "type": "library"
@@ -205,20 +177,12 @@
       "root": "examples/preact-kitchen-sink",
       "type": "library"
     },
-    "rax-kitchen-sink": {
-      "root": "examples/rax-kitchen-sink",
-      "type": "library"
-    },
     "@storybook/example-react-ts": {
       "root": "examples/react-ts",
       "type": "library"
     },
     "@storybook/example-react-ts-webpack4": {
       "root": "examples/react-ts-webpack4",
-      "type": "library"
-    },
-    "riot-example": {
-      "root": "examples/riot-kitchen-sink",
       "type": "library"
     },
     "server-kitchen-sink": {

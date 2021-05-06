@@ -45,24 +45,6 @@ export const html: Parameters = {
   autoDetect: false,
 };
 
-// TODO: broken
-// export const marionette: Parameters = {
-//   name: 'marionette',
-//   version: 'latest',
-//   generator: fromDeps('backbone.marionette@{{version}}'),
-// };
-
-// TODO: not working on start-storybook
-//  - Marko CLI is failing with Node 12 and looks to work with Node 10
-//  - Demo components of @storybook/marko must be updated
-//  - Marko Story templates of @storybook/cli must be updated
-// export const marko: Parameters = {
-//   name: 'marko',
-//   version: 'latest',
-//   generator: 'npx marko-cli@{{version}} create {{name}}-{{version}}',
-//   ensureDir: false,
-// };
-
 // TODO: need to install meteor first
 // export const meteor: Parameters = {
 //   name: 'meteor',
@@ -70,25 +52,12 @@ export const html: Parameters = {
 //   generator: 'meteor create {{name}}-{{version}} --minimal --react',
 // };
 
-export const mithril: Parameters = {
-  name: 'mithril',
-  version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
-};
-
 export const preact: Parameters = {
   name: 'preact',
   version: 'latest',
   generator:
     'npx preact-cli@{{version}} create preactjs-templates/default {{name}}-{{version}} --yarn --install=false --git=false',
   ensureDir: false,
-};
-
-export const rax: Parameters = {
-  name: 'rax',
-  version: 'latest',
-  // Rax versions are inconsistent 1.1.0-1 for some
-  generator: fromDeps('rax', 'rax-image', 'rax-link', 'rax-text', 'rax-view'),
 };
 
 export const react: Parameters = {
@@ -126,13 +95,6 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
 };
-
-// TODO: there is a compatibility issue with riot@4
-// export const riot: Parameters = {
-//   name: 'riot',
-//   version: '3',
-//   generator: fromDeps('riot@3', 'riot-compiler@3', 'riot-tmpl@3'),
-// };
 
 export const sfcVue: Parameters = {
   name: 'sfcVue',
