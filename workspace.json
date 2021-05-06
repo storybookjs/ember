@@ -117,10 +117,6 @@
       "root": "app/react",
       "type": "library"
     },
-    "@storybook/riot": {
-      "root": "app/riot",
-      "type": "library"
-    },
     "@storybook/server": {
       "root": "app/server",
       "type": "library"
@@ -215,10 +211,6 @@
     },
     "@storybook/example-react-ts-webpack4": {
       "root": "examples/react-ts-webpack4",
-      "type": "library"
-    },
-    "riot-example": {
-      "root": "examples/riot-kitchen-sink",
       "type": "library"
     },
     "server-kitchen-sink": {

@@ -106,9 +106,6 @@
     "@storybook/react": {
       "implicitDependencies": []
     },
-    "@storybook/riot": {
-      "implicitDependencies": []
-    },
     "@storybook/server": {
       "implicitDependencies": []
     },
@@ -179,9 +176,6 @@
       "implicitDependencies": []
     },
     "@storybook/example-react-ts-webpack4": {
-      "implicitDependencies": []
-    },
-    "riot-example": {
       "implicitDependencies": []
     },
     "server-kitchen-sink": {

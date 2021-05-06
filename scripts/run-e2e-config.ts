@@ -121,13 +121,6 @@ export const cra_typescript: Parameters = {
   generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
 };
 
-// TODO: there is a compatibility issue with riot@4
-// export const riot: Parameters = {
-//   name: 'riot',
-//   version: '3',
-//   generator: fromDeps('riot@3', 'riot-compiler@3', 'riot-tmpl@3'),
-// };
-
 export const sfcVue: Parameters = {
   name: 'sfcVue',
   version: 'latest',
