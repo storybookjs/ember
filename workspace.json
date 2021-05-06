@@ -97,10 +97,6 @@
       "root": "app/html",
       "type": "library"
     },
-    "@storybook/marionette": {
-      "root": "app/marionette",
-      "type": "library"
-    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"

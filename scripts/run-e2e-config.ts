@@ -45,13 +45,6 @@ export const html: Parameters = {
   autoDetect: false,
 };
 
-// TODO: broken
-// export const marionette: Parameters = {
-//   name: 'marionette',
-//   version: 'latest',
-//   generator: fromDeps('backbone.marionette@{{version}}'),
-// };
-
 // TODO: need to install meteor first
 // export const meteor: Parameters = {
 //   name: 'meteor',

@@ -91,9 +91,6 @@
     "@storybook/html": {
       "implicitDependencies": []
     },
-    "@storybook/marionette": {
-      "implicitDependencies": []
-    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
