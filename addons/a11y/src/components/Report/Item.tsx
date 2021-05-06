@@ -33,6 +33,7 @@ const Icon = styled<any, any>(Icons)(({ theme }) => ({
 const HeaderBar = styled.div<{}>(({ theme }) => ({
   padding: theme.layoutMargin,
   paddingLeft: theme.layoutMargin - 3,
+  lineHeight: '20px',
   background: 'none',
   color: 'inherit',
   textAlign: 'left',
@@ -51,7 +52,10 @@ const HighlightToggleElement = styled.span({
   float: 'right',
   marginRight: 15,
   alignSelf: 'center',
-  input: { margin: 0 },
+  input: {
+    margin: 0,
+    display: 'block',
+  },
 });
 
 interface ItemProps {
