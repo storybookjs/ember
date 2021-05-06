@@ -85,10 +85,6 @@
       "root": "app/angular",
       "type": "library"
     },
-    "@storybook/aurelia": {
-      "root": "app/aurelia",
-      "type": "library"
-    },
     "@storybook/ember": {
       "root": "app/ember",
       "type": "library"
@@ -127,10 +123,6 @@
     },
     "angular-cli": {
       "root": "examples/angular-cli",
-      "type": "library"
-    },
-    "aurelia-kitchen-sink": {
-      "root": "examples/aurelia-kitchen-sink",
       "type": "library"
     },
     "cra-kitchen-sink": {

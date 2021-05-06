@@ -143,7 +143,6 @@
     "@storybook/addons": "workspace:*",
     "@storybook/angular": "workspace:*",
     "@storybook/api": "workspace:*",
-    "@storybook/aurelia": "workspace:*",
     "@storybook/channel-postmessage": "workspace:*",
     "@storybook/channel-websocket": "workspace:*",
     "@storybook/channels": "workspace:*",
