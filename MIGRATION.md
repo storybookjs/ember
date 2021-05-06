@@ -6,6 +6,7 @@
     - [New Angular storyshots format](#new-angular-storyshots-format)
     - [Deprecated Angular story component](#deprecated-angular-story-component)
     - [New Angular renderer](#new-angular-renderer)
+  - [Packages now available as ESModules](#packages-now-available-as-esmodules)
   - [6.2 Deprecations](#62-deprecations)
     - [Deprecated implicit PostCSS loader](#deprecated-implicit-postcss-loader)
     - [Deprecated default PostCSS plugins](#deprecated-default-postcss-plugins)
@@ -202,6 +203,15 @@ export const parameters = {
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
 
+### Packages now available as ESModules
+
+Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. To fix, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
+
+```js
+// In your jest config
+transformIgnorePatterns: ['/node_modules/(?!@storybook)']
+```
+
 ### 6.2 Deprecations
 
 #### Deprecated implicit PostCSS loader
@@ -213,6 +223,16 @@ Instead of continuing to include PostCSS inside the core library, it has been mo
 If you require PostCSS support, please install `@storybook/addon-postcss` in your project, add it to your list of addons inside `.storybook/main.js`, and configure a `postcss.config.js` file.
 
 Further information is available at https://github.com/storybookjs/storybook/issues/12668 and https://github.com/storybookjs/storybook/pull/13669.
+
+If you're not using Postcss and you don't want to see the warning, you can disable it by adding the following to your `.storybook/main.js`:
+
+```js
+module.exports = {
+  features: {
+    postcss: false,
+  },
+};
+```
 
 #### Deprecated default PostCSS plugins
 

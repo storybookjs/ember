@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-knobs",
-  "version": "6.2.1",
+  "version": "6.3.0-alpha.19",
   "description": "Storybook addon prop editor component",
   "keywords": [
     "addon",
@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/knobs"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/cjs/index.js",
@@ -37,13 +41,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.1",
-    "@storybook/api": "6.2.1",
-    "@storybook/channels": "6.2.1",
-    "@storybook/client-api": "6.2.1",
-    "@storybook/components": "6.2.1",
-    "@storybook/core-events": "6.2.1",
-    "@storybook/theming": "6.2.1",
+    "@storybook/addons": "6.3.0-alpha.19",
+    "@storybook/api": "6.3.0-alpha.19",
+    "@storybook/channels": "6.3.0-alpha.19",
+    "@storybook/client-api": "6.3.0-alpha.19",
+    "@storybook/components": "6.3.0-alpha.19",
+    "@storybook/core-events": "6.3.0-alpha.19",
+    "@storybook/theming": "6.3.0-alpha.19",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.2",
     "escape-html": "^1.0.3",
@@ -52,7 +56,7 @@
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
     "qs": "^6.10.0",
-    "react-colorful": "^5.0.1",
+    "react-colorful": "^5.1.2",
     "react-lifecycles-compat": "^3.0.4",
     "react-select": "^3.2.0",
     "regenerator-runtime": "^0.13.7"
@@ -80,7 +84,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "3d5d666f4e961205bfb7b94133c794866f0d7a0f",
+  "gitHead": "8ba485343b31df4e65fce2494a5f615d6d6c661d",
   "storybook": {
     "displayName": "Knobs",
     "unsupportedFrameworks": [

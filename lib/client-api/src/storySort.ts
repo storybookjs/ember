@@ -6,7 +6,8 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
 ): number => {
   // If the two stories have the same story kind, then use the default
   // ordering, which is the order they are defined in the story file.
-  if (a[1].kind === b[1].kind) {
+  // only when includeNames is falsy
+  if (a[1].kind === b[1].kind && !options.includeNames) {
     return 0;
   }
 
@@ -15,8 +16,8 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   let order = options.order || [];
 
   // Examine each part of the story kind in turn.
-  const storyKindA = a[1].kind.split('/');
-  const storyKindB = b[1].kind.split('/');
+  const storyKindA = [...a[1].kind.split('/'), ...(options.includeNames ? a[1].name : [])];
+  const storyKindB = [...b[1].kind.split('/'), ...(options.includeNames ? b[1].name : [])];
   let depth = 0;
   while (storyKindA[depth] || storyKindB[depth]) {
     // Stories with a shorter depth should go first.
@@ -34,15 +35,25 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
       // Look for the names in the given `order` array.
       let indexA = order.indexOf(nameA);
       let indexB = order.indexOf(nameB);
+      const indexWildcard = order.indexOf('*');
 
       // If at least one of the names is found, sort by the `order` array.
       if (indexA !== -1 || indexB !== -1) {
-        // If one of the names is not found in `order`, list it last.
+        // If one of the names is not found and there is a wildcard, insert it at the wildcard position.
+        // Otherwise, list it last.
         if (indexA === -1) {
-          indexA = order.length;
+          if (indexWildcard !== -1) {
+            indexA = indexWildcard;
+          } else {
+            indexA = order.length;
+          }
         }
         if (indexB === -1) {
-          indexB = order.length;
+          if (indexWildcard !== -1) {
+            indexB = indexWildcard;
+          } else {
+            indexB = order.length;
+          }
         }
 
         return indexA - indexB;

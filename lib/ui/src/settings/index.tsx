@@ -82,6 +82,7 @@ const Pages: FunctionComponent<{
             e.preventDefault();
             return onClose();
           }}
+          title="Close settings page"
         >
           <Icons icon="close" />
         </IconButton>

@@ -89,7 +89,7 @@ export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur
       checked={value || false}
       {...{ name, onBlur, onFocus }}
     />
-    <span>True</span>
     <span>False</span>
+    <span>True</span>
   </Label>
 );

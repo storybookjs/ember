@@ -132,7 +132,7 @@ export const StoryTable: FC<
     parameters: { argTypes },
     storyStore,
   } = context;
-  const { story, component, subcomponents, showComponent, include, exclude } = props;
+  const { story, component, subcomponents, showComponent, include, exclude, sort } = props;
   let storyArgTypes;
   try {
     let storyId;
@@ -187,7 +187,7 @@ export const StoryTable: FC<
       }
       tabs = addComponentTabs(tabs, subcomponents, context, include, exclude);
     }
-    return <TabbedArgsTable tabs={tabs} />;
+    return <TabbedArgsTable tabs={tabs} sort={sort} />;
   } catch (err) {
     return <PureArgsTable error={err.message} />;
   }
@@ -195,10 +195,10 @@ export const StoryTable: FC<
 
 export const ComponentsTable: FC<ComponentsProps> = (props) => {
   const context = useContext(DocsContext);
-  const { components, include, exclude } = props;
+  const { components, include, exclude, sort } = props;
 
   const tabs = addComponentTabs({}, components, context, include, exclude);
-  return <TabbedArgsTable tabs={tabs} />;
+  return <TabbedArgsTable tabs={tabs} sort={sort} />;
 };
 
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
@@ -222,7 +222,8 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     } catch (err) {
       mainProps = { error: err.message };
     }
-    return <PureArgsTable {...mainProps} />;
+
+    return <PureArgsTable {...mainProps} sort={sort} />;
   }
 
   if (components) {
