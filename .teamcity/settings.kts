@@ -397,9 +397,6 @@ object SmokeTests : BuildType({
                 cd ../mithril-kitchen-sink
                 yarn storybook --smoke-test --quiet
                 
-                cd ../riot-kitchen-sink
-                yarn storybook --smoke-test --quiet
-                
                 cd ../preact-kitchen-sink
                 yarn storybook --smoke-test --quiet
                 

@@ -10,18 +10,8 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare"
-        ],
-        "strictlyOrderedTargets": [
-          "build",
-          "package",
-          "prepare"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "NGVmYTkxMmItYzY3OS00MjkxLTk1ZDktZDFmYTFmNmVlNGY4fHJlYWQ=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -119,9 +109,6 @@
     "@storybook/react": {
       "implicitDependencies": []
     },
-    "@storybook/riot": {
-      "implicitDependencies": []
-    },
     "@storybook/server": {
       "implicitDependencies": []
     },
@@ -195,9 +182,6 @@
       "implicitDependencies": []
     },
     "@storybook/example-react-ts-webpack4": {
-      "implicitDependencies": []
-    },
-    "riot-example": {
       "implicitDependencies": []
     },
     "server-kitchen-sink": {

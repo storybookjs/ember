@@ -13,7 +13,6 @@ describe.each([
   ['preact'],
   ['rax'],
   ['react'],
-  ['riot'],
   ['server'],
   ['svelte'],
   ['vue'],
