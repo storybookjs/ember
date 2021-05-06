@@ -28,11 +28,11 @@ As an example, you can tell Storybook to use the "dark" theme by modifying [`.st
 
 <!-- prettier-ignore-end -->
 
-When setting a theme, set a full theme object. The theme is replaced, not combined.
+When setting a theme, set a complete theme object. The theme is replaced, not combined.
 
 ## Theming docs
 
-[Storybook Docs](../writing-docs/introduction) uses the same theme system as Storybook’s UI, but is themed independently from the main UI.
+[Storybook Docs](../writing-docs/introduction) uses the same theme system as Storybook’s UI but is themed independently from the main UI.
 
 Supposing you have a Storybook theme defined for the main UI in [`.storybook/manager.js`](./overview.md#configure-story-rendering):
 
@@ -77,16 +77,16 @@ Inside your `.storybook` directory, create a new file called `YourTheme.js` and 
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-If you're using <code>brandImage</code> to add your own custom logo, you can use any of the most common image formats.
+💡 If you're using <code>brandImage</code> to add your custom logo, you can use any of the most common image formats.
 </div>
 
-Above we're creating a new theme that will:
+Above, we're creating a new theme that will:
 
 -  Use Storybook's `light` theme as a baseline.
 -  Replace Storybook's logo in the sidebar with our own (defined in the brandImage variable).
 -  Add custom branding information.
 
-Finally we'll need to import the theme into Storybook. Create a new file called `manager.js` in your `.storybook` directory and add the following:
+Finally, we'll need to import the theme into Storybook. Create a new file called `manager.js` in your `.storybook` directory and add the following:
 
 <!-- prettier-ignore-start -->
 
@@ -108,14 +108,15 @@ Adjust your `storybook` script in your package.json and include the [`--no-manag
   },
 }
 ```
+<div class="aside">
+💡 <strong>Note:</strong> Once you've finished configuring your theme, you can remove the <code>--no-manager-cache</code>flag from the <code>storybook</code> script at will. Leaving it in can severely impact loading times.
+</div>
 
-Now your custom theme will replace Storybook's default theme and you'll see a similar set of changes in the UI.
+Now your custom theme will replace Storybook's default theme, and you'll see a similar set of changes in the UI.
 
 ![Storybook starter theme](./storybook-starter-custom-theme.png)
 
-**Note:** Once you're finished configuring the theme, remove the flag `--no-manager-cache` from the `storybook` script, otherwise loading times can be severely impacted.
-
-Let's take a look at more complex example. Copy the code below and paste it in `.storybook/YourTheme.js`.
+Let's take a look at a more complex example. Copy the code below and paste it in `.storybook/YourTheme.js`.
 
 <!-- prettier-ignore-start -->
 
@@ -127,7 +128,7 @@ Let's take a look at more complex example. Copy the code below and paste it in `
 
 <!-- prettier-ignore-end -->
 
-Above we're updating the theme with the following changes:
+Above, we're updating the theme with the following changes:
 
 -  A custom color palette (defined in the `app` and `color` variables).
 -  Custom fonts (defined in the `font` and `text` variables).
@@ -137,14 +138,14 @@ With the new changes introduced, the custom theme should yield a similar result.
 ![Storybook custom theme loaded](./storybook-custom-theme.png)
 
 <div class="aside">
-Many theme variables are optional, the <code>base</code> property is <strong>NOT</strong>.
+💡 Many theme variables are optional, the <code>base</code> property is <strong>NOT</strong>.
 </div>
 
-The `@storybook/theming` package is built using TypeScript, so this should help create a valid theme for TypeScript users. The types are part of the package itself.
+The `@storybook/theming` package is built using TypeScript, which should help create a valid theme for TypeScript users. The types are part of the package itself.
 
 ## CSS escape hatches
 
-The Storybook theme API is narrow by design. If you want to have fine-grained control over the CSS, all of the UI and Docs components are tagged with class names to make this possible. This is advanced usage: **use at your own risk**.
+The Storybook theme API is narrow by design. If you want to have fine-grained control over the CSS, all UI and Docs components are tagged with class names to make this possible. This is advanced usage: **use at your own risk**.
 
 To style these elements, insert style tags into:
 
@@ -153,15 +154,13 @@ To style these elements, insert style tags into:
 
 <div class="aside">
 
-Similar to changing the preview’s head tag, `.storybook/manager-head.html` allows you to inject code into the manager side, which can be useful to adding styles for your theme that target Storybook’s HTML.
-
-WARNING: we don’t make any guarantees about the structure of Storybook’s HTML and it could change at any time. Consider yourself warned!
+💡 <strong>Caution:</strong> The same way as you can adjust your [preview’s head tag](../configure/story-rendering.md#adding-to-head), Storybook allows you to modify the code on the manager's side, through <code>.storybook/manager-head.html</code>. It can be helpful when adding theme styles that target Storybook's HTML, but it comes with a cost as Storybook's inner HTML can change at any time through the release cycle.
 
 </div>
 
 ## MDX component overrides
 
-If you're using MDX for docs, there's one more level of themability. MDX allows you to completely override the components that are rendered from Markdown using a components parameter. This is an advanced usage that we don't officially support in Storybook, but it's a powerful mechanism if you need it.
+If you're using MDX for docs, there's one more level of "themability". MDX allows you to completely override the components that are rendered from Markdown using a components parameter. It's an advanced usage that we don't officially support in Storybook, but it's a powerful mechanism if you need it.
 
 Here's how you might insert a custom code renderer for `code` blocks on the page, in [`.storybook/preview.js`](./overview.md#configure-story-rendering):
 
@@ -191,9 +190,9 @@ Here's how you might insert a custom `<Canvas />` block:
 
 ## Addons and theme creation
 
-Some addons require specific theme variables that a Storybook user must add. If you share your theme with the community, make sure to support the official API and other popular addons so your users have a consistent experience.
+Some addons require specific theme variables that a Storybook user must add. If you share your theme with the community, make sure to support the official API and other popular addons, so your users have a consistent experience.
 
-For example, the popular Actions addon uses [react-inspector](https://github.com/xyc/react-inspector/blob/master/src/styles/themes/chromeLight.js) which has themes of its own. Supply additional theme variables to style it like so:
+For example, the popular Actions addon uses [react-inspector](https://github.com/xyc/react-inspector/blob/master/src/styles/themes/chromeLight.js), which has themes of its own. Supply additional theme variables to style it like so:
 
 <!-- prettier-ignore-start -->
 
