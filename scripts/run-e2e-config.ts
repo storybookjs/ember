@@ -59,12 +59,6 @@ export const html: Parameters = {
 //   generator: 'meteor create {{name}}-{{version}} --minimal --react',
 // };
 
-export const mithril: Parameters = {
-  name: 'mithril',
-  version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
-};
-
 export const preact: Parameters = {
   name: 'preact',
   version: 'latest',
@@ -115,13 +109,6 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
 };
-
-// TODO: there is a compatibility issue with riot@4
-// export const riot: Parameters = {
-//   name: 'riot',
-//   version: '3',
-//   generator: fromDeps('riot@3', 'riot-compiler@3', 'riot-tmpl@3'),
-// };
 
 export const sfcVue: Parameters = {
   name: 'sfcVue',

@@ -94,9 +94,6 @@
     "@storybook/marionette": {
       "implicitDependencies": []
     },
-    "@storybook/mithril": {
-      "implicitDependencies": []
-    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
@@ -104,9 +101,6 @@
       "implicitDependencies": []
     },
     "@storybook/react": {
-      "implicitDependencies": []
-    },
-    "@storybook/riot": {
       "implicitDependencies": []
     },
     "@storybook/server": {
@@ -163,9 +157,6 @@
     "html-kitchen-sink": {
       "implicitDependencies": []
     },
-    "mithril-example": {
-      "implicitDependencies": []
-    },
     "official-storybook": {
       "implicitDependencies": []
     },
@@ -179,9 +170,6 @@
       "implicitDependencies": []
     },
     "@storybook/example-react-ts-webpack4": {
-      "implicitDependencies": []
-    },
-    "riot-example": {
       "implicitDependencies": []
     },
     "server-kitchen-sink": {

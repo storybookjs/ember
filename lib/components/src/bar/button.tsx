@@ -85,6 +85,11 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     padding: 0,
     cursor: 'pointer',
 
+    // Icon Buttons may have text depending on user preferences.
+    // While we don't recommend having text for IconButtons, this style ensures that the text is the correct size.
+    fontWeight: 'bold',
+    fontSize: 13,
+
     border: '0 solid transparent',
     borderTop: '3px solid transparent',
     borderBottom: '3px solid transparent',
