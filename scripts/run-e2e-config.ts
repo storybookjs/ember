@@ -52,29 +52,12 @@ export const html: Parameters = {
 //   generator: fromDeps('backbone.marionette@{{version}}'),
 // };
 
-// TODO: not working on start-storybook
-//  - Marko CLI is failing with Node 12 and looks to work with Node 10
-//  - Demo components of @storybook/marko must be updated
-//  - Marko Story templates of @storybook/cli must be updated
-// export const marko: Parameters = {
-//   name: 'marko',
-//   version: 'latest',
-//   generator: 'npx marko-cli@{{version}} create {{name}}-{{version}}',
-//   ensureDir: false,
-// };
-
 // TODO: need to install meteor first
 // export const meteor: Parameters = {
 //   name: 'meteor',
 //   version: 'latest',
 //   generator: 'meteor create {{name}}-{{version}} --minimal --react',
 // };
-
-export const mithril: Parameters = {
-  name: 'mithril',
-  version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
-};
 
 export const preact: Parameters = {
   name: 'preact',
@@ -119,13 +102,6 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: 'yarn dlx create-react-app@{{version}} {{name}}-{{version}} --template typescript',
 };
-
-// TODO: there is a compatibility issue with riot@4
-// export const riot: Parameters = {
-//   name: 'riot',
-//   version: '3',
-//   generator: fromDeps('riot@3', 'riot-compiler@3', 'riot-tmpl@3'),
-// };
 
 export const sfcVue: Parameters = {
   name: 'sfcVue',

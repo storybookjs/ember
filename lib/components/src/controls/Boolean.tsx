@@ -68,7 +68,7 @@ const Label = styled.label(({ theme }) => ({
     },
   },
 
-  'input:checked ~ span:first-of-type, input:not(:checked) ~ span:last-of-type': {
+  'input:checked ~ span:last-of-type, input:not(:checked) ~ span:first-of-type': {
     background: theme.background.bar,
     boxShadow: `${opacify(0.1, theme.appBorderColor)} 0 0 2px`,
     color: theme.color.defaultText,
@@ -89,7 +89,7 @@ export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur
       checked={value || false}
       {...{ name, onBlur, onFocus }}
     />
-    <span>True</span>
     <span>False</span>
+    <span>True</span>
   </Label>
 );
