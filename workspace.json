@@ -105,10 +105,6 @@
       "root": "app/marko",
       "type": "library"
     },
-    "@storybook/mithril": {
-      "root": "app/mithril",
-      "type": "library"
-    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"
@@ -195,10 +191,6 @@
     },
     "marko-cli": {
       "root": "examples/marko-cli",
-      "type": "library"
-    },
-    "mithril-example": {
-      "root": "examples/mithril-kitchen-sink",
       "type": "library"
     },
     "official-storybook": {

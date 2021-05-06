@@ -97,9 +97,6 @@
     "@storybook/marko": {
       "implicitDependencies": []
     },
-    "@storybook/mithril": {
-      "implicitDependencies": []
-    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
@@ -164,9 +161,6 @@
       "implicitDependencies": []
     },
     "marko-cli": {
-      "implicitDependencies": []
-    },
-    "mithril-example": {
       "implicitDependencies": []
     },
     "official-storybook": {
