@@ -8,7 +8,6 @@ describe.each([
   ['ember'],
   ['html'],
   ['marionette'],
-  ['marko'],
   ['preact'],
   ['rax'],
   ['react'],

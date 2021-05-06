@@ -348,11 +348,6 @@ jobs:
             cd examples/ember-cli
             yarn storybook --smoke-test --quiet
       - run:
-          name: Run marko-cli (smoke test)
-          command: |
-            cd examples/marko-cli
-            yarn storybook --smoke-test --quiet
-      - run:
           name: Run official-storybook (smoke test)
           command: |
             cd examples/official-storybook

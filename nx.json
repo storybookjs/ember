@@ -94,9 +94,6 @@
     "@storybook/marionette": {
       "implicitDependencies": []
     },
-    "@storybook/marko": {
-      "implicitDependencies": []
-    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
@@ -158,9 +155,6 @@
       "implicitDependencies": []
     },
     "html-kitchen-sink": {
-      "implicitDependencies": []
-    },
-    "marko-cli": {
       "implicitDependencies": []
     },
     "official-storybook": {
