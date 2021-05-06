@@ -1,3 +1,19 @@
+## 6.3.0-alpha.20 (May 6, 2021)
+
+### Bug Fixes
+
+* Vue3: Fix components in decorators ([#14809](https://github.com/storybookjs/storybook/pull/14809))
+* Accessibility: Adds title to close button on settings page ([#14808](https://github.com/storybookjs/storybook/pull/14808))
+
+### Maintenance
+
+* Refactor marionette into its own repo ([#14802](https://github.com/storybookjs/storybook/pull/14802))
+* Refactor rax to its own repo ([#14799](https://github.com/storybookjs/storybook/pull/14799))
+* Refactor marko into its own repo ([#14803](https://github.com/storybookjs/storybook/pull/14803))
+* Refactor mithril into its own repo ([#14804](https://github.com/storybookjs/storybook/pull/14804))
+* Refactor riot to its own repo ([#14800](https://github.com/storybookjs/storybook/pull/14800))
+* UI: Styling updates ([#14820](https://github.com/storybookjs/storybook/pull/14820))
+
 ## 6.3.0-alpha.19 (May 3, 2021)
 
 ### Features
