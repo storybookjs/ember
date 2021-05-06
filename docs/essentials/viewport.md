@@ -124,6 +124,8 @@ You can change your story through [parameters](../writing-stories/parameters.md)
     'vue/my-component-story-configure-viewports.js.mdx',
     'angular/my-component-story-configure-viewports.ts.mdx',
     'web-components/my-component-story-configure-viewports.js.mdx',
+    'svelte/my-component-story-configure-viewports.js.mdx',
+    'svelte/my-component-story-configure-viewports.native-format.mdx',
   ]}
 />
 

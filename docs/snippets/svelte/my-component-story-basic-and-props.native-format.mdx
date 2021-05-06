@@ -1,0 +1,16 @@
+```html
+<!-- MyComponent.stories.svelte -->
+
+<script>
+  import { Meta, Story } from '@storybook/addon-svelte-csf';
+  import MyComponent from './MyComponent.svelte';
+</script>
+
+<Story name="Basic" template="BasicTemplate">
+    <MyComponent />
+</Story>
+
+<Story name="WithProp">
+  <MyComponent prop="value"/>
+</Story>
+```

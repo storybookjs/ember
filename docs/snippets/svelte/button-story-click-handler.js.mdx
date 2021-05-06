@@ -1,0 +1,22 @@
+```js
+// Button.stories.js
+
+import Button from './Button.svelte';
+
+import { action } from '@storybook/addon-actions';
+
+export default {
+  title: 'Button',
+  component: Button,
+};
+
+export const Text = () =>({
+  Component:Button,
+  props:{
+    label:'Hello',
+  },
+  on:{
+    onClick={action('clicked')}
+  }
+});
+```

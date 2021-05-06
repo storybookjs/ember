@@ -1,0 +1,15 @@
+```html
+<-- Button.stories.svelte -->
+
+<script>
+  import { Meta, Story } from '../src/index.js';
+  import { action } from '@storybook/addon-actions';
+  import Button from './Button.svelte';
+</script>
+
+<Meta title="Button" component={Button}/>
+
+<Story name="Text">
+  <Button text="Custom text" on:click={action('clicked')}/>
+</Story>
+```
