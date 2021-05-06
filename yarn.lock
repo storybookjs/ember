@@ -5786,17 +5786,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-decorator@6.3.0-alpha.20, @storybook/addon-decorator@workspace:*, @storybook/addon-decorator@workspace:dev-kits/addon-decorator":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-decorator@workspace:dev-kits/addon-decorator"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.20
-    "@storybook/client-api": 6.3.0-alpha.20
-    core-js: ^3.8.2
-    global: ^4.4.0
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-design-assets@6.3.0-alpha.20, @storybook/addon-design-assets@workspace:*, @storybook/addon-design-assets@workspace:addons/design-assets":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-design-assets@workspace:addons/design-assets"
@@ -6156,23 +6145,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-parameter@6.3.0-alpha.20, @storybook/addon-parameter@workspace:*, @storybook/addon-parameter@workspace:dev-kits/addon-parameter":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-parameter@workspace:dev-kits/addon-parameter"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.20
-    "@storybook/api": 6.3.0-alpha.20
-    "@storybook/client-logger": 6.3.0-alpha.20
-    "@storybook/components": 6.3.0-alpha.20
-    "@storybook/core-events": 6.3.0-alpha.20
-    "@storybook/theming": 6.3.0-alpha.20
-    core-js: ^3.8.2
-    global: ^4.4.0
-    react: ^16.8.0 || ^17.0.0
-    ts-dedent: ^2.0.0
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-postcss@npm:^2.0.0":
   version: 2.0.0
   resolution: "@storybook/addon-postcss@npm:2.0.0"
@@ -6185,15 +6157,6 @@ __metadata:
   checksum: 48d77633cbe7da6542ba8c04dfda5999ed97919ff602d5b5686f1ec57c579bb89c2e103207bf29b5e60cc8121e803def3229b0584566928e4318b979bd5883be
   languageName: node
   linkType: hard
-
-"@storybook/addon-preview-wrapper@6.3.0-alpha.20, @storybook/addon-preview-wrapper@workspace:*, @storybook/addon-preview-wrapper@workspace:dev-kits/addon-preview-wrapper":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-preview-wrapper@workspace:dev-kits/addon-preview-wrapper"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.20
-    react: ^16.8.0 || ^17.0.0
-  languageName: unknown
-  linkType: soft
 
 "@storybook/addon-queryparams@6.3.0-alpha.20, @storybook/addon-queryparams@workspace:*, @storybook/addon-queryparams@workspace:addons/queryparams":
   version: 0.0.0-use.local
@@ -6219,24 +6182,6 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  languageName: unknown
-  linkType: soft
-
-"@storybook/addon-roundtrip@6.3.0-alpha.20, @storybook/addon-roundtrip@workspace:*, @storybook/addon-roundtrip@workspace:dev-kits/addon-roundtrip":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-roundtrip@workspace:dev-kits/addon-roundtrip"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.20
-    "@storybook/api": 6.3.0-alpha.20
-    "@storybook/client-api": 6.3.0-alpha.20
-    "@storybook/client-logger": 6.3.0-alpha.20
-    "@storybook/components": 6.3.0-alpha.20
-    "@storybook/core-events": 6.3.0-alpha.20
-    "@storybook/theming": 6.3.0-alpha.20
-    core-js: ^3.8.2
-    global: ^4.4.0
-    react: ^16.8.0 || ^17.0.0
-    ts-dedent: ^2.0.0
   languageName: unknown
   linkType: soft
 
@@ -7209,41 +7154,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/example-devkits@workspace:examples/dev-kits":
-  version: 0.0.0-use.local
-  resolution: "@storybook/example-devkits@workspace:examples/dev-kits"
-  dependencies:
-    "@storybook/addon-decorator": 6.3.0-alpha.20
-    "@storybook/addon-parameter": 6.3.0-alpha.20
-    "@storybook/addon-preview-wrapper": 6.3.0-alpha.20
-    "@storybook/addon-roundtrip": 6.3.0-alpha.20
-    "@storybook/addons": 6.3.0-alpha.20
-    "@storybook/api": 6.3.0-alpha.20
-    "@storybook/client-api": 6.3.0-alpha.20
-    "@storybook/components": 6.3.0-alpha.20
-    "@storybook/core-events": 6.3.0-alpha.20
-    "@storybook/node-logger": 6.3.0-alpha.20
-    "@storybook/react": 6.3.0-alpha.20
-    "@storybook/theming": 6.3.0-alpha.20
-    cors: ^2.8.5
-    cross-env: ^7.0.3
-    enzyme-to-json: ^3.6.1
-    eventemitter3: ^4.0.7
-    express: ^4.17.1
-    express-graphql: ^0.12.0
-    format-json: ^1.0.3
-    global: ^4.4.0
-    graphql: ^15.4.0
-    jest-emotion: ^10.0.32
-    paths.macro: ^3.0.1
-    prop-types: ^15.7.2
-    react: 16.14.0
-    react-dom: 16.14.0
-    uuid: ^8.3.2
-    webpack: 4
-  languageName: unknown
-  linkType: soft
-
 "@storybook/example-react-ts-webpack4@workspace:examples/react-ts-webpack4":
   version: 0.0.0-use.local
   resolution: "@storybook/example-react-ts-webpack4@workspace:examples/react-ts-webpack4"
@@ -7504,7 +7414,6 @@ __metadata:
     "@storybook/addon-backgrounds": "workspace:*"
     "@storybook/addon-controls": "workspace:*"
     "@storybook/addon-cssresources": "workspace:*"
-    "@storybook/addon-decorator": "workspace:*"
     "@storybook/addon-design-assets": "workspace:*"
     "@storybook/addon-docs": "workspace:*"
     "@storybook/addon-essentials": "workspace:*"
@@ -7514,10 +7423,7 @@ __metadata:
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-knobs": "workspace:*"
     "@storybook/addon-links": "workspace:*"
-    "@storybook/addon-parameter": "workspace:*"
-    "@storybook/addon-preview-wrapper": "workspace:*"
     "@storybook/addon-queryparams": "workspace:*"
-    "@storybook/addon-roundtrip": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"
     "@storybook/addon-storysource": "workspace:*"
@@ -36384,16 +36290,6 @@ fsevents@^1.2.7:
     object-assign: ^4.1.0
     prop-types: ^15.5.10
   checksum: 1b48cf636c1af90a15660ad024db1389716c495dcd19807700f0eb92678d8bd57fe362f40eb4d89a713e8db1c8ab8ac1e989cdf3b215d32ac1d3fbc4120f26d8
-  languageName: node
-  linkType: hard
-
-"react@npm:^16.8.0 || ^17.0.0":
-  version: 17.0.1
-  resolution: "react@npm:17.0.1"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: adaf04c179d1f3811ea7d221a0929643c2b0518e6e168cba554a4c3e2032c0c22a6a49e83f1b43f98bbf71d93fede73e69489082373bccf2142d13ae94fa3b20
   languageName: node
   linkType: hard
 

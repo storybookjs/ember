@@ -112,18 +112,6 @@
     "@storybook/web-components": {
       "implicitDependencies": []
     },
-    "@storybook/addon-decorator": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-parameter": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-preview-wrapper": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-roundtrip": {
-      "implicitDependencies": []
-    },
     "angular-cli": {
       "implicitDependencies": []
     },
@@ -140,9 +128,6 @@
       "implicitDependencies": []
     },
     "cra-ts-kitchen-sink": {
-      "implicitDependencies": []
-    },
-    "@storybook/example-devkits": {
       "implicitDependencies": []
     },
     "ember-example": {
