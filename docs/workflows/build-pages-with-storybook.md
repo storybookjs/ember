@@ -41,7 +41,7 @@ When you are building screens in this way, it is typical that the inputs of a co
     'vue/simple-page-implementation.2.mdx',
     'vue/simple-page-implementation.3.mdx',
     'angular/simple-page-implementation.ts.mdx',
-    'svelte/simple-page-implementation.js'
+    'svelte/simple-page-implementation.js',
   ]}
 />
 

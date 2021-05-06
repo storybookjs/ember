@@ -21,7 +21,7 @@
    */
   export let label = '';
 
-  let style = backgroundColor ? `background-color: ${backgroundColor}` : '';
+  $: style = backgroundColor ? `background-color: ${backgroundColor}` : '';
 
   const dispatch = createEventDispatcher();
 
