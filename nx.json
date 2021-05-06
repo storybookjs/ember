@@ -130,9 +130,6 @@
     "cra-ts-kitchen-sink": {
       "implicitDependencies": []
     },
-    "@storybook/example-devkits": {
-      "implicitDependencies": []
-    },
     "ember-example": {
       "implicitDependencies": []
     },
