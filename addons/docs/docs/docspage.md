@@ -122,14 +122,7 @@ Here's an example of rebuilding `DocsPage` out of doc blocks:
 
 ```js
 import React from 'react';
-import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  ArgsTable,
-  Stories,
-} from '@storybook/addon-docs/blocks';
+import { Title, Subtitle, Description, Primary, ArgsTable, Stories } from '@storybook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 
 export default {

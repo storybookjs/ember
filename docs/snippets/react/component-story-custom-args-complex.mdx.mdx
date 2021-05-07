@@ -1,21 +1,26 @@
 ```md
 <!--- YourComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import { YourComponent } from './your-component';
 
 <Meta title='Example of how to use argTypes and functions' />
 
 <!---👇 A function to apply some computations -->
+
 export const someFunction = (valuePropertyA, valuePropertyB) => {
-  <!--- makes some computations and returns something -->
+
+  <!--- Makes some computations and returns something -->
+
 };
 
 export const Template = ({propertyA,propertyB,...rest})=>{
+
   <!---👇 Assigns the function result to a variable -->
-  const someFunctionResult = someFunction(propertyA, propertyB);
-  return <YourComponent someProperty={someFunctionResult} {...rest} />;
+
+const someFunctionResult = someFunction(propertyA, propertyB);
+return <YourComponent someProperty={someFunctionResult} {...rest} />;
 }
 
 <Canvas>

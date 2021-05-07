@@ -85,10 +85,6 @@
       "root": "app/angular",
       "type": "library"
     },
-    "@storybook/aurelia": {
-      "root": "app/aurelia",
-      "type": "library"
-    },
     "@storybook/ember": {
       "root": "app/ember",
       "type": "library"
@@ -97,32 +93,12 @@
       "root": "app/html",
       "type": "library"
     },
-    "@storybook/marionette": {
-      "root": "app/marionette",
-      "type": "library"
-    },
-    "@storybook/marko": {
-      "root": "app/marko",
-      "type": "library"
-    },
-    "@storybook/mithril": {
-      "root": "app/mithril",
-      "type": "library"
-    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"
     },
-    "@storybook/rax": {
-      "root": "app/rax",
-      "type": "library"
-    },
     "@storybook/react": {
       "root": "app/react",
-      "type": "library"
-    },
-    "@storybook/riot": {
-      "root": "app/riot",
       "type": "library"
     },
     "@storybook/server": {
@@ -145,28 +121,8 @@
       "root": "app/web-components",
       "type": "library"
     },
-    "@storybook/addon-decorator": {
-      "root": "dev-kits/addon-decorator",
-      "type": "library"
-    },
-    "@storybook/addon-parameter": {
-      "root": "dev-kits/addon-parameter",
-      "type": "library"
-    },
-    "@storybook/addon-preview-wrapper": {
-      "root": "dev-kits/addon-preview-wrapper",
-      "type": "library"
-    },
-    "@storybook/addon-roundtrip": {
-      "root": "dev-kits/addon-roundtrip",
-      "type": "library"
-    },
     "angular-cli": {
       "root": "examples/angular-cli",
-      "type": "library"
-    },
-    "aurelia-kitchen-sink": {
-      "root": "examples/aurelia-kitchen-sink",
       "type": "library"
     },
     "cra-kitchen-sink": {
@@ -185,24 +141,12 @@
       "root": "examples/cra-ts-kitchen-sink",
       "type": "library"
     },
-    "@storybook/example-devkits": {
-      "root": "examples/dev-kits",
-      "type": "library"
-    },
     "ember-example": {
       "root": "examples/ember-cli",
       "type": "library"
     },
     "html-kitchen-sink": {
       "root": "examples/html-kitchen-sink",
-      "type": "library"
-    },
-    "marko-cli": {
-      "root": "examples/marko-cli",
-      "type": "library"
-    },
-    "mithril-example": {
-      "root": "examples/mithril-kitchen-sink",
       "type": "library"
     },
     "official-storybook": {
@@ -213,20 +157,12 @@
       "root": "examples/preact-kitchen-sink",
       "type": "library"
     },
-    "rax-kitchen-sink": {
-      "root": "examples/rax-kitchen-sink",
-      "type": "library"
-    },
     "@storybook/example-react-ts": {
       "root": "examples/react-ts",
       "type": "library"
     },
     "@storybook/example-react-ts-webpack4": {
       "root": "examples/react-ts-webpack4",
-      "type": "library"
-    },
-    "riot-example": {
-      "root": "examples/riot-kitchen-sink",
       "type": "library"
     },
     "server-kitchen-sink": {

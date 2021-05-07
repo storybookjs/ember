@@ -19,8 +19,8 @@ const Template = (args) => <DocumentScreen {...args} />;
 
 export const Simple = Template.bind({});
 Simple.args = {
-  user: PageLayout.Simple.user,
-  document: DocumentHeader.Simple.document,
-  subdocuments: DocumentList.Simple.documents,
+  user: PageLayout.Simple.args.user,
+  document: DocumentHeader.Simple.args.document,
+  subdocuments: DocumentList.Simple.args.documents,
 };
 ```
