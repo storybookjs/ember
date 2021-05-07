@@ -85,10 +85,6 @@
       "root": "app/angular",
       "type": "library"
     },
-    "@storybook/aurelia": {
-      "root": "app/aurelia",
-      "type": "library"
-    },
     "@storybook/ember": {
       "root": "app/ember",
       "type": "library"
@@ -125,28 +121,8 @@
       "root": "app/web-components",
       "type": "library"
     },
-    "@storybook/addon-decorator": {
-      "root": "dev-kits/addon-decorator",
-      "type": "library"
-    },
-    "@storybook/addon-parameter": {
-      "root": "dev-kits/addon-parameter",
-      "type": "library"
-    },
-    "@storybook/addon-preview-wrapper": {
-      "root": "dev-kits/addon-preview-wrapper",
-      "type": "library"
-    },
-    "@storybook/addon-roundtrip": {
-      "root": "dev-kits/addon-roundtrip",
-      "type": "library"
-    },
     "angular-cli": {
       "root": "examples/angular-cli",
-      "type": "library"
-    },
-    "aurelia-kitchen-sink": {
-      "root": "examples/aurelia-kitchen-sink",
       "type": "library"
     },
     "cra-kitchen-sink": {
@@ -163,10 +139,6 @@
     },
     "cra-ts-kitchen-sink": {
       "root": "examples/cra-ts-kitchen-sink",
-      "type": "library"
-    },
-    "@storybook/example-devkits": {
-      "root": "examples/dev-kits",
       "type": "library"
     },
     "ember-example": {

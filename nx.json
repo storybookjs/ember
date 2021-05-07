@@ -82,9 +82,6 @@
     "@storybook/angular": {
       "implicitDependencies": []
     },
-    "@storybook/aurelia": {
-      "implicitDependencies": []
-    },
     "@storybook/ember": {
       "implicitDependencies": []
     },
@@ -112,22 +109,7 @@
     "@storybook/web-components": {
       "implicitDependencies": []
     },
-    "@storybook/addon-decorator": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-parameter": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-preview-wrapper": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-roundtrip": {
-      "implicitDependencies": []
-    },
     "angular-cli": {
-      "implicitDependencies": []
-    },
-    "aurelia-kitchen-sink": {
       "implicitDependencies": []
     },
     "cra-kitchen-sink": {
@@ -140,9 +122,6 @@
       "implicitDependencies": []
     },
     "cra-ts-kitchen-sink": {
-      "implicitDependencies": []
-    },
-    "@storybook/example-devkits": {
       "implicitDependencies": []
     },
     "ember-example": {

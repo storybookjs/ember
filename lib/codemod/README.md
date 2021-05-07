@@ -227,7 +227,7 @@ story2.story = { name: 'second story' };
 Becomes:
 
 ```md
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 # Button
 
@@ -253,7 +253,7 @@ For example:
 ```js
 import React from 'react';
 import Button from './Button';
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 <Meta title='Button' />
 

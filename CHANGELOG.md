@@ -1,3 +1,15 @@
+## 6.3.0-alpha.21 (May 7, 2021)
+
+### Maintenance
+
+- Addon-docs: Fix doc blocks imports to import from ESM/CJS ([#14841](https://github.com/storybookjs/storybook/pull/14841))
+- Refactor aurelia into its own repo ([#14801](https://github.com/storybookjs/storybook/pull/14801))
+- Delete unmaintained dev-kits ([#14832](https://github.com/storybookjs/storybook/pull/14832))
+
+### Dependency Upgrades
+
+- Storyshots: Make `vue-jest` and `svelte` optional peer dependencies ([#14835](https://github.com/storybookjs/storybook/pull/14835))
+
 ## 6.3.0-alpha.20 (May 6, 2021)
 
 ### Bug Fixes
