@@ -113,7 +113,7 @@ module.exports = {
 Finally, you can create MDX files like this:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { AppComponent } from './app.component';
 
 <Meta title='App Component' component={AppComponent} />
@@ -139,7 +139,7 @@ Also, to use the `Props` doc block, you need to set up Compodoc, [as described a
 When you are using `template`, `moduleMetadata` and/or `addDecorators` with `storiesOf` then you can easily translate your story to MDX, too:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { CheckboxComponent, RadioButtonComponent } from './my-components';
 import { moduleMetadata } from '@storybook/angular';
 

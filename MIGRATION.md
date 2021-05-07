@@ -1,5 +1,8 @@
 <h1>Migration</h1>
 
+- [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [6.3 deprecations](#63-deprecations)
+    - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
@@ -152,6 +155,24 @@
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
+## From version 6.2.x to 6.3.0
+
+### 6.3 deprecations
+
+#### Deprecated scoped blocks imports
+
+In 6.3, we changed doc block imports from `@storybook/addon-docs/blocks` to `@storybook/addon-docs`. This makes it possible for bundlers to automatically choose the ESM or CJS version of the library depending on the context.
+
+To update your code, you should be able to global replace `@storybook/addon-docs/blocks` with `@storybook/addon-docs`. Example:
+
+```js
+// before
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+// after
+import { Meta, Story } from '@storybook/addon-docs';
+```
+
 ## From version 6.1.x to 6.2.0
 
 ### MDX pattern tweaked
@@ -205,9 +226,9 @@ Please also file an issue if you need to opt out. We plan to remove the legacy r
 
 ### Packages now available as ESModules
 
-Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. To fix, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
+Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. One common culprit is doc blocks, which [is fixed in 6.3](#deprecated-scoped-blocks-imports). In 6.2, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
 
-```js
+```json
 // In your jest config
 transformIgnorePatterns: ['/node_modules/(?!@storybook)']
 ```
