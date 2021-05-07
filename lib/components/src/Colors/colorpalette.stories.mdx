@@ -1,4 +1,4 @@
-import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
 
 import { themes, ThemeProvider, convert, ensure } from '@storybook/theming';
 
@@ -13,21 +13,22 @@ import { SideBySide } from './SideBySide';
 Dark theme Colors
 
 <ColorPalette>
-  {Object.entries(convert(themes.dark).color).map(([k,v]) => {
+  {Object.entries(convert(themes.dark).color).map(([k, v]) => {
     if (typeof v === 'string' && (v.match(/^#/) || v.match(/^rgb/) || k.match(/color/i))) {
-      return (
-        <ColorItem
-          key={k}
-          title={k}
-          colors={{ [k]: v }}
-        />
-      );
+      return <ColorItem key={k} title={k} colors={{ [k]: v }} />;
     } else if (typeof v === 'object') {
       return (
         <ColorItem
           key={k}
           title={k}
-          colors={Object.entries(v).reduce((acc, [key, value]) => (typeof value === 'string' && (value.match(/^#/) || value.match(/^rgb/) || key.match(/color/i))) ? {...acc, [key]: value} : acc, {})}
+          colors={Object.entries(v).reduce(
+            (acc, [key, value]) =>
+              typeof value === 'string' &&
+              (value.match(/^#/) || value.match(/^rgb/) || key.match(/color/i))
+                ? { ...acc, [key]: value }
+                : acc,
+            {}
+          )}
         />
       );
     }
@@ -69,21 +70,22 @@ Dark theme Backgrounds
 Light theme Colors
 
 <ColorPalette>
-  {Object.entries(convert(themes.light).color).map(([k,v]) => {
+  {Object.entries(convert(themes.light).color).map(([k, v]) => {
     if (typeof v === 'string' && (v.match(/^#/) || v.match(/^rgb/) || k.match(/color/i))) {
-      return (
-        <ColorItem
-          key={k}
-          title={k}
-          colors={{ [k]: v }}
-        />
-      );
+      return <ColorItem key={k} title={k} colors={{ [k]: v }} />;
     } else if (typeof v === 'object') {
       return (
         <ColorItem
           key={k}
           title={k}
-          colors={Object.entries(v).reduce((acc, [key, value]) => (typeof value === 'string' && (value.match(/^#/) || value.match(/^rgb/) || key.match(/color/i))) ? {...acc, [key]: value} : acc, {})}
+          colors={Object.entries(v).reduce(
+            (acc, [key, value]) =>
+              typeof value === 'string' &&
+              (value.match(/^#/) || value.match(/^rgb/) || key.match(/color/i))
+                ? { ...acc, [key]: value }
+                : acc,
+            {}
+          )}
         />
       );
     }

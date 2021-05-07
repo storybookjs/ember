@@ -42,7 +42,7 @@ To use the props table in [MDX](./mdx.md), use the `ArgsTable` block:
 
 ```js
 // MyComponent.stories.mdx
-import { ArgsTable } from '@storybook/addon-docs/blocks';
+import { ArgsTable } from '@storybook/addon-docs';
 import { MyComponent } from './MyComponent';
 
 # My Component!

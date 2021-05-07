@@ -6,7 +6,7 @@ exports[`docs-mdx-compiler-plugin previews.mdx 1`] = `
 import { assertIsFn, AddContext } from '@storybook/addon-docs';
 
 import { Button } from '@storybook/react/demo';
-import { Canvas, Story, Meta } from '@storybook/addon-docs/blocks';
+import { Canvas, Story, Meta } from '@storybook/addon-docs';
 
 const layoutProps = {};
 const MDXLayout = 'wrapper';
