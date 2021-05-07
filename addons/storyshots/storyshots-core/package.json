@@ -132,7 +132,13 @@
     "rxjs": {
       "optional": true
     },
+    "svelte": {
+      "optional": true
+    },
     "vue": {
+      "optional": true
+    },
+    "vue-jest": {
       "optional": true
     }
   },

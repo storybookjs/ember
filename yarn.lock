@@ -6090,7 +6090,11 @@ __metadata:
       optional: true
     rxjs:
       optional: true
+    svelte:
+      optional: true
     vue:
+      optional: true
+    vue-jest:
       optional: true
   languageName: unknown
   linkType: soft
