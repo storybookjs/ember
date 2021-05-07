@@ -226,11 +226,11 @@ Please also file an issue if you need to opt out. We plan to remove the legacy r
 
 ### Packages now available as ESModules
 
-Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. To fix, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
+Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. One common culprit is doc blocks, which [is fixed in 6.3](#deprecated-scoped-blocks-imports). In 6.2, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
 
-```js
+```json
 // In your jest config
-transformIgnorePatterns: ['/node_modules/(?!@storybook)'];
+transformIgnorePatterns: ['/node_modules/(?!@storybook)']
 ```
 
 ### 6.2 Deprecations
