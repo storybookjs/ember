@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story, ComponentStory } from '@storybook/react';
+import { ComponentMeta, Story, ComponentStory } from '@storybook/react';
 import TsButton from '../../components/TsButton';
 
 export default {
@@ -12,7 +12,7 @@ export default {
       </>
     ),
   ],
-} as Meta;
+} as ComponentMeta<typeof TsButton>;
 
 const Template: Story = (args) => <TsButton {...args} />;
 

@@ -1,7 +1,18 @@
 import { ComponentProps, JSXElementConstructor } from 'react';
-import type { Story } from './types-6-0';
+import type { Story, Meta } from './types-6-0';
 
 export * from './types-6-0';
+
+/**
+ * For the common case where a component's stories are simple components that receives args as props:
+ *
+ * ```tsx
+ * export default { ... } as ComponentMeta<typeof Button>;
+ * ```
+ */
+export type ComponentMeta<
+  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
+> = Meta<ComponentProps<T>>;
 
 /**
  * For the common case where a story is a simple component that receives args as props:
