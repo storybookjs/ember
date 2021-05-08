@@ -25,7 +25,6 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-events',
     '@storybook/addon-knobs',
-    '@storybook/addon-cssresources',
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
     '@storybook/addon-graphql',
