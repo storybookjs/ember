@@ -1,5 +1,5 @@
 import React from 'react';
-import { DocsContainer } from '@storybook/addon-docs/blocks';
+import { DocsContainer } from '@storybook/addon-docs';
 import { themes } from '@storybook/theming';
 import markdown from './markdown.stories.mdx';
 

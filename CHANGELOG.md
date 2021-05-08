@@ -1,3 +1,204 @@
+## 6.3.0-alpha.21 (May 7, 2021)
+
+### Maintenance
+
+- Addon-docs: Fix doc blocks imports to import from ESM/CJS ([#14841](https://github.com/storybookjs/storybook/pull/14841))
+- Refactor aurelia into its own repo ([#14801](https://github.com/storybookjs/storybook/pull/14801))
+- Delete unmaintained dev-kits ([#14832](https://github.com/storybookjs/storybook/pull/14832))
+
+### Dependency Upgrades
+
+- Storyshots: Make `vue-jest` and `svelte` optional peer dependencies ([#14835](https://github.com/storybookjs/storybook/pull/14835))
+
+## 6.3.0-alpha.20 (May 6, 2021)
+
+### Bug Fixes
+
+- Vue3: Fix components in decorators ([#14809](https://github.com/storybookjs/storybook/pull/14809))
+- Accessibility: Adds title to close button on settings page ([#14808](https://github.com/storybookjs/storybook/pull/14808))
+
+### Maintenance
+
+- Refactor marionette into its own repo ([#14802](https://github.com/storybookjs/storybook/pull/14802))
+- Refactor rax to its own repo ([#14799](https://github.com/storybookjs/storybook/pull/14799))
+- Refactor marko into its own repo ([#14803](https://github.com/storybookjs/storybook/pull/14803))
+- Refactor mithril into its own repo ([#14804](https://github.com/storybookjs/storybook/pull/14804))
+- Refactor riot to its own repo ([#14800](https://github.com/storybookjs/storybook/pull/14800))
+- UI: Styling updates ([#14820](https://github.com/storybookjs/storybook/pull/14820))
+
+## 6.3.0-alpha.19 (May 3, 2021)
+
+### Features
+
+- Addon-toolbars: Add optional label for toolbar items ([#14776](https://github.com/storybookjs/storybook/pull/14776))
+
+### Maintenance
+
+- Core: Remove spurious package.json warning ([#14785](https://github.com/storybookjs/storybook/pull/14785))
+
+## 6.3.0-alpha.18 (May 2, 2021)
+
+### Features
+
+- Angular: Filter out args whose argType are missing a control or action ([#14779](https://github.com/storybookjs/storybook/pull/14779))
+
+### Maintenance
+
+- Addon-docs: Allow doc blocks to CJS imported ([#14769](https://github.com/storybookjs/storybook/pull/14769))
+
+## 6.3.0-alpha.17 (April 30, 2021)
+
+### Features
+
+- Core: Add option to include story names when sorting ([#12520](https://github.com/storybookjs/storybook/pull/12520))
+- Addon-actions: Add 'New Action' indicator ([#14728](https://github.com/storybookjs/storybook/pull/14728))
+- Addon-docs: Add parameter to show code by default ([#14729](https://github.com/storybookjs/storybook/pull/14729))
+
+### Bug Fixes
+
+- Addon-docs: Add classnames for Preview block ([#14685](https://github.com/storybookjs/storybook/pull/14685))
+- UI: Fix toolbar text using theme color ([#14308](https://github.com/storybookjs/storybook/pull/14308))
+
+### Maintenance
+
+- Core: Protect core metadata from decorators ([#13512](https://github.com/storybookjs/storybook/pull/13512))
+- Addon-a11y: Reorder color blindness types by most common ([#14768](https://github.com/storybookjs/storybook/pull/14768))
+
+## 6.3.0-alpha.16 (April 29, 2021)
+
+### Bug Fixes
+
+- Core: Fix `features`, `core`, `logLevel` in main.js config types ([#14745](https://github.com/storybookjs/storybook/pull/14745))
+- Angular: Fix windows path for tsconfig ([#14747](https://github.com/storybookjs/storybook/pull/14747))
+
+### Maintenance
+
+- Build: Change nx cloud access token to read-only token ([#14744](https://github.com/storybookjs/storybook/pull/14744))
+
+### Dependency Upgrades
+
+- Addon-a11y/Storyshots: Upgrade axe-core to 4.2.0 and related dependencies ([#14749](https://github.com/storybookjs/storybook/pull/14749))
+
+## 6.3.0-alpha.15 (April 28, 2021)
+
+### Features
+
+- Storyshots: Add `beforeAxeTest` hook ([#14563](https://github.com/storybookjs/storybook/pull/14563))
+- API: Add addon keyboard shortcuts & create shortcuts for addon-viewport ([#14658](https://github.com/storybookjs/storybook/pull/14658))
+
+### Bug Fixes
+
+- Storyshots/Preact: Add pragma @jsxRuntime classic ([#13849](https://github.com/storybookjs/storybook/pull/13849))
+- Core: Don't recreate a bound story function each time we call a decorated story ([#14692](https://github.com/storybookjs/storybook/pull/14692))
+
+### Maintenance
+
+- Build: Add NX bootstrap optimization ([#14535](https://github.com/storybookjs/storybook/pull/14535))
+
+## 6.2.9 (April 23, 2021)
+
+### Bug Fixes
+
+- Angular: set the @ViewChild with a non-empty value in StorybookWrapperComponent ([#14586](https://github.com/storybookjs/storybook/pull/14586))
+- Addon-docs: Fix ArgsTable sorting when using of={Component} ([#14669](https://github.com/storybookjs/storybook/pull/14669))
+- Server: Fix string escaping in CSF compiler ([#14615](https://github.com/storybookjs/storybook/pull/14615))
+
+### Maintenance
+
+- Examples: Move from placehold.it to place-hold.it for mock images ([#14637](https://github.com/storybookjs/storybook/pull/14637))
+
+## 6.3.0-alpha.14 (April 23, 2021)
+
+### Bug Fixes
+
+- Core: Fix URL handling in Firefox ([#14556](https://github.com/storybookjs/storybook/pull/14556))
+- Build: Create webpack stats target directory if needed and accept boolean flag ([#14690](https://github.com/storybookjs/storybook/pull/14690))
+
+### Maintenance
+
+- Docs: Remove `babel-loader` and `@babel/core` peer deps ([#14689](https://github.com/storybookjs/storybook/pull/14689))
+- Use Storybook's built-in accessibility icon for VisionDeficiency tab. ([#14681](https://github.com/storybookjs/storybook/pull/14681))
+
+## 6.3.0-alpha.13 (April 21, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Fix ArgsTable sorting when using of={Component} ([#14669](https://github.com/storybookjs/storybook/pull/14669))
+
+### Maintenance
+
+- CLI: Rename preact template files to JSX ([#14670](https://github.com/storybookjs/storybook/pull/14670))
+
+## 6.3.0-alpha.12 (April 20, 2021)
+
+### Maintenance
+
+- Angular: Refactor angular server ([#14358](https://github.com/storybookjs/storybook/pull/14358))
+- CLI: Rename react template files to jsx ([#14650](https://github.com/storybookjs/storybook/pull/14650))
+
+## 6.3.0-alpha.11 (April 19, 2021)
+
+### Features
+
+- CLI: Support community builders in `sb init` ([#14651](https://github.com/storybookjs/storybook/pull/14651))
+- Angular: Support Ivy addon ([#14649](https://github.com/storybookjs/storybook/pull/14649))
+
+### Maintenance
+
+- Add `funding` to manifests ([#14647](https://github.com/storybookjs/storybook/pull/14647))
+
+## 6.3.0-alpha.10 (April 18, 2021)
+
+### Bug Fixes
+
+- Modified Swatches keys to avoid duplicates ([#14636](https://github.com/storybookjs/storybook/pull/14636))
+
+### Maintenance
+
+- ESM tweaks for vite builder ([#14641](https://github.com/storybookjs/storybook/pull/14641))
+- Examples: Move from placehold.it to place-hold.it for mock images ([#14637](https://github.com/storybookjs/storybook/pull/14637))
+
+## 6.3.0-alpha.9 (April 17, 2021)
+
+### Features
+
+- Preact: Add react compat by default ([#14555](https://github.com/storybookjs/storybook/pull/14555))
+
+### Bug Fixes
+
+- Addon-docs: Fix MD code snippet format inside Description ([#14495](https://github.com/storybookjs/storybook/pull/14495))
+- Server: Fix string escaping in CSF compiler ([#14615](https://github.com/storybookjs/storybook/pull/14615))
+
+### Maintenance
+
+- Maintenance: Improve issue templates ([#14543](https://github.com/storybookjs/storybook/pull/14543))
+
+## 6.3.0-alpha.8 (April 15, 2021)
+
+### Features
+
+- Angular: Create actions for Outputs by default ([#14299](https://github.com/storybookjs/storybook/pull/14299))
+
+### Bug Fixes
+
+- Addon-a11y: Fix crypto in webpack5 ([#14592](https://github.com/storybookjs/storybook/pull/14592))
+- Storyshots: Preserve authentication information in Storybook URL ([#14582](https://github.com/storybookjs/storybook/pull/14582))
+
+### Maintenance
+
+- Angular: Add template MDX example ([#14597](https://github.com/storybookjs/storybook/pull/14597))
+
+### Dependency Upgrades
+
+- Remove unused inquirer dependency ([#14590](https://github.com/storybookjs/storybook/pull/14590))
+
+## 6.2.8 (April 14, 2021)
+
+### Bug Fixes
+
+- CLI: Properly detect vuetify3 ([#14552](https://github.com/storybookjs/storybook/pull/14552))
+- Core: Fix build config inconsistency ([#14566](https://github.com/storybookjs/storybook/pull/14566))
+
 ## 6.3.0-alpha.7 (April 14, 2021)
 
 ### Features

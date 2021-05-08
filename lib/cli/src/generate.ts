@@ -26,7 +26,7 @@ program
   .option('-t --type <type>', 'Add Storybook for a specific project type')
   .option('--story-format <csf | csf-ts | mdx >', 'Generate stories in a specified format')
   .option('-y --yes', 'Answer yes to all prompts')
-  .option('-b --builder <webpack4 | webpack5>', 'Builder library')
+  .option('-b --builder <builder>', 'Builder library')
   .option('-l --linkable', 'Prepare installation for link (contributor helper)')
   .action((options) => initiate(options, pkg));
 
@@ -130,7 +130,3 @@ program.on('command:*', ([invalidCmd]) => {
 });
 
 program.usage('<command> [options]').version(pkg.version).parse(process.argv);
-
-if (program.rawArgs.length < 3) {
-  program.help();
-}

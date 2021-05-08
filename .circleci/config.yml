@@ -6,7 +6,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: [ 'small', 'medium', 'large', 'xlarge' ]
+        enum: ['small', 'medium', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -104,7 +104,6 @@ jobs:
             - examples
             - node_modules
             - addons
-            - dev-kits
             - app
             - lib
   chromatic:
@@ -177,12 +176,12 @@ jobs:
           condition:
             and:
               - not:
-                  equal: [ master, << pipeline.git.branch >> ]
+                  equal: [master, << pipeline.git.branch >>]
               - not:
-                  equal: [ next, << pipeline.git.branch >> ]
+                  equal: [next, << pipeline.git.branch >>]
           steps:
             - ensure-pr-is-labeled-with:
-                label: "run e2e extended test suite"
+                label: 'run e2e extended test suite'
       - git-shallow-clone/checkout_advanced:
           clone_options: '--depth 1 --verbose'
       - attach_workspace:
@@ -348,24 +347,9 @@ jobs:
             cd examples/ember-cli
             yarn storybook --smoke-test --quiet
       - run:
-          name: Run marko-cli (smoke test)
-          command: |
-            cd examples/marko-cli
-            yarn storybook --smoke-test --quiet
-      - run:
           name: Run official-storybook (smoke test)
           command: |
             cd examples/official-storybook
-            yarn storybook --smoke-test --quiet
-      - run:
-          name: Run mithril kitchen-sink (smoke test)
-          command: |
-            cd examples/mithril-kitchen-sink
-            yarn storybook --smoke-test --quiet
-      - run:
-          name: Run riot kitchen-sink (smoke test)
-          command: |
-            cd examples/riot-kitchen-sink
             yarn storybook --smoke-test --quiet
       - run:
           name: Run preact kitchen-sink (smoke test)
@@ -373,7 +357,7 @@ jobs:
             cd examples/preact-kitchen-sink
             yarn storybook --smoke-test --quiet
       - run:
-          name: Run cra reac15 (smoke test)
+          name: Run cra react15 (smoke test)
           command: |
             cd examples/cra-react15
             yarn storybook --smoke-test --quiet

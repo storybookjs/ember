@@ -53,6 +53,7 @@ export interface StoryIdentifier {
   name: StoryName;
 }
 
+export type StoryContextUpdate = Partial<StoryContext>;
 export type StoryContext = StoryIdentifier & {
   [key: string]: any;
   parameters: Parameters;
@@ -76,6 +77,7 @@ export interface StorySortObjectParameter {
   method?: StorySortMethod;
   order?: any[];
   locales?: string;
+  includeNames?: boolean;
 }
 // The `any` here is the story store's `StoreItem` record. Ideally we should probably only
 // pass a defined subset of that full data, but we pass it all so far :shrug:
@@ -93,8 +95,13 @@ export interface OptionsParameter extends Object {
 
 export type StoryGetter = (context: StoryContext) => any;
 
+// This is the type of story function passed to a decorator -- does not rely on being passed any context
+export type PartialStoryFn<ReturnType = unknown> = (p?: StoryContextUpdate) => ReturnType;
+// This is a passArgsFirst: false user story function
 export type LegacyStoryFn<ReturnType = unknown> = (p?: StoryContext) => ReturnType;
+// This is a passArgsFirst: true user story function
 export type ArgsStoryFn<ReturnType = unknown> = (a?: Args, p?: StoryContext) => ReturnType;
+// This is either type of user story function
 export type StoryFn<ReturnType = unknown> = LegacyStoryFn<ReturnType> | ArgsStoryFn<ReturnType>;
 
 export type StoryWrapper = (
@@ -136,16 +143,16 @@ export interface StoryApi<StoryFnReturnType = unknown> {
 }
 
 export type DecoratorFunction<StoryFnReturnType = unknown> = (
-  fn: StoryFn<StoryFnReturnType>,
+  fn: PartialStoryFn<StoryFnReturnType>,
   c: StoryContext
-) => ReturnType<StoryFn<StoryFnReturnType>>;
+) => ReturnType<LegacyStoryFn<StoryFnReturnType>>;
 
 export type LoaderFunction = (c: StoryContext) => Promise<Record<string, any>>;
 
 export type DecorateStoryFunction<StoryFnReturnType = unknown> = (
-  storyFn: StoryFn<StoryFnReturnType>,
+  storyFn: LegacyStoryFn<StoryFnReturnType>,
   decorators: DecoratorFunction<StoryFnReturnType>[]
-) => StoryFn<StoryFnReturnType>;
+) => LegacyStoryFn<StoryFnReturnType>;
 
 export interface ClientStoryApi<StoryFnReturnType = unknown> {
   storiesOf(kind: StoryKind, module: NodeModule): StoryApi<StoryFnReturnType>;
