@@ -5569,30 +5569,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-cssresources@6.3.0-alpha.21, @storybook/addon-cssresources@workspace:*, @storybook/addon-cssresources@workspace:addons/cssresources":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-cssresources@workspace:addons/cssresources"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.21
-    "@storybook/api": 6.3.0-alpha.21
-    "@storybook/components": 6.3.0-alpha.21
-    "@storybook/core-events": 6.3.0-alpha.21
-    "@storybook/theming": 6.3.0-alpha.21
-    "@types/webpack-env": ^1.16.0
-    core-js: ^3.8.2
-    global: ^4.4.0
-    regenerator-runtime: ^0.13.7
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-design-assets@6.3.0-alpha.21, @storybook/addon-design-assets@workspace:*, @storybook/addon-design-assets@workspace:addons/design-assets":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-design-assets@workspace:addons/design-assets"
@@ -7185,7 +7161,6 @@ __metadata:
     "@storybook/addon-actions": "workspace:*"
     "@storybook/addon-backgrounds": "workspace:*"
     "@storybook/addon-controls": "workspace:*"
-    "@storybook/addon-cssresources": "workspace:*"
     "@storybook/addon-design-assets": "workspace:*"
     "@storybook/addon-docs": "workspace:*"
     "@storybook/addon-essentials": "workspace:*"
@@ -31395,7 +31370,6 @@ fsevents@^1.2.7:
     "@storybook/addon-actions": 6.3.0-alpha.21
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
     "@storybook/addon-controls": 6.3.0-alpha.21
-    "@storybook/addon-cssresources": 6.3.0-alpha.21
     "@storybook/addon-design-assets": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-events": 6.3.0-alpha.21
