@@ -125,7 +125,6 @@
     "@storybook/addon-backgrounds": "workspace:*",
     "@storybook/addon-controls": "workspace:*",
     "@storybook/addon-cssresources": "workspace:*",
-    "@storybook/addon-design-assets": "workspace:*",
     "@storybook/addon-docs": "workspace:*",
     "@storybook/addon-essentials": "workspace:*",
     "@storybook/addon-events": "workspace:*",

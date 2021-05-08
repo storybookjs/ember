@@ -34,9 +34,6 @@
     "@storybook/addon-cssresources": {
       "implicitDependencies": []
     },
-    "@storybook/addon-design-assets": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-docs": {
       "implicitDependencies": []
     },
