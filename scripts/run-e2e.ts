@@ -1,6 +1,6 @@
 /* eslint-disable no-irregular-whitespace */
 import path from 'path';
-import { remove, ensureDir, pathExists, writeFile, writeJSON } from 'fs-extra';
+import { remove, ensureDir, pathExists } from 'fs-extra';
 import { prompt } from 'enquirer';
 import pLimit from 'p-limit';
 
