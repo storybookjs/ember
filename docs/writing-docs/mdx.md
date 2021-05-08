@@ -180,7 +180,7 @@ You can also use anchors to target a specific section of a page:
 ```
 
 <div class="aside">
-💡 <strong>Note:</> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
 </div>
 
 ![MDX anchor example](./mdx-anchor.webp)
