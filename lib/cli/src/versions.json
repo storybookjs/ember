@@ -7,7 +7,6 @@
   "@storybook/addon-design-assets": "6.3.0-alpha.21",
   "@storybook/addon-docs": "6.3.0-alpha.21",
   "@storybook/addon-essentials": "6.3.0-alpha.21",
-  "@storybook/addon-events": "6.3.0-alpha.21",
   "@storybook/addon-google-analytics": "6.3.0-alpha.21",
   "@storybook/addon-graphql": "6.3.0-alpha.21",
   "@storybook/addon-jest": "6.3.0-alpha.21",

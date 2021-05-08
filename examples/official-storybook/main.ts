@@ -23,7 +23,6 @@ const config: StorybookConfig = {
     '@storybook/addon-storysource',
     '@storybook/addon-design-assets',
     '@storybook/addon-links',
-    '@storybook/addon-events',
     '@storybook/addon-knobs',
     '@storybook/addon-cssresources',
     '@storybook/addon-a11y',

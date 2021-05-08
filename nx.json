@@ -43,9 +43,6 @@
     "@storybook/addon-essentials": {
       "implicitDependencies": []
     },
-    "@storybook/addon-events": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-google-analytics": {
       "implicitDependencies": []
     },
