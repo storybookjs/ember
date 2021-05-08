@@ -49,9 +49,6 @@
     "@storybook/addon-google-analytics": {
       "implicitDependencies": []
     },
-    "@storybook/addon-graphql": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-jest": {
       "implicitDependencies": []
     },
