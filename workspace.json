@@ -17,24 +17,12 @@
       "root": "addons/controls",
       "type": "library"
     },
-    "@storybook/addon-cssresources": {
-      "root": "addons/cssresources",
-      "type": "library"
-    },
-    "@storybook/addon-design-assets": {
-      "root": "addons/design-assets",
-      "type": "library"
-    },
     "@storybook/addon-docs": {
       "root": "addons/docs",
       "type": "library"
     },
     "@storybook/addon-essentials": {
       "root": "addons/essentials",
-      "type": "library"
-    },
-    "@storybook/addon-events": {
-      "root": "addons/events",
       "type": "library"
     },
     "@storybook/addon-google-analytics": {
@@ -55,10 +43,6 @@
     },
     "@storybook/addon-links": {
       "root": "addons/links",
-      "type": "library"
-    },
-    "@storybook/addon-queryparams": {
-      "root": "addons/queryparams",
       "type": "library"
     },
     "@storybook/addon-storyshots": {
