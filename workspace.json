@@ -29,10 +29,6 @@
       "root": "addons/essentials",
       "type": "library"
     },
-    "@storybook/addon-events": {
-      "root": "addons/events",
-      "type": "library"
-    },
     "@storybook/addon-google-analytics": {
       "root": "addons/google-analytics",
       "type": "library"
