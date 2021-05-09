@@ -17,10 +17,6 @@
       "root": "addons/controls",
       "type": "library"
     },
-    "@storybook/addon-cssresources": {
-      "root": "addons/cssresources",
-      "type": "library"
-    },
     "@storybook/addon-design-assets": {
       "root": "addons/design-assets",
       "type": "library"
