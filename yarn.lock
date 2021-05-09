@@ -5941,33 +5941,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-queryparams@6.3.0-alpha.21, @storybook/addon-queryparams@workspace:*, @storybook/addon-queryparams@workspace:addons/queryparams":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-queryparams@workspace:addons/queryparams"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.21
-    "@storybook/api": 6.3.0-alpha.21
-    "@storybook/client-logger": 6.3.0-alpha.21
-    "@storybook/components": 6.3.0-alpha.21
-    "@storybook/core-events": 6.3.0-alpha.21
-    "@storybook/theming": 6.3.0-alpha.21
-    "@types/webpack-env": ^1.16.0
-    core-js: ^3.8.2
-    global: ^4.4.0
-    qs: ^6.10.0
-    regenerator-runtime: ^0.13.7
-    ts-dedent: ^2.0.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-storyshots-puppeteer@6.3.0-alpha.21, @storybook/addon-storyshots-puppeteer@workspace:*, @storybook/addon-storyshots-puppeteer@workspace:addons/storyshots/storyshots-puppeteer":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-storyshots-puppeteer@workspace:addons/storyshots/storyshots-puppeteer"
@@ -7170,7 +7143,6 @@ __metadata:
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-knobs": "workspace:*"
     "@storybook/addon-links": "workspace:*"
-    "@storybook/addon-queryparams": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"
     "@storybook/addon-storysource": "workspace:*"
@@ -31377,7 +31349,6 @@ fsevents@^1.2.7:
     "@storybook/addon-jest": 6.3.0-alpha.21
     "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
-    "@storybook/addon-queryparams": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storyshots-puppeteer": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21

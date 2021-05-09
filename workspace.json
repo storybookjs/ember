@@ -53,10 +53,6 @@
       "root": "addons/links",
       "type": "library"
     },
-    "@storybook/addon-queryparams": {
-      "root": "addons/queryparams",
-      "type": "library"
-    },
     "@storybook/addon-storyshots": {
       "root": "addons/storyshots/storyshots-core",
       "type": "library"

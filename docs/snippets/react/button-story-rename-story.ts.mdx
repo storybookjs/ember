@@ -3,9 +3,11 @@
 
 import React from 'react';
 
+import { Story } from '@storybook/react';
+
 import { Button, ButtonProps } from './Button';
 
-export const Primary: React.VFC<{}> = () => <Button primary>Button</Button>;
+export const Primary: Story = () => <Button primary>Button</Button>;
 
 Primary.storyName = 'I am the primary';
 ```

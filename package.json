@@ -133,7 +133,6 @@
     "@storybook/addon-jest": "workspace:*",
     "@storybook/addon-knobs": "workspace:*",
     "@storybook/addon-links": "workspace:*",
-    "@storybook/addon-queryparams": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",
     "@storybook/addon-storysource": "workspace:*",
