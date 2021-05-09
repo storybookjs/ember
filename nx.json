@@ -61,9 +61,6 @@
     "@storybook/addon-links": {
       "implicitDependencies": []
     },
-    "@storybook/addon-queryparams": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-storyshots": {
       "implicitDependencies": []
     },

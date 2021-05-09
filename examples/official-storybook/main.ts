@@ -29,7 +29,6 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
     '@storybook/addon-graphql',
-    '@storybook/addon-queryparams',
   ],
   core: {
     builder: 'webpack4',
