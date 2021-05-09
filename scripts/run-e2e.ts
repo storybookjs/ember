@@ -75,7 +75,7 @@ const runCypress = async ({ name }: Options, location: string, open: boolean) =>
   logger.info(`🤖 Running Cypress tests`);
   try {
     await exec(
-      `yarn cypress ${cypressCommand} --config integrationFolder="cypress/generated" --env location="${location}"`,
+      `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,integrationFolder="cypress/generated" --env location="${location}"`,
       { cwd: rootDir }
     );
     logger.info(`✅ E2E tests success`);
