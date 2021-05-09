@@ -22,7 +22,7 @@ export interface Parameters {
 
 const fromDeps = (...args: string[]): string =>
   [
-    'cd {{appName}}-{{version}}',
+    'cd {{appName}}',
     // Create `yarn.lock` to force Yarn to consider adding deps in this directory
     // and not look for a yarn workspace in parent directory
     'touch yarn.lock',
@@ -39,8 +39,8 @@ export const cra: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}}-{{version}} --use-npm',
-    'cd {{appName}}-{{version}}',
+    'npx create-react-app@{{version}} {{appName}} --use-npm',
+    'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
   ].join(' && '),
 };
@@ -51,7 +51,7 @@ export const cra_typescript: Parameters = {
   version: 'latest',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}}-{{version}} --template typescript --use-npm',
+    'npx create-react-app@{{version}} {{appName}} --template typescript --use-npm',
   ].join(' && '),
 };
 
@@ -82,7 +82,7 @@ export const react_in_yarn_workspace: Parameters = {
   name: 'react_in_yarn_workspace',
   version: 'latest',
   generator: [
-    'cd {{appName}}-{{version}}',
+    'cd {{appName}}',
     'echo "{ \\"name\\": \\"workspace-root\\", \\"private\\": true, \\"workspaces\\": [] }" > package.json',
     'touch yarn.lock',
     `yarn add react react-dom`,
@@ -96,14 +96,12 @@ const baseAngular: Parameters = {
   framework: 'angular',
   name: 'angular',
   version: 'latest',
-  generator: [
-    `npx --package @angular/cli@{{version}} ng new {{appName}}-{{version}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
-    `cd {{appName}}-{{version}}`,
-  ].join(' && '),
+  generator: `npx --package @angular/cli@{{version}} ng new {{appName}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
 };
 
-export const angularv10: Parameters = {
+export const angular10: Parameters = {
   ...baseAngular,
+  name: 'angular10',
   version: 'v10-lts',
 };
 
@@ -136,7 +134,7 @@ export const vue: Parameters = {
   generator: [
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    `npx -p @vue/cli@{{version}} vue create {{appName}}-{{version}} --default --packageManager=npm --no-git --force`,
+    `npx -p @vue/cli@{{version}} vue create {{appName}} --default --packageManager=npm --no-git --force`,
   ].join(' && '),
 };
 
@@ -148,7 +146,7 @@ export const vue3: Parameters = {
   generator: [
     `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    `npx -p @vue/cli@^4 vue create {{appName}}-{{version}} --preset=__default_vue_3__ --packageManager=npm --no-git --force`,
+    `npx -p @vue/cli@^4 vue create {{appName}} --preset=__default_vue_3__ --packageManager=npm --no-git --force`,
   ].join(' && '),
 };
 
@@ -174,7 +172,7 @@ export const preact: Parameters = {
   name: 'preact',
   version: 'latest',
   generator:
-    'npx preact-cli@{{version}} create preactjs-templates/default {{appName}}-{{version}} --yarn --install=false --git=false',
+    'npx preact-cli@{{version}} create preactjs-templates/default {{appName}} --yarn --install=false --git=false',
   ensureDir: false,
 };
 
@@ -197,5 +195,5 @@ export const svelte: Parameters = {
   framework: 'svelte',
   name: 'svelte',
   version: 'latest',
-  generator: 'npx degit sveltejs/template {{appName}}-{{version}}',
+  generator: 'npx degit sveltejs/template {{appName}}',
 };

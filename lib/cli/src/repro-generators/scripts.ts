@@ -72,7 +72,7 @@ const installYarn2 = async ({ cwd, pnp }: Options) => {
 
 const configureYarn2ForE2E = async ({ cwd }: Options) => {
   const commands = [
-    // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1
+    // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1 (URL is hardcoded in CircleCI config.yml)
     `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
     // Some required magic to be able to fetch deps from local registry
     `yarn config set unsafeHttpWhitelist --json '["localhost"]'`,
