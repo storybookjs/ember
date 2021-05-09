@@ -160,28 +160,12 @@ export const html: Parameters = {
   autoDetect: false,
 };
 
-export const mithril: Parameters = {
-  framework: 'mithril',
-  name: 'mithril',
-  version: 'latest',
-  generator: fromDeps('mithril@{{version}}'),
-};
-
 export const preact: Parameters = {
   framework: 'preact',
   name: 'preact',
   version: 'latest',
-  generator:
-    'npx preact-cli@{{version}} create preactjs-templates/default {{appName}} --yarn --install=false --git=false',
+  generator: 'npx preact-cli@{{version}} create default {{appName}} --install=false --git=false',
   ensureDir: false,
-};
-
-export const rax: Parameters = {
-  framework: 'rax',
-  name: 'rax',
-  version: 'latest',
-  // Rax versions are inconsistent 1.1.0-1 for some
-  generator: fromDeps('rax', 'rax-image', 'rax-link', 'rax-text', 'rax-view'),
 };
 
 export const sfcVue: Parameters = {
