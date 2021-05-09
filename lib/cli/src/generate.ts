@@ -102,7 +102,3 @@ program.on('command:*', ([invalidCmd]) => {
 });
 
 program.usage('<command> [options]').version(pkg.version).parse(process.argv);
-
-if (program.rawArgs.length < 3) {
-  program.help();
-}
