@@ -102,12 +102,19 @@ export const repro = async ({
     await createAndInit(cwd, selectedConfig, {
       e2e: !!e2e,
     });
-    await exec('git init', { cwd });
-    await exec('echo "node_modules" >> .gitignore', { cwd });
-    await exec('git add --all', { cwd });
-    await exec('git commit -am "added storybook"', { cwd });
-    await exec('git tag repro-base', { cwd });
+
+    if (!e2e) {
+      await initGitRepo(cwd);
+    }
   } catch (error) {
     logger.error('Failed to create repro');
   }
+};
+
+const initGitRepo = async (cwd: string) => {
+  await exec('git init', { cwd });
+  await exec('echo "node_modules" >> .gitignore', { cwd });
+  await exec('git add --all', { cwd });
+  await exec('git commit -am "added storybook"', { cwd });
+  await exec('git tag repro-base', { cwd });
 };
