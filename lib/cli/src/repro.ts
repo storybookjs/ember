@@ -12,6 +12,7 @@ interface ReproOptions {
   template?: string;
   e2e?: boolean;
   generator?: string;
+  pnp?: boolean;
 }
 
 const TEMPLATES = configs as Record<string, Parameters>;
@@ -31,6 +32,7 @@ export const repro = async ({
   framework,
   generator,
   e2e,
+  pnp,
 }: ReproOptions) => {
   if (list) {
     logger.info('Available templates');
@@ -101,6 +103,7 @@ export const repro = async ({
       : path.join(process.cwd(), selectedDirectory);
     await createAndInit(cwd, selectedConfig, {
       e2e: !!e2e,
+      pnp: !!pnp,
     });
 
     if (!e2e) {

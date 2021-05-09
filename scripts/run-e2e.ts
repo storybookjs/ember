@@ -117,16 +117,25 @@ const runTests = async ({ name, version, ...rest }: Parameters) => {
   if (!(await prepareDirectory(options))) {
     // Call repro cli
     const sbCLICommand = useLocalSbCli
-      ? 'node ../storybook/lib/cli/bin'
+      ? 'node ../storybook/lib/cli/bin repro'
       : // Need to use npx because at this time we don't have Yarn 2 installed
-        'npx -p @storybook/cli sb';
+        'npx -p @storybook/cli sb repro';
 
-    const commandArgs = options.framework
-      ? `--framework ${options.framework} --template ${options.name}`
-      : `--generator "${options.generator}"`;
+    const commandArgs = ['--e2e'];
+
+    if (options.framework) {
+      commandArgs.push(`--framework ${options.framework}`);
+      commandArgs.push(`--template ${options.name}`);
+    } else {
+      commandArgs.push(`--generator "${options.generator}"`);
+    }
+
+    if (pnp) {
+      commandArgs.push('--pnp');
+    }
 
     const targetFolder = path.join(siblingDir, `${name}-${version}`);
-    const command = `${sbCLICommand} repro ${targetFolder} ${commandArgs} --e2e`;
+    const command = `${sbCLICommand}  ${targetFolder} ${commandArgs.join(' ')}`;
     logger.debug(command);
     await exec(command, { cwd: siblingDir });
 
@@ -193,7 +202,7 @@ const runE2E = async (parameters: Parameters) => {
 };
 
 program.option('--clean', 'Clean up existing projects before running the tests', false);
-program.option('--use-yarn-2-pnp', 'Run tests using Yarn 2 PnP instead of Yarn 1 + npx', false);
+program.option('--pnp', 'Run tests using Yarn 2 PnP instead of Yarn 1 + npx', false);
 program.option(
   '--use-local-sb-cli',
   'Run tests using local @storybook/cli package (⚠️ Be sure @storybook/cli is properly build as it will not be rebuild before running the tests)',
@@ -208,7 +217,7 @@ program.option(
 program.parse(process.argv);
 
 const {
-  useYarn2Pnp,
+  pnp,
   useLocalSbCli,
   clean: startWithCleanSlate,
   args: frameworkArgs,

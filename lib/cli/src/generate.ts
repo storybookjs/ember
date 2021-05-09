@@ -96,13 +96,14 @@ program
 program
   .command('repro [outputDirectory]')
   .description('Create a reproduction from a set of possible templates')
-  .option('-f --framework <framework>', 'filter on given framework')
+  .option('-f --framework <framework>', 'Filter on given framework')
   .option('-t --template <template>', 'Use the given template')
   .option('-l --list', 'List available templates')
-  .option('-g --generator <generator>', 'use custom generator command')
+  .option('-g --generator <generator>', 'Use custom generator command')
+  .option('--pnp', "Use Yarn Plug'n'Play mode instead of node_modules one")
   .option('--e2e', 'Used in e2e context')
-  .action((outputDirectory, { framework, template, list, e2e, generator }) =>
-    repro({ outputDirectory, framework, template, list, e2e, generator }).catch((e) => {
+  .action((outputDirectory, { framework, template, list, e2e, generator, pnp }) =>
+    repro({ outputDirectory, framework, template, list, e2e, generator, pnp }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })

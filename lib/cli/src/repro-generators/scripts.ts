@@ -26,9 +26,9 @@ export interface Parameters {
 
 interface Configuration {
   e2e: boolean;
+  pnp: boolean;
 }
 
-const useYarnPnP = false;
 const useLocalSbCli = true;
 
 export interface Options extends Parameters {
@@ -36,6 +36,7 @@ export interface Options extends Parameters {
   creationPath: string;
   cwd?: string;
   e2e: boolean;
+  pnp: boolean;
 }
 
 export const exec = async (command: string, options: ExecOptions = {}) =>
@@ -49,12 +50,11 @@ export const exec = async (command: string, options: ExecOptions = {}) =>
     });
   });
 
-const installYarn2 = async ({ cwd }: Options) => {
+const installYarn2 = async ({ cwd, pnp }: Options) => {
   const commands = [
     `yarn set version berry`,
     `yarn config set enableGlobalCache true`,
-    // TODO: add a flag in `sb repro` command to enable Yarn Plug n Play mode
-    `yarn config set nodeLinker ${useYarnPnP ? 'pnp' : 'node-modules'}`,
+    `yarn config set nodeLinker ${pnp ? 'pnp' : 'node-modules'}`,
   ];
 
   const command = commands.join(' && ');
@@ -182,9 +182,9 @@ const doTask = async (
 export const createAndInit = async (
   cwd: string,
   { name, version, ensureDir: ensureDirOption = true, ...rest }: Parameters,
-  { e2e }: Configuration
+  { e2e, pnp }: Configuration
 ) => {
-  const options = {
+  const options: Options = {
     name,
     version,
     ensureDir: ensureDirOption,
@@ -192,6 +192,7 @@ export const createAndInit = async (
     creationPath: ensureDirOption ? path.join(cwd, '..') : cwd,
     cwd,
     e2e,
+    pnp,
     ...rest,
   };
 
