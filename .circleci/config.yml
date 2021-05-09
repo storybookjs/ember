@@ -229,7 +229,7 @@ jobs:
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
-  e2e-tests-cra-bench:
+  cra-bench:
     executor:
       class: medium
       name: sb_cypress_6_node_12
@@ -247,14 +247,12 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Set registry
-          command: yarn config set npmRegistryServer http://localhost:6000/
-      - run:
           name: Run @storybook/bench on a CRA project
-          command: yarn test:e2e-framework cra_bench
-      - store_artifacts:
-          path: /tmp/storybook/cypress
-          destination: cypress
+          command: |
+            cd ..
+            npx create-react-app cra-bench
+            cd cra-bench
+            npx @storybook/bench 'npx sb init' --label cra
   e2e-tests-pnp:
     executor:
       class: medium
@@ -451,7 +449,7 @@ workflows:
       - e2e-tests-pnp:
           requires:
             - publish
-      - e2e-tests-cra-bench:
+      - cra-bench:
           requires:
             - publish
   deploy:
