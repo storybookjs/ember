@@ -17,20 +17,12 @@
       "root": "addons/controls",
       "type": "library"
     },
-    "@storybook/addon-cssresources": {
-      "root": "addons/cssresources",
-      "type": "library"
-    },
     "@storybook/addon-docs": {
       "root": "addons/docs",
       "type": "library"
     },
     "@storybook/addon-essentials": {
       "root": "addons/essentials",
-      "type": "library"
-    },
-    "@storybook/addon-events": {
-      "root": "addons/events",
       "type": "library"
     },
     "@storybook/addon-google-analytics": {
