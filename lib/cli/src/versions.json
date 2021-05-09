@@ -3,7 +3,6 @@
   "@storybook/addon-actions": "6.3.0-alpha.21",
   "@storybook/addon-backgrounds": "6.3.0-alpha.21",
   "@storybook/addon-controls": "6.3.0-alpha.21",
-  "@storybook/addon-design-assets": "6.3.0-alpha.21",
   "@storybook/addon-docs": "6.3.0-alpha.21",
   "@storybook/addon-essentials": "6.3.0-alpha.21",
   "@storybook/addon-google-analytics": "6.3.0-alpha.21",

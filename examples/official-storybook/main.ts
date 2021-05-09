@@ -21,7 +21,6 @@ const config: StorybookConfig = {
     },
     { name: '@storybook/addon-essentials' },
     '@storybook/addon-storysource',
-    '@storybook/addon-design-assets',
     '@storybook/addon-links',
     '@storybook/addon-knobs',
     '@storybook/addon-a11y',
