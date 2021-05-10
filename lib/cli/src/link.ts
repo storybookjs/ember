@@ -22,7 +22,8 @@ export const link = async ({ reproUrl }: LinkOptions) => {
 
   logger.info(`Cloning ${reproUrl}`);
   await exec(`git clone ${reproUrl}`, { cwd: reprosDirectory });
-  const reproName = path.basename(reproUrl);
+  // Extract a repro name from url given as input (take the last part of the path and remove the extension)
+  const reproName = path.basename(reproUrl, path.extname(reproUrl));
   const repro = path.join(reprosDirectory, reproName);
 
   logger.info(`Linking ${repro}`);
@@ -30,6 +31,12 @@ export const link = async ({ reproUrl }: LinkOptions) => {
 
   logger.info(`Installing ${reproName}`);
   await exec(`yarn install`, { cwd: repro });
+
+  // ⚠️ TODO: Fix peer deps in `@storybook/preset-create-react-app`
+  logger.info(
+    `Magic stuff related to @storybook/preset-create-react-app, we need to fix peerDependencies`
+  );
+  await exec(`yarn add -D webpack-hot-middleware`, { cwd: repro });
 
   logger.info(`Running ${reproName} storybook`);
   await exec(`yarn run storybook`, { cwd: repro });
