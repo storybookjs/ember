@@ -5746,27 +5746,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-google-analytics@workspace:*, @storybook/addon-google-analytics@workspace:addons/google-analytics":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-google-analytics@workspace:addons/google-analytics"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.22
-    "@storybook/core-events": 6.3.0-alpha.22
-    core-js: ^3.8.2
-    global: ^4.4.0
-    react-ga: ^2.7.0
-    regenerator-runtime: ^0.13.7
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-jest@6.3.0-alpha.22, @storybook/addon-jest@workspace:*, @storybook/addon-jest@workspace:addons/jest":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-jest@workspace:addons/jest"
@@ -7055,7 +7034,6 @@ __metadata:
     "@storybook/addon-controls": "workspace:*"
     "@storybook/addon-docs": "workspace:*"
     "@storybook/addon-essentials": "workspace:*"
-    "@storybook/addon-google-analytics": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-links": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
@@ -35023,16 +35001,6 @@ fsevents@^1.2.7:
   version: 3.2.0
   resolution: "react-fast-compare@npm:3.2.0"
   checksum: 2a7d75ce9fb5da1e3c01f74a5cd592f3369a8cc8d44e93654bf147ab221f430238e8be70677e896f2bfcb96a1cb7a47a8d05d84633de764a9d57d27005a4bb9e
-  languageName: node
-  linkType: hard
-
-"react-ga@npm:^2.7.0":
-  version: 2.7.0
-  resolution: "react-ga@npm:2.7.0"
-  peerDependencies:
-    prop-types: ^15.6.0
-    react: ^15.6.2 || ^16.0
-  checksum: 3ccd0469f741921dc42356fb1fb081abf61165823e0c92c33584ba2d3982a799b30d673a19e0244254ebf6ba8959ae617de7b32024c8edec753f34e61f37dd17
   languageName: node
   linkType: hard
 

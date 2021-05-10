@@ -37,9 +37,6 @@
     "@storybook/addon-essentials": {
       "implicitDependencies": []
     },
-    "@storybook/addon-google-analytics": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-jest": {
       "implicitDependencies": []
     },

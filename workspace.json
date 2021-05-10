@@ -25,10 +25,6 @@
       "root": "addons/essentials",
       "type": "library"
     },
-    "@storybook/addon-google-analytics": {
-      "root": "addons/google-analytics",
-      "type": "library"
-    },
     "@storybook/addon-jest": {
       "root": "addons/jest",
       "type": "library"
