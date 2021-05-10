@@ -107,14 +107,19 @@ const runTests = async ({ name, ...rest }: Parameters) => {
       : // Need to use npx because at this time we don't have Yarn 2 installed
         'npx -p @storybook/cli sb repro';
 
-    const commandArgs = [`--framework ${options.framework}`, `--template ${options.name}`, '--e2e'];
+    const targetFolder = path.join(siblingDir, `${name}`);
+    const commandArgs = [
+      targetFolder,
+      `--framework ${options.framework}`,
+      `--template ${options.name}`,
+      '--e2e',
+    ];
 
     if (pnp) {
       commandArgs.push('--pnp');
     }
 
-    const targetFolder = path.join(siblingDir, `${name}`);
-    const command = `${sbCLICommand}  ${targetFolder} ${commandArgs.join(' ')}`;
+    const command = `${sbCLICommand} ${commandArgs.join(' ')}`;
     logger.debug(command);
     await exec(command, { cwd: siblingDir });
 

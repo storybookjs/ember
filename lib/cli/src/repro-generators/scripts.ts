@@ -96,8 +96,8 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
   }
 };
 
-const generate = async ({ cwd, name, version, generator }: Options) => {
-  const command = generator.replace(/{{appName}}/g, name).replace(/{{version}}/g, version);
+const generate = async ({ cwd, name, appName, version, generator }: Options) => {
+  const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
 
   logger.info(`🏗  Bootstrapping ${name} project`);
   logger.debug(command);
@@ -201,6 +201,8 @@ export const createAndInit = async (
   logger.log();
   logger.debug(options);
   logger.log();
+
+  console.log({ creationPath: options.creationPath });
 
   await doTask(generate, { ...options, cwd: options.creationPath });
 
