@@ -37,10 +37,6 @@
       "root": "addons/jest",
       "type": "library"
     },
-    "@storybook/addon-knobs": {
-      "root": "addons/knobs",
-      "type": "library"
-    },
     "@storybook/addon-links": {
       "root": "addons/links",
       "type": "library"

@@ -129,7 +129,6 @@
     "@storybook/addon-google-analytics": "workspace:*",
     "@storybook/addon-graphql": "workspace:*",
     "@storybook/addon-jest": "workspace:*",
-    "@storybook/addon-knobs": "workspace:*",
     "@storybook/addon-links": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",

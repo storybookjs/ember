@@ -2539,7 +2539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.4.5, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.4.5, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.13.6
   resolution: "@babel/runtime@npm:7.13.6"
   dependencies:
@@ -2874,7 +2874,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^10.0.27, @emotion/cache@npm:^10.0.9":
+"@emotion/cache@npm:^10.0.27":
   version: 10.0.29
   resolution: "@emotion/cache@npm:10.0.29"
   dependencies:
@@ -2886,7 +2886,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/core@npm:^10.0.9, @emotion/core@npm:^10.1.1":
+"@emotion/core@npm:^10.1.1":
   version: 10.1.1
   resolution: "@emotion/core@npm:10.1.1"
   dependencies:
@@ -2902,7 +2902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/css@npm:^10.0.27, @emotion/css@npm:^10.0.9":
+"@emotion/css@npm:^10.0.27":
   version: 10.0.27
   resolution: "@emotion/css@npm:10.0.27"
   dependencies:
@@ -5806,46 +5806,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-knobs@6.3.0-alpha.21, @storybook/addon-knobs@workspace:*, @storybook/addon-knobs@workspace:addons/knobs":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-knobs@workspace:addons/knobs"
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.21
-    "@storybook/api": 6.3.0-alpha.21
-    "@storybook/channels": 6.3.0-alpha.21
-    "@storybook/client-api": 6.3.0-alpha.21
-    "@storybook/components": 6.3.0-alpha.21
-    "@storybook/core-events": 6.3.0-alpha.21
-    "@storybook/theming": 6.3.0-alpha.21
-    "@types/enzyme": ^3.10.8
-    "@types/escape-html": 1.0.0
-    "@types/react-lifecycles-compat": ^3.0.1
-    "@types/react-select": ^3.1.2
-    "@types/webpack-env": ^1.16.0
-    copy-to-clipboard: ^3.3.1
-    core-js: ^3.8.2
-    enzyme: ^3.11.0
-    escape-html: ^1.0.3
-    fast-deep-equal: ^3.1.3
-    global: ^4.4.0
-    lodash: ^4.17.20
-    prop-types: ^15.7.2
-    qs: ^6.10.0
-    react-colorful: ^5.1.2
-    react-lifecycles-compat: ^3.0.4
-    react-select: ^3.2.0
-    regenerator-runtime: ^0.13.7
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@storybook/addon-links@6.3.0-alpha.21, @storybook/addon-links@workspace:*, @storybook/addon-links@workspace:addons/links":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-links@workspace:addons/links"
@@ -7085,7 +7045,6 @@ __metadata:
     "@storybook/addon-google-analytics": "workspace:*"
     "@storybook/addon-graphql": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
-    "@storybook/addon-knobs": "workspace:*"
     "@storybook/addon-links": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"
@@ -8127,13 +8086,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/escape-html@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@types/escape-html@npm:1.0.0"
-  checksum: f31bb2d8dc39b0a9b8da3d3e712c03b7cbac7273c214dacd82e760e85206f15bb744b79887c41d7555bcc99246eafed83bb79b0c765242a2558b4a3184f495b5
-  languageName: node
-  linkType: hard
-
 "@types/escodegen@npm:^0.0.6":
   version: 0.0.6
   resolution: "@types/escodegen@npm:0.0.6"
@@ -8751,15 +8703,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:*":
-  version: 17.0.1
-  resolution: "@types/react-dom@npm:17.0.1"
-  dependencies:
-    "@types/react": "*"
-  checksum: a4ec3b9978c919d112124c397ec7138a21a823308ffc81dcdb36f2bd25c76d67062961a3229ab11f59a97814fbceaace14316144a95ca0574937d03d5b9e8d8f
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:16.9.10":
   version: 16.9.10
   resolution: "@types/react-dom@npm:16.9.10"
@@ -8787,41 +8730,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-lifecycles-compat@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@types/react-lifecycles-compat@npm:3.0.1"
-  dependencies:
-    "@types/react": "*"
-  checksum: 31399ac394e9bf2dfbaabd925c84f0f53a9b6e1610599bbc076379fc3b1d48b83b981ea142fea501d6e1155111a4edcbe1e2e203eb4ee3fa46ebf3a7edf74d8e
-  languageName: node
-  linkType: hard
-
-"@types/react-select@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "@types/react-select@npm:3.1.2"
-  dependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    "@types/react-transition-group": "*"
-  checksum: a3ef2f0aaefb070c71842cdbc36dae687cb6592ea2c34a2f85779385959efc9c7b4c314efb4a596caf5faa5732612384fff5e19a95f241d1f67c90d707e6da19
-  languageName: node
-  linkType: hard
-
 "@types/react-syntax-highlighter@npm:11.0.5, @types/react-syntax-highlighter@npm:^11.0.5":
   version: 11.0.5
   resolution: "@types/react-syntax-highlighter@npm:11.0.5"
   dependencies:
     "@types/react": "*"
   checksum: f4aa5ae5d1e877946fd7667aa9fa27c1cbba23bbe2b4301933df70d7b5ee9c207c6ecdb19681916b57bf190e4c0f7803fce4e5359fa9a3548f7b100ee4508311
-  languageName: node
-  linkType: hard
-
-"@types/react-transition-group@npm:*":
-  version: 4.4.1
-  resolution: "@types/react-transition-group@npm:4.4.1"
-  dependencies:
-    "@types/react": "*"
-  checksum: 3def916f8dbcd5150dfcea072c6f388367c549fa7dba1380113a1c34d6191399e3c20a47633d2415229213aa4944fcf4c9c503e905d7a4e6b2e199c77c48bf0e
   languageName: node
   linkType: hard
 
@@ -11143,7 +11057,6 @@ __metadata:
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-jest": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
@@ -16072,7 +15985,6 @@ __metadata:
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-jest": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addons": 6.3.0-alpha.21
@@ -16142,7 +16054,6 @@ __metadata:
     "@storybook/addon-a11y": 6.3.0-alpha.21
     "@storybook/addon-actions": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addons": 6.3.0-alpha.21
     "@storybook/builder-webpack4": 6.3.0-alpha.21
@@ -17731,16 +17642,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-helpers@npm:^5.0.1":
-  version: 5.2.0
-  resolution: "dom-helpers@npm:5.2.0"
-  dependencies:
-    "@babel/runtime": ^7.8.7
-    csstype: ^3.0.2
-  checksum: f81ef28fa145496dbed631de8332d3e3bcf10f1776dc7b0ae356852e85daf6a9be01efb593aa4776f688875b09823bc30d20ccb11d7085b59fbcad492e7ae93e
-  languageName: node
-  linkType: hard
-
 "dom-serializer@npm:0":
   version: 0.2.2
   resolution: "dom-serializer@npm:0.2.2"
@@ -18596,7 +18497,6 @@ __metadata:
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
     "@storybook/addon-viewport": 6.3.0-alpha.21
@@ -19365,7 +19265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-html@npm:^1.0.3, escape-html@npm:~1.0.3":
+"escape-html@npm:~1.0.3":
   version: 1.0.3
   resolution: "escape-html@npm:1.0.3"
   checksum: 524c739d776b36c3d29fa08a22e03e8824e3b2fd57500e5e44ecf3cc4707c34c60f9ca0781c0e33d191f2991161504c295e98f68c78fe7baa6e57081ec6ac0a3
@@ -23340,7 +23240,6 @@ fsevents@^1.2.7:
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-jest": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-postcss": ^2.0.0
     "@storybook/addon-storyshots": 6.3.0-alpha.21
@@ -31287,7 +31186,6 @@ fsevents@^1.2.7:
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-graphql": 6.3.0-alpha.21
     "@storybook/addon-jest": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storyshots-puppeteer": 6.3.0-alpha.21
@@ -33889,7 +33787,6 @@ fsevents@^1.2.7:
     "@storybook/addon-a11y": 6.3.0-alpha.21
     "@storybook/addon-actions": 6.3.0-alpha.21
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
@@ -34299,7 +34196,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.4, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.10, prop-types@npm:^15.5.4, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -35265,17 +35162,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-input-autosize@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "react-input-autosize@npm:3.0.0"
-  dependencies:
-    prop-types: ^15.5.8
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.0
-  checksum: 5a9aeb3052145746bef4d94299595cbcc2236ac8e1b158a900a49107b06230a071bdc49f27e74223f735d1cf5b7c6add69f3a2fdb9c9c48ce33ad4492301b83e
-  languageName: node
-  linkType: hard
-
 "react-inspector@npm:^5.1.0":
   version: 5.1.0
   resolution: "react-inspector@npm:5.1.0"
@@ -35548,25 +35434,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-select@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "react-select@npm:3.2.0"
-  dependencies:
-    "@babel/runtime": ^7.4.4
-    "@emotion/cache": ^10.0.9
-    "@emotion/core": ^10.0.9
-    "@emotion/css": ^10.0.9
-    memoize-one: ^5.0.0
-    prop-types: ^15.6.0
-    react-input-autosize: ^3.0.0
-    react-transition-group: ^4.3.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  checksum: 49e4703b58275ae6ce8ba82ce490a9e5ca13dcf65eb8603c7bf2449cb6714491c34ac8f9486dd777222ede6e880ab0438623df95fb414dc27b1d5f7e76eb8490
-  languageName: node
-  linkType: hard
-
 "react-shallow-renderer@npm:^16.13.1":
   version: 16.14.1
   resolution: "react-shallow-renderer@npm:16.14.1"
@@ -35647,21 +35514,6 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: ba8037d93a3026b0b0dfe984a709096e6f622f5bf6e543fc873b2dfc7d4265b486c0f129512f2d842b732314676f046ef52d6069fe14e9ecc5b5ad9a8d4e51fd
-  languageName: node
-  linkType: hard
-
-"react-transition-group@npm:^4.3.0":
-  version: 4.4.1
-  resolution: "react-transition-group@npm:4.4.1"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    dom-helpers: ^5.0.1
-    loose-envify: ^1.4.0
-    prop-types: ^15.6.2
-  peerDependencies:
-    react: ">=16.6.0"
-    react-dom: ">=16.6.0"
-  checksum: b99029dc8ce9e827f7985755a2ada286f235a0533560067fe4f539c596b5518b2aa7f18d831d4513a217609c3ea1670b98c7508ba6422be3fd46bd8e65b51548
   languageName: node
   linkType: hard
 
@@ -39780,7 +39632,6 @@ resolve@1.19.0:
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
@@ -42698,7 +42549,6 @@ typescript@4.1.3:
     "@storybook/addon-backgrounds": 6.3.0-alpha.21
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
@@ -43063,7 +42913,6 @@ typescript@4.1.3:
     "@storybook/addon-controls": 6.3.0-alpha.21
     "@storybook/addon-docs": 6.3.0-alpha.21
     "@storybook/addon-jest": 6.3.0-alpha.21
-    "@storybook/addon-knobs": 6.3.0-alpha.21
     "@storybook/addon-links": 6.3.0-alpha.21
     "@storybook/addon-storyshots": 6.3.0-alpha.21
     "@storybook/addon-storysource": 6.3.0-alpha.21
