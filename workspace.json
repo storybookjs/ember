@@ -29,10 +29,6 @@
       "root": "addons/google-analytics",
       "type": "library"
     },
-    "@storybook/addon-graphql": {
-      "root": "addons/graphql",
-      "type": "library"
-    },
     "@storybook/addon-jest": {
       "root": "addons/jest",
       "type": "library"
