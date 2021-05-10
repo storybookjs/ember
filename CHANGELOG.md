@@ -5,11 +5,6 @@
 - Lit: Initial lit2 support ([#14600](https://github.com/storybookjs/storybook/pull/14600))
 - React: Add ComponentStory convenience type ([#14780](https://github.com/storybookjs/storybook/pull/14780))
 
-### Bug Fixes
-
-- Revert "UI: Boolean control change for UI Fix toggle button" ([#14865](https://github.com/storybookjs/storybook/pull/14865))
-- UI: Boolean control change for UI Fix toggle button ([#14408](https://github.com/storybookjs/storybook/pull/14408))
-
 ### Maintenance
 
 - Extract addon-knobs from monorepo ([#14874](https://github.com/storybookjs/storybook/pull/14874))
