@@ -95,12 +95,14 @@ export const repro = async ({
   if (!selectedConfig) {
     throw new Error('Repro: please specify a valid template type');
   }
-  logger.info(`Running ${selectedTemplate} into ${path.join(process.cwd(), selectedDirectory)}`);
 
   try {
     const cwd = path.isAbsolute(selectedDirectory)
       ? selectedDirectory
       : path.join(process.cwd(), selectedDirectory);
+
+    logger.info(`Running ${selectedTemplate} into ${cwd}`);
+
     await createAndInit(cwd, selectedConfig, {
       e2e: !!e2e,
       pnp: !!pnp,

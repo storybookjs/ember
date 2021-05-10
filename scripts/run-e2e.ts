@@ -26,10 +26,7 @@ export interface Options {
 const rootDir = path.join(__dirname, '..');
 const siblingDir = path.join(__dirname, '..', '..', 'storybook-e2e-testing');
 
-const prepareDirectory = async ({
-  cwd,
-  ensureDir: ensureDirOption = true,
-}: Options): Promise<boolean> => {
+const prepareDirectory = async ({ cwd }: Options): Promise<boolean> => {
   const siblingExists = await pathExists(siblingDir);
 
   if (!siblingExists) {
@@ -40,10 +37,6 @@ const prepareDirectory = async ({
 
   if (cwdExists) {
     return true;
-  }
-
-  if (ensureDirOption) {
-    await ensureDir(cwd);
   }
 
   return false;

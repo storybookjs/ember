@@ -181,15 +181,14 @@ const doTask = async (
 
 export const createAndInit = async (
   cwd: string,
-  { name, version, ensureDir: ensureDirOption = true, ...rest }: Parameters,
+  { name, version, ...rest }: Parameters,
   { e2e, pnp }: Configuration
 ) => {
   const options: Options = {
     name,
     version,
-    ensureDir: ensureDirOption,
     appName: path.basename(cwd),
-    creationPath: ensureDirOption ? path.join(cwd, '..') : cwd,
+    creationPath: path.join(cwd, '..'),
     cwd,
     e2e,
     pnp,

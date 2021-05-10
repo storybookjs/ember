@@ -10,10 +10,6 @@ export interface Parameters {
   generator: string;
   /** Use storybook framework detection */
   autoDetect?: boolean;
-  /** Pre-build hook */
-  preBuildCommand?: string;
-  /** When cli complains when folder already exists */
-  ensureDir?: boolean;
   /** Dependencies to add before building Storybook */
   additionalDeps?: string[];
   /** Add typescript dependency and creates a tsconfig.json file */
@@ -22,6 +18,7 @@ export interface Parameters {
 
 const fromDeps = (...args: string[]): string =>
   [
+    'mkdir {{appName}}',
     'cd {{appName}}',
     // Create `yarn.lock` to force Yarn to consider adding deps in this directory
     // and not look for a yarn workspace in parent directory
@@ -82,6 +79,7 @@ export const react_in_yarn_workspace: Parameters = {
   name: 'react_in_yarn_workspace',
   version: 'latest',
   generator: [
+    'mkdir {{appName}}',
     'cd {{appName}}',
     'echo "{ \\"name\\": \\"workspace-root\\", \\"private\\": true, \\"workspaces\\": [] }" > package.json',
     'touch yarn.lock',
@@ -117,7 +115,6 @@ export const web_components: Parameters = {
 };
 
 export const web_components_typescript: Parameters = {
-  framework: 'web-components',
   ...web_components,
   name: 'web_components_typescript',
   typescript: true,
@@ -164,8 +161,8 @@ export const preact: Parameters = {
   framework: 'preact',
   name: 'preact',
   version: 'latest',
-  generator: 'npx preact-cli@{{version}} create default {{appName}} --install=false --git=false',
-  ensureDir: false,
+  generator:
+    'npx preact-cli@{{version}} create preactjs-templates/default {{appName}} --install=false --git=false',
 };
 
 export const sfcVue: Parameters = {
