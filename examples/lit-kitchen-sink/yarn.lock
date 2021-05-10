@@ -1962,59 +1962,6 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@storybook/addon-events@npm:*":
-  version: 6.2.9
-  resolution: "@storybook/addon-events@npm:6.2.9"
-  dependencies:
-    "@storybook/addons": 6.2.9
-    "@storybook/api": 6.2.9
-    "@storybook/client-api": 6.2.9
-    "@storybook/core-events": 6.2.9
-    "@storybook/theming": 6.2.9
-    core-js: ^3.8.2
-    format-json: ^1.0.3
-    lodash: ^4.17.20
-    prop-types: ^15.7.2
-    react-lifecycles-compat: ^3.0.4
-    react-textarea-autosize: ^8.3.0
-    regenerator-runtime: ^0.13.7
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  checksum: 27aa1217494b0e5304857ba54be4841d434a007915d0adface7e82aae00b2cec259ad4a260a21e636d22b68f08a37882ed862ddb11d42372953bf17463eb41ee
-  languageName: node
-  linkType: hard
-
-"@storybook/addon-jest@portal:../../addons/jest::locator=lit-kitchen-sink%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@storybook/addon-jest@portal:../../addons/jest::locator=lit-kitchen-sink%40workspace%3A."
-  dependencies:
-    "@storybook/addons": 6.3.0-alpha.21
-    "@storybook/api": 6.3.0-alpha.21
-    "@storybook/components": 6.3.0-alpha.21
-    "@storybook/core-events": 6.3.0-alpha.21
-    "@storybook/theming": 6.3.0-alpha.21
-    core-js: ^3.8.2
-    global: ^4.4.0
-    react-sizeme: ^3.0.1
-    regenerator-runtime: ^0.13.7
-    upath: ^1.2.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  languageName: node
-  linkType: soft
-
 "@storybook/addon-links@portal:../../addons/links::locator=lit-kitchen-sink%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-links@portal:../../addons/links::locator=lit-kitchen-sink%40workspace%3A."
@@ -2060,6 +2007,26 @@ __metadata:
     prop-types: ^15.7.2
     react-syntax-highlighter: ^13.5.3
     regenerator-runtime: ^0.13.7
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  languageName: node
+  linkType: soft
+
+"@storybook/addon-toolbars@portal:../../addons/toolbars::locator=lit-kitchen-sink%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@storybook/addon-toolbars@portal:../../addons/toolbars::locator=lit-kitchen-sink%40workspace%3A."
+  dependencies:
+    "@storybook/addons": 6.3.0-alpha.21
+    "@storybook/api": 6.3.0-alpha.21
+    "@storybook/client-api": 6.3.0-alpha.21
+    "@storybook/components": 6.3.0-alpha.21
+    core-js: ^3.8.2
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
@@ -6502,15 +6469,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"format-json@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "format-json@npm:1.0.3"
-  bin:
-    format-json: ./format-json.js
-  checksum: e42caea6fc53c49b70aaf362e5815738920941e1d521558891dbbb555ee0531a801c39382e792bf1e2c6fa58b51977761eb630f69299e80ddf52c9026a48dba7
-  languageName: node
-  linkType: hard
-
 "format@npm:^0.2.0":
   version: 0.2.2
   resolution: "format@npm:0.2.2"
@@ -8375,10 +8333,9 @@ fsevents@^1.2.7:
     "@storybook/addon-backgrounds": "*"
     "@storybook/addon-controls": "*"
     "@storybook/addon-docs": "*"
-    "@storybook/addon-events": "*"
-    "@storybook/addon-jest": "*"
     "@storybook/addon-links": "*"
     "@storybook/addon-storysource": "*"
+    "@storybook/addon-toolbars": "*"
     "@storybook/addon-viewport": "*"
     "@storybook/builder-webpack5": "*"
     "@storybook/lit": "*"
@@ -12460,7 +12417,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"upath@npm:^1.1.1, upath@npm:^1.2.0":
+"upath@npm:^1.1.1":
   version: 1.2.0
   resolution: "upath@npm:1.2.0"
   checksum: 3746f24099bf69dbf8234cecb671e1016e1f6b26bd306de4ff8966fb0bc463fa1014ffc48646b375de1ab573660e3a0256f6f2a87218b2dfa1779a84ef6992fa
