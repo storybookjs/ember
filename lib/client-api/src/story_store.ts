@@ -32,7 +32,6 @@ import {
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
   StoreSelection,
-  StorySpecifier,
 } from './types';
 import { combineArgs, mapArgsToTypes, validateOptions } from './args';
 import { HooksContext } from './hooks';
