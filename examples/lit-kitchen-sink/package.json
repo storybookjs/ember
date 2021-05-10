@@ -1,6 +1,6 @@
 {
   "name": "lit-kitchen-sink",
-  "version": "6.3.0-alpha.14",
+  "version": "6.3.0-alpha.21",
   "private": true,
   "description": "",
   "keywords": [],
@@ -17,7 +17,6 @@
     "@storybook/addon-backgrounds": "portal:../../addons/backgrounds",
     "@storybook/addon-controls": "portal:../../addons/controls",
     "@storybook/addon-docs": "portal:../../addons/docs",
-    "@storybook/addon-events": "portal:../../addons/events",
     "@storybook/addon-jest": "portal:../../addons/jest",
     "@storybook/addon-links": "portal:../../addons/links",
     "@storybook/addon-storysource": "portal:../../addons/storysource",

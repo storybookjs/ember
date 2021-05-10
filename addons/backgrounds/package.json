@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-backgrounds",
-  "version": "6.3.0-alpha.19",
+  "version": "6.3.0-alpha.21",
   "description": "Switch backgrounds to view components in different settings",
   "keywords": [
     "addon",
@@ -45,12 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.19",
-    "@storybook/api": "6.3.0-alpha.19",
-    "@storybook/client-logger": "6.3.0-alpha.19",
-    "@storybook/components": "6.3.0-alpha.19",
-    "@storybook/core-events": "6.3.0-alpha.19",
-    "@storybook/theming": "6.3.0-alpha.19",
+    "@storybook/addons": "6.3.0-alpha.21",
+    "@storybook/api": "6.3.0-alpha.21",
+    "@storybook/client-logger": "6.3.0-alpha.21",
+    "@storybook/components": "6.3.0-alpha.21",
+    "@storybook/core-events": "6.3.0-alpha.21",
+    "@storybook/theming": "6.3.0-alpha.21",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3",
@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "8ba485343b31df4e65fce2494a5f615d6d6c661d",
+  "gitHead": "c3ffd75d5ae104f678f2f0bea2042b017373aa4a",
   "storybook": {
     "displayName": "Backgrounds",
     "icon": "https://user-images.githubusercontent.com/263385/101991667-479cc600-3c7c-11eb-96d3-410e936252e7.png",

@@ -10,8 +10,7 @@ import {
   styled,
   useTheme,
 } from '@storybook/theming';
-import { withCssResources } from '@storybook/addon-cssresources';
-import { DocsPage } from '@storybook/addon-docs/blocks';
+import { DocsPage } from '@storybook/addon-docs';
 import { Symbols } from '@storybook/components';
 
 import addHeadWarning from './head-warning';
@@ -87,7 +86,6 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  withCssResources,
   (StoryFn, { globals: { theme = 'light' } }) => {
     switch (theme) {
       case 'side-by-side': {

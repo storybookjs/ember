@@ -95,7 +95,7 @@ module.exports = {
 Finally, you can create MDX files like this:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { hbs } from 'ember-cli-htmlbars';
 
 <Meta title='App Component' component='AppComponent' />

@@ -182,7 +182,7 @@ Basic.args = { label: 'hello', background: '#ff0' };
 Here's the MDX equivalent:
 
 ```jsx
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 import { Button } from './Button';
 
 <Meta title="Button" component={Button} argTypes={{ background: { control: 'color' } }} />

@@ -42,6 +42,8 @@ With CSF, every named export in the file represents a story function by default.
   paths={[
     'react/my-component-story-basic-and-props.js.mdx',
     'vue/my-component-story-basic-and-props.js.mdx',
+    'svelte/my-component-story-basic-and-props.js.mdx',
+    'svelte/my-component-story-basic-and-props.native-format.mdx',
   ]}
 />
 
@@ -86,6 +88,8 @@ Consider Storybook’s ["Button" example](../writing-stories/introduction.md#def
     'react/button-story-click-handler.js.mdx',
     'vue/button-story-click-handler.2.js.mdx',
     'vue/button-story-click-handler.3.js.mdx',
+    'svelte/button-story-click-handler.js.mdx',
+    'svelte/button-story-click-handler.native-format.mdx',
   ]}
 />
 
@@ -177,6 +181,7 @@ Consider the following story file:
   paths={[
     'react/my-component-story-with-nonstory.js.mdx',
     'vue/my-component-story-with-nonstory.js.mdx',
+    'svelte/my-component-story-with-nonstory.js.mdx',
   ]}
 />
 
