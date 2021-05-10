@@ -72,12 +72,13 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
     viewMode = 'story';
   }
 
-  const singleStory = getFirstString(query.singleStory) === 'true';
+  // eslint-disable-next-line no-underscore-dangle
+  const singleStory = getFirstString(query.__singleStory) === 'true';
   const path = getFirstString(query.path);
   const storyId = path ? pathToId(path) : getFirstString(query.id);
 
   if (storyId) {
-    return { storySpecifier: storyId, args, viewMode, singleStory };
+    return { storySpecifier: storyId, args, viewMode, __singleStory: singleStory };
   }
 
   // Legacy URL format
@@ -86,7 +87,7 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
 
   if (kind && name) {
     deprecatedLegacyQuery();
-    return { storySpecifier: { kind, name }, args, viewMode, singleStory };
+    return { storySpecifier: { kind, name }, args, viewMode, __singleStory: singleStory };
   }
   return null;
 };

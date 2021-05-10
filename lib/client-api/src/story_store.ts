@@ -31,7 +31,8 @@ import {
   GetStorybookKind,
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
-  StoreSelection, StorySpecifier,
+  StoreSelection,
+  StorySpecifier,
 } from './types';
 import { combineArgs, mapArgsToTypes, validateOptions } from './args';
 import { HooksContext } from './hooks';
@@ -667,8 +668,8 @@ export default class StoryStore {
       return false;
     }
 
-    const { singleStory, storySpecifier } = this._selectionSpecifier;
-    return storySpecifier && storySpecifier !== '*' && singleStory;
+    const { __singleStory, storySpecifier } = this._selectionSpecifier;
+    return storySpecifier && storySpecifier !== '*' && __singleStory;
   }
 
   getSelection = (): StoreSelection => this._selection;
