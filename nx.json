@@ -43,9 +43,6 @@
     "@storybook/addon-jest": {
       "implicitDependencies": []
     },
-    "@storybook/addon-knobs": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-links": {
       "implicitDependencies": []
     },

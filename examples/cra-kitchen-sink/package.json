@@ -26,7 +26,6 @@
     "@storybook/addon-backgrounds": "6.3.0-alpha.21",
     "@storybook/addon-docs": "6.3.0-alpha.21",
     "@storybook/addon-jest": "6.3.0-alpha.21",
-    "@storybook/addon-knobs": "6.3.0-alpha.21",
     "@storybook/addon-links": "6.3.0-alpha.21",
     "@storybook/addon-storyshots": "6.3.0-alpha.21",
     "@storybook/addons": "6.3.0-alpha.21",

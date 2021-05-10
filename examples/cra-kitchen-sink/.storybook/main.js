@@ -16,7 +16,6 @@ module.exports = {
     },
     '@storybook/addon-actions',
     '@storybook/addon-links',
-    '@storybook/addon-knobs',
     '@storybook/addon-backgrounds',
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
