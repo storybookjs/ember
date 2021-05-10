@@ -50,6 +50,8 @@ Then you can access this environment variable anywhere, even within your stories
     'vue/my-component-with-env-variables.3.js.mdx',
     'angular/my-component-with-env-variables.ts.mdx',
     'web-components/my-component-with-env-variables.js.mdx',
+    'svelte/my-component-with-env-variables.js.mdx',
+    'svelte/my-component-with-env-variables.native-format.mdx',
   ]}
 />
 
