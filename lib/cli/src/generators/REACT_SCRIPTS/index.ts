@@ -7,10 +7,11 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   const extraMain = options.linkable
     ? {
         webpackFinal: `%%(config) => {
+      const path = require('path');
       // add monorepo root as a valid directory to import modules from
       config.resolve.plugins.forEach((p) => {
         if (Array.isArray(p.appSrcs)) {
-          p.appSrcs.push(path.join(__dirname, '..', '..', '..'));
+          p.appSrcs.push(path.join(__dirname, '..', '..', '..', 'storybook'));
         }
       });
       return config;
