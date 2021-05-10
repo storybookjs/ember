@@ -1,10 +1,8 @@
 import { PropsSort } from './PropsSort';
-import { ArgsTable, Meta } from '@storybook/addon-docs/blocks';
-import { SortType } from "@storybook/components";
+import { ArgsTable, Meta } from '@storybook/addon-docs';
+import { SortType } from '@storybook/components';
 
-<Meta 
-    title="PropsSort"
-/>
+<Meta title="PropsSort" />
 
 <ArgsTable of={PropsSort} />
 <ArgsTable of={PropsSort} exclude={['foo']} />
