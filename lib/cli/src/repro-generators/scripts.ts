@@ -1,7 +1,7 @@
-/* eslint-disable no-irregular-whitespace */
 import path from 'path';
 import { writeJSON } from 'fs-extra';
 import shell, { ExecOptions } from 'shelljs';
+import chalk from 'chalk';
 
 const logger = console;
 
@@ -39,39 +39,50 @@ export interface Options extends Parameters {
   pnp: boolean;
 }
 
-export const exec = async (command: string, options: ExecOptions = {}) =>
-  new Promise((resolve, reject) => {
-    shell.exec(command, options, (code) => {
+export const exec = async (
+  command: string,
+  options: ExecOptions = {},
+  { startMessage, errorMessage }: { startMessage?: string; errorMessage?: string } = {}
+) => {
+  if (startMessage) {
+    logger.info(startMessage);
+  }
+  logger.debug(command);
+  return new Promise((resolve, reject) => {
+    const defaultOptions: ExecOptions = {
+      silent: true,
+    };
+    shell.exec(command, { ...defaultOptions, ...options }, (code, stdout, stderr) => {
       if (code === 0) {
         resolve(undefined);
       } else {
-        reject(new Error(`command exited with code: ${code}`));
+        logger.error(chalk.red(`An error occurred while executing: \`${command}\``));
+        logger.error(`Command output was:${chalk.yellow(`\n${stdout}\n${stderr}`)}`);
+        if (errorMessage) {
+          logger.error(errorMessage);
+        }
+        reject(new Error(`command exited with code: ${code}: `));
       }
     });
   });
+};
 
 const installYarn2 = async ({ cwd, pnp }: Options) => {
-  const commands = [
+  const command = [
     `yarn set version berry`,
     `yarn config set enableGlobalCache true`,
     `yarn config set nodeLinker ${pnp ? 'pnp' : 'node-modules'}`,
-  ];
+  ].join(' && ');
 
-  const command = commands.join(' && ');
-
-  logger.info(`🧶 Installing Yarn 2`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Installing Yarn 2 failed`);
-    throw e;
-  }
+  await exec(
+    command,
+    { cwd },
+    { startMessage: `🧶 Installing Yarn 2`, errorMessage: `🚨 Installing Yarn 2 failed` }
+  );
 };
 
 const configureYarn2ForE2E = async ({ cwd }: Options) => {
-  const commands = [
+  const command = [
     // ⚠️ Need to set registry because Yarn 2 is not using the conf of Yarn 1 (URL is hardcoded in CircleCI config.yml)
     `yarn config set npmScopes --json '{ "storybook": { "npmRegistryServer": "http://localhost:6000/" } }'`,
     // Some required magic to be able to fetch deps from local registry
@@ -82,72 +93,68 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
     `yarn config set enableImmutableInstalls false`,
     // Discard all YN0013 - FETCH_NOT_CACHED messages
     `yarn config set logFilters --json '[ { "code": "YN0013", "level": "discard" } ]'`,
-  ];
+  ].join(' && ');
 
-  const command = commands.join(' && ');
-  logger.info(`🎛 Configuring Yarn 2`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Configuring Yarn 2 failed`);
-    throw e;
-  }
+  await exec(
+    command,
+    { cwd },
+    { startMessage: `🎛 Configuring Yarn 2`, errorMessage: `🚨 Configuring Yarn 2 failed` }
+  );
 };
 
 const generate = async ({ cwd, name, appName, version, generator }: Options) => {
   const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
 
-  logger.info(`🏗  Bootstrapping ${name} project`);
-  logger.debug(command);
-
-  try {
-    await exec(command, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Bootstrapping ${name} failed`);
-    throw e;
-  }
+  await exec(
+    command,
+    { cwd },
+    {
+      startMessage: `🏗 Bootstrapping ${name} project (this might take a few minutes)`,
+      errorMessage: `🚨 Bootstrapping ${name} failed`,
+    }
+  );
 };
 
 const initStorybook = async ({ cwd, autoDetect = true, name, e2e }: Options) => {
-  logger.info(`🎨 Initializing Storybook with @storybook/cli`);
-  try {
-    const type = autoDetect ? '' : `--type ${name}`;
-    const linkable = e2e ? '' : '--linkable';
-    const sbCLICommand = useLocalSbCli
-      ? `node ${path.join(__dirname, '../../esm/generate')}`
-      : `yarn dlx -p @storybook/cli sb`;
+  const type = autoDetect ? '' : `--type ${name}`;
+  const linkable = e2e ? '' : '--linkable';
+  const sbCLICommand = useLocalSbCli
+    ? `node ${path.join(__dirname, '../../esm/generate')}`
+    : `yarn dlx -p @storybook/cli sb`;
 
-    await exec(`${sbCLICommand} init --yes ${type} ${linkable}`, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Storybook initialization failed`);
-    throw e;
-  }
+  const command = `${sbCLICommand} init --yes ${type} ${linkable}`;
+
+  await exec(
+    command,
+    { cwd },
+    {
+      startMessage: `🎨 Initializing Storybook with @storybook/cli`,
+      errorMessage: `🚨 Storybook initialization failed`,
+    }
+  );
 };
 
 const addRequiredDeps = async ({ cwd, additionalDeps }: Options) => {
-  logger.info(`🌍 Adding needed deps & installing all deps`);
-  try {
-    // Remove any lockfile generated without Yarn 2
-    shell.rm(path.join(cwd, 'package-lock.json'), path.join(cwd, 'yarn.lock'));
-    if (additionalDeps && additionalDeps.length > 0) {
-      await exec(`yarn add -D ${additionalDeps.join(' ')}`, {
-        cwd,
-      });
-    } else {
-      await exec(`yarn install`, {
-        cwd,
-      });
+  // Remove any lockfile generated without Yarn 2
+  shell.rm(path.join(cwd, 'package-lock.json'), path.join(cwd, 'yarn.lock'));
+
+  const command =
+    additionalDeps && additionalDeps.length > 0
+      ? `yarn add -D ${additionalDeps.join(' ')}`
+      : `yarn install`;
+
+  await exec(
+    command,
+    { cwd },
+    {
+      startMessage: `🌍 Adding needed deps & installing all deps`,
+      errorMessage: `🚨 Dependencies installation failed`,
     }
-  } catch (e) {
-    logger.error(`🚨 Dependencies installation failed`);
-    throw e;
-  }
+  );
 };
 
 const addTypescript = async ({ cwd }: Options) => {
-  logger.info(`👮🏻 Adding typescript and tsconfig.json`);
+  logger.info(`👮 Adding typescript and tsconfig.json`);
   try {
     await exec(`yarn add -D typescript@latest`, { cwd });
     const tsConfig = {
@@ -163,7 +170,7 @@ const addTypescript = async ({ cwd }: Options) => {
     const tsConfigJsonPath = path.resolve(cwd, 'tsconfig.json');
     await writeJSON(tsConfigJsonPath, tsConfig, { encoding: 'utf8', spaces: 2 });
   } catch (e) {
-    logger.error(`🚨 Creating tsconfig.json failed`);
+    logger.error(`🚨 Creating tsconfig.json failed`);
     throw e;
   }
 };
@@ -196,7 +203,7 @@ export const createAndInit = async (
   };
 
   logger.log();
-  logger.info(`🏃‍♀️ Starting for ${name} ${version}`);
+  logger.info(`🏃 Starting for ${name} ${version}`);
   logger.log();
   logger.debug(options);
   logger.log();
@@ -205,9 +212,7 @@ export const createAndInit = async (
 
   await doTask(installYarn2, options);
 
-  if (e2e) {
-    await doTask(configureYarn2ForE2E, options);
-  }
+  await doTask(configureYarn2ForE2E, options, e2e);
 
   await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);

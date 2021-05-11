@@ -103,7 +103,7 @@ export const repro = async ({
       ? selectedDirectory
       : path.join(process.cwd(), selectedDirectory);
 
-    logger.info(`🏃‍♀️ Running ${selectedTemplate} into ${cwd}`);
+    logger.info(`🏃 Running ${selectedTemplate} into ${cwd}`);
 
     await createAndInit(cwd, selectedConfig, {
       e2e: !!e2e,
