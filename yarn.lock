@@ -6117,7 +6117,7 @@ __metadata:
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
     store2: ^2.12.0
-    telejson: ^5.1.0
+    telejson: ^5.2.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   peerDependencies:
@@ -6306,7 +6306,7 @@ __metadata:
     core-js: ^3.8.2
     global: ^4.4.0
     qs: ^6.10.0
-    telejson: ^5.1.0
+    telejson: ^5.2.0
   languageName: unknown
   linkType: soft
 
@@ -6317,7 +6317,7 @@ __metadata:
     "@storybook/channels": 6.3.0-alpha.22
     core-js: ^3.8.2
     global: ^4.4.0
-    telejson: ^5.1.0
+    telejson: ^5.2.0
   languageName: unknown
   linkType: soft
 
@@ -6631,7 +6631,7 @@ __metadata:
     resolve-from: ^5.0.0
     serve-favicon: ^2.5.0
     style-loader: ^1.3.0
-    telejson: ^5.1.0
+    telejson: ^5.2.0
     terser-webpack-plugin: ^4.2.3
     ts-dedent: ^2.0.0
     url-loader: ^4.1.1
@@ -22691,6 +22691,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"has-symbols@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "has-symbols@npm:1.0.2"
+  checksum: bfac913244c77e6cb4e3cb6d617a70419f5fa4e1959e828a789b958933ceb997706eafb9615f27089e8fa57449094a3c81695ed3ec0c3b2fa8be8d506640b0f7
+  languageName: node
+  linkType: hard
+
 "has-unicode@npm:^2.0.0, has-unicode@npm:^2.0.1":
   version: 2.0.1
   resolution: "has-unicode@npm:2.0.1"
@@ -24857,6 +24864,16 @@ fsevents@^1.2.7:
     call-bind: ^1.0.2
     has-symbols: ^1.0.1
   checksum: 51bed6de11c869a507576285b20747ca9da4f4e28829b8d8d9c9f0367b5494de56e4d50278dcaf9e6a264b6ebe8c5f81e267726b3911933ddcf5c65a3ca8ca4b
+  languageName: node
+  linkType: hard
+
+"is-regex@npm:^1.1.2":
+  version: 1.1.3
+  resolution: "is-regex@npm:1.1.3"
+  dependencies:
+    call-bind: ^1.0.2
+    has-symbols: ^1.0.2
+  checksum: 91abb3a54dfec0e12901860df4d7282da97578c85ea4c8e95674d146e7cfddc02084e5fc6eaee6142d161bf0d0fed22034e4176ef1378058e20f22271a2cb73e
   languageName: node
   linkType: hard
 
@@ -28496,7 +28513,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.x, lodash@npm:>=3.5 <5, lodash@npm:^4.0.0, lodash@npm:^4.17.11, lodash@npm:^4.17.12, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.3, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.2.1, lodash@npm:^4.5.1, lodash@npm:~4.17.10":
+"lodash@npm:4.x, lodash@npm:>=3.5 <5, lodash@npm:^4.0.0, lodash@npm:^4.17.11, lodash@npm:^4.17.12, lodash@npm:^4.17.13, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.17.3, lodash@npm:^4.17.4, lodash@npm:^4.17.5, lodash@npm:^4.2.1, lodash@npm:^4.5.1, lodash@npm:~4.17.10":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -39859,19 +39876,19 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"telejson@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "telejson@npm:5.1.0"
+"telejson@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "telejson@npm:5.2.0"
   dependencies:
     "@types/is-function": ^1.0.0
     global: ^4.4.0
     is-function: ^1.0.2
-    is-regex: ^1.1.1
+    is-regex: ^1.1.2
     is-symbol: ^1.0.3
     isobject: ^4.0.0
-    lodash: ^4.17.20
+    lodash: ^4.17.21
     memoizerific: ^1.11.3
-  checksum: d1707c912a5694b95745378f9e4ed948c5a7ccc9a888542b01d585d5784e475f34be9004b68b93f1e48131389bd96acffd6a7a5b10382bc9946968ef17b5cba0
+  checksum: 78f27dc71c3d787902e1f77c2023244739e622fdc03be8d9fb27f7667c8072f206532b001cc476d62291668c6e04ee08c047394284286fece6f3448b1a176240
   languageName: node
   linkType: hard
 
