@@ -58,10 +58,8 @@ const startVerdaccio = (port: number) => {
 };
 const registryUrl = (command: string, url?: string) =>
   new Promise<string>((res, rej) => {
-    const args = url
-      ? ['config', 'set', 'npmRegistryServer', url]
-      : ['config', 'get', 'npmRegistryServer'];
-    exec(`${command} ${args.join(' ')}`, (e, stdout) => {
+    const args = url ? ['config', 'set', 'registry', url] : ['config', 'get', 'registry'];
+    exec(`${command} ${args.join(' ')}`, { cwd: path.join(process.cwd(), '..') }, (e, stdout) => {
       if (e) {
         rej(e);
       } else {
@@ -71,7 +69,7 @@ const registryUrl = (command: string, url?: string) =>
   });
 
 const registriesUrl = (yarnUrl?: string, npmUrl?: string) =>
-  Promise.all([registryUrl('yarn', yarnUrl), registryUrl('npm', npmUrl || yarnUrl)]);
+  Promise.all([registryUrl('/usr/local/bin/yarn', yarnUrl), registryUrl('npm', npmUrl || yarnUrl)]);
 
 const applyRegistriesUrl = (
   yarnUrl: string,
