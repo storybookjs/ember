@@ -201,8 +201,6 @@ export const createAndInit = async (
   logger.debug(options);
   logger.log();
 
-  console.log({ creationPath: options.creationPath });
-
   await doTask(generate, { ...options, cwd: options.creationPath });
 
   await doTask(installYarn2, options);
