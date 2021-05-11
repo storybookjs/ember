@@ -39,6 +39,20 @@ export default {
 export const noTabs = () => (
   <Consumer>
     {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          api={{ ...api, getElements: () => ({}) }}
+          story={{ parameters: { previewTabs: { canvas: { hidden: true } } } }}
+        />
+      );
+    }}
+  </Consumer>
+);
+
+export const withCanvasTab = () => (
+  <Consumer>
+    {({ api }: Combo) => {
       return <Preview {...previewProps} api={{ ...api, getElements: () => ({}) }} />;
     }}
   </Consumer>
