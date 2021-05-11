@@ -1,3 +1,13 @@
+## 6.3.0-alpha.24 (May 11, 2021)
+
+### Features
+
+- CLI: Add repro/link commands for creating/running reproductions ([#14594](https://github.com/storybookjs/storybook/pull/14594))
+
+### Bug Fixes
+
+- UI: Only show addons in mobile if docsOnly is false ([#14810](https://github.com/storybookjs/storybook/pull/14810))
+
 ## 6.3.0-alpha.23 (May 11, 2021)
 
 ### Bug Fixes
