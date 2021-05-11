@@ -1,3 +1,14 @@
+## 6.3.0-alpha.23 (May 11, 2021)
+
+### Bug Fixes
+
+- UI: Fix tab display when there is only one tab ([#14790](https://github.com/storybookjs/storybook/pull/14790))
+- Addon-actions: Display DOM Event/CustomEvent data ([#14879](https://github.com/storybookjs/storybook/pull/14879))
+
+### Dependency Upgrades
+
+- Build: Remove outdated `@types/cpy` dependency ([#14880](https://github.com/storybookjs/storybook/pull/14880))
+
 ## 6.3.0-alpha.22 (May 10, 2021)
 
 ### Features
