@@ -5895,6 +5895,8 @@ __metadata:
       optional: true
     "@storybook/angular":
       optional: true
+    "@storybook/react":
+      optional: true
     "@storybook/vue":
       optional: true
     "@storybook/vue3":
