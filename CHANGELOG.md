@@ -1,3 +1,33 @@
+## 6.3.0-alpha.23 (May 11, 2021)
+
+### Bug Fixes
+
+- UI: Fix tab display when there is only one tab ([#14790](https://github.com/storybookjs/storybook/pull/14790))
+- Addon-actions: Display DOM Event/CustomEvent data ([#14879](https://github.com/storybookjs/storybook/pull/14879))
+
+### Dependency Upgrades
+
+- Build: Remove outdated `@types/cpy` dependency ([#14880](https://github.com/storybookjs/storybook/pull/14880))
+
+## 6.3.0-alpha.22 (May 10, 2021)
+
+### Features
+
+- Lit: Initial lit2 support ([#14600](https://github.com/storybookjs/storybook/pull/14600))
+- React: Add ComponentStory convenience type ([#14780](https://github.com/storybookjs/storybook/pull/14780))
+
+### Maintenance
+
+- Extract addon-knobs from monorepo ([#14874](https://github.com/storybookjs/storybook/pull/14874))
+- Extract addon-graphql from monorepo ([#14862](https://github.com/storybookjs/storybook/pull/14862))
+- Extract design-assets from monorepo ([#14854](https://github.com/storybookjs/storybook/pull/14854))
+- Fix renovate config ([#14868](https://github.com/storybookjs/storybook/pull/14868))
+- Extract addon-events from monorepo ([#14855](https://github.com/storybookjs/storybook/pull/14855))
+- Extract addon-cssresources from monorepo ([#14860](https://github.com/storybookjs/storybook/pull/14860))
+- Extract addon-queryparams from monorepo ([#14861](https://github.com/storybookjs/storybook/pull/14861))
+- CLI: Use arg-parser defaults ([#14857](https://github.com/storybookjs/storybook/pull/14857))
+- Build: Remove MDX to make chromatic/IE pass in CI ([#14863](https://github.com/storybookjs/storybook/pull/14863))
+
 ## 6.3.0-alpha.21 (May 7, 2021)
 
 ### Maintenance

@@ -25,20 +25,8 @@
       "root": "addons/essentials",
       "type": "library"
     },
-    "@storybook/addon-google-analytics": {
-      "root": "addons/google-analytics",
-      "type": "library"
-    },
-    "@storybook/addon-graphql": {
-      "root": "addons/graphql",
-      "type": "library"
-    },
     "@storybook/addon-jest": {
       "root": "addons/jest",
-      "type": "library"
-    },
-    "@storybook/addon-knobs": {
-      "root": "addons/knobs",
       "type": "library"
     },
     "@storybook/addon-links": {
@@ -75,6 +63,10 @@
     },
     "@storybook/html": {
       "root": "app/html",
+      "type": "library"
+    },
+    "@storybook/lit": {
+      "root": "app/lit",
       "type": "library"
     },
     "@storybook/preact": {

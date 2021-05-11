@@ -19,7 +19,6 @@ module.exports = {
     },
     '@storybook/addon-controls',
     '@storybook/addon-links',
-    '@storybook/addon-knobs',
     '@storybook/addon-backgrounds',
     '@storybook/addon-viewport',
     '@storybook/addon-a11y',

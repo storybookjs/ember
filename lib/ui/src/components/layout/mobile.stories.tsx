@@ -1,6 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { ActiveTabs } from '@storybook/api';
 import { DecoratorFn } from '@storybook/react';
 
@@ -13,9 +12,8 @@ export default {
   component: Mobile,
   parameters: { passArgsFirst: false },
   decorators: [
-    withKnobs,
     ((storyFn, c) => {
-      const mocked = boolean('mock', true);
+      const mocked = true;
 
       const props = {
         ...(mocked ? mockProps : realProps),
