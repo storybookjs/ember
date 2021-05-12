@@ -5,7 +5,7 @@ import { styled } from '@storybook/theming';
 import { FlexBar, IconButton, Icons, Separator, TabButton, TabBar } from '@storybook/components';
 import { Consumer, Combo, API, Story, Group, State } from '@storybook/api';
 import { shortcutToHumanString } from '@storybook/api/shortcut';
-import { Addon, types } from '@storybook/addons';
+import addons, { Addon, types } from '@storybook/addons';
 
 import { Location, RenderData } from '@storybook/router';
 import { zoomTool } from './tools/zoom';
@@ -46,6 +46,7 @@ const fullScreenMapper = ({ api, state }: Combo) => ({
 
 export const fullScreenTool: Addon = {
   title: 'fullscreen',
+  id: 'fullscreen',
   match: (p) => ['story', 'docs'].includes(p.viewMode),
   render: () => (
     <Consumer filter={fullScreenMapper}>
@@ -74,6 +75,7 @@ const tabsMapper = ({ state }: Combo) => ({
 
 export const createTabsTool = (tabs: Addon[]): Addon => ({
   title: 'title',
+  id: 'title',
   render: () => (
     <Consumer filter={tabsMapper}>
       {(rp) => (
@@ -165,6 +167,11 @@ export const Tools = React.memo<{ list: Addon[] }>(({ list }) => (
   </>
 ));
 
+function hasBeenExcludedByConfiguration(item: Partial<Addon>) {
+  const { toolbar } = addons.getConfig();
+  return toolbar ? !!toolbar[item.id]?.hidden : false;
+}
+
 export function filterTools(
   tools: Addon[],
   toolsExtra: Addon[],
@@ -194,7 +201,8 @@ export function filterTools(
         viewMode,
         location,
         path,
-      }));
+      })) &&
+    !hasBeenExcludedByConfiguration(item);
 
   const left = toolsLeft.filter(filter);
   const right = toolsRight.filter(filter);
