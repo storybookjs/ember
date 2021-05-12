@@ -30,7 +30,7 @@ export const copyTool: Addon = {
             onClick={() => copy(`${baseUrl}?id=${storyId}${stringifyQueryParams(queryParams)}`)}
             title="Copy canvas link"
           >
-            <Icons icon="copy" />
+            <Icons icon="link" />
           </IconButton>
         ) : null
       }

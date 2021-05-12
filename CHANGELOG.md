@@ -1,3 +1,91 @@
+## 6.3.0-alpha.24 (May 11, 2021)
+
+### Features
+
+- CLI: Add repro/link commands for creating/running reproductions ([#14594](https://github.com/storybookjs/storybook/pull/14594))
+
+### Bug Fixes
+
+- UI: Only show addons in mobile if docsOnly is false ([#14810](https://github.com/storybookjs/storybook/pull/14810))
+
+## 6.3.0-alpha.23 (May 11, 2021)
+
+### Bug Fixes
+
+- UI: Fix tab display when there is only one tab ([#14790](https://github.com/storybookjs/storybook/pull/14790))
+- Addon-actions: Display DOM Event/CustomEvent data ([#14879](https://github.com/storybookjs/storybook/pull/14879))
+
+### Dependency Upgrades
+
+- Build: Remove outdated `@types/cpy` dependency ([#14880](https://github.com/storybookjs/storybook/pull/14880))
+
+## 6.3.0-alpha.22 (May 10, 2021)
+
+### Features
+
+- Lit: Initial lit2 support ([#14600](https://github.com/storybookjs/storybook/pull/14600))
+- React: Add ComponentStory convenience type ([#14780](https://github.com/storybookjs/storybook/pull/14780))
+
+### Maintenance
+
+- Extract addon-knobs from monorepo ([#14874](https://github.com/storybookjs/storybook/pull/14874))
+- Extract addon-graphql from monorepo ([#14862](https://github.com/storybookjs/storybook/pull/14862))
+- Extract design-assets from monorepo ([#14854](https://github.com/storybookjs/storybook/pull/14854))
+- Fix renovate config ([#14868](https://github.com/storybookjs/storybook/pull/14868))
+- Extract addon-events from monorepo ([#14855](https://github.com/storybookjs/storybook/pull/14855))
+- Extract addon-cssresources from monorepo ([#14860](https://github.com/storybookjs/storybook/pull/14860))
+- Extract addon-queryparams from monorepo ([#14861](https://github.com/storybookjs/storybook/pull/14861))
+- CLI: Use arg-parser defaults ([#14857](https://github.com/storybookjs/storybook/pull/14857))
+- Build: Remove MDX to make chromatic/IE pass in CI ([#14863](https://github.com/storybookjs/storybook/pull/14863))
+
+## 6.3.0-alpha.21 (May 7, 2021)
+
+### Maintenance
+
+- Addon-docs: Fix doc blocks imports to import from ESM/CJS ([#14841](https://github.com/storybookjs/storybook/pull/14841))
+- Refactor aurelia into its own repo ([#14801](https://github.com/storybookjs/storybook/pull/14801))
+- Delete unmaintained dev-kits ([#14832](https://github.com/storybookjs/storybook/pull/14832))
+
+### Dependency Upgrades
+
+- Storyshots: Make `vue-jest` and `svelte` optional peer dependencies ([#14835](https://github.com/storybookjs/storybook/pull/14835))
+
+## 6.3.0-alpha.20 (May 6, 2021)
+
+### Bug Fixes
+
+- Vue3: Fix components in decorators ([#14809](https://github.com/storybookjs/storybook/pull/14809))
+- Accessibility: Adds title to close button on settings page ([#14808](https://github.com/storybookjs/storybook/pull/14808))
+
+### Maintenance
+
+- Refactor marionette into its own repo ([#14802](https://github.com/storybookjs/storybook/pull/14802))
+- Refactor rax to its own repo ([#14799](https://github.com/storybookjs/storybook/pull/14799))
+- Refactor marko into its own repo ([#14803](https://github.com/storybookjs/storybook/pull/14803))
+- Refactor mithril into its own repo ([#14804](https://github.com/storybookjs/storybook/pull/14804))
+- Refactor riot to its own repo ([#14800](https://github.com/storybookjs/storybook/pull/14800))
+- UI: Styling updates ([#14820](https://github.com/storybookjs/storybook/pull/14820))
+
+## 6.3.0-alpha.19 (May 3, 2021)
+
+### Features
+
+- Addon-toolbars: Add optional label for toolbar items ([#14776](https://github.com/storybookjs/storybook/pull/14776))
+
+### Maintenance
+
+- Core: Remove spurious package.json warning ([#14785](https://github.com/storybookjs/storybook/pull/14785))
+
+## 6.3.0-alpha.18 (May 2, 2021)
+
+### Features
+
+- Angular: Filter out args whose argType are missing a control or action ([#14779](https://github.com/storybookjs/storybook/pull/14779))
+
+### Maintenance
+
+- Addon-docs: Allow doc blocks to CJS imported ([#14769](https://github.com/storybookjs/storybook/pull/14769))
+
 ## 6.3.0-alpha.17 (April 30, 2021)
 
 ### Features

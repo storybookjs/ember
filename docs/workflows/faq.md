@@ -13,7 +13,7 @@ npm test -- --coverage --collectCoverageFrom='["src/**/*.{js,jsx}","!src/**/stor
 ```
 
 <div class="aside">
-💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly. 
+💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly.
 </div>
 
 ### I see `ReferenceError: React is not defined` when using storybooks with Next.js
@@ -58,7 +58,7 @@ module.exports = {
 ```
 <div class="aside">
 💡 <strong>Note:</strong> Fast Refresh only works in development mode with React 16.10 or higher.
-<div>
+</div>
 
 ### Why is there no addons channel?
 
@@ -124,7 +124,7 @@ We're working on overcoming this limitation, and soon you'll be able to use them
 
 Starting with Storybook version 6.0, we've introduced some great features aimed at streamlining your development workflow.
 
-With this, we would like to point out that if you plan on using addons created by our fantastic community, you need to consider that some of those addons might be working with an outdated version of Storybook. 
+With this, we would like to point out that if you plan on using addons created by our fantastic community, you need to consider that some of those addons might be working with an outdated version of Storybook.
 
 We're actively working in providing a better way to address this situation, but in the meantime, we would ask a bit of caution on your end so that you don't run into unexpected problems. Let us know by creating an issue in the [Storybook repo](https://github.com/storybookjs/storybook/issues) so that we can gather information and create a curated list with those addons to help not only you but the rest of the community.
 
@@ -250,7 +250,7 @@ Yes, with the release of version 6.2, Storybook now includes support for Vue 3. 
 
 ### Is snapshot testing with Storyshots supported for Vue 3?
 
-Yes, with the release of version 6.2, the [`Storyshots addon`](https://www.npmjs.com/package/@storybook/addon-storyshots) will automatically detect Vue 3 projects. 
+Yes, with the release of version 6.2, the [`Storyshots addon`](https://www.npmjs.com/package/@storybook/addon-storyshots) will automatically detect Vue 3 projects.
 
 If you run into a situation where this is not the case, you can adjust the `config` object and manually specify the framework (e.g., `vue3`).
 

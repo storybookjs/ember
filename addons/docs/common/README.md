@@ -2,7 +2,7 @@
 
 Storybook Docs transforms your Storybook stories into world-class component documentation. Docs supports [all web frameworks that Storybook supports](../README.md#framework-support).
 
-Popular frameworks like [React](../react/README.md)/[Vue](../vue/README.md)/[Angular](../angular/README.md)/[Ember](../ember/README.md)/[Web components](../web-components/README.md) have their own framework-specific optimizations and setup guides. This README documents the "common" setup for other frameworks that don't have any docs-specific optimizations.
+Popular frameworks like [React](../react/README.md)/[Vue](../vue/README.md)/[Angular](../angular/README.md)/[Ember](../ember/README.md)/[Web components](../web-components/README.md)/[Lit](../lit/README.md) have their own framework-specific optimizations and setup guides. This README documents the "common" setup for other frameworks that don't have any docs-specific optimizations.
 
 - [Installation](#installation)
 - [DocsPage](#docspage)
@@ -51,7 +51,7 @@ module.exports = {
 Finally, you can create MDX files like this:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 
 <Meta title='App Component' />
 
