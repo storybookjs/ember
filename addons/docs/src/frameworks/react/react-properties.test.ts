@@ -67,6 +67,7 @@ describe('react component properties', () => {
           const properties = extractProps(component);
           expect(properties).toMatchSpecificSnapshot(path.join(testDir, 'properties.snapshot'));
 
+          // snapshot the output of `extractArgTypes`
           const argTypes = extractArgTypes(component);
           const parameters = { __isArgsStory: true, argTypes };
           const rows = inferControls(({ parameters } as unknown) as StoryContext);
