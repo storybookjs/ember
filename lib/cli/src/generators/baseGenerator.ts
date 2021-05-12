@@ -14,6 +14,7 @@ export type GeneratorOptions = {
   language: SupportedLanguage;
   storyFormat: StoryFormat;
   builder: Builder;
+  linkable: boolean;
 };
 
 export interface FrameworkOptions {

@@ -33,6 +33,9 @@ export const InitialCanvas = ({ props }: { props: MobileProps }) => (
 export const InitialAddons = ({ props }: { props: MobileProps }) => (
   <Mobile {...props} options={{ ...props.options, initialActive: ActiveTabs.ADDONS }} />
 );
+
+export const docsOnly = ({ props }: { props: MobileProps }) => <Mobile {...props} docsOnly />;
+
 export const Page = ({ props }: { props: MobileProps }) => (
   <Mobile
     {...props}

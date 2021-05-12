@@ -65,6 +65,10 @@
       "root": "app/html",
       "type": "library"
     },
+    "@storybook/lit": {
+      "root": "app/lit",
+      "type": "library"
+    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"
