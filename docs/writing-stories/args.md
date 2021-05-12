@@ -26,6 +26,7 @@ To define the args of a single story, use the `args` CSF story key:
     'vue/button-story-with-args.3.js.mdx',
     'angular/button-story-with-args.ts.mdx',
     'svelte/button-story-with-args.js.mdx',
+    'svelte/button-story-with-args.native-format.mdx',
     'web-components/button-story-with-args.js.mdx',
   ]}
 />
@@ -59,6 +60,7 @@ You can also define args at the component level; such args will apply to all sto
     'vue/button-story-component-args-primary.js.mdx',
     'angular/button-story-component-args-primary.ts.mdx',
     'svelte/button-story-component-args-primary.js.mdx',
+    'svelte/button-story-component-args-primary.native-format.mdx',
     'web-components/button-story-component-args-primary.js.mdx',
   ]}
 />
@@ -114,6 +116,8 @@ Args are used in story templates to configure the component appearance just as y
     'react/page-story-slots.ts.mdx',
     'vue/page-story-slots.2.js.mdx',
     'vue/page-story-slots.3.js.mdx',
+    'angular/page-story-slots.ts.mdx',
+    'svelte/page-story-slots.native-format.mdx',
   ]}
 />
 
@@ -131,7 +135,7 @@ In order to protect against [XSS](https://owasp.org/www-community/attacks/xss/) 
 
 The `args` param is always a set of `key:value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 
-```
+```js
 {
   obj: { key: 'val' },
   arr: ['one', 'two'],
@@ -139,19 +143,18 @@ The `args` param is always a set of `key:value` pairs delimited with a semicolon
 }
 ```
 
+Similarly, special formats are available for dates and colors. Date objects will be encoded as `!date(value)` with value represented as an ISO date string. Colors are encoded as `!hex(value)`, `!rgba(value)` or `!hsla(value)`. Note that rgb(a) and hsl(a) should not contain spaces or percentage signs in the URL.
+
 Args specified through the URL will extend and override any default values of args specified on the story.
 
 ## Mapping to complex arg values
 
-Complex values such as JSX elements cannot be serialized to the manager (e.g. the Controls addon) or synced with the URL. To work around this limitation, arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes`. This works on any type of arg, but makes most sense when used with the 'select' control.
+Complex values such as JSX elements cannot be serialized to the manager (e.g. the Controls addon) or synced with the URL. To work around this limitation, arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes`. This works on any type of arg, but makes most sense when used with the `select` control type.
 
-```
+```js
 argTypes: {
   label: {
-    control: {
-      type: 'select',
-      options: ['Normal', 'Bold', 'Italic']
-    },
+    options: ['Normal', 'Bold', 'Italic'],
     mapping: {
       Bold: <b>Bold</b>,
       Italic: <i>Italic</i>
@@ -160,17 +163,7 @@ argTypes: {
 }
 ```
 
-Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, even when `options` is an object. Specifying `options` as an object (key-value pairs) is useful if you want to use special characters in the input label. For example:
-
-```
-{
-  control: {
-    type: 'select',
-    options: { да: 'yes', нет: 'no' }
-  },
-  mapping: { yes: 'да', no: 'нет' }
-}
-```
+Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, not their index in the `options` array.
 
 <details>
 <summary>Using args in addons</summary>

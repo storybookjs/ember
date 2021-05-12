@@ -1,6 +1,6 @@
 {
   "name": "@storybook/preact",
-  "version": "6.2.0-beta.14",
+  "version": "6.3.0-alpha.24",
   "description": "Storybook for Preact: Develop Preact Component in isolation.",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/preact"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/cjs/client/index.js",
@@ -42,9 +46,9 @@
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.12",
-    "@storybook/addons": "6.2.0-beta.14",
-    "@storybook/core": "6.2.0-beta.14",
-    "@storybook/core-common": "6.2.0-beta.14",
+    "@storybook/addons": "6.3.0-alpha.24",
+    "@storybook/core": "6.3.0-alpha.24",
+    "@storybook/core-common": "6.3.0-alpha.24",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -55,11 +59,12 @@
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "preact": "^10.5.9"
+    "preact": "^10.5.13"
   },
   "peerDependencies": {
     "@babel/core": "*",
-    "preact": "^8.0.0||^10.0.0"
+    "preact": "^8.0.0||^10.0.0",
+    "webpack": "*"
   },
   "engines": {
     "node": ">=10.13.0"
@@ -67,5 +72,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "45957443c70b308214c9eb52cb048e7e488153c6"
+  "gitHead": "a8870128bc9684f9b54083decbd10664bf26bcc4"
 }

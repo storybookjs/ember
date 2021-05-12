@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/react/types';
 
-module.exports = {
+const config: StorybookConfig = {
   stories: ['./src/*.stories.*'],
   logLevel: 'debug',
   addons: [
@@ -28,4 +28,9 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
-} as StorybookConfig;
+  features: {
+    postcss: false,
+  },
+};
+
+module.exports = config;

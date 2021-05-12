@@ -6,6 +6,7 @@ import {
   ArgsTableProps as PureArgsTableProps,
   ArgsTableError,
   ArgTypes,
+  SortType,
   TabbedArgsTable,
 } from '@storybook/components';
 import { Args } from '@storybook/addons';
@@ -22,6 +23,7 @@ import { lookupStoryId } from './Story';
 interface BaseProps {
   include?: PropDescriptor;
   exclude?: PropDescriptor;
+  sort?: SortType;
 }
 
 type OfProps = BaseProps & {
@@ -111,11 +113,13 @@ const addComponentTabs = (
   components: Record<string, Component>,
   context: DocsContextProps,
   include?: PropDescriptor,
-  exclude?: PropDescriptor
+  exclude?: PropDescriptor,
+  sort?: SortType
 ) => ({
   ...tabs,
   ...mapValues(components, (comp) => ({
     rows: extractComponentArgTypes(comp, context, include, exclude),
+    sort,
   })),
 });
 
@@ -128,7 +132,7 @@ export const StoryTable: FC<
     parameters: { argTypes },
     storyStore,
   } = context;
-  const { story, component, subcomponents, showComponent, include, exclude } = props;
+  const { story, component, subcomponents, showComponent, include, exclude, sort } = props;
   let storyArgTypes;
   try {
     let storyId;
@@ -183,7 +187,7 @@ export const StoryTable: FC<
       }
       tabs = addComponentTabs(tabs, subcomponents, context, include, exclude);
     }
-    return <TabbedArgsTable tabs={tabs} />;
+    return <TabbedArgsTable tabs={tabs} sort={sort} />;
   } catch (err) {
     return <PureArgsTable error={err.message} />;
   }
@@ -191,22 +195,24 @@ export const StoryTable: FC<
 
 export const ComponentsTable: FC<ComponentsProps> = (props) => {
   const context = useContext(DocsContext);
-  const { components, include, exclude } = props;
+  const { components, include, exclude, sort } = props;
 
   const tabs = addComponentTabs({}, components, context, include, exclude);
-  return <TabbedArgsTable tabs={tabs} />;
+  return <TabbedArgsTable tabs={tabs} sort={sort} />;
 };
 
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
   const context = useContext(DocsContext);
-  const { parameters: { subcomponents } = {} } = context;
+  const { parameters: { subcomponents, controls } = {} } = context;
 
-  const { include, exclude, components } = props as ComponentsProps;
+  const { include, exclude, components, sort: sortProp } = props as ComponentsProps;
   const { story } = props as StoryProps;
+
+  const sort = sortProp || controls?.sort;
 
   const main = getComponent(props, context);
   if (story) {
-    return <StoryTable {...(props as StoryProps)} component={main} subcomponents={subcomponents} />;
+    return <StoryTable {...(props as StoryProps)} component={main} {...{ subcomponents, sort }} />;
   }
 
   if (!components && !subcomponents) {
@@ -216,11 +222,12 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     } catch (err) {
       mainProps = { error: err.message };
     }
-    return <PureArgsTable {...mainProps} />;
+
+    return <PureArgsTable {...mainProps} sort={sort} />;
   }
 
   if (components) {
-    return <ComponentsTable {...(props as ComponentsProps)} components={components} />;
+    return <ComponentsTable {...(props as ComponentsProps)} {...{ components, sort }} />;
   }
 
   const mainLabel = getComponentName(main);
@@ -228,6 +235,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     <ComponentsTable
       {...(props as ComponentsProps)}
       components={{ [mainLabel]: main, ...subcomponents }}
+      sort={sort}
     />
   );
 };

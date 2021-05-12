@@ -3,9 +3,9 @@
 exports[`docs-mdx-compiler-plugin story-function-var.mdx 1`] = `
 "/* @jsxRuntime classic */
 /* @jsx mdx */
-import { assertIsFn, AddContext } from '@storybook/addon-docs/blocks';
+import { assertIsFn, AddContext } from '@storybook/addon-docs';
 
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 export const basicFn = () => <Button mdxType=\\"Button\\" />;
 const makeShortcode = (name) =>
   function MDXDefaultShortcode(props) {

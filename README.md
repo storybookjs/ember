@@ -82,11 +82,11 @@ Documentation can be found [Storybook's docs site](https://storybook.js.org/docs
 
 Here are some featured examples that you can reference to see how Storybook works: <https://storybook.js.org/docs/react/get-started/examples>
 
-Storybook comes with a lot of [addons](https://storybook.js.org/docs/react/configure/storybook-addons) for component design, documentation, testing, interactivity, and so on. Storybook's API makes it possible to configure and extend in various ways. It has even been extended to support React Native development for mobile.
+Storybook comes with a lot of [addons](https://storybook.js.org/docs/react/configure/storybook-addons) for component design, documentation, testing, interactivity, and so on. Storybook's API makes it possible to configure and extend in various ways. It has even been extended to support React Native, Android, iOS, and Flutter development for mobile.
 
 ### Community
 
-For additional help, join us [in our Discord](https://discord.gg/storybook) or [Slack (legacy)](https://now-examples-slackin-rrirkqohko.now.sh/).
+For additional help, join us in the [Storybook Discord](https://discord.gg/storybook).
 
 ## Projects
 
@@ -94,20 +94,21 @@ For additional help, join us [in our Discord](https://discord.gg/storybook) or [
 
 | Framework                                                   | Demo                                                                        |                                                                                                |
 | ----------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [React](app/react)                                          | [v6.1.x](https://storybookjs.netlify.com/official-storybook/?path=/story/*) | [![React](https://img.shields.io/npm/dm/@storybook/react.svg)](app/react)                      |
-| [Vue](app/vue)                                              | [v6.1.x](https://storybookjs.netlify.com/vue-kitchen-sink/)                 | [![Vue](https://img.shields.io/npm/dm/@storybook/vue.svg)](app/vue)                            |
-| [Angular](app/angular)                                      | [v6.1.x](https://storybookjs.netlify.com/angular-cli/)                      | [![Angular](https://img.shields.io/npm/dm/@storybook/angular.svg)](app/angular)                |
-| [Web components](app/web-components)                        | [v6.1.x](https://storybookjs.netlify.com/web-components-kitchen-sink/)      | [![Svelte](https://img.shields.io/npm/dm/@storybook/web-components.svg)](app/web-components)   |
+| [React](app/react)                                          | [v6.2.x](https://storybookjs.netlify.com/official-storybook/?path=/story/*) | [![React](https://img.shields.io/npm/dm/@storybook/react.svg)](app/react)                      |
+| [Vue](app/vue)                                              | [v6.2.x](https://storybookjs.netlify.com/vue-kitchen-sink/)                 | [![Vue](https://img.shields.io/npm/dm/@storybook/vue.svg)](app/vue)                            |
+| [Angular](app/angular)                                      | [v6.2.x](https://storybookjs.netlify.com/angular-cli/)                      | [![Angular](https://img.shields.io/npm/dm/@storybook/angular.svg)](app/angular)                |
+| [Web components](app/web-components)                        | [v6.2.x](https://storybookjs.netlify.com/web-components-kitchen-sink/)      | [![Svelte](https://img.shields.io/npm/dm/@storybook/web-components.svg)](app/web-components)   |
 | [React Native](https://github.com/storybookjs/react-native) | -                                                                           | [![React Native](https://img.shields.io/npm/dm/@storybook/react-native.svg)](app/react-native) |
-| [HTML](app/html)                                            | [v6.1.x](https://storybookjs.netlify.com/html-kitchen-sink/)                | [![HTML](https://img.shields.io/npm/dm/@storybook/html.svg)](app/html)                         |
-| [Ember](app/ember)                                          | [v6.1.x](https://storybookjs.netlify.com/ember-cli/)                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                      |
-| [Svelte](app/svelte)                                        | [v6.1.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                   |
-| [Preact](app/preact)                                        | [v6.1.x](https://storybookjs.netlify.com/preact-kitchen-sink/)              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                   |
+| [HTML](app/html)                                            | [v6.2.x](https://storybookjs.netlify.com/html-kitchen-sink/)                | [![HTML](https://img.shields.io/npm/dm/@storybook/html.svg)](app/html)                         |
+| [Ember](app/ember)                                          | [v6.2.x](https://storybookjs.netlify.com/ember-cli/)                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                      |
+| [Svelte](app/svelte)                                        | [v6.2.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                   |
+| [Preact](app/preact)                                        | [v6.2.x](https://storybookjs.netlify.com/preact-kitchen-sink/)              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                   |
 | [Marionette.js](app/marionette)                             | -                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)    |
-| [Mithril](app/mithril)                                      | [v6.1.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                |
-| [Marko](app/marko)                                          | [v6.1.x](https://storybookjs.netlify.com/marko-cli/)                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                      |
-| [Riot](app/riot)                                            | [v6.1.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                         |
-| [Rax](app/rax)                                              | [v6.1.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                            |
+| [Mithril](app/mithril)                                      | [v6.2.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                |
+| [Marko](app/marko)                                          | [v6.2.x](https://storybookjs.netlify.com/marko-cli/)                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                      |
+| [Riot](app/riot)                                            | [v6.2.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                         |
+| [Rax](app/rax)                                              | [v6.2.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                            |
+| [Android, iOS, Flutter](https://github.com/storybookjs/native)                                              | [v6.2.x](https://storybookjs.github.io/native/@storybook/native-flutter-example/index.html)                 | [![Rax](https://img.shields.io/npm/dm/@storybook/native.svg)](https://github.com/storybookjs/native)                            |
 
 ### Sub Projects
 
@@ -143,8 +144,8 @@ See [Addon / Framework Support Table](https://storybook.js.org/docs/react/api/fr
 | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | [info](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info)   | Annotate stories with extra component usage information  |
 | [notes](https://github.com/storybookjs/deprecated-addons/tree/master/addons/notes) | Annotate Storybook stories with notes                    |
-| [contexts](https://github.com/storybookjs/storybook/tree/master/addons/contexts)   | Addon for driving your components under dynamic contexts |
-| [options](https://github.com/storybookjs/storybook/tree/master/addons/options/)    | Customize the Storybook UI in code                       |
+| [contexts](https://storybook.js.org/addons/@storybook/addon-contexts/)             | Addon for driving your components under dynamic contexts |
+| [options](https://www.npmjs.com/package/@storybook/addon-options)                  | Customize the Storybook UI in code                       |
 
 In order to continue improving your experience, we have to eventually deprecate certain addons in favor of new, better tools.
 
@@ -167,9 +168,8 @@ If you're looking for material to use in your presentation about storybook, like
 ## Community
 
 - Tweeting via [@storybookjs](https://twitter.com/storybookjs)
-- Blogging at [Medium](https://medium.com/storybookjs)
+- Blogging at [storybook.js.org](https://storybook.js.org/blog/) and [Medium](https://medium.com/storybookjs)
 - Chatting on [Discord](https://discord.gg/storybook)
-- Chatting (legacy) on [Slack](https://now-examples-slackin-rrirkqohko.now.sh/)
 - Streaming saved at [Youtube](https://www.youtube.com/channel/UCr7Quur3eIyA_oe8FNYexfg)
 
 ## Contributing

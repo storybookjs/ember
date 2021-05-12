@@ -10,8 +10,7 @@ import {
   styled,
   useTheme,
 } from '@storybook/theming';
-import { withCssResources } from '@storybook/addon-cssresources';
-import { DocsPage } from '@storybook/addon-docs/blocks';
+import { DocsPage } from '@storybook/addon-docs';
 import { Symbols } from '@storybook/components';
 
 import addHeadWarning from './head-warning';
@@ -87,7 +86,6 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  withCssResources,
   (StoryFn, { globals: { theme = 'light' } }) => {
     switch (theme) {
       case 'side-by-side': {
@@ -161,6 +159,33 @@ export const parameters = {
     theme: themes.light,
     page: () => <DocsPage subtitleSlot={({ kind }) => `Subtitle: ${kind}`} />,
   },
+  controls: {
+    presetColors: [
+      { color: '#ff4785', title: 'Coral' },
+      { color: '#1EA7FD', title: 'Ocean' },
+      { color: 'rgb(252, 82, 31)', title: 'Orange' },
+      { color: 'RGBA(255, 174, 0, 0.5)', title: 'Gold' },
+      { color: 'hsl(101, 52%, 49%)', title: 'Green' },
+      { color: 'HSLA(179,65%,53%,0.5)', title: 'Seafoam' },
+      { color: '#6F2CAC', title: 'Purple' },
+      { color: '#2A0481', title: 'Ultraviolet' },
+      { color: 'black' },
+      { color: '#333', title: 'Darkest' },
+      { color: '#444', title: 'Darker' },
+      { color: '#666', title: 'Dark' },
+      { color: '#999', title: 'Mediumdark' },
+      { color: '#ddd', title: 'Medium' },
+      { color: '#EEE', title: 'Mediumlight' },
+      { color: '#F3F3F3', title: 'Light' },
+      { color: '#F8F8F8', title: 'Lighter' },
+      { color: '#FFFFFF', title: 'Lightest' },
+      '#fe4a49',
+      '#FED766',
+      'rgba(0, 159, 183, 1)',
+      'HSLA(240,11%,91%,0.5)',
+      'slategray',
+    ],
+  },
 };
 
 export const globals = {
@@ -182,6 +207,7 @@ export const globalTypes = {
         { value: 'side-by-side', icon: 'sidebar', title: 'side by side' },
         { value: 'stacked', icon: 'bottombar', title: 'stacked' },
       ],
+      showName: true,
     },
   },
   locale: {

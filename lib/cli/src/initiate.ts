@@ -8,6 +8,7 @@ import {
   StoryFormat,
   SupportedLanguage,
   Builder,
+  CoreBuilder,
 } from './project_types';
 import { commandLog, codeLog, paddedLog } from './helpers';
 import angularGenerator from './generators/ANGULAR';
@@ -47,6 +48,7 @@ type CommandOptions = {
   parser?: string;
   yes?: boolean;
   builder?: Builder;
+  linkable?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -67,7 +69,8 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
   const generatorOptions = {
     storyFormat: options.storyFormat || defaultStoryFormat,
     language,
-    builder: options.builder || Builder.Webpack4,
+    builder: options.builder || CoreBuilder.Webpack4,
+    linkable: !!options.linkable,
   };
 
   const end = () => {
@@ -245,7 +248,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
       default:
         paddedLog(`We couldn't detect your project type. (code: ${projectType})`);
         paddedLog(
-          'You can specify a project type explicitly via `sb init --type <type>` or follow some of the slow start guides: https://storybook.js.org/basics/slow-start-guide/'
+          'You can specify a project type explicitly via `sb init --type <type>`, see our docs on how to configure Storybook for your framework: https://storybook.js.org/docs/react/get-started/install'
         );
 
         // Add a new line for the clear visibility.

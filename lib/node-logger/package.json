@@ -1,6 +1,6 @@
 {
   "name": "@storybook/node-logger",
-  "version": "6.2.0-beta.14",
+  "version": "6.3.0-alpha.24",
   "description": "",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/node-logger"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -48,5 +52,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "45957443c70b308214c9eb52cb048e7e488153c6"
+  "gitHead": "a8870128bc9684f9b54083decbd10664bf26bcc4"
 }

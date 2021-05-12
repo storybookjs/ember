@@ -54,6 +54,7 @@ Use the _named_ exports of a CSF file to define your component’s stories. We r
     'vue/button-story.js.mdx',
     'angular/button-story.ts.mdx',
     'svelte/button-story.js.mdx',
+    'svelte/button-story.native-format.mdx',
     'web-components/button-story.js.mdx',
   ]}
 />
@@ -100,6 +101,7 @@ A story is a function that describes how to render a component. You can have mul
     'vue/button-story-with-emojis.js.mdx',
     'angular/button-story-with-emojis.ts.mdx',
     'svelte/button-story-with-emojis.js.mdx',
+    'svelte/button-story-with-emojis.native-format.mdx',
     'web-components/button-story-with-emojis.js.mdx',
   ]}
 />
@@ -122,6 +124,7 @@ Refine this pattern by defining a master template for a component’s stories th
     'vue/button-story-using-args.3.js.mdx',
     'angular/button-story-using-args.ts.mdx',
     'svelte/button-story-using-args.js.mdx',
+    'svelte/button-story-using-args.native-format.mdx',
     'web-components/button-story-using-args.js.mdx',
   ]}
 />
@@ -142,6 +145,7 @@ What’s more, you can import args to reuse when writing stories for other compo
     'vue/button-group-story.2.js.mdx',
     'vue/button-group-story.3.js.mdx',
     'svelte/button-group-story.js.mdx',
+    'web-components/button-group-story.js.mdx',
   ]}
 />
 
@@ -182,6 +186,7 @@ For instance, suppose you wanted to test your Button component against a differe
     'vue/button-story-with-blue-args.js.mdx',
     'angular/button-story-with-blue-args.ts.mdx',
     'svelte/button-story-with-blue-args.js.mdx',
+    'svelte/button-story-with-blue-args.native-format.mdx',
     'web-components/button-story-with-blue-args.js.mdx',
   ]}
 />
@@ -207,6 +212,7 @@ A simple example is adding padding to a component’s stories. Accomplish this u
     'vue/button-story-component-decorator.js.mdx',
     'angular/button-story-component-decorator.ts.mdx',
     'svelte/button-story-component-decorator.js.mdx',
+    'svelte/button-story-component-decorator.native-format.mdx',
     'web-components/button-story-component-decorator.js.mdx',
   ]}
 />
@@ -228,6 +234,8 @@ When building design systems or component libraries, you may have two or more co
     'angular/list-story-starter.ts.mdx',
     'vue/list-story-starter.2.js.mdx',
     'vue/list-story-starter.3.js.mdx',
+    'svelte/list-story-starter.native-format.mdx',
+    'web-components/list-story-starter.js.mdx',
   ]}
 />
 
@@ -244,6 +252,8 @@ In such cases, it makes sense to render a different function for each story:
     'angular/list-story-expanded.ts.mdx',
     'vue/list-story-expanded.2.js.mdx',
     'vue/list-story-expanded.3.js.mdx',
+    'svelte/list-story-expanded.native-format.mdx',
+    'web-components/list-story-expanded.js.mdx',
   ]}
 />
 
@@ -260,6 +270,7 @@ You can also reuse stories from the child `ListItem` in your `List` component. T
     'angular/list-story-reuse-data.ts.mdx',
     'vue/list-story-reuse-data.2.js.mdx',
     'vue/list-story-reuse-data.3.js.mdx',
+    'web-components/list-story-reuse-data.js.mdx',
   ]}
 />
 

@@ -1,4 +1,5 @@
-import { Group, Story, StoriesHash, isRoot, isStory } from '@storybook/api';
+import type { Group, Story, StoriesHash } from '@storybook/api';
+import { isRoot, isStory } from '@storybook/api';
 import { styled } from '@storybook/theming';
 import { Icons } from '@storybook/components';
 import { transparentize } from 'polished';
@@ -43,7 +44,12 @@ export const Action = styled.button(({ theme }) => ({
   '&:focus': {
     color: theme.barSelectedColor,
     borderColor: theme.color.secondary,
+
+    '&:not(:focus-visible)': {
+      borderColor: 'transparent',
+    },
   },
+
   svg: {
     width: 10,
     height: 10,
@@ -84,6 +90,10 @@ const CollapseButton = styled.button(({ theme }) => ({
     color: theme.color.secondary,
     'span:first-of-type': {
       color: theme.color.secondary,
+    },
+
+    '&:not(:focus-visible)': {
+      boxShadow: 'none',
     },
   },
 }));
@@ -168,6 +178,7 @@ const Node = React.memo<NodeProps>(
             <Action
               type="button"
               className="sidebar-subheading-action"
+              aria-label="expand"
               data-action="expand-all"
               data-expanded={isFullyExpanded}
               onClick={(event) => {
