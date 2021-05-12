@@ -62,12 +62,12 @@ If you're coming from the `storiesOf` format, there's [a codemod that adds it fo
 Sometimes it's useful to document multiple components on the same page. For example, suppose your component library contains `List` and `ListItem` components that don't make sense without one another. `DocsPage` has the concept of a "primary" component with the [`component` parameter](#component-parameter), and can also accept one or more "subcomponents":
 
 ```js
-import { List, ListHeading, ListItem } from './List';
+import { Button, ButtonGroup } from '../ButtonGroup';
 
 export default {
-  title: 'Path/to/List',
-  component: List,
-  subcomponents: { ListHeading, ListItem },
+  title: 'Path/to/ButtonGroup',
+  component: ButtonGroup,
+  subcomponents: { Button },
 };
 ```
 
