@@ -30,6 +30,7 @@ export interface StoryMetadata {
   loaders?: LoaderFunction[];
 }
 export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
+export type ArgsEnhancer = (context: StoryContext) => Args;
 
 type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 

@@ -648,6 +648,36 @@ describe('preview.story_store', () => {
     });
   });
 
+  describe('argsEnhancer', () => {
+    it('allows you to add args', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancer = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancer);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd' });
+    });
+
+    it('does not pass result of earlier enhancers into subsequent ones, but composes their output', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancerOne = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancerOne);
+
+      const enhancerTwo = jest.fn((context) => ({ e: 'f' }));
+      store.addArgsEnhancer(enhancerTwo);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancerOne).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(enhancerTwo).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd', e: 'f' });
+    });
+  });
+
   describe('argTypesEnhancer', () => {
     it('records when the given story processes args', () => {
       const store = new StoryStore({ channel });
