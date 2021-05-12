@@ -253,7 +253,7 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
-      placeholder="Enter JSON string"
+      placeholder="Edit JSON string..."
       valid={parseError ? 'error' : null}
     />
   );

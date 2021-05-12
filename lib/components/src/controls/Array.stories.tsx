@@ -16,11 +16,13 @@ const Template = (initialValue: any) => {
         onChange={(newVal) => setValue(newVal)}
         separator=","
       />
-      <ul>{value && value.map((item) => <li key={item}>{item}</li>)}</ul>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
 export const Basic = () => Template(['Bat', 'Cat', 'Rat']);
+
+export const Empty = () => Template([]);
 
 export const Undefined = () => Template(undefined);

@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useCallback, useState } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
@@ -16,13 +16,21 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(event.target.value);
   };
+
+  const [forceVisible, onSetForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => onSetForceVisible(true), [onSetForceVisible]);
+  if (!forceVisible && value === undefined) {
+    return <Form.Button onClick={onForceVisible}>Set string</Form.Button>;
+  }
+
   return (
     <Wrapper>
       <Form.Textarea
         id={name}
         onChange={handleChange}
         size="flex"
-        placeholder="Adjust string dynamically"
+        placeholder="Edit string..."
+        autoFocus={forceVisible}
         {...{ name, value: format(value), onFocus, onBlur }}
       />
     </Wrapper>
