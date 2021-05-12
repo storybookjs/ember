@@ -3,9 +3,12 @@ import path from 'path';
 import fs from 'fs';
 
 import { transformFileSync, transformSync } from '@babel/core';
+import { inferControls } from '@storybook/client-api';
+import { StoryContext } from '@storybook/react';
 import requireFromString from 'require-from-string';
 
 import { extractProps } from './extractProps';
+import { extractArgTypes } from './extractArgTypes';
 import { normalizeNewlines } from '../../lib/utils';
 
 // jest.mock('../imported', () => () => ({ imported: 'imported-value' }), { virtual: true });
@@ -63,6 +66,11 @@ describe('react component properties', () => {
           const { component } = requireFromString(docgenModule, inputPath);
           const properties = extractProps(component);
           expect(properties).toMatchSpecificSnapshot(path.join(testDir, 'properties.snapshot'));
+
+          const argTypes = extractArgTypes(component);
+          const parameters = { __isArgsStory: true, argTypes };
+          const rows = inferControls(({ parameters } as unknown) as StoryContext);
+          expect(rows).toMatchSpecificSnapshot(path.join(testDir, 'argTypes.snapshot'));
         });
       }
     }
