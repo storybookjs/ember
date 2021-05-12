@@ -9,16 +9,17 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
       return rows.reduce((acc: ArgTypes, row: PropDef) => {
         const {
           name,
+          description,
           type,
           sbType,
           defaultValue: defaultSummary,
           jsDocTags,
           required,
-          ...rest
         } = row;
 
         acc[name] = {
-          ...rest,
+          name,
+          description,
           type: { required, ...sbType },
           table: {
             type,
