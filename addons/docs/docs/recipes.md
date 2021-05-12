@@ -61,8 +61,8 @@ basic.parameters = {
 **Button.stories.mdx**
 
 ```md
-import { Meta, Story } from '@storybook/addon-docs/blocks';
-import * as stories from './Button.stories.js';
+import { Meta, Story } from '@storybook/addon-docs';
+import \* as stories from './Button.stories.js';
 import { SomeComponent } from 'path/to/SomeComponent';
 
 <Meta title="Demo/Button" component={Button} />
@@ -91,7 +91,7 @@ We recommend [MDX Docs](#csf-stories-with-mdx-docs) as the most ergonomic way to
 **Button.mdx**
 
 ```md
-import { Story } from '@storybook/addon-docs/blocks';
+import { Story } from '@storybook/addon-docs';
 import { SomeComponent } from 'somewhere';
 
 # Button
@@ -289,7 +289,7 @@ When you're writing stories you can do this by adding a [decorator](https://stor
 The closest Docs equivalent of a decorator is the `container`, a wrapper element that is rendered around the page that is being rendered. Here's an example of adding a solid red border around the page. It uses Storybook's default page container (that sets up various contexts and other magic) and then inserts its own logic between that container and the contents of the page:
 
 ```js
-import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+import { Meta, DocsContainer } from '@storybook/addon-docs';
 
 <Meta
   title="Addons/Docs/container-override"
@@ -312,7 +312,7 @@ Rest of your file...
 This is especially useful if you are using `styled-components` and need to wrap your JSX with a `ThemeProvider` to have access to your theme:
 
 ```js
-import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+import { Meta, DocsContainer } from '@storybook/addon-docs';
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../path/to/theme'
 
@@ -339,6 +339,6 @@ Rest of your file...
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
-- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
+- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md) / [Lit](../lit/README.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)

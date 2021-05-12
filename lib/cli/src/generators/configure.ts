@@ -35,7 +35,8 @@ function configureMain({
   const stringified = `module.exports = ${JSON.stringify(config, null, 2)
     .replace(/\\"/g, '"')
     .replace(/['"]%%/g, '')
-    .replace(/%%['"]/, '')}`;
+    .replace(/%%['"]/, '')
+    .replace(/\\n/g, '\r\n')}`;
   fse.ensureDirSync('./.storybook');
   fse.writeFileSync(`./.storybook/main.${commonJs ? 'cjs' : 'js'}`, stringified, {
     encoding: 'utf8',

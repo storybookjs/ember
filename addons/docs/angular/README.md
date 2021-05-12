@@ -96,10 +96,10 @@ storiesOf('App Component', module)
 
 [MDX](../docs/mdx.md) is a convenient way to document your components in Markdown and embed documentation components, such as stories and props tables, inline.
 
-Docs has peer dependencies on `react` and `babel-loader`. If you want to write stories in MDX, you'll need to add these dependencies as well:
+Docs has peer dependencies on `react`. If you want to write stories in MDX, you may need to add this dependency as well:
 
 ```sh
-yarn add -D react babel-loader
+yarn add -D react
 ```
 
 Then update your `.storybook/main.js` to make sure you load MDX files:
@@ -113,7 +113,7 @@ module.exports = {
 Finally, you can create MDX files like this:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { AppComponent } from './app.component';
 
 <Meta title='App Component' component={AppComponent} />
@@ -139,7 +139,7 @@ Also, to use the `Props` doc block, you need to set up Compodoc, [as described a
 When you are using `template`, `moduleMetadata` and/or `addDecorators` with `storiesOf` then you can easily translate your story to MDX, too:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { CheckboxComponent, RadioButtonComponent } from './my-components';
 import { moduleMetadata } from '@storybook/angular';
 
