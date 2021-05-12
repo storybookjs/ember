@@ -26,9 +26,6 @@ addons.setConfig({
       hidden: true,
     },
   },
-  toolbar: {
-    fullscreen: { hidden: true },
-  },
   sidebar: {
     collapsedRoots: ['other'],
     renderLabel: ({ id, name }) => {

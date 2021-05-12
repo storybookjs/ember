@@ -3,7 +3,7 @@ import React, { Fragment, useMemo, FunctionComponent } from 'react';
 import { styled } from '@storybook/theming';
 
 import { FlexBar, IconButton, Icons, Separator, TabButton, TabBar } from '@storybook/components';
-import { Consumer, Combo, API, Story, Group, State } from '@storybook/api';
+import { Consumer, Combo, API, Story, Group, State, merge } from '@storybook/api';
 import { shortcutToHumanString } from '@storybook/api/shortcut';
 import addons, { Addon, types } from '@storybook/addons';
 
@@ -167,8 +167,13 @@ export const Tools = React.memo<{ list: Addon[] }>(({ list }) => (
   </>
 ));
 
-function hasBeenExcludedByConfiguration(item: Partial<Addon>) {
-  const { toolbar } = addons.getConfig();
+function toolbarItemHasBeenExcluded(item: Partial<Addon>, story: PreviewProps['story']) {
+  const storyParameterToolbar =
+    'toolbar' in story.parameters ? story.parameters.toolbar : undefined;
+  const { toolbar: configToolbar } = addons.getConfig();
+
+  const toolbar = merge(configToolbar, storyParameterToolbar);
+
   return toolbar ? !!toolbar[item.id]?.hidden : false;
 }
 
@@ -201,7 +206,7 @@ export function filterTools(
         location,
         path,
       })) &&
-    !hasBeenExcludedByConfiguration(item);
+    !toolbarItemHasBeenExcluded(item, story);
 
   const left = toolsLeft.filter(filter);
   const right = toolsRight.filter(filter);
