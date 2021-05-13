@@ -1,6 +1,9 @@
 import prompts from 'prompts';
+import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import boxen from 'boxen';
+import dedent from 'ts-dedent';
 import { createAndInit, Parameters, exec } from './repro-generators/scripts';
 import * as configs from './repro-generators/configs';
 import { SupportedFrameworks } from './project_types';
@@ -93,9 +96,9 @@ export const repro = async ({
       name: 'directory',
     });
     selectedDirectory = directory;
-    // if (fs.existsSync(selectedDirectory)) {
-    //   throw new Error(`Repro: ${selectedDirectory} already exists`);
-    // }
+    if (fs.existsSync(selectedDirectory)) {
+      throw new Error(`🚨 Repro: ${selectedDirectory} already exists`);
+    }
   }
 
   try {
@@ -114,16 +117,25 @@ export const repro = async ({
       await initGitRepo(cwd);
     }
 
-    logger.info('');
-    logger.info('🎉 Your Storybook reproduction project is ready to use! Now:');
-    logger.info('');
-    logger.info(chalk.yellow(`cd ${selectedDirectory}`));
-    logger.info(chalk.yellow(`yarn storybook`));
-    logger.info('');
-    logger.info("Once you've recreated the problem you're experiencing,");
-    logger.info('publish to github and paste the repo link in your issue.');
-    logger.info('Having a clean repro helps us solve your issue faster! 🙏');
-    logger.info('');
+    logger.info(
+      boxen(
+        dedent`
+        🎉 Your Storybook reproduction project is ready to use! 🎉
+
+        ${chalk.yellow(`cd ${selectedDirectory}`)}
+        ${chalk.yellow(`yarn storybook`)}
+
+        Once you've recreated the problem you're experiencing, please:
+        
+        1. Document any additional steps in ${chalk.cyan('README.md')}
+        2. Publish the repository to github
+        3. Link to the repro repository in your issue
+
+        Having a clean repro helps us solve your issue faster! 🙏
+      `.trim(),
+        { borderStyle: 'round', padding: 1, borderColor: '#F1618C' } as any
+      )
+    );
   } catch (error) {
     logger.error('🚨 Failed to create repro');
   }
