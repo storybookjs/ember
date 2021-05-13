@@ -76,5 +76,12 @@ export async function createDefaultWebpackConfig(
         },
       ],
     },
+    resolve: {
+      ...storybookBaseConfig.resolve,
+      fallback: {
+        ...storybookBaseConfig.resolve?.fallback,
+        crypto: false,
+      },
+    },
   };
 }
