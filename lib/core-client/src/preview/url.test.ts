@@ -73,7 +73,7 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'story--id',
         viewMode: 'story',
-        __singleStory: false,
+        singleStory: false,
       });
     });
     it('should handle id queries with *', () => {
@@ -81,7 +81,7 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: '*',
         viewMode: 'story',
-        __singleStory: false,
+        singleStory: false,
       });
     });
     it('should redirect legacy queries', () => {
@@ -89,7 +89,7 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: { kind: 'kind', name: 'story' },
         viewMode: 'story',
-        __singleStory: false,
+        singleStory: false,
       });
     });
     it('should parse args', () => {
@@ -97,16 +97,16 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'story--id',
         viewMode: 'story',
-        __singleStory: false,
+        singleStory: false,
         args: { obj: { key: 'val' } },
       });
     });
     it('should handle singleStory param', () => {
-      document.location.search = '?id=abc&__singleStory=true';
+      document.location.search = '?id=abc&singleStory=true';
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'abc',
         viewMode: 'story',
-        __singleStory: true,
+        singleStory: true,
       });
     });
   });

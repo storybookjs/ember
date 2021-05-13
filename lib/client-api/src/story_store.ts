@@ -667,8 +667,8 @@ export default class StoryStore {
       return false;
     }
 
-    const { __singleStory, storySpecifier } = this._selectionSpecifier;
-    return storySpecifier && storySpecifier !== '*' && __singleStory;
+    const { singleStory, storySpecifier } = this._selectionSpecifier;
+    return storySpecifier && storySpecifier !== '*' && singleStory;
   }
 
   getSelection = (): StoreSelection => this._selection;
