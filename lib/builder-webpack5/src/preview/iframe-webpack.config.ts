@@ -7,7 +7,6 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
-import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 import themingPaths from '@storybook/theming/paths';
@@ -184,11 +183,7 @@ export default async ({
         es6Transpiler() as any,
         {
           test: /\.md$/,
-          use: [
-            {
-              loader: require.resolve('raw-loader'),
-            },
-          ],
+          type: 'asset/source',
         },
       ],
     },
@@ -202,15 +197,7 @@ export default async ({
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
       },
-
-      plugins: [
-        // Transparently resolve packages via PnP when needed; noop otherwise
-        PnpWebpackPlugin,
-      ],
       fallback: { path: false },
-    },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     optimization: {
       splitChunks: {
