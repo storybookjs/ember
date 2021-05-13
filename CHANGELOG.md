@@ -1,3 +1,10 @@
+## 6.3.0-alpha.25 (May 13, 2021)
+
+### Maintenance
+
+- Builder-Webpack5: Use native features instead of plugins ([#14281](https://github.com/storybookjs/storybook/pull/14281))
+- CLI: Repro refinements per feedback ([#14888](https://github.com/storybookjs/storybook/pull/14888))
+
 ## 6.3.0-alpha.24 (May 11, 2021)
 
 ### Features
