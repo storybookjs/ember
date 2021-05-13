@@ -168,13 +168,13 @@ export const Tools = React.memo<{ list: Addon[] }>(({ list }) => (
 ));
 
 function toolbarItemHasBeenExcluded(item: Partial<Addon>, story: PreviewProps['story']) {
-  const storyParameterToolbar =
+  const toolbarItemsFromStoryParameters =
     'toolbar' in story.parameters ? story.parameters.toolbar : undefined;
-  const { toolbar: configToolbar } = addons.getConfig();
+  const { toolbar: toolbarItemsFromAddonsConfig } = addons.getConfig();
 
-  const toolbar = merge(configToolbar, storyParameterToolbar);
+  const toolbarItems = merge(toolbarItemsFromAddonsConfig, toolbarItemsFromStoryParameters);
 
-  return toolbar ? !!toolbar[item.id]?.hidden : false;
+  return toolbarItems ? !!toolbarItems[item.id]?.hidden : false;
 }
 
 export function filterTools(
