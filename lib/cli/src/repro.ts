@@ -121,7 +121,7 @@ export const repro = async ({
     logger.info(chalk.yellow(`yarn storybook`));
     logger.info('');
     logger.info("Once you've recreated the problem you're experiencing,");
-    logger.info('publish to github and  paste the repo link in your issue.');
+    logger.info('publish to github and paste the repo link in your issue.');
     logger.info('Having a clean repro helps us solve your issue faster! 🙏');
     logger.info('');
   } catch (error) {
