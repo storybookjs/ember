@@ -51,6 +51,7 @@
     "@storybook/codemod": "6.3.0-alpha.24",
     "@storybook/node-logger": "6.3.0-alpha.24",
     "@storybook/semver": "^7.3.2",
+    "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "commander": "^6.2.1",
     "core-js": "^3.8.2",
@@ -69,6 +70,7 @@
     "read-pkg-up": "^7.0.1",
     "shelljs": "^0.8.4",
     "strip-json-comments": "^3.0.1",
+    "ts-dedent": "^2.0.0",
     "update-notifier": "^5.0.1"
   },
   "devDependencies": {
