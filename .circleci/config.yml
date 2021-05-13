@@ -195,7 +195,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          command: yarn test:e2e-framework --clean --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          command: yarn test:e2e-framework --clean --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
@@ -218,8 +218,8 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          # Do not test CRA here because it's done in PnP part
-          command: yarn test:e2e-framework vue3 angular web_components_typescript
+          # Do not test CRA here because it's done in PnP part and add `angular` as soon as SB will support Angular 12
+          command: yarn test:e2e-framework vue3 angular11 web_components_typescript
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
