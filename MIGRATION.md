@@ -224,6 +224,9 @@ export const parameters = {
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
 
+#### Components Without Selectors
+When the new Angular renderer is used, all Angular Story components must either have a selector, or be added to the `entryComponents` array of the story's `moduleMetadata`. If the component has any `Input`s or `Output`s to be controlled with `args`, a selector should be added.
+
 ### Packages now available as ESModules
 
 Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. One common culprit is doc blocks, which [is fixed in 6.3](#deprecated-scoped-blocks-imports). In 6.2, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):

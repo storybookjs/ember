@@ -132,7 +132,11 @@ const handleExamples = async (deployables) => {
 };
 
 const run = async () => {
-  const list = getDeployables(await readdir(p(['examples'])), hasBuildScript);
+  const list = getDeployables(await readdir(p(['examples'])), hasBuildScript)
+    // Temporary disable run for lit-kitchen-sink
+    .filter((example) => {
+      return !example.includes('lit-kitchen-sink');
+    });
   const deployables = filterDataForCurrentCircleCINode(list);
 
   if (deployables.length) {
