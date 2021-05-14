@@ -10,19 +10,21 @@ const Wrapper = styled.label({
   display: 'flex',
 });
 
-const format = (value?: TextValue) => value || '';
-
 export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onBlur }) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(event.target.value);
   };
 
   const [forceVisible, onSetForceVisible] = useState(false);
-  const onForceVisible = useCallback(() => onSetForceVisible(true), [onSetForceVisible]);
-  if (!forceVisible && value === undefined) {
+  const onForceVisible = useCallback(() => {
+    onChange('');
+    onSetForceVisible(true);
+  }, [onSetForceVisible]);
+  if (value === undefined) {
     return <Form.Button onClick={onForceVisible}>Set string</Form.Button>;
   }
 
+  const isValid = typeof value === 'string';
   return (
     <Wrapper>
       <Form.Textarea
@@ -31,7 +33,8 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
         size="flex"
         placeholder="Edit string..."
         autoFocus={forceVisible}
-        {...{ name, value: format(value), onFocus, onBlur }}
+        valid={isValid ? null : 'error'}
+        {...{ name, value: isValid ? value : '', onFocus, onBlur }}
       />
     </Wrapper>
   );

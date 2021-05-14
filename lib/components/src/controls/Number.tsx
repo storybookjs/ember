@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useState, useCallback } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
@@ -12,7 +12,7 @@ type NumberProps = ControlProps<NumberValue | null> & NumberConfig;
 
 export const parse = (value: string) => {
   const result = parseFloat(value);
-  return Number.isNaN(result) ? null : result;
+  return Number.isNaN(result) ? undefined : result;
 };
 
 export const format = (value: NumberValue) => (value != null ? String(value) : '');
@@ -31,6 +31,15 @@ export const NumberControl: FC<NumberProps> = ({
     onChange(parse(event.target.value));
   };
 
+  const [forceVisible, onSetForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange(0);
+    onSetForceVisible(true);
+  }, [onSetForceVisible]);
+  if (value === undefined) {
+    return <Form.Button onClick={onForceVisible}>Set number</Form.Button>;
+  }
+
   return (
     <Wrapper>
       <Form.Input
@@ -38,7 +47,8 @@ export const NumberControl: FC<NumberProps> = ({
         onChange={handleChange}
         size="flex"
         placeholder="Edit number..."
-        value={value === null ? undefined : value}
+        value={value}
+        autoFocus={forceVisible}
         {...{ name, min, max, step, onFocus, onBlur }}
       />
     </Wrapper>

@@ -247,6 +247,16 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     },
     [onChange]
   );
+
+  const [forceVisible, onSetForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange({});
+    onSetForceVisible(true);
+  }, [onSetForceVisible]);
+  if (!hasData) {
+    return <Form.Button onClick={onForceVisible}>Set object</Form.Button>;
+  }
+
   const rawJSONForm = (
     <RawInput
       id={name}
@@ -254,6 +264,7 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
       placeholder="Edit JSON string..."
+      autoFocus={forceVisible}
       valid={parseError ? 'error' : null}
     />
   );

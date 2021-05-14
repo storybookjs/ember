@@ -33,11 +33,15 @@ export const ArrayControl: FC<ArrayProps> = ({
   );
 
   const [forceVisible, onSetForceVisible] = useState(false);
-  const onForceVisible = useCallback(() => onSetForceVisible(true), [onSetForceVisible]);
-  if (!forceVisible && value === undefined) {
+  const onForceVisible = useCallback(() => {
+    onChange([]);
+    onSetForceVisible(true);
+  }, [onSetForceVisible]);
+  if (value === undefined) {
     return <Form.Button onClick={onForceVisible}>Set array</Form.Button>;
   }
 
+  const isValid = Array.isArray(value);
   return (
     <Wrapper>
       <Form.Textarea
@@ -46,6 +50,7 @@ export const ArrayControl: FC<ArrayProps> = ({
         onChange={handleChange}
         size="flex"
         placeholder="Edit array..."
+        valid={isValid ? null : 'error'}
         autoFocus={forceVisible}
         {...{ name, onBlur, onFocus }}
       />
