@@ -83,7 +83,10 @@ yarn storybook
 ## Check your work
 
 When you're done with your work, make sure you've added documentation and tests as appropriate. If you don't, we'll remind you in your PR. 😘
-Our naming convention for tests is as follows:
+
+Adding a story or set of stories to an example app is a great way to test your work. If you're modifying part of Storybook's core, or one of the addons, there's probably a set of stories you can add to in `examples/official-storybook`. If you're modifying something related to a specific framework, they have their own examples in the monorepo. For instance, `examples/vue-kitchen-sink` is a natural place to add stories for `@storybook/vue`, `examples/angular-cli` for `@storybook/angular`, and so on.
+
+Unit tests are also part of our test strategy. The naming convention for unit tests is as follows:
 
 ```sh
 # Proper naming convention and structure for ts tests files
