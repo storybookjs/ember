@@ -1,5 +1,3 @@
-import { isNumber } from 'lodash';
-import { array } from 'prop-types';
 import React, { useState } from 'react';
 import { OptionsControl } from './Options';
 

@@ -271,13 +271,13 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
 
   return (
     <Wrapper>
-      {hasData && ['Object', 'Array'].includes(getObjectType(data)) && (
+      {['Object', 'Array'].includes(getObjectType(data)) && (
         <RawButton onClick={() => setShowRaw((v) => !v)}>
           <Icons icon={showRaw ? 'eyeclose' : 'eye'} />
           <span>RAW</span>
         </RawButton>
       )}
-      {hasData && !showRaw ? (
+      {!showRaw ? (
         <JsonTree
           data={data}
           rootName={name}

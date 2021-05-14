@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { opacify, transparentize } from 'polished';
 import { styled } from '@storybook/theming';
