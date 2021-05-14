@@ -39,6 +39,21 @@ export const repro = async ({
   e2e,
   pnp,
 }: ReproOptions) => {
+  logger.info(
+    boxen(
+      dedent`
+        🤗 Welcome to ${chalk.yellow('sb repro')}! 🤗 
+
+        Create a ${chalk.green('new project')} to minimally reproduce Storybook issues.
+        
+        1. select an environment that most closely matches your project setup.
+        2. select a location for the reproduction, outside of your project.
+        
+        After the reproduction is ready, we'll guide you through the next steps.
+        `.trim(),
+      { borderStyle: 'round', padding: 1, borderColor: '#F1618C' } as any
+    )
+  );
   if (list) {
     logger.info('🌈 Available templates');
     Object.entries(FRAMEWORKS).forEach(([fmwrk, templates]) => {
@@ -62,6 +77,9 @@ export const repro = async ({
         choices: Object.keys(FRAMEWORKS).map((f) => ({ title: f, value: f })),
       });
       selectedFramework = frameworkOpt;
+    }
+    if (!selectedFramework) {
+      throw new Error('🚨 Repro: please select a framework!');
     }
     selectedTemplate = (
       await prompts({
