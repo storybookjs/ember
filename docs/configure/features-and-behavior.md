@@ -42,4 +42,4 @@ The following options are configurable under the `toolbar` namespace:
 
 | Name                  | Type          | Description                                                   | Example Value                                  |
 | ----------------------|:-------------:|:-------------------------------------------------------------:|:----------------------------------------------:|
-| **id**                | String        |Toggle visibility for toolbar item                             |` { hidden: false }`                            |
+| **id**                | String        |Toggle visibility for toolbar item                             |`{ hidden: false }`                            |
