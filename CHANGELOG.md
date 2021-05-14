@@ -1,3 +1,20 @@
+## 6.3.0-alpha.26 (May 14, 2021)
+
+### Bug Fixes
+
+- Addon-controls: Fix duplicate color swatch id's in Color control ([#14925](https://github.com/storybookjs/storybook/pull/14925))
+
+### Maintenance
+
+- CLI: Add preamble instructions to `sb repro` ([#14924](https://github.com/storybookjs/storybook/pull/14924))
+- Webpack5: Always set `resolve.fallback.crypto` to `false` ([#14914](https://github.com/storybookjs/storybook/pull/14914))
+- Build: Add missing dependencies ([#14919](https://github.com/storybookjs/storybook/pull/14919))
+- Build: Put E2E tests back on track ([#14917](https://github.com/storybookjs/storybook/pull/14917))
+
+### Dependency Upgrades
+
+- Addon-storyshots: Make @storybook/react dependency optional ([#14891](https://github.com/storybookjs/storybook/pull/14891))
+
 ## 6.3.0-alpha.25 (May 13, 2021)
 
 ### Maintenance
