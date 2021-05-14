@@ -499,7 +499,7 @@ export default class StoryStore {
       }
       return acc;
     }, {} as Args);
-    if (defaultArgs !== {}) {
+    if (Object.keys(defaultArgs).length > 0) {
       argTypeDefaultValueWarning();
     }
 
