@@ -406,5 +406,17 @@ module.exports = {
         },
       ],
     },
+    {
+      title: '🛠 Contribute',
+      pathSegment: 'contribute',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'dev-setup',
+          title: 'Dev setup',
+          type: 'link',
+        },
+      ],
+    },
   ],
 };
