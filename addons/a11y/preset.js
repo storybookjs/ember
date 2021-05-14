@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 function managerEntries(entry = []) {
   return [...entry, require.resolve('./dist/esm/register')];
 }
@@ -11,17 +10,4 @@ function config(entry = []) {
   ];
 }
 
-async function webpack(webpackConfig, options) {
-  const core = await options.presets.apply('core');
-  if ((core && core.builder) !== 'webpack5') {
-    return webpackConfig;
-  }
-  if (!webpackConfig.resolve.fallback) {
-    webpackConfig.resolve.fallback = {};
-  }
-  webpackConfig.resolve.fallback.crypto = false;
-
-  return webpackConfig;
-}
-
-module.exports = { managerEntries, config, webpack };
+module.exports = { managerEntries, config };

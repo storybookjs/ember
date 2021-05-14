@@ -12,8 +12,6 @@ function getCommand(watch, dir) {
     return '';
   }
 
-  const babel = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'babel');
-
   const args = [
     './src',
     `--out-dir ${dir}`,
@@ -36,7 +34,7 @@ function getCommand(watch, dir) {
     args.push('-w');
   }
 
-  return `${babel} ${args.join(' ')}`;
+  return `yarn run -T babel ${args.join(' ')}`;
 }
 
 function handleExit(code, stderr, errorCallback) {

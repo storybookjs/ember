@@ -4,9 +4,6 @@ const path = require('path');
 const shell = require('shelljs');
 
 function getCommand(watch) {
-  const tsc = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'tsc');
-  const downlevelDts = path.join(__dirname, '..', '..', 'node_modules', '.bin', 'downlevel-dts');
-
   const args = ['--outDir ./dist/ts3.9', '--listEmittedFiles true', '--declaration true'];
 
   /**
@@ -24,7 +21,7 @@ function getCommand(watch) {
     args.push('-w', '--preserveWatchOutput');
   }
 
-  return `${tsc} ${args.join(' ')} && ${downlevelDts} dist/ts3.9 dist/ts3.4`;
+  return `yarn run -T tsc ${args.join(' ')} && yarn run -T downlevel-dts dist/ts3.9 dist/ts3.4`;
 }
 
 function handleExit(code, stderr, errorCallback) {
