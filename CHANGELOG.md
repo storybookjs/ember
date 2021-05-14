@@ -1,3 +1,9 @@
+## 6.3.0-alpha.27 (May 14, 2021)
+
+### Features
+
+- CLI: Add Angular 12 + docs inline rendering support ([#14928](https://github.com/storybookjs/storybook/pull/14928))
+
 ## 6.3.0-alpha.26 (May 14, 2021)
 
 ### Bug Fixes
