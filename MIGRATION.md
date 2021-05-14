@@ -167,7 +167,7 @@ Storybook 6.3 supports Angular 12 out of the box when you install it fresh. Howe
 npm install @storybook/builder-webpack5 --save-dev # or yarn
 ```
 
-The edit your `.storybook/main.js` config:
+Then edit your `.storybook/main.js` config:
 
 ```js
 module.exports = {
