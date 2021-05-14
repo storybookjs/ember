@@ -1,6 +1,6 @@
 {
   "name": "@storybook/svelte",
-  "version": "6.3.0-alpha.24",
+  "version": "6.3.0-alpha.26",
   "description": "Storybook for Svelte: Develop Svelte Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,9 +45,9 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.24",
-    "@storybook/core": "6.3.0-alpha.24",
-    "@storybook/core-common": "6.3.0-alpha.24",
+    "@storybook/addons": "6.3.0-alpha.26",
+    "@storybook/core": "6.3.0-alpha.26",
+    "@storybook/core-common": "6.3.0-alpha.26",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "react": "16.14.0",
@@ -73,5 +73,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a8870128bc9684f9b54083decbd10664bf26bcc4"
+  "gitHead": "10b42ef0cd54ad9a248287d6ffc9d5d92f5eb733"
 }

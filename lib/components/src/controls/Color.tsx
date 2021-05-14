@@ -303,9 +303,10 @@ export const ColorControl: FC<ColorProps> = ({
             />
             {presets.length > 0 && (
               <Swatches>
-                {presets.map((preset) => (
+                {presets.map((preset, index: number) => (
                   <WithTooltip
-                    key={preset.value}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${preset.value}-${index}`}
                     hasChrome={false}
                     tooltip={<Note note={preset.keyword || preset.value} />}
                   >
