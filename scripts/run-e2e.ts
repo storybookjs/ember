@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import path from 'path';
 import { remove, ensureDir, pathExists } from 'fs-extra';
-import { prompt } from 'enquirer';
+import prompts from 'prompts';
 import pLimit from 'p-limit';
 
 import program from 'commander';
@@ -63,8 +63,8 @@ const serveStorybook = async ({ cwd }: Options, port: string) => {
   return serve(staticDirectory, port);
 };
 
-const runCypress = async ({ name }: Options, location: string, open: boolean) => {
-  const cypressCommand = open ? 'open' : 'run';
+const runCypress = async ({ name }: Options, location: string) => {
+  const cypressCommand = openCypressInUIMode ? 'open' : 'run';
   logger.info(`🤖 Running Cypress tests`);
   try {
     await exec(
@@ -123,17 +123,8 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   const server = await serveStorybook(options, '4000');
   logger.log();
 
-  let open = false;
-  if (!process.env.CI) {
-    ({ open } = await prompt({
-      type: 'confirm',
-      name: 'open',
-      message: 'Should open cypress?',
-    }));
-  }
-
   try {
-    await runCypress(options, 'http://localhost:4000', open);
+    await runCypress(options, 'http://localhost:4000');
     logger.log();
   } finally {
     server.close();
@@ -153,10 +144,13 @@ const runE2E = async (parameters: Parameters) => {
   return runTests(parameters)
     .then(async () => {
       if (!process.env.CI) {
-        const { cleanup } = await prompt<{ cleanup: boolean }>({
-          type: 'confirm',
+        const { cleanup } = await prompts({
+          type: 'toggle',
           name: 'cleanup',
           message: 'Should perform cleanup?',
+          initial: false,
+          active: 'yes',
+          inactive: 'no',
         });
 
         if (cleanup) {
@@ -178,55 +172,118 @@ const runE2E = async (parameters: Parameters) => {
     });
 };
 
-program.option('--clean', 'Clean up existing projects before running the tests', false);
-program.option('--pnp', 'Run tests using Yarn 2 PnP instead of Yarn 1 + npx', false);
-program.option(
-  '--use-local-sb-cli',
-  'Run tests using local @storybook/cli package (⚠️ Be sure @storybook/cli is properly build as it will not be rebuild before running the tests)',
-  false
-);
-program.option(
-  '--skip <value>',
-  'Skip a framework, can be used multiple times "--skip angular@latest --skip preact"',
-  (value, previous) => previous.concat([value]),
-  []
-);
+program
+  .option('--clean', 'Clean up existing projects before running the tests', false)
+  .option('--pnp', 'Run tests using Yarn 2 PnP instead of Yarn 1 + npx', false)
+  .option(
+    '--use-local-sb-cli',
+    'Run tests using local @storybook/cli package (⚠️ Be sure @storybook/cli is properly built as it will not be rebuilt before running the tests)',
+    false
+  )
+  .option(
+    '--skip <value>',
+    'Skip a framework, can be used multiple times "--skip angular@latest --skip preact"',
+    (value, previous) => previous.concat([value]),
+    []
+  )
+  .option('--all', `run e2e tests for every framework`, false);
 program.parse(process.argv);
 
-const {
-  pnp,
-  useLocalSbCli,
-  clean: startWithCleanSlate,
-  args: frameworkArgs,
-  skip: frameworksToSkip,
-}: {
+type ProgramOptions = {
+  all?: boolean;
   pnp?: boolean;
   useLocalSbCli?: boolean;
   clean?: boolean;
   args?: string[];
   skip?: string[];
-} = program;
+};
+
+const {
+  all: shouldRunAllFrameworks,
+  args: frameworkArgs,
+  skip: frameworksToSkip,
+}: ProgramOptions = program;
+
+let { pnp, useLocalSbCli, clean: startWithCleanSlate }: ProgramOptions = program;
 
 const typedConfigs: { [key: string]: Parameters } = configs;
-const e2eConfigs: { [key: string]: Parameters } = {};
+let e2eConfigs: { [key: string]: Parameters } = {};
 
-// Compute the list of frameworks we will run E2E for
-if (frameworkArgs.length > 0) {
-  frameworkArgs.forEach((framework) => {
-    e2eConfigs[framework] = Object.values(typedConfigs).find((c) => c.name === framework);
+let openCypressInUIMode = !process.env.CI;
+
+const getConfig = async () => {
+  if (shouldRunAllFrameworks) {
+    logger.info(`📑 Running test for ALL frameworks`);
+    Object.values(typedConfigs).forEach((config) => {
+      e2eConfigs[`${config.name}-${config.version}`] = config;
+    });
+
+    // CRA Bench is a special case of E2E tests, it requires Node 12 as `@storybook/bench` is using `@hapi/hapi@19.2.0`
+    // which itself need Node 12.
+    delete e2eConfigs['cra_bench-latest'];
+    return;
+  }
+
+  // Compute the list of frameworks we will run E2E for
+  if (frameworkArgs.length > 0) {
+    frameworkArgs.forEach((framework) => {
+      e2eConfigs[framework] = Object.values(typedConfigs).find((c) => c.name === framework);
+    });
+  } else {
+    const selectedValues = await prompts([
+      {
+        type: 'toggle',
+        name: 'openCypressInUIMode',
+        message: 'Open cypress in UI mode',
+        initial: false,
+        active: 'yes',
+        inactive: 'no',
+      },
+      {
+        type: 'toggle',
+        name: 'useLocalSbCli',
+        message: 'Use local Storybook CLI',
+        initial: false,
+        active: 'yes',
+        inactive: 'no',
+      },
+      {
+        type: 'autocompleteMultiselect',
+        message: 'Select the frameworks to run',
+        name: 'frameworks',
+        hint:
+          'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
+        choices: Object.keys(configs).map((key) => {
+          // @ts-ignore
+          const { name, version } = configs[key];
+          return {
+            // @ts-ignore
+            value: configs[key],
+            title: `${name}@${version}`,
+            selected: false,
+          };
+        }),
+      },
+    ]);
+
+    if (!selectedValues.frameworks) {
+      logger.info(`No framework was selected.`);
+      process.exit(process.exitCode || 0);
+    }
+
+    useLocalSbCli = selectedValues.useLocalSbCli;
+    openCypressInUIMode = selectedValues.openCypressInUIMode;
+    e2eConfigs = selectedValues.frameworks;
+  }
+
+  // Remove frameworks listed with `--skip` arg
+  frameworksToSkip.forEach((framework) => {
+    delete e2eConfigs[framework];
   });
-} else {
-  Object.values(typedConfigs).forEach((config) => {
-    e2eConfigs[config.name] = config;
-  });
-}
+};
 
-// Remove frameworks listed with `--skip` arg
-frameworksToSkip.forEach((framework) => {
-  delete e2eConfigs[framework];
-});
-
-const perform = () => {
+const perform = async () => {
+  await getConfig();
   const limit = pLimit(1);
   const narrowedConfigs = Object.values(e2eConfigs);
 
