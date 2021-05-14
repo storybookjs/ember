@@ -87,6 +87,14 @@ const storyFnWarning = deprecate(
   https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-storyfn`
 );
 
+const argTypeDefaultValueWarning = deprecate(
+  () => {},
+  dedent`
+  \`argType.defaultValue\` is deprecated and will be removed in Storybook 7.0.
+
+  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-argtype-defaultValue`
+);
+
 interface AllowUnsafeOption {
   allowUnsafe?: boolean;
 }
@@ -491,6 +499,9 @@ export default class StoryStore {
       }
       return acc;
     }, {} as Args);
+    if (defaultArgs !== {}) {
+      argTypeDefaultValueWarning();
+    }
 
     const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
     const initialArgs = this._argsEnhancers.reduce(
