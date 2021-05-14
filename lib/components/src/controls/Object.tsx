@@ -248,11 +248,11 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     [onChange]
   );
 
-  const [forceVisible, onSetForceVisible] = useState(false);
+  const [forceVisible, setForceVisible] = useState(false);
   const onForceVisible = useCallback(() => {
     onChange({});
-    onSetForceVisible(true);
-  }, [onSetForceVisible]);
+    setForceVisible(true);
+  }, [setForceVisible]);
   if (!hasData) {
     return <Form.Button onClick={onForceVisible}>Set object</Form.Button>;
   }

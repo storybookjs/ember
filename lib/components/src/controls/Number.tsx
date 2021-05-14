@@ -27,16 +27,30 @@ export const NumberControl: FC<NumberProps> = ({
   onBlur,
   onFocus,
 }) => {
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(parse(event.target.value));
-  };
+  const [inputValue, setInputValue] = useState(typeof value === 'number' ? value : '');
+  const [forceVisible, setForceVisible] = useState(false);
+  const [parseError, setParseError] = useState(false);
 
-  const [forceVisible, onSetForceVisible] = useState(false);
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+
+      const result = parseFloat(event.target.value);
+      if (Number.isNaN(result)) {
+        setParseError(true);
+      } else {
+        onChange(result);
+        setParseError(false);
+      }
+    },
+    [onChange, setParseError]
+  );
+
   const onForceVisible = useCallback(() => {
     onChange(0);
-    onSetForceVisible(true);
-  }, [onSetForceVisible]);
-  if (value === undefined) {
+    setForceVisible(true);
+  }, [setForceVisible]);
+  if (!forceVisible && value === undefined) {
     return <Form.Button onClick={onForceVisible}>Set number</Form.Button>;
   }
 
@@ -47,7 +61,8 @@ export const NumberControl: FC<NumberProps> = ({
         onChange={handleChange}
         size="flex"
         placeholder="Edit number..."
-        value={value}
+        value={inputValue}
+        valid={parseError ? 'error' : null}
         autoFocus={forceVisible}
         {...{ name, min, max, step, onFocus, onBlur }}
       />

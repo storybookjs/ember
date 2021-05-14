@@ -15,11 +15,11 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
     onChange(event.target.value);
   };
 
-  const [forceVisible, onSetForceVisible] = useState(false);
+  const [forceVisible, setForceVisible] = useState(false);
   const onForceVisible = useCallback(() => {
     onChange('');
-    onSetForceVisible(true);
-  }, [onSetForceVisible]);
+    setForceVisible(true);
+  }, [setForceVisible]);
   if (value === undefined) {
     return <Form.Button onClick={onForceVisible}>Set string</Form.Button>;
   }
