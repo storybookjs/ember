@@ -1,9 +1,6 @@
 import { StoryContext } from '@storybook/addons';
 import { inferActionsFromArgTypesRegex, addActionsFromArgTypes } from './addArgsHelpers';
 
-const withDefaultValue = (argTypes) =>
-  Object.keys(argTypes).filter((key) => !!argTypes[key].defaultValue);
-
 describe('actions parameter enhancers', () => {
   describe('actions.argTypesRegex parameter', () => {
     const parameters = { actions: { argTypesRegex: '^on.*' } };

@@ -1,5 +1,4 @@
-import mapValues from 'lodash/mapValues';
-import { Args, ArgTypes } from '@storybook/addons';
+import { Args } from '@storybook/addons';
 import { ArgsEnhancer } from '@storybook/client-api';
 import { action } from '../index';
 
