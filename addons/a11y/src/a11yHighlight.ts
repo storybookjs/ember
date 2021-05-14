@@ -21,9 +21,12 @@ const highlight = (infos: HighlightInfo) => {
   const id = HIGHLIGHT_STYLE_ID;
   resetHighlight();
 
+  // Make sure there are no duplicated selectors
+  const elements = Array.from(new Set(infos.elements));
+
   const sheet = document.createElement('style');
   sheet.setAttribute('id', id);
-  sheet.innerHTML = infos.elements
+  sheet.innerHTML = elements
     .map(
       (target) =>
         `${target}{ 
