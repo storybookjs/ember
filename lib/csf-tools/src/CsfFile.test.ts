@@ -2,7 +2,7 @@ import { addSerializer } from 'jest-specific-snapshot';
 import globby from 'globby';
 import path from 'path';
 
-import { read } from './CsfFile';
+import { readCsf } from './CsfFile';
 
 addSerializer({
   print: (val: any) => JSON.stringify(val, null, 2),
@@ -16,7 +16,7 @@ describe('csf extract', () => {
     .map((testFile) => [path.basename(testFile).split('.')[0], testFile]);
 
   it.each(testFiles)('%s', async (testName, testFile) => {
-    const csf = (await read(testFile)).parse();
+    const csf = (await readCsf(testFile)).parse();
     expect({ meta: csf.meta, stories: csf.stories }).toMatchSpecificSnapshot(
       path.join(fixturesDir, `${testName}.snapshot`)
     );

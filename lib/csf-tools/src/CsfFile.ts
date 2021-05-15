@@ -130,13 +130,13 @@ export class CsfFile {
   }
 }
 
-export const read = async (fileName: string) => {
+export const readCsf = async (fileName: string) => {
   const code = (await fs.readFile(fileName, 'utf-8')).toString();
   const ast = parse(code, { sourceType: 'module', plugins: ['jsx', 'typescript'] });
   return new CsfFile(ast);
 };
 
-export const write = async (fileName: string, csf: CsfFile) => {
+export const writeCsf = async (fileName: string, csf: CsfFile) => {
   const { code } = generate(csf._ast, {});
   await fs.writeFile(fileName, code);
 };
