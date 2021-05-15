@@ -1,3 +1,9 @@
+## 6.3.0-alpha.28 (May 15, 2021)
+
+### Bug Fixes
+
+- CLI: Keep Webpack 4 builder for Angular lower than 12 ([#14942](https://github.com/storybookjs/storybook/pull/14942))
+
 ## 6.3.0-alpha.27 (May 14, 2021)
 
 ### Features
