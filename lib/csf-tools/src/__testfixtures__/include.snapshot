@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`csf extract include 1`] = `
+{
+  "meta": {
+    "title": "foo/bar/baz",
+    "includeStories": {}
+  },
+  "stories": [
+    {
+      "id": "foo-bar-baz--includea",
+      "name": "IncludeA"
+    },
+    {
+      "id": "foo-bar-baz--includeb",
+      "name": "Some story"
+    },
+    {
+      "id": "foo-bar-baz--includec",
+      "name": "IncludeC"
+    }
+  ]
+}
+`;

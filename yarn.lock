@@ -584,6 +584,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/generator@npm:^7.14.0":
+  version: 7.14.1
+  resolution: "@babel/generator@npm:7.14.1"
+  dependencies:
+    "@babel/types": ^7.14.1
+    jsesc: ^2.5.1
+    source-map: ^0.5.0
+  checksum: f92059c9ceb75a018a3786f279a9b06fe07dbf73a2b0073ce85d14af6dde78cecfe66fe833dfd2646446a1e017c27864ade155768e95f4fac7bf63ba290122de
+  languageName: node
+  linkType: hard
+
 "@babel/helper-annotate-as-pure@npm:^7.0.0, @babel/helper-annotate-as-pure@npm:^7.10.4, @babel/helper-annotate-as-pure@npm:^7.12.13":
   version: 7.12.13
   resolution: "@babel/helper-annotate-as-pure@npm:7.12.13"
@@ -816,6 +827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-validator-identifier@npm:^7.14.0":
+  version: 7.14.0
+  resolution: "@babel/helper-validator-identifier@npm:7.14.0"
+  checksum: 8fca6a00b6d4d43650dcbfa9fc436e2ae33058084827cc70d94c2825af50787cfb2c0ffaeff8c92be4498a66a2f9ec0a4bc40e7023b3bf4ccc6ed2abd5bb4088
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-option@npm:^7.12.1, @babel/helper-validator-option@npm:^7.12.11, @babel/helper-validator-option@npm:^7.12.17":
   version: 7.12.17
   resolution: "@babel/helper-validator-option@npm:7.12.17"
@@ -872,6 +890,15 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: bc36dccae0548178f6877b58b29afae8aa20afb5111afb7a67670b6374b308c4a2b5b1aa86d48bd073101ee33dc7d0545b6703779dc01cf8f9dc2a2d0a12853c
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^7.14.0":
+  version: 7.14.1
+  resolution: "@babel/parser@npm:7.14.1"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: bbfba7fd75fd889a7fa1cc15703826ddd190b69de1eed176b07f2bacc4478736313edf8c2d640923585fd15ba906ddeab639d77376154c09cd3407b750069d76
   languageName: node
   linkType: hard
 
@@ -2596,6 +2623,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/traverse@npm:^7.12.11":
+  version: 7.14.0
+  resolution: "@babel/traverse@npm:7.14.0"
+  dependencies:
+    "@babel/code-frame": ^7.12.13
+    "@babel/generator": ^7.14.0
+    "@babel/helper-function-name": ^7.12.13
+    "@babel/helper-split-export-declaration": ^7.12.13
+    "@babel/parser": ^7.14.0
+    "@babel/types": ^7.14.0
+    debug: ^4.1.0
+    globals: ^11.1.0
+  checksum: 77775e73fa1e73ce6a7950bff5d535a59a55d6d2db3d4d8eefb4f50ff77a542016d91e09e91a55e40d4a9022765f932244680cc37b5dd20ceb7ad0d89b925db3
+  languageName: node
+  linkType: hard
+
 "@babel/types@npm:^7.0.0, @babel/types@npm:^7.12.0, @babel/types@npm:^7.12.1, @babel/types@npm:^7.12.10, @babel/types@npm:^7.12.11, @babel/types@npm:^7.12.13, @babel/types@npm:^7.12.17, @babel/types@npm:^7.12.6, @babel/types@npm:^7.12.7, @babel/types@npm:^7.13.0, @babel/types@npm:^7.3.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.0, @babel/types@npm:^7.4.4, @babel/types@npm:^7.6.1, @babel/types@npm:^7.7.0, @babel/types@npm:^7.7.2, @babel/types@npm:^7.8.3, @babel/types@npm:^7.8.6, @babel/types@npm:^7.9.0, @babel/types@npm:^7.9.6":
   version: 7.13.0
   resolution: "@babel/types@npm:7.13.0"
@@ -2615,6 +2658,16 @@ __metadata:
     lodash: ^4.17.19
     to-fast-properties: ^2.0.0
   checksum: 560c6a1bf783e0fae0b8ea478145224df41fd620e0ca35bad1d8000ac6ef79549787d1213f7c8ef8e799d24e7f541a16378caa3a6bc4d78eb8c076c09f2e68dc
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.14.0, @babel/types@npm:^7.14.1":
+  version: 7.14.1
+  resolution: "@babel/types@npm:7.14.1"
+  dependencies:
+    "@babel/helper-validator-identifier": ^7.14.0
+    to-fast-properties: ^2.0.0
+  checksum: cadb85719a93d75c4f20469bb3968bb11ef8104af8d7a1339aff745f60ae93f10495dfeeb258a290cc295654281ba8f6cf1c62292756c5e262405b49476520bc
   languageName: node
   linkType: hard
 
@@ -6668,7 +6721,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/csf@npm:0.0.1":
+"@storybook/csf-tools@workspace:*, @storybook/csf-tools@workspace:lib/csf-tools":
+  version: 0.0.0-use.local
+  resolution: "@storybook/csf-tools@workspace:lib/csf-tools"
+  dependencies:
+    "@babel/generator": ^7.12.11
+    "@babel/parser": ^7.12.11
+    "@babel/traverse": ^7.12.11
+    "@babel/types": ^7.12.11
+    "@storybook/csf": ^0.0.1
+    "@types/fs-extra": ^9.0.6
+    core-js: ^3.8.2
+    fs-extra: ^9.0.1
+    globby: ^11.0.2
+  languageName: unknown
+  linkType: soft
+
+"@storybook/csf@npm:0.0.1, @storybook/csf@npm:^0.0.1":
   version: 0.0.1
   resolution: "@storybook/csf@npm:0.0.1"
   dependencies:
@@ -7053,6 +7122,7 @@ __metadata:
     "@storybook/components": "workspace:*"
     "@storybook/core": "workspace:*"
     "@storybook/core-events": "workspace:*"
+    "@storybook/csf-tools": "workspace:*"
     "@storybook/ember": "workspace:*"
     "@storybook/eslint-config-storybook": ^2.4.0
     "@storybook/html": "workspace:*"

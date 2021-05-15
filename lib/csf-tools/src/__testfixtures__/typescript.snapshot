@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`csf extract typescript 1`] = `
+{
+  "meta": {
+    "title": "foo/bar/baz"
+  },
+  "stories": [
+    {
+      "id": "foo-bar-baz--a",
+      "name": "A"
+    },
+    {
+      "id": "foo-bar-baz--b",
+      "name": "Some story"
+    },
+    {
+      "id": "foo-bar-baz--c",
+      "name": "C"
+    }
+  ]
+}
+`;
