@@ -33,7 +33,9 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
       'Could not find a default project in your Angular workspace.\nSet a defaultProject in your angular.json and re-run the installation.'
     );
   }
-  const angularVersion = semver.coerce(await packageManager.getVersion('@angular/core'))?.version;
+  const angularVersion = semver.coerce(
+    packageManager.retrievePackageJson().dependencies['@angular/core']
+  )?.version;
   const isWebpack5 = semver.gte(angularVersion, '12.0.0');
   const updatedOptions = isWebpack5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
 
