@@ -18,6 +18,7 @@ interface Meta {
 interface Story {
   id: string;
   name: string;
+  parameters: Record<string, any>;
 }
 
 const getMeta = (declaration: any): Meta => {
@@ -89,9 +90,16 @@ export class CsfFile {
                 isExportStory(decl.id.name, self._meta)
               ) {
                 const { name } = decl.id;
+                const parameters = {
+                  __id: toId(self._meta.title, name),
+                  // FiXME: Template.bind({});
+                  __isArgsStory:
+                    t.isArrowFunctionExpression(decl.init) && decl.init.params.length > 0,
+                };
                 self._stories[name] = {
-                  id: toId(self._meta.title, name),
+                  id: parameters.__id,
                   name,
+                  parameters,
                 };
               }
             });

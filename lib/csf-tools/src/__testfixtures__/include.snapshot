@@ -9,15 +9,27 @@ exports[`csf extract include 1`] = `
   "stories": [
     {
       "id": "foo-bar-baz--includea",
-      "name": "IncludeA"
+      "name": "IncludeA",
+      "parameters": {
+        "__id": "foo-bar-baz--includea",
+        "__isArgsStory": false
+      }
     },
     {
       "id": "foo-bar-baz--includeb",
-      "name": "Some story"
+      "name": "Some story",
+      "parameters": {
+        "__id": "foo-bar-baz--includeb",
+        "__isArgsStory": false
+      }
     },
     {
       "id": "foo-bar-baz--includec",
-      "name": "IncludeC"
+      "name": "IncludeC",
+      "parameters": {
+        "__id": "foo-bar-baz--includec",
+        "__isArgsStory": false
+      }
     }
   ]
 }

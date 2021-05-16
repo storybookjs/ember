@@ -2,13 +2,14 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
-import { Options } from '@storybook/core-common';
+// import { Options } from '@storybook/core-common';
 import { readCsf } from '@storybook/csf-tools';
 
 interface ExtractedStory {
   id: string;
   kind: string;
   name: string;
+  parameters: Record<string, any>;
 }
 
 type ExtractedStories = Record<string, ExtractedStory>;

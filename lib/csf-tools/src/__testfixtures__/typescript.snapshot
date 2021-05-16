@@ -8,15 +8,27 @@ exports[`csf extract typescript 1`] = `
   "stories": [
     {
       "id": "foo-bar-baz--a",
-      "name": "A"
+      "name": "A",
+      "parameters": {
+        "__id": "foo-bar-baz--a",
+        "__isArgsStory": false
+      }
     },
     {
       "id": "foo-bar-baz--b",
-      "name": "Some story"
+      "name": "Some story",
+      "parameters": {
+        "__id": "foo-bar-baz--b",
+        "__isArgsStory": true
+      }
     },
     {
       "id": "foo-bar-baz--c",
-      "name": "C"
+      "name": "C",
+      "parameters": {
+        "__id": "foo-bar-baz--c",
+        "__isArgsStory": false
+      }
     }
   ]
 }

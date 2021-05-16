@@ -11,7 +11,7 @@ const Template: Story<PropTypes> = (args) => <>template</>;
 
 export const A: Story<PropTypes> = () => <>A</>;
 
-export const B = () => <>B</>;
+export const B = (args: any) => <>B</>;
 B.storyName = 'Some story';
 
 export const C = Template.bind({});
