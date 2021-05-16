@@ -37,8 +37,6 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
     const currentGlobals = store.getState()?.globals;
     if (!deepEqual(globals, currentGlobals)) {
       store.setState({ globals });
-    } else {
-      logger.info('Tried to update globals but the old and new values are equal.');
     }
   };
 
