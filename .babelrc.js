@@ -12,7 +12,10 @@ const withTests = {
   ],
 };
 
-const modules = process.env.BABEL_ESM === 'true' ? false : 'auto';
+// type BabelMode = 'cjs' | 'esm' | 'modern';
+
+const modules = process.env.BABEL_MODE === 'cjs' ? 'auto' : false;
+const targets = process.env.BABEL_MODE === 'modern' ? { chrome: '80' } : 'defaults';
 
 module.exports = {
   ignore: [
@@ -26,7 +29,7 @@ module.exports = {
         shippedProposals: true,
         useBuiltIns: 'usage',
         corejs: '3',
-        targets: 'defaults',
+        targets,
         modules,
       },
     ],
@@ -70,7 +73,7 @@ module.exports = {
             useBuiltIns: 'usage',
             corejs: '3',
             modules,
-            targets: 'defaults',
+            targets,
           },
         ],
         '@babel/preset-react',
