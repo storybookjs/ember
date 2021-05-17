@@ -50,6 +50,44 @@ export const noTabs = () => (
   </Consumer>
 );
 
+export const hideFullscreen = () => (
+  <Consumer>
+    {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          api={{ ...api, getElements: () => ({}) }}
+          story={{ parameters: { toolbar: { fullscreen: { hidden: true } } } }}
+        />
+      );
+    }}
+  </Consumer>
+);
+
+export const hideAllDefaultTools = () => (
+  <Consumer>
+    {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          api={{ ...api, getElements: () => ({}) }}
+          story={{
+            parameters: {
+              toolbar: {
+                title: { hidden: true },
+                zoom: { hidden: true },
+                eject: { hidden: true },
+                copy: { hidden: true },
+                fullscreen: { hidden: true },
+              },
+            },
+          }}
+        />
+      );
+    }}
+  </Consumer>
+);
+
 export const withCanvasTab = () => (
   <Consumer>
     {({ api }: Combo) => {
