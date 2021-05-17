@@ -78,7 +78,7 @@ async function run({ watch, dir, silent, errorCallback }) {
 }
 
 async function babelify(options = {}) {
-  const { watch = false, silent = true, modules, errorCallback } = options;
+  const { watch = false, silent = true, errorCallback } = options;
 
   if (!fs.existsSync('src')) {
     if (!silent) {
@@ -87,18 +87,18 @@ async function babelify(options = {}) {
     return;
   }
 
-  if (watch) {
-    await Promise.all([
-      run({ watch, dir: './dist/cjs', silent, errorCallback }),
-      run({ watch, dir: './dist/modern', silent, errorCallback }),
-    ]);
-  } else {
-    await Promise.all([
-      run({ dir: './dist/cjs', silent, errorCallback }),
-      run({ dir: './dist/esm', silent, errorCallback }),
-      run({ dir: './dist/modern', silent, errorCallback }),
-    ]);
-  }
+  const runners = watch
+    ? [
+        run({ watch, dir: './dist/cjs', silent, errorCallback }),
+        run({ watch, dir: './dist/modern', silent, errorCallback }),
+      ]
+    : [
+        run({ dir: './dist/cjs', silent, errorCallback }),
+        run({ dir: './dist/esm', silent, errorCallback }),
+        run({ dir: './dist/modern', silent, errorCallback }),
+      ];
+
+  await Promise.all(runners);
 }
 
 module.exports = {
