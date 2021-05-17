@@ -14,16 +14,16 @@ exports[`csf extract exclude 1`] = `
       "id": "foo-bar-baz--a",
       "name": "A",
       "parameters": {
-        "__id": "foo-bar-baz--a",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar-baz--a"
       }
     },
     {
       "id": "foo-bar-baz--b",
       "name": "Some story",
       "parameters": {
-        "__id": "foo-bar-baz--b",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar-baz--b"
       }
     }
   ]

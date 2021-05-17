@@ -11,24 +11,24 @@ exports[`csf extract include 1`] = `
       "id": "foo-bar-baz--includea",
       "name": "IncludeA",
       "parameters": {
-        "__id": "foo-bar-baz--includea",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar-baz--includea"
       }
     },
     {
       "id": "foo-bar-baz--includeb",
       "name": "Some story",
       "parameters": {
-        "__id": "foo-bar-baz--includeb",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar-baz--includeb"
       }
     },
     {
       "id": "foo-bar-baz--includec",
       "name": "IncludeC",
       "parameters": {
-        "__id": "foo-bar-baz--includec",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar-baz--includec"
       }
     }
   ]

@@ -21,8 +21,23 @@ interface Story {
   parameters: Record<string, any>;
 }
 
-const getMeta = (declaration: any): Meta => {
-  // { title: 'asdf', includeStories: /.../ (or []), excludeStories: ... }
+function parseIncludeExclude(prop: Node) {
+  const { code } = generate(prop, {});
+  if (t.isArrayExpression(prop)) {
+    return prop.elements.map((e) => {
+      if (t.isStringLiteral(e)) return e.value;
+      throw new Error(`Expected string literal: ${e}`);
+    });
+  }
+
+  if (t.isStringLiteral(prop)) return new RegExp(prop.value);
+
+  if (t.isRegExpLiteral(prop)) return new RegExp(prop.pattern, prop.flags);
+
+  throw new Error(`Unknown include/exclude: ${prop}`);
+}
+
+const parseMeta = (declaration: t.ObjectExpression): Meta => {
   const meta: Meta = {};
   declaration.properties.forEach((p: Node) => {
     if (t.isObjectProperty(p) && t.isIdentifier(p.key)) {
@@ -38,17 +53,9 @@ const getMeta = (declaration: any): Meta => {
 };
 
 const parseTitle = (value: any) => {
-  if (value.type === 'StringLiteral') {
-    return value.value;
-  }
+  if (t.isStringLiteral(value)) return value.value;
   return undefined;
 };
-
-function parseIncludeExclude(prop: any) {
-  const { code } = generate(prop, {});
-  // eslint-disable-next-line no-eval
-  return eval(code);
-}
 
 export class CsfFile {
   _ast: Node;
@@ -69,13 +76,13 @@ export class CsfFile {
         enter({ node }) {
           if (t.isObjectExpression(node.declaration)) {
             // export default { ... };
-            self._meta = getMeta(node.declaration);
+            self._meta = parseMeta(node.declaration);
           } else if (
             // export default { ... } as Meta<...>
             t.isTSAsExpression(node.declaration) &&
             t.isObjectExpression(node.declaration.expression)
           ) {
-            self._meta = getMeta(node.declaration.expression);
+            self._meta = parseMeta(node.declaration.expression);
           }
         },
       },
@@ -84,20 +91,16 @@ export class CsfFile {
           if (t.isVariableDeclaration(node.declaration)) {
             // export const X = ...;
             node.declaration.declarations.forEach((decl) => {
-              if (
-                t.isVariableDeclarator(decl) &&
-                t.isIdentifier(decl.id) &&
-                isExportStory(decl.id.name, self._meta)
-              ) {
+              if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
                 const { name } = decl.id;
                 const parameters = {
-                  __id: toId(self._meta.title, name),
+                  // __id: toId(self._meta.title, name),
                   // FiXME: Template.bind({});
                   __isArgsStory:
                     t.isArrowFunctionExpression(decl.init) && decl.init.params.length > 0,
                 };
                 self._stories[name] = {
-                  id: parameters.__id,
+                  id: 'FIXME',
                   name,
                   parameters,
                 };
@@ -126,6 +129,15 @@ export class CsfFile {
         },
       },
     });
+
+    // default export can come at any point in the file, so we do this post processing last
+    self._stories = Object.entries(self._stories).reduce((acc, [name, story]) => {
+      if (isExportStory(name, self._meta)) {
+        const id = toId(self._meta.title, name);
+        acc[name] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+      }
+      return acc;
+    }, {} as Record<string, Story>);
     return self;
   }
 

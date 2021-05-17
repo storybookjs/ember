@@ -10,24 +10,24 @@ exports[`csf extract basic 1`] = `
       "id": "foo-bar--a",
       "name": "A",
       "parameters": {
-        "__id": "foo-bar--a",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar--a"
       }
     },
     {
       "id": "foo-bar--b",
       "name": "Some story",
       "parameters": {
-        "__id": "foo-bar--b",
-        "__isArgsStory": true
+        "__isArgsStory": true,
+        "__id": "foo-bar--b"
       }
     },
     {
       "id": "foo-bar--d",
       "name": "D",
       "parameters": {
-        "__id": "foo-bar--d",
-        "__isArgsStory": false
+        "__isArgsStory": false,
+        "__id": "foo-bar--d"
       }
     }
   ]
