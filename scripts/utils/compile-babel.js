@@ -93,9 +93,11 @@ async function babelify(options = {}) {
       run({ watch, dir: './dist/modern', silent, errorCallback }),
     ]);
   } else {
-    await run({ dir: './dist/cjs', silent, errorCallback });
-    await run({ dir: './dist/esm', silent, errorCallback });
-    await run({ dir: './dist/modern', silent, errorCallback });
+    await Promise.all([
+      run({ dir: './dist/cjs', silent, errorCallback }),
+      run({ dir: './dist/esm', silent, errorCallback }),
+      run({ dir: './dist/modern', silent, errorCallback }),
+    ]);
   }
 }
 
