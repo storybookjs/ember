@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
-// import { Options } from '@storybook/core-common';
+import { resolvePathInStorybookCache, Options } from '@storybook/core-common';
 import { readCsf } from '@storybook/csf-tools';
 
 interface ExtractedStory {
@@ -43,23 +43,25 @@ export async function extractStoriesJson(fileName: string, storiesGlobs: string[
   await fs.writeJson(fileName, { v: 3, stories });
 }
 
-// const timeout = 30000; // 30s
-// const step = 100; // .1s
+const timeout = 30000; // 30s
+const step = 100; // .1s
 
-// export async function useStoriesJson(router: any, options: Options) {
-//   const storiesFile = '/tmp/stories.json';
-//   await fs.remove(storiesFile);
-//   const storiesGlobs = (await options.presets.apply('stories')) as string[];
-//   extractStoriesJson(storiesFile, storiesGlobs);
-//   router.use('/stories.json', async (_req: any, res: any) => {
-//     for (let i = 0; i < timeout / step; i += 1) {
-//       if (fs.existsSync(storiesFile)) {
-//         // eslint-disable-next-line no-await-in-loop
-//         return res.json(await fs.readFile(storiesFile, 'utf-8'));
-//       }
-//       // eslint-disable-next-line no-await-in-loop
-//       await new Promise((r: any) => setTimeout(r, step));
-//     }
-//     res.status(408).send('stories.json timeout');
-//   });
-// }
+export async function useStoriesJson(router: any, options: Options) {
+  const storiesFile = resolvePathInStorybookCache('stories.json');
+  await fs.remove(storiesFile);
+  const storiesGlobs = (await options.presets.apply('stories')) as string[];
+  extractStoriesJson(storiesFile, storiesGlobs);
+  router.use('/stories.json', async (_req: any, res: any) => {
+    for (let i = 0; i < timeout / step; i += 1) {
+      if (fs.existsSync(storiesFile)) {
+        // eslint-disable-next-line no-await-in-loop
+        const json = await fs.readFile(storiesFile, 'utf-8');
+        res.header('Content-Type', 'application/json');
+        return res.send(json);
+      }
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r: any) => setTimeout(r, step));
+    }
+    return res.status(408).send('stories.json timeout');
+  });
+}
