@@ -55,7 +55,7 @@ async function run({ watch, dir, silent, errorCallback }) {
       const child = shell.exec(command, {
         async: true,
         silent,
-        env: { ...process.env, BABEL_ESM: dir.includes('esm') },
+        env: { ...process.env, BABEL_MODE: path.basename(dir) },
       });
       let stderr = '';
 
@@ -78,7 +78,7 @@ async function run({ watch, dir, silent, errorCallback }) {
 }
 
 async function babelify(options = {}) {
-  const { watch = false, silent = true, modules, errorCallback } = options;
+  const { watch = false, silent = true, errorCallback } = options;
 
   if (!fs.existsSync('src')) {
     if (!silent) {
@@ -87,20 +87,18 @@ async function babelify(options = {}) {
     return;
   }
 
-  if (watch) {
-    await Promise.all([
-      run({ watch, dir: './dist/cjs', silent, errorCallback }),
-      modules ? run({ watch, dir: './dist/esm', silent, errorCallback }) : Promise.resolve(),
-    ]);
-  } else {
-    // cjs
-    await run({ dir: './dist/cjs', silent, errorCallback });
+  const runners = watch
+    ? [
+        run({ watch, dir: './dist/cjs', silent, errorCallback }),
+        run({ watch, dir: './dist/modern', silent, errorCallback }),
+      ]
+    : [
+        run({ dir: './dist/cjs', silent, errorCallback }),
+        run({ dir: './dist/esm', silent, errorCallback }),
+        run({ dir: './dist/modern', silent, errorCallback }),
+      ];
 
-    if (modules) {
-      // esm
-      await run({ dir: './dist/esm', silent, errorCallback });
-    }
-  }
+  await Promise.all(runners);
 }
 
 module.exports = {

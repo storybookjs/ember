@@ -77,6 +77,7 @@
     "access": "public"
   },
   "gitHead": "2f7423e38558228c3b5b09a3afc5047ac3523241",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Jest",
     "icon": "https://pbs.twimg.com/profile_images/821713465245102080/mMtKIMax_400x400.jpg",

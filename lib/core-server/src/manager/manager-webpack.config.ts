@@ -35,6 +35,7 @@ export default async ({
   versionCheck,
   releaseNotesData,
   presets,
+  modern,
 }: Options & ManagerWebpackOptions): Promise<Configuration> => {
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -153,7 +154,7 @@ export default async ({
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.json', '.cjs', '.ts', '.tsx'],
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
-      mainFields: ['browser', 'module', 'main'],
+      mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
         ...themingPaths,
         ...uiPaths,

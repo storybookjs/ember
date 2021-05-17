@@ -16,6 +16,7 @@ export interface ProdCliOptions {
   debugWebpack?: boolean;
   previewUrl?: string;
   docs?: boolean;
+  modern?: boolean;
 }
 
 export function getProdCli(packageJson: {
@@ -42,6 +43,7 @@ export function getProdCli(packageJson: {
       'Disables the default storybook preview and lets your use your own'
     )
     .option('--docs', 'Build a documentation-only site using addon-docs')
+    .option('--modern', 'Use modern browser modules')
     .parse(process.argv);
 
   logger.setLevel(program.loglevel);

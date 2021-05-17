@@ -73,6 +73,7 @@
     "access": "public"
   },
   "gitHead": "2f7423e38558228c3b5b09a3afc5047ac3523241",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Links",
     "icon": "https://user-images.githubusercontent.com/263385/101991673-48355c80-3c7c-11eb-9b6e-b627c96a75f6.png",
