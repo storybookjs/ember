@@ -1,3 +1,15 @@
+## 6.3.0-alpha.29 (May 17, 2021)
+
+### Features
+
+- UI: Provide option to hide default toolbar tools ([#14897](https://github.com/storybookjs/storybook/pull/14897))
+- Core: Support modern browser target ([#14954](https://github.com/storybookjs/storybook/pull/14954))
+
+### Maintenance
+
+- Core: Remove updateGlobals warning message ([#14949](https://github.com/storybookjs/storybook/pull/14949))
+- Controls: Tighten color control inference heuristic and test ([#14684](https://github.com/storybookjs/storybook/pull/14684))
+
 ## 6.3.0-alpha.28 (May 15, 2021)
 
 ### Bug Fixes
