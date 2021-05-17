@@ -1,8 +1,9 @@
 import { html } from 'lit';
+import { Story, Meta } from '@storybook/lit';
 
 export default {
   title: 'Addons / Toolbars',
-};
+} as Meta;
 
 const getCaptionForLocale = (locale: string) => {
   switch (locale) {
@@ -20,6 +21,6 @@ const getCaptionForLocale = (locale: string) => {
   }
 };
 
-export const Locale = (args: unknown, { globals: { locale } }: { globals: { locale: string } }) => {
+export const Locale: Story = (args, { globals: { locale } }) => {
   return html` <div>Your locale is '${locale}', so I say: ${getCaptionForLocale(locale)}</div> `;
 };

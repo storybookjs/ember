@@ -1,5 +1,7 @@
 import { html } from 'lit';
+import { Story, Meta } from '@storybook/lit';
 import '../../../components/SbButton';
+import { MetaProperty } from 'typescript';
 
 export default {
   title: 'Addons / Controls',
@@ -12,9 +14,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const Template = ({ primary, backgroundColor, size, label, sbButtonClickHandler }: any) =>
+const Template: Story = ({ primary, backgroundColor, size, label, sbButtonClickHandler }) =>
   html`<sb-button
     ?primary="${primary}"
     .size="${size}"
