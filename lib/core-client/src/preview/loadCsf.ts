@@ -1,4 +1,4 @@
-import {ConfigApi, ClientApi, StoryStore, StorySpecifier} from '@storybook/client-api';
+import { ConfigApi, ClientApi, StoryStore } from '@storybook/client-api';
 import { isExportStory, storyNameFromExport, toId, sanitize } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import dedent from 'ts-dedent';
@@ -26,22 +26,6 @@ const duplicateKindWarning = deprecate(
     https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-support-for-duplicate-kinds
   `
 );
-
-function extractSanitizedKindNameFromStorySpecifier(storySpecifier:StorySpecifier):string {
-  if (typeof storySpecifier === 'string') {
-    return storySpecifier.split('--').shift();
-  }
-
-  return sanitize(storySpecifier.kind);
-}
-
-function extractIdFromStorySpecifier(storySpecifier:StorySpecifier):string {
-  if (typeof storySpecifier === 'string') {
-    return storySpecifier
-  }
-
-  return toId(storySpecifier.kind, storySpecifier.name);
-}
 
 let previousExports = new Map<any, string>();
 const loadStories = (
@@ -97,23 +81,7 @@ const loadStories = (
     }
   });
 
-  const added = Array.from(currentExports.keys()).filter((exp) => {
-    const isPreviousExport = previousExports.has(exp);
-    if (storyStore.isSingleStoryMode() && exp.default && exp.default.title) {
-      const sanitizedKindName = sanitize(exp.default.id || exp.default.title);
-      const selectionSpecifier = storyStore.getSelectionSpecifier();
-      if (
-        extractSanitizedKindNameFromStorySpecifier(selectionSpecifier.storySpecifier) ===
-        sanitizedKindName
-      ) {
-        return !isPreviousExport;
-      }
-
-      return false;
-    }
-
-    return !storyStore.isSingleStoryMode() && !isPreviousExport;
-  });
+  const added = Array.from(currentExports.keys()).filter((exp) => !previousExports.has(exp));
 
   added.forEach((fileExports) => {
     // An old-style story file
@@ -183,7 +151,7 @@ const loadStories = (
       kind.addLoader(loader);
     });
 
-    let storyExports = Object.keys(exports);
+    const storyExports = Object.keys(exports);
     if (storyExports.length === 0) {
       logger.warn(
         dedent`
@@ -192,19 +160,6 @@ const loadStories = (
         `
       );
       return;
-    }
-
-    if (storyStore.isSingleStoryMode()) {
-      const selectionSpecifier = storyStore.getSelectionSpecifier();
-      storyExports = storyExports.filter((key) => {
-        const exportName = storyNameFromExport(key);
-        const id = toId(componentId || kindName, exportName);
-        return id === extractIdFromStorySpecifier(selectionSpecifier.storySpecifier);
-      });
-
-      if (storyExports.length === 0) {
-        return;
-      }
     }
 
     storyExports.forEach((key) => {

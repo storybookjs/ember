@@ -36,7 +36,7 @@ export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*
 export interface StoreSelectionSpecifier {
   storySpecifier: StorySpecifier;
   viewMode: ViewMode;
-  singleStory: boolean;
+  singleStory?: boolean;
   args?: Args;
 }
 
