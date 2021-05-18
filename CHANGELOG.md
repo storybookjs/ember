@@ -1,9 +1,13 @@
-## 6.3.0-alpha.32 (May 18, 2021)
+## 6.3.0-alpha.33 (May 18, 2021)
 
 ### Bug Fixes
 
 - Controls: Fix controls without options and add warning ([#14976](https://github.com/storybookjs/storybook/pull/14976))
 - Core: Add remaining sbmodern exports ([#14977](https://github.com/storybookjs/storybook/pull/14977))
+
+## 6.3.0-alpha.32 (May 18, 2021)
+
+Failed NPM publish
 
 ## 6.3.0-alpha.31 (May 18, 2021)
 
