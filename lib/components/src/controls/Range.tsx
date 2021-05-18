@@ -7,7 +7,7 @@ import { parse } from './Number';
 
 type RangeProps = ControlProps<NumberValue | null> & RangeConfig;
 
-const RangeInput = styled.input(({ theme, hasValue }) => ({
+const RangeInput = styled.input(({ theme }) => ({
   // Resytled using http://danielstern.ca/range.css/#/
   '&': {
     width: '100%',
