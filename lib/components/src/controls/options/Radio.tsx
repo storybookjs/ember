@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { styled } from '@storybook/theming';
+import { logger } from '@storybook/client-logger';
 import { ControlProps, OptionsSingleSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey } from './helpers';
 
@@ -48,6 +49,10 @@ const Label = styled.label({
 type RadioConfig = NormalizedOptionsConfig & { isInline: boolean };
 type RadioProps = ControlProps<OptionsSingleSelection> & RadioConfig;
 export const RadioControl: FC<RadioProps> = ({ name, options, value, onChange, isInline }) => {
+  if (!options) {
+    logger.warn(`Radio with no options: ${name}`);
+    return <>-</>;
+  }
   const selection = selectedKey(value, options);
   return (
     <Wrapper isInline={isInline}>
