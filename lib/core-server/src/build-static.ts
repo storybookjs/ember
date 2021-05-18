@@ -71,11 +71,13 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   };
 
   const storiesGlobs = (await presets.apply('stories')) as string[];
-  await extractStoriesJson(
-    path.join(options.outputDir, 'stories.json'),
-    storiesGlobs,
-    options.configDir
-  );
+  if (!options.skipStoriesJson) {
+    await extractStoriesJson(
+      path.join(options.outputDir, 'stories.json'),
+      storiesGlobs,
+      options.configDir
+    );
+  }
 
   const prebuiltDir = await getPrebuiltDir(fullOptions);
 

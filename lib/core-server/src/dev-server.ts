@@ -36,7 +36,9 @@ export async function storybookDevServer(options: Options) {
 
   // User's own static files
   await useStatics(router, options);
-  await useStoriesJson(router, options);
+  if (!options.skipStoriesJson) {
+    await useStoriesJson(router, options);
+  }
 
   getMiddleware(options.configDir)(router);
   app.use(router);
