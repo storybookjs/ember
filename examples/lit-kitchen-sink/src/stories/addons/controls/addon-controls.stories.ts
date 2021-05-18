@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import { Story, Meta } from '@storybook/lit';
 import '../../../components/SbButton';
-import { MetaProperty } from 'typescript';
 
 export default {
   title: 'Addons / Controls',
