@@ -1,3 +1,14 @@
+## 6.3.0-alpha.30 (May 18, 2021)
+
+### Features
+
+- Core: Built-in static `stories.json` support ([#14945](https://github.com/storybookjs/storybook/pull/14945))
+
+### Maintenance
+
+- Core: Add modern build target to apps aka frameworks ([#14967](https://github.com/storybookjs/storybook/pull/14967))
+- Build: Increase CI `build` step to XL ([#14970](https://github.com/storybookjs/storybook/pull/14970))
+
 ## 6.3.0-alpha.29 (May 17, 2021)
 
 ### Features
