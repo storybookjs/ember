@@ -1,17 +1,15 @@
-/* eslint-disable no-irregular-whitespace */
 import path from 'path';
-import { remove, ensureDir, pathExists } from 'fs-extra';
+import { ensureDir, pathExists, remove } from 'fs-extra';
 import prompts from 'prompts';
-import pLimit from 'p-limit';
 
 import program from 'commander';
 import { serve } from './utils/serve';
-import { exec } from './utils/command';
 // @ts-ignore
 import { filterDataForCurrentCircleCINode } from './utils/concurrency';
 
 import * as configs from '../lib/cli/src/repro-generators/configs';
 import { Parameters } from '../lib/cli/src/repro-generators/configs';
+import { exec } from '../lib/cli/src/repro-generators/scripts';
 
 const logger = console;
 
@@ -33,13 +31,7 @@ const prepareDirectory = async ({ cwd }: Options): Promise<boolean> => {
     await ensureDir(siblingDir);
   }
 
-  const cwdExists = await pathExists(cwd);
-
-  if (cwdExists) {
-    return true;
-  }
-
-  return false;
+  return pathExists(cwd);
 };
 
 const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
@@ -47,37 +39,30 @@ const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
 };
 
 const buildStorybook = async ({ cwd }: Options) => {
-  logger.info(`👷 Building Storybook`);
-  try {
-    await exec(`yarn build-storybook --quiet`, { cwd });
-  } catch (e) {
-    logger.error(`🚨 Storybook build failed`);
-    throw e;
-  }
+  await exec(
+    `yarn build-storybook --quiet`,
+    { cwd, silent: false },
+    { startMessage: `👷 Building Storybook`, errorMessage: `🚨 Storybook build failed` }
+  );
 };
 
 const serveStorybook = async ({ cwd }: Options, port: string) => {
   const staticDirectory = path.join(cwd, 'storybook-static');
-  logger.info(`🌍 Serving ${staticDirectory} on http://localhost:${port}`);
+  logger.info(`🌍 Serving ${staticDirectory} on http://localhost:${port}`);
 
   return serve(staticDirectory, port);
 };
 
-const runCypress = async ({ name }: Options, location: string) => {
+const runCypress = async (_: Options, location: string) => {
   const cypressCommand = openCypressInUIMode ? 'open' : 'run';
-  logger.info(`🤖 Running Cypress tests`);
-  try {
-    await exec(
-      `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,integrationFolder="cypress/generated" --env location="${location}"`,
-      { cwd: rootDir }
-    );
-    logger.info(`✅ E2E tests success`);
-    logger.info(`🎉 Storybook is working great with ${name}!`);
-  } catch (e) {
-    logger.error(`🚨 E2E tests fails`);
-    logger.info(`🥺 Storybook has some issues with ${name}!`);
-    throw e;
-  }
+  await exec(
+    `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,integrationFolder="cypress/generated" --env location="${location}"`,
+    { cwd: rootDir },
+    {
+      startMessage: `🤖 Running Cypress tests`,
+      errorMessage: `🚨 E2E tests fails`,
+    }
+  );
 };
 
 const runTests = async ({ name, ...rest }: Parameters) => {
@@ -88,7 +73,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   };
 
   logger.log();
-  logger.info(`🏃‍♀️ Starting for ${name}`);
+  logger.info(`🏃️Starting for ${name}`);
   logger.log();
   logger.debug(options);
   logger.log();
@@ -113,8 +98,14 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     }
 
     const command = `${sbCLICommand} ${commandArgs.join(' ')}`;
-    logger.debug(command);
-    await exec(command, { cwd: siblingDir });
+    await exec(
+      command,
+      { cwd: siblingDir, silent: false },
+      {
+        startMessage: `👷 Bootstrapping ${options.framework} project`,
+        errorMessage: `🚨 Unable to bootstrap project`,
+      }
+    );
 
     await buildStorybook(options);
     logger.log();
@@ -125,50 +116,62 @@ const runTests = async ({ name, ...rest }: Parameters) => {
 
   try {
     await runCypress(options, 'http://localhost:4000');
-    logger.log();
+    logger.info(`🎉 Storybook is working great with ${name}!`);
+  } catch (e) {
+    logger.info(`🥺 Storybook has some issues with ${name}!`);
   } finally {
     server.close();
   }
 };
 
-// Run tests!
-const runE2E = async (parameters: Parameters) => {
-  const { name } = parameters;
-  const cwd = path.join(siblingDir, `${name}`);
+async function postE2ECleanup(cwd: string, parameters: Parameters) {
+  if (!process.env.CI) {
+    const { cleanup } = await prompts({
+      type: 'toggle',
+      name: 'cleanup',
+      message: 'Should perform cleanup?',
+      initial: false,
+      active: 'yes',
+      inactive: 'no',
+    });
+
+    if (cleanup) {
+      logger.log();
+      logger.info(`🗑 Cleaning ${cwd}`);
+      await cleanDirectory({ ...parameters, cwd });
+    } else {
+      logger.log();
+      logger.info(`🚯 No cleanup happened: ${cwd}`);
+    }
+  }
+}
+
+async function preE2ECleanup(name: string, parameters: Parameters, cwd: string) {
   if (startWithCleanSlate) {
     logger.log();
-    logger.info(`♻️  Starting with a clean slate, removing existing ${name} folder`);
+    logger.info(`♻️  Starting with a clean slate, removing existing ${name} folder`);
     await cleanDirectory({ ...parameters, cwd });
   }
+}
 
-  return runTests(parameters)
-    .then(async () => {
-      if (!process.env.CI) {
-        const { cleanup } = await prompts({
-          type: 'toggle',
-          name: 'cleanup',
-          message: 'Should perform cleanup?',
-          initial: false,
-          active: 'yes',
-          inactive: 'no',
-        });
-
-        if (cleanup) {
-          logger.log();
-          logger.info(`🗑  Cleaning ${cwd}`);
-          await cleanDirectory({ ...parameters, cwd });
-        } else {
-          logger.log();
-          logger.info(`🚯 No cleanup happened: ${cwd}`);
-        }
-      }
-    })
+/**
+ * Execute E2E for input parameters and return true is everything is ok, false
+ * otherwise.
+ * @param parameters
+ */
+const runE2E = async (parameters: Parameters): Promise<boolean> => {
+  const { name } = parameters;
+  const cwd = path.join(siblingDir, `${name}`);
+  return preE2ECleanup(name, parameters, cwd)
+    .then(() => runTests(parameters))
+    .then(() => postE2ECleanup(cwd, parameters))
+    .then(() => true)
     .catch((e) => {
-      logger.error(`🛑 an error occurred:\n${e}`);
-      logger.log();
+      logger.error(`🛑 an error occurred:`);
       logger.error(e);
       logger.log();
       process.exitCode = 1;
+      return false;
     });
 };
 
@@ -217,11 +220,6 @@ const getConfig = async () => {
     Object.values(typedConfigs).forEach((config) => {
       e2eConfigs[`${config.name}-${config.version}`] = config;
     });
-
-    // CRA Bench is a special case of E2E tests, it requires Node 12 as `@storybook/bench` is using `@hapi/hapi@19.2.0`
-    // which itself need Node 12.
-    delete e2eConfigs['cra_bench-latest'];
-    return;
   }
 
   // Compute the list of frameworks we will run E2E for
@@ -282,18 +280,36 @@ const getConfig = async () => {
   });
 };
 
-const perform = async () => {
+const perform = async (): Promise<Record<string, boolean>> => {
   await getConfig();
-  const limit = pLimit(1);
   const narrowedConfigs = Object.values(e2eConfigs);
 
   const list = filterDataForCurrentCircleCINode(narrowedConfigs) as Parameters[];
 
   logger.info(`📑 Will run E2E tests for:${list.map((c) => `${c.name}`).join(', ')}`);
 
-  return Promise.all(list.map((config) => limit(() => runE2E(config))));
+  const e2eResult: Record<string, boolean> = {};
+
+  // Run all e2e tests one after another and fill result map
+  await list.reduce(
+    (previousValue, config) =>
+      previousValue
+        .then(() => runE2E(config))
+        .then((result) => {
+          e2eResult[config.name] = result;
+        }),
+    Promise.resolve()
+  );
+
+  return e2eResult;
 };
 
-perform().then(() => {
+perform().then((e2eResult) => {
+  logger.info(`🧮 E2E Results`);
+
+  Object.entries(e2eResult).forEach(([configName, result]) => {
+    logger.info(`${configName}: ${result ? 'OK' : 'KO'}`);
+  });
+
   process.exit(process.exitCode || 0);
 });
