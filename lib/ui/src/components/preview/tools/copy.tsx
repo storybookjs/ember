@@ -20,6 +20,7 @@ const copyMapper = ({ state }: Combo) => {
 
 export const copyTool: Addon = {
   title: 'copy',
+  id: 'copy',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={copyMapper}>

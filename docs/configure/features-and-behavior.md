@@ -28,6 +28,7 @@ The following table details how to use the API values:
 | **selectedPanel**     | String        |Id to select an addon panel                                    |`my-panel`                                      |
 | **initialActive**     | String        |Select the default active tab on Mobile                        |`sidebar` or `canvas` or `addons`               |
 | **sidebar**           | Object        |Sidebar options, see below                                     |`{ showRoots: false }`                          |
+| **toolbar**           | Object        |Modify the tools in the toolbar using the addon id             |`{ fullscreen: { hidden: false } } }`           |
 
 The following options are configurable under the `sidebar` namespace:
 
@@ -36,3 +37,9 @@ The following options are configurable under the `sidebar` namespace:
 | **showRoots**         | Boolean       |Display the top-level nodes as a "root" in the sidebar         |`false`                                         |
 | **collapsedRoots**    | Array         |Set of root node IDs to visually collapse by default           |`['misc', 'other']`                             |
 | **renderLabel**       | Function      |Create a custom label for tree nodes; must return a ReactNode  |`(item) => <abbr title="...">{item.name}</abbr>`|
+
+The following options are configurable under the `toolbar` namespace:
+
+| Name                  | Type          | Description                                                   | Example Value                                  |
+| ----------------------|:-------------:|:-------------------------------------------------------------:|:----------------------------------------------:|
+| **id**                | String        |Toggle visibility for toolbar item                             |`{ hidden: false }`                            |

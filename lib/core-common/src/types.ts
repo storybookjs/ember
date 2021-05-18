@@ -144,6 +144,7 @@ export interface CLIOptions {
   debugWebpack?: boolean;
   webpackStatsJson?: string | boolean;
   outputDir?: string;
+  modern?: boolean;
 }
 
 export interface BuilderOptions {

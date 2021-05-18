@@ -16,7 +16,7 @@ function makeAngularElementRendererOptional(): Plugin[] {
   ) {
     return [];
   }
-  return [new IgnorePlugin(/@storybook(\\|\/)angular(\\|\/)element-renderer/)];
+  return [new IgnorePlugin({ resourceRegExp: /@storybook(\\|\/)angular(\\|\/)element-renderer/ })];
 }
 
 function moduleIsAvailable(moduleName: string): boolean {

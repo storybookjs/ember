@@ -1,3 +1,51 @@
+## 6.3.0-alpha.29 (May 17, 2021)
+
+### Features
+
+- UI: Provide option to hide default toolbar tools ([#14897](https://github.com/storybookjs/storybook/pull/14897))
+- Core: Support modern browser target ([#14954](https://github.com/storybookjs/storybook/pull/14954))
+
+### Maintenance
+
+- Core: Remove updateGlobals warning message ([#14949](https://github.com/storybookjs/storybook/pull/14949))
+- Controls: Tighten color control inference heuristic and test ([#14684](https://github.com/storybookjs/storybook/pull/14684))
+
+## 6.3.0-alpha.28 (May 15, 2021)
+
+### Bug Fixes
+
+- CLI: Keep Webpack 4 builder for Angular lower than 12 ([#14942](https://github.com/storybookjs/storybook/pull/14942))
+
+## 6.3.0-alpha.27 (May 14, 2021)
+
+### Features
+
+- CLI: Add Angular 12 + docs inline rendering support ([#14928](https://github.com/storybookjs/storybook/pull/14928))
+
+## 6.3.0-alpha.26 (May 14, 2021)
+
+### Bug Fixes
+
+- Addon-controls: Fix duplicate color swatch id's in Color control ([#14925](https://github.com/storybookjs/storybook/pull/14925))
+
+### Maintenance
+
+- CLI: Add preamble instructions to `sb repro` ([#14924](https://github.com/storybookjs/storybook/pull/14924))
+- Webpack5: Always set `resolve.fallback.crypto` to `false` ([#14914](https://github.com/storybookjs/storybook/pull/14914))
+- Build: Add missing dependencies ([#14919](https://github.com/storybookjs/storybook/pull/14919))
+- Build: Put E2E tests back on track ([#14917](https://github.com/storybookjs/storybook/pull/14917))
+
+### Dependency Upgrades
+
+- Addon-storyshots: Make @storybook/react dependency optional ([#14891](https://github.com/storybookjs/storybook/pull/14891))
+
+## 6.3.0-alpha.25 (May 13, 2021)
+
+### Maintenance
+
+- Builder-Webpack5: Use native features instead of plugins ([#14281](https://github.com/storybookjs/storybook/pull/14281))
+- CLI: Repro refinements per feedback ([#14888](https://github.com/storybookjs/storybook/pull/14888))
+
 ## 6.3.0-alpha.24 (May 11, 2021)
 
 ### Features

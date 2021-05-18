@@ -195,7 +195,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          command: yarn test:e2e-framework --clean --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          command: yarn test:e2e-framework --clean --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
@@ -218,8 +218,8 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          # Do not test CRA nor Web Components here because it's done in PnP part
-          command: yarn test:e2e-framework vue3 angular
+          # Do not test CRA here because it's done in PnP part
+          command: yarn test:e2e-framework vue3 angular angular11 web_components_typescript
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
@@ -246,7 +246,7 @@ jobs:
             cd ..
             npx create-react-app cra-bench
             cd cra-bench
-            npx @storybook/bench 'npx sb init' --label cra
+            npx @storybook/bench 'npx sb init' --label cra --extra-flags "--modern"
   e2e-tests-pnp:
     executor:
       class: medium
@@ -266,7 +266,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: run e2e tests
-          command: yarn test:e2e-framework --pnp sfcVue cra web_components_typescript
+          command: yarn test:e2e-framework --pnp sfcVue cra
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress

@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [Angular 12 upgrade](#angular-12-upgrade)
   - [6.3 deprecations](#63-deprecations)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
@@ -9,6 +10,7 @@
     - [New Angular storyshots format](#new-angular-storyshots-format)
     - [Deprecated Angular story component](#deprecated-angular-story-component)
     - [New Angular renderer](#new-angular-renderer)
+    - [Components without selectors](#components-without-selectors)
   - [Packages now available as ESModules](#packages-now-available-as-esmodules)
   - [6.2 Deprecations](#62-deprecations)
     - [Deprecated implicit PostCSS loader](#deprecated-implicit-postcss-loader)
@@ -157,6 +159,24 @@
 
 ## From version 6.2.x to 6.3.0
 
+### Angular 12 upgrade
+
+Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
+
+```js
+npm install @storybook/builder-webpack5 --save-dev # or yarn
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
 ### 6.3 deprecations
 
 #### Deprecated scoped blocks imports
@@ -223,6 +243,10 @@ export const parameters = {
 ```
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
+
+#### Components without selectors
+
+When the new Angular renderer is used, all Angular Story components must either have a selector, or be added to the `entryComponents` array of the story's `moduleMetadata`. If the component has any `Input`s or `Output`s to be controlled with `args`, a selector should be added.
 
 ### Packages now available as ESModules
 
