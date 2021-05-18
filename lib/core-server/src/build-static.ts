@@ -21,6 +21,7 @@ import { getPrebuiltDir } from './utils/prebuilt-manager';
 import { cache } from './utils/cache';
 import { copyAllStaticFiles } from './utils/copy-all-static-files';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { extractStoriesJson } from './utils/stories-json';
 
 export async function buildStaticStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   /* eslint-disable no-param-reassign */
@@ -68,6 +69,15 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     ...options,
     presets,
   };
+
+  const storiesGlobs = (await presets.apply('stories')) as string[];
+  if (!options.skipStoriesJson) {
+    await extractStoriesJson(
+      path.join(options.outputDir, 'stories.json'),
+      storiesGlobs,
+      options.configDir
+    );
+  }
 
   const prebuiltDir = await getPrebuiltDir(fullOptions);
 

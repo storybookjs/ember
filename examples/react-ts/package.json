@@ -18,5 +18,8 @@
     "react-dom": "16.14.0",
     "typescript": "^3.9.7",
     "webpack": "4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
