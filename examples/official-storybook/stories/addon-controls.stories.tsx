@@ -161,3 +161,8 @@ FilteredWithExcludeRegex.parameters = {
     exclude: /hello*/,
   },
 };
+
+// https://github.com/storybookjs/storybook/issues/14752
+export const MissingRadioOptions = Template.bind({});
+MissingRadioOptions.argTypes = { invalidRadio: { control: 'radio' } };
+MissingRadioOptions.args = { invalidRadio: 'someValue' };

@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent } from 'react';
 import { styled, CSSObject } from '@storybook/theming';
+import { logger } from '@storybook/client-logger';
 import { ControlProps, OptionsSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey, selectedKeys, selectedValues } from './helpers';
 import { Icons } from '../../icon/icon';
@@ -129,6 +130,13 @@ const MultiSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
   );
 };
 
-export const SelectControl: FC<SelectProps> = (props) =>
+export const SelectControl: FC<SelectProps> = (props) => {
+  const { name, options } = props;
+  if (!options) {
+    logger.warn(`Select with no options: ${name}`);
+    return <>-</>;
+  }
+
   // eslint-disable-next-line react/destructuring-assignment
-  props.isMulti ? <MultiSelect {...props} /> : <SingleSelect {...props} />;
+  return props.isMulti ? <MultiSelect {...props} /> : <SingleSelect {...props} />;
+};
