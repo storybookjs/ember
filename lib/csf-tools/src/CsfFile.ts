@@ -7,6 +7,7 @@ import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
 import { toId, isExportStory } from '@storybook/csf';
 
+const logger = console;
 interface Meta {
   title?: string;
   includeStories?: string[] | RegExp;
@@ -34,6 +35,12 @@ function parseIncludeExclude(prop: Node) {
   throw new Error(`Unknown include/exclude: ${prop}`);
 }
 
+const parseTitle = (value: any) => {
+  if (t.isStringLiteral(value)) return value.value;
+  logger.warn(`Unexpected meta.title: ${JSON.stringify(value)}`);
+  return undefined;
+};
+
 const parseMeta = (declaration: t.ObjectExpression): Meta => {
   const meta: Meta = {};
   declaration.properties.forEach((p: Node) => {
@@ -48,12 +55,6 @@ const parseMeta = (declaration: t.ObjectExpression): Meta => {
   });
   return meta;
 };
-
-const parseTitle = (value: any) => {
-  if (t.isStringLiteral(value)) return value.value;
-  return undefined;
-};
-
 export class CsfFile {
   _ast: Node;
 
@@ -128,13 +129,16 @@ export class CsfFile {
     });
 
     // default export can come at any point in the file, so we do this post processing last
-    self._stories = Object.entries(self._stories).reduce((acc, [name, story]) => {
-      if (isExportStory(name, self._meta)) {
-        const id = toId(self._meta.title, name);
-        acc[name] = { ...story, id, parameters: { ...story.parameters, __id: id } };
-      }
-      return acc;
-    }, {} as Record<string, Story>);
+    self._stories =
+      self._meta && self._meta.title
+        ? Object.entries(self._stories).reduce((acc, [name, story]) => {
+            if (isExportStory(name, self._meta)) {
+              const id = toId(self._meta.title, name);
+              acc[name] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+            }
+            return acc;
+          }, {} as Record<string, Story>)
+        : {}; // no meta = no stories
     return self;
   }
 
