@@ -14,48 +14,56 @@ interface ExtractedStory {
 
 type ExtractedStories = Record<string, ExtractedStory>;
 
-export async function extractStoriesJson(fileName: string, storiesGlobs: string[]) {
+export async function extractStoriesJson(
+  ouputFile: string,
+  storiesGlobs: string[],
+  configDir: string
+) {
   if (!storiesGlobs) {
     throw new Error('No stories glob');
   }
   const storyFiles: string[] = [];
   await Promise.all(
     storiesGlobs.map(async (storiesGlob) => {
-      const files = await glob(storiesGlob);
+      const files = await glob(path.join(configDir, storiesGlob));
       storyFiles.push(...files);
     })
   );
-  logger.info(`⚙️ Processing ${storyFiles.length} story files`);
+  logger.info(`⚙️ Processing ${storyFiles.length} story files from ${storiesGlobs}`);
 
   const stories: ExtractedStories = {};
   await Promise.all(
-    storyFiles.map(async (csfFile) => {
-      const ext = path.extname(csfFile);
+    storyFiles.map(async (fileName) => {
+      const ext = path.extname(fileName);
       if (!['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
-        logger.info(`skipping ${csfFile}`);
+        logger.info(`skipping ${fileName}`);
       }
-      const csf = (await readCsf(csfFile)).parse();
+      const csf = (await readCsf(fileName)).parse();
       csf.stories.forEach((story) => {
-        stories[story.id] = { ...story, kind: csf.meta.title };
+        stories[story.id] = {
+          ...story,
+          kind: csf.meta.title,
+          parameters: { ...story.parameters, fileName },
+        };
       });
     })
   );
-  await fs.writeJson(fileName, { v: 3, stories });
+  await fs.writeJson(ouputFile, { v: 3, stories });
 }
 
 const timeout = 30000; // 30s
 const step = 100; // .1s
 
 export async function useStoriesJson(router: any, options: Options) {
-  const storiesFile = resolvePathInStorybookCache('stories.json');
-  await fs.remove(storiesFile);
+  const storiesJson = resolvePathInStorybookCache('stories.json');
+  await fs.remove(storiesJson);
   const storiesGlobs = (await options.presets.apply('stories')) as string[];
-  extractStoriesJson(storiesFile, storiesGlobs);
+  extractStoriesJson(storiesJson, storiesGlobs, options.configDir);
   router.use('/stories.json', async (_req: any, res: any) => {
     for (let i = 0; i < timeout / step; i += 1) {
-      if (fs.existsSync(storiesFile)) {
+      if (fs.existsSync(storiesJson)) {
         // eslint-disable-next-line no-await-in-loop
-        const json = await fs.readFile(storiesFile, 'utf-8');
+        const json = await fs.readFile(storiesJson, 'utf-8');
         res.header('Content-Type', 'application/json');
         return res.send(json);
       }
