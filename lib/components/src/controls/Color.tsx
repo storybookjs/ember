@@ -328,7 +328,7 @@ export const ColorControl: FC<ColorProps> = ({
         value={value}
         onChange={(e: any) => updateValue(e.target.value)}
         onFocus={(e) => e.target.select()}
-        placeholder="Choose color"
+        placeholder="Choose color..."
       />
       <ToggleIcon icon="markup" onClick={cycleColorSpace} />
     </Wrapper>

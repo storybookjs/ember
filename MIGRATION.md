@@ -4,6 +4,7 @@
   - [Angular 12 upgrade](#angular-12-upgrade)
   - [6.3 deprecations](#63-deprecations)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
+    - [Deprecated argType.defaulValue](#deprecated-argtype-defaultValue)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
@@ -191,6 +192,21 @@ import { Meta, Story } from '@storybook/addon-docs/blocks';
 
 // after
 import { Meta, Story } from '@storybook/addon-docs';
+```
+
+#### Deprecated `argType.defaultValue`
+
+Previously, unset `args` were set to the `argType.defaultValue` if set or inferred from the component's prop types (etc.). In 6.3 we no longer infer default values and instead set arg values to `undefined` when unset, allowing the framework to supply the default value.
+
+If you were using `argType.defaultValue` to fix issues with the above inference, it should no longer be necessary, you can remove that code. If you were using it to set a default value for an arg, there is a simpler way; simply set a value for the arg at the component level:
+
+```js
+export default {
+  component: MyComponent,
+  args: {
+    argName: 'default-value',
+  },
+};
 ```
 
 ## From version 6.1.x to 6.2.0

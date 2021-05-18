@@ -41,7 +41,6 @@ export const createArgTypes = (docgen: SvelteComponentDoc) => {
         required: hasKeyword('required', item.keywords),
         summary: item.type?.text,
       },
-      defaultValue: item.defaultValue,
       table: {
         type: {
           summary: item.type?.text,

@@ -86,7 +86,7 @@ const SelectWrapper = styled.span`
 type SelectConfig = NormalizedOptionsConfig & { isMulti: boolean };
 type SelectProps = ControlProps<OptionsSelection> & SelectConfig;
 
-const NO_SELECTION = 'Select...';
+const NO_SELECTION = 'Choose option...';
 
 const SingleSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
