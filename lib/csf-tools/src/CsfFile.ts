@@ -149,7 +149,16 @@ export class CsfFile {
 
 export const readCsf = async (fileName: string) => {
   const code = (await fs.readFile(fileName, 'utf-8')).toString();
-  const ast = parse(code, { sourceType: 'module', plugins: ['jsx', 'typescript'] });
+  const ast = parse(code, {
+    sourceType: 'module',
+    // FIXME: we should get this from the project config somehow?
+    plugins: [
+      'jsx',
+      'typescript',
+      ['decorators', { decoratorsBeforeExport: true }],
+      'classProperties',
+    ],
+  });
   return new CsfFile(ast);
 };
 
