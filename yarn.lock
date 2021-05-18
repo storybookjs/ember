@@ -6758,6 +6758,7 @@ __metadata:
     core-js: ^3.8.2
     fs-extra: ^9.0.1
     globby: ^11.0.2
+    regenerator-runtime: ^0.13.7
   languageName: unknown
   linkType: soft
 
