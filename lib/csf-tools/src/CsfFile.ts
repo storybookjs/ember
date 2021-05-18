@@ -7,8 +7,6 @@ import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
 import { toId, isExportStory } from '@storybook/csf';
 
-const logger = console;
-
 interface Meta {
   title?: string;
   includeStories?: string[] | RegExp;
@@ -22,7 +20,6 @@ interface Story {
 }
 
 function parseIncludeExclude(prop: Node) {
-  const { code } = generate(prop, {});
   if (t.isArrayExpression(prop)) {
     return prop.elements.map((e) => {
       if (t.isStringLiteral(e)) return e.value;
