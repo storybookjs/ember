@@ -37,15 +37,21 @@ export async function extractStoriesJson(
       const ext = path.extname(fileName);
       if (!['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
         logger.info(`skipping ${fileName}`);
+        return;
       }
-      const csf = (await readCsf(fileName)).parse();
-      csf.stories.forEach((story) => {
-        stories[story.id] = {
-          ...story,
-          kind: csf.meta.title,
-          parameters: { ...story.parameters, fileName },
-        };
-      });
+      try {
+        const csf = (await readCsf(fileName)).parse();
+        csf.stories.forEach((story) => {
+          stories[story.id] = {
+            ...story,
+            kind: csf.meta.title,
+            parameters: { ...story.parameters, fileName },
+          };
+        });
+      } catch (err) {
+        logger.error(`🚨 Extraction error on ${fileName}`);
+        throw err;
+      }
     })
   );
   await fs.writeJson(ouputFile, { v: 3, stories });
