@@ -53,7 +53,7 @@ const serveStorybook = async ({ cwd }: Options, port: string) => {
   return serve(staticDirectory, port);
 };
 
-const runCypress = async (_: Options, location: string) => {
+const runCypress = async (location: string) => {
   const cypressCommand = openCypressInUIMode ? 'open' : 'run';
   await exec(
     `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,integrationFolder="cypress/generated" --env location="${location}"`,
@@ -115,7 +115,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   logger.log();
 
   try {
-    await runCypress(options, 'http://localhost:4000');
+    await runCypress('http://localhost:4000');
     logger.info(`🎉 Storybook is working great with ${name}!`);
   } catch (e) {
     logger.info(`🥺 Storybook has some issues with ${name}!`);
