@@ -1,5 +1,5 @@
 import { ConfigApi, ClientApi, StoryStore } from '@storybook/client-api';
-import { isExportStory, storyNameFromExport, toId, sanitize } from '@storybook/csf';
+import { isExportStory, storyNameFromExport, toId } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
