@@ -1,3 +1,12 @@
+## 6.3.0-alpha.31 (May 18, 2021)
+
+### Features
+
+- Angular: Pass bootstrapOptions to angular ([#14852](https://github.com/storybookjs/storybook/pull/14852))
+- Controls: Update all controls to have explicit handling for `undefined` ([#14899](https://github.com/storybookjs/storybook/pull/14899))
+- Core: Add args enhancers + use in addon-actions ([#14901](https://github.com/storybookjs/storybook/pull/14901))
+- Addon-docs: Remove all defaultValue eval-ing ([#14900](https://github.com/storybookjs/storybook/pull/14900))
+
 ## 6.3.0-alpha.30 (May 18, 2021)
 
 ### Features
