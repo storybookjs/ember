@@ -33,23 +33,24 @@ export async function extractStoriesJson(
 
   const stories: ExtractedStories = {};
   await Promise.all(
-    storyFiles.map(async (fileName) => {
-      const ext = path.extname(fileName);
+    storyFiles.map(async (absolutePath) => {
+      const ext = path.extname(absolutePath);
+      const relativePath = path.relative(configDir, absolutePath);
       if (!['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
-        logger.info(`skipping ${fileName}`);
+        logger.info(`Skipping ${ext} file ${relativePath}`);
         return;
       }
       try {
-        const csf = (await readCsf(fileName)).parse();
+        const csf = (await readCsf(absolutePath)).parse();
         csf.stories.forEach((story) => {
           stories[story.id] = {
             ...story,
             kind: csf.meta.title,
-            parameters: { ...story.parameters, fileName },
+            parameters: { ...story.parameters, fileName: relativePath },
           };
         });
       } catch (err) {
-        logger.error(`🚨 Extraction error on ${fileName}`);
+        logger.error(`🚨 Extraction error on ${relativePath}`);
         throw err;
       }
     })
