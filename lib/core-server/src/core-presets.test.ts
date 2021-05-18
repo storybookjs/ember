@@ -133,6 +133,7 @@ describe.each([
     ...baseOptions,
     ...frameworkOptions,
     configDir: path.resolve(`${__dirname}/../../../examples/${example}/.storybook`),
+    skipStoriesJson: true,
   };
 
   describe('manager', () => {

@@ -1,1 +1,1 @@
-{"version":"6.3.0-alpha.27","info":{"plain":"### Features\n\n- CLI: Add Angular 12 + docs inline rendering support ([#14928](https://github.com/storybookjs/storybook/pull/14928))"}}
+{"version":"6.3.0-alpha.33","info":{"plain":"### Bug Fixes\n\n- Controls: Fix controls without options and add warning ([#14976](https://github.com/storybookjs/storybook/pull/14976))\n- Core: Add remaining sbmodern exports ([#14977](https://github.com/storybookjs/storybook/pull/14977))"}}

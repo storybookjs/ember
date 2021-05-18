@@ -12,13 +12,16 @@ const Template = (
 ) => {
   const [value, setValue] = useState(initialValue);
   return (
-    <ColorControl
-      name="Color"
-      value={value}
-      onChange={(newVal) => setValue(newVal)}
-      presetColors={presetColors}
-      startOpen
-    />
+    <>
+      <ColorControl
+        name="Color"
+        value={value}
+        onChange={(newVal) => setValue(newVal)}
+        presetColors={presetColors}
+        startOpen
+      />
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
+    </>
   );
 };
 

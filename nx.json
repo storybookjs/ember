@@ -217,6 +217,9 @@
     "@storybook/theming": {
       "implicitDependencies": []
     },
+    "@storybook/csf-tools": {
+      "implicitDependencies": []
+    },
     "@storybook/ui": {
       "implicitDependencies": []
     }

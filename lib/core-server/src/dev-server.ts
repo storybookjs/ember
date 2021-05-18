@@ -7,6 +7,7 @@ import { getMiddleware } from './utils/middleware';
 import { getServerAddresses } from './utils/server-address';
 import { getServer } from './utils/server-init';
 import { useStatics } from './utils/server-statics';
+import { useStoriesJson } from './utils/stories-json';
 
 import * as managerBuilder from './manager/builder';
 
@@ -35,6 +36,9 @@ export async function storybookDevServer(options: Options) {
 
   // User's own static files
   await useStatics(router, options);
+  if (!options.skipStoriesJson) {
+    await useStoriesJson(router, options);
+  }
 
   getMiddleware(options.configDir)(router);
   app.use(router);

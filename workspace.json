@@ -265,6 +265,10 @@
       "root": "lib/theming",
       "type": "library"
     },
+    "@storybook/csf-tools": {
+      "root": "lib/csf-tools",
+      "type": "library"
+    },
     "@storybook/ui": {
       "root": "lib/ui",
       "type": "library"

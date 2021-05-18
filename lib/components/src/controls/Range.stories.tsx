@@ -18,11 +18,13 @@ const Template = (initialValue?: number) => {
         max={20}
         step={2}
       />
-      <p>{value}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
 export const Basic = () => Template(10);
+
+export const Zero = () => Template(0);
 
 export const Undefined = () => Template(undefined);

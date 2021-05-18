@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useCallback } from 'react';
+import React, { FC, ChangeEvent, useCallback, useState } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
@@ -32,6 +32,16 @@ export const ArrayControl: FC<ArrayProps> = ({
     [onChange]
   );
 
+  const [forceVisible, setForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange([]);
+    setForceVisible(true);
+  }, [setForceVisible]);
+  if (value === undefined) {
+    return <Form.Button onClick={onForceVisible}>Set array</Form.Button>;
+  }
+
+  const isValid = Array.isArray(value);
   return (
     <Wrapper>
       <Form.Textarea
@@ -39,7 +49,9 @@ export const ArrayControl: FC<ArrayProps> = ({
         value={format(value, separator)}
         onChange={handleChange}
         size="flex"
-        placeholder="Adjust array dynamically"
+        placeholder="Edit array..."
+        valid={isValid ? null : 'error'}
+        autoFocus={forceVisible}
         {...{ name, onBlur, onFocus }}
       />
     </Wrapper>

@@ -11,7 +11,7 @@ export {
   raw,
 } from './preview';
 
-export * from './preview/types';
+export * from './preview/types-6-0';
 
 // TODO: disable HMR and do full page loads because of customElements.define
 if (module && module.hot && module.hot.decline) {

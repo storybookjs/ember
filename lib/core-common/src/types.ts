@@ -144,6 +144,7 @@ export interface CLIOptions {
   debugWebpack?: boolean;
   webpackStatsJson?: string | boolean;
   outputDir?: string;
+  modern?: boolean;
 }
 
 export interface BuilderOptions {
@@ -154,6 +155,7 @@ export interface BuilderOptions {
   docsMode: boolean;
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
+  skipStoriesJson?: boolean;
 }
 
 export interface StorybookConfigOptions {
