@@ -692,10 +692,6 @@ export default class StoryStore {
     this._selectionSpecifier = selectionSpecifier;
   }
 
-  getSelectionSpecifier(): StoreSelectionSpecifier {
-    return this._selectionSpecifier;
-  }
-
   setSelection(selection: StoreSelection): void {
     this._selection = selection;
 
