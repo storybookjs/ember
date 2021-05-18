@@ -70,6 +70,7 @@
     "access": "public"
   },
   "gitHead": "7c52ccd131b1a182d5d87ff416ac9598797af0fa",
+  "sbmodern": "dist/modern/preview.js",
   "storybook": {
     "displayName": "Viewport",
     "icon": "https://user-images.githubusercontent.com/263385/101991678-48cdf300-3c7c-11eb-9764-f8af293c1b28.png",
