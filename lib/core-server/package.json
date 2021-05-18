@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.3.0-alpha.31",
+  "version": "6.3.0-alpha.32",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -45,15 +45,15 @@
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-template-literals": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
-    "@storybook/addons": "6.3.0-alpha.31",
-    "@storybook/builder-webpack4": "6.3.0-alpha.31",
-    "@storybook/core-client": "6.3.0-alpha.31",
-    "@storybook/core-common": "6.3.0-alpha.31",
-    "@storybook/csf-tools": "6.3.0-alpha.31",
-    "@storybook/node-logger": "6.3.0-alpha.31",
+    "@storybook/addons": "6.3.0-alpha.32",
+    "@storybook/builder-webpack4": "6.3.0-alpha.32",
+    "@storybook/core-client": "6.3.0-alpha.32",
+    "@storybook/core-common": "6.3.0-alpha.32",
+    "@storybook/csf-tools": "6.3.0-alpha.32",
+    "@storybook/node-logger": "6.3.0-alpha.32",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.3.0-alpha.31",
-    "@storybook/ui": "6.3.0-alpha.31",
+    "@storybook/theming": "6.3.0-alpha.32",
+    "@storybook/ui": "6.3.0-alpha.32",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -100,7 +100,7 @@
     "webpack-virtual-modules": "^0.2.2"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.3.0-alpha.31",
+    "@storybook/builder-webpack5": "6.3.0-alpha.32",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
     "@types/compression": "^1.7.0",
     "@types/dotenv-webpack": "^3.0.0",
