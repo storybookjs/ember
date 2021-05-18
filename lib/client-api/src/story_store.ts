@@ -33,6 +33,7 @@ import {
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
   StoreSelection,
+  StorySpecifier,
 } from './types';
 import { combineArgs, mapArgsToTypes, validateOptions } from './args';
 import { HooksContext } from './hooks';
@@ -41,7 +42,6 @@ import { combineParameters } from './parameters';
 import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
-import { StorySpecifier } from '../dist/ts3.9';
 
 interface StoryOptions {
   includeDocsOnly?: boolean;
