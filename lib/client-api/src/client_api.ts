@@ -10,6 +10,7 @@ import {
   DecoratorFunction,
   ClientApiAddons,
   StoryApi,
+  ArgsEnhancer,
   ArgTypesEnhancer,
 } from './types';
 import { applyHooks } from './hooks';
@@ -63,6 +64,13 @@ export const addLoader = (loader: LoaderFunction, deprecationWarning = true) => 
   if (deprecationWarning) addLoaderDeprecationWarning();
 
   singleton.addLoader(loader);
+};
+
+export const addArgsEnhancer = (enhancer: ArgsEnhancer) => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call addArgsEnhancer`);
+
+  singleton.addArgsEnhancer(enhancer);
 };
 
 export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
@@ -134,6 +142,10 @@ export default class ClientApi {
 
   addLoader = (loader: LoaderFunction) => {
     this._storyStore.addGlobalMetadata({ loaders: [loader] });
+  };
+
+  addArgsEnhancer = (enhancer: ArgsEnhancer) => {
+    this._storyStore.addArgsEnhancer(enhancer);
   };
 
   addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {

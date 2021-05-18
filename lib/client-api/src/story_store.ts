@@ -29,6 +29,7 @@ import {
   PublishedStoreItem,
   ErrorLike,
   GetStorybookKind,
+  ArgsEnhancer,
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
   StoreSelection,
@@ -86,6 +87,14 @@ const storyFnWarning = deprecate(
   https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-storyfn`
 );
 
+const argTypeDefaultValueWarning = deprecate(
+  () => {},
+  dedent`
+  \`argType.defaultValue\` is deprecated and will be removed in Storybook 7.0.
+
+  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-argtype-defaultValue`
+);
+
 interface AllowUnsafeOption {
   allowUnsafe?: boolean;
 }
@@ -124,6 +133,8 @@ export default class StoryStore {
   // Keyed on storyId
   _stories: StoreData;
 
+  _argsEnhancers: ArgsEnhancer[];
+
   _argTypesEnhancers: ArgTypesEnhancer[];
 
   _selectionSpecifier?: StoreSelectionSpecifier;
@@ -140,6 +151,7 @@ export default class StoryStore {
     this._globalMetadata = { parameters: {}, decorators: [], loaders: [] };
     this._kinds = {};
     this._stories = {};
+    this._argsEnhancers = [];
     this._argTypesEnhancers = [ensureArgTypes];
     this._error = undefined;
     this._channel = params.channel;
@@ -312,9 +324,16 @@ export default class StoryStore {
     this._kinds[kind].loaders.push(...loaders);
   }
 
+  addArgsEnhancer(argsEnhancer: ArgsEnhancer) {
+    if (Object.keys(this._stories).length > 0)
+      throw new Error('Cannot add an args enhancer to the store after a story has been added.');
+
+    this._argsEnhancers.push(argsEnhancer);
+  }
+
   addArgTypesEnhancer(argTypesEnhancer: ArgTypesEnhancer) {
     if (Object.keys(this._stories).length > 0)
-      throw new Error('Cannot add a parameter enhancer to the store after a story has been added.');
+      throw new Error('Cannot add an argTypes enhancer to the store after a story has been added.');
 
     this._argTypesEnhancers.push(argTypesEnhancer);
   }
@@ -480,8 +499,25 @@ export default class StoryStore {
       }
       return acc;
     }, {} as Args);
+    if (Object.keys(defaultArgs).length > 0) {
+      argTypeDefaultValueWarning();
+    }
 
-    const initialArgs = { ...defaultArgs, ...passedArgs };
+    const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
+    const initialArgs = this._argsEnhancers.reduce(
+      (accumulatedArgs: Args, enhancer) => ({
+        ...accumulatedArgs,
+        ...enhancer({
+          ...identification,
+          parameters: combinedParameters,
+          args: initialArgsBeforeEnhancers,
+          argTypes,
+          globals: {},
+        }),
+      }),
+      initialArgsBeforeEnhancers
+    );
+
     _stories[id] = {
       ...identification,
 
