@@ -1,6 +1,14 @@
 import { window as globalWindow } from 'global';
 import cloneDeep from 'lodash/cloneDeep';
-import React, { ComponentProps, SyntheticEvent, useCallback, useMemo, useState } from 'react';
+import React, {
+  ComponentProps,
+  SyntheticEvent,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import { styled, useTheme, Theme } from '@storybook/theming';
 
 // @ts-ignore
@@ -253,12 +261,19 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     onChange({});
     setForceVisible(true);
   }, [setForceVisible]);
+
+  const htmlElRef = useRef(null);
+  useEffect(() => {
+    if (forceVisible && htmlElRef.current) htmlElRef.current.select();
+  }, [forceVisible]);
+
   if (!hasData) {
     return <Form.Button onClick={onForceVisible}>Set object</Form.Button>;
   }
 
   const rawJSONForm = (
     <RawInput
+      ref={htmlElRef}
       id={name}
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}

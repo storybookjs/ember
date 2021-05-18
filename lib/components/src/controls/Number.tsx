@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState, useCallback } from 'react';
+import React, { FC, ChangeEvent, useState, useCallback, useEffect, useRef } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
@@ -47,9 +47,16 @@ export const NumberControl: FC<NumberProps> = ({
   );
 
   const onForceVisible = useCallback(() => {
+    setInputValue('0');
     onChange(0);
     setForceVisible(true);
   }, [setForceVisible]);
+
+  const htmlElRef = useRef(null);
+  useEffect(() => {
+    if (forceVisible && htmlElRef.current) htmlElRef.current.select();
+  }, [forceVisible]);
+
   if (!forceVisible && value === undefined) {
     return <Form.Button onClick={onForceVisible}>Set number</Form.Button>;
   }
@@ -57,6 +64,7 @@ export const NumberControl: FC<NumberProps> = ({
   return (
     <Wrapper>
       <Form.Input
+        ref={htmlElRef}
         type="number"
         onChange={handleChange}
         size="flex"
