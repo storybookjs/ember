@@ -11,7 +11,6 @@ import { Channel } from '@storybook/channels';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { sanitize, toId } from '@storybook/csf';
-
 import {
   Comparator,
   Parameters,
