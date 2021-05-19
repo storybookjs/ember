@@ -66,6 +66,7 @@ export const NumberControl: FC<NumberProps> = ({
     <Wrapper>
       <Form.Input
         ref={htmlElRef}
+        id={getControlId(name)}
         type="number"
         onChange={handleChange}
         size="flex"
