@@ -15,8 +15,8 @@ const Template = (initialValue?: number) => {
         value={value}
         onChange={(newVal) => setValue(newVal)}
         min={0}
-        max={20}
-        step={2}
+        max={2000}
+        step={0.0000000000005}
       />
       <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>

@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useMemo } from 'react';
 
 import { styled } from '@storybook/theming';
 import { lighten, darken, rgba } from 'polished';
@@ -150,6 +150,23 @@ const RangeWrapper = styled.div({
   alignItems: 'center',
   width: '100%',
 });
+const RangeLabelNumberWrapper = styled.span<{ minWidth: string }>(({ minWidth }) => ({
+  minWidth,
+  display: 'inline-block',
+  textAlign: 'right',
+}));
+
+const NUMBER_WIDTH = 8 as const;
+const EXPONENTIAL_SEPARATOR = 'e-' as const;
+
+const parseExponentialNumber = (number: number) => Number(number.toString().split('e-')[1]);
+// Range slider value label changes handle position and causes jittering #14204
+function getNumberOfDecimals(number: number): number {
+  const stringNumber = number.toString();
+  return stringNumber.includes(EXPONENTIAL_SEPARATOR)
+    ? Number(stringNumber.split('e-')[1])
+    : stringNumber.split('.')[1]?.length || 0;
+}
 
 export const RangeControl: FC<RangeProps> = ({
   name,
@@ -165,6 +182,13 @@ export const RangeControl: FC<RangeProps> = ({
     onChange(parse(event.target.value));
   };
   const hasValue = value !== undefined;
+
+  const valueMinWidthPixels = useMemo(() => {
+    const stepDecimals = getNumberOfDecimals(step);
+    const maxLength = max.toString().length;
+    return (stepDecimals + maxLength) * NUMBER_WIDTH;
+  }, [step, max]);
+
   return (
     <RangeWrapper>
       <RangeLabel>{min}</RangeLabel>
@@ -173,7 +197,12 @@ export const RangeControl: FC<RangeProps> = ({
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}
       />
-      <RangeLabel>{`${hasValue ? value : '--'} / ${max}`}</RangeLabel>
+      <RangeLabel>
+        <RangeLabelNumberWrapper minWidth={`${valueMinWidthPixels}px`}>{`${
+          hasValue ? value : '--'
+        }`}</RangeLabelNumberWrapper>{' '}
+        / {max}
+      </RangeLabel>
     </RangeWrapper>
   );
 };
