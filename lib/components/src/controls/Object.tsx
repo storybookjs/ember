@@ -257,9 +257,25 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     [onChange]
   );
 
+  const [forceVisible, setForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange({});
+    setForceVisible(true);
+  }, [setForceVisible]);
+
+  const htmlElRef = useRef(null);
+  useEffect(() => {
+    if (forceVisible && htmlElRef.current) htmlElRef.current.select();
+  }, [forceVisible]);
+
+  if (!hasData) {
+    return <Form.Button onClick={onForceVisible}>Set object</Form.Button>;
+  }
+
   const rawJSONForm = (
     <RawInput
-     
+      ref={htmlElRef}
+      id={getControlId(name)}
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
