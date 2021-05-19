@@ -11,11 +11,13 @@ const Template = (initialValue?: string) => {
   return (
     <>
       <TextControl name="Text" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
 export const Basic = () => Template('Hello text');
+
+export const Empty = () => Template('');
 
 export const Undefined = () => Template(undefined);

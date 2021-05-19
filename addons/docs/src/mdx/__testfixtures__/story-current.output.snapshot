@@ -3,9 +3,9 @@
 exports[`docs-mdx-compiler-plugin story-current.mdx 1`] = `
 "/* @jsxRuntime classic */
 /* @jsx mdx */
-import { assertIsFn, AddContext } from '@storybook/addon-docs/blocks';
+import { assertIsFn, AddContext } from '@storybook/addon-docs';
 
-import { Story } from '@storybook/addon-docs/blocks';
+import { Story } from '@storybook/addon-docs';
 
 const layoutProps = {};
 const MDXLayout = 'wrapper';

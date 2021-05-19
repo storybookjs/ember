@@ -1,5 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Storybook Discord
+  - name: Documentation 📚
+    url: https://storybook.js.org/docs/
+    about: Check out the official docs for answers to common questions
+  - name: Questions & discussions 🤔
+    url: https://github.com/storybookjs/storybook/discussions
+    about: Ask questions, request features & discuss RFCs
+  - name: Community Discord 💬
     url: https://discord.gg/storybook
     about: Community discussions, interactive support, contributor help

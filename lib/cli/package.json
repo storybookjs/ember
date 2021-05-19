@@ -1,6 +1,6 @@
 {
   "name": "@storybook/cli",
-  "version": "6.3.0-alpha.9",
+  "version": "6.3.0-alpha.34",
   "description": "Storybook's CLI - easiest method of adding storybook to your projects",
   "keywords": [
     "cli",
@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/cli"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "author": "Storybook Team",
@@ -44,9 +48,10 @@
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "@storybook/codemod": "6.3.0-alpha.9",
-    "@storybook/node-logger": "6.3.0-alpha.9",
+    "@storybook/codemod": "6.3.0-alpha.34",
+    "@storybook/node-logger": "6.3.0-alpha.34",
     "@storybook/semver": "^7.3.2",
+    "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "commander": "^6.2.1",
     "core-js": "^3.8.2",
@@ -65,10 +70,11 @@
     "read-pkg-up": "^7.0.1",
     "shelljs": "^0.8.4",
     "strip-json-comments": "^3.0.1",
+    "ts-dedent": "^2.0.0",
     "update-notifier": "^5.0.1"
   },
   "devDependencies": {
-    "@storybook/client-api": "6.3.0-alpha.9",
+    "@storybook/client-api": "6.3.0-alpha.34",
     "@types/cross-spawn": "^6.0.2",
     "@types/prompts": "^2.0.9",
     "@types/puppeteer-core": "^2.1.0",
@@ -84,5 +90,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "1d75ab7fc1bb8631bb5f47f96447aa53aa5da46e"
+  "gitHead": "e88f5c202decc2e594d08266d41b2b561e0ceb42"
 }

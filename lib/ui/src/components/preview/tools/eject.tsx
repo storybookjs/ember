@@ -19,6 +19,7 @@ const ejectMapper = ({ state }: Combo) => {
 
 export const ejectTool: Addon = {
   title: 'eject',
+  id: 'eject',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={ejectMapper}>
@@ -30,7 +31,7 @@ export const ejectTool: Addon = {
             target="_blank"
             title="Open canvas in new tab"
           >
-            <Icons icon="share" />
+            <Icons icon="sharealt" />
           </IconButton>
         ) : null
       }

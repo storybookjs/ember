@@ -37,9 +37,14 @@ export interface Collection {
 interface Elements {
   [key: string]: Collection;
 }
-
+interface ToolbarConfig {
+  hidden?: boolean;
+}
 export interface Config {
   theme?: ThemeVars;
+  toolbar?: {
+    [id: string]: ToolbarConfig;
+  };
   [key: string]: any;
 }
 

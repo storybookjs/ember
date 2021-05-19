@@ -21,6 +21,7 @@ import { getPrebuiltDir } from './utils/prebuilt-manager';
 import { cache } from './utils/cache';
 import { copyAllStaticFiles } from './utils/copy-all-static-files';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { extractStoriesJson } from './utils/stories-json';
 
 export async function buildStaticStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   /* eslint-disable no-param-reassign */
@@ -69,6 +70,15 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     presets,
   };
 
+  const storiesGlobs = (await presets.apply('stories')) as string[];
+  if (!options.skipStoriesJson) {
+    await extractStoriesJson(
+      path.join(options.outputDir, 'stories.json'),
+      storiesGlobs,
+      options.configDir
+    );
+  }
+
   const prebuiltDir = await getPrebuiltDir(fullOptions);
 
   const startTime = process.hrtime();
@@ -93,7 +103,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   const [managerStats, previewStats] = await Promise.all([manager, preview]);
 
   if (options.webpackStatsJson) {
-    await outputStats(options.webpackStatsJson, previewStats, managerStats);
+    const target = options.webpackStatsJson === true ? options.outputDir : options.webpackStatsJson;
+    await outputStats(target, previewStats, managerStats);
   }
 
   logger.info(`=> Output directory: ${options.outputDir}`);

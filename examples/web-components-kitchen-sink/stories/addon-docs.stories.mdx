@@ -1,4 +1,4 @@
-import { Story, Canvas, Meta, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Story, Canvas, Meta, ArgsTable } from '@storybook/addon-docs';
 import { action } from '@storybook/addon-actions';
 import { html } from 'lit-html';
 import '../demo-wc-card.js';
@@ -32,9 +32,7 @@ Or a function
       { header: 'mana', value: '100' },
     ];
     return html`
-      <demo-wc-card back-side .rows=${rows}>
-        A card with data on the back
-      </demo-wc-card>
+      <demo-wc-card back-side .rows=${rows}> A card with data on the back </demo-wc-card>
     `;
   }}
 </Story>

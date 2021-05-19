@@ -305,9 +305,10 @@ export const ColorControl: FC<ColorProps> = ({
             />
             {presets.length > 0 && (
               <Swatches>
-                {presets.map((preset) => (
+                {presets.map((preset, index: number) => (
                   <WithTooltip
-                    key={preset.value}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${preset.value}-${index}`}
                     hasChrome={false}
                     tooltip={<Note note={preset.keyword || preset.value} />}
                   >
@@ -330,7 +331,7 @@ export const ColorControl: FC<ColorProps> = ({
         value={value}
         onChange={(e: any) => updateValue(e.target.value)}
         onFocus={(e) => e.target.select()}
-        placeholder="Choose color"
+        placeholder="Choose color..."
       />
       <ToggleIcon icon="markup" onClick={cycleColorSpace} />
     </Wrapper>

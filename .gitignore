@@ -40,4 +40,4 @@ examples/angular-cli/addon-jest.testresults.json
 !/.yarn/plugins
 !/.yarn/sdks
 !/.yarn/versions
-/.pnp.*
+.pnp.*

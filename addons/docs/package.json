@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-docs",
-  "version": "6.3.0-alpha.9",
+  "version": "6.3.0-alpha.34",
   "description": "Document component usage and properties in Markdown",
   "keywords": [
     "addon",
@@ -19,10 +19,14 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/docs"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/cjs/public_api.js",
-  "module": "dist/esm/public_api.js",
-  "types": "dist/ts3.9/public_api.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
       "*": [
@@ -40,6 +44,7 @@
     "react/**/*",
     "vue/**/*",
     "web-components/**/*",
+    "lit/**/*",
     "README.md",
     "*.js",
     "*.d.ts",
@@ -58,19 +63,19 @@
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@storybook/addons": "6.3.0-alpha.9",
-    "@storybook/api": "6.3.0-alpha.9",
-    "@storybook/builder-webpack4": "6.3.0-alpha.9",
-    "@storybook/client-api": "6.3.0-alpha.9",
-    "@storybook/client-logger": "6.3.0-alpha.9",
-    "@storybook/components": "6.3.0-alpha.9",
-    "@storybook/core": "6.3.0-alpha.9",
-    "@storybook/core-events": "6.3.0-alpha.9",
+    "@storybook/addons": "6.3.0-alpha.34",
+    "@storybook/api": "6.3.0-alpha.34",
+    "@storybook/builder-webpack4": "6.3.0-alpha.34",
+    "@storybook/client-api": "6.3.0-alpha.34",
+    "@storybook/client-logger": "6.3.0-alpha.34",
+    "@storybook/components": "6.3.0-alpha.34",
+    "@storybook/core": "6.3.0-alpha.34",
+    "@storybook/core-events": "6.3.0-alpha.34",
     "@storybook/csf": "0.0.1",
-    "@storybook/node-logger": "6.3.0-alpha.9",
-    "@storybook/postinstall": "6.3.0-alpha.9",
-    "@storybook/source-loader": "6.3.0-alpha.9",
-    "@storybook/theming": "6.3.0-alpha.9",
+    "@storybook/node-logger": "6.3.0-alpha.34",
+    "@storybook/postinstall": "6.3.0-alpha.34",
+    "@storybook/source-loader": "6.3.0-alpha.34",
+    "@storybook/theming": "6.3.0-alpha.34",
     "acorn": "^7.4.1",
     "acorn-jsx": "^5.3.1",
     "acorn-walk": "^7.2.0",
@@ -97,10 +102,11 @@
     "@babel/core": "^7.12.10",
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
-    "@storybook/angular": "6.3.0-alpha.9",
-    "@storybook/react": "6.3.0-alpha.9",
-    "@storybook/vue": "6.3.0-alpha.9",
-    "@storybook/web-components": "6.3.0-alpha.9",
+    "@storybook/angular": "6.3.0-alpha.34",
+    "@storybook/lit": "6.3.0-alpha.34",
+    "@storybook/react": "6.3.0-alpha.34",
+    "@storybook/vue": "6.3.0-alpha.34",
+    "@storybook/web-components": "6.3.0-alpha.34",
     "@types/cross-spawn": "^6.0.2",
     "@types/doctrine": "^0.0.3",
     "@types/enzyme": "^3.10.8",
@@ -130,12 +136,12 @@
     "zone.js": "^0.11.3"
   },
   "peerDependencies": {
-    "@babel/core": "^7.11.5",
-    "@storybook/angular": "6.3.0-alpha.9",
-    "@storybook/vue": "6.3.0-alpha.9",
-    "@storybook/vue3": "6.3.0-alpha.9",
-    "@storybook/web-components": "6.3.0-alpha.9",
-    "babel-loader": "^8.0.0",
+    "@storybook/angular": "6.3.0-alpha.34",
+    "@storybook/lit": "6.3.0-alpha.34",
+    "@storybook/vue": "6.3.0-alpha.34",
+    "@storybook/vue3": "6.3.0-alpha.34",
+    "@storybook/web-components": "6.3.0-alpha.34",
+    "lit": "^2.0.0-rc.1",
     "lit-html": "^1.0.0",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0",
@@ -148,6 +154,9 @@
     "@storybook/angular": {
       "optional": true
     },
+    "@storybook/lit": {
+      "optional": true
+    },
     "@storybook/vue": {
       "optional": true
     },
@@ -155,6 +164,9 @@
       "optional": true
     },
     "@storybook/web-components": {
+      "optional": true
+    },
+    "lit": {
       "optional": true
     },
     "lit-html": {
@@ -182,7 +194,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "1d75ab7fc1bb8631bb5f47f96447aa53aa5da46e",
+  "gitHead": "e88f5c202decc2e594d08266d41b2b561e0ceb42",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Docs",
     "icon": "https://user-images.githubusercontent.com/263385/101991672-48355c80-3c7c-11eb-82d9-95fa12438f64.png",

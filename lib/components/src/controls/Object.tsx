@@ -1,6 +1,14 @@
 import { window as globalWindow } from 'global';
 import cloneDeep from 'lodash/cloneDeep';
-import React, { ComponentProps, SyntheticEvent, useCallback, useMemo, useState } from 'react';
+import React, {
+  ComponentProps,
+  SyntheticEvent,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import { styled, useTheme, Theme } from '@storybook/theming';
 
 // @ts-ignore
@@ -251,24 +259,25 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
 
   const rawJSONForm = (
     <RawInput
-      id={getControlId(name)}
+     
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
-      placeholder="Enter JSON string"
+      placeholder="Edit JSON string..."
+      autoFocus={forceVisible}
       valid={parseError ? 'error' : null}
     />
   );
 
   return (
     <Wrapper>
-      {hasData && ['Object', 'Array'].includes(getObjectType(data)) && (
+      {['Object', 'Array'].includes(getObjectType(data)) && (
         <RawButton onClick={() => setShowRaw((v) => !v)}>
           <Icons icon={showRaw ? 'eyeclose' : 'eye'} />
           <span>RAW</span>
         </RawButton>
       )}
-      {hasData && !showRaw ? (
+      {!showRaw ? (
         <JsonTree
           data={data}
           rootName={name}

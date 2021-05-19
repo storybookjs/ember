@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-alpha.9",
+  "version": "6.3.0-alpha.34",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/angular"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/ts3.9/client/index.js",
@@ -41,11 +45,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.9",
-    "@storybook/api": "6.3.0-alpha.9",
-    "@storybook/core": "6.3.0-alpha.9",
-    "@storybook/core-common": "6.3.0-alpha.9",
-    "@storybook/node-logger": "6.3.0-alpha.9",
+    "@storybook/addons": "6.3.0-alpha.34",
+    "@storybook/api": "6.3.0-alpha.34",
+    "@storybook/core": "6.3.0-alpha.34",
+    "@storybook/core-common": "6.3.0-alpha.34",
+    "@storybook/node-logger": "6.3.0-alpha.34",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -77,7 +81,7 @@
     "@angular/forms": "^11.2.0",
     "@angular/platform-browser": "^11.2.0",
     "@angular/platform-browser-dynamic": "^11.2.0",
-    "@nrwl/workspace": "^11.1.5",
+    "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
     "@types/jest": "^26.0.16",
     "@webcomponents/custom-elements": "^1.4.3",
@@ -120,5 +124,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "1d75ab7fc1bb8631bb5f47f96447aa53aa5da46e"
+  "gitHead": "e88f5c202decc2e594d08266d41b2b561e0ceb42"
 }

@@ -20,6 +20,7 @@ const copyMapper = ({ state }: Combo) => {
 
 export const copyTool: Addon = {
   title: 'copy',
+  id: 'copy',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={copyMapper}>
@@ -30,7 +31,7 @@ export const copyTool: Addon = {
             onClick={() => copy(`${baseUrl}?id=${storyId}${stringifyQueryParams(queryParams)}`)}
             title="Copy canvas link"
           >
-            <Icons icon="copy" />
+            <Icons icon="link" />
           </IconButton>
         ) : null
       }
