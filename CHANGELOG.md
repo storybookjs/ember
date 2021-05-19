@@ -1,3 +1,15 @@
+## 6.3.0-alpha.34 (May 19, 2021)
+
+### Features
+
+- Core: Single story option in iframe view ([#14875](https://github.com/storybookjs/storybook/pull/14875))
+- Lit: Add typings for @storybook/lit ([#14962](https://github.com/storybookjs/storybook/pull/14962))
+
+### Dependency Upgrades
+
+- Bump telejson to 5.3.2 to use the ESM version ([#14983](https://github.com/storybookjs/storybook/pull/14983))
+- CSF: Add undeclared dependency `regenerator-runtime` ([#14979](https://github.com/storybookjs/storybook/pull/14979))
+
 ## 6.3.0-alpha.33 (May 18, 2021)
 
 ### Bug Fixes
