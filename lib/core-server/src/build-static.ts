@@ -71,7 +71,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     presets,
   };
 
-  const features = (await presets.apply('features')) as StorybookConfig['features'];
+  const features = await presets.apply<StorybookConfig['features']>('features');
   if (features.buildStoriesJson) {
     const storiesGlobs = (await presets.apply('stories')) as StorybookConfig['stories'];
     await extractStoriesJson(

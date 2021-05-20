@@ -81,7 +81,6 @@ const baseOptions = {
   outputDir: `${__dirname}/storybook-static`, // production
   ci: true,
   managerCache: false,
-  // skipStoriesJson: true,
 };
 
 const ROOT = process.cwd();

@@ -37,7 +37,7 @@ export async function storybookDevServer(options: Options) {
   // User's own static files
   await useStatics(router, options);
 
-  const features = (await options.presets.apply('features')) as StorybookConfig['features'];
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
   if (!features.buildStoriesJson) {
     await useStoriesJson(router, options);
   }
