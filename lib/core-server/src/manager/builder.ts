@@ -39,10 +39,11 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
     if (options.managerCache) {
       const [useCache, hasOutput] = await Promise.all([
         // must run even if outputDir doesn't exist, otherwise the 2nd run won't use cache
-        useManagerCache(options.cache, config),
+        useManagerCache(options, config),
         pathExists(options.outputDir),
       ]);
       if (useCache && hasOutput && !options.smokeTest) {
+        logger.line(1); // force starting new line
         logger.info('=> Using cached manager');
         // Manager static files
         router.use('/', express.static(prebuiltDir || options.outputDir));
@@ -50,6 +51,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
         return;
       }
     } else if (!options.smokeTest && (await clearManagerCache(options.cache))) {
+      logger.line(1); // force starting new line
       logger.info('=> Cleared cached manager config');
     }
   }
