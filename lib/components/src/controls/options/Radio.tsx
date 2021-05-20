@@ -3,6 +3,7 @@ import { styled } from '@storybook/theming';
 import { logger } from '@storybook/client-logger';
 import { ControlProps, OptionsSingleSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey } from './helpers';
+import { getControlId } from '../helpers';
 
 const Wrapper = styled.div<{ isInline: boolean }>(({ isInline }) =>
   isInline
@@ -54,10 +55,12 @@ export const RadioControl: FC<RadioProps> = ({ name, options, value, onChange, i
     return <>-</>;
   }
   const selection = selectedKey(value, options);
+  const controlId = getControlId(name);
+
   return (
     <Wrapper isInline={isInline}>
-      {Object.keys(options).map((key) => {
-        const id = `${name}-${key}`;
+      {Object.keys(options).map((key, index) => {
+        const id = `${controlId}-${index}`;
         return (
           <Label key={id} htmlFor={id}>
             <input
