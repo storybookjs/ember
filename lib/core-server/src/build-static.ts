@@ -12,6 +12,7 @@ import {
   BuilderOptions,
   Options,
   Builder,
+  StorybookConfig,
 } from '@storybook/core-common';
 import * as managerBuilder from './manager/builder';
 
@@ -70,8 +71,9 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     presets,
   };
 
-  const storiesGlobs = (await presets.apply('stories')) as string[];
-  if (!options.skipStoriesJson) {
+  const features = await presets.apply<StorybookConfig['features']>('features');
+  if (features.buildStoriesJson) {
+    const storiesGlobs = (await presets.apply('stories')) as StorybookConfig['stories'];
     await extractStoriesJson(
       path.join(options.outputDir, 'stories.json'),
       storiesGlobs,

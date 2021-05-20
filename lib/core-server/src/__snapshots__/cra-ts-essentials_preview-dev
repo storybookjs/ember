@@ -432,3 +432,5 @@ Object {
   ],
 }
 `;
+
+exports[`vue-3-cli manager dev mode 1`] = `null`;
