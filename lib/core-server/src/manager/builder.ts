@@ -2,7 +2,8 @@ import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { logger } from '@storybook/node-logger';
 import { Builder, useProgressReporting, checkWebpackVersion } from '@storybook/core-common';
-import { pathExists } from 'fs-extra';
+import findUp from 'find-up';
+import fs from 'fs-extra';
 import express from 'express';
 import { getManagerWebpackConfig } from './manager-config';
 import { clearManagerCache, useManagerCache } from '../utils/manager-cache';
@@ -36,21 +37,25 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
   const config = await getConfig(options);
 
   if (options.cache) {
+    // Retrieve the Storybook version number to bust cache up upgrades.
+    const packageFile = await findUp('package.json', { cwd: __dirname });
+    const { version: storybookVersion } = await fs.readJSON(packageFile);
+    const cacheKey = `managerConfig@${storybookVersion}`;
+
     if (options.managerCache) {
       const [useCache, hasOutput] = await Promise.all([
         // must run even if outputDir doesn't exist, otherwise the 2nd run won't use cache
-        useManagerCache(options, config),
-        pathExists(options.outputDir),
+        useManagerCache(cacheKey, options, config),
+        fs.pathExists(options.outputDir),
       ]);
       if (useCache && hasOutput && !options.smokeTest) {
         logger.line(1); // force starting new line
         logger.info('=> Using cached manager');
         // Manager static files
         router.use('/', express.static(prebuiltDir || options.outputDir));
-
         return;
       }
-    } else if (!options.smokeTest && (await clearManagerCache(options.cache))) {
+    } else if (!options.smokeTest && (await clearManagerCache(cacheKey, options))) {
       logger.line(1); // force starting new line
       logger.info('=> Cleared cached manager config');
     }

@@ -1,22 +1,19 @@
 import { Options } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
-import findUp from 'find-up';
 import fs from 'fs-extra';
 import path from 'path';
 import { stringify } from 'telejson';
 import webpack from 'webpack';
-import { FileSystemCache } from 'file-system-cache';
 
 // The main config file determines the managerConfig value, so is already handled.
 // The other files don't affect the manager, so can be safely ignored.
 const ignoredConfigFiles = [/^main\.(m?js|ts)$/, /^preview\.(m?js|ts)$/, /^preview-head\.html$/];
 
-export const useManagerCache = async (options: Options, managerConfig: webpack.Configuration) => {
-  // Retrieve the Storybook version number to bust cache up upgrades.
-  const packageFile = await findUp('package.json', { cwd: __dirname });
-  const { version: storybookVersion } = await fs.readJSON(packageFile);
-  const cacheKey = `managerConfig@${storybookVersion}`;
-
+export const useManagerCache = async (
+  cacheKey: string,
+  options: Options,
+  managerConfig: webpack.Configuration
+) => {
   const [cachedISOTime, cachedConfig] = await options.cache
     .get(cacheKey)
     .then((str) => str.match(/^([0-9TZ.:+-]+)_(.*)/).slice(1))
@@ -54,9 +51,9 @@ export const useManagerCache = async (options: Options, managerConfig: webpack.C
   }
 };
 
-export const clearManagerCache = async (fsc: FileSystemCache) => {
-  if (fsc && fsc.fileExists('managerConfig')) {
-    await fsc.remove('managerConfig');
+export const clearManagerCache = async (cacheKey: string, options: Options) => {
+  if (options.cache && options.cache.fileExists(cacheKey)) {
+    await options.cache.remove(cacheKey);
     return true;
   }
   return false;
