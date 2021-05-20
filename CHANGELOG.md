@@ -1,3 +1,13 @@
+## 6.3.0-alpha.35 (May 20, 2021)
+
+### Maintenance
+
+- Core: Feature flag for builtin stories.json support ([#14992](https://github.com/storybookjs/storybook/pull/14992))
+
+### Dependency Upgrades
+
+- React: Upgrade to @storybook/react-docgen-typescript-plugin ([#14991](https://github.com/storybookjs/storybook/pull/14991))
+
 ## 6.3.0-alpha.34 (May 19, 2021)
 
 ### Features
