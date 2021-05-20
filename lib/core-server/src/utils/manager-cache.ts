@@ -23,8 +23,11 @@ export const useManagerCache = async (options: Options, managerConfig: webpack.C
 
   // Drop the `cache` property because it'll change as a result of writing to the cache.
   const { cache: _, ...baseConfig } = managerConfig;
-  const configString = stringify({ ...baseConfig, storybookVersion });
-  await options.cache.set('managerConfig', `${new Date().toISOString()}_${configString}`);
+  const configString = stringify(baseConfig);
+  await options.cache.set(
+    `managerConfig@${storybookVersion}`,
+    `${new Date().toISOString()}_${configString}`
+  );
   if (configString !== cachedConfig || !cachedISOTime) {
     logger.line(1); // force starting new line
     logger.info('=> Ignoring cached manager due to change in manager config');
