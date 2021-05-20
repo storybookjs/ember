@@ -155,7 +155,6 @@ export interface BuilderOptions {
   docsMode: boolean;
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
-  skipStoriesJson?: boolean;
 }
 
 export interface StorybookConfigOptions {
@@ -238,6 +237,7 @@ export interface StorybookConfig {
    */
   features?: {
     postcss?: boolean;
+    buildStoriesJson?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

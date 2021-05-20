@@ -22,10 +22,13 @@ import { outputStats } from './utils/output-stats';
 // this only applies to this file
 jest.setTimeout(10000);
 
+const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false } }];
+
 jest.mock('@storybook/builder-webpack5', () => {
   const actualBuilder = jest.requireActual('@storybook/builder-webpack5');
   // MUTATION! we couldn't mock webpack5, so we added a level of indirection instead
   actualBuilder.executor.get = jest.fn();
+  actualBuilder.overridePresets = [...actualBuilder.overridePresets, skipStoriesJsonPreset];
   return actualBuilder;
 });
 
@@ -33,6 +36,7 @@ jest.mock('@storybook/builder-webpack4', () => {
   const actualBuilder = jest.requireActual('@storybook/builder-webpack4');
   // MUTATION! we couldn't mock webpack5, so we added a level of indirection instead
   actualBuilder.executor.get = jest.fn();
+  actualBuilder.overridePresets = [...actualBuilder.overridePresets, skipStoriesJsonPreset];
   return actualBuilder;
 });
 
@@ -133,7 +137,6 @@ describe.each([
     ...baseOptions,
     ...frameworkOptions,
     configDir: path.resolve(`${__dirname}/../../../examples/${example}/.storybook`),
-    skipStoriesJson: true,
   };
 
   describe('manager', () => {

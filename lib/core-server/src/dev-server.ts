@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import compression from 'compression';
 
-import { Builder, logConfig, Options } from '@storybook/core-common';
+import { Builder, logConfig, Options, StorybookConfig } from '@storybook/core-common';
 
 import { getMiddleware } from './utils/middleware';
 import { getServerAddresses } from './utils/server-address';
@@ -36,7 +36,9 @@ export async function storybookDevServer(options: Options) {
 
   // User's own static files
   await useStatics(router, options);
-  if (!options.skipStoriesJson) {
+
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
+  if (!features.buildStoriesJson) {
     await useStoriesJson(router, options);
   }
 
