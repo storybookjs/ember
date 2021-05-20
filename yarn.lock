@@ -7075,7 +7075,7 @@ __metadata:
     lodash: ^4.17.20
     prop-types: ^15.7.2
     react-dev-utils: ^11.0.3
-    react-docgen-typescript-plugin: ^0.6.2
+    react-docgen-typescript-plugin: "npm:@storybook/react-docgen-typescript-plugin@0.7.2-canary.91cf050.0"
     react-refresh: ^0.8.3
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
@@ -34992,6 +34992,25 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-docgen-typescript-plugin@npm:@storybook/react-docgen-typescript-plugin@0.7.2-canary.91cf050.0":
+  version: 0.7.2-canary.91cf050.0
+  resolution: "@storybook/react-docgen-typescript-plugin@npm:0.7.2-canary.91cf050.0"
+  dependencies:
+    debug: ^4.1.1
+    endent: ^2.0.1
+    find-cache-dir: ^3.3.1
+    flat-cache: ^3.0.4
+    micromatch: ^4.0.2
+    react-docgen-typescript: ^1.22.0
+    tslib: ^2.0.0
+    webpack-sources: ^2.2.0
+  peerDependencies:
+    typescript: ">= 3.x"
+    webpack: ">= 4"
+  checksum: 38b4bf1ee5c5ac88ec011775be6f185ae8274c9e8c605362a4333f12947c4a9af4ce5f149565a3bc70091b2c40ebf27ed0dc0b6217c81f4e409dd06703e1cb31
+  languageName: node
+  linkType: hard
+
 "react-docgen-typescript-plugin@npm:^0.6.2":
   version: 0.6.3
   resolution: "react-docgen-typescript-plugin@npm:0.6.3"
@@ -35013,6 +35032,15 @@ fsevents@^1.2.7:
   peerDependencies:
     typescript: ">= 3.x"
   checksum: b053dcec8000be3c967476db6fb0c59dd3abc9378459758873be0d07b17799f87cdce95249b86b931803f95aa24c63e64f1031ec31ec8e156ef21b342cfabb90
+  languageName: node
+  linkType: hard
+
+"react-docgen-typescript@npm:^1.22.0":
+  version: 1.22.0
+  resolution: "react-docgen-typescript@npm:1.22.0"
+  peerDependencies:
+    typescript: ">= 3.x"
+  checksum: 6d13f70a796087d63a556a5850abdb1e48774d932658fb625b04d84fcf4acc0b3f1278100dfb49ac08b96bcdcc6c188016d77372f1720296383a2c48e1e9852b
   languageName: node
   linkType: hard
 
@@ -43282,7 +43310,7 @@ typescript@4.1.3:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:2.2.0, webpack-sources@npm:^2.1.1":
+"webpack-sources@npm:2.2.0, webpack-sources@npm:^2.1.1, webpack-sources@npm:^2.2.0":
   version: 2.2.0
   resolution: "webpack-sources@npm:2.2.0"
   dependencies:
