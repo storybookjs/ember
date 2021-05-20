@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent } from 'react';
 
 import { styled } from '@storybook/theming';
 import { lighten, darken, rgba } from 'polished';
+import { getControlId } from './helpers';
 import { ControlProps, NumberValue, RangeConfig } from './types';
 import { parse } from './Number';
 
@@ -169,6 +170,7 @@ export const RangeControl: FC<RangeProps> = ({
     <RangeWrapper>
       <RangeLabel>{min}</RangeLabel>
       <RangeInput
+        id={getControlId(name)}
         type="range"
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}

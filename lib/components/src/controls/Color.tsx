@@ -9,6 +9,7 @@ import { TooltipNote } from '../tooltip/TooltipNote';
 import { WithTooltip } from '../tooltip/lazy-WithTooltip';
 import { Form } from '../form';
 import { Icons } from '../icon/icon';
+import { getControlId } from './helpers';
 
 const Wrapper = styled.div({
   position: 'relative',
@@ -274,6 +275,7 @@ const usePresets = (
 
 export type ColorProps = ControlProps<ColorValue> & ColorConfig;
 export const ColorControl: FC<ColorProps> = ({
+  name,
   value: initialValue,
   onChange,
   onFocus,
@@ -325,6 +327,7 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch value={realValue} style={{ margin: 4 }} />
       </PickerTooltip>
       <Input
+        id={getControlId(name)}
         value={value}
         onChange={(e: any) => updateValue(e.target.value)}
         onFocus={(e) => e.target.select()}

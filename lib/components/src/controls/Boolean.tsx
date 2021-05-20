@@ -3,6 +3,7 @@ import React, { FC, useCallback } from 'react';
 import { opacify, transparentize } from 'polished';
 import { styled } from '@storybook/theming';
 
+import { getControlId } from './helpers';
 import { Form } from '../form';
 import { ControlProps, BooleanValue, BooleanConfig } from './types';
 
@@ -90,7 +91,7 @@ export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur
   return (
     <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
       <input
-        id={name}
+        id={getControlId(name)}
         type="checkbox"
         onChange={(e) => onChange(e.target.checked)}
         checked={value || false}
