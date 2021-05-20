@@ -12,22 +12,20 @@ import { FileSystemCache } from 'file-system-cache';
 const ignoredConfigFiles = [/^main\.(m?js|ts)$/, /^preview\.(m?js|ts)$/, /^preview-head\.html$/];
 
 export const useManagerCache = async (options: Options, managerConfig: webpack.Configuration) => {
-  const [cachedISOTime, cachedConfig] = await options.cache
-    .get('managerConfig')
-    .then((str) => str.match(/^([0-9TZ.:+-]+)_(.*)/).slice(1))
-    .catch(() => []);
-
   // Retrieve the Storybook version number to bust cache up upgrades.
   const packageFile = await findUp('package.json', { cwd: __dirname });
   const { version: storybookVersion } = await fs.readJSON(packageFile);
+  const cacheKey = `managerConfig@${storybookVersion}`;
+
+  const [cachedISOTime, cachedConfig] = await options.cache
+    .get(cacheKey)
+    .then((str) => str.match(/^([0-9TZ.:+-]+)_(.*)/).slice(1))
+    .catch(() => []);
 
   // Drop the `cache` property because it'll change as a result of writing to the cache.
   const { cache: _, ...baseConfig } = managerConfig;
   const configString = stringify(baseConfig);
-  await options.cache.set(
-    `managerConfig@${storybookVersion}`,
-    `${new Date().toISOString()}_${configString}`
-  );
+  await options.cache.set(cacheKey, `${new Date().toISOString()}_${configString}`);
   if (configString !== cachedConfig || !cachedISOTime) {
     logger.line(1); // force starting new line
     logger.info('=> Ignoring cached manager due to change in manager config');
