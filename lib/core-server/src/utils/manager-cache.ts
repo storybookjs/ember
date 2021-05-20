@@ -1,5 +1,6 @@
 import { Options } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
+import findUp from 'find-up';
 import fs from 'fs-extra';
 import path from 'path';
 import { stringify } from 'telejson';
@@ -16,9 +17,13 @@ export const useManagerCache = async (options: Options, managerConfig: webpack.C
     .then((str) => str.match(/^([0-9TZ.:+-]+)_(.*)/).slice(1))
     .catch(() => []);
 
+  // Retrieve the Storybook version number to bust cache up upgrades.
+  const packageFile = await findUp('package.json', { cwd: __dirname });
+  const { version: storybookVersion } = await fs.readJSON(packageFile);
+
   // Drop the `cache` property because it'll change as a result of writing to the cache.
   const { cache: _, ...baseConfig } = managerConfig;
-  const configString = stringify(baseConfig);
+  const configString = stringify({ ...baseConfig, storybookVersion });
   await options.cache.set('managerConfig', `${new Date().toISOString()}_${configString}`);
   if (configString !== cachedConfig || !cachedISOTime) {
     logger.line(1); // force starting new line
