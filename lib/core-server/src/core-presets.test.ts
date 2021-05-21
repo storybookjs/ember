@@ -183,18 +183,18 @@ describe('dev cli flags', () => {
 
   const cliOptions = { ...reactOptions, ...baseOptions };
 
-  it('baseline', async () => {
-    await buildDevStandalone(cliOptions);
-    const config = getConfig(previewExecutor.get, 'preview');
-    expect(progressPlugin(config)).toBeTruthy();
-  });
+  // it('baseline', async () => {
+  //   await buildDevStandalone(cliOptions);
+  //   const config = getConfig(previewExecutor.get, 'preview');
+  //   expect(progressPlugin(config)).toBeTruthy();
+  // });
 
-  it('--quiet', async () => {
-    const options = { ...cliOptions, quiet: true };
-    await buildDevStandalone(options);
-    const config = getConfig(previewExecutor.get, 'preview');
-    expect(progressPlugin(config)).toBeFalsy();
-  });
+  // it('--quiet', async () => {
+  //   const options = { ...cliOptions, quiet: true };
+  //   await buildDevStandalone(options);
+  //   const config = getConfig(previewExecutor.get, 'preview');
+  //   expect(progressPlugin(config)).toBeFalsy();
+  // });
 
   it('--webpack-stats-json calls output-stats', async () => {
     await buildDevStandalone(cliOptions);
