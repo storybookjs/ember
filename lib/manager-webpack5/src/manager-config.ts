@@ -6,8 +6,6 @@ import fetch from 'node-fetch';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
-import { logger } from '@storybook/node-logger';
-
 import { Configuration } from 'webpack';
 import { Ref, Options } from '@storybook/core-common';
 

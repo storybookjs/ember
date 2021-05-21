@@ -124,7 +124,6 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
   const webpackInstance = await executor.get(options);
 
   const config = await getConfig(options);
-  const statsOptions = typeof config.stats === 'boolean' ? 'minimal' : config.stats;
 
   const compiler = webpackInstance(config);
   if (!compiler) {
