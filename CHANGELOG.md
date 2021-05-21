@@ -1,3 +1,28 @@
+## 6.3.0-alpha.36 (May 20, 2021)
+
+### Features
+
+- CLI: Add sb link --local option ([#14950](https://github.com/storybookjs/storybook/pull/14950))
+- Controls: Add automatic ids to all controls ([#14296](https://github.com/storybookjs/storybook/pull/14296))
+
+### Maintenance
+
+- Build: Improve e2e script ([#14980](https://github.com/storybookjs/storybook/pull/14980))
+
+### Dependency Upgrades
+
+- React: Upgrade to @storybook/react-docgen-typescript-plugin ([#14991](https://github.com/storybookjs/storybook/pull/14991))
+
+## 6.3.0-alpha.35 (May 20, 2021)
+
+### Maintenance
+
+- Core: Feature flag for builtin stories.json support ([#14992](https://github.com/storybookjs/storybook/pull/14992))
+
+### Dependency Upgrades
+
+- React: Upgrade to @storybook/react-docgen-typescript-plugin ([#14991](https://github.com/storybookjs/storybook/pull/14991))
+
 ## 6.3.0-alpha.34 (May 19, 2021)
 
 ### Features
