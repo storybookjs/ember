@@ -172,8 +172,8 @@ describe.each([
   });
 });
 
-const progressPlugin = (config) =>
-  config.plugins.find((p) => p.constructor.name === 'ProgressPlugin');
+// const progressPlugin = (config) =>
+//   config.plugins.find((p) => p.constructor.name === 'ProgressPlugin');
 
 describe('dev cli flags', () => {
   beforeEach(() => {
