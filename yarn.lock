@@ -4778,18 +4778,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/cli@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/cli@npm:12.0.7"
+"@nrwl/cli@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/cli@npm:12.3.4"
   dependencies:
-    "@nrwl/tao": 12.0.7
+    "@nrwl/tao": 12.3.4
     chalk: 4.1.0
     v8-compile-cache: 2.3.0
     yargs: 15.4.1
     yargs-parser: 20.0.0
   bin:
     nx: bin/nx.js
-  checksum: 71004f6ce548f91aeed839bf929a8ef5762ac047ee4d185592f998d8223e03512a882e2276f8c5db9b52b8cf71849ee662f6275473e3dfd89d26a40da2705935
+  checksum: 2d8f6101856ee036a4b38e86d5e2f28f35e1cc7807e63666e986b3370c23642eacfcbf842c4fcb2922ae446c7f6ed85aa827b78fa3cf79c1da76bb519f64484a
   languageName: node
   linkType: hard
 
@@ -4807,17 +4807,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/devkit@npm:12.0.7"
+"@nrwl/devkit@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/devkit@npm:12.3.4"
   dependencies:
-    "@nrwl/tao": 12.0.7
+    "@nrwl/tao": 12.3.4
     ejs: ^3.1.5
     ignore: ^5.0.4
     semver: 7.3.4
     strip-json-comments: ^3.1.1
     tslib: ^2.0.0
-  checksum: 0f2145c87a33e91958cde916faee8a055080c8b98619be64abb69a596b2f6cbd1a5008cab646a6bf4e97f7a672bd303b6b310ce83be3e3099bdd97c858121826
+  checksum: 6246b1faa97e72d48e5cb7b9fecf5d4f4edaf4c40471845430dd8b2cd1bd731bfc39d2e4a0da2f6a7b106d0cac9cc3aefaa29c982ba94c981d04202dbd0afb81
   languageName: node
   linkType: hard
 
@@ -4834,16 +4834,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/jest@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/jest@npm:12.0.7"
+"@nrwl/jest@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/jest@npm:12.3.4"
   dependencies:
-    "@nrwl/devkit": 12.0.7
+    "@nrwl/devkit": 12.3.4
     jest-resolve: ^26.6.2
     rxjs: ^6.5.4
     strip-json-comments: ^3.1.1
     tslib: ^2.0.0
-  checksum: 5748075bf53bc443afe247be3847829060ddbddbe1c0f9cf4e4d16235c5377863267be7ac166a0c0e5ad75d4c42b764a04bbd0d7684578dacb35623cb7fad406
+  checksum: a14796c6a5c4ec0460590d1bf519d2bca1b8bfcc1a223c033a7ec9fc552314dcc2bb56392c44297c9cd55329f5a0808797e0db617acc8658ff37de833b611ba5
   languageName: node
   linkType: hard
 
@@ -4860,30 +4860,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/linter@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/linter@npm:12.0.7"
+"@nrwl/linter@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/linter@npm:12.3.4"
   dependencies:
-    "@nrwl/devkit": 12.0.7
+    "@nrwl/devkit": 12.3.4
     glob: 7.1.4
     minimatch: 3.0.4
     tmp: ~0.2.1
     tslib: ^2.0.0
-  checksum: 03b910515d94f7269d5bc5cedee76db792f931ad105eedee3599b41facae5c260005d2b6ba00dfc914b7c6ef2dfd96915330f202ad67af52f7060a00fb9bb0e5
+  checksum: a0bca2cdfc24705d54a8c377d770e86618680643d14e987af9a1739611865dc356c987db531cd0ee2429bfc46c291a0b8c39f77267dc4c65d977d002ff73dadd
   languageName: node
   linkType: hard
 
-"@nrwl/nx-cloud@npm:11.2.0":
-  version: 11.2.0
-  resolution: "@nrwl/nx-cloud@npm:11.2.0"
+"@nrwl/nx-cloud@npm:12.1.1":
+  version: 12.1.1
+  resolution: "@nrwl/nx-cloud@npm:12.1.1"
   dependencies:
     axios: ^0.21.1
     chalk: 4.1.0
     node-machine-id: ^1.1.12
     rxjs: 6.5.5
+    strip-json-comments: ^3.1.1
     tar: 5.0.5
     uuid: ^3.3.3
-  checksum: cc1cef40e9391d5a4c8781c2028c8b3bf678919cc0ed233f8dcc9b57e5274e0d03c59ac3b39d30282c56b795462ea0129b12729cd26e6022d9c31a21d43ce09d
+  bin:
+    nx-cloud: bin/nx-cloud.js
+  checksum: 0ece114978bb4bb04381a62910151f1e7f5977ac795ce15b1f1c12abea89d2d5893650dadc489db124ed291dabee436de103ac660180aa454f7c73793f5c8a96
   languageName: node
   linkType: hard
 
@@ -4908,14 +4911,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/tao@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/tao@npm:12.0.7"
+"@nrwl/tao@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/tao@npm:12.3.4"
   dependencies:
     chalk: 4.1.0
     enquirer: ~2.3.6
-    fs-extra: 7.0.1
-    minimist: ^1.2.5
+    fs-extra: ^9.1.0
     rxjs: ^6.5.4
     rxjs-for-await: 0.0.2
     semver: 7.3.4
@@ -4925,27 +4927,26 @@ __metadata:
     yargs-parser: 20.0.0
   bin:
     tao: index.js
-  checksum: 770286d9da4647881af41d8b25dcef0dbc858cb244757b5a6a2be76b1297b54f7ed49e451453f7224d6a06a284eb35302c6ad8a919c783e0d2d79f5ae7f2f13f
+  checksum: 43e47e57fb34dfb6fe430eeed28ee9ddc4376fdf4a2d1fc8b8013b619020d13a9c055c5c9d435bbf75e5a2f64573455a4683610008166ee2e204db4a9d1e7b39
   languageName: node
   linkType: hard
 
-"@nrwl/workspace@npm:12.0.7":
-  version: 12.0.7
-  resolution: "@nrwl/workspace@npm:12.0.7"
+"@nrwl/workspace@npm:12.3.4":
+  version: 12.3.4
+  resolution: "@nrwl/workspace@npm:12.3.4"
   dependencies:
-    "@nrwl/cli": 12.0.7
-    "@nrwl/devkit": 12.0.7
-    "@nrwl/jest": 12.0.7
-    "@nrwl/linter": 12.0.7
-    axios: 0.21.1
+    "@nrwl/cli": 12.3.4
+    "@nrwl/devkit": 12.3.4
+    "@nrwl/jest": 12.3.4
+    "@nrwl/linter": 12.3.4
     chalk: 4.1.0
     cosmiconfig: ^4.0.0
     dotenv: 8.2.0
     enquirer: ~2.3.6
     flat: ^5.0.2
-    fs-extra: 7.0.1
+    fs-extra: ^9.1.0
+    glob: 7.1.4
     ignore: ^5.0.4
-    lodash.template: ~4.5.0
     minimatch: 3.0.4
     npm-run-all: ^4.1.5
     open: ^7.4.2
@@ -4959,7 +4960,7 @@ __metadata:
     yargs-parser: 20.0.0
   peerDependencies:
     prettier: ^2.0.4
-  checksum: a5ecdff8a9862a81bfda976348eb0c54818cb325bececaf63b574696095ce7a21951ecf6cd468c96ef218a83923b5a66ac3e2e47aa557169cb1edf5d6855aa5d
+  checksum: 94e494bd3c648b817356596deee94f215bafaecf68a9b2ce45bb46926dba580397392349744c6885254a5c7a20ec3597bc87f0acfb59eb098c5f397ac9d5ed12
   languageName: node
   linkType: hard
 
@@ -7141,10 +7142,10 @@ __metadata:
     "@cypress/webpack-preprocessor": ^5.7.0
     "@emotion/snapshot-serializer": ^0.8.2
     "@nicolo-ribaudo/chokidar-2": ^2.1.8
-    "@nrwl/cli": 12.0.7
-    "@nrwl/nx-cloud": 11.2.0
-    "@nrwl/tao": 12.0.7
-    "@nrwl/workspace": 12.0.7
+    "@nrwl/cli": 12.3.4
+    "@nrwl/nx-cloud": 12.1.1
+    "@nrwl/tao": 12.3.4
+    "@nrwl/workspace": 12.3.4
     "@storybook/addon-a11y": "workspace:*"
     "@storybook/addon-actions": "workspace:*"
     "@storybook/addon-backgrounds": "workspace:*"
@@ -28584,7 +28585,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lodash.template@npm:^4.0.2, lodash.template@npm:^4.4.0, lodash.template@npm:^4.5.0, lodash.template@npm:~4.5.0":
+"lodash.template@npm:^4.0.2, lodash.template@npm:^4.4.0, lodash.template@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.template@npm:4.5.0"
   dependencies:
