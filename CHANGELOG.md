@@ -1,3 +1,7 @@
+## 6.3.0-alpha.39 (May 23, 2021)
+
+Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
+
 ## 6.3.0-alpha.38 (May 23, 2021)
 
 Minor manager webapck5 fixes appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
