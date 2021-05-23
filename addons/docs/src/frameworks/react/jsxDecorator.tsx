@@ -166,14 +166,13 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
     ...(context?.parameters.jsx || {}),
   } as Required<JSXOptions>;
 
-  let storyOrComponent = story;
-  const { parameters, args } = context;
-  if (parameters.component) {
-    storyOrComponent = React.createElement(parameters.component, args);
-  }
+  // Exclude decorators from source code snippet by default
+  const sourceJsx = context?.parameters.docs?.source?.includeDecorators
+    ? story
+    : context.originalStoryFn(context.args);
 
   let jsx = '';
-  const rendered = renderJsx(storyOrComponent, options);
+  const rendered = renderJsx(sourceJsx, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }
