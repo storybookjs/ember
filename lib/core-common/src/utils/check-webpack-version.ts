@@ -12,9 +12,9 @@ export const checkWebpackVersion = (
   }
   if (webpack.version !== specifier) {
     logger.warn(dedent`
-      Unexpected webpack version in ${caption}
-      - Received: ${webpack.version}
-      - Expected: ${specifier}
+      Unexpected webpack version in ${caption}:
+      - Received '${webpack.version}'
+      - Expected '${specifier}'
 
       For more info: https://gist.github.com/shilman/8856ea1786dcd247139b47b270912324#troubleshooting
     `);
