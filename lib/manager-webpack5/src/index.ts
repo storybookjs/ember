@@ -168,6 +168,6 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
 };
 
 export const corePresets: WebpackBuilder['corePresets'] = [
-  require.resolve('../presets/manager-preset'),
+  require.resolve('./presets/manager-preset'),
 ];
 export const overridePresets: WebpackBuilder['overridePresets'] = [];
