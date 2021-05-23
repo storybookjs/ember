@@ -34,10 +34,3 @@ export const Nested = (args) => (
   </Button>
 );
 Nested.args = { onClick: action('clicked', { depth: 1 }) };
-Nested.parameters = {
-  docs: {
-    source: {
-      includeDecorators: false,
-    },
-  },
-};

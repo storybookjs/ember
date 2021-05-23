@@ -155,12 +155,13 @@ describe('renderJsx', () => {
 });
 
 // @ts-ignore
-const makeContext = (name: string, parameters: any, args: any): StoryContext => ({
+const makeContext = (name: string, parameters: any, args: any, extra?: object): StoryContext => ({
   id: `jsx-test--${name}`,
   kind: 'js-text',
   name,
   parameters,
   args,
+  ...extra,
 });
 
 describe('jsxDecorator', () => {
@@ -183,21 +184,29 @@ describe('jsxDecorator', () => {
     );
   });
 
-  it('should render dynamically when provided a component', () => {
-    const Component = ({ className }: { className: string }) => (
-      <div className={className}>component</div>
+  it('should not render decorators when provided excludeDecorators parameter', () => {
+    const storyFn = (args: any) => <div>args story</div>;
+    const decoratedStoryFn = (args: any) => (
+      <div style={{ padding: 25, border: '3px solid red' }}>{storyFn(args)}</div>
     );
-    const storyFn = (args: any) => <Component {...args} />;
     const context = makeContext(
       'args',
-      { __isArgsStory: true, component: Component },
-      { className: 'test' }
+      {
+        __isArgsStory: true,
+        docs: {
+          source: {
+            excludeDecorators: true,
+          },
+        },
+      },
+      {},
+      { originalStoryFn: storyFn }
     );
-    jsxDecorator(storyFn, context);
+    jsxDecorator(decoratedStoryFn, context);
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
-      '<Component className="test" />'
+      '<div>\n  args story\n</div>'
     );
   });
 

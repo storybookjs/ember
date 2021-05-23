@@ -167,9 +167,9 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
   } as Required<JSXOptions>;
 
   // Exclude decorators from source code snippet by default
-  const sourceJsx = context?.parameters.docs?.source?.includeDecorators
-    ? story
-    : context.originalStoryFn(context.args);
+  const sourceJsx = context?.parameters.docs?.source?.excludeDecorators
+    ? context.originalStoryFn(context.args) 
+    : story;
 
   let jsx = '';
   const rendered = renderJsx(sourceJsx, options);
