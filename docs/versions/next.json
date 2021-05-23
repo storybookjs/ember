@@ -1,1 +1,1 @@
-{"version":"6.3.0-alpha.38","info":{"plain":"Minor manager webapck5 fixes appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)"}}
+{"version":"6.3.0-alpha.39","info":{"plain":"Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)"}}
