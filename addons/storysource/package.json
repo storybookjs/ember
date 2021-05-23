@@ -75,7 +75,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "362e4d37c2e68040ea1385b2da060d2ece62a9bf",
+  "gitHead": "eb1fe7eb6be8e8b255514c47ec617a96f4fa7342",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",
