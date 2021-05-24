@@ -165,7 +165,7 @@
 
 Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
 
-If you're upgrading from 6.2 and already using the experimental webpack5 feature, this is a breaking change (hence the 'experimental' label)! You'll need to also add the manager builder:
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
 
 ```
 yarn add @storybook/manager-webpack5 --dev
