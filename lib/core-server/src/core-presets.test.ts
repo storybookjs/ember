@@ -24,14 +24,6 @@ jest.setTimeout(10000);
 
 const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false } }];
 
-// jest.mock('@storybook/builder-webpack5', () => {
-//   const actualBuilder = jest.requireActual('@storybook/builder-webpack5');
-//   // MUTATION! we couldn't mock webpack5, so we added a level of indirection instead
-//   actualBuilder.executor.get = () => jest.fn();
-//   actualBuilder.overridePresets = [...actualBuilder.overridePresets, skipStoriesJsonPreset];
-//   return actualBuilder;
-// });
-
 jest.mock('@storybook/builder-webpack4', () => {
   const value = jest.fn();
   const actualBuilder = jest.requireActual('@storybook/builder-webpack4');
@@ -172,8 +164,8 @@ describe.each([
   });
 });
 
-// const progressPlugin = (config) =>
-//   config.plugins.find((p) => p.constructor.name === 'ProgressPlugin');
+const progressPlugin = (config) =>
+  config.plugins.find((p) => p.constructor.name === 'ProgressPlugin');
 
 describe('dev cli flags', () => {
   beforeEach(() => {
@@ -183,18 +175,20 @@ describe('dev cli flags', () => {
 
   const cliOptions = { ...reactOptions, ...baseOptions };
 
-  // it('baseline', async () => {
-  //   await buildDevStandalone(cliOptions);
-  //   const config = getConfig(previewExecutor.get, 'preview');
-  //   expect(progressPlugin(config)).toBeTruthy();
-  // });
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('baseline', async () => {
+    await buildDevStandalone(cliOptions);
+    const config = getConfig(previewExecutor.get, 'preview');
+    expect(progressPlugin(config)).toBeTruthy();
+  });
 
-  // it('--quiet', async () => {
-  //   const options = { ...cliOptions, quiet: true };
-  //   await buildDevStandalone(options);
-  //   const config = getConfig(previewExecutor.get, 'preview');
-  //   expect(progressPlugin(config)).toBeFalsy();
-  // });
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('--quiet', async () => {
+    const options = { ...cliOptions, quiet: true };
+    await buildDevStandalone(options);
+    const config = getConfig(previewExecutor.get, 'preview');
+    expect(progressPlugin(config)).toBeFalsy();
+  });
 
   it('--webpack-stats-json calls output-stats', async () => {
     await buildDevStandalone(cliOptions);

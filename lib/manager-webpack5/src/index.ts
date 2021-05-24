@@ -157,11 +157,6 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
           stats.toJson({ warnings: true }).warnings.forEach((e) => logger.warn(e.message));
         }
 
-        // const statsData = stats.toJson(
-        //   typeof statsOptions === 'string' ? statsOptions : { ...statsOptions, warnings: true }
-        // );
-        // statsData?.warnings?.forEach((e) => logger.warn(e));
-
         succeed(stats);
       }
     });

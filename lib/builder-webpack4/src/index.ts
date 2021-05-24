@@ -16,7 +16,6 @@ let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
-// const webpack = (webpackReal as any) as typeof webpackType;
 export const executor = {
   get: async (options: Options) => {
     const version = ((await options.presets.apply('webpackVersion')) || '4') as string;
