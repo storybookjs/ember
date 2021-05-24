@@ -62,6 +62,7 @@ export type StoryContext = StoryIdentifier & {
   globals: Args;
   hooks?: HooksContext;
   viewMode?: ViewMode;
+  originalStoryFn?: ArgsStoryFn;
 };
 
 export interface WrapperSettings {

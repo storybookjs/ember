@@ -487,6 +487,7 @@ export default class StoryStore {
           args: {},
           argTypes: {},
           globals: {},
+          originalStoryFn: getOriginal(),
         }),
       }),
       { __isArgsStory, ...combinedParameters }
@@ -506,6 +507,7 @@ export default class StoryStore {
         argTypes,
         globals: this._globals,
         viewMode: this._selection?.viewMode,
+        originalStoryFn: getOriginal(),
       });
     };
 
@@ -521,6 +523,7 @@ export default class StoryStore {
         argTypes,
         globals: this._globals,
         viewMode: this._selection?.viewMode,
+        originalStoryFn: getOriginal(),
       };
       const loadResults = await Promise.all(loaders.map((loader) => loader(context)));
       const loaded = Object.assign({}, ...loadResults);
@@ -554,6 +557,7 @@ export default class StoryStore {
           args: initialArgsBeforeEnhancers,
           argTypes,
           globals: {},
+          originalStoryFn: getOriginal(),
         }),
       }),
       initialArgsBeforeEnhancers
