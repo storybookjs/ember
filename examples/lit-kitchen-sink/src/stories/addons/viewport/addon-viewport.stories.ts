@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { Story, Meta } from '@storybook/lit';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 export default {
@@ -8,9 +9,9 @@ export default {
       viewports: INITIAL_VIEWPORTS,
     },
   },
-};
+} as Meta;
 
-const Template = (args: { title: string }) => html`<h2>${args.title}</h2>`;
+const Template: Story<{ title: string }> = (args) => html`<h2>${args.title}</h2>`;
 
 export const Default = Template.bind({});
 Default.args = {

@@ -3,7 +3,7 @@ import path from 'path';
 import { toRequireContext } from '@storybook/core-common';
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import global from 'global';
-import { ArgTypesEnhancer, DecoratorFunction } from '@storybook/client-api';
+import { ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/client-api';
 
 import { ClientApi } from './Loader';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
@@ -85,15 +85,23 @@ function configure(
 
   if (preview) {
     // This is essentially the same code as lib/core/src/server/preview/virtualModuleEntry.template
-    const { parameters, decorators, globals, globalTypes, argTypesEnhancers } = jest.requireActual(
-      preview
-    );
+    const {
+      parameters,
+      decorators,
+      globals,
+      globalTypes,
+      argsEnhancers,
+      argTypesEnhancers,
+    } = jest.requireActual(preview);
 
     if (decorators) {
       decorators.forEach((decorator: DecoratorFunction) => storybook.addDecorator(decorator));
     }
     if (parameters || globals || globalTypes) {
       storybook.addParameters({ ...parameters, globals, globalTypes });
+    }
+    if (argsEnhancers) {
+      argsEnhancers.forEach((enhancer: ArgsEnhancer) => storybook.addArgsEnhancer(enhancer));
     }
     if (argTypesEnhancers) {
       argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer) =>

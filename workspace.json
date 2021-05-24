@@ -69,6 +69,14 @@
       "root": "app/lit",
       "type": "library"
     },
+    "@storybook/manager-webpack4": {
+      "root": "lib/manager-webpack4",
+      "type": "library"
+    },
+    "@storybook/manager-webpack5": {
+      "root": "lib/manager-webpack5",
+      "type": "library"
+    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"
@@ -263,6 +271,10 @@
     },
     "@storybook/theming": {
       "root": "lib/theming",
+      "type": "library"
+    },
+    "@storybook/csf-tools": {
+      "root": "lib/csf-tools",
       "type": "library"
     },
     "@storybook/ui": {

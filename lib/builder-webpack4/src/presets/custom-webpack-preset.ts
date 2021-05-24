@@ -1,3 +1,4 @@
+import webpackReal from 'webpack';
 import { logger } from '@storybook/node-logger';
 import { loadCustomWebpackConfig } from '@storybook/core-common';
 import { createDefaultWebpackConfig } from '../preview/base-webpack.config';
@@ -24,3 +25,6 @@ export async function webpack(config: any, options: any) {
   logger.info('=> Using default Webpack4 setup');
   return finalDefaultConfig;
 }
+
+export const webpackInstance = async () => webpackReal;
+export const webpackVersion = async () => '4';

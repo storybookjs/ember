@@ -1,1 +1,1 @@
-{"version":"6.3.0-alpha.24","info":{"plain":"### Features\n\n- CLI: Add repro/link commands for creating/running reproductions ([#14594](https://github.com/storybookjs/storybook/pull/14594))\n\n### Bug Fixes\n\n- UI: Only show addons in mobile if docsOnly is false ([#14810](https://github.com/storybookjs/storybook/pull/14810))"}}
+{"version":"6.3.0-alpha.42","info":{"plain":"### Dependency Upgrades\n\n- Core: Fix manager builder dependencies for PnP ([#15019](https://github.com/storybookjs/storybook/pull/15019))"}}

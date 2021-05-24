@@ -24,4 +24,15 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
+  // Test code for built-in stories.json extraction
+  //
+  // refs: {
+  //   'react-ts': {
+  //     title: 'React TS',
+  //     // development
+  //     url: 'http://localhost:9011',
+  //     // production
+  //     // url: 'http://localhost:8080',
+  //   },
+  // },
 };

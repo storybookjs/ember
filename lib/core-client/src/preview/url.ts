@@ -72,11 +72,12 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
     viewMode = 'story';
   }
 
+  const singleStory = getFirstString(query.singleStory) === 'true';
   const path = getFirstString(query.path);
   const storyId = path ? pathToId(path) : getFirstString(query.id);
 
   if (storyId) {
-    return { storySpecifier: storyId, args, viewMode };
+    return { storySpecifier: storyId, args, viewMode, singleStory };
   }
 
   // Legacy URL format
@@ -85,7 +86,7 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
 
   if (kind && name) {
     deprecatedLegacyQuery();
-    return { storySpecifier: { kind, name }, args, viewMode };
+    return { storySpecifier: { kind, name }, args, viewMode, singleStory };
   }
   return null;
 };

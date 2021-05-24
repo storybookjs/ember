@@ -38,7 +38,10 @@ export class ElementRendererService {
 
     return this.rendererService
       .newPlatformBrowserDynamic()
-      .bootstrapModule(createElementsModule(ngModule))
+      .bootstrapModule(
+        createElementsModule(ngModule),
+        parameters.bootstrapModuleOptions ?? undefined
+      )
       .then((m) => m.instance.ngEl);
   }
 }
