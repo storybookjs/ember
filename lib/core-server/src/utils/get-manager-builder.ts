@@ -7,8 +7,10 @@ export async function getManagerBuilder(configDir: Options['configDir']) {
   const { core } = mainFile ? serverRequire(mainFile) : { core: null };
 
   // Builder can be any string including community builders like `storybook-builder-vite`.
-  // - For now, `webpack5` triggers `manager-webpack5.
-  // - Everything else builds with `manager-webpack4`.
+  // - For now, `webpack5` triggers `manager-webpack5`
+  // - Everything else builds with `manager-webpack4`
+  //
+  // Unlike preview builders, manager building is not pluggable!
   const builderPackage =
     core?.builder === 'webpack5' ? '@storybook/manager-webpack5' : '@storybook/manager-webpack4';
 
