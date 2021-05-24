@@ -4,7 +4,6 @@ import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 
@@ -159,13 +158,6 @@ export default async ({
         ...themingPaths,
         ...uiPaths,
       },
-      plugins: [
-        // Transparently resolve packages via PnP when needed; noop otherwise
-        PnpWebpackPlugin,
-      ],
-    },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     recordsPath: resolvePathInStorybookCache('public/records.json'),
     performance: {
