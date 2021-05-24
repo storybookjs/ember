@@ -1,3 +1,29 @@
+## 6.3.0-alpha.39 (May 23, 2021)
+
+Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
+
+## 6.3.0-alpha.38 (May 23, 2021)
+
+Minor manager webapck5 fixes appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
+
+## 6.3.0-alpha.37 (May 23, 2021)
+
+### Features
+
+- Core: Support manager build with webpack5 ([#15001](https://github.com/storybookjs/storybook/pull/15001))
+
+### Bug Fixes
+
+- Core: Fix opt-in stories.json generation ([#15003](https://github.com/storybookjs/storybook/pull/15003))
+
+### Maintenance
+
+- Maintenance: Build ESM in watch mode, revert modern ([#15015](https://github.com/storybookjs/storybook/pull/15015))
+
+### Dependency Upgrades
+
+- Storyshots-puppeteer: Remove the usage of GPL-licensed `@wordpress/jest-puppeteer-axe` package ([#15006](https://github.com/storybookjs/storybook/pull/15006))
+
 ## 6.3.0-alpha.36 (May 20, 2021)
 
 ### Features

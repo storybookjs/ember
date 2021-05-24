@@ -9,10 +9,9 @@ import { getServer } from './utils/server-init';
 import { useStatics } from './utils/server-statics';
 import { useStoriesJson } from './utils/stories-json';
 
-import * as managerBuilder from './manager/builder';
-
 import { openInBrowser } from './utils/open-in-browser';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { getManagerBuilder } from './utils/get-manager-builder';
 
 // @ts-ignore
 export const router: Router = new Router();
@@ -56,6 +55,7 @@ export async function storybookDevServer(options: Options) {
   });
 
   const previewBuilder: Builder<unknown, unknown> = await getPreviewBuilder(options.configDir);
+  const managerBuilder: Builder<unknown, unknown> = await getManagerBuilder(options.configDir);
 
   if (options.debugWebpack) {
     logConfig('Preview webpack config', await previewBuilder.getConfig(options));
