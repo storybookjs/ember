@@ -1,3 +1,9 @@
+## 6.3.0-alpha.40 (May 24, 2021)
+
+### Features
+
+- Addon-docs: Exclude decorators in dynamic source snippets ([#14652](https://github.com/storybookjs/storybook/pull/14652))
+
 ## 6.3.0-alpha.39 (May 23, 2021)
 
 Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
