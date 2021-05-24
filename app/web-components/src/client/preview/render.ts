@@ -1,7 +1,9 @@
 import { document, Node } from 'global';
 import dedent from 'ts-dedent';
 import { render } from 'lit-html';
-import { isTemplateResult } from 'lit-html/directive-helpers';
+// Keep `.js` extension to avoid issue with Webpack (related to export map?)
+// eslint-disable-next-line import/extensions
+import { isTemplateResult } from 'lit-html/directive-helpers.js';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
 
