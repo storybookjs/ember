@@ -6644,6 +6644,7 @@ __metadata:
   dependencies:
     "@storybook/builder-webpack4": 6.3.0-alpha.41
     "@storybook/builder-webpack5": 6.3.0-alpha.41
+    "@storybook/core-client": 6.3.0-alpha.41
     "@storybook/core-common": 6.3.0-alpha.41
     "@storybook/csf-tools": 6.3.0-alpha.41
     "@storybook/manager-webpack4": 6.3.0-alpha.41
