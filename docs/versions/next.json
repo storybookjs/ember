@@ -1,1 +1,1 @@
-{"version":"6.3.0-alpha.39","info":{"plain":"Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)"}}
+{"version":"6.3.0-alpha.41","info":{"plain":"### Features\n\n- Addon-docs: Exclude decorators in dynamic source snippets ([#14652](https://github.com/storybookjs/storybook/pull/14652))"}}
