@@ -1,3 +1,9 @@
+## 6.3.0-alpha.42 (May 24, 2021)
+
+### Dependency Upgrades
+
+- Core: Fix manager builder dependencies for PnP ([#15019](https://github.com/storybookjs/storybook/pull/15019))
+
 ## 6.3.0-alpha.41 (May 24, 2021)
 
 ### Features
