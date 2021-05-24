@@ -39,8 +39,9 @@ export const previewMainTemplate = () => getPreviewMainTemplate();
 export const managerMainTemplate = () => getManagerMainTemplate();
 
 export const previewEntries = (entries: any[] = [], options: { modern?: boolean }) => {
-  if (!options.modern) entries.push('@storybook/core-client/dist/esm/globals/polyfills');
-  entries.push('@storybook/core-client/dist/esm/globals/globals');
+  if (!options.modern)
+    entries.push(require.resolve('@storybook/core-client/dist/esm/globals/polyfills'));
+  entries.push(require.resolve('@storybook/core-client/dist/esm/globals/globals'));
   return entries;
 };
 

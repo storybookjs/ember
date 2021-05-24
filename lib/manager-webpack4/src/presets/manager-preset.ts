@@ -14,7 +14,9 @@ export async function managerEntries(
   options: { managerEntry: string; configDir: string; modern?: boolean }
 ): Promise<string[]> {
   const { managerEntry = '@storybook/core-client/dist/esm/manager' } = options;
-  const entries = options.modern ? [] : ['@storybook/core-client/dist/esm/globals/polyfills'];
+  const entries = options.modern
+    ? []
+    : [require.resolve('@storybook/core-client/dist/esm/globals/polyfills')];
 
   if (installedAddons && installedAddons.length) {
     entries.push(...installedAddons);
