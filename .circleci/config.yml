@@ -195,7 +195,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          command: yarn test:e2e-framework --clean --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
