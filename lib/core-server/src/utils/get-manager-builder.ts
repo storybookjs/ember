@@ -7,7 +7,9 @@ export async function getManagerBuilder(configDir: Options['configDir']) {
   const { core } = mainFile ? serverRequire(mainFile) : { core: null };
 
   const builderPackage =
-    core?.builder === 'webpack5' ? '@storybook/manager-webpack5' : '@storybook/manager-webpack4';
+    core?.builder === 'webpack5'
+      ? require.resolve('@storybook/manager-webpack5', { paths: [main] })
+      : '@storybook/manager-webpack4';
 
   const managerBuilder = await import(builderPackage);
   return managerBuilder;
