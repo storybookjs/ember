@@ -15,10 +15,6 @@ yarn
 yarn bootstrap --core
 ```
 
-<div class="aside">
-💡 <strong>Note:</strong> If you're using Yarn 2, you can skip running <code>yarn</code> to install the dependencies.
-</div>
-
 ## Sanity check
 
 Once you've completed the [initial setup](#initial-setup), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples. 
