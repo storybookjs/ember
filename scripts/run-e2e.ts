@@ -119,6 +119,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     logger.info(`🎉 Storybook is working great with ${name}!`);
   } catch (e) {
     logger.info(`🥺 Storybook has some issues with ${name}!`);
+    throw e;
   } finally {
     server.close();
   }
