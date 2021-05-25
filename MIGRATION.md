@@ -168,16 +168,20 @@ Storybook 6.2 introduced **experimental** webpack5 support for building user com
 
 If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
 
-```
+```shell
 yarn add @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/manager-webpack5 --save-dev
 ```
 
 ### Angular 12 upgrade
 
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
 
-```js
-npm install @storybook/builder-webpack5 --save-dev # or yarn
+```shell
+yarn add @storybook/builder-webpack5 --dev
+# Or
+npm install @storybook/builder-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
