@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit-element';
 import { withLinks } from '@storybook/addon-links';
 
 export default {

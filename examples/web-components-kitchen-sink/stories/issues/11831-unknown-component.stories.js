@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { html } from 'lit-html';
+import { html } from 'lit-element';
 import '../../demo-wc-card.js';
 
 export default {

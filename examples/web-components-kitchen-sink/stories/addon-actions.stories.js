@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit-element';
 
 const buttonStory = () => () => html` <button type="button">Hello World</button> `;
 
