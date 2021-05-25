@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-essentials",
-  "version": "6.3.0-alpha.42",
+  "version": "6.3.0-alpha.43",
   "description": "Curated addons to bring out the best of Storybook",
   "keywords": [
     "addon",
@@ -39,29 +39,29 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addon-actions": "6.3.0-alpha.42",
-    "@storybook/addon-backgrounds": "6.3.0-alpha.42",
-    "@storybook/addon-controls": "6.3.0-alpha.42",
-    "@storybook/addon-docs": "6.3.0-alpha.42",
-    "@storybook/addon-toolbars": "6.3.0-alpha.42",
-    "@storybook/addon-viewport": "6.3.0-alpha.42",
-    "@storybook/addons": "6.3.0-alpha.42",
-    "@storybook/api": "6.3.0-alpha.42",
-    "@storybook/node-logger": "6.3.0-alpha.42",
+    "@storybook/addon-actions": "6.3.0-alpha.43",
+    "@storybook/addon-backgrounds": "6.3.0-alpha.43",
+    "@storybook/addon-controls": "6.3.0-alpha.43",
+    "@storybook/addon-docs": "6.3.0-alpha.43",
+    "@storybook/addon-toolbars": "6.3.0-alpha.43",
+    "@storybook/addon-viewport": "6.3.0-alpha.43",
+    "@storybook/addons": "6.3.0-alpha.43",
+    "@storybook/api": "6.3.0-alpha.43",
+    "@storybook/node-logger": "6.3.0-alpha.43",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/vue": "6.3.0-alpha.42",
+    "@storybook/vue": "6.3.0-alpha.43",
     "@types/jest": "^26.0.16",
     "@types/webpack-env": "^1.16.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.9.6",
-    "@storybook/vue": "6.3.0-alpha.42",
-    "@storybook/web-components": "6.3.0-alpha.42",
+    "@storybook/vue": "6.3.0-alpha.43",
+    "@storybook/web-components": "6.3.0-alpha.43",
     "babel-loader": "^8.0.0",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
@@ -91,6 +91,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "8cb665a7789e6f1a6f853a5c2de05448c854f14c",
+  "gitHead": "5701d147dd15a37f431ccc2e5af30e81fb5b0da9",
   "sbmodern": "dist/modern/index.js"
 }
