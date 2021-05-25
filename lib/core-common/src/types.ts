@@ -123,6 +123,7 @@ export interface CLIOptions {
   port?: number;
   ignorePreview?: boolean;
   previewUrl?: string;
+  forceBuildPreview?: boolean;
   host?: string;
   staticDir?: string[];
   configDir?: string;
