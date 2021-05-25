@@ -430,14 +430,14 @@ describe('framework-preset-angular-cli', () => {
       ]);
     });
   });
-  
+
   describe('when angular.json have some config', () => {
     beforeEach(() => {
       initMockWorkspace('some-config');
     });
     it('should log', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      await webpackFinal(baseWebpackConfig);
+      await webpackFinal(baseWebpackConfig, options);
 
       expect(logger.info).toHaveBeenCalledTimes(3);
       expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
