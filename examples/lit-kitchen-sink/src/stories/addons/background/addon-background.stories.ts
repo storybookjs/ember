@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { Story, Meta } from '@storybook/lit';
 
 export default {
   title: 'Addons / Backgrounds',
@@ -11,9 +12,9 @@ export default {
       ],
     },
   },
-};
+} as Meta;
 
-const Template = () => html`<button>Click Me!</button>`;
+const Template: Story = () => html`<button>Click Me!</button>`;
 
 export const Default = Template.bind({});
 

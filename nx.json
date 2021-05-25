@@ -70,6 +70,12 @@
     "@storybook/lit": {
       "implicitDependencies": []
     },
+    "@storybook/manager-webpack4": {
+      "implicitDependencies": []
+    },
+    "@storybook/manager-webpack5": {
+      "implicitDependencies": []
+    },
     "@storybook/preact": {
       "implicitDependencies": []
     },
@@ -215,6 +221,9 @@
       "implicitDependencies": []
     },
     "@storybook/theming": {
+      "implicitDependencies": []
+    },
+    "@storybook/csf-tools": {
       "implicitDependencies": []
     },
     "@storybook/ui": {

@@ -19,6 +19,7 @@ const ejectMapper = ({ state }: Combo) => {
 
 export const ejectTool: Addon = {
   title: 'eject',
+  id: 'eject',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={ejectMapper}>

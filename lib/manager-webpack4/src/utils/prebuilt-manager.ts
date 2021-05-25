@@ -8,7 +8,7 @@ import {
   Options,
 } from '@storybook/core-common';
 
-import { getAutoRefs } from '../manager/manager-config';
+import { getAutoRefs } from '../manager-config';
 
 // Addons automatically installed when running `sb init` (see baseGenerator.ts)
 export const DEFAULT_ADDONS = ['@storybook/addon-links', '@storybook/addon-essentials'];

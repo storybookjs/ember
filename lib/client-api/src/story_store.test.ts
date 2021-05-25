@@ -648,6 +648,36 @@ describe('preview.story_store', () => {
     });
   });
 
+  describe('argsEnhancer', () => {
+    it('allows you to add args', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancer = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancer);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd' });
+    });
+
+    it('does not pass result of earlier enhancers into subsequent ones, but composes their output', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancerOne = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancerOne);
+
+      const enhancerTwo = jest.fn((context) => ({ e: 'f' }));
+      store.addArgsEnhancer(enhancerTwo);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancerOne).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(enhancerTwo).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd', e: 'f' });
+    });
+  });
+
   describe('argTypesEnhancer', () => {
     it('records when the given story processes args', () => {
       const store = new StoryStore({ channel });
@@ -1581,6 +1611,80 @@ describe('preview.story_store', () => {
       onStorySpecified.mockClear();
       store.setSelection({ storyId: 'a--1', viewMode: 'story' });
       expect(onStorySpecified).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('In Single Story mode', () => {
+    describe('when storySpecifier is story id', () => {
+      it('adds only one story specified in selection specifier when addStory is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: toId('kind-1', 'story-1.1'),
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        addStoryToStore(store, 'kind-1', 'story-1.1', () => 0);
+        addStoryToStore(store, 'kind-1', 'story-1.2', () => 0);
+        store.finishConfiguring();
+
+        expect(store.fromId(toId('kind-1', 'story-1.1'))).toBeTruthy();
+        expect(store.fromId(toId('kind-1', 'story-1.2'))).toBeFalsy();
+      });
+
+      it('adds only kind metadata specified in selection specifier when addKindMetadata is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: toId('kind-1', 'story-1.1'),
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        store.addKindMetadata('kind-1', {});
+        store.addKindMetadata('kind-2', {});
+        store.finishConfiguring();
+
+        expect(store._kinds['kind-1']).toBeDefined();
+        expect(store._kinds['kind-2']).not.toBeDefined();
+      });
+    });
+
+    describe('when storySpecifier is object', () => {
+      it('adds only one story specified in selection specifier when addStory is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: { kind: 'kind-1', name: 'story-1.1' },
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        addStoryToStore(store, 'kind-1', 'story-1.1', () => 0);
+        addStoryToStore(store, 'kind-1', 'story-1.2', () => 0);
+        store.finishConfiguring();
+
+        expect(store.fromId(toId('kind-1', 'story-1.1'))).toBeTruthy();
+        expect(store.fromId(toId('kind-1', 'story-1.2'))).toBeFalsy();
+      });
+
+      it('adds only kind metadata specified in selection specifier when addKindMetadata is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: { kind: 'kind-1', name: 'story-1.1' },
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        store.addKindMetadata('kind-1', {});
+        store.addKindMetadata('kind-2', {});
+        store.finishConfiguring();
+
+        expect(store._kinds['kind-1']).toBeDefined();
+        expect(store._kinds['kind-2']).not.toBeDefined();
+      });
     });
   });
 });

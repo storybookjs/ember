@@ -11,11 +11,13 @@ const Template = (initialValue?: boolean) => {
   return (
     <>
       <BooleanControl name="boolean" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>value: {typeof value === 'boolean' ? value.toString() : value}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
-export const Basic = () => Template(false);
+export const True = () => Template(true);
+
+export const False = () => Template(false);
 
 export const Undefined = () => Template(undefined);

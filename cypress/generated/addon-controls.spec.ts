@@ -8,7 +8,7 @@ describe('addon-controls', () => {
 
     // Text input: Label
     cy.getStoryElement().find('button').should('contain.text', 'Button');
-    cy.get('#label').clear().type('Hello world');
+    cy.get('textarea[name=label]').clear().type('Hello world');
     cy.getStoryElement().find('button').should('contain.text', 'Hello world');
 
     // Args in URL
@@ -16,11 +16,11 @@ describe('addon-controls', () => {
 
     // Boolean toggle: Primary/secondary
     cy.getStoryElement().find('button').should('have.css', 'background-color', 'rgb(30, 167, 253)');
-    cy.get('#primary').click();
+    cy.get('input[name=primary]').click();
     cy.getStoryElement().find('button').should('have.css', 'background-color', 'rgba(0, 0, 0, 0)');
 
     // Color picker: Background color
-    cy.get('input[placeholder="Choose color"]').type('red');
+    cy.get('input[placeholder="Choose color..."]').type('red');
     cy.getStoryElement().find('button').should('have.css', 'background-color', 'rgb(255, 0, 0)');
 
     // TODO: enable this once the controls for size are aligned in all CLI templates.

@@ -6,22 +6,18 @@ export default {
   component: NumberControl,
 };
 
-export const Basic = () => {
-  const [value, setValue] = useState(10);
+const Template = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
   return (
     <>
       <NumberControl name="number" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
-export const Undefined = () => {
-  const [value, setValue] = useState(undefined);
-  return (
-    <>
-      <NumberControl name="number" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value}</p>
-    </>
-  );
-};
+export const Basic = () => Template(10);
+
+export const Zero = () => Template(0);
+
+export const Undefined = () => Template(undefined);

@@ -12,15 +12,18 @@ import {
   BuilderOptions,
   Options,
   Builder,
+  StorybookConfig,
+  cache,
 } from '@storybook/core-common';
-import * as managerBuilder from './manager/builder';
+
+import { getPrebuiltDir } from '@storybook/manager-webpack4/prebuilt-manager';
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
-import { getPrebuiltDir } from './utils/prebuilt-manager';
-import { cache } from './utils/cache';
 import { copyAllStaticFiles } from './utils/copy-all-static-files';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { getManagerBuilder } from './utils/get-manager-builder';
+import { extractStoriesJson } from './utils/stories-json';
 
 export async function buildStaticStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   /* eslint-disable no-param-reassign */
@@ -52,11 +55,12 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   await copyAllStaticFiles(options.staticDir, options.outputDir);
 
   const previewBuilder: Builder<unknown, unknown> = await getPreviewBuilder(options.configDir);
+  const managerBuilder: Builder<unknown, unknown> = await getManagerBuilder(options.configDir);
 
   const presets = loadAllPresets({
     corePresets: [
       require.resolve('./presets/common-preset'),
-      require.resolve('./presets/manager-preset'),
+      ...managerBuilder.corePresets,
       ...previewBuilder.corePresets,
       require.resolve('./presets/babel-cache-preset'),
     ],
@@ -68,6 +72,16 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     ...options,
     presets,
   };
+
+  const features = await presets.apply<StorybookConfig['features']>('features');
+  if (features?.buildStoriesJson) {
+    const storiesGlobs = (await presets.apply('stories')) as StorybookConfig['stories'];
+    await extractStoriesJson(
+      path.join(options.outputDir, 'stories.json'),
+      storiesGlobs,
+      options.configDir
+    );
+  }
 
   const prebuiltDir = await getPrebuiltDir(fullOptions);
 

@@ -81,6 +81,7 @@ export async function createDefaultWebpackConfig(
       fallback: {
         ...storybookBaseConfig.resolve?.fallback,
         crypto: false,
+        assert: false,
       },
     },
   };

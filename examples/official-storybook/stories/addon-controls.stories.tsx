@@ -85,12 +85,16 @@ const hasCycle: any = {};
 hasCycle.cycle = hasCycle;
 
 export const CyclicArgs = Template.bind({});
-CyclicArgs.args = {
-  hasCycle,
-};
+// No warnings in tests
+if (process.env.NODE_ENV !== 'test') {
+  CyclicArgs.args = {
+    hasCycle,
+  };
+}
 CyclicArgs.parameters = {
   docs: { disable: true },
   chromatic: { disable: true },
+  storyshots: { disable: true },
 };
 
 export const CustomControlMatchers = Template.bind({});
@@ -161,3 +165,8 @@ FilteredWithExcludeRegex.parameters = {
     exclude: /hello*/,
   },
 };
+
+// https://github.com/storybookjs/storybook/issues/14752
+export const MissingRadioOptions = Template.bind({});
+MissingRadioOptions.argTypes = { invalidRadio: { control: 'radio' } };
+MissingRadioOptions.args = { invalidRadio: 'someValue' };

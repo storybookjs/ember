@@ -1,4 +1,5 @@
 import { html } from 'lit';
+import { Story, Meta } from '@storybook/lit';
 import '../../../components/SbButton';
 
 export default {
@@ -12,9 +13,9 @@ export default {
       },
     },
   },
-};
+} as Meta;
 
-const Template = ({ primary, backgroundColor, size, label, sbButtonClickHandler }: any) =>
+const Template: Story = ({ primary, backgroundColor, size, label, sbButtonClickHandler }) =>
   html`<sb-button
     ?primary="${primary}"
     .size="${size}"
