@@ -125,7 +125,7 @@ export async function buildDev(loadOptions: LoadOptions) {
       ...loadOptions,
       configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
       configType: 'DEVELOPMENT',
-      ignorePreview: !!cliOptions.previewUrl,
+      ignorePreview: !!cliOptions.previewUrl && !cliOptions.forceBuildPreview,
       docsMode: !!cliOptions.docs,
       cache,
     });
