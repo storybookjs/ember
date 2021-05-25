@@ -16,8 +16,8 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   let order = options.order || [];
 
   // Examine each part of the story kind in turn.
-  const storyKindA = [...a[1].kind.split('/'), ...(options.includeNames ? a[1].name : [])];
-  const storyKindB = [...b[1].kind.split('/'), ...(options.includeNames ? b[1].name : [])];
+  const storyKindA = [...a[1].kind.split(/\s*\/\s*/), ...(options.includeNames ? a[1].name : [])];
+  const storyKindB = [...b[1].kind.split(/\s*\/\s*/), ...(options.includeNames ? b[1].name : [])];
   let depth = 0;
   while (storyKindA[depth] || storyKindB[depth]) {
     // Stories with a shorter depth should go first.

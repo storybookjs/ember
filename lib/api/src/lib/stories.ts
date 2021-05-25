@@ -168,7 +168,7 @@ export const transformStoriesRawToStoriesHash = (
       warnChangedDefaultHierarchySeparators();
     }
 
-    const groups = kind.split('/').map((part) => part.trim());
+    const groups = kind.split(/\s*\/\s*/);
     const root = (!setShowRoots || showRoots) && groups.length > 1 ? [groups.shift()] : [];
 
     const rootAndGroups = [...root, ...groups].reduce((list, name, index) => {

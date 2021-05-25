@@ -5,9 +5,8 @@ import { DocsContext, DocsContextProps } from './DocsContext';
 interface TitleProps {
   children?: JSX.Element | string;
 }
-export const extractTitle = ({ kind, parameters }: DocsContextProps) => {
-  const groups = kind.split('/');
-
+export const extractTitle = ({ kind }: DocsContextProps) => {
+  const groups = kind.split(/\s*\/\s*/);
   return (groups && groups[groups.length - 1]) || kind;
 };
 
