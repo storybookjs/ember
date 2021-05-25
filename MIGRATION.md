@@ -3,6 +3,7 @@
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
+  - [Lit support](#lit-support)
   - [6.3 deprecations](#63-deprecations)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
     - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
@@ -188,6 +189,14 @@ module.exports = {
   },
 };
 ```
+
+### Lit support
+
+Storybook 6.3 introduces Lit 2 support in a non-breaking way to ease migration from `lit-html`/`lit-element` to `lit`.
+
+To do so, it relies on helpers added in the latest minor versions of `lit-html`/`lit-element`. So when upgrading to Storybook 6.3, please ensure your project is using `lit-html` 1.4.x or `lit-element` 2.5.x.
+
+According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
 
 ### 6.3 deprecations
 
