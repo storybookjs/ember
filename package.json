@@ -44,7 +44,7 @@
       "app/*",
       "examples-native/*",
       "examples/*",
-      "!examples/lit-kitchen-sink",
+      "!examples/web-components-kitchen-sink",
       "lib/*",
       "lib/cli/test/run/*"
     ]
