@@ -1,3 +1,88 @@
+## 6.3.0-alpha.43 (May 25, 2021)
+
+### Features
+
+- Web-components: Support lit 2 with back-compat ([#14898](https://github.com/storybookjs/storybook/pull/14898))
+
+### Bug Fixes
+
+- Angular: Use NormalizeOptimization from angular-cli ([#15022](https://github.com/storybookjs/storybook/pull/15022))
+
+### Maintenance
+
+- Build: Fix selectors used in Cypress tests and E2E exit code ([#15021](https://github.com/storybookjs/storybook/pull/15021))
+
+### Dependency Upgrades
+
+- Bump react-docgen-typescript-plugin to 0.7.2-canary.375d65e.0 ([#15024](https://github.com/storybookjs/storybook/pull/15024))
+
+## 6.3.0-alpha.42 (May 24, 2021)
+
+### Dependency Upgrades
+
+- Core: Fix manager builder dependencies for PnP ([#15019](https://github.com/storybookjs/storybook/pull/15019))
+
+## 6.3.0-alpha.41 (May 24, 2021)
+
+### Features
+
+- Addon-docs: Exclude decorators in dynamic source snippets ([#14652](https://github.com/storybookjs/storybook/pull/14652))
+
+## 6.3.0-alpha.40 (May 24, 2021)
+
+Failed NPM publish
+
+## 6.3.0-alpha.39 (May 23, 2021)
+
+Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
+
+## 6.3.0-alpha.38 (May 23, 2021)
+
+Minor manager webapck5 fixes appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)
+
+## 6.3.0-alpha.37 (May 23, 2021)
+
+### Features
+
+- Core: Support manager build with webpack5 ([#15001](https://github.com/storybookjs/storybook/pull/15001))
+
+### Bug Fixes
+
+- Core: Fix opt-in stories.json generation ([#15003](https://github.com/storybookjs/storybook/pull/15003))
+
+### Maintenance
+
+- Maintenance: Build ESM in watch mode, revert modern ([#15015](https://github.com/storybookjs/storybook/pull/15015))
+
+### Dependency Upgrades
+
+- Storyshots-puppeteer: Remove the usage of GPL-licensed `@wordpress/jest-puppeteer-axe` package ([#15006](https://github.com/storybookjs/storybook/pull/15006))
+
+## 6.3.0-alpha.36 (May 20, 2021)
+
+### Features
+
+- CLI: Add sb link --local option ([#14950](https://github.com/storybookjs/storybook/pull/14950))
+- Controls: Add automatic ids to all controls ([#14296](https://github.com/storybookjs/storybook/pull/14296))
+
+### Maintenance
+
+- Build: Improve e2e script ([#14980](https://github.com/storybookjs/storybook/pull/14980))
+
+### Dependency Upgrades
+
+- React: Upgrade to @storybook/react-docgen-typescript-plugin ([#14991](https://github.com/storybookjs/storybook/pull/14991))
+
+## 6.3.0-alpha.35 (May 20, 2021)
+
+### Maintenance
+
+- Core: Feature flag for builtin stories.json support ([#14992](https://github.com/storybookjs/storybook/pull/14992))
+
+### Dependency Upgrades
+
+- React: Upgrade to @storybook/react-docgen-typescript-plugin ([#14991](https://github.com/storybookjs/storybook/pull/14991))
+
 ## 6.3.0-alpha.34 (May 19, 2021)
 
 ### Features

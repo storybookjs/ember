@@ -406,5 +406,39 @@ module.exports = {
         },
       ],
     },
+    {
+      title: '🛠 Contribute',
+      pathSegment: 'contribute',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'how-to-contribute',
+          title: 'How to Contribute',
+          type: 'link',
+        },
+        {
+          pathSegment: 'code',
+          title: 'Code',
+          type: 'link',
+        },
+        {
+          pathSegment: '',
+          title: 'Documentation',
+          type: 'menu',
+          children: [
+            {
+              pathSegment: 'new-snippets',
+              title: 'Code snippets',
+              type: 'link',
+            },
+            {
+              pathSegment: 'documentation-updates',
+              title: 'Updates',
+              type: 'link',
+            },
+          ],
+        },
+      ],
+    },
   ],
 };

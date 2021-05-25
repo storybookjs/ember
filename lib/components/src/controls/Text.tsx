@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, useCallback, useState } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, TextValue, TextConfig } from './types';
 
 export type TextProps = ControlProps<TextValue | undefined> & TextConfig;
@@ -28,7 +29,7 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
   return (
     <Wrapper>
       <Form.Textarea
-        id={name}
+        id={getControlId(name)}
         onChange={handleChange}
         size="flex"
         placeholder="Edit string..."

@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, useState, useCallback, useEffect, useRef } from
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, NumberValue, NumberConfig } from './types';
 
 const Wrapper = styled.label({
@@ -65,6 +66,7 @@ export const NumberControl: FC<NumberProps> = ({
     <Wrapper>
       <Form.Input
         ref={htmlElRef}
+        id={getControlId(name)}
         type="number"
         onChange={handleChange}
         size="flex"

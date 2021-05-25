@@ -90,7 +90,7 @@ async function babelify(options = {}) {
   const runners = watch
     ? [
         run({ watch, dir: './dist/cjs', silent, errorCallback }),
-        run({ watch, dir: './dist/modern', silent, errorCallback }),
+        run({ watch, dir: './dist/esm', silent, errorCallback }),
       ]
     : [
         run({ dir: './dist/cjs', silent, errorCallback }),

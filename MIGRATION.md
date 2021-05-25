@@ -1,10 +1,11 @@
 <h1>Migration</h1>
 
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
   - [6.3 deprecations](#63-deprecations)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
-    - [Deprecated argType.defaulValue](#deprecated-argtype-defaultValue)
+    - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
@@ -159,6 +160,16 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.2.x to 6.3.0
+
+### Webpack 5 manager build
+
+Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
+
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+
+```
+yarn add @storybook/manager-webpack5 --dev
+```
 
 ### Angular 12 upgrade
 

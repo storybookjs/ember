@@ -18,6 +18,7 @@ import {
 
 import { moduleIsAvailable } from './utils/module-is-available';
 import { normalizeAssetPatterns } from './utils/normalize-asset-patterns';
+import { normalizeOptimization } from './utils/normalize-optimization';
 
 const importAngularCliWebpackConfigGenerator = (): {
   getCommonConfig: (config: unknown) => webpack.Configuration;
@@ -128,11 +129,7 @@ const buildWebpackConfigOptions = async (
       projectRootNormalized,
       sourceRootNormalized
     ),
-    optimization: (projectBuildOptions.optimization as any) ?? {
-      styles: {},
-      scripts: true,
-      fonts: {},
-    },
+    optimization: normalizeOptimization(projectBuildOptions.optimization as any),
 
     // Forced options
     statsJson: false,

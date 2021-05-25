@@ -13,6 +13,7 @@ import { styled, useTheme, Theme } from '@storybook/theming';
 
 // @ts-ignore
 import { JsonTree, getObjectType } from './react-editable-json-tree';
+import { getControlId } from './helpers';
 import type { ControlProps, ObjectValue, ObjectConfig } from './types';
 import { Form } from '../form';
 import { Icons, IconsProps } from '../icon/icon';
@@ -274,7 +275,7 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
   const rawJSONForm = (
     <RawInput
       ref={htmlElRef}
-      id={name}
+      id={getControlId(name)}
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}

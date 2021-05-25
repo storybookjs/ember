@@ -1,3 +1,4 @@
+import webpackReal from 'webpack';
 import { logger } from '@storybook/node-logger';
 import { loadCustomWebpackConfig, Options } from '@storybook/core-common';
 import type { Configuration } from 'webpack';
@@ -33,3 +34,6 @@ export async function webpack(config: Configuration, options: Options) {
   logger.info('=> Using default Webpack5 setup');
   return finalDefaultConfig;
 }
+
+export const webpackInstance = async () => webpackReal;
+export const webpackVersion = async () => '5';

@@ -1,27 +1,26 @@
 import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import { logger } from '@storybook/node-logger';
-import { Builder, useProgressReporting, checkWebpackVersion } from '@storybook/core-common';
+import {
+  Builder,
+  useProgressReporting,
+  checkWebpackVersion,
+  Options,
+} from '@storybook/core-common';
+
 import findUp from 'find-up';
 import fs from 'fs-extra';
 import express from 'express';
 import { getManagerWebpackConfig } from './manager-config';
-import { clearManagerCache, useManagerCache } from '../utils/manager-cache';
-import { getPrebuiltDir } from '../utils/prebuilt-manager';
+import { clearManagerCache, useManagerCache } from './utils/manager-cache';
+import { getPrebuiltDir } from './utils/prebuilt-manager';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
 let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
-const checkWebpackVersion4 = (webpackInstance: { version?: string }) =>
-  checkWebpackVersion(webpackInstance, '4.x', 'manager-builder');
-
 export const getConfig: WebpackBuilder['getConfig'] = getManagerWebpackConfig;
-
-export const executor = {
-  get: webpack,
-};
 
 export const makeStatsFromError = (err: string) =>
   (({
@@ -30,8 +29,18 @@ export const makeStatsFromError = (err: string) =>
     toJson: () => ({ warnings: [] as any[], errors: [err] }),
   } as any) as Stats);
 
+export const executor = {
+  get: async (options: Options) => {
+    const version = ((await options.presets.apply('webpackVersion')) || '4') as string;
+    const webpackInstance =
+      (await options.presets.apply<typeof webpack>('webpackInstance')) || webpack;
+    checkWebpackVersion({ version }, '4', 'manager-webpack4');
+    return webpackInstance;
+  },
+};
+
 export const start: WebpackBuilder['start'] = async ({ startTime, options, router }) => {
-  checkWebpackVersion4(executor.get);
+  const webpackInstance = await executor.get(options);
 
   const prebuiltDir = await getPrebuiltDir(options);
   const config = await getConfig(options);
@@ -61,7 +70,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
     }
   }
 
-  const compiler = executor.get(config);
+  const compiler = (webpackInstance as any)(config);
 
   if (!compiler) {
     const err = `${config.name}: missing webpack compiler at runtime!`;
@@ -121,12 +130,12 @@ export const bail: WebpackBuilder['bail'] = (e: Error) => {
 
 export const build: WebpackBuilder['build'] = async ({ options, startTime }) => {
   logger.info('=> Compiling manager..');
-  checkWebpackVersion4(executor.get);
+  const webpackInstance = await executor.get(options);
 
   const config = await getConfig(options);
   const statsOptions = typeof config.stats === 'boolean' ? 'minimal' : config.stats;
 
-  const compiler = executor.get(config);
+  const compiler = webpackInstance(config);
   if (!compiler) {
     const err = `${config.name}: missing webpack compiler at runtime!`;
     logger.error(err);
@@ -164,5 +173,7 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
   });
 };
 
-export const corePresets: WebpackBuilder['corePresets'] = [];
+export const corePresets: WebpackBuilder['corePresets'] = [
+  require.resolve('./presets/manager-preset'),
+];
 export const overridePresets: WebpackBuilder['overridePresets'] = [];

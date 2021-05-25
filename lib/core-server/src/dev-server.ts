@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import compression from 'compression';
 
-import { Builder, logConfig, Options } from '@storybook/core-common';
+import { Builder, logConfig, Options, StorybookConfig } from '@storybook/core-common';
 
 import { getMiddleware } from './utils/middleware';
 import { getServerAddresses } from './utils/server-address';
@@ -9,10 +9,9 @@ import { getServer } from './utils/server-init';
 import { useStatics } from './utils/server-statics';
 import { useStoriesJson } from './utils/stories-json';
 
-import * as managerBuilder from './manager/builder';
-
 import { openInBrowser } from './utils/open-in-browser';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { getManagerBuilder } from './utils/get-manager-builder';
 
 // @ts-ignore
 export const router: Router = new Router();
@@ -36,7 +35,9 @@ export async function storybookDevServer(options: Options) {
 
   // User's own static files
   await useStatics(router, options);
-  if (!options.skipStoriesJson) {
+
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
+  if (features?.buildStoriesJson) {
     await useStoriesJson(router, options);
   }
 
@@ -54,6 +55,7 @@ export async function storybookDevServer(options: Options) {
   });
 
   const previewBuilder: Builder<unknown, unknown> = await getPreviewBuilder(options.configDir);
+  const managerBuilder: Builder<unknown, unknown> = await getManagerBuilder(options.configDir);
 
   if (options.debugWebpack) {
     logConfig('Preview webpack config', await previewBuilder.getConfig(options));
