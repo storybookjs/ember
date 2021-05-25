@@ -68,8 +68,6 @@
     "lit-html": "^2.0.0-rc.3"
   },
   "peerDependencies": {
-    "@babel/core": "*",
-    "babel-loader": "^7.0.0 || ^8.0.0",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3"
   },
   "engines": {

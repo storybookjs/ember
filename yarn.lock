@@ -5977,6 +5977,7 @@ __metadata:
     "@storybook/react": "*"
     "@storybook/vue": "*"
     "@storybook/vue3": "*"
+    jest: "*"
     jest-preset-angular: "*"
     jest-vue-preprocessor: "*"
     preact: ^10.5.13
@@ -7694,8 +7695,6 @@ __metadata:
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    "@babel/core": "*"
-    babel-loader: ^7.0.0 || ^8.0.0
     lit-html: ^1.4.1 || ^2.0.0-rc.3
   bin:
     build-storybook: ./bin/build.js
