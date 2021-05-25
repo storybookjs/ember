@@ -1,17 +1,27 @@
 import webpack from 'webpack';
 import { logger } from '@storybook/node-logger';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { targetFromTargetString, Target } from '@angular-devkit/architect';
 
-import { findAngularProject, readAngularWorkspaceConfig } from './angular-read-workspace';
+import { Options as CoreOptions } from '@storybook/core-common';
+import { workspaces } from '@angular-devkit/core';
+import {
+  findAngularProjectTarget,
+  getDefaultProjectName,
+  readAngularWorkspaceConfig,
+} from './angular-read-workspace';
 import {
   AngularCliWebpackConfig,
   extractAngularCliWebpackConfig,
-  ProjectTargetNotFoundError,
 } from './angular-devkit-build-webpack';
 import { moduleIsAvailable } from './utils/module-is-available';
 import { filterOutStylingRules } from './utils/filter-out-styling-rules';
 
-export async function webpackFinal(baseConfig: webpack.Configuration) {
+export type Options = CoreOptions & {
+  angularBrowserTarget?: string;
+};
+
+export async function webpackFinal(baseConfig: webpack.Configuration, options: Options) {
   const dirToSearch = process.cwd();
 
   if (!moduleIsAvailable('@angular-devkit/build-angular')) {
@@ -32,16 +42,31 @@ export async function webpackFinal(baseConfig: webpack.Configuration) {
     return baseConfig;
   }
 
-  // Find angular project
-  let project;
-  let projectName;
+  // Find angular project target
+  let project: workspaces.ProjectDefinition;
+  let target: workspaces.TargetDefinition;
+  let browserTarget;
   try {
-    const fondProject = findAngularProject(workspaceConfig);
+    browserTarget = options.angularBrowserTarget
+      ? targetFromTargetString(options.angularBrowserTarget)
+      : ({
+          configuration: undefined,
+          project: getDefaultProjectName(workspaceConfig),
+          target: 'build',
+        } as Target);
+
+    const fondProject = findAngularProjectTarget(
+      workspaceConfig,
+      browserTarget.project,
+      browserTarget.target
+    );
     project = fondProject.project;
-    projectName = fondProject.projectName;
-    logger.info(`=> Using angular project "${projectName}" for configuring Storybook`);
+    target = fondProject.target;
+    logger.info(
+      `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
+    );
   } catch (error) {
-    logger.error(`=> Could not find angular project`);
+    logger.error(`=> Could not find angular project: ${error.message}`);
     logger.info(`=> Fail to load angular-cli config. Using base config`);
     return baseConfig;
   }
@@ -49,14 +74,9 @@ export async function webpackFinal(baseConfig: webpack.Configuration) {
   // Use angular-cli to get some webpack config
   let angularCliWebpackConfig;
   try {
-    angularCliWebpackConfig = await extractAngularCliWebpackConfig(dirToSearch, project);
+    angularCliWebpackConfig = await extractAngularCliWebpackConfig(dirToSearch, project, target);
     logger.info(`=> Using angular-cli webpack config`);
   } catch (error) {
-    if (error instanceof ProjectTargetNotFoundError) {
-      logger.error(`=> "${error.projectTarget}" target is not defined in project "${projectName}"`);
-      logger.info(`=> Fail to load angular-cli config. Using base config`);
-      return baseConfig;
-    }
     logger.error(`=> Could not get angular cli webpack config`);
     throw error;
   }
