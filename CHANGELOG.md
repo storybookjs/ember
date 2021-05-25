@@ -1,3 +1,14 @@
+## 6.3.0-alpha.44 (May 25, 2021)
+
+### Features
+
+- Presets: Expand `webpackInstance` to include entire namespace ([#15016](https://github.com/storybookjs/storybook/pull/15016))
+- Angular: Add `angularBrowserTarget` option in server ([#14955](https://github.com/storybookjs/storybook/pull/14955))
+
+### Bug Fixes
+
+- Core: Ignore manager cache on config file changes and Storybook upgrade ([#14993](https://github.com/storybookjs/storybook/pull/14993))
+
 ## 6.3.0-alpha.43 (May 25, 2021)
 
 ### Features
