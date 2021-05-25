@@ -9560,6 +9560,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"lit@npm:^2.0.0-rc.2":
+  version: 2.0.0-rc.2
+  resolution: "lit@npm:2.0.0-rc.2"
+  dependencies:
+    "@lit/reactive-element": ^1.0.0-rc.2
+    lit-element: ^3.0.0-rc.2
+    lit-html: ^2.0.0-rc.3
+  checksum: efb6c6e200c971c82875fcb277ef27850d01d4b2f4bb7254f319e5c0569bf64486923d883873890b42c38e3a0696cd2e398852fe379fe3ac87c74ddd6c34a874
+  languageName: node
+  linkType: hard
+
 "loader-runner@npm:^2.4.0":
   version: 2.4.0
   resolution: "loader-runner@npm:2.4.0"
@@ -14058,7 +14069,7 @@ fsevents@^1.2.7:
     "@storybook/web-components": "*"
     global: ^4.4.0
     jest: ^27.0.1
-    lit-element: ^3.0.0-rc.2
+    lit: ^2.0.0-rc.2
   languageName: unknown
   linkType: soft
 
