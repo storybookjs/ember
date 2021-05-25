@@ -443,7 +443,7 @@ describe('framework-preset-angular-cli', () => {
       expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
       expect(logger.info).toHaveBeenNthCalledWith(
         2,
-        '=> Using angular project "foo-project" for configuring Storybook'
+        '=> Using angular project "foo-project:build" for configuring Storybook'
       );
       expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
     });
