@@ -2,7 +2,7 @@
 title: 'Code contributions'
 ---
 
-If you're willing to fix a bug or add a new feature to [Storybook](https://github.com/storybookjs/storybook), the first step is to set up your development environment. This page outlines how to get set up to contribute to Storybook's code. For instructions on working with documentation, check the [documentation contribution](./documentation-updates.md) page. To contribute  to the code snippets, check the [snippets contribution](./new-snippets.md) page.
+If you're willing to fix a bug or add a new feature to [Storybook](https://github.com/storybookjs/storybook), the first step is to set up your development environment. This page outlines how to get set up to contribute to Storybook's code. For instructions on working with documentation, check the [documentation contribution](./documentation-updates.md) page. To contribute to the code snippets, check the [snippets contribution](./new-snippets.md) page.
 
 ## Initial setup
 
@@ -17,7 +17,7 @@ yarn bootstrap --core
 
 ## Sanity check
 
-Once you've completed the [initial setup](#initial-setup), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples. 
+Once you've completed the [initial setup](#initial-setup), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples.
 
 Run the following command to execute the tests:
 
@@ -55,11 +55,10 @@ Run the build process with:
 ```shell
 yarn build
 ```
- 
-When asked if you want to start the build in `watch` mode, answer **yes**  to develop in interactive mode.  Afterward, choose which packages you want to build. For example, if you're going to work on a feature for `@storybook/addon-docs`, you might want to select `@storybook/addon-docs` and `@storybook/components`. 
+
+When asked if you want to start the build in `watch` mode, answer **yes** to develop in interactive mode. Afterward, choose which packages you want to build. For example, if you're going to work on a feature for `@storybook/addon-docs`, you might want to select `@storybook/addon-docs` and `@storybook/components`.
 
 ![Storybook package selector](./storybook-build-packages-selection-optimized.png)
-
 
 If the work you'll be doing affects the `Preview` (the innermost Storybook `iframe`, where the stories are displayed), it will automatically refresh one to two seconds after you save.
 
@@ -92,10 +91,10 @@ Before submitting your contribution, we recommend that you run the test suite on
 ```sh
 yarn test
 ```
+
 <div class="aside">
 💡  Storybook uses <a href="https://jestjs.io/"><code>jest</code></a> as part of the testing suite, if you notice that the snapshot tests fail you can re-run and update them with <code>yarn test --update</code>.
 </div>
-
 
 Doing this prevents last-minute bugs and is also a great way to get your contribution merged faster once you submit your pull request. Failing to do so will lead to one of the maintainers mark the pull request with the **Work in Progress** label until all tests pass.
 
@@ -105,15 +104,21 @@ If your contribution focus on a bugfix and you want it featured in the next stab
 
 ## Working with reproductions
 
-Starting May 2021, we're strongly encouraging contributors to create reproductions for their issues. In the same way, it's possible to [develop interactively](#start-developing) against example projects in the monorepo; it's also possible to develop against a reproduction repository.
+We strongly encourage contributors to create reproductions for their issues. In the same way, it's possible to [develop interactively](#start-developing) against example projects in the monorepo; it's also possible to develop against a reproduction repository.
 
 To do so, run the following command in the root of the monorepo:
 
-```shell
+```sh
 npx sb@next link https://github.com/your-username/your-project.git
 ```
 
 This command creates a project `../storybook-repros/your-project`, and automatically links it to your local Storybook code. After connecting it, you should be able to run Storybook and develop as mentioned [above](#start-developing).
+
+If you already have a reproduction on your local machine, you can similarly link it to your monorepo dev setup with the `--local` flag:
+
+```sh
+npx sb@next link /path/to/local-repro-directory
+```
 
 ## Troubleshooting
 
