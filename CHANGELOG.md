@@ -1,3 +1,37 @@
+## 6.3.0-alpha.43 (May 25, 2021)
+
+### Features
+
+- Web-components: Support lit 2 with back-compat ([#14898](https://github.com/storybookjs/storybook/pull/14898))
+
+### Bug Fixes
+
+- Angular: Use NormalizeOptimization from angular-cli ([#15022](https://github.com/storybookjs/storybook/pull/15022))
+
+### Maintenance
+
+- Build: Fix selectors used in Cypress tests and E2E exit code ([#15021](https://github.com/storybookjs/storybook/pull/15021))
+
+### Dependency Upgrades
+
+- Bump react-docgen-typescript-plugin to 0.7.2-canary.375d65e.0 ([#15024](https://github.com/storybookjs/storybook/pull/15024))
+
+## 6.3.0-alpha.42 (May 24, 2021)
+
+### Dependency Upgrades
+
+- Core: Fix manager builder dependencies for PnP ([#15019](https://github.com/storybookjs/storybook/pull/15019))
+
+## 6.3.0-alpha.41 (May 24, 2021)
+
+### Features
+
+- Addon-docs: Exclude decorators in dynamic source snippets ([#14652](https://github.com/storybookjs/storybook/pull/14652))
+
+## 6.3.0-alpha.40 (May 24, 2021)
+
+Failed NPM publish
+
 ## 6.3.0-alpha.39 (May 23, 2021)
 
 Fix stale dependencies appended to [#15001](https://github.com/storybookjs/storybook/pull/15001)

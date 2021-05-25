@@ -28,6 +28,7 @@ describe('web-components component properties', () => {
   // because lit-html is distributed as ESM not CJS
   // https://github.com/Polymer/lit-html/issues/516
   jest.mock('lit-html', () => {});
+  jest.mock('lit-html/directive-helpers.js', () => {});
   // eslint-disable-next-line global-require
   const { extractArgTypesFromElements } = require('./custom-elements');
 

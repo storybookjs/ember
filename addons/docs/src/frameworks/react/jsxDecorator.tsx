@@ -166,8 +166,13 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
     ...(context?.parameters.jsx || {}),
   } as Required<JSXOptions>;
 
+  // Exclude decorators from source code snippet by default
+  const sourceJsx = context?.parameters.docs?.source?.excludeDecorators
+    ? context.originalStoryFn(context.args) 
+    : story;
+
   let jsx = '';
-  const rendered = renderJsx(story, options);
+  const rendered = renderJsx(sourceJsx, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }

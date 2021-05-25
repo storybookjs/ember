@@ -195,7 +195,8 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          command: yarn test:e2e-framework --clean --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress
@@ -219,7 +220,9 @@ jobs:
       - run:
           name: Run E2E tests
           # Do not test CRA here because it's done in PnP part
-          command: yarn test:e2e-framework vue3 angular angular11 web_components_typescript
+          # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
+          command: yarn test:e2e-framework vue3 angular angular11 web_components_typescript web_components_lit2
+          no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/storybook/cypress
           destination: cypress

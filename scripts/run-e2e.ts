@@ -119,6 +119,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     logger.info(`🎉 Storybook is working great with ${name}!`);
   } catch (e) {
     logger.info(`🥺 Storybook has some issues with ${name}!`);
+    throw e;
   } finally {
     server.close();
   }
@@ -210,24 +211,17 @@ const {
 let { pnp, useLocalSbCli, clean: startWithCleanSlate }: ProgramOptions = program;
 
 const typedConfigs: { [key: string]: Parameters } = configs;
-let e2eConfigs: { [key: string]: Parameters } = {};
 
 let openCypressInUIMode = !process.env.CI;
 
-const getConfig = async () => {
-  if (shouldRunAllFrameworks) {
-    logger.info(`📑 Running test for ALL frameworks`);
-    Object.values(typedConfigs).forEach((config) => {
-      e2eConfigs[`${config.name}-${config.version}`] = config;
-    });
-  }
+const getConfig = async (): Promise<Parameters[]> => {
+  let e2eConfigsToRun = Object.values(typedConfigs);
 
-  // Compute the list of frameworks we will run E2E for
-  if (frameworkArgs.length > 0) {
-    frameworkArgs.forEach((framework) => {
-      e2eConfigs[framework] = Object.values(typedConfigs).find((c) => c.name === framework);
-    });
-  } else {
+  if (shouldRunAllFrameworks) {
+    // Nothing to do here
+  } else if (frameworkArgs.length > 0) {
+    e2eConfigsToRun = e2eConfigsToRun.filter((config) => frameworkArgs.includes(config.name));
+  } else if (!process.env.CI) {
     const selectedValues = await prompts([
       {
         type: 'toggle',
@@ -271,18 +265,17 @@ const getConfig = async () => {
 
     useLocalSbCli = selectedValues.useLocalSbCli;
     openCypressInUIMode = selectedValues.openCypressInUIMode;
-    e2eConfigs = selectedValues.frameworks;
+    e2eConfigsToRun = selectedValues.frameworks;
   }
 
   // Remove frameworks listed with `--skip` arg
-  frameworksToSkip.forEach((framework) => {
-    delete e2eConfigs[framework];
-  });
+  e2eConfigsToRun = e2eConfigsToRun.filter((config) => !frameworksToSkip.includes(config.name));
+
+  return e2eConfigsToRun;
 };
 
 const perform = async (): Promise<Record<string, boolean>> => {
-  await getConfig();
-  const narrowedConfigs = Object.values(e2eConfigs);
+  const narrowedConfigs: Parameters[] = await getConfig();
 
   const list = filterDataForCurrentCircleCINode(narrowedConfigs) as Parameters[];
 
