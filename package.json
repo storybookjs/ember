@@ -156,7 +156,6 @@
     "@storybook/eslint-config-storybook": "^2.4.0",
     "@storybook/html": "workspace:*",
     "@storybook/linter-config": "^2.5.0",
-    "@storybook/lit": "workspace:*",
     "@storybook/node-logger": "workspace:*",
     "@storybook/postinstall": "workspace:*",
     "@storybook/preact": "workspace:*",
