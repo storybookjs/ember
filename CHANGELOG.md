@@ -1,3 +1,14 @@
+## 6.3.0-alpha.45 (May 26, 2021)
+
+### Features
+
+* CLI: Add option to force-build iframe despite custom preview URL ([#15030](https://github.com/storybookjs/storybook/pull/15030))
+
+### Bug Fixes
+
+* Addon-docs: Fix source block tree shaking ([#15035](https://github.com/storybookjs/storybook/pull/15035))
+* Addon-a11y: Highlight all elements correctly ([#14935](https://github.com/storybookjs/storybook/pull/14935))
+
 ## 6.3.0-alpha.44 (May 25, 2021)
 
 ### Features
