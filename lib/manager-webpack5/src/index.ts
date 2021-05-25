@@ -65,7 +65,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
 
         return;
       }
-    } else if (!options.smokeTest && (await clearManagerCache(options.cache))) {
+    } else if (!options.smokeTest && (await clearManagerCache(cacheKey, options))) {
       logger.line(1); // force starting new line
       logger.info('=> Cleared cached manager config');
     }
