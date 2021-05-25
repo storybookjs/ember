@@ -1,4 +1,4 @@
-import webpackReal from 'webpack';
+import * as webpackReal from 'webpack';
 import { logger } from '@storybook/node-logger';
 import { loadCustomWebpackConfig } from '@storybook/core-common';
 import { createDefaultWebpackConfig } from '../preview/base-webpack.config';

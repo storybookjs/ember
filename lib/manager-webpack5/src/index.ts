@@ -31,7 +31,8 @@ export const executor = {
   get: async (options: Options) => {
     const version = ((await options.presets.apply('webpackVersion')) || '5') as string;
     const webpackInstance =
-      (await options.presets.apply<typeof webpack>('webpackInstance')) || webpack;
+      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
+      webpack;
     checkWebpackVersion({ version }, '5', 'manager-webpack5');
     return webpackInstance;
   },
@@ -155,11 +156,6 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
         if (stats && stats.hasWarnings()) {
           stats.toJson({ warnings: true }).warnings.forEach((e) => logger.warn(e.message));
         }
-
-        // const statsData = stats.toJson(
-        //   typeof statsOptions === 'string' ? statsOptions : { ...statsOptions, warnings: true }
-        // );
-        // statsData?.warnings?.forEach((e) => logger.warn(e));
 
         succeed(stats);
       }

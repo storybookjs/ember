@@ -31,7 +31,8 @@ export const executor = {
   get: async (options: Options) => {
     const version = ((await options.presets.apply('webpackVersion')) || '4') as string;
     const webpackInstance =
-      (await options.presets.apply<typeof webpack>('webpackInstance')) || webpack;
+      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
+      webpack;
     checkWebpackVersion({ version }, '4', 'manager-webpack4');
     return webpackInstance;
   },

@@ -16,12 +16,12 @@ let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
-// const webpack = (webpackReal as any) as typeof webpackType;
 export const executor = {
   get: async (options: Options) => {
     const version = ((await options.presets.apply('webpackVersion')) || '4') as string;
     const webpackInstance =
-      (await options.presets.apply<typeof webpackType>('webpackInstance')) || webpackReal;
+      (await options.presets.apply<{ default: typeof webpackType }>('webpackInstance'))?.default ||
+      webpackReal;
     checkWebpackVersion({ version }, '4', 'builder-webpack4');
     return webpackInstance;
   },
