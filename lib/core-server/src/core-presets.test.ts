@@ -51,6 +51,7 @@ jest.mock('@storybook/node-logger', () => ({
     info: jest.fn(),
     warn: jest.fn(),
     error: jest.fn(),
+    line: jest.fn(),
   },
 }));
 jest.mock('./utils/output-startup-information', () => ({

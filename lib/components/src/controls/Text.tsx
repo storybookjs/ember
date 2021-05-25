@@ -15,7 +15,7 @@ export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onB
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(event.target.value);
   };
-  
+
   const [forceVisible, setForceVisible] = useState(false);
   const onForceVisible = useCallback(() => {
     onChange('');

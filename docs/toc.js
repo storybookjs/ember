@@ -435,7 +435,7 @@ module.exports = {
               pathSegment: 'documentation-updates',
               title: 'Updates',
               type: 'link',
-            }
+            },
           ],
         },
       ],
