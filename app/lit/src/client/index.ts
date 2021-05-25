@@ -1,4 +1,6 @@
-import { EventSource, window } from 'global';
+import global from 'global';
+
+const { EventSource, window } = global;
 
 export {
   storiesOf,

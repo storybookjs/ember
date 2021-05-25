@@ -1,4 +1,4 @@
-import { document } from 'global';
+import global from 'global';
 import React, { ReactNode } from 'react';
 
 import {
@@ -14,6 +14,8 @@ import {
 } from '@reach/router';
 import { ToggleVisibility } from './visibility';
 import { queryFromString, parsePath, getMatch, StoryData } from './utils';
+
+const { document } = global;
 
 interface Other extends StoryData {
   path: string;

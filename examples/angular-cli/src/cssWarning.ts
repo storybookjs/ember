@@ -1,4 +1,6 @@
-import { document } from 'global';
+import global from 'global';
+
+const { document } = global;
 
 export default function addCssWarning() {
   const warning = document.createElement('h1');

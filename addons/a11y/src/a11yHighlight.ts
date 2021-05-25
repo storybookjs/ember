@@ -1,9 +1,11 @@
-import { document } from 'global';
+import global from 'global';
 import addons from '@storybook/addons';
 import { STORY_CHANGED } from '@storybook/core-events';
 import { EVENTS, HIGHLIGHT_STYLE_ID } from './constants';
 
 import { highlightStyle } from './highlight';
+
+const { document } = global;
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();
@@ -29,7 +31,7 @@ const highlight = (infos: HighlightInfo) => {
   sheet.innerHTML = elements
     .map(
       (target) =>
-        `${target}{ 
+        `${target}{
           ${highlightStyle(infos.color)}
          }`
     )

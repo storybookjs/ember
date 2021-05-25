@@ -3,11 +3,13 @@ import { NAVIGATE_URL, STORY_ARGS_UPDATED, SET_CURRENT_STORY } from '@storybook/
 import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@storybook/router';
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
-import { window as globalWindow } from 'global';
+import global from 'global';
 
 import { ModuleArgs, ModuleFn } from '../index';
 import { PanelPositions } from './layout';
 import { isStory } from '../lib/stories';
+
+const { window: globalWindow } = global;
 
 interface Additions {
   isFullscreen?: boolean;
