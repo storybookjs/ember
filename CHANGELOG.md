@@ -1,13 +1,28 @@
+## 6.3.0-beta.0 (May 26, 2021)
+
+Storybook 6.3 is in beta!! 🎉🎉🎉
+
+Hundreds of improvements and fixes, including:
+
+- **Angular** - Overhauled Angular support.
+- **Web-components** - Lit2 support.
+- **Webpack 5** - Official support.
+- **Vite builder** - Community support.
+- **Modern ESM** - Modern package distribution.
+- **API** - Keyboard shortcuts for addons.
+
+Track the release in the Github: [Storybook 6.3 Release 🛠](https://github.com/storybookjs/storybook/issues/14397)
+
 ## 6.3.0-alpha.45 (May 26, 2021)
 
 ### Features
 
-* CLI: Add option to force-build iframe despite custom preview URL ([#15030](https://github.com/storybookjs/storybook/pull/15030))
+- CLI: Add option to force-build iframe despite custom preview URL ([#15030](https://github.com/storybookjs/storybook/pull/15030))
 
 ### Bug Fixes
 
-* Addon-docs: Fix source block tree shaking ([#15035](https://github.com/storybookjs/storybook/pull/15035))
-* Addon-a11y: Highlight all elements correctly ([#14935](https://github.com/storybookjs/storybook/pull/14935))
+- Addon-docs: Fix source block tree shaking ([#15035](https://github.com/storybookjs/storybook/pull/15035))
+- Addon-a11y: Highlight all elements correctly ([#14935](https://github.com/storybookjs/storybook/pull/14935))
 
 ## 6.3.0-alpha.44 (May 25, 2021)
 
