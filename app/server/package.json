@@ -59,7 +59,8 @@
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
     "safe-identifier": "^0.4.1",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "yaml-loader": "^0.6.0"
   },
   "devDependencies": {
     "fs-extra": "^9.0.1"
