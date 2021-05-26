@@ -5,8 +5,11 @@ import { DocsContext, DocsContextProps } from './DocsContext';
 interface TitleProps {
   children?: JSX.Element | string;
 }
+
+const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
+
 export const extractTitle = ({ kind }: DocsContextProps) => {
-  const groups = kind.split(/\s*\/\s*/);
+  const groups = kind.trim().split(STORY_KIND_PATH_SEPARATOR);
   return (groups && groups[groups.length - 1]) || kind;
 };
 
