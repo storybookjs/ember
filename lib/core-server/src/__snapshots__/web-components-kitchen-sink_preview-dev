@@ -99,6 +99,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -168,6 +169,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "modules": false,
                     "shippedProposals": true,
                     "targets": "defaults",
@@ -311,6 +313,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -402,6 +405,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
