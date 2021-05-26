@@ -16,8 +16,6 @@ import {
   cache,
 } from '@storybook/core-common';
 
-import { getPrebuiltDir } from '@storybook/manager-webpack4/prebuilt-manager';
-
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
 import { copyAllStaticFiles } from './utils/copy-all-static-files';
@@ -83,15 +81,20 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     );
   }
 
+  const core = await presets.apply<{ builder?: string }>('core');
+
+  const { getPrebuiltDir } =
+    core?.builder === 'webpack5'
+      ? await import('@storybook/manager-webpack5/prebuilt-manager')
+      : await import('@storybook/manager-webpack4/prebuilt-manager');
+
   const prebuiltDir = await getPrebuiltDir(fullOptions);
 
   const startTime = process.hrtime();
+  // When using the prebuilt manager, we straight up copy it into the outputDir instead of building it
   const manager = prebuiltDir
     ? cpy('**', options.outputDir, { cwd: prebuiltDir, parents: true }).then(() => {})
-    : managerBuilder.build({
-        startTime,
-        options: fullOptions,
-      });
+    : managerBuilder.build({ startTime, options: fullOptions });
 
   if (options.ignorePreview) {
     logger.info(`=> Not building preview`);
