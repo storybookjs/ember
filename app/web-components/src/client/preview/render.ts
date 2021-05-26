@@ -1,4 +1,4 @@
-import { document, Node } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { render } from 'lit-html';
 // Keep `.js` extension to avoid issue with Webpack (related to export map?)
@@ -7,6 +7,7 @@ import { isTemplateResult } from 'lit-html/directive-helpers.js';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
 
+const { document, Node } = global;
 const rootElement = document.getElementById('root');
 
 export default function renderMain({

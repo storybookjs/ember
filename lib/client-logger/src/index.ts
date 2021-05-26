@@ -1,4 +1,6 @@
-import { LOGLEVEL, console } from 'global';
+import global from 'global';
+
+const { LOGLEVEL, console } = global;
 
 type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent';
 

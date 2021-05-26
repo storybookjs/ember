@@ -2,9 +2,11 @@ import React, { FC, SyntheticEvent } from 'react';
 import addons from '@storybook/addons';
 import { NAVIGATE_URL } from '@storybook/core-events';
 import { Source, Code, components } from '@storybook/components';
-import { document } from 'global';
+import global from 'global';
 import { styled } from '@storybook/theming';
 import { DocsContext, DocsContextProps } from './DocsContext';
+
+const { document } = global;
 
 // Hacky utility for asserting identifiers in MDX Story elements
 export const assertIsFn = (val: any) => {

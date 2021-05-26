@@ -1,4 +1,4 @@
-import { location, fetch } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import {
   transformStoriesRawToStoriesHash,
@@ -8,6 +8,8 @@ import {
 } from '../lib/stories';
 
 import { ModuleFn } from '../index';
+
+const { location, fetch } = global;
 
 export interface SubState {
   refs: Refs;
@@ -166,12 +168,12 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
           message: dedent`
             Error: Loading of ref failed
               at fetch (lib/api/src/modules/refs.ts)
-            
+
             URL: ${url}
-            
+
             We weren't able to load the above URL,
             it's possible a CORS error happened.
-            
+
             Please check your dev-tools network tab.
           `,
         } as Error;
