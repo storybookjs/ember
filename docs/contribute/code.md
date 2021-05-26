@@ -117,7 +117,7 @@ This command creates a project `../storybook-repros/your-project`, and automatic
 If you already have a reproduction on your local machine, you can similarly link it to your monorepo dev setup with the `--local` flag:
 
 ```sh
-npx sb@next link /path/to/local-repro-directory
+npx sb@next link --local /path/to/local-repro-directory
 ```
 
 ## Troubleshooting
