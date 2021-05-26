@@ -34,9 +34,7 @@
     "dll/**/*",
     "types/**/*",
     "*.js",
-    "*.d.ts",
-    "prebuilt/**/*",
-    "!prebuilt/report.html"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
