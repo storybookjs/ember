@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  ChangeEvent,
+  FocusEvent,
+} from 'react';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
 import convert from 'color-convert';
 import throttle from 'lodash/throttle';
@@ -131,7 +139,7 @@ const stringToArgs = (value: string) => {
   return [x, y, z, a].map(Number);
 };
 
-const parseValue = (value: string): ParsedColor => {
+const parseValue = (value: string): ParsedColor | undefined => {
   if (!value) return undefined;
   let valid = true;
 
@@ -213,6 +221,13 @@ const useColorInput = (initialValue: string, onChange: (value: string) => string
   const [color, setColor] = useState(() => parseValue(value));
   const [colorSpace, setColorSpace] = useState(color?.colorSpace || ColorSpace.HEX);
 
+  useEffect(() => {
+    if (initialValue !== undefined) return;
+    const parsed = parseValue('');
+    setValue('');
+    setColor(parsed);
+  }, [initialValue]);
+
   const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
     value,
     color,
@@ -252,7 +267,13 @@ const usePresets = (
 ) => {
   const [selectedColors, setSelectedColors] = useState(currentColor?.valid ? [currentColor] : []);
 
+  useEffect(() => {
+    if (currentColor !== undefined) return;
+    setSelectedColors([]);
+  }, [currentColor]);
+
   const presets = useMemo(() => {
+    if (selectedColors.length === 0) return [];
     const initialPresets = (presetColors || []).map((preset) => {
       if (typeof preset === 'string') return parseValue(preset);
       if (preset.title) return { ...parseValue(preset.color), keyword: preset.title };
@@ -329,8 +350,8 @@ export const ColorControl: FC<ColorProps> = ({
       <Input
         id={getControlId(name)}
         value={value}
-        onChange={(e: any) => updateValue(e.target.value)}
-        onFocus={(e) => e.target.select()}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => updateValue(e.target.value)}
+        onFocus={(e: FocusEvent<HTMLInputElement>) => e.target.select()}
         placeholder="Choose color..."
       />
       <ToggleIcon icon="markup" onClick={cycleColorSpace} />
