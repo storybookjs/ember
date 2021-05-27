@@ -217,19 +217,15 @@ export default class StoryStore {
     this._configuring = false;
 
     const { globals = {}, globalTypes = {} } = this._globalMetadata.parameters;
-
-    this._initialGlobals = globals;
-    this._defaultGlobals = Object.entries(
+    const allowedGlobals = new Set([...Object.keys(globals), ...Object.keys(globalTypes)]);
+    const defaultGlobals = Object.entries(
       globalTypes as Record<string, { defaultValue: any }>
     ).reduce((acc, [arg, { defaultValue }]) => {
       if (defaultValue) acc[arg] = defaultValue;
       return acc;
     }, {} as Args);
 
-    const allowedGlobals = new Set([
-      ...Object.keys(this._initialGlobals),
-      ...Object.keys(globalTypes),
-    ]);
+    this._initialGlobals = { ...defaultGlobals, ...globals };
 
     // To deal with HMR & persistence, we consider the previous value of global args, and:
     //   1. Remove any keys that are not in the new parameter
@@ -241,7 +237,7 @@ export default class StoryStore {
 
         return acc;
       },
-      { ...this._defaultGlobals, ...this._initialGlobals }
+      { ...this._initialGlobals }
     );
 
     // Set the current selection based on the current selection specifier, if selection is not yet set
@@ -627,7 +623,6 @@ export default class StoryStore {
     this._globals = { ...this._globals, ...newGlobals };
     this._channel.emit(Events.GLOBALS_UPDATED, {
       globals: this._globals,
-      defaultGlobals: this._defaultGlobals,
       initialGlobals: this._initialGlobals,
     });
   }

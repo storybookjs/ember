@@ -597,15 +597,13 @@ describe('preview.story_store', () => {
       store.updateGlobals({ foo: 'FUD' });
       expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
         globals: { foo: 'FUD', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
-        defaultGlobals: { foo: 'Foo', bar: 'Bar' },
-        initialGlobals: { baz: 'Baz', qux: 'Qux' },
+        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
       });
 
       store.updateGlobals({ baz: 'BING' });
       expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
         globals: { foo: 'FUD', bar: 'Bar', baz: 'BING', qux: 'Qux' },
-        defaultGlobals: { foo: 'Foo', bar: 'Bar' },
-        initialGlobals: { baz: 'Baz', qux: 'Qux' },
+        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
       });
     });
 

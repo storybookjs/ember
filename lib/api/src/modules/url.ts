@@ -183,9 +183,9 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
       }
     });
 
-    fullAPI.on(GLOBALS_UPDATED, ({ globals, defaultGlobals, initialGlobals }) => {
+    fullAPI.on(GLOBALS_UPDATED, ({ globals, initialGlobals }) => {
       const { path } = fullAPI.getUrlState();
-      const argsString = buildArgsParam({ ...defaultGlobals, ...initialGlobals }, globals);
+      const argsString = buildArgsParam(initialGlobals, globals);
       const globalsParam = argsString.length ? `&globals=${argsString}` : '';
       queryNavigate(`${path}${globalsParam}`, { replace: true });
       api.setQueryParams({ globals: argsString });
