@@ -1,3 +1,13 @@
+## 6.3.0-beta.2 (May 27, 2021)
+
+### Features
+
+* Core: Add `globals` URL param and remove from sessionStorage ([#15056](https://github.com/storybookjs/storybook/pull/15056))
+
+### Bug Fixes
+
+* Core: Set `loose: true` in babel/preset-env config ([#15055](https://github.com/storybookjs/storybook/pull/15055))
+
 ## 6.3.0-beta.1 (May 26, 2021)
 
 ### Bug Fixes
