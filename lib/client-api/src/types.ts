@@ -39,6 +39,7 @@ export interface StoreSelectionSpecifier {
   viewMode: ViewMode;
   singleStory?: boolean;
   args?: Args;
+  globals?: Args;
 }
 
 export interface StoreSelection {

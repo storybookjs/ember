@@ -68,6 +68,7 @@ See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-url-stru
 export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () => {
   const query = qs.parse(document.location.search, { ignoreQueryPrefix: true });
   const args = typeof query.args === 'string' ? parseArgsParam(query.args) : undefined;
+  const globals = typeof query.globals === 'string' ? parseArgsParam(query.globals) : undefined;
 
   let viewMode = getFirstString(query.viewMode) as ViewMode;
   if (typeof viewMode !== 'string' || !viewMode.match(/docs|story/)) {
@@ -79,7 +80,7 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
   const storyId = path ? pathToId(path) : getFirstString(query.id);
 
   if (storyId) {
-    return { storySpecifier: storyId, args, viewMode, singleStory };
+    return { storySpecifier: storyId, args, globals, viewMode, singleStory };
   }
 
   // Legacy URL format
@@ -88,7 +89,7 @@ export const getSelectionSpecifierFromPath: () => StoreSelectionSpecifier = () =
 
   if (kind && name) {
     deprecatedLegacyQuery();
-    return { storySpecifier: { kind, name }, args, viewMode, singleStory };
+    return { storySpecifier: { kind, name }, args, globals, viewMode, singleStory };
   }
   return null;
 };
