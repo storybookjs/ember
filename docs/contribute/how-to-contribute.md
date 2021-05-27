@@ -1,22 +1,24 @@
 ---
-title: 'How to Contribute'
+title: 'How to'
 ---
 
-We want Storybook contributions to be enjoyable and educational for everyone. Therefore, all contributions are welcome, including issues, new documentation, new features and updates, and much more.
+Storybook is a community-oriented open source project that welcomes contributions. Our most popular features, integrations, and documentation began with a developer wanting to solve a problem for themselves.
 
-## Not sure how to start contributing?
+## Contributor covenant
 
-If you don't know where to start, you can reach out with questions on our [Discord Server](https://discord.gg/storybook) or submit an [issue](https://github.com/storybookjs/storybook/issues), and a maintainer can guide you!
+> In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
+[Read our contributor covenant »](https://github.com/storybookjs/storybook/blob/next/CODE_OF_CONDUCT.md)
 
-## In this section:
+## Ways to contribute
 
-- [Code contributions](./code.md)
-- [Documentation contributions](./documentation-updates.md)
-- [Snippet contributions](./new-snippets.md)
+- [**Code**](./code.md): Features, bug fixes, dependency updates
+- [**Docs**](./documentation-updates.md): Typos, clarifications
+- [**Integrations**](./../api/new-frameworks): Integrate Storybook with your favorite library
+- [**Addons**](./../addons/introduction): Build an addon and share it with the community
 
+## Not sure how to get started?
 
-## Additional resources
-
-- [Synching a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/syncing-a-fork)
-- [Merging an upstream repository into your fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/merging-an-upstream-repository-into-your-fork)
+- [Chat in Discord #contributing](https://discord.gg/storybook),
+- [Browse "good first issues" to fix](https://github.com/storybookjs/storybook/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+- [Submit a bug report or feature request](https://github.com/storybookjs/storybook/issues)
