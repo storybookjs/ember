@@ -2,7 +2,7 @@
 title: 'Code contributions'
 ---
 
-Contribute a new feature or bug fix to [Storybook](https://github.com/storybookjs/storybook). This page outlines how to get set up to work on Storybook's code.
+Contribute a new feature or bug fix to [Storybook's monorepo](https://github.com/storybookjs/storybook). This page outlines how to get your environment set up to work contribute code.
 
 ## Initial setup
 
