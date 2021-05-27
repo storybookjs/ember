@@ -1,3 +1,15 @@
+## 6.3.0-beta.1 (May 26, 2021)
+
+### Bug Fixes
+
+- Core: Fix prebuilt manager ([#15050](https://github.com/storybookjs/storybook/pull/15050))
+- Core: Fix storySort `order` with whitespace in story paths ([#15038](https://github.com/storybookjs/storybook/pull/15038))
+
+### Maintenance
+
+- Do not try to named import from global ([#15043](https://github.com/storybookjs/storybook/pull/15043))
+- Remove storybook/lit from monorepo ([#15048](https://github.com/storybookjs/storybook/pull/15048))
+
 ## 6.3.0-beta.0 (May 26, 2021)
 
 Storybook 6.3 is in beta!! 🎉🎉🎉

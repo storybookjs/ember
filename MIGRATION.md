@@ -5,6 +5,7 @@
   - [Angular 12 upgrade](#angular-12-upgrade)
   - [Lit support](#lit-support)
   - [6.3 deprecations](#63-deprecations)
+    - [Deprecated addon-knobs](#deprecated-addon-knobs)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
     - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
@@ -203,6 +204,13 @@ To do so, it relies on helpers added in the latest minor versions of `lit-html`/
 According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
 
 ### 6.3 deprecations
+
+#### Deprecated addon-knobs
+
+We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
+
+- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
+- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
 
 #### Deprecated scoped blocks imports
 
