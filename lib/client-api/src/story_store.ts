@@ -252,7 +252,7 @@ export default class StoryStore {
         storySpecifier,
         viewMode,
         args: urlArgs,
-        globalArgs: urlGlobals,
+        globals: urlGlobals,
       } = this._selectionSpecifier;
 
       if (urlGlobals) {

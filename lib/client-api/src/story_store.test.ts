@@ -502,7 +502,7 @@ describe('preview.story_store', () => {
       store.setSelectionSpecifier({
         storySpecifier: '*',
         viewMode: 'story',
-        globalArgs: {
+        globals: {
           arg1: 'arg1',
           arg2: 2,
           arg3: { complex: { object: ['type'] } },
