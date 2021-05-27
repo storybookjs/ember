@@ -88,7 +88,7 @@ Unit tests ensure that Storybook doesn't break accidentally. If your code can re
 |   +-- [filename].test.ts
 ```
 
-## Submit your contribution pull request
+## Submit a pull request
 
 Before submitting your contribution, run the test suite one last time with:
 
@@ -113,7 +113,7 @@ If your contribution focuses on a bugfix and you want it featured in the next st
 - [Sync a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/syncing-a-fork)
 - [Merge an upstream repository into your fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/merging-an-upstream-repository-into-your-fork)
 
-## Working with reproductions
+## How to work with reproductions
 
 We encourage bug reports to include reproductions. In the same way that it's possible to [develop interactively](#start-developing) against example projects in the monorepo, it's also possible to develop against a reproduction repository.
 
