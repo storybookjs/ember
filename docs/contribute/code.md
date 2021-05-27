@@ -106,7 +106,7 @@ Doing this prevents last-minute bugs and is also a great way to get your contrib
 
 Once the test suite finishes, it's time to commit, push and open a pull request against Storybook's `next` (default) branch. This branch is where all active development happens and is associated with the latest prerelease version (e.g., `6.3.0-alpha.25`).
 
-If your contribution focuses on a bugfix and you want it featured in the next stable release, mention it in the pull request description. We'll try to get it in if it appears to be non-disruptive and fixes a critical bug.
+If your contribution focuses on a bugfix and you want it featured in the next stable release, mention it in the pull request description. We'll try to patch it in if it appears to be non-disruptive and fixes a critical bug.
 
 #### Useful resources when working with forks
 
