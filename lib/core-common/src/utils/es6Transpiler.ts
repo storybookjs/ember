@@ -34,6 +34,7 @@ export const es6Transpiler: () => RuleSetRule = () => {
               {
                 shippedProposals: true,
                 modules: false,
+                loose: true,
                 targets: 'defaults',
               },
             ],
