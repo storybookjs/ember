@@ -5,9 +5,10 @@ const { plugins } = babelConfig();
 
 const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   '@storybook/node_logger',
+  'node_modules/acorn-jsx',
+  'node_modules/highlight.js',
   'node_modules/json5',
   'node_modules/semver',
-  'node_modules/highlight.js',
 ];
 
 export const es6Transpiler: () => RuleSetRule = () => {
