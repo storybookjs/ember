@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Start Storybook",
+  "description": "Serve up storybook in development mode.",
+  "type": "object",
+  "properties": {
+    "browserTarget": {
+      "type": "string",
+      "description": "Build target to be served in project-name:builder:config format. Should generally target on the builder: '@angular-devkit/build-angular:browser'. Useful for Storybook to use options (styles, assets, ...).",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+    },
+    "port": {
+      "type": "number",
+      "description": "Port to listen on.",
+      "default": 9009
+    },
+    "host": {
+      "type": "string",
+      "description": "Host to listen on.",
+      "default": "localhost"
+    },
+    "staticDir": {
+      "type": "array",
+      "description": "Directory where to load static files from, array of strings.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "configDir": {
+      "type": "string",
+      "description": "Directory where to load Storybook configurations from.",
+      "default": ".storybook"
+    },
+    "https": {
+      "type": "boolean",
+      "description": "Serve Storybook over HTTPS. Note: You must provide your own certificate information.",
+      "default": false
+    },
+    "sslCa": {
+      "type": "string",
+      "description": "Provide an SSL certificate authority. (Optional with --https, required if using a self-signed certificate)."
+    },
+    "sslCert": {
+      "type": "string",
+      "description": "Provide an SSL certificate. (Required with --https)."
+    },
+    "sslKey": {
+      "type": "string",
+      "description": "SSL key to use for serving HTTPS."
+    },
+    "smokeTest": {
+      "type": "boolean",
+      "description": "Exit after successful start.",
+      "default": false
+    },
+    "ci": {
+      "type": "boolean",
+      "description": "CI mode (skip interactive prompts, don't open browser).",
+      "default": false
+    },
+    "quiet": {
+      "type": "boolean",
+      "description": "Suppress verbose build output.",
+      "default": false
+    },
+    "docs": {
+      "type": "boolean",
+      "description": "Starts Storybook in documentation mode. Learn more about it : https://storybook.js.org/docs/react/writing-docs/build-documentation#preview-storybooks-documentation.",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "required": ["browserTarget"]
+}

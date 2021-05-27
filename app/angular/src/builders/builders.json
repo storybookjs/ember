@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "start-storybook": {
+      "implementation": "./start-storybook",
+      "schema": "./start-storybook/schema.json",
+      "description": "Start storybook"
+    }
+  }
+}
