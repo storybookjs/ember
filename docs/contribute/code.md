@@ -15,7 +15,7 @@ yarn
 yarn bootstrap --core
 ```
 
-## Run Storybook utilities
+## Run tests & examples
 
 Once you've completed the [initial setup](#initial-setup), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples.
 
