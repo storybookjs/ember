@@ -1,10 +1,14 @@
-## 6.3.0-beta.3 (May 28, 2021)
+## 6.3.0-beta.4 (May 28, 2021)
 
 ### Bug Fixes
 
 - Addon-docs: Fix MDX source rendering ([#15071](https://github.com/storybookjs/storybook/pull/15071))
 - CLI: Add new packages to versions.json ([#15073](https://github.com/storybookjs/storybook/pull/15073))
 - Addon-docs: Fix per-story `docs.source` parameter ([#15070](https://github.com/storybookjs/storybook/pull/15070))
+
+## 6.3.0-beta.3 (May 28, 2021)
+
+Failed NPM publish
 
 ## 6.3.0-beta.2 (May 27, 2021)
 
