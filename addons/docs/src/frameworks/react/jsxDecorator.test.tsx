@@ -252,4 +252,24 @@ describe('jsxDecorator', () => {
     jsxDecorator(storyFn, context);
     expect(transformSource).toHaveBeenCalledWith('<div>\n  args story\n</div>', context);
   });
+
+  it('renders MDX properly', () => {
+    // FIXME: generate this from actual MDX
+    const mdxElement = {
+      type: { displayName: 'MDXCreateElement' },
+      props: {
+        mdxType: 'div',
+        originalType: 'div',
+        className: 'foo',
+      },
+    };
+
+    jsxDecorator(() => mdxElement, makeContext('mdx-args', { __isArgsStory: true }, {}));
+
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'jsx-test--mdx-args',
+      '<div className="foo" />'
+    );
+  });
 });
