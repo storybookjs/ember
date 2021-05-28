@@ -2,26 +2,22 @@
 title: 'Documentation updates'
 ---
 
-Contributions to the documentation are welcome and strongly encouraged. Either by fixing a small typo or a semantic error. This page outlines how to get involved and contribute to [Storybook's](https://github.com/storybookjs/storybook) documentation. For instructions on working with the codebase, check the [code contributions](./code.md) page, and for code snippets, check the [code snippets](./new-snippets.md) page.
+Fix a typo or clarify a section of the docs. This page outlines how to edit the documentation.
 
-## Identify and fix documentation issues
+## Find the Markdown file
 
-While browsing our documentation, you encounter an issue with the documentation, either a small typo or a semantic error; we encourage you to help us fix it. 
-
-Start by scrolling to the bottom of the page in question, then click ✍️ Edit on GitHub – PRs welcome!
+Scroll to the bottom of the document in question, then click ✍️ Edit on GitHub – PRs welcome! This will open the Markdown file on GitHub.
 
 ![Storybook documentation edit](./storybook-edit-docs-optimized.png)
 
-Click the pencil icon on the right-hand corner to edit the document and apply your fix.
+Use GitHub's web editor by clicking the pencil icon on the right-hand corner. Tweak the document to your liking.
 
 ![GitHub edit documentation](./github-docs-edit-optimized.png)
 
-Scroll down to the bottom of the page, fill the form with clear and concise information. 
-
-Next, select the `Create a new branch for this commit and start a pull request` option and finally, click the `Propose changes` button.
+Scroll down to the bottom of the document page on GitHub and describe what you changed and why. Select the `Create a new branch for this commit and start a pull request` option then click the `Propose changes` button.
 
 ![Fill the commit information](./storybook-docs-submit-changes-optimized.png)
 
 ## Create the pull request
 
-In the Storybook repository, fill the form with the necessary information, and submit your pull request. One of the maintainers will guide you through the triage and merge process.
+In the Storybook repository, create a pull request that describes changes and includes additional context that would help maintainers review. Once you submit the PR, a maintainer will guide you through the triage and merge process.

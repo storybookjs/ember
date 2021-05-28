@@ -2,11 +2,11 @@
 title: 'Code contributions'
 ---
 
-If you're willing to fix a bug or add a new feature to [Storybook](https://github.com/storybookjs/storybook), the first step is to set up your development environment. This page outlines how to get set up to contribute to Storybook's code. For instructions on working with documentation, check the [documentation contribution](./documentation-updates.md) page. To contribute to the code snippets, check the [snippets contribution](./new-snippets.md) page.
+Contribute a new feature or bug fix to [Storybook's monorepo](https://github.com/storybookjs/storybook). This page outlines how to get your environment set up to contribute code.
 
 ## Initial setup
 
-The first thing you need to do is [fork](https://docs.github.com/en/github/getting-started-with-github/quickstart/fork-a-repo) the Storybook repository. Afterward, you need to clone and build your fork locally. Run the following commands:
+First [fork](https://docs.github.com/en/github/getting-started-with-github/quickstart/fork-a-repo) the Storybook repository then clone and build your fork locally. Run the following commands:
 
 ```shell
 git clone https://github.com/your-username/storybook.git
@@ -15,9 +15,9 @@ yarn
 yarn bootstrap --core
 ```
 
-## Sanity check
+## Run tests & examples
 
-Once you've completed the [initial setup](#initial-setup), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples.
+Once you've completed the [initial setup](#run-tests-&-examples), you should have a fully functional version of Storybook built on your local machine. Before making any code changes, it's helpful to verify that everything is working as it should. More specifically, the test suite and examples.
 
 Run the following command to execute the tests:
 
@@ -68,15 +68,19 @@ Otherwise, if it affects the `Manager` (the outermost Storybook `iframe` where t
 
 ## Check your work
 
-When you're done with your work, we encourage you to include documentation and tests as appropriate. If you don't, we'll add a friendly reminder when you submit your pull request. 🧐
+When you're done coding, add documentation and tests as appropriate. That simplifies the PR review process, which means your code will get merged faster.
 
 ### Add stories
 
-Adding a story or set of stories to an example app is a great way to test your work. If you're modifying part of Storybook's core, or one of the addons, there's probably a set of stories you can add to the [`official-storybook`](../../examples/official-storybook). If you're modifying something related to a specific framework, they have their own examples in the monorepo. For instance, [`examples/vue-kitchen-sink`](../../examples/vue-kitchen-sink) is a natural place to add stories for `@storybook/vue`, [`examples/angular-cli`](../../examples/angular-cli) for `@storybook/angular`, and so on.
+Adding a story or set of stories to our suite of example apps helps you test your work.
+
+If you're modifying part of Storybook's core, or one of the essential addons, there's probably an existing set of stories in the [`official-storybook`](../../examples/official-storybook) that documents how the feature is supposed to work. Add your stories there.
+
+If you're modifying something related to a specific framework, the framework will have its own examples in the monorepo. For instance, [`examples/vue-kitchen-sink`](../../examples/vue-kitchen-sink) is a natural place to add stories for `@storybook/vue` while [`examples/angular-cli`](../../examples/angular-cli) is the place for `@storybook/angular`.
 
 ### Add tests
 
-Unit tests are also part of our test strategy. Therefore, we encourage you to use the following naming convention:
+Unit tests ensure that Storybook doesn't break accidentally. If your code can regress in non-obvious ways, include unit tests with your PR. Use the following naming convention:
 
 ```
 +-- parentFolder
@@ -84,9 +88,9 @@ Unit tests are also part of our test strategy. Therefore, we encourage you to us
 |   +-- [filename].test.ts
 ```
 
-## Submit your contribution
+## Submit a pull request
 
-Before submitting your contribution, we recommend that you run the test suite one last time with:
+Before submitting your contribution, run the test suite one last time with:
 
 ```sh
 yarn test
@@ -98,13 +102,20 @@ yarn test
 
 Doing this prevents last-minute bugs and is also a great way to get your contribution merged faster once you submit your pull request. Failing to do so will lead to one of the maintainers mark the pull request with the **Work in Progress** label until all tests pass.
 
+### Target `next` branch
+
 Once the test suite finishes, it's time to commit, push and open a pull request against Storybook's `next` (default) branch. This branch is where all active development happens and is associated with the latest prerelease version (e.g., `6.3.0-alpha.25`).
 
-If your contribution focus on a bugfix and you want it featured in the next stable release, mention it in the pull request description. We'll try to get it in if it appears to be non-disruptive and fixes a critical bug.
+If your contribution focuses on a bugfix and you want it featured in the next stable release, mention it in the pull request description. We'll try to patch it in if it appears to be non-disruptive and fixes a critical bug.
 
-## Working with reproductions
+#### Useful resources when working with forks
 
-We strongly encourage contributors to create reproductions for their issues. In the same way, it's possible to [develop interactively](#start-developing) against example projects in the monorepo; it's also possible to develop against a reproduction repository.
+- [Sync a fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/syncing-a-fork)
+- [Merge an upstream repository into your fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/working-with-forks/merging-an-upstream-repository-into-your-fork)
+
+## How to work with reproductions
+
+We encourage bug reports to include reproductions. In the same way that it's possible to [develop interactively](#start-developing) against example projects in the monorepo, it's also possible to develop against a reproduction repository.
 
 To do so, run the following command in the root of the monorepo:
 
