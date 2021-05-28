@@ -6,7 +6,7 @@ Add or update the code snippets in the documentation. This page outlines how the
 
 ## Documented frameworks
 
-Storybook maintains code snippets for a [variety of frameworks](./../api/frameworks-feature-support). We try to keep them up to date as framework APIs evolve. But it's tricky to keep track of every API change in every framework.
+Storybook maintains code snippets for a [variety of frameworks](./../api/frameworks-feature-support.md). We try to keep them up to date as framework APIs evolve. But it's tricky to keep track of every API change in every framework.
 
 We welcome community contributions to the code snippets. Here's a matrix of the frameworks we have snippets for. Help us add snippets for your favorite framework.
 
