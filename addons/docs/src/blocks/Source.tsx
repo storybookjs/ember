@@ -66,6 +66,7 @@ const getSourceState = (storyIds: string[], docsContext: DocsContextProps) => {
     .filter(Boolean);
 
   if (states.length === 0) return SourceState.CLOSED;
+  // FIXME: handling multiple stories is a pain
   return states[0];
 };
 
