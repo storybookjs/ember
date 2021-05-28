@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createElement, ReactElement } from 'react';
 import reactElementToJSXString, { Options } from 'react-element-to-jsx-string';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
@@ -150,6 +150,19 @@ export const skipJsxRender = (context: StoryContext) => {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
+const isMdx = (node: any) => node.type?.displayName === 'MDXCreateElement' && !!node.props?.mdxType;
+
+const mdxToJsx = (node: any) => {
+  if (!isMdx(node)) return node;
+  const { mdxType, originalType, children, ...rest } = node.props;
+  let jsxChildren = [] as ReactElement[];
+  if (children) {
+    const array = Array.isArray(children) ? children : [children];
+    jsxChildren = array.map(mdxToJsx);
+  }
+  return createElement(originalType, rest, ...jsxChildren);
+};
+
 export const jsxDecorator = (storyFn: any, context: StoryContext) => {
   const story = storyFn();
 
@@ -167,9 +180,11 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
   } as Required<JSXOptions>;
 
   // Exclude decorators from source code snippet by default
-  const sourceJsx = context?.parameters.docs?.source?.excludeDecorators
+  const storyJsx = context?.parameters.docs?.source?.excludeDecorators
     ? context.originalStoryFn(context.args)
     : story;
+
+  const sourceJsx = mdxToJsx(storyJsx);
 
   let jsx = '';
   const rendered = renderJsx(sourceJsx, options);
