@@ -180,9 +180,9 @@ npm install @storybook/manager-webpack5 --save-dev
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
 
 ```shell
-yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5@next --dev
 # Or
-npm install @storybook/builder-webpack5 @storybook/manager-webpack5 --save-dev
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5@next --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
