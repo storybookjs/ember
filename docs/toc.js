@@ -438,6 +438,11 @@ module.exports = {
             },
           ],
         },
+        {
+          pathSegment:'how-to-reproduce',
+          title: 'Reproduce',
+          type: 'link',
+        },
       ],
     },
   ],
