@@ -31,7 +31,9 @@ export default {
   title: 'Basics / Component / with ngOnDestroy',
   component: OnDestroyComponent,
   parameters: {
-    storyshots: { disable: true }, // disabled due to new Date()
+    // disabled due to new Date()
+    storyshots: { disable: true },
+    chromatic: { disable: true },
   },
 } as Meta;
 
