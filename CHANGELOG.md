@@ -1,3 +1,15 @@
+## 6.3.0-beta.5 (May 30, 2021)
+
+### Bug Fixes
+
+- Vue2: Check types when `typescript.check` is true ([#15089](https://github.com/storybookjs/storybook/pull/15089))
+- Update markdown-to-jsx version to fix url links in comments ([#15083](https://github.com/storybookjs/storybook/pull/15083))
+
+### Maintenance
+
+- CLI: Add `SKIP_PREFLIGHT_CHECK` in CRA repro ([#15092](https://github.com/storybookjs/storybook/pull/15092))
+- Angular: Disable chromatic for story with dynamic time display ([#15074](https://github.com/storybookjs/storybook/pull/15074))
+
 ## 6.3.0-beta.4 (May 28, 2021)
 
 ### Bug Fixes
