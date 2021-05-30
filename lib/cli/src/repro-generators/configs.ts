@@ -39,6 +39,7 @@ export const cra: Parameters = {
     'npx create-react-app@{{version}} {{appName}} --use-npm',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
+    'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
   ].join(' && '),
 };
 
