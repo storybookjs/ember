@@ -1,10 +1,9 @@
 import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-// TODO: find a better way 🤷‍♂️
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 
@@ -48,9 +47,5 @@ function commandBuilder(
 }
 
 function runInstance(options: StandaloneOptions) {
-  return new Observable<unknown>((obs) => {
-    buildStandalone({ ...options })
-      .then((sucess: unknown) => obs.next(sucess))
-      .catch((err: unknown) => obs.error(err));
-  });
+  return from(buildStandalone(options));
 }
