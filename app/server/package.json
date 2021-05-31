@@ -63,7 +63,8 @@
     "yaml-loader": "^0.6.0"
   },
   "devDependencies": {
-    "fs-extra": "^9.0.1"
+    "fs-extra": "^9.0.1",
+    "yaml": "^1.10.0"
   },
   "engines": {
     "node": ">=10.13.0"

@@ -1,13 +1,15 @@
 import 'jest-specific-snapshot';
 import path from 'path';
 import fs from 'fs-extra';
+import YAML from 'yaml';
 import { compileCsfModule } from '.';
 
-const inputRegExp = /\.json$/;
+const inputRegExp = /\.(json|ya?ml)$/;
 
 async function generate(filePath: string) {
   const content = await fs.readFile(filePath, 'utf8');
-  return compileCsfModule(JSON.parse(content));
+  const parsed = filePath.endsWith('.json') ? JSON.parse(content) : YAML.parse(content);
+  return compileCsfModule(parsed);
 }
 
 describe('json-to-csf-compiler', () => {
