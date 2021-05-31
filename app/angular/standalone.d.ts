@@ -4,6 +4,7 @@ export type StandaloneOptions = Partial<
   CLIOptions &
     LoadOptions &
     BuilderOptions & {
+      mode?: 'static' | 'dev';
       angularBrowserTarget: string;
     }
 >;
