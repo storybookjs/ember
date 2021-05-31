@@ -12,11 +12,8 @@ export function webpack(config: Configuration) {
   config.module.rules.push({
     type: 'javascript/auto',
     test: /\.stories\.ya?ml/,
-    use: [
-      path.resolve(__dirname, './loader.js'),
-      'yaml-loader'
-    ],
-  })
+    use: [path.resolve(__dirname, './loader.js'), 'yaml-loader'],
+  });
 
   return config;
 }
