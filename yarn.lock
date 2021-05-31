@@ -5817,6 +5817,7 @@ __metadata:
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     regenerator-runtime: ^0.13.7
+    storybook-addon-outline: ^1.2.0
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
@@ -5896,6 +5897,26 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
+
+"@storybook/addon-measure@npm:latest":
+  version: 1.1.0
+  resolution: "@storybook/addon-measure@npm:1.1.0"
+  peerDependencies:
+    "@storybook/addons": ^6.3.0-beta.1
+    "@storybook/api": ^6.3.0-beta.1
+    "@storybook/components": ^6.3.0-beta.1
+    "@storybook/core-events": ^6.3.0-beta.1
+    "@storybook/theming": ^6.3.0-beta.1
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 33441086c7870b58fe718e3084b7fd7ff194938c243ac156a132eb7ee6e66b0e03d3556ab061b47fcc28ffdc134428502f9aeb67c615075f0869f34ae773a366
+  languageName: node
+  linkType: hard
 
 "@storybook/addon-postcss@npm:^2.0.0":
   version: 2.0.0
@@ -7437,6 +7458,27 @@ __metadata:
     react-dom: ^16.8.0 || ^17.0.0
   languageName: unknown
   linkType: soft
+
+"@storybook/router@npm:6.2.9":
+  version: 6.2.9
+  resolution: "@storybook/router@npm:6.2.9"
+  dependencies:
+    "@reach/router": ^1.3.4
+    "@storybook/client-logger": 6.2.9
+    "@types/reach__router": ^1.3.7
+    core-js: ^3.8.2
+    fast-deep-equal: ^3.1.3
+    global: ^4.4.0
+    lodash: ^4.17.20
+    memoizerific: ^1.11.3
+    qs: ^6.10.0
+    ts-dedent: ^2.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  checksum: eb1bb075ff68bb07b5a1bceda8581c35e90f0d726ba5d107804face72e31e1c629e2e26f57c71413fe162f9ef630cd44b1183b8615e67797a26b29437e028fe3
+  languageName: node
+  linkType: hard
 
 "@storybook/semver@npm:^7.3.2":
   version: 7.3.2
@@ -39037,6 +39079,18 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
+"storybook-addon-outline@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "storybook-addon-outline@npm:1.2.0"
+  dependencies:
+    "@storybook/addons": ^6.0.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  checksum: 9a6d5cb027b43ed9cbe9884b813eada1c02eede778254d328ca09c80e858a5b2e17f3e220aec6e5cb724fc28737a1ea7986b947a75fac09084a71eba039398aa
+  languageName: node
+  linkType: hard
+
 "storybook@workspace:lib/cli-storybook":
   version: 0.0.0-use.local
   resolution: "storybook@workspace:lib/cli-storybook"
@@ -40098,6 +40152,22 @@ resolve@1.19.0:
     stream-events: ^1.0.5
     uuid: ^3.3.2
   checksum: 315856efe6aec9b8d7812b5f2a0894aa4637c08055dbe9af43c491debec79fe8709b5965d1a9da2de7eee359ec93076900593044a08399a620c4a57ded49ddf0
+  languageName: node
+  linkType: hard
+
+"telejson@npm:^5.1.0":
+  version: 5.3.3
+  resolution: "telejson@npm:5.3.3"
+  dependencies:
+    "@types/is-function": ^1.0.0
+    global: ^4.4.0
+    is-function: ^1.0.2
+    is-regex: ^1.1.2
+    is-symbol: ^1.0.3
+    isobject: ^4.0.0
+    lodash: ^4.17.21
+    memoizerific: ^1.11.3
+  checksum: 14be7bf39634c253181eceabe10c6fe1768ba2baf7a1aad8b0289b9ca7fff976d4ecd9445628ef1e9faf382e2c46e3a7db7da2e3b0bd8a540917d20ff18cd182
   languageName: node
   linkType: hard
 
