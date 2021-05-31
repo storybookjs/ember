@@ -1,5 +1,4 @@
 import fse from 'fs-extra';
-import fs from 'fs';
 import dedent from 'ts-dedent';
 import { SupportedFrameworks } from '../project_types';
 
@@ -62,7 +61,7 @@ function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
   const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
 
   // If the framework template included a preview then we have nothing to do
-  if (fs.existsSync(previewPath)) {
+  if (fse.existsSync(previewPath)) {
     return;
   }
 
