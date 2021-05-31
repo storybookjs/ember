@@ -1,23 +1,39 @@
-import '@wordpress/jest-puppeteer-axe';
-import { defaultCommonConfig, CommonConfig } from './config';
+import AxePuppeteer from '@axe-core/puppeteer';
+import { defaultAxeConfig, AxeConfig } from './config';
 import { puppeteerTest } from './puppeteerTest';
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace,no-redeclare
-  namespace jest {
-    interface Matchers<R, T> {
-      toPassAxeTests(parameters: any): R;
-    }
-  }
-}
+export const axeTest = (customConfig: Partial<AxeConfig> = {}) => {
+  const extendedConfig = { ...defaultAxeConfig, ...customConfig };
+  const { beforeAxeTest } = extendedConfig;
 
-export const axeTest = (customConfig: Partial<CommonConfig> = {}) =>
-  puppeteerTest({
-    ...defaultCommonConfig,
-    ...customConfig,
-    async testBody(page, options) {
-      const parameters = options.context.parameters.a11y;
-      const include = parameters?.element ?? '#root';
-      await expect(page).toPassAxeTests({ ...parameters, include });
+  return puppeteerTest({
+    ...extendedConfig,
+    async testBody(page, testOptions) {
+      const { element = '#root', exclude, disabledRules, options, config } =
+        testOptions.context.parameters.a11y || {};
+      await beforeAxeTest(page, options);
+      const axe = new AxePuppeteer(page);
+      axe.include(element);
+
+      if (exclude) {
+        axe.exclude(exclude);
+      }
+
+      if (options) {
+        axe.options(options);
+      }
+
+      if (disabledRules) {
+        axe.disableRules(disabledRules);
+      }
+
+      if (config) {
+        axe.configure(config);
+      }
+
+      const { violations } = await axe.analyze();
+
+      expect(violations).toHaveLength(0);
     },
   });
+};

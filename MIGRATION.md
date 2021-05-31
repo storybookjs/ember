@@ -1,11 +1,21 @@
 <h1>Migration</h1>
 
+- [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [Webpack 5 manager build](#webpack-5-manager-build)
+  - [Angular 12 upgrade](#angular-12-upgrade)
+  - [Lit support](#lit-support)
+  - [6.3 deprecations](#63-deprecations)
+    - [Deprecated addon-knobs](#deprecated-addon-knobs)
+    - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
+    - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
     - [New Angular storyshots format](#new-angular-storyshots-format)
     - [Deprecated Angular story component](#deprecated-angular-story-component)
     - [New Angular renderer](#new-angular-renderer)
+    - [Components without selectors](#components-without-selectors)
+  - [Packages now available as ESModules](#packages-now-available-as-esmodules)
   - [6.2 Deprecations](#62-deprecations)
     - [Deprecated implicit PostCSS loader](#deprecated-implicit-postcss-loader)
     - [Deprecated default PostCSS plugins](#deprecated-default-postcss-plugins)
@@ -151,6 +161,86 @@
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
+## From version 6.2.x to 6.3.0
+
+### Webpack 5 manager build
+
+Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
+
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+
+```shell
+yarn add @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/manager-webpack5 --save-dev
+```
+
+### Angular 12 upgrade
+
+Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
+
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5@next --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5@next --save-dev
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
+### Lit support
+
+Storybook 6.3 introduces Lit 2 support in a non-breaking way to ease migration from `lit-html`/`lit-element` to `lit`.
+
+To do so, it relies on helpers added in the latest minor versions of `lit-html`/`lit-element`. So when upgrading to Storybook 6.3, please ensure your project is using `lit-html` 1.4.x or `lit-element` 2.5.x.
+
+According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
+
+### 6.3 deprecations
+
+#### Deprecated addon-knobs
+
+We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
+
+- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
+- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
+
+#### Deprecated scoped blocks imports
+
+In 6.3, we changed doc block imports from `@storybook/addon-docs/blocks` to `@storybook/addon-docs`. This makes it possible for bundlers to automatically choose the ESM or CJS version of the library depending on the context.
+
+To update your code, you should be able to global replace `@storybook/addon-docs/blocks` with `@storybook/addon-docs`. Example:
+
+```js
+// before
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+// after
+import { Meta, Story } from '@storybook/addon-docs';
+```
+
+#### Deprecated `argType.defaultValue`
+
+Previously, unset `args` were set to the `argType.defaultValue` if set or inferred from the component's prop types (etc.). In 6.3 we no longer infer default values and instead set arg values to `undefined` when unset, allowing the framework to supply the default value.
+
+If you were using `argType.defaultValue` to fix issues with the above inference, it should no longer be necessary, you can remove that code. If you were using it to set a default value for an arg, there is a simpler way; simply set a value for the arg at the component level:
+
+```js
+export default {
+  component: MyComponent,
+  args: {
+    argName: 'default-value',
+  },
+};
+```
+
 ## From version 6.1.x to 6.2.0
 
 ### MDX pattern tweaked
@@ -201,6 +291,19 @@ export const parameters = {
 ```
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
+
+#### Components without selectors
+
+When the new Angular renderer is used, all Angular Story components must either have a selector, or be added to the `entryComponents` array of the story's `moduleMetadata`. If the component has any `Input`s or `Output`s to be controlled with `args`, a selector should be added.
+
+### Packages now available as ESModules
+
+Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. One common culprit is doc blocks, which [is fixed in 6.3](#deprecated-scoped-blocks-imports). In 6.2, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
+
+```json
+// In your jest config
+transformIgnorePatterns: ['/node_modules/(?!@storybook)']
+```
 
 ### 6.2 Deprecations
 

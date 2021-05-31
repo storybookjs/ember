@@ -10,7 +10,7 @@ export {
   forceReRender,
 } from './preview';
 
-export * from './preview/types-6-0';
+export * from './preview/types-6-3';
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();

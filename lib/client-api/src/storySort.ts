@@ -1,12 +1,15 @@
 import { StorySortObjectParameter, StorySortComparator } from '@storybook/addons';
 
+const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
+
 export const storySort = (options: StorySortObjectParameter = {}): StorySortComparator => (
   a: any,
   b: any
 ): number => {
   // If the two stories have the same story kind, then use the default
   // ordering, which is the order they are defined in the story file.
-  if (a[1].kind === b[1].kind) {
+  // only when includeNames is falsy
+  if (a[1].kind === b[1].kind && !options.includeNames) {
     return 0;
   }
 
@@ -15,8 +18,13 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   let order = options.order || [];
 
   // Examine each part of the story kind in turn.
-  const storyKindA = a[1].kind.split('/');
-  const storyKindB = b[1].kind.split('/');
+  const storyKindA = a[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
+  const storyKindB = b[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
+  if (options.includeNames) {
+    storyKindA.push(a[1].name);
+    storyKindB.push(b[1].name);
+  }
+
   let depth = 0;
   while (storyKindA[depth] || storyKindB[depth]) {
     // Stories with a shorter depth should go first.

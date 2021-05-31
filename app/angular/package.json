@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-alpha.7",
+  "version": "6.3.0-beta.5",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/angular"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/ts3.9/client/index.js",
@@ -41,11 +45,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.7",
-    "@storybook/api": "6.3.0-alpha.7",
-    "@storybook/core": "6.3.0-alpha.7",
-    "@storybook/core-common": "6.3.0-alpha.7",
-    "@storybook/node-logger": "6.3.0-alpha.7",
+    "@storybook/addons": "6.3.0-beta.5",
+    "@storybook/api": "6.3.0-beta.5",
+    "@storybook/core": "6.3.0-beta.5",
+    "@storybook/core-common": "6.3.0-beta.5",
+    "@storybook/node-logger": "6.3.0-beta.5",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -67,6 +71,7 @@
     "webpack": "4"
   },
   "devDependencies": {
+    "@angular-devkit/architect": "~0.1102.0",
     "@angular-devkit/build-angular": "~0.1102.0",
     "@angular-devkit/core": "^11.2.0",
     "@angular/common": "^11.2.0",
@@ -77,7 +82,7 @@
     "@angular/forms": "^11.2.0",
     "@angular/platform-browser": "^11.2.0",
     "@angular/platform-browser-dynamic": "^11.2.0",
-    "@nrwl/workspace": "^11.1.5",
+    "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
     "@types/jest": "^26.0.16",
     "@webcomponents/custom-elements": "^1.4.3",
@@ -86,6 +91,7 @@
     "ts-jest": "^26.4.4"
   },
   "peerDependencies": {
+    "@angular-devkit/architect": ">=0.8.9",
     "@angular-devkit/build-angular": ">=0.8.9",
     "@angular-devkit/core": "^0.6.1 || >=7.0.0",
     "@angular/common": ">=6.0.0",
@@ -120,5 +126,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ca7182ff5f2ce82ade20e198fed65cd701bf6084"
+  "gitHead": "7ce19a9db3879b3a14ca6d1f7d4f6f7cfb19aca6"
 }

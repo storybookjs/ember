@@ -1,5 +1,6 @@
 import fse from 'fs-extra';
 import fs from 'fs';
+import dedent from 'ts-dedent';
 import { SupportedFrameworks } from '../project_types';
 
 interface ConfigureMainOptions {
@@ -36,14 +37,28 @@ function configureMain({
   const stringified = `module.exports = ${JSON.stringify(config, null, 2)
     .replace(/\\"/g, '"')
     .replace(/['"]%%/g, '')
-    .replace(/%%['"]/, '')}`;
+    .replace(/%%['"]/, '')
+    .replace(/\\n/g, '\r\n')}`;
   fse.ensureDirSync('./.storybook');
   fse.writeFileSync(`./.storybook/main.${commonJs ? 'cjs' : 'js'}`, stringified, {
     encoding: 'utf8',
   });
 }
 
+const frameworkToPreviewParts: Partial<Record<SupportedFrameworks, any>> = {
+  angular: {
+    prefix: dedent`
+      import { setCompodocJson } from "@storybook/addon-docs/angular";
+      import docJson from "../documentation.json";
+      setCompodocJson(docJson);
+      
+      `.trimStart(),
+    extraParameters: 'docs: { inlineStories: true },',
+  },
+};
+
 function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
+  const { prefix = '', extraParameters = '' } = frameworkToPreviewParts[framework] || {};
   const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
 
   // If the framework template included a preview then we have nothing to do
@@ -51,26 +66,20 @@ function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
     return;
   }
 
-  const parameters = `
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
-  },
-}`;
-
-  const preview =
-    framework === 'angular'
-      ? `
-import { setCompodocJson } from "@storybook/addon-docs/angular";
-import docJson from "../documentation.json";
-setCompodocJson(docJson);
-
-${parameters}`
-      : parameters;
+  const preview = dedent`
+    ${prefix}
+    export const parameters = {
+      actions: { argTypesRegex: "^on[A-Z].*" },
+      controls: {
+        matchers: {
+          color: /(background|color)$/i,
+          date: /Date$/,
+        },
+      },
+      ${extraParameters}
+    }`
+    .replace('  \n', '')
+    .trim();
 
   fse.writeFileSync(previewPath, preview, { encoding: 'utf8' });
 }

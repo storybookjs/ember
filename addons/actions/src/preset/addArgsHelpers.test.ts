@@ -1,76 +1,67 @@
 import { StoryContext } from '@storybook/addons';
 import { inferActionsFromArgTypesRegex, addActionsFromArgTypes } from './addArgsHelpers';
 
-const withDefaultValue = (argTypes) =>
-  Object.keys(argTypes).filter((key) => !!argTypes[key].defaultValue);
-
 describe('actions parameter enhancers', () => {
   describe('actions.argTypesRegex parameter', () => {
-    const baseParameters = {
-      argTypes: { onClick: {}, onFocus: {}, somethingElse: {} },
-      actions: { argTypesRegex: '^on.*' },
-    };
+    const parameters = { actions: { argTypesRegex: '^on.*' } };
+    const argTypes = { onClick: {}, onFocus: {}, somethingElse: {} };
 
     it('should add actions that match a pattern', () => {
-      const parameters = baseParameters;
-      const argTypes = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onFocus']);
+      const args = inferActionsFromArgTypesRegex(({
+        argTypes,
+        parameters,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function),
+      });
     });
 
     it('should override pre-existing argTypes', () => {
-      const parameters = {
-        ...baseParameters,
+      const args = inferActionsFromArgTypesRegex(({
+        parameters,
         argTypes: {
           onClick: { defaultValue: 'pre-existing value' },
         },
-      };
-      const argTypes = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick']);
-      expect(argTypes.onClick.defaultValue).not.toBeNull();
-      expect(argTypes.onClick.defaultValue).not.toEqual('pre-existing value');
+      } as unknown) as StoryContext);
+      expect(args).toEqual({
+        onClick: expect.any(Function),
+      });
     });
 
     it('should do nothing if actions are disabled', () => {
-      const parameters = {
-        ...baseParameters,
-        actions: { ...baseParameters.actions, disable: true },
-      };
-      const result = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(result).toEqual(parameters.argTypes);
+      const args = inferActionsFromArgTypesRegex(({
+        parameters: {
+          ...parameters,
+          actions: { ...parameters.actions, disable: true },
+        },
+        argTypes,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({});
     });
   });
 
   describe('argTypes.action parameter', () => {
-    const baseParameters = {
-      argTypes: {
-        onClick: { action: 'clicked!' },
-        onBlur: { action: 'blurred!' },
-      },
+    const argTypes = {
+      onClick: { action: 'clicked!' },
+      onBlur: { action: 'blurred!' },
     };
     it('should add actions based on action.args', () => {
-      const parameters = baseParameters;
-      const argTypes = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onBlur']);
-    });
-
-    it('should override pre-existing args', () => {
-      const parameters = {
-        ...baseParameters,
-        argTypes: {
-          onClick: { defaultValue: 'pre-existing value', action: 'onClick' },
-          onBlur: { action: 'onBlur' },
-        },
-      };
-      const argTypes = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onBlur']);
-      expect(argTypes.onClick.defaultValue).not.toBeNull();
-      expect(argTypes.onClick.defaultValue).not.toEqual('pre-existing value');
+      expect(
+        addActionsFromArgTypes(({ argTypes, parameters: {} } as unknown) as StoryContext)
+      ).toEqual({
+        onClick: expect.any(Function),
+        onBlur: expect.any(Function),
+      });
     });
 
     it('should do nothing if actions are disabled', () => {
-      const parameters = { ...baseParameters, actions: { disable: true } };
-      const result = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(result).toEqual(parameters.argTypes);
+      expect(
+        addActionsFromArgTypes(({
+          argTypes,
+          parameters: { actions: { disable: true } },
+        } as unknown) as StoryContext)
+      ).toEqual({});
     });
   });
 });

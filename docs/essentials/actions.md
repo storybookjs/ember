@@ -13,7 +13,7 @@ The actions addon is used to display data received by event handler (callback) a
 
 ## Action args
 
-Actions works via supplying special Storybook-generated “action” arguments (referred to as "args" for short) to your stories. There are two ways to get an action arg:
+Actions work via supplying special Storybook-generated “action” arguments (referred to as "args" for short) to your stories. There are two ways to get an action arg:
 
 ### Action argType annotation
 

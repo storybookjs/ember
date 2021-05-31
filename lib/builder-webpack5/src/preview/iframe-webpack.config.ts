@@ -7,7 +7,6 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
-import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 import themingPaths from '@storybook/theming/paths';
@@ -59,6 +58,7 @@ export default async ({
   frameworkPath,
   presets,
   typescriptOptions,
+  modern,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -184,33 +184,21 @@ export default async ({
         es6Transpiler() as any,
         {
           test: /\.md$/,
-          use: [
-            {
-              loader: require.resolve('raw-loader'),
-            },
-          ],
+          type: 'asset/source',
         },
       ],
     },
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.cjs'],
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
-      mainFields: ['browser', 'module', 'main'],
+      mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
         ...themingPaths,
         ...storybookPaths,
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
       },
-
-      plugins: [
-        // Transparently resolve packages via PnP when needed; noop otherwise
-        PnpWebpackPlugin,
-      ],
       fallback: { path: false },
-    },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     optimization: {
       splitChunks: {

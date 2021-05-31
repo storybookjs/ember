@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { document } from 'global';
+import global from 'global';
 import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
 
@@ -11,6 +11,8 @@ import { StoryStore } from '@storybook/client-api';
 
 import { NoDocs } from './NoDocs';
 import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
+
+const { document } = global;
 
 // We have "changed" story if this changes
 interface RenderMetadata {

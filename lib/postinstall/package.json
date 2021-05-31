@@ -1,6 +1,6 @@
 {
   "name": "@storybook/postinstall",
-  "version": "6.3.0-alpha.7",
+  "version": "6.3.0-beta.5",
   "description": "Storybook addons postinstall utilities",
   "keywords": [
     "api",
@@ -14,6 +14,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/postinstall"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -47,5 +51,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ca7182ff5f2ce82ade20e198fed65cd701bf6084"
+  "gitHead": "7ce19a9db3879b3a14ca6d1f7d4f6f7cfb19aca6",
+  "sbmodern": "dist/modern/index.js"
 }

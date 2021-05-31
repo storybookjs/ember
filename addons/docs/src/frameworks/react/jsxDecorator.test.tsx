@@ -155,12 +155,13 @@ describe('renderJsx', () => {
 });
 
 // @ts-ignore
-const makeContext = (name: string, parameters: any, args: any): StoryContext => ({
+const makeContext = (name: string, parameters: any, args: any, extra?: object): StoryContext => ({
   id: `jsx-test--${name}`,
   kind: 'js-text',
   name,
   parameters,
   args,
+  ...extra,
 });
 
 describe('jsxDecorator', () => {
@@ -176,6 +177,32 @@ describe('jsxDecorator', () => {
     const storyFn = (args: any) => <div>args story</div>;
     const context = makeContext('args', { __isArgsStory: true }, {});
     jsxDecorator(storyFn, context);
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'jsx-test--args',
+      '<div>\n  args story\n</div>'
+    );
+  });
+
+  it('should not render decorators when provided excludeDecorators parameter', () => {
+    const storyFn = (args: any) => <div>args story</div>;
+    const decoratedStoryFn = (args: any) => (
+      <div style={{ padding: 25, border: '3px solid red' }}>{storyFn(args)}</div>
+    );
+    const context = makeContext(
+      'args',
+      {
+        __isArgsStory: true,
+        docs: {
+          source: {
+            excludeDecorators: true,
+          },
+        },
+      },
+      {},
+      { originalStoryFn: storyFn }
+    );
+    jsxDecorator(decoratedStoryFn, context);
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
@@ -224,5 +251,25 @@ describe('jsxDecorator', () => {
     const context = makeContext('args', { __isArgsStory: true, jsx }, {});
     jsxDecorator(storyFn, context);
     expect(transformSource).toHaveBeenCalledWith('<div>\n  args story\n</div>', context);
+  });
+
+  it('renders MDX properly', () => {
+    // FIXME: generate this from actual MDX
+    const mdxElement = {
+      type: { displayName: 'MDXCreateElement' },
+      props: {
+        mdxType: 'div',
+        originalType: 'div',
+        className: 'foo',
+      },
+    };
+
+    jsxDecorator(() => mdxElement, makeContext('mdx-args', { __isArgsStory: true }, {}));
+
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'jsx-test--mdx-args',
+      '<div className="foo" />'
+    );
   });
 });

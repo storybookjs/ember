@@ -1,4 +1,4 @@
-import { document } from 'global';
+import global from 'global';
 import React, { Fragment, useEffect } from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import {
@@ -10,11 +10,11 @@ import {
   styled,
   useTheme,
 } from '@storybook/theming';
-import { withCssResources } from '@storybook/addon-cssresources';
-import { DocsPage } from '@storybook/addon-docs/blocks';
 import { Symbols } from '@storybook/components';
 
 import addHeadWarning from './head-warning';
+
+const { document } = global;
 
 if (process.env.NODE_ENV === 'development') {
   if (!process.env.DOTENV_DEVELOPMENT_DISPLAY_WARNING) {
@@ -87,7 +87,6 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  withCssResources,
   (StoryFn, { globals: { theme = 'light' } }) => {
     switch (theme) {
       case 'side-by-side': {
@@ -159,7 +158,6 @@ export const parameters = {
   },
   docs: {
     theme: themes.light,
-    page: () => <DocsPage subtitleSlot={({ kind }) => `Subtitle: ${kind}`} />,
   },
   controls: {
     presetColors: [
@@ -209,6 +207,7 @@ export const globalTypes = {
         { value: 'side-by-side', icon: 'sidebar', title: 'side by side' },
         { value: 'stacked', icon: 'bottombar', title: 'stacked' },
       ],
+      showName: true,
     },
   },
   locale: {

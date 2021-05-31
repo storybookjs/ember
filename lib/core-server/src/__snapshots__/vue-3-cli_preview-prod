@@ -3,8 +3,8 @@
 exports[`vue-3-cli preview production mode 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-server/src/globals/polyfills.ts",
-    "ROOT/lib/core-server/src/globals/globals.ts",
+    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
+    "ROOT/lib/core-client/dist/esm/globals/globals.js",
     "ROOT/examples/vue-3-cli/.storybook/storybook-init-framework-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-other-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/vue3/config.js-generated-other-entry.js",
@@ -96,6 +96,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -165,6 +166,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "modules": false,
                     "shippedProposals": true,
                     "targets": "defaults",
@@ -291,6 +293,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -382,6 +385,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],

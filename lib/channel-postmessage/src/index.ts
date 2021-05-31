@@ -1,9 +1,11 @@
-import { window as globalWindow, document, location } from 'global';
+import global from 'global';
 import * as EVENTS from '@storybook/core-events';
 import Channel, { ChannelEvent, ChannelHandler } from '@storybook/channels';
 import { logger, pretty } from '@storybook/client-logger';
 import { isJSON, parse, stringify } from 'telejson';
 import qs from 'qs';
+
+const { window: globalWindow, document, location } = global;
 
 interface Config {
   page: 'manager' | 'preview';
@@ -231,8 +233,8 @@ const getEventSourceUrl = (event: MessageEvent) => {
 
   if (frame && remainder.length === 0) {
     const src = frame.getAttribute('src');
-    const { origin, pathname } = new URL(src, document.location);
-    return origin + pathname;
+    const { protocol, host, pathname } = new URL(src, document.location);
+    return `${protocol}//${host}${pathname}`;
   }
 
   if (remainder.length > 0) {

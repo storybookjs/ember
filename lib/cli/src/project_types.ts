@@ -86,10 +86,12 @@ export enum StoryFormat {
   MDX = 'mdx',
 }
 
-export enum Builder {
+export enum CoreBuilder {
   Webpack4 = 'webpack4',
   Webpack5 = 'webpack5',
 }
+
+export type Builder = CoreBuilder | string;
 
 export enum SupportedLanguage {
   JAVASCRIPT = 'javascript',
@@ -211,7 +213,7 @@ export const supportedTemplates: TemplateConfiguration[] = [
   },
   {
     preset: ProjectType.WEB_COMPONENTS,
-    dependencies: ['lit-element', 'lit-html'],
+    dependencies: ['lit-element', 'lit-html', 'lit'],
     matcherFunction: ({ dependencies }) => {
       return dependencies.some(Boolean);
     },

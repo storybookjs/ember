@@ -8,6 +8,7 @@ import {
   StoryFormat,
   SupportedLanguage,
   Builder,
+  CoreBuilder,
 } from './project_types';
 import { commandLog, codeLog, paddedLog } from './helpers';
 import angularGenerator from './generators/ANGULAR';
@@ -48,6 +49,7 @@ type CommandOptions = {
   parser?: string;
   yes?: boolean;
   builder?: Builder;
+  linkable?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -68,7 +70,8 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
   const generatorOptions = {
     storyFormat: options.storyFormat || defaultStoryFormat,
     language,
-    builder: options.builder || Builder.Webpack4,
+    builder: options.builder || CoreBuilder.Webpack4,
+    linkable: !!options.linkable,
   };
 
   const end = () => {

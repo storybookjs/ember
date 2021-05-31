@@ -1,9 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`csf-to-mdx transforms correctly using "story-function.input.js" data 1`] = `
-"import { document } from 'global';
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+"import global from 'global';
+import { Meta, Story } from '@storybook/addon-docs';
 
+const {
+  document,
+} = global;
 <Meta title='Function' />
 
 <Story name='function' height='100px'>{() => {
