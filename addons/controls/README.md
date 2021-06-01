@@ -101,7 +101,6 @@ export const Reflow = ({ count, label, ...args }) => (
         <Button key={i} label={`${label} ${i}`} {...args} />
     ))}
   </>
-  <>{Array.from({ length: count }, (_, i) => <Button label={`${label} ${i}` {...args}} />)}</>
 );
 
 Reflow.args = { 
