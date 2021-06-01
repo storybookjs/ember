@@ -4,8 +4,9 @@ import path from 'path';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import dedent from 'ts-dedent';
-import { createAndInit, Parameters, exec } from './repro-generators/scripts';
+import { createAndInit, exec } from './repro-generators/scripts';
 import * as configs from './repro-generators/configs';
+import type { Parameters } from './repro-generators/configs';
 import { SupportedFrameworks } from './project_types';
 
 const logger = console;
@@ -20,9 +21,12 @@ interface ReproOptions {
   pnp?: boolean;
 }
 
-const TEMPLATES = configs as Record<string, Parameters>;
+// react_in_yarn_workspace is only for e2e tests not users
+const TEMPLATES = Object.fromEntries(
+  Object.entries(configs).filter((entry) => entry[0] !== 'react_in_yarn_workspace')
+) as Record<string, Parameters>;
 
-const FRAMEWORKS = Object.values(configs).reduce<Record<SupportedFrameworks, Parameters[]>>(
+const FRAMEWORKS = Object.values(TEMPLATES).reduce<Record<SupportedFrameworks, Parameters[]>>(
   (acc, cur) => {
     acc[cur.framework] = [...(acc[cur.framework] || []), cur];
     return acc;
