@@ -58,6 +58,7 @@ export const react: Parameters = {
   name: 'react',
   version: 'latest',
   generator: fromDeps('react', 'react-dom'),
+  additionalDeps: ['prop-types'],
 };
 
 export const react_typescript: Parameters = {
