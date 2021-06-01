@@ -1,3 +1,13 @@
+## 6.3.0-beta.6 (June 1, 2021)
+
+### Features
+
+- CLI: Add Server template generator ([#13979](https://github.com/storybookjs/storybook/pull/13979))
+
+### Bug Fixes
+
+- CLI: Disable `react_in_yarn_workspace` template for users, keep in e2e ([#15114](https://github.com/storybookjs/storybook/pull/15114))
+
 ## 6.3.0-beta.5 (May 30, 2021)
 
 ### Bug Fixes
