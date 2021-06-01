@@ -22,6 +22,7 @@
   "main": "dist/ts3.9/client/index.js",
   "module": "dist/ts3.9/client/index.js",
   "types": "dist/ts3.9/client/index.d.ts",
+  "builders": "dist/ts3.9/builders/builders.json",
   "typesVersions": {
     "<3.8": {
       "*": [
