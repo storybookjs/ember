@@ -135,6 +135,10 @@ If you already have a reproduction on your local machine, you can similarly link
 npx sb@next link --local /path/to/local-repro-directory
 ```
 
+<div class="aside">
+💡  The `sb link` command relies on `yarn 2` linking under the hood. It requires that the local repro is using `yarn 2`, which will be the case if you're using the [`sb repro` command](./how-to-reproduce) per our contributing guidelines. If you are trying to link to a non-`yarn 2` project, linking will fail.
+</div>
+
 ## Troubleshooting
 
 <details>
