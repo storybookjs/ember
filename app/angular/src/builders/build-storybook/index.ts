@@ -2,7 +2,7 @@ import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/ar
 import { JsonObject } from '@angular-devkit/core';
 import { from, Observable, of } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
