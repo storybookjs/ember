@@ -1,3 +1,13 @@
+## 6.3.0-beta.7 (June 2, 2021)
+
+### Features
+
+- Angular: Add angular builder to start + build storybook ([#15061](https://github.com/storybookjs/storybook/pull/15061))
+
+### Bug Fixes
+
+- CLI: Fix react repro template deps ([#15118](https://github.com/storybookjs/storybook/pull/15118))
+
 ## 6.3.0-beta.6 (June 1, 2021)
 
 ### Features
