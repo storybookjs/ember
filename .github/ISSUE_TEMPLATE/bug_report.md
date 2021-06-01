@@ -1,6 +1,6 @@
 ---
 name: Bug report 🐞
-about: Something is broken, and you have a reliable reproduction? Let us know here. For questions, please use "Question" below.
+about: Something is broken and you have a reliable reproduction? Let us know here. For questions, please use "Question" below.
 labels: needs triage, bug
 ---
 
