@@ -8,8 +8,8 @@ import { parse } from './Number';
 
 type RangeProps = ControlProps<NumberValue | null> & RangeConfig;
 
-const RangeInput = styled.input<{ hasValue: boolean; min: number; max: number; value: number }>(
-  ({ theme, hasValue, min, max, value }) => ({
+const RangeInput = styled.input<{ min: number; max: number; value: number }>(
+  ({ theme, min, max, value }) => ({
     // Resytled using http://danielstern.ca/range.css/#/
     '&': {
       width: '100%',
@@ -183,7 +183,6 @@ export const RangeControl: FC<RangeProps> = ({
       <RangeLabel>{min}</RangeLabel>
       <RangeInput
         id={getControlId(name)}
-        hasValue={hasValue}
         type="range"
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}
