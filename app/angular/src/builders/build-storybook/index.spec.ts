@@ -5,7 +5,7 @@ import * as path from 'path';
 
 const buildStandaloneMock = jest.fn().mockImplementation((_options: unknown) => Promise.resolve());
 
-jest.mock('@storybook/angular/standalone', () => buildStandaloneMock);
+jest.doMock('@storybook/angular/standalone', () => buildStandaloneMock);
 
 describe('Build Storybook Builder', () => {
   let architect: Architect;
