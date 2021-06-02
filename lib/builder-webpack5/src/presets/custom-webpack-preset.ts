@@ -10,10 +10,10 @@ export async function webpack(config: Configuration, options: Options) {
   // @ts-ignore
   const { configDir, configType, presets, webpackConfig } = options;
 
-  const coreOptions = await options.presets.apply<CoreConfig>('core');
+  const coreOptions = await presets.apply<CoreConfig>('core');
 
   let defaultConfig = config;
-  if (!coreOptions.disableWebpackDefaults) {
+  if (!coreOptions?.disableWebpackDefaults) {
     defaultConfig = await createDefaultWebpackConfig(config, options);
   }
 
