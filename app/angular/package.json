@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-beta.7",
+  "version": "6.3.0-beta.8",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -22,7 +22,6 @@
   "main": "dist/ts3.9/client/index.js",
   "module": "dist/ts3.9/client/index.js",
   "types": "dist/ts3.9/client/index.d.ts",
-  "builders": "dist/ts3.9/builders/builders.json",
   "typesVersions": {
     "<3.8": {
       "*": [
@@ -46,11 +45,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-beta.7",
-    "@storybook/api": "6.3.0-beta.7",
-    "@storybook/core": "6.3.0-beta.7",
-    "@storybook/core-common": "6.3.0-beta.7",
-    "@storybook/node-logger": "6.3.0-beta.7",
+    "@storybook/addons": "6.3.0-beta.8",
+    "@storybook/api": "6.3.0-beta.8",
+    "@storybook/core": "6.3.0-beta.8",
+    "@storybook/core-common": "6.3.0-beta.8",
+    "@storybook/node-logger": "6.3.0-beta.8",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -127,5 +126,6 @@
   "publishConfig": {
     "access": "public"
   },
+  "builders": "dist/ts3.9/builders/builders.json",
   "gitHead": "273d1aad5c54cb66bd8b968e0b6ff41860ef205e"
 }
