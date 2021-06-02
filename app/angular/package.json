@@ -22,6 +22,7 @@
   "main": "dist/ts3.9/client/index.js",
   "module": "dist/ts3.9/client/index.js",
   "types": "dist/ts3.9/client/index.d.ts",
+  "builders": "dist/ts3.9/builders/builders.json",
   "typesVersions": {
     "<3.8": {
       "*": [
@@ -126,6 +127,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "4421c26adf5c185fc6f81d20a422aec122d93918"
+  "gitHead": "df59c3933e319f216ef41b6a516102884e54e7f0"
 }
