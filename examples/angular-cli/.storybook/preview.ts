@@ -25,7 +25,7 @@ export const parameters = {
     },
   },
   chromatic: {
-    delay: 200,
+    delay: 500,
   }
 };
 
