@@ -5818,7 +5818,7 @@ __metadata:
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     regenerator-runtime: ^0.13.7
-    storybook-addon-outline: ^1.3.1
+    storybook-addon-outline: ^1.3.2
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
@@ -6118,7 +6118,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addons@6.3.0-beta.8, @storybook/addons@workspace:*, @storybook/addons@workspace:lib/addons":
+"@storybook/addons@6.3.0-beta.8, @storybook/addons@^6.3.0-beta.6, @storybook/addons@workspace:*, @storybook/addons@workspace:lib/addons":
   version: 0.0.0-use.local
   resolution: "@storybook/addons@workspace:lib/addons"
   dependencies:
@@ -6215,7 +6215,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/api@6.3.0-beta.8, @storybook/api@workspace:*, @storybook/api@workspace:lib/api":
+"@storybook/api@6.3.0-beta.8, @storybook/api@^6.3.0-beta.6, @storybook/api@workspace:*, @storybook/api@workspace:lib/api":
   version: 0.0.0-use.local
   resolution: "@storybook/api@workspace:lib/api"
   dependencies:
@@ -6552,7 +6552,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/components@6.3.0-beta.8, @storybook/components@workspace:*, @storybook/components@workspace:lib/components":
+"@storybook/components@6.3.0-beta.8, @storybook/components@^6.3.0-beta.6, @storybook/components@workspace:*, @storybook/components@workspace:lib/components":
   version: 0.0.0-use.local
   resolution: "@storybook/components@workspace:lib/components"
   dependencies:
@@ -6684,7 +6684,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/core-events@6.3.0-beta.8, @storybook/core-events@workspace:*, @storybook/core-events@workspace:lib/core-events":
+"@storybook/core-events@6.3.0-beta.8, @storybook/core-events@^6.3.0-beta.6, @storybook/core-events@workspace:*, @storybook/core-events@workspace:lib/core-events":
   version: 0.0.0-use.local
   resolution: "@storybook/core-events@workspace:lib/core-events"
   dependencies:
@@ -39059,9 +39059,9 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"storybook-addon-outline@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "storybook-addon-outline@npm:1.3.1"
+"storybook-addon-outline@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "storybook-addon-outline@npm:1.3.2"
   dependencies:
     "@storybook/addons": ^6.3.0-beta.6
     "@storybook/api": ^6.3.0-beta.6
@@ -39071,7 +39071,7 @@ resolve@1.19.0:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
-  checksum: 4af1f3cbc334195204fa7220624e00abf5a5a31100fc659a770780ffa47c83e14f9c021cfac21608634793efb6ad243cdc54ca6f58bc48da7e8a2d796791c62b
+  checksum: 75586ff5093ab904ad1d5d98b0934d009192ebb02db4ae986f40f50e4b72e0ce131afa46932d68dca6e9849a13e7355cb7745b19dc60e5b9624a696eb8b611aa
   languageName: node
   linkType: hard
 
