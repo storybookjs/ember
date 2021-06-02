@@ -5818,7 +5818,7 @@ __metadata:
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     regenerator-runtime: ^0.13.7
-    storybook-addon-outline: ^1.3.0
+    storybook-addon-outline: ^1.3.1
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
@@ -39059,18 +39059,19 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"storybook-addon-outline@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "storybook-addon-outline@npm:1.3.0"
+"storybook-addon-outline@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "storybook-addon-outline@npm:1.3.1"
   dependencies:
     "@storybook/addons": ^6.3.0-beta.6
     "@storybook/api": ^6.3.0-beta.6
     "@storybook/components": ^6.3.0-beta.6
     "@storybook/core-events": ^6.3.0-beta.6
+    ts-dedent: ^2.1.1
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
-  checksum: bd973699508e9a553a101563663122cc9648d5a389567b07b6f09ee4db1587c9dd11ebe75b66b74336c927d9b18f254d59f1d398c6e335d672af212db9430442
+  checksum: 4af1f3cbc334195204fa7220624e00abf5a5a31100fc659a770780ffa47c83e14f9c021cfac21608634793efb6ad243cdc54ca6f58bc48da7e8a2d796791c62b
   languageName: node
   linkType: hard
 
@@ -41011,6 +41012,13 @@ resolve@1.19.0:
   version: 2.0.0
   resolution: "ts-dedent@npm:2.0.0"
   checksum: dc22c2a7184ce80cb19b5619199dc33128750c7ffe366eecdb50fcc39a19347921d950c90af8418ef4d15271528bc75340efa23acce271aeb618c9a54fd0383c
+  languageName: node
+  linkType: hard
+
+"ts-dedent@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "ts-dedent@npm:2.1.1"
+  checksum: 7ac68dbc2e864db6e3f0500a8b6af5bf775020bfe09816cf647469e06acdcb76d2a24b1b0211614c3c44e0978aa081a51a3dde6b8f211a68f945cbc177f7f9c2
   languageName: node
   linkType: hard
 
