@@ -1,4 +1,3 @@
-import { PlatformRef } from '@angular/core';
 import { AbstractRenderer } from './AbstractRenderer';
 import { DocsRenderer } from './DocsRenderer';
 import { CanvasRenderer } from './CanvasRenderer';

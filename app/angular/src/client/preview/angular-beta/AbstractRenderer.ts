@@ -182,8 +182,7 @@ export abstract class AbstractRenderer {
 
     // force the rendering if the metadata structure has changed
     const hasChangedModuleMetadata =
-      currentStoryRender?.moduleMetadataSnapshot !==
-      previousStoryRenderInfo?.moduleMetadataSnapshot;
+      currentStoryRender.moduleMetadataSnapshot !== previousStoryRenderInfo?.moduleMetadataSnapshot;
 
     return hasChangedModuleMetadata;
   }
