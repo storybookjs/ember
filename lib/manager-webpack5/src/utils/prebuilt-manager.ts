@@ -1,4 +1,3 @@
-import { logger } from '@storybook/node-logger';
 import { pathExists } from 'fs-extra';
 import path from 'path';
 import {
@@ -44,6 +43,5 @@ export const getPrebuiltDir = async (options: Options): Promise<string | false> 
   const autoRefs = await getAutoRefs(options);
   if (autoRefs.length > 0) return false;
 
-  logger.info('=> Using prebuilt manager');
   return prebuiltDir;
 };
