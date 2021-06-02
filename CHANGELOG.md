@@ -1,3 +1,13 @@
+## 6.3.0-beta.8 (June 2, 2021)
+
+### Features
+
+* Core: Add `core.disableWebpackDefaults` preset ([#15062](https://github.com/storybookjs/storybook/pull/15062))
+
+### Bug Fixes
+
+* Core: Fix prebuilt manager usage on first run ([#15121](https://github.com/storybookjs/storybook/pull/15121))
+
 ## 6.3.0-beta.7 (June 2, 2021)
 
 ### Features
