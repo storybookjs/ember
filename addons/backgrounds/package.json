@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "273d1aad5c54cb66bd8b968e0b6ff41860ef205e",
+  "gitHead": "4421c26adf5c185fc6f81d20a422aec122d93918",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Backgrounds",
