@@ -20,6 +20,8 @@ let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
+export const WEBPACK_VERSION = '4';
+
 export const getConfig: WebpackBuilder['getConfig'] = getManagerWebpackConfig;
 
 export const makeStatsFromError = (err: string) =>
@@ -31,38 +33,41 @@ export const makeStatsFromError = (err: string) =>
 
 export const executor = {
   get: async (options: Options) => {
-    const version = ((await options.presets.apply('webpackVersion')) || '4') as string;
+    const version = ((await options.presets.apply('webpackVersion')) || WEBPACK_VERSION) as string;
     const webpackInstance =
       (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
       webpack;
-    checkWebpackVersion({ version }, '4', 'manager-webpack4');
+    checkWebpackVersion({ version }, WEBPACK_VERSION, `manager-webpack${WEBPACK_VERSION}`);
     return webpackInstance;
   },
 };
 
 export const start: WebpackBuilder['start'] = async ({ startTime, options, router }) => {
-  const webpackInstance = await executor.get(options);
-
   const prebuiltDir = await getPrebuiltDir(options);
-  const config = await getConfig(options);
+  if (prebuiltDir && options.managerCache && !options.smokeTest) {
+    logger.info('=> Using prebuilt manager');
+    router.use('/', express.static(prebuiltDir));
+    return;
+  }
 
+  const config = await getConfig(options);
   if (options.cache) {
-    // Retrieve the Storybook version number to bust cache up upgrades.
+    // Retrieve the Storybook version number to bust cache on upgrades.
     const packageFile = await findUp('package.json', { cwd: __dirname });
     const { version: storybookVersion } = await fs.readJSON(packageFile);
-    const cacheKey = `managerConfig@${storybookVersion}`;
+    const cacheKey = `managerConfig-webpack${WEBPACK_VERSION}@${storybookVersion}`;
 
     if (options.managerCache) {
       const [useCache, hasOutput] = await Promise.all([
-        // must run even if outputDir doesn't exist, otherwise the 2nd run won't use cache
+        // useManagerCache sets the cache, so it must run even if outputDir doesn't exist yet,
+        // otherwise the 2nd run won't be able to use the manager built on the 1st run.
         useManagerCache(cacheKey, options, config),
         fs.pathExists(options.outputDir),
       ]);
       if (useCache && hasOutput && !options.smokeTest) {
         logger.line(1); // force starting new line
         logger.info('=> Using cached manager');
-        // Manager static files
-        router.use('/', express.static(prebuiltDir || options.outputDir));
+        router.use('/', express.static(options.outputDir));
         return;
       }
     } else if (!options.smokeTest && (await clearManagerCache(cacheKey, options))) {
@@ -71,6 +76,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
     }
   }
 
+  const webpackInstance = await executor.get(options);
   const compiler = (webpackInstance as any)(config);
 
   if (!compiler) {
