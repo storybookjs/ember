@@ -1,8 +1,10 @@
-import { document, FRAMEWORK_OPTIONS } from 'global';
+import global from 'global';
 import React, { Component, FunctionComponent, ReactElement, StrictMode, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 
 import { StoryContext, RenderContext } from './types';
+
+const { document, FRAMEWORK_OPTIONS } = global;
 
 const rootEl = document ? document.getElementById('root') : null;
 

@@ -1,9 +1,10 @@
-import { document } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { render } from 'lit';
 import { isTemplateResult } from 'lit/directive-helpers.js';
 import { RenderContext } from './types';
 
+const { document } = global;
 const rootElement = document.getElementById('root');
 
 export default function renderMain({ storyFn, kind, name, showMain, showError }: RenderContext) {

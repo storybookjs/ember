@@ -1,6 +1,8 @@
-import { WebSocket } from 'global';
+import global from 'global';
 import { Channel, ChannelHandler } from '@storybook/channels';
 import { isJSON, parse, stringify } from 'telejson';
+
+const { WebSocket } = global;
 
 type OnError = (message: Event) => void;
 

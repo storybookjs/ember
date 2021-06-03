@@ -8,13 +8,9 @@ import {
 } from '@storybook/components';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
-import { getSourceProps } from './Source';
+import { getSourceProps, SourceState } from './Source';
 
-export enum SourceState {
-  OPEN = 'open',
-  CLOSED = 'closed',
-  NONE = 'none',
-}
+export { SourceState };
 
 type CanvasProps = PurePreviewProps & {
   withSource?: SourceState;
@@ -26,8 +22,8 @@ const getPreviewProps = (
   docsContext: DocsContextProps,
   sourceContext: SourceContextProps
 ): PurePreviewProps => {
-  const { mdxComponentMeta, mdxStoryNameToKey, parameters } = docsContext;
-  const sourceState = withSource || parameters?.docs?.source?.state || SourceState.CLOSED;
+  const { mdxComponentMeta, mdxStoryNameToKey } = docsContext;
+  let sourceState = withSource;
   if (sourceState === SourceState.NONE) {
     return props;
   }
@@ -50,6 +46,8 @@ const getPreviewProps = (
       )
   );
   const sourceProps = getSourceProps({ ids: targetIds }, docsContext, sourceContext);
+  if (!sourceState) sourceState = sourceProps.state;
+
   return {
     ...props, // pass through columns etc.
     withSource: sourceProps,

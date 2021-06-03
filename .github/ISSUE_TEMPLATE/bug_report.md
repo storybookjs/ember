@@ -8,8 +8,8 @@ labels: needs triage, bug
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Please create a reproduction repo by running `npx sb@next repro` and following the instructions.
-When you're done, please link the repo here. We prioritize issues with reproductions over those without.
+Please create a reproduction by running `npx sb@next repro` and following the instructions. Read our [documentation](https://storybook.js.org/docs/react/contribute/how-to-reproduce) to learn more about creating reproductions.
+Paste your repository and deployed reproduction here. We prioritize issues with reproductions over those without.
 
 **System**
 Please paste the results of `npx sb@next info` here.

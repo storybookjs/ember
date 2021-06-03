@@ -20,8 +20,9 @@ export interface TypescriptConfig {
   };
 }
 
-interface CoreConfig {
+export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
+  disableWebpackDefaults?: boolean;
 }
 
 export interface Presets {
@@ -156,6 +157,7 @@ export interface BuilderOptions {
   docsMode: boolean;
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
+  disableWebpackDefaults?: boolean;
 }
 
 export interface StorybookConfigOptions {

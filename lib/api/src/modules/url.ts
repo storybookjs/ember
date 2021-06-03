@@ -1,13 +1,20 @@
 import { navigate as navigateRouter, NavigateOptions } from '@reach/router';
-import { NAVIGATE_URL, STORY_ARGS_UPDATED, SET_CURRENT_STORY } from '@storybook/core-events';
+import {
+  NAVIGATE_URL,
+  STORY_ARGS_UPDATED,
+  SET_CURRENT_STORY,
+  GLOBALS_UPDATED,
+} from '@storybook/core-events';
 import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@storybook/router';
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
-import { window as globalWindow } from 'global';
+import global from 'global';
 
 import { ModuleArgs, ModuleFn } from '../index';
 import { PanelPositions } from './layout';
 import { isStory } from '../lib/stories';
+
+const { window: globalWindow } = global;
 
 interface Additions {
   isFullscreen?: boolean;
@@ -166,7 +173,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
     fullAPI.on(SET_CURRENT_STORY, () => updateArgsParam());
 
     let handleOrId: any;
-    fullAPI.on(STORY_ARGS_UPDATED, ({ args }) => {
+    fullAPI.on(STORY_ARGS_UPDATED, () => {
       if ('requestIdleCallback' in globalWindow) {
         if (handleOrId) globalWindow.cancelIdleCallback(handleOrId);
         handleOrId = globalWindow.requestIdleCallback(updateArgsParam, { timeout: 1000 });
@@ -174,6 +181,14 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
         if (handleOrId) clearTimeout(handleOrId);
         setTimeout(updateArgsParam, 100);
       }
+    });
+
+    fullAPI.on(GLOBALS_UPDATED, ({ globals, initialGlobals }) => {
+      const { path } = fullAPI.getUrlState();
+      const argsString = buildArgsParam(initialGlobals, globals);
+      const globalsParam = argsString.length ? `&globals=${argsString}` : '';
+      queryNavigate(`${path}${globalsParam}`, { replace: true });
+      api.setQueryParams({ globals: argsString });
     });
 
     fullAPI.on(NAVIGATE_URL, (url: string, options: { [k: string]: any }) => {

@@ -1,6 +1,7 @@
-import { document, setTimeout } from 'global';
+import global from 'global';
 import { html } from 'lit-html';
 
+const { document, setTimeout } = global;
 const text = 'Testing the a11y addon';
 
 export default {

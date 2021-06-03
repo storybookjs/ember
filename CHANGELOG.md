@@ -1,13 +1,110 @@
+## 6.3.0-beta.9 (June 3, 2021)
+
+### Features
+
+- Essentials: Add measure and outline addons ([#15107](https://github.com/storybookjs/storybook/pull/15107))
+
+## 6.3.0-beta.8 (June 2, 2021)
+
+### Features
+
+- Core: Add `core.disableWebpackDefaults` preset ([#15062](https://github.com/storybookjs/storybook/pull/15062))
+
+### Bug Fixes
+
+- Core: Fix prebuilt manager usage on first run ([#15121](https://github.com/storybookjs/storybook/pull/15121))
+
+## 6.3.0-beta.7 (June 2, 2021)
+
+### Features
+
+- Angular: Add angular builder to start + build storybook ([#15061](https://github.com/storybookjs/storybook/pull/15061))
+
+### Bug Fixes
+
+- CLI: Fix react repro template deps ([#15118](https://github.com/storybookjs/storybook/pull/15118))
+
+## 6.3.0-beta.6 (June 1, 2021)
+
+### Features
+
+- CLI: Add Server template generator ([#13979](https://github.com/storybookjs/storybook/pull/13979))
+
+### Bug Fixes
+
+- CLI: Disable `react_in_yarn_workspace` template for users, keep in e2e ([#15114](https://github.com/storybookjs/storybook/pull/15114))
+
+## 6.3.0-beta.5 (May 30, 2021)
+
+### Bug Fixes
+
+- Vue2: Check types when `typescript.check` is true ([#15089](https://github.com/storybookjs/storybook/pull/15089))
+- Update markdown-to-jsx version to fix url links in comments ([#15083](https://github.com/storybookjs/storybook/pull/15083))
+
+### Maintenance
+
+- CLI: Add `SKIP_PREFLIGHT_CHECK` in CRA repro ([#15092](https://github.com/storybookjs/storybook/pull/15092))
+- Angular: Disable chromatic for story with dynamic time display ([#15074](https://github.com/storybookjs/storybook/pull/15074))
+
+## 6.3.0-beta.4 (May 28, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Fix MDX source rendering ([#15071](https://github.com/storybookjs/storybook/pull/15071))
+- CLI: Add new packages to versions.json ([#15073](https://github.com/storybookjs/storybook/pull/15073))
+- Addon-docs: Fix per-story `docs.source` parameter ([#15070](https://github.com/storybookjs/storybook/pull/15070))
+
+## 6.3.0-beta.3 (May 28, 2021)
+
+Failed NPM publish
+
+## 6.3.0-beta.2 (May 27, 2021)
+
+### Features
+
+- Core: Add `globals` URL param and remove from sessionStorage ([#15056](https://github.com/storybookjs/storybook/pull/15056))
+
+### Bug Fixes
+
+- Core: Set `loose: true` in babel/preset-env config ([#15055](https://github.com/storybookjs/storybook/pull/15055))
+
+## 6.3.0-beta.1 (May 26, 2021)
+
+### Bug Fixes
+
+- Core: Fix prebuilt manager ([#15050](https://github.com/storybookjs/storybook/pull/15050))
+- Core: Fix storySort `order` with whitespace in story paths ([#15038](https://github.com/storybookjs/storybook/pull/15038))
+
+### Maintenance
+
+- Do not try to named import from global ([#15043](https://github.com/storybookjs/storybook/pull/15043))
+- Remove storybook/lit from monorepo ([#15048](https://github.com/storybookjs/storybook/pull/15048))
+
+## 6.3.0-beta.0 (May 26, 2021)
+
+Storybook 6.3 is in beta!! 🎉🎉🎉
+
+Hundreds of improvements and fixes, including:
+
+- **Angular** - Overhauled Angular support.
+- **Web-components** - Lit2 support.
+- **Webpack 5** - Official support.
+- **Vite builder** - Community support.
+- **Modern ESM** - Modern package distribution.
+- **API** - Keyboard shortcuts for addons.
+
+Track the release in the Github: [Storybook 6.3 Release 🛠](https://github.com/storybookjs/storybook/issues/14397)
+
 ## 6.3.0-alpha.45 (May 26, 2021)
 
 ### Features
 
-* CLI: Add option to force-build iframe despite custom preview URL ([#15030](https://github.com/storybookjs/storybook/pull/15030))
+- CLI: Add option to force-build iframe despite custom preview URL ([#15030](https://github.com/storybookjs/storybook/pull/15030))
 
 ### Bug Fixes
 
-* Addon-docs: Fix source block tree shaking ([#15035](https://github.com/storybookjs/storybook/pull/15035))
-* Addon-a11y: Highlight all elements correctly ([#14935](https://github.com/storybookjs/storybook/pull/14935))
+- Addon-docs: Fix source block tree shaking ([#15035](https://github.com/storybookjs/storybook/pull/15035))
+- Addon-a11y: Highlight all elements correctly ([#14935](https://github.com/storybookjs/storybook/pull/14935))
 
 ## 6.3.0-alpha.44 (May 25, 2021)
 
