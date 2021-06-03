@@ -1,3 +1,11 @@
+## 6.3.0-beta.10 (June 3, 2021)
+
+### Features
+
+- CLI: Add storybook-addon-angular-ivy to angular install ([#14653](https://github.com/storybookjs/storybook/pull/14653))
+- Angular: Ivy rendering for Canvas and Docs ([#15126](https://github.com/storybookjs/storybook/pull/15126))
+- Server: Add support for stories written in YAML ([#15049](https://github.com/storybookjs/storybook/pull/15049))
+
 ## 6.3.0-beta.9 (June 3, 2021)
 
 ### Features
