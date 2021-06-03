@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`json-to-csf-compiler yml.yml 1`] = `
+"
+export default {
+  title: \\"Demo YML\\",
+};
+
+export const Heading = (args) => {};
+Heading.storyName = 'Heading';
+Heading.parameters = {
+  server: {
+    id: \\"yaml/heading\\"
+  }
+};
+
+export const Headings = (args) => {};
+Headings.storyName = 'Headings';
+Headings.parameters = {
+  server: {
+    id: \\"yaml/headings\\"
+  }
+};
+
+export const Button = (args) => {};
+Button.storyName = 'Button';
+Button.parameters = {
+  server: {
+    id: \\"yaml/button\\"
+  }
+};
+"
+`;
+
+exports[`ya?ml-to-csf-compiler yml.yml 1`] = `
+"
+export default {
+  title: \\"Demo YML\\",
+};
+
+export const Heading = (args) => {};
+Heading.storyName = 'Heading';
+Heading.parameters = {
+  server: {
+    id: \\"yaml/heading\\"
+  }
+};
+
+export const Headings = (args) => {};
+Headings.storyName = 'Headings';
+Headings.parameters = {
+  server: {
+    id: \\"yaml/headings\\"
+  }
+};
+
+export const Button = (args) => {};
+Button.storyName = 'Button';
+Button.parameters = {
+  server: {
+    id: \\"yaml/button\\"
+  }
+};
+"
+`;
+
+exports[`yml-to-csf-compiler yml.yml 1`] = `
+"
+export default {
+  title: \\"Demo YML\\",
+};
+
+export const Heading = (args) => {};
+Heading.storyName = 'Heading';
+Heading.parameters = {
+  server: {
+    id: \\"yaml/heading\\"
+  }
+};
+
+export const Headings = (args) => {};
+Headings.storyName = 'Headings';
+Headings.parameters = {
+  server: {
+    id: \\"yaml/headings\\"
+  }
+};
+
+export const Button = (args) => {};
+Button.storyName = 'Button';
+Button.parameters = {
+  server: {
+    id: \\"yaml/button\\"
+  }
+};
+"
+`;
