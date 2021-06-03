@@ -439,7 +439,7 @@ module.exports = {
           ],
         },
         {
-          pathSegment:'how-to-reproduce',
+          pathSegment: 'how-to-reproduce',
           title: 'Reproduce',
           type: 'link',
         },

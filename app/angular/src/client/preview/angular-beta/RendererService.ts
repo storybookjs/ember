@@ -108,7 +108,10 @@ export class RendererService {
     }
     this.storyProps$ = storyProps$;
 
-    await this.newPlatformBrowserDynamic().bootstrapModule(createStorybookModule(moduleMetadata), parameters.bootstrapModuleOptions ?? undefined);
+    await this.newPlatformBrowserDynamic().bootstrapModule(
+      createStorybookModule(moduleMetadata),
+      parameters.bootstrapModuleOptions ?? undefined
+    );
   }
 
   public newPlatformBrowserDynamic() {
