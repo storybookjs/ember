@@ -25,6 +25,8 @@ export default async function renderMain({
   targetDOMNode: HTMLElement;
   id: string;
 }) {
+  showMain();
+
   if (parameters.angularLegacyRendering) {
     renderNgApp(storyFn, forceRender);
     return;
