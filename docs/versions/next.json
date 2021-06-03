@@ -1,1 +1,1 @@
-{"version":"6.3.0-alpha.24","info":{"plain":"### Features\n\n- CLI: Add repro/link commands for creating/running reproductions ([#14594](https://github.com/storybookjs/storybook/pull/14594))\n\n### Bug Fixes\n\n- UI: Only show addons in mobile if docsOnly is false ([#14810](https://github.com/storybookjs/storybook/pull/14810))"}}
+{"version":"6.3.0-beta.9","info":{"plain":"### Features\n\n- Essentials: Add measure and outline addons ([#15107](https://github.com/storybookjs/storybook/pull/15107))"}}

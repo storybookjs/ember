@@ -147,6 +147,8 @@ export const denormalizeStoryParameters = ({
   }));
 };
 
+const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
+
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,
   { provider }: { provider: Provider }
@@ -168,7 +170,7 @@ export const transformStoriesRawToStoriesHash = (
       warnChangedDefaultHierarchySeparators();
     }
 
-    const groups = kind.split('/').map((part) => part.trim());
+    const groups = kind.trim().split(STORY_KIND_PATH_SEPARATOR);
     const root = (!setShowRoots || showRoots) && groups.length > 1 ? [groups.shift()] : [];
 
     const rootAndGroups = [...root, ...groups].reduce((list, name, index) => {

@@ -1,7 +1,7 @@
 import React, { ComponentProps, FunctionComponent, MouseEvent, useState } from 'react';
 import { logger } from '@storybook/client-logger';
 import { styled } from '@storybook/theming';
-import { navigator, document, window as globalWindow } from 'global';
+import global from 'global';
 import memoize from 'memoizerific';
 
 // @ts-ignore
@@ -35,6 +35,8 @@ import { ScrollArea } from '../ScrollArea/ScrollArea';
 
 import { formatter } from './formatter';
 import type { SyntaxHighlighterProps } from './syntaxhighlighter-types';
+
+const { navigator, document, window: globalWindow } = global;
 
 ReactSyntaxHighlighter.registerLanguage('jsextra', jsExtras);
 ReactSyntaxHighlighter.registerLanguage('jsx', jsx);

@@ -39,6 +39,7 @@ export const cra: Parameters = {
     'npx create-react-app@{{version}} {{appName}} --use-npm',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
+    'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
   ].join(' && '),
 };
 
@@ -57,6 +58,7 @@ export const react: Parameters = {
   name: 'react',
   version: 'latest',
   generator: fromDeps('react', 'react-dom'),
+  additionalDeps: ['prop-types'],
 };
 
 export const react_typescript: Parameters = {
@@ -103,6 +105,12 @@ export const angular10: Parameters = {
   version: 'v10-lts',
 };
 
+export const angular11: Parameters = {
+  ...baseAngular,
+  name: 'angular11',
+  version: 'v11-lts',
+};
+
 export const angular: Parameters = baseAngular;
 // #endregion
 
@@ -110,13 +118,21 @@ export const angular: Parameters = baseAngular;
 export const web_components: Parameters = {
   framework: 'web-components',
   name: 'web_components',
-  version: 'latest',
+  version: '2',
   generator: fromDeps('lit-element'),
 };
 
 export const web_components_typescript: Parameters = {
   ...web_components,
   name: 'web_components_typescript',
+  typescript: true,
+};
+
+export const web_components_lit2: Parameters = {
+  ...web_components,
+  version: 'next',
+  name: 'web_components_lit2',
+  generator: fromDeps('lit'),
   typescript: true,
 };
 

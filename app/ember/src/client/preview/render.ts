@@ -1,6 +1,8 @@
-import { window as globalWindow, document } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { RenderContext, ElementArgs, OptionsArgs } from './types';
+
+const { window: globalWindow, document } = global;
 
 declare let Ember: any;
 

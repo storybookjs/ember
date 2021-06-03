@@ -47,7 +47,9 @@ export async function getDevCli(packageJson: {
       '--preview-url <string>',
       'Disables the default storybook preview and lets your use your own'
     )
+    .option('--force-build-preview', 'Build the preview iframe even if you are using --preview-url')
     .option('--docs', 'Build a documentation-only site using addon-docs')
+    .option('--modern', 'Use modern browser modules')
     .parse(process.argv);
 
   logger.setLevel(program.loglevel);

@@ -41,7 +41,7 @@ export const readAngularWorkspaceConfig = async (
   return (await workspaces.readWorkspace(dirToSearch, host)).workspace;
 };
 
-export const getProjectName = (workspace: workspaces.WorkspaceDefinition): string => {
+export const getDefaultProjectName = (workspace: workspaces.WorkspaceDefinition): string => {
   const environmentProjectName = process.env.STORYBOOK_ANGULAR_PROJECT;
   if (environmentProjectName) {
     return environmentProjectName;
@@ -58,25 +58,31 @@ export const getProjectName = (workspace: workspaces.WorkspaceDefinition): strin
   if (firstProjectName) {
     return firstProjectName;
   }
-  throw new Error('No angular projects found.');
+  throw new Error('No angular projects found');
 };
 
-export const findAngularProject = (
-  workspace: workspaces.WorkspaceDefinition
+export const findAngularProjectTarget = (
+  workspace: workspaces.WorkspaceDefinition,
+  projectName: string,
+  targetName: string
 ): {
-  projectName: string;
   project: workspaces.ProjectDefinition;
+  target: workspaces.TargetDefinition;
 } => {
   if (!workspace.projects || !Object.keys(workspace.projects).length) {
-    throw new Error('No angular projects found.');
+    throw new Error('No angular projects found');
   }
-
-  const projectName = getProjectName(workspace);
 
   const project = workspace.projects.get(projectName);
 
   if (!project) {
-    throw new Error(`Could not find angular project '${projectName}' in angular.json.`);
+    throw new Error(`"${projectName}" project is not found in angular.json`);
   }
-  return { projectName, project };
+
+  if (!project.targets.has(targetName)) {
+    throw new Error(`"${targetName}" target is not found in "${projectName}" project`);
+  }
+  const target = project.targets.get(targetName);
+
+  return { project, target };
 };

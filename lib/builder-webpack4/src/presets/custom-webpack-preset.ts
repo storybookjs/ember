@@ -1,10 +1,20 @@
+import * as webpackReal from 'webpack';
 import { logger } from '@storybook/node-logger';
-import { loadCustomWebpackConfig } from '@storybook/core-common';
+import { CoreConfig, loadCustomWebpackConfig, Options } from '@storybook/core-common';
+import type { Configuration } from 'webpack';
 import { createDefaultWebpackConfig } from '../preview/base-webpack.config';
 
-export async function webpack(config: any, options: any) {
+export async function webpack(config: Configuration, options: Options) {
+  // @ts-ignore
   const { configDir, configType, presets, webpackConfig } = options;
-  const defaultConfig = await createDefaultWebpackConfig(config, options);
+
+  const coreOptions = await presets.apply<CoreConfig>('core');
+
+  let defaultConfig = config;
+  if (!coreOptions?.disableWebpackDefaults) {
+    defaultConfig = await createDefaultWebpackConfig(config, options);
+  }
+
   const finalDefaultConfig = await presets.apply('webpackFinal', defaultConfig, options);
 
   // through standalone webpackConfig option
@@ -24,3 +34,6 @@ export async function webpack(config: any, options: any) {
   logger.info('=> Using default Webpack4 setup');
   return finalDefaultConfig;
 }
+
+export const webpackInstance = async () => webpackReal;
+export const webpackVersion = async () => '4';

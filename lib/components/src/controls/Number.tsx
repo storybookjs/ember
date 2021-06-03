@@ -1,7 +1,8 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useState, useCallback, useEffect, useRef } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, NumberValue, NumberConfig } from './types';
 
 const Wrapper = styled.label({
@@ -12,7 +13,7 @@ type NumberProps = ControlProps<NumberValue | null> & NumberConfig;
 
 export const parse = (value: string) => {
   const result = parseFloat(value);
-  return Number.isNaN(result) ? null : result;
+  return Number.isNaN(result) ? undefined : result;
 };
 
 export const format = (value: NumberValue) => (value != null ? String(value) : '');
@@ -27,18 +28,52 @@ export const NumberControl: FC<NumberProps> = ({
   onBlur,
   onFocus,
 }) => {
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(parse(event.target.value));
-  };
+  const [inputValue, setInputValue] = useState(typeof value === 'number' ? value : '');
+  const [forceVisible, setForceVisible] = useState(false);
+  const [parseError, setParseError] = useState(false);
+
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+
+      const result = parseFloat(event.target.value);
+      if (Number.isNaN(result)) {
+        setParseError(true);
+      } else {
+        onChange(result);
+        setParseError(false);
+      }
+    },
+    [onChange, setParseError]
+  );
+
+  const onForceVisible = useCallback(() => {
+    setInputValue('0');
+    onChange(0);
+    setForceVisible(true);
+  }, [setForceVisible]);
+
+  const htmlElRef = useRef(null);
+  useEffect(() => {
+    if (forceVisible && htmlElRef.current) htmlElRef.current.select();
+  }, [forceVisible]);
+
+  if (!forceVisible && value === undefined) {
+    return <Form.Button onClick={onForceVisible}>Set number</Form.Button>;
+  }
 
   return (
     <Wrapper>
       <Form.Input
+        ref={htmlElRef}
+        id={getControlId(name)}
         type="number"
         onChange={handleChange}
         size="flex"
-        placeholder="Adjust number dynamically"
-        value={value === null ? undefined : value}
+        placeholder="Edit number..."
+        value={inputValue}
+        valid={parseError ? 'error' : null}
+        autoFocus={forceVisible}
         {...{ name, min, max, step, onFocus, onBlur }}
       />
     </Wrapper>

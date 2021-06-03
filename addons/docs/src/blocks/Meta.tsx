@@ -1,10 +1,12 @@
 import React, { FC, useContext } from 'react';
-import { document } from 'global';
+import global from 'global';
 import { Args, BaseAnnotations, BaseMeta } from '@storybook/addons';
 import { Anchor } from './Anchor';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { getDocsStories } from './utils';
 import { Component } from './types';
+
+const { document } = global;
 
 type MetaProps = BaseMeta<Component> & BaseAnnotations<Args, any>;
 

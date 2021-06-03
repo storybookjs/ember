@@ -1,9 +1,11 @@
-import { PREVIEW_URL } from 'global';
+import global from 'global';
 import React from 'react';
 import { IconButton, Icons } from '@storybook/components';
 import { Consumer, Combo } from '@storybook/api';
 import { Addon } from '@storybook/addons';
 import { stringifyQueryParams } from '../utils/stringifyQueryParams';
+
+const { PREVIEW_URL } = global;
 
 const ejectMapper = ({ state }: Combo) => {
   const { storyId, refId, refs } = state;
@@ -19,6 +21,7 @@ const ejectMapper = ({ state }: Combo) => {
 
 export const ejectTool: Addon = {
   title: 'eject',
+  id: 'eject',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={ejectMapper}>

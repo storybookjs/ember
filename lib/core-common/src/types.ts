@@ -1,5 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import type { PluginOptions } from 'react-docgen-typescript-plugin';
+import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
 import { Router } from 'express';
@@ -20,8 +20,9 @@ export interface TypescriptConfig {
   };
 }
 
-interface CoreConfig {
+export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
+  disableWebpackDefaults?: boolean;
 }
 
 export interface Presets {
@@ -123,6 +124,7 @@ export interface CLIOptions {
   port?: number;
   ignorePreview?: boolean;
   previewUrl?: string;
+  forceBuildPreview?: boolean;
   host?: string;
   staticDir?: string[];
   configDir?: string;
@@ -144,6 +146,7 @@ export interface CLIOptions {
   debugWebpack?: boolean;
   webpackStatsJson?: string | boolean;
   outputDir?: string;
+  modern?: boolean;
 }
 
 export interface BuilderOptions {
@@ -154,6 +157,7 @@ export interface BuilderOptions {
   docsMode: boolean;
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
+  disableWebpackDefaults?: boolean;
 }
 
 export interface StorybookConfigOptions {
@@ -236,6 +240,7 @@ export interface StorybookConfig {
    */
   features?: {
     postcss?: boolean;
+    buildStoriesJson?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

@@ -1,4 +1,4 @@
-import { window as globalWindow } from 'global';
+import global from 'global';
 import { logger } from '@storybook/client-logger';
 import {
   FORCE_RE_RENDER,
@@ -10,6 +10,8 @@ import {
 } from '@storybook/core-events';
 import { addons } from './index';
 import { StoryGetter, StoryContext, Args } from './types';
+
+const { window: globalWindow } = global;
 
 interface Hook {
   name: string;

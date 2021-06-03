@@ -1,4 +1,5 @@
 import fse from 'fs-extra';
+import dedent from 'ts-dedent';
 import { SupportedFrameworks } from '../project_types';
 
 interface ConfigureMainOptions {
@@ -43,31 +44,43 @@ function configureMain({
   });
 }
 
-function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
-  const parameters = `
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
+const frameworkToPreviewParts: Partial<Record<SupportedFrameworks, any>> = {
+  angular: {
+    prefix: dedent`
+      import { setCompodocJson } from "@storybook/addon-docs/angular";
+      import docJson from "../documentation.json";
+      setCompodocJson(docJson);
+      
+      `.trimStart(),
+    extraParameters: 'docs: { inlineStories: true },',
   },
-}`;
+};
 
-  const preview =
-    framework === 'angular'
-      ? `
-import { setCompodocJson } from "@storybook/addon-docs/angular";
-import docJson from "../documentation.json";
-setCompodocJson(docJson);
+function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
+  const { prefix = '', extraParameters = '' } = frameworkToPreviewParts[framework] || {};
+  const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
 
-${parameters}`
-      : parameters;
+  // If the framework template included a preview then we have nothing to do
+  if (fse.existsSync(previewPath)) {
+    return;
+  }
 
-  fse.writeFileSync(`./.storybook/preview.${commonJs ? 'cjs' : 'js'}`, preview, {
-    encoding: 'utf8',
-  });
+  const preview = dedent`
+    ${prefix}
+    export const parameters = {
+      actions: { argTypesRegex: "^on[A-Z].*" },
+      controls: {
+        matchers: {
+          color: /(background|color)$/i,
+          date: /Date$/,
+        },
+      },
+      ${extraParameters}
+    }`
+    .replace('  \n', '')
+    .trim();
+
+  fse.writeFileSync(previewPath, preview, { encoding: 'utf8' });
 }
 
 export function configure(framework: SupportedFrameworks, mainOptions: ConfigureMainOptions) {

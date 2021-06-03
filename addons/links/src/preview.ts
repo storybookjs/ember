@@ -1,15 +1,17 @@
-import {
-  document,
-  HTMLElement,
-  __STORYBOOK_STORY_STORE__ as storyStore,
-  __STORYBOOK_CLIENT_API__ as clientApi,
-} from 'global';
+import global from 'global';
 import qs from 'qs';
 import addons, { makeDecorator } from '@storybook/addons';
 import { STORY_CHANGED, SELECT_STORY } from '@storybook/core-events';
 import { toId } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import { PARAM_KEY } from './constants';
+
+const {
+  document,
+  HTMLElement,
+  __STORYBOOK_STORY_STORE__: storyStore,
+  __STORYBOOK_CLIENT_API__: clientApi,
+} = global;
 
 interface ParamsId {
   storyId: string;
