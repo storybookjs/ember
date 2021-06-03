@@ -25,9 +25,6 @@ exports[`Storyshots Core / Parameters / All parameters All parameters passed to 
         ]
       }
     },
-    "chromatic": {
-      "delay": 500
-    },
     "globalTypes": {
       "theme": {
         "name": "Theme",
