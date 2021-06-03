@@ -32,7 +32,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
     );
   }
   baseGenerator(packageManager, npmOptions, options, 'angular', {
-    extraAddons: ['storybook-addon-angular-ivy'],
+    extraAddons: ['@storybook/addon-angular-ivy'],
     extraPackages: ['@compodoc/compodoc'],
     addScripts: false,
   });
