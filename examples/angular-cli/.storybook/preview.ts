@@ -8,9 +8,9 @@ import docJson from '../documentation.json';
 const filtered = !docJson?.components
   ? docJson
   : {
-    ...docJson,
-    components: docJson.components.filter((c) => c.name !== 'ButtonComponent'),
-  };
+      ...docJson,
+      components: docJson.components.filter((c) => c.name !== 'ButtonComponent'),
+    };
 setCompodocJson(filtered);
 
 addCssWarning();
@@ -24,9 +24,6 @@ export const parameters = {
       order: ['Welcome', 'Core ', 'Addons ', 'Basics '],
     },
   },
-  chromatic: {
-    delay: 200,
-  }
 };
 
 export const globalTypes = {
