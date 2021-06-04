@@ -61,12 +61,12 @@ One way we improve that situation is by pulling the rendered subcomponent out in
 
 Now that `children` is an arg, we can potentially reuse it in another story.
 
-However there are some caveats when using this approach that you should be aware of.
+However, there are some caveats when using this approach that you should be aware of.
 
-The `children` `args` as any other arg needs to be JSON serializable. This means that you should:
+The `children` `args` as any other arg needs to be JSON serializable. It means that you should:
 
-- avoid using empty values.
-- avoid using components that include third party libraries such as `emotion`.
+- Avoid using empty values
+- Use caution with components that include third party libraries
 
 As they could lead into errors with your Storybook.
 
