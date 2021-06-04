@@ -17,7 +17,8 @@ export const prepareForInline = (storyFn: StoryFn<IStory>, { id, parameters }: S
         return null;
       }
 
-      return limit(() => rendererFactory.getRendererInstance(id, node)).then(async (renderer) => {
+      return limit(async () => {
+        const renderer = await rendererFactory.getRendererInstance(id, node);
         await renderer.render({
           forced: false,
           parameters,
