@@ -128,7 +128,7 @@ export class CsfFile {
     const self = this;
     traverse(this._ast, {
       ExportDefaultDeclaration: {
-        enter({ node }) {
+        enter({ node, parent }) {
           if (t.isObjectExpression(node.declaration)) {
             // export default { ... };
             self._meta = parseMeta(node.declaration);
@@ -138,6 +138,11 @@ export class CsfFile {
             t.isObjectExpression(node.declaration.expression)
           ) {
             self._meta = parseMeta(node.declaration.expression);
+          } else if (t.isIdentifier(node.declaration) && t.isProgram(parent)) {
+            const init = findVarInitialization(node.declaration.name, parent);
+            if (t.isObjectExpression(init)) {
+              self._meta = parseMeta(init);
+            }
           }
         },
       },

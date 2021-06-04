@@ -174,8 +174,14 @@ describe('csf extract', () => {
           true
         )
       ).toMatchInlineSnapshot(`
-        meta: !<tag:yaml.org,2002:js/undefined> ''
-        stories: []
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--a
       `);
     });
   });
