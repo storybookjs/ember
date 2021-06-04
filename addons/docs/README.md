@@ -139,7 +139,6 @@ Add the following to your Jest configuration:
 - [Angular](https://github.com/storybookjs/storybook/tree/next/addons/docs/angular)
 - [Ember](https://github.com/storybookjs/storybook/tree/next/addons/docs/ember)
 - [Web Components](https://github.com/storybookjs/storybook/tree/next/addons/docs/web-components)
-- [Lit](https://github.com/storybookjs/storybook/tree/next/addons/docs/lit)
 - [Common setup (all other frameworks)](https://github.com/storybookjs/storybook/tree/next/addons/docs/common)
 
 ## Preset options

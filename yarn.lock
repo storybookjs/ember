@@ -4519,13 +4519,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lit/reactive-element@npm:^1.0.0-rc.1":
-  version: 1.0.0-rc.1
-  resolution: "@lit/reactive-element@npm:1.0.0-rc.1"
-  checksum: 14652c3c43a469f1699a9b986a5c5f3e0d5a9d67c1ce3f7dc8f1d31c9c1887df1c7f0ea9b03bfa445d1de02b7a0042585cb731e236a5988ccc3189fe2a755031
-  languageName: node
-  linkType: hard
-
 "@lit/reactive-element@npm:^1.0.0-rc.2":
   version: 1.0.0-rc.2
   resolution: "@lit/reactive-element@npm:1.0.0-rc.2"
@@ -5677,7 +5670,6 @@ __metadata:
     "@storybook/core": 6.3.0-beta.10
     "@storybook/core-events": 6.3.0-beta.10
     "@storybook/csf": 0.0.1
-    "@storybook/lit": 6.3.0-beta.10
     "@storybook/node-logger": 6.3.0-beta.10
     "@storybook/postinstall": 6.3.0-beta.10
     "@storybook/react": 6.3.0-beta.10
@@ -5735,7 +5727,6 @@ __metadata:
     zone.js: ^0.11.3
   peerDependencies:
     "@storybook/angular": 6.3.0-beta.10
-    "@storybook/lit": 6.3.0-beta.10
     "@storybook/vue": 6.3.0-beta.10
     "@storybook/vue3": 6.3.0-beta.10
     "@storybook/web-components": 6.3.0-beta.10
@@ -5749,8 +5740,6 @@ __metadata:
     webpack: "*"
   peerDependenciesMeta:
     "@storybook/angular":
-      optional: true
-    "@storybook/lit":
       optional: true
     "@storybook/vue":
       optional: true
@@ -5977,6 +5966,7 @@ __metadata:
     "@storybook/react": "*"
     "@storybook/vue": "*"
     "@storybook/vue3": "*"
+    jest: "*"
     jest-preset-angular: "*"
     jest-vue-preprocessor: "*"
     preact: ^10.5.13
@@ -6932,32 +6922,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/lit@6.3.0-beta.10, @storybook/lit@workspace:*, @storybook/lit@workspace:app/lit":
-  version: 0.0.0-use.local
-  resolution: "@storybook/lit@workspace:app/lit"
-  dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/core": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
-    "@types/webpack": ^4.41.26
-    "@types/webpack-env": ^1.16.0
-    core-js: ^3.8.2
-    global: ^4.4.0
-    lit: ^2.0.0-rc.1
-    react: 16.14.0
-    react-dom: 16.14.0
-    read-pkg-up: ^7.0.1
-    ts-dedent: ^2.0.0
-  peerDependencies:
-    lit: ^2.0.0-rc.1
-  bin:
-    build-storybook: ./bin/build.js
-    start-storybook: ./bin/index.js
-    storybook-server: ./bin/index.js
-  languageName: unknown
-  linkType: soft
-
 "@storybook/manager-webpack4@6.3.0-beta.10, @storybook/manager-webpack4@workspace:lib/manager-webpack4":
   version: 0.0.0-use.local
   resolution: "@storybook/manager-webpack4@workspace:lib/manager-webpack4"
@@ -7286,7 +7250,6 @@ __metadata:
     "@storybook/eslint-config-storybook": ^2.4.0
     "@storybook/html": "workspace:*"
     "@storybook/linter-config": ^2.5.0
-    "@storybook/lit": "workspace:*"
     "@storybook/node-logger": "workspace:*"
     "@storybook/postinstall": "workspace:*"
     "@storybook/preact": "workspace:*"
@@ -7694,8 +7657,6 @@ __metadata:
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    "@babel/core": "*"
-    babel-loader: ^7.0.0 || ^8.0.0
     lit-html: ^1.4.1 || ^2.0.0-rc.3
   bin:
     build-storybook: ./bin/build.js
@@ -28191,16 +28152,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-element@npm:^3.0.0-rc.1":
-  version: 3.0.0-rc.1
-  resolution: "lit-element@npm:3.0.0-rc.1"
-  dependencies:
-    "@lit/reactive-element": ^1.0.0-rc.1
-    lit-html: ^2.0.0-rc.1
-  checksum: b801b17df7c164d67ff0fef518944b4702f3b64bc25b5e39b5b91d5ca350ff03b78720896673f01b955458595295c855f022f9508c03892440b1697c8238288d
-  languageName: node
-  linkType: hard
-
 "lit-element@npm:^3.0.0-rc.2":
   version: 3.0.0-rc.2
   resolution: "lit-element@npm:3.0.0-rc.2"
@@ -28211,32 +28162,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^2.0.0-rc.1":
-  version: 2.0.0-rc.2
-  resolution: "lit-html@npm:2.0.0-rc.2"
-  dependencies:
-    "@types/trusted-types": ^1.0.1
-  checksum: 2ccf663cd7c6557db86d840f3b80c65644a935a2a857fe34714eb201989ce8eccd45f936e5596fa810bafc5bf5851973e2e296b8cfb691cdea23108d15e40c87
-  languageName: node
-  linkType: hard
-
 "lit-html@npm:^2.0.0-rc.3":
   version: 2.0.0-rc.3
   resolution: "lit-html@npm:2.0.0-rc.3"
   dependencies:
     "@types/trusted-types": ^1.0.1
   checksum: 26120f0bfdd65c2f32fb15ea4e554cdf2072289fae5d1f6820b6110a42da069c6062ec19ff26734f4fff3be77cd3c61a1d0146cd9c257c64b199cb52eebc756f
-  languageName: node
-  linkType: hard
-
-"lit@npm:^2.0.0-rc.1":
-  version: 2.0.0-rc.1
-  resolution: "lit@npm:2.0.0-rc.1"
-  dependencies:
-    "@lit/reactive-element": ^1.0.0-rc.1
-    lit-element: ^3.0.0-rc.1
-    lit-html: ^2.0.0-rc.1
-  checksum: d13466a257650bb11d234a5c808300696c742b51cc51518ebf7f048d18f3c3140d4e5212e08cd23640f286a364135f444a441e3e94892f6a643d509f1bf146c7
   languageName: node
   linkType: hard
 
@@ -43525,34 +43456,6 @@ typescript@2.9.1:
   checksum: d76361f973a925e84b4aa9ddfe2ffa11d5e97b2afedd61dabef1070ca89c31259871043dc9cb356a101f7481b33752d5281afd18ca4cfd0fddb9e8cf2d072446
   languageName: node
   linkType: hard
-
-"web-components-kitchen-sink@workspace:examples/web-components-kitchen-sink":
-  version: 0.0.0-use.local
-  resolution: "web-components-kitchen-sink@workspace:examples/web-components-kitchen-sink"
-  dependencies:
-    "@storybook/addon-a11y": 6.3.0-beta.10
-    "@storybook/addon-actions": 6.3.0-beta.10
-    "@storybook/addon-backgrounds": 6.3.0-beta.10
-    "@storybook/addon-controls": 6.3.0-beta.10
-    "@storybook/addon-docs": 6.3.0-beta.10
-    "@storybook/addon-jest": 6.3.0-beta.10
-    "@storybook/addon-links": 6.3.0-beta.10
-    "@storybook/addon-storyshots": 6.3.0-beta.10
-    "@storybook/addon-storysource": 6.3.0-beta.10
-    "@storybook/addon-viewport": 6.3.0-beta.10
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/core": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/source-loader": 6.3.0-beta.10
-    "@storybook/web-components": 6.3.0-beta.10
-    babel-loader: ^8.2.2
-    eventemitter3: ^4.0.7
-    format-json: ^1.0.3
-    global: ^4.4.0
-    lit-element: ^3.0.0-rc.2
-  languageName: unknown
-  linkType: soft
 
 "web-namespaces@npm:^1.0.0":
   version: 1.1.4

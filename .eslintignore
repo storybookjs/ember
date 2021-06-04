@@ -9,6 +9,7 @@ built-storybooks
 lib/cli/test
 lib/manager-webpack4/prebuilt
 lib/manager-webpack5/prebuilt
+lib/core-server/prebuilt
 lib/codemod/src/transforms/__testfixtures__
 lib/components/src/controls/react-editable-json-tree
 scripts/storage

@@ -104,7 +104,6 @@
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
     "@storybook/angular": "6.3.0-beta.10",
-    "@storybook/lit": "6.3.0-beta.10",
     "@storybook/react": "6.3.0-beta.10",
     "@storybook/vue": "6.3.0-beta.10",
     "@storybook/web-components": "6.3.0-beta.10",
@@ -138,7 +137,6 @@
   },
   "peerDependencies": {
     "@storybook/angular": "6.3.0-beta.10",
-    "@storybook/lit": "6.3.0-beta.10",
     "@storybook/vue": "6.3.0-beta.10",
     "@storybook/vue3": "6.3.0-beta.10",
     "@storybook/web-components": "6.3.0-beta.10",
@@ -153,9 +151,6 @@
   },
   "peerDependenciesMeta": {
     "@storybook/angular": {
-      "optional": true
-    },
-    "@storybook/lit": {
       "optional": true
     },
     "@storybook/vue": {

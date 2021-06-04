@@ -88,6 +88,7 @@
     "@storybook/react": "*",
     "@storybook/vue": "*",
     "@storybook/vue3": "*",
+    "jest": "*",
     "jest-preset-angular": "*",
     "jest-vue-preprocessor": "*",
     "preact": "^10.5.13",
