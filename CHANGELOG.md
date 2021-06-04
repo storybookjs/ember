@@ -1,3 +1,14 @@
+## 6.3.0-beta.11 (June 4, 2021)
+
+### Bug Fixes
+
+- Angular: Fix Ivy rendering to use at most one render promise at a time ([#15139](https://github.com/storybookjs/storybook/pull/15139))
+- CSF tools: Refactor test cases ([#15142](https://github.com/storybookjs/storybook/pull/15142))
+
+### Maintenance
+
+- Web Components: Reintegrate `@storybook/lit` into `@storybook/web-components` ([#15042](https://github.com/storybookjs/storybook/pull/15042))
+
 ## 6.3.0-beta.10 (June 3, 2021)
 
 ### Features
