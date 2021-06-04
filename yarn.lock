@@ -5775,7 +5775,7 @@ __metadata:
     "@storybook/addon-backgrounds": 6.3.0-beta.11
     "@storybook/addon-controls": 6.3.0-beta.11
     "@storybook/addon-docs": 6.3.0-beta.11
-    "@storybook/addon-measure": ^1.1.0
+    "@storybook/addon-measure": ^1.2.2
     "@storybook/addon-toolbars": 6.3.0-beta.11
     "@storybook/addon-viewport": 6.3.0-beta.11
     "@storybook/addons": 6.3.0-beta.11
@@ -5786,7 +5786,7 @@ __metadata:
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     regenerator-runtime: ^0.13.7
-    storybook-addon-outline: ^1.3.2
+    storybook-addon-outline: ^1.3.3
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
@@ -5867,9 +5867,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-measure@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@storybook/addon-measure@npm:1.1.0"
+"@storybook/addon-measure@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@storybook/addon-measure@npm:1.2.2"
   peerDependencies:
     "@storybook/addons": ^6.3.0-beta.1
     "@storybook/api": ^6.3.0-beta.1
@@ -5883,7 +5883,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 33441086c7870b58fe718e3084b7fd7ff194938c243ac156a132eb7ee6e66b0e03d3556ab061b47fcc28ffdc134428502f9aeb67c615075f0869f34ae773a366
+  checksum: da1185ff27aea7e7ee6ae0779d9227d83739c14e893af5e9f0363e14f208492b1eb3604d96405b18b139abcbc4f3bb600c4a65e874a794a0fd8f486cecfd4644
   languageName: node
   linkType: hard
 
@@ -39457,9 +39457,9 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"storybook-addon-outline@npm:^1.3.2":
-  version: 1.3.2
-  resolution: "storybook-addon-outline@npm:1.3.2"
+"storybook-addon-outline@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "storybook-addon-outline@npm:1.3.3"
   dependencies:
     "@storybook/addons": ^6.3.0-beta.6
     "@storybook/api": ^6.3.0-beta.6
@@ -39469,7 +39469,7 @@ resolve@1.19.0:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
-  checksum: 75586ff5093ab904ad1d5d98b0934d009192ebb02db4ae986f40f50e4b72e0ce131afa46932d68dca6e9849a13e7355cb7745b19dc60e5b9624a696eb8b611aa
+  checksum: db9f175f086ef1a5fd8e6fff6a912e5b5383afab1cb267a2b896ff4e213a0e3d2dad98766cc28ef5420d28da656cc569a644ca5c48c99993472f8ac0e0e5b8b5
   languageName: node
   linkType: hard
 
