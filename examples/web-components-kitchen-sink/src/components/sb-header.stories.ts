@@ -1,7 +1,8 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit';
 
-import { SbHeader } from './sb-header';
+import './sb-header';
+import type { SbHeader } from './sb-header';
 
 export default {
   title: 'Example/Header',
