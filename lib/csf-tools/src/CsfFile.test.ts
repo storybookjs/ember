@@ -81,7 +81,7 @@ describe('csf extract', () => {
           title: foo/bar
           includeStories: !<tag:yaml.org,2002:js/regexp> /^Include.*/
         stories:
-          - id: foo-bar--includea
+          - id: foo-bar--include-a
             name: IncludeA
       `);
     });

@@ -5,7 +5,7 @@ import { parse } from '@babel/parser';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
-import { toId, isExportStory } from '@storybook/csf';
+import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
 
 const logger = console;
 interface Meta {
@@ -131,10 +131,10 @@ export class CsfFile {
     // default export can come at any point in the file, so we do this post processing last
     self._stories =
       self._meta && self._meta.title
-        ? Object.entries(self._stories).reduce((acc, [name, story]) => {
-            if (isExportStory(name, self._meta)) {
-              const id = toId(self._meta.title, name);
-              acc[name] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+        ? Object.entries(self._stories).reduce((acc, [key, story]) => {
+            if (isExportStory(key, self._meta)) {
+              const id = toId(self._meta.title, storyNameFromExport(key));
+              acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
             }
             return acc;
           }, {} as Record<string, Story>)
