@@ -151,8 +151,7 @@ export class CsfFile {
   }
 }
 
-export const readCsf = async (fileName: string) => {
-  const code = (await fs.readFile(fileName, 'utf-8')).toString();
+export const loadCsf = async (code: string) => {
   const ast = parse(code, {
     sourceType: 'module',
     // FIXME: we should get this from the project config somehow?
@@ -166,7 +165,16 @@ export const readCsf = async (fileName: string) => {
   return new CsfFile(ast);
 };
 
-export const writeCsf = async (fileName: string, csf: CsfFile) => {
+export const formatCsf = async (csf: CsfFile) => {
   const { code } = generate(csf._ast, {});
-  await fs.writeFile(fileName, code);
+  return code;
+};
+
+export const readCsf = async (fileName: string) => {
+  const code = (await fs.readFile(fileName, 'utf-8')).toString();
+  return loadCsf(code);
+};
+
+export const writeCsf = async (fileName: string, csf: CsfFile) => {
+  await fs.writeFile(fileName, await formatCsf(csf));
 };
