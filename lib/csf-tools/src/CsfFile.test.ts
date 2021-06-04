@@ -158,7 +158,7 @@ describe('csf extract', () => {
           - id: foo-bar--a
             name: A
             parameters:
-              __isArgsStory: false
+              __isArgsStory: true
               __id: foo-bar--a
       `);
     });
