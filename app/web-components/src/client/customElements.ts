@@ -30,7 +30,17 @@ export function setCustomElements(customElements: any) {
   window.__STORYBOOK_CUSTOM_ELEMENTS__ = customElements;
 }
 
+/**
+ * @param customElements any for now as spec is not super stable yet
+ */
+export function setCustomElementsManifest(customElements: any) {
+  // @ts-ignore
+  window.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__ = customElements;
+}
+​
 export function getCustomElements() {
   // @ts-ignore
-  return window.__STORYBOOK_CUSTOM_ELEMENTS__;
+  return window.__STORYBOOK_CUSTOM_ELEMENTS__ || window.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__;
 }
+​
+

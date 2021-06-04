@@ -4,7 +4,7 @@ import { logger } from '@storybook/client-logger';
 
 interface TagItem {
   name: string;
-  type: string;
+  type: { text: string };
   description: string;
   default?: any;
   defaultValue?: any;
@@ -24,8 +24,17 @@ interface Tag {
 
 interface CustomElements {
   tags: Tag[];
+  modules?: []
 }
 
+interface Module {
+  declarations?: [],
+  exports?: [],
+}
+
+interface Declaration {
+  name: string;
+}
 interface Sections {
   attributes?: any;
   properties?: any;
@@ -47,7 +56,7 @@ function mapData(data: TagItem[], category: string) {
         type,
         table: {
           category,
-          type: { summary: item.type },
+          type: { summary: item.type.text },
           defaultValue: { summary: item.default !== undefined ? item.default : item.defaultValue },
         },
       };
@@ -56,7 +65,7 @@ function mapData(data: TagItem[], category: string) {
   );
 }
 
-const getMetaData = (tagName: string, customElements: CustomElements) => {
+const getMetaDataExperimental = (tagName: string, customElements: CustomElements) => {
   if (!isValidComponent(tagName) || !isValidMetaData(customElements)) {
     return null;
   }
@@ -68,6 +77,26 @@ const getMetaData = (tagName: string, customElements: CustomElements) => {
   }
   return metaData;
 };
+
+const getMetaDataV1 = (tagName: string, customElements: CustomElements) => {
+  if (!isValidComponent(tagName) || !isValidMetaData(customElements)) {
+    return null;
+  }
+
+  let metadata;
+  customElements?.modules?.forEach((_module: Module) => {
+    _module?.declarations?.forEach((declaration: Declaration) => {
+      if(declaration.name === tagName) {
+        metadata = declaration;
+      }
+    });
+  });
+
+  if (!metadata) {
+    logger.warn(`Component not found in custom-elements.json: ${tagName}`);
+  }
+  return metadata;
+}
 
 export const extractArgTypesFromElements = (tagName: string, customElements: CustomElements) => {
   const metaData = getMetaData(tagName, customElements);
@@ -84,11 +113,20 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Cus
   );
 };
 
+const getMetaData = (tagName: string, manifest: any) => {
+  if(manifest.version === 'experimental') {
+    return getMetaDataExperimental(tagName, manifest);
+  }
+  return getMetaDataV1(tagName, manifest);
+}
+
 export const extractArgTypes = (tagName: string) => {
-  return extractArgTypesFromElements(tagName, getCustomElements());
+  const cem = getCustomElements();
+  return extractArgTypesFromElements(tagName, cem);
 };
 
 export const extractComponentDescription = (tagName: string) => {
   const metaData = getMetaData(tagName, getCustomElements());
   return metaData && metaData.description;
 };
+
