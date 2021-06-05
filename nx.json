@@ -67,7 +67,10 @@
     "@storybook/html": {
       "implicitDependencies": []
     },
-    "@storybook/lit": {
+    "@storybook/manager-webpack4": {
+      "implicitDependencies": []
+    },
+    "@storybook/manager-webpack5": {
       "implicitDependencies": []
     },
     "@storybook/preact": {

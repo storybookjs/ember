@@ -6,6 +6,7 @@ import {
   resolvePathInStorybookCache,
   loadAllPresets,
   Options,
+  cache,
 } from '@storybook/core-common';
 import dedent from 'ts-dedent';
 import prompts from 'prompts';
@@ -17,9 +18,9 @@ import { getReleaseNotesData, getReleaseNotesFailedState } from './utils/release
 import { outputStats } from './utils/output-stats';
 import { outputStartupInformation } from './utils/output-startup-information';
 import { updateCheck } from './utils/update-check';
-import { cache } from './utils/cache';
 import { getServerPort } from './utils/server-address';
 import { getPreviewBuilder } from './utils/get-preview-builder';
+import { getManagerBuilder } from './utils/get-manager-builder';
 
 export async function buildDevStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   const { packageJson, versionUpdates, releaseNotes } = options;
@@ -58,11 +59,12 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   /* eslint-enable no-param-reassign */
 
   const previewBuilder = await getPreviewBuilder(options.configDir);
+  const managerBuilder = await getManagerBuilder(options.configDir);
 
   const presets = loadAllPresets({
     corePresets: [
       require.resolve('./presets/common-preset'),
-      require.resolve('./presets/manager-preset'),
+      ...managerBuilder.corePresets,
       ...previewBuilder.corePresets,
       require.resolve('./presets/babel-cache-preset'),
     ],
@@ -91,6 +93,7 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   }
 
   if (options.smokeTest) {
+    // @ts-ignore
     const managerWarnings = (managerStats && managerStats.toJson().warnings) || [];
     if (managerWarnings.length > 0) logger.warn(`manager: ${managerWarnings}`);
     // I'm a little reticent to import webpack types in this file :shrug:
@@ -122,7 +125,7 @@ export async function buildDev(loadOptions: LoadOptions) {
       ...loadOptions,
       configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
       configType: 'DEVELOPMENT',
-      ignorePreview: !!cliOptions.previewUrl,
+      ignorePreview: !!cliOptions.previewUrl && !cliOptions.forceBuildPreview,
       docsMode: !!cliOptions.docs,
       cache,
     });

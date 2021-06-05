@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 import { promisify } from 'util';
-import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync } from 'fs';
+import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 import { getDeployables } from './utils/list-examples';
@@ -122,6 +122,10 @@ const handleExamples = async (deployables) => {
     const out = p(['built-storybooks', d]);
     const cwd = p(['examples', d]);
 
+    if (existsSync(join(cwd, 'yarn.lock'))) {
+      await exec(`yarn`, [`install`], { cwd });
+    }
+
     await exec(`yarn`, [`build-storybook`, `--output-dir=${out}`, '--quiet'], { cwd });
     await exec(`npx`, [`sb`, 'extract', out, `${out}/stories.json`], { cwd });
 
@@ -132,11 +136,7 @@ const handleExamples = async (deployables) => {
 };
 
 const run = async () => {
-  const list = getDeployables(await readdir(p(['examples'])), hasBuildScript)
-    // Temporary disable run for lit-kitchen-sink
-    .filter((example) => {
-      return !example.includes('lit-kitchen-sink');
-    });
+  const list = getDeployables(await readdir(p(['examples'])), hasBuildScript);
   const deployables = filterDataForCurrentCircleCINode(list);
 
   if (deployables.length) {

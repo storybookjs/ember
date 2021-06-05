@@ -31,11 +31,6 @@ export default {
   },
   parameters: {
     chromatic: { disable: true },
-    docs: {
-      source: {
-        state: 'open',
-      },
-    },
   },
 };
 
@@ -53,7 +48,10 @@ Basic.args = {
   children: 'basic',
   json: DEFAULT_NESTED_OBJECT,
 };
-Basic.parameters = { chromatic: { disable: false } };
+Basic.parameters = {
+  chromatic: { disable: false },
+  docs: { source: { state: 'open' } },
+};
 
 export const Action = Template.bind({});
 Action.args = {
@@ -85,12 +83,16 @@ const hasCycle: any = {};
 hasCycle.cycle = hasCycle;
 
 export const CyclicArgs = Template.bind({});
-CyclicArgs.args = {
-  hasCycle,
-};
+// No warnings in tests
+if (process.env.NODE_ENV !== 'test') {
+  CyclicArgs.args = {
+    hasCycle,
+  };
+}
 CyclicArgs.parameters = {
   docs: { disable: true },
   chromatic: { disable: true },
+  storyshots: { disable: true },
 };
 
 export const CustomControlMatchers = Template.bind({});
@@ -100,6 +102,7 @@ CustomControlMatchers.parameters = {
       date: /whateverIwant/,
     },
   },
+  docs: { source: { state: 'open' } },
 };
 CustomControlMatchers.args = {
   whateverIwant: '10/10/2020',

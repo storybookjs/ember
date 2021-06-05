@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Build Storybook",
+  "description": "Serve up storybook in development mode.",
+  "type": "object",
+  "properties": {
+    "browserTarget": {
+      "type": "string",
+      "description": "Build target to be served in project-name:builder:config format. Should generally target on the builder: '@angular-devkit/build-angular:browser'. Useful for Storybook to use options (styles, assets, ...).",
+      "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
+    },
+    "staticDir": {
+      "type": "array",
+      "description": "Directory where to load static files from, array of strings.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outputDir": {
+      "type": "string",
+      "description": "Directory where to store built files.",
+      "default": "storybook-static"
+    },
+    "configDir": {
+      "type": "string",
+      "description": "Directory where to load Storybook configurations from.",
+      "default": ".storybook"
+    },
+    "loglevel": {
+      "type": "string",
+      "description": "Controls level of logging during build. Can be one of: [silly, verbose, info (default), warn, error, silent].",
+      "pattern": "(silly|verbose|info|warn|silent)"
+    },
+    "quiet": {
+      "type": "boolean",
+      "description": "Suppress verbose build output.",
+      "default": false
+    },
+    "docs": {
+      "type": "boolean",
+      "description": "Starts Storybook in documentation mode. Learn more about it : https://storybook.js.org/docs/react/writing-docs/build-documentation#preview-storybooks-documentation.",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "required": ["browserTarget"]
+}

@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, useCallback, useState } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, ArrayValue, ArrayConfig } from './types';
 
 const parse = (value: string, separator: string): ArrayValue =>
@@ -45,7 +46,7 @@ export const ArrayControl: FC<ArrayProps> = ({
   return (
     <Wrapper>
       <Form.Textarea
-        id={name}
+        id={getControlId(name)}
         value={format(value, separator)}
         onChange={handleChange}
         size="flex"

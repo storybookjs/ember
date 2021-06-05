@@ -3,7 +3,7 @@
 exports[`vue-3-cli manager production mode 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-server/src/globals/polyfills.ts",
+    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
     "ROOT/addons/links/dist/esm/register.js",
     "ROOT/addons/docs/dist/esm/register.js",
@@ -12,6 +12,8 @@ Object {
     "ROOT/addons/backgrounds/dist/esm/register.js",
     "ROOT/addons/viewport/dist/esm/register.js",
     "ROOT/addons/toolbars/dist/esm/register.js",
+    "NODE_MODULES/@storybook/addon-measure/dist/esm/preset/manager.js",
+    "NODE_MODULES/storybook-addon-outline/dist/esm/preset/register.js",
     "ROOT/examples/vue-3-cli/.storybook/generated-refs.js",
   ],
   "keys": Array [
@@ -98,6 +100,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -168,6 +171,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "modules": false,
                     "shippedProposals": true,
                     "targets": "defaults",

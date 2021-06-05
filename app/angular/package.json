@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-alpha.33",
+  "version": "6.3.0-beta.11",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,11 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.33",
-    "@storybook/api": "6.3.0-alpha.33",
-    "@storybook/core": "6.3.0-alpha.33",
-    "@storybook/core-common": "6.3.0-alpha.33",
-    "@storybook/node-logger": "6.3.0-alpha.33",
+    "@storybook/addons": "6.3.0-beta.11",
+    "@storybook/api": "6.3.0-beta.11",
+    "@storybook/core": "6.3.0-beta.11",
+    "@storybook/core-common": "6.3.0-beta.11",
+    "@storybook/core-events": "6.3.0-beta.11",
+    "@storybook/node-logger": "6.3.0-beta.11",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -71,16 +72,17 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.0",
-    "@angular-devkit/core": "^11.2.0",
-    "@angular/common": "^11.2.0",
-    "@angular/compiler": "^11.2.0",
-    "@angular/compiler-cli": "^11.2.0",
-    "@angular/core": "^11.2.0",
-    "@angular/elements": "^11.2.0",
-    "@angular/forms": "^11.2.0",
-    "@angular/platform-browser": "^11.2.0",
-    "@angular/platform-browser-dynamic": "^11.2.0",
+    "@angular-devkit/architect": "~0.1102.0",
+    "@angular-devkit/build-angular": "~0.1102.13",
+    "@angular-devkit/core": "^11.2.13",
+    "@angular/common": "^11.2.14",
+    "@angular/compiler": "^11.2.14",
+    "@angular/compiler-cli": "^11.2.14",
+    "@angular/core": "^11.2.14",
+    "@angular/elements": "^11.2.14",
+    "@angular/forms": "^11.2.14",
+    "@angular/platform-browser": "^11.2.14",
+    "@angular/platform-browser-dynamic": "^11.2.14",
     "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
     "@types/jest": "^26.0.16",
@@ -90,6 +92,7 @@
     "ts-jest": "^26.4.4"
   },
   "peerDependencies": {
+    "@angular-devkit/architect": ">=0.8.9",
     "@angular-devkit/build-angular": ">=0.8.9",
     "@angular-devkit/core": "^0.6.1 || >=7.0.0",
     "@angular/common": ">=6.0.0",
@@ -124,5 +127,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a70d3fa1577b078011ae1fe56f9acda0daa95ae7"
+  "builders": "dist/ts3.9/builders/builders.json",
+  "gitHead": "4c0a14de3f7d0d360933c7dfb6cb8a8e3fb548d6"
 }

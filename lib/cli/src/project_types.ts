@@ -28,7 +28,8 @@ export type SupportedFrameworks =
   | 'rax'
   | 'aurelia'
   | 'html'
-  | 'web-components';
+  | 'web-components'
+  | 'server';
 
 export enum ProjectType {
   UNDETECTED = 'UNDETECTED',
@@ -56,6 +57,7 @@ export enum ProjectType {
   SVELTE = 'SVELTE',
   RAX = 'RAX',
   AURELIA = 'AURELIA',
+  SERVER = 'SERVER',
 }
 
 export const SUPPORTED_FRAMEWORKS: SupportedFrameworks[] = [
@@ -211,7 +213,7 @@ export const supportedTemplates: TemplateConfiguration[] = [
   },
   {
     preset: ProjectType.WEB_COMPONENTS,
-    dependencies: ['lit-element', 'lit-html'],
+    dependencies: ['lit-element', 'lit-html', 'lit'],
     matcherFunction: ({ dependencies }) => {
       return dependencies.some(Boolean);
     },

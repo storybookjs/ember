@@ -1,10 +1,13 @@
 <h1>Migration</h1>
 
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
+  - [Lit support](#lit-support)
   - [6.3 deprecations](#63-deprecations)
+    - [Deprecated addon-knobs](#deprecated-addon-knobs)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
-    - [Deprecated argType.defaulValue](#deprecated-argtype-defaultValue)
+    - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
@@ -160,12 +163,26 @@
 
 ## From version 6.2.x to 6.3.0
 
+### Webpack 5 manager build
+
+Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
+
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+
+```shell
+yarn add @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/manager-webpack5 --save-dev
+```
+
 ### Angular 12 upgrade
 
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
 
-```js
-npm install @storybook/builder-webpack5 --save-dev # or yarn
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5@next --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5@next --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
@@ -178,7 +195,22 @@ module.exports = {
 };
 ```
 
+### Lit support
+
+Storybook 6.3 introduces Lit 2 support in a non-breaking way to ease migration from `lit-html`/`lit-element` to `lit`.
+
+To do so, it relies on helpers added in the latest minor versions of `lit-html`/`lit-element`. So when upgrading to Storybook 6.3, please ensure your project is using `lit-html` 1.4.x or `lit-element` 2.5.x.
+
+According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
+
 ### 6.3 deprecations
+
+#### Deprecated addon-knobs
+
+We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
+
+- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
+- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
 
 #### Deprecated scoped blocks imports
 
@@ -453,7 +485,7 @@ console.log(unboundStoryFn(context));
 
 If you're not using loaders, `storyFn` will work as before. If you are, you'll need to use the new approach.
 
-> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in 6.2. You can track the issue at https://github.com/storybookjs/storybook/issues/13074.
+> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in a future release. You can track the issue at https://github.com/storybookjs/storybook/issues/13074.
 
 #### Deprecated onBeforeRender
 

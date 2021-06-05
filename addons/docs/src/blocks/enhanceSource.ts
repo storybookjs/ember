@@ -1,6 +1,54 @@
 import { combineParameters } from '@storybook/client-api';
 import { StoryContext, Parameters } from '@storybook/addons';
-import { extractSource, LocationsMap } from '@storybook/source-loader';
+
+// ============================================================
+// START @storybook/source-loader/extract-source
+//
+// This code duplicated because tree-shaking isn't working.
+// It's not DRY, but source-loader is on the chopping block for
+// the next version of addon-docs, so it's not the worst sin.
+// ============================================================
+
+interface SourceLoc {
+  line: number;
+  col: number;
+}
+
+interface SourceBlock {
+  startBody: SourceLoc;
+  endBody: SourceLoc;
+  startLoc: SourceLoc;
+  endLoc: SourceLoc;
+}
+
+interface LocationsMap {
+  [key: string]: SourceBlock;
+}
+
+/**
+ * given a location, extract the text from the full source
+ */
+function extractSource(location: SourceBlock, lines: string[]): string | null {
+  const { startBody: start, endBody: end } = location;
+  if (start.line === end.line && lines[start.line - 1] !== undefined) {
+    return lines[start.line - 1].substring(start.col, end.col);
+  }
+  // NOTE: storysource locations are 1-based not 0-based!
+  const startLine = lines[start.line - 1];
+  const endLine = lines[end.line - 1];
+  if (startLine === undefined || endLine === undefined) {
+    return null;
+  }
+  return [
+    startLine.substring(start.col),
+    ...lines.slice(start.line, end.line - 1),
+    endLine.substring(0, end.col),
+  ].join('\n');
+}
+
+// ============================================================
+// END @storybook/source-loader/extract-source
+// ============================================================
 
 interface StorySource {
   source: string;

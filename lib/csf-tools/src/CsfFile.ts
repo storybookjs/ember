@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 import fs from 'fs-extra';
 import { parse } from '@babel/parser';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
-import { toId, isExportStory } from '@storybook/csf';
+import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
 
 const logger = console;
 interface Meta {
@@ -55,6 +54,63 @@ const parseMeta = (declaration: t.ObjectExpression): Meta => {
   });
   return meta;
 };
+
+const findVarInitialization = (identifier: string, program: t.Program) => {
+  let init: t.Node = null;
+  let declarations: t.VariableDeclarator[] = null;
+  program.body.find((node: t.Node) => {
+    if (t.isVariableDeclaration(node)) {
+      declarations = node.declarations;
+    } else if (t.isExportNamedDeclaration(node) && t.isVariableDeclaration(node.declaration)) {
+      declarations = node.declaration.declarations;
+    }
+
+    return (
+      declarations &&
+      declarations.find((decl: t.Node) => {
+        if (
+          t.isVariableDeclarator(decl) &&
+          t.isIdentifier(decl.id) &&
+          decl.id.name === identifier
+        ) {
+          init = decl.init;
+          return true; // stop looking
+        }
+        return false;
+      })
+    );
+  });
+  return init;
+};
+
+const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node) => {
+  let storyFn: t.Node = init;
+  // export const Foo = Bar.bind({})
+  if (t.isCallExpression(init)) {
+    const { callee, arguments: bindArguments } = init;
+    if (
+      t.isProgram(parent) &&
+      t.isMemberExpression(callee) &&
+      t.isIdentifier(callee.object) &&
+      t.isIdentifier(callee.property) &&
+      callee.property.name === 'bind' &&
+      (bindArguments.length === 0 ||
+        (bindArguments.length === 1 &&
+          t.isObjectExpression(bindArguments[0]) &&
+          bindArguments[0].properties.length === 0))
+    ) {
+      const boundIdentifier = callee.object.name;
+      const template = findVarInitialization(boundIdentifier, parent);
+      if (template) {
+        storyFn = template;
+      }
+    }
+  }
+  if (t.isArrowFunctionExpression(storyFn)) {
+    return storyFn.params.length > 0;
+  }
+  return false;
+};
 export class CsfFile {
   _ast: Node;
 
@@ -71,7 +127,7 @@ export class CsfFile {
     const self = this;
     traverse(this._ast, {
       ExportDefaultDeclaration: {
-        enter({ node }) {
+        enter({ node, parent }) {
           if (t.isObjectExpression(node.declaration)) {
             // export default { ... };
             self._meta = parseMeta(node.declaration);
@@ -81,11 +137,16 @@ export class CsfFile {
             t.isObjectExpression(node.declaration.expression)
           ) {
             self._meta = parseMeta(node.declaration.expression);
+          } else if (t.isIdentifier(node.declaration) && t.isProgram(parent)) {
+            const init = findVarInitialization(node.declaration.name, parent);
+            if (t.isObjectExpression(init)) {
+              self._meta = parseMeta(init);
+            }
           }
         },
       },
       ExportNamedDeclaration: {
-        enter({ node }) {
+        enter({ node, parent }) {
           if (t.isVariableDeclaration(node.declaration)) {
             // export const X = ...;
             node.declaration.declarations.forEach((decl) => {
@@ -94,8 +155,7 @@ export class CsfFile {
                 const parameters = {
                   // __id: toId(self._meta.title, name),
                   // FiXME: Template.bind({});
-                  __isArgsStory:
-                    t.isArrowFunctionExpression(decl.init) && decl.init.params.length > 0,
+                  __isArgsStory: isArgsStory(decl, parent),
                 };
                 self._stories[name] = {
                   id: 'FIXME',
@@ -131,10 +191,10 @@ export class CsfFile {
     // default export can come at any point in the file, so we do this post processing last
     self._stories =
       self._meta && self._meta.title
-        ? Object.entries(self._stories).reduce((acc, [name, story]) => {
-            if (isExportStory(name, self._meta)) {
-              const id = toId(self._meta.title, name);
-              acc[name] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+        ? Object.entries(self._stories).reduce((acc, [key, story]) => {
+            if (isExportStory(key, self._meta)) {
+              const id = toId(self._meta.title, storyNameFromExport(key));
+              acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
             }
             return acc;
           }, {} as Record<string, Story>)
@@ -151,8 +211,7 @@ export class CsfFile {
   }
 }
 
-export const readCsf = async (fileName: string) => {
-  const code = (await fs.readFile(fileName, 'utf-8')).toString();
+export const loadCsf = async (code: string) => {
   const ast = parse(code, {
     sourceType: 'module',
     // FIXME: we should get this from the project config somehow?
@@ -166,7 +225,16 @@ export const readCsf = async (fileName: string) => {
   return new CsfFile(ast);
 };
 
-export const writeCsf = async (fileName: string, csf: CsfFile) => {
+export const formatCsf = async (csf: CsfFile) => {
   const { code } = generate(csf._ast, {});
-  await fs.writeFile(fileName, code);
+  return code;
+};
+
+export const readCsf = async (fileName: string) => {
+  const code = (await fs.readFile(fileName, 'utf-8')).toString();
+  return loadCsf(code);
+};
+
+export const writeCsf = async (fileName: string, csf: CsfFile) => {
+  await fs.writeFile(fileName, await formatCsf(csf));
 };
