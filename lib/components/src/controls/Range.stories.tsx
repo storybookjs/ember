@@ -27,6 +27,7 @@ export const Basic = () => Template({ initialValue: 10 });
 
 export const Zero = () => Template({ initialValue: 10 });
 
-export const MaxLengthValue = () => Template({ step: 0.00000000002 });
+export const MaxLengthValue = () =>
+  Template({ step: 0.00000000000002, initialValue: 1989.123123123123 });
 
 export const Undefined = () => Template({});
