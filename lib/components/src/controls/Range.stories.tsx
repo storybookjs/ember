@@ -6,7 +6,7 @@ export default {
   component: RangeControl,
 };
 
-const Template = (initialValue?: number) => {
+const Template = ({ initialValue, step }: { initialValue?: number; step?: number }) => {
   const [value, setValue] = useState(initialValue);
   return (
     <>
@@ -16,15 +16,17 @@ const Template = (initialValue?: number) => {
         onChange={(newVal) => setValue(newVal)}
         min={0}
         max={2000}
-        step={0.000000000000000000000000000005}
+        step={step || 2}
       />
       <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
-export const Basic = () => Template(10);
+export const Basic = () => Template({ initialValue: 10 });
 
-export const Zero = () => Template(0);
+export const Zero = () => Template({ initialValue: 10 });
 
-export const Undefined = () => Template(undefined);
+export const MaxLengthValue = () => Template({ step: 0.00000000002 });
+
+export const Undefined = () => Template({});
