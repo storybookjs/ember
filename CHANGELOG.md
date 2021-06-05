@@ -1,3 +1,9 @@
+## 6.3.0-beta.12 (June 5, 2021)
+
+### Features
+
+- Essentials: Update measure/outline addons to support ESM and vite builder ([#15144](https://github.com/storybookjs/storybook/pull/15144))
+
 ## 6.3.0-beta.11 (June 4, 2021)
 
 ### Bug Fixes
