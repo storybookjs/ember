@@ -11,6 +11,7 @@ const RangeInput = styled.input(({ theme }) => ({
   // Resytled using http://danielstern.ca/range.css/#/
   '&': {
     width: '100%',
+    minWidth: 40,
     backgroundColor: 'transparent',
     appearance: 'none',
   },
@@ -158,14 +159,17 @@ const RangeLabelNumberWrapper = styled.span<{ minWidth: string }>(({ minWidth })
 
 const NUMBER_WIDTH = 8 as const;
 const EXPONENTIAL_SEPARATOR = 'e-' as const;
+const MAX_NUMBER_LENGTH = Number.MAX_SAFE_INTEGER.toString().length;
 
-const parseExponentialNumber = (number: number) => Number(number.toString().split('e-')[1]);
-// Range slider value label changes handle position and causes jittering #14204
+const parseExponentialNumber = (number: number) =>
+  Number(number.toString().split(EXPONENTIAL_SEPARATOR)[1]);
+
 function getNumberOfDecimals(number: number): number {
   const stringNumber = number.toString();
-  return stringNumber.includes(EXPONENTIAL_SEPARATOR)
-    ? Number(stringNumber.split('e-')[1])
+  const numberOFDecimals = stringNumber.includes(EXPONENTIAL_SEPARATOR)
+    ? parseExponentialNumber(number)
     : stringNumber.split('.')[1]?.length || 0;
+  return numberOFDecimals > MAX_NUMBER_LENGTH ? MAX_NUMBER_LENGTH : numberOFDecimals;
 }
 
 export const RangeControl: FC<RangeProps> = ({
@@ -186,7 +190,8 @@ export const RangeControl: FC<RangeProps> = ({
   const valueMinWidthPixels = useMemo(() => {
     const stepDecimals = getNumberOfDecimals(step);
     const maxLength = max.toString().length;
-    return (stepDecimals + maxLength) * NUMBER_WIDTH;
+    const numberLength = stepDecimals + maxLength;
+    return (numberLength > MAX_NUMBER_LENGTH ? MAX_NUMBER_LENGTH : numberLength) * NUMBER_WIDTH;
   }, [step, max]);
 
   return (
