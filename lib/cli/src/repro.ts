@@ -21,18 +21,20 @@ interface ReproOptions {
   pnp?: boolean;
 }
 
-// react_in_yarn_workspace is only for e2e tests not users
-const TEMPLATES = Object.fromEntries(
+const TEMPLATES = configs as Record<string, Parameters>;
+
+// Create a curate list of template because some of them only make sense in E2E
+// context, fon instance react_in_yarn_workspace
+const CURATED_TEMPLATES = Object.fromEntries(
   Object.entries(configs).filter((entry) => entry[0] !== 'react_in_yarn_workspace')
 ) as Record<string, Parameters>;
 
-const FRAMEWORKS = Object.values(TEMPLATES).reduce<Record<SupportedFrameworks, Parameters[]>>(
-  (acc, cur) => {
-    acc[cur.framework] = [...(acc[cur.framework] || []), cur];
-    return acc;
-  },
-  {} as Record<SupportedFrameworks, Parameters[]>
-);
+const FRAMEWORKS = Object.values(CURATED_TEMPLATES).reduce<
+  Record<SupportedFrameworks, Parameters[]>
+>((acc, cur) => {
+  acc[cur.framework] = [...(acc[cur.framework] || []), cur];
+  return acc;
+}, {} as Record<SupportedFrameworks, Parameters[]>);
 
 export const repro = async ({
   outputDirectory,

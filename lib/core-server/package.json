@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.3.0-beta.11",
+  "version": "6.3.0-beta.12",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,12 +40,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/builder-webpack4": "6.3.0-beta.11",
-    "@storybook/core-client": "6.3.0-beta.11",
-    "@storybook/core-common": "6.3.0-beta.11",
-    "@storybook/csf-tools": "6.3.0-beta.11",
-    "@storybook/manager-webpack4": "6.3.0-beta.11",
-    "@storybook/node-logger": "6.3.0-beta.11",
+    "@storybook/builder-webpack4": "6.3.0-beta.12",
+    "@storybook/core-client": "6.3.0-beta.12",
+    "@storybook/core-common": "6.3.0-beta.12",
+    "@storybook/csf-tools": "6.3.0-beta.12",
+    "@storybook/manager-webpack4": "6.3.0-beta.12",
+    "@storybook/node-logger": "6.3.0-beta.12",
     "@storybook/semver": "^7.3.2",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
@@ -75,15 +75,15 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.3.0-beta.11",
+    "@storybook/builder-webpack5": "6.3.0-beta.12",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.3.0-beta.11",
-    "@storybook/manager-webpack5": "6.3.0-beta.11",
+    "@storybook/builder-webpack5": "6.3.0-beta.12",
+    "@storybook/manager-webpack5": "6.3.0-beta.12",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -101,6 +101,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "4c0a14de3f7d0d360933c7dfb6cb8a8e3fb548d6",
+  "gitHead": "38d2cd7f9c33fcaa3bb52effcad385700e25c750",
   "sbmodern": "dist/modern/index.js"
 }
