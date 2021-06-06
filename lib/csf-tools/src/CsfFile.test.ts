@@ -9,7 +9,7 @@ expect.addSnapshotSerializer({
 });
 
 const parse = async (code: string, includeParameters?: boolean) => {
-  const { stories, meta } = (await loadCsf(code)).parse();
+  const { stories, meta } = loadCsf(code).parse();
   const filtered = includeParameters
     ? stories
     : stories.map(({ id, name, parameters, ...rest }) => ({ id, name, ...rest }));
