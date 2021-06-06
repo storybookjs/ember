@@ -145,6 +145,8 @@ const RangeLabel = styled.span({
   paddingRight: 5,
   fontSize: 12,
   whiteSpace: 'nowrap',
+  fontFeatureSettings: 'tnum',
+  fontVariantNumeric: 'tabular-nums',
 });
 
 const RangeWrapper = styled.div({
@@ -152,23 +154,17 @@ const RangeWrapper = styled.div({
   alignItems: 'center',
   width: '100%',
 });
-const RangeLabelNumberWrapper = styled.span<{ minWidth: string }>(({ minWidth }) => ({
-  minWidth,
-  display: 'inline-block',
-  textAlign: 'right',
-}));
 
-const NUMBER_WIDTH = 8 as const;
 const EXPONENTIAL_SEPARATOR = 'e-' as const;
 const MAX_NUMBER_LENGTH = Number.MAX_SAFE_INTEGER.toString().length;
 
-const parseExponentialNumber = (number: number) =>
+const getNumberOfDecimalsForExponentialNumber = (number: number) =>
   Number(number.toString().split(EXPONENTIAL_SEPARATOR)[1]);
 
 function getNumberOfDecimals(number: number): number {
   const stringNumber = number.toString();
   const numberOFDecimals = stringNumber.includes(EXPONENTIAL_SEPARATOR)
-    ? parseExponentialNumber(number)
+    ? getNumberOfDecimalsForExponentialNumber(number)
     : stringNumber.split('.')[1]?.length || 0;
   return numberOFDecimals > MAX_NUMBER_LENGTH ? MAX_NUMBER_LENGTH : numberOFDecimals;
 }
@@ -188,11 +184,11 @@ export const RangeControl: FC<RangeProps> = ({
   };
   const hasValue = value !== undefined;
 
-  const valueMinWidthPixels = useMemo(() => {
+  const numberOFDecimals = useMemo(() => {
     const stepDecimals = getNumberOfDecimals(step);
     const maxLength = max.toString().length;
     const numberLength = stepDecimals + maxLength;
-    return (numberLength > MAX_NUMBER_LENGTH ? MAX_NUMBER_LENGTH : numberLength) * NUMBER_WIDTH;
+    return numberLength > MAX_NUMBER_LENGTH ? MAX_NUMBER_LENGTH : numberLength;
   }, [step, max]);
 
   return (
@@ -205,10 +201,7 @@ export const RangeControl: FC<RangeProps> = ({
         {...{ name, value, min, max, step, onFocus, onBlur }}
       />
       <RangeLabel>
-        <RangeLabelNumberWrapper minWidth={`${valueMinWidthPixels}px`}>{`${
-          hasValue ? value : '--'
-        }`}</RangeLabelNumberWrapper>{' '}
-        / {max}
+        {`${hasValue ? value.toFixed(numberOFDecimals) : '--'}`} / {max}
       </RangeLabel>
     </RangeWrapper>
   );
