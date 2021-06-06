@@ -1,3 +1,11 @@
+## 6.3.0-beta.13 (June 6, 2021)
+
+### Maintenance
+
+- CsfFile: Index Meta/Story annotations ([#15152](https://github.com/storybookjs/storybook/pull/15152))
+- CLI: Update project template for web-components ([#15149](https://github.com/storybookjs/storybook/pull/15149))
+- Build: Fix WC example and e2e tests ([#15146](https://github.com/storybookjs/storybook/pull/15146))
+
 ## 6.3.0-beta.12 (June 5, 2021)
 
 ### Features
