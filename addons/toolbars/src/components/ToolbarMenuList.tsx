@@ -1,4 +1,5 @@
 import React from 'react';
+import { styled, useTheme, Theme } from '@storybook/theming';
 import { useGlobals } from '@storybook/api';
 import { Icons, IconButton, WithTooltip, TooltipLinkList, TabButton } from '@storybook/components';
 import { NormalizedToolbarArgType } from '../types';
@@ -12,24 +13,34 @@ export const ToolbarMenuList = ({
   toolbar: { icon, items, showName },
 }: MenuToolbarProps) => {
   const [globals, updateGlobals] = useGlobals();
+  const theme = useTheme<Theme>();
   const selectedValue = globals[id];
   const active = selectedValue != null;
   const selectedItem = active && items.find((item) => item.value === selectedValue);
   const selectedIcon = (selectedItem && selectedItem.icon) || icon;
 
   return (
-    <WithTooltip
+    <Wrapper
       placement="top"
       trigger="click"
       tooltip={({ onHide }) => {
-        const links = items.map((item) => {
-          const { value, left, title, right, icon: itemIcon } = item;
+        const links = items.map(({ value, left: _left, title, right: _right, icon: _icon }) => {
+          let left: React.ReactNode = _left;
+          let right: React.ReactNode = _right;
+          const Icon = <Icons fill={theme.color.defaultText} style={{ opacity: 1 }} icon={_icon} />;
+
+          // If title or left is provided, then set icon to right and vice versa
+          if (left || title) {
+            right = Icon;
+          } else if (right) {
+            left = Icon;
+          }
+
           return {
             id: value,
             left,
             title,
             right,
-            icon: itemIcon,
             active: selectedValue === value,
             onClick: () => {
               updateGlobals({ [id]: value });
@@ -49,6 +60,12 @@ export const ToolbarMenuList = ({
       ) : (
         <TabButton active={active}>{name}</TabButton>
       )}
-    </WithTooltip>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled(WithTooltip)({
+  '& a span > svg': {
+    opacity: 1,
+  },
+});

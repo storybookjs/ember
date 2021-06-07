@@ -201,6 +201,7 @@ export const globalTypes = {
     defaultValue: 'off',
     toolbar: {
       toggle: true,
+      title: 'My test',
       shortcuts: {
         toggle: {
           label: 'Toggle on/off',
@@ -218,12 +219,9 @@ export const globalTypes = {
     description: 'test2 description',
     defaultValue: 'false',
     toolbar: {
-      icon: 'circlehollow',
+      preventDynamicIcon: true,
+      icon: 'sidebar',
       shortcuts: {
-        toggle: {
-          label: 'Next test item',
-          keys: ['T'],
-        },
         next: {
           label: 'Next test item',
           keys: ['T'],
@@ -235,7 +233,7 @@ export const globalTypes = {
       },
       items: [
         { value: 'true', icon: 'circlehollow', title: 'true' },
-        { value: 'false', icon: 'circlehollow', title: 'false' },
+        { value: 'false', icon: 'circle', title: 'false' },
       ],
     },
   },

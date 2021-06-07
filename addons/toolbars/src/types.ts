@@ -19,10 +19,16 @@ export interface ToolbarItem {
 }
 
 export interface NormalizedToolbarConfig {
+  /** The label to show for this toolbar item */
+  title?: string;
+  /** Choose an icon to show for this toolbar item */
   icon?: IconsProps['icon'];
+  /** Set to true to update icon to match any present selected items icon */
+  useItemIcon?: boolean;
   items: ToolbarItem[];
-  showName?: boolean;
   toggle?: boolean;
+  /** @deprecated "name" no longer dual purposes as title - use "title" if a title is wanted */
+  showName?: boolean;
 }
 
 export type NormalizedToolbarArgType = ArgType & {
