@@ -1,3 +1,9 @@
+## 6.3.0-beta.15 (June 7, 2021)
+
+### Bug Fixes
+
+- Angular: Clear root / docs-root when navigating from one tab to the other ([#15160](https://github.com/storybookjs/storybook/pull/15160))
+
 ## 6.3.0-beta.14 (June 6, 2021)
 
 ### Features
