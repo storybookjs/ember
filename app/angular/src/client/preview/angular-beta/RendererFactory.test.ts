@@ -212,6 +212,32 @@ describe('RendererFactory', () => {
   });
 
   describe('DocsRenderer', () => {
+    describe('when canvas render is done before', () => {
+      beforeEach(async () => {
+        // Init first Canvas render
+        const render = await rendererFactory.getRendererInstance('my-story', rootTargetDOMNode);
+        await render.render({
+          storyFnAngular: {
+            template: 'Canvas 🖼',
+          },
+          forced: true,
+          parameters: {} as any,
+          targetDOMNode: rootTargetDOMNode,
+        });
+      });
+
+      it('should reset root HTML', async () => {
+        global.document.getElementById('root').appendChild(global.document.createElement('👾'));
+
+        expect(global.document.getElementById('root').innerHTML).toContain('Canvas 🖼');
+        const render = await rendererFactory.getRendererInstance(
+          'my-story-in-docs',
+          rootDocstargetDOMNode
+        );
+        expect(global.document.getElementById('root').innerHTML).toBe('');
+      });
+    });
+
     it('should get DocsRenderer instance', async () => {
       const render = await rendererFactory.getRendererInstance(
         'my-story-in-docs',
