@@ -195,6 +195,50 @@ export const globals = {
 export const globalTypes = {
   foo: { defaultValue: 'fooDefaultValue' },
   bar: { defaultValue: 'barDefaultValue' },
+  test1: {
+    name: 'test1',
+    description: 'test1 description',
+    defaultValue: 'off',
+    toolbar: {
+      toggle: true,
+      shortcuts: {
+        toggle: {
+          label: 'Toggle on/off',
+          keys: ['Q'],
+        },
+      },
+      items: [
+        { value: 'on', icon: 'lightning', title: 'on' },
+        { value: 'off', icon: 'lightningoff', title: 'off' },
+      ],
+    },
+  },
+  test2: {
+    name: 'test2',
+    description: 'test2 description',
+    defaultValue: 'false',
+    toolbar: {
+      icon: 'circlehollow',
+      shortcuts: {
+        toggle: {
+          label: 'Next test item',
+          keys: ['T'],
+        },
+        next: {
+          label: 'Next test item',
+          keys: ['T'],
+        },
+        previous: {
+          label: 'Previous test item',
+          keys: ['shift', 'T'],
+        },
+      },
+      items: [
+        { value: 'true', icon: 'circlehollow', title: 'true' },
+        { value: 'false', icon: 'circlehollow', title: 'false' },
+      ],
+    },
+  },
   theme: {
     name: 'Theme',
     description: 'Global theme for components',
