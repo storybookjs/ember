@@ -1,16 +1,16 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useGlobals } from '@storybook/api';
 import { Icons, IconButton, WithTooltip, TooltipLinkList, TabButton } from '@storybook/components';
 import { NormalizedToolbarArgType } from '../types';
 
 export type MenuToolbarProps = NormalizedToolbarArgType & { id: string };
 
-export const MenuToolbar: FC<MenuToolbarProps> = ({
+export const ToolbarMenuList = ({
   id,
   name,
   description,
   toolbar: { icon, items, showName },
-}) => {
+}: MenuToolbarProps) => {
   const [globals, updateGlobals] = useGlobals();
   const selectedValue = globals[id];
   const active = selectedValue != null;
@@ -23,12 +23,13 @@ export const MenuToolbar: FC<MenuToolbarProps> = ({
       trigger="click"
       tooltip={({ onHide }) => {
         const links = items.map((item) => {
-          const { value, left, title, right } = item;
+          const { value, left, title, right, icon: itemIcon } = item;
           return {
             id: value,
             left,
             title,
             right,
+            icon: itemIcon,
             active: selectedValue === value,
             onClick: () => {
               updateGlobals({ [id]: value });

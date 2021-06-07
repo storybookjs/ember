@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
+import React, { useRef } from 'react';
+import { uniqueId } from 'lodash';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
+import { ToolbarMenuList } from './ToolbarMenuList';
+import { ToolbarMenuToggle } from './ToolbarMenuToggle';
+import { ID } from '../constants';
 
-import { ToolbarArgType } from '../types';
-import { MenuToolbar } from './MenuToolbar';
+import type { ToolbarArgType } from '../types';
 
 const normalize = (key: string, argType: ToolbarArgType) => ({
   ...argType,
@@ -20,7 +23,8 @@ const normalize = (key: string, argType: ToolbarArgType) => ({
 /**
  * A smart component for handling manager-preview interactions.
  */
-export const ToolbarManager: FC = () => {
+export const ToolbarManager = () => {
+  const idRef = useRef(uniqueId(ID));
   const globalTypes = useGlobalTypes();
   const keys = Object.keys(globalTypes).filter((key) => !!globalTypes[key].toolbar);
   if (!keys.length) return null;
@@ -30,7 +34,13 @@ export const ToolbarManager: FC = () => {
       <Separator />
       {keys.map((key) => {
         const normalizedConfig = normalize(key, globalTypes[key] as ToolbarArgType);
-        return <MenuToolbar key={key} id={key} {...normalizedConfig} />;
+        const isToggle = normalizedConfig.toolbar.toggle === true;
+
+        return isToggle ? (
+          <ToolbarMenuToggle key={key} id={`${idRef.current}-${key}`} {...normalizedConfig} />
+        ) : (
+          <ToolbarMenuList key={key} id={`${idRef.current}-${key}`} {...normalizedConfig} />
+        );
       })}
     </>
   );
