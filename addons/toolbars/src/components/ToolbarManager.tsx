@@ -3,8 +3,8 @@ import { uniqueId } from 'lodash';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
 import { ToolbarMenuList } from './ToolbarMenuList';
-import { ToolbarMenuToggle } from './ToolbarMenuToggle';
-import { ID } from '../constants';
+import { ToolbarMenuCycle } from './ToolbarMenuCycle';
+import { ADDON_ID } from '../constants';
 
 import type { ToolbarArgType } from '../types';
 
@@ -24,22 +24,25 @@ const normalize = (key: string, argType: ToolbarArgType) => ({
  * A smart component for handling manager-preview interactions.
  */
 export const ToolbarManager = () => {
-  const idRef = useRef(uniqueId(ID));
+  const idRef = useRef(uniqueId(ADDON_ID));
   const globalTypes = useGlobalTypes();
-  const keys = Object.keys(globalTypes).filter((key) => !!globalTypes[key].toolbar);
-  if (!keys.length) return null;
+  const globalIds = Object.keys(globalTypes).filter((id) => !!globalTypes[id].toolbar);
+
+  if (!globalIds.length) {
+    return null;
+  }
 
   return (
     <>
       <Separator />
-      {keys.map((key) => {
-        const normalizedConfig = normalize(key, globalTypes[key] as ToolbarArgType);
-        const isToggle = normalizedConfig.toolbar.toggle === true;
+      {globalIds.map((id) => {
+        const normalizedConfig = normalize(id, globalTypes[id] as ToolbarArgType);
+        const isCycle = normalizedConfig.toolbar.cycle === true;
 
-        return isToggle ? (
-          <ToolbarMenuToggle key={key} id={`${idRef.current}-${key}`} {...normalizedConfig} />
+        return isCycle ? (
+          <ToolbarMenuCycle key={`${idRef.current}-${id}`} id={id} {...normalizedConfig} />
         ) : (
-          <ToolbarMenuList key={key} id={`${idRef.current}-${key}`} {...normalizedConfig} />
+          <ToolbarMenuList key={`${idRef.current}-${id}`} id={id} {...normalizedConfig} />
         );
       })}
     </>

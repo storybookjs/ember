@@ -1,7 +1,7 @@
 import { IconsProps } from '@storybook/components';
 import { ArgType } from '@storybook/api';
 
-export type ToolbarShortcutType = 'next' | 'previous' | 'toggle';
+export type ToolbarShortcutType = 'next' | 'previous';
 export interface ToolbarShortcutConfig {
   label: string;
   keys: string[];
@@ -14,8 +14,9 @@ export interface ToolbarItem {
   icon?: IconsProps['icon'];
   left?: string;
   right?: string;
-  shortcuts?: ToolbarShortcuts;
   title?: string;
+  hideIcon?: boolean;
+  condition?: (value: unknown) => boolean;
 }
 
 export interface NormalizedToolbarConfig {
@@ -23,10 +24,11 @@ export interface NormalizedToolbarConfig {
   title?: string;
   /** Choose an icon to show for this toolbar item */
   icon?: IconsProps['icon'];
-  /** Set to true to update icon to match any present selected items icon */
-  useItemIcon?: boolean;
+  /** Set to true to prevent default update of icon to match any present selected items icon */
+  preventDynamicIcon?: boolean;
   items: ToolbarItem[];
-  toggle?: boolean;
+  shortcuts?: ToolbarShortcuts;
+  cycle?: boolean;
   /** @deprecated "name" no longer dual purposes as title - use "title" if a title is wanted */
   showName?: boolean;
 }
@@ -42,3 +44,5 @@ export type ToolbarConfig = NormalizedToolbarConfig & {
 export type ToolbarArgType = ArgType & {
   toolbar: ToolbarConfig;
 };
+
+export type ToolbarMenuProps = NormalizedToolbarArgType & { id: string };

@@ -1,71 +1,104 @@
-import React from 'react';
-import { styled, useTheme, Theme } from '@storybook/theming';
+import React, { useCallback } from 'react';
 import { useGlobals } from '@storybook/api';
-import { Icons, IconButton, WithTooltip, TooltipLinkList, TabButton } from '@storybook/components';
-import { NormalizedToolbarArgType } from '../types';
+import { Icons, WithTooltip, TooltipLinkList } from '@storybook/components';
+import { ToolbarMenuButton } from './ToolbarMenuButton';
+import { withCycle } from '../hoc/withCycle';
+import { getSelectedIcon } from '../utils/get-selected-icon';
 
-export type MenuToolbarProps = NormalizedToolbarArgType & { id: string };
+import type { WithCycleProps } from '../hoc/withCycle';
+import type { ToolbarMenuProps } from '../types';
 
-export const ToolbarMenuList = ({
-  id,
-  name,
-  description,
-  toolbar: { icon, items, showName },
-}: MenuToolbarProps) => {
-  const [globals, updateGlobals] = useGlobals();
-  const theme = useTheme<Theme>();
-  const selectedValue = globals[id];
-  const active = selectedValue != null;
-  const selectedItem = active && items.find((item) => item.value === selectedValue);
-  const selectedIcon = (selectedItem && selectedItem.icon) || icon;
+type ToolbarMenuListProps = ToolbarMenuProps & WithCycleProps;
 
-  return (
-    <Wrapper
-      placement="top"
-      trigger="click"
-      tooltip={({ onHide }) => {
-        const links = items.map(({ value, left: _left, title, right: _right, icon: _icon }) => {
-          let left: React.ReactNode = _left;
-          let right: React.ReactNode = _right;
-          const Icon = <Icons fill={theme.color.defaultText} style={{ opacity: 1 }} icon={_icon} />;
+export const ToolbarMenuList = withCycle(
+  ({
+    id,
+    name,
+    description,
+    toolbar: { icon: _icon, items, title: _title, showName, preventDynamicIcon },
+  }: ToolbarMenuListProps) => {
+    const [globals, updateGlobals] = useGlobals();
 
-          // If title or left is provided, then set icon to right and vice versa
-          if (left || title) {
-            right = Icon;
-          } else if (right) {
-            left = Icon;
-          }
+    const currentValue = globals[id];
+    const hasGlobalValue = !!currentValue;
+    let icon = _icon;
+    let title = _title;
 
-          return {
-            id: value,
-            left,
-            title,
-            right,
-            active: selectedValue === value,
-            onClick: () => {
-              updateGlobals({ [id]: value });
-              onHide();
-            },
-          };
-        });
-        return <TooltipLinkList links={links} />;
-      }}
-      closeOnClick
-    >
-      {selectedIcon ? (
-        <IconButton key={name} active={active} title={description}>
-          <Icons icon={selectedIcon} />
-          {showName ? `\xa0${name}` : null}
-        </IconButton>
-      ) : (
-        <TabButton active={active}>{name}</TabButton>
-      )}
-    </Wrapper>
-  );
-};
+    if (!preventDynamicIcon) {
+      icon = getSelectedIcon({ currentValue, items }) || icon;
+    }
 
-const Wrapper = styled(WithTooltip)({
-  '& a span > svg': {
-    opacity: 1,
-  },
-});
+    // Deprecation support for old "name of global arg used as title"
+    if (showName && !title) {
+      title = name;
+    }
+
+    const handleItemClick = useCallback(
+      (value: string) => {
+        updateGlobals({ [id]: value });
+      },
+      [currentValue, updateGlobals]
+    );
+
+    return (
+      <WithTooltip
+        placement="top"
+        trigger="click"
+        tooltip={({ onHide }) => {
+          const links = items
+            .filter(({ condition }) => {
+              let shouldReturn = true;
+
+              if (condition) {
+                shouldReturn = condition(currentValue);
+              }
+
+              return shouldReturn;
+            })
+            .map(
+              ({
+                value,
+                left: _left,
+                title: itemTitle,
+                right: _right,
+                icon: itemIcon,
+                hideIcon,
+              }) => {
+                let left: React.ReactNode = _left;
+                let right: React.ReactNode = _right;
+                const Icon = <Icons style={{ opacity: 1 }} icon={itemIcon} />;
+
+                // If title or left is provided, then set icon to right and vice versa
+                if (itemIcon && (left || itemTitle) && !right && !hideIcon) {
+                  right = Icon;
+                } else if (itemIcon && right && !left && !hideIcon) {
+                  left = Icon;
+                }
+
+                return {
+                  id: value,
+                  left,
+                  title: itemTitle,
+                  right,
+                  active: currentValue === value,
+                  onClick: () => {
+                    handleItemClick(value);
+                    onHide();
+                  },
+                };
+              }
+            );
+          return <TooltipLinkList links={links} />;
+        }}
+        closeOnClick
+      >
+        <ToolbarMenuButton
+          active={hasGlobalValue}
+          description={description}
+          icon={icon}
+          title={title}
+        />
+      </WithTooltip>
+    );
+  }
+);

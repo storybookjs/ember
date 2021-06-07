@@ -198,29 +198,29 @@ export const globalTypes = {
   test1: {
     name: 'test1',
     description: 'test1 description',
-    defaultValue: 'off',
+    defaultValue: '',
     toolbar: {
-      toggle: true,
+      cycle: true,
       title: 'My test',
       shortcuts: {
-        toggle: {
-          label: 'Toggle on/off',
-          keys: ['Q'],
+        next: {
+          label: 'Cycle that shit',
+          keys: ['K'],
         },
       },
       items: [
         { value: 'on', icon: 'lightning', title: 'on' },
         { value: 'off', icon: 'lightningoff', title: 'off' },
+        { value: '', icon: '', title: 'none' },
       ],
     },
   },
   test2: {
     name: 'test2',
     description: 'test2 description',
-    defaultValue: 'false',
     toolbar: {
-      preventDynamicIcon: true,
       icon: 'sidebar',
+      defaultValue: '',
       shortcuts: {
         next: {
           label: 'Next test item',
@@ -232,6 +232,13 @@ export const globalTypes = {
         },
       },
       items: [
+        {
+          value: '',
+          icon: 'sidebar',
+          title: 'reset',
+          hideIcon: true,
+          condition: (val) => val,
+        },
         { value: 'true', icon: 'circlehollow', title: 'true' },
         { value: 'false', icon: 'circle', title: 'false' },
       ],
@@ -259,6 +266,7 @@ export const globalTypes = {
     toolbar: {
       icon: 'globe',
       items: [
+        { value: '', title: 'Reset', icon: 'globe', hideIcon: true },
         { value: 'en', right: '🇺🇸', title: 'English' },
         { value: 'es', right: '🇪🇸', title: 'Español' },
         { value: 'zh', right: '🇨🇳', title: '中文' },
