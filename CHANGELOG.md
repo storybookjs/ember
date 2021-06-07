@@ -1,3 +1,9 @@
+## 6.3.0-beta.16 (June 8, 2021)
+
+### Features
+
+- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))
+
 ## 6.3.0-beta.15 (June 7, 2021)
 
 ### Bug Fixes
