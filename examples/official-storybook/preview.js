@@ -195,55 +195,6 @@ export const globals = {
 export const globalTypes = {
   foo: { defaultValue: 'fooDefaultValue' },
   bar: { defaultValue: 'barDefaultValue' },
-  test1: {
-    name: 'test1',
-    description: 'test1 description',
-    defaultValue: '',
-    toolbar: {
-      cycle: true,
-      title: 'My test',
-      shortcuts: {
-        next: {
-          label: 'Cycle that shit',
-          keys: ['K'],
-        },
-      },
-      items: [
-        { value: 'on', icon: 'lightning', title: 'on' },
-        { value: 'off', icon: 'lightningoff', title: 'off' },
-        { value: '', icon: '', title: 'none' },
-      ],
-    },
-  },
-  test2: {
-    name: 'test2',
-    description: 'test2 description',
-    toolbar: {
-      icon: 'sidebar',
-      defaultValue: '',
-      shortcuts: {
-        next: {
-          label: 'Next test item',
-          keys: ['T'],
-        },
-        previous: {
-          label: 'Previous test item',
-          keys: ['shift', 'T'],
-        },
-      },
-      items: [
-        {
-          value: '',
-          icon: 'sidebar',
-          title: 'reset',
-          hideIcon: true,
-          condition: (val) => val,
-        },
-        { value: 'true', icon: 'circlehollow', title: 'true' },
-        { value: 'false', icon: 'circle', title: 'false' },
-      ],
-    },
-  },
   theme: {
     name: 'Theme',
     description: 'Global theme for components',
@@ -265,8 +216,14 @@ export const globalTypes = {
     defaultValue: 'en',
     toolbar: {
       icon: 'globe',
+      shortcuts: {
+        next: {
+          label: 'Go to next language',
+          keys: ['L'],
+        },
+      },
       items: [
-        { value: '', title: 'Reset', icon: 'globe', hideIcon: true },
+        { value: '', title: 'Reset', icon: 'globe', hideIcon: true, condition: (val) => val },
         { value: 'en', right: '🇺🇸', title: 'English' },
         { value: 'es', right: '🇪🇸', title: 'Español' },
         { value: 'zh', right: '🇨🇳', title: '中文' },
