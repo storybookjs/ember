@@ -65,10 +65,6 @@
       "root": "app/html",
       "type": "library"
     },
-    "@storybook/lit": {
-      "root": "app/lit",
-      "type": "library"
-    },
     "@storybook/manager-webpack4": {
       "root": "lib/manager-webpack4",
       "type": "library"

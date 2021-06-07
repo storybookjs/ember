@@ -19,7 +19,7 @@ Storybook Docs automatically generates props tables for components in supported 
 
 ## Usage
 
-For framework-specific setup instructions, see the framework's README: [React](../react/README.md), [Vue](../vue/README.md), [Angular](../angular/README.md), [Web Components](../web-components/README.md), [Ember](../ember/README.md), [Lit](../lit/README.md).
+For framework-specific setup instructions, see the framework's README: [React](../react/README.md), [Vue](../vue/README.md), [Angular](../angular/README.md), [Web Components](../web-components/README.md), [Ember](../ember/README.md).
 
 ### DocsPage
 
@@ -259,11 +259,10 @@ This package relies on a variety of sub-packages to extract property information
 | Angular        | `compodoc`                               | [Docs](../angular/README.md#props-tables)        | [Open issues](https://github.com/storybookjs/storybook/issues?q=is%3Aopen+is%3Aissue+label%3A%22block%3A+props%22+label%3Abug+label%3A%22app%3A+angular%22)        |
 | Web-components | `custom-elements.json`                   | [Docs](../web-components/README.md#props-tables) | [Open issues](https://github.com/storybookjs/storybook/issues?q=is%3Aopen+is%3Aissue+label%3A%22block%3A+props%22+label%3Abug+label%3A%22app%3A+web-components%22) |
 | Ember          | `yui-doc`                                | [Docs](../ember/README.md#props-tables)          | [Open issues](https://github.com/storybookjs/storybook/issues?q=is%3Aopen+is%3Aissue+label%3A%22block%3A+props%22+label%3Abug+label%3A%22app%3A+ember%22)          |
-| Lit -- ⚠️ WIP  | WIP                                      | [Docs](../lit/README.md#props-tables)            | [Open issues](https://github.com/storybookjs/storybook/issues?q=is%3Aopen+is%3Aissue+label%3A%22block%3A+props%22+label%3Abug+label%3A%22app%3A+web-components%22) |
 
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
-- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md) / [Lit](../lit/README.md)
+- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)

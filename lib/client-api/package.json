@@ -1,6 +1,6 @@
 {
   "name": "@storybook/client-api",
-  "version": "6.3.0-beta.4",
+  "version": "6.3.0-beta.16",
   "description": "Storybook Client API",
   "keywords": [
     "storybook"
@@ -40,11 +40,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-beta.4",
-    "@storybook/channel-postmessage": "6.3.0-beta.4",
-    "@storybook/channels": "6.3.0-beta.4",
-    "@storybook/client-logger": "6.3.0-beta.4",
-    "@storybook/core-events": "6.3.0-beta.4",
+    "@storybook/addons": "6.3.0-beta.16",
+    "@storybook/channel-postmessage": "6.3.0-beta.16",
+    "@storybook/channels": "6.3.0-beta.16",
+    "@storybook/client-logger": "6.3.0-beta.16",
+    "@storybook/core-events": "6.3.0-beta.16",
     "@storybook/csf": "0.0.1",
     "@types/qs": "^6.9.5",
     "@types/webpack-env": "^1.16.0",
@@ -66,6 +66,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f4d1305d01e935c368d91a6316e2144e601d8ee0",
+  "gitHead": "c0c79bc820155513a61f98a1f7f3e97e9313a28f",
   "sbmodern": "dist/modern/index.js"
 }

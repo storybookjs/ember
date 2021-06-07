@@ -1,13 +1,13 @@
-# Manager-Webpack4
+# Manager-Webpack5
 
-Builder implemented with `webpack4` and `webpack4`-compatible loaders/plugins/config, used by `@storybook/core-server` to build the manager UI.
+Builder implemented with `webpack5` and `webpack5`-compatible loaders/plugins/config, used by `@storybook/core-server` to build the manager UI.
 
-`builder-webpack4` is the default, so no configuration is necessary to use it. However, if you wan to explicitly configure your Storybook to run `builder-webpack4`, install it as a dev dependency and then update your `.storybook/main.js` configuration.
+`webpack4` is the default. To configure your Storybook to run `webpack5`, install `@storybook/manager-webpack5` and `@storybook/builder-webpack5` as dev dependencies then update your `.storybook/main.js` configuration.
 
 ```js
 module.exports = {
   core: {
-    builder: 'webpack4',
+    builder: 'webpack5',
   },
 };
 ```

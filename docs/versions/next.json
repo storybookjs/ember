@@ -1,1 +1,1 @@
-{"version":"6.3.0-beta.4","info":{"plain":"### Bug Fixes\n\n- Addon-docs: Fix MDX source rendering ([#15071](https://github.com/storybookjs/storybook/pull/15071))\n- CLI: Add new packages to versions.json ([#15073](https://github.com/storybookjs/storybook/pull/15073))\n- Addon-docs: Fix per-story `docs.source` parameter ([#15070](https://github.com/storybookjs/storybook/pull/15070))"}}
+{"version":"6.3.0-beta.16","info":{"plain":"### Features\n\n- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))"}}
