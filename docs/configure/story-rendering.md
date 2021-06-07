@@ -25,7 +25,7 @@ Storybook will inject these tags into the _preview iframe_ where your components
 
 </div>
 
-It's also possible to to programmatically modify the preview head HTML using a preset defined in the `main.js` file. For more information see [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates).
+It's also possible to programmatically modify the preview head HTML using a preset defined in the `main.js` file. For more information see [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates).
 
 
 ## Adding to &#60;body&#62;
