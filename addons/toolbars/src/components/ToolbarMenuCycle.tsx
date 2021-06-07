@@ -21,7 +21,7 @@ export const ToolbarMenuCycle = withCycle(
 
     const currentValue = globals[id];
     const hasGlobalValue = !!currentValue;
-    const selectedIcon = getSelectedIcon({ currentValue, items });
+    const icon = getSelectedIcon({ currentValue, items });
 
     let title = _title;
 
@@ -45,7 +45,7 @@ export const ToolbarMenuCycle = withCycle(
         active={hasGlobalValue}
         description={description}
         onClick={setNext}
-        icon={selectedIcon}
+        icon={icon}
         title={title}
       />
     );
