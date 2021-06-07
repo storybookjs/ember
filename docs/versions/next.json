@@ -1,1 +1,1 @@
-{"version":"6.3.0-beta.15","info":{"plain":"### Bug Fixes\n\n- Angular: Clear root / docs-root when navigating from one tab to the other ([#15160](https://github.com/storybookjs/storybook/pull/15160))"}}
+{"version":"6.3.0-beta.16","info":{"plain":"### Features\n\n- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))"}}
