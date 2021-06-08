@@ -1,10 +1,19 @@
-import React, { useCallback, FC } from 'react';
+import React, { useCallback, FC, ReactNode } from 'react';
 import { useGlobals } from '@storybook/api';
 import { Icons, WithTooltip, TooltipLinkList } from '@storybook/components';
 import { ToolbarMenuButton } from './ToolbarMenuButton';
 import { withKeyboardCycle, WithKeyboardCycleProps } from '../hoc/withKeyboardCycle';
 import { getSelectedIcon } from '../utils/get-selected-icon';
 import { ToolbarMenuProps } from '../types';
+import { ToolbarMenuListItem } from './ToolbarMenuListItem';
+
+type ItemProps = {
+  left?: ReactNode;
+  title?: ReactNode;
+  right?: ReactNode;
+  active?: boolean;
+  onClick?: () => void;
+};
 
 type ToolbarMenuListProps = ToolbarMenuProps & WithKeyboardCycleProps;
 
@@ -44,48 +53,28 @@ export const ToolbarMenuList: FC<ToolbarMenuListProps> = withKeyboardCycle(
         trigger="click"
         tooltip={({ onHide }) => {
           const links = items
-            .filter(({ condition }) => {
+            // Special case handling for various "type" variants
+            .filter(({ type }) => {
               let shouldReturn = true;
 
-              if (condition) {
-                shouldReturn = condition(currentValue);
+              if (type === 'reset' && !currentValue) {
+                shouldReturn = false;
               }
 
               return shouldReturn;
             })
-            .map(
-              ({
-                value,
-                left: _left,
-                title: itemTitle,
-                right: _right,
-                icon: itemIcon,
-                hideIcon,
-              }) => {
-                let left: React.ReactNode = _left;
-                let right: React.ReactNode = _right;
-                const Icon = <Icons style={{ opacity: 1 }} icon={itemIcon} />;
+            .map((item) => {
+              const listItem = ToolbarMenuListItem({
+                ...item,
+                currentValue,
+                onClick: () => {
+                  handleItemClick(item.value);
+                  onHide();
+                },
+              });
 
-                // If title or left is provided, then set icon to right and vice versa
-                if (itemIcon && (left || itemTitle) && !right && !hideIcon) {
-                  right = Icon;
-                } else if (itemIcon && right && !left && !hideIcon) {
-                  left = Icon;
-                }
-
-                return {
-                  id: value,
-                  left,
-                  title: itemTitle,
-                  right,
-                  active: currentValue === value,
-                  onClick: () => {
-                    handleItemClick(value);
-                    onHide();
-                  },
-                };
-              }
-            );
+              return listItem;
+            });
           return <TooltipLinkList links={links} />;
         }}
         closeOnClick

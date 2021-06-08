@@ -20,6 +20,10 @@ export const withKeyboardCycle = (Component: React.ComponentType<ToolbarMenuProp
     const cycleValues = useRef([]);
     const currentValue = globals[id];
 
+    const reset = useCallback(() => {
+      updateGlobals({ [id]: '' });
+    }, [updateGlobals]);
+
     const setNext = useCallback(() => {
       const values = cycleValues.current;
       const currentIndex = values.indexOf(currentValue);
@@ -33,7 +37,8 @@ export const withKeyboardCycle = (Component: React.ComponentType<ToolbarMenuProp
 
     const setPrevious = useCallback(() => {
       const values = cycleValues.current;
-      const currentIndex = values.indexOf(currentValue);
+      const indexOf = values.indexOf(currentValue);
+      const currentIndex = indexOf > -1 ? indexOf : 0;
       const currentIsFirst = currentIndex === 0;
 
       const newCurrentIndex = currentIsFirst ? values.length - 1 : currentIndex - 1;
@@ -47,9 +52,10 @@ export const withKeyboardCycle = (Component: React.ComponentType<ToolbarMenuProp
         registerShortcuts(api, id, {
           next: { ...shortcuts.next, action: setNext },
           previous: { ...shortcuts.previous, action: setPrevious },
+          reset: { ...shortcuts.reset, action: reset },
         });
       }
-    }, [api, id, shortcuts, setNext, setPrevious]);
+    }, [api, id, shortcuts, setNext, setPrevious, reset]);
 
     useEffect(() => {
       cycleValues.current = createCycleValueArray(items);

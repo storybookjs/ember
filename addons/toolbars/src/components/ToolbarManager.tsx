@@ -1,21 +1,10 @@
 import React, { FC } from 'react';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
-import { ToolbarArgType } from '../types';
 import { ToolbarMenuCycle } from './ToolbarMenuCycle';
 import { ToolbarMenuList } from './ToolbarMenuList';
-
-const normalize = (key: string, argType: ToolbarArgType) => ({
-  ...argType,
-  name: argType.name || key,
-  description: argType.description || key,
-  toolbar: {
-    ...argType.toolbar,
-    items: argType.toolbar.items.map((item) =>
-      typeof item === 'string' ? { value: item, title: item } : item
-    ),
-  },
-});
+import { normalizeArgType } from '../utils/normalize-toolbar-arg-type';
+import { ToolbarArgType } from '../types';
 
 /**
  * A smart component for handling manager-preview interactions.
@@ -32,13 +21,13 @@ export const ToolbarManager: FC = () => {
     <>
       <Separator />
       {globalIds.map((id) => {
-        const normalizedConfig = normalize(id, globalTypes[id] as ToolbarArgType);
-        const isCycle = normalizedConfig.toolbar.cycle === true;
+        const normalizedArgType = normalizeArgType(id, globalTypes[id] as ToolbarArgType);
+        const isCycle = normalizedArgType.toolbar.cycle === true;
 
         return isCycle ? (
-          <ToolbarMenuCycle key={id} id={id} {...normalizedConfig} />
+          <ToolbarMenuCycle key={id} id={id} {...normalizedArgType} />
         ) : (
-          <ToolbarMenuList key={id} id={id} {...normalizedConfig} />
+          <ToolbarMenuList key={id} id={id} {...normalizedArgType} />
         );
       })}
     </>

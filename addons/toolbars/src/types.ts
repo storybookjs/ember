@@ -1,7 +1,10 @@
 import { IconsProps } from '@storybook/components';
 import { ArgType } from '@storybook/api';
 
-export type ToolbarShortcutType = 'next' | 'previous';
+export type ToolbarShortcutType = 'next' | 'previous' | 'reset';
+
+export type ToolbarItemType = 'item' | 'reset';
+
 export interface ToolbarShortcutConfig {
   label: string;
   keys: string[];
@@ -10,13 +13,13 @@ export interface ToolbarShortcutConfig {
 export type ToolbarShortcuts = Record<ToolbarShortcutType, ToolbarShortcutConfig>;
 
 export interface ToolbarItem {
-  value: string;
+  value?: string;
   icon?: IconsProps['icon'];
   left?: string;
   right?: string;
   title?: string;
   hideIcon?: boolean;
-  condition?: (value: unknown) => boolean;
+  type?: ToolbarItemType;
 }
 
 export interface NormalizedToolbarConfig {
