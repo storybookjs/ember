@@ -58,6 +58,12 @@ const frameworkToPreviewParts: Partial<Record<SupportedFrameworks, any>> = {
 
 function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
   const { prefix = '', extraParameters = '' } = frameworkToPreviewParts[framework] || {};
+  const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
+
+  // If the framework template included a preview then we have nothing to do
+  if (fse.existsSync(previewPath)) {
+    return;
+  }
 
   const preview = dedent`
     ${prefix}
@@ -74,9 +80,7 @@ function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
     .replace('  \n', '')
     .trim();
 
-  fse.writeFileSync(`./.storybook/preview.${commonJs ? 'cjs' : 'js'}`, preview, {
-    encoding: 'utf8',
-  });
+  fse.writeFileSync(previewPath, preview, { encoding: 'utf8' });
 }
 
 export function configure(framework: SupportedFrameworks, mainOptions: ConfigureMainOptions) {

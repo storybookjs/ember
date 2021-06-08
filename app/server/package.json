@@ -1,6 +1,6 @@
 {
   "name": "@storybook/server",
-  "version": "6.3.0-beta.1",
+  "version": "6.3.0-beta.17",
   "description": "Storybook for Server: View HTML snippets from a server in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,12 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-beta.1",
-    "@storybook/api": "6.3.0-beta.1",
-    "@storybook/client-api": "6.3.0-beta.1",
-    "@storybook/core": "6.3.0-beta.1",
-    "@storybook/core-common": "6.3.0-beta.1",
-    "@storybook/node-logger": "6.3.0-beta.1",
+    "@storybook/addons": "6.3.0-beta.17",
+    "@storybook/api": "6.3.0-beta.17",
+    "@storybook/client-api": "6.3.0-beta.17",
+    "@storybook/core": "6.3.0-beta.17",
+    "@storybook/core-common": "6.3.0-beta.17",
+    "@storybook/node-logger": "6.3.0-beta.17",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -59,10 +59,12 @@
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
     "safe-identifier": "^0.4.1",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "yaml-loader": "^0.6.0"
   },
   "devDependencies": {
-    "fs-extra": "^9.0.1"
+    "fs-extra": "^9.0.1",
+    "yaml": "^1.10.0"
   },
   "engines": {
     "node": ">=10.13.0"
@@ -70,6 +72,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "356a2dfd1a7de292e50d0c2d732b2e28bbf3de6e",
+  "gitHead": "71599e3d3ba5a90cd258a15e293de5662434a326",
   "sbmodern": "dist/modern/client/index.js"
 }

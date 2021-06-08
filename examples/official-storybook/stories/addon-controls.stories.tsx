@@ -31,11 +31,6 @@ export default {
   },
   parameters: {
     chromatic: { disable: true },
-    docs: {
-      source: {
-        state: 'open',
-      },
-    },
   },
 };
 
@@ -53,7 +48,10 @@ Basic.args = {
   children: 'basic',
   json: DEFAULT_NESTED_OBJECT,
 };
-Basic.parameters = { chromatic: { disable: false } };
+Basic.parameters = {
+  chromatic: { disable: false },
+  docs: { source: { state: 'open' } },
+};
 
 export const Action = Template.bind({});
 Action.args = {
@@ -104,6 +102,7 @@ CustomControlMatchers.parameters = {
       date: /whateverIwant/,
     },
   },
+  docs: { source: { state: 'open' } },
 };
 CustomControlMatchers.args = {
   whateverIwant: '10/10/2020',

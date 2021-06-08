@@ -4,7 +4,6 @@ import dedent from 'ts-dedent';
 import stable from 'stable';
 import mapValues from 'lodash/mapValues';
 import pick from 'lodash/pick';
-import store from 'store2';
 import deprecate from 'util-deprecate';
 
 import { Channel } from '@storybook/channels';
@@ -49,8 +48,6 @@ interface StoryOptions {
 }
 
 type KindMetadata = StoryMetadata & { order: number };
-
-const STORAGE_KEY = '@storybook/preview/store';
 
 function extractSanitizedKindNameFromStorySpecifier(storySpecifier: StorySpecifier): string {
   if (typeof storySpecifier === 'string') {
@@ -143,6 +140,10 @@ export default class StoryStore {
 
   _globals: Args;
 
+  _initialGlobals: Args;
+
+  _defaultGlobals: Args;
+
   _globalMetadata: StoryMetadata;
 
   // Keyed on kind name
@@ -162,10 +163,9 @@ export default class StoryStore {
   constructor(params: { channel: Channel }) {
     // Assume we are configuring until we hear otherwise
     this._configuring = true;
-
-    // We store global args in session storage. Note that when we finish
-    // configuring below we will ensure we only use values here that make sense
-    this._globals = store.session.get(STORAGE_KEY)?.globals || {};
+    this._globals = {};
+    this._defaultGlobals = {};
+    this._initialGlobals = {};
     this._globalMetadata = { parameters: {}, decorators: [], loaders: [] };
     this._kinds = {};
     this._stories = {};
@@ -213,24 +213,19 @@ export default class StoryStore {
     safePush(inferControls, this._argTypesEnhancers);
   }
 
-  storeGlobals() {
-    // Store the global args on the session
-    store.session.set(STORAGE_KEY, { globals: this._globals });
-  }
-
   finishConfiguring() {
     this._configuring = false;
 
-    const { globals: initialGlobals = {}, globalTypes = {} } = this._globalMetadata.parameters;
-
-    const defaultGlobals: Args = Object.entries(
+    const { globals = {}, globalTypes = {} } = this._globalMetadata.parameters;
+    const allowedGlobals = new Set([...Object.keys(globals), ...Object.keys(globalTypes)]);
+    const defaultGlobals = Object.entries(
       globalTypes as Record<string, { defaultValue: any }>
     ).reduce((acc, [arg, { defaultValue }]) => {
       if (defaultValue) acc[arg] = defaultValue;
       return acc;
     }, {} as Args);
 
-    const allowedGlobals = new Set([...Object.keys(initialGlobals), ...Object.keys(globalTypes)]);
+    this._initialGlobals = { ...defaultGlobals, ...globals };
 
     // To deal with HMR & persistence, we consider the previous value of global args, and:
     //   1. Remove any keys that are not in the new parameter
@@ -242,15 +237,27 @@ export default class StoryStore {
 
         return acc;
       },
-      { ...defaultGlobals, ...initialGlobals }
+      { ...this._initialGlobals }
     );
-    this.storeGlobals();
 
     // Set the current selection based on the current selection specifier, if selection is not yet set
     const stories = this.sortedStories();
     let foundStory;
     if (this._selectionSpecifier && !this._selection) {
-      const { storySpecifier, viewMode, args: urlArgs } = this._selectionSpecifier;
+      const {
+        storySpecifier,
+        viewMode,
+        args: urlArgs,
+        globals: urlGlobals,
+      } = this._selectionSpecifier;
+
+      if (urlGlobals) {
+        const allowedUrlGlobals = Object.entries(urlGlobals).reduce((acc, [key, value]) => {
+          if (allowedGlobals.has(key)) acc[key] = value;
+          return acc;
+        }, {} as Args);
+        this._globals = combineParameters(this._globals, allowedUrlGlobals);
+      }
 
       if (storySpecifier === '*') {
         // '*' means select the first story. If there is none, we have no selection.
@@ -614,8 +621,10 @@ export default class StoryStore {
 
   updateGlobals(newGlobals: Args) {
     this._globals = { ...this._globals, ...newGlobals };
-    this.storeGlobals();
-    this._channel.emit(Events.GLOBALS_UPDATED, { globals: this._globals });
+    this._channel.emit(Events.GLOBALS_UPDATED, {
+      globals: this._globals,
+      initialGlobals: this._initialGlobals,
+    });
   }
 
   updateStoryArgs(id: string, newArgs: Args) {

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/components",
-  "version": "6.3.0-beta.1",
+  "version": "6.3.0-beta.17",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -41,9 +41,9 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.6.0",
-    "@storybook/client-logger": "6.3.0-beta.1",
+    "@storybook/client-logger": "6.3.0-beta.17",
     "@storybook/csf": "0.0.1",
-    "@storybook/theming": "6.3.0-beta.1",
+    "@storybook/theming": "6.3.0-beta.17",
     "@types/color-convert": "^2.0.0",
     "@types/overlayscrollbars": "^1.12.0",
     "@types/react-syntax-highlighter": "11.0.5",
@@ -52,7 +52,7 @@
     "fast-deep-equal": "^3.1.3",
     "global": "^4.4.0",
     "lodash": "^4.17.20",
-    "markdown-to-jsx": "^7.1.0",
+    "markdown-to-jsx": "^7.1.3",
     "memoizerific": "^1.11.3",
     "overlayscrollbars": "^1.13.1",
     "polished": "^4.0.5",
@@ -76,6 +76,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "356a2dfd1a7de292e50d0c2d732b2e28bbf3de6e",
+  "gitHead": "71599e3d3ba5a90cd258a15e293de5662434a326",
   "sbmodern": "dist/modern/index.js"
 }

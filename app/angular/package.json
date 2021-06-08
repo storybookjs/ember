@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.3.0-beta.1",
+  "version": "6.3.0-beta.17",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,11 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-beta.1",
-    "@storybook/api": "6.3.0-beta.1",
-    "@storybook/core": "6.3.0-beta.1",
-    "@storybook/core-common": "6.3.0-beta.1",
-    "@storybook/node-logger": "6.3.0-beta.1",
+    "@storybook/addons": "6.3.0-beta.17",
+    "@storybook/api": "6.3.0-beta.17",
+    "@storybook/core": "6.3.0-beta.17",
+    "@storybook/core-common": "6.3.0-beta.17",
+    "@storybook/core-events": "6.3.0-beta.17",
+    "@storybook/node-logger": "6.3.0-beta.17",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -72,16 +73,16 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.1102.0",
-    "@angular-devkit/build-angular": "~0.1102.0",
-    "@angular-devkit/core": "^11.2.0",
-    "@angular/common": "^11.2.0",
-    "@angular/compiler": "^11.2.0",
-    "@angular/compiler-cli": "^11.2.0",
-    "@angular/core": "^11.2.0",
-    "@angular/elements": "^11.2.0",
-    "@angular/forms": "^11.2.0",
-    "@angular/platform-browser": "^11.2.0",
-    "@angular/platform-browser-dynamic": "^11.2.0",
+    "@angular-devkit/build-angular": "~0.1102.13",
+    "@angular-devkit/core": "^11.2.13",
+    "@angular/common": "^11.2.14",
+    "@angular/compiler": "^11.2.14",
+    "@angular/compiler-cli": "^11.2.14",
+    "@angular/core": "^11.2.14",
+    "@angular/elements": "^11.2.14",
+    "@angular/forms": "^11.2.14",
+    "@angular/platform-browser": "^11.2.14",
+    "@angular/platform-browser-dynamic": "^11.2.14",
     "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
     "@types/jest": "^26.0.16",
@@ -126,5 +127,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "356a2dfd1a7de292e50d0c2d732b2e28bbf3de6e"
+  "builders": "dist/ts3.9/builders/builders.json",
+  "gitHead": "71599e3d3ba5a90cd258a15e293de5662434a326"
 }

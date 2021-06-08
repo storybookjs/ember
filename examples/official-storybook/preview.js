@@ -10,7 +10,6 @@ import {
   styled,
   useTheme,
 } from '@storybook/theming';
-import { DocsPage } from '@storybook/addon-docs';
 import { Symbols } from '@storybook/components';
 
 import addHeadWarning from './head-warning';
@@ -159,7 +158,6 @@ export const parameters = {
   },
   docs: {
     theme: themes.light,
-    page: () => <DocsPage subtitleSlot={({ kind }) => `Subtitle: ${kind}`} />,
   },
   controls: {
     presetColors: [
