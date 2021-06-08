@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
 import { ToolbarMenuList } from './ToolbarMenuList';
 import { ToolbarMenuCycle } from './ToolbarMenuCycle';
-import { ADDON_ID } from '../constants';
 
 /* eslint-disable import/order */
 import type { FC } from 'react';
