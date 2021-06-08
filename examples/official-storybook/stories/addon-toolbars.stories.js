@@ -3,6 +3,9 @@ import { styled } from '@storybook/theming';
 
 export default {
   title: 'Addons/Toolbars',
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 const getCaptionForLocale = (locale) => {
@@ -21,17 +24,16 @@ const getCaptionForLocale = (locale) => {
   }
 };
 
-const Themed = styled.div(({ theme }) => ({
-  color: theme.color.defaultText,
-  background: theme.background.content,
-}));
-
 export const Locale = (_args, { globals: { locale } }) => {
   return (
-    <Themed style={{ fontSize: 30 }}>
-      Your locale is '{locale}', so I say:
-      <br />
-      <Themed style={{ fontSize: 60, fontWeight: 'bold' }}>{getCaptionForLocale(locale)}</Themed>
+    <Themed>
+      <div style={{ fontSize: 30 }}>Your locale is '{locale}', so I say:</div>
+      <div style={{ fontSize: 14 }}>note: cycle backwards and forwards with "K" & "L"</div>
+      <div style={{ fontSize: 60, fontWeight: 'bold' }}>{getCaptionForLocale(locale)}</div>
     </Themed>
   );
 };
+
+const Themed = styled.div(({ theme }) => ({
+  color: theme.color.defaultText,
+}));
