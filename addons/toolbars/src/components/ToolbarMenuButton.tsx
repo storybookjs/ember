@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icons, IconButton } from '@storybook/components';
 
+import type { FC } from 'react';
 import type { IconsProps } from '@storybook/components';
 
 interface ToolbarMenuButtonProps {
@@ -11,13 +12,13 @@ interface ToolbarMenuButtonProps {
   onClick?: () => void;
 }
 
-export const ToolbarMenuButton = ({
+export const ToolbarMenuButton: FC<ToolbarMenuButtonProps> = ({
   active,
   title,
   icon,
   description,
   onClick,
-}: ToolbarMenuButtonProps) => {
+}) => {
   return (
     <IconButton active={active} title={description} onClick={onClick}>
       {icon && <Icons icon={icon} />}

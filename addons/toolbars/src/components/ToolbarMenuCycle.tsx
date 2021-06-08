@@ -4,19 +4,15 @@ import { ToolbarMenuButton } from './ToolbarMenuButton';
 import { withCycle } from '../hoc/withCycle';
 import { getSelectedIcon } from '../utils/get-selected-icon';
 
+/* eslint-disable import/order */
+import type { FC } from 'react';
 import type { WithCycleProps } from '../hoc/withCycle';
 import type { ToolbarMenuProps } from '../types';
 
 type ToolbarMenuCycleProps = ToolbarMenuProps & WithCycleProps;
 
-export const ToolbarMenuCycle = withCycle(
-  ({
-    id,
-    name,
-    description,
-    cycleValues = [],
-    toolbar: { title: _title, items, showName },
-  }: ToolbarMenuCycleProps) => {
+export const ToolbarMenuCycle: FC<ToolbarMenuCycleProps> = withCycle(
+  ({ id, name, description, cycleValues = [], toolbar: { title: _title, items, showName } }) => {
     const [globals, updateGlobals] = useGlobals();
 
     const currentValue = globals[id];

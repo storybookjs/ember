@@ -6,6 +6,8 @@ import { ToolbarMenuList } from './ToolbarMenuList';
 import { ToolbarMenuCycle } from './ToolbarMenuCycle';
 import { ADDON_ID } from '../constants';
 
+/* eslint-disable import/order */
+import type { FC } from 'react';
 import type { ToolbarArgType } from '../types';
 
 const normalize = (key: string, argType: ToolbarArgType) => ({
@@ -23,7 +25,7 @@ const normalize = (key: string, argType: ToolbarArgType) => ({
 /**
  * A smart component for handling manager-preview interactions.
  */
-export const ToolbarManager = () => {
+export const ToolbarManager: FC = () => {
   const idRef = useRef(uniqueId(ADDON_ID));
   const globalTypes = useGlobalTypes();
   const globalIds = Object.keys(globalTypes).filter((id) => !!globalTypes[id].toolbar);
