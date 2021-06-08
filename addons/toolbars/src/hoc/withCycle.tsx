@@ -30,36 +30,27 @@ export const withCycle = (Component: React.ComponentType<ToolbarMenuProps>) => {
       const newCurrent = cycleValues.current[newCurrentIndex];
 
       updateGlobals({ [id]: newCurrent });
-    }, [currentValue, updateGlobals]);
+    }, [cycleValues, currentValue, updateGlobals]);
 
     const setPrevious = useCallback(() => {
       const values = cycleValues.current;
       const currentIndex = values.indexOf(currentValue);
-      const currentIsLast = currentIndex === values.length - 1;
+      const currentIsFirst = currentIndex === 0;
 
-      const newCurrentIndex = currentIsLast ? 0 : currentIndex + 1;
+      const newCurrentIndex = currentIsFirst ? values.length - 1 : currentIndex - 1;
       const newCurrent = cycleValues.current[newCurrentIndex];
 
       updateGlobals({ [id]: newCurrent });
-    }, [currentValue, updateGlobals]);
+    }, [cycleValues, currentValue, updateGlobals]);
 
     useEffect(() => {
-      if (shortcuts && shortcuts.next) {
-        registerShortcuts(api, {
-          ...shortcuts.next,
-          actionName: `${id}-next`,
-          action: setNext,
+      if (shortcuts) {
+        registerShortcuts(api, id, {
+          next: { ...shortcuts.next, action: setNext },
+          previous: { ...shortcuts.previous, action: setPrevious },
         });
       }
-
-      if (shortcuts && shortcuts.previous) {
-        registerShortcuts(api, {
-          ...shortcuts.previous,
-          actionName: `${id}-previous`,
-          action: setPrevious,
-        });
-      }
-    }, [setNext, setPrevious]);
+    }, [api, id, shortcuts, setNext, setPrevious]);
 
     useEffect(() => {
       cycleValues.current = createCycleValueArray(items);

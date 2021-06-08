@@ -221,6 +221,10 @@ export const globalTypes = {
           label: 'Go to next language',
           keys: ['L'],
         },
+        previous: {
+          label: 'Go to previous language',
+          keys: ['K'],
+        },
       },
       items: [
         { value: '', title: 'Reset', icon: 'globe', hideIcon: true, condition: (val) => val },
