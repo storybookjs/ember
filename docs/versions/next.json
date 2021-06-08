@@ -1,1 +1,1 @@
-{"version":"6.3.0-beta.17","info":{"plain":"### Bug Fixes\n\n- Measure: Update version to fix hooks issue ([#15167](https://github.com/storybookjs/storybook/pull/15167))"}}
+{"version":"6.3.0-beta.18","info":{"plain":"### Features\n\n* Toolbars: Add customizable keyboard navigation shortcuts ([#15169](https://github.com/storybookjs/storybook/pull/15169))\n\n### Bug Fixes\n\n* Controls: Initialize color control on reset ([#15059](https://github.com/storybookjs/storybook/pull/15059))"}}
