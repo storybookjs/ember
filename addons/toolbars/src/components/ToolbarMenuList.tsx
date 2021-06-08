@@ -2,13 +2,13 @@ import React, { useCallback, FC } from 'react';
 import { useGlobals } from '@storybook/api';
 import { Icons, WithTooltip, TooltipLinkList } from '@storybook/components';
 import { ToolbarMenuButton } from './ToolbarMenuButton';
-import { withCycle, WithCycleProps } from '../hoc/withCycle';
+import { withKeyboardCycle, WithKeyboardCycleProps } from '../hoc/withKeyboardCycle';
 import { getSelectedIcon } from '../utils/get-selected-icon';
 import { ToolbarMenuProps } from '../types';
 
-type ToolbarMenuListProps = ToolbarMenuProps & WithCycleProps;
+type ToolbarMenuListProps = ToolbarMenuProps & WithKeyboardCycleProps;
 
-export const ToolbarMenuList: FC<ToolbarMenuListProps> = withCycle(
+export const ToolbarMenuList: FC<ToolbarMenuListProps> = withKeyboardCycle(
   ({
     id,
     name,

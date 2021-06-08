@@ -1,13 +1,13 @@
 import React, { useCallback, FC } from 'react';
 import { useGlobals } from '@storybook/api';
 import { ToolbarMenuButton } from './ToolbarMenuButton';
-import { withCycle, WithCycleProps } from '../hoc/withCycle';
+import { withKeyboardCycle, WithKeyboardCycleProps } from '../hoc/withKeyboardCycle';
 import { getSelectedIcon } from '../utils/get-selected-icon';
 import { ToolbarMenuProps } from '../types';
 
-type ToolbarMenuCycleProps = ToolbarMenuProps & WithCycleProps;
+type ToolbarMenuCycleProps = ToolbarMenuProps & WithKeyboardCycleProps;
 
-export const ToolbarMenuCycle: FC<ToolbarMenuCycleProps> = withCycle(
+export const ToolbarMenuCycle: FC<ToolbarMenuCycleProps> = withKeyboardCycle(
   ({ id, name, description, cycleValues = [], toolbar: { title: _title, items, showName } }) => {
     const [globals, updateGlobals] = useGlobals();
 

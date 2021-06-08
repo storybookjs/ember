@@ -4,12 +4,12 @@ import { createCycleValueArray } from '../utils/create-cycle-value-array';
 import { registerShortcuts } from '../utils/register-shortcuts';
 import { ToolbarMenuProps } from '../types';
 
-export type WithCycleProps = {
+export type WithKeyboardCycleProps = {
   cycleValues?: string[];
 };
 
-export const withCycle = (Component: React.ComponentType<ToolbarMenuProps>) => {
-  const WithCycle = (props: ToolbarMenuProps) => {
+export const withKeyboardCycle = (Component: React.ComponentType<ToolbarMenuProps>) => {
+  const WithKeyboardCycle = (props: ToolbarMenuProps) => {
     const {
       id,
       toolbar: { items, shortcuts },
@@ -58,5 +58,5 @@ export const withCycle = (Component: React.ComponentType<ToolbarMenuProps>) => {
     return <Component cycleValues={cycleValues.current} {...props} />;
   };
 
-  return WithCycle;
+  return WithKeyboardCycle;
 };
