@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
-import { ToolbarMenuCycle } from './ToolbarMenuCycle';
 import { ToolbarMenuList } from './ToolbarMenuList';
 import { normalizeArgType } from '../utils/normalize-toolbar-arg-type';
 import { ToolbarArgType } from '../types';
@@ -22,13 +21,8 @@ export const ToolbarManager: FC = () => {
       <Separator />
       {globalIds.map((id) => {
         const normalizedArgType = normalizeArgType(id, globalTypes[id] as ToolbarArgType);
-        const isCycle = normalizedArgType.toolbar.cycle === true;
 
-        return isCycle ? (
-          <ToolbarMenuCycle key={id} id={id} {...normalizedArgType} />
-        ) : (
-          <ToolbarMenuList key={id} id={id} {...normalizedArgType} />
-        );
+        return <ToolbarMenuList key={id} id={id} {...normalizedArgType} />;
       })}
     </>
   );
