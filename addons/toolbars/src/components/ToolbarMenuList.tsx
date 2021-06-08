@@ -1,14 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FC } from 'react';
 import { useGlobals } from '@storybook/api';
 import { Icons, WithTooltip, TooltipLinkList } from '@storybook/components';
 import { ToolbarMenuButton } from './ToolbarMenuButton';
-import { withCycle } from '../hoc/withCycle';
+import { withCycle, WithCycleProps } from '../hoc/withCycle';
 import { getSelectedIcon } from '../utils/get-selected-icon';
-
-/* eslint-disable import/order */
-import type { FC } from 'react';
-import type { WithCycleProps } from '../hoc/withCycle';
-import type { ToolbarMenuProps } from '../types';
+import { ToolbarMenuProps } from '../types';
 
 type ToolbarMenuListProps = ToolbarMenuProps & WithCycleProps;
 

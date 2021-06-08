@@ -1,4 +1,4 @@
-import type { ToolbarItem } from '../types';
+import { ToolbarItem } from '../types';
 
 export const createCycleValueArray = (items: ToolbarItem[]) => {
   // Do not allow items in the cycle arrays that are conditional in placement

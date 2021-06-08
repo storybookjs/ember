@@ -1,7 +1,5 @@
-import { ADDON_ID } from '../constants';
-
-/* eslint-disable import/order */
 import type { API } from '@storybook/api';
+import { ADDON_ID } from '../constants';
 import type { ToolbarShortcutConfig } from '../types';
 
 interface Shortcuts {

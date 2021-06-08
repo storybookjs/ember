@@ -2,8 +2,7 @@ import React, { useRef, useEffect, useCallback } from 'react';
 import { useGlobals, useStorybookApi } from '@storybook/api';
 import { createCycleValueArray } from '../utils/create-cycle-value-array';
 import { registerShortcuts } from '../utils/register-shortcuts';
-
-import type { ToolbarMenuProps } from '../types';
+import { ToolbarMenuProps } from '../types';
 
 export type WithCycleProps = {
   cycleValues?: string[];

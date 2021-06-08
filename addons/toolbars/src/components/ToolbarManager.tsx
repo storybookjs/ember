@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
-import { ToolbarMenuList } from './ToolbarMenuList';
+import { ToolbarArgType } from '../types';
 import { ToolbarMenuCycle } from './ToolbarMenuCycle';
-
-/* eslint-disable import/order */
-import type { FC } from 'react';
-import type { ToolbarArgType } from '../types';
+import { ToolbarMenuList } from './ToolbarMenuList';
 
 const normalize = (key: string, argType: ToolbarArgType) => ({
   ...argType,
