@@ -227,19 +227,14 @@ export const globalTypes = {
         },
       },
       items: [
-        {
-          value: '',
-          title: 'Reset locale',
-          icon: 'globe',
-          hideIcon: true,
-          condition: (val) => val,
-        },
+        { value: '', title: 'Reset locale', type: 'reset' },
         { value: 'en', right: '🇺🇸', title: 'English' },
         { value: 'es', right: '🇪🇸', title: 'Español' },
         { value: 'zh', right: '🇨🇳', title: '中文' },
         { value: 'kr', right: '🇰🇷', title: '한국어' },
       ],
     },
+    john: {},
   },
 };
 
