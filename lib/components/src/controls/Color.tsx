@@ -278,7 +278,6 @@ const usePresets = (
   }, [currentColor]);
 
   const presets = useMemo(() => {
-    if (selectedColors.length === 0) return [];
     const initialPresets = (presetColors || []).map((preset) => {
       if (typeof preset === 'string') return parseValue(preset);
       if (preset.title) return { ...parseValue(preset.color), keyword: preset.title };
