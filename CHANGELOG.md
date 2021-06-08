@@ -1,3 +1,9 @@
+## 6.3.0-beta.17 (June 8, 2021)
+
+### Bug Fixes
+
+- Measure: Update version to fix hooks issue ([#15167](https://github.com/storybookjs/storybook/pull/15167))
+
 ## 6.3.0-beta.16 (June 8, 2021)
 
 ### Features
