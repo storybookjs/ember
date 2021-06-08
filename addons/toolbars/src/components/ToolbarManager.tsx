@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { uniqueId } from 'lodash';
 import { useGlobalTypes } from '@storybook/api';
 import { Separator } from '@storybook/components';
 import { ToolbarMenuList } from './ToolbarMenuList';
@@ -26,7 +25,6 @@ const normalize = (key: string, argType: ToolbarArgType) => ({
  * A smart component for handling manager-preview interactions.
  */
 export const ToolbarManager: FC = () => {
-  const idRef = useRef(uniqueId(ADDON_ID));
   const globalTypes = useGlobalTypes();
   const globalIds = Object.keys(globalTypes).filter((id) => !!globalTypes[id].toolbar);
 
@@ -42,9 +40,9 @@ export const ToolbarManager: FC = () => {
         const isCycle = normalizedConfig.toolbar.cycle === true;
 
         return isCycle ? (
-          <ToolbarMenuCycle key={`${idRef.current}-${id}`} id={id} {...normalizedConfig} />
+          <ToolbarMenuCycle key={id} id={id} {...normalizedConfig} />
         ) : (
-          <ToolbarMenuList key={`${idRef.current}-${id}`} id={id} {...normalizedConfig} />
+          <ToolbarMenuList key={id} id={id} {...normalizedConfig} />
         );
       })}
     </>
