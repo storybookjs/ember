@@ -1,1 +1,1 @@
-{"version":"6.3.0-beta.16","info":{"plain":"### Features\n\n- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))"}}
+{"version":"6.3.0-beta.17","info":{"plain":"### Bug Fixes\n\n- Measure: Update version to fix hooks issue ([#15167](https://github.com/storybookjs/storybook/pull/15167))"}}

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-common",
-  "version": "6.3.0-beta.16",
+  "version": "6.3.0-beta.17",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -61,7 +61,7 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/register": "^7.12.1",
-    "@storybook/node-logger": "6.3.0-beta.16",
+    "@storybook/node-logger": "6.3.0-beta.17",
     "@storybook/semver": "^7.3.2",
     "@types/glob-base": "^0.3.0",
     "@types/micromatch": "^4.0.1",
@@ -107,6 +107,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "c0c79bc820155513a61f98a1f7f3e97e9313a28f",
+  "gitHead": "71599e3d3ba5a90cd258a15e293de5662434a326",
   "sbmodern": "dist/modern/index.js"
 }
