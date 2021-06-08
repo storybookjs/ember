@@ -5775,7 +5775,7 @@ __metadata:
     "@storybook/addon-backgrounds": 6.3.0-beta.16
     "@storybook/addon-controls": 6.3.0-beta.16
     "@storybook/addon-docs": 6.3.0-beta.16
-    "@storybook/addon-measure": ^1.2.2
+    "@storybook/addon-measure": ^1.2.3
     "@storybook/addon-toolbars": 6.3.0-beta.16
     "@storybook/addon-viewport": 6.3.0-beta.16
     "@storybook/addons": 6.3.0-beta.16
@@ -5867,9 +5867,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-measure@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@storybook/addon-measure@npm:1.2.2"
+"@storybook/addon-measure@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@storybook/addon-measure@npm:1.2.3"
   peerDependencies:
     "@storybook/addons": ^6.3.0-beta.1
     "@storybook/api": ^6.3.0-beta.1
@@ -5883,7 +5883,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: da1185ff27aea7e7ee6ae0779d9227d83739c14e893af5e9f0363e14f208492b1eb3604d96405b18b139abcbc4f3bb600c4a65e874a794a0fd8f486cecfd4644
+  checksum: 8c46d5b5a067ef0a4d333f9cfd1c7fe408810b487113523ed411b29d7b4f02b33f777b0aeafbec679893d783850c9f3cbaf922dba9d365e4282bbd2ee8ab3182
   languageName: node
   linkType: hard
 
