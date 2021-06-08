@@ -216,16 +216,20 @@ const getRealValue = (value: string, color: ParsedColor, colorSpace: ColorSpace)
   return `#${r}${r}${g}${g}${b}${b}`;
 };
 
-const useColorInput = (initialValue: string, onChange: (value: string) => string | void) => {
+const useColorInput = (
+  initialValue: string | undefined,
+  onChange: (value: string) => string | void
+) => {
   const [value, setValue] = useState(initialValue || '');
   const [color, setColor] = useState(() => parseValue(value));
   const [colorSpace, setColorSpace] = useState(color?.colorSpace || ColorSpace.HEX);
 
+  // Reset state when initialValue becomes undefined (when resetting controls)
   useEffect(() => {
     if (initialValue !== undefined) return;
-    const parsed = parseValue('');
     setValue('');
-    setColor(parsed);
+    setColor(undefined);
+    setColorSpace(ColorSpace.HEX);
   }, [initialValue]);
 
   const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
@@ -262,11 +266,12 @@ const id = (value: string) => value.replace(/\s*/, '').toLowerCase();
 
 const usePresets = (
   presetColors: PresetColor[],
-  currentColor: ParsedColor,
+  currentColor: ParsedColor | undefined,
   colorSpace: ColorSpace
 ) => {
   const [selectedColors, setSelectedColors] = useState(currentColor?.valid ? [currentColor] : []);
 
+  // Reset state when currentColor becomes undefined (when resetting controls)
   useEffect(() => {
     if (currentColor !== undefined) return;
     setSelectedColors([]);
