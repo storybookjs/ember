@@ -1,3 +1,13 @@
+## 6.3.0-beta.18 (June 9, 2021)
+
+### Features
+
+* Toolbars: Add customizable keyboard navigation shortcuts ([#15169](https://github.com/storybookjs/storybook/pull/15169))
+
+### Bug Fixes
+
+* Controls: Initialize color control on reset ([#15059](https://github.com/storybookjs/storybook/pull/15059))
+
 ## 6.3.0-beta.17 (June 8, 2021)
 
 ### Bug Fixes
