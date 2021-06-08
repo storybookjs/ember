@@ -2,18 +2,20 @@
 title: 'Code snippets contributions'
 ---
 
-Contributions to the snippets used in our documentation are welcome and greatly encouraged. This page outlines how to contribute to [Storybook's](https://github.com/storybookjs/storybook) code snippets. For instructions on working with the codebase, check the [code contributions](./code.md) page, and for documentation, check the [documentation contributions](./documentation-updates.md) page.
+Add or update the code snippets in the documentation. This page outlines how the code snippets are structured.
 
 ## Documented frameworks
 
-The Storybook documentation is highly versatile and constantly updated to solve everyday scenarios. Currently, it features examples for the following UI frameworks:
+Storybook maintains code snippets for a [variety of frameworks](./../api/frameworks-feature-support.md). We try to keep them up to date as framework APIs evolve. But it's tricky to keep track of every API change in every framework.
 
-| React                                                                       | Vue                                                                       | Angular                                                                       | Web Components                                                                                  | Svelte                                                                       | Ember | HTML | Mithril | Marko | Riot | Preact | Rax |
-|-----------------------------------------------------------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-------|------|---------|-------|------|--------|-----|
-| [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/react) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/vue) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/angular) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/web-components) (See note) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/svelte) | ❌     | ❌    | ❌       | ❌     | ❌    | ❌      | ❌   |
+We welcome community contributions to the code snippets. Here's a matrix of the frameworks we have snippets for. Help us add snippets for your favorite framework.
+
+| React                                                                        | Vue                                                                        | Angular                                                                        | Web Components                                                                                   | Svelte                                                                        | Ember | HTML | Mithril | Marko | Riot | Preact | Rax |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ----- | ---- | ------- | ----- | ---- | ------ | --- |
+| [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/react) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/vue) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/angular) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/web-components) (See note) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/svelte) | ❌    | ❌   | ❌      | ❌    | ❌   | ❌     | ❌  |
 
 <div class="aside">
-💡 Note: The <code>Web Components</code> snippets are present but not fully documented. If you're willing to help submit a pull request.
+💡 Note: The <code>Web Components</code> snippets are present but not fully documented. If you're willing to help, submit a pull request.
 </div>
 
 ## Setup
@@ -28,7 +30,7 @@ Before adding your snippets, open the `docs` folder with your editor of choice. 
 
 ### Add your first snippet
 
-Now that you're familiar with how the documentation is structured, it's time to add the code snippets. First, go to the `docs/snippets/` folder and create a new directory for your framework of choice (e.g., `ember`). 
+Now that you're familiar with how the documentation is structured, it's time to add the code snippets. First, go to the `docs/snippets/` folder and create a new directory for your framework of choice (e.g., `ember`).
 
 Browse the documentation and look for the code snippets you're willing to contribute. For example, on the [setup page](https://github.com/storybookjs/storybook/blob/next/docs/get-started/setup.md), you should see something similar to:
 
@@ -85,7 +87,7 @@ Go through the rest of the documentation and repeat the process.
 
 ### Preview your work
 
-Before submitting your contribution, we advise you to check your work against the Storybook website. Doing this prevents last-minute issues with the documentation and is also an excellent way for the maintainers to merge faster once you submit the pull request. However, failing to do so will lead one of the maintainers to notify you that your contribution has an issue. 
+Before submitting your contribution, we advise you to check your work against the Storybook website. Doing this prevents last-minute issues with the documentation and is also an excellent way for the maintainers to merge faster once you submit the pull request. However, failing to do so will lead one of the maintainers to notify you that your contribution has an issue.
 
 Start by forking [frontpage repo](https://github.com/storybookjs/frontpage). Then, clone and install the dependencies with the following commands:
 
@@ -111,13 +113,12 @@ yarn start:skip-addons
 💡 <strong>Note:</strong> During the start process if there's an issue with the the documentation, the process will stop and you'll get a notification.
 </div>
 
-Open a browser window to `http://localhost:8000`, click the Docs link, and select your framework from the dropdown. 
+Open a browser window to `http://localhost:8000`, click the Docs link, and select your framework from the dropdown.
 
 ![Storybook docs with dropdown](./local-storybook-website-dropdown-optimized.png)
 
 Go through the documentation and check your work.
 
-
 ## Submit your contribution
 
-Finally, commit, push and open a pull request in the Storybook monorepo. Add a clear description of the work you've done, and one of the maintainers will guide you through and hopefully merge it with little feedback.
+Finally, commit, push and open a pull request in the Storybook monorepo. Add a clear description of the work you've done, and one of the maintainers will guide you through the merge process.

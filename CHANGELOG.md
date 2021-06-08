@@ -1,3 +1,106 @@
+## 6.3.0-beta.16 (June 8, 2021)
+
+### Features
+
+- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))
+
+## 6.3.0-beta.15 (June 7, 2021)
+
+### Bug Fixes
+
+- Angular: Clear root / docs-root when navigating from one tab to the other ([#15160](https://github.com/storybookjs/storybook/pull/15160))
+
+## 6.3.0-beta.14 (June 6, 2021)
+
+### Features
+
+- Controls: Style `undefined` range slider different to filled one ([#14973](https://github.com/storybookjs/storybook/pull/14973))
+
+### Dependency Upgrades
+
+- Upgrade to react-docgen-typescript-plugin 1.0.0 ([#15154](https://github.com/storybookjs/storybook/pull/15154))
+
+## 6.3.0-beta.13 (June 6, 2021)
+
+### Maintenance
+
+- CsfFile: Index Meta/Story annotations ([#15152](https://github.com/storybookjs/storybook/pull/15152))
+- CLI: Update project template for web-components ([#15149](https://github.com/storybookjs/storybook/pull/15149))
+- Build: Fix WC example and e2e tests ([#15146](https://github.com/storybookjs/storybook/pull/15146))
+
+## 6.3.0-beta.12 (June 5, 2021)
+
+### Features
+
+- Essentials: Update measure/outline addons to support ESM and vite builder ([#15144](https://github.com/storybookjs/storybook/pull/15144))
+
+## 6.3.0-beta.11 (June 4, 2021)
+
+### Bug Fixes
+
+- Angular: Fix Ivy rendering to use at most one render promise at a time ([#15139](https://github.com/storybookjs/storybook/pull/15139))
+- CSF tools: Refactor test cases ([#15142](https://github.com/storybookjs/storybook/pull/15142))
+
+### Maintenance
+
+- Web Components: Reintegrate `@storybook/lit` into `@storybook/web-components` ([#15042](https://github.com/storybookjs/storybook/pull/15042))
+
+## 6.3.0-beta.10 (June 3, 2021)
+
+### Features
+
+- CLI: Add storybook-addon-angular-ivy to angular install ([#14653](https://github.com/storybookjs/storybook/pull/14653))
+- Angular: Ivy rendering for Canvas and Docs ([#15126](https://github.com/storybookjs/storybook/pull/15126))
+- Server: Add support for stories written in YAML ([#15049](https://github.com/storybookjs/storybook/pull/15049))
+
+## 6.3.0-beta.9 (June 3, 2021)
+
+### Features
+
+- Essentials: Add measure and outline addons ([#15107](https://github.com/storybookjs/storybook/pull/15107))
+
+## 6.3.0-beta.8 (June 2, 2021)
+
+### Features
+
+- Core: Add `core.disableWebpackDefaults` preset ([#15062](https://github.com/storybookjs/storybook/pull/15062))
+
+### Bug Fixes
+
+- Core: Fix prebuilt manager usage on first run ([#15121](https://github.com/storybookjs/storybook/pull/15121))
+
+## 6.3.0-beta.7 (June 2, 2021)
+
+### Features
+
+- Angular: Add angular builder to start + build storybook ([#15061](https://github.com/storybookjs/storybook/pull/15061))
+
+### Bug Fixes
+
+- CLI: Fix react repro template deps ([#15118](https://github.com/storybookjs/storybook/pull/15118))
+
+## 6.3.0-beta.6 (June 1, 2021)
+
+### Features
+
+- CLI: Add Server template generator ([#13979](https://github.com/storybookjs/storybook/pull/13979))
+
+### Bug Fixes
+
+- CLI: Disable `react_in_yarn_workspace` template for users, keep in e2e ([#15114](https://github.com/storybookjs/storybook/pull/15114))
+
+## 6.3.0-beta.5 (May 30, 2021)
+
+### Bug Fixes
+
+- Vue2: Check types when `typescript.check` is true ([#15089](https://github.com/storybookjs/storybook/pull/15089))
+- Update markdown-to-jsx version to fix url links in comments ([#15083](https://github.com/storybookjs/storybook/pull/15083))
+
+### Maintenance
+
+- CLI: Add `SKIP_PREFLIGHT_CHECK` in CRA repro ([#15092](https://github.com/storybookjs/storybook/pull/15092))
+- Angular: Disable chromatic for story with dynamic time display ([#15074](https://github.com/storybookjs/storybook/pull/15074))
+
 ## 6.3.0-beta.4 (May 28, 2021)
 
 ### Bug Fixes
