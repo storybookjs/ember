@@ -234,7 +234,6 @@ export const globalTypes = {
         { value: 'kr', right: '🇰🇷', title: '한국어' },
       ],
     },
-    john: {},
   },
 };
 
