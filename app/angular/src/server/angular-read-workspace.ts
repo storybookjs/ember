@@ -34,6 +34,12 @@ export const readAngularWorkspaceConfig = async (
       }
       return host.readFile(path);
     };
+    host.isFile = (path) => {
+      if (typeof path === 'string' && path.endsWith('angular.json')) {
+        return Promise.resolve(true);
+      }
+      return host.isFile(path);
+    };
   } catch (e) {
     // Ignore if the client does not use NX
   }
