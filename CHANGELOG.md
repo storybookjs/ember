@@ -4,12 +4,13 @@ Storybook 6.3 is in RC!! 🎉🎉🎉
 
 Hundreds of improvements and fixes, including:
 
-- **Angular** - Angular12, Ivy, overhauld docs support.
+- **Angular** - Angular12, Ivy, overhauled docs support.
 - **Web-components** - Lit2 support.
+- **Essentials** - New measure/outline addons for CSS debugging.
+- **Addon API** - Keyboard shortcuts for addons. Initial support in viewports, toolbars.
 - **Webpack 5** - Official support.
 - **Vite builder** - Community support.
 - **Modern ESM** - Modern package distribution.
-- **API** - Keyboard shortcuts for addons w/ viewports, toolbars.
 
 Track the release in the Github: [Storybook 6.3 Release 🛠](https://github.com/storybookjs/storybook/issues/14397)
 
