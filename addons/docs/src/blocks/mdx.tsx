@@ -1,5 +1,5 @@
 import React, { FC, SyntheticEvent } from 'react';
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { NAVIGATE_URL } from '@storybook/core-events';
 import { Source, Code, components } from '@storybook/components';
 import global from 'global';

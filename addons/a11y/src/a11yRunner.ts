@@ -1,6 +1,6 @@
 import global from 'global';
 import axe from 'axe-core';
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 import { A11yParameters } from './params';
 

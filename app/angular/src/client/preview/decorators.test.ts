@@ -1,4 +1,4 @@
-import addons, { mockChannel, StoryContext } from '@storybook/addons';
+import { addons, mockChannel, StoryContext } from '@storybook/addons';
 
 import { Component } from '@angular/core';
 import { moduleMetadata } from './decorators';

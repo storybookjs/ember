@@ -66,7 +66,7 @@ A common error is that an addon tries to access the "channel", but the channel i
 
 1.  You're trying to access addon channel (e.g., by calling `setOptions`) in a non-browser environment like Jest. You may need to add a channel mock:
     ```js
-    import addons, { mockChannel } from '@storybook/addons';
+    import { addons, mockChannel } from '@storybook/addons';
 
     addons.setChannel(mockChannel());
     ```
