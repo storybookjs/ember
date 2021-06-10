@@ -49,10 +49,10 @@ const initialUrlSupport = ({
     addons, // deprecated
     panelRight, // deprecated
     stories, // deprecated
-    selectedKind,
-    selectedStory,
+    selectedKind, // deprecated
+    selectedStory, // deprecated
     path: queryPath,
-    ...otherParams
+    ...otherParams // the rest gets passed to the iframe
   } = query;
 
   if (full === 'true' || full === '1') {
@@ -103,15 +103,17 @@ const initialUrlSupport = ({
     layout.showNav = false;
   }
 
+  // @deprecated To be removed in 7.0
   // If the user hasn't set the storyId on the URL, we support legacy URLs (selectedKind/selectedStory)
   // NOTE: this "storyId" can just be a prefix of a storyId, really it is a storyIdSpecifier.
   let storyId = storyIdFromUrl;
-  if (!storyId) {
-    if (selectedKind && selectedStory) {
-      storyId = toId(selectedKind, selectedStory);
-    } else if (selectedKind) {
-      storyId = sanitize(selectedKind);
-    }
+  if (!storyId && selectedKind) {
+    once.warn(dedent`
+      The 'selectedKind' and 'selectedStory' query params are deprecated and will be removed in Storybook 7.0. Use 'path' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    storyId = selectedStory ? toId(selectedKind, selectedStory) : sanitize(selectedKind);
   }
 
   // Avoid returning a new object each time if no params actually changed.
