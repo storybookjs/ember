@@ -1,1 +1,1 @@
-{"version":"6.3.0-rc.1","info":{"plain":"### Maintenance\n\n- Core: Use named import for @storybook/addons, fixes vite builder ([#15187](https://github.com/storybookjs/storybook/pull/15187))"}}
+{"version":"6.3.0-rc.2","info":{"plain":"### Features\n\n- Core: Add `shortcuts` URL param to disable keyboard shortcuts ([#15192](https://github.com/storybookjs/storybook/pull/15192))\n\n### Bug Fixes\n\n- Angular: Fix builder runaway process ([#15189](https://github.com/storybookjs/storybook/pull/15189))"}}
