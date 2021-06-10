@@ -43,46 +43,47 @@ const initialUrlSupport = ({
     panel,
     nav,
     shortcuts,
-    addons,
-    panelRight,
-    stories,
     addonPanel,
+    addons, // deprecated
+    panelRight, // deprecated
+    stories, // deprecated
     selectedKind,
     selectedStory,
     path: queryPath,
     ...otherParams
   } = query;
 
-  if (full === '1') {
+  if (full === 'true' || full === '1') {
     layout.isFullscreen = true;
   }
   if (panel) {
     if (['right', 'bottom'].includes(panel)) {
       layout.panelPosition = panel;
-    } else if (panel === '0') {
+    } else if (panel === 'false' || panel === '0') {
       layout.showPanel = false;
     }
   }
-  if (nav === '0') {
+  if (nav === 'false' || nav === '0') {
     layout.showNav = false;
   }
-  if (shortcuts === '0') {
+  if (shortcuts === 'false' || shortcuts === '0') {
     ui.enableShortcuts = false;
   }
+  if (addonPanel) {
+    selectedPanel = addonPanel;
+  }
 
-  // Legacy URLs
+  // @deprecated Superceded by `panel=false`, to be removed in 7.0
   if (addons === '0') {
     layout.showPanel = false;
   }
+  // @deprecated Superceded by `panel=right`, to be removed in 7.0
   if (panelRight === '1') {
     layout.panelPosition = 'right';
   }
+  // @deprecated Superceded by `nav=false`, to be removed in 7.0
   if (stories === '0') {
     layout.showNav = false;
-  }
-
-  if (addonPanel) {
-    selectedPanel = addonPanel;
   }
 
   // If the user hasn't set the storyId on the URL, we support legacy URLs (selectedKind/selectedStory)
