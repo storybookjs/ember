@@ -22,6 +22,12 @@ export interface SubState {
   customQueryParams: QueryParams;
 }
 
+const parseBoolean = (value: string) => {
+  if (value === 'true' || value === '1') return true;
+  if (value === 'false' || value === '0') return false;
+  return undefined;
+};
+
 // Initialize the state based on the URL.
 // NOTE:
 //   Although we don't change the URL when you change the state, we do support setting initial state
@@ -35,11 +41,6 @@ let prevParams: ReturnType<typeof queryFromLocation>;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
 }: ModuleArgs) => {
-  const layout: Partial<Layout> = {};
-  const ui: Partial<UI> = {};
-  const query = queryFromLocation(location);
-  let selectedPanel;
-
   const {
     full,
     panel,
@@ -53,27 +54,18 @@ const initialUrlSupport = ({
     selectedStory, // deprecated
     path: queryPath,
     ...otherParams // the rest gets passed to the iframe
-  } = query;
+  } = queryFromLocation(location);
 
-  if (full === 'true' || full === '1') {
-    layout.isFullscreen = true;
-  }
-  if (panel) {
-    if (['right', 'bottom'].includes(panel)) {
-      layout.panelPosition = panel;
-    } else if (panel === 'false' || panel === '0') {
-      layout.showPanel = false;
-    }
-  }
-  if (nav === 'false' || nav === '0') {
-    layout.showNav = false;
-  }
-  if (shortcuts === 'false' || shortcuts === '0') {
-    ui.enableShortcuts = false;
-  }
-  if (addonPanel) {
-    selectedPanel = addonPanel;
-  }
+  const layout: Partial<Layout> = {
+    isFullscreen: parseBoolean(full),
+    showNav: parseBoolean(nav),
+    showPanel: parseBoolean(panel),
+    panelPosition: panel && ['right', 'bottom'].includes(panel) ? panel : undefined,
+  };
+  const ui: Partial<UI> = {
+    enableShortcuts: parseBoolean(shortcuts),
+  };
+  const selectedPanel = addonPanel || undefined;
 
   // @deprecated Superceded by `panel=false`, to be removed in 7.0
   if (addons === '0') {
@@ -106,7 +98,7 @@ const initialUrlSupport = ({
   // No need to show the sidebar if we're loading a single story.
   // Here we only set the initial state, we prevent it from re-enabling in the layout module.
   // We don't remove this from the query params because it needs to propagate to the iframe.
-  if (query.singleStory === 'true') {
+  if (otherParams.singleStory === 'true') {
     layout.showNav = false;
   }
 
