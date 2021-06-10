@@ -89,6 +89,13 @@ const initialUrlSupport = ({
     selectedPanel = addonPanel;
   }
 
+  // No need to show the sidebar if we're loading a single story.
+  // Here we only set the initial state, we prevent it from re-enabling in the layout module.
+  // We don't remove this from the query params because it needs to propagate to the iframe.
+  if (query.singleStory === 'true') {
+    addition.showNav = false;
+  }
+
   // If the user hasn't set the storyId on the URL, we support legacy URLs (selectedKind/selectedStory)
   // NOTE: this "storyId" can just be a prefix of a storyId, really it is a storyIdSpecifier.
   let storyId = storyIdFromUrl;

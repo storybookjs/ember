@@ -88,17 +88,18 @@ export const init: ModuleFn = ({ store, provider }) => {
   const api = {
     toggleFullscreen(toggled?: boolean) {
       return store.setState(
-        (state: State) => {
-          const { showNav } = state.layout;
+        ({ layout, customQueryParams }: State) => {
+          const { showNav } = layout;
 
-          const value = typeof toggled === 'boolean' ? toggled : !state.layout.isFullscreen;
+          const value = typeof toggled === 'boolean' ? toggled : !layout.isFullscreen;
           const shouldShowNav = showNav === false && value === false;
+          const singleStory = customQueryParams.singleStory === 'true';
 
           return {
             layout: {
-              ...state.layout,
+              ...layout,
               isFullscreen: value,
-              showNav: shouldShowNav ? true : showNav,
+              showNav: !singleStory && shouldShowNav ? true : showNav,
             },
           };
         },
@@ -108,15 +109,15 @@ export const init: ModuleFn = ({ store, provider }) => {
 
     togglePanel(toggled?: boolean) {
       return store.setState(
-        (state: State) => {
-          const { showNav, isFullscreen } = state.layout;
+        ({ layout }: State) => {
+          const { showNav, isFullscreen } = layout;
 
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showPanel;
+          const value = typeof toggled !== 'undefined' ? toggled : !layout.showPanel;
           const shouldToggleFullScreen = showNav === false && value === false;
 
           return {
             layout: {
-              ...state.layout,
+              ...layout,
               showPanel: value,
               isFullscreen: shouldToggleFullScreen ? true : isFullscreen,
             },
@@ -129,9 +130,9 @@ export const init: ModuleFn = ({ store, provider }) => {
     togglePanelPosition(position?: 'bottom' | 'right') {
       if (typeof position !== 'undefined') {
         return store.setState(
-          (state: State) => ({
+          ({ layout }: State) => ({
             layout: {
-              ...state.layout,
+              ...layout,
               panelPosition: position,
             },
           }),
@@ -140,10 +141,10 @@ export const init: ModuleFn = ({ store, provider }) => {
       }
 
       return store.setState(
-        (state: State) => ({
+        ({ layout }: State) => ({
           layout: {
-            ...state.layout,
-            panelPosition: state.layout.panelPosition === 'right' ? 'bottom' : 'right',
+            ...layout,
+            panelPosition: layout.panelPosition === 'right' ? 'bottom' : 'right',
           },
         }),
         { persistence: 'session' }
@@ -152,15 +153,16 @@ export const init: ModuleFn = ({ store, provider }) => {
 
     toggleNav(toggled?: boolean) {
       return store.setState(
-        (state: State) => {
-          const { showPanel, isFullscreen } = state.layout;
+        ({ customQueryParams, layout }: State) => {
+          if (customQueryParams.singleStory === 'true') return { layout };
 
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
+          const { showPanel, isFullscreen } = layout;
+          const value = typeof toggled !== 'undefined' ? toggled : !layout.showNav;
           const shouldToggleFullScreen = showPanel === false && value === false;
 
           return {
             layout: {
-              ...state.layout,
+              ...layout,
               showNav: value,
               isFullscreen: shouldToggleFullScreen ? true : isFullscreen,
             },
@@ -172,12 +174,12 @@ export const init: ModuleFn = ({ store, provider }) => {
 
     toggleToolbar(toggled?: boolean) {
       return store.setState(
-        (state: State) => {
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.isToolshown;
+        ({ layout }: State) => {
+          const value = typeof toggled !== 'undefined' ? toggled : !layout.isToolshown;
 
           return {
             layout: {
-              ...state.layout,
+              ...layout,
               isToolshown: value,
             },
           };
@@ -188,10 +190,10 @@ export const init: ModuleFn = ({ store, provider }) => {
 
     resetLayout() {
       return store.setState(
-        (state: State) => {
+        ({ layout }: State) => {
           return {
             layout: {
-              ...state.layout,
+              ...layout,
               showNav: false,
               showPanel: false,
               isFullscreen: false,
