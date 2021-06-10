@@ -13,7 +13,8 @@ import {
   STORY_RENDERED,
 } from '@storybook/core-events';
 import { toId } from '@storybook/csf';
-import addons, {
+import {
+  addons,
   StoryFn,
   StoryKind,
   StoryName,

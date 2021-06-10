@@ -5,7 +5,7 @@ import { styled } from '@storybook/theming';
 import { FlexBar, IconButton, Icons, Separator, TabButton, TabBar } from '@storybook/components';
 import { Consumer, Combo, API, Story, Group, State, merge } from '@storybook/api';
 import { shortcutToHumanString } from '@storybook/api/shortcut';
-import addons, { Addon, types } from '@storybook/addons';
+import { addons, Addon, types } from '@storybook/addons';
 
 import { Location, RenderData } from '@storybook/router';
 import { zoomTool } from './tools/zoom';
