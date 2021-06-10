@@ -77,5 +77,11 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
 }
 
 function runInstance(options: StandaloneOptions) {
-  return from(buildStandalone(options));
+  return new Observable<void>((observer) => {
+    // This Observable intentionally never complete, leaving the process running ;)
+    buildStandalone(options).then(
+      () => observer.next(),
+      (error) => observer.error(error)
+    );
+  });
 }
