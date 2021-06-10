@@ -78,24 +78,27 @@ const initialUrlSupport = ({
   // @deprecated Superceded by `panel=false`, to be removed in 7.0
   if (addons === '0') {
     once.warn(dedent`
-      The 'addons' query param is deprecated and will be removed in Storybook 7.0.
-      Use 'panel=false' instead.
+      The 'addons' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
     `);
     layout.showPanel = false;
   }
   // @deprecated Superceded by `panel=right`, to be removed in 7.0
   if (panelRight === '1') {
     once.warn(dedent`
-      The 'panelRight' query param is deprecated and will be removed in Storybook 7.0.
-      Use 'panel=right' instead.
+      The 'panelRight' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=right' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
     `);
     layout.panelPosition = 'right';
   }
   // @deprecated Superceded by `nav=false`, to be removed in 7.0
   if (stories === '0') {
     once.warn(dedent`
-      The 'stories' query param is deprecated and will be removed in Storybook 7.0.
-      Use 'nav=false' instead.
+      The 'stories' query param is deprecated and will be removed in Storybook 7.0. Use 'nav=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
     `);
     layout.showNav = false;
   }
