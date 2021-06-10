@@ -11,19 +11,10 @@ import deepEqual from 'fast-deep-equal';
 import global from 'global';
 
 import { ModuleArgs, ModuleFn } from '../index';
-import { PanelPositions } from './layout';
+import { Layout, UI } from './layout';
 import { isStory } from '../lib/stories';
 
 const { window: globalWindow } = global;
-
-interface Additions {
-  isFullscreen?: boolean;
-  showPanel?: boolean;
-  panelPosition?: PanelPositions;
-  showNav?: boolean;
-  selectedPanel?: string;
-  viewMode?: string;
-}
 
 export interface SubState {
   customQueryParams: QueryParams;
@@ -42,7 +33,8 @@ let prevParams: ReturnType<typeof queryFromLocation>;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
 }: ModuleArgs) => {
-  const addition: Additions = {};
+  const layout: Partial<Layout> = {};
+  const ui: Partial<UI> = {};
   const query = queryFromLocation(location);
   let selectedPanel;
 
@@ -50,6 +42,7 @@ const initialUrlSupport = ({
     full,
     panel,
     nav,
+    shortcuts,
     addons,
     panelRight,
     stories,
@@ -61,28 +54,31 @@ const initialUrlSupport = ({
   } = query;
 
   if (full === '1') {
-    addition.isFullscreen = true;
+    layout.isFullscreen = true;
   }
   if (panel) {
     if (['right', 'bottom'].includes(panel)) {
-      addition.panelPosition = panel;
+      layout.panelPosition = panel;
     } else if (panel === '0') {
-      addition.showPanel = false;
+      layout.showPanel = false;
     }
   }
   if (nav === '0') {
-    addition.showNav = false;
+    layout.showNav = false;
+  }
+  if (shortcuts === '0') {
+    ui.enableShortcuts = false;
   }
 
   // Legacy URLs
   if (addons === '0') {
-    addition.showPanel = false;
+    layout.showPanel = false;
   }
   if (panelRight === '1') {
-    addition.panelPosition = 'right';
+    layout.panelPosition = 'right';
   }
   if (stories === '0') {
-    addition.showNav = false;
+    layout.showNav = false;
   }
 
   if (addonPanel) {
@@ -104,7 +100,7 @@ const initialUrlSupport = ({
   const customQueryParams = deepEqual(prevParams, otherParams) ? prevParams : otherParams;
   prevParams = customQueryParams;
 
-  return { viewMode, layout: addition, selectedPanel, location, path, customQueryParams, storyId };
+  return { viewMode, layout, ui, selectedPanel, location, path, customQueryParams, storyId };
 };
 
 export interface QueryParams {
