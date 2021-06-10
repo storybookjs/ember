@@ -1,4 +1,5 @@
 import { navigate as navigateRouter, NavigateOptions } from '@reach/router';
+import { once } from '@storybook/client-logger';
 import {
   NAVIGATE_URL,
   STORY_ARGS_UPDATED,
@@ -9,6 +10,7 @@ import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@s
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
 import global from 'global';
+import dedent from 'ts-dedent';
 
 import { ModuleArgs, ModuleFn } from '../index';
 import { Layout, UI } from './layout';
@@ -75,14 +77,26 @@ const initialUrlSupport = ({
 
   // @deprecated Superceded by `panel=false`, to be removed in 7.0
   if (addons === '0') {
+    once.warn(dedent`
+      The 'addons' query param is deprecated and will be removed in Storybook 7.0.
+      Use 'panel=false' instead.
+    `);
     layout.showPanel = false;
   }
   // @deprecated Superceded by `panel=right`, to be removed in 7.0
   if (panelRight === '1') {
+    once.warn(dedent`
+      The 'panelRight' query param is deprecated and will be removed in Storybook 7.0.
+      Use 'panel=right' instead.
+    `);
     layout.panelPosition = 'right';
   }
   // @deprecated Superceded by `nav=false`, to be removed in 7.0
   if (stories === '0') {
+    once.warn(dedent`
+      The 'stories' query param is deprecated and will be removed in Storybook 7.0.
+      Use 'nav=false' instead.
+    `);
     layout.showNav = false;
   }
 
