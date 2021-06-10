@@ -1,4 +1,5 @@
 import { navigate as navigateRouter, NavigateOptions } from '@reach/router';
+import { once } from '@storybook/client-logger';
 import {
   NAVIGATE_URL,
   STORY_ARGS_UPDATED,
@@ -9,21 +10,13 @@ import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@s
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
 import global from 'global';
+import dedent from 'ts-dedent';
 
 import { ModuleArgs, ModuleFn } from '../index';
-import { PanelPositions } from './layout';
+import { Layout, UI } from './layout';
 import { isStory } from '../lib/stories';
 
 const { window: globalWindow } = global;
-
-interface Additions {
-  isFullscreen?: boolean;
-  showPanel?: boolean;
-  panelPosition?: PanelPositions;
-  showNav?: boolean;
-  selectedPanel?: string;
-  viewMode?: string;
-}
 
 export interface SubState {
   customQueryParams: QueryParams;
@@ -42,7 +35,8 @@ let prevParams: ReturnType<typeof queryFromLocation>;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
 }: ModuleArgs) => {
-  const addition: Additions = {};
+  const layout: Partial<Layout> = {};
+  const ui: Partial<UI> = {};
   const query = queryFromLocation(location);
   let selectedPanel;
 
@@ -50,61 +44,83 @@ const initialUrlSupport = ({
     full,
     panel,
     nav,
-    addons,
-    panelRight,
-    stories,
+    shortcuts,
     addonPanel,
-    selectedKind,
-    selectedStory,
+    addons, // deprecated
+    panelRight, // deprecated
+    stories, // deprecated
+    selectedKind, // deprecated
+    selectedStory, // deprecated
     path: queryPath,
-    ...otherParams
+    ...otherParams // the rest gets passed to the iframe
   } = query;
 
-  if (full === '1') {
-    addition.isFullscreen = true;
+  if (full === 'true' || full === '1') {
+    layout.isFullscreen = true;
   }
   if (panel) {
     if (['right', 'bottom'].includes(panel)) {
-      addition.panelPosition = panel;
-    } else if (panel === '0') {
-      addition.showPanel = false;
+      layout.panelPosition = panel;
+    } else if (panel === 'false' || panel === '0') {
+      layout.showPanel = false;
     }
   }
-  if (nav === '0') {
-    addition.showNav = false;
+  if (nav === 'false' || nav === '0') {
+    layout.showNav = false;
   }
-
-  // Legacy URLs
-  if (addons === '0') {
-    addition.showPanel = false;
+  if (shortcuts === 'false' || shortcuts === '0') {
+    ui.enableShortcuts = false;
   }
-  if (panelRight === '1') {
-    addition.panelPosition = 'right';
-  }
-  if (stories === '0') {
-    addition.showNav = false;
-  }
-
   if (addonPanel) {
     selectedPanel = addonPanel;
   }
 
+  // @deprecated Superceded by `panel=false`, to be removed in 7.0
+  if (addons === '0') {
+    once.warn(dedent`
+      The 'addons' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.showPanel = false;
+  }
+  // @deprecated Superceded by `panel=right`, to be removed in 7.0
+  if (panelRight === '1') {
+    once.warn(dedent`
+      The 'panelRight' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=right' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.panelPosition = 'right';
+  }
+  // @deprecated Superceded by `nav=false`, to be removed in 7.0
+  if (stories === '0') {
+    once.warn(dedent`
+      The 'stories' query param is deprecated and will be removed in Storybook 7.0. Use 'nav=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.showNav = false;
+  }
+
+  // @deprecated To be removed in 7.0
   // If the user hasn't set the storyId on the URL, we support legacy URLs (selectedKind/selectedStory)
   // NOTE: this "storyId" can just be a prefix of a storyId, really it is a storyIdSpecifier.
   let storyId = storyIdFromUrl;
-  if (!storyId) {
-    if (selectedKind && selectedStory) {
-      storyId = toId(selectedKind, selectedStory);
-    } else if (selectedKind) {
-      storyId = sanitize(selectedKind);
-    }
+  if (!storyId && selectedKind) {
+    once.warn(dedent`
+      The 'selectedKind' and 'selectedStory' query params are deprecated and will be removed in Storybook 7.0. Use 'path' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    storyId = selectedStory ? toId(selectedKind, selectedStory) : sanitize(selectedKind);
   }
 
   // Avoid returning a new object each time if no params actually changed.
   const customQueryParams = deepEqual(prevParams, otherParams) ? prevParams : otherParams;
   prevParams = customQueryParams;
 
-  return { viewMode, layout: addition, selectedPanel, location, path, customQueryParams, storyId };
+  return { viewMode, layout, ui, selectedPanel, location, path, customQueryParams, storyId };
 };
 
 export interface QueryParams {
