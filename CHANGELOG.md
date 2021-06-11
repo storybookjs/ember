@@ -1,3 +1,17 @@
+## 6.3.0-rc.3 (June 11, 2021)
+
+### Features
+
+- Core: Disable sidebar and don't load refs when `singleStory=true` ([#15201](https://github.com/storybookjs/storybook/pull/15201))
+
+### Bug Fixes
+
+- Angular: Use docsMode to set docs options ([#15194](https://github.com/storybookjs/storybook/pull/15194))
+
+### Maintenance
+
+- Addon-docs: Split out MDX compiler into standalone package ([#15205](https://github.com/storybookjs/storybook/pull/15205))
+
 ## 6.3.0-rc.2 (June 10, 2021)
 
 ### Features
