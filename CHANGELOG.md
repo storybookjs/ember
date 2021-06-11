@@ -1,3 +1,9 @@
+## 6.3.0-rc.4 (June 12, 2021)
+
+### Dependency Upgrades
+
+- Vue3: Add vue-loader as a dependency ([#15207](https://github.com/storybookjs/storybook/pull/15207))
+
 ## 6.3.0-rc.3 (June 11, 2021)
 
 ### Features
