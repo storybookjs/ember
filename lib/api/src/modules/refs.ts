@@ -110,7 +110,7 @@ const map = (
   return input;
 };
 
-export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true } = {}) => {
+export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = true } = {}) => {
   const api: SubAPI = {
     findRef: (source) => {
       const refs = api.getRefs();
@@ -210,6 +210,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
     },
 
     setRef: (id, { stories, ...rest }, ready = false) => {
+      if (singleStory) return;
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
       const after = stories
@@ -233,7 +234,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
     },
   };
 
-  const refs = provider.getConfig().refs || {};
+  const refs = (!singleStory && provider.getConfig().refs) || {};
 
   const initialState: SubState['refs'] = refs;
 

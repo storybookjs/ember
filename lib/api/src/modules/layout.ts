@@ -84,16 +84,15 @@ export const focusableUIElements = {
   storyPanelRoot: 'storybook-panel-root',
 };
 
-export const init: ModuleFn = ({ store, provider }) => {
+export const init: ModuleFn = ({ store, provider, singleStory }) => {
   const api = {
     toggleFullscreen(toggled?: boolean) {
       return store.setState(
-        ({ layout, customQueryParams }: State) => {
+        ({ layout }: State) => {
           const { showNav } = layout;
 
           const value = typeof toggled === 'boolean' ? toggled : !layout.isFullscreen;
           const shouldShowNav = showNav === false && value === false;
-          const singleStory = customQueryParams.singleStory === 'true';
 
           return {
             layout: {
@@ -153,8 +152,8 @@ export const init: ModuleFn = ({ store, provider }) => {
 
     toggleNav(toggled?: boolean) {
       return store.setState(
-        ({ customQueryParams, layout }: State) => {
-          if (customQueryParams.singleStory === 'true') return { layout };
+        ({ layout }: State) => {
+          if (singleStory) return { layout };
 
           const { showPanel, isFullscreen } = layout;
           const value = typeof toggled !== 'undefined' ? toggled : !layout.showNav;
@@ -223,6 +222,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         layout: {
           ...defaultState.layout,
           ...pick(options, Object.keys(defaultState.layout)),
+          ...(singleStory && { showNav: false }),
         },
         ui: {
           ...defaultState.ui,
@@ -240,6 +240,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         const updatedLayout = {
           ...layout,
           ...pick(options, Object.keys(layout)),
+          ...(singleStory && { showNav: false }),
         };
 
         const updatedUi = {

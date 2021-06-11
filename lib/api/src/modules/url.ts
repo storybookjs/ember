@@ -40,6 +40,7 @@ const parseBoolean = (value: string) => {
 let prevParams: ReturnType<typeof queryFromLocation>;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
+  singleStory,
 }: ModuleArgs) => {
   const {
     full,
@@ -58,9 +59,9 @@ const initialUrlSupport = ({
 
   const layout: Partial<Layout> = {
     isFullscreen: parseBoolean(full),
-    showNav: parseBoolean(nav),
+    showNav: !singleStory && parseBoolean(nav),
     showPanel: parseBoolean(panel),
-    panelPosition: panel && ['right', 'bottom'].includes(panel) ? panel : undefined,
+    panelPosition: ['right', 'bottom'].includes(panel) ? panel : undefined,
   };
   const ui: Partial<UI> = {
     enableShortcuts: parseBoolean(shortcuts),
@@ -92,13 +93,6 @@ const initialUrlSupport = ({
 
       More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
     `);
-    layout.showNav = false;
-  }
-
-  // No need to show the sidebar if we're loading a single story.
-  // Here we only set the initial state, we prevent it from re-enabling in the layout module.
-  // We don't remove this from the query params because it needs to propagate to the iframe.
-  if (otherParams.singleStory === 'true') {
     layout.showNav = false;
   }
 
