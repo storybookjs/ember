@@ -21,7 +21,7 @@ function generate(content) {
   });
 }
 
-const fixturesDir = path.join(__dirname, '..', '..', '__testfixtures__');
+const fixturesDir = path.join(__dirname, '..', '..', '__testfixtures__', 'mdx');
 
 const snap = (prefix) => path.join(fixturesDir, `${prefix}.output.snapshot`);
 
