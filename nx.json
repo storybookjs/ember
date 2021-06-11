@@ -76,6 +76,9 @@
     "@storybook/preact": {
       "implicitDependencies": []
     },
+    "@storybook/mdx": {
+      "implicitDependencies": []
+    },
     "@storybook/react": {
       "implicitDependencies": []
     },

@@ -72,6 +72,7 @@
     "@storybook/core": "6.3.0-rc.2",
     "@storybook/core-events": "6.3.0-rc.2",
     "@storybook/csf": "0.0.1",
+    "@storybook/mdx": "6.3.0-rc.2",
     "@storybook/node-logger": "6.3.0-rc.2",
     "@storybook/postinstall": "6.3.0-rc.2",
     "@storybook/source-loader": "6.3.0-rc.2",

@@ -14,11 +14,7 @@ function MDXContent({ components, ...props }) {
     <MDXLayout {...layoutProps} {...props} components={components} mdxType=\\"MDXLayout\\">
       <Meta title=\\"docs-only\\" mdxType=\\"Meta\\" />
       <h1>{\`Documentation only\`}</h1>
-      <p>
-        {\`This is a documentation-only MDX file which generates a dummy \`}
-        <inlineCode parentName=\\"p\\">{\`docsOnly: true\`}</inlineCode>
-        {\` story.\`}
-      </p>
+      <p>{\`This is a documentation-only MDX file which generates a dummy 'docsOnly: true' story.\`}</p>
     </MDXLayout>
   );
 }

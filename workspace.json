@@ -73,6 +73,10 @@
       "root": "lib/manager-webpack5",
       "type": "library"
     },
+    "@storybook/mdx": {
+      "root": "lib/mdx",
+      "type": "library"
+    },
     "@storybook/preact": {
       "root": "app/preact",
       "type": "library"

@@ -5670,6 +5670,7 @@ __metadata:
     "@storybook/core": 6.3.0-rc.2
     "@storybook/core-events": 6.3.0-rc.2
     "@storybook/csf": 0.0.1
+    "@storybook/mdx": 6.3.0-rc.2
     "@storybook/node-logger": 6.3.0-rc.2
     "@storybook/postinstall": 6.3.0-rc.2
     "@storybook/react": 6.3.0-rc.2
@@ -7031,6 +7032,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@storybook/mdx@6.3.0-rc.2, @storybook/mdx@workspace:*, @storybook/mdx@workspace:lib/mdx":
+  version: 0.0.0-use.local
+  resolution: "@storybook/mdx@workspace:lib/mdx"
+  dependencies:
+    "@babel/generator": ^7.12.11
+    "@babel/parser": ^7.12.11
+    "@babel/plugin-transform-react-jsx": ^7.12.12
+    "@babel/preset-env": ^7.12.11
+    "@babel/types": ^7.12.11
+    "@mdx-js/mdx": ^1.6.22
+    jest: ^26.6.3
+    jest-specific-snapshot: ^4.0.0
+    js-string-escape: ^1.0.1
+    lodash: ^4.17.20
+    prettier: ~2.2.1
+    regenerator-runtime: ^0.13.7
+    ts-dedent: ^2.0.0
+  languageName: unknown
+  linkType: soft
+
 "@storybook/node-logger@6.3.0-rc.2, @storybook/node-logger@workspace:*, @storybook/node-logger@workspace:lib/node-logger":
   version: 0.0.0-use.local
   resolution: "@storybook/node-logger@workspace:lib/node-logger"
@@ -7232,6 +7253,7 @@ __metadata:
     "@storybook/eslint-config-storybook": ^2.4.0
     "@storybook/html": "workspace:*"
     "@storybook/linter-config": ^2.5.0
+    "@storybook/mdx": "workspace:*"
     "@storybook/node-logger": "workspace:*"
     "@storybook/postinstall": "workspace:*"
     "@storybook/preact": "workspace:*"
