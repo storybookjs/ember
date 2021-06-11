@@ -19,7 +19,7 @@ const { document } = global;
 
 interface Other extends StoryData {
   path: string;
-  singleStory: boolean;
+  singleStory?: boolean;
 }
 
 export type RenderData = Pick<LocationContext, 'location'> &
