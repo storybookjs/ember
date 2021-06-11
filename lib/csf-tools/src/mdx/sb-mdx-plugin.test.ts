@@ -3,12 +3,12 @@ import dedent from 'ts-dedent';
 import path from 'path';
 import mdx from '@mdx-js/mdx';
 import prettier from 'prettier';
-import plugin from './sb-mdx-plugin';
+import { createCompiler } from './sb-mdx-plugin';
 
 function generate(content) {
   const code = mdx.sync(content, {
     // filepath: filePath,
-    compilers: [plugin({})],
+    compilers: [createCompiler({})],
   });
 
   return prettier.format(code, {
@@ -21,17 +21,10 @@ function generate(content) {
   });
 }
 
-const fixturesDir = path.join(__dirname, '..', '__testfixtures__');
-
-const snapshot = (fixturePrefix) => async () => {
-  const pathPrefix = path.join(fixturesDir, fixturePrefix);
-  const code = await generate(`${pathPrefix}.mdx`);
-  expect(code).toMatchSpecificSnapshot(`${pathPrefix}.output.snapshot`);
-};
+const fixturesDir = path.join(__dirname, '..', '..', '__testfixtures__');
 
 const snap = (prefix) => path.join(fixturesDir, `${prefix}.output.snapshot`);
 
-const inputRegExp = /\.mdx$/;
 describe('docs-mdx-compiler-plugin', () => {
   it('component-args.mdx', () => {
     expect(
