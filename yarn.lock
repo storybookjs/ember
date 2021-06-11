@@ -7580,7 +7580,6 @@ __metadata:
     "@vue/compiler-sfc": ^3.0.0
     babel-loader: ^7.0.0 || ^8.0.0
     vue: ^3.0.0
-    vue-loader: ^16.0.0
   bin:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
