@@ -3,8 +3,16 @@ import { logger } from '@storybook/client-logger';
 import { storyNameFromExport, toId } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
+import global from 'global';
 
-const isCsfV3 = () => false;
+const { PREVIEW_CSF_V3 } = global;
+const isCsfV3 = () => {
+  try {
+    return !!PREVIEW_CSF_V3;
+  } catch (e) {
+    return false;
+  }
+};
 
 const deprecatedStoryAnnotation = dedent`
 CSF .story annotations deprecated; annotate story functions directly:

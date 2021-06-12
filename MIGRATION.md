@@ -320,7 +320,7 @@ transformIgnorePatterns: ['/node_modules/(?!@storybook)']
 
 #### Deprecated implicit PostCSS loader
 
-Previously, `@storybook/core` would automatically add the `postcss-loader` to your preview. This caused issues for consumers when PostCSS upgraded to v8 and tools, like Autoprefixer and Tailwind, starting requiring the new version. Implictly adding `postcss-loader` will be removed in Storybook 7.0.
+Previously, `@storybook/core` would automatically add the `postcss-loader` to your preview. This caused issues for consumers when PostCSS upgraded to v8 and tools, like Autoprefixer and Tailwind, starting requiring the new version. Implicitly adding `postcss-loader` will be removed in Storybook 7.0.
 
 Instead of continuing to include PostCSS inside the core library, it has been moved to [`@storybook/addon-postcss`](https://github.com/storybookjs/addon-postcss). This addon provides more fine-grained customization and will be upgraded more flexibly to track PostCSS upgrades.
 

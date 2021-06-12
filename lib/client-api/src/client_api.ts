@@ -14,7 +14,7 @@ import {
   ArgTypesEnhancer,
 } from './types';
 import { applyHooks } from './hooks';
-import StoryStore from './story_store';
+import StoryStore, { IMPLICIT_STORY_FN } from './story_store';
 import { defaultDecorateStory } from './decorators';
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
@@ -218,7 +218,9 @@ export default class ClientApi {
         throw new Error(`Invalid or missing storyName provided for a "${kind}" story.`);
       }
 
-      if (typeof storyFn !== 'function') {
+      // @ts-ignore
+      const isImplicit = storyFn === IMPLICIT_STORY_FN;
+      if (!isImplicit && typeof storyFn !== 'function') {
         throw new Error(
           `Cannot load story "${storyName}" in "${kind}" due to invalid format. Storybook expected a function but received ${typeof storyFn} instead.`
         );

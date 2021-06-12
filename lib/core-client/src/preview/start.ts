@@ -1,6 +1,6 @@
 import global from 'global';
 
-import { addons, DecorateStoryFunction, Channel } from '@storybook/addons';
+import { addons, DecorateStoryFunction, Channel, StoryFn } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
 import Events from '@storybook/core-events';
@@ -32,7 +32,7 @@ function getOrCreateChannel() {
   return channel;
 }
 
-function getClientApi(decorateStory: DecorateStoryFunction, channel?: Channel) {
+function getClientApi(options: StartOptions, channel?: Channel) {
   let storyStore: StoryStore;
   let clientApi: ClientApi;
   if (
@@ -43,7 +43,8 @@ function getClientApi(decorateStory: DecorateStoryFunction, channel?: Channel) {
     clientApi = globalWindow.__STORYBOOK_CLIENT_API__;
     storyStore = globalWindow.__STORYBOOK_STORY_STORE__;
   } else {
-    storyStore = new StoryStore({ channel });
+    const { decorateStory, implicitStoryFn } = options;
+    storyStore = new StoryStore({ implicitStoryFn, channel });
     clientApi = new ClientApi({ storyStore, decorateStory });
   }
   return { clientApi, storyStore };
@@ -54,13 +55,15 @@ function focusInInput(event: Event) {
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
 
+interface StartOptions {
+  decorateStory?: DecorateStoryFunction;
+  implicitStoryFn?: StoryFn<any>;
+}
+
 // todo improve typings
-export default function start(
-  render: RenderStoryFunction,
-  { decorateStory }: { decorateStory?: DecorateStoryFunction } = {}
-) {
+export default function start(render: RenderStoryFunction, options: StartOptions = {}) {
   const channel = getOrCreateChannel();
-  const { clientApi, storyStore } = getClientApi(decorateStory, channel);
+  const { clientApi, storyStore } = getClientApi(options, channel);
   const configApi = new ConfigApi({ storyStore });
   const storyRenderer = new StoryRenderer({ render, channel, storyStore });
 
