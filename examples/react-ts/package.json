@@ -20,6 +20,8 @@
     "webpack": "4"
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.31.2",
+    "@testing-library/user-event": "^13.1.9",
     "cross-env": "^7.0.3"
   }
 }

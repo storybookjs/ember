@@ -1,5 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
+import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { Button } from './button';
 
 export default {
@@ -19,4 +21,12 @@ export const StoryObject = {
 
 export const StoryNoRender = {
   args: { label: 'magic!' },
+};
+
+export const StoryWithSetup = {
+  args: { label: 'setup' },
+  setup: () => {
+    console.log('setup!!');
+    userEvent.click(screen.getByRole('button'));
+  },
 };
