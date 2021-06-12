@@ -10,7 +10,7 @@ import { Story } from './types-6-3';
 
 const framework = 'react';
 
-const implicitStoryFn: Story = (args, { parameters }) => {
+const globalRender: Story = (args, { parameters }) => {
   const Component = parameters.component;
   return <Component {...args} />;
 };
@@ -24,7 +24,8 @@ interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
   raw: () => any; // todo add type
 }
 
-const api = start(render, { implicitStoryFn });
+const api = start(render);
+api.clientApi.globalRender = globalRender;
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

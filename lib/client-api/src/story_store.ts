@@ -53,8 +53,6 @@ const withSetup: DecoratorFunction = (storyFn, { parameters }) => {
   }, []);
   return storyFn();
 };
-
-export const IMPLICIT_STORY_FN = '__IMPLICIT_STORY_FN__';
 interface StoryOptions {
   includeDocsOnly?: boolean;
 }
@@ -172,9 +170,7 @@ export default class StoryStore {
 
   _selection?: StoreSelection;
 
-  _implicitStoryFn?: StoryFn<any>;
-
-  constructor(params: { channel: Channel; implicitStoryFn?: StoryFn<any> }) {
+  constructor(params: { channel: Channel }) {
     // Assume we are configuring until we hear otherwise
     this._configuring = true;
     this._globals = {};
@@ -187,7 +183,6 @@ export default class StoryStore {
     this._argTypesEnhancers = [ensureArgTypes];
     this._error = undefined;
     this._channel = params.channel;
-    this._implicitStoryFn = params.implicitStoryFn;
 
     this.setupListeners();
   }
@@ -411,7 +406,7 @@ export default class StoryStore {
       id,
       kind,
       name,
-      storyFn: originalOrImplicit,
+      storyFn: original,
       parameters: storyParameters = {},
       decorators: storyDecorators = [],
       loaders: storyLoaders = [],
@@ -427,10 +422,6 @@ export default class StoryStore {
       throw new Error(
         'Cannot add a story when not configuring, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#story-store-immutable-outside-of-configuration'
       );
-
-    // @ts-ignore
-    const isImplicit = originalOrImplicit === IMPLICIT_STORY_FN;
-    const original = isImplicit ? this._implicitStoryFn : originalOrImplicit;
 
     if (this.shouldBlockAddingStory(id)) {
       return;

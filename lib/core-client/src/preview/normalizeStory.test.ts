@@ -1,5 +1,6 @@
-import { IMPLICIT_STORY_FN } from '@storybook/client-api';
 import { normalizeV2, normalizeV3 } from './normalizeStory';
+
+const globalRender = 'global-render';
 
 describe('normalizeStory', () => {
   describe('user-provided story function', () => {
@@ -7,7 +8,7 @@ describe('normalizeStory', () => {
       it('should normalize into an object', () => {
         const storyFn = () => {};
         const meta = { title: 'title' };
-        expect(normalizeV2('storyExport', storyFn, meta)).toMatchInlineSnapshot(`
+        expect(normalizeV2('storyExport', storyFn, meta, globalRender)).toMatchInlineSnapshot(`
           Object {
             "name": "Story Export",
             "parameters": Object {
@@ -26,7 +27,7 @@ describe('normalizeStory', () => {
       it('should normalize into an object', () => {
         const storyFn = () => {};
         const meta = { title: 'title' };
-        expect(normalizeV3('storyExport', storyFn, meta)).toMatchInlineSnapshot(`
+        expect(normalizeV3('storyExport', storyFn, meta, globalRender)).toMatchInlineSnapshot(`
           Object {
             "name": "Story Export",
             "parameters": Object {
@@ -45,7 +46,9 @@ describe('normalizeStory', () => {
         const storyFn = () => {};
         storyFn.story = { name: 'v1 style name' };
         const meta = { title: 'title' };
-        await expect(async () => normalizeV3('storyExport', storyFn, meta)).rejects.toThrow();
+        await expect(async () =>
+          normalizeV3('storyExport', storyFn, meta, globalRender)
+        ).rejects.toThrow();
       });
     });
   });
@@ -54,7 +57,7 @@ describe('normalizeStory', () => {
       it('should treat it the same as if it was a function', () => {
         const storyObj = {};
         const meta = { title: 'title' };
-        expect(normalizeV2('storyExport', storyObj, meta)).toMatchInlineSnapshot(`
+        expect(normalizeV2('storyExport', storyObj, meta, globalRender)).toMatchInlineSnapshot(`
           Object {
             "name": "Story Export",
             "parameters": Object {
@@ -74,21 +77,21 @@ describe('normalizeStory', () => {
         it('implicit render function', () => {
           const storyObj = {};
           const meta = { title: 'title' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
-          expect(normalized.storyFn).toBe(IMPLICIT_STORY_FN);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
+          expect(normalized.storyFn).toBe(globalRender);
         });
 
         it('user-provided story render function', () => {
           const storyObj = { render: () => 'story' };
           const meta = { title: 'title', render: () => 'meta' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized.storyFn).toBe(storyObj.render);
         });
 
         it('user-provided meta render function', () => {
           const storyObj = {};
           const meta = { title: 'title', render: () => 'meta' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized.storyFn).toBe(meta.render);
         });
       });
@@ -97,21 +100,21 @@ describe('normalizeStory', () => {
         it('no render function', () => {
           const storyObj = {};
           const meta = { title: 'title' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized.parameters.setup).toBeUndefined();
         });
 
         it('user-provided story render function', () => {
           const storyObj = { setup: () => 'story' };
           const meta = { title: 'title', setup: () => 'meta' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized.parameters.setup).toBe(storyObj.setup);
         });
 
         it('user-provided meta render function', () => {
           const storyObj = {};
           const meta = { title: 'title', setup: () => 'meta' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized.parameters.setup).toBe(meta.setup);
         });
       });
@@ -120,7 +123,7 @@ describe('normalizeStory', () => {
         it('empty annotations', () => {
           const storyObj = {};
           const meta = { title: 'title' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized).toMatchInlineSnapshot(`
             Object {
               "name": "Story Export",
@@ -132,7 +135,7 @@ describe('normalizeStory', () => {
                 "loaders": Array [],
                 "setup": undefined,
               },
-              "storyFn": "__IMPLICIT_STORY_FN__",
+              "storyFn": "global-render",
             }
           `);
         });
@@ -147,7 +150,7 @@ describe('normalizeStory', () => {
             argTypes: { storyArgType: 'val' },
           };
           const meta = { title: 'title' };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized).toMatchInlineSnapshot(`
             Object {
               "name": "story name",
@@ -168,7 +171,7 @@ describe('normalizeStory', () => {
                 "setup": undefined,
                 "storyParam": "val",
               },
-              "storyFn": "__IMPLICIT_STORY_FN__",
+              "storyFn": "global-render",
             }
           `);
         });
@@ -183,7 +186,7 @@ describe('normalizeStory', () => {
             args: { metaArg: 'val' },
             argTypes: { metaArgType: 'val' },
           };
-          const normalized = normalizeV3('storyExport', storyObj, meta);
+          const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
           expect(normalized).toMatchInlineSnapshot(`
             Object {
               "name": "Story Export",
@@ -195,7 +198,7 @@ describe('normalizeStory', () => {
                 "loaders": Array [],
                 "setup": undefined,
               },
-              "storyFn": "__IMPLICIT_STORY_FN__",
+              "storyFn": "global-render",
             }
           `);
         });

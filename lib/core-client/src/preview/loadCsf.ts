@@ -154,7 +154,12 @@ const loadStories = (
 
     storyExports.forEach((key) => {
       if (isExportStory(key, meta)) {
-        const { name, storyFn, parameters } = normalizeStory(key, exports[key], meta);
+        const { name, storyFn, parameters } = normalizeStory(
+          key,
+          exports[key],
+          meta,
+          clientApi.globalRender
+        );
         kind.add(name, storyFn, parameters);
       }
     });

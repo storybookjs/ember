@@ -32,7 +32,7 @@ function getOrCreateChannel() {
   return channel;
 }
 
-function getClientApi(options: StartOptions, channel?: Channel) {
+function getClientApi(decorateStory: DecorateStoryFunction, channel?: Channel) {
   let storyStore: StoryStore;
   let clientApi: ClientApi;
   if (
@@ -43,8 +43,7 @@ function getClientApi(options: StartOptions, channel?: Channel) {
     clientApi = globalWindow.__STORYBOOK_CLIENT_API__;
     storyStore = globalWindow.__STORYBOOK_STORY_STORE__;
   } else {
-    const { decorateStory, implicitStoryFn } = options;
-    storyStore = new StoryStore({ implicitStoryFn, channel });
+    storyStore = new StoryStore({ channel });
     clientApi = new ClientApi({ storyStore, decorateStory });
   }
   return { clientApi, storyStore };
@@ -55,15 +54,13 @@ function focusInInput(event: Event) {
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
 
-interface StartOptions {
-  decorateStory?: DecorateStoryFunction;
-  implicitStoryFn?: StoryFn<any>;
-}
-
 // todo improve typings
-export default function start(render: RenderStoryFunction, options: StartOptions = {}) {
+export default function start(
+  render: RenderStoryFunction,
+  { decorateStory }: { decorateStory?: DecorateStoryFunction } = {}
+) {
   const channel = getOrCreateChannel();
-  const { clientApi, storyStore } = getClientApi(options, channel);
+  const { clientApi, storyStore } = getClientApi(decorateStory, channel);
   const configApi = new ConfigApi({ storyStore });
   const storyRenderer = new StoryRenderer({ render, channel, storyStore });
 

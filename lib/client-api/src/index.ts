@@ -7,7 +7,7 @@ import ClientApi, {
 } from './client_api';
 import { defaultDecorateStory } from './decorators';
 import { combineParameters } from './parameters';
-import StoryStore, { IMPLICIT_STORY_FN } from './story_store';
+import StoryStore from './story_store';
 import ConfigApi from './config_api';
 import pathToId from './pathToId';
 import { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';
@@ -41,5 +41,4 @@ export {
   simulateDOMContentLoaded,
   simulatePageLoad,
   StoryStore,
-  IMPLICIT_STORY_FN,
 };

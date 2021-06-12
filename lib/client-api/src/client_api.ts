@@ -14,7 +14,7 @@ import {
   ArgTypesEnhancer,
 } from './types';
 import { applyHooks } from './hooks';
-import StoryStore, { IMPLICIT_STORY_FN } from './story_store';
+import StoryStore from './story_store';
 import { defaultDecorateStory } from './decorators';
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
@@ -80,12 +80,27 @@ export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
   singleton.addArgTypesEnhancer(enhancer);
 };
 
+export const getGlobalRender = () => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call getGlobalRender`);
+
+  return singleton.globalRender;
+};
+
+export const setGlobalRender = (render: StoryFn) => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call setGobalRender`);
+  singleton.globalRender = render;
+};
+
 export default class ClientApi {
   private _storyStore: StoryStore;
 
   private _addons: ClientApiAddons<unknown>;
 
   private _decorateStory: DecorateStoryFunction;
+
+  private _globalRender: StoryFn<any>;
 
   // React Native Fast refresh doesn't allow multiple dispose calls
   private _noStoryModuleAddMethodHotDispose: boolean;
@@ -152,6 +167,14 @@ export default class ClientApi {
     this._storyStore.addArgTypesEnhancer(enhancer);
   };
 
+  get globalRender(): StoryFn {
+    return this._globalRender;
+  }
+
+  set globalRender(render: StoryFn) {
+    this._globalRender = render;
+  }
+
   // what are the occasions that "m" is a boolean vs an obj
   storiesOf = <StoryFnReturnType = unknown>(
     kind: string,
@@ -216,14 +239,6 @@ export default class ClientApi {
 
       if (typeof storyName !== 'string') {
         throw new Error(`Invalid or missing storyName provided for a "${kind}" story.`);
-      }
-
-      // @ts-ignore
-      const isImplicit = storyFn === IMPLICIT_STORY_FN;
-      if (!isImplicit && typeof storyFn !== 'function') {
-        throw new Error(
-          `Cannot load story "${storyName}" in "${kind}" due to invalid format. Storybook expected a function but received ${typeof storyFn} instead.`
-        );
       }
 
       if (!this._noStoryModuleAddMethodHotDispose && m && m.hot && m.hot.dispose) {

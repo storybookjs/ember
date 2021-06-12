@@ -1,5 +1,5 @@
-import { IMPLICIT_STORY_FN } from '@storybook/client-api';
 import { logger } from '@storybook/client-logger';
+import { ClientApi } from '@storybook/client-api';
 import { storyNameFromExport, toId } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
@@ -26,7 +26,7 @@ const deprecatedStoryAnnotationWarning = deprecate(() => {}, deprecatedStoryAnno
 /**
  * Utilities for normalizing a story to support different
  */
-export const normalizeV2 = (key: string, storyExport: any, meta: any) => {
+export const normalizeV2 = (key: string, storyExport: any, meta: any, globalRender: any) => {
   const exportType = typeof storyExport;
   if (exportType !== 'function') {
     logger.info(`Unexpected story export "${key}": expected function, received "${exportType}."`);
@@ -66,7 +66,7 @@ export const normalizeV2 = (key: string, storyExport: any, meta: any) => {
   };
 };
 
-export const normalizeV3 = (key: string, storyExport: any, meta: any) => {
+export const normalizeV3 = (key: string, storyExport: any, meta: any, globalRender: any) => {
   let storyObject = storyExport;
   if (typeof storyExport === 'function') {
     storyObject = { ...storyExport };
@@ -87,7 +87,7 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any) => {
     argTypes = {},
   } = storyObject;
 
-  const storyFn = render || meta.render || IMPLICIT_STORY_FN;
+  const storyFn = render || meta.render || globalRender;
   const exportName = storyNameFromExport(key);
 
   const parameters = {
