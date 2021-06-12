@@ -43,6 +43,7 @@ import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
 
+export const IMPLICIT_STORY_FN = '__IMPLICIT_STORY_FN__';
 interface StoryOptions {
   includeDocsOnly?: boolean;
 }

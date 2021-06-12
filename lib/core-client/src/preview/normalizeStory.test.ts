@@ -1,0 +1,178 @@
+import { IMPLICIT_STORY_FN } from '@storybook/client-api';
+import { normalizeV2, normalizeV3 } from './normalizeStory';
+
+describe('normalizeStory', () => {
+  describe('user-provided story function', () => {
+    describe('v2', () => {
+      it('should normalize into an object', () => {
+        const storyFn = () => {};
+        const meta = { title: 'title' };
+        expect(normalizeV2('storyExport', storyFn, meta)).toMatchInlineSnapshot(`
+          Object {
+            "name": "Story Export",
+            "parameters": Object {
+              "__id": "title--story-export",
+              "argTypes": Object {},
+              "args": Object {},
+              "decorators": Array [],
+              "loaders": Array [],
+            },
+            "storyFn": [Function],
+          }
+        `);
+      });
+    });
+    describe('v3', () => {
+      it('should normalize into an object', () => {
+        const storyFn = () => {};
+        const meta = { title: 'title' };
+        expect(normalizeV3('storyExport', storyFn, meta)).toMatchInlineSnapshot(`
+          Object {
+            "name": "Story Export",
+            "parameters": Object {
+              "__id": "title--story-export",
+              "argTypes": Object {},
+              "args": Object {},
+              "decorators": Array [],
+              "loaders": Array [],
+            },
+            "storyFn": [Function],
+          }
+        `);
+      });
+      it('should throw on story annotation', async () => {
+        const storyFn = () => {};
+        storyFn.story = { name: 'v1 style name' };
+        const meta = { title: 'title' };
+        await expect(async () => normalizeV3('storyExport', storyFn, meta)).rejects.toThrow();
+      });
+    });
+  });
+  describe('user-provided story object', () => {
+    describe('v2', () => {
+      it('should treat it the same as if it was a function', () => {
+        const storyObj = {};
+        const meta = { title: 'title' };
+        expect(normalizeV2('storyExport', storyObj, meta)).toMatchInlineSnapshot(`
+          Object {
+            "name": "Story Export",
+            "parameters": Object {
+              "__id": "title--story-export",
+              "argTypes": Object {},
+              "args": Object {},
+              "decorators": Array [],
+              "loaders": Array [],
+            },
+            "storyFn": Object {},
+          }
+        `);
+      });
+    });
+    describe('v3', () => {
+      describe('render function', () => {
+        it('implicit render function', () => {
+          const storyObj = {};
+          const meta = { title: 'title' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.storyFn).toBe(IMPLICIT_STORY_FN);
+        });
+
+        it('user-provided story render function', () => {
+          const storyObj = { render: () => 'story' };
+          const meta = { title: 'title', render: () => 'meta' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.storyFn).toBe(storyObj.render);
+        });
+
+        it('user-provided meta render function', () => {
+          const storyObj = {};
+          const meta = { title: 'title', render: () => 'meta' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.storyFn).toBe(meta.render);
+        });
+      });
+
+      describe('annotations', () => {
+        it('empty annotations', () => {
+          const storyObj = {};
+          const meta = { title: 'title' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized).toMatchInlineSnapshot(`
+            Object {
+              "name": "Story Export",
+              "parameters": Object {
+                "__id": "title--story-export",
+                "argTypes": Object {},
+                "args": Object {},
+                "decorators": Array [],
+                "loaders": Array [],
+              },
+              "storyFn": "__IMPLICIT_STORY_FN__",
+            }
+          `);
+        });
+
+        it('full annotations', () => {
+          const storyObj = {
+            name: 'story name',
+            parameters: { storyParam: 'val' },
+            decorators: [() => {}],
+            loaders: [() => {}],
+            args: { storyArg: 'val' },
+            argTypes: { storyArgType: 'val' },
+          };
+          const meta = { title: 'title' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized).toMatchInlineSnapshot(`
+            Object {
+              "name": "story name",
+              "parameters": Object {
+                "__id": "title--story-export",
+                "argTypes": Object {
+                  "storyArgType": "val",
+                },
+                "args": Object {
+                  "storyArg": "val",
+                },
+                "decorators": Array [
+                  [Function],
+                ],
+                "loaders": Array [
+                  [Function],
+                ],
+                "storyParam": "val",
+              },
+              "storyFn": "__IMPLICIT_STORY_FN__",
+            }
+          `);
+        });
+
+        it('meta annotations', () => {
+          const storyObj = {};
+          const meta = {
+            title: 'title',
+            parameters: { metaParam: 'val' },
+            decorators: [() => {}],
+            loaders: [() => {}],
+            args: { metaArg: 'val' },
+            argTypes: { metaArgType: 'val' },
+          };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized).toMatchInlineSnapshot(`
+            Object {
+              "name": "Story Export",
+              "parameters": Object {
+                "__id": "title--story-export",
+                "argTypes": Object {},
+                "args": Object {},
+                "decorators": Array [],
+                "loaders": Array [],
+              },
+              "storyFn": "__IMPLICIT_STORY_FN__",
+            }
+          `);
+        });
+      });
+    });
+  });
+});
