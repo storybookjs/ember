@@ -20,6 +20,7 @@ import {
   StoryKind,
   StoryId,
   StoryFn,
+  useEffect,
 } from '@storybook/addons';
 import {
   DecoratorFunction,
@@ -43,6 +44,15 @@ import { combineParameters } from './parameters';
 import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
+
+const withSetup: DecoratorFunction = (storyFn, { parameters }) => {
+  useEffect(() => {
+    if (parameters?.setup) {
+      parameters.setup();
+    }
+  }, []);
+  return storyFn();
+};
 
 export const IMPLICIT_STORY_FN = '__IMPLICIT_STORY_FN__';
 interface StoryOptions {
@@ -170,7 +180,7 @@ export default class StoryStore {
     this._globals = {};
     this._defaultGlobals = {};
     this._initialGlobals = {};
-    this._globalMetadata = { parameters: {}, decorators: [], loaders: [] };
+    this._globalMetadata = { parameters: {}, decorators: [withSetup], loaders: [] };
     this._kinds = {};
     this._stories = {};
     this._argsEnhancers = [];
@@ -328,7 +338,7 @@ export default class StoryStore {
   }
 
   clearGlobalDecorators() {
-    this._globalMetadata.decorators = [];
+    this._globalMetadata.decorators = [withSetup];
   }
 
   ensureKind(kind: string) {

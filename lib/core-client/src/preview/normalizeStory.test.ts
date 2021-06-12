@@ -35,6 +35,7 @@ describe('normalizeStory', () => {
               "args": Object {},
               "decorators": Array [],
               "loaders": Array [],
+              "setup": undefined,
             },
             "storyFn": [Function],
           }
@@ -92,6 +93,29 @@ describe('normalizeStory', () => {
         });
       });
 
+      describe('setup function', () => {
+        it('no render function', () => {
+          const storyObj = {};
+          const meta = { title: 'title' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.parameters.setup).toBeUndefined();
+        });
+
+        it('user-provided story render function', () => {
+          const storyObj = { setup: () => 'story' };
+          const meta = { title: 'title', setup: () => 'meta' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.parameters.setup).toBe(storyObj.setup);
+        });
+
+        it('user-provided meta render function', () => {
+          const storyObj = {};
+          const meta = { title: 'title', setup: () => 'meta' };
+          const normalized = normalizeV3('storyExport', storyObj, meta);
+          expect(normalized.parameters.setup).toBe(meta.setup);
+        });
+      });
+
       describe('annotations', () => {
         it('empty annotations', () => {
           const storyObj = {};
@@ -106,6 +130,7 @@ describe('normalizeStory', () => {
                 "args": Object {},
                 "decorators": Array [],
                 "loaders": Array [],
+                "setup": undefined,
               },
               "storyFn": "__IMPLICIT_STORY_FN__",
             }
@@ -140,6 +165,7 @@ describe('normalizeStory', () => {
                 "loaders": Array [
                   [Function],
                 ],
+                "setup": undefined,
                 "storyParam": "val",
               },
               "storyFn": "__IMPLICIT_STORY_FN__",
@@ -167,6 +193,7 @@ describe('normalizeStory', () => {
                 "args": Object {},
                 "decorators": Array [],
                 "loaders": Array [],
+                "setup": undefined,
               },
               "storyFn": "__IMPLICIT_STORY_FN__",
             }

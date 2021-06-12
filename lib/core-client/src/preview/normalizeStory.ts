@@ -79,6 +79,7 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any) => {
 
   const {
     render,
+    setup,
     parameters: storyParams,
     decorators = [],
     loaders = [],
@@ -96,6 +97,7 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any) => {
     loaders,
     args,
     argTypes,
+    setup: setup || meta.setup,
   };
 
   return {
