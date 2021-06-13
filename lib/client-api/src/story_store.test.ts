@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import createChannel from '@storybook/channel-postmessage';
 import { toId } from '@storybook/csf';
-import { addons, mockChannel } from '@storybook/addons';
+import { addons, mockChannel, applyHooks } from '@storybook/addons';
 import Events from '@storybook/core-events';
 
 import StoryStore from './story_store';
@@ -46,7 +46,7 @@ const addStoryToStore = (store, kind, name, storyFn, parameters = {}) =>
       id: toId(kind, name),
     },
     {
-      applyDecorators: defaultDecorateStory,
+      applyDecorators: applyHooks(defaultDecorateStory),
     }
   );
 
@@ -145,8 +145,8 @@ describe('preview.story_store', () => {
       const story = jest.fn();
       addStoryToStore(store, 'a', '1', story);
 
-      const { getDecorated } = store.getRawStory('a', '1');
-      getDecorated()();
+      const context = store.getRawStory('a', '1');
+      context.getDecorated()(context);
 
       expect(globalDecorator).toHaveBeenCalled();
       expect(kindDecorator).toHaveBeenCalled();
@@ -1356,7 +1356,7 @@ describe('preview.story_store', () => {
             id: 'a--1',
           },
           {
-            applyDecorators: defaultDecorateStory,
+            applyDecorators: applyHooks(defaultDecorateStory),
             allowUnsafe: true,
           }
         )

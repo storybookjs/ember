@@ -20,6 +20,7 @@ import {
   StoryName,
   Parameters,
   LoaderFunction,
+  applyHooks,
 } from '@storybook/addons';
 import ReactDOM from 'react-dom';
 
@@ -65,7 +66,7 @@ function addStory(
   storyStore.addStory(
     { id, kind, name, storyFn, parameters, loaders },
     {
-      applyDecorators: defaultDecorateStory,
+      applyDecorators: applyHooks(defaultDecorateStory),
     }
   );
   return id;
@@ -120,6 +121,33 @@ describe('core.preview.StoryRenderer', () => {
     await Promise.resolve(null);
 
     expect(onStoryRendered).toHaveBeenCalledWith('a--1');
+  });
+
+  it('calls setup functions on render', async () => {
+    const { render, channel, storyStore, renderer } = prepareRenderer();
+
+    const onStoryRendered = jest.fn();
+    channel.on(STORY_RENDERED, onStoryRendered);
+
+    const setup = jest.fn();
+    addAndSelectStory(storyStore, 'a', '1', { p: 'q', setup });
+
+    await renderer.renderCurrentStory(false);
+    expect(render).toHaveBeenCalled();
+
+    render.mockClear();
+    await renderer.renderCurrentStory(true);
+    expect(render).toHaveBeenCalledWith(
+      expect.objectContaining({
+        forceRender: true,
+      })
+    );
+
+    // the render function does something async so we need to jump to the end of the promise queue
+    await Promise.resolve(null);
+
+    expect(onStoryRendered).toHaveBeenCalledWith('a--1');
+    expect(setup).toHaveBeenCalled();
   });
 
   describe('loaders', () => {
