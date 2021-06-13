@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { API, Consumer, Combo, merge } from '@storybook/api';
 import { SET_CURRENT_STORY } from '@storybook/core-events';
-import addons, { types, Addon } from '@storybook/addons';
+import { addons, types, Addon } from '@storybook/addons';
 
 import { Loader } from '@storybook/components';
 import { Location } from '@storybook/router';

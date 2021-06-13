@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import createChannel from '@storybook/channel-postmessage';
 import { toId } from '@storybook/csf';
-import addons, { mockChannel } from '@storybook/addons';
+import { addons, mockChannel } from '@storybook/addons';
 import Events from '@storybook/core-events';
 
 import StoryStore from './story_store';

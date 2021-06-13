@@ -1,6 +1,6 @@
 import global from 'global';
 import qs from 'qs';
-import addons, { makeDecorator } from '@storybook/addons';
+import { addons, makeDecorator } from '@storybook/addons';
 import { STORY_CHANGED, SELECT_STORY } from '@storybook/core-events';
 import { toId } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';

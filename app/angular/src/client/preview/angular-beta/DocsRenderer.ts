@@ -1,4 +1,4 @@
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import { AbstractRenderer } from './AbstractRenderer';
 import { StoryFnAngularReturnType } from '../types';

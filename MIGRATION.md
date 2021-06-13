@@ -8,6 +8,7 @@
     - [Deprecated addon-knobs](#deprecated-addon-knobs)
     - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
     - [Deprecated `argType.defaultValue`](#deprecated-argtypedefaultvalue)
+    - [Deprecated layout URL params](#deprecated-layout-url-params)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
@@ -240,6 +241,16 @@ export default {
   },
 };
 ```
+
+#### Deprecated layout URL params
+
+Several URL params to control the manager layout have been deprecated and will be removed in 7.0:
+
+- `addons=0`: use `panel=false` instead
+- `panelRight=1`: use `panel=right` instead
+- `stories=0`: use `nav=false` instead
+
+Additionally, support for legacy URLs using `selectedKind` and `selectedStory` will be removed in 7.0. Use `path` instead.
 
 ## From version 6.1.x to 6.2.0
 
@@ -863,7 +874,7 @@ npx sb@next migrate upgrade-hierarchy-separators --glob="*/**/*.stories.@(tsx|js
 We also now default to showing "roots", which are non-expandable groupings in the sidebar for the top-level groups. If you'd like to disable this, set the `showRoots` option in `.storybook/manager.js`:
 
 ```js
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 
 addons.setConfig({
   showRoots: false,
@@ -1150,7 +1161,7 @@ You should use `addon.setConfig` to set them:
 
 ```js
 // in .storybook/manager.js
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 
 addons.setConfig({
   showRoots: false,

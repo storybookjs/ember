@@ -1,5 +1,5 @@
 import React from 'react';
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import { Button } from '@storybook/components';
 

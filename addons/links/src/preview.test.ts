@@ -1,4 +1,4 @@
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { SELECT_STORY } from '@storybook/core-events';
 
 import globalPkg from 'global';
