@@ -29,7 +29,7 @@ const deprecatedStoryAnnotationWarning = deprecate(() => {}, deprecatedStoryAnno
 export const normalizeV2 = (key: string, storyExport: any, meta: any, globalRender: any) => {
   const exportType = typeof storyExport;
   if (exportType !== 'function') {
-    logger.info(`Unexpected story export "${key}": expected function, received "${exportType}."`);
+    logger.info(`Unexpected story export "${key}": expected function, received "${exportType}".`);
   }
 
   const storyFn = storyExport;
