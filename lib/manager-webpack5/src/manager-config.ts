@@ -132,7 +132,7 @@ export async function getManagerWebpackConfig(options: Options): Promise<Configu
     });
   }
 
-  if (autoRefs || definedRefs) {
+  if ((autoRefs && autoRefs.length) || definedRefs) {
     entries.push(path.resolve(path.join(options.configDir, `generated-refs.js`)));
 
     // verify the refs are publicly reachable, if they are not we'll require stories.json at runtime, otherwise the ref won't work
