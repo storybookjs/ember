@@ -13,7 +13,7 @@ const tsTransform = (source: string) => _transform({ source }, null, { parser: '
 
 describe('csf-2-to-3', () => {
   describe('javascript', () => {
-    it('should replace function exports with objects', () => {
+    it('should replace non-simple function exports with objects', () => {
       expect(
         jsTransform(dedent`
           export default { title: 'Cat' };
@@ -24,9 +24,7 @@ describe('csf-2-to-3', () => {
         export default {
           title: 'Cat',
         };
-        export const A = {
-          render: () => <Cat />,
-        };
+        export const A = () => <Cat />;
         export const B = {
           render: (args) => <Button {...args} />,
         };
@@ -61,7 +59,7 @@ describe('csf-2-to-3', () => {
       expect(
         jsTransform(dedent`
           export default { title: 'components/Fruit', includeStories: ['A'] };
-          export const A = () => <Apple />;
+          export const A = (args) => <Apple {...args} />;
           export const B = (args) => <Banana {...args} />;
           const C = (args) => <Cherry {...args} />;
         `)
@@ -71,7 +69,7 @@ describe('csf-2-to-3', () => {
           includeStories: ['A'],
         };
         export const A = {
-          render: () => <Apple />,
+          render: (args) => <Apple {...args} />,
         };
         export const B = (args) => <Banana {...args} />;
 
@@ -179,6 +177,31 @@ describe('csf-2-to-3', () => {
         };
       `);
     });
+
+    it('should ignore no-arg stories without annotations', () => {
+      expect(
+        jsTransform(dedent`
+          export default { title: 'Cat', component: Cat };
+          export const A = (args) => <Cat {...args} />;
+          export const B = () => <Cat name="frisky" />;
+          export const C = () => <Cat name="fluffy" />;
+          C.parameters = { foo: 2 };
+        `)
+      ).toMatchInlineSnapshot(`
+        export default {
+          title: 'Cat',
+          component: Cat,
+        };
+        export const A = {};
+        export const B = () => <Cat name="frisky" />;
+        export const C = {
+          render: () => <Cat name="fluffy" />,
+          parameters: {
+            foo: 2,
+          },
+        };
+      `);
+    });
   });
 
   describe('typescript', () => {
@@ -186,19 +209,21 @@ describe('csf-2-to-3', () => {
       expect(
         tsTransform(dedent`
           export default { title: 'Cat' } as Meta<CatProps>;
-          export const A: Story<CatProps> = () => <Cat />;
+          export const A: Story<CatProps> = (args) => <Cat {...args} />;
           export const B: any = (args) => <Button {...args} />;
+          export const C: Story<CatProps> = () => <Cat />;
         `)
       ).toMatchInlineSnapshot(`
         export default {
           title: 'Cat',
         } as Meta<CatProps>;
         export const A: Story<CatProps> = {
-          render: () => <Cat />,
+          render: (args) => <Cat {...args} />,
         };
         export const B: any = {
           render: (args) => <Button {...args} />,
         };
+        export const C: Story<CatProps> = () => <Cat />;
       `);
     });
   });

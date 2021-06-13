@@ -83,6 +83,10 @@ const isReactGlobalRenderFn = (csf: CsfFile, storyFn: t.Expression) => {
   return false;
 };
 
+// A simple CSF story is a no-arg story without any extra annotations (params, args, etc.)
+const isSimpleCSFStory = (init: t.Expression, annotations: t.ObjectProperty[]) =>
+  annotations.length === 0 && t.isArrowFunctionExpression(init) && init.params.length === 0;
+
 function transform({ source }: { source: string }, api: any, options: { parser?: string }) {
   const csf = loadCsf(source).parse();
 
@@ -93,9 +97,10 @@ function transform({ source }: { source: string }, api: any, options: { parser?:
     });
 
     const { init, id } = decl;
-    // only replace arrow function expressions
+    // only replace arrow function expressions && template
+    // ignore no-arg stories without annotations
     const template = getTemplateBindVariable(init);
-    if (!t.isArrowFunctionExpression(init) && !template) {
+    if ((!t.isArrowFunctionExpression(init) && !template) || isSimpleCSFStory(init, annotations)) {
       return;
     }
 
