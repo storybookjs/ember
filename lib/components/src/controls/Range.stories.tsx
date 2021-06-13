@@ -35,7 +35,9 @@ export const Basic = () => Template({ initialValue: 10, max: 20, step: 2 });
 
 export const Zero = () => Template({ initialValue: 10, max: 20, step: 2 });
 
-export const MaxLengthValue = () =>
+export const Decimals = () =>
   Template({ step: 0.000000000002, initialValue: 1989.123123123123, max: 2000 });
+
+export const BigMaxValue = () => Template({ step: 1000, initialValue: 15, max: 10000000000 });
 
 export const Undefined = () => Template({});
