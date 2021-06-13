@@ -33,7 +33,7 @@ const Template = ({
 
 export const Basic = () => Template({ initialValue: 10, max: 20, step: 2 });
 
-export const Zero = () => Template({ initialValue: 10, max: 20, step: 2 });
+export const Zero = () => Template({ initialValue: 0, max: 20, step: 2 });
 
 export const Decimals = () =>
   Template({ step: 0.000000000002, initialValue: 1989.123123123123, max: 2000 });
