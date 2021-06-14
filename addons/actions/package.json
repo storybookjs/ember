@@ -78,7 +78,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a83fc8b2c0c13c901e09092695f29587f9fe4879",
+  "gitHead": "9fee93508654bf56f3ee9f28a884b43c902d6af7",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Actions",
