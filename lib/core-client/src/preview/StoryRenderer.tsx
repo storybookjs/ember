@@ -277,10 +277,11 @@ export class StoryRenderer {
   }) {
     if (getDecorated) {
       try {
-        const { applyLoaders, unboundStoryFn } = context;
+        const { applyLoaders, runSetupFunction, unboundStoryFn } = context;
         const storyContext = await applyLoaders();
         const storyFn = () => unboundStoryFn(storyContext);
         await this.render({ ...context, storyContext, storyFn });
+        await runSetupFunction();
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         this.renderException(err);

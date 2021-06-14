@@ -19,8 +19,6 @@ import {
   StoryContext,
   StoryKind,
   StoryId,
-  StoryFn,
-  useEffect,
 } from '@storybook/addons';
 import {
   DecoratorFunction,
@@ -45,14 +43,6 @@ import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
 
-const withSetup: DecoratorFunction = (storyFn, { parameters }) => {
-  useEffect(() => {
-    if (parameters?.setup) {
-      parameters.setup();
-    }
-  }, []);
-  return storyFn();
-};
 interface StoryOptions {
   includeDocsOnly?: boolean;
 }
@@ -176,7 +166,7 @@ export default class StoryStore {
     this._globals = {};
     this._defaultGlobals = {};
     this._initialGlobals = {};
-    this._globalMetadata = { parameters: {}, decorators: [withSetup], loaders: [] };
+    this._globalMetadata = { parameters: {}, decorators: [], loaders: [] };
     this._kinds = {};
     this._stories = {};
     this._argsEnhancers = [];
@@ -333,7 +323,7 @@ export default class StoryStore {
   }
 
   clearGlobalDecorators() {
-    this._globalMetadata.decorators = [withSetup];
+    this._globalMetadata.decorators = [];
   }
 
   ensureKind(kind: string) {
@@ -580,6 +570,11 @@ export default class StoryStore {
       initialArgsBeforeEnhancers
     );
 
+    const runSetupFunction = async () => {
+      const { setup } = storyParametersWithArgTypes as { setup?: () => any };
+      return setup ? setup() : undefined;
+    };
+
     _stories[id] = {
       ...identification,
 
@@ -587,6 +582,7 @@ export default class StoryStore {
       getDecorated,
       getOriginal,
       applyLoaders,
+      runSetupFunction,
       storyFn,
       unboundStoryFn,
 

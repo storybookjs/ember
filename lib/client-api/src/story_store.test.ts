@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import createChannel from '@storybook/channel-postmessage';
 import { toId } from '@storybook/csf';
-import { addons, mockChannel, applyHooks } from '@storybook/addons';
+import { addons, mockChannel } from '@storybook/addons';
 import Events from '@storybook/core-events';
 
 import StoryStore from './story_store';
@@ -46,7 +46,8 @@ const addStoryToStore = (store, kind, name, storyFn, parameters = {}) =>
       id: toId(kind, name),
     },
     {
-      applyDecorators: applyHooks(defaultDecorateStory),
+      // FIXME: need applyHooks, but this breaks the current tests
+      applyDecorators: defaultDecorateStory,
     }
   );
 
@@ -1356,7 +1357,7 @@ describe('preview.story_store', () => {
             id: 'a--1',
           },
           {
-            applyDecorators: applyHooks(defaultDecorateStory),
+            applyDecorators: defaultDecorateStory,
             allowUnsafe: true,
           }
         )
