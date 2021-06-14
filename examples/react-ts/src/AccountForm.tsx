@@ -15,10 +15,6 @@ const email99RegExp = new RegExp(
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 );
 
-const w3cEmailRegExp = new RegExp(
-  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-);
-
 export interface AccountFormResponse {
   success: boolean;
 }
@@ -321,11 +317,6 @@ const Input = styled.input(({ theme }) => ({
     boxShadow: 'rgb(255 68 0) 0px 0px 0px 1px inset',
   },
 }));
-
-const Helper = styled.div({
-  marginTop: 4,
-  fontSize: 10,
-});
 
 const Actions = styled.div({
   alignSelf: 'stretch',

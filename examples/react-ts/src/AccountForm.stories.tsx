@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { AccountForm } from './AccountForm';
