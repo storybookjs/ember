@@ -202,6 +202,28 @@ describe('csf-2-to-3', () => {
         };
       `);
     });
+
+    it('should work for v1-style annotations', () => {
+      expect(
+        jsTransform(dedent`
+          export default { title: 'Cat' };
+          export const A = (args) => <Cat {...args} />;
+          A.story = {
+            parameters: { foo: 2 }
+          };
+        `)
+      ).toMatchInlineSnapshot(`
+        export default {
+          title: 'Cat',
+        };
+        export const A = {
+          render: (args) => <Cat {...args} />,
+          parameters: {
+            foo: 2,
+          },
+        };
+      `);
+    });
   });
 
   describe('typescript', () => {
