@@ -29,7 +29,7 @@ interface FormValues extends AccountFormValues {
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
-type AccountFormProps = {
+export type AccountFormProps = {
   passwordVerification?: boolean;
   onSubmit?: (values: AccountFormValues) => void;
   onTransactionStart?: (values: AccountFormValues) => void;
@@ -127,16 +127,15 @@ export const AccountForm: FC<AccountFormProps> = ({
         </Title>
       </Brand>
       {!state.transactionSuccess && !state.transactionFailure && (
-        <Introduction>Create an account and become a part of the Storybook community</Introduction>
+        <Introduction>Create an account to join the Storybook community</Introduction>
       )}
       <Content>
         {state.transactionSuccess && !state.transactionFailure && (
           <Presentation>
             <p>
-              Everything is almost perfect, your account has been made and we should probably get
-              you started
+              Everything is perfect. Your account is ready and we should probably get you started!
             </p>
-            <p>So why don't you go ahead and get started then?</p>
+            <p>So why don't you get started then?</p>
             <Submit
               dirty
               onClick={() => {
