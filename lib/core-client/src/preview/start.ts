@@ -1,6 +1,6 @@
 import global from 'global';
 
-import addons, { DecorateStoryFunction, Channel } from '@storybook/addons';
+import { addons, DecorateStoryFunction, Channel } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
 import Events from '@storybook/core-events';

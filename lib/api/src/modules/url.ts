@@ -1,4 +1,5 @@
 import { navigate as navigateRouter, NavigateOptions } from '@reach/router';
+import { once } from '@storybook/client-logger';
 import {
   NAVIGATE_URL,
   STORY_ARGS_UPDATED,
@@ -9,25 +10,32 @@ import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@s
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
 import global from 'global';
+import dedent from 'ts-dedent';
 
 import { ModuleArgs, ModuleFn } from '../index';
-import { PanelPositions } from './layout';
+import { Layout, UI } from './layout';
 import { isStory } from '../lib/stories';
 
 const { window: globalWindow } = global;
 
-interface Additions {
-  isFullscreen?: boolean;
-  showPanel?: boolean;
-  panelPosition?: PanelPositions;
-  showNav?: boolean;
-  selectedPanel?: string;
-  viewMode?: string;
-}
-
 export interface SubState {
   customQueryParams: QueryParams;
 }
+
+const parseBoolean = (value: string) => {
+  if (value === 'true' || value === '1') return true;
+  if (value === 'false' || value === '0') return false;
+  return undefined;
+};
+
+const navigateTo = (path: string, queryParams: Record<string, string> = {}, options = {}) => {
+  const params = Object.entries(queryParams)
+    .filter(([, v]) => v)
+    .sort(([a], [b]) => (a < b ? -1 : 1))
+    .map(([k, v]) => `${k}=${v}`);
+  const to = [path, ...params].join('&');
+  return queryNavigate(to, options);
+};
 
 // Initialize the state based on the URL.
 // NOTE:
@@ -41,70 +49,80 @@ export interface SubState {
 let prevParams: ReturnType<typeof queryFromLocation>;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
+  singleStory,
 }: ModuleArgs) => {
-  const addition: Additions = {};
-  const query = queryFromLocation(location);
-  let selectedPanel;
-
   const {
     full,
     panel,
     nav,
-    addons,
-    panelRight,
-    stories,
+    shortcuts,
     addonPanel,
-    selectedKind,
-    selectedStory,
+    addons, // deprecated
+    panelRight, // deprecated
+    stories, // deprecated
+    selectedKind, // deprecated
+    selectedStory, // deprecated
     path: queryPath,
-    ...otherParams
-  } = query;
+    ...otherParams // the rest gets passed to the iframe
+  } = queryFromLocation(location);
 
-  if (full === '1') {
-    addition.isFullscreen = true;
-  }
-  if (panel) {
-    if (['right', 'bottom'].includes(panel)) {
-      addition.panelPosition = panel;
-    } else if (panel === '0') {
-      addition.showPanel = false;
-    }
-  }
-  if (nav === '0') {
-    addition.showNav = false;
-  }
+  const layout: Partial<Layout> = {
+    isFullscreen: parseBoolean(full),
+    showNav: !singleStory && parseBoolean(nav),
+    showPanel: parseBoolean(panel),
+    panelPosition: ['right', 'bottom'].includes(panel) ? panel : undefined,
+  };
+  const ui: Partial<UI> = {
+    enableShortcuts: parseBoolean(shortcuts),
+  };
+  const selectedPanel = addonPanel || undefined;
 
-  // Legacy URLs
+  // @deprecated Superceded by `panel=false`, to be removed in 7.0
   if (addons === '0') {
-    addition.showPanel = false;
+    once.warn(dedent`
+      The 'addons' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.showPanel = false;
   }
+  // @deprecated Superceded by `panel=right`, to be removed in 7.0
   if (panelRight === '1') {
-    addition.panelPosition = 'right';
+    once.warn(dedent`
+      The 'panelRight' query param is deprecated and will be removed in Storybook 7.0. Use 'panel=right' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.panelPosition = 'right';
   }
+  // @deprecated Superceded by `nav=false`, to be removed in 7.0
   if (stories === '0') {
-    addition.showNav = false;
+    once.warn(dedent`
+      The 'stories' query param is deprecated and will be removed in Storybook 7.0. Use 'nav=false' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    layout.showNav = false;
   }
 
-  if (addonPanel) {
-    selectedPanel = addonPanel;
-  }
-
+  // @deprecated To be removed in 7.0
   // If the user hasn't set the storyId on the URL, we support legacy URLs (selectedKind/selectedStory)
   // NOTE: this "storyId" can just be a prefix of a storyId, really it is a storyIdSpecifier.
   let storyId = storyIdFromUrl;
-  if (!storyId) {
-    if (selectedKind && selectedStory) {
-      storyId = toId(selectedKind, selectedStory);
-    } else if (selectedKind) {
-      storyId = sanitize(selectedKind);
-    }
+  if (!storyId && selectedKind) {
+    once.warn(dedent`
+      The 'selectedKind' and 'selectedStory' query params are deprecated and will be removed in Storybook 7.0. Use 'path' instead.
+
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-layout-url-params
+    `);
+    storyId = selectedStory ? toId(selectedKind, selectedStory) : sanitize(selectedKind);
   }
 
   // Avoid returning a new object each time if no params actually changed.
   const customQueryParams = deepEqual(prevParams, otherParams) ? prevParams : otherParams;
   prevParams = customQueryParams;
 
-  return { viewMode, layout: addition, selectedPanel, location, path, customQueryParams, storyId };
+  return { viewMode, layout, ui, selectedPanel, location, path, customQueryParams, storyId };
 };
 
 export interface QueryParams {
@@ -157,7 +175,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
   const initModule = () => {
     // Sets `args` parameter in URL, omitting any args that have their initial value or cannot be unserialized safely.
     const updateArgsParam = () => {
-      const { path, viewMode } = fullAPI.getUrlState();
+      const { path, queryParams, viewMode } = fullAPI.getUrlState();
       if (viewMode !== 'story') return;
 
       const currentStory = fullAPI.getCurrentStoryData();
@@ -165,8 +183,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
 
       const { args, initialArgs } = currentStory;
       const argsString = buildArgsParam(initialArgs, args);
-      const argsParam = argsString.length ? `&args=${argsString}` : '';
-      queryNavigate(`${path}${argsParam}`, { replace: true });
+      navigateTo(path, { ...queryParams, args: argsString }, { replace: true });
       api.setQueryParams({ args: argsString });
     };
 
@@ -184,11 +201,10 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
     });
 
     fullAPI.on(GLOBALS_UPDATED, ({ globals, initialGlobals }) => {
-      const { path } = fullAPI.getUrlState();
-      const argsString = buildArgsParam(initialGlobals, globals);
-      const globalsParam = argsString.length ? `&globals=${argsString}` : '';
-      queryNavigate(`${path}${globalsParam}`, { replace: true });
-      api.setQueryParams({ globals: argsString });
+      const { path, queryParams } = fullAPI.getUrlState();
+      const globalsString = buildArgsParam(initialGlobals, globals);
+      navigateTo(path, { ...queryParams, globals: globalsString }, { replace: true });
+      api.setQueryParams({ globals: globalsString });
     });
 
     fullAPI.on(NAVIGATE_URL, (url: string, options: { [k: string]: any }) => {

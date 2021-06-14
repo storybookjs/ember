@@ -1,3 +1,101 @@
+## 6.3.0-rc.4 (June 12, 2021)
+
+### Dependency Upgrades
+
+- Vue3: Add vue-loader as a dependency ([#15207](https://github.com/storybookjs/storybook/pull/15207))
+
+## 6.3.0-rc.3 (June 11, 2021)
+
+### Features
+
+- Core: Disable sidebar and don't load refs when `singleStory=true` ([#15201](https://github.com/storybookjs/storybook/pull/15201))
+
+### Bug Fixes
+
+- Angular: Use docsMode to set docs options ([#15194](https://github.com/storybookjs/storybook/pull/15194))
+
+### Maintenance
+
+- Addon-docs: Split out MDX compiler into standalone package ([#15205](https://github.com/storybookjs/storybook/pull/15205))
+
+## 6.3.0-rc.2 (June 10, 2021)
+
+### Features
+
+- Core: Add `shortcuts` URL param to disable keyboard shortcuts ([#15192](https://github.com/storybookjs/storybook/pull/15192))
+
+### Bug Fixes
+
+- Angular: Fix builder runaway process ([#15189](https://github.com/storybookjs/storybook/pull/15189))
+
+## 6.3.0-rc.1 (June 10, 2021)
+
+### Maintenance
+
+- Core: Use named import for @storybook/addons, fixes vite builder ([#15187](https://github.com/storybookjs/storybook/pull/15187))
+
+## 6.3.0-rc.0 (June 9, 2021)
+
+Storybook 6.3 is in RC!! 🎉🎉🎉
+
+Hundreds of improvements and fixes, including:
+
+- **Angular** - Angular12, Ivy, overhauled docs support.
+- **Web-components** - Lit2 support.
+- **Essentials** - New measure/outline addons for CSS debugging.
+- **Addon API** - Keyboard shortcuts for addons. Initial support in viewports, toolbars.
+- **Webpack 5** - Official support.
+- **Vite builder** - Community support.
+- **Modern ESM** - Modern package distribution.
+
+Track the release in the Github: [Storybook 6.3 Release 🛠](https://github.com/storybookjs/storybook/issues/14397)
+
+## 6.3.0-beta.18 (June 9, 2021)
+
+### Features
+
+- Toolbars: Add customizable keyboard navigation shortcuts ([#15169](https://github.com/storybookjs/storybook/pull/15169))
+
+### Bug Fixes
+
+- Controls: Initialize color control on reset ([#15059](https://github.com/storybookjs/storybook/pull/15059))
+
+## 6.3.0-beta.17 (June 8, 2021)
+
+### Bug Fixes
+
+- Measure: Update version to fix hooks issue ([#15167](https://github.com/storybookjs/storybook/pull/15167))
+
+## 6.3.0-beta.16 (June 8, 2021)
+
+### Features
+
+- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))
+
+## 6.3.0-beta.15 (June 7, 2021)
+
+### Bug Fixes
+
+- Angular: Clear root / docs-root when navigating from one tab to the other ([#15160](https://github.com/storybookjs/storybook/pull/15160))
+
+## 6.3.0-beta.14 (June 6, 2021)
+
+### Features
+
+- Controls: Style `undefined` range slider different to filled one ([#14973](https://github.com/storybookjs/storybook/pull/14973))
+
+### Dependency Upgrades
+
+- Upgrade to react-docgen-typescript-plugin 1.0.0 ([#15154](https://github.com/storybookjs/storybook/pull/15154))
+
+## 6.3.0-beta.13 (June 6, 2021)
+
+### Maintenance
+
+- CsfFile: Index Meta/Story annotations ([#15152](https://github.com/storybookjs/storybook/pull/15152))
+- CLI: Update project template for web-components ([#15149](https://github.com/storybookjs/storybook/pull/15149))
+- Build: Fix WC example and e2e tests ([#15146](https://github.com/storybookjs/storybook/pull/15146))
+
 ## 6.3.0-beta.12 (June 5, 2021)
 
 ### Features

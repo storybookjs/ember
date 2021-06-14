@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import dedent from 'ts-dedent';
 import yaml from 'js-yaml';
 import { loadCsf } from './CsfFile';
@@ -9,7 +10,7 @@ expect.addSnapshotSerializer({
 });
 
 const parse = async (code: string, includeParameters?: boolean) => {
-  const { stories, meta } = (await loadCsf(code)).parse();
+  const { stories, meta } = loadCsf(code).parse();
   const filtered = includeParameters
     ? stories
     : stories.map(({ id, name, parameters, ...rest }) => ({ id, name, ...rest }));
@@ -183,6 +184,49 @@ describe('csf extract', () => {
               __isArgsStory: false
               __id: foo-bar--a
       `);
+    });
+  });
+
+  // NOTE: this does not have a public API, but we can still test it
+  describe('indexed annotations', () => {
+    it('meta annotations', () => {
+      const input = dedent`
+        export default { title: 'foo/bar', x: 1, y: 2 };
+      `;
+      const csf = loadCsf(input).parse();
+      expect(Object.keys(csf._metaAnnotations)).toEqual(['title', 'x', 'y']);
+    });
+
+    it('story annotations', () => {
+      const input = dedent`
+        export default { title: 'foo/bar' };
+        export const A = () => {};
+        A.x = 1;
+        A.y = 2;
+        export const B = () => {};
+        B.z = 3;
+    `;
+      const csf = loadCsf(input).parse();
+      expect(Object.keys(csf._storyAnnotations.A)).toEqual(['x', 'y']);
+      expect(Object.keys(csf._storyAnnotations.B)).toEqual(['z']);
+    });
+
+    it('v1-style story annotations', () => {
+      const input = dedent`
+        export default { title: 'foo/bar' };
+        export const A = () => {};
+        A.story = {
+          x: 1,
+          y: 2,
+        }
+        export const B = () => {};
+        B.story = {
+          z: 3,
+        }
+    `;
+      const csf = loadCsf(input).parse();
+      expect(Object.keys(csf._storyAnnotations.A)).toEqual(['x', 'y']);
+      expect(Object.keys(csf._storyAnnotations.B)).toEqual(['z']);
     });
   });
 });

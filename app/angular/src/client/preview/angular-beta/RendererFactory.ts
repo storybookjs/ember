@@ -12,8 +12,9 @@ export class RendererFactory {
     const renderType = getRenderType(targetDOMNode);
     // keep only instances of the same type
     if (this.lastRenderType && this.lastRenderType !== renderType) {
-      this.rendererMap.clear();
       await AbstractRenderer.resetPlatformBrowserDynamic();
+      clearRootHTMLElement(renderType);
+      this.rendererMap.clear();
     }
 
     if (!this.rendererMap.has(storyId)) {
@@ -35,3 +36,17 @@ export class RendererFactory {
 export const getRenderType = (targetDOMNode: HTMLElement): RenderType => {
   return targetDOMNode.id === 'root' ? 'canvas' : 'docs';
 };
+
+export function clearRootHTMLElement(renderType: RenderType) {
+  switch (renderType) {
+    case 'canvas':
+      global.document.getElementById('docs-root').innerHTML = '';
+      break;
+
+    case 'docs':
+      global.document.getElementById('root').innerHTML = '';
+      break;
+    default:
+      break;
+  }
+}

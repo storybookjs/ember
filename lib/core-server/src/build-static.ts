@@ -66,11 +66,6 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     ...options,
   });
 
-  const fullOptions: Options = {
-    ...options,
-    presets,
-  };
-
   const features = await presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson) {
     const storiesGlobs = (await presets.apply('stories')) as StorybookConfig['stories'];
@@ -80,6 +75,12 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
       options.configDir
     );
   }
+
+  const fullOptions: Options = {
+    ...options,
+    presets,
+    previewCsfV3: features?.previewCsfV3,
+  };
 
   const core = await presets.apply<{ builder?: string }>('core');
 

@@ -10,6 +10,8 @@ A major strength of Storybook are [addons](/addons/) that extend Storybook’s U
 - [Viewport](./viewport.md)
 - [Backgrounds](./backgrounds.md)
 - [Toolbars & globals](./toolbars-and-globals.md)
+- [Measure](/addons/@storybook/addon-measure)
+- [Outline](/addons/storybook-addon-outline)
 
 ### Installation
 If you're running `sb init` to add Storybook to your project, the essentials package (`@storybook/addon-essentials`) is already installed and configured for you . You can skip the rest of this section.
@@ -21,7 +23,7 @@ npm install --save-dev @storybook/addon-essentials
 ```
 
 <div class="aside">
-💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly. 
+💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly.
 </div>
 
 Update your Storybook configuration (in `.storybook/main.js`) to include the essentials addon.

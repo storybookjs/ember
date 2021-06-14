@@ -2065,14 +2065,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-a11y@portal:../../addons/a11y::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     axe-core: ^4.2.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -2096,12 +2096,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-actions@portal:../../addons/actions::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     fast-deep-equal: ^3.1.3
     global: ^4.4.0
@@ -2128,12 +2128,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-backgrounds@portal:../../addons/backgrounds::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     global: ^4.4.0
     memoizerific: ^1.11.3
@@ -2155,12 +2155,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-controls@portal:../../addons/controls::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/node-logger": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/node-logger": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     ts-dedent: ^2.0.0
   peerDependencies:
@@ -2187,19 +2187,19 @@ __metadata:
     "@mdx-js/loader": ^1.6.22
     "@mdx-js/mdx": ^1.6.22
     "@mdx-js/react": ^1.6.22
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/builder-webpack4": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/builder-webpack4": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
-    "@storybook/node-logger": 6.3.0-beta.10
-    "@storybook/postinstall": 6.3.0-beta.10
-    "@storybook/source-loader": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/node-logger": 6.3.0-beta.12
+    "@storybook/postinstall": 6.3.0-beta.12
+    "@storybook/source-loader": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     acorn: ^7.4.1
     acorn-jsx: ^5.3.1
     acorn-walk: ^7.2.0
@@ -2222,10 +2222,10 @@ __metadata:
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   peerDependencies:
-    "@storybook/angular": 6.3.0-beta.10
-    "@storybook/vue": 6.3.0-beta.10
-    "@storybook/vue3": 6.3.0-beta.10
-    "@storybook/web-components": 6.3.0-beta.10
+    "@storybook/angular": 6.3.0-beta.12
+    "@storybook/vue": 6.3.0-beta.12
+    "@storybook/vue3": 6.3.0-beta.12
+    "@storybook/web-components": 6.3.0-beta.12
     lit: ^2.0.0-rc.1
     lit-html: ^1.4.1 || ^2.0.0-rc.3
     react: ^16.8.0 || ^17.0.0
@@ -2292,11 +2292,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-links@portal:../../addons/links::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
-    "@storybook/router": 6.3.0-beta.10
+    "@storybook/router": 6.3.0-beta.12
     "@types/qs": ^6.9.5
     core-js: ^3.8.2
     global: ^4.4.0
@@ -2320,10 +2320,10 @@ __metadata:
   resolution: "@storybook/addon-storyshots@portal:../../addons/storyshots/storyshots-core::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
     "@jest/transform": ^26.6.2
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/core": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/core": 6.3.0-beta.12
+    "@storybook/core-common": 6.3.0-beta.12
     "@types/glob": ^7.1.3
     "@types/jest": ^26.0.16
     "@types/jest-specific-snapshot": ^0.5.3
@@ -2393,13 +2393,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-storysource@portal:../../addons/storysource::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/router": 6.3.0-beta.10
-    "@storybook/source-loader": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/router": 6.3.0-beta.12
+    "@storybook/source-loader": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     estraverse: ^5.2.0
     loader-utils: ^2.0.0
@@ -2422,12 +2422,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addon-viewport@portal:../../addons/viewport::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     global: ^4.4.0
     memoizerific: ^1.11.3
@@ -2448,12 +2448,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/addons@portal:../../lib/addons::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/router": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/router": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
     core-js: ^3.8.2
     global: ^4.4.0
     regenerator-runtime: ^0.13.7
@@ -2468,13 +2468,13 @@ __metadata:
   resolution: "@storybook/api@portal:../../lib/api::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
     "@reach/router": ^1.3.4
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
-    "@storybook/router": 6.3.0-beta.10
+    "@storybook/router": 6.3.0-beta.12
     "@storybook/semver": ^7.3.2
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/theming": 6.3.0-beta.12
     "@types/reach__router": ^1.3.7
     core-js: ^3.8.2
     fast-deep-equal: ^3.1.3
@@ -2518,20 +2518,20 @@ __metadata:
     "@babel/preset-env": ^7.12.11
     "@babel/preset-react": ^7.12.10
     "@babel/preset-typescript": ^7.12.7
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/channel-postmessage": 6.3.0-beta.10
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/node-logger": 6.3.0-beta.10
-    "@storybook/router": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/channel-postmessage": 6.3.0-beta.12
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-common": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/node-logger": 6.3.0-beta.12
+    "@storybook/router": 6.3.0-beta.12
     "@storybook/semver": ^7.3.2
-    "@storybook/theming": 6.3.0-beta.10
-    "@storybook/ui": 6.3.0-beta.10
+    "@storybook/theming": 6.3.0-beta.12
+    "@storybook/ui": 6.3.0-beta.12
     "@types/node": ^14.0.10
     "@types/webpack": ^4.41.26
     autoprefixer: ^9.8.6
@@ -2580,9 +2580,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/channel-postmessage@portal:../../lib/channel-postmessage::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     core-js: ^3.8.2
     global: ^4.4.0
     qs: ^6.10.0
@@ -2604,11 +2604,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/client-api@portal:../../lib/client-api::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/channel-postmessage": 6.3.0-beta.10
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/channel-postmessage": 6.3.0-beta.12
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
     "@types/qs": ^6.9.5
     "@types/webpack-env": ^1.16.0
@@ -2642,9 +2642,9 @@ __metadata:
   resolution: "@storybook/components@portal:../../lib/components::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
     "@popperjs/core": ^2.6.0
-    "@storybook/client-logger": 6.3.0-beta.10
+    "@storybook/client-logger": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/theming": 6.3.0-beta.12
     "@types/color-convert": ^2.0.0
     "@types/overlayscrollbars": ^1.12.0
     "@types/react-syntax-highlighter": 11.0.5
@@ -2675,13 +2675,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/core-client@portal:../../lib/core-client::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/channel-postmessage": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/channel-postmessage": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
-    "@storybook/ui": 6.3.0-beta.10
+    "@storybook/ui": 6.3.0-beta.12
     airbnb-js-shims: ^2.2.1
     ansi-to-html: ^0.6.11
     core-js: ^3.8.2
@@ -2727,7 +2727,7 @@ __metadata:
     "@babel/preset-react": ^7.12.10
     "@babel/preset-typescript": ^7.12.7
     "@babel/register": ^7.12.1
-    "@storybook/node-logger": 6.3.0-beta.10
+    "@storybook/node-logger": 6.3.0-beta.12
     "@storybook/semver": ^7.3.2
     "@types/glob-base": ^0.3.0
     "@types/micromatch": ^4.0.1
@@ -2775,12 +2775,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/core-server@portal:../../lib/core-server::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/builder-webpack4": 6.3.0-beta.10
-    "@storybook/core-client": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
-    "@storybook/csf-tools": 6.3.0-beta.10
-    "@storybook/manager-webpack4": 6.3.0-beta.10
-    "@storybook/node-logger": 6.3.0-beta.10
+    "@storybook/builder-webpack4": 6.3.0-beta.12
+    "@storybook/core-client": 6.3.0-beta.12
+    "@storybook/core-common": 6.3.0-beta.12
+    "@storybook/csf-tools": 6.3.0-beta.12
+    "@storybook/manager-webpack4": 6.3.0-beta.12
+    "@storybook/node-logger": 6.3.0-beta.12
     "@storybook/semver": ^7.3.2
     "@types/node": ^14.0.10
     "@types/node-fetch": ^2.5.7
@@ -2809,8 +2809,8 @@ __metadata:
     util-deprecate: ^1.0.2
     webpack: 4
   peerDependencies:
-    "@storybook/builder-webpack5": 6.3.0-beta.10
-    "@storybook/manager-webpack5": 6.3.0-beta.10
+    "@storybook/builder-webpack5": 6.3.0-beta.12
+    "@storybook/manager-webpack5": 6.3.0-beta.12
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
@@ -2827,10 +2827,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/core@portal:../../lib/core::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/core-client": 6.3.0-beta.10
-    "@storybook/core-server": 6.3.0-beta.10
+    "@storybook/core-client": 6.3.0-beta.12
+    "@storybook/core-server": 6.3.0-beta.12
   peerDependencies:
-    "@storybook/builder-webpack5": 6.3.0-beta.10
+    "@storybook/builder-webpack5": 6.3.0-beta.12
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
@@ -2872,12 +2872,12 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/plugin-transform-template-literals": ^7.12.1
     "@babel/preset-react": ^7.12.10
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/core-client": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
-    "@storybook/node-logger": 6.3.0-beta.10
-    "@storybook/theming": 6.3.0-beta.10
-    "@storybook/ui": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/core-client": 6.3.0-beta.12
+    "@storybook/core-common": 6.3.0-beta.12
+    "@storybook/node-logger": 6.3.0-beta.12
+    "@storybook/theming": 6.3.0-beta.12
+    "@storybook/ui": 6.3.0-beta.12
     "@types/node": ^14.0.10
     "@types/webpack": ^4.41.26
     babel-loader: ^8.2.2
@@ -2940,7 +2940,7 @@ __metadata:
   resolution: "@storybook/router@portal:../../lib/router::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
     "@reach/router": ^1.3.4
-    "@storybook/client-logger": 6.3.0-beta.10
+    "@storybook/client-logger": 6.3.0-beta.12
     "@types/reach__router": ^1.3.7
     core-js: ^3.8.2
     fast-deep-equal: ^3.1.3
@@ -2971,8 +2971,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/source-loader@portal:../../lib/source-loader::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
     "@storybook/csf": 0.0.1
     core-js: ^3.8.2
     estraverse: ^5.2.0
@@ -2994,7 +2994,7 @@ __metadata:
     "@emotion/core": ^10.1.1
     "@emotion/is-prop-valid": ^0.8.6
     "@emotion/styled": ^10.0.27
-    "@storybook/client-logger": 6.3.0-beta.10
+    "@storybook/client-logger": 6.3.0-beta.12
     core-js: ^3.8.2
     deep-object-diff: ^1.1.0
     emotion-theming: ^10.0.27
@@ -3014,15 +3014,15 @@ __metadata:
   resolution: "@storybook/ui@portal:../../lib/ui::locator=web-components-kitchen-sink%40workspace%3A."
   dependencies:
     "@emotion/core": ^10.1.1
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/api": 6.3.0-beta.10
-    "@storybook/channels": 6.3.0-beta.10
-    "@storybook/client-logger": 6.3.0-beta.10
-    "@storybook/components": 6.3.0-beta.10
-    "@storybook/core-events": 6.3.0-beta.10
-    "@storybook/router": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/api": 6.3.0-beta.12
+    "@storybook/channels": 6.3.0-beta.12
+    "@storybook/client-logger": 6.3.0-beta.12
+    "@storybook/components": 6.3.0-beta.12
+    "@storybook/core-events": 6.3.0-beta.12
+    "@storybook/router": 6.3.0-beta.12
     "@storybook/semver": ^7.3.2
-    "@storybook/theming": 6.3.0-beta.10
+    "@storybook/theming": 6.3.0-beta.12
     "@types/markdown-to-jsx": ^6.11.3
     copy-to-clipboard: ^3.3.1
     core-js: ^3.8.2
@@ -3055,10 +3055,10 @@ __metadata:
     "@babel/plugin-syntax-dynamic-import": ^7.8.3
     "@babel/plugin-syntax-import-meta": ^7.10.4
     "@babel/preset-env": ^7.12.11
-    "@storybook/addons": 6.3.0-beta.10
-    "@storybook/client-api": 6.3.0-beta.10
-    "@storybook/core": 6.3.0-beta.10
-    "@storybook/core-common": 6.3.0-beta.10
+    "@storybook/addons": 6.3.0-beta.12
+    "@storybook/client-api": 6.3.0-beta.12
+    "@storybook/core": 6.3.0-beta.12
+    "@storybook/core-common": 6.3.0-beta.12
     "@types/webpack-env": ^1.16.0
     babel-plugin-bundled-import-meta: ^0.3.1
     core-js: ^3.8.2
