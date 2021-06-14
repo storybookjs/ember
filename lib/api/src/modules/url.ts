@@ -28,6 +28,15 @@ const parseBoolean = (value: string) => {
   return undefined;
 };
 
+const navigateTo = (path: string, queryParams: Record<string, string> = {}, options = {}) => {
+  const params = Object.entries(queryParams)
+    .filter(([, v]) => v)
+    .sort(([a], [b]) => (a < b ? -1 : 1))
+    .map(([k, v]) => `${k}=${v}`);
+  const to = [path, ...params].join('&');
+  return queryNavigate(to, options);
+};
+
 // Initialize the state based on the URL.
 // NOTE:
 //   Although we don't change the URL when you change the state, we do support setting initial state
@@ -166,7 +175,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
   const initModule = () => {
     // Sets `args` parameter in URL, omitting any args that have their initial value or cannot be unserialized safely.
     const updateArgsParam = () => {
-      const { path, viewMode } = fullAPI.getUrlState();
+      const { path, queryParams, viewMode } = fullAPI.getUrlState();
       if (viewMode !== 'story') return;
 
       const currentStory = fullAPI.getCurrentStoryData();
@@ -174,8 +183,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
 
       const { args, initialArgs } = currentStory;
       const argsString = buildArgsParam(initialArgs, args);
-      const argsParam = argsString.length ? `&args=${argsString}` : '';
-      queryNavigate(`${path}${argsParam}`, { replace: true });
+      navigateTo(path, { ...queryParams, args: argsString }, { replace: true });
       api.setQueryParams({ args: argsString });
     };
 
@@ -193,11 +201,10 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
     });
 
     fullAPI.on(GLOBALS_UPDATED, ({ globals, initialGlobals }) => {
-      const { path } = fullAPI.getUrlState();
-      const argsString = buildArgsParam(initialGlobals, globals);
-      const globalsParam = argsString.length ? `&globals=${argsString}` : '';
-      queryNavigate(`${path}${globalsParam}`, { replace: true });
-      api.setQueryParams({ globals: argsString });
+      const { path, queryParams } = fullAPI.getUrlState();
+      const globalsString = buildArgsParam(initialGlobals, globals);
+      navigateTo(path, { ...queryParams, globals: globalsString }, { replace: true });
+      api.setQueryParams({ globals: globalsString });
     });
 
     fullAPI.on(NAVIGATE_URL, (url: string, options: { [k: string]: any }) => {
