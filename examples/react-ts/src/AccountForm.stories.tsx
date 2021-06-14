@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { AccountForm } from './AccountForm';
+import { AccountForm, AccountFormProps } from './AccountForm';
 
 export default {
   title: 'Demo/AccountForm',
@@ -12,7 +12,8 @@ export default {
   },
 } as ComponentMeta<typeof AccountForm>;
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+// export const Standard = (args: AccountFormProps) => <AccountForm {...args} />;
+// Standard.args = { passwordVerification: false };
 
 export const Standard = {
   args: { passwordVerification: false },
@@ -62,6 +63,8 @@ export const VerificationPasswordMismatch = {
     userEvent.click(screen.getByTestId('submit'));
   },
 };
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const VerificationSuccess = {
   ...Verification,
