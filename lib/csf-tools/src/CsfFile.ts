@@ -9,6 +9,7 @@ import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
 const logger = console;
 interface Meta {
   title?: string;
+  component?: string;
   includeStories?: string[] | RegExp;
   excludeStories?: string[] | RegExp;
 }
@@ -41,7 +42,7 @@ const parseTitle = (value: any) => {
 };
 
 const findVarInitialization = (identifier: string, program: t.Program) => {
-  let init: t.Node = null;
+  let init: t.Expression = null;
   let declarations: t.VariableDeclarator[] = null;
   program.body.find((node: t.Node) => {
     if (t.isVariableDeclaration(node)) {
@@ -68,7 +69,7 @@ const findVarInitialization = (identifier: string, program: t.Program) => {
   return init;
 };
 
-const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node) => {
+const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node, csf: CsfFile) => {
   let storyFn: t.Node = init;
   // export const Foo = Bar.bind({})
   if (t.isCallExpression(init)) {
@@ -87,6 +88,8 @@ const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node) => {
       const boundIdentifier = callee.object.name;
       const template = findVarInitialization(boundIdentifier, parent);
       if (template) {
+        // eslint-disable-next-line no-param-reassign
+        csf._templates[boundIdentifier] = template;
         storyFn = template;
       }
     }
@@ -97,7 +100,7 @@ const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node) => {
   return false;
 };
 export class CsfFile {
-  _ast: Node;
+  _ast: t.File;
 
   _meta?: Meta;
 
@@ -105,9 +108,13 @@ export class CsfFile {
 
   _metaAnnotations: Record<string, Node> = {};
 
+  _storyExports: Record<string, t.VariableDeclarator> = {};
+
   _storyAnnotations: Record<string, Record<string, Node>> = {};
 
-  constructor(ast: Node) {
+  _templates: Record<string, t.Expression> = {};
+
+  constructor(ast: t.File) {
     this._ast = ast;
   }
 
@@ -122,6 +129,12 @@ export class CsfFile {
         } else if (['includeStories', 'excludeStories'].includes(p.key.name)) {
           // @ts-ignore
           meta[p.key.name] = parseIncludeExclude(p.value);
+        } else if (p.key.name === 'component') {
+          if (t.isIdentifier(p.value)) {
+            meta.component = p.value.name;
+          } else if (t.isStringLiteral(p.value)) {
+            meta.component = p.value.value;
+          }
         }
       }
     });
@@ -165,14 +178,15 @@ export class CsfFile {
                 const { name } = decl.id;
                 const parameters = {
                   // __id: toId(self._meta.title, name),
-                  // FiXME: Template.bind({});
-                  __isArgsStory: isArgsStory(decl, parent),
+                  // FIXME: Template.bind({});
+                  __isArgsStory: isArgsStory(decl, parent, self),
                 };
                 self._stories[name] = {
                   id: 'FIXME',
                   name,
                   parameters,
                 };
+                self._storyExports[name] = decl;
                 if (self._storyAnnotations[name]) {
                   logger.warn(`Unexpected annotations for "${name}" before story declaration`);
                 } else {
@@ -216,16 +230,28 @@ export class CsfFile {
     });
 
     // default export can come at any point in the file, so we do this post processing last
-    self._stories =
-      self._meta && self._meta.title
-        ? Object.entries(self._stories).reduce((acc, [key, story]) => {
-            if (isExportStory(key, self._meta)) {
-              const id = toId(self._meta.title, storyNameFromExport(key));
-              acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
-            }
-            return acc;
-          }, {} as Record<string, Story>)
-        : {}; // no meta = no stories
+    if (self._meta?.title || self._meta?.component) {
+      self._stories = Object.entries(self._stories).reduce((acc, [key, story]) => {
+        if (isExportStory(key, self._meta)) {
+          const id = toId(self._meta.title, storyNameFromExport(key));
+          acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+        }
+        return acc;
+      }, {} as Record<string, Story>);
+
+      Object.keys(self._storyExports).forEach((key) => {
+        if (!isExportStory(key, self._meta)) {
+          delete self._storyExports[key];
+          delete self._storyAnnotations[key];
+        }
+      });
+    } else {
+      // no meta = no stories
+      self._stories = {};
+      self._storyExports = {};
+      self._storyAnnotations = {};
+    }
+
     return self;
   }
 

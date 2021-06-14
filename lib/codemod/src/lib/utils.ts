@@ -1,7 +1,7 @@
 import camelCase from 'lodash/camelCase';
 import upperFirst from 'lodash/upperFirst';
 
-export const sanitizeName = (name) => {
+export const sanitizeName = (name: string) => {
   let key = upperFirst(camelCase(name));
   // prepend _ if name starts with a digit
   if (/^\d/.test(key)) {
@@ -14,8 +14,8 @@ export const sanitizeName = (name) => {
   return key;
 };
 
-export function jscodeshiftToPrettierParser(parser) {
-  const parserMap = {
+export function jscodeshiftToPrettierParser(parser?: string) {
+  const parserMap: Record<string, string> = {
     babylon: 'babel',
     flow: 'flow',
     ts: 'typescript',
