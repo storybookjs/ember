@@ -307,7 +307,7 @@ export const AccountForm: FC<AccountFormProps> = ({
                     </FormikInput>
                     {errors.password && (
                       <WithTooltip tooltip={<ErrorTooltip>{errors.passwordTooltip}</ErrorTooltip>}>
-                        <ErrorWrapper>
+                        <ErrorWrapper data-testid="password-error-info">
                           <ErrorIcon icon="question" height={14} />
                           <Error name="password" component="div" />
                         </ErrorWrapper>

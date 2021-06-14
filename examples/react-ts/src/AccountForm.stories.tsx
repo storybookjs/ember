@@ -16,6 +16,7 @@ export default {
 // Standard.args = { passwordVerification: false };
 
 export const Standard = {
+  // render: (args: AccountFormProps) => <AccountForm {...args} />,
   args: { passwordVerification: false },
 };
 
@@ -39,6 +40,15 @@ export const StandardPasswordFailed = {
     StandardEmailFilled.setup();
     userEvent.type(screen.getByTestId('password1'), 'asdf');
     userEvent.click(screen.getByTestId('submit'));
+  },
+};
+
+export const StandardFailHover = {
+  ...StandardPasswordFailed,
+  setup: async () => {
+    await StandardPasswordFailed.setup();
+    await sleep(100);
+    userEvent.hover(screen.getByTestId('password-error-info'));
   },
 };
 
