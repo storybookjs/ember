@@ -11,6 +11,7 @@ import { StoryStore } from '@storybook/client-api';
 
 import { NoDocs } from './NoDocs';
 import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
+import { isCsf3Enabled } from './csf3';
 
 const { document } = global;
 
@@ -281,7 +282,9 @@ export class StoryRenderer {
         const storyContext = await applyLoaders();
         const storyFn = () => unboundStoryFn(storyContext);
         await this.render({ ...context, storyContext, storyFn });
-        await runSetupFunction();
+        if (isCsf3Enabled()) {
+          await runSetupFunction();
+        }
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         this.renderException(err);
