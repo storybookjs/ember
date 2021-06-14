@@ -1,3 +1,18 @@
+## 6.3.0-rc.5 (June 14, 2021)
+
+### Bug Fixes
+
+- Vue3: Update args without re-mounting component ([#15168](https://github.com/storybookjs/storybook/pull/15168))
+- Core: Preserve other query params when changing args/globals ([#15213](https://github.com/storybookjs/storybook/pull/15213))
+- UI: Fix range slider value label size changes causing jittering ([#15145](https://github.com/storybookjs/storybook/pull/15145))
+- Codemod: Fix dist/node_modules ignore heuristic ([#15222](https://github.com/storybookjs/storybook/pull/15222))
+- Core: Fix autoRefs check in manager-webpack ([#15197](https://github.com/storybookjs/storybook/pull/15197))
+
+### Maintenance
+
+- CSF3: Fix v1-style annotations in codemod ([#15230](https://github.com/storybookjs/storybook/pull/15230))
+- Core: CSF v3 preview ([#15217](https://github.com/storybookjs/storybook/pull/15217))
+
 ## 6.3.0-rc.4 (June 12, 2021)
 
 ### Dependency Upgrades
