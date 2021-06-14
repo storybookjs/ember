@@ -36,6 +36,10 @@ jest.mock('@storybook/client-logger', () => ({
   },
 }));
 
+jest.mock('./csf3', () => ({
+  isCsf3Enabled: () => true,
+}));
+
 function prepareRenderer() {
   const render = jest.fn(({ storyFn }) => storyFn());
   const channel = createChannel({ page: 'preview' });
