@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useMemo } from 'react';
 
 import { styled } from '@storybook/theming';
 import { lighten, darken, rgba } from 'polished';
@@ -156,6 +156,8 @@ const RangeLabel = styled.span({
   paddingRight: 5,
   fontSize: 12,
   whiteSpace: 'nowrap',
+  fontFeatureSettings: 'tnum',
+  fontVariantNumeric: 'tabular-nums',
 });
 
 const RangeWrapper = styled.div({
@@ -163,6 +165,19 @@ const RangeWrapper = styled.div({
   alignItems: 'center',
   width: '100%',
 });
+
+function getNumberOfDecimalPlaces(number: number) {
+  const match = number.toString().match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+  return !match
+    ? 0
+    : Math.max(
+        0,
+        // Number of digits right of decimal point.
+        (match[1] ? match[1].length : 0) -
+          // Adjust for scientific notation.
+          (match[2] ? +match[2] : 0)
+      );
+}
 
 export const RangeControl: FC<RangeProps> = ({
   name,
@@ -177,7 +192,10 @@ export const RangeControl: FC<RangeProps> = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(parse(event.target.value));
   };
+
   const hasValue = value !== undefined;
+  const numberOFDecimalsPlaces = useMemo(() => getNumberOfDecimalPlaces(step), [step]);
+
   return (
     <RangeWrapper>
       <RangeLabel>{min}</RangeLabel>
@@ -187,7 +205,9 @@ export const RangeControl: FC<RangeProps> = ({
         onChange={handleChange}
         {...{ name, value, min, max, step, onFocus, onBlur }}
       />
-      <RangeLabel>{`${hasValue ? value : '--'} / ${max}`}</RangeLabel>
+      <RangeLabel>
+        {`${hasValue ? value.toFixed(numberOFDecimalsPlaces) : '--'}`} / {max}
+      </RangeLabel>
     </RangeWrapper>
   );
 };

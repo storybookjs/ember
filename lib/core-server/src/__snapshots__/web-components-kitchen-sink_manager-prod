@@ -14,7 +14,6 @@ Object {
     "ROOT/addons/storysource/dist/esm/register.js",
     "ROOT/addons/viewport/dist/esm/register.js",
     "ROOT/addons/toolbars/dist/esm/register.js",
-    "ROOT/examples/web-components-kitchen-sink/.storybook/generated-refs.js",
   ],
   "keys": Array [
     "name",
