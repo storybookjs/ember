@@ -93,6 +93,7 @@ export const setGlobalRender = (render: StoryFn) => {
   singleton.globalRender = render;
 };
 
+const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi {
   private _storyStore: StoryStore;
 
@@ -239,6 +240,12 @@ export default class ClientApi {
 
       if (typeof storyName !== 'string') {
         throw new Error(`Invalid or missing storyName provided for a "${kind}" story.`);
+      }
+
+      if (!storyFn || Array.isArray(storyFn) || invalidStoryTypes.has(typeof storyFn)) {
+        throw new Error(
+          `Cannot load story "${storyName}" in "${kind}" due to invalid format. Storybook expected a function/object but received ${typeof storyFn} instead.`
+        );
       }
 
       if (!this._noStoryModuleAddMethodHotDispose && m && m.hot && m.hot.dispose) {
