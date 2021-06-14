@@ -1,5 +1,4 @@
 import { logger } from '@storybook/client-logger';
-import { ClientApi } from '@storybook/client-api';
 import { storyNameFromExport, toId } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';

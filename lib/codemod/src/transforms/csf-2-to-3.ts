@@ -2,7 +2,6 @@
 import prettier from 'prettier';
 import * as t from '@babel/types';
 import { CsfFile, formatCsf, loadCsf } from '@storybook/csf-tools';
-import { logger } from '@storybook/node-logger';
 import { jscodeshiftToPrettierParser } from '../lib/utils';
 
 const _rename = (annotation: string) => {
