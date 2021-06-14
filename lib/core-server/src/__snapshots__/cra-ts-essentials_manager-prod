@@ -12,7 +12,6 @@ Object {
     "ROOT/addons/toolbars/dist/esm/register.js",
     "NODE_MODULES/@storybook/addon-measure/dist/esm/preset/manager.js",
     "NODE_MODULES/storybook-addon-outline/dist/esm/preset/register.js",
-    "ROOT/examples/cra-ts-essentials/.storybook/generated-refs.js",
   ],
   "keys": Array [
     "name",
