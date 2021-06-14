@@ -571,7 +571,7 @@ export default class StoryStore {
     );
 
     const runSetupFunction = async () => {
-      const { setup } = storyParametersWithArgTypes as { setup?: () => any };
+      const { setup } = combinedParameters as { setup?: () => any };
       return setup ? setup() : undefined;
     };
 
