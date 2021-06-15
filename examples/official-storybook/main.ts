@@ -30,6 +30,9 @@ const config: StorybookConfig = {
     builder: 'webpack4',
   },
   logLevel: 'debug',
+  features: {
+    previewCsfV3: true,
+  },
 };
 
 module.exports = config;
