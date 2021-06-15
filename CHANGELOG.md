@@ -1,3 +1,17 @@
+## 6.3.0-rc.6 (June 15, 2021)
+
+### Bug Fixes
+
+- Core: Only call setup function on story navigation ([#15244](https://github.com/storybookjs/storybook/pull/15244))
+
+### Maintenance
+
+- Official-storybook: Add CSF3 setup function demo ([#15245](https://github.com/storybookjs/storybook/pull/15245))
+
+### Dependency Upgrades
+
+- Use @storybook/react-docgen-typescript-plugin canary with PR#45 ([#15243](https://github.com/storybookjs/storybook/pull/15243))
+
 ## 6.3.0-rc.5 (June 14, 2021)
 
 ### Bug Fixes
