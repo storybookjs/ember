@@ -84,7 +84,48 @@ Write your documentation in MDX and update the `docs.page` [parameter](../writin
 
 ### With a custom component
 
-Write a custom React component and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
+Storybook's UI is built using React. If you want to include a custom component to display documentation, you'll need to update your environment to allow React components to be correctly transpiled.
+
+For example, with Angular start by adding a `babel.config.js` file at the root of the project with the following content:
+
+```js
+// babel.config.js
+
+module.exports = function(api) {
+  process.env.NODE_ENV === 'development' ? api.cache(false) : api.cache(true);
+  const presets = [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          node: 'current',
+        },
+      },
+    ],
+    '@babel/preset-typescript',
+    '@babel/preset-react',
+  ];
+  const plugins = [];
+  return {
+    presets,
+    plugins,
+  };
+};
+```
+
+Then, update your `tsconfig.json` to include the following:
+
+```json
+{
+  "compilerOptions": {
+    ....
+    "allowJs": true,
+    "jsx": "react-jsx",
+  },
+}
+```
+Finally write your custom React component and and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
+
 
 <!-- prettier-ignore-start -->
 
@@ -97,10 +138,6 @@ Write a custom React component and update the `docs.page` [parameter](../writing
 />
 
 <!-- prettier-ignore-end -->
-
-<div class="aside">
-💡 <strong>Note:</strong> Depending on your framework of choice, you'll probably need extra configuration to allow React components to be properly transpiled.
-</div>
 
 ## Remixing DocsPage using doc blocks
 
