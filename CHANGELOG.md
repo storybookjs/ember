@@ -1,3 +1,9 @@
+## 6.3.0-rc.7 (June 15, 2021)
+
+### Dependency Upgrades
+
+- Upgrade react-docgen-typescript-plugin to RDT 2.0 ([#15247](https://github.com/storybookjs/storybook/pull/15247))
+
 ## 6.3.0-rc.6 (June 15, 2021)
 
 ### Bug Fixes
