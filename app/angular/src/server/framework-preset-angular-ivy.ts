@@ -29,7 +29,8 @@ export const webpack = async (webpackConfig: Configuration, options: Options) =>
     options
   );
 
-  if (!angularOptions.enableIvy) {
+  // Default to true, if undefined
+  if (angularOptions.enableIvy === false) {
     return webpackConfig;
   }
 
