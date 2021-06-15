@@ -40,7 +40,6 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   const updatedOptions = isWebpack5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
 
   baseGenerator(packageManager, npmOptions, updatedOptions, 'angular', {
-    extraAddons: ['storybook-addon-angular-ivy'],
     extraPackages: ['@compodoc/compodoc', '@angular/elements', '@webcomponents/custom-elements'],
     addScripts: false,
   });
