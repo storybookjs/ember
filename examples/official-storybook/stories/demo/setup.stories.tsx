@@ -10,5 +10,8 @@ export default {
 };
 
 export const WithSetup = {
-  setup: () => userEvent.type(screen.getByTestId('test-input'), 'asdfasdf', { delay: 20 }),
+  setup: () =>
+    screen
+      .getAllByTestId('test-input')
+      .map((elt) => userEvent.type(elt, 'asdfasdf', { delay: 20 })),
 };
