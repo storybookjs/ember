@@ -10,10 +10,11 @@ export default {
 };
 
 export const WithSetup = {
-  setup: () =>
-    Promise.all(
-      screen
-        .getAllByTestId('test-input')
-        .map((elt) => userEvent.type(elt, 'asdfasdf', { delay: 10 }))
-    ),
+  setup: async () => {
+    const inputs = screen.getAllByTestId('test-input');
+    for (let i = 0; i < inputs.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await userEvent.type(inputs[i], 'asdfasdf', { delay: 10 });
+    }
+  },
 };
