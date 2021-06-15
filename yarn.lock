@@ -7141,6 +7141,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.f7e28c0.0":
+  version: 1.0.2-canary.f7e28c0.0
+  resolution: "@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.f7e28c0.0"
+  dependencies:
+    debug: ^4.1.1
+    endent: ^2.0.1
+    find-cache-dir: ^3.3.1
+    flat-cache: ^3.0.4
+    micromatch: ^4.0.2
+    react-docgen-typescript: ^1.22.0
+    tslib: ^2.0.0
+  peerDependencies:
+    typescript: ">= 3.x"
+    webpack: ">= 4"
+  checksum: 363ef1fd65f1b760d300fe08161529ccb8580abdc49426d574b9ca604b80be7c563b2e2e9e96d09bf4054accd62bc3ec8419c88119ae0a8b51a357be850ae2bc
+  languageName: node
+  linkType: hard
+
 "@storybook/react@6.3.0-rc.5, @storybook/react@workspace:*, @storybook/react@workspace:app/react":
   version: 0.0.0-use.local
   resolution: "@storybook/react@workspace:app/react"
@@ -7153,6 +7171,7 @@ __metadata:
     "@storybook/core": 6.3.0-rc.5
     "@storybook/core-common": 6.3.0-rc.5
     "@storybook/node-logger": 6.3.0-rc.5
+    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.f7e28c0.0
     "@storybook/semver": ^7.3.2
     "@types/node": ^14.14.20
     "@types/prompts": ^2.0.9
@@ -7165,7 +7184,6 @@ __metadata:
     lodash: ^4.17.20
     prop-types: ^15.7.2
     react-dev-utils: ^11.0.3
-    react-docgen-typescript-plugin: ^1.0.0
     react-refresh: ^0.8.3
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
