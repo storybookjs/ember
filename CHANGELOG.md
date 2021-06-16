@@ -1,3 +1,14 @@
+## 6.3.0-rc.8 (June 16, 2021)
+
+### Features
+
+- Angular: Add built-in Ivy support instead of relying on addon ([#15229](https://github.com/storybookjs/storybook/pull/15229))
+
+### Bug Fixes
+
+- Addon-docs: Fix MDX compiler export to match new location ([#15266](https://github.com/storybookjs/storybook/pull/15266))
+- Addon-viewport: Fix CSS for scale reset on firefox ([#15128](https://github.com/storybookjs/storybook/pull/15128))
+
 ## 6.3.0-rc.7 (June 15, 2021)
 
 ### Dependency Upgrades
