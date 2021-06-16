@@ -16,4 +16,7 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
+  angularOptions: {
+    enableIvy: true,
+  },
 };
