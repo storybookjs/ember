@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/mdx/mdx-compiler-plugin').createCompiler;
+module.exports = require('@storybook/csf-tools/mdx').createCompiler;
