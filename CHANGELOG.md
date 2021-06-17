@@ -1,9 +1,16 @@
+## 6.3.0-rc.10 (June 17, 2021)
+
+### Bug Fixes
+
+- Angular: Fix nx project with workspace.json ([#15267](https://github.com/storybookjs/storybook/pull/15267))
+- Angular: Fix some Ivy rendering glitches ([#15279](https://github.com/storybookjs/storybook/pull/15279))
+
 ## 6.3.0-rc.9 (June 17, 2021)
 
 ### Dependency Upgrades
 
-* Bump postcss to 7.0.36 with security fix ([#15276](https://github.com/storybookjs/storybook/pull/15276))
-* Fix monorepo peer deps ([#15277](https://github.com/storybookjs/storybook/pull/15277))
+- Bump postcss to 7.0.36 with security fix ([#15276](https://github.com/storybookjs/storybook/pull/15276))
+- Fix monorepo peer deps ([#15277](https://github.com/storybookjs/storybook/pull/15277))
 
 ## 6.3.0-rc.8 (June 16, 2021)
 
