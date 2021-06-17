@@ -242,6 +242,19 @@ export default {
 };
 ```
 
+To manually configure the value that is shown in the ArgsTable doc block, you can configure the `table.defaultValue` setting:
+
+```js
+export default {
+  component: MyComponent,
+  argTypes: {
+    argName: {
+      table: { defaultValue: { summary: 'SomeType<T>' } },
+    },
+  },
+};
+```
+
 #### Deprecated layout URL params
 
 Several URL params to control the manager layout have been deprecated and will be removed in 7.0:
