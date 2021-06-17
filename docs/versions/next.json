@@ -1,1 +1,1 @@
-{"version":"6.3.0-rc.9","info":{"plain":"### Dependency Upgrades\n\n* Bump postcss to 7.0.36 with security fix ([#15276](https://github.com/storybookjs/storybook/pull/15276))\n* Fix monorepo peer deps ([#15277](https://github.com/storybookjs/storybook/pull/15277))"}}
+{"version":"6.3.0-rc.10","info":{"plain":"### Bug Fixes\n\n- Angular: Fix nx project with workspace.json ([#15267](https://github.com/storybookjs/storybook/pull/15267))\n- Angular: Fix some Ivy rendering glitches ([#15279](https://github.com/storybookjs/storybook/pull/15279))"}}
