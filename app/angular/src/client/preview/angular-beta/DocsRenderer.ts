@@ -27,9 +27,11 @@ export class DocsRenderer extends AbstractRenderer {
     });
 
     await super.render({ ...options, forced: false });
-
-    await AbstractRenderer.resetCompiledComponents();
   }
 
   async beforeFullRender(): Promise<void> {}
+
+  async afterFullRender(): Promise<void> {
+    await AbstractRenderer.resetCompiledComponents();
+  }
 }
