@@ -29,7 +29,6 @@ exports[`Storyshots Basics / NgModule / Module with multiple component Chips Gro
   <storybook-chips-group
     ng-reflect-chips="[object Object],[object Object"
   >
-    
     <storybook-chip
       class="chip"
       ng-reflect-display-text="Chip 1"
@@ -76,6 +75,7 @@ exports[`Storyshots Basics / NgModule / Module with multiple component Chips Gro
     >
        Remove All 
     </div>
+    
   </storybook-chips-group>
 </storybook-wrapper>
 `;

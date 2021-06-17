@@ -13,13 +13,13 @@ exports[`Storyshots Basics / Component / With Provider inputs and inject depende
         Title: Component dependencies
       </div>
       <div>
-        Injector: function Injector_(view, elDef) {
-              this.view = view;
-              this.elDef = elDef;
+        Injector: function NodeInjector(_tNode, _lView) {
+              this._tNode = _tNode;
+              this._lView = _lView;
           }
       </div>
       <div>
-        ElementRef: {"nativeElement":{}}
+        ElementRef: {"nativeElement":{"__ngContext__":"[Array(33)]","_constructor-name_":"HTMLElement"}}
       </div>
       <div>
         TestToken: 123
@@ -42,13 +42,13 @@ exports[`Storyshots Basics / Component / With Provider inputs and inject depende
         Title: Component dependencies
       </div>
       <div>
-        Injector: function Injector_(view, elDef) {
-              this.view = view;
-              this.elDef = elDef;
+        Injector: function NodeInjector(_tNode, _lView) {
+              this._tNode = _tNode;
+              this._lView = _lView;
           }
       </div>
       <div>
-        ElementRef: {"nativeElement":{}}
+        ElementRef: {"nativeElement":{"__ngContext__":"[Array(33)]","_constructor-name_":"HTMLElement"}}
       </div>
       <div>
         TestToken: 123
