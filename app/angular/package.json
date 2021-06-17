@@ -56,7 +56,7 @@
     "core-js": "^3.8.2",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
     "global": "^4.4.0",
-    "postcss": "^7.0.35",
+    "postcss": "^7.0.36",
     "postcss-loader": "^4.2.0",
     "raw-loader": "^4.0.2",
     "react": "16.14.0",

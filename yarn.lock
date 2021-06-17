@@ -6140,7 +6140,7 @@ __metadata:
     global: ^4.4.0
     jest: ^26.6.3
     jest-preset-angular: ^8.3.2
-    postcss: ^7.0.35
+    postcss: ^7.0.36
     postcss-loader: ^4.2.0
     raw-loader: ^4.0.2
     react: 16.14.0
@@ -6286,7 +6286,7 @@ __metadata:
     global: ^4.4.0
     html-webpack-plugin: ^4.0.0
     pnp-webpack-plugin: 1.6.4
-    postcss: ^7.0.35
+    postcss: ^7.0.36
     postcss-flexbugs-fixes: ^4.2.1
     postcss-loader: ^4.2.0
     raw-loader: ^4.0.2
@@ -34276,6 +34276,17 @@ fsevents@^1.2.7:
     source-map: ^0.6.1
     supports-color: ^5.4.0
   checksum: 45d45184ffbb9d510e7585d9441af9a1a771a56b7553b1d598544e54acdfd31df439a95d5f00a6dc57b85b76d0c8925fec18614b1cc795887c845c3965e32e63
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^7.0.36":
+  version: 7.0.36
+  resolution: "postcss@npm:7.0.36"
+  dependencies:
+    chalk: ^2.4.2
+    source-map: ^0.6.1
+    supports-color: ^6.1.0
+  checksum: 8e5dcaf9adf875a3ad9444227391979043958fc08f5a848a58bb716e41d1f7a1618cc3f884a7a19328d7ae341bbaa4f5a75063195dd43da168659688dffecbe1
   languageName: node
   linkType: hard
 
