@@ -1,6 +1,6 @@
-import { navigator, window as globalWindow } from 'global';
+import global from 'global';
 
-import addons, { DecorateStoryFunction, Channel } from '@storybook/addons';
+import { addons, DecorateStoryFunction, Channel } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
 import Events from '@storybook/core-events';
@@ -10,6 +10,7 @@ import { RenderStoryFunction } from './types';
 import { loadCsf } from './loadCsf';
 import { StoryRenderer } from './StoryRenderer';
 
+const { navigator, window: globalWindow } = global;
 const isBrowser =
   navigator &&
   navigator.userAgent &&

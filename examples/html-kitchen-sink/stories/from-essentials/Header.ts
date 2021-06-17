@@ -1,7 +1,9 @@
-import { document } from 'global';
+import global from 'global';
 
 import './header.css';
 import { createButton } from './Button';
+
+const { document } = global;
 
 export interface HeaderProps {
   user?: {};

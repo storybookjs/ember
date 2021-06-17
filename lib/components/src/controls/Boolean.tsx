@@ -1,8 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
-import { styled } from '@storybook/theming';
 import { opacify, transparentize } from 'polished';
+import { styled } from '@storybook/theming';
 
+import { getControlId } from './helpers';
+import { Form } from '../form';
 import { ControlProps, BooleanValue, BooleanConfig } from './types';
 
 const Label = styled.label(({ theme }) => ({
@@ -68,7 +70,7 @@ const Label = styled.label(({ theme }) => ({
     },
   },
 
-  'input:checked ~ span:first-of-type, input:not(:checked) ~ span:last-of-type': {
+  'input:checked ~ span:last-of-type, input:not(:checked) ~ span:first-of-type': {
     background: theme.background.bar,
     boxShadow: `${opacify(0.1, theme.appBorderColor)} 0 0 2px`,
     color: theme.color.defaultText,
@@ -80,16 +82,23 @@ const format = (value: BooleanValue): string | null => (value ? String(value) : 
 const parse = (value: string | null) => value === 'true';
 
 export type BooleanProps = ControlProps<BooleanValue> & BooleanConfig;
-export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => (
-  <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
-    <input
-      id={name}
-      type="checkbox"
-      onChange={(e) => onChange(e.target.checked)}
-      checked={value || false}
-      {...{ name, onBlur, onFocus }}
-    />
-    <span>True</span>
-    <span>False</span>
-  </Label>
-);
+export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => {
+  const onSetFalse = useCallback(() => onChange(false), [onChange]);
+  if (value === undefined) {
+    return <Form.Button onClick={onSetFalse}>Set boolean</Form.Button>;
+  }
+
+  return (
+    <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
+      <input
+        id={getControlId(name)}
+        type="checkbox"
+        onChange={(e) => onChange(e.target.checked)}
+        checked={value || false}
+        {...{ name, onBlur, onFocus }}
+      />
+      <span>False</span>
+      <span>True</span>
+    </Label>
+  );
+};

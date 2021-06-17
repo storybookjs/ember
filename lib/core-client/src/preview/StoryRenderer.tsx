@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { document } from 'global';
+import global from 'global';
 import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
 
@@ -11,6 +11,9 @@ import { StoryStore } from '@storybook/client-api';
 
 import { NoDocs } from './NoDocs';
 import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
+import { isCsf3Enabled } from './csf3';
+
+const { document } = global;
 
 // We have "changed" story if this changes
 interface RenderMetadata {
@@ -275,10 +278,13 @@ export class StoryRenderer {
   }) {
     if (getDecorated) {
       try {
-        const { applyLoaders, unboundStoryFn } = context;
+        const { applyLoaders, runSetupFunction, unboundStoryFn, forceRender } = context;
         const storyContext = await applyLoaders();
         const storyFn = () => unboundStoryFn(storyContext);
         await this.render({ ...context, storyContext, storyFn });
+        if (isCsf3Enabled() && !forceRender) {
+          await runSetupFunction();
+        }
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         this.renderException(err);

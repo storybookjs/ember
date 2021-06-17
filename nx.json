@@ -10,18 +10,8 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare"
-        ],
-        "strictlyOrderedTargets": [
-          "build",
-          "package",
-          "prepare"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
         "accessToken": "NGVmYTkxMmItYzY3OS00MjkxLTk1ZDktZDFmYTFmNmVlNGY4fHJlYWQ=",
         "canTrackAnalytics": false,
         "showUsageWarnings": true
@@ -41,37 +31,16 @@
     "@storybook/addon-controls": {
       "implicitDependencies": []
     },
-    "@storybook/addon-cssresources": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-design-assets": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-docs": {
       "implicitDependencies": []
     },
     "@storybook/addon-essentials": {
       "implicitDependencies": []
     },
-    "@storybook/addon-events": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-google-analytics": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-graphql": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-jest": {
       "implicitDependencies": []
     },
-    "@storybook/addon-knobs": {
-      "implicitDependencies": []
-    },
     "@storybook/addon-links": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-queryparams": {
       "implicitDependencies": []
     },
     "@storybook/addon-storyshots": {
@@ -92,34 +61,22 @@
     "@storybook/angular": {
       "implicitDependencies": []
     },
-    "@storybook/aurelia": {
-      "implicitDependencies": []
-    },
     "@storybook/ember": {
       "implicitDependencies": []
     },
     "@storybook/html": {
       "implicitDependencies": []
     },
-    "@storybook/marionette": {
+    "@storybook/manager-webpack4": {
       "implicitDependencies": []
     },
-    "@storybook/marko": {
-      "implicitDependencies": []
-    },
-    "@storybook/mithril": {
+    "@storybook/manager-webpack5": {
       "implicitDependencies": []
     },
     "@storybook/preact": {
       "implicitDependencies": []
     },
-    "@storybook/rax": {
-      "implicitDependencies": []
-    },
     "@storybook/react": {
-      "implicitDependencies": []
-    },
-    "@storybook/riot": {
       "implicitDependencies": []
     },
     "@storybook/server": {
@@ -137,22 +94,7 @@
     "@storybook/web-components": {
       "implicitDependencies": []
     },
-    "@storybook/addon-decorator": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-parameter": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-preview-wrapper": {
-      "implicitDependencies": []
-    },
-    "@storybook/addon-roundtrip": {
-      "implicitDependencies": []
-    },
     "angular-cli": {
-      "implicitDependencies": []
-    },
-    "aurelia-kitchen-sink": {
       "implicitDependencies": []
     },
     "cra-kitchen-sink": {
@@ -167,19 +109,10 @@
     "cra-ts-kitchen-sink": {
       "implicitDependencies": []
     },
-    "@storybook/example-devkits": {
-      "implicitDependencies": []
-    },
     "ember-example": {
       "implicitDependencies": []
     },
     "html-kitchen-sink": {
-      "implicitDependencies": []
-    },
-    "marko-cli": {
-      "implicitDependencies": []
-    },
-    "mithril-example": {
       "implicitDependencies": []
     },
     "official-storybook": {
@@ -188,16 +121,10 @@
     "preact-example": {
       "implicitDependencies": []
     },
-    "rax-kitchen-sink": {
-      "implicitDependencies": []
-    },
     "@storybook/example-react-ts": {
       "implicitDependencies": []
     },
     "@storybook/example-react-ts-webpack4": {
-      "implicitDependencies": []
-    },
-    "riot-example": {
       "implicitDependencies": []
     },
     "server-kitchen-sink": {
@@ -291,6 +218,9 @@
       "implicitDependencies": []
     },
     "@storybook/theming": {
+      "implicitDependencies": []
+    },
+    "@storybook/csf-tools": {
       "implicitDependencies": []
     },
     "@storybook/ui": {

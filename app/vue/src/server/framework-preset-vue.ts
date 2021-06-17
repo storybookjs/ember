@@ -2,7 +2,11 @@
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 import type { Configuration } from 'webpack';
 
-export function webpack(config: Configuration) {
+import type { Options, TypescriptConfig } from '@storybook/core-common';
+
+export async function webpack(config: Configuration, { presets }: Options) {
+  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+
   config.plugins.push(new VueLoaderPlugin());
   config.module.rules.push({
     test: /\.vue$/,
@@ -15,7 +19,7 @@ export function webpack(config: Configuration) {
       {
         loader: require.resolve('ts-loader'),
         options: {
-          transpileOnly: true,
+          transpileOnly: !typescriptOptions.check,
           appendTsSuffixTo: [/\.vue$/],
         },
       },

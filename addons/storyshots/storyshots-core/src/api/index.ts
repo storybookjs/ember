@@ -1,11 +1,12 @@
-import global, { describe } from 'global';
-import addons, { mockChannel } from '@storybook/addons';
+import global from 'global';
+import { addons, mockChannel } from '@storybook/addons';
 import ensureOptionsDefaults from './ensureOptionsDefaults';
 import snapshotsTests from './snapshotsTestsTemplate';
 import integrityTest from './integrityTestTemplate';
 import loadFramework from '../frameworks/frameworkLoader';
 import { StoryshotsOptions } from './StoryshotsOptions';
 
+const { describe } = global;
 global.STORYBOOK_REACT_CLASSES = global.STORYBOOK_REACT_CLASSES || {};
 
 type TestMethod = 'beforeAll' | 'beforeEach' | 'afterEach' | 'afterAll';

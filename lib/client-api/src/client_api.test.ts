@@ -1,5 +1,5 @@
 import { logger } from '@storybook/client-logger';
-import addons, { mockChannel } from '@storybook/addons';
+import { addons, mockChannel } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import ClientApi from './client_api';
 import ConfigApi from './config_api';
@@ -667,7 +667,7 @@ describe('preview.client_api', () => {
         expect(() => {
           storiesOf('kind', module).add('test', 'String that should be a function instead' as any);
         }).toThrow(
-          'Cannot load story "test" in "kind" due to invalid format. Storybook expected a function but received string instead.'
+          'Cannot load story "test" in "kind" due to invalid format. Storybook expected a function/object but received string instead.'
         );
       });
     });

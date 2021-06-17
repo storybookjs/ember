@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 import { promisify } from 'util';
-import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync } from 'fs';
+import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 import { getDeployables } from './utils/list-examples';
@@ -121,6 +121,10 @@ const handleExamples = async (deployables) => {
     logger.log(`-----------------${Array(d.length).fill('-').join('')}`);
     const out = p(['built-storybooks', d]);
     const cwd = p(['examples', d]);
+
+    if (existsSync(join(cwd, 'yarn.lock'))) {
+      await exec(`yarn`, [`install`], { cwd });
+    }
 
     await exec(`yarn`, [`build-storybook`, `--output-dir=${out}`, '--quiet'], { cwd });
     await exec(`npx`, [`sb`, 'extract', out, `${out}/stories.json`], { cwd });

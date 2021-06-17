@@ -46,7 +46,7 @@ For more information on how it works, see the [`DocsPage` reference](https://git
 Here's an example file:
 
 ```md
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 import { Checkbox } from './Checkbox';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
@@ -79,17 +79,17 @@ For more information on `MDX`, see the [`MDX` reference](https://github.com/stor
 
 Storybook Docs supports all view layers that Storybook supports except for React Native (currently). There are some framework-specific features as well, such as props tables and inline story rendering. This chart captures the current state of support:
 
-|                   | React | Vue | Angular | Ember | Web Components | HTML | Svelte | Preact | Riot | Mithril | Marko |
-| ----------------- | :---: | :-: | :-----: | :---: | :------------: | :--: | :----: | :----: | :--: | :-----: | :---: |
-| MDX stories       |   +   |  +  |    +    |   +   |       +        |  +   |   +    |   +    |  +   |    +    |   +   |
-| CSF stories       |   +   |  +  |    +    |   +   |       +        |  +   |   +    |   +    |  +   |    +    |   +   |
-| StoriesOf stories |   +   |  +  |    +    |   +   |       +        |  +   |   +    |   +    |  +   |    +    |   +   |
-| Source            |   +   |  +  |    +    |   +   |       +        |  +   |   +    |   +    |  +   |    +    |   +   |
-| Notes / Info      |   +   |  +  |    +    |   +   |       +        |  +   |   +    |   +    |  +   |    +    |   +   |
-| Props table       |   +   |  +  |    +    |   +   |       +        |      |        |        |      |         |       |
-| Props controls    |   +   |  +  |    +    |       |                |      |        |        |      |         |       |
-| Description       |   +   |  +  |    +    |   +   |       +        |      |        |        |      |         |       |
-| Inline stories    |   +   |  +  |    +    |       |       +        |  +   |        |        |      |         |       |
+|                   | React | Vue | Angular | Ember | Web Components | Marko | HTML | Svelte | Preact | Riot | Mithril | Marko |
+| ----------------- | :---: | :-: | :-----: | :---: | :------------: | :---: | :--: | :----: | :----: | :--: | :-----: | :---: |
+| MDX stories       |   +   |  +  |    +    |   +   |       +        |  WIP  |  +   |   +    |   +    |  +   |    +    |   +   |
+| CSF stories       |   +   |  +  |    +    |   +   |       +        |  WIP  |  +   |   +    |   +    |  +   |    +    |   +   |
+| StoriesOf stories |   +   |  +  |    +    |   +   |       +        |  WIP  |  +   |   +    |   +    |  +   |    +    |   +   |
+| Source            |   +   |  +  |    +    |   +   |       +        |  WIP  |  +   |   +    |   +    |  +   |    +    |   +   |
+| Notes / Info      |   +   |  +  |    +    |   +   |       +        |  WIP  |  +   |   +    |   +    |  +   |    +    |   +   |
+| Props table       |   +   |  +  |    +    |   +   |       +        |  WIP  |      |        |        |      |         |       |
+| Props controls    |   +   |  +  |    +    |       |                |  WIP  |      |        |        |      |         |       |
+| Description       |   +   |  +  |    +    |   +   |       +        |  WIP  |      |        |        |      |         |       |
+| Inline stories    |   +   |  +  |    +    |       |       +        |  WIP  |  +   |        |        |      |         |       |
 
 **Note:** `#` = WIP support
 
@@ -166,8 +166,9 @@ The `configureJSX` option is useful when you're writing your docs in MDX and you
 `sourceLoaderOptions` is an object for configuring `@storybook/source-loader`. When set to `null` it tells docs not to run the `source-loader` at all, which can be used as an optimization, or if you're already using `source-loader` in your `main.js`.
 
 The `transcludeMarkdown` option enables mdx files to import `.md` files and render them as a component.
+
 ```mdx
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from '@storybook/addon-docs';
 import Changelog from '../CHANGELOG.md';
 
 <Meta title="Changelog" />
@@ -226,7 +227,7 @@ You'll also need to set up the docs parameter in `.storybook/preview.js`. This i
 
 ```js
 import { addParameters } from '@storybook/react';
-import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import { DocsPage, DocsContainer } from '@storybook/addon-docs';
 
 addParameters({
   docs: {

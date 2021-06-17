@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-client",
-  "version": "6.3.0-alpha.19",
+  "version": "6.3.0-rc.8",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,13 +40,14 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.19",
-    "@storybook/channel-postmessage": "6.3.0-alpha.19",
-    "@storybook/client-api": "6.3.0-alpha.19",
-    "@storybook/client-logger": "6.3.0-alpha.19",
-    "@storybook/core-events": "6.3.0-alpha.19",
+    "@storybook/addons": "6.3.0-rc.8",
+    "@storybook/channel-postmessage": "6.3.0-rc.8",
+    "@storybook/client-api": "6.3.0-rc.8",
+    "@storybook/client-logger": "6.3.0-rc.8",
+    "@storybook/core-events": "6.3.0-rc.8",
     "@storybook/csf": "0.0.1",
-    "@storybook/ui": "6.3.0-alpha.19",
+    "@storybook/ui": "6.3.0-rc.8",
+    "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -70,5 +71,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "8ba485343b31df4e65fce2494a5f615d6d6c661d"
+  "gitHead": "a9256a360ce67dc2eab408046a4baa4e13430a8b",
+  "sbmodern": "dist/modern/index.js"
 }

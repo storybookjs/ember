@@ -63,6 +63,8 @@ export default async ({
   frameworkPath,
   presets,
   typescriptOptions,
+  modern,
+  previewCsfV3,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
@@ -152,6 +154,7 @@ export default async ({
           globals: {
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            PREVIEW_CSF_V3: previewCsfV3,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -194,7 +197,7 @@ export default async ({
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.cjs'],
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
-      mainFields: ['browser', 'module', 'main'],
+      mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
         ...themingPaths,
         ...storybookPaths,

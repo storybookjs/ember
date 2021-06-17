@@ -31,13 +31,14 @@ cypress/screenshots
 examples/ember-cli/ember-output
 .verdaccio-cache
 tsconfig.tsbuildinfo
-lib/core-server/prebuilt
+lib/manager-webpack4/prebuilt
+lib/manager-webpack5/prebuilt
 examples/angular-cli/addon-jest.testresults.json
 
 # Yarn stuff
-/.yarn/*
-!/.yarn/releases
-!/.yarn/plugins
-!/.yarn/sdks
-!/.yarn/versions
-/.pnp.*
+/**/.yarn/*
+!/**/.yarn/releases
+!/**/.yarn/plugins
+!/**/.yarn/sdks
+!/**/.yarn/versions
+/**/.pnp.*

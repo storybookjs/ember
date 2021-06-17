@@ -7,6 +7,8 @@ docs/public
 storybook-static
 built-storybooks
 lib/cli/test
+lib/manager-webpack4/prebuilt
+lib/manager-webpack5/prebuilt
 lib/core-server/prebuilt
 lib/codemod/src/transforms/__testfixtures__
 lib/components/src/controls/react-editable-json-tree
@@ -20,7 +22,6 @@ examples/cra-ts-kitchen-sink/*.json
 examples/cra-ts-kitchen-sink/public/*
 examples/cra-ts-essentials/*.json
 examples/cra-ts-essentials/public/*
-examples/rax-kitchen-sink/src/document/*
 ember-output
 .yarn
 !.remarkrc.js

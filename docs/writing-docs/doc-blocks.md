@@ -135,6 +135,7 @@ Looking at the following component:
     'angular/button-implementation.ts.mdx',
     'vue/button-implementation.2.mdx',
     'vue/button-implementation.3.mdx',
+    'svelte/button-implementation.js.mdx',
   ]}
 />
 
@@ -253,6 +254,8 @@ As an example, if you had the following story:
     'vue/button-story-default-docs-code.2.js.mdx',
     'vue/button-story-default-docs-code.3.js.mdx',
     'angular/button-story-default-docs-code.ts.mdx',
+    'svelte/button-story-default-docs-code.js.mdx',
+    'svelte/button-story-default-docs-code.native-format.mdx',
   ]}
 />
 

@@ -1,9 +1,10 @@
-import { document, fetch, Node } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { Args, ArgTypes } from '@storybook/api';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext, FetchStoryHtmlType } from './types';
 
+const { document, fetch, Node } = global;
 const rootElement = document.getElementById('root');
 
 const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, storyContext) => {

@@ -59,15 +59,15 @@ If you're coming from the `storiesOf` format, there's [a codemod that adds it fo
 
 ## Subcomponents parameter
 
-Sometimes it's useful to document multiple components on the same page. For example, suppose your component library contains `List` and `ListItem` components that don't make sense without one another. `DocsPage` has the concept of a "primary" component with the [`component` parameter](#component-parameter), and can also accept one or more "subcomponents":
+Sometimes it's useful to document multiple components on the same page. For example, suppose your component library contains `Button` and `ButtonGroup` components that don't make sense without one another. `DocsPage` has the concept of a "primary" component with the [`component` parameter](#component-parameter), and can also accept one or more "subcomponents":
 
 ```js
-import { List, ListHeading, ListItem } from './List';
+import { Button, ButtonGroup } from '../ButtonGroup';
 
 export default {
-  title: 'Path/to/List',
-  component: List,
-  subcomponents: { ListHeading, ListItem },
+  title: 'Path/to/ButtonGroup',
+  component: ButtonGroup,
+  subcomponents: { Button },
 };
 ```
 
@@ -79,7 +79,7 @@ If you want organize your documentation differently for groups of components, we
 
 ## Replacing DocsPage
 
-What if you don't want a `DocsPage` for your storybook, for a specific component, or even for a specific story?
+What if you don't want a `DocsPage` for your Storybook, for a specific component, or even for a specific story?
 
 You can replace DocsPage at any level by overriding the `docs.page` parameter:
 
@@ -122,14 +122,7 @@ Here's an example of rebuilding `DocsPage` out of doc blocks:
 
 ```js
 import React from 'react';
-import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  ArgsTable,
-  Stories,
-} from '@storybook/addon-docs/blocks';
+import { Title, Subtitle, Description, Primary, ArgsTable, Stories } from '@storybook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 
 export default {

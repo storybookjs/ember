@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-interpolation-in-snapshots */
 import { Configuration } from 'webpack';
 import { logger } from '@storybook/node-logger';
-import { webpackFinal } from './framework-preset-angular-cli';
+import { Options, webpackFinal } from './framework-preset-angular-cli';
 
 const testPath = __dirname;
 
@@ -24,6 +24,12 @@ function initMockWorkspace(name: string) {
 }
 
 describe('framework-preset-angular-cli', () => {
+  let options: Options;
+
+  beforeEach(() => {
+    options = {} as Options;
+  });
+
   describe('without angular.json', () => {
     let consoleErrorSpy: jest.SpyInstance;
 
@@ -34,7 +40,7 @@ describe('framework-preset-angular-cli', () => {
     it('should return webpack base config and display log error', async () => {
       const webpackBaseConfig = newWebpackConfiguration();
 
-      const config = await webpackFinal(webpackBaseConfig);
+      const config = await webpackFinal(webpackBaseConfig, options);
 
       expect(logger.info).toHaveBeenCalledWith('=> Loading angular-cli config');
       expect(logger.error).toHaveBeenCalledWith(
@@ -52,10 +58,12 @@ describe('framework-preset-angular-cli', () => {
     it('should return webpack base config and display log error', async () => {
       const webpackBaseConfig = newWebpackConfiguration();
 
-      const config = await webpackFinal(webpackBaseConfig);
+      const config = await webpackFinal(webpackBaseConfig, options);
 
       expect(logger.info).toHaveBeenCalledWith('=> Loading angular-cli config');
-      expect(logger.error).toHaveBeenCalledWith('=> Could not find angular project');
+      expect(logger.error).toHaveBeenCalledWith(
+        '=> Could not find angular project: No angular projects found'
+      );
       expect(logger.info).toHaveBeenCalledWith(
         '=> Fail to load angular-cli config. Using base config'
       );
@@ -71,10 +79,12 @@ describe('framework-preset-angular-cli', () => {
     it('should return webpack base config and display log error', async () => {
       const webpackBaseConfig = newWebpackConfiguration();
 
-      const config = await webpackFinal(webpackBaseConfig);
+      const config = await webpackFinal(webpackBaseConfig, options);
 
       expect(logger.info).toHaveBeenCalledWith('=> Loading angular-cli config');
-      expect(logger.error).toHaveBeenCalledWith('=> Could not find angular project');
+      expect(logger.error).toHaveBeenCalledWith(
+        '=> Could not find angular project: No angular projects found'
+      );
       expect(logger.info).toHaveBeenCalledWith(
         '=> Fail to load angular-cli config. Using base config'
       );
@@ -90,10 +100,12 @@ describe('framework-preset-angular-cli', () => {
     it('should return webpack base config and display log error', async () => {
       const webpackBaseConfig = newWebpackConfiguration();
 
-      const config = await webpackFinal(webpackBaseConfig);
+      const config = await webpackFinal(webpackBaseConfig, options);
 
       expect(logger.info).toHaveBeenCalledWith('=> Loading angular-cli config');
-      expect(logger.error).toHaveBeenCalledWith('=> Could not find angular project');
+      expect(logger.error).toHaveBeenCalledWith(
+        '=> Could not find angular project: "missing-project" project is not found in angular.json'
+      );
       expect(logger.info).toHaveBeenCalledWith(
         '=> Fail to load angular-cli config. Using base config'
       );
@@ -109,11 +121,11 @@ describe('framework-preset-angular-cli', () => {
     it('should return webpack base config and display log error', async () => {
       const webpackBaseConfig = newWebpackConfiguration();
 
-      const config = await webpackFinal(webpackBaseConfig);
+      const config = await webpackFinal(webpackBaseConfig, options);
 
       expect(logger.info).toHaveBeenCalledWith('=> Loading angular-cli config');
       expect(logger.error).toHaveBeenCalledWith(
-        '=> "build" target is not defined in project "foo-project"'
+        '=> Could not find angular project: "build" target is not found in "foo-project" project'
       );
       expect(logger.info).toHaveBeenCalledWith(
         '=> Fail to load angular-cli config. Using base config'
@@ -128,7 +140,7 @@ describe('framework-preset-angular-cli', () => {
       initMockWorkspace('without-architect-build-options');
     });
     it('throws error', async () => {
-      await expect(() => webpackFinal(newWebpackConfiguration())).rejects.toThrowError(
+      await expect(() => webpackFinal(newWebpackConfiguration(), options)).rejects.toThrowError(
         'Missing required options in project target. Check "tsConfig, assets, optimization"'
       );
       expect(logger.error).toHaveBeenCalledWith(`=> Could not get angular cli webpack config`);
@@ -140,20 +152,20 @@ describe('framework-preset-angular-cli', () => {
     });
     it('should log', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      await webpackFinal(baseWebpackConfig);
+      await webpackFinal(baseWebpackConfig, options);
 
       expect(logger.info).toHaveBeenCalledTimes(3);
       expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
       expect(logger.info).toHaveBeenNthCalledWith(
         2,
-        '=> Using angular project "foo-project" for configuring Storybook'
+        '=> Using angular project "foo-project:build" for configuring Storybook'
       );
       expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
     });
 
     it('should extends webpack base config', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig).toEqual({
         ...baseWebpackConfig,
@@ -171,7 +183,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should set webpack "module.rules"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.module.rules).toEqual([
         {
@@ -200,7 +212,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should set webpack "plugins"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.plugins).toMatchInlineSnapshot(`
         Array [
@@ -228,7 +240,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should set webpack "resolve.modules"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.resolve.modules).toEqual([
         ...baseWebpackConfig.resolve.modules,
@@ -238,7 +250,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should replace webpack "resolve.plugins"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.resolve.plugins).toMatchInlineSnapshot(`
         Array [
@@ -270,7 +282,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should extends webpack base config', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig).toEqual({
         ...baseWebpackConfig,
@@ -293,7 +305,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should set webpack "module.rules"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.module.rules).toEqual([
         {
@@ -348,7 +360,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should extends webpack base config', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig).toEqual({
         ...baseWebpackConfig,
@@ -371,7 +383,7 @@ describe('framework-preset-angular-cli', () => {
 
     it('should set webpack "module.rules"', async () => {
       const baseWebpackConfig = newWebpackConfiguration();
-      const webpackFinalConfig = await webpackFinal(baseWebpackConfig);
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
 
       expect(webpackFinalConfig.module.rules).toEqual([
         {
@@ -416,6 +428,43 @@ describe('framework-preset-angular-cli', () => {
         },
         ...baseWebpackConfig.module.rules,
       ]);
+    });
+  });
+
+  describe('when angular.json have some config', () => {
+    beforeEach(() => {
+      initMockWorkspace('some-config');
+    });
+    it('should log', async () => {
+      const baseWebpackConfig = newWebpackConfiguration();
+      await webpackFinal(baseWebpackConfig, options);
+
+      expect(logger.info).toHaveBeenCalledTimes(3);
+      expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
+      expect(logger.info).toHaveBeenNthCalledWith(
+        2,
+        '=> Using angular project "foo-project:build" for configuring Storybook'
+      );
+      expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
+    });
+  });
+
+  describe('with angularBrowserTarget option', () => {
+    beforeEach(() => {
+      initMockWorkspace('with-angularBrowserTarget');
+      options = { angularBrowserTarget: 'target-project:target-build' } as Options;
+    });
+    it('should log', async () => {
+      const baseWebpackConfig = newWebpackConfiguration();
+      await webpackFinal(baseWebpackConfig, options);
+
+      expect(logger.info).toHaveBeenCalledTimes(3);
+      expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
+      expect(logger.info).toHaveBeenNthCalledWith(
+        2,
+        '=> Using angular project "target-project:target-build" for configuring Storybook'
+      );
+      expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
     });
   });
 });

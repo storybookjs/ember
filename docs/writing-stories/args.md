@@ -10,7 +10,7 @@ Learn how and why to write stories in [the introduction](./introduction.md#using
 
 ## Args object
 
-The args object can be defined at the story and component level (see below). It is an object with string keys, where values can have any type that is allowed to be passed into a component in your framework.
+The args object can be defined at the story and component level (see below). It is a JSON serializable object, composed of string keys with matching valid value types that can be passed into a component for your framework.
 
 ## Story args
 
@@ -26,6 +26,7 @@ To define the args of a single story, use the `args` CSF story key:
     'vue/button-story-with-args.3.js.mdx',
     'angular/button-story-with-args.ts.mdx',
     'svelte/button-story-with-args.js.mdx',
+    'svelte/button-story-with-args.native-format.mdx',
     'web-components/button-story-with-args.js.mdx',
   ]}
 />
@@ -59,6 +60,7 @@ You can also define args at the component level; such args will apply to all sto
     'vue/button-story-component-args-primary.js.mdx',
     'angular/button-story-component-args-primary.ts.mdx',
     'svelte/button-story-component-args-primary.js.mdx',
+    'svelte/button-story-component-args-primary.native-format.mdx',
     'web-components/button-story-component-args-primary.js.mdx',
   ]}
 />
@@ -114,7 +116,8 @@ Args are used in story templates to configure the component appearance just as y
     'react/page-story-slots.ts.mdx',
     'vue/page-story-slots.2.js.mdx',
     'vue/page-story-slots.3.js.mdx',
-    'angular/page-story-slots.ts.mdx'
+    'angular/page-story-slots.ts.mdx',
+    'svelte/page-story-slots.native-format.mdx',
   ]}
 />
 

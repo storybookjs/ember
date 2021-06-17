@@ -18,6 +18,7 @@ import {
 
 import { moduleIsAvailable } from './utils/module-is-available';
 import { normalizeAssetPatterns } from './utils/normalize-asset-patterns';
+import { normalizeOptimization } from './utils/normalize-optimization';
 
 const importAngularCliWebpackConfigGenerator = (): {
   getCommonConfig: (config: unknown) => webpack.Configuration;
@@ -62,26 +63,12 @@ const importAngularCliReadTsconfigUtil = (): typeof import('@angular-devkit/buil
   throw new Error('ReadTsconfig not found in "@angular-devkit/build-angular"');
 };
 
-export class ProjectTargetNotFoundError implements Error {
-  name = 'ProjectTargetNotFoundError';
-
-  message: string;
-
-  constructor(public projectTarget: string) {
-    this.message = `No project target "${projectTarget}" fond.`;
-  }
-}
-
 const buildWebpackConfigOptions = async (
   dirToSearch: string,
   project: workspaces.ProjectDefinition,
-  projectTarget = 'build'
+  target: workspaces.TargetDefinition
 ): Promise<WebpackConfigOptions> => {
-  if (!project.targets.has(projectTarget)) {
-    throw new ProjectTargetNotFoundError(projectTarget);
-  }
-
-  const { options: projectBuildOptions = {} } = project.targets.get(projectTarget);
+  const { options: projectBuildOptions = {} } = target;
 
   const requiredOptions = ['tsConfig', 'assets', 'optimization'];
 
@@ -128,11 +115,7 @@ const buildWebpackConfigOptions = async (
       projectRootNormalized,
       sourceRootNormalized
     ),
-    optimization: (projectBuildOptions.optimization as any) ?? {
-      styles: {},
-      scripts: true,
-      fonts: {},
-    },
+    optimization: normalizeOptimization(projectBuildOptions.optimization as any),
 
     // Forced options
     statsJson: false,
@@ -176,11 +159,12 @@ export type AngularCliWebpackConfig = {
  */
 export async function extractAngularCliWebpackConfig(
   dirToSearch: string,
-  project: workspaces.ProjectDefinition
+  project: workspaces.ProjectDefinition,
+  target: workspaces.TargetDefinition
 ): Promise<AngularCliWebpackConfig> {
   const { getCommonConfig, getStylesConfig } = importAngularCliWebpackConfigGenerator();
 
-  const webpackConfigOptions = await buildWebpackConfigOptions(dirToSearch, project);
+  const webpackConfigOptions = await buildWebpackConfigOptions(dirToSearch, project, target);
 
   const cliCommonConfig = getCommonConfig(webpackConfigOptions);
   const cliStyleConfig = getStylesConfig(webpackConfigOptions);
