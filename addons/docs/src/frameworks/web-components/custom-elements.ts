@@ -7,6 +7,7 @@ interface TagItem {
   type: { text: string };
   description: string;
   default?: any;
+  kind?: string;
   defaultValue?: any;
 }
 
@@ -17,6 +18,7 @@ interface Tag {
   properties?: TagItem[];
   events?: TagItem[];
   methods?: TagItem[];
+  members?: TagItem[];
   slots?: TagItem[];
   cssProperties?: TagItem[];
   cssParts?: TagItem[];
@@ -24,16 +26,16 @@ interface Tag {
 
 interface CustomElements {
   tags: Tag[];
-  modules?: []
+  modules?: [];
 }
 
 interface Module {
-  declarations?: [],
-  exports?: [],
+  declarations?: [];
+  exports?: [];
 }
 
 interface Declaration {
-  name: string;
+  tagName: string;
 }
 interface Sections {
   attributes?: any;
@@ -48,7 +50,10 @@ function mapData(data: TagItem[], category: string) {
   return (
     data &&
     data.reduce((acc, item) => {
-      const type = category === 'properties' ? { name: item.type } : { name: 'void' };
+      if (item?.kind === 'method') return acc;
+
+      const type =
+        category === 'properties' ? { name: item?.type?.text || item.type } : { name: 'void' };
       acc[item.name] = {
         name: item.name,
         required: false,
@@ -56,7 +61,7 @@ function mapData(data: TagItem[], category: string) {
         type,
         table: {
           category,
-          type: { summary: item.type.text },
+          type: { summary: item?.type?.text || item.type },
           defaultValue: { summary: item.default !== undefined ? item.default : item.defaultValue },
         },
       };
@@ -86,7 +91,7 @@ const getMetaDataV1 = (tagName: string, customElements: CustomElements) => {
   let metadata;
   customElements?.modules?.forEach((_module: Module) => {
     _module?.declarations?.forEach((declaration: Declaration) => {
-      if(declaration.name === tagName) {
+      if (declaration.tagName === tagName) {
         metadata = declaration;
       }
     });
@@ -96,16 +101,16 @@ const getMetaDataV1 = (tagName: string, customElements: CustomElements) => {
     logger.warn(`Component not found in custom-elements.json: ${tagName}`);
   }
   return metadata;
-}
+};
 
 export const extractArgTypesFromElements = (tagName: string, customElements: CustomElements) => {
   const metaData = getMetaData(tagName, customElements);
   return (
     metaData && {
       ...mapData(metaData.attributes, 'attributes'),
+      ...mapData(metaData.members, 'properties'),
       ...mapData(metaData.properties, 'properties'),
       ...mapData(metaData.events, 'events'),
-      ...mapData(metaData.methods, 'methods'),
       ...mapData(metaData.slots, 'slots'),
       ...mapData(metaData.cssProperties, 'css custom properties'),
       ...mapData(metaData.cssParts, 'css shadow parts'),
@@ -114,11 +119,11 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Cus
 };
 
 const getMetaData = (tagName: string, manifest: any) => {
-  if(manifest.version === 'experimental') {
+  if (manifest.version === 'experimental') {
     return getMetaDataExperimental(tagName, manifest);
   }
   return getMetaDataV1(tagName, manifest);
-}
+};
 
 export const extractArgTypes = (tagName: string) => {
   const cem = getCustomElements();
@@ -129,4 +134,3 @@ export const extractComponentDescription = (tagName: string) => {
   const metaData = getMetaData(tagName, getCustomElements());
   return metaData && metaData.description;
 };
-

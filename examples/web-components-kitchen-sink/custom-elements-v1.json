@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "fixtures/-default/package/bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "This is a container looking like a card with a back and front side you can switch",
+          "name": "DemoWcCard",
+          "cssProperties": [
+            {
+              "description": "- Header font size",
+              "name": "--demo-wc-card-header-font-size"
+            },
+            {
+              "description": "- Font color for front",
+              "name": "--demo-wc-card-front-color"
+            },
+            {
+              "description": "- Font color for back",
+              "name": "--demo-wc-card-back-color"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "- Front of the card",
+              "name": "front"
+            },
+            {
+              "description": "- Back of the card",
+              "name": "back"
+            }
+          ],
+          "slots": [
+            {
+              "description": "This is an unnamed slot (the default slot)",
+              "name": "-"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "toggle"
+            },
+            {
+              "kind": "field",
+              "name": "backSide",
+              "privacy": "public",
+              "description": "Indicates that the back of the card is shown",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "header",
+              "privacy": "public",
+              "description": "Header message",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Your Message'"
+            },
+            {
+              "kind": "field",
+              "name": "rows",
+              "privacy": "public",
+              "description": "Data rows"
+            }
+          ],
+          "events": [
+            {
+              "name": "side-changed",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "- Fires whenever it switches between front/back"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "back-side",
+              "fieldName": "backSide"
+            },
+            {
+              "name": "header",
+              "fieldName": "header"
+            },
+            {
+              "name": "rows",
+              "fieldName": "rows"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement"
+          },
+          "customElement": true,
+          "tagName": "demo-wc-card"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "demo-wc-card",
+          "declaration": {
+            "name": "DemoWcCard",
+            "module": "fixtures/-default/package/bar.js"
+          }
+        }
+      ]
+    }
+  ]
+}

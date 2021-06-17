@@ -15,7 +15,11 @@ export function isValidMetaData(customElements: any) {
   if (!customElements) {
     return false;
   }
-  if (customElements.tags && Array.isArray(customElements.tags)) {
+
+  if (
+    (customElements.tags && Array.isArray(customElements.tags)) ||
+    (customElements.modules && Array.isArray(customElements.modules))
+  ) {
     return true;
   }
   throw new Error(`You need to setup valid meta data in your config.js via setCustomElements().
@@ -30,17 +34,12 @@ export function setCustomElements(customElements: any) {
   window.__STORYBOOK_CUSTOM_ELEMENTS__ = customElements;
 }
 
-/**
- * @param customElements any for now as spec is not super stable yet
- */
 export function setCustomElementsManifest(customElements: any) {
   // @ts-ignore
   window.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__ = customElements;
 }
-​
+
 export function getCustomElements() {
   // @ts-ignore
   return window.__STORYBOOK_CUSTOM_ELEMENTS__ || window.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__;
 }
-​
-
