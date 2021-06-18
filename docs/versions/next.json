@@ -1,1 +1,1 @@
-{"version":"6.3.0-rc.10","info":{"plain":"### Bug Fixes\n\n- Angular: Fix nx project with workspace.json ([#15267](https://github.com/storybookjs/storybook/pull/15267))\n- Angular: Fix some Ivy rendering glitches ([#15279](https://github.com/storybookjs/storybook/pull/15279))"}}
+{"version":"6.3.0-rc.11","info":{"plain":"### Dependency Upgrades\n\n- Upgrade react-docgen-typescript-plugin per PR#46 ([#15287](https://github.com/storybookjs/storybook/pull/15287))\n- Fix peer deps ([#15288](https://github.com/storybookjs/storybook/pull/15288))"}}
