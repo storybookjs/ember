@@ -5727,10 +5727,10 @@ __metadata:
     webpack: 4
     zone.js: ^0.11.3
   peerDependencies:
-    "@storybook/angular": 6.3.0-rc.8
-    "@storybook/vue": 6.3.0-rc.8
-    "@storybook/vue3": 6.3.0-rc.8
-    "@storybook/web-components": 6.3.0-rc.8
+    "@storybook/angular": 6.3.0-rc.10
+    "@storybook/vue": 6.3.0-rc.10
+    "@storybook/vue3": 6.3.0-rc.10
+    "@storybook/web-components": 6.3.0-rc.10
     lit: ^2.0.0-rc.1
     lit-html: ^1.4.1 || ^2.0.0-rc.3
     react: ^16.8.0 || ^17.0.0
@@ -5791,8 +5791,8 @@ __metadata:
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
-    "@storybook/vue": 6.3.0-rc.8
-    "@storybook/web-components": 6.3.0-rc.8
+    "@storybook/vue": 6.3.0-rc.10
+    "@storybook/web-components": 6.3.0-rc.10
     babel-loader: ^8.0.0
     lit-html: ^1.4.1 || ^2.0.0-rc.3
     react: ^16.8.0 || ^17.0.0
@@ -5914,7 +5914,7 @@ __metadata:
     jest-image-snapshot: ^4.3.0
     regenerator-runtime: ^0.13.7
   peerDependencies:
-    "@storybook/addon-storyshots": 6.3.0-rc.8
+    "@storybook/addon-storyshots": 6.3.0-rc.10
     puppeteer: ^2.0.0 || ^3.0.0
   peerDependenciesMeta:
     puppeteer:
@@ -6709,8 +6709,8 @@ __metadata:
     util-deprecate: ^1.0.2
     webpack: 4
   peerDependencies:
-    "@storybook/builder-webpack5": 6.3.0-rc.8
-    "@storybook/manager-webpack5": 6.3.0-rc.8
+    "@storybook/builder-webpack5": 6.3.0-rc.10
+    "@storybook/manager-webpack5": 6.3.0-rc.10
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
@@ -6730,7 +6730,7 @@ __metadata:
     "@storybook/core-client": 6.3.0-rc.10
     "@storybook/core-server": 6.3.0-rc.10
   peerDependencies:
-    "@storybook/builder-webpack5": 6.3.0-rc.8
+    "@storybook/builder-webpack5": 6.3.0-rc.10
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
