@@ -19,6 +19,7 @@ const { document } = global;
 
 interface Other extends StoryData {
   path: string;
+  singleStory?: boolean;
 }
 
 export type RenderData = Pick<LocationContext, 'location'> &
@@ -67,10 +68,18 @@ QueryLink.displayName = 'QueryLink';
 const QueryLocation = ({ children }: QueryLocationProps) => (
   <Location>
     {({ location }: RouteComponentProps): ReactNode => {
-      const { path } = queryFromString(location.search);
+      const { path, singleStory } = queryFromString(location.search);
       const { viewMode, storyId, refId } = parsePath(path);
 
-      return children({ path, location, navigate: queryNavigate, viewMode, storyId, refId });
+      return children({
+        path,
+        location,
+        navigate: queryNavigate,
+        viewMode,
+        storyId,
+        refId,
+        singleStory: singleStory === 'true',
+      });
     }}
   </Location>
 );

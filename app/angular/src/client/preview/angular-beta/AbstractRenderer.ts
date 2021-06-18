@@ -29,7 +29,6 @@ export abstract class AbstractRenderer {
     return new Promise<void>((resolve) => {
       if (platformRef && !platformRef.destroyed) {
         platformRef.onDestroy(async () => {
-          await AbstractRenderer.resetCompiledComponents();
           resolve();
         });
         // Destroys the current Angular platform and all Angular applications on the page.
@@ -82,6 +81,8 @@ export abstract class AbstractRenderer {
   }
 
   protected abstract beforeFullRender(): Promise<void>;
+
+  protected abstract afterFullRender(): Promise<void>;
 
   /**
    * Bootstrap main angular module with main component or send only new `props` with storyProps$
@@ -136,6 +137,7 @@ export abstract class AbstractRenderer {
       createStorybookModule(moduleMetadata),
       parameters.bootstrapModuleOptions ?? undefined
     );
+    await this.afterFullRender();
   }
 
   protected initAngularRootElement(targetDOMNode: HTMLElement, targetSelector: string) {

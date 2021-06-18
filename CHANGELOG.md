@@ -1,3 +1,185 @@
+## 6.3.0-rc.11 (June 18, 2021)
+
+### Dependency Upgrades
+
+- Upgrade react-docgen-typescript-plugin per PR#46 ([#15287](https://github.com/storybookjs/storybook/pull/15287))
+- Fix peer deps ([#15288](https://github.com/storybookjs/storybook/pull/15288))
+
+## 6.3.0-rc.10 (June 17, 2021)
+
+### Bug Fixes
+
+- Angular: Fix nx project with workspace.json ([#15267](https://github.com/storybookjs/storybook/pull/15267))
+- Angular: Fix some Ivy rendering glitches ([#15279](https://github.com/storybookjs/storybook/pull/15279))
+
+## 6.3.0-rc.9 (June 17, 2021)
+
+### Dependency Upgrades
+
+- Bump postcss to 7.0.36 with security fix ([#15276](https://github.com/storybookjs/storybook/pull/15276))
+- Fix monorepo peer deps ([#15277](https://github.com/storybookjs/storybook/pull/15277))
+
+## 6.3.0-rc.8 (June 16, 2021)
+
+### Features
+
+- Angular: Add built-in Ivy support instead of relying on addon ([#15229](https://github.com/storybookjs/storybook/pull/15229))
+
+### Bug Fixes
+
+- Addon-docs: Fix MDX compiler export to match new location ([#15266](https://github.com/storybookjs/storybook/pull/15266))
+- Addon-viewport: Fix CSS for scale reset on firefox ([#15128](https://github.com/storybookjs/storybook/pull/15128))
+
+## 6.3.0-rc.7 (June 15, 2021)
+
+### Dependency Upgrades
+
+- Upgrade react-docgen-typescript-plugin to RDT 2.0 ([#15247](https://github.com/storybookjs/storybook/pull/15247))
+
+## 6.3.0-rc.6 (June 15, 2021)
+
+### Bug Fixes
+
+- Core: Only call setup function on story navigation ([#15244](https://github.com/storybookjs/storybook/pull/15244))
+
+### Maintenance
+
+- Official-storybook: Add CSF3 setup function demo ([#15245](https://github.com/storybookjs/storybook/pull/15245))
+
+### Dependency Upgrades
+
+- Use @storybook/react-docgen-typescript-plugin canary with PR#45 ([#15243](https://github.com/storybookjs/storybook/pull/15243))
+
+## 6.3.0-rc.5 (June 14, 2021)
+
+### Bug Fixes
+
+- Vue3: Update args without re-mounting component ([#15168](https://github.com/storybookjs/storybook/pull/15168))
+- Core: Preserve other query params when changing args/globals ([#15213](https://github.com/storybookjs/storybook/pull/15213))
+- UI: Fix range slider value label size changes causing jittering ([#15145](https://github.com/storybookjs/storybook/pull/15145))
+- Codemod: Fix dist/node_modules ignore heuristic ([#15222](https://github.com/storybookjs/storybook/pull/15222))
+- Core: Fix autoRefs check in manager-webpack ([#15197](https://github.com/storybookjs/storybook/pull/15197))
+
+### Maintenance
+
+- CSF3: Fix v1-style annotations in codemod ([#15230](https://github.com/storybookjs/storybook/pull/15230))
+- Core: CSF v3 preview ([#15217](https://github.com/storybookjs/storybook/pull/15217))
+
+## 6.3.0-rc.4 (June 12, 2021)
+
+### Dependency Upgrades
+
+- Vue3: Add vue-loader as a dependency ([#15207](https://github.com/storybookjs/storybook/pull/15207))
+
+## 6.3.0-rc.3 (June 11, 2021)
+
+### Features
+
+- Core: Disable sidebar and don't load refs when `singleStory=true` ([#15201](https://github.com/storybookjs/storybook/pull/15201))
+
+### Bug Fixes
+
+- Angular: Use docsMode to set docs options ([#15194](https://github.com/storybookjs/storybook/pull/15194))
+
+### Maintenance
+
+- Addon-docs: Split out MDX compiler into standalone package ([#15205](https://github.com/storybookjs/storybook/pull/15205))
+
+## 6.3.0-rc.2 (June 10, 2021)
+
+### Features
+
+- Core: Add `shortcuts` URL param to disable keyboard shortcuts ([#15192](https://github.com/storybookjs/storybook/pull/15192))
+
+### Bug Fixes
+
+- Angular: Fix builder runaway process ([#15189](https://github.com/storybookjs/storybook/pull/15189))
+
+## 6.3.0-rc.1 (June 10, 2021)
+
+### Maintenance
+
+- Core: Use named import for @storybook/addons, fixes vite builder ([#15187](https://github.com/storybookjs/storybook/pull/15187))
+
+## 6.3.0-rc.0 (June 9, 2021)
+
+Storybook 6.3 is in RC!! 🎉🎉🎉
+
+Hundreds of improvements and fixes, including:
+
+- **Angular** - Angular12, Ivy, overhauled docs support.
+- **Web-components** - Lit2 support.
+- **Essentials** - New measure/outline addons for CSS debugging.
+- **Addon API** - Keyboard shortcuts for addons. Initial support in viewports, toolbars.
+- **Webpack 5** - Official support.
+- **Vite builder** - Community support.
+- **Modern ESM** - Modern package distribution.
+
+Track the release in the Github: [Storybook 6.3 Release 🛠](https://github.com/storybookjs/storybook/issues/14397)
+
+## 6.3.0-beta.18 (June 9, 2021)
+
+### Features
+
+- Toolbars: Add customizable keyboard navigation shortcuts ([#15169](https://github.com/storybookjs/storybook/pull/15169))
+
+### Bug Fixes
+
+- Controls: Initialize color control on reset ([#15059](https://github.com/storybookjs/storybook/pull/15059))
+
+## 6.3.0-beta.17 (June 8, 2021)
+
+### Bug Fixes
+
+- Measure: Update version to fix hooks issue ([#15167](https://github.com/storybookjs/storybook/pull/15167))
+
+## 6.3.0-beta.16 (June 8, 2021)
+
+### Features
+
+- Angular: Add compodoc to ng builder ([#15165](https://github.com/storybookjs/storybook/pull/15165))
+
+## 6.3.0-beta.15 (June 7, 2021)
+
+### Bug Fixes
+
+- Angular: Clear root / docs-root when navigating from one tab to the other ([#15160](https://github.com/storybookjs/storybook/pull/15160))
+
+## 6.3.0-beta.14 (June 6, 2021)
+
+### Features
+
+- Controls: Style `undefined` range slider different to filled one ([#14973](https://github.com/storybookjs/storybook/pull/14973))
+
+### Dependency Upgrades
+
+- Upgrade to react-docgen-typescript-plugin 1.0.0 ([#15154](https://github.com/storybookjs/storybook/pull/15154))
+
+## 6.3.0-beta.13 (June 6, 2021)
+
+### Maintenance
+
+- CsfFile: Index Meta/Story annotations ([#15152](https://github.com/storybookjs/storybook/pull/15152))
+- CLI: Update project template for web-components ([#15149](https://github.com/storybookjs/storybook/pull/15149))
+- Build: Fix WC example and e2e tests ([#15146](https://github.com/storybookjs/storybook/pull/15146))
+
+## 6.3.0-beta.12 (June 5, 2021)
+
+### Features
+
+- Essentials: Update measure/outline addons to support ESM and vite builder ([#15144](https://github.com/storybookjs/storybook/pull/15144))
+
+## 6.3.0-beta.11 (June 4, 2021)
+
+### Bug Fixes
+
+- Angular: Fix Ivy rendering to use at most one render promise at a time ([#15139](https://github.com/storybookjs/storybook/pull/15139))
+- CSF tools: Refactor test cases ([#15142](https://github.com/storybookjs/storybook/pull/15142))
+
+### Maintenance
+
+- Web Components: Reintegrate `@storybook/lit` into `@storybook/web-components` ([#15042](https://github.com/storybookjs/storybook/pull/15042))
+
 ## 6.3.0-beta.10 (June 3, 2021)
 
 ### Features

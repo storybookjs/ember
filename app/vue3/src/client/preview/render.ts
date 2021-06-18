@@ -1,15 +1,26 @@
 import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
+import { Args } from '@storybook/addons';
 import { RenderContext, StoryFnVueReturnType } from './types';
 
 const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
 
-let root: ComponentPublicInstance | null = null;
+interface Root extends ComponentPublicInstance {
+  storyArgs?: Args;
+}
+
+let root: Root | null = null;
 
 export const storybookApp = createApp({
   // If an end-user calls `unmount` on the app, we need to clear our root variable
   unmounted() {
     root = null;
+  },
+
+  data() {
+    return {
+      storyArgs: undefined,
+    };
   },
 
   setup() {
@@ -48,9 +59,13 @@ export default function render({
 
   showMain();
 
-  activeStoryComponent.value = element;
+  if (!forceRender) {
+    activeStoryComponent.value = element;
+  }
 
   if (!root) {
     root = storybookApp.mount('#root');
   }
+
+  root.storyArgs = args;
 }

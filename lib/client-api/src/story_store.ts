@@ -570,6 +570,11 @@ export default class StoryStore {
       initialArgsBeforeEnhancers
     );
 
+    const runSetupFunction = async () => {
+      const { setup } = combinedParameters as { setup?: () => any };
+      return setup ? setup() : undefined;
+    };
+
     _stories[id] = {
       ...identification,
 
@@ -577,6 +582,7 @@ export default class StoryStore {
       getDecorated,
       getOriginal,
       applyLoaders,
+      runSetupFunction,
       storyFn,
       unboundStoryFn,
 

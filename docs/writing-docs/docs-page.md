@@ -8,8 +8,7 @@ title: 'DocsPage'
 
 </div>
 
-
-When you install [Storybook Docs](https://storybook.js.org/addons/@storybook/addon-docs), DocsPage is the zero-config default documentation that all stories get out of the box. It aggregates your stories, text descriptions, docgen comments, args tables, and code examples into a single page for each component.
+When you install [Storybook Docs](https://storybook.js.org/addons/@storybook/addon-docs), DocsPage is the zero-config default documentation that all stories get out of the box. It aggregates your [stories](../get-started/whats-a-story.md), text descriptions, docgen comments, [args tables](./doc-blocks.md#argstable), and code examples into a single page for each component.
 
 The best practice for docs is for each component to have its own set of documentation and stories.
 
@@ -29,9 +28,9 @@ Storybook uses the `component` key in the story file’s default export to extra
 
 ## Subcomponents parameter
 
-Sometimes it's useful to document multiple components together. For example, a component library’s ButtonGroup and Button components might not make sense without one another.
+Sometimes it's helpful to document multiple components together. For example, a component library’s ButtonGroup and Button components might not make sense without one another.
 
-DocsPage has the concept of a "primary" component that is defined by the `component` parameter. It also accepts one or more `subcomponents`.
+DocsPage has the concept of a "primary" component defined by the `component` parameter. It also accepts one or more `subcomponents`.
 
 <!-- prettier-ignore-start -->
 
@@ -48,35 +47,15 @@ DocsPage has the concept of a "primary" component that is defined by the `compon
 
 Subcomponent `ArgsTables` will show up in a tabbed interface along with the primary component. The tab titles will correspond to the keys of the subcomponents object.
 
-If you want to organize your documentation differently for component groups, we recommend using MDX. It gives you complete control over display and supports any configuration.
+If you want to organize your documentation differently for component groups, we recommend using MDX. It gives you complete control over how it's displayed and supports any configuration.
 
 ## Replacing DocsPage
 
-Replace DocsPage template with your own for the entire Storybook, a specific component, or a specific story.
+Replace the DocsPage template with your own to customize its contents.
 
-Override the `docs.page` [parameter](../writing-stories/parameters.md):
-
-- With null to remove docs.
-- With MDX docs.
-- With a custom component
-
-### Story-level
-
-Override the `docs.page` [parameter](../writing-stories/parameters.md#story-parameters) in the story definition.
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/button-story-disable-docspage.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-### Component-level
-
-Override the `docs.page` [parameter](../writing-stories/parameters.md#component-parameters) in the default export of the story file.
+### With null to remove docs
+ 
+Override the `docs.page` [parameter](../writing-stories/parameters.md) with `null` to remove its contents.
 
 <!-- prettier-ignore-start -->
 
@@ -88,15 +67,73 @@ Override the `docs.page` [parameter](../writing-stories/parameters.md#component-
 
 <!-- prettier-ignore-end -->
 
-### Global-level
+### With MDX documentation
 
-Override the `docs.page` [parameter](../writing-stories/parameters.md#global-parameters) in [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering).
+Write your documentation in MDX and update the `docs.page` [parameter](../writing-stories/parameters.md) to display it.
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'common/storybook-preview-disable-docspage.js.mdx',
+    'common/custom-docs-page.mdx.mdx',
+    'common/button-story-docspage-with-mdx.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+### With a custom component
+
+Storybook's UI is built using React. If you want to include a custom component to display documentation, you'll need to update your environment to allow React components to be correctly transpiled.
+
+For example, with Angular start by adding a `babel.config.js` file at the root of the project with the following content:
+
+```js
+// babel.config.js
+
+module.exports = function(api) {
+  process.env.NODE_ENV === 'development' ? api.cache(false) : api.cache(true);
+  const presets = [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          node: 'current',
+        },
+      },
+    ],
+    '@babel/preset-typescript',
+    '@babel/preset-react',
+  ];
+  const plugins = [];
+  return {
+    presets,
+    plugins,
+  };
+};
+```
+
+Then, update your `tsconfig.json` to include the following:
+
+```json
+{
+  "compilerOptions": {
+    ....
+    "allowJs": true,
+    "jsx": "react-jsx",
+  },
+}
+```
+Finally write your custom React component and and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
+
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/custom-docs-page.js-component.js.mdx',
+    'common/custom-docs-page.ts-component.ts.mdx',
+    'common/button-story-docspage-with-custom-component.js.mdx',
   ]}
 />
 
@@ -106,7 +143,7 @@ Override the `docs.page` [parameter](../writing-stories/parameters.md#global-par
 
 Doc blocks are the basic building blocks of Storybook Docs. DocsPage composes them to provide a reasonable UI documentation experience out of the box.
 
-If you want to make minor customizations to the default DocsPage but don’t want to write your own MDX you can remix DocsPage. That allows you to reorder, add, or omit doc blocks without losing Storybook’s automatic docgen capabilities.
+If you want to make minor customizations to the default DocsPage but don’t want to write your MDX, you can remix DocsPage. That allows you to reorder, add, or omit doc blocks without losing Storybook’s automatic docgen capabilities.
 
 Here's an example of rebuilding DocsPage for the Button component using doc blocks:
 
@@ -121,9 +158,7 @@ Here's an example of rebuilding DocsPage for the Button component using doc bloc
 
 <!-- prettier-ignore-end -->
 
-Apply a similar technique to remix the DocsPage at the [story](#story-level), [component](#component-level), or [global](#global-level) level.
-
-In addition, you can interleave your own components to customize the auto-generated contents of the page, or pass in different options to the blocks to customize their appearance. Read more about [Doc Blocks](./doc-blocks.md).
+In addition, you can interleave your own components to customize the auto-generated contents of the page or pass in different options to the blocks to customize their appearance. Read more about [Doc Blocks](./doc-blocks.md).
 
 ## Story file names
 
@@ -131,11 +166,11 @@ Unless you use a custom [webpack configuration](../configure/webpack.md#extendin
 
 ## Inline stories vs. iframe stories
 
-DocsPage displays all the stories of a component in one page. You have the option of rendering those stories inline or in an iframe.
+DocsPage displays all the stories of a component on one page. You have the option of rendering those stories inline or in an iframe.
 
 By default, we render React and Vue stories inline. Stories from other supported frameworks will render in an `<iframe>` by default.
 
-The iframe creates a clean separation between your code and Storybook’s UI. But using an iframe has disadvantages. You have to explicitly set the height of iframe stories or you’ll see a scroll bar. And certain dev tools might not work right.
+The iframe creates a clean separation between your code and Storybook’s UI. But using an iframe has disadvantages. For example, you have to set the height of iframe stories explicitly, or you’ll see a scroll bar. And certain dev tools might not work right.
 
 Render your framework’s stories inline using two docs configuration options in tandem, `inlineStories` and `prepareForInline`.
 
@@ -143,7 +178,7 @@ Setting `inlineStories` to `true` tells Storybook to stop putting your stories i
 
 Different frameworks will need to approach this in different ways. Angular, for example, might convert its story content into a custom element (you can read about that [here](https://angular.io/guide/elements)).
 
-Here’s an example of how to render Vue stories inline. The following docs config block uses `prepareForInline` along with an effect hook provided by [@egoist/vue-to-react](https://github.com/egoist/vue-to-react).
+Here’s an example of how to render Vue stories inline. The following docs config block uses `prepareForInline` and an effect hook provided by [@egoist/vue-to-react](https://github.com/egoist/vue-to-react).
 
 <!-- prettier-ignore-start -->
 
@@ -157,4 +192,4 @@ Here’s an example of how to render Vue stories inline. The following docs conf
 
 With this function, anyone using the docs addon for [@storybook/vue](https://github.com/storybookjs/storybook/tree/master/app/vue) can make their stories render inline, either globally with the inlineStories docs parameter, or on a per-story-basis using the inline prop on the `<Story>` doc block.
 
-If you come up with an elegant and flexible implementation for the `prepareForInline` function for your own framework, let us know. We'd love to make it the default configuration to make inline stories more accessible for a larger variety of frameworks!
+If you come up with an elegant and flexible implementation for the `prepareForInline` function for your framework, let us know. We'd love to make it the default configuration to make inline stories more accessible for a larger variety of frameworks!

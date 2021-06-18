@@ -6,6 +6,7 @@ module.exports = {
     '@storybook/addon-controls',
     '@storybook/addon-storysource',
     '@storybook/addon-actions',
+    '@storybook/addon-viewport',
     '@storybook/addon-links',
     '@storybook/addon-jest',
     '@storybook/addon-backgrounds',
@@ -14,5 +15,8 @@ module.exports = {
   ],
   core: {
     builder: 'webpack4',
+  },
+  angularOptions: {
+    enableIvy: true,
   },
 };

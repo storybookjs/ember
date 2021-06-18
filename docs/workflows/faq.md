@@ -4,6 +4,22 @@ title: 'Frequently Asked Questions'
 
 Here are some answers to frequently asked questions. If you have a question, you can ask it by opening an issue on the [Storybook Repository](https://github.com/storybookjs/storybook/).
 
+### How can I opt-out of Angular Ivy?
+
+In case you are having trouble with Angular Ivy you can deactivate it in your `main.js`:
+
+```javascript
+module.exports = {
+  stories: [/* ... */],
+  addons: [/* ... */],
+  angularOptions: {
+    enableIvy: false,
+  },
+};
+```
+
+Please report any issues related to Ivy in our [GitHub Issue Tracker](https://github.com/storybookjs/storybook/labels/app%3A%20angular) as the support for View Engine will be dropped in a future release of Angular.
+
 ### How can I run coverage tests with Create React App and leave out stories?
 
 Create React App does not allow providing options to Jest in your `package.json`, however you can run `jest` with commandline arguments:
@@ -66,7 +82,7 @@ A common error is that an addon tries to access the "channel", but the channel i
 
 1.  You're trying to access addon channel (e.g., by calling `setOptions`) in a non-browser environment like Jest. You may need to add a channel mock:
     ```js
-    import addons, { mockChannel } from '@storybook/addons';
+    import { addons, mockChannel } from '@storybook/addons';
 
     addons.setChannel(mockChannel());
     ```

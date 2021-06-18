@@ -1,9 +1,4 @@
-/* eslint-disable */
-/* global window */
-
 import {
-  addParameters,
-
   // setCustomElementsManifest,
   // ☝️☝️☝️☝️☝️☝️
   // @TODO: cant import this function for some reason after running `yarn bootstrap --core`
@@ -25,9 +20,8 @@ function setCustomElementsManifest(customElements) {
 
 setCustomElementsManifest(customElementsV1);
 // setCustomElements(customElements);
-  
 
-addParameters({
+export const parameters = {
   a11y: {
     config: {},
     options: {
@@ -38,4 +32,22 @@ addParameters({
   docs: {
     iframeHeight: '200px',
   },
-});
+};
+
+export const globalTypes = {
+  locale: {
+    name: 'Locale',
+    description: 'Internationalization locale',
+    defaultValue: 'en',
+    toolbar: {
+      icon: 'globe',
+      items: [
+        { value: 'en', right: '🇺🇸', title: 'English' },
+        { value: 'es', right: '🇪🇸', title: 'Español' },
+        { value: 'fr', right: '🇫🇷', title: 'Français' },
+        { value: 'zh', right: '🇨🇳', title: '中文' },
+        { value: 'kr', right: '🇰🇷', title: '한국어' },
+      ],
+    },
+  },
+};

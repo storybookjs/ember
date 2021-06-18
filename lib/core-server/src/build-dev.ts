@@ -7,6 +7,7 @@ import {
   loadAllPresets,
   Options,
   cache,
+  StorybookConfig,
 } from '@storybook/core-common';
 import dedent from 'ts-dedent';
 import prompts from 'prompts';
@@ -72,9 +73,12 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
     ...options,
   });
 
+  const features = await presets.apply<StorybookConfig['features']>('features');
+
   const fullOptions: Options = {
     ...options,
     presets,
+    previewCsfV3: features?.previewCsfV3,
   };
 
   const { address, networkAddress, managerResult, previewResult } = await storybookDevServer(

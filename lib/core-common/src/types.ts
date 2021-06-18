@@ -155,6 +155,7 @@ export interface BuilderOptions {
   cache: FileSystemCache;
   configDir: string;
   docsMode: boolean;
+  previewCsfV3?: boolean;
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;
@@ -235,12 +236,21 @@ export interface StorybookConfig {
   >;
   core?: CoreConfig;
   logLevel?: string;
-  /**
-   * Allows to disable deprecated implicit PostCSS loader.
-   */
   features?: {
+    /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
     postcss?: boolean;
+
+    /**
+     * Build stories.json automatically on start/build
+     */
     buildStoriesJson?: boolean;
+
+    /**
+     * Activate preview of CSF v3.0
+     */
+    previewCsfV3?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

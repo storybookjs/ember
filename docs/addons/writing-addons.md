@@ -12,6 +12,10 @@ For this example, we're going to build a bare-bones addon which:
 - Retrieves a custom parameter from the stories.
 - Displays the parameter data in the panel.
 
+### Addon kit
+
+This guide shows you how to setup an addon from scratch. Alternatively, you can jumpstart your addon development with the [`addon-kit`](https://github.com/storybookjs/addon-kit).
+
 ### Addon directory structure
 
 We recommend a common addon file and directory structure for consistency.
