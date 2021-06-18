@@ -6619,7 +6619,7 @@ __metadata:
     "@babel/preset-typescript": ^7.12.7
     "@babel/register": ^7.12.1
     "@storybook/node-logger": 6.3.0-rc.10
-    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.a1497ff.0
+    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.3c70e01.0
     "@storybook/semver": ^7.3.2
     "@types/glob-base": ^0.3.0
     "@types/interpret": ^1.1.1
@@ -7141,9 +7141,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.a1497ff.0":
-  version: 1.0.2-canary.a1497ff.0
-  resolution: "@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.a1497ff.0"
+"@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.3c70e01.0":
+  version: 1.0.2-canary.3c70e01.0
+  resolution: "@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.3c70e01.0"
   dependencies:
     debug: ^4.1.1
     endent: ^2.0.1
@@ -7155,7 +7155,7 @@ __metadata:
   peerDependencies:
     typescript: ">= 3.x"
     webpack: ">= 4"
-  checksum: 463548382953145ef6c7dd3b0c0bde6179478d2e5afe9b3fa9c85db32eb252f05d3da3d0c84c2a5bd5529f622c0a8d128ec481d947a2f2b1c1679cfff7369185
+  checksum: 6c31de7199bd868ed2b72c7ace99cffe8a5475a44751bf42a6042f662abb13b47bae7b7c02a5de8165c1fc75f9c1ae2fcf1b8dc2e31a101d09e0d88666852793
   languageName: node
   linkType: hard
 
@@ -7171,7 +7171,7 @@ __metadata:
     "@storybook/core": 6.3.0-rc.10
     "@storybook/core-common": 6.3.0-rc.10
     "@storybook/node-logger": 6.3.0-rc.10
-    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.a1497ff.0
+    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.3c70e01.0
     "@storybook/semver": ^7.3.2
     "@types/node": ^14.14.20
     "@types/prompts": ^2.0.9
