@@ -1,3 +1,10 @@
+## 6.3.0-rc.11 (June 18, 2021)
+
+### Dependency Upgrades
+
+- Upgrade react-docgen-typescript-plugin per PR#46 ([#15287](https://github.com/storybookjs/storybook/pull/15287))
+- Fix peer deps ([#15288](https://github.com/storybookjs/storybook/pull/15288))
+
 ## 6.3.0-rc.10 (June 17, 2021)
 
 ### Bug Fixes
