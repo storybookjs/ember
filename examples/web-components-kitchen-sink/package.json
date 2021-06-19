@@ -71,6 +71,7 @@
     "jest": "^27.0.1",
     "typescript": "4.2.4"
   },
+  "customElements": "custom-elements.json",
   "storybook": {
     "chromatic": {
       "projectToken": "npm5gsofwkf"
