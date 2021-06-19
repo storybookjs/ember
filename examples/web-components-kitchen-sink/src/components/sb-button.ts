@@ -11,7 +11,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  *
  * @prop {boolean} primary - Set button in primary mode
  *
- * @event {CustomEvent} sb-button:click - some description for typed-custom-event
+ * @event {CustomEvent} sb-button:click - Custom event send when the button is clicked
  *
  * @summary This is a simple Storybook Button
  *
