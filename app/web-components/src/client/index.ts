@@ -16,6 +16,7 @@ export {
 export {
   getCustomElements,
   setCustomElements,
+  setCustomElementsManifest,
   isValidComponent,
   isValidMetaData,
 } from './customElements';
