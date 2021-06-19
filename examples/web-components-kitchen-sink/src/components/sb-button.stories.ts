@@ -5,6 +5,8 @@ import { SbButton } from './sb-button';
 
 export default {
   title: 'Example/Button',
+  // Need to set the tag to make addon-docs works properly with CustomElementsManifest
+  component: 'sb-button',
   argTypes: {
     onClick: { action: 'onClick' },
   },

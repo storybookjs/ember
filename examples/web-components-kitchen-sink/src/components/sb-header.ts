@@ -3,6 +3,17 @@ import { customElement } from 'lit/decorators.js';
 
 import './sb-button';
 
+/**
+ * @attr {Object} user - User of the app
+ *
+ * @event {CustomEvent} sb-header:createAccount - Event send when user clicks on create account button
+ * @event {CustomEvent} sb-header:login - Event send when user clicks on login button
+ * @event {CustomEvent} sb-header:logout - Event send when user clicks on logout button
+ *
+ * @summary This is a simple Storybook Header
+ *
+ * @tag sb-header
+ */
 @customElement('sb-header')
 export class SbHeader extends LitElement {
   static get styles() {

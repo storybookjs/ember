@@ -8,6 +8,7 @@ import type { SbPage } from './sb-page';
 
 export default {
   title: 'Example/Page',
+  component: 'sb-page',
 } as Meta;
 
 const Template: Story<SbPage> = ({ user }) => html`<sb-page .user="${user}"></sb-page>`;
