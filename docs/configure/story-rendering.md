@@ -25,6 +25,9 @@ Storybook will inject these tags into the _preview iframe_ where your components
 
 </div>
 
+It's also possible to programmatically modify the preview head HTML using a preset defined in the `main.js` file. For more information see [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates).
+
+
 ## Adding to &#60;body&#62;
 
 Sometimes, you may need to add different tags to the `<body>`. This is useful for adding some custom content roots.
@@ -58,3 +61,5 @@ If using relative sizing in your project (like `rem` or `em`), you may update th
 Storybook will inject these tags into the _preview iframe_ where your components are rendered not the Storybook application UI.
 
 </div>
+
+Similarly to the preview head HTML, preview body HTML can also be updated programmtically using a preset. See [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates) for more information.
