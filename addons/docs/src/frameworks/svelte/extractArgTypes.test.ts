@@ -102,8 +102,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
-            "required": false,
             "name": "boolean",
+            "required": false,
           },
         },
         "slot_default": Object {
@@ -134,8 +134,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
-            "required": false,
             "name": "string",
+            "required": false,
           },
         },
       }
