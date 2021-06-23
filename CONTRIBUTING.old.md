@@ -1,7 +1,7 @@
 <h1>Contributing to Storybook</h1>
 
 - [Issues](#issues)
-  - [Testing against `master`](#testing-against-master)
+  - [Testing against `main`](#testing-against-main)
     - [1. Download the latest version of this project, and build it:](#1-download-the-latest-version-of-this-project-and-build-it)
     - [2a. Run unit tests](#2a-run-unit-tests)
       - [Core & Examples Tests](#core--examples-tests)
@@ -53,7 +53,7 @@ No software is bug-free. So, if you got an issue, follow these steps:
   - Share error logs, screenshots and etc.
   - To speed up the issue fixing process, send us a sample repo with the issue you faced:
 
-### Testing against `master`
+### Testing against `main`
 
 To test your project against the current latest version of storybook, you can clone the repository and link it with `yarn`. Try following these steps:
 
@@ -145,7 +145,7 @@ Then run `yarn cypress open` if you want to see the tests run in the UI, or `yar
 
 #### In the monorepo
 
-The best way to help figure out an issue you are having is to produce a minimal reproduction against the `master` branch.
+The best way to help figure out an issue you are having is to produce a minimal reproduction against the `main` branch.
 
 A good way to do that is using the example `cra-kitchen-sink` app embedded in this repository:
 
@@ -222,9 +222,9 @@ Before you submit a new PR, make sure you run `yarn test`. Do not submit a PR if
 
 ### Reviewing PRs
 
-**As a PR submitter**, you should reference the issue if there is one, include a short description of what you contributed and, if it is a code change, instructions for how to manually test out the change. This is informally enforced by our [PR template](https://github.com/storybookjs/storybook/blob/master/.github/PULL_REQUEST_TEMPLATE.md). If your PR is reviewed as only needing trivial changes (e.g. small typos etc), and you have commit access then you can merge the PR after making those changes.
+**As a PR submitter**, you should reference the issue if there is one, include a short description of what you contributed and, if it is a code change, instructions for how to manually test out the change. This is informally enforced by our [PR template](https://github.com/storybookjs/storybook/blob/main/.github/PULL_REQUEST_TEMPLATE.md). If your PR is reviewed as only needing trivial changes (e.g. small typos etc), and you have commit access then you can merge the PR after making those changes.
 
-> **_Note:_** Although the latest stable version of storybook corresponds to the `master` branch, nearly all Storybook development happens in the `next` branch. If you submit a PR, branch off `next` and target your PR to `next`.
+> **_Note:_** Although the latest stable version of storybook corresponds to the `main` branch, nearly all Storybook development happens in the `next` branch. If you submit a PR, branch off `next` and target your PR to `next`.
 
 **As a PR reviewer**, you should read through the changes and comment on any potential problems. If you see something cool, a kind word never hurts either! Additionally, you should follow the testing instructions and manually test the changes. If the instructions are missing, unclear, or overly complex, feel free to request better instructions from the submitter. Unless the PR is tagged with the `do not merge` label, if you approve the review and there is no other required discussion or changes, you should also go ahead and merge the PR.
 
@@ -234,7 +234,7 @@ If you are looking for a way to help the project, triaging issues is a great pla
 
 ### Responding to issues
 
-Issues that are tagged `question / support` or `needs reproduction` are great places to help. If you can answer a question, it will help the asker as well as anyone who has a similar question. Also in the future if anyone has that same question they can easily find it by searching. If an issue needs reproduction, you may be able to guide the reporter toward one, or even reproduce it yourself using [this technique](https://github.com/storybookjs/storybook/blob/master/CONTRIBUTING.md#reproductions).
+Issues that are tagged `question / support` or `needs reproduction` are great places to help. If you can answer a question, it will help the asker as well as anyone who has a similar question. Also in the future if anyone has that same question they can easily find it by searching. If an issue needs reproduction, you may be able to guide the reporter toward one, or even reproduce it yourself using [this technique](https://github.com/storybookjs/storybook/blob/main/CONTRIBUTING.md#reproductions).
 
 ### Triaging issues
 
@@ -385,7 +385,7 @@ This section is for Storybook maintainers who will be creating releases. It assu
 The current manual release sequence is as follows:
 
 - Generate a changelog and verify the release by hand
-- Push the changelog to master or the release branch
+- Push the changelog to main or the release branch
 - Clean, build and publish the release
 - Cut and paste the changelog to the [GitHub release page](https://github.com/storybookjs/storybook/releases), and mark it as a (pre-) release
 
@@ -428,8 +428,8 @@ open https://github.com/storybookjs/storybook/releases
 #### Full release:
 
 ```sh
-# make sure you current with origin/master.
-git checkout master
+# make sure you current with origin/main.
+git checkout main
 git status
 
 # generate changelog and edit as appropriate

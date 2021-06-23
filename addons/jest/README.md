@@ -2,7 +2,7 @@
 
 Brings Jest results in storybook.
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/master/ADDONS_SUPPORT.md)
+[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
 
 [![Storybook Jest Addon Demo](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/jest/docs/storybook-addon-jest.gif)](http://storybooks-official.netlify.com/?selectedKind=Addons%7Cjest&selectedStory=withTests&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Ftests%2Fpanel)
 
@@ -184,7 +184,7 @@ addDecorator(
 );
 ```
 
-##### Example [here](https://github.com/storybookjs/storybook/tree/master/examples/angular-cli)
+##### Example [here](https://github.com/storybookjs/storybook/tree/main/examples/angular-cli)
 
 ## TODO
 

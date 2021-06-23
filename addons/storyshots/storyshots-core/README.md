@@ -2,7 +2,7 @@
 
 StoryShots adds automatic Jest Snapshot Testing for [Storybook](https://storybook.js.org/).
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/master/ADDONS_SUPPORT.md)
+[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
 
 ![StoryShots In Action](https://raw.githubusercontent.com/storybookjs/storybook/HEAD/addons/storyshots/storyshots-core/docs/storyshots-fail.png)
 
