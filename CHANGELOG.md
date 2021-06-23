@@ -1,3 +1,13 @@
+## 6.3.0-rc.12 (June 23, 2021)
+
+### Features
+
+* CLI: Update types in React typescript templates ([#15292](https://github.com/storybookjs/storybook/pull/15292))
+### Maintenance
+
+* Yarn: Disable unnecessary builds ([#15299](https://github.com/storybookjs/storybook/pull/15299))
+* Toolbars: Add missing `regenerator-runtime` dependency ([#15312](https://github.com/storybookjs/storybook/pull/15312))
+
 ## 6.3.0-rc.11 (June 18, 2021)
 
 ### Dependency Upgrades
