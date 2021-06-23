@@ -1,12 +1,27 @@
+## 6.3.0 (June 23, 2021)
+
+**[Optimized for UI development](https://github.com/storybookjs/storybook/issues/14397)**
+
+SB6.3 adds new UI development and testing features, while evolving with the JS ecosystem:
+
+- 📐 Layout debugging with Measure and Outline addons
+- 🔌 Reuse your stories in unit tests: Jest, Cypress & more
+- 🚀 Frameworks: Angular 12 Ivy, Lit2 web components
+- 🛠 Builders: Webpack5 stable, Vite community
+- 📦 Packaging: Modern ESM
+
+It also contains hundreds more fixes, features, and tweaks. Browse the [changelogs](https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md) matching `6.3.0-alpha.*`, `6.3.0-beta.*`, and `6.3.0-rc.*` for the full list of changes. See [Storybook 6 migration guide](https://storybook.js.org/blog/storybook-6-migration-guide/) to upgrade from `5.x` or [MIGRATION.md](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) for detailed migration instructions.
+
 ## 6.3.0-rc.12 (June 23, 2021)
 
 ### Features
 
-* CLI: Update types in React typescript templates ([#15292](https://github.com/storybookjs/storybook/pull/15292))
+- CLI: Update types in React typescript templates ([#15292](https://github.com/storybookjs/storybook/pull/15292))
+
 ### Maintenance
 
-* Yarn: Disable unnecessary builds ([#15299](https://github.com/storybookjs/storybook/pull/15299))
-* Toolbars: Add missing `regenerator-runtime` dependency ([#15312](https://github.com/storybookjs/storybook/pull/15312))
+- Yarn: Disable unnecessary builds ([#15299](https://github.com/storybookjs/storybook/pull/15299))
+- Toolbars: Add missing `regenerator-runtime` dependency ([#15312](https://github.com/storybookjs/storybook/pull/15312))
 
 ## 6.3.0-rc.11 (June 18, 2021)
 
