@@ -152,14 +152,12 @@ const Preview = React.memo<PreviewProps>((props) => {
   const previousStoryId = useRef(storyId);
 
   useEffect(() => {
-    // Don't emit the event on first ("real") render, only when story or mode changes
-    console.log({ story });
-
     if (story && viewMode && viewMode.match(/docs|story/)) {
+      // Don't emit the event on first ("real") render, only when story or mode changes
       if (storyId !== previousStoryId.current) {
         previousStoryId.current = storyId;
+
         const { refId, id } = story;
-        console.log({ refId, id });
         api.emit(SET_CURRENT_STORY, {
           storyId: id,
           viewMode,
