@@ -14,5 +14,6 @@ export const prepareForInline = (storyFn: StoryFn) => {
       return React.createElement('div', { ref: this.wrapperRef });
     }
   }
-  return React.createElement(Story);
+
+  return (React.createElement(Story) as unknown) as React.CElement<{}, React.Component>;
 };
