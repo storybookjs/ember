@@ -150,21 +150,25 @@ const Preview = React.memo<PreviewProps>((props) => {
   const { isToolshown } = options;
 
   const previousStoryId = useRef(storyId);
+  const previousViewMode = useRef(viewMode);
 
   useEffect(() => {
-    if (story && viewMode && viewMode.match(/docs|story/)) {
+    if (story && viewMode) {
       // Don't emit the event on first ("real") render, only when story or mode changes
-      if (storyId !== previousStoryId.current) {
+      if (storyId !== previousStoryId.current || viewMode !== previousViewMode.current) {
         previousStoryId.current = storyId;
+        previousViewMode.current = viewMode;
 
-        const { refId, id } = story;
-        api.emit(SET_CURRENT_STORY, {
-          storyId: id,
-          viewMode,
-          options: {
-            target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
-          },
-        });
+        if (viewMode.match(/docs|story/)) {
+          const { refId, id } = story;
+          api.emit(SET_CURRENT_STORY, {
+            storyId: id,
+            viewMode,
+            options: {
+              target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
+            },
+          });
+        }
       }
     }
   }, [story, viewMode]);
