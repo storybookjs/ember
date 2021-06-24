@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-backgrounds",
-  "version": "6.3.0-rc.12",
+  "version": "6.3.0",
   "description": "Switch backgrounds to view components in different settings",
   "keywords": [
     "addon",
@@ -45,12 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-rc.12",
-    "@storybook/api": "6.3.0-rc.12",
-    "@storybook/client-logger": "6.3.0-rc.12",
-    "@storybook/components": "6.3.0-rc.12",
-    "@storybook/core-events": "6.3.0-rc.12",
-    "@storybook/theming": "6.3.0-rc.12",
+    "@storybook/addons": "6.3.0",
+    "@storybook/api": "6.3.0",
+    "@storybook/client-logger": "6.3.0",
+    "@storybook/components": "6.3.0",
+    "@storybook/core-events": "6.3.0",
+    "@storybook/theming": "6.3.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3",
@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "fa3aaf15f513ac1f8bed8ef84ac42a2a33b1b74d",
+  "gitHead": "9a381339dee8faf13933265cf2600577ca2c20e8",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Backgrounds",
