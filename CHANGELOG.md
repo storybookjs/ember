@@ -1,3 +1,13 @@
+## 6.4.0-alpha.0 (June 24, 2021)
+
+### Bug Fixes
+
+- Svelte: Fix argType.type.name extraction ([#15332](https://github.com/storybookjs/storybook/pull/15332))
+
+### Dependency Upgrades
+
+- Upgrade dotenv-webpack to 7.0.x ([#15343](https://github.com/storybookjs/storybook/pull/15343))
+
 ## 6.3.0 (June 23, 2021)
 
 **[Optimized for UI development](https://github.com/storybookjs/storybook/issues/14397)**
