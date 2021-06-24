@@ -6363,7 +6363,7 @@ __metadata:
     case-sensitive-paths-webpack-plugin: ^2.3.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
-    dotenv-webpack: ^6.0.0
+    dotenv-webpack: ^7.0.0
     fork-ts-checker-webpack-plugin: ^6.0.4
     fs-extra: ^9.0.1
     glob: ^7.1.6
@@ -7018,7 +7018,7 @@ __metadata:
     chalk: ^4.1.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
-    dotenv-webpack: ^6.0.0
+    dotenv-webpack: ^7.0.0
     express: ^4.17.1
     file-loader: ^6.2.0
     file-system-cache: ^1.0.5
@@ -18170,12 +18170,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-defaults@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "dotenv-defaults@npm:2.0.1"
+"dotenv-defaults@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "dotenv-defaults@npm:2.0.2"
   dependencies:
     dotenv: ^8.2.0
-  checksum: f2bf720e969679fe27a8e2f07fe230b75526ebe499256ebdd8b8f05e9a64103aa09234a5f1ef29b960e914c8be0f1e9522b5b85e73b4de2e6d2159a667be312c
+  checksum: 14b7b8f6c21a30404106384398728746e63405bfeabe47ef7aadd0e81de49986d5896a612e5b1acddf655af6472a24947b7b113aa3ef3270a2877afa9c5bd287
   languageName: node
   linkType: hard
 
@@ -18197,14 +18197,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-webpack@npm:^6.0.0":
-  version: 6.0.2
-  resolution: "dotenv-webpack@npm:6.0.2"
+"dotenv-webpack@npm:^7.0.0":
+  version: 7.0.3
+  resolution: "dotenv-webpack@npm:7.0.3"
   dependencies:
-    dotenv-defaults: ^2.0.1
+    dotenv-defaults: ^2.0.2
   peerDependencies:
-    webpack: ^1 || ^2 || ^3 || ^4 || ^5
-  checksum: 4458763c622b7515d58497906ddcea34b09503f60d7ed2eeb24e1946793fe5df37bd96e6a722685004b18b749a773021491ec705aff256463d4372392632ba72
+    webpack: ^4 || ^5
+  checksum: 1209f72c980989a4de550e6be7fab9efe7c34f56496760e8b91cd577ddba461b36acbb7de3a56416e60af9ef67c9b7d224bdf6a61e4dca60e23dc8e1673a16eb
   languageName: node
   linkType: hard
 

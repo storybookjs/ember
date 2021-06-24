@@ -80,7 +80,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "core-js": "^3.8.2",
     "css-loader": "^5.0.1",
-    "dotenv-webpack": "^6.0.0",
+    "dotenv-webpack": "^7.0.0",
     "fork-ts-checker-webpack-plugin": "^6.0.4",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",

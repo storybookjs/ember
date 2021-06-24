@@ -103,7 +103,7 @@ export default async ({
         template,
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
-      (new Dotenv({ silent: true }) as any) as WebpackPluginInstance,
+      new Dotenv({ silent: true }),
       // graphql sources check process variable
       new DefinePlugin({
         'process.env': stringifyEnvs(envs),
