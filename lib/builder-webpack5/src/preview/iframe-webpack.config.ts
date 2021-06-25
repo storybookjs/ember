@@ -18,6 +18,7 @@ import {
   nodeModulesPaths,
   interpolate,
   Options,
+  hasDotenv,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -175,7 +176,7 @@ export default async ({
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
-      new Dotenv({ silent: true }),
+      hasDotenv() ? new Dotenv({ silent: true }) : null,
       shouldCheckTs ? new ForkTsCheckerWebpackPlugin(tsCheckOptions) : null,
     ].filter(Boolean),
     module: {
