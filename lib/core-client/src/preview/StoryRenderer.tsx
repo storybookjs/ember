@@ -278,12 +278,12 @@ export class StoryRenderer {
   }) {
     if (getDecorated) {
       try {
-        const { applyLoaders, runSetupFunction, unboundStoryFn, forceRender } = context;
+        const { applyLoaders, runPlayFunction, unboundStoryFn, forceRender } = context;
         const storyContext = await applyLoaders();
         const storyFn = () => unboundStoryFn(storyContext);
         await this.render({ ...context, storyContext, storyFn });
         if (isCsf3Enabled() && !forceRender) {
-          await runSetupFunction();
+          await runPlayFunction();
         }
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {

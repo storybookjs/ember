@@ -36,7 +36,7 @@ describe('normalizeStory', () => {
               "args": Object {},
               "decorators": Array [],
               "loaders": Array [],
-              "setup": undefined,
+              "play": undefined,
             },
             "storyFn": [Function],
           }
@@ -96,26 +96,26 @@ describe('normalizeStory', () => {
         });
       });
 
-      describe('setup function', () => {
+      describe('play function', () => {
         it('no render function', () => {
           const storyObj = {};
           const meta = { title: 'title' };
           const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
-          expect(normalized.parameters.setup).toBeUndefined();
+          expect(normalized.parameters.play).toBeUndefined();
         });
 
         it('user-provided story render function', () => {
-          const storyObj = { setup: () => 'story' };
-          const meta = { title: 'title', setup: () => 'meta' };
+          const storyObj = { play: () => 'story' };
+          const meta = { title: 'title', play: () => 'meta' };
           const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
-          expect(normalized.parameters.setup).toBe(storyObj.setup);
+          expect(normalized.parameters.play).toBe(storyObj.play);
         });
 
         it('user-provided meta render function', () => {
           const storyObj = {};
-          const meta = { title: 'title', setup: () => 'meta' };
+          const meta = { title: 'title', play: () => 'meta' };
           const normalized = normalizeV3('storyExport', storyObj, meta, globalRender);
-          expect(normalized.parameters.setup).toBe(meta.setup);
+          expect(normalized.parameters.play).toBe(meta.play);
         });
       });
 
@@ -133,7 +133,7 @@ describe('normalizeStory', () => {
                 "args": Object {},
                 "decorators": Array [],
                 "loaders": Array [],
-                "setup": undefined,
+                "play": undefined,
               },
               "storyFn": "global-render",
             }
@@ -168,7 +168,7 @@ describe('normalizeStory', () => {
                 "loaders": Array [
                   [Function],
                 ],
-                "setup": undefined,
+                "play": undefined,
                 "storyParam": "val",
               },
               "storyFn": "global-render",
@@ -196,7 +196,7 @@ describe('normalizeStory', () => {
                 "args": Object {},
                 "decorators": Array [],
                 "loaders": Array [],
-                "setup": undefined,
+                "play": undefined,
               },
               "storyFn": "global-render",
             }
