@@ -12,10 +12,10 @@ Storybook uses this to auto-generate the `ArgTypes` for your component using you
 You'll need to register that in `.storybook/preview.js`:
 
 ```js
-import { setCustomElements } from '@storybook/web-components';
+import { setCustomElementsManifest } from '@storybook/web-components';
 import customElements from '../custom-elements.json';
 
-setCustomElements(customElements);
+setCustomElementsManifest(customElements);
 ```
 
-You can generate a `custom-elements.json` using either [web-component-analyzer](https://github.com/runem/web-component-analyzer) or [stenciljs](https://stenciljs.com/) (if you're using Stencil).
+You can generate a `custom-elements.json` using [@custom-elements-manifest/analyzer](https://github.com/open-wc/custom-elements-manifest). If you're using the pre-v1.0.0 version of `custom-elements.json` you can use either [web-component-analyzer](https://github.com/runem/web-component-analyzer) or [stenciljs](https://stenciljs.com/) (if you're using Stencil).
