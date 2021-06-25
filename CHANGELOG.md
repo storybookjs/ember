@@ -1,3 +1,10 @@
+## 6.4.0-alpha.1 (June 25, 2021)
+
+### Bug Fixes
+
+- Essentials: Update addon measure and outline ([#15354](https://github.com/storybookjs/storybook/pull/15354))
+- UI: Fix navigation after no story error ([#15349](https://github.com/storybookjs/storybook/pull/15349))
+
 ## 6.4.0-alpha.0 (June 24, 2021)
 
 ### Bug Fixes
