@@ -1,3 +1,13 @@
+## 6.4.0-alpha.2 (June 25, 2021)
+
+### Bug Fixes
+
+- Core: Only use dotenv-webpack when a user has a dotenv file ([#15365](https://github.com/storybookjs/storybook/pull/15365))
+
+### Maintenance
+
+- CSF3: Rename setup to play ([#15358](https://github.com/storybookjs/storybook/pull/15358))
+
 ## 6.4.0-alpha.1 (June 25, 2021)
 
 ### Bug Fixes
