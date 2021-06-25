@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.0","info":{"plain":"### Bug Fixes\n\n- Svelte: Fix argType.type.name extraction ([#15332](https://github.com/storybookjs/storybook/pull/15332))\n\n### Dependency Upgrades\n\n- Upgrade dotenv-webpack to 7.0.x ([#15343](https://github.com/storybookjs/storybook/pull/15343))"}}
+{"version":"6.4.0-alpha.1","info":{"plain":"### Bug Fixes\n\n- Essentials: Update addon measure and outline ([#15354](https://github.com/storybookjs/storybook/pull/15354))\n- UI: Fix navigation after no story error ([#15349](https://github.com/storybookjs/storybook/pull/15349))"}}
