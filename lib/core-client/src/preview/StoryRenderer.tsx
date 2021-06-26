@@ -11,9 +11,8 @@ import { StoryStore } from '@storybook/client-api';
 
 import { NoDocs } from './NoDocs';
 import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
-import { isCsf3Enabled } from './csf3';
 
-const { document } = global;
+const { document, FEATURES = {} } = global;
 
 // We have "changed" story if this changes
 interface RenderMetadata {
@@ -282,7 +281,7 @@ export class StoryRenderer {
         const storyContext = await applyLoaders();
         const storyFn = () => unboundStoryFn(storyContext);
         await this.render({ ...context, storyContext, storyFn });
-        if (isCsf3Enabled() && !forceRender) {
+        if (FEATURES.previewCsfV3 && !forceRender) {
           await runPlayFunction();
         }
         this.channel.emit(Events.STORY_RENDERED, id);
