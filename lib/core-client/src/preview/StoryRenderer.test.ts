@@ -36,8 +36,10 @@ jest.mock('@storybook/client-logger', () => ({
   },
 }));
 
-jest.mock('./csf3', () => ({
-  isCsf3Enabled: () => true,
+jest.mock('global', () => ({
+  // @ts-ignore
+  ...global,
+  FEATURES: { previewCsfV3: true },
 }));
 
 function prepareRenderer() {
