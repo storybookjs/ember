@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
-import { resolvePathInStorybookCache, Options } from '@storybook/core-common';
+import { resolvePathInStorybookCache, Options, normalizeStories } from '@storybook/core-common';
 import { readCsf } from '@storybook/csf-tools';
 
 interface ExtractedStory {
@@ -64,8 +64,9 @@ const step = 100; // .1s
 export async function useStoriesJson(router: any, options: Options) {
   const storiesJson = resolvePathInStorybookCache('stories.json');
   await fs.remove(storiesJson);
-  const storiesGlobs = (await options.presets.apply('stories')) as string[];
-  extractStoriesJson(storiesJson, storiesGlobs, options.configDir);
+  const stories = normalizeStories(await options.presets.apply('stories'), options.configDir);
+  const globs = stories.map((s) => s.glob);
+  extractStoriesJson(storiesJson, globs, options.configDir);
   router.use('/stories.json', async (_req: any, res: any) => {
     for (let i = 0; i < timeout / step; i += 1) {
       if (fs.existsSync(storiesJson)) {
