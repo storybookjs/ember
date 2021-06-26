@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.2","info":{"plain":"### Bug Fixes\n\n- Core: Only use dotenv-webpack when a user has a dotenv file ([#15365](https://github.com/storybookjs/storybook/pull/15365))\n\n### Maintenance\n\n- CSF3: Rename setup to play ([#15358](https://github.com/storybookjs/storybook/pull/15358))"}}
+{"version":"6.4.0-alpha.3","info":{"plain":"### Bug Fixes\n\n* CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))\n* Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))"}}
