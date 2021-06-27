@@ -14,7 +14,7 @@ describe('autoTitle', () => {
     expect(auto('/path/to/file', { glob: '', specifier: { directory: '/other' } })).toBeFalsy();
   });
 
-  describe('trailing slash', () => {
+  describe('no trailing slash', () => {
     it('match with no root', () => {
       expect(
         auto('/path/to/file', { glob: '', specifier: { directory: '/path' } })
@@ -37,7 +37,7 @@ describe('autoTitle', () => {
     });
   });
 
-  describe('no trailing slash', () => {
+  describe('trailing slash', () => {
     it('match with no root', () => {
       expect(
         auto('/path/to/file', { glob: '', specifier: { directory: '/path/' } })

@@ -1,4 +1,4 @@
-import { normalizeStoriesEntry, normalizeStories } from '../normalize-stories';
+import { normalizeStoriesEntry } from '../normalize-stories';
 
 expect.addSnapshotSerializer({
   print: (val: any) => JSON.stringify(val, null, 2),
@@ -23,6 +23,7 @@ describe('normalizeStoriesEntry', () => {
       }
     `);
   });
+
   it('directory', () => {
     expect(normalizeStoriesEntry('..', '')).toMatchInlineSnapshot(`
       {
@@ -35,6 +36,7 @@ describe('normalizeStoriesEntry', () => {
       }
     `);
   });
+
   it('directory specifier', () => {
     expect(normalizeStoriesEntry({ directory: '..' }, '')).toMatchInlineSnapshot(`
       {
@@ -47,6 +49,7 @@ describe('normalizeStoriesEntry', () => {
       }
     `);
   });
+
   it('directory/files specifier', () => {
     expect(normalizeStoriesEntry({ directory: '..', files: '*.stories.mdx' }, ''))
       .toMatchInlineSnapshot(`
@@ -60,6 +63,7 @@ describe('normalizeStoriesEntry', () => {
       }
     `);
   });
+
   it('directory/root specifier', () => {
     expect(normalizeStoriesEntry({ directory: '..', root: 'atoms' }, '')).toMatchInlineSnapshot(`
       {
@@ -68,6 +72,20 @@ describe('normalizeStoriesEntry', () => {
           "directory": "..",
           "root": "atoms",
           "files": "*.stories.@(mdx|tsx|ts|jsx|js)"
+        }
+      }
+    `);
+  });
+
+  it('directory/root/files specifier', () => {
+    expect(normalizeStoriesEntry({ directory: '..', root: 'atoms', files: '*.stories.mdx' }, ''))
+      .toMatchInlineSnapshot(`
+      {
+        "glob": "../**/*.stories.mdx",
+        "specifier": {
+          "directory": "..",
+          "root": "atoms",
+          "files": "*.stories.mdx"
         }
       }
     `);

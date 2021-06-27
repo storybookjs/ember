@@ -10,7 +10,6 @@ import {
   checkWebpackVersion,
   Options,
   normalizeStories,
-  StoriesEntry,
 } from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;

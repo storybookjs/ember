@@ -36,7 +36,6 @@ export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEnt
 
 const autoTitleV3 = (meta: Meta, fileName: string) => {
   if (meta.title) return meta.title;
-  console.log({ fileName, STORIES });
   for (let i = 0; i < STORIES.length; i += 1) {
     const title = autoTitleFromEntry(fileName, STORIES[i]);
     if (title) return title;
