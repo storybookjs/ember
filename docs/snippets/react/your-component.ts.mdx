@@ -1,9 +1,9 @@
 ```ts
-// YourComponent.stories.tsx
+// YourComponent.stories.ts | YourComponent.stories.tsx
 
 import React, { ComponentProps } from 'react';
 
-import { Story } from '@storybook/react';
+import { Story, Meta } from '@storybook/react';
 
 import { YourComponent } from './YourComponent';
 
@@ -11,7 +11,7 @@ import { YourComponent } from './YourComponent';
 export default {
   title: 'YourComponent',
   component: YourComponent,
-};
+} as Meta;
 
 //👇 We create a “template” of how args map to rendering
 const Template: Story<ComponentProps<typeof YourComponent>> = (args) => <YourComponent {...args} />;
