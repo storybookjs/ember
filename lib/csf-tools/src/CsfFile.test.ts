@@ -3,6 +3,12 @@ import dedent from 'ts-dedent';
 import yaml from 'js-yaml';
 import { loadCsf } from './CsfFile';
 
+jest.mock('global', () => ({
+  // @ts-ignore
+  ...global,
+  FEATURES: { previewCsfV3: true },
+}));
+
 // @ts-ignore
 expect.addSnapshotSerializer({
   print: (val: any) => yaml.dump(val).trimEnd(),
@@ -17,7 +23,7 @@ const parse = async (code: string, includeParameters?: boolean) => {
   return { meta, stories: filtered };
 };
 
-describe('csf extract', () => {
+describe('CsfFile', () => {
   describe('basic', () => {
     it('args stories', async () => {
       expect(
@@ -227,6 +233,98 @@ describe('csf extract', () => {
       const csf = loadCsf(input).parse();
       expect(Object.keys(csf._storyAnnotations.A)).toEqual(['x', 'y']);
       expect(Object.keys(csf._storyAnnotations.B)).toEqual(['z']);
+    });
+  });
+
+  describe('CSF3', () => {
+    it('Object export with no-args render', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const A = {
+            render: () => {}
+          }
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--a
+      `);
+    });
+
+    it('Object export with args render', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const A = {
+            render: (args) => {}
+          }
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: true
+              __id: foo-bar--a
+      `);
+    });
+
+    it('Object export with default render', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const A = {}
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: true
+              __id: foo-bar--a
+      `);
+    });
+
+    it('Object export with name', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const A = {
+            name: 'Apple'
+          }
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: Apple
+            parameters:
+              __isArgsStory: true
+              __id: foo-bar--a
+      `);
     });
   });
 });
