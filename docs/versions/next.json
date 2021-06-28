@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.4","info":{"plain":"### Bug Fixes\n\n- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))"}}
+{"version":"6.4.0-alpha.5","info":{"plain":"### Features\n\n- CSF: Add stories.json generation for CSF3 stories ([#15395](https://github.com/storybookjs/storybook/pull/15395))\n\n### Bug Fixes\n\n- Essentials: Update measure and outline. Fix alt+tab issues on windows. ([#15402](https://github.com/storybookjs/storybook/pull/15402))"}}
