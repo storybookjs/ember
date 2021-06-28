@@ -1,3 +1,13 @@
+## 6.4.0-alpha.5 (June 29, 2021)
+
+### Features
+
+- CSF: Add stories.json generation for CSF3 stories ([#15395](https://github.com/storybookjs/storybook/pull/15395))
+
+### Bug Fixes
+
+- Essentials: Update measure and outline. Fix alt+tab issues on windows. ([#15402](https://github.com/storybookjs/storybook/pull/15402))
+
 ## 6.3.1 (June 28, 2021)
 
 ### Bug Fixes
