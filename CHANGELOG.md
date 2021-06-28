@@ -1,3 +1,17 @@
+## 6.3.1 (June 28, 2021)
+
+### Bug Fixes
+
+- Core: Only use dotenv-webpack when a user has a dotenv file ([#15365](https://github.com/storybookjs/storybook/pull/15365))
+- Essentials: Update addon measure and outline ([#15354](https://github.com/storybookjs/storybook/pull/15354))
+- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))
+- Svelte: Fix argType.type.name extraction ([#15332](https://github.com/storybookjs/storybook/pull/15332))
+- CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))
+- Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))
+- UI: Fix navigation after no story error ([#15349](https://github.com/storybookjs/storybook/pull/15349))
+- CSF3: Rename setup to play ([#15358](https://github.com/storybookjs/storybook/pull/15358))
+- Upgrade dotenv-webpack to 7.0.x ([#15343](https://github.com/storybookjs/storybook/pull/15343))
+
 ## 6.4.0-alpha.4 (June 28, 2021)
 
 ### Bug Fixes
