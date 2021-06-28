@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.3","info":{"plain":"### Bug Fixes\n\n* CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))\n* Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))"}}
+{"version":"6.4.0-alpha.4","info":{"plain":"### Bug Fixes\n\n- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))"}}
