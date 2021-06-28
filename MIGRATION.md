@@ -263,7 +263,7 @@ Several URL params to control the manager layout have been deprecated and will b
 - `panelRight=1`: use `panel=right` instead
 - `stories=0`: use `nav=false` instead
 
-Additionally, support for legacy URLs using `selectedKind` and `selectedStory` will be removed in 7.0. Use `path` instead.
+Additionally, support for legacy URLs using `selectedKind` and `selectedStory` will be removed in 7.0. Use `path` instead.
 
 ## From version 6.1.x to 6.2.0
 
