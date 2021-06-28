@@ -107,13 +107,19 @@ By default the [`Storyshots addon`](https://www.npmjs.com/package/@storybook/add
 
 <!-- prettier-ignore-end -->
 
-Use this table as a reference for manually specifying the framework.
+Use this list as a reference for manually specifying the framework.
 
-| angular        | html | preact       |
-|----------------|------|--------------|
-| react          | riot | react-native |
-| svelte         | vue  | vue3         |
-| web-components | rax  |              |
+- angular
+- html
+- preact
+- rax
+- react
+- react-native
+- riot
+- svelte
+- vue
+- vue3
+- web-components
 
 <div class="aside">
 
