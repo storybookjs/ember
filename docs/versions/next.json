@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.6","info":{"plain":"### Bug Fixes\n\n- Core: Fix decorator context update ([#15408](https://github.com/storybookjs/storybook/pull/15408))\n- Revert \"Vue3: Update args without re-mounting component\" ([#15409](https://github.com/storybookjs/storybook/pull/15409))"}}
+{"version":"6.4.0-alpha.7","info":{"plain":"### Features\n\n- CSF: Generate default titles based on file path ([#15376](https://github.com/storybookjs/storybook/pull/15376))"}}
