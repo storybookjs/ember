@@ -1,8 +1,12 @@
-import { setCustomElements } from '@storybook/web-components';
+import { setCustomElementsManifest } from '@storybook/web-components';
 
-import customElements from '../custom-elements.json';
+import customElementsManifest from '../custom-elements.json';
 
-setCustomElements(customElements);
+setCustomElementsManifest(customElementsManifest);
+
+// TODO: Remove support of 0.x CustomElementManifest format in 7.0
+// import customElements from '../custom-elements-experimental.json';
+// setCustomElements(customElements);
 
 export const parameters = {
   a11y: {
