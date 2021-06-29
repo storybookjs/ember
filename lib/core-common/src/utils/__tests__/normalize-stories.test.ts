@@ -30,7 +30,7 @@ describe('normalizeStoriesEntry', () => {
         "glob": "../**/*.stories.@(mdx|tsx|ts|jsx|js)",
         "specifier": {
           "directory": "..",
-          "root": "",
+          "titlePrefix": "",
           "files": "*.stories.@(mdx|tsx|ts|jsx|js)"
         }
       }
@@ -43,7 +43,7 @@ describe('normalizeStoriesEntry', () => {
         "glob": "../**/*.stories.@(mdx|tsx|ts|jsx|js)",
         "specifier": {
           "directory": "..",
-          "root": "",
+          "titlePrefix": "",
           "files": "*.stories.@(mdx|tsx|ts|jsx|js)"
         }
       }
@@ -57,34 +57,36 @@ describe('normalizeStoriesEntry', () => {
         "glob": "../**/*.stories.mdx",
         "specifier": {
           "directory": "..",
-          "root": "",
+          "titlePrefix": "",
           "files": "*.stories.mdx"
         }
       }
     `);
   });
 
-  it('directory/root specifier', () => {
-    expect(normalizeStoriesEntry({ directory: '..', root: 'atoms' }, '')).toMatchInlineSnapshot(`
+  it('directory/titlePrefix specifier', () => {
+    expect(normalizeStoriesEntry({ directory: '..', titlePrefix: 'atoms' }, ''))
+      .toMatchInlineSnapshot(`
       {
         "glob": "../**/*.stories.@(mdx|tsx|ts|jsx|js)",
         "specifier": {
           "directory": "..",
-          "root": "atoms",
+          "titlePrefix": "atoms",
           "files": "*.stories.@(mdx|tsx|ts|jsx|js)"
         }
       }
     `);
   });
 
-  it('directory/root/files specifier', () => {
-    expect(normalizeStoriesEntry({ directory: '..', root: 'atoms', files: '*.stories.mdx' }, ''))
-      .toMatchInlineSnapshot(`
+  it('directory/titlePrefix/files specifier', () => {
+    expect(
+      normalizeStoriesEntry({ directory: '..', titlePrefix: 'atoms', files: '*.stories.mdx' }, '')
+    ).toMatchInlineSnapshot(`
       {
         "glob": "../**/*.stories.mdx",
         "specifier": {
           "directory": "..",
-          "root": "atoms",
+          "titlePrefix": "atoms",
           "files": "*.stories.mdx"
         }
       }

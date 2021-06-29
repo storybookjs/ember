@@ -221,7 +221,7 @@ export interface TypescriptOptions {
 interface StoriesSpecifier {
   directory: string;
   files?: string;
-  root?: string;
+  titlePrefix?: string;
 }
 
 export type StoriesEntry = string | StoriesSpecifier;

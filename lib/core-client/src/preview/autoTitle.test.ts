@@ -15,15 +15,15 @@ describe('autoTitle', () => {
   });
 
   describe('no trailing slash', () => {
-    it('match with no root', () => {
+    it('match with no titlePrefix', () => {
       expect(
         auto('/path/to/file', { glob: '', specifier: { directory: '/path' } })
       ).toMatchInlineSnapshot(`to/file`);
     });
 
-    it('match with root', () => {
+    it('match with titlePrefix', () => {
       expect(
-        auto('/path/to/file', { glob: '', specifier: { directory: '/path', root: 'atoms' } })
+        auto('/path/to/file', { glob: '', specifier: { directory: '/path', titlePrefix: 'atoms' } })
       ).toMatchInlineSnapshot(`atoms/to/file`);
     });
 
@@ -31,22 +31,25 @@ describe('autoTitle', () => {
       expect(
         auto('/path/to/file.stories.tsx', {
           glob: '',
-          specifier: { directory: '/path', root: 'atoms' },
+          specifier: { directory: '/path', titlePrefix: 'atoms' },
         })
       ).toMatchInlineSnapshot(`atoms/to/file`);
     });
   });
 
   describe('trailing slash', () => {
-    it('match with no root', () => {
+    it('match with no titlePrefix', () => {
       expect(
         auto('/path/to/file', { glob: '', specifier: { directory: '/path/' } })
       ).toMatchInlineSnapshot(`to/file`);
     });
 
-    it('match with root', () => {
+    it('match with titlePrefix', () => {
       expect(
-        auto('/path/to/file', { glob: '', specifier: { directory: '/path/', root: 'atoms' } })
+        auto('/path/to/file', {
+          glob: '',
+          specifier: { directory: '/path/', titlePrefix: 'atoms' },
+        })
       ).toMatchInlineSnapshot(`atoms/to/file`);
     });
 
@@ -54,7 +57,7 @@ describe('autoTitle', () => {
       expect(
         auto('/path/to/file.stories.tsx', {
           glob: '',
-          specifier: { directory: '/path/', root: 'atoms' },
+          specifier: { directory: '/path/', titlePrefix: 'atoms' },
         })
       ).toMatchInlineSnapshot(`atoms/to/file`);
     });

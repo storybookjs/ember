@@ -26,10 +26,10 @@ const stripExtension = (titleWithExtension: string) => {
 };
 
 export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEntry) => {
-  const { directory, root = '' } = entry.specifier || {};
+  const { directory, titlePrefix = '' } = entry.specifier || {};
   if (fileName.startsWith(directory)) {
     const suffix = fileName.replace(directory, '');
-    return stripExtension(path.join(root, suffix));
+    return stripExtension(path.join(titlePrefix, suffix));
   }
   return undefined;
 };

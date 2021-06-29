@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import type { StoriesEntry, NormalizedStoriesEntry } from '../types';
 
 const DEFAULT_FILES = '*.stories.@(mdx|tsx|ts|jsx|js)';
-const DEFAULT_ROOT = '';
+const DEFAULT_TITLE_PREFIX = '';
 
 export const normalizeStoriesEntry = (
   entry: StoriesEntry,
@@ -12,11 +12,11 @@ export const normalizeStoriesEntry = (
   let glob;
   let directory;
   let files;
-  let root;
+  let titlePrefix;
   if (typeof entry === 'string') {
     if (!entry.includes('**') && fs.lstatSync(resolve(configDir, entry)).isDirectory()) {
       directory = entry;
-      root = DEFAULT_ROOT;
+      titlePrefix = DEFAULT_TITLE_PREFIX;
       files = DEFAULT_FILES;
     } else {
       glob = entry;
@@ -24,12 +24,12 @@ export const normalizeStoriesEntry = (
   } else {
     directory = entry.directory;
     files = entry.files || DEFAULT_FILES;
-    root = entry.root || DEFAULT_ROOT;
+    titlePrefix = entry.titlePrefix || DEFAULT_TITLE_PREFIX;
   }
   if (typeof glob !== 'undefined') {
     return { glob, specifier: undefined };
   }
-  return { glob: `${directory}/**/${files}`, specifier: { directory, root, files } };
+  return { glob: `${directory}/**/${files}`, specifier: { directory, titlePrefix, files } };
 };
 
 export const normalizeStories = (entries: StoriesEntry[], configDir: string) =>
