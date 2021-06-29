@@ -21,7 +21,7 @@ export const menuTool: Addon = {
               <IconButton
                 aria-label="Show sidebar"
                 key="menu"
-                onClick={() => toggle()}
+                onClick={toggle as any}
                 title="Show sidebar"
               >
                 <Icons icon="menu" />
