@@ -1,9 +1,46 @@
+## 6.4.0-alpha.6 (June 29, 2021)
+
+### Bug Fixes
+
+- Core: Fix decorator context update ([#15408](https://github.com/storybookjs/storybook/pull/15408))
+- Revert "Vue3: Update args without re-mounting component" ([#15409](https://github.com/storybookjs/storybook/pull/15409))
+
+## 6.4.0-alpha.5 (June 29, 2021)
+
+### Features
+
+- CSF: Add stories.json generation for CSF3 stories ([#15395](https://github.com/storybookjs/storybook/pull/15395))
+
+### Bug Fixes
+
+- Essentials: Update measure and outline. Fix alt+tab issues on windows. ([#15402](https://github.com/storybookjs/storybook/pull/15402))
+
+## 6.3.1 (June 28, 2021)
+
+### Bug Fixes
+
+- Core: Only use dotenv-webpack when a user has a dotenv file ([#15365](https://github.com/storybookjs/storybook/pull/15365))
+- Essentials: Update addon measure and outline ([#15354](https://github.com/storybookjs/storybook/pull/15354))
+- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))
+- Svelte: Fix argType.type.name extraction ([#15332](https://github.com/storybookjs/storybook/pull/15332))
+- CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))
+- Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))
+- UI: Fix navigation after no story error ([#15349](https://github.com/storybookjs/storybook/pull/15349))
+- CSF3: Rename setup to play ([#15358](https://github.com/storybookjs/storybook/pull/15358))
+- Upgrade dotenv-webpack to 7.0.x ([#15343](https://github.com/storybookjs/storybook/pull/15343))
+
+## 6.4.0-alpha.4 (June 28, 2021)
+
+### Bug Fixes
+
+- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))
+
 ## 6.4.0-alpha.3 (June 26, 2021)
 
 ### Bug Fixes
 
-* CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))
-* Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))
+- CSF3: Genericize feature flagging and fix webpack5 ([#15375](https://github.com/storybookjs/storybook/pull/15375))
+- Webpack5: Fix warnings typo ([#15374](https://github.com/storybookjs/storybook/pull/15374))
 
 ## 6.4.0-alpha.2 (June 25, 2021)
 

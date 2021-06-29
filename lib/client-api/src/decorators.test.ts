@@ -42,6 +42,25 @@ describe('client-api.decorators', () => {
     expect(contexts.map((c) => c.k)).toEqual([0, 3, 2, 1]);
   });
 
+  it('passes context through to sub decorators additively', () => {
+    const contexts = [];
+    const decorators = [
+      (s, c) => contexts.push(c) && s({ b: 1 }),
+      (s, c) => contexts.push(c) && s({ c: 2 }),
+      (s, c) => contexts.push(c) && s({ d: 3 }),
+    ];
+    const decorated = defaultDecorateStory((c) => contexts.push(c), decorators);
+
+    expect(contexts).toEqual([]);
+    decorated(makeContext({ a: 0 }));
+    expect(contexts.map(({ a, b, c, d }) => ({ a, b, c, d }))).toEqual([
+      { a: 0, b: undefined, c: undefined, d: undefined },
+      { a: 0, b: undefined, c: undefined, d: 3 },
+      { a: 0, b: undefined, c: 2, d: 3 },
+      { a: 0, b: 1, c: 2, d: 3 },
+    ]);
+  });
+
   it('does not recreate decorated story functions each time', () => {
     const decoratedStories = [];
     const decorators = [

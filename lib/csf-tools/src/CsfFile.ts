@@ -1,10 +1,13 @@
 /* eslint-disable no-underscore-dangle */
+import global from 'global';
 import fs from 'fs-extra';
 import { parse } from '@babel/parser';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
+
+const { FEATURES = {} } = global;
 
 const logger = console;
 interface Meta {
@@ -69,7 +72,7 @@ const findVarInitialization = (identifier: string, program: t.Program) => {
   return init;
 };
 
-const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node, csf: CsfFile) => {
+const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
   let storyFn: t.Node = init;
   // export const Foo = Bar.bind({})
   if (t.isCallExpression(init)) {
@@ -175,23 +178,43 @@ export class CsfFile {
             // export const X = ...;
             node.declaration.declarations.forEach((decl) => {
               if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
-                const { name } = decl.id;
-                const parameters = {
-                  // __id: toId(self._meta.title, name),
-                  // FIXME: Template.bind({});
-                  __isArgsStory: isArgsStory(decl, parent, self),
-                };
-                self._stories[name] = {
+                const { name: exportName } = decl.id;
+                self._storyExports[exportName] = decl;
+                let name = exportName;
+                if (self._storyAnnotations[exportName]) {
+                  logger.warn(
+                    `Unexpected annotations for "${exportName}" before story declaration`
+                  );
+                } else {
+                  self._storyAnnotations[exportName] = {};
+                }
+                let parameters;
+                if (FEATURES.previewCsfV3 && t.isObjectExpression(decl.init)) {
+                  let __isArgsStory = true; // assume default render is an args story
+                  // CSF3 object export
+                  decl.init.properties.forEach((p: t.ObjectProperty) => {
+                    if (t.isIdentifier(p.key)) {
+                      if (p.key.name === 'render') {
+                        __isArgsStory = isArgsStory(p.value as t.Expression, parent, self);
+                      } else if (p.key.name === 'name' && t.isStringLiteral(p.value)) {
+                        name = p.value.value;
+                      }
+                      self._storyAnnotations[exportName][p.key.name] = p.value;
+                    }
+                  });
+                  parameters = { __isArgsStory };
+                } else {
+                  parameters = {
+                    // __id: toId(self._meta.title, name),
+                    // FIXME: Template.bind({});
+                    __isArgsStory: isArgsStory(decl.init, parent, self),
+                  };
+                }
+                self._stories[exportName] = {
                   id: 'FIXME',
                   name,
                   parameters,
                 };
-                self._storyExports[name] = decl;
-                if (self._storyAnnotations[name]) {
-                  logger.warn(`Unexpected annotations for "${name}" before story declaration`);
-                } else {
-                  self._storyAnnotations[name] = {};
-                }
               }
             });
           }

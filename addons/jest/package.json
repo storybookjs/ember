@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-jest",
-  "version": "6.4.0-alpha.3",
+  "version": "6.4.0-alpha.6",
   "description": "React storybook addon that show component jest report",
   "keywords": [
     "addon",
@@ -47,11 +47,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.3",
-    "@storybook/api": "6.4.0-alpha.3",
-    "@storybook/components": "6.4.0-alpha.3",
-    "@storybook/core-events": "6.4.0-alpha.3",
-    "@storybook/theming": "6.4.0-alpha.3",
+    "@storybook/addons": "6.4.0-alpha.6",
+    "@storybook/api": "6.4.0-alpha.6",
+    "@storybook/components": "6.4.0-alpha.6",
+    "@storybook/core-events": "6.4.0-alpha.6",
+    "@storybook/theming": "6.4.0-alpha.6",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "react-sizeme": "^3.0.1",
@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9511766a3b488ccf7091b919ecf4c8a5e8bbb060",
+  "gitHead": "e15d4e0276d925a601ee25fd819d5f050920e1ab",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Jest",
