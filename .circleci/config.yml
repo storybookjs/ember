@@ -176,7 +176,7 @@ jobs:
           condition:
             and:
               - not:
-                  equal: [master, << pipeline.git.branch >>]
+                  equal: [main, << pipeline.git.branch >>]
               - not:
                   equal: [next, << pipeline.git.branch >>]
           steps:

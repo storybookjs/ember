@@ -19,6 +19,7 @@ import {
   getManagerMainTemplate,
   Options,
   ManagerWebpackOptions,
+  hasDotenv,
 } from '@storybook/core-common';
 
 import { babelLoader } from './babel-loader-manager';
@@ -103,7 +104,7 @@ export default async ({
         template,
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
-      (new Dotenv({ silent: true }) as any) as WebpackPluginInstance,
+      hasDotenv() ? new Dotenv({ silent: true }) : null,
       // graphql sources check process variable
       new DefinePlugin({
         'process.env': stringifyEnvs(envs),

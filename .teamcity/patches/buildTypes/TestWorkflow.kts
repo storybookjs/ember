@@ -19,7 +19,7 @@ changeBuildType(RelativeId("TestWorkflow")) {
                 branchFilter = """
                     +:<default>
                     +:next
-                    +:master
+                    +:main
                     +:pull/*
                 """.trimIndent()
             }

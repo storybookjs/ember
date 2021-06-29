@@ -136,6 +136,7 @@ const Preview = React.memo<PreviewProps>((props) => {
     id: previewId,
     options,
     viewMode,
+    storyId,
     story = undefined,
     description,
     baseUrl,
@@ -148,25 +149,27 @@ const Preview = React.memo<PreviewProps>((props) => {
   const shouldScale = viewMode === 'story';
   const { isToolshown } = options;
 
-  const initialRender = useRef(true);
+  const previousStoryId = useRef(storyId);
+  const previousViewMode = useRef(viewMode);
+
   useEffect(() => {
-    // Don't emit the event on first ("real") render, only when story or mode changes
-    if (initialRender.current) {
-      // We initially render without a story set, which isn't all that interesting, let's ignore
-      if (story) {
-        initialRender.current = false;
+    if (story && viewMode) {
+      // Don't emit the event on first ("real") render, only when story or mode changes
+      if (storyId !== previousStoryId.current || viewMode !== previousViewMode.current) {
+        previousStoryId.current = storyId;
+        previousViewMode.current = viewMode;
+
+        if (viewMode.match(/docs|story/)) {
+          const { refId, id } = story;
+          api.emit(SET_CURRENT_STORY, {
+            storyId: id,
+            viewMode,
+            options: {
+              target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
+            },
+          });
+        }
       }
-      return;
-    }
-    if (story && viewMode && viewMode.match(/docs|story/)) {
-      const { refId, id } = story;
-      api.emit(SET_CURRENT_STORY, {
-        storyId: id,
-        viewMode,
-        options: {
-          target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
-        },
-      });
     }
   }, [story, viewMode]);
 

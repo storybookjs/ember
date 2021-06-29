@@ -243,6 +243,7 @@ const getConfig = async (): Promise<Parameters[]> => {
         type: 'autocompleteMultiselect',
         message: 'Select the frameworks to run',
         name: 'frameworks',
+        min: 1,
         hint:
           'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
         choices: Object.keys(configs).map((key) => {

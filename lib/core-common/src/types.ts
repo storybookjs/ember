@@ -33,7 +33,7 @@ export interface Presets {
   ): Promise<TypescriptConfig>;
   apply(extension: 'babel', config: {}, args: any): Promise<TransformOptions>;
   apply(extension: 'entries', config: [], args: any): Promise<unknown>;
-  apply(extension: 'stories', config: [], args: any): Promise<unknown>;
+  apply(extension: 'stories', config: [], args: any): Promise<StoriesEntry[]>;
   apply(
     extension: 'webpack',
     config: {},
@@ -155,7 +155,7 @@ export interface BuilderOptions {
   cache: FileSystemCache;
   configDir: string;
   docsMode: boolean;
-  previewCsfV3?: boolean;
+  features?: StorybookConfig['features'];
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;
@@ -218,6 +218,19 @@ export interface TypescriptOptions {
   reactDocgenTypescriptOptions: PluginOptions;
 }
 
+interface StoriesSpecifier {
+  directory: string;
+  files?: string;
+  titlePrefix?: string;
+}
+
+export type StoriesEntry = string | StoriesSpecifier;
+
+export interface NormalizedStoriesEntry {
+  glob: string;
+  specifier?: StoriesSpecifier;
+}
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -257,7 +270,7 @@ export interface StorybookConfig {
    *
    * @example `['./src/*.stories.@(j|t)sx?']`
    */
-  stories: string[];
+  stories: StoriesEntry[];
   /**
    * Controls how Storybook handles TypeScript files.
    */

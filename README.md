@@ -19,9 +19,9 @@
     <img src="https://snyk.io/test/github/storybookjs/storybook/badge.svg" alt="Known Vulnerabilities" />
   </a>
   <a href="https://codecov.io/gh/storybookjs/storybook">
-    <img src="https://codecov.io/gh/storybookjs/storybook/branch/master/graph/badge.svg" alt="codecov" />
+    <img src="https://codecov.io/gh/storybookjs/storybook/branch/main/graph/badge.svg" alt="codecov" />
   </a>
-  <a href="https://github.com/storybookjs/storybook/blob/master/LICENSE">
+  <a href="https://github.com/storybookjs/storybook/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/storybookjs/storybook.svg" alt="License" />
   </a>
   <br/>
@@ -46,12 +46,12 @@
 It allows you to browse a component library, view the different states of each component, and interactively develop and test components. Find out more at https://storybook.js.org.
 
 <center>
-  <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/media/storybook-intro.gif" width="100%" />
+  <img src="https://raw.githubusercontent.com/storybookjs/storybook/main/media/storybook-intro.gif" width="100%" />
 </center>
 
 <p align="center">
   View README for:<br/>
-  <a href="https://github.com/storybookjs/storybook/blob/master/README.md" title="latest"><img alt="latest" src="https://img.shields.io/npm/v/@storybook/core/latest.svg" /></a>
+  <a href="https://github.com/storybookjs/storybook/blob/main/README.md" title="latest"><img alt="latest" src="https://img.shields.io/npm/v/@storybook/core/latest.svg" /></a>
   <a href="https://github.com/storybookjs/storybook/blob/next/README.md" title="next"><img alt="next" src="https://img.shields.io/npm/v/@storybook/core/next.svg" /></a>
 </p>
 
@@ -92,23 +92,23 @@ For additional help, join us in the [Storybook Discord](https://discord.gg/story
 
 ### Supported Frameworks
 
-| Framework                                                   | Demo                                                                        |                                                                                                |
-| ----------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [React](app/react)                                          | [v6.2.x](https://storybookjs.netlify.com/official-storybook/?path=/story/*) | [![React](https://img.shields.io/npm/dm/@storybook/react.svg)](app/react)                      |
-| [Vue](app/vue)                                              | [v6.2.x](https://storybookjs.netlify.com/vue-kitchen-sink/)                 | [![Vue](https://img.shields.io/npm/dm/@storybook/vue.svg)](app/vue)                            |
-| [Angular](app/angular)                                      | [v6.2.x](https://storybookjs.netlify.com/angular-cli/)                      | [![Angular](https://img.shields.io/npm/dm/@storybook/angular.svg)](app/angular)                |
-| [Web components](app/web-components)                        | [v6.2.x](https://storybookjs.netlify.com/web-components-kitchen-sink/)      | [![Svelte](https://img.shields.io/npm/dm/@storybook/web-components.svg)](app/web-components)   |
-| [React Native](https://github.com/storybookjs/react-native) | -                                                                           | [![React Native](https://img.shields.io/npm/dm/@storybook/react-native.svg)](app/react-native) |
-| [HTML](app/html)                                            | [v6.2.x](https://storybookjs.netlify.com/html-kitchen-sink/)                | [![HTML](https://img.shields.io/npm/dm/@storybook/html.svg)](app/html)                         |
-| [Ember](app/ember)                                          | [v6.2.x](https://storybookjs.netlify.com/ember-cli/)                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                      |
-| [Svelte](app/svelte)                                        | [v6.2.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                   |
-| [Preact](app/preact)                                        | [v6.2.x](https://storybookjs.netlify.com/preact-kitchen-sink/)              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                   |
-| [Marionette.js](app/marionette)                             | -                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)    |
-| [Mithril](app/mithril)                                      | [v6.2.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                |
-| [Marko](app/marko)                                          | [v6.2.x](https://storybookjs.netlify.com/marko-cli/)                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                      |
-| [Riot](app/riot)                                            | [v6.2.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                         |
-| [Rax](app/rax)                                              | [v6.2.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                            |
-| [Android, iOS, Flutter](https://github.com/storybookjs/native)                                              | [v6.2.x](https://storybookjs.github.io/native/@storybook/native-flutter-example/index.html)                 | [![Rax](https://img.shields.io/npm/dm/@storybook/native.svg)](https://github.com/storybookjs/native)                            |
+| Framework                                                      | Demo                                                                                        |                                                                                                      |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [React](app/react)                                             | [v6.3.x](https://storybookjs.netlify.com/official-storybook/?path=/story/*)                 | [![React](https://img.shields.io/npm/dm/@storybook/react.svg)](app/react)                            |
+| [Vue](app/vue)                                                 | [v6.3.x](https://storybookjs.netlify.com/vue-kitchen-sink/)                                 | [![Vue](https://img.shields.io/npm/dm/@storybook/vue.svg)](app/vue)                                  |
+| [Angular](app/angular)                                         | [v6.3.x](https://storybookjs.netlify.com/angular-cli/)                                      | [![Angular](https://img.shields.io/npm/dm/@storybook/angular.svg)](app/angular)                      |
+| [Web components](app/web-components)                           | [v6.3.x](https://storybookjs.netlify.com/web-components-kitchen-sink/)                      | [![Svelte](https://img.shields.io/npm/dm/@storybook/web-components.svg)](app/web-components)         |
+| [React Native](https://github.com/storybookjs/react-native)    | -                                                                                           | [![React Native](https://img.shields.io/npm/dm/@storybook/react-native.svg)](app/react-native)       |
+| [HTML](app/html)                                               | [v6.3.x](https://storybookjs.netlify.com/html-kitchen-sink/)                                | [![HTML](https://img.shields.io/npm/dm/@storybook/html.svg)](app/html)                               |
+| [Ember](app/ember)                                             | [v6.3.x](https://storybookjs.netlify.com/ember-cli/)                                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                            |
+| [Svelte](app/svelte)                                           | [v6.3.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)                              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                         |
+| [Preact](app/preact)                                           | [v6.3.x](https://storybookjs.netlify.com/preact-kitchen-sink/)                              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                         |
+| [Marionette.js](app/marionette)                                | -                                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)          |
+| [Mithril](app/mithril)                                         | [v6.3.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)                             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                      |
+| [Marko](app/marko)                                             | [v6.3.x](https://storybookjs.netlify.com/marko-cli/)                                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                            |
+| [Riot](app/riot)                                               | [v6.3.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                               |
+| [Rax](app/rax)                                                 | [v6.3.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                                  |
+| [Android, iOS, Flutter](https://github.com/storybookjs/native) | [v6.3.x](https://storybookjs.github.io/native/@storybook/native-flutter-example/index.html) | [![Rax](https://img.shields.io/npm/dm/@storybook/native.svg)](https://github.com/storybookjs/native) |
 
 ### Sub Projects
 
@@ -118,7 +118,7 @@ For additional help, join us in the [Storybook Discord](https://discord.gg/story
 ### Addons
 
 | Addons                                                                    |                                                                            |
-|---------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | [a11y](addons/a11y/)                                                      | Test components for user accessibility in Storybook                        |
 | [actions](addons/actions/)                                                | Log actions as users interact with components in the Storybook UI          |
 | [backgrounds](addons/backgrounds/)                                        | Let users choose backgrounds in the Storybook UI                           |
@@ -139,13 +139,13 @@ See [Addon / Framework Support Table](https://storybook.js.org/docs/react/api/fr
 
 ### Deprecated Addons
 
-| Addons                                                                             |                                                           |
-| ---------------------------------------------------------------------------------- | ----------------------------------------------------------|
-| [info](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info)   | Annotate stories with extra component usage information   |
-| [notes](https://github.com/storybookjs/deprecated-addons/tree/master/addons/notes) | Annotate Storybook stories with notes                     |
-| [contexts](https://storybook.js.org/addons/@storybook/addon-contexts/)             | Addon for driving your components under dynamic contexts  |
-| [options](https://www.npmjs.com/package/@storybook/addon-options)                  | Customize the Storybook UI in code                        |
-| [knobs](https://github.com/storybookjs/addon-knobs)                                | Interactively edit component prop data in the Storybook UI|
+| Addons                                                                           |                                                            |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [info](https://github.com/storybookjs/deprecated-addons/tree/main/addons/info)   | Annotate stories with extra component usage information    |
+| [notes](https://github.com/storybookjs/deprecated-addons/tree/main/addons/notes) | Annotate Storybook stories with notes                      |
+| [contexts](https://storybook.js.org/addons/@storybook/addon-contexts/)           | Addon for driving your components under dynamic contexts   |
+| [options](https://www.npmjs.com/package/@storybook/addon-options)                | Customize the Storybook UI in code                         |
+| [knobs](https://github.com/storybookjs/addon-knobs)                              | Interactively edit component prop data in the Storybook UI |
 
 In order to continue improving your experience, we have to eventually deprecate certain addons in favor of new, better tools.
 
@@ -157,10 +157,10 @@ If you're using contexts, we highly recommend you to migrate to [toolbars](https
 
 We have a badge! Link it to your live Storybook example.
 
-![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)
+![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@main/badge/badge-storybook.svg)
 
 ```md
-[![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)](link to site)
+[![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@main/badge/badge-storybook.svg)](link to site)
 ```
 
 If you're looking for material to use in your presentation about storybook, like logo's video material and the colors we use etc, you can find all of that at our [brand repo](https://github.com/storybookjs/brand).
@@ -279,6 +279,6 @@ Support us with a monthly donation and help us continue our activities. \[[Becom
 
 ## License
 
-[MIT](https://github.com/storybookjs/storybook/blob/master/LICENSE)
+[MIT](https://github.com/storybookjs/storybook/blob/main/LICENSE)
 
 -the end-

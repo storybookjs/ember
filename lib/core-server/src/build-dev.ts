@@ -78,7 +78,7 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   const fullOptions: Options = {
     ...options,
     presets,
-    previewCsfV3: features?.previewCsfV3,
+    features,
   };
 
   const { address, networkAddress, managerResult, previewResult } = await storybookDevServer(

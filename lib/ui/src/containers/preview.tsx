@@ -41,6 +41,7 @@ const mapper = ({ api, state }: Combo) => {
     viewMode,
     path,
     refs,
+    storyId,
     baseUrl: PREVIEW_URL || 'iframe.html',
     queryParams: customQueryParams,
     docsOnly,

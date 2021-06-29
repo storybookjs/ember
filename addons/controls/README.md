@@ -48,7 +48,7 @@ If you are somehow tied to knobs or prefer the knobs interface, we are happy to 
 
 ### How do I migrate from addon-knobs?
 
-If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/master/addons/knobs) you should consider migrating to Controls.
+If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/main/addons/knobs) you should consider migrating to Controls.
 
 You're probably using it for something that can be satisfied by one of the cases [described above](#writing-stories).
 
@@ -90,7 +90,7 @@ export const Reflow = () => {
     </>
   );
 };
-``` 
+```
 
 And again, as above, this can be rewritten using [fully custom args](https://storybook.js.org/docs/react/essentials/controls#fully-custom-args):
 
@@ -98,24 +98,24 @@ And again, as above, this can be rewritten using [fully custom args](https://sto
 export const Reflow = ({ count, label, ...args }) => (
   <>
     {[...Array(count)].map((_, i) => (
-        <Button key={i} label={`${label} ${i}`} {...args} />
+      <Button key={i} label={`${label} ${i}`} {...args} />
     ))}
   </>
 );
 
-Reflow.args = { 
-  count: 3, 
-  label: 'reflow' 
+Reflow.args = {
+  count: 3,
+  label: 'reflow',
 };
 
 Reflow.argTypes = {
-  count: { 
-    control: { 
-      type: 'range', 
-      min: 0, 
-      max: 20 
-    } 
-  }
+  count: {
+    control: {
+      type: 'range',
+      min: 0,
+      max: 20,
+    },
+  },
 };
 ```
 

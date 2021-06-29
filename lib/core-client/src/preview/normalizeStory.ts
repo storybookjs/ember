@@ -1,8 +1,10 @@
+import global from 'global';
 import { logger } from '@storybook/client-logger';
 import { storyNameFromExport, toId } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
-import { isCsf3Enabled } from './csf3';
+
+const { FEATURES = {} } = global;
 
 const deprecatedStoryAnnotation = dedent`
 CSF .story annotations deprecated; annotate story functions directly:
@@ -69,7 +71,7 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any, globalRend
 
   const {
     render,
-    setup,
+    play,
     parameters: storyParams,
     decorators = [],
     loaders = [],
@@ -87,7 +89,7 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any, globalRend
     loaders,
     args,
     argTypes,
-    setup: setup || meta.setup,
+    play: play || meta.play,
   };
 
   return {
@@ -97,4 +99,4 @@ export const normalizeV3 = (key: string, storyExport: any, meta: any, globalRend
   };
 };
 
-export const normalizeStory = isCsf3Enabled() ? normalizeV3 : normalizeV2;
+export const normalizeStory = FEATURES.previewCsfV3 ? normalizeV3 : normalizeV2;

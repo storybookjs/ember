@@ -23,10 +23,10 @@ export const StoryNoRender = {
   args: { label: 'magic!' },
 };
 
-export const StoryWithSetup = {
-  args: { label: 'setup' },
-  setup: () => {
-    console.log('setup!!');
+export const StoryWithPlay = {
+  args: { label: 'play' },
+  play: () => {
+    console.log('play!!');
     userEvent.click(screen.getByRole('button'));
   },
 };
