@@ -1,3 +1,9 @@
+## 6.4.0-alpha.7 (June 29, 2021)
+
+### Features
+
+- CSF: Generate default titles based on file path ([#15376](https://github.com/storybookjs/storybook/pull/15376))
+
 ## 6.4.0-alpha.6 (June 29, 2021)
 
 ### Bug Fixes
