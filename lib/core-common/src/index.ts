@@ -22,5 +22,6 @@ export * from './utils/interpolate';
 export * from './utils/validate-configuration-files';
 export * from './utils/to-require-context';
 export * from './utils/has-dotenv';
+export * from './utils/normalize-stories';
 
 export * from './types';
