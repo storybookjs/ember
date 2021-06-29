@@ -17,7 +17,7 @@
 - [Reordering Docs tab first](#reordering-docs-tab-first)
 - [Customizing source snippets](#customizing-source-snippets)
 - [Overwriting docs container](#overwriting-docs-container)
-- [Add doc to individual stories](#add-doc-to-individual-stories)
+- [Add description to individual stories](#add-description-to-individual-stories)
 - [More resources](#more-resources)
 
 ## Component Story Format (CSF) with DocsPage
@@ -337,7 +337,7 @@ import { theme } from '../path/to/theme'
 Rest of your file...
 ```
 
-## Add doc to individual stories
+## Add description to individual stories
 
 Add `storyDescription` to `parameters.docs`
 
