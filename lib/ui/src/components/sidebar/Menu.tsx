@@ -124,7 +124,7 @@ export const ToolbarMenu: FunctionComponent<{
       closeOnClick
       tooltip={({ onHide }) => <SidebarMenuList onHide={onHide} menu={menu} />}
     >
-      <IconButton title="Shortcuts">
+      <IconButton title="Shortcuts" aria-label="Shortcuts">
         <Icons icon="menu" />
       </IconButton>
     </WithTooltip>
