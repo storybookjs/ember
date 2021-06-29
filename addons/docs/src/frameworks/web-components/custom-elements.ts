@@ -49,24 +49,28 @@ interface Sections {
 function mapData(data: TagItem[], category: string) {
   return (
     data &&
-    data.reduce((acc, item) => {
-      if (item?.kind === 'method') return acc;
+    data
+      .filter((item) => !!item)
+      .reduce((acc, item) => {
+        if (item.kind === 'method') return acc;
 
-      const type =
-        category === 'properties' ? { name: item?.type?.text || item.type } : { name: 'void' };
-      acc[item.name] = {
-        name: item.name,
-        required: false,
-        description: item.description,
-        type,
-        table: {
-          category,
-          type: { summary: item?.type?.text || item.type },
-          defaultValue: { summary: item.default !== undefined ? item.default : item.defaultValue },
-        },
-      };
-      return acc;
-    }, {} as ArgTypes)
+        const type =
+          category === 'properties' ? { name: item.type?.text || item.type } : { name: 'void' };
+        acc[item.name] = {
+          name: item.name,
+          required: false,
+          description: item.description,
+          type,
+          table: {
+            category,
+            type: { summary: item.type?.text || item.type },
+            defaultValue: {
+              summary: item.default !== undefined ? item.default : item.defaultValue,
+            },
+          },
+        };
+        return acc;
+      }, {} as ArgTypes)
   );
 }
 
