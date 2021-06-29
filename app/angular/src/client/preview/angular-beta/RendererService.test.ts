@@ -57,6 +57,29 @@ describe('RendererService', () => {
       );
     });
 
+    it('should handle circular reference in moduleMetadata', async () => {
+      class Thing {
+        token: Thing;
+
+        constructor() {
+          this.token = this;
+        }
+      }
+      const token = new Thing();
+
+      await rendererService.render({
+        storyFnAngular: {
+          template: '🦊',
+          props: {},
+          moduleMetadata: { providers: [{ provide: 'foo', useValue: token }] },
+        },
+        forced: false,
+        parameters: {} as any,
+      });
+
+      expect(document.body.getElementsByTagName('storybook-wrapper')[0].innerHTML).toBe('🦊');
+    });
+
     describe('when forced=true', () => {
       beforeEach(async () => {
         // Init first render
