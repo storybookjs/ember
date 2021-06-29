@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.1","info":{"plain":"### Bug Fixes\n\n- Essentials: Update addon measure and outline ([#15354](https://github.com/storybookjs/storybook/pull/15354))\n- UI: Fix navigation after no story error ([#15349](https://github.com/storybookjs/storybook/pull/15349))"}}
+{"version":"6.4.0-alpha.6","info":{"plain":"### Bug Fixes\n\n- Core: Fix decorator context update ([#15408](https://github.com/storybookjs/storybook/pull/15408))\n- Revert \"Vue3: Update args without re-mounting component\" ([#15409](https://github.com/storybookjs/storybook/pull/15409))"}}

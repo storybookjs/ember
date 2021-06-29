@@ -155,7 +155,7 @@ export interface BuilderOptions {
   cache: FileSystemCache;
   configDir: string;
   docsMode: boolean;
-  previewCsfV3?: boolean;
+  features?: StorybookConfig['features'];
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;

@@ -18,6 +18,7 @@ import {
   nodeModulesPaths,
   interpolate,
   Options,
+  hasDotenv,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -59,6 +60,7 @@ export default async ({
   presets,
   typescriptOptions,
   modern,
+  features,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -153,6 +155,7 @@ export default async ({
           globals: {
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            FEATURES: features,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -175,7 +178,7 @@ export default async ({
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
-      new Dotenv({ silent: true }),
+      hasDotenv() ? new Dotenv({ silent: true }) : null,
       shouldCheckTs ? new ForkTsCheckerWebpackPlugin(tsCheckOptions) : null,
     ].filter(Boolean),
     module: {

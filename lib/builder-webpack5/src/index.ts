@@ -60,7 +60,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
       totalTime: process.hrtime(startTime),
       stats: ({
         hasErrors: () => true,
-        hasWarngins: () => false,
+        hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
       } as any) as Stats,
     };

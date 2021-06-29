@@ -79,7 +79,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   const fullOptions: Options = {
     ...options,
     presets,
-    previewCsfV3: features?.previewCsfV3,
+    features,
   };
 
   const core = await presets.apply<{ builder?: string }>('core');
