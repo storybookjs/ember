@@ -218,6 +218,7 @@ export default async ({
       runtimeChunk: true,
       sideEffects: true,
       usedExports: true,
+      moduleIds: 'named',
       minimizer: isProd
         ? [
             new TerserWebpackPlugin({
