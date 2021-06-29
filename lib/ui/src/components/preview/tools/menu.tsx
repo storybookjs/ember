@@ -16,7 +16,7 @@ export const menuTool: Addon = {
     <>
       <Consumer filter={menuMapper}>
         {({ isVisible, toggle }) =>
-          isVisible && (
+          !isVisible && (
             <>
               <IconButton
                 aria-label="Show sidebar"
