@@ -33,7 +33,7 @@
           "name": "SbButton",
           "cssProperties": [
             {
-              "description": "- Controls the color of bar",
+              "description": "Controls the color of bar",
               "name": "--sb-primary-color",
               "default": "#1ea7fd"
             }
@@ -45,14 +45,16 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "- Set button in primary mode"
+              "description": "Set button in primary mode",
+              "privacy": "public"
             },
             {
               "kind": "field",
               "name": "backgroundColor",
               "type": {
                 "text": "string"
-              }
+              },
+              "privacy": "public"
             },
             {
               "kind": "field",
@@ -60,37 +62,19 @@
               "type": {
                 "text": "'small' | 'medium' | 'large'"
               },
-              "default": "medium"
+              "default": "'medium'",
+              "privacy": "public"
             },
             {
               "kind": "field",
               "name": "label",
-              "default": ""
+              "default": "''",
+              "privacy": "public"
             },
             {
               "kind": "method",
               "name": "onClick",
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "label",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "primary",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "size",
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "backgroundColor",
-              "privacy": "public"
             }
           ],
           "events": [
@@ -99,7 +83,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- some description for typed-custom-event"
+              "description": "Custom event send when the button is clicked"
             }
           ],
           "attributes": [
@@ -107,21 +91,21 @@
               "type": {
                 "text": "string"
               },
-              "description": "- Label of the button",
+              "description": "Label of the button",
               "name": "label"
             },
             {
               "type": {
                 "text": "string"
               },
-              "description": "- Size of the button, can be \"small\", \"medium\" or \"large\"; default is \"medium\".",
+              "description": "Size of the button, can be \"small\", \"medium\" or \"large\"; default is \"medium\".",
               "name": "size"
             },
             {
               "type": {
                 "text": "string"
               },
-              "description": "- Color of the button's background",
+              "description": "Color of the button's background",
               "name": "backgroundColor"
             },
             {
@@ -142,7 +126,8 @@
             }
           ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit"
           },
           "tagName": "sb-button",
           "summary": "This is a simple Storybook Button",
@@ -182,7 +167,8 @@
               "name": "user",
               "type": {
                 "text": "{}"
-              }
+              },
+              "privacy": "public"
             },
             {
               "kind": "method",
@@ -201,11 +187,6 @@
               "kind": "method",
               "name": "logInOutButton",
               "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "user",
-              "privacy": "public"
             }
           ],
           "events": [
@@ -218,21 +199,21 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- Event send when user clicks on create account button",
+              "description": "Event send when user clicks on create account button",
               "name": "sb-header:createAccount"
             },
             {
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- Event send when user clicks on login button",
+              "description": "Event send when user clicks on login button",
               "name": "sb-header:login"
             },
             {
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- Event send when user clicks on logout button",
+              "description": "Event send when user clicks on logout button",
               "name": "sb-header:logout"
             }
           ],
@@ -241,7 +222,7 @@
               "type": {
                 "text": "Object"
               },
-              "description": "- User of the app",
+              "description": "User of the app",
               "name": "user"
             },
             {
@@ -250,7 +231,8 @@
             }
           ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit"
           },
           "tagName": "sb-header",
           "summary": "This is a simple Storybook Header",
@@ -290,11 +272,7 @@
               "name": "user",
               "type": {
                 "text": "{}"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "user",
+              },
               "privacy": "public"
             }
           ],
@@ -303,7 +281,7 @@
               "type": {
                 "text": "Object"
               },
-              "description": "- User of the app",
+              "description": "User of the app",
               "name": "user"
             },
             {
@@ -312,7 +290,8 @@
             }
           ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit"
           },
           "tagName": "sb-page",
           "summary": "This is a simple Storybook Page",
@@ -348,32 +327,32 @@
           "name": "DemoWcCard",
           "cssProperties": [
             {
-              "description": "- Header font size",
+              "description": "Header font size",
               "name": "--demo-wc-card-header-font-size"
             },
             {
-              "description": "- Font color for front",
+              "description": "Font color for front",
               "name": "--demo-wc-card-front-color"
             },
             {
-              "description": "- Font color for back",
+              "description": "Font color for back",
               "name": "--demo-wc-card-back-color"
             }
           ],
           "cssParts": [
             {
-              "description": "- Front of the card",
+              "description": "Front of the card",
               "name": "front"
             },
             {
-              "description": "- Back of the card",
+              "description": "Back of the card",
               "name": "back"
             }
           ],
           "slots": [
             {
               "description": "This is an unnamed slot (the default slot)",
-              "name": "-"
+              "name": ""
             }
           ],
           "members": [
@@ -399,7 +378,8 @@
               "kind": "field",
               "name": "rows",
               "privacy": "public",
-              "description": "Data rows"
+              "description": "Data rows",
+              "default": "[]"
             }
           ],
           "events": [
@@ -408,7 +388,7 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "- Fires whenever it switches between front/back"
+              "description": "Fires whenever it switches between front/back"
             }
           ],
           "attributes": [
@@ -426,7 +406,8 @@
             }
           ],
           "superclass": {
-            "name": "LitElement"
+            "name": "LitElement",
+            "package": "lit"
           },
           "tagName": "demo-wc-card",
           "customElement": true

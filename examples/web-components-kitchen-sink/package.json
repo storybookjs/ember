@@ -55,7 +55,7 @@
     "lit": "^2.0.0-rc.2"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.3.0",
+    "@custom-elements-manifest/analyzer": "^0.3.11",
     "@storybook/addon-a11y": "*",
     "@storybook/addon-actions": "*",
     "@storybook/addon-backgrounds": "*",
