@@ -5,6 +5,14 @@ import type { StoriesEntry, NormalizedStoriesEntry } from '../types';
 const DEFAULT_FILES = '*.stories.@(mdx|tsx|ts|jsx|js)';
 const DEFAULT_TITLE_PREFIX = '';
 
+const isDirectory = (configDir: string, entry: string) => {
+  try {
+    return fs.lstatSync(resolve(configDir, entry)).isDirectory();
+  } catch (err) {
+    return false;
+  }
+};
+
 export const normalizeStoriesEntry = (
   entry: StoriesEntry,
   configDir: string
@@ -14,7 +22,7 @@ export const normalizeStoriesEntry = (
   let files;
   let titlePrefix;
   if (typeof entry === 'string') {
-    if (!entry.includes('**') && fs.lstatSync(resolve(configDir, entry)).isDirectory()) {
+    if (!entry.includes('**') && isDirectory(configDir, entry)) {
       directory = entry;
       titlePrefix = DEFAULT_TITLE_PREFIX;
       files = DEFAULT_FILES;
