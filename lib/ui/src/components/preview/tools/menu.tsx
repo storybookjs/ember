@@ -25,7 +25,7 @@ export const menuTool: Addon = {
     <>
       <Consumer filter={menuMapper}>
         {({ isVisible, menu }) =>
-          isVisible ? null : (
+          isVisible && (
             <>
               <ToolbarMenu menu={menu} />
               <Separator />
