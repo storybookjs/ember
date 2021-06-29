@@ -41,7 +41,7 @@ function prepare(rawStory: StoryFnVueReturnType, innerStory?: ConcreteComponent)
 
   return {
     render() {
-      return h(story, this.$root.storyArgs);
+      return h(story);
     },
   };
 }
