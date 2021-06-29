@@ -336,6 +336,22 @@ import { theme } from '../path/to/theme'
 Rest of your file...
 ```
 
+## Add doc to individual stories
+
+Add `storyDescription` to `parameters.docs`
+
+```js
+const Example = () => <Button />;
+
+Example.parameters = {
+  docs: {
+    storyDescription: "Individiual story description, may conatin `markdown` markup",
+  },
+};
+```
+
+There is also an webpack loader package that extracts descriptions from jsdoc comments [story-description-loader](https://www.npmjs.com/package/story-description-loader)
+
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
