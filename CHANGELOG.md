@@ -1,3 +1,10 @@
+## 6.4.0-alpha.6 (June 29, 2021)
+
+### Bug Fixes
+
+- Core: Fix decorator context update ([#15408](https://github.com/storybookjs/storybook/pull/15408))
+- Revert "Vue3: Update args without re-mounting component" ([#15409](https://github.com/storybookjs/storybook/pull/15409))
+
 ## 6.4.0-alpha.5 (June 29, 2021)
 
 ### Features
