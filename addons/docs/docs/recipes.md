@@ -339,7 +339,7 @@ Rest of your file...
 
 ## Add description to individual stories
 
-Add `storyDescription` to `parameters.docs`
+Add `story` to `docs.description` parameter
 
 ```js
 const Example = () => <Button />;
