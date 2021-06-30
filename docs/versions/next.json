@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.7","info":{"plain":"### Features\n\n- CSF: Generate default titles based on file path ([#15376](https://github.com/storybookjs/storybook/pull/15376))"}}
+{"version":"6.4.0-alpha.9","info":{"plain":"### Dependency Upgrades\n\n- Upgrade bad release of `react-docgen-typescript-plugin` ([#15432](https://github.com/storybookjs/storybook/pull/15432))"}}

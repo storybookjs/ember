@@ -41,7 +41,10 @@ export async function createPreviewEntry(options: { configDir: string; presets: 
 
   const configs = getMainConfigs(options);
   const other: string[] = await presets.apply('config', [], options);
-  const stories = normalizeStories(await presets.apply('stories', [], options), configDir);
+  const stories = normalizeStories(await presets.apply('stories', [], options), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
 
   if (configs.length > 0) {
     const noun = configs.length === 1 ? 'file' : 'files';
