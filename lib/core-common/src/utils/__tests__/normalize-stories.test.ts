@@ -1,13 +1,9 @@
-import { normalizeStoriesEntry } from '../normalize-stories';
+import { normalizeStoriesEntry, normalizeDirectory } from '../normalize-stories';
 
 expect.addSnapshotSerializer({
   print: (val: any) => JSON.stringify(val, null, 2),
   test: (val) => typeof val !== 'string',
 });
-
-jest.mock('path', () => ({
-  resolve: () => 'dummy',
-}));
 
 jest.mock('fs', () => ({
   lstatSync: () => ({
@@ -88,6 +84,32 @@ describe('normalizeStoriesEntry', () => {
           "directory": "..",
           "titlePrefix": "atoms",
           "files": "*.stories.mdx"
+        }
+      }
+    `);
+  });
+});
+
+describe('normalizeDirectory', () => {
+  it('.storybook config', () => {
+    expect(
+      normalizeDirectory(
+        {
+          glob: '../src/**/*.stories.*',
+          specifier: {
+            directory: '../src',
+          },
+        },
+        {
+          configDir: '/project/.storybook',
+          workingDir: '/project',
+        }
+      )
+    ).toMatchInlineSnapshot(`
+      {
+        "glob": "../src/**/*.stories.*",
+        "specifier": {
+          "directory": "./src"
         }
       }
     `);

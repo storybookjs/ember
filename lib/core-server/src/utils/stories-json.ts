@@ -64,7 +64,10 @@ const step = 100; // .1s
 export async function useStoriesJson(router: any, options: Options) {
   const storiesJson = resolvePathInStorybookCache('stories.json');
   await fs.remove(storiesJson);
-  const stories = normalizeStories(await options.presets.apply('stories'), options.configDir);
+  const stories = normalizeStories(await options.presets.apply('stories'), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
   const globs = stories.map((s) => s.glob);
   extractStoriesJson(storiesJson, globs, options.configDir);
   router.use('/stories.json', async (_req: any, res: any) => {

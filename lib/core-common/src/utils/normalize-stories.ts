@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { resolve } from 'path';
+import path from 'path';
 import type { StoriesEntry, NormalizedStoriesEntry } from '../types';
 
 const DEFAULT_FILES = '*.stories.@(mdx|tsx|ts|jsx|js)';
@@ -7,7 +7,7 @@ const DEFAULT_TITLE_PREFIX = '';
 
 const isDirectory = (configDir: string, entry: string) => {
   try {
-    return fs.lstatSync(resolve(configDir, entry)).isDirectory();
+    return fs.lstatSync(path.resolve(configDir, entry)).isDirectory();
   } catch (err) {
     return false;
   }
@@ -40,5 +40,42 @@ export const normalizeStoriesEntry = (
   return { glob: `${directory}/**/${files}`, specifier: { directory, titlePrefix, files } };
 };
 
-export const normalizeStories = (entries: StoriesEntry[], configDir: string) =>
-  entries.map((entry) => normalizeStoriesEntry(entry, configDir));
+interface NormalizeOptions {
+  configDir: string;
+  workingDir: string;
+}
+
+/**
+ * Stories entries are specified relative to the configDir. Webpack filenames are produced relative to the
+ * current working directory. This function rewrites the specifier.directory relative to the current working
+ * directory.
+ */
+export const normalizeDirectory = (
+  entry: NormalizedStoriesEntry,
+  { configDir, workingDir }: NormalizeOptions
+) => {
+  if (!entry.specifier) return entry;
+
+  const { directory } = entry.specifier;
+  const directoryFromConfig = path.resolve(configDir, directory);
+  let directoryFromWorking = path.relative(workingDir, directoryFromConfig);
+
+  // relative('/foo', '/foo/src') => 'src'
+  // but we want `./src`to match webpack's file names
+  if (!directoryFromWorking.startsWith('.')) {
+    directoryFromWorking = `.${path.sep}${directoryFromWorking}`;
+  }
+
+  return {
+    ...entry,
+    specifier: {
+      ...entry.specifier,
+      directory: directoryFromWorking,
+    },
+  };
+};
+
+export const normalizeStories = (entries: StoriesEntry[], options: NormalizeOptions) =>
+  entries.map((entry) =>
+    normalizeDirectory(normalizeStoriesEntry(entry, options.configDir), options)
+  );

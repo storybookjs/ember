@@ -69,7 +69,10 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
 
   const features = await presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson) {
-    const stories = normalizeStories(await presets.apply('stories'), options.configDir);
+    const stories = normalizeStories(await presets.apply('stories'), {
+      configDir: options.configDir,
+      workingDir: process.cwd(),
+    });
     await extractStoriesJson(
       path.join(options.outputDir, 'stories.json'),
       stories.map((s) => s.glob),
