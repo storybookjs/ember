@@ -1,3 +1,9 @@
+## 6.4.0-alpha.9 (June 30, 2021)
+
+### Dependency Upgrades
+
+- Upgrade bad release of `react-docgen-typescript-plugin` ([#15432](https://github.com/storybookjs/storybook/pull/15432))
+
 ## 6.4.0-alpha.8 (June 30, 2021)
 
 ### Features
