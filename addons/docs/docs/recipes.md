@@ -17,6 +17,7 @@
 - [Reordering Docs tab first](#reordering-docs-tab-first)
 - [Customizing source snippets](#customizing-source-snippets)
 - [Overwriting docs container](#overwriting-docs-container)
+- [Add description to individual stories](#add-description-to-individual-stories)
 - [More resources](#more-resources)
 
 ## Component Story Format (CSF) with DocsPage
@@ -335,6 +336,24 @@ import { theme } from '../path/to/theme'
 
 Rest of your file...
 ```
+
+## Add description to individual stories
+
+Add `story` to `docs.description` parameter
+
+```js
+const Example = () => <Button />;
+
+Example.parameters = {
+  docs: {
+    description: {
+      story: "Individiual story description, may conatin `markdown` markup"
+    },
+  },
+};
+```
+
+There is also an webpack loader package that extracts descriptions from jsdoc comments [story-description-loader](https://www.npmjs.com/package/story-description-loader)
 
 ## More resources
 
