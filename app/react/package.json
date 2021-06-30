@@ -53,7 +53,7 @@
     "@storybook/core": "6.4.0-alpha.7",
     "@storybook/core-common": "6.4.0-alpha.7",
     "@storybook/node-logger": "6.4.0-alpha.7",
-    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.3c70e01.0",
+    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.424ea79.0",
     "@storybook/semver": "^7.3.2",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
