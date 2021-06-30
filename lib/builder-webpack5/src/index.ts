@@ -23,7 +23,10 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const entries = await presets.apply('entries', [], options);
   const stories = normalizeStories(
     (await presets.apply('stories', [], options)) as StoriesEntry[],
-    options.configDir
+    {
+      configDir: options.configDir,
+      workingDir: process.cwd(),
+    }
   );
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
