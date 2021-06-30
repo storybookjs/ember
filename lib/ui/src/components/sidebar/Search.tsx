@@ -87,7 +87,7 @@ const Input = styled.input(({ theme }) => ({
   '&:focus, &:active': {
     outline: 0,
     borderColor: theme.color.secondary,
-    background: theme.input.background,
+    background: theme.background.app,
   },
   '&::placeholder': {
     color: theme.textMutedColor,
