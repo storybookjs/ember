@@ -6727,7 +6727,7 @@ __metadata:
     "@babel/preset-typescript": ^7.12.7
     "@babel/register": ^7.12.1
     "@storybook/node-logger": 6.4.0-alpha.7
-    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.3c70e01.0
+    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.424ea79.0
     "@storybook/semver": ^7.3.2
     "@types/glob-base": ^0.3.0
     "@types/interpret": ^1.1.1
@@ -7259,21 +7259,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.3c70e01.0":
-  version: 1.0.2-canary.3c70e01.0
-  resolution: "@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.3c70e01.0"
+"@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.424ea79.0":
+  version: 1.0.2-canary.424ea79.0
+  resolution: "@storybook/react-docgen-typescript-plugin@npm:1.0.2-canary.424ea79.0"
   dependencies:
     debug: ^4.1.1
     endent: ^2.0.1
     find-cache-dir: ^3.3.1
     flat-cache: ^3.0.4
     micromatch: ^4.0.2
-    react-docgen-typescript: ^2.0.0
+    react-docgen-typescript: ^1.22.0
     tslib: ^2.0.0
   peerDependencies:
     typescript: ">= 3.x"
     webpack: ">= 4"
-  checksum: 6c31de7199bd868ed2b72c7ace99cffe8a5475a44751bf42a6042f662abb13b47bae7b7c02a5de8165c1fc75f9c1ae2fcf1b8dc2e31a101d09e0d88666852793
+  checksum: d1989c5ce73d661b175ce9928a6a94e8bea20dc4d8213e639fc750ff7c8d53bf3aec62e46828603a83fe629911b77b49917be0ff13878ae8541a7d7727f58d10
   languageName: node
   linkType: hard
 
@@ -7289,7 +7289,7 @@ __metadata:
     "@storybook/core": 6.4.0-alpha.7
     "@storybook/core-common": 6.4.0-alpha.7
     "@storybook/node-logger": 6.4.0-alpha.7
-    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.3c70e01.0
+    "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.424ea79.0
     "@storybook/semver": ^7.3.2
     "@types/node": ^14.14.20
     "@types/prompts": ^2.0.9
@@ -35808,12 +35808,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-docgen-typescript@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-docgen-typescript@npm:2.0.0"
+"react-docgen-typescript@npm:^1.22.0":
+  version: 1.22.0
+  resolution: "react-docgen-typescript@npm:1.22.0"
   peerDependencies:
-    typescript: ">= 4.3.x"
-  checksum: 7c697e44426b873776a39e707deee49783f00d99eae0ab115c3343681d6086965c9a62380ea5e18eb31cefc535528dc1f13e0023c1757b8af2fe2d96b4acf1a1
+    typescript: ">= 3.x"
+  checksum: 6d13f70a796087d63a556a5850abdb1e48774d932658fb625b04d84fcf4acc0b3f1278100dfb49ac08b96bcdcc6c188016d77372f1720296383a2c48e1e9852b
   languageName: node
   linkType: hard
 

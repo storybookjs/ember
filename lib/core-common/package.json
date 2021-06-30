@@ -90,7 +90,7 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.3c70e01.0",
+    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.424ea79.0",
     "@types/interpret": "^1.1.1",
     "@types/mock-fs": "^4.13.0",
     "mock-fs": "^4.13.0"
