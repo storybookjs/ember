@@ -1,3 +1,12 @@
+## 6.3.2 (June 30, 2021)
+
+### Bug Fixes
+
+- Essentials: Update measure and outline. Fix alt+tab issues on windows. ([#15402](https://github.com/storybookjs/storybook/pull/15402))
+- Core: Fix decorator context update ([#15408](https://github.com/storybookjs/storybook/pull/15408))
+- Revert "Vue3: Update args without re-mounting component" ([#15409](https://github.com/storybookjs/storybook/pull/15409))
+- Upgrade bad release of `react-docgen-typescript-plugin` ([#15432](https://github.com/storybookjs/storybook/pull/15432))
+
 ## 6.4.0-alpha.9 (June 30, 2021)
 
 ### Dependency Upgrades
