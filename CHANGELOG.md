@@ -1,3 +1,17 @@
+## 6.4.0-alpha.8 (June 30, 2021)
+
+### Features
+
+- Web-components: Custom Elements Manifest v1 support ([#15138](https://github.com/storybookjs/storybook/pull/15138))
+
+### Bug Fixes
+
+- CSF: Fix auto-title generation for standard config dir ([#15430](https://github.com/storybookjs/storybook/pull/15430))
+
+### Dependency Upgrades
+
+- Upgrade `react-docgen-typescript-plugin` for refresh perf regression ([#15431](https://github.com/storybookjs/storybook/pull/15431))
+
 ## 6.4.0-alpha.7 (June 29, 2021)
 
 ### Features
