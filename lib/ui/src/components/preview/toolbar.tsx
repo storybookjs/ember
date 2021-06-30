@@ -15,6 +15,7 @@ import * as S from './utils/components';
 import { PreviewProps } from './utils/types';
 import { copyTool } from './tools/copy';
 import { ejectTool } from './tools/eject';
+import { menuTool } from './tools/menu';
 
 export const getTools = (getFn: API['getElements']) => Object.values(getFn<Addon>(types.TOOL));
 
@@ -193,7 +194,11 @@ export function filterTools(
     path: State['path'];
   }
 ) {
-  const toolsLeft = [tabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(tabs), ...tools];
+  const toolsLeft = [
+    menuTool,
+    tabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(tabs),
+    ...tools,
+  ];
   const toolsRight = [...toolsExtra];
 
   const filter = (item: Partial<Addon>) =>
