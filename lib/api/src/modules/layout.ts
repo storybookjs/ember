@@ -156,14 +156,14 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
           if (singleStory) return { layout: state.layout };
 
           const { showPanel, isFullscreen } = state.layout;
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
-          const shouldToggleFullScreen = showPanel === false && value === false;
+          const showNav = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
+          const shouldToggleFullScreen = showPanel === false && showNav === false;
 
           return {
             layout: {
               ...state.layout,
-              showNav: value,
-              isFullscreen: shouldToggleFullScreen ? true : isFullscreen,
+              showNav,
+              isFullscreen: shouldToggleFullScreen ? true : !showNav && isFullscreen,
             },
           };
         },
