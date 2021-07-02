@@ -128,5 +128,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "b9b9f9484bfe3cb9f259c26bc71e7635362addde"
+  "gitHead": "1b43aa79911d0d9d936571533cbf76c6ecf928b0"
 }
