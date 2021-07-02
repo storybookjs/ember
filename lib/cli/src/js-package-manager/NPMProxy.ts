@@ -60,7 +60,7 @@ export class NPMProxy extends JsPackageManager {
         return parsedOutput;
       }
     } catch (e) {
-      throw new Error(`Unable to find versions of ${packageName} using yarn`);
+      throw new Error(`Unable to find versions of ${packageName} using npm`);
     }
   }
 }
