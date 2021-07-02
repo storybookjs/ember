@@ -138,7 +138,6 @@ export default async ({
       publicPath: '',
     },
     watchOptions: {
-      aggregateTimeout: 10,
       ignored: /node_modules/,
     },
     plugins: [
