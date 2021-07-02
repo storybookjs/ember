@@ -29,6 +29,8 @@ npm install --save-dev @storybook/addon-essentials
 Update your Storybook configuration (in `.storybook/main.js`) to include the essentials addon.
 
 ```js
+// .storybook/main.js
+
 module.exports = {
   addons: ['@storybook/addon-essentials'],
 };
