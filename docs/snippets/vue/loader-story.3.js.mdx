@@ -20,7 +20,7 @@ export const Primary = (args, { loaded: { todo } }) => {
   };
 };
 
-SampleStory.loaders = [
+Primary.loaders = [
   async () => ({
     todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
   }),

@@ -15,7 +15,7 @@ export const Primary = (args, { loaded: { todo } }) => ({
   props: { ...args, ...todo },
 });
 
-Primaryloaders = [
+Primary.loaders = [
   async () => ({
     todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
   }),

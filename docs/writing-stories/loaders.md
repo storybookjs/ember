@@ -31,7 +31,7 @@ Loaders are helpful when you need to load story data externally (e.g., from a re
 
 <!-- prettier-ignore-end -->
 
-The response obtained from the remote API call is combined into a `loaded` field on the story context, which is the second argument to a story function. For example, in React, the story's args were spread first to prioritize them over the static data provided by the loader. Other frameworks will not need such requisite.
+The response obtained from the remote API call is combined into a `loaded` field on the story context, which is the second argument to a story function. For example, in React, the story's args were spread first to prioritize them over the static data provided by the loader. With other frameworks (e.g., Angular), you can write your stories as you'd usually do.
 
 ## Global loaders
 
