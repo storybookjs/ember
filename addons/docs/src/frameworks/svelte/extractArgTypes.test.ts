@@ -90,7 +90,6 @@ describe('Extracting Arguments', () => {
           "control": Object {
             "type": "boolean",
           },
-          "defaultValue": true,
           "description": null,
           "name": "rounded",
           "table": Object {
@@ -103,8 +102,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
+            "name": "boolean",
             "required": false,
-            "summary": "boolean",
           },
         },
         "slot_default": Object {
@@ -123,7 +122,6 @@ describe('Extracting Arguments', () => {
           "control": Object {
             "type": "text",
           },
-          "defaultValue": "",
           "description": null,
           "name": "text",
           "table": Object {
@@ -136,8 +134,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
+            "name": "string",
             "required": false,
-            "summary": "string",
           },
         },
       }

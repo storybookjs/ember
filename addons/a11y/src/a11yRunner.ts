@@ -1,8 +1,10 @@
-import { document, window } from 'global';
+import global from 'global';
 import axe from 'axe-core';
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 import { A11yParameters } from './params';
+
+const { document, window: globalWindow } = global;
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();
@@ -66,7 +68,7 @@ const run = async (storyId: string) => {
 
 /** Returns story parameters or default ones. */
 const getParams = (storyId: string): A11yParameters => {
-  const { parameters } = window.__STORYBOOK_STORY_STORE__.fromId(storyId) || {};
+  const { parameters } = globalWindow.__STORYBOOK_STORY_STORE__.fromId(storyId) || {};
   return (
     parameters.a11y || {
       config: {},

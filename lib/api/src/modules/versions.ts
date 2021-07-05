@@ -1,10 +1,12 @@
-import { VERSIONCHECK } from 'global';
+import global from 'global';
 import semver from '@storybook/semver';
 import memoize from 'memoizerific';
 
 import { version as currentVersion } from '../version';
 
 import { ModuleFn } from '../index';
+
+const { VERSIONCHECK } = global;
 
 export interface Version {
   version: string;

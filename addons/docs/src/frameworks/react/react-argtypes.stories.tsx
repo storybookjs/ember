@@ -4,7 +4,6 @@ import { storiesOf, StoryContext } from '@storybook/react';
 import { ArgsTable } from '@storybook/components';
 import { Args } from '@storybook/api';
 import { inferControls } from '@storybook/client-api';
-import { useTheme, Theme } from '@storybook/theming';
 
 import { extractArgTypes } from './extractArgTypes';
 import { Component } from '../../blocks';
@@ -16,23 +15,6 @@ const argsTableProps = (component: Component) => {
   return { rows };
 };
 
-function FormatArg({ arg }) {
-  const theme = useTheme<Theme>();
-  const badgeStyle = {
-    background: theme.background.hoverable,
-    border: `1px solid ${theme.background.hoverable}`,
-    borderRadius: 2,
-  };
-  if (typeof arg !== 'undefined') {
-    try {
-      return <code>{JSON.stringify(arg, null, 2)}</code>;
-    } catch (err) {
-      return <code style={badgeStyle}>{arg.toString()}</code>;
-    }
-  }
-  return <code style={badgeStyle}>undefined</code>;
-}
-
 const ArgsStory = ({ component }: any) => {
   const { rows } = argsTableProps(component);
   const initialArgs = mapValues(rows, (argType) => argType.defaultValue) as Args;
@@ -40,11 +22,16 @@ const ArgsStory = ({ component }: any) => {
   const [args, setArgs] = useState(initialArgs);
   return (
     <>
+      <p>
+        <b>NOTE:</b> these stories are to help visualise the snapshot tests in{' '}
+        <code>./react-properties.test.js</code>.
+      </p>
+      <ArgsTable rows={rows} args={args} updateArgs={(val) => setArgs({ ...args, ...val })} />
       <table>
         <thead>
           <tr>
-            <th>key</th>
-            <th>val</th>
+            <th>arg name</th>
+            <th>argType</th>
           </tr>
         </thead>
         <tbody>
@@ -54,13 +41,12 @@ const ArgsStory = ({ component }: any) => {
                 <code>{key}</code>
               </td>
               <td>
-                <FormatArg arg={val} />
+                <pre>{JSON.stringify(rows[key])}</pre>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <ArgsTable rows={rows} args={args} updateArgs={(val) => setArgs({ ...args, ...val })} />
     </>
   );
 };
@@ -132,5 +118,7 @@ issuesFixtures.forEach((fixture) => {
   // eslint-disable-next-line import/no-dynamic-require, global-require
   const { component } = require(`./__testfixtures__/${fixture}/input`);
 
-  issuesStories.add(fixture, () => <ArgsStory component={component} />);
+  issuesStories.add(fixture, () => <ArgsStory component={component} />, {
+    chromatic: { disable: true },
+  });
 });

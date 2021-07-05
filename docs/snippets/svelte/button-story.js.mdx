@@ -3,11 +3,16 @@
 
 import Button from './Button.svelte';
 
+export default {
+  title: 'Components/Button',
+  component: Button,
+}
+
 export const Primary = () => ({
-    Component: Button,
-    props: {
-        primary: true,
-        label: 'Button',
-    },
+  Component: Button,
+  props: {
+    primary: true,
+    label: 'Button',
+  },
 });
 ```

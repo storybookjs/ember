@@ -68,9 +68,18 @@ One way we improve that situation is by pulling the rendered subcomponent out in
 
 Now that `children` is an arg, we can potentially reuse it in another story.
 
+However, there are some caveats when using this approach that you should be aware of.
+
+The `children` `args` as any other arg needs to be JSON serializable. It means that you should:
+
+- Avoid using empty values
+- Use caution with components that include third party libraries
+
+As they could lead into errors with your Storybook.
+
 <div class="aside">
 
-As things stand (we hope to improve this soon) you cannot edit children in a control yet.
+We're currently working on improving the overall experience for the children arg and allow you to edit children arg in a control and allow you to use other types of components in the near future. But for now you need to factor in this caveat when you're implementing your stories.
 
 </div>
 

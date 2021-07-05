@@ -1,6 +1,6 @@
 {
   "name": "@storybook/codemod",
-  "version": "6.2.1",
+  "version": "6.4.0-alpha.11",
   "description": "A collection of codemod scripts written with JSCodeshift",
   "keywords": [
     "storybook"
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/codemod"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -37,9 +41,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
+    "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
     "@storybook/csf": "0.0.1",
-    "@storybook/node-logger": "6.2.1",
+    "@storybook/csf-tools": "6.4.0-alpha.11",
+    "@storybook/node-logger": "6.4.0-alpha.11",
     "core-js": "^3.8.2",
     "cross-spawn": "^7.0.3",
     "globby": "^11.0.2",
@@ -56,5 +62,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "3d5d666f4e961205bfb7b94133c794866f0d7a0f"
+  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
+  "sbmodern": "dist/modern/index.js"
 }

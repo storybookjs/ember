@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.2.1",
+  "version": "6.4.0-alpha.11",
   "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
@@ -15,6 +15,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/storysource"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "main": "dist/cjs/index.js",
@@ -37,13 +41,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.1",
-    "@storybook/api": "6.2.1",
-    "@storybook/client-logger": "6.2.1",
-    "@storybook/components": "6.2.1",
-    "@storybook/router": "6.2.1",
-    "@storybook/source-loader": "6.2.1",
-    "@storybook/theming": "6.2.1",
+    "@storybook/addons": "6.4.0-alpha.11",
+    "@storybook/api": "6.4.0-alpha.11",
+    "@storybook/client-logger": "6.4.0-alpha.11",
+    "@storybook/components": "6.4.0-alpha.11",
+    "@storybook/router": "6.4.0-alpha.11",
+    "@storybook/source-loader": "6.4.0-alpha.11",
+    "@storybook/theming": "6.4.0-alpha.11",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
@@ -71,7 +75,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "3d5d666f4e961205bfb7b94133c794866f0d7a0f",
+  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",
     "icon": "https://user-images.githubusercontent.com/263385/101991675-48cdf300-3c7c-11eb-9400-58de5ac6daa7.png",

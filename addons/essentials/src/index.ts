@@ -37,9 +37,9 @@ export function addons(options: PresetOptions = {}) {
 
   const main = requireMain(options.configDir);
   return (
-    ['docs', 'controls', 'actions', 'backgrounds', 'viewport', 'toolbars']
+    ['docs', 'controls', 'actions', 'backgrounds', 'viewport', 'toolbars', 'measure', 'outline']
       .filter((key) => (options as any)[key] !== false)
-      .map((key) => `@storybook/addon-${key}`)
+      .map((key) => (key === 'outline' ? `storybook-addon-${key}` : `@storybook/addon-${key}`))
       .filter((addon) => !checkInstalled(addon, main))
       // Use `require.resolve` to ensure Yarn PnP compatibility
       // Files of various addons should be resolved in the context of `addon-essentials` as they are listed as deps here

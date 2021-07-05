@@ -19,12 +19,12 @@ exports[`Storyshots Addons/Docs with text 1`] = `
 <storybook-wrapper>
   <storybook-button-component
     _nghost-a-c8=""
-    ng-reflect-text="Hello Button"
+    ng-reflect-text="hello button"
   >
     <button
       _ngcontent-a-c8=""
     >
-      Hello Button
+      hello button
     </button>
   </storybook-button-component>
 </storybook-wrapper>

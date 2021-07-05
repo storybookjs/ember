@@ -1,5 +1,5 @@
-import mapValues from 'lodash/mapValues';
-import { ArgTypesEnhancer } from '@storybook/client-api';
+import { Args } from '@storybook/addons';
+import { ArgsEnhancer } from '@storybook/client-api';
 import { action } from '../index';
 
 // interface ActionsParameter {
@@ -12,35 +12,48 @@ import { action } from '../index';
  * matches a regex, such as `^on.*` for react-style `onClick` etc.
  */
 
-export const inferActionsFromArgTypesRegex: ArgTypesEnhancer = (context) => {
-  const { actions, argTypes } = context.parameters;
+export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
+  const {
+    args,
+    argTypes,
+    parameters: { actions },
+  } = context;
   if (!actions || actions.disable || !actions.argTypesRegex || !argTypes) {
-    return argTypes;
+    return {};
   }
 
   const argTypesRegex = new RegExp(actions.argTypesRegex);
-  return mapValues(argTypes, (argType, name) => {
-    if (!argTypesRegex.test(name)) {
-      return argType;
+  const argTypesMatchingRegex = Object.entries(argTypes).filter(
+    ([name]) => !!argTypesRegex.test(name)
+  );
+
+  return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
+    if (typeof args[name] === 'undefined') {
+      acc[name] = action(name);
     }
-    return { ...argType, defaultValue: action(name) };
-  });
+    return acc;
+  }, {} as Args);
 };
+
 /**
  * Add action args for list of strings.
  */
-
-export const addActionsFromArgTypes: ArgTypesEnhancer = (context) => {
-  const { argTypes, actions } = context.parameters;
+export const addActionsFromArgTypes: ArgsEnhancer = (context) => {
+  const {
+    args,
+    argTypes,
+    parameters: { actions },
+  } = context;
   if (actions?.disable || !argTypes) {
-    return argTypes;
+    return {};
   }
 
-  return mapValues(argTypes, (argType, name) => {
-    if (!argType.action) {
-      return argType;
+  const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType.action);
+
+  return argTypesWithAction.reduce((acc, [name, argType]) => {
+    if (typeof args[name] === 'undefined') {
+      acc[name] = action(typeof argType.action === 'string' ? argType.action : name);
     }
-    const message = typeof argType.action === 'string' ? argType.action : name;
-    return { ...argType, defaultValue: action(message) };
-  });
+    return acc;
+  }, {} as Args);
 };

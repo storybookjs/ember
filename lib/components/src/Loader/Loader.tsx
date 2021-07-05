@@ -1,9 +1,11 @@
-import { EventSource, CONFIG_TYPE } from 'global';
+import global from 'global';
 import { transparentize } from 'polished';
 import React, { ComponentProps, FunctionComponent, useEffect, useState } from 'react';
 import { styled, keyframes } from '@storybook/theming';
 import { Icons } from '../icon/icon';
 import { rotate360 } from '../shared/animation';
+
+const { EventSource, CONFIG_TYPE } = global;
 
 const LoaderWrapper = styled.div<{ size?: number }>(({ size = 32 }) => ({
   borderRadius: '50%',

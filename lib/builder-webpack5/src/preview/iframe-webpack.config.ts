@@ -7,7 +7,6 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
-import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 import themingPaths from '@storybook/theming/paths';
@@ -19,6 +18,8 @@ import {
   nodeModulesPaths,
   interpolate,
   Options,
+  hasDotenv,
+  NormalizedStoriesEntry,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -59,13 +60,15 @@ export default async ({
   frameworkPath,
   presets,
   typescriptOptions,
+  modern,
+  features,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
 
-  const headHtmlSnippet = await presets.apply('previewHeadTemplate');
-  const bodyHtmlSnippet = await presets.apply('previewBodyTemplate');
+  const headHtmlSnippet = await presets.apply('previewHead');
+  const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
 
   const babelLoader = createBabelLoader(babelOptions, framework);
@@ -105,7 +108,13 @@ export default async ({
     const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
     virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
       // Make sure we also replace quotes for this one
-      .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
+      .replace(
+        "'{{stories}}'",
+        stories
+          .map((s: NormalizedStoriesEntry) => s.glob)
+          .map(toRequireContextString)
+          .join(',')
+      );
   }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
@@ -127,7 +136,6 @@ export default async ({
       logging: 'error',
     },
     watchOptions: {
-      aggregateTimeout: 10,
       ignored: /node_modules/,
     },
     ignoreWarnings: [
@@ -153,6 +161,8 @@ export default async ({
           globals: {
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            FEATURES: features,
+            STORIES: stories,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -175,7 +185,7 @@ export default async ({
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
-      new Dotenv({ silent: true }),
+      hasDotenv() ? new Dotenv({ silent: true }) : null,
       shouldCheckTs ? new ForkTsCheckerWebpackPlugin(tsCheckOptions) : null,
     ].filter(Boolean),
     module: {
@@ -184,33 +194,21 @@ export default async ({
         es6Transpiler() as any,
         {
           test: /\.md$/,
-          use: [
-            {
-              loader: require.resolve('raw-loader'),
-            },
-          ],
+          type: 'asset/source',
         },
       ],
     },
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.cjs'],
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
-      mainFields: ['browser', 'module', 'main'],
+      mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
         ...themingPaths,
         ...storybookPaths,
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
       },
-
-      plugins: [
-        // Transparently resolve packages via PnP when needed; noop otherwise
-        PnpWebpackPlugin,
-      ],
       fallback: { path: false },
-    },
-    resolveLoader: {
-      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     optimization: {
       splitChunks: {
@@ -219,6 +217,7 @@ export default async ({
       runtimeChunk: true,
       sideEffects: true,
       usedExports: true,
+      moduleIds: 'named',
       minimizer: isProd
         ? [
             new TerserWebpackPlugin({
@@ -228,7 +227,9 @@ export default async ({
                 mangle: false,
                 keep_fnames: true,
               },
-            }),
+              // It looks like the types from `@types/terser-webpack-plugin` are not matching the latest version of
+              // Webpack yet
+            }) as any,
           ]
         : [],
     },

@@ -1,7 +1,9 @@
-import { navigator } from 'global';
+import global from 'global';
 
 // The shortcut is our JSON-ifiable representation of a shortcut combination
 import { KeyCollection, Event } from '../modules/shortcuts';
+
+const { navigator } = global;
 
 export const isMacLike = () =>
   navigator && navigator.platform ? !!navigator.platform.match(/(Mac|iPhone|iPod|iPad)/i) : false;

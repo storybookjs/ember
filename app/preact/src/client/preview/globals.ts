@@ -1,5 +1,7 @@
-import { window } from 'global';
+import global from 'global';
 
-if (window) {
-  window.STORYBOOK_ENV = 'preact';
+const { window: globalWindow } = global;
+
+if (globalWindow) {
+  globalWindow.STORYBOOK_ENV = 'preact';
 }

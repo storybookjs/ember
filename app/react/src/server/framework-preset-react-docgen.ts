@@ -1,6 +1,6 @@
 import type { TransformOptions } from '@babel/core';
 import type { Configuration } from 'webpack';
-import ReactDocgenTypescriptPlugin from 'react-docgen-typescript-plugin';
+import ReactDocgenTypescriptPlugin from '@storybook/react-docgen-typescript-plugin';
 import type { Options, TypescriptConfig } from '@storybook/core-common';
 
 export async function babel(config: TransformOptions, { presets }: Options) {

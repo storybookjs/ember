@@ -125,7 +125,7 @@ This is equivalent to exporting the `backgrounds` parameter manually in `main.js
 
 ### Addons
 
-For users, the name `managerEntries` might be a bit too technical, so instead both users and preset-authors can simply use the property: `addons`:
+For users, the name `managerEntries` might be a bit too technical, so instead both users and preset-authors can simply use the `addons` property:
 
 <!-- prettier-ignore-start -->
 
@@ -143,7 +143,7 @@ Storybook will automatically detect whether a reference to an addon is a preset 
 
 If this heuristic is incorrect for an addon you are using, you can explicitly opt in to an entry being an a manager entry using the `managerEntries` key.
 
-Here's what it looks when combining presets and managerEntries in the addons property:
+Here's what it looks when combining presets and manager entries in the `addons` property:
 
 <!-- prettier-ignore-start -->
 
@@ -194,6 +194,8 @@ For example, the following snippet adds a style tag to the preview head programa
 <!-- prettier-ignore-end -->
 
 Similarly, the `managerHead` can be used to modify the surrounding "manager" UI, analogous to `manager-head.html`.
+
+Finally, the preview's main page _template_ can also be overridden using the `previewMainTemplate`, which should return a reference to a file containing an `.ejs` template that gets interpolated with some environment variables. For an example, see the [Storbook's default template](https://github.com/storybookjs/storybook/blob/next/lib/core-common/src/templates/index.ejs).
 
 ## Sharing advanced configuration
 

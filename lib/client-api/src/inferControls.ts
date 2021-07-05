@@ -1,5 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import { ArgType } from '@storybook/addons';
+import { logger } from '@storybook/client-logger';
+
 import { SBEnumType, ArgTypesEnhancer } from './types';
 import { combineParameters } from './parameters';
 import { filterArgTypes } from './filterArgTypes';
@@ -17,7 +19,14 @@ const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers
 
   // args that end with background or color e.g. iconColor
   if (matchers.color && matchers.color.test(name)) {
-    return { control: { type: 'color' } };
+    const controlType = typeof argType.type.value;
+    if (controlType === 'string') {
+      return { control: { type: 'color' } };
+    }
+
+    logger.warn(
+      `Addon controls: Control of type color only supports string, received "${controlType}" instead`
+    );
   }
 
   // args that end with date e.g. purchaseDate

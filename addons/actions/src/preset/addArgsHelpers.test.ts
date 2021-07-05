@@ -1,76 +1,115 @@
 import { StoryContext } from '@storybook/addons';
 import { inferActionsFromArgTypesRegex, addActionsFromArgTypes } from './addArgsHelpers';
 
-const withDefaultValue = (argTypes) =>
-  Object.keys(argTypes).filter((key) => !!argTypes[key].defaultValue);
-
 describe('actions parameter enhancers', () => {
   describe('actions.argTypesRegex parameter', () => {
-    const baseParameters = {
-      argTypes: { onClick: {}, onFocus: {}, somethingElse: {} },
-      actions: { argTypesRegex: '^on.*' },
-    };
+    const parameters = { actions: { argTypesRegex: '^on.*' } };
+    const argTypes = { onClick: {}, onFocus: {}, somethingElse: {} };
 
     it('should add actions that match a pattern', () => {
-      const parameters = baseParameters;
-      const argTypes = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onFocus']);
+      const args = inferActionsFromArgTypesRegex(({
+        args: {},
+        argTypes,
+        parameters,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function),
+      });
     });
 
-    it('should override pre-existing argTypes', () => {
-      const parameters = {
-        ...baseParameters,
-        argTypes: {
-          onClick: { defaultValue: 'pre-existing value' },
-        },
-      };
-      const argTypes = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick']);
-      expect(argTypes.onClick.defaultValue).not.toBeNull();
-      expect(argTypes.onClick.defaultValue).not.toEqual('pre-existing value');
+    it('should NOT override pre-existing args', () => {
+      const args = inferActionsFromArgTypesRegex(({
+        args: { onClick: 'pre-existing value' },
+        argTypes,
+        parameters,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({ onFocus: expect.any(Function) });
+    });
+
+    it('should NOT override pre-existing args, if null', () => {
+      const args = inferActionsFromArgTypesRegex(({
+        args: { onClick: null },
+        argTypes,
+        parameters,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({ onFocus: expect.any(Function) });
+    });
+
+    it('should override pre-existing args, if undefined', () => {
+      const args = inferActionsFromArgTypesRegex(({
+        args: { onClick: undefined },
+        argTypes,
+        parameters,
+      } as unknown) as StoryContext);
+      expect(args).toEqual({ onClick: expect.any(Function), onFocus: expect.any(Function) });
     });
 
     it('should do nothing if actions are disabled', () => {
-      const parameters = {
-        ...baseParameters,
-        actions: { ...baseParameters.actions, disable: true },
-      };
-      const result = inferActionsFromArgTypesRegex({ parameters } as StoryContext);
-      expect(result).toEqual(parameters.argTypes);
+      const args = inferActionsFromArgTypesRegex(({
+        args: {},
+        argTypes,
+        parameters: {
+          ...parameters,
+          actions: { ...parameters.actions, disable: true },
+        },
+      } as unknown) as StoryContext);
+      expect(args).toEqual({});
     });
   });
 
   describe('argTypes.action parameter', () => {
-    const baseParameters = {
-      argTypes: {
-        onClick: { action: 'clicked!' },
-        onBlur: { action: 'blurred!' },
-      },
+    const argTypes = {
+      onClick: { action: 'clicked!' },
+      onBlur: { action: 'blurred!' },
     };
     it('should add actions based on action.args', () => {
-      const parameters = baseParameters;
-      const argTypes = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onBlur']);
+      expect(
+        addActionsFromArgTypes(({ args: {}, argTypes, parameters: {} } as unknown) as StoryContext)
+      ).toEqual({
+        onClick: expect.any(Function),
+        onBlur: expect.any(Function),
+      });
     });
 
-    it('should override pre-existing args', () => {
-      const parameters = {
-        ...baseParameters,
-        argTypes: {
-          onClick: { defaultValue: 'pre-existing value', action: 'onClick' },
-          onBlur: { action: 'onBlur' },
-        },
-      };
-      const argTypes = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(withDefaultValue(argTypes)).toEqual(['onClick', 'onBlur']);
-      expect(argTypes.onClick.defaultValue).not.toBeNull();
-      expect(argTypes.onClick.defaultValue).not.toEqual('pre-existing value');
+    it('should NOT override pre-existing args', () => {
+      expect(
+        addActionsFromArgTypes(({
+          argTypes: { onClick: { action: 'clicked!' } },
+          args: { onClick: 'pre-existing value' },
+          parameters: {},
+        } as unknown) as StoryContext)
+      ).toEqual({});
+    });
+
+    it('should NOT override pre-existing args, if null', () => {
+      expect(
+        addActionsFromArgTypes(({
+          argTypes: { onClick: { action: 'clicked!' } },
+          args: { onClick: null },
+          parameters: {},
+        } as unknown) as StoryContext)
+      ).toEqual({});
+    });
+
+    it('should override pre-existing args, if undefined', () => {
+      expect(
+        addActionsFromArgTypes(({
+          argTypes: { onClick: { action: 'clicked!' } },
+          args: { onClick: undefined },
+          parameters: {},
+        } as unknown) as StoryContext)
+      ).toEqual({ onClick: expect.any(Function) });
     });
 
     it('should do nothing if actions are disabled', () => {
-      const parameters = { ...baseParameters, actions: { disable: true } };
-      const result = addActionsFromArgTypes({ parameters } as StoryContext);
-      expect(result).toEqual(parameters.argTypes);
+      expect(
+        addActionsFromArgTypes(({
+          args: {},
+          argTypes,
+          parameters: { actions: { disable: true } },
+        } as unknown) as StoryContext)
+      ).toEqual({});
     });
   });
 });

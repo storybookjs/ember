@@ -1,5 +1,5 @@
 ```js
-// Badge.stories.js | Badge.stories.ts
+// Badge.stories.js | Badge.stories.jsx  | Badge.stories.ts | Badge.stories.tsx
 
 export default {
   component: Badge,
@@ -8,17 +8,13 @@ export default {
     status: {
       name: 'Badge Status',
       description: 'Available options available to the Badge',
-      control: {
-        type: 'select',
-        options: [
-          'positive',
-          'negative',
-          'warning',
-          'error',
-          'error',
-          'neutral'
-        ],
-      },
+      options: [
+        'positive',
+        'negative',
+        'warning',
+        'error',
+        'neutral'
+      ],
       table: {
         defaultValue: {
           summary: 'positive'
@@ -44,5 +40,4 @@ export default {
     }
   }
 };
-
 ```

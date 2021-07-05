@@ -1,4 +1,4 @@
-import { location, fetch } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import {
   transformStoriesRawToStoriesHash,
@@ -8,6 +8,8 @@ import {
 } from '../lib/stories';
 
 import { ModuleFn } from '../index';
+
+const { location, fetch } = global;
 
 export interface SubState {
   refs: Refs;
@@ -108,7 +110,7 @@ const map = (
   return input;
 };
 
-export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true } = {}) => {
+export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = true } = {}) => {
   const api: SubAPI = {
     findRef: (source) => {
       const refs = api.getRefs();
@@ -166,12 +168,12 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
           message: dedent`
             Error: Loading of ref failed
               at fetch (lib/api/src/modules/refs.ts)
-            
+
             URL: ${url}
-            
+
             We weren't able to load the above URL,
             it's possible a CORS error happened.
-            
+
             Please check your dev-tools network tab.
           `,
         } as Error;
@@ -208,6 +210,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
     },
 
     setRef: (id, { stories, ...rest }, ready = false) => {
+      if (singleStory) return;
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
       const after = stories
@@ -231,7 +234,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
     },
   };
 
-  const refs = provider.getConfig().refs || {};
+  const refs = (!singleStory && provider.getConfig().refs) || {};
 
   const initialState: SubState['refs'] = refs;
 

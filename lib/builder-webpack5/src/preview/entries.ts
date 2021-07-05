@@ -3,7 +3,7 @@ import { logger } from '@storybook/node-logger';
 import stable from 'stable';
 import dedent from 'ts-dedent';
 import glob from 'glob-promise';
-import { loadPreviewOrConfigFile } from '@storybook/core-common';
+import { loadPreviewOrConfigFile, normalizeStories } from '@storybook/core-common';
 
 export const sortEntries = (entries: string[]) => {
   const isGenerated = /generated-(config|other)-entry/;
@@ -41,7 +41,10 @@ export async function createPreviewEntry(options: { configDir: string; presets: 
 
   const configs = getMainConfigs(options);
   const other: string[] = await presets.apply('config', [], options);
-  const stories: string[] = await presets.apply('stories', [], options);
+  const stories = normalizeStories(await presets.apply('stories', [], options), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
 
   if (configs.length > 0) {
     const noun = configs.length === 1 ? 'file' : 'files';
@@ -58,15 +61,16 @@ export async function createPreviewEntry(options: { configDir: string; presets: 
   if (stories && stories.length) {
     entries.push(path.resolve(path.join(configDir, `generated-stories-entry.js`)));
 
+    const globs = stories.map((s) => s.glob);
     const files = (
-      await Promise.all(stories.map((g) => glob(path.isAbsolute(g) ? g : path.join(configDir, g))))
+      await Promise.all(globs.map((g) => glob(path.isAbsolute(g) ? g : path.join(configDir, g))))
     ).reduce((a, b) => a.concat(b));
 
     if (files.length === 0) {
       logger.warn(dedent`
         We found no files matching any of the following globs:
         
-        ${stories.join('\n')}
+        ${globs.join('\n')}
 
         Maybe your glob was invalid?
         see: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#correct-globs-in-mainjs

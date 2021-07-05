@@ -1,56 +1,31 @@
 import React from 'react';
-import { IStory, StoryContext } from '@storybook/angular';
-import { StoryFn } from '@storybook/addons';
-import { logger } from '@storybook/client-logger';
+import pLimit from 'p-limit';
 
-const customElementsVersions: Record<string, number> = {};
+import { IStory, StoryContext } from '@storybook/angular';
+import { rendererFactory } from '@storybook/angular/renderer';
+import { StoryFn } from '@storybook/addons';
+
+const limit = pLimit(1);
 
 /**
- * Uses angular element to generate on-the-fly web components and reference it with `customElements`
- * then it is added into react
+ * Uses the angular renderer to generate a story. Uses p-limit to run synchronously
  */
 export const prepareForInline = (storyFn: StoryFn<IStory>, { id, parameters }: StoryContext) => {
-  // Upgrade story version in order that the next defined component has a unique key
-  customElementsVersions[id] =
-    customElementsVersions[id] !== undefined ? customElementsVersions[id] + 1 : 0;
+  return React.createElement('div', {
+    ref: async (node?: HTMLDivElement): Promise<void> => {
+      if (!node) {
+        return null;
+      }
 
-  const customElementsName = `${id}_${customElementsVersions[id]}`;
-
-  const Story = class Story extends React.Component {
-    wrapperRef: React.RefObject<unknown>;
-
-    elementName: string;
-
-    constructor(props: any) {
-      super(props);
-      this.wrapperRef = React.createRef();
-    }
-
-    async componentDidMount() {
-      const { ElementRendererService } = await import('@storybook/angular/element-renderer').catch(
-        (error) => {
-          logger.error(
-            'Check the documentation to activate `inlineStories`. The `@angular/elements` & `@webcomponents/custom-elements` dependencies are required.'
-          );
-          throw error;
-        }
-      );
-
-      // eslint-disable-next-line no-undef
-      customElements.define(
-        customElementsName,
-        await new ElementRendererService().renderAngularElement({
-          storyFnAngular: storyFn(),
+      return limit(async () => {
+        const renderer = await rendererFactory.getRendererInstance(id, node);
+        await renderer.render({
+          forced: false,
           parameters,
-        })
-      );
-    }
-
-    render() {
-      return React.createElement(customElementsName, {
-        ref: this.wrapperRef,
+          storyFnAngular: storyFn(),
+          targetDOMNode: node,
+        });
       });
-    }
-  };
-  return React.createElement(Story);
+    },
+  });
 };

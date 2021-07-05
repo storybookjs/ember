@@ -1,4 +1,4 @@
-import { document, window } from 'global';
+import global from 'global';
 import {
   Dispatch,
   MutableRefObject,
@@ -12,6 +12,8 @@ import { matchesKeyCode, matchesModifiers } from '../../keybinding';
 
 import { CombinedDataset, Highlight, Selection } from './types';
 import { cycle, isAncestor, scrollIntoView } from './utils';
+
+const { document, window: globalWindow } = global;
 
 export interface HighlightedProps {
   containerRef: MutableRefObject<HTMLElement>;
@@ -88,8 +90,8 @@ export const useHighlighted = ({
       if (!(isArrowUp || isArrowDown)) return;
       event.preventDefault();
 
-      const requestId = window.requestAnimationFrame(() => {
-        window.cancelAnimationFrame(lastRequestId);
+      const requestId = globalWindow.requestAnimationFrame(() => {
+        globalWindow.cancelAnimationFrame(lastRequestId);
         lastRequestId = requestId;
 
         const target = event.target as Element;

@@ -1,7 +1,7 @@
 ```md
 <!---Badge.stories.mdx --->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import { Badge } from './Badge';
 import { Icon } from './Icon';
@@ -20,7 +20,7 @@ Let's define a story for our `Badge` component:
   status: 'positive',
   label: 'Positive'
 }}>
-  {Template.bind({})}
+{Template.bind({})}
 </Story>
 
 We can drop it in a `Canvas` to get a code snippet:
@@ -35,12 +35,12 @@ We can drop it in a `Canvas` to get a code snippet:
 </Canvas>
 
 We can even preview multiple Stories in a block. This
-gets rendered as a group, but defines individual stories
-with unique URLs which is great for review and testing.
+gets rendered as a group but defines individual stories
+with unique URLs, which is great for review and testing.
 
 <Canvas>
   <Story name="warning" args={{
-    status: warning,
+    status: 'warning',
     label: 'Warning' 
   }}>
     {Template.bind({})}
@@ -58,7 +58,7 @@ with unique URLs which is great for review and testing.
     {Template.bind({})}
   </Story>
   <Story name="with icon" args={{
-    status: warning, 
+    status: 'warning', 
     label: (<Icon icon="check" inline /> with icon)
   )}}>
     {Template.bind({})}

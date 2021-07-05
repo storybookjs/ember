@@ -1,5 +1,5 @@
 import { Provider } from '@storybook/ui';
-import addons, { AddonStore, Channel, Config, Types } from '@storybook/addons';
+import { addons, AddonStore, Channel, Config, Types } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import Events from '@storybook/core-events';
 

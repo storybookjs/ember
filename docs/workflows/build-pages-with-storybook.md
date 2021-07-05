@@ -41,6 +41,7 @@ When you are building screens in this way, it is typical that the inputs of a co
     'vue/simple-page-implementation.2.mdx',
     'vue/simple-page-implementation.3.mdx',
     'angular/simple-page-implementation.ts.mdx',
+    'svelte/simple-page-implementation.js',
   ]}
 />
 
@@ -57,6 +58,7 @@ In such cases it is natural to use [args composition](../writing-stories/args.md
     'vue/page-story-with-args-composition.2.js.mdx',
     'vue/page-story-with-args-composition.3.js.mdx',
     'angular/page-story-with-args-composition.ts.mdx',
+    'svelte/page-story-with-args-composition.js.mdx',
   ]}
 />
 

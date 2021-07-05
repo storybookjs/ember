@@ -1,15 +1,13 @@
 ```js
-// Button.stories.js
+// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
 export default {
   title: 'Button',
   component: Button,
   argTypes: {
     variant: {
-      control: {
-        type: 'radio',
-        options: ['primary', 'secondary']
-      }
+      options: ['primary', 'secondary'],
+      control: { type: 'radio' }
     }
   }
 };

@@ -44,7 +44,12 @@ export const Action = styled.button(({ theme }) => ({
   '&:focus': {
     color: theme.barSelectedColor,
     borderColor: theme.color.secondary,
+
+    '&:not(:focus-visible)': {
+      borderColor: 'transparent',
+    },
   },
+
   svg: {
     width: 10,
     height: 10,
@@ -85,6 +90,10 @@ const CollapseButton = styled.button(({ theme }) => ({
     color: theme.color.secondary,
     'span:first-of-type': {
       color: theme.color.secondary,
+    },
+
+    '&:not(:focus-visible)': {
+      boxShadow: 'none',
     },
   },
 }));

@@ -3,7 +3,7 @@
 Storybook for Vue 3 is a UI development environment for your Vue 3 components.
 With it, you can visualize different states of your UI components and develop them interactively.
 
-![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/master/media/storybook-intro.gif)
+![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/main/media/storybook-intro.gif)
 
 Storybook runs outside of your app.
 So you can develop UI components in isolation without worrying about app specific dependencies and requirements.
@@ -12,7 +12,7 @@ So you can develop UI components in isolation without worrying about app specifi
 
 ```sh
 cd my-vue3-app
-npx -p @storybook/cli sb init
+npx sb init
 ```
 
 For more information visit: [storybook.js.org](https://storybook.js.org)
@@ -24,7 +24,7 @@ You can also build a [static version](https://storybook.js.org/docs/vue3/workflo
 
 ## Extending the Vue application
 
-Storybook creates a [Vue 3 application](https://v3.vuejs.org/api/application-api.html#application-api) for your component preview, which can be imported as `import { app } from '@storybook/vue3'`.
+Storybook creates a [Vue 3 application](https://v3.vuejs.org/api/application-api.html#application-api) for your component preview which can be imported as `import { app } from '@storybook/vue3'`.
 
 When using global custom components (`app.component`), directives (`app.directive`), extensions (`app.use`), or other application methods, you will need to configure those in the `./storybook/preview.js` file.
 
@@ -37,5 +37,7 @@ import { app } from '@storybook/vue3';
 
 app.use(MyPlugin);
 app.component('my-component', MyComponent);
-app.mixin({ /* My mixin */ });
+app.mixin({
+  /* My mixin */
+});
 ```

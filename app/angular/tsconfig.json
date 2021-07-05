@@ -6,5 +6,6 @@
     "types": ["webpack-env", "node"],
     "rootDir": "./src",
     "resolveJsonModule": true
-  }
+  },
+  "include": ["src/**/*", "src/**/*.json"]
 }

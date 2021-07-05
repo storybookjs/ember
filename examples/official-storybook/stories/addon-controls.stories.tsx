@@ -29,7 +29,9 @@ export default {
       },
     },
   },
-  parameters: { chromatic: { disable: true } },
+  parameters: {
+    chromatic: { disable: true },
+  },
 };
 
 const DEFAULT_NESTED_OBJECT = { a: 4, b: { c: 'hello', d: [1, 2, 3] } };
@@ -46,7 +48,10 @@ Basic.args = {
   children: 'basic',
   json: DEFAULT_NESTED_OBJECT,
 };
-Basic.parameters = { chromatic: { disable: false } };
+Basic.parameters = {
+  chromatic: { disable: false },
+  docs: { source: { state: 'open' } },
+};
 
 export const Action = Template.bind({});
 Action.args = {
@@ -57,7 +62,7 @@ Action.args = {
 
 export const ImageFileControl = (args) => <img src={args.imageUrls[0]} alt="Your Example Story" />;
 ImageFileControl.args = {
-  imageUrls: ['http://placehold.it/350x150'],
+  imageUrls: ['http://place-hold.it/350x150'],
 };
 
 export const CustomControls = Template.bind({});
@@ -78,12 +83,16 @@ const hasCycle: any = {};
 hasCycle.cycle = hasCycle;
 
 export const CyclicArgs = Template.bind({});
-CyclicArgs.args = {
-  hasCycle,
-};
+// No warnings in tests
+if (process.env.NODE_ENV !== 'test') {
+  CyclicArgs.args = {
+    hasCycle,
+  };
+}
 CyclicArgs.parameters = {
   docs: { disable: true },
   chromatic: { disable: true },
+  storyshots: { disable: true },
 };
 
 export const CustomControlMatchers = Template.bind({});
@@ -93,6 +102,7 @@ CustomControlMatchers.parameters = {
       date: /whateverIwant/,
     },
   },
+  docs: { source: { state: 'open' } },
 };
 CustomControlMatchers.args = {
   whateverIwant: '10/10/2020',
@@ -154,3 +164,8 @@ FilteredWithExcludeRegex.parameters = {
     exclude: /hello*/,
   },
 };
+
+// https://github.com/storybookjs/storybook/issues/14752
+export const MissingRadioOptions = Template.bind({});
+MissingRadioOptions.argTypes = { invalidRadio: { control: 'radio' } };
+MissingRadioOptions.args = { invalidRadio: 'someValue' };

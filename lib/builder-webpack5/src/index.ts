@@ -2,22 +2,32 @@ import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import { logger } from '@storybook/node-logger';
-import { Builder, useProgressReporting, checkWebpackVersion } from '@storybook/core-common';
+import {
+  Builder,
+  useProgressReporting,
+  checkWebpackVersion,
+  Options,
+  normalizeStories,
+  StoriesEntry,
+} from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
 let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
-const checkWebpackVersion5 = (webpackInstance: { version?: string }) =>
-  checkWebpackVersion(webpackInstance, '5.x', 'builder-webpack5');
-
 export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
   const entries = await presets.apply('entries', [], options);
-  const stories = await presets.apply('stories', [], options);
+  const stories = normalizeStories(
+    (await presets.apply('stories', [], options)) as StoriesEntry[],
+    {
+      configDir: options.configDir,
+      workingDir: process.cwd(),
+    }
+  );
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
   return presets.apply(
@@ -35,14 +45,21 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
 };
 
 export const executor = {
-  get: webpack,
+  get: async (options: Options) => {
+    const version = ((await options.presets.apply('webpackVersion')) || '5') as string;
+    const webpackInstance =
+      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
+      webpack;
+    checkWebpackVersion({ version }, '5', 'builder-webpack5');
+    return webpackInstance;
+  },
 };
 
 export const start: WebpackBuilder['start'] = async ({ startTime, options, router }) => {
-  checkWebpackVersion5(executor.get);
+  const webpackInstance = await executor.get(options);
 
   const config = await getConfig(options);
-  const compiler = executor.get(config);
+  const compiler = webpackInstance(config);
   if (!compiler) {
     const err = `${config.name}: missing webpack compiler at runtime!`;
     logger.error(err);
@@ -51,7 +68,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
       totalTime: process.hrtime(startTime),
       stats: ({
         hasErrors: () => true,
-        hasWarngins: () => false,
+        hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
       } as any) as Stats,
     };
@@ -106,13 +123,13 @@ export const bail: WebpackBuilder['bail'] = (e: Error) => {
 };
 
 export const build: WebpackBuilder['build'] = async ({ options, startTime }) => {
-  checkWebpackVersion5(executor.get);
+  const webpackInstance = await executor.get(options);
 
   logger.info('=> Compiling preview..');
   const config = await getConfig(options);
 
   return new Promise((succeed, fail) => {
-    webpack(config).run((error, stats) => {
+    webpackInstance(config).run((error, stats) => {
       if (error || !stats || stats.hasErrors()) {
         logger.error('=> Failed to build the preview');
         process.exitCode = 1;

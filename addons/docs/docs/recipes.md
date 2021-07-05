@@ -17,6 +17,7 @@
 - [Reordering Docs tab first](#reordering-docs-tab-first)
 - [Customizing source snippets](#customizing-source-snippets)
 - [Overwriting docs container](#overwriting-docs-container)
+- [Add description to individual stories](#add-description-to-individual-stories)
 - [More resources](#more-resources)
 
 ## Component Story Format (CSF) with DocsPage
@@ -61,8 +62,8 @@ basic.parameters = {
 **Button.stories.mdx**
 
 ```md
-import { Meta, Story } from '@storybook/addon-docs/blocks';
-import * as stories from './Button.stories.js';
+import { Meta, Story } from '@storybook/addon-docs';
+import \* as stories from './Button.stories.js';
 import { SomeComponent } from 'path/to/SomeComponent';
 
 <Meta title="Demo/Button" component={Button} />
@@ -91,7 +92,7 @@ We recommend [MDX Docs](#csf-stories-with-mdx-docs) as the most ergonomic way to
 **Button.mdx**
 
 ```md
-import { Story } from '@storybook/addon-docs/blocks';
+import { Story } from '@storybook/addon-docs';
 import { SomeComponent } from 'somewhere';
 
 # Button
@@ -289,7 +290,7 @@ When you're writing stories you can do this by adding a [decorator](https://stor
 The closest Docs equivalent of a decorator is the `container`, a wrapper element that is rendered around the page that is being rendered. Here's an example of adding a solid red border around the page. It uses Storybook's default page container (that sets up various contexts and other magic) and then inserts its own logic between that container and the contents of the page:
 
 ```js
-import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+import { Meta, DocsContainer } from '@storybook/addon-docs';
 
 <Meta
   title="Addons/Docs/container-override"
@@ -312,7 +313,7 @@ Rest of your file...
 This is especially useful if you are using `styled-components` and need to wrap your JSX with a `ThemeProvider` to have access to your theme:
 
 ```js
-import { Meta, DocsContainer } from '@storybook/addon-docs/blocks';
+import { Meta, DocsContainer } from '@storybook/addon-docs';
 import { ThemeProvider } from 'styled-components'
 import { theme } from '../path/to/theme'
 
@@ -335,6 +336,24 @@ import { theme } from '../path/to/theme'
 
 Rest of your file...
 ```
+
+## Add description to individual stories
+
+Add `story` to `docs.description` parameter
+
+```js
+const Example = () => <Button />;
+
+Example.parameters = {
+  docs: {
+    description: {
+      story: "Individiual story description, may conatin `markdown` markup"
+    },
+  },
+};
+```
+
+There is also an webpack loader package that extracts descriptions from jsdoc comments [story-description-loader](https://www.npmjs.com/package/story-description-loader)
 
 ## More resources
 

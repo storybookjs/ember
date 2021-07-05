@@ -24,7 +24,9 @@ function normalizeFunctionalComponent(options: ConcreteComponent): ComponentOpti
   return typeof options === 'function' ? { render: options, name: options.name } : options;
 }
 
-function prepare(story: StoryFnVueReturnType, innerStory?: ConcreteComponent): Component | null {
+function prepare(rawStory: StoryFnVueReturnType, innerStory?: ConcreteComponent): Component | null {
+  const story = rawStory as ComponentOptions;
+
   if (story == null) {
     return null;
   }
@@ -33,7 +35,7 @@ function prepare(story: StoryFnVueReturnType, innerStory?: ConcreteComponent): C
     return {
       // Normalize so we can always spread an object
       ...normalizeFunctionalComponent(story),
-      components: { story: innerStory },
+      components: { ...(story.components || {}), story: innerStory },
     };
   }
 
