@@ -12,11 +12,6 @@ jobs:
           node-version: "12.x"
           cache: yarn
       - uses: actions/checkout@v2
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: yarn-2-cache-v1-${{ hashFiles('**/yarn.lock') }}
       - name: install, bootstrap
         run: |
           yarn install --immutable
