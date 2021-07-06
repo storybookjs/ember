@@ -30,7 +30,7 @@ export function sourceDecorator(storyFn: StoryFn, context: StoryContext) {
     const container = window.document.createElement('div');
     render(story, container);
     const source = applyTransformSource(container.innerHTML.replace(/<!---->/g, ''), context);
-    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context?.id, source);
+    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
   }
 
   return story;
