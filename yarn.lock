@@ -39619,6 +39619,7 @@ resolve@1.19.0:
   version: 0.0.0-use.local
   resolution: "standalone-preview@workspace:examples/standalone-preview"
   dependencies:
+    "@storybook/addon-docs": 6.4.0-alpha.11
     "@storybook/react": 6.4.0-alpha.11
     parcel: ^1.12.4
     react: 16.14.0
