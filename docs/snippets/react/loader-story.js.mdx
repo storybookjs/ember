@@ -7,6 +7,11 @@ import fetch from 'node-fetch';
 
 import { TodoItem } from './TodoItem';
 
+export default {
+  component: TodoItem,
+  title: 'Examples/Loader',
+};
+
 export const Primary = (args, { loaded: { todo } }) => <TodoItem {...args} {...todo} />;
 Primary.loaders = [
   async () => ({
