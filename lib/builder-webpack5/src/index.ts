@@ -7,6 +7,8 @@ import {
   useProgressReporting,
   checkWebpackVersion,
   Options,
+  normalizeStories,
+  StoriesEntry,
 } from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
@@ -19,7 +21,13 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
   const entries = await presets.apply('entries', [], options);
-  const stories = await presets.apply('stories', [], options);
+  const stories = normalizeStories(
+    (await presets.apply('stories', [], options)) as StoriesEntry[],
+    {
+      configDir: options.configDir,
+      workingDir: process.cwd(),
+    }
+  );
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
   return presets.apply(
@@ -60,7 +68,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
       totalTime: process.hrtime(startTime),
       stats: ({
         hasErrors: () => true,
-        hasWarngins: () => false,
+        hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
       } as any) as Stats,
     };

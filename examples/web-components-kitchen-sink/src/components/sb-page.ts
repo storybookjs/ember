@@ -3,6 +3,13 @@ import { customElement } from 'lit/decorators.js';
 
 import './sb-header';
 
+/**
+ * @attr {Object} user - User of the app
+ *
+ * @summary This is a simple Storybook Page
+ *
+ * @tag sb-page
+ */
 @customElement('sb-page')
 export class SbPage extends LitElement {
   static get styles() {

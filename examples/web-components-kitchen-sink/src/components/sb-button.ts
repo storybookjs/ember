@@ -2,6 +2,21 @@ import { css, html, LitElement } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+/**
+ * @attr {string} label - Label of the button
+ * @attr {string} size - Size of the button, can be "small", "medium" or "large"; default is "medium".
+ * @attr {string} backgroundColor - Color of the button's background
+ *
+ * @cssprop [--sb-primary-color=#1ea7fd] - Controls the color of bar
+ *
+ * @prop {boolean} primary - Set button in primary mode
+ *
+ * @event {CustomEvent} sb-button:click - Custom event send when the button is clicked
+ *
+ * @summary This is a simple Storybook Button
+ *
+ * @tag sb-button
+ */
 @customElement('sb-button')
 export class SbButton extends LitElement {
   static get styles() {
@@ -17,7 +32,7 @@ export class SbButton extends LitElement {
       }
       .storybook-button--primary {
         color: white;
-        background-color: #1ea7fd;
+        background-color: var(--sb-primary-color, #1ea7fd);
       }
       .storybook-button--secondary {
         color: #333;

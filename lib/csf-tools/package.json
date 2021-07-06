@@ -1,6 +1,6 @@
 {
   "name": "@storybook/csf-tools",
-  "version": "6.3.0-rc.12",
+  "version": "6.4.0-alpha.11",
   "description": "",
   "keywords": [
     "storybook"
@@ -50,6 +50,7 @@
     "@storybook/csf": "^0.0.1",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
+    "global": "^4.4.0",
     "js-string-escape": "^1.0.1",
     "lodash": "^4.17.20",
     "prettier": "~2.2.1",
@@ -63,6 +64,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "fa3aaf15f513ac1f8bed8ef84ac42a2a33b1b74d",
+  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
   "sbmodern": "dist/modern/index.js"
 }

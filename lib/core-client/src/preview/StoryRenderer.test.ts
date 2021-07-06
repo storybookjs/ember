@@ -36,8 +36,10 @@ jest.mock('@storybook/client-logger', () => ({
   },
 }));
 
-jest.mock('./csf3', () => ({
-  isCsf3Enabled: () => true,
+jest.mock('global', () => ({
+  // @ts-ignore
+  ...global,
+  FEATURES: { previewCsfV3: true },
 }));
 
 function prepareRenderer() {
@@ -127,14 +129,14 @@ describe('core.preview.StoryRenderer', () => {
     expect(onStoryRendered).toHaveBeenCalledWith('a--1');
   });
 
-  it('calls setup functions on render', async () => {
+  it('calls play functions on render', async () => {
     const { render, channel, storyStore, renderer } = prepareRenderer();
 
     const onStoryRendered = jest.fn();
     channel.on(STORY_RENDERED, onStoryRendered);
 
-    const setup = jest.fn();
-    addAndSelectStory(storyStore, 'a', '1', { p: 'q', setup });
+    const play = jest.fn();
+    addAndSelectStory(storyStore, 'a', '1', { p: 'q', play });
 
     await renderer.renderCurrentStory(false);
     expect(render).toHaveBeenCalled();
@@ -151,7 +153,7 @@ describe('core.preview.StoryRenderer', () => {
     await Promise.resolve(null);
 
     expect(onStoryRendered).toHaveBeenCalledWith('a--1');
-    expect(setup).toHaveBeenCalled();
+    expect(play).toHaveBeenCalled();
   });
 
   describe('loaders', () => {

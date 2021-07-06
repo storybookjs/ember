@@ -23,7 +23,7 @@ The following table details how to use the API values:
 | **showPanel**         | Boolean       |Display panel that shows addon configurations                  |`true`                                          |
 | **panelPosition**     | String/Object |Where to show the addon panel                                  |`bottom` or `right`                             |
 | **enableShortcuts**   | Boolean       |Enable/disable shortcuts                                       |`true`                                          |
-| **isToolshown**       | String        |Show/hide tool bar                                             |`true`                                          |
+| **isToolshown**       | Boolean       |Show/hide tool bar                                             |`true`                                          |
 | **theme**             | Object        |Storybook Theme, see next section                              |`undefined`                                     |
 | **selectedPanel**     | String        |Id to select an addon panel                                    |`storybook/actions/panel`                       |
 | **initialActive**     | String        |Select the default active tab on Mobile                        |`sidebar` or `canvas` or `addons`               |

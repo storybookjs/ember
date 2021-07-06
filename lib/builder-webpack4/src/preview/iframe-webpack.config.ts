@@ -23,6 +23,7 @@ import {
   interpolate,
   nodeModulesPaths,
   Options,
+  NormalizedStoriesEntry,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -64,7 +65,7 @@ export default async ({
   presets,
   typescriptOptions,
   modern,
-  previewCsfV3,
+  features,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
@@ -109,9 +110,16 @@ export default async ({
   });
   if (stories) {
     const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
-    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
-      // Make sure we also replace quotes for this one
-      .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
+    // Make sure we also replace quotes for this one
+    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
+      frameworkImportPath,
+    }).replace(
+      "'{{stories}}'",
+      stories
+        .map((s: NormalizedStoriesEntry) => s.glob)
+        .map(toRequireContextString)
+        .join(',')
+    );
   }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
@@ -130,7 +138,6 @@ export default async ({
       publicPath: '',
     },
     watchOptions: {
-      aggregateTimeout: 10,
       ignored: /node_modules/,
     },
     plugins: [
@@ -154,7 +161,8 @@ export default async ({
           globals: {
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
-            PREVIEW_CSF_V3: previewCsfV3,
+            FEATURES: features,
+            STORIES: stories,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -220,6 +228,7 @@ export default async ({
       runtimeChunk: true,
       sideEffects: true,
       usedExports: true,
+      moduleIds: 'named',
       minimizer: isProd
         ? [
             new TerserWebpackPlugin({
