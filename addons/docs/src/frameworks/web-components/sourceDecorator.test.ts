@@ -11,13 +11,14 @@ expect.addSnapshotSerializer({
   test: (val) => typeof val === 'string',
 });
 
-// @ts-expect-error: :shrug:
 const makeContext = (name: string, parameters: any, args: any, extra?: object): StoryContext => ({
   id: `lit-test--${name}`,
   kind: 'js-text',
   name,
   parameters,
   args,
+  argTypes: {},
+  globals: {},
   ...extra,
 });
 
@@ -51,8 +52,8 @@ describe('sourceDecorator', () => {
   it('allows the snippet output to be modified by transformSource', () => {
     const storyFn = (args: any) => html`<div>args story</div>`;
     const transformSource = (dom: string) => `<p>${dom}</p>`;
-    const jsx = { transformSource };
-    const context = makeContext('args', { __isArgsStory: true, jsx }, {});
+    const docs = { transformSource };
+    const context = makeContext('args', { __isArgsStory: true, docs }, {});
     sourceDecorator(storyFn, context);
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
@@ -63,9 +64,9 @@ describe('sourceDecorator', () => {
 
   it('provides the story context to transformSource', () => {
     const storyFn = (args: any) => html`<div>args story</div>`;
-    const transformSource = jest.fn();
-    const jsx = { transformSource };
-    const context = makeContext('args', { __isArgsStory: true, jsx }, {});
+    const transformSource = jest.fn((x) => x);
+    const docs = { transformSource };
+    const context = makeContext('args', { __isArgsStory: true, docs }, {});
     sourceDecorator(storyFn, context);
     expect(transformSource).toHaveBeenCalledWith('<div>args story</div>', context);
   });

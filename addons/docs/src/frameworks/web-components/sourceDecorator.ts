@@ -17,13 +17,19 @@ function skipSourceRender(context: StoryContext) {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 }
 
+function applyTransformSource(source: string, context: StoryContext): string {
+  const { transformSource } = context.parameters.docs ?? {};
+  if (typeof transformSource !== 'function') return source;
+  return transformSource(source, context);
+}
+
 export function sourceDecorator(storyFn: StoryFn, context: StoryContext) {
   const story = storyFn();
 
   if (!skipSourceRender(context)) {
     const container = window.document.createElement('div');
     render(story, container);
-    const source = container.innerHTML.replace(/<!---->/g, '');
+    const source = applyTransformSource(container.innerHTML.replace(/<!---->/g, ''), context);
     if (source) addons.getChannel().emit(SNIPPET_RENDERED, context?.id, source);
   }
 
