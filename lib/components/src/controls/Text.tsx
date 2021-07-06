@@ -1,13 +1,42 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, ChangeEvent, useCallback, useState } from 'react';
+import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
+import { getControlId } from './helpers';
 import { ControlProps, TextValue, TextConfig } from './types';
 
-export type TextProps = ControlProps<TextValue> & TextConfig;
+export type TextProps = ControlProps<TextValue | undefined> & TextConfig;
 
-export const TextControl: FC<TextProps> = ({ name, value, onChange }) => {
+const Wrapper = styled.label({
+  display: 'flex',
+});
+
+export const TextControl: FC<TextProps> = ({ name, value, onChange, onFocus, onBlur }) => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(name, event.target.value);
+    onChange(event.target.value);
   };
-  return <Form.Textarea id={name} name={name} value={value} onChange={handleChange} size="flex" />;
+
+  const [forceVisible, setForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange('');
+    setForceVisible(true);
+  }, [setForceVisible]);
+  if (value === undefined) {
+    return <Form.Button onClick={onForceVisible}>Set string</Form.Button>;
+  }
+
+  const isValid = typeof value === 'string';
+  return (
+    <Wrapper>
+      <Form.Textarea
+        id={getControlId(name)}
+        onChange={handleChange}
+        size="flex"
+        placeholder="Edit string..."
+        autoFocus={forceVisible}
+        valid={isValid ? null : 'error'}
+        {...{ name, value: isValid ? value : '', onFocus, onBlur }}
+      />
+    </Wrapper>
+  );
 };

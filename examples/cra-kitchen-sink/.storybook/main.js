@@ -1,4 +1,11 @@
+const path = require('path');
+
 module.exports = {
+  stories: ['../src/stories/**/*.stories.@(js|mdx)'],
+  logLevel: 'debug',
+  reactOptions: {
+    fastRefresh: true,
+  },
   addons: [
     '@storybook/preset-create-react-app',
     {
@@ -9,11 +16,20 @@ module.exports = {
     },
     '@storybook/addon-actions',
     '@storybook/addon-links',
-    '@storybook/addon-events',
-    '@storybook/addon-knobs',
     '@storybook/addon-backgrounds',
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
   ],
-  stories: ['../src/stories/**/*.stories.@(js|mdx)'],
+  webpackFinal: (config) => {
+    // add monorepo root as a valid directory to import modules from
+    config.resolve.plugins.forEach((p) => {
+      if (Array.isArray(p.appSrcs)) {
+        p.appSrcs.push(path.join(__dirname, '..', '..', '..'));
+      }
+    });
+    return config;
+  },
+  core: {
+    builder: 'webpack4',
+  },
 };

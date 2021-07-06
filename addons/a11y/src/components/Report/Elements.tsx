@@ -24,7 +24,10 @@ const HighlightToggleElement = styled.span({
   fontWeight: 'normal',
   alignSelf: 'center',
   paddingRight: 15,
-  input: { margin: 0 },
+  input: {
+    margin: 0,
+    display: 'block',
+  },
 });
 
 interface ElementProps {

@@ -2,7 +2,7 @@
 
 The Storybook Links addon can be used to create links that navigate between stories in [Storybook](https://storybook.js.org).
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/master/ADDONS_SUPPORT.md)
+[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
 
 ## Getting Started
 
@@ -16,41 +16,40 @@ within `.storybook/main.js`:
 
 ```js
 module.exports = {
-  addons: ['@storybook/addon-links']
-}
+  addons: ['@storybook/addon-links'],
+};
 ```
 
 Then you can import `linkTo` in your stories and use like this:
 
 ```js
-import { linkTo } from '@storybook/addon-links'
+import { linkTo } from '@storybook/addon-links';
 
 export default {
   title: 'Button',
 };
 
-export const first = () => (
-  <button onClick={linkTo('Button', 'second')}>Go to "Second"</button>
-);
-export const second = () => (
-  <button onClick={linkTo('Button', 'first')}>Go to "First"</button>
-);
+export const first = () => <button onClick={linkTo('Button', 'second')}>Go to "Second"</button>;
+export const second = () => <button onClick={linkTo('Button', 'first')}>Go to "First"</button>;
 ```
 
 Have a look at the linkTo function:
 
 ```js
-import { linkTo } from '@storybook/addon-links'
+import { linkTo } from '@storybook/addon-links';
 
-linkTo('Toggle', 'off')
-linkTo(() => 'Toggle', () => 'off')
-linkTo('Toggle') // Links to the first story in the 'Toggle' kind
+linkTo('Toggle', 'off');
+linkTo(
+  () => 'Toggle',
+  () => 'off'
+);
+linkTo('Toggle'); // Links to the first story in the 'Toggle' kind
 ```
 
 With that, you can link an event in a component to any story in the Storybook.
 
 - First parameter is the story kind name (what you named with `title`).
-- Second (optional) parameter is the story name (what you named with `exported name`). 
+- Second (optional) parameter is the story name (what you named with `exported name`).
   If the second parameter is omitted, the link will point to the first story in the given kind.
 
 You can also pass a function instead for any of above parameter. That function accepts arguments emitted by the event and it should return a string:
@@ -63,22 +62,16 @@ export default {
 };
 
 export const index = () => (
-  <select value="Index" onChange={linkTo('Select', e => e.currentTarget.value)}>
+  <select value="Index" onChange={linkTo('Select', (e) => e.currentTarget.value)}>
     <option>index</option>
     <option>first</option>
     <option>second</option>
     <option>third</option>
-  </select>  
+  </select>
 );
-export const first = () => (
-  <LinkTo story="index">Go back</LinkTo>
-);
-export const second = () => (
-  <LinkTo story="index">Go back</LinkTo>
-);
-export const third = () => (
-  <LinkTo story="index">Go back</LinkTo>
-);
+export const first = () => <LinkTo story="index">Go back</LinkTo>;
+export const second = () => <LinkTo story="index">Go back</LinkTo>;
+export const third = () => <LinkTo story="index">Go back</LinkTo>;
 ```
 
 ## hrefTo function
@@ -106,7 +99,7 @@ export const log = () => {
 Here is an example in React, but it works with any framework:
 
 ```js
-import { withLinks } from '@storybook/addon-links'
+import { withLinks } from '@storybook/addon-links';
 
 export default {
   title: 'Button',
@@ -114,7 +107,9 @@ export default {
 };
 
 export const first = () => (
-  <button data-sb-kind="OtherKind" data-sb-story="otherStory">Go to "OtherStory"</button>
+  <button data-sb-kind="OtherKind" data-sb-story="otherStory">
+    Go to "OtherStory"
+  </button>
 );
 ```
 
@@ -130,12 +125,8 @@ export default {
   title: 'Link',
 };
 
-export const first = () => (
-  <LinkTo story="second">Go to Second</LinkTo>
-);
-export const second = () => (
-  <LinkTo story="first">Go to First</LinkTo>
-);
+export const first = () => <LinkTo story="second">Go to Second</LinkTo>;
+export const second = () => <LinkTo story="first">Go to First</LinkTo>;
 ```
 
 It accepts all the props the `a` element does, plus `story` and `kind`. It the `kind` prop is omitted, the current kind will be preserved.
@@ -146,8 +137,10 @@ It accepts all the props the `a` element does, plus `story` and `kind`. It the `
   story="off"
   target="_blank"
   title="link to second story"
-  style={{color: '#1474f3'}}
->Go to Second</LinkTo>
+  style={{ color: '#1474f3' }}
+>
+  Go to Second
+</LinkTo>
 ```
 
-To implement such a component for another framework, you need to add special handling for `click` event on native `a` element. See [`RoutedLink` sources](https://github.com/storybookjs/storybook/blob/master/addons/links/src/react/components/RoutedLink.js#L20-L24) for reference. 
+To implement such a component for another framework, you need to add special handling for `click` event on native `a` element. See [`RoutedLink` sources](https://github.com/storybookjs/storybook/blob/main/addons/links/src/react/components/RoutedLink.tsx) for reference.

@@ -1,12 +1,16 @@
 import fs from 'fs';
 
-import { getBowerJson, getPackageJson } from './helpers';
+import { getBowerJson } from './helpers';
 import { isStorybookInstalled, detectFrameworkPreset, detect, detectLanguage } from './detect';
 import { ProjectType, SUPPORTED_FRAMEWORKS, SupportedLanguage } from './project_types';
+import { readPackageJson } from './js-package-manager';
 
 jest.mock('./helpers', () => ({
   getBowerJson: jest.fn(),
-  getPackageJson: jest.fn(),
+}));
+
+jest.mock('./js-package-manager', () => ({
+  readPackageJson: jest.fn(),
 }));
 
 jest.mock('fs', () => ({
@@ -44,6 +48,27 @@ const MOCK_FRAMEWORK_FILES = [
       'package.json': {
         dependencies: {
           vue: '1.0.0',
+        },
+      },
+    },
+  },
+  {
+    name: ProjectType.VUE3,
+    files: {
+      'package.json': {
+        dependencies: {
+          vue: '^3.0.0',
+        },
+      },
+    },
+  },
+  {
+    name: ProjectType.VUE3,
+    files: {
+      'package.json': {
+        dependencies: {
+          // Testing the `next` tag too
+          vue: 'next',
         },
       },
     },
@@ -135,6 +160,36 @@ const MOCK_FRAMEWORK_FILES = [
     },
   },
   {
+    name: ProjectType.WEB_COMPONENTS,
+    files: {
+      'package.json': {
+        dependencies: {
+          'lit-html': '1.4.1',
+        },
+      },
+    },
+  },
+  {
+    name: ProjectType.WEB_COMPONENTS,
+    files: {
+      'package.json': {
+        dependencies: {
+          'lit-html': '2.0.0-rc.3',
+        },
+      },
+    },
+  },
+  {
+    name: ProjectType.WEB_COMPONENTS,
+    files: {
+      'package.json': {
+        dependencies: {
+          lit: '2.0.0-rc.2',
+        },
+      },
+    },
+  },
+  {
     name: ProjectType.MITHRIL,
     files: {
       'package.json': {
@@ -205,22 +260,32 @@ const MOCK_FRAMEWORK_FILES = [
       },
     },
   },
+  {
+    name: ProjectType.AURELIA,
+    files: {
+      'package.json': {
+        dependencies: {
+          'aurelia-bootstrapper': '1.0.0',
+        },
+      },
+    },
+  },
 ];
 
 describe('Detect', () => {
   it(`should return type HTML if html option is passed`, () => {
-    (getPackageJson as jest.Mock).mockImplementation(() => true);
+    (readPackageJson as jest.Mock).mockImplementation(() => true);
     expect(detect({ html: true })).toBe(ProjectType.HTML);
   });
 
   it(`should return type UNDETECTED if neither packageJson or bowerJson exist`, () => {
-    (getPackageJson as jest.Mock).mockImplementation(() => false);
+    (readPackageJson as jest.Mock).mockImplementation(() => false);
     (getBowerJson as jest.Mock).mockImplementation(() => false);
     expect(detect()).toBe(ProjectType.UNDETECTED);
   });
 
   it(`should return language typescript if the dependency is present`, () => {
-    (getPackageJson as jest.Mock).mockImplementation(() => ({
+    (readPackageJson as jest.Mock).mockImplementation(() => ({
       dependencies: {
         typescript: '1.0.0',
       },
@@ -229,7 +294,7 @@ describe('Detect', () => {
   });
 
   it(`should return language javascript by default`, () => {
-    (getPackageJson as jest.Mock).mockImplementation(() => true);
+    (readPackageJson as jest.Mock).mockImplementation(() => true);
     expect(detectLanguage()).toBe(SupportedLanguage.JAVASCRIPT);
   });
 
@@ -301,6 +366,17 @@ describe('Detect', () => {
       expect(result).toBe(ProjectType.UNDETECTED);
     });
 
+    // TODO(blaine): Remove once Nuxt3 is supported
+    it(`UNSUPPORTED for Nuxt framework above version 3.0.0`, () => {
+      const result = detectFrameworkPreset({
+        dependencies: {
+          nuxt: '3.0.0',
+        },
+      });
+      expect(result).toBe(ProjectType.UNSUPPORTED);
+    });
+
+    // TODO: The mocking in this test causes tests after it to fail
     it('REACT_SCRIPTS for custom react scripts config', () => {
       const forkedReactScriptsConfig = {
         '/node_modules/.bin/react-scripts': 'file content',

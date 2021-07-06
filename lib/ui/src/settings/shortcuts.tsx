@@ -1,11 +1,13 @@
-import React, { Component, Fragment, SyntheticEvent } from 'react';
+import React, { Component } from 'react';
 import { styled, keyframes } from '@storybook/theming';
-import { GlobalHotKeys } from 'react-hotkeys';
 
-import { Form, IconButton, Icons, Tabs } from '@storybook/components';
+import {
+  eventToShortcut,
+  shortcutToHumanString,
+  shortcutMatchesShortcut,
+} from '@storybook/api/shortcut';
+import { Form, Icons } from '@storybook/components';
 import SettingsFooter from './SettingsFooter';
-
-import { eventToShortcut, shortcutToHumanString, shortcutMatchesShortcut } from '../libs/shortcut';
 
 const { Button, Input } = Form;
 
@@ -137,22 +139,19 @@ function toShortcutState(shortcutKeys: ShortcutsScreenProps['shortcutKeys']) {
   );
 }
 
-const keyMap = {
-  CLOSE: 'escape',
-};
-
 export interface ShortcutsScreenState {
   activeFeature: Feature;
   successField: Feature;
   shortcutKeys: Record<Feature, any>;
+  addonsShortcutLabels?: Record<string, string>;
 }
 
 export interface ShortcutsScreenProps {
   shortcutKeys: Record<Feature, any>;
+  addonsShortcutLabels?: Record<string, string>;
   setShortcut: Function;
   restoreDefaultShortcut: Function;
   restoreAllDefaultShortcuts: Function;
-  onClose: (e?: KeyboardEvent) => void;
 }
 
 class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenState> {
@@ -165,6 +164,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
       // As the user interacts with the page, the state stores the temporary, unsaved shortcuts
       // This object also includes the error attached to each shortcut
       shortcutKeys: toShortcutState(props.shortcutKeys),
+      addonsShortcutLabels: props.addonsShortcutLabels,
     };
   }
 
@@ -182,7 +182,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
       return false;
     }
 
-    // Check we don't match any other shortucts
+    // Check we don't match any other shortcuts
     const error = !!Object.entries(shortcutKeys).find(
       ([feature, { shortcut: existingShortcut }]) =>
         feature !== activeFeature &&
@@ -200,7 +200,10 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
 
     this.setState({
       activeFeature: focusedInput,
-      shortcutKeys: { ...shortcutKeys, [focusedInput]: { shortcut: null, error: false } },
+      shortcutKeys: {
+        ...shortcutKeys,
+        [focusedInput]: { shortcut: null, error: false },
+      },
     });
   };
 
@@ -261,10 +264,10 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   };
 
   renderKeyInput = () => {
-    const { shortcutKeys } = this.state;
+    const { shortcutKeys, addonsShortcutLabels } = this.state;
     const arr = Object.entries(shortcutKeys).map(([feature, { shortcut }]: [Feature, any]) => (
       <Row key={feature}>
-        <Description>{shortcutLabels[feature]}</Description>
+        <Description>{shortcutLabels[feature] || addonsShortcutLabels[feature]}</Description>
 
         <TextInput
           spellCheck="false"
@@ -297,43 +300,20 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   );
 
   render() {
-    const { onClose } = this.props;
     const layout = this.renderKeyForm();
     return (
-      <GlobalHotKeys handlers={{ CLOSE: onClose }} keyMap={keyMap}>
-        <Tabs
-          absolute
-          selected="shortcuts"
-          actions={{ onSelect: () => {} }}
-          tools={
-            <Fragment>
-              <IconButton
-                onClick={(e: SyntheticEvent) => {
-                  e.preventDefault();
-                  return onClose();
-                }}
-              >
-                <Icons icon="close" />
-              </IconButton>
-            </Fragment>
-          }
-        >
-          <div id="shortcuts" title="Keyboard Shortcuts">
-            <Container>
-              <Header>Keyboard shortcuts</Header>
+      <Container>
+        <Header>Keyboard shortcuts</Header>
 
-              {layout}
-              <Button tertiary small id="restoreDefaultsHotkeys" onClick={this.restoreDefaults}>
-                Restore defaults
-              </Button>
+        {layout}
+        <Button tertiary small id="restoreDefaultsHotkeys" onClick={this.restoreDefaults}>
+          Restore defaults
+        </Button>
 
-              <SettingsFooter />
-            </Container>
-          </div>
-        </Tabs>
-      </GlobalHotKeys>
+        <SettingsFooter />
+      </Container>
     );
   }
 }
 
-export default ShortcutsScreen;
+export { ShortcutsScreen };

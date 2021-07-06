@@ -1,10 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 
-import { PropDef } from '@storybook/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Component } from '../../../blocks/types';
-import { extractComponentProps, DocgenInfo, DocgenPropDefaultValue } from '../../../lib/docgen';
+import {
+  PropDef,
+  extractComponentProps,
+  DocgenInfo,
+  DocgenPropDefaultValue,
+} from '../../../lib/docgen';
 import { enhancePropTypesProp, enhancePropTypesProps } from './handleProp';
 
 const DOCGEN_SECTION = 'props';
@@ -141,7 +145,7 @@ describe('enhancePropTypesProp', () => {
             type: {
               name: 'custom',
               raw:
-                'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionnalComponent!</div>;\n}',
+                'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionalComponent!</div>;\n}',
             },
           });
 
@@ -150,7 +154,7 @@ describe('enhancePropTypesProp', () => {
           expect(type.summary).toBe('InlinedFunctionalComponent');
 
           const expectedDetail = `function InlinedFunctionalComponent() {
-            return <div>Inlined FunctionnalComponent!</div>;
+            return <div>Inlined FunctionalComponent!</div>;
           }`;
 
           expect(type.detail.replace(/\s/g, '')).toBe(expectedDetail.replace(/\s/g, ''));
@@ -467,7 +471,7 @@ describe('enhancePropTypesProp', () => {
           name: 'enum',
           value: [
             {
-              value: '() => {\n  return <div>FunctionnalComponent!</div>;\n}',
+              value: '() => {\n  return <div>FunctionalComponent!</div>;\n}',
               computed: true,
             },
             {
@@ -484,7 +488,7 @@ describe('enhancePropTypesProp', () => {
       expect(type.summary).toBe('element | ClassComponent');
 
       const expectedDetail = `() => {
-          return <div>FunctionnalComponent!</div>;
+          return <div>FunctionalComponent!</div>;
         } | class ClassComponent extends React.PureComponent {
           render() {
             return <div>ClassComponent!</div>;
@@ -1104,7 +1108,7 @@ describe('enhancePropTypesProp', () => {
     it("should use the name of the React component when it's available", () => {
       const component = createTestComponent(
         createDefaultValue(
-          'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionnalComponent!</div>;\n}'
+          'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionalComponent!</div>;\n}'
         )
       );
 
@@ -1113,7 +1117,7 @@ describe('enhancePropTypesProp', () => {
       expect(defaultValue.summary).toBe('<InlinedFunctionalComponent />');
 
       const expectedDetail = `function InlinedFunctionalComponent() {
-        return <div>Inlined FunctionnalComponent!</div>;
+        return <div>Inlined FunctionalComponent!</div>;
       }`;
 
       expect(defaultValue.detail.replace(/\s/g, '')).toBe(expectedDetail.replace(/\s/g, ''));
@@ -1169,7 +1173,6 @@ describe('enhancePropTypesProp', () => {
 
     describe('fromRawDefaultProp', () => {
       [
-        { type: 'string', defaultProp: 'foo' },
         { type: 'number', defaultProp: 1 },
         { type: 'boolean', defaultProp: true },
         { type: 'symbol', defaultProp: Symbol('hey!') },
@@ -1182,6 +1185,15 @@ describe('enhancePropTypesProp', () => {
           expect(defaultValue.summary).toBe(x.defaultProp.toString());
           expect(defaultValue.detail).toBeUndefined();
         });
+      });
+
+      it('should support strings', () => {
+        const component = createTestComponent(null);
+
+        const { defaultValue } = extractPropDef(component, 'foo');
+
+        expect(defaultValue.summary).toBe('"foo"');
+        expect(defaultValue.detail).toBeUndefined();
       });
 
       it('should support array of primitives', () => {
@@ -1348,7 +1360,7 @@ describe('enhancePropTypesProp', () => {
           const component = createTestComponent(null, x);
 
           const { defaultValue } = extractPropDef(component, () => {
-            return <div>Inlined FunctionnalComponent!</div>;
+            return <div>Inlined FunctionalComponent!</div>;
           });
 
           expect(defaultValue.summary).toBe('element');
@@ -1370,7 +1382,7 @@ describe('enhancePropTypesProp', () => {
           const component = createTestComponent(null, x);
 
           const { defaultValue } = extractPropDef(component, function InlinedFunctionalComponent() {
-            return <div>Inlined FunctionnalComponent!</div>;
+            return <div>Inlined FunctionalComponent!</div>;
           });
 
           expect(defaultValue.summary).toBe('<InlinedFunctionalComponent />');
@@ -1380,13 +1392,12 @@ describe('enhancePropTypesProp', () => {
         it(`should support inlined named React functional component with props for ${x}`, () => {
           const component = createTestComponent(null, x);
 
-          const { defaultValue } = extractPropDef(component, function InlinedFunctionalComponent({
-            foo,
-          }: {
-            foo: string;
-          }) {
-            return <div>{foo}</div>;
-          });
+          const { defaultValue } = extractPropDef(
+            component,
+            function InlinedFunctionalComponent({ foo }: { foo: string }) {
+              return <div>{foo}</div>;
+            }
+          );
 
           expect(defaultValue.summary).toBe('<InlinedFunctionalComponent />');
           expect(defaultValue.detail).toBeUndefined();

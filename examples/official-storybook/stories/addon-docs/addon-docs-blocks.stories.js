@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  Props,
-  Stories,
-} from '@storybook/addon-docs/blocks';
+import { Title, Subtitle, Description, Primary, ArgsTable, Stories } from '@storybook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 import BaseButton from '../../components/BaseButton';
 import { ButtonGroup, SubGroup } from '../../components/ButtonGroup';
@@ -22,7 +15,7 @@ export default {
           <Subtitle />
           <Description />
           <Primary />
-          <Props />
+          <ArgsTable />
           <Stories />
         </>
       ),
@@ -61,7 +54,7 @@ checkBoxProps.parameters = {
             <input type="checkbox" checked={showProps} onChange={() => setShowProps(!showProps)} />
             <span>display props</span>
           </label>
-          {showProps && <Props />}
+          {showProps && <ArgsTable />}
         </>
       );
     },
@@ -78,7 +71,7 @@ customLabels.parameters = {
         <Subtitle>Custom sub title</Subtitle>
         <Description>Custom description</Description>
         <Primary />
-        <Props />
+        <ArgsTable />
         <Stories title="Custom stories title" />
       </>
     ),
@@ -117,7 +110,7 @@ multipleComponents.parameters = {
         <Subtitle />
         <Description />
         <Primary name="Many Components" />
-        <Props />
+        <ArgsTable />
       </>
     ),
   },
@@ -138,7 +131,7 @@ componentsProps.parameters = {
         <Description>
           Here's what happens when your component has some related components
         </Description>
-        <Props
+        <ArgsTable
           components={{
             'ButtonGroup Custom': ButtonGroup,
             'Docgen Button': DocgenButton,

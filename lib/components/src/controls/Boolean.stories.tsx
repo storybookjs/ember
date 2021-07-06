@@ -6,12 +6,18 @@ export default {
   component: BooleanControl,
 };
 
-export const Basic = () => {
-  const [value, setValue] = useState(false);
+const Template = (initialValue?: boolean) => {
+  const [value, setValue] = useState(initialValue);
   return (
     <>
-      <BooleanControl name="boolean" value={value} onChange={(name, newVal) => setValue(newVal)} />
-      <p>value: {value.toString()}</p>
+      <BooleanControl name="boolean" value={value} onChange={(newVal) => setValue(newVal)} />
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
+
+export const True = () => Template(true);
+
+export const False = () => Template(false);
+
+export const Undefined = () => Template(undefined);

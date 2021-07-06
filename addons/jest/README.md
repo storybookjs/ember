@@ -2,7 +2,7 @@
 
 Brings Jest results in storybook.
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/master/ADDONS_SUPPORT.md)
+[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
 
 [![Storybook Jest Addon Demo](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/jest/docs/storybook-addon-jest.gif)](http://storybooks-official.netlify.com/?selectedKind=Addons%7Cjest&selectedStory=withTests&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Ftests%2Fpanel)
 
@@ -128,6 +128,9 @@ defaultView.parameters = {
 };
 ```
 
+The jest parameter will default to inferring from your story file name if not provided. For example, if your story file is `MyComponent.stories.js`,
+then "MyComponent" will be used to find your test file results. This currently doesn't work in production environments.
+
 ### Disabling
 
 You can disable the addon for a single story by setting the `jest` parameter to `{disable: true}`:
@@ -152,7 +155,7 @@ defaultView.parameters = {
 
 ## Usage with Angular
 
-Assuming that you have created test files `my.component.spec.ts` and `my-other.comonent.spec.ts`
+Assuming that you have created test files `my.component.spec.ts` and `my-other.component.spec.ts`
 
 Configure Jest with [jest-preset-angular](https://www.npmjs.com/package/jest-preset-angular)
 
@@ -171,7 +174,7 @@ In your `.storybook/preview.ts`:
 import { addDecorator } from '@storybook/angular';
 import { withTests } from '@storybook/addon-jest';
 
-import * as results from '../.jest-test-results.json';
+import results from '../.jest-test-results.json';
 
 addDecorator(
   withTests({
@@ -181,7 +184,7 @@ addDecorator(
 );
 ```
 
-##### Example [here](https://github.com/storybookjs/storybook/tree/master/examples/angular-cli)
+##### Example [here](https://github.com/storybookjs/storybook/tree/main/examples/angular-cli)
 
 ## TODO
 

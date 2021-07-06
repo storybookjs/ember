@@ -1,10 +1,12 @@
-import React, { FunctionComponent, ReactNode, useState, useEffect } from 'react';
+import React, { FunctionComponent, ReactNode, useCallback, useState, useEffect } from 'react';
 import { styled } from '@storybook/theming';
-import { document } from 'global';
+import global from 'global';
 
 import TooltipTrigger from 'react-popper-tooltip';
-import { Modifiers, Placement } from 'popper.js';
+import { Modifier, Placement } from '@popperjs/core';
 import { Tooltip } from './Tooltip';
+
+const { document } = global;
 
 // A target that doesn't speak popper
 const TargetContainer = styled.div<{ mode: string }>`
@@ -25,12 +27,12 @@ export interface WithTooltipPureProps {
   trigger?: 'none' | 'hover' | 'click' | 'right-click';
   closeOnClick?: boolean;
   placement?: Placement;
-  modifiers?: Modifiers;
+  modifiers?: Array<Partial<Modifier<string, {}>>>;
   hasChrome?: boolean;
   tooltip: ReactNode | ((p: WithHideFn) => ReactNode);
   children: ReactNode;
   tooltipShown?: boolean;
-  onVisibilityChange?: (visibility: boolean) => void;
+  onVisibilityChange?: (visibility: boolean) => void | boolean;
   onDoubleClick?: () => void;
 }
 
@@ -93,7 +95,26 @@ WithTooltipPure.defaultProps = {
   trigger: 'hover',
   closeOnClick: false,
   placement: 'top',
-  modifiers: {},
+  modifiers: [
+    {
+      name: 'preventOverflow',
+      options: {
+        padding: 8,
+      },
+    },
+    {
+      name: 'offset',
+      options: {
+        offset: [8, 8],
+      },
+    },
+    {
+      name: 'arrow',
+      options: {
+        padding: 8,
+      },
+    },
+  ],
   hasChrome: true,
   tooltipShown: false,
 };
@@ -102,8 +123,15 @@ const WithToolTipState: FunctionComponent<
   WithTooltipPureProps & {
     startOpen?: boolean;
   }
-> = ({ startOpen, ...rest }) => {
-  const [tooltipShown, onVisibilityChange] = useState(startOpen || false);
+> = ({ startOpen, onVisibilityChange: onChange, ...rest }) => {
+  const [tooltipShown, setTooltipShown] = useState(startOpen || false);
+  const onVisibilityChange = useCallback(
+    (visibility) => {
+      if (onChange && onChange(visibility) === false) return;
+      setTooltipShown(visibility);
+    },
+    [onChange]
+  );
 
   useEffect(() => {
     const hide = () => onVisibilityChange(false);

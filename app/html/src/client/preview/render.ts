@@ -1,7 +1,9 @@
-import { document, Node } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
 
+const { document, Node } = global;
 const rootElement = document.getElementById('root');
 
 export default function renderMain({
@@ -13,10 +15,10 @@ export default function renderMain({
   forceRender,
 }: RenderContext) {
   const element = storyFn();
-
   showMain();
   if (typeof element === 'string') {
     rootElement.innerHTML = element;
+    simulatePageLoad(rootElement);
   } else if (element instanceof Node) {
     // Don't re-mount the element if it didn't change and neither did the story
     if (rootElement.firstChild === element && forceRender === true) {
@@ -25,6 +27,7 @@ export default function renderMain({
 
     rootElement.innerHTML = '';
     rootElement.appendChild(element);
+    simulateDOMContentLoaded();
   } else {
     showError({
       title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${kind}".`,

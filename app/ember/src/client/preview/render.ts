@@ -1,13 +1,15 @@
-import { window, document } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { RenderContext, ElementArgs, OptionsArgs } from './types';
+
+const { window: globalWindow, document } = global;
 
 declare let Ember: any;
 
 const rootEl = document.getElementById('root');
 
-const config = window.require(`${window.STORYBOOK_NAME}/config/environment`);
-const app = window.require(`${window.STORYBOOK_NAME}/app`).default.create({
+const config = globalWindow.require(`${globalWindow.STORYBOOK_NAME}/config/environment`);
+const app = globalWindow.require(`${globalWindow.STORYBOOK_NAME}/app`).default.create({
   autoboot: false,
   rootElement: rootEl,
   ...config.APP,

@@ -1,12 +1,17 @@
 import type { TransformOptions } from '@babel/core';
 import type { Configuration } from 'webpack';
-import type { StorybookOptions } from '@storybook/core/types';
+import ReactDocgenTypescriptPlugin from '@storybook/react-docgen-typescript-plugin';
+import type { Options, TypescriptConfig } from '@storybook/core-common';
 
-export function babel(config: TransformOptions, { typescriptOptions }: StorybookOptions) {
+export async function babel(config: TransformOptions, { presets }: Options) {
+  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+
   const { reactDocgen } = typescriptOptions;
-  if (!reactDocgen) {
+
+  if (typeof reactDocgen !== 'string') {
     return config;
   }
+
   return {
     ...config,
     overrides: [
@@ -25,26 +30,24 @@ export function babel(config: TransformOptions, { typescriptOptions }: Storybook
   };
 }
 
-export function webpackFinal(config: Configuration, { typescriptOptions }: StorybookOptions) {
+export async function webpackFinal(config: Configuration, { presets }: Options) {
+  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+
   const { reactDocgen, reactDocgenTypescriptOptions } = typescriptOptions;
-  if (reactDocgen !== 'react-docgen-typescript') return config;
+
+  if (reactDocgen !== 'react-docgen-typescript') {
+    return config;
+  }
+
   return {
     ...config,
-    module: {
-      ...config.module,
-      rules: [
-        ...config.module.rules,
-        {
-          test: /\.tsx?$/,
-          // include: path.resolve(__dirname, "../src"),
-          use: [
-            {
-              loader: require.resolve('react-docgen-typescript-loader'),
-              options: reactDocgenTypescriptOptions,
-            },
-          ],
-        },
-      ],
-    },
+    plugins: [
+      ...config.plugins,
+      new ReactDocgenTypescriptPlugin({
+        ...reactDocgenTypescriptOptions,
+        // We *need* this set so that RDT returns default values in the same format as react-docgen
+        savePropValueAsString: true,
+      }),
+    ],
   };
 }

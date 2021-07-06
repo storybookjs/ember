@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
-import { ArgsTable, ArgsTableProps } from './ArgsTable';
+import { ArgsTable, ArgsTableProps, SortType } from './ArgsTable';
 import { TabsState } from '../../tabs/tabs';
 
 export interface TabbedArgsTableProps {
   tabs: Record<string, ArgsTableProps>;
+  sort?: SortType;
 }
 
-export const TabbedArgsTable: FC<TabbedArgsTableProps> = ({ tabs }) => {
+export const TabbedArgsTable: FC<TabbedArgsTableProps> = ({ tabs, ...props }) => {
   const entries = Object.entries(tabs);
 
   if (entries.length === 1) {
-    return <ArgsTable {...entries[0][1]} />;
+    return <ArgsTable {...entries[0][1]} {...props} />;
   }
 
   return (
@@ -21,7 +22,7 @@ export const TabbedArgsTable: FC<TabbedArgsTableProps> = ({ tabs }) => {
         return (
           <div key={id} id={id} title={label}>
             {({ active }: { active: boolean }) =>
-              active ? <ArgsTable key={`prop_table_${label}`} {...table} /> : null
+              active ? <ArgsTable key={`prop_table_${label}`} {...table} {...props} /> : null
             }
           </div>
         );

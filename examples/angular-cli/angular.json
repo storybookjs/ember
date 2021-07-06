@@ -38,7 +38,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -74,6 +73,21 @@
             "styles": ["styles.css"],
             "scripts": [],
             "assets": ["src/favicon.ico", "src/assets"]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "browserTarget": "angular-cli:build",
+            "port": 4400,
+            "staticDir": ["src/assets"]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "angular-cli:build",
+            "staticDir": ["src/assets"]
           }
         }
       }

@@ -1,11 +1,11 @@
 import React from 'react';
-import addons, { types } from '@storybook/addons';
+import { addons, types } from '@storybook/addons';
 import { ToolbarManager } from './components/ToolbarManager';
-import { ID } from './constants';
+import { ADDON_ID } from './constants';
 
-addons.register(ID, (api) =>
-  addons.add(ID, {
-    title: ID,
+addons.register(ADDON_ID, () =>
+  addons.add(ADDON_ID, {
+    title: ADDON_ID,
     type: types.TOOL,
     match: () => true,
     render: () => <ToolbarManager />,

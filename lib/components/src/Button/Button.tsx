@@ -25,7 +25,7 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
     cursor: 'pointer',
     display: 'inline-block',
     overflow: 'hidden',
-    padding: small ? '10px 16px' : '13px 20px',
+    padding: small ? '8px 16px' : '13px 20px',
     position: 'relative',
     textAlign: 'center',
     textDecoration: 'none',
@@ -56,7 +56,7 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
       pointerEvents: 'none',
 
       path: {
-        fill: 'currentColor }',
+        fill: 'currentColor',
       },
     },
   }),
@@ -83,20 +83,18 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
   ({ theme, primary, secondary, gray }) => {
     let color;
 
-    if (primary) {
-      color = theme.color.primary;
-    }
-    if (secondary) {
-      color = theme.color.secondary;
-    }
     if (gray) {
       color = theme.color.medium;
+    } else if (secondary) {
+      color = theme.color.secondary;
+    } else if (primary) {
+      color = theme.color.primary;
     }
 
     return color
       ? {
           background: color,
-          color: gray ? '#333333' : theme.color.inverseText,
+          color: gray ? theme.color.darkest : theme.color.lightest,
 
           '&:hover': {
             background: darken(0.05, color),
@@ -105,7 +103,8 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
             boxShadow: 'rgba(0, 0, 0, 0.1) 0 0 0 3em inset',
           },
           '&:focus': {
-            boxShadow: `${rgba(color, 0.4)} 0 1px 9px 2px`,
+            boxShadow: `${rgba(color, 1)} 0 1px 9px 2px`,
+            outline: 'none',
           },
           '&:focus:hover': {
             boxShadow: `${rgba(color, 0.2)} 0 8px 18px 0px`,
@@ -113,7 +112,7 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
         }
       : {};
   },
-  ({ theme, tertiary, inForm }) =>
+  ({ theme, tertiary, inForm, small }) =>
     tertiary
       ? {
           background:
@@ -123,6 +122,8 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
           color: theme.input.color,
           boxShadow: `${theme.input.border} 0 0 0 1px inset`,
           borderRadius: theme.input.borderRadius,
+
+          ...(inForm && small ? { padding: '10px 16px' } : {}),
 
           '&:hover': {
             background:
@@ -139,7 +140,8 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
             background: theme.input.background,
           },
           '&:focus': {
-            boxShadow: `${rgba(theme.color.secondary, 0.4)} 0 0 0 1px inset`,
+            boxShadow: `${rgba(theme.color.secondary, 1)} 0 0 0 1px inset`,
+            outline: 'none',
           },
         }
       : {},
@@ -150,8 +152,9 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
           color: transparentize(0.3, theme.color.defaultText),
           background: 'transparent',
 
-          '&:hover': {
+          '&:hover, &:focus': {
             boxShadow: `${transparentize(0.5, theme.color.defaultText)} 0 0 0 1px inset`,
+            outline: 'none',
           },
 
           '&:active': {
@@ -180,10 +183,11 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
           '&:active': {
             background: color,
             boxShadow: `${color} 0 0 0 1px inset`,
-            color: theme.color.lightest,
+            color: theme.color.tertiary,
           },
           '&:focus': {
             boxShadow: `${color} 0 0 0 1px inset, ${rgba(color, 0.4)} 0 1px 9px 2px`,
+            outline: 'none',
           },
           '&:focus:hover': {
             boxShadow: `${color} 0 0 0 1px inset, ${rgba(color, 0.2)} 0 8px 18px 0px`,
@@ -193,12 +197,13 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
   },
   ({ theme, outline, primary, secondary }) => {
     let color;
-    if (primary) {
-      color = theme.color.primary;
-    }
+
     if (secondary) {
       color = theme.color.secondary;
+    } else if (primary) {
+      color = theme.color.primary;
     }
+
     return outline && color
       ? {
           boxShadow: `${color} 0 0 0 1px inset`,
@@ -216,10 +221,11 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
           '&:active': {
             background: color,
             boxShadow: `${color} 0 0 0 1px inset`,
-            color: theme.color.lightest,
+            color: theme.color.tertiary,
           },
           '&:focus': {
             boxShadow: `${color} 0 0 0 1px inset, ${rgba(color, 0.4)} 0 1px 9px 2px`,
+            outline: 'none',
           },
           '&:focus:hover': {
             boxShadow: `${color} 0 0 0 1px inset, ${rgba(color, 0.2)} 0 8px 18px 0px`,

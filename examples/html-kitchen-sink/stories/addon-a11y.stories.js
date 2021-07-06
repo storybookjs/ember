@@ -1,5 +1,6 @@
-import { document, setTimeout } from 'global';
+import global from 'global';
 
+const { document, setTimeout } = global;
 const text = 'Testing the a11y addon';
 
 export default {

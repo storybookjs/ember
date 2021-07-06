@@ -1,9 +1,10 @@
 import { spawn } from 'child_process';
 import { promisify } from 'util';
-import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync } from 'fs';
+import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 import { getDeployables } from './utils/list-examples';
+import { filterDataForCurrentCircleCINode } from './utils/concurrency';
 
 const readdir = promisify(readdirRaw);
 const writeFile = promisify(writeFileRaw);
@@ -121,6 +122,10 @@ const handleExamples = async (deployables) => {
     const out = p(['built-storybooks', d]);
     const cwd = p(['examples', d]);
 
+    if (existsSync(join(cwd, 'yarn.lock'))) {
+      await exec(`yarn`, [`install`], { cwd });
+    }
+
     await exec(`yarn`, [`build-storybook`, `--output-dir=${out}`, '--quiet'], { cwd });
     await exec(`npx`, [`sb`, 'extract', out, `${out}/stories.json`], { cwd });
 
@@ -132,20 +137,10 @@ const handleExamples = async (deployables) => {
 
 const run = async () => {
   const list = getDeployables(await readdir(p(['examples'])), hasBuildScript);
-
-  const { length } = list;
-  const [a, b] = [process.env.CIRCLE_NODE_INDEX || 0, process.env.CIRCLE_NODE_TOTAL || 1];
-  const step = Math.ceil(length / b);
-  const offset = step * a;
-
-  const deployables = list.slice().splice(offset, step);
+  const deployables = filterDataForCurrentCircleCINode(list);
 
   if (deployables.length) {
-    logger.log(
-      `will build: ${deployables.join(', ')} (${
-        deployables.length
-      } total - offset: ${offset} | step: ${step} | length: ${length} | node_index: ${a} | total: ${b} |)`
-    );
+    logger.log(`🏗 Will build Storybook for: ${deployables.join(', ')}`);
     await handleExamples(deployables);
   }
 

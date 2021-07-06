@@ -1,55 +1,45 @@
-import {
-  getVersions,
-  retrievePackageJson,
-  writePackageJson,
-  getBabelDependencies,
-  installDependencies,
-  copyTemplate,
-} from '../../helpers';
-import { Generator } from '../Generator';
+import fse from 'fs-extra';
+import { logger } from '@storybook/node-logger';
 
-const generator: Generator = async (npmOptions, { storyFormat }) => {
-  const [
-    storybookVersion,
-    actionsVersion,
-    linksVersion,
-    addonsVersion,
-    svelte,
-    svelteLoader,
-  ] = await getVersions(
-    npmOptions,
-    '@storybook/svelte',
-    '@storybook/addon-actions',
-    '@storybook/addon-links',
-    '@storybook/addons',
-    'svelte',
-    'svelte-loader'
-  );
+import { baseGenerator, Generator } from '../baseGenerator';
 
-  copyTemplate(__dirname, storyFormat);
+const generator: Generator = async (packageManager, npmOptions, options) => {
+  let extraMain;
+  let commonJs = false;
+  // svelte.config.js ?
+  if (fse.existsSync('./svelte.config.js')) {
+    logger.info("Configuring preprocessor from 'svelte.config.js'");
 
-  const packageJson = await retrievePackageJson();
+    extraMain = {
+      svelteOptions: { preprocess: '%%require("../svelte.config.js").preprocess%%' },
+    };
+  } else if (fse.existsSync('./svelte.config.cjs')) {
+    logger.info("Configuring preprocessor from 'svelte.config.cjs'");
 
-  packageJson.dependencies = packageJson.dependencies || {};
-  packageJson.devDependencies = packageJson.devDependencies || {};
+    commonJs = true;
 
-  packageJson.scripts = packageJson.scripts || {};
-  packageJson.scripts.storybook = 'start-storybook -p 6006';
-  packageJson.scripts['build-storybook'] = 'build-storybook';
+    extraMain = {
+      svelteOptions: { preprocess: '%%require("../svelte.config.cjs").preprocess%%' },
+    };
+  } else {
+    // svelte-preprocess dependencies ?
+    const packageJson = packageManager.retrievePackageJson();
+    if (packageJson.devDependencies && packageJson.devDependencies['svelte-preprocess']) {
+      logger.info("Configuring preprocessor with 'svelte-preprocess'");
 
-  writePackageJson(packageJson);
+      extraMain = {
+        svelteOptions: { preprocess: '%%require("svelte-preprocess")()%%' },
+      };
+    }
+  }
 
-  const babelDependencies = await getBabelDependencies(npmOptions, packageJson);
-
-  installDependencies({ ...npmOptions, packageJson }, [
-    `@storybook/svelte@${storybookVersion}`,
-    `@storybook/addon-actions@${actionsVersion}`,
-    `@storybook/addon-links@${linksVersion}`,
-    `@storybook/addons@${addonsVersion}`,
-    `svelte@${svelte}`,
-    `svelte-loader@${svelteLoader}`,
-    ...babelDependencies,
-  ]);
+  await baseGenerator(packageManager, npmOptions, options, 'svelte', {
+    extraPackages: ['svelte', 'svelte-loader'],
+    extraAddons: ['@storybook/addon-svelte-csf'],
+    extensions: ['js', 'jsx', 'ts', 'tsx', 'svelte'],
+    extraMain,
+    commonJs,
+  });
 };
 
 export default generator;

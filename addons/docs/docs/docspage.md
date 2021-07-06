@@ -13,11 +13,12 @@ When you install [Storybook Docs](../README.md), `DocsPage` is the zero-config d
   - [Remixing DocsPage using doc blocks](#remixing-docspage-using-doc-blocks)
 - [Story file names](#story-file-names)
 - [Inline stories vs. Iframe stories](#inline-stories-vs-iframe-stories)
+- [Show/Hide code](#showhide-code)
 - [More resources](#more-resources)
 
 ## Motivation
 
-`DocsPage` is the successor to [`addon-info`](https://github.com/storybookjs/storybook/tree/next/addons/info), which was one of the most popular Storybook addons despite many limitations.
+`DocsPage` is the successor to [`addon-info`](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info), which was one of the most popular Storybook addons despite many limitations.
 
 Like `addon-info`, `DocsPage` provides sensible defaults, meaning it adds documentation to your existing Storybook without requiring any additional work on your part.
 
@@ -34,7 +35,7 @@ However, `DocsPage` brings the following improvements:
 
 Storybook uses `component` to extract the component's description and props, and will rely on it further in future releases. We encourage you to add it to existing stories and use it in all new stories.
 
-Here's how to set the component in [Component Story Format (CSF)](https://storybook.js.org/docs/formats/component-story-format/):
+Here's how to set the component in [Component Story Format (CSF)](https://storybook.js.org/docs/react/api/csf):
 
 ```js
 import { Badge } from './Badge';
@@ -58,15 +59,15 @@ If you're coming from the `storiesOf` format, there's [a codemod that adds it fo
 
 ## Subcomponents parameter
 
-Sometimes it's useful to document multiple components on the same page. For example, suppose your component library contains `List` and `ListItem` components that don't make sense without one another. `DocsPage` has the concept of a "primary" component with the [`component` parameter](#component-parameter), and can also accept one or more "subcomponents":
+Sometimes it's useful to document multiple components on the same page. For example, suppose your component library contains `Button` and `ButtonGroup` components that don't make sense without one another. `DocsPage` has the concept of a "primary" component with the [`component` parameter](#component-parameter), and can also accept one or more "subcomponents":
 
 ```js
-import { List, ListHeading, ListItem } from './List';
+import { Button, ButtonGroup } from '../ButtonGroup';
 
 export default {
-  title: 'Path/to/List',
-  component: List,
-  subcomponents: { ListHeading, ListItem },
+  title: 'Path/to/ButtonGroup',
+  component: ButtonGroup,
+  subcomponents: { Button },
 };
 ```
 
@@ -78,7 +79,7 @@ If you want organize your documentation differently for groups of components, we
 
 ## Replacing DocsPage
 
-What if you don't want a `DocsPage` for your storybook, for a specific component, or even for a specific story?
+What if you don't want a `DocsPage` for your Storybook, for a specific component, or even for a specific story?
 
 You can replace DocsPage at any level by overriding the `docs.page` parameter:
 
@@ -121,14 +122,7 @@ Here's an example of rebuilding `DocsPage` out of doc blocks:
 
 ```js
 import React from 'react';
-import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  Props,
-  Stories,
-} from '@storybook/addon-docs/blocks';
+import { Title, Subtitle, Description, Primary, ArgsTable, Stories } from '@storybook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 
 export default {
@@ -142,7 +136,7 @@ export default {
           <Subtitle />
           <Description />
           <Primary />
-          <Props />
+          <ArgsTable />
           <Stories />
         </>
       ),
@@ -173,15 +167,33 @@ import { addParameters } from '@storybook/vue';
 
 addParameters({
   docs: {
-    prepareForInline: (storyFn) => {
+    prepareForInline: (storyFn, { args }) => {
       const Story = toReact(storyFn());
-      return <Story />;
+      return <Story {...args} />;
     },
   },
 });
 ```
 
 With that function, anyone using the docs addon for `@storybook/vue` can make their stories render inline, either globally with the `inlineStories` docs parameter, or on a per-story-basis using the `inline` prop on the `<Story>` doc block. If you come up with an elegant and flexible implementation for the `prepareForInline` function for your own framework, let us know! We'd love to make it the default configuration, to make inline stories more accessible for a larger variety of frameworks!
+
+## Show/Hide code
+
+By default, the code block under the Preview is collapsed and you have to click on "Show code" to reveal it.
+
+You can override this default behavior in `.storybook/preview.js` (or in any of your components/stories):
+
+```js
+export const parameters = {
+  docs: {
+    source: {
+      state: 'open',
+    },
+  },
+};
+```
+
+With that flag, now the docs addon will show all code blocks open by default.
 
 ## More resources
 

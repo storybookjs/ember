@@ -1,8 +1,8 @@
-import { DOCS_MODE } from 'global';
+import global from 'global';
 import React, { FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Location, LocationProvider } from '@storybook/router';
+import { Location, LocationProvider, History } from '@storybook/router';
 import { Provider as ManagerProvider, Combo } from '@storybook/api';
 import { ThemeProvider, ensure as ensureTheme } from '@storybook/theming';
 import { HelmetProvider } from 'react-helmet-async';
@@ -10,6 +10,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import App from './app';
 
 import Provider from './provider';
+
+const { DOCS_MODE } = global;
 
 // @ts-ignore
 ThemeProvider.displayName = 'ThemeProvider';
@@ -28,12 +30,13 @@ const Container = process.env.XSTORYBOOK_EXAMPLE_APP ? React.StrictMode : React.
 
 export interface RootProps {
   provider: Provider;
+  history?: History;
 }
 
-export const Root: FunctionComponent<RootProps> = ({ provider }) => (
+export const Root: FunctionComponent<RootProps> = ({ provider, history }) => (
   <Container key="container">
     <HelmetProvider key="helmet.Provider">
-      <LocationProvider key="location.provider">
+      <LocationProvider key="location.provider" history={history}>
         <Location key="location.consumer">
           {(locationData) => (
             <ManagerProvider
@@ -44,14 +47,17 @@ export const Root: FunctionComponent<RootProps> = ({ provider }) => (
             >
               {({ state, api }: Combo) => {
                 const panelCount = Object.keys(api.getPanels()).length;
-                const story = api.getData(state.storyId);
+                const story = api.getData(state.storyId, state.refId);
+                const isLoading = story
+                  ? !!state.refs[state.refId] && !state.refs[state.refId].ready
+                  : !state.storiesFailed && !state.storiesConfigured;
 
                 return (
                   <ThemeProvider key="theme.provider" theme={ensureTheme(state.theme)}>
                     <App
                       key="app"
                       viewMode={state.viewMode}
-                      layout={state.layout}
+                      layout={isLoading ? { ...state.layout, showPanel: false } : state.layout}
                       panelCount={panelCount}
                       docsOnly={story && story.parameters && story.parameters.docsOnly}
                     />

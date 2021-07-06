@@ -1,0 +1,40 @@
+```js
+// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+
+export default {
+  title: 'Button',
+  component: Button,
+  argTypes: {
+    // Assigns the argTypes to the Colors category
+    backgroundColor: {
+      control: 'color',
+      table: {
+        category: 'Colors'
+      }
+    },
+    primary: {
+      table: {
+        category: 'Colors'
+      }
+    },
+    // Assigns the argType to the Text category
+    label: {
+      table: {
+        category: 'Text'
+      }
+    },
+    // Assigns the argType to the Events category
+    onClick: {
+      table: {
+        category: 'Events'
+      }
+    },
+    // Assigns the argType to the Sizes category
+    size: {
+      table: {
+        category: 'Sizes'
+      }
+    }
+  }
+};
+```

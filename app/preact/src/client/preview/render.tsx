@@ -1,14 +1,30 @@
-import { h, render } from 'preact';
-import { document } from 'global';
+import * as preact from 'preact';
+import global from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext } from './types';
+import { RenderContext, StoryFnPreactReturnType } from './types';
 
+const { document } = global;
 const rootElement = document ? document.getElementById('root') : null;
 
-export default function renderMain({ storyFn, kind, name, showMain, showError }: RenderContext) {
-  const element = storyFn();
+let renderedStory: Element;
 
-  if (!element) {
+function preactRender(story: StoryFnPreactReturnType): void {
+  if (preact.Fragment) {
+    // Preact 10 only:
+    preact.render(story, rootElement);
+  } else {
+    renderedStory = (preact.render(story, rootElement, renderedStory) as unknown) as Element;
+  }
+}
+
+const StoryHarness: preact.FunctionalComponent<{
+  name: string;
+  kind: string;
+  showError: RenderContext['showError'];
+  storyFn: () => any;
+}> = ({ showError, name, kind, storyFn }) => {
+  const content = preact.h(storyFn as any, null);
+  if (!content) {
     showError({
       title: `Expecting a Preact element from the story: "${name}" of "${kind}".`,
       description: dedent`
@@ -16,12 +32,25 @@ export default function renderMain({ storyFn, kind, name, showMain, showError }:
         Use "() => (<MyComp/>)" or "() => { return <MyComp/>; }" when defining the story.
       `,
     });
-    return;
+    return null;
   }
+  return content;
+};
 
-  render(null, rootElement);
+export default function renderMain({
+  storyFn,
+  kind,
+  name,
+  showMain,
+  showError,
+  forceRender,
+}: RenderContext) {
+  // But forceRender means that it's the same story, so we want to keep the state in that case.
+  if (!forceRender) {
+    preactRender(null);
+  }
 
   showMain();
 
-  render(element, rootElement);
+  preactRender(preact.h(StoryHarness, { name, kind, showError, storyFn }));
 }

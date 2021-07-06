@@ -1,0 +1,23 @@
+```js
+// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+
+export default {
+  title: 'CustomDescription',
+  parameters: {
+    docs: {
+      description: {
+        component: 'Some component _markdown_',
+      },
+    },
+  },
+};
+
+export const WithStoryDescription = Template.bind({});
+WithStoryDescription.parameters = {
+  docs: {
+    description: {
+      story: 'Some story **markdown**',
+    },
+  },
+};
+```

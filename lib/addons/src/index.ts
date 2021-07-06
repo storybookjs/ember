@@ -15,7 +15,7 @@ export interface RenderOptions {
 }
 
 export interface Addon {
-  title: string;
+  title: (() => string) | string;
   type?: Types;
   id?: string;
   route?: (routeOptions: RouterData) => string;
@@ -37,9 +37,14 @@ export interface Collection {
 interface Elements {
   [key: string]: Collection;
 }
-
-interface Config {
+interface ToolbarConfig {
+  hidden?: boolean;
+}
+export interface Config {
   theme?: ThemeVars;
+  toolbar?: {
+    [id: string]: ToolbarConfig;
+  };
   [key: string]: any;
 }
 

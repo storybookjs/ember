@@ -8,17 +8,36 @@ import {
   SupportedLanguage,
   TemplateConfiguration,
   TemplateMatcher,
+  unsupportedTemplate,
 } from './project_types';
-import { getBowerJson, getPackageJson } from './helpers';
-import { PackageJson } from './PackageJson';
+import { getBowerJson } from './helpers';
+import { PackageJson, readPackageJson } from './js-package-manager';
 
-const hasDependency = (packageJson: PackageJson, name: string) => {
-  return !!packageJson.dependencies?.[name] || !!packageJson.devDependencies?.[name];
+const hasDependency = (
+  packageJson: PackageJson,
+  name: string,
+  matcher?: (version: string) => boolean
+) => {
+  const version = packageJson.dependencies?.[name] || packageJson.devDependencies?.[name];
+  if (version && typeof matcher === 'function') {
+    return matcher(version);
+  }
+  return !!version;
 };
 
-const hasPeerDependency = (packageJson: PackageJson, name: string) => {
-  return !!packageJson.peerDependencies?.[name];
+const hasPeerDependency = (
+  packageJson: PackageJson,
+  name: string,
+  matcher?: (version: string) => boolean
+) => {
+  const version = packageJson.peerDependencies?.[name];
+  if (version && typeof matcher === 'function') {
+    return matcher(version);
+  }
+  return !!version;
 };
+
+type SearchTuple = [string, (version: string) => boolean | undefined];
 
 const getFrameworkPreset = (
   packageJson: PackageJson,
@@ -32,12 +51,32 @@ const getFrameworkPreset = (
 
   const { preset, files, dependencies, peerDependencies, matcherFunction } = framework;
 
-  if (Array.isArray(dependencies) && dependencies.length > 0) {
-    matcher.dependencies = dependencies.map((name) => hasDependency(packageJson, name));
+  let dependencySearches = [] as SearchTuple[];
+  if (Array.isArray(dependencies)) {
+    dependencySearches = dependencies.map((name) => [name, undefined]);
+  } else if (typeof dependencies === 'object') {
+    dependencySearches = Object.entries(dependencies);
   }
 
-  if (Array.isArray(peerDependencies) && peerDependencies.length > 0) {
-    matcher.peerDependencies = peerDependencies.map((name) => hasPeerDependency(packageJson, name));
+  // Must check the length so the `[false]` isn't overwritten if `{ dependencies: [] }`
+  if (dependencySearches.length > 0) {
+    matcher.dependencies = dependencySearches.map(([name, matchFn]) =>
+      hasDependency(packageJson, name, matchFn)
+    );
+  }
+
+  let peerDependencySearches = [] as SearchTuple[];
+  if (Array.isArray(peerDependencies)) {
+    peerDependencySearches = peerDependencies.map((name) => [name, undefined]);
+  } else if (typeof peerDependencies === 'object') {
+    peerDependencySearches = Object.entries(peerDependencies);
+  }
+
+  // Must check the length so the `[false]` isn't overwritten if `{ peerDependencies: [] }`
+  if (peerDependencySearches.length > 0) {
+    matcher.peerDependencies = peerDependencySearches.map(([name, matchFn]) =>
+      hasPeerDependency(packageJson, name, matchFn)
+    );
   }
 
   if (Array.isArray(files) && files.length > 0) {
@@ -48,14 +87,14 @@ const getFrameworkPreset = (
 };
 
 export function detectFrameworkPreset(packageJson = {}) {
-  const result = supportedTemplates.find((framework) => {
+  const result = [...supportedTemplates, unsupportedTemplate].find((framework) => {
     return getFrameworkPreset(packageJson, framework) !== null;
   });
 
   return result ? result.preset : ProjectType.UNDETECTED;
 }
 
-export function isStorybookInstalled(dependencies: PackageJson, force?: boolean) {
+export function isStorybookInstalled(dependencies: PackageJson | false, force?: boolean) {
   if (!dependencies) {
     return false;
   }
@@ -83,7 +122,7 @@ export function isStorybookInstalled(dependencies: PackageJson, force?: boolean)
 
 export function detectLanguage() {
   let language = SupportedLanguage.JAVASCRIPT;
-  const packageJson = getPackageJson();
+  const packageJson = readPackageJson();
   const bowerJson = getBowerJson();
   if (!packageJson && !bowerJson) {
     return language;
@@ -97,7 +136,7 @@ export function detectLanguage() {
 }
 
 export function detect(options: { force?: boolean; html?: boolean } = {}) {
-  const packageJson = getPackageJson();
+  const packageJson = readPackageJson();
   const bowerJson = getBowerJson();
 
   if (!packageJson && !bowerJson) {

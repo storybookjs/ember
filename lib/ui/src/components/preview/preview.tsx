@@ -1,10 +1,9 @@
-import React, { Fragment, FunctionComponent, useMemo, useEffect } from 'react';
+import React, { Fragment, useMemo, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import merge from '@storybook/api/dist/lib/merge';
-import { API, Consumer, Combo } from '@storybook/api';
+import { API, Consumer, Combo, merge } from '@storybook/api';
 import { SET_CURRENT_STORY } from '@storybook/core-events';
-import addons, { types, Addon } from '@storybook/addons';
+import { addons, types, Addon } from '@storybook/addons';
 
 import { Loader } from '@storybook/components';
 import { Location } from '@storybook/router';
@@ -60,10 +59,9 @@ const createCanvas = (id: string, baseUrl = 'iframe.html', withLoader = true): A
             ...defaultWrappers,
           ]);
 
-          const isLoading = !!(
-            (!story && !(storiesFailed || storiesConfigured)) ||
-            (story && refId && refs[refId] && !refs[refId].ready)
-          );
+          const isLoading = story
+            ? !!refs[refId] && !refs[refId].ready
+            : !storiesFailed && !storiesConfigured;
 
           return (
             <ZoomConsumer>
@@ -124,7 +122,7 @@ const useTabs = (
   }, [getElements]);
 
   return useMemo(() => {
-    if (story && story.parameters) {
+    if (story?.parameters) {
       return filterTabs([canvas, ...tabsFromConfig], story.parameters);
     }
 
@@ -132,32 +130,46 @@ const useTabs = (
   }, [story, canvas, ...tabsFromConfig]);
 };
 
-const Preview: FunctionComponent<PreviewProps> = (props) => {
+const Preview = React.memo<PreviewProps>((props) => {
   const {
     api,
     id: previewId,
     options,
     viewMode,
+    storyId,
     story = undefined,
     description,
     baseUrl,
     withLoader = true,
   } = props;
-  const { isToolshown } = options;
   const { getElements } = api;
 
   const tabs = useTabs(previewId, baseUrl, withLoader, getElements, story);
 
+  const shouldScale = viewMode === 'story';
+  const { isToolshown } = options;
+
+  const previousStoryId = useRef(storyId);
+  const previousViewMode = useRef(viewMode);
+
   useEffect(() => {
-    if (story && viewMode && viewMode.match(/docs|story/)) {
-      const { refId, id } = story;
-      api.emit(SET_CURRENT_STORY, {
-        storyId: id,
-        viewMode,
-        options: {
-          target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
-        },
-      });
+    if (story && viewMode) {
+      // Don't emit the event on first ("real") render, only when story or mode changes
+      if (storyId !== previousStoryId.current || viewMode !== previousViewMode.current) {
+        previousStoryId.current = storyId;
+        previousViewMode.current = viewMode;
+
+        if (viewMode.match(/docs|story/)) {
+          const { refId, id } = story;
+          api.emit(SET_CURRENT_STORY, {
+            storyId: id,
+            viewMode,
+            options: {
+              target: refId ? `storybook-ref-${refId}` : 'storybook-preview-iframe',
+            },
+          });
+        }
+      }
     }
   }, [story, viewMode]);
 
@@ -168,7 +180,7 @@ const Preview: FunctionComponent<PreviewProps> = (props) => {
           <title>{description}</title>
         </Helmet>
       )}
-      <ZoomProvider>
+      <ZoomProvider shouldScale={shouldScale}>
         <ToolbarComp key="tools" story={story} api={api} isShown={isToolshown} tabs={tabs} />
         <S.FrameWrap key="frame" offset={isToolshown ? 40 : 0}>
           {tabs.map(({ render: Render, match, ...t }, i) => {
@@ -184,7 +196,7 @@ const Preview: FunctionComponent<PreviewProps> = (props) => {
       </ZoomProvider>
     </Fragment>
   );
-};
+});
 
 export { Preview };
 

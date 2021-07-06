@@ -1,3 +1,5 @@
-import { window } from 'global';
+import global from 'global';
 
-window.STORYBOOK_ENV = 'web-components';
+const { window: globalWindow } = global;
+
+globalWindow.STORYBOOK_ENV = 'web-components';

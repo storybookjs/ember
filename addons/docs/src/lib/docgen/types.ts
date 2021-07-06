@@ -1,8 +1,8 @@
-import { PropsTableProps } from '@storybook/components';
 import { ArgTypes } from '@storybook/api';
+import { PropDef } from './PropDef';
 import { Component } from '../../blocks/types';
 
-export type PropsExtractor = (component: Component) => PropsTableProps | null;
+export type PropsExtractor = (component: Component) => { rows?: PropDef[] } | null;
 
 export type ArgTypesExtractor = (component: Component) => ArgTypes | null;
 
@@ -10,6 +10,7 @@ export interface DocgenType {
   name: string;
   description?: string;
   required?: boolean;
+  value?: any; // Seems like this can be many things
 }
 
 export interface DocgenPropType extends DocgenType {
@@ -32,6 +33,8 @@ export interface DocgenTypeScriptType extends DocgenType {}
 
 export interface DocgenPropDefaultValue {
   value: string;
+  computed?: boolean;
+  func?: boolean;
 }
 
 export interface DocgenInfo {
@@ -49,3 +52,5 @@ export enum TypeSystem {
   TYPESCRIPT = 'TypeScript',
   UNKNOWN = 'Unknown',
 }
+
+export type { PropDef };
