@@ -5,7 +5,7 @@
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/angular",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/angular",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

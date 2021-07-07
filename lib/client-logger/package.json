@@ -5,7 +5,7 @@
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/client-logger",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/client-logger",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

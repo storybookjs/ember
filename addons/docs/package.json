@@ -10,7 +10,7 @@
     "essentials",
     "organize"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/docs",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/docs",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

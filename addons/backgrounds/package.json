@@ -10,7 +10,7 @@
     "essentials",
     "design"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/backgrounds",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/backgrounds",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

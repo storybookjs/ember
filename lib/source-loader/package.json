@@ -6,7 +6,7 @@
     "lib",
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/source-loader",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/source-loader",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

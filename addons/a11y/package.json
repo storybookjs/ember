@@ -11,13 +11,13 @@
     "verify",
     "test"
   ],
-  "homepage": "https://github.com/storybookjs/storybook#readme",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/a11y",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/storybookjs/storybook.git",
+    "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/a11y"
   },
   "funding": {

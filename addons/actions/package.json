@@ -7,7 +7,7 @@
     "essentials",
     "data-state"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/actions",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/actions",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
