@@ -7,7 +7,6 @@ exports[`Storyshots Basics / Component / without selector / Custom wrapper *NgCo
     ng-reflect-component-outlet="function WithoutSelectorCompon"
     ng-reflect-name="Dixie Normous"
   >
-    
     <ng-component>
       My name in color : 
       <div
@@ -18,6 +17,7 @@ exports[`Storyshots Basics / Component / without selector / Custom wrapper *NgCo
       Ng-content : Inspired by 
       https://angular.io/api/common/NgComponentOutlet
     </ng-component>
+    
   </ng-component-outlet-wrapper>
 </storybook-wrapper>
 `;
