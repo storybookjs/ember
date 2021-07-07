@@ -5,7 +5,7 @@
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/vue",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/vue",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

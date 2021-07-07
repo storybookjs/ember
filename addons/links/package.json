@@ -7,7 +7,7 @@
     "storybook",
     "organize"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/links",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/links",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },

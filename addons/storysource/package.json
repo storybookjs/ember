@@ -7,7 +7,7 @@
     "storybook",
     "code"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/storysource",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/storysource",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
