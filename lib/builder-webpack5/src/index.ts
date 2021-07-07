@@ -129,14 +129,19 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
   const config = await getConfig(options);
 
   return new Promise((succeed, fail) => {
-    webpackInstance(config).run((error, stats) => {
+    const compiler = webpackInstance(config);
+
+    compiler.run((error, stats) => {
       if (error || !stats || stats.hasErrors()) {
         logger.error('=> Failed to build the preview');
         process.exitCode = 1;
 
         if (error) {
           logger.error(error.message);
-          return fail(error);
+
+          compiler.close(() => fail(error));
+
+          return;
         }
 
         if (stats && (stats.hasErrors() || stats.hasWarnings())) {
@@ -145,7 +150,9 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
           errors.forEach((e) => logger.error(e.message));
           warnings.forEach((e) => logger.error(e.message));
 
-          return fail(stats);
+          compiler.close(() => fail(stats));
+
+          return;
         }
       }
 
@@ -154,7 +161,15 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
         stats.toJson({ warnings: true }).warnings.forEach((e) => logger.warn(e.message));
       }
 
-      return succeed(stats);
+      // https://webpack.js.org/api/node/#run
+      // #15227
+      compiler.close((closeErr) => {
+        if (closeErr) {
+          return fail(closeErr);
+        }
+
+        return succeed(stats);
+      });
     });
   });
 };
