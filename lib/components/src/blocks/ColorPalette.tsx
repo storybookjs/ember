@@ -145,7 +145,7 @@ interface ColorProps {
   isTransparent?: boolean;
 }
 
-function renderSwatch(color: string, index: number, isTransparent: boolean) {
+function renderSwatch(color: string, index: number) {
   return <Swatch key={`${color}-${index}`} title={color} background={color} />;
 }
 
@@ -165,7 +165,7 @@ function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
     return (
       <SwatchSpecimen>
         <SwatchColors isTransparent={isTransparent}>
-          {colors.map((color, index) => renderSwatch(color, index, isTransparent))}
+          {colors.map((color, index) => renderSwatch(color, index))}
         </SwatchColors>
         <SwatchLabels>{colors.map((color, index) => renderSwatchLabel(color, index))}</SwatchLabels>
       </SwatchSpecimen>
@@ -174,7 +174,7 @@ function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
   return (
     <SwatchSpecimen>
       <SwatchColors isTransparent={isTransparent}>
-        {Object.values(colors).map((color, index) => renderSwatch(color, index, isTransparent))}
+        {Object.values(colors).map((color, index) => renderSwatch(color, index))}
       </SwatchColors>
       <SwatchLabels>
         {Object.keys(colors).map((color, index) => renderSwatchLabel(color, index, colors[color]))}
