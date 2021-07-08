@@ -24,6 +24,7 @@ export const defaultStyle = () => (
         'rgba(102,191,60,.6)',
         'rgba(102,191,60,.3)',
       ]}
+      isTransparent
     />
     <ColorItem
       title="gradient"
@@ -55,6 +56,7 @@ export const NamedColors = () => (
         Apple60: 'rgba(102,191,60,.6)',
         Apple30: 'rgba(102,191,60,.3)',
       }}
+      isTransparent
     />
     <ColorItem
       title="gradient"
