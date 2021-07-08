@@ -1,3 +1,9 @@
+## 6.3.4 (July 8, 2021)
+
+### Maintenance
+
+- Addon-docs: Cache DocsContext on window to prevent duplication ([#15428](https://github.com/storybookjs/storybook/pull/15428))
+
 ## 6.3.3 (July 7, 2021)
 
 ### Bug Fixes
