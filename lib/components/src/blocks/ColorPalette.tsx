@@ -55,36 +55,38 @@ const SwatchLabels = styled.div({
 
 interface SwatchProps {
   background: string;
-  isTransparent?: boolean;
 }
 
-const Swatch = styled.div<SwatchProps>(({ background, isTransparent }) => ({
+const Swatch = styled.div<SwatchProps>(({ background }) => ({
   position: 'relative',
   flex: 1,
 
-  ...(isTransparent && {
-    backgroundColor: 'white',
-    backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
-
-    '&::before': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background,
-      content: '""',
-    },
-  }),
+  '&::before': {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background,
+    content: '""',
+  },
 }));
 
-const SwatchColors = styled.div(({ theme }) => ({
+interface SwatchColorsProps {
+  isTransparent: boolean;
+}
+const SwatchColors = styled.div<SwatchColorsProps>(({ theme, isTransparent }) => ({
   ...getBlockBackgroundStyle(theme),
   display: 'flex',
   flexDirection: 'row',
   height: 50,
   marginBottom: 5,
   overflow: 'hidden',
+
+  ...(isTransparent && {
+    backgroundColor: 'white',
+    backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
+  }),
 }));
 
 const SwatchSpecimen = styled.div({
@@ -144,14 +146,7 @@ interface ColorProps {
 }
 
 function renderSwatch(color: string, index: number, isTransparent: boolean) {
-  return (
-    <Swatch
-      key={`${color}-${index}`}
-      title={color}
-      background={color}
-      isTransparent={isTransparent}
-    />
-  );
+  return <Swatch key={`${color}-${index}`} title={color} background={color} />;
 }
 
 function renderSwatchLabel(color: string, index: number, colorDescription?: string) {
@@ -169,7 +164,7 @@ function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
   if (Array.isArray(colors)) {
     return (
       <SwatchSpecimen>
-        <SwatchColors>
+        <SwatchColors isTransparent={isTransparent}>
           {colors.map((color, index) => renderSwatch(color, index, isTransparent))}
         </SwatchColors>
         <SwatchLabels>{colors.map((color, index) => renderSwatchLabel(color, index))}</SwatchLabels>
@@ -178,7 +173,7 @@ function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
   }
   return (
     <SwatchSpecimen>
-      <SwatchColors>
+      <SwatchColors isTransparent={isTransparent}>
         {Object.values(colors).map((color, index) => renderSwatch(color, index, isTransparent))}
       </SwatchColors>
       <SwatchLabels>
@@ -196,7 +191,7 @@ export const ColorItem: FunctionComponent<ColorProps> = ({
   title,
   subtitle,
   colors,
-  isTransparent = false,
+  isTransparent,
 }) => {
   return (
     <Item>
