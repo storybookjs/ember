@@ -33,6 +33,10 @@
       "root": "addons/links",
       "type": "library"
     },
+    "@storybook/addon-outline": {
+      "root": "addons/outline",
+      "type": "library"
+    },
     "@storybook/addon-storyshots": {
       "root": "addons/storyshots/storyshots-core",
       "type": "library"
