@@ -13,50 +13,73 @@ interface Call {
   printed?: true;
 }
 
-const print = (call: Call, callsById: Record<Call["id"], Call>): string => {
-  call.printed = true;
+const fold = (calls: Call[]) => {
+  const callsById = calls.reduce<Record<Call["id"], Call>>((acc, call) => {
+    acc[call.id] = call;
+    return acc;
+  }, {});
+
+  const seen = new Set();
+  return calls.reduceRight<Call[]>((acc, call) => {
+    if (seen.has(call.id)) return acc;
+    call.args = call.args.map((arg) => {
+      if (!arg?.__callId__) return arg;
+      seen.add(arg.__callId__);
+      return callsById[arg.__callId__];
+    });
+    acc.unshift(call);
+    seen.add(call.id);
+    return acc;
+  }, []);
+};
+
+const Call = ({ call }: { call: Call }) => {
   const params = call.args.map((arg) => {
-    if (arg?.__callId__ && callsById[arg.__callId__]) {
-      return print(callsById[arg.__callId__], callsById);
-    }
+    if (arg?.id && arg?.key && arg?.args)
+      return <Call key={call.id} call={arg} />;
     try {
-      return JSON.stringify(arg);
+      return <span key={arg}>{JSON.stringify(arg)}</span>;
     } catch (e) {
-      return String(arg);
+      return <span key={arg}>{String(arg)}</span>;
     }
-  });
-  return `${call.key}(${params.join(", ")})`;
+  }).flatMap((elem, index, array) => index === array.length -1 ? [elem] : [elem, <span>, </span>])
+  const style = {
+    display: "inline-block",
+    padding: "1px 3px",
+    margin: "1px 2px",
+    background: "#1111",
+    border: "1px solid #3333",
+    borderRadius: 3,
+  };
+  return (
+    <span style={style}>
+      {call.key}({params})
+    </span>
+  );
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
   const calls = React.useRef([] as Call[]);
-  const callsById = React.useRef({} as Record<Call["id"], Call>);
   const [log, setLog] = React.useState([]);
 
   useChannel({
     [EVENTS.CALL]: (call) => {
       calls.current.push(call);
-      callsById.current[call.id] = call;
     },
     storyRendered: () => {
-      const log = calls.current.reduceRight((acc, call) => {
-        if (call.printed) return acc;
-        acc.unshift([call.id, print(call, callsById.current)]);
-        return acc;
-      }, []);
+      const log = fold(calls.current);
       calls.current = [];
-      callsById.current = {};
       setLog(log);
     },
   });
 
   return (
     <AddonPanel {...props}>
-      <ul>
-        {log.map(([id, line]) => (
-          <li key={id}>{line}</li>
-        ))}
-      </ul>
+      {log.map((call) => (
+        <div key={call.id} style={{ margin: 3 }}>
+          <Call call={call} />
+        </div>
+      ))}
     </AddonPanel>
   );
 };
