@@ -5707,6 +5707,7 @@ __metadata:
     lit-html: ^2.0.0-rc.3
     loader-utils: ^2.0.0
     lodash: ^4.17.20
+    nanoid: ^3.1.23
     p-limit: ^3.1.0
     prettier: ~2.2.1
     prop-types: ^15.7.2
@@ -30638,6 +30639,15 @@ fsevents@^1.2.7:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 58bc86b5f6c77fb4052ca6d29bb498120facde6318d7d29de9cd41c12a5183925d68e0284133b12cdd9865ce5eec195e3764d98bf6620e4ad4ec3c15fa57aa43
+  languageName: node
+  linkType: hard
+
+"nanoid@npm:^3.1.23":
+  version: 3.1.23
+  resolution: "nanoid@npm:3.1.23"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: a3207f946e2db59f8095118d5c57615f217e7f8a743bdb83212e222bd263516dbd83db226675d9b8634ed928ff2019db96ca06825a391af4256b02f7bec4b443
   languageName: node
   linkType: hard
 
