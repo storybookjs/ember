@@ -7,14 +7,9 @@ const channel = addons.getChannel()
 const emitCall = ({ path, method, args: originalArgs, result }) => {
   const id = Math.random().toString(16).slice(2)
   const key = path.concat(method).join('.')
-  const args = originalArgs.map(arg => {
-    const call = calls.get(arg)
-    if (call) call.referenced = true
-    return call || arg
-  })
-  const call = { id, key, args }
-  calls.set(result, call)
-  channel.emit(EVENTS.CALL, call)
+  const args = originalArgs.map(arg => calls.get(arg) || arg)
+  calls.set(result, { __callId__: id })
+  channel.emit(EVENTS.CALL, { id, key, args })
 }
 
 // Monkey patch an object method to record calls.

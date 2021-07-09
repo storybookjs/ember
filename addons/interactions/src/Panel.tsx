@@ -6,12 +6,18 @@ interface PanelProps {
   active: boolean;
 }
 
-const print = (call) => {
-  console.log(call)
+interface Call {
+  id: string;
+  key: string;
+  args: any[];
+  printed?: true;
+}
+
+const print = (call: Call, callsById: Record<Call["id"], Call>): string => {
+  call.printed = true;
   const params = call.args.map((arg) => {
-    if (arg?.id && arg?.key && arg?.args) {
-      call.printed = true;
-      return print(arg);
+    if (arg?.__callId__ && callsById[arg.__callId__]) {
+      return print(callsById[arg.__callId__], callsById);
     }
     try {
       return JSON.stringify(arg);
@@ -23,28 +29,32 @@ const print = (call) => {
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
-  const calls = React.useRef([])
-  const [log, setLog] = React.useState([])
-  
+  const calls = React.useRef([] as Call[]);
+  const callsById = React.useRef({} as Record<Call["id"], Call>);
+  const [log, setLog] = React.useState([]);
+
   useChannel({
     [EVENTS.CALL]: (call) => {
-      calls.current = [call, ...calls.current]
+      calls.current.push(call);
+      callsById.current[call.id] = call;
     },
     storyRendered: () => {
-      const log = []
-      for (const call of calls.current) {
-        if (!call.referenced) log.unshift([call.id, print(call)]);
-      }
-      setLog(log)
-      calls.current = []
-    }
+      const log = calls.current.reduceRight((acc, call) => {
+        if (call.printed) return acc;
+        acc.unshift([call.id, print(call, callsById.current)]);
+        return acc;
+      }, []);
+      calls.current = [];
+      callsById.current = {};
+      setLog(log);
+    },
   });
 
   return (
     <AddonPanel {...props}>
       <ul>
         {log.map(([id, line]) => (
-          <li key={id}>{line})</li>
+          <li key={id}>{line}</li>
         ))}
       </ul>
     </AddonPanel>
