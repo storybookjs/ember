@@ -1,7 +1,7 @@
 import React from "react";
-import { useAddonState, useChannel } from "@storybook/api";
+import { useChannel } from "@storybook/api";
 import { AddonPanel } from "@storybook/components";
-import { ADDON_ID, EVENTS } from "./constants";
+import { EVENTS } from "./constants";
 interface PanelProps {
   active: boolean;
 }
