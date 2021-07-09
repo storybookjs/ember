@@ -26,11 +26,11 @@ module.exports = {
       url: 'https://storybookjs.netlify.app/cra-ts-essentials',
     },
     second: {
-      title: 'Composition test one',
+      title: 'Composition test two',
       url: 'https://storybookjs.netlify.app/cra-ts-essentials',
     },
     third: {
-      title: 'Composition test one',
+      title: 'Composition test three',
       url: 'https://storybookjs.netlify.app/cra-ts-essentials',
     },
   },
