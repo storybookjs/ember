@@ -5888,7 +5888,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-outline@6.4.0-alpha.12, @storybook/addon-outline@workspace:addons/outline":
+"@storybook/addon-outline@6.4.0-alpha.12, @storybook/addon-outline@workspace:*, @storybook/addon-outline@workspace:addons/outline":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-outline@workspace:addons/outline"
   dependencies:
@@ -7270,6 +7270,7 @@ __metadata:
     "@storybook/addon-essentials": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-links": "workspace:*"
+    "@storybook/addon-outline": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"
     "@storybook/addon-storysource": "workspace:*"
