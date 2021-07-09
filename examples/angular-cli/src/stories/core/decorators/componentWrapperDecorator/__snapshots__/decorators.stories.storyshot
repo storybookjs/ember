@@ -3,11 +3,11 @@
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator Angular Legacy Rendering 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     Custom Decorator 
     <div
-      style="margin: 3em"
+      style="margin: 3em;"
     >
       Child Template
     </div>
@@ -18,7 +18,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator Angular Legacy
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     <child-component
       ng-reflect-child-text="Child text"
@@ -35,6 +35,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
        Private text: Child private text 
       <br />
     </child-component>
+    
   </div>
 </storybook-wrapper>
 `;
@@ -42,7 +43,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component Wrapper Decorator 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     <parent-component>
        Parent
@@ -55,7 +56,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
       </button>
       <br />
       <div
-        style="margin: 3em; border:solid;"
+        style="margin: 3em; border: solid;"
       >
         <child-component
           ng-reflect-child-text="Child text"
@@ -72,6 +73,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
            Private text: Child private text 
           <br />
         </child-component>
+        
       </div>
     </parent-component>
   </div>
@@ -81,7 +83,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component Wrapper Decorator And Args 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     <parent-component>
        Parent
@@ -94,7 +96,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
       </button>
       <br />
       <div
-        style="margin: 3em; border:solid;"
+        style="margin: 3em; border: solid;"
       >
         <child-component
           ng-reflect-child-text="Child text"
@@ -111,6 +113,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
            Private text: Child private text 
           <br />
         </child-component>
+        
       </div>
     </parent-component>
   </div>
@@ -120,7 +123,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component Wrapper Decorator And Props 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     <parent-component
       ng-reflect-parent-text="Parent text"
@@ -135,7 +138,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
       </button>
       <br />
       <div
-        style="margin: 3em; border:solid;"
+        style="margin: 3em; border: solid;"
       >
         <child-component
           ng-reflect-child-text="Child text"
@@ -152,6 +155,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
            Private text: Child private text 
           <br />
         </child-component>
+        
       </div>
     </parent-component>
   </div>
@@ -161,11 +165,11 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Component
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Custom Decorator 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     Custom Decorator 
     <div
-      style="margin: 3em"
+      style="margin: 3em;"
     >
       Child Template
     </div>
@@ -176,7 +180,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Custom De
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Legacy Component 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     <child-component
       ng-reflect-child-text="Child text"
@@ -193,6 +197,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Legacy Co
        Private text: Child private text 
       <br />
     </child-component>
+    
   </div>
 </storybook-wrapper>
 `;
@@ -200,7 +205,7 @@ exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Legacy Co
 exports[`Storyshots Core / Decorators / ComponentWrapperDecorator With Template 1`] = `
 <storybook-wrapper>
   Grandparent<br /><div
-    style="margin: 3em; border:solid;"
+    style="margin: 3em; border: solid;"
   >
     Child Template
   </div>

@@ -1,13 +1,13 @@
 {
   "name": "@storybook/web-components",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.13",
   "description": "Storybook for web-components: View web components snippets in isolation with Hot Reloading.",
   "keywords": [
     "lit-html",
     "storybook",
     "web-components"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/web-components",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/web-components",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -50,10 +50,10 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-env": "^7.12.11",
-    "@storybook/addons": "6.4.0-alpha.9",
-    "@storybook/client-api": "6.4.0-alpha.9",
-    "@storybook/core": "6.4.0-alpha.9",
-    "@storybook/core-common": "6.4.0-alpha.9",
+    "@storybook/addons": "6.4.0-alpha.13",
+    "@storybook/client-api": "6.4.0-alpha.13",
+    "@storybook/core": "6.4.0-alpha.13",
+    "@storybook/core-common": "6.4.0-alpha.13",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-bundled-import-meta": "^0.3.1",
     "core-js": "^3.8.2",
@@ -76,6 +76,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b9b9f9484bfe3cb9f259c26bc71e7635362addde",
+  "gitHead": "417958f6d40b4ac7d361c706d9b96dd4123231cd",
   "sbmodern": "dist/modern/client/index.js"
 }

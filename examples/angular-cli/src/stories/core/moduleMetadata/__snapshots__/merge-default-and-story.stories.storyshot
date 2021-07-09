@@ -12,13 +12,13 @@ exports[`Storyshots Core / ModuleMetadata / Merge default and story Merge with d
       Items:
     </p>
     <ul>
-      
       <li>
         Joe
       </li>
       <li>
         Jane
       </li>
+      
     </ul>
   </storybook-simple-token-component>
 </storybook-wrapper>

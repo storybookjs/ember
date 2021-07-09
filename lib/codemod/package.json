@@ -1,11 +1,11 @@
 {
   "name": "@storybook/codemod",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.13",
   "description": "A collection of codemod scripts written with JSCodeshift",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/codemod",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/codemod",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -44,8 +44,8 @@
     "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
     "@storybook/csf": "0.0.1",
-    "@storybook/csf-tools": "6.4.0-alpha.9",
-    "@storybook/node-logger": "6.4.0-alpha.9",
+    "@storybook/csf-tools": "6.4.0-alpha.13",
+    "@storybook/node-logger": "6.4.0-alpha.13",
     "core-js": "^3.8.2",
     "cross-spawn": "^7.0.3",
     "globby": "^11.0.2",
@@ -62,6 +62,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b9b9f9484bfe3cb9f259c26bc71e7635362addde",
+  "gitHead": "417958f6d40b4ac7d361c706d9b96dd4123231cd",
   "sbmodern": "dist/modern/index.js"
 }

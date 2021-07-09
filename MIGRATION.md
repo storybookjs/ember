@@ -176,6 +176,14 @@ yarn add @storybook/manager-webpack5 --dev
 npm install @storybook/manager-webpack5 --save-dev
 ```
 
+Because Storybook uses `webpack@4` as the default, it's possible for the wrong version of webpack to get hoisted by your package manager. If you receive an error that looks like you might be using the wrong version of webpack, install `webpack@5` explicitly as a dev dependency to force it to be hoisted:
+
+```shell
+yarn add webpack@5 --dev
+# Or
+npm install webpack@5 --save-dev
+```
+
 ### Angular 12 upgrade
 
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:

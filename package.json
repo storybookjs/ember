@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.13",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -134,6 +134,7 @@
     "@storybook/addon-essentials": "workspace:*",
     "@storybook/addon-jest": "workspace:*",
     "@storybook/addon-links": "workspace:*",
+    "@storybook/addon-outline": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",
     "@storybook/addon-storysource": "workspace:*",
@@ -270,6 +271,42 @@
     "webpack-dev-middleware": "^3.7.3",
     "window-size": "^1.1.1"
   },
+  "dependenciesMeta": {
+    "@compodoc/compodoc": {
+      "built": false
+    },
+    "core-js": {
+      "built": false
+    },
+    "core-js-pure": {
+      "built": false
+    },
+    "ejs": {
+      "built": false
+    },
+    "level": {
+      "built": false
+    },
+    "node-uuid": {
+      "built": false,
+      "unplugged": false
+    },
+    "nodemon": {
+      "built": false
+    },
+    "parcel": {
+      "built": false
+    },
+    "preact": {
+      "built": false
+    },
+    "styled-components": {
+      "built": false
+    },
+    "yorkie": {
+      "built": false
+    }
+  },
   "optionalDependencies": {
     "@cypress/webpack-preprocessor": "^5.7.0",
     "cypress": "6.8.0",
@@ -323,41 +360,5 @@
         "Other"
       ]
     ]
-  },
-  "dependenciesMeta": {
-    "@compodoc/compodoc": {
-      "built": false
-    },
-    "core-js": {
-      "built": false
-    },
-    "core-js-pure": {
-      "built": false
-    },
-    "ejs": {
-      "built": false
-    },
-    "level": {
-      "built": false
-    },
-    "node-uuid": {
-      "built": false,
-      "unplugged": false
-    },
-    "nodemon": {
-      "built": false
-    },
-    "parcel": {
-      "built": false
-    },
-    "preact": {
-      "built": false
-    },
-    "styled-components": {
-      "built": false
-    },
-    "yorkie": {
-      "built": false
-    }
   }
 }

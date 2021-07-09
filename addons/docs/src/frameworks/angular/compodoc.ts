@@ -112,7 +112,9 @@ const displaySignature = (item: Method): string => {
 
 const extractTypeFromValue = (defaultValue: any) => {
   const valueType = typeof defaultValue;
-  return defaultValue || valueType === 'boolean' || valueType === 'string' ? valueType : null;
+  return defaultValue || valueType === 'number' || valueType === 'boolean' || valueType === 'string'
+    ? valueType
+    : null;
 };
 
 const extractEnumValues = (compodocType: any) => {

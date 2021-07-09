@@ -3,6 +3,7 @@ import { enableProdMode, NgModule, PlatformRef } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { BehaviorSubject, Subject } from 'rxjs';
+import { stringify } from 'telejson';
 import { ICollection, StoryFnAngularReturnType } from '../types';
 import { Parameters } from '../types-6-0';
 import { createStorybookModule, getStorybookModuleMetadata } from './StorybookModule';
@@ -154,7 +155,7 @@ export class RendererService {
 
     this.currentStoryRender = {
       storyFnAngular,
-      moduleMetadataSnapshot: JSON.stringify(moduleMetadata),
+      moduleMetadataSnapshot: stringify(moduleMetadata),
     };
 
     if (

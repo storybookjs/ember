@@ -5,7 +5,7 @@ import { Addon } from '@storybook/addons';
 
 const menuMapper = ({ api, state }: Combo) => ({
   isVisible: state.layout.showNav,
-  toggle: api.toggleNav,
+  toggle: () => api.toggleNav(),
 });
 
 export const menuTool: Addon = {
@@ -13,24 +13,17 @@ export const menuTool: Addon = {
   id: 'menu',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
-    <>
-      <Consumer filter={menuMapper}>
-        {({ isVisible, toggle }) =>
-          !isVisible && (
-            <>
-              <IconButton
-                aria-label="Show sidebar"
-                key="menu"
-                onClick={toggle as any}
-                title="Show sidebar"
-              >
-                <Icons icon="menu" />
-              </IconButton>
-              <Separator />
-            </>
-          )
-        }
-      </Consumer>
-    </>
+    <Consumer filter={menuMapper}>
+      {({ isVisible, toggle }) =>
+        !isVisible && (
+          <>
+            <IconButton aria-label="Show sidebar" key="menu" onClick={toggle} title="Show sidebar">
+              <Icons icon="menu" />
+            </IconButton>
+            <Separator />
+          </>
+        )
+      }
+    </Consumer>
   ),
 };

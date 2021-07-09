@@ -3,6 +3,7 @@ import { enableProdMode, NgModule, PlatformRef } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { BehaviorSubject, Subject } from 'rxjs';
+import { stringify } from 'telejson';
 import { ICollection, StoryFnAngularReturnType } from '../types';
 import { Parameters } from '../types-6-0';
 import { createStorybookModule, getStorybookModuleMetadata } from './StorybookModule';
@@ -160,7 +161,7 @@ export abstract class AbstractRenderer {
 
     const currentStoryRender = {
       storyFnAngular,
-      moduleMetadataSnapshot: JSON.stringify(moduleMetadata),
+      moduleMetadataSnapshot: stringify(moduleMetadata),
     };
 
     this.previousStoryRenderInfo = currentStoryRender;

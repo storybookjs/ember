@@ -1,3 +1,71 @@
+## 6.4.0-alpha.13 (July 9, 2021)
+
+### Bug Fixes
+
+- Addon-docs/Angular: Add unique id to Angular stories ([#15501](https://github.com/storybookjs/storybook/pull/15501))
+- Composition: Fix refs ordering ([#15527](https://github.com/storybookjs/storybook/pull/15527))
+
+### Maintenance
+
+- Essentials: Add outline addon to monorepo ([#15526](https://github.com/storybookjs/storybook/pull/15526))
+- Build: Fix cache setup in GitHub Actions workflow ([#15523](https://github.com/storybookjs/storybook/pull/15523))
+
+## 6.3.4 (July 8, 2021)
+
+### Maintenance
+
+- Addon-docs: Cache DocsContext on window to prevent duplication ([#15428](https://github.com/storybookjs/storybook/pull/15428))
+
+## 6.3.3 (July 7, 2021)
+
+### Bug Fixes
+
+- Webpack5: Quit process after finishing a static build ([#15483](https://github.com/storybookjs/storybook/pull/15483))
+- Addon-docs/Angular: Fix numeric args default value handling ([#15491](https://github.com/storybookjs/storybook/pull/15491))
+- Angular: Fix circular reference not being handled in moduleMetadata ([#15410](https://github.com/storybookjs/storybook/pull/15410))
+- Core: Fix double rebuilds by removing aggregateTimeout ([#15372](https://github.com/storybookjs/storybook/pull/15372))
+- CLI: Fix NPM typo ([#15461](https://github.com/storybookjs/storybook/pull/15461))
+
+## 6.4.0-alpha.12 (July 7, 2021)
+
+### Bug Fixes
+
+- Webpack5: Quit process after finishing a static build ([#15483](https://github.com/storybookjs/storybook/pull/15483))
+- Addon-docs/Angular: Fix numeric args default value handling ([#15491](https://github.com/storybookjs/storybook/pull/15491))
+
+### Maintenance
+
+- Angular: Make Ivy work by default in the angular-cli example ([#15280](https://github.com/storybookjs/storybook/pull/15280))
+- Official-storybook: Fix shortcut for navigating to previous language ([#15489](https://github.com/storybookjs/storybook/pull/15489))
+- Addon-docs: Add docs to standalone example ([#7848](https://github.com/storybookjs/storybook/pull/7848))
+- Build: Update Yarn cache setup in GitHub Actions workflow ([#15480](https://github.com/storybookjs/storybook/pull/15480))
+
+## 6.4.0-alpha.11 (July 3, 2021)
+
+### Bug Fixes
+
+- UI: Fix sidebar toggle in fullscreen mode ([#15459](https://github.com/storybookjs/storybook/pull/15459))
+- Angular: Fix circular reference not being handled in moduleMetadata ([#15410](https://github.com/storybookjs/storybook/pull/15410))
+
+### Maintenance
+
+- Addon-a11y: Reverse help and description labels in accordion ([#15466](https://github.com/storybookjs/storybook/pull/15466))
+
+## 6.4.0-alpha.10 (July 2, 2021)
+
+### Features
+
+- UI: Display menu icon on the toolbar when the sidebar is collapsed ([#15369](https://github.com/storybookjs/storybook/pull/15369))
+
+### Bug Fixes
+
+- Core: Fix double rebuilds by removing aggregateTimeout ([#15372](https://github.com/storybookjs/storybook/pull/15372))
+- CLI: Fix NPM typo ([#15461](https://github.com/storybookjs/storybook/pull/15461))
+
+### Maintenance
+
+- Addon-docs: Cache DocsContext on window to prevent duplication ([#15428](https://github.com/storybookjs/storybook/pull/15428))
+
 ## 6.3.2 (June 30, 2021)
 
 ### Bug Fixes
