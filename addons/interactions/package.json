@@ -34,6 +34,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 7007",
     "start": "concurrently -r \"yarn build:watch\" \"yarn storybook --no-manager-cache --quiet\"",
+    "prebuild-storybook": "yarn build",
     "build-storybook": "build-storybook",
     "prerelease": "zx scripts/prepublish-checks.mjs",
     "release": "yarn build && auto shipit",
