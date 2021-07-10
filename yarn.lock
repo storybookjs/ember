@@ -5777,7 +5777,7 @@ __metadata:
     "@storybook/addon-backgrounds": 6.4.0-alpha.13
     "@storybook/addon-controls": 6.4.0-alpha.13
     "@storybook/addon-docs": 6.4.0-alpha.13
-    "@storybook/addon-measure": ^2.0.0
+    "@storybook/addon-measure": 6.4.0-alpha.13
     "@storybook/addon-outline": 6.4.0-alpha.13
     "@storybook/addon-toolbars": 6.4.0-alpha.13
     "@storybook/addon-viewport": 6.4.0-alpha.13
@@ -5869,15 +5869,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-measure@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@storybook/addon-measure@npm:2.0.0"
+"@storybook/addon-measure@6.4.0-alpha.13, @storybook/addon-measure@workspace:*, @storybook/addon-measure@workspace:addons/measure":
+  version: 0.0.0-use.local
+  resolution: "@storybook/addon-measure@workspace:addons/measure"
+  dependencies:
+    "@storybook/addons": 6.4.0-alpha.13
+    "@storybook/api": 6.4.0-alpha.13
+    "@storybook/client-logger": 6.4.0-alpha.13
+    "@storybook/components": 6.4.0-alpha.13
+    "@storybook/core-events": 6.4.0-alpha.13
+    "@types/webpack-env": ^1.16.0
+    core-js: ^3.8.2
+    global: ^4.4.0
   peerDependencies:
-    "@storybook/addons": ^6.3.0
-    "@storybook/api": ^6.3.0
-    "@storybook/components": ^6.3.0
-    "@storybook/core-events": ^6.3.0
-    "@storybook/theming": ^6.3.0
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
@@ -5885,9 +5889,8 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: fa701e19ac0806590a24fdc4de75a00e06cee26cc0d909fe03743fee5f92abddafa3756a01def312622ff2ba1dd1fe92c6de5046c4d49363dfdff8120cf231de
-  languageName: node
-  linkType: hard
+  languageName: unknown
+  linkType: soft
 
 "@storybook/addon-outline@6.4.0-alpha.13, @storybook/addon-outline@workspace:*, @storybook/addon-outline@workspace:addons/outline":
   version: 0.0.0-use.local
@@ -7271,6 +7274,7 @@ __metadata:
     "@storybook/addon-essentials": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-links": "workspace:*"
+    "@storybook/addon-measure": "workspace:*"
     "@storybook/addon-outline": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"
