@@ -24,7 +24,9 @@ function applyTransformSource(source: string, context: StoryContext): string {
 }
 
 export function sourceDecorator(storyFn: StoryFn, context: StoryContext) {
-  const story = storyFn();
+  const story = context?.parameters.docs?.source?.excludeDecorators
+    ? context.originalStoryFn(context.args)
+    : storyFn();
 
   if (!skipSourceRender(context)) {
     const container = window.document.createElement('div');
