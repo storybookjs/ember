@@ -5869,7 +5869,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-measure@6.4.0-alpha.13, @storybook/addon-measure@workspace:addons/measure":
+"@storybook/addon-measure@6.4.0-alpha.13, @storybook/addon-measure@workspace:*, @storybook/addon-measure@workspace:addons/measure":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-measure@workspace:addons/measure"
   dependencies:
@@ -7274,6 +7274,7 @@ __metadata:
     "@storybook/addon-essentials": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-links": "workspace:*"
+    "@storybook/addon-measure": "workspace:*"
     "@storybook/addon-outline": "workspace:*"
     "@storybook/addon-storyshots": "workspace:*"
     "@storybook/addon-storyshots-puppeteer": "workspace:*"

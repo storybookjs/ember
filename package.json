@@ -134,6 +134,7 @@
     "@storybook/addon-essentials": "workspace:*",
     "@storybook/addon-jest": "workspace:*",
     "@storybook/addon-links": "workspace:*",
+    "@storybook/addon-measure": "workspace:*",
     "@storybook/addon-outline": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",
