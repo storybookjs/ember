@@ -1,5 +1,6 @@
 import { Meta, Story } from '@storybook/web-components';
 import { html } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 import { SbButton } from './sb-button';
 
@@ -20,9 +21,9 @@ export default {
 const Template: Story<SbButton> = ({ primary, backgroundColor, size, label }) =>
   html`<sb-button
     ?primary="${primary}"
-    .size="${size}"
-    .label="${label}"
-    .backgroundColor="${backgroundColor}"
+    size="${ifDefined(size)}"
+    label="${ifDefined(label)}"
+    background-color="${ifDefined(backgroundColor)}"
   ></sb-button>`;
 
 export const Primary: Story<SbButton> = Template.bind({});
