@@ -206,9 +206,10 @@ const Preview: FunctionComponent<PreviewProps> = ({
   const previewClasses = [className].concat(['sbdocs', 'sbdocs-preview']);
 
   const defaultActionItems = withSource ? [actionItem] : [];
-  const [actionItems, setActionItems] = useState(
-    additionalActions ? [...defaultActionItems, ...additionalActions] : defaultActionItems
+  const [additionalActionItems, setAdditionalActionItems] = useState(
+    additionalActions ? [...additionalActions] : []
   );
+  const actionItems = [...defaultActionItems, ...additionalActionItems];
 
   // @ts-ignore
   const layout = getLayout(Children.count(children) === 1 ? [children] : children);
@@ -218,20 +219,20 @@ const Preview: FunctionComponent<PreviewProps> = ({
 
   const onCopyCapture = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (
-      actionItems.length <=
-      defaultActionItems.length + (additionalActions ? additionalActions.length : 0)
-    ) {
+    if (additionalActionItems.filter((item) => item.title === 'Copied').length === 0) {
       copyToClipboard(source.props.code).then(() => {
-        setActionItems([
-          ...actionItems,
+        setAdditionalActionItems([
+          ...additionalActionItems,
           {
             title: 'Copied',
             onClick: () => {},
           },
         ]);
         globalWindow.setTimeout(
-          () => setActionItems((arr) => arr.filter((item) => item.title !== 'Copied')),
+          () =>
+            setAdditionalActionItems(
+              additionalActionItems.filter((item) => item.title !== 'Copied')
+            ),
           1500
         );
       });
