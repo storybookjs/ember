@@ -190,7 +190,7 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
       const section = mapItemToSection(key, item);
       const defaultValue = isMethod(item) ? undefined : extractDefaultValue(item as Property);
       const type =
-        isMethod(item) || section !== 'inputs'
+        isMethod(item) || (section !== 'inputs' && section !== 'properties')
           ? { name: 'void' }
           : extractType(item as Property, defaultValue);
       const action = section === 'outputs' ? { action: item.name } : {};
