@@ -1,4 +1,10 @@
-import React, { ComponentProps, FunctionComponent, MouseEvent, useState } from 'react';
+import React, {
+  ClipboardEvent,
+  ComponentProps,
+  FunctionComponent,
+  MouseEvent,
+  useState,
+} from 'react';
 import { logger } from '@storybook/client-logger';
 import { styled } from '@storybook/theming';
 import global from 'global';
@@ -152,7 +158,7 @@ export const SyntaxHighlighter: FunctionComponent<Props> = ({
   const highlightableCode = format ? formatter(children) : children.trim();
   const [copied, setCopied] = useState(false);
 
-  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const onClick = (e: MouseEvent<HTMLButtonElement> | ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     copyToClipboard(highlightableCode)
@@ -164,7 +170,7 @@ export const SyntaxHighlighter: FunctionComponent<Props> = ({
   };
 
   return (
-    <Wrapper bordered={bordered} padded={padded} className={className}>
+    <Wrapper bordered={bordered} padded={padded} className={className} onCopyCapture={onClick}>
       <Scroller>
         <ReactSyntaxHighlighter
           padded={padded || bordered}

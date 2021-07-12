@@ -1,7 +1,15 @@
-import React, { Children, FunctionComponent, ReactElement, ReactNode, useState } from 'react';
+import React, {
+  Children,
+  ClipboardEvent,
+  FunctionComponent,
+  ReactElement,
+  ReactNode,
+  useState,
+} from 'react';
 import { darken } from 'polished';
 import { styled } from '@storybook/theming';
 
+import global from 'global';
 import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
 import { Source, SourceProps } from './Source';
 import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
@@ -130,7 +138,7 @@ const getSource = (
     }
     default: {
       return {
-        source: null,
+        source: <StyledSource {...withSource} dark />,
         actionItem: {
           title: 'Show code',
           className: 'docblock-code-toggle',
@@ -175,6 +183,27 @@ const getLayout = (children: ReactElement[]): layout => {
   }, undefined);
 };
 
+const { navigator, document, window: globalWindow } = global;
+
+let copyToClipboard: (text: string) => Promise<void>;
+
+if (navigator?.clipboard) {
+  copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
+} else {
+  copyToClipboard = async (text: string) => {
+    const tmp = document.createElement('TEXTAREA');
+    const focus = document.activeElement;
+
+    tmp.value = text;
+
+    document.body.appendChild(tmp);
+    tmp.select();
+    document.execCommand('copy');
+    document.body.removeChild(tmp);
+    focus.focus();
+  };
+}
+
 /**
  * A preview component for showing one or more component `Story`
  * items. The preview also shows the source for the component
@@ -197,12 +226,34 @@ const Preview: FunctionComponent<PreviewProps> = ({
   const previewClasses = [className].concat(['sbdocs', 'sbdocs-preview']);
 
   const defaultActionItems = withSource ? [actionItem] : [];
-  const actionItems = additionalActions
-    ? [...defaultActionItems, ...additionalActions]
-    : defaultActionItems;
+  const [actionItems, setActionItems] = useState(
+    additionalActions ? [...defaultActionItems, ...additionalActions] : defaultActionItems
+  );
 
   // @ts-ignore
   const layout = getLayout(Children.count(children) === 1 ? [children] : children);
+
+  const onCopyCapture = (e: ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (
+      actionItems.length <=
+      defaultActionItems.length + (additionalActions ? additionalActions.length : 0)
+    ) {
+      copyToClipboard(source.props.code).then(() => {
+        setActionItems([
+          ...actionItems,
+          {
+            title: 'Copied',
+            onClick: () => {},
+          },
+        ]);
+        globalWindow.setTimeout(
+          () => setActionItems((arr) => arr.filter((item) => item.title !== 'Copied')),
+          1500
+        );
+      });
+    }
+  };
 
   return (
     <PreviewContainer
@@ -220,7 +271,7 @@ const Preview: FunctionComponent<PreviewProps> = ({
         />
       )}
       <ZoomContext.Provider value={{ scale }}>
-        <Relative className="docs-story">
+        <Relative className="docs-story" onCopyCapture={onCopyCapture}>
           <ChildrenContainer
             isColumn={isColumn || !Array.isArray(children)}
             columns={columns}
@@ -238,7 +289,7 @@ const Preview: FunctionComponent<PreviewProps> = ({
           <ActionBar actionItems={actionItems} />
         </Relative>
       </ZoomContext.Provider>
-      {withSource && source}
+      {withSource && expanded && source}
     </PreviewContainer>
   );
 };
