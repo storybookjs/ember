@@ -198,7 +198,7 @@ jobs:
           command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
           no_output_timeout: 5m
       - store_artifacts:
-          path: /tmp/storybook/cypress
+          path: /tmp/cypress-record
           destination: cypress
   e2e-tests-core:
     executor:
@@ -224,7 +224,7 @@ jobs:
           command: yarn test:e2e-framework vue3 angular angular11 web_components_typescript web_components_lit2
           no_output_timeout: 5m
       - store_artifacts:
-          path: /tmp/storybook/cypress
+          path: /tmp/cypress-record
           destination: cypress
   cra-bench:
     executor:
@@ -271,7 +271,7 @@ jobs:
           name: run e2e tests
           command: yarn test:e2e-framework --pnp sfcVue cra
       - store_artifacts:
-          path: /tmp/storybook/cypress
+          path: /tmp/cypress-record
           destination: cypress
   e2e-tests-examples:
     executor:
@@ -293,7 +293,7 @@ jobs:
           name: cypress run
           command: yarn test:e2e-examples
       - store_artifacts:
-          path: /tmp/storybook/cypress
+          path: /tmp/cypress-record
           destination: cypress
   smoke-tests:
     executor:
