@@ -111,7 +111,7 @@ module.exports = {
         },
         {
           name: 'Dynamic source',
-          supported: ['react', 'vue', 'angular', 'svelte'],
+          supported: ['react', 'vue', 'angular', 'svelte', 'web-components'],
           path: 'writing-docs/doc-blocks#source',
         },
         {

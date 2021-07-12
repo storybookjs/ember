@@ -1,6 +1,6 @@
 {
   "name": "@storybook/react",
-  "version": "6.4.0-alpha.13",
+  "version": "6.4.0-alpha.14",
   "description": "Storybook for React: Develop React Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -49,10 +49,10 @@
     "@babel/preset-flow": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@storybook/addons": "6.4.0-alpha.13",
-    "@storybook/core": "6.4.0-alpha.13",
-    "@storybook/core-common": "6.4.0-alpha.13",
-    "@storybook/node-logger": "6.4.0-alpha.13",
+    "@storybook/addons": "6.4.0-alpha.14",
+    "@storybook/core": "6.4.0-alpha.14",
+    "@storybook/core-common": "6.4.0-alpha.14",
+    "@storybook/node-logger": "6.4.0-alpha.14",
     "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.253f8c1.0",
     "@storybook/semver": "^7.3.2",
     "@types/webpack-env": "^1.16.0",
@@ -71,7 +71,7 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/client-api": "6.4.0-alpha.13",
+    "@storybook/client-api": "6.4.0-alpha.14",
     "@types/node": "^14.14.20",
     "@types/prompts": "^2.0.9"
   },
@@ -94,6 +94,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "70d04492b677c52c518b1b9591e382ba57484042",
+  "gitHead": "d3f8b5119b70ecf23ef2006b58034292eab3726e",
   "sbmodern": "dist/modern/client/index.js"
 }

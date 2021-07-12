@@ -1,3 +1,13 @@
+## 6.4.0-alpha.14 (July 11, 2021)
+
+### Features
+
+- Web-components: Dynamic source snippets ([#15337](https://github.com/storybookjs/storybook/pull/15337))
+
+### Maintenance
+
+- Essentials: Add measure addon to monorepo ([#15545](https://github.com/storybookjs/storybook/pull/15545))
+
 ## 6.4.0-alpha.13 (July 9, 2021)
 
 ### Bug Fixes
