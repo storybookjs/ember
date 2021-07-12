@@ -5,7 +5,7 @@
   "scripts": {
     "build-storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true build-storybook -c ./",
     "debug": "cross-env NODE_OPTIONS=--inspect-brk STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./",
-    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./"
+    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./ --no-manager-cache"
   },
   "dependencies": {
     "@storybook/addon-controls": "6.4.0-alpha.14",

@@ -10,7 +10,7 @@
   "scripts": {
     "build-storybook": "build-storybook",
     "generate-addon-jest-testresults": "jest --config=tests/addon-jest.config.json --json --outputFile=stories/addon-jest.testresults.json",
-    "storybook": "start-storybook -p 9006"
+    "storybook": "start-storybook -p 9006 --no-manager-cache"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "6.4.0-alpha.14",

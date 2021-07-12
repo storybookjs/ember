@@ -6,7 +6,7 @@
     "build": "vue-cli-service build",
     "build-storybook": "build-storybook",
     "serve": "vue-cli-service serve",
-    "storybook": "start-storybook -p 9009"
+    "storybook": "start-storybook -p 9009 --no-manager-cache"
   },
   "dependencies": {
     "core-js": "^3.8.2",

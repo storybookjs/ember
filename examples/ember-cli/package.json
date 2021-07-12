@@ -6,7 +6,7 @@
     "build": "ember build --output-path ember-output",
     "build-storybook": "yarn storybook-prebuild && build-storybook -s ember-output",
     "dev": "ember serve",
-    "storybook": "yarn build && start-storybook -p 9009 -s ember-output",
+    "storybook": "yarn build && start-storybook -p 9009 -s ember-output --no-manager-cache",
     "storybook-prebuild": "yarn build && shx cp -r public/* ember-output",
     "storybook:dev": "yarn dev & start-storybook -p 9009 -s ember-output"
   },

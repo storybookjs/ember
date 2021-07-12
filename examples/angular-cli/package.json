@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "ng": "ng",
     "start": "ng serve",
-    "storybook": "yarn storybook-prebuild && start-storybook -p 9008 -s src/assets",
+    "storybook": "yarn storybook-prebuild && start-storybook -p 9008 -s src/assets --no-manager-cache",
     "storybook-prebuild": "yarn test:generate-output && yarn docs:json",
     "test": "jest",
     "test:coverage": "jest --coverage",
