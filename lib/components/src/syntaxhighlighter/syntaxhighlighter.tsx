@@ -80,22 +80,6 @@ export function createCopyToClipboardFunction() {
   };
 }
 
-// if (navigator?.clipboard) {
-//   copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
-// } else {
-//   copyToClipboard = async (text: string) => {
-//     const tmp = document.createElement('TEXTAREA');
-//     const focus = document.activeElement;
-
-//     tmp.value = text;
-
-//     document.body.appendChild(tmp);
-//     tmp.select();
-//     document.execCommand('copy');
-//     document.body.removeChild(tmp);
-//     focus.focus();
-//   };
-// }
 export interface WrapperProps {
   bordered?: boolean;
   padded?: boolean;
