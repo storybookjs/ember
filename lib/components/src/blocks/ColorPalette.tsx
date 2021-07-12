@@ -72,21 +72,15 @@ const Swatch = styled.div<SwatchProps>(({ background }) => ({
   },
 }));
 
-interface SwatchColorsProps {
-  isTransparent: boolean;
-}
-const SwatchColors = styled.div<SwatchColorsProps>(({ theme, isTransparent }) => ({
+const SwatchColors = styled.div(({ theme }) => ({
   ...getBlockBackgroundStyle(theme),
   display: 'flex',
   flexDirection: 'row',
   height: 50,
   marginBottom: 5,
   overflow: 'hidden',
-
-  ...(isTransparent && {
-    backgroundColor: 'white',
-    backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
-  }),
+  backgroundColor: 'white',
+  backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
 }));
 
 const SwatchSpecimen = styled.div({
@@ -142,7 +136,6 @@ interface ColorProps {
   title: string;
   subtitle: string;
   colors: Colors;
-  isTransparent?: boolean;
 }
 
 function renderSwatch(color: string, index: number) {
@@ -160,20 +153,18 @@ function renderSwatchLabel(color: string, index: number, colorDescription?: stri
   );
 }
 
-function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
+function renderSwatchSpecimen(colors: Colors) {
   if (Array.isArray(colors)) {
     return (
       <SwatchSpecimen>
-        <SwatchColors isTransparent={isTransparent}>
-          {colors.map((color, index) => renderSwatch(color, index))}
-        </SwatchColors>
+        <SwatchColors>{colors.map((color, index) => renderSwatch(color, index))}</SwatchColors>
         <SwatchLabels>{colors.map((color, index) => renderSwatchLabel(color, index))}</SwatchLabels>
       </SwatchSpecimen>
     );
   }
   return (
     <SwatchSpecimen>
-      <SwatchColors isTransparent={isTransparent}>
+      <SwatchColors>
         {Object.values(colors).map((color, index) => renderSwatch(color, index))}
       </SwatchColors>
       <SwatchLabels>
@@ -187,19 +178,14 @@ function renderSwatchSpecimen(colors: Colors, isTransparent: boolean) {
  * A single color row your styleguide showing title, subtitle and one or more colors, used
  * as a child of `ColorPalette`.
  */
-export const ColorItem: FunctionComponent<ColorProps> = ({
-  title,
-  subtitle,
-  colors,
-  isTransparent,
-}) => {
+export const ColorItem: FunctionComponent<ColorProps> = ({ title, subtitle, colors }) => {
   return (
     <Item>
       <ItemDescription>
         <ItemTitle>{title}</ItemTitle>
         <ItemSubtitle>{subtitle}</ItemSubtitle>
       </ItemDescription>
-      <Swatches>{renderSwatchSpecimen(colors, isTransparent)}</Swatches>
+      <Swatches>{renderSwatchSpecimen(colors)}</Swatches>
     </Item>
   );
 };

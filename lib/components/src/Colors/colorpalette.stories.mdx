@@ -15,7 +15,7 @@ Dark theme Colors
 <ColorPalette>
   {Object.entries(convert(themes.dark).color).map(([k, v]) => {
     if (typeof v === 'string' && (v.match(/^#/) || v.match(/^rgb/) || k.match(/color/i))) {
-      return <ColorItem key={k} title={k} colors={{ [k]: v }} isTransparent />;
+      return <ColorItem key={k} title={k} colors={{ [k]: v }} />;
     } else if (typeof v === 'object') {
       return (
         <ColorItem
@@ -29,7 +29,6 @@ Dark theme Colors
                 : acc,
             {}
           )}
-          isTransparent
         />
       );
     }
@@ -50,7 +49,6 @@ Dark theme Backgrounds
           key={k}
           title={k}
           colors={{ [k]: v }}
-          isTransparent
         />
       );
     } else if (typeof v === 'object') {
@@ -60,7 +58,6 @@ Dark theme Backgrounds
           key={k}
           title={k}
           colors={colors}
-          isTransparent
         />
       );
     }
@@ -75,7 +72,7 @@ Light theme Colors
 <ColorPalette>
   {Object.entries(convert(themes.light).color).map(([k, v]) => {
     if (typeof v === 'string' && (v.match(/^#/) || v.match(/^rgb/) || k.match(/color/i))) {
-      return <ColorItem key={k} title={k} colors={{ [k]: v }} isTransparent/>;
+      return <ColorItem key={k} title={k} colors={{ [k]: v }} />;
     } else if (typeof v === 'object') {
       return (
         <ColorItem
@@ -89,7 +86,6 @@ Light theme Colors
                 : acc,
             {}
           )}
-          isTransparent
         />
       );
     }
@@ -110,7 +106,6 @@ Light theme Backgrounds
           key={k}
           title={k}
           colors={{ [k]: v }}
-          isTransparent
         />
       );
     } else if (typeof v === 'object') {
@@ -120,7 +115,6 @@ Light theme Backgrounds
           key={k}
           title={k}
           colors={colors}
-          isTransparent
         />
       );
     }
