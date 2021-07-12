@@ -212,34 +212,13 @@ To do so, it relies on helpers added in the latest minor versions of `lit-html`/
 
 According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
 
-### 6.3 deprecations
-
-#### Deprecated addon-knobs
-
-We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
-
-- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
-- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
-
-#### Deprecated scoped blocks imports
-
-In 6.3, we changed doc block imports from `@storybook/addon-docs/blocks` to `@storybook/addon-docs`. This makes it possible for bundlers to automatically choose the ESM or CJS version of the library depending on the context.
-
-To update your code, you should be able to global replace `@storybook/addon-docs/blocks` with `@storybook/addon-docs`. Example:
-
-```js
-// before
-import { Meta, Story } from '@storybook/addon-docs/blocks';
-
-// after
-import { Meta, Story } from '@storybook/addon-docs';
-```
-
-#### Deprecated `argType.defaultValue`
+### No longer inferring default values of args
 
 Previously, unset `args` were set to the `argType.defaultValue` if set or inferred from the component's prop types (etc.). In 6.3 we no longer infer default values and instead set arg values to `undefined` when unset, allowing the framework to supply the default value.
 
-If you were using `argType.defaultValue` to fix issues with the above inference, it should no longer be necessary, you can remove that code. If you were using it to set a default value for an arg, there is a simpler way; simply set a value for the arg at the component level:
+If you were using `argType.defaultValue` to fix issues with the above inference, it should no longer be necessary, you can remove that code.
+
+If you were using `argType.defaultValue` or relying on inference to set a default value for an arg, you should now set a value for the arg at the component level:
 
 ```js
 export default {
@@ -261,6 +240,29 @@ export default {
     },
   },
 };
+```
+
+### 6.3 deprecations
+
+#### Deprecated addon-knobs
+
+We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
+
+- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
+- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
+
+#### Deprecated scoped blocks imports
+
+In 6.3, we changed doc block imports from `@storybook/addon-docs/blocks` to `@storybook/addon-docs`. This makes it possible for bundlers to automatically choose the ESM or CJS version of the library depending on the context.
+
+To update your code, you should be able to global replace `@storybook/addon-docs/blocks` with `@storybook/addon-docs`. Example:
+
+```js
+// before
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+// after
+import { Meta, Story } from '@storybook/addon-docs';
 ```
 
 #### Deprecated layout URL params
