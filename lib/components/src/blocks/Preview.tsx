@@ -16,6 +16,7 @@ import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
 import { Zoom } from '../Zoom/Zoom';
+import { createCopyToClipboardFunction } from '../syntaxhighlighter/syntaxhighlighter';
 
 export interface PreviewProps {
   isColumn?: boolean;
@@ -183,27 +184,6 @@ const getLayout = (children: ReactElement[]): layout => {
   }, undefined);
 };
 
-const { navigator, document, window: globalWindow } = global;
-
-let copyToClipboard: (text: string) => Promise<void>;
-
-if (navigator?.clipboard) {
-  copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
-} else {
-  copyToClipboard = async (text: string) => {
-    const tmp = document.createElement('TEXTAREA');
-    const focus = document.activeElement;
-
-    tmp.value = text;
-
-    document.body.appendChild(tmp);
-    tmp.select();
-    document.execCommand('copy');
-    document.body.removeChild(tmp);
-    focus.focus();
-  };
-}
-
 /**
  * A preview component for showing one or more component `Story`
  * items. The preview also shows the source for the component
@@ -232,6 +212,9 @@ const Preview: FunctionComponent<PreviewProps> = ({
 
   // @ts-ignore
   const layout = getLayout(Children.count(children) === 1 ? [children] : children);
+
+  const { window: globalWindow } = global;
+  const copyToClipboard: (text: string) => Promise<void> = createCopyToClipboardFunction();
 
   const onCopyCapture = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -271,7 +254,7 @@ const Preview: FunctionComponent<PreviewProps> = ({
         />
       )}
       <ZoomContext.Provider value={{ scale }}>
-        <Relative className="docs-story" onCopyCapture={onCopyCapture}>
+        <Relative className="docs-story" onCopyCapture={withSource && onCopyCapture}>
           <ChildrenContainer
             isColumn={isColumn || !Array.isArray(children)}
             columns={columns}
