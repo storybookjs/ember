@@ -1,3 +1,16 @@
+## 6.4.0-alpha.15 (July 13, 2021)
+
+### Bug Fixes
+
+- Controls: Fix color matching behavior for non-string types ([#15549](https://github.com/storybookjs/storybook/pull/15549))
+- UI: Fix toggle button for custom theming ([#15449](https://github.com/storybookjs/storybook/pull/15449))
+
+### Maintenance
+
+- Build: Fix `publish` step on CircleCI ([#15556](https://github.com/storybookjs/storybook/pull/15556))
+- Examples: Add no-manager-cache to all examples ([#15546](https://github.com/storybookjs/storybook/pull/15546))
+- Official-storybook: Add example of embedding story object in MDX ([#15533](https://github.com/storybookjs/storybook/pull/15533))
+
 ## 6.4.0-alpha.14 (July 11, 2021)
 
 ### Features
