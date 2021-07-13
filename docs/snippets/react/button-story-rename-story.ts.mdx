@@ -1,10 +1,13 @@
 ```ts
-// Button.stories.tsx
+// Button.stories.ts | Button.stories.tsx
 
 import React from 'react';
+
+import { Story } from '@storybook/react';
+
 import { Button, ButtonProps } from './Button';
 
-export const Primary: React.SFC<{}> = () => <Button primary>Button</Button>;
+export const Primary: Story = () => <Button primary>Button</Button>;
 
-Primary.storyName='I am the primary';
+Primary.storyName = 'I am the primary';
 ```

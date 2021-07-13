@@ -1,8 +1,10 @@
 /* eslint-disable jest/no-export */
 import fs from 'fs';
 import glob from 'glob';
-import { describe, it } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
+
+const { describe, it } = global;
 
 expect.extend({
   notToBeAbandoned(storyshots, stories2snapsConverter) {

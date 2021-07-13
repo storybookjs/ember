@@ -1,6 +1,5 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { radios } from '@storybook/addon-knobs';
 import Button, { Type } from './Button';
 
 export default {
@@ -18,6 +17,4 @@ const typeOptions = {
   Action: 'action',
 };
 
-export const WithType = () => (
-  <Button type={radios('Type', typeOptions, typeOptions.Default) as Type}>Label</Button>
-);
+export const WithType = () => <Button type={typeOptions.Default as Type}>Label</Button>;

@@ -1,10 +1,12 @@
-import { VERSIONCHECK } from 'global';
+import global from 'global';
 import semver from '@storybook/semver';
 import memoize from 'memoizerific';
 
 import { version as currentVersion } from '../version';
 
 import { ModuleFn } from '../index';
+
+const { VERSIONCHECK } = global;
 
 export interface Version {
   version: string;
@@ -117,7 +119,6 @@ export const init: ModuleFn = ({ store, mode, fullAPI }) => {
 
     if (api.versionUpdateAvailable()) {
       const latestVersion = api.getLatestVersion().version;
-
       const diff = semver.diff(versions.current.version, versions.latest.version);
 
       if (
@@ -129,7 +130,11 @@ export const init: ModuleFn = ({ store, mode, fullAPI }) => {
         fullAPI.addNotification({
           id: 'update',
           link: '/settings/about',
-          content: `🎉 Storybook ${latestVersion} is available!`,
+          content: {
+            headline: `Storybook ${latestVersion} is available!`,
+            subHeadline: `Your current version is: ${versions.current.version}`,
+          },
+          icon: { name: 'book' },
           onClear() {
             store.setState(
               { dismissedVersionNotification: latestVersion },

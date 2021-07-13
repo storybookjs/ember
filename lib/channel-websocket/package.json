@@ -1,11 +1,11 @@
 {
   "name": "@storybook/channel-websocket",
-  "version": "6.0.12",
+  "version": "6.4.0-alpha.14",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/channel-websocket",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/channel-websocket",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,34 +14,40 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/channel-websocket"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.5/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/channels": "6.0.12",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "telejson": "^5.0.2"
+    "@storybook/channels": "6.4.0-alpha.14",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "telejson": "^5.3.2"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ebb058e4090f2a697a6f2f16494d57a5e3a553f4",
-  "typesVersions": {
-    "<=3.5": {
-      "*": [
-        "ts3.5/*"
-      ]
-    }
-  }
+  "gitHead": "d3f8b5119b70ecf23ef2006b58034292eab3726e",
+  "sbmodern": "dist/modern/index.js"
 }

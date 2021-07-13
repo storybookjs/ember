@@ -1,10 +1,12 @@
-import { DOCS_MODE, document } from 'global';
+import global from 'global';
 import pick from 'lodash/pick';
 import deepEqual from 'fast-deep-equal';
 import { themes, ThemeVars } from '@storybook/theming';
 
 import merge from '../lib/merge';
 import { State, ModuleFn } from '../index';
+
+const { DOCS_MODE, document } = global;
 
 export type PanelPositions = 'bottom' | 'right';
 export type ActiveTabsType = 'sidebar' | 'canvas' | 'addons';
@@ -27,7 +29,6 @@ export interface UI {
   name?: string;
   url?: string;
   enableShortcuts: boolean;
-  sidebarAnimations: boolean;
   docsMode: boolean;
 }
 
@@ -63,7 +64,6 @@ export interface UIOptions {
 const defaultState: SubState = {
   ui: {
     enableShortcuts: true,
-    sidebarAnimations: true,
     docsMode: false,
   },
   layout: {
@@ -84,17 +84,21 @@ export const focusableUIElements = {
   storyPanelRoot: 'storybook-panel-root',
 };
 
-export const init: ModuleFn = ({ store, provider }) => {
+export const init: ModuleFn = ({ store, provider, singleStory }) => {
   const api = {
     toggleFullscreen(toggled?: boolean) {
       return store.setState(
         (state: State) => {
+          const { showNav } = state.layout;
+
           const value = typeof toggled === 'boolean' ? toggled : !state.layout.isFullscreen;
+          const shouldShowNav = showNav === false && value === false;
 
           return {
             layout: {
               ...state.layout,
               isFullscreen: value,
+              showNav: !singleStory && shouldShowNav ? true : showNav,
             },
           };
         },
@@ -105,12 +109,16 @@ export const init: ModuleFn = ({ store, provider }) => {
     togglePanel(toggled?: boolean) {
       return store.setState(
         (state: State) => {
+          const { showNav, isFullscreen } = state.layout;
+
           const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showPanel;
+          const shouldToggleFullScreen = showNav === false && value === false;
 
           return {
             layout: {
               ...state.layout,
               showPanel: value,
+              isFullscreen: shouldToggleFullScreen ? true : isFullscreen,
             },
           };
         },
@@ -145,12 +153,17 @@ export const init: ModuleFn = ({ store, provider }) => {
     toggleNav(toggled?: boolean) {
       return store.setState(
         (state: State) => {
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
+          if (singleStory) return { layout: state.layout };
+
+          const { showPanel, isFullscreen } = state.layout;
+          const showNav = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
+          const shouldToggleFullScreen = showPanel === false && showNav === false;
 
           return {
             layout: {
               ...state.layout,
-              showNav: value,
+              showNav,
+              isFullscreen: shouldToggleFullScreen ? true : !showNav && isFullscreen,
             },
           };
         },
@@ -190,13 +203,14 @@ export const init: ModuleFn = ({ store, provider }) => {
       );
     },
 
-    focusOnUIElement(elementId?: string) {
+    focusOnUIElement(elementId?: string, select?: boolean) {
       if (!elementId) {
         return;
       }
       const element = document.getElementById(elementId);
       if (element) {
         element.focus();
+        if (select) element.select();
       }
     },
 
@@ -208,6 +222,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         layout: {
           ...defaultState.layout,
           ...pick(options, Object.keys(defaultState.layout)),
+          ...(singleStory && { showNav: false }),
         },
         ui: {
           ...defaultState.ui,
@@ -225,6 +240,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         const updatedLayout = {
           ...layout,
           ...pick(options, Object.keys(layout)),
+          ...(singleStory && { showNav: false }),
         };
 
         const updatedUi = {

@@ -1,13 +1,15 @@
 {
   "name": "@storybook/addon-toolbars",
-  "version": "6.0.12",
-  "description": "Storybook toolbars addon",
+  "version": "6.4.0-alpha.14",
+  "description": "Create your own toolbar items that control story rendering",
   "keywords": [
     "addon",
     "storybook",
     "theming",
     "i18n",
-    "internationalization"
+    "internationalization",
+    "test",
+    "essentials"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/next/addons/toolbars",
   "bugs": {
@@ -18,8 +20,21 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/toolbars"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/register.js",
+  "main": "dist/cjs/register.js",
+  "module": "dist/esm/register.js",
+  "types": "dist/ts3.9/register.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
@@ -30,18 +45,36 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.0.12",
-    "@storybook/api": "6.0.12",
-    "@storybook/client-api": "6.0.12",
-    "@storybook/components": "6.0.12",
-    "core-js": "^3.0.1"
+    "@storybook/addons": "6.4.0-alpha.14",
+    "@storybook/api": "6.4.0-alpha.14",
+    "@storybook/client-api": "6.4.0-alpha.14",
+    "@storybook/components": "6.4.0-alpha.14",
+    "@storybook/theming": "6.4.0-alpha.14",
+    "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ebb058e4090f2a697a6f2f16494d57a5e3a553f4"
+  "gitHead": "d3f8b5119b70ecf23ef2006b58034292eab3726e",
+  "sbmodern": "dist/modern/register.js",
+  "storybook": {
+    "displayName": "Toolbars",
+    "icon": "https://user-images.githubusercontent.com/263385/101991677-48cdf300-3c7c-11eb-93b4-19b0e3366959.png",
+    "unsupportedFrameworks": [
+      "react-native"
+    ]
+  }
 }

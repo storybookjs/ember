@@ -1,4 +1,4 @@
-import { location, fetch } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import {
   transformStoriesRawToStoriesHash,
@@ -8,6 +8,8 @@ import {
 } from '../lib/stories';
 
 import { ModuleFn } from '../index';
+
+const { location, fetch } = global;
 
 export interface SubState {
   refs: Refs;
@@ -36,7 +38,7 @@ export interface ComposedRef {
   id: string;
   title?: string;
   url: string;
-  type?: 'auto-inject' | 'unknown' | 'lazy';
+  type?: 'auto-inject' | 'unknown' | 'lazy' | 'server-checked';
   stories: StoriesHash;
   versions?: Versions;
   loginUrl?: string;
@@ -44,16 +46,13 @@ export interface ComposedRef {
   ready?: boolean;
   error?: any;
 }
-export interface ComposedRefUpdate {
-  title?: string;
-  type?: 'auto-inject' | 'unknown' | 'lazy';
-  stories?: StoriesHash;
-  versions?: Versions;
-  loginUrl?: string;
-  version?: string;
-  ready?: boolean;
-  error?: any;
-}
+
+export type ComposedRefUpdate = Partial<
+  Pick<
+    ComposedRef,
+    'title' | 'type' | 'stories' | 'versions' | 'loginUrl' | 'version' | 'ready' | 'error'
+  >
+>;
 
 export type Refs = Record<string, ComposedRef>;
 export type RefId = string;
@@ -61,16 +60,6 @@ export type RefUrl = string;
 
 // eslint-disable-next-line no-useless-escape
 const findFilename = /(\/((?:[^\/]+?)\.[^\/]+?)|\/)$/;
-
-const allSettled = (promises: Promise<Response>[]): Promise<(Response | false)[]> =>
-  Promise.all(
-    promises.map((promise) =>
-      promise.then(
-        (r) => (r.ok ? r : (false as const)),
-        () => false as const
-      )
-    )
-  );
 
 export const getSourceType = (source: string, refId: string) => {
   const { origin: localOrigin, pathname: localPathname } = location;
@@ -98,6 +87,15 @@ const addRefIds = (input: StoriesHash, ref: ComposedRef): StoriesHash => {
   }, {} as StoriesHash);
 };
 
+const handle = async (request: Response | false): Promise<SetRefData> => {
+  if (request) {
+    return Promise.resolve(request)
+      .then((response) => (response.ok ? response.json() : {}))
+      .catch((error) => ({ error }));
+  }
+  return {};
+};
+
 const map = (
   input: StoriesRaw,
   ref: ComposedRef,
@@ -112,7 +110,7 @@ const map = (
   return input;
 };
 
-export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true } = {}) => {
+export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = true } = {}) => {
   const api: SubAPI = {
     findRef: (source) => {
       const refs = api.getRefs();
@@ -135,58 +133,53 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
       });
     },
     checkRef: async (ref) => {
-      const { id, url, version } = ref;
+      const { id, url, version, type } = ref;
+      const isPublic = type === 'server-checked';
+
+      // ref's type starts as either 'unknown' or 'server-checked'
+      // "server-checked" happens when we were able to verify the storybook is accessible from node (without cookies)
+      // "unknown" happens if the request was declined of failed (this can happen because the storybook doesn't exists or authentication is required)
+      //
+      // we then make a request for stories.json
+      //
+      // if this request fails when storybook is server-checked we mark the ref as "auto-inject", this is a fallback mechanism for local storybook, legacy storybooks, and storybooks that lack stories.json
+      // if the request fails with type "unknown" we give up and show an error
+      // if the request succeeds we set the ref to 'lazy' type, and show the stories in the sidebar without injecting the iframe first
+      //
+      // then we fetch metadata if the above fetch succeeded
 
       const loadedData: { error?: Error; stories?: StoriesRaw; loginUrl?: string } = {};
       const query = version ? `?version=${version}` : '';
+      const credentials = isPublic ? 'omit' : 'include';
 
-      const [included, omitted, iframe] = await allSettled([
-        fetch(`${url}/stories.json${query}`, {
-          headers: {
-            Accept: 'application/json',
-          },
-          credentials: 'include',
-        }),
-        fetch(`${url}/stories.json${query}`, {
-          headers: {
-            Accept: 'application/json',
-          },
-          credentials: 'omit',
-        }),
-        fetch(`${url}/iframe.html${query}`, {
-          mode: 'no-cors',
-          credentials: 'omit',
-        }),
-      ]);
+      // In theory the `/iframe.html` could be private and the `stories.json` could not exist, but in practice
+      // the only private servers we know about (Chromatic) always include `stories.json`. So we can tell
+      // if the ref actually exists by simply checking `stories.json` w/ credentials.
 
-      const handle = async (request: Response | false): Promise<SetRefData> => {
-        if (request) {
-          return Promise.resolve(request)
-            .then((response) => (response.ok ? response.json() : {}))
-            .catch((error) => ({ error }));
-        }
-        return {};
-      };
+      const storiesFetch = await fetch(`${url}/stories.json${query}`, {
+        headers: {
+          Accept: 'application/json',
+        },
+        credentials,
+      });
 
-      if (!included && !omitted && !iframe) {
+      if (!storiesFetch.ok && !isPublic) {
         loadedData.error = {
           message: dedent`
             Error: Loading of ref failed
               at fetch (lib/api/src/modules/refs.ts)
-            
+
             URL: ${url}
-            
+
             We weren't able to load the above URL,
             it's possible a CORS error happened.
-            
+
             Please check your dev-tools network tab.
           `,
         } as Error;
-      } else if (omitted || included) {
-        const credentials = included ? 'include' : 'omit';
-
+      } else if (storiesFetch.ok) {
         const [stories, metadata] = await Promise.all([
-          included ? handle(included) : handle(omitted),
+          handle(storiesFetch),
           handle(
             fetch(`${url}/metadata.json${query}`, {
               headers: {
@@ -217,6 +210,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
     },
 
     setRef: (id, { stories, ...rest }, ready = false) => {
+      if (singleStory) return;
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
       const after = stories
@@ -234,20 +228,22 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
 
       updated[id] = { ...ref, ...data };
 
+      /* eslint-disable no-param-reassign */
+      const ordered = Object.keys(initialState).reduce((obj: any, key) => {
+        obj[key] = updated[key];
+        return obj;
+      }, {});
+      /* eslint-enable no-param-reassign */
+
       store.setState({
-        refs: updated,
+        refs: ordered,
       });
     },
   };
 
-  const refs = provider.getConfig().refs || {};
+  const refs = (!singleStory && provider.getConfig().refs) || {};
 
   const initialState: SubState['refs'] = refs;
-
-  Object.values(refs).forEach((r) => {
-    // eslint-disable-next-line no-param-reassign
-    r.type = 'unknown';
-  });
 
   if (runCheck) {
     Object.entries(refs).forEach(([k, v]) => {

@@ -4,15 +4,15 @@ title: 'How to write stories'
 
 A story captures the rendered state of a UI component. It’s a function that returns a component’s state given a set of arguments.
 
-Storybook uses the generic term arguments (args for short) when talking about React’s `props`, Vue’s `slots`, Angular’s `@input`, and other similar concepts.
+Storybook uses the generic term arguments (args for short) when talking about React’s `props`, Vue’s `props`, Angular’s `@Input`, and other similar concepts.
 
 ## Where to put stories
 
 A component’s stories are defined in a story file that lives alongside the component file. The story file is for development-only, it won't be included in your production bundle.
 
 ```
-Button.js | ts
-Button.stories.js | ts
+Button.js | ts | jsx | tsx
+Button.stories.js | ts | jsx | tsx
 ```
 
 ## Component Story Format
@@ -23,7 +23,7 @@ The key ingredients are the [default export](https://developer.mozilla.org/en-US
 
 ### Default export
 
-The default export metadata controls how Storybook lists your stories and provides information used by addons. For example, here’s the default export for a story file `Button.stories.js`:
+The _default_ export metadata controls how Storybook lists your stories and provides information used by addons. For example, here’s the default export for a story file `Button.stories.js`:
 
 <!-- prettier-ignore-start -->
 
@@ -31,7 +31,10 @@ The default export metadata controls how Storybook lists your stories and provid
   paths={[
     'react/button-story-default-export-with-component.js.mdx',
     'react/button-story-default-export-with-component.ts.mdx',
+    'vue/button-story-default-export-with-component.js.mdx',
     'angular/button-story-default-export-with-component.ts.mdx',
+    'svelte/button-story-default-export-with-component.js.mdx',
+    'web-components/button-story-default-export-with-component.js.mdx',
   ]}
 />
 
@@ -39,7 +42,7 @@ The default export metadata controls how Storybook lists your stories and provid
 
 ### Defining stories
 
-Use the named exports of a CSF file to define your component’s stories. Here’s how to render `Button` in the “primary” state and export a story called `Primary`.
+Use the _named_ exports of a CSF file to define your component’s stories. We recommend you use UpperCamelCase for your story exports. Here’s how to render `Button` in the “primary” state and export a story called `Primary`.
 
 <!-- prettier-ignore-start -->
 
@@ -47,15 +50,26 @@ Use the named exports of a CSF file to define your component’s stories. Here�
   paths={[
     'react/button-story.js.mdx',
     'react/button-story.ts.mdx',
+    'react/button-story.with-hooks.js.mdx',
+    'vue/button-story.js.mdx',
     'angular/button-story.ts.mdx',
+    'svelte/button-story.js.mdx',
+    'svelte/button-story.native-format.mdx',
+    'web-components/button-story.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
+<div class="aside">
+
+💡 <strong>Note</strong>: Using framework specific elements such as [React Hooks](https://reactjs.org/docs/hooks-intro.html) alongside your stories is a perfectly valid approach, but should be used as an advanced use case. We <strong>recommend</strong> using [args](./args.md) as much as possible when writing your own stories.
+
+</div>
+
 ### Rename stories
 
-You can rename any particular story you need. For instance to give it a more clearer name. Here's how you can change the name of the `Primary` story:
+You can rename any particular story you need. For instance to give it a clearer name. Here's how you can change the name of the `Primary` story:
 
 <!-- prettier-ignore-start -->
 
@@ -63,13 +77,16 @@ You can rename any particular story you need. For instance to give it a more cle
   paths={[
     'react/button-story-rename-story.js.mdx',
     'react/button-story-rename-story.ts.mdx',
+    'vue/button-story-rename-story.js.mdx',
     'angular/button-story-rename-story.ts.mdx',
+    'svelte/button-story-rename-story.js.mdx',
+    'web-components/button-story-rename-story.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-Your story will now be show in the sidebar with the given text.
+Your story will now be shown in the sidebar with the given text.
 
 ## How to write stories
 
@@ -81,7 +98,11 @@ A story is a function that describes how to render a component. You can have mul
   paths={[
     'react/button-story-with-emojis.js.mdx',
     'react/button-story-with-emojis.ts.mdx',
+    'vue/button-story-with-emojis.js.mdx',
     'angular/button-story-with-emojis.ts.mdx',
+    'svelte/button-story-with-emojis.js.mdx',
+    'svelte/button-story-with-emojis.native-format.mdx',
+    'web-components/button-story-with-emojis.js.mdx',
   ]}
 />
 
@@ -99,7 +120,12 @@ Refine this pattern by defining a master template for a component’s stories th
   paths={[
     'react/button-story-using-args.js.mdx',
     'react/button-story-using-args.ts.mdx',
+    'vue/button-story-using-args.2.js.mdx',
+    'vue/button-story-using-args.3.js.mdx',
     'angular/button-story-using-args.ts.mdx',
+    'svelte/button-story-using-args.js.mdx',
+    'svelte/button-story-using-args.native-format.mdx',
+    'web-components/button-story-using-args.js.mdx',
   ]}
 />
 
@@ -116,6 +142,10 @@ What’s more, you can import args to reuse when writing stories for other compo
     'react/button-group-story.js.mdx',
     'react/button-group-story.ts.mdx',
     'angular/button-group-story.ts.mdx',
+    'vue/button-group-story.2.js.mdx',
+    'vue/button-group-story.3.js.mdx',
+    'svelte/button-group-story.js.mdx',
+    'web-components/button-group-story.js.mdx',
   ]}
 />
 
@@ -153,7 +183,11 @@ For instance, suppose you wanted to test your Button component against a differe
   paths={[
     'react/button-story-with-blue-args.js.mdx',
     'react/button-story-with-blue-args.ts.mdx',
+    'vue/button-story-with-blue-args.js.mdx',
     'angular/button-story-with-blue-args.ts.mdx',
+    'svelte/button-story-with-blue-args.js.mdx',
+    'svelte/button-story-with-blue-args.native-format.mdx',
+    'web-components/button-story-with-blue-args.js.mdx',
   ]}
 />
 
@@ -175,6 +209,11 @@ A simple example is adding padding to a component’s stories. Accomplish this u
   paths={[
     'react/button-story-component-decorator.js.mdx',
     'react/button-story-component-decorator.ts.mdx',
+    'vue/button-story-component-decorator.js.mdx',
+    'angular/button-story-component-decorator.ts.mdx',
+    'svelte/button-story-component-decorator.js.mdx',
+    'svelte/button-story-component-decorator.native-format.mdx',
+    'web-components/button-story-component-decorator.js.mdx',
   ]}
 />
 
@@ -192,13 +231,17 @@ When building design systems or component libraries, you may have two or more co
   paths={[
     'react/list-story-starter.js.mdx',
     'react/list-story-starter.ts.mdx',
-    'angular/list-story-starter.ts.mdx'
+    'angular/list-story-starter.ts.mdx',
+    'vue/list-story-starter.2.js.mdx',
+    'vue/list-story-starter.3.js.mdx',
+    'svelte/list-story-starter.native-format.mdx',
+    'web-components/list-story-starter.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-In such cases, it makes sense to render something a different function for each story:
+In such cases, it makes sense to render a different function for each story:
 
 <!-- prettier-ignore-start -->
 
@@ -206,7 +249,11 @@ In such cases, it makes sense to render something a different function for each 
   paths={[
     'react/list-story-expanded.js.mdx',
     'react/list-story-expanded.ts.mdx',
-    'angular/list-story-expanded.ts.mdx'
+    'angular/list-story-expanded.ts.mdx',
+    'vue/list-story-expanded.2.js.mdx',
+    'vue/list-story-expanded.3.js.mdx',
+    'svelte/list-story-expanded.native-format.mdx',
+    'web-components/list-story-expanded.js.mdx',
   ]}
 />
 
@@ -220,7 +267,10 @@ You can also reuse stories from the child `ListItem` in your `List` component. T
   paths={[
     'react/list-story-reuse-data.js.mdx',
     'react/list-story-reuse-data.ts.mdx',
-    'angular/list-story-reuse-data.ts.mdx'
+    'angular/list-story-reuse-data.ts.mdx',
+    'vue/list-story-reuse-data.2.js.mdx',
+    'vue/list-story-reuse-data.3.js.mdx',
+    'web-components/list-story-reuse-data.js.mdx',
   ]}
 />
 

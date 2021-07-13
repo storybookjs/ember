@@ -1,8 +1,13 @@
-import { document, Node } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
-import { render, TemplateResult } from 'lit-html';
+import { render } from 'lit-html';
+// Keep `.js` extension to avoid issue with Webpack (related to export map?)
+// eslint-disable-next-line import/extensions
+import { isTemplateResult } from 'lit-html/directive-helpers.js';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
 
+const { document, Node } = global;
 const rootElement = document.getElementById('root');
 
 export default function renderMain({
@@ -16,7 +21,7 @@ export default function renderMain({
   const element = storyFn();
 
   showMain();
-  if (element instanceof TemplateResult) {
+  if (isTemplateResult(element)) {
     // `render` stores the TemplateInstance in the Node and tries to update based on that.
     // Since we reuse `rootElement` for all stories, remove the stored instance first.
     // But forceRender means that it's the same story, so we want too keep the state in that case.
@@ -26,8 +31,10 @@ export default function renderMain({
     const renderTo = rootElement.querySelector('[id="root-inner"]');
 
     render(element, renderTo);
+    simulatePageLoad(rootElement);
   } else if (typeof element === 'string') {
     rootElement.innerHTML = element;
+    simulatePageLoad(rootElement);
   } else if (element instanceof Node) {
     // Don't re-mount the element if it didn't change and neither did the story
     if (rootElement.firstChild === element && forceRender === true) {
@@ -36,6 +43,7 @@ export default function renderMain({
 
     rootElement.innerHTML = '';
     rootElement.appendChild(element);
+    simulateDOMContentLoaded();
   } else {
     showError({
       title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${kind}".`,

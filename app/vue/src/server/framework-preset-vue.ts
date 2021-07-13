@@ -1,40 +1,33 @@
+/* eslint-disable no-param-reassign */
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 
-export function webpack(config: Configuration) {
-  return {
-    ...config,
-    plugins: [...config.plugins, new VueLoaderPlugin()],
-    module: {
-      ...config.module,
-      rules: [
-        ...config.module.rules,
-        {
-          test: /\.vue$/,
-          loader: require.resolve('vue-loader'),
-          options: {},
+import type { Options, TypescriptConfig } from '@storybook/core-common';
+
+export async function webpack(config: Configuration, { presets }: Options) {
+  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+
+  config.plugins.push(new VueLoaderPlugin());
+  config.module.rules.push({
+    test: /\.vue$/,
+    loader: require.resolve('vue-loader'),
+    options: {},
+  });
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    use: [
+      {
+        loader: require.resolve('ts-loader'),
+        options: {
+          transpileOnly: !typescriptOptions.check,
+          appendTsSuffixTo: [/\.vue$/],
         },
-        {
-          test: /\.tsx?$/,
-          use: [
-            {
-              loader: require.resolve('ts-loader'),
-              options: {
-                transpileOnly: true,
-                appendTsSuffixTo: [/\.vue$/],
-              },
-            },
-          ],
-        },
-      ],
-    },
-    resolve: {
-      ...config.resolve,
-      extensions: [...config.resolve.extensions, '.vue'],
-      alias: {
-        ...config.resolve.alias,
-        vue$: require.resolve('vue/dist/vue.esm.js'),
       },
-    },
-  };
+    ],
+  });
+
+  config.resolve.extensions.push('.vue');
+  config.resolve.alias = { ...config.resolve.alias, vue$: require.resolve('vue/dist/vue.esm.js') };
+
+  return config;
 }

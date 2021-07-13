@@ -1,37 +1,39 @@
 {
   "name": "cra-kitchen-sink",
-  "version": "6.0.12",
+  "version": "6.4.0-alpha.14",
   "private": true,
   "scripts": {
     "build": "react-scripts build",
     "build-storybook": "build-storybook -s public",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9010 -s public",
+    "storybook": "start-storybook -p 9010 -s public --no-manager-cache",
     "test": "react-scripts test --env=jsdom"
   },
   "dependencies": {
-    "global": "^4.3.2",
+    "@storybook/client-logger": "6.4.0-alpha.14",
+    "global": "^4.4.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-lifecycles-compat": "^3.0.4"
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-lifecycles-compat": "^3.0.4",
+    "react-scripts": "^4.0.2"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "6.0.12",
-    "@storybook/addon-actions": "6.0.12",
-    "@storybook/addon-backgrounds": "6.0.12",
-    "@storybook/addon-docs": "6.0.12",
-    "@storybook/addon-events": "6.0.12",
-    "@storybook/addon-jest": "6.0.12",
-    "@storybook/addon-knobs": "6.0.12",
-    "@storybook/addon-links": "6.0.12",
-    "@storybook/addon-storyshots": "6.0.12",
-    "@storybook/addons": "6.0.12",
-    "@storybook/client-logger": "6.0.12",
-    "@storybook/react": "6.0.12",
-    "@storybook/theming": "6.0.12",
-    "react-scripts": "^3.0.1"
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@storybook/addon-a11y": "6.4.0-alpha.14",
+    "@storybook/addon-actions": "6.4.0-alpha.14",
+    "@storybook/addon-backgrounds": "6.4.0-alpha.14",
+    "@storybook/addon-docs": "6.4.0-alpha.14",
+    "@storybook/addon-jest": "6.4.0-alpha.14",
+    "@storybook/addon-links": "6.4.0-alpha.14",
+    "@storybook/addon-storyshots": "6.4.0-alpha.14",
+    "@storybook/addons": "6.4.0-alpha.14",
+    "@storybook/builder-webpack4": "6.4.0-alpha.14",
+    "@storybook/preset-create-react-app": "^3.1.6",
+    "@storybook/react": "6.4.0-alpha.14",
+    "@storybook/theming": "6.4.0-alpha.14",
+    "webpack": "4"
   },
   "storybook": {
     "chromatic": {
