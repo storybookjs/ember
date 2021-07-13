@@ -280,7 +280,7 @@ type BaseStoryObject<Args, StoryFnReturnType> = {
 
 type BaseStoryFn<Args, StoryFnReturnType> = {
   (args: Args, context: StoryContext): StoryFnReturnType;
-};
+} & BaseStoryObject<Args, StoryFnReturnType>;
 
 export type BaseStory<Args, StoryFnReturnType> =
   | BaseStoryFn<Args, StoryFnReturnType>
