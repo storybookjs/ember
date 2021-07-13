@@ -76,13 +76,13 @@ If you are using a provider that supplies data via the context, you can wrap you
 
 ### Mocking API Services
 
-Connected applications are everywhere, consuming data either from REST or GraphQL endpoints. If you're working in an application that relies on either of these data providers, you can add Mock Service Worker (MSW) and [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
+Connected applications such as Twitter, Instagram, amongst others, are everywhere, consuming data either from REST or GraphQL endpoints. If you're working in an application that relies on either of these data providers, you can add Mock Service Worker (MSW) via the [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
 
 [Mock Service Worker](https://mswjs.io/) is an API mocking library. It relies on service workers to capture network requests and provides mocked data in response. The MSW addon adds this functionality into Storybook, allowing you to mock API requests in your stories.
 
 #### Mocking REST requests with MSW addon
 
-The approach documented [above](#args-composition-for-presentational-screens) could be quickly adapted if you're relying on a Restful API. For instance, if you're retrieving the list of documents from a Restful endpoint, you could have an implementation similar to:
+If you're working with pure presentational screens, adding stories through [args composition](#args-composition-for-presentational-screens) is recommended. You can easily encode all the data via [args](../writing-stories/args.md), removing the need for handling it with "wrapper components". However, this approach loses its flexibility if the screen's data is retrieved from a RESTful endpoint within the screen itself. For instance, if your screen had a similar implementation to retrieve a list of documents:
 
 <!-- prettier-ignore-start -->
 
@@ -120,7 +120,7 @@ The mocked data (i.e., `TestData`) will be injected via [parameters](./writing-s
 
 #### Mocking GraphQL queries with MSW addon
 
-If instead of a Restful endpoint, you're retrieving the data from a [GraphQL](https://www.apollographql.com/docs/react/integrations/integrations/) endpoint. You could have the following implementation for your screen:
+In addition to mocking RESTful requests, the other noteworthy feature of the [MSW addon](https://msw-sb.vercel.app/?path=/story/guides-introduction--page) is the ability to mock incoming data from any of the mainstream [GraphQL](https://www.apollographql.com/docs/react/integrations/integrations/) clients (e.g., [Apollo Client](https://www.apollographql.com/docs/), [URQL](https://formidable.com/open-source/urql/) or [React Query](https://react-query.tanstack.com/)). For instance, if your screen retrieves the user's information and a list of documents based on a query result, you could have a similar implementation:
 
 <!-- prettier-ignore-start -->
 
@@ -155,7 +155,7 @@ To test your screen with the GraphQL mocked data, you could write the following 
 
 ### Mocking imports
 
-It is also possible to mock imports directly, as you might in a unit test, using webpack’s aliasing. It's advantageous if your component makes network requests directly with third-party libraries.
+It is also possible to mock imports directly, as you might in a unit test, using Webpack’s aliasing. It's advantageous if your component makes network requests directly with third-party libraries.
 
 We're going to use [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) as an example.
 
