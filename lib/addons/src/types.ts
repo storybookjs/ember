@@ -202,7 +202,7 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
    */
   render?: (args: Args, context: StoryContext) => StoryFnReturnType;
   /**
-   * Function that can be executed after the story is rendered.
+   * Function that is executed after the story is rendered.
    */
   play?: Function;
 }
