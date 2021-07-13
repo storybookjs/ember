@@ -10,7 +10,7 @@ const getCaptionForLocale = (locale) => {
     default:
       return 'Hello!';
   }
-}
+};
 
 export const StoryWithLocale = (args, { globals: { locale } }) => {
   const caption = getCaptionForLocale(locale);

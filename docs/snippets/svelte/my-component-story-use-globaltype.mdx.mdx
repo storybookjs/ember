@@ -10,12 +10,17 @@ export const getCaptionForLocale = (locale) => {
     default:
       return 'Hello!';
   }
-}
+};
 
 <Story name="StoryWithLocale">
   {(args, { globals: { locale } }) => {
     const caption = getCaptionForLocale(locale);
-    return <>{caption}</>;
+    return {
+      component: MyComponent,
+      props: {
+        locale: caption,
+      },
+    };
   }}
 </Story>
 ```
