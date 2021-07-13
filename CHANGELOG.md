@@ -1,3 +1,14 @@
+## 6.4.0-alpha.16 (July 13, 2021)
+
+### Features
+
+- Addon-backgrounds: Respect user's reduced motion settings ([#13711](https://github.com/storybookjs/storybook/pull/13711))
+- CSF: Add CSF3 typings ([#15558](https://github.com/storybookjs/storybook/pull/15558))
+
+### Bug Fixes
+
+- Angular: Fix actions argType auto generation ([#15563](https://github.com/storybookjs/storybook/pull/15563))
+
 ## 6.4.0-alpha.15 (July 13, 2021)
 
 ### Bug Fixes
