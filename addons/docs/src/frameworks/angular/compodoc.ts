@@ -217,9 +217,9 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
   });
 
   const SECTIONS = [
+    'properties',
     'inputs',
     'outputs',
-    'properties',
     'methods',
     'view child',
     'view children',
