@@ -236,6 +236,8 @@ export interface BaseMeta<ComponentType> {
    *
    * Stories can be organized in a nested structure using "/" as a separator.
    *
+   * Since CSF 3.0 this property is optional.
+   *
    * @example
    * export default {
    *   ...
@@ -244,7 +246,7 @@ export interface BaseMeta<ComponentType> {
    *
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
-  title: string;
+  title?: string;
 
   /**
    * The primary component for your story.
