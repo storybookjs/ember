@@ -273,14 +273,14 @@ export interface BaseMeta<ComponentType> {
   subcomponents?: Record<string, ComponentType>;
 }
 
-type BaseStoryObject<Args, StoryFnReturnType> = {
+export type BaseStoryObject<Args, StoryFnReturnType> = {
   /**
    * Override the display name in the UI
    */
   storyName?: string;
 };
 
-type BaseStoryFn<Args, StoryFnReturnType> = {
+export type BaseStoryFn<Args, StoryFnReturnType> = {
   (args: Args, context: StoryContext): StoryFnReturnType;
 } & BaseStoryObject<Args, StoryFnReturnType>;
 
