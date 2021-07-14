@@ -115,12 +115,14 @@ export const renderJsx = (code: React.ReactElement, options: JSXOptions) => {
     // @ts-ignore FIXME: workaround react-element-to-jsx-string
     const child = typeof c === 'number' ? c.toString() : c;
     let string = applyBeforeRender(reactElementToJSXString(child, opts as Options), options);
-    const matches = string.match(/\S+=\\"([^"]*)\\"/g);
 
-    if (matches) {
-      matches.forEach((match) => {
-        string = string.replace(match, match.replace(/&quot;/g, "'"));
-      });
+    if (string.indexOf('&quot;') > -1) {
+      const matches = string.match(/\S+=\\"([^"]*)\\"/g);
+        if (matches) {
+          matches.forEach((match) => {
+            string = string.replace(match, match.replace(/&quot;/g, "'"));
+          });
+        }
     }
 
     return string;
