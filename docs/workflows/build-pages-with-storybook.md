@@ -76,7 +76,7 @@ If you are using a provider that supplies data via the context, you can wrap you
 
 ### Mocking API Services
 
-Connected applications such as Twitter, Instagram, amongst others, are everywhere, consuming data either from REST or GraphQL endpoints. If you're working in an application that relies on either of these data providers, you can add Mock Service Worker (MSW) via the [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
+Connected applications such as Twitter, Instagram, amongst others, are everywhere, consuming data either from REST or GraphQL endpoints. If you're working in an application that relies on either of these data providers, you can add Mock Service Worker (MSW) via [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
 
 [Mock Service Worker](https://mswjs.io/) is an API mocking library. It relies on service workers to capture network requests and provides mocked data in response. The MSW addon adds this functionality into Storybook, allowing you to mock API requests in your stories.
 
