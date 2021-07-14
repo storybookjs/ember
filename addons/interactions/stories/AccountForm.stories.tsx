@@ -1,6 +1,7 @@
 import { AccountForm } from "./AccountForm"
 import { screen } from "../src/dom"
 import userEvent from "../src/user-event"
+import { sleep } from "../src/sleep"
 
 export default {
   component: AccountForm,
@@ -19,6 +20,7 @@ export const StandardEmailFilled = {
 export const StandardEmailFailed = {
   ...Standard,
   play: () => {
+    window.paused = true
     userEvent.type(screen.getByTestId("email"), "michael@chromatic.com.com@com")
     userEvent.type(screen.getByTestId("password1"), "testpasswordthatwontfail")
     userEvent.click(screen.getByTestId("submit"))
@@ -65,8 +67,6 @@ export const VerificationPasswordMismatch = {
     await userEvent.click(screen.getByTestId("submit"))
   },
 }
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
 export const VerificationSuccess = {
   ...Verification,

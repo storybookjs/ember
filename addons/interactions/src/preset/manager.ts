@@ -9,7 +9,7 @@ addons.register(ADDON_ID, () => {
   // Register the tool
   addons.add(TOOL_ID, {
     type: types.TOOL,
-    title: "My addon",
+    title: "Interactions",
     match: ({ viewMode }) => !!(viewMode && viewMode.match(/^(story|docs)$/)),
     render: Tool,
   });
@@ -17,7 +17,7 @@ addons.register(ADDON_ID, () => {
   // Register the panel
   addons.add(PANEL_ID, {
     type: types.PANEL,
-    title: "My addon",
+    title: "Interactions",
     match: ({ viewMode }) => viewMode === "story",
     render: Panel,
   });
