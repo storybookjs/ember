@@ -20,7 +20,6 @@ export const StandardEmailFilled = {
 export const StandardEmailFailed = {
   ...Standard,
   play: () => {
-    window.paused = true
     userEvent.type(screen.getByTestId("email"), "michael@chromatic.com.com@com")
     userEvent.type(screen.getByTestId("password1"), "testpasswordthatwontfail")
     userEvent.click(screen.getByTestId("submit"))

@@ -6,27 +6,20 @@ const callsByResult = new Map();
 const resultsByCallId = new Map();
 const channel = addons.getChannel();
 
-const emitCall = ({
-  id,
-  path,
-  method,
-  args: originalArgs,
-  result,
-  skipped,
-}) => {
-  const key = path.concat(method).join(".");
-  const args = originalArgs.map((arg) => callsByResult.get(arg) || arg);
-  callsByResult.set(result, { __callId__: id });
-  resultsByCallId.set(id, result);
-  channel.emit(EVENTS.CALL, { id, key, args, skipped });
-};
-
 channel.on(EVENTS.NEXT, () => {
   const [id, fn, args] = interceptions.shift();
   const result = fn(...args.map((arg) => resultsByCallId.get(arg?.__callId__) || arg));
   callsByResult.set(result, { __callId__: id });
   resultsByCallId.set(id, result);
 });
+
+channel.on(EVENTS.RELOAD, () => {
+  window.sessionStorage.setItem('paused', true);
+  window.location.reload()
+});
+
+channel.on('storyChanged', () => window.sessionStorage.removeItem('paused'))
+channel.on('storyRendered', () => window.sessionStorage.removeItem('paused'))
 
 // Monkey patch an object method to record calls.
 // Returns a function that invokes the original function, records the
@@ -39,13 +32,13 @@ export function patch(obj, method, path = []) {
   const patched = (...originalArgs) => {
     const id = Math.random().toString(16).slice(2);
     const args = originalArgs.map((arg) => callsByResult.get(arg) || arg);
-    if (window.paused) interceptions.push([id, fn, args]);
-    
-    // TODO return recorded result when paused
-    const result = window.paused ? undefined : fn(...originalArgs);
+    const paused = !!window.sessionStorage.getItem('paused');
+    if (paused) interceptions.push([id, fn, args]);
+
+    const result = paused ? [] : fn(...originalArgs);
     callsByResult.set(result, { __callId__: id });
     resultsByCallId.set(id, result);
-    channel.emit(EVENTS.CALL, { id, key, args, skipped: window.paused });
+    channel.emit(EVENTS.CALL, { id, key, args, skipped: paused });
     return result;
   };
   patched._original = fn;

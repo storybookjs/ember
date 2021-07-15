@@ -64,21 +64,26 @@ const Call = ({ call }: { call: Call }) => {
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
-  const [calls, setCalls] = React.useState([] as Call[]);
+  const calls = React.useRef([]);
+  const [log, setLog] = React.useState([] as Call[]);
 
   const emit = useChannel({
     [EVENTS.CALL]: (call) => {
-      setCalls((calls) => calls.concat(call));
+      calls.current.push(call);
     },
-    storyChanged: () => {
-      setCalls([]);
+    storyRendered: () => {
+      setLog(calls.current);
+      calls.current = []
     },
   });
 
-  const log = fold(calls);
+  const reload = () => {
+    emit(EVENTS.RELOAD);
+  }
+
   const next = () => {
     emit(EVENTS.NEXT);
-    setCalls((calls) => {
+    setLog((calls) => {
       const index = calls.findIndex((call) => call.skipped);
       return [
         ...calls.slice(0, index),
@@ -91,14 +96,17 @@ export const Panel: React.FC<PanelProps> = (props) => {
   return (
     <AddonPanel {...props}>
       <div style={{ padding: 5 }}>
-        {log.map((call) => (
+        {fold(log).map((call) => (
           <div key={call.id} style={{ padding: 3 }}>
             <Call call={call} />
           </div>
         ))}
         <div style={{ padding: 3 }}>
+          <Button outline containsIcon title="Reload" onClick={reload}>
+            <Icons icon="undo" />
+          </Button>
           <Button outline containsIcon title="Next" onClick={next} disabled={!log.some((call) => call.skipped)}>
-            <Icons icon="proceed" />
+            <Icons icon="arrowrightalt" />
           </Button>
         </div>
       </div>
