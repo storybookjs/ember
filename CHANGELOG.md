@@ -1,3 +1,10 @@
+## 6.4.0-alpha.17 (July 15, 2021)
+
+### Features
+
+- Types: Export BaseStoryFn and BaseStoryObject ([#15592](https://github.com/storybookjs/storybook/pull/15592))
+- Addon-docs: Add transparency support to color swatch ([#14439](https://github.com/storybookjs/storybook/pull/14439))
+
 ## 6.4.0-alpha.16 (July 13, 2021)
 
 ### Features
