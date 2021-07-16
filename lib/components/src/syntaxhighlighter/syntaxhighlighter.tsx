@@ -163,10 +163,8 @@ export const SyntaxHighlighter: FunctionComponent<Props> = ({
   const onClick = (e: MouseEvent<HTMLButtonElement> | ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const textToCopy =
-      e.type !== 'click' && globalWindow.getSelection().toString() !== ''
-        ? globalWindow.getSelection().toString()
-        : highlightableCode;
+    const selectedText = globalWindow.getSelection().toString();
+    const textToCopy = e.type !== 'click' && selectedText ? selectedText : highlightableCode;
 
     copyToClipboard(textToCopy)
       .then(() => {
