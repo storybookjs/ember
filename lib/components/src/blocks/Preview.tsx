@@ -4,6 +4,7 @@ import React, {
   FunctionComponent,
   ReactElement,
   ReactNode,
+  useCallback,
   useState,
 } from 'react';
 import { darken } from 'polished';
@@ -16,7 +17,6 @@ import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
 import { Zoom } from '../Zoom/Zoom';
-import { createCopyToClipboardFunction } from '../syntaxhighlighter/syntaxhighlighter';
 
 export interface PreviewProps {
   isColumn?: boolean;
@@ -215,7 +215,13 @@ const Preview: FunctionComponent<PreviewProps> = ({
   const layout = getLayout(Children.count(children) === 1 ? [children] : children);
 
   const { window: globalWindow } = global;
-  const copyToClipboard: (text: string) => Promise<void> = createCopyToClipboardFunction();
+
+  const copyToClipboard = useCallback(async (text: string) => {
+    const { createCopyToClipboardFunction } = await import(
+      '../syntaxhighlighter/syntaxhighlighter'
+    );
+    createCopyToClipboardFunction();
+  }, []);
 
   const onCopyCapture = (e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
