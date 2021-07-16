@@ -1,3 +1,13 @@
+## 6.4.0-alpha.18 (July 16, 2021)
+
+### Features
+
+- UI: Allow keyboard shortcut to copy code in preview blocks ([#15559](https://github.com/storybookjs/storybook/pull/15559))
+
+### Maintenance
+
+- Avoid slow regex.match call in renderJsx ([#15581](https://github.com/storybookjs/storybook/pull/15581))
+
 ## 6.4.0-alpha.17 (July 15, 2021)
 
 ### Features
