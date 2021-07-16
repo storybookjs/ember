@@ -61,7 +61,7 @@ export class SbButton extends LitElement {
       label: { type: String, reflect: true },
       primary: { type: Boolean },
       size: { type: String },
-      backgroundColor: { type: String },
+      backgroundColor: { type: String, attribute: 'background-color' },
     };
   }
 

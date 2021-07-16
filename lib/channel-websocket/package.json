@@ -1,11 +1,11 @@
 {
   "name": "@storybook/channel-websocket",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.17",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/channel-websocket",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/channel-websocket",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -40,7 +40,7 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/channels": "6.4.0-alpha.9",
+    "@storybook/channels": "6.4.0-alpha.17",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "telejson": "^5.3.2"
@@ -48,6 +48,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b9b9f9484bfe3cb9f259c26bc71e7635362addde",
+  "gitHead": "2efd8b17dbeb1d170c2bd58b7abff659ce1bcfae",
   "sbmodern": "dist/modern/index.js"
 }

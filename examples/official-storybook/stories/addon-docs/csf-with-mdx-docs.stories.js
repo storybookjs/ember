@@ -16,3 +16,7 @@ WithArgs.args = { children: 'with args' };
 
 export const WithTemplate = WithArgs.bind({});
 WithTemplate.args = { children: 'with template' };
+
+export const StoryObject = {
+  render: Basic,
+};

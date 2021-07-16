@@ -19,7 +19,8 @@ const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers
 
   // args that end with background or color e.g. iconColor
   if (matchers.color && matchers.color.test(name)) {
-    const controlType = typeof argType.type.value;
+    const controlType = argType.type.name;
+
     if (controlType === 'string') {
       return { control: { type: 'color' } };
     }

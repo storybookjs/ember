@@ -6,9 +6,9 @@ Storybook ships with toolbar items to control the [viewport](./viewport.md) and 
 
 ## Globals
 
-Globals in Storybook represent “global” (as in not story-specific) inputs to the rendering of the story. As they aren’t specific to the story, they aren’t passed in the `args` argument to the story function (although they are accessible as `context.globals`), but typically you use them in decorators which apply to all stories.
+Globals in Storybook represent “global” (as in not story-specific) inputs to the rendering of the story. As they aren’t specific to the story, they aren’t passed in the `args` argument to the story function (although they are accessible as `context.globals`), but typically you use them in decorators, which apply to all stories.
 
-When the globals change, the story re-renders and the decorators rerun with the new values. The easiest way to change globals is to create a toolbar item for them.
+When the globals change, the story re-renders, and the decorators rerun with the new values. The easiest way to change globals is to create a toolbar item for them.
 
 ## Global types and the toolbar annotation
 
@@ -34,7 +34,7 @@ When you start your Storybook, you should see a new dropdown in your toolbar wit
 
 ## Create a decorator
 
-We have a `global` defined, let's wire it up! We can consume our new `theme` global in a decorator using the `context.globals.theme` value.
+We have a `global` implemented. Let's wire it up! We can consume our new `theme` global in a decorator using the `context.globals.theme` value.
 
 For example, suppose you are using `styled-components`. You can add a theme provider decorator to your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) config:
 
@@ -76,7 +76,7 @@ The <code>icon</code> element used in the examples loads the icons from the <cod
   The <code>@storybook/addon-toolbars</code> addon is required to use toolbars. The toolbars addon is included by default in <code>@storybook/addon-essentials</code>.
 </div>
 
-By adding the configuration element `right`, the text will be displayed on the right side in the toolbar menu, once you connect it to a decorator.
+By adding the configuration element `right`, the text will be displayed on the right side in the toolbar menu once you connect it to a decorator.
 
 Here's a list of the configuration options available.
 
@@ -84,15 +84,15 @@ Here's a list of the configuration options available.
 | --------- | :----: | :-------------------------------------------------------------: | :------: |
 | **value** | String |    The string value of the menu that gets set in the globals    |   Yes    |
 | **title** | String |                   The main text of the title                    |   Yes    |
-| **left**  | String |        A string that gets shown in left side of the menu        |    No    |
-| **right** | String |       A string that gets shown in right side of the menu        |    No    |
+| **left**  | String |      A string that gets shown on the left side of the menu      |    No    |
+| **right** | String |   A string that gets displayed on the right side of the menu    |    No    |
 | **icon**  | String | An icon that gets shown in the toolbar if this item is selected |    No    |
 
 ## Consuming globals from within a story
 
 We recommend consuming globals from within a decorator and define a global setting for all stories.
 
-But we're aware that sometimes it's more useful to use toolbar options in a per-story basis.
+But we're aware that sometimes it's more beneficial to use toolbar options on a per-story basis.
 
 Using the example above, you can modify any story to retrieve the **Locale** `global` from the story context:
 
@@ -100,8 +100,15 @@ Using the example above, you can modify any story to retrieve the **Locale** `gl
 
 <CodeSnippets
   paths={[
-    'common/my-component-story-use-globaltype.js.mdx',
-    'common/my-component-story-use-globaltype.mdx.mdx',
+    'react/my-component-story-use-globaltype.js.mdx',
+    'react/my-component-story-use-globaltype.mdx.mdx',
+    'vue/my-component-story-use-globaltype.js.mdx',
+    'vue/my-component-story-use-globaltype.mdx.mdx',
+    'angular/my-component-story-use-globaltype.ts.mdx',
+    'angular/my-component-story-use-globaltype.mdx.mdx',
+    'svelte/my-component-story-use-globaltype.js.mdx',
+    'svelte/my-component-story-use-globaltype.mdx.mdx',
+    'web-components/my-component-story-use-globaltype.js.mdx',
   ]}
 />
 
@@ -115,7 +122,11 @@ In Storybook 6.0, if you set the global option `passArgsFirst: false` for backwa
 
 <CodeSnippets
   paths={[
-    'common/my-component-story-use-globaltype-backwards-compat.js.mdx',
+    'react/my-component-story-use-globaltype-backwards-compat.js.mdx',
+    'vue/my-component-story-use-globaltype-backwards-compat.js.mdx',
+    'angular/my-component-story-use-globaltype-backwards-compat.ts.mdx',
+    'svelte/my-component-story-use-globaltype-backwards-compat.js.mdx',
+    'web-components/my-component-story-use-globaltype-backwards-compat.js.mdx',
   ]}
 />
 
@@ -125,7 +136,7 @@ In Storybook 6.0, if you set the global option `passArgsFirst: false` for backwa
 
 ## Consuming globals from within an addon
 
-If you're working on a Storybook addon and you need to retrieve globals. You can do so, the `@storybook/api` package provides a hook for this scenario, you can use the [`useGlobals()`](../addons/addons-api.md#useglobals) hook to retrieve any globals you want.
+If you're working on a Storybook addon and you need to retrieve globals, you can do so. The `@storybook/api` package provides a hook for this scenario. You can use the [`useGlobals()`](../addons/addons-api.md#useglobals) hook to retrieve any globals you want.
 
 Using the ThemeProvider example above, you could expand it to display which current theme is being shown inside a panel like so:
 
@@ -141,7 +152,7 @@ Using the ThemeProvider example above, you could expand it to display which curr
 
 ## Updating globals from within an addon
 
-If you're working on a Storybook addon that needs to update the global and refreshes the UI, you can do so. As mentioned previously, the `@storybook/api` package provides the necessary hook for this scenario. You can use the `updateGlobals` function to update any global values you want. 
+If you're working on a Storybook addon that needs to update the global and refreshes the UI, you can do so. As mentioned previously, the `@storybook/api` package provides the necessary hook for this scenario. You can use the `updateGlobals` function to update any global values you want.
 
 Also, you can use the `@storybook/addons` and `@storybook/core-events` packages together to trigger the refresh.
 

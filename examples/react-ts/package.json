@@ -1,18 +1,18 @@
 {
   "name": "@storybook/example-react-ts",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.17",
   "private": true,
   "scripts": {
     "build-storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true build-storybook -c ./",
     "debug": "cross-env NODE_OPTIONS=--inspect-brk STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./",
-    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./"
+    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./ --no-manager-cache"
   },
   "dependencies": {
-    "@storybook/addon-controls": "6.4.0-alpha.9",
-    "@storybook/addon-essentials": "6.4.0-alpha.9",
-    "@storybook/components": "6.4.0-alpha.9",
-    "@storybook/react": "6.4.0-alpha.9",
-    "@storybook/theming": "6.4.0-alpha.9",
+    "@storybook/addon-controls": "6.4.0-alpha.17",
+    "@storybook/addon-essentials": "6.4.0-alpha.17",
+    "@storybook/components": "6.4.0-alpha.17",
+    "@storybook/react": "6.4.0-alpha.17",
+    "@storybook/theming": "6.4.0-alpha.17",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "formik": "^2.2.9",

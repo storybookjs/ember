@@ -1,0 +1,28 @@
+```md
+<!-- TodoItem.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+import TodoItem from './TodoItem';
+
+import fetch from 'node-fetch';
+
+<Meta title="Examples/Loader" component={TodoItem} />
+
+<Story
+  name="Primary"
+  loaders={[
+    async () => ({
+      todo: await (
+        await fetch("https://jsonplaceholder.typicode.com/todos/1")
+      ).json(),
+    }),
+  ]}
+>
+  {(args, { loaded: { todo } }) => ({
+    props: {
+      todo: todo,
+    },
+  })}
+</Story>
+```

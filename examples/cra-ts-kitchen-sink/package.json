@@ -1,13 +1,13 @@
 {
   "name": "cra-ts-kitchen-sink",
-  "version": "6.4.0-alpha.9",
+  "version": "6.4.0-alpha.17",
   "private": true,
   "scripts": {
     "build": "react-scripts build",
     "build-storybook": "build-storybook -s public",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9009 -s public",
+    "storybook": "start-storybook -p 9009 -s public --no-manager-cache",
     "test": "react-scripts test"
   },
   "browserslist": {
@@ -34,14 +34,14 @@
     "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "6.4.0-alpha.9",
-    "@storybook/addon-actions": "6.4.0-alpha.9",
-    "@storybook/addon-docs": "6.4.0-alpha.9",
-    "@storybook/addon-links": "6.4.0-alpha.9",
-    "@storybook/addons": "6.4.0-alpha.9",
-    "@storybook/builder-webpack4": "6.4.0-alpha.9",
+    "@storybook/addon-a11y": "6.4.0-alpha.17",
+    "@storybook/addon-actions": "6.4.0-alpha.17",
+    "@storybook/addon-docs": "6.4.0-alpha.17",
+    "@storybook/addon-links": "6.4.0-alpha.17",
+    "@storybook/addons": "6.4.0-alpha.17",
+    "@storybook/builder-webpack4": "6.4.0-alpha.17",
     "@storybook/preset-create-react-app": "^3.1.6",
-    "@storybook/react": "6.4.0-alpha.9",
+    "@storybook/react": "6.4.0-alpha.17",
     "@types/enzyme": "^3.10.8",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.9.1",

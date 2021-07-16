@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.9","info":{"plain":"### Dependency Upgrades\n\n- Upgrade bad release of `react-docgen-typescript-plugin` ([#15432](https://github.com/storybookjs/storybook/pull/15432))"}}
+{"version":"6.4.0-alpha.17","info":{"plain":"### Features\n\n- Types: Export BaseStoryFn and BaseStoryObject ([#15592](https://github.com/storybookjs/storybook/pull/15592))\n- Addon-docs: Add transparency support to color swatch ([#14439](https://github.com/storybookjs/storybook/pull/14439))"}}

@@ -10,8 +10,8 @@ Object {
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
     "ROOT/addons/toolbars/dist/esm/register.js",
-    "NODE_MODULES/@storybook/addon-measure/dist/esm/preset/manager.js",
-    "NODE_MODULES/storybook-addon-outline/dist/esm/preset/register.js",
+    "ROOT/addons/measure/dist/esm/register.js",
+    "ROOT/addons/outline/dist/esm/register.js",
   ],
   "keys": Array [
     "name",

@@ -10,11 +10,6 @@ import { Story } from './types-6-3';
 
 const framework = 'react';
 
-const globalRender: Story = (args, { parameters }) => {
-  const Component = parameters.component;
-  return <Component {...args} />;
-};
-
 interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
@@ -23,6 +18,11 @@ interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
   forceReRender(): void;
   raw: () => any; // todo add type
 }
+
+const globalRender: Story = (args, { parameters }) => {
+  const Component = parameters.component;
+  return <Component {...args} />;
+};
 
 const api = start(render);
 api.clientApi.globalRender = globalRender;

@@ -47,6 +47,7 @@ module.exports = {
     '^.+\\.[jt]sx?$': '<rootDir>/scripts/utils/jest-transform-js.js',
     '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
   },
+  transformIgnorePatterns: ['/node_modules/(?!lit-html).+\\.js'],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   testPathIgnorePatterns: [
     '/node_modules/',
