@@ -42,6 +42,7 @@ export const Heading = {
       params: {
         color: \\"orange\\"
       }
+    }
   },
   args: {
     name: \\"John Doe\\",
