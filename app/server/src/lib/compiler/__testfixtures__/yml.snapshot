@@ -6,27 +6,30 @@ export default {
   title: \\"Demo YML\\",
 };
 
-export const Heading = (args) => {};
-Heading.storyName = 'Heading';
-Heading.parameters = {
-  server: {
-    id: \\"yaml/heading\\"
+export const Heading = {
+  storyName: \\"Heading\\",
+  parameters: {
+    server: {
+      id: \\"yaml/heading\\"
+    }
   }
 };
 
-export const Headings = (args) => {};
-Headings.storyName = 'Headings';
-Headings.parameters = {
-  server: {
-    id: \\"yaml/headings\\"
+export const Headings = {
+  storyName: \\"Headings\\",
+  parameters: {
+    server: {
+      id: \\"yaml/headings\\"
+    }
   }
 };
 
-export const Button = (args) => {};
-Button.storyName = 'Button';
-Button.parameters = {
-  server: {
-    id: \\"yaml/button\\"
+export const Button = {
+  storyName: \\"Button\\",
+  parameters: {
+    server: {
+      id: \\"yaml/button\\"
+    }
   }
 };
 "
