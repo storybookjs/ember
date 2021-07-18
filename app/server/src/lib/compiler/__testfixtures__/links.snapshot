@@ -7,7 +7,7 @@ export default {
 };
 
 export const Welcome = {
-  storyName: \\"Welcome\\",
+  name: \\"Welcome\\",
   parameters: {
     server: {
       id: \\"welcome/welcome\\"

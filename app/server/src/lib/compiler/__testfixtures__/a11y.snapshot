@@ -12,7 +12,7 @@ export default {
 };
 
 export const Label = {
-  storyName: \\"Label\\",
+  name: \\"Label\\",
   parameters: {
     server: {
       id: \\"addons/a11y/label\\"

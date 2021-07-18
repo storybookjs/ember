@@ -14,7 +14,7 @@ export default {
 };
 
 export const Story = {
-  storyName: \\"Story\\",
+  name: \\"Story\\",
   parameters: {
     server: {
       id: \\"params/story\\",

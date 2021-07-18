@@ -20,7 +20,7 @@ export default {
 };
 
 export const Story_1 = {
-  storyName: \\"Story 1\\",
+  name: \\"Story 1\\",
   parameters: {
     server: {
       id: \\"addons/backgrounds/story1\\"

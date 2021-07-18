@@ -28,7 +28,7 @@ export default {
 };
 
 export const Heading = {
-  storyName: \\"Heading\\",
+  name: \\"Heading\\",
   parameters: {
     actions: [
       \\"click\\",
@@ -51,7 +51,7 @@ export const Heading = {
 };
 
 export const Button = {
-  storyName: \\"Button\\",
+  name: \\"Button\\",
   parameters: {
     server: {
       id: \\"demo/button\\"

@@ -14,7 +14,7 @@ export default {
 };
 
 export const Override = {
-  storyName: \\"Override\\",
+  name: \\"Override\\",
   parameters: {
     server: {
       id: \\"params/override\\",

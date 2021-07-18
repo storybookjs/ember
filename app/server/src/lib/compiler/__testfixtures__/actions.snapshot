@@ -12,7 +12,7 @@ export default {
 };
 
 export const Multiple_actions_config = {
-  storyName: \\"Multiple actions + config\\",
+  name: \\"Multiple actions + config\\",
   parameters: {
     actions: [
       \\"click\\",
