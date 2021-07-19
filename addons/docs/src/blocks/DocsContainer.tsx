@@ -1,17 +1,18 @@
 import React, { FunctionComponent, useEffect } from 'react';
-import { document, window } from 'global';
+import global from 'global';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider, ensure as ensureTheme } from '@storybook/theming';
-import { DocsWrapper, DocsContent } from '@storybook/components';
-import { components as htmlComponents } from '@storybook/components/html';
+import { DocsWrapper, DocsContent, components as htmlComponents } from '@storybook/components';
 import { DocsContextProps, DocsContext } from './DocsContext';
 import { anchorBlockIdFromId } from './Anchor';
 import { storyBlockIdFromId } from './Story';
 import { SourceContainer } from './SourceContainer';
 import { CodeOrSourceMdx, AnchorMdx, HeadersMdx } from './mdx';
 import { scrollToElement } from './utils';
+
+const { document, window: globalWindow } = global;
 
 export interface DocsContainerProps {
   context: DocsContextProps;
@@ -28,7 +29,7 @@ const warnOptionsTheme = deprecate(
   () => {},
   dedent`
     Deprecated parameter: options.theme => docs.theme
-    
+
     https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/theming.md#storybook-theming
 `
 );
@@ -47,7 +48,7 @@ export const DocsContainer: FunctionComponent<DocsContainerProps> = ({ context, 
   useEffect(() => {
     let url;
     try {
-      url = new URL(window.parent.location);
+      url = new URL(globalWindow.parent.location);
     } catch (err) {
       return;
     }
@@ -65,13 +66,14 @@ export const DocsContainer: FunctionComponent<DocsContainerProps> = ({ context, 
         document.getElementById(storyBlockIdFromId(storyId));
       if (element) {
         const allStories = element.parentElement.querySelectorAll('[id|="anchor-"]');
-        let block = 'start';
+        let scrollTarget = element;
         if (allStories && allStories[0] === element) {
-          block = 'end'; // first story should be shown with the intro content above
+          // Include content above first story
+          scrollTarget = document.getElementById('docs-root');
         }
         // Introducing a delay to ensure scrolling works when it's a full refresh.
         setTimeout(() => {
-          scrollToElement(element, block);
+          scrollToElement(scrollTarget, 'start');
         }, 200);
       }
     }

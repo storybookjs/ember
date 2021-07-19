@@ -1,8 +1,16 @@
 ```ts
-// your-component.stories.ts
+// YourComponent.stories.ts | YourComponent.stories.tsx
+
+import { Meta } from '@storybook/react';
 
 export default {
-  component: your-component,
-  decorators: [(Story) => <div style={{ margin: '3em' }}><Story/></div>]
-}
-``` 
+  component: YourComponent,
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '3em' }}>
+        <Story/>
+      </div>
+    ),
+  ],
+} as Meta;
+```

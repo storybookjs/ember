@@ -1,11 +1,11 @@
 {
   "name": "@storybook/channels",
-  "version": "6.0.4",
+  "version": "6.4.0-alpha.18",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/channels",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/channels",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,33 +14,39 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/channels"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.5/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "core-js": "^3.0.1",
-    "ts-dedent": "^1.1.1",
+    "core-js": "^3.8.2",
+    "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ca50653f3a10879a7e0677d2464677a86678c3fe",
-  "typesVersions": {
-    "<=3.5": {
-      "*": [
-        "ts3.5/*"
-      ]
-    }
-  }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js"
 }

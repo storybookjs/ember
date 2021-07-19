@@ -26,8 +26,11 @@ const excludeList = [
   '@storybook/ember-cli-storybook',
   '@storybook/semver',
   '@storybook/eslint-config-storybook',
+  '@storybook/bench',
+  '@storybook/addon-bench',
   '@storybook/addon-console',
   '@storybook/csf',
+  '@storybook/storybook-deployer',
 ];
 export const isCorePackage = (pkg: string) =>
   pkg.startsWith('@storybook/') &&
@@ -60,7 +63,8 @@ export const checkVersionConsistency = () => {
     .filter(Boolean)
     .filter((pkg) => isCorePackage(pkg.package));
   if (!storybookPackages.length) {
-    throw new Error('No storybook core packages found!');
+    logger.warn('No storybook core packages found.');
+    logger.warn(`'npm ls | grep storybook' can show if multiple versions are installed.`);
   }
   storybookPackages.sort((a, b) => semver.rcompare(a.version, b.version));
   const latestVersion = storybookPackages[0].version;
@@ -95,7 +99,8 @@ export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun }: Options
 
   const flags = [];
   if (!dryRun) flags.push('--upgrade');
-  if (prerelease) flags.push('--newest');
+  flags.push('--target');
+  flags.push(prerelease ? 'greatest' : 'latest');
   const check = spawnSync('npx', ['npm-check-updates', '/storybook/', ...flags], {
     stdio: 'pipe',
   }).output.toString();

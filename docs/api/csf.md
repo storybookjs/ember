@@ -16,7 +16,7 @@ CSF is supported in all frameworks except React Native, where you should use the
 
 ## Default export
 
-The default export defines metadata about your component, including the `component` itself, its `title` (where it will show up in the [navigation UI story hierarchy](../writing-stories/docs/writing-stories/naming-components-and-hierarchy.md#sorting-stories)), [decorators](../writing-stories/decorators.md), and [parameters](../writing-stories/parameters.md).
+The default export defines metadata about your component, including the `component` itself, its `title` (where it will show up in the [navigation UI story hierarchy](../writing-stories/naming-components-and-hierarchy.md#sorting-stories)), [decorators](../writing-stories/decorators.md), and [parameters](../writing-stories/parameters.md).
 
 The `component` field is optional (but encouraged!), and is used by addons for automatic prop table generation and display of other component metadata. `title` should be unique, i.e. not re-used across files.
 
@@ -41,6 +41,9 @@ With CSF, every named export in the file represents a story function by default.
 <CodeSnippets
   paths={[
     'react/my-component-story-basic-and-props.js.mdx',
+    'vue/my-component-story-basic-and-props.js.mdx',
+    'svelte/my-component-story-basic-and-props.js.mdx',
+    'svelte/my-component-story-basic-and-props.native-format.mdx',
   ]}
 />
 
@@ -66,7 +69,7 @@ The `storyName` is useful if you want to use names with special characters, name
 
 <CodeSnippets
   paths={[
-    'react/my-component-story-with-storyname.js.mdx',
+    'common/my-component-story-with-storyname.js.mdx',
   ]}
 />
 
@@ -83,6 +86,10 @@ Consider Storybook’s ["Button" example](../writing-stories/introduction.md#def
 <CodeSnippets
   paths={[
     'react/button-story-click-handler.js.mdx',
+    'vue/button-story-click-handler.2.js.mdx',
+    'vue/button-story-click-handler.3.js.mdx',
+    'svelte/button-story-click-handler.js.mdx',
+    'svelte/button-story-click-handler.native-format.mdx',
   ]}
 />
 
@@ -95,10 +102,13 @@ Now consider the same example, re-written with args:
 <CodeSnippets
   paths={[
     'react/button-story-click-handler-args.js.mdx',
+    'vue/button-story-click-handler-args.2.js.mdx',
+    'vue/button-story-click-handler-args.3.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
+  
 
 At first blush this might seem no better than the original example. However, if we add the [Docs addon](https://github.com/storybookjs/storybook/tree/master/addons/docs) and configure the [Actions addon](https://github.com/storybookjs/storybook/tree/master/addons/actions) appropriately, we can write:
 
@@ -107,6 +117,8 @@ At first blush this might seem no better than the original example. However, if 
 <CodeSnippets
   paths={[
     'react/button-story-click-handler-simple-docs.js.mdx',
+    'vue/button-story-click-handler-simple-docs.2.js.mdx',
+    'vue/button-story-click-handler-simple-docs.3.js.mdx',
   ]}
 />
 
@@ -168,6 +180,8 @@ Consider the following story file:
 <CodeSnippets
   paths={[
     'react/my-component-story-with-nonstory.js.mdx',
+    'vue/my-component-story-with-nonstory.js.mdx',
+    'svelte/my-component-story-with-nonstory.js.mdx',
   ]}
 />
 
@@ -177,7 +191,11 @@ When Storybook loads this file, it will see all the exports, but it will ignore 
 
 For this specific example the equivalent result can be achieved in a few ways depending on what's convenient:
 
-- `includeStories: ['SimpleStory', 'ComplexStory']`
+- `includeStories: /^[A-Z]/`
 - `includeStories: /.*Story$/`
-- `excludeStories: ['simpleData', 'complexData']`
+- `includeStories: ['SimpleStory', 'ComplexStory']`
+- `excludeStories: /^[a-z]/`
 - `excludeStories: /.*Data$/`
+- `excludeStories: ['simpleData', 'complexData']`
+
+If you follow the best practice of starting story exports with an uppercase letter (i.e. use UpperCamelCase), the first option is the recommended solution.

@@ -1,12 +1,14 @@
 {
   "name": "@storybook/addon-viewport",
-  "version": "6.0.4",
-  "description": "Storybook addon to change the viewport size to mobile",
+  "version": "6.4.0-alpha.18",
+  "description": "Build responsive components by adjusting Storybook’s viewport size and orientation",
   "keywords": [
     "addon",
-    "storybook"
+    "storybook",
+    "style",
+    "essentials"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/viewport",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/viewport",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -15,45 +17,65 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/viewport"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/preview.js",
-  "types": "dist/preview.d.ts",
+  "main": "dist/cjs/preview.js",
+  "module": "dist/esm/preview.js",
+  "types": "dist/ts3.9/preview.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.5/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.0.4",
-    "@storybook/api": "6.0.4",
-    "@storybook/client-logger": "6.0.4",
-    "@storybook/components": "6.0.4",
-    "@storybook/core-events": "6.0.4",
-    "@storybook/theming": "6.0.4",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
     "memoizerific": "^1.11.3",
     "prop-types": "^15.7.2",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.7"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ca50653f3a10879a7e0677d2464677a86678c3fe",
-  "typesVersions": {
-    "<=3.5": {
-      "*": [
-        "ts3.5/*"
-      ]
-    }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/preview.js",
+  "storybook": {
+    "displayName": "Viewport",
+    "icon": "https://user-images.githubusercontent.com/263385/101991678-48cdf300-3c7c-11eb-9764-f8af293c1b28.png",
+    "unsupportedFrameworks": [
+      "react-native"
+    ]
   }
 }

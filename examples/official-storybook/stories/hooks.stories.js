@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useContext, createContext } from 'react';
 import { useEffect, useRef, useState } from '@storybook/client-api';
+
+const Consumer = () => {
+  // testing hooks in the component itself,
+  // rendering JSX for the component without decorators
+  // per https://github.com/storybookjs/storybook/pull/14652/
+  const value = useContext(DummyContext);
+  return <div>value: {value}</div>;
+};
 
 export default {
   title: 'Core/Hooks',
+  component: Consumer,
 };
 
 export const Checkbox = () => {
@@ -44,3 +53,19 @@ export const ReactHookCheckbox = () => {
     </label>
   );
 };
+
+const DummyContext = createContext({});
+
+export const Context = (args) => {
+  // testing hooks in the story
+  const storyContext = useContext(DummyContext);
+  return <Consumer />;
+};
+
+Context.decorators = [
+  (Story) => (
+    <DummyContext.Provider value="hello">
+      <Story />
+    </DummyContext.Provider>
+  ),
+];

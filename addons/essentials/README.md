@@ -2,7 +2,7 @@
 
 Storybook Essentials is a curated collection of addons to bring out the best of Storybook.
 
-Each addon is documented and maintained by the core team and will be upgraded alongside Storybook as the platform evolves. We will also do our best to maintain [framework support](https://github.com/storybookjs/storybook/blob/master/ADDONS_SUPPORT.md) for all of the officially supported frameworks.
+Each addon is documented and maintained by the core team and will be upgraded alongside Storybook as the platform evolves. We will also do our best to maintain [framework support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md) for all of the officially supported frameworks.
 
 ## Contents
 
@@ -39,7 +39,7 @@ If you want to reconfigure an addon, simply install that addon per that addon's 
 
 ## Disabling addons
 
-Yuu can disable any of Essential's addons using the following configuration scheme in `.storybook/main.js`:
+You can disable any of Essential's addons using the following configuration scheme in `.storybook/main.js`:
 
 ```js
 module.exports = {

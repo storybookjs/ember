@@ -1,11 +1,11 @@
 {
   "name": "@storybook/theming",
-  "version": "6.0.4",
+  "version": "6.4.0-alpha.18",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/theming",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/theming",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,46 +14,52 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/theming"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.5/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.20",
+    "@emotion/core": "^10.1.1",
     "@emotion/is-prop-valid": "^0.8.6",
-    "@emotion/styled": "^10.0.17",
-    "@storybook/client-logger": "6.0.4",
-    "core-js": "^3.0.1",
+    "@emotion/styled": "^10.0.27",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "core-js": "^3.8.2",
     "deep-object-diff": "^1.1.0",
-    "emotion-theming": "^10.0.19",
-    "global": "^4.3.2",
+    "emotion-theming": "^10.0.27",
+    "global": "^4.4.0",
     "memoizerific": "^1.11.3",
-    "polished": "^3.4.4",
+    "polished": "^4.0.5",
     "resolve-from": "^5.0.0",
-    "ts-dedent": "^1.1.1"
+    "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ca50653f3a10879a7e0677d2464677a86678c3fe",
-  "typesVersions": {
-    "<=3.5": {
-      "*": [
-        "ts3.5/*"
-      ]
-    }
-  }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js"
 }

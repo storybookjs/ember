@@ -4,11 +4,12 @@ import dedent from 'ts-dedent';
 import stable from 'stable';
 import mapValues from 'lodash/mapValues';
 import pick from 'lodash/pick';
-import store from 'store2';
+import deprecate from 'util-deprecate';
 
 import { Channel } from '@storybook/channels';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
+import { sanitize, toId } from '@storybook/csf';
 import {
   Comparator,
   Parameters,
@@ -28,14 +29,19 @@ import {
   PublishedStoreItem,
   ErrorLike,
   GetStorybookKind,
+  ArgsEnhancer,
   ArgTypesEnhancer,
   StoreSelectionSpecifier,
   StoreSelection,
+  StorySpecifier,
 } from './types';
+import { combineArgs, mapArgsToTypes, validateOptions } from './args';
 import { HooksContext } from './hooks';
 import { storySort } from './storySort';
 import { combineParameters } from './parameters';
+import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
+import { inferControls } from './inferControls';
 
 interface StoryOptions {
   includeDocsOnly?: boolean;
@@ -43,7 +49,21 @@ interface StoryOptions {
 
 type KindMetadata = StoryMetadata & { order: number };
 
-const STORAGE_KEY = '@storybook/preview/store';
+function extractSanitizedKindNameFromStorySpecifier(storySpecifier: StorySpecifier): string {
+  if (typeof storySpecifier === 'string') {
+    return storySpecifier.split('--').shift();
+  }
+
+  return sanitize(storySpecifier.kind);
+}
+
+function extractIdFromStorySpecifier(storySpecifier: StorySpecifier): string {
+  if (typeof storySpecifier === 'string') {
+    return storySpecifier;
+  }
+
+  return toId(storySpecifier.kind, storySpecifier.name);
+}
 
 const isStoryDocsOnly = (parameters?: Parameters) => {
   return parameters && parameters.docsOnly;
@@ -73,6 +93,22 @@ const checkStorySort = (parameters: Parameters) => {
   const { options } = parameters;
   if (options?.storySort) logger.error('The storySort option parameter can only be set globally');
 };
+
+const storyFnWarning = deprecate(
+  () => {},
+  dedent`
+  \`storyFn\` is deprecated and will be removed in Storybook 7.0.
+
+  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-storyfn`
+);
+
+const argTypeDefaultValueWarning = deprecate(
+  () => {},
+  dedent`
+  \`argType.defaultValue\` is deprecated and will be removed in Storybook 7.0.
+
+  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-argtype-defaultValue`
+);
 
 interface AllowUnsafeOption {
   allowUnsafe?: boolean;
@@ -104,6 +140,10 @@ export default class StoryStore {
 
   _globals: Args;
 
+  _initialGlobals: Args;
+
+  _defaultGlobals: Args;
+
   _globalMetadata: StoryMetadata;
 
   // Keyed on kind name
@@ -111,6 +151,8 @@ export default class StoryStore {
 
   // Keyed on storyId
   _stories: StoreData;
+
+  _argsEnhancers: ArgsEnhancer[];
 
   _argTypesEnhancers: ArgTypesEnhancer[];
 
@@ -121,14 +163,14 @@ export default class StoryStore {
   constructor(params: { channel: Channel }) {
     // Assume we are configuring until we hear otherwise
     this._configuring = true;
-
-    // We store global args in session storage. Note that when we finish
-    // configuring below we will ensure we only use values here that make sense
-    this._globals = store.session.get(STORAGE_KEY)?.globals || {};
-    this._globalMetadata = { parameters: {}, decorators: [] };
+    this._globals = {};
+    this._defaultGlobals = {};
+    this._initialGlobals = {};
+    this._globalMetadata = { parameters: {}, decorators: [], loaders: [] };
     this._kinds = {};
     this._stories = {};
-    this._argTypesEnhancers = [inferArgTypes];
+    this._argsEnhancers = [];
+    this._argTypesEnhancers = [ensureArgTypes];
     this._error = undefined;
     this._channel = params.channel;
 
@@ -162,26 +204,28 @@ export default class StoryStore {
 
   startConfiguring() {
     this._configuring = true;
-  }
 
-  storeGlobals() {
-    // Store the global args on the session
-    store.session.set(STORAGE_KEY, { globals: this._globals });
+    const safePush = (enhancer: ArgTypesEnhancer, enhancers: ArgTypesEnhancer[]) => {
+      if (!enhancers.includes(enhancer)) enhancers.push(enhancer);
+    };
+    // run these at the end
+    safePush(inferArgTypes, this._argTypesEnhancers);
+    safePush(inferControls, this._argTypesEnhancers);
   }
 
   finishConfiguring() {
     this._configuring = false;
 
-    const { globals: initialGlobals = {}, globalTypes = {} } = this._globalMetadata.parameters;
-
-    const defaultGlobals: Args = Object.entries(
+    const { globals = {}, globalTypes = {} } = this._globalMetadata.parameters;
+    const allowedGlobals = new Set([...Object.keys(globals), ...Object.keys(globalTypes)]);
+    const defaultGlobals = Object.entries(
       globalTypes as Record<string, { defaultValue: any }>
     ).reduce((acc, [arg, { defaultValue }]) => {
       if (defaultValue) acc[arg] = defaultValue;
       return acc;
     }, {} as Args);
 
-    const allowedGlobals = new Set([...Object.keys(initialGlobals), ...Object.keys(globalTypes)]);
+    this._initialGlobals = { ...defaultGlobals, ...globals };
 
     // To deal with HMR & persistence, we consider the previous value of global args, and:
     //   1. Remove any keys that are not in the new parameter
@@ -193,15 +237,28 @@ export default class StoryStore {
 
         return acc;
       },
-      { ...defaultGlobals, ...initialGlobals }
+      { ...this._initialGlobals }
     );
-    this.storeGlobals();
 
     // Set the current selection based on the current selection specifier, if selection is not yet set
     const stories = this.sortedStories();
     let foundStory;
     if (this._selectionSpecifier && !this._selection) {
-      const { storySpecifier, viewMode } = this._selectionSpecifier;
+      const {
+        storySpecifier,
+        viewMode,
+        args: urlArgs,
+        globals: urlGlobals,
+      } = this._selectionSpecifier;
+
+      if (urlGlobals) {
+        const allowedUrlGlobals = Object.entries(urlGlobals).reduce((acc, [key, value]) => {
+          if (allowedGlobals.has(key)) acc[key] = value;
+          return acc;
+        }, {} as Args);
+        this._globals = combineParameters(this._globals, allowedUrlGlobals);
+      }
+
       if (storySpecifier === '*') {
         // '*' means select the first story. If there is none, we have no selection.
         [foundStory] = stories;
@@ -219,6 +276,11 @@ export default class StoryStore {
       }
 
       if (foundStory) {
+        if (urlArgs) {
+          const mappedUrlArgs = mapArgsToTypes(urlArgs, foundStory.argTypes);
+          foundStory.args = combineArgs(foundStory.args, mappedUrlArgs);
+        }
+        foundStory.args = validateOptions(foundStory.args, foundStory.argTypes);
         this.setSelection({ storyId: foundStory.id, viewMode });
         this._channel.emit(Events.STORY_SPECIFIED, { storyId: foundStory.id, viewMode });
       }
@@ -233,7 +295,7 @@ export default class StoryStore {
     this.pushToManager();
   }
 
-  addGlobalMetadata({ parameters, decorators }: StoryMetadata) {
+  addGlobalMetadata({ parameters = {}, decorators = [], loaders = [] }: StoryMetadata) {
     if (parameters) {
       const { args, argTypes } = parameters;
       if (args || argTypes)
@@ -246,13 +308,18 @@ export default class StoryStore {
 
     this._globalMetadata.parameters = combineParameters(globalParameters, parameters);
 
-    decorators.forEach((decorator) => {
-      if (this._globalMetadata.decorators.includes(decorator)) {
-        logger.warn('You tried to add a duplicate decorator, this is not expected', decorator);
-      } else {
-        this._globalMetadata.decorators.push(decorator);
-      }
-    });
+    function _safeAdd(items: any[], collection: any[], caption: string) {
+      items.forEach((item) => {
+        if (collection.includes(item)) {
+          logger.warn(`You tried to add a duplicate ${caption}, this is not expected`, item);
+        } else {
+          collection.push(item);
+        }
+      });
+    }
+
+    _safeAdd(decorators, this._globalMetadata.decorators, 'decorator');
+    _safeAdd(loaders, this._globalMetadata.loaders, 'loader');
   }
 
   clearGlobalDecorators() {
@@ -265,11 +332,16 @@ export default class StoryStore {
         order: Object.keys(this._kinds).length,
         parameters: {},
         decorators: [],
+        loaders: [],
       };
     }
   }
 
-  addKindMetadata(kind: string, { parameters, decorators }: StoryMetadata) {
+  addKindMetadata(kind: string, { parameters = {}, decorators = [], loaders = [] }: StoryMetadata) {
+    if (this.shouldBlockAddingKindMetadata(kind)) {
+      return;
+    }
+
     this.ensureKind(kind);
     if (parameters) {
       checkGlobals(parameters);
@@ -278,11 +350,19 @@ export default class StoryStore {
     this._kinds[kind].parameters = combineParameters(this._kinds[kind].parameters, parameters);
 
     this._kinds[kind].decorators.push(...decorators);
+    this._kinds[kind].loaders.push(...loaders);
+  }
+
+  addArgsEnhancer(argsEnhancer: ArgsEnhancer) {
+    if (Object.keys(this._stories).length > 0)
+      throw new Error('Cannot add an args enhancer to the store after a story has been added.');
+
+    this._argsEnhancers.push(argsEnhancer);
   }
 
   addArgTypesEnhancer(argTypesEnhancer: ArgTypesEnhancer) {
     if (Object.keys(this._stories).length > 0)
-      throw new Error('Cannot add a parameter enhancer to the store after a story has been added.');
+      throw new Error('Cannot add an argTypes enhancer to the store after a story has been added.');
 
     this._argTypesEnhancers.push(argTypesEnhancer);
   }
@@ -296,6 +376,21 @@ export default class StoryStore {
     );
   }
 
+  shouldBlockAddingStory(id: string): boolean {
+    return (
+      this.isSingleStoryMode() &&
+      id !== extractIdFromStorySpecifier(this._selectionSpecifier.storySpecifier)
+    );
+  }
+
+  shouldBlockAddingKindMetadata(kind: string): boolean {
+    return (
+      this.isSingleStoryMode() &&
+      sanitize(kind) !==
+        extractSanitizedKindNameFromStorySpecifier(this._selectionSpecifier.storySpecifier)
+    );
+  }
+
   addStory(
     {
       id,
@@ -304,6 +399,7 @@ export default class StoryStore {
       storyFn: original,
       parameters: storyParameters = {},
       decorators: storyDecorators = [],
+      loaders: storyLoaders = [],
     }: AddStoryArgs,
     {
       applyDecorators,
@@ -317,10 +413,12 @@ export default class StoryStore {
         'Cannot add a story when not configuring, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#story-store-immutable-outside-of-configuration'
       );
 
-    if (storyParameters) {
-      checkGlobals(storyParameters);
-      checkStorySort(storyParameters);
+    if (this.shouldBlockAddingStory(id)) {
+      return;
     }
+
+    checkGlobals(storyParameters);
+    checkStorySort(storyParameters);
 
     const { _stories } = this;
 
@@ -350,10 +448,22 @@ export default class StoryStore {
       ...kindMetadata.decorators,
       ...this._globalMetadata.decorators,
     ];
+    const loaders = [...this._globalMetadata.loaders, ...kindMetadata.loaders, ...storyLoaders];
 
     const finalStoryFn = (context: StoryContext) => {
-      const { passArgsFirst = true } = context.parameters;
-      return passArgsFirst ? (original as ArgsStoryFn)(context.args, context) : original(context);
+      const { args = {}, argTypes = {}, parameters } = context;
+      const { passArgsFirst = true } = parameters;
+      const mapped = {
+        ...context,
+        args: Object.entries(args).reduce((acc, [key, val]) => {
+          const { mapping } = argTypes[key] || {};
+          acc[key] = mapping && val in mapping ? mapping[val] : val;
+          return acc;
+        }, {} as Args),
+      };
+      return passArgsFirst
+        ? (original as ArgsStoryFn)(mapped.args, mapped)
+        : (original as LegacyStoryFn)(mapped);
     };
 
     // lazily decorate the story when it's loaded
@@ -384,6 +494,7 @@ export default class StoryStore {
           args: {},
           argTypes: {},
           globals: {},
+          originalStoryFn: getOriginal(),
         }),
       }),
       { __isArgsStory, ...combinedParameters }
@@ -391,8 +502,9 @@ export default class StoryStore {
 
     const storyParametersWithArgTypes = { ...storyParameters, argTypes, __isArgsStory };
 
-    const storyFn: LegacyStoryFn = (runtimeContext: StoryContext) =>
-      getDecorated()({
+    const storyFn: LegacyStoryFn = (runtimeContext: StoryContext) => {
+      storyFnWarning();
+      return getDecorated()({
         ...identification,
         ...runtimeContext,
         // Calculate "combined" parameters at render time (NOTE: for perf we could just use combinedParameters from above?)
@@ -401,25 +513,78 @@ export default class StoryStore {
         args: _stories[id].args,
         argTypes,
         globals: this._globals,
+        viewMode: this._selection?.viewMode,
+        originalStoryFn: getOriginal(),
       });
+    };
+
+    const unboundStoryFn: LegacyStoryFn = (context: StoryContext) => getDecorated()(context);
+
+    const applyLoaders = async () => {
+      const context = {
+        ...identification,
+        // Calculate "combined" parameters at render time (NOTE: for perf we could just use combinedParameters from above?)
+        parameters: this.combineStoryParameters(storyParametersWithArgTypes, kind),
+        hooks,
+        args: _stories[id].args,
+        argTypes,
+        globals: this._globals,
+        viewMode: this._selection?.viewMode,
+        originalStoryFn: getOriginal(),
+      };
+      const loadResults = await Promise.all(loaders.map((loader) => loader(context)));
+      const loaded = Object.assign({}, ...loadResults);
+      return { ...context, loaded };
+    };
 
     // Pull out parameters.args.$ || .argTypes.$.defaultValue into initialArgs
-    const passedArgs: Args = combinedParameters.args;
+    const passedArgs: Args = {
+      ...this._kinds[kind].parameters.args,
+      ...storyParameters.args,
+    };
     const defaultArgs: Args = Object.entries(
       argTypes as Record<string, { defaultValue: any }>
     ).reduce((acc, [arg, { defaultValue }]) => {
-      if (defaultValue) acc[arg] = defaultValue;
+      if (typeof defaultValue !== 'undefined') {
+        acc[arg] = defaultValue;
+      }
       return acc;
     }, {} as Args);
+    if (Object.keys(defaultArgs).length > 0) {
+      argTypeDefaultValueWarning();
+    }
 
-    const initialArgs = { ...defaultArgs, ...passedArgs };
+    const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
+    const initialArgs = this._argsEnhancers.reduce(
+      (accumulatedArgs: Args, enhancer) => ({
+        ...accumulatedArgs,
+        ...enhancer({
+          ...identification,
+          parameters: combinedParameters,
+          args: initialArgsBeforeEnhancers,
+          argTypes,
+          globals: {},
+          originalStoryFn: getOriginal(),
+        }),
+      }),
+      initialArgsBeforeEnhancers
+    );
+
+    const runPlayFunction = async () => {
+      const { play } = combinedParameters as { play?: () => any };
+      return play ? play() : undefined;
+    };
+
     _stories[id] = {
       ...identification,
 
       hooks,
       getDecorated,
       getOriginal,
+      applyLoaders,
+      runPlayFunction,
       storyFn,
+      unboundStoryFn,
 
       parameters: storyParametersWithArgTypes,
       args: initialArgs,
@@ -462,8 +627,10 @@ export default class StoryStore {
 
   updateGlobals(newGlobals: Args) {
     this._globals = { ...this._globals, ...newGlobals };
-    this.storeGlobals();
-    this._channel.emit(Events.GLOBALS_UPDATED, { globals: this._globals });
+    this._channel.emit(Events.GLOBALS_UPDATED, {
+      globals: this._globals,
+      initialGlobals: this._initialGlobals,
+    });
   }
 
   updateStoryArgs(id: string, newArgs: Args) {
@@ -585,6 +752,15 @@ export default class StoryStore {
     if (this._channel) {
       this._channel.emit(Events.CURRENT_STORY_WAS_SET, this._selection);
     }
+  }
+
+  isSingleStoryMode(): boolean {
+    if (!this._selectionSpecifier) {
+      return false;
+    }
+
+    const { singleStory, storySpecifier } = this._selectionSpecifier;
+    return storySpecifier && storySpecifier !== '*' && singleStory;
   }
 
   getSelection = (): StoreSelection => this._selection;

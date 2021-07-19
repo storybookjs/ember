@@ -1,16 +1,14 @@
 ```js
-// .storybook/typescript-preset.js
+// .storybook/main.js
 
-const path = require('path');
 module.exports = {
   addons: [
     {
-      name: '@storybook/preset-typescript',
+      name: '@storybook/preset-scss',
       options: {
-        tsLoaderOptions: {
-          configFile: path.resolve(__dirname, '../tsconfig.json'),
+        cssLoaderOptions: {
+          modules: { localIdentName: '[name]__[local]--[hash:base64:5]' },
         },
-        include: [path.resolve(__dirname)],
       },
     },
   ],

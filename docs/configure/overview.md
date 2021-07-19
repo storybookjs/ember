@@ -12,7 +12,7 @@ Note you can change the folder that Storybook uses by setting the `-c` flag to y
 
 ## Configure your Storybook project
 
-The main configuration file is `main.js`. This file controls the behaviour of the Storybook server, and so you must restart Storybook’s process when you change it. It contains the following:
+The main configuration file is `main.js`. This file controls the behavior of the Storybook server, and so you must restart Storybook’s process when you change it. It contains the following:
 
 <!-- prettier-ignore-start -->
 
@@ -24,12 +24,16 @@ The main configuration file is `main.js`. This file controls the behaviour of th
 
 <!-- prettier-ignore-end -->
 
-The `main.js` configuration file is a [preset](../api/presets.md) and as such has a powerful interface, but the key fields within it are:
+The `main.js` configuration file is a [preset](../addons/addon-types.md) and as such has a powerful interface, but the key fields within it are:
 
-- `stories` - a array of globs that indicates the [location of your story files](#configure-story-loading), relative to `main.js`.
+- `stories` - an array of globs that indicates the [location of your story files](#configure-story-loading), relative to `main.js`.
 - `addons` - a list of the [addons](/addons) you are using.
-- `webpackFinal` - custom [webpack configuration](./integration.md#extending-storybooks-webpack-config).
-- `babel` - custom [babel configuration](./integration.md#babel).
+- `webpackFinal` - custom [webpack configuration](./webpack.md#extending-storybooks-webpack-config).
+- `babel` - custom [babel configuration](./babel.md).
+
+<div class="aside">
+  Tip: Customize your default story by referencing it first in the `stories` array.
+</div>
 
 ## Configure story loading
 
@@ -56,6 +60,21 @@ For example if you wanted to pull both `.md` and `.js` files from the `my-projec
 
 <!-- prettier-ignore-end -->
 
+If you want to use a custom logic for loading stories which is not supported by a glob pattern, you can supply the final list of stories files:
+
+```js
+// .storybook/main.js
+
+function findStories() {
+  // your custom logic returns a list of files
+}
+
+module.exports = {
+  stories: async (list) => [...list, ...findStories()],
+};
+```
+
+
 ## Configure story rendering
 
 To control the way stories are rendered and add global [decorators](../writing-stories/decorators.md#global-decorators) and [parameters](../writing-stories/parameters.md#global-parameters), create a `.storybook/preview.js` file. This is loaded in the Canvas tab, the “preview” iframe that renders your components in isolation. Use `preview.js` for global code (such as [CSS imports](../get-started/setup.md#render-component-styles) or JavaScript mocks) that applies to all stories.
@@ -63,7 +82,7 @@ To control the way stories are rendered and add global [decorators](../writing-s
 The `preview.js` file can be an ES module and export the following keys:
 
 - `decorators` - an array of global [decorators](../writing-stories/decorators.md#global-decorators)
-- `parameters` - an object of global [parameters](..writing-stories/parameters.md#global-parameters)
+- `parameters` - an object of global [parameters](../writing-stories/parameters.md#global-parameters)
 - `globalTypes` - definition of [globalTypes](../essentials/toolbars-and-globals.md#global-types-and-the-toolbar-annotation)
 
 If you’re looking to change how your stories are ordered, read about [sorting stories](../writing-stories/naming-components-and-hierarchy.md#sorting-stories).
@@ -72,4 +91,4 @@ If you’re looking to change how your stories are ordered, read about [sorting 
 
 To control the behaviour of Storybook’s UI (the **“manager”**), you can create a `.storybook/manager.js` file.
 
-This file does not have a specific API but is the place to set [UI options](./user-interface.md) and to configure Storybook’s [theme](./theming.md).
+This file does not have a specific API but is the place to set [UI options](./features-and-behavior.md) and to configure Storybook’s [theme](./theming.md).

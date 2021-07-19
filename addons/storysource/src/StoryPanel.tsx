@@ -1,16 +1,17 @@
 import React from 'react';
-import { API } from '@storybook/api';
+import { API, Story } from '@storybook/api';
 import { styled } from '@storybook/theming';
 import { Link } from '@storybook/router';
 import {
   SyntaxHighlighter,
   SyntaxHighlighterProps,
   SyntaxHighlighterRendererProps,
-  createSyntaxHighlighterElement,
 } from '@storybook/components';
 
+// @ts-expect-error Typedefs don't currently expose `createElement` even though it exists
+import { createElement as createSyntaxHighlighterElement } from 'react-syntax-highlighter';
+
 import { SourceBlock, LocationsMap } from '@storybook/source-loader';
-import { Story } from '@storybook/api/dist/lib/stories';
 
 const StyledStoryLink = styled(Link)<{ to: string; key: string }>(({ theme }) => ({
   display: 'block',
@@ -87,7 +88,7 @@ export const StoryPanel: React.FC<StoryPanelProps> = ({ api }) => {
         node,
         stylesheet,
         useInlineStyles,
-        key: `code-segement${i}`,
+        key: `code-segment${i}`,
       })
     );
 

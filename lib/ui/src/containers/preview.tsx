@@ -1,18 +1,17 @@
-import { PREVIEW_URL } from 'global';
+import global from 'global';
 import React from 'react';
 
-import { Consumer, Combo, StoriesHash, isRoot, isGroup, isStory } from '@storybook/api';
+import type { Combo, StoriesHash } from '@storybook/api';
+import { Consumer, isRoot, isGroup, isStory } from '@storybook/api';
 
 import { Preview } from '../components/preview/preview';
 
+const { PREVIEW_URL } = global;
+
 export type Item = StoriesHash[keyof StoriesHash];
 
-const nonAlphanumSpace = /[^a-z0-9 ]/gi;
-const doubleSpace = /\s\s/gi;
-const replacer = (match: string) => ` ${match} `;
-
-const addExtraWhiteSpace = (input: string) =>
-  input.replace(nonAlphanumSpace, replacer).replace(doubleSpace, ' ');
+const splitTitleAddExtraSpace = (input: string) =>
+  input.split('/').join(' / ').replace(/\s\s/, ' ');
 
 const getDescription = (item: Item) => {
   if (isRoot(item)) {
@@ -23,7 +22,7 @@ const getDescription = (item: Item) => {
   }
   if (isStory(item)) {
     const { kind, name } = item;
-    return kind && name ? addExtraWhiteSpace(`${kind} - ${name} ⋅ Storybook`) : 'Storybook';
+    return kind && name ? splitTitleAddExtraSpace(`${kind} - ${name} ⋅ Storybook`) : 'Storybook';
   }
 
   return 'Storybook';
@@ -42,6 +41,7 @@ const mapper = ({ api, state }: Combo) => {
     viewMode,
     path,
     refs,
+    storyId,
     baseUrl: PREVIEW_URL || 'iframe.html',
     queryParams: customQueryParams,
     docsOnly,

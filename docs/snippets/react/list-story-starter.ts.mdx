@@ -1,14 +1,17 @@
 ```ts
-// List.stories.ts
+// List.stories.ts | List.stories.tsx
 
-import { Story, Meta } from '@storybook/react/types-6-0';
+import React from 'react';
+
+import { Story, Meta } from '@storybook/react';
+
 import { List, ListProps } from './List';
+
 export default {
   component: List,
   title: 'List',
 } as Meta;
 
-// Always an empty list, not super interesting
+//👇 Always an empty list, not super interesting
 const Template : Story<ListProps> = (args) => <List {...args} />;
-
 ```
