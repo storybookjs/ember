@@ -8,23 +8,28 @@
     "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ./ --no-manager-cache"
   },
   "dependencies": {
-    "@storybook/addon-controls": "6.4.0-alpha.18",
-    "@storybook/addon-essentials": "6.4.0-alpha.18",
-    "@storybook/components": "6.4.0-alpha.18",
-    "@storybook/react": "6.4.0-alpha.18",
-    "@storybook/theming": "6.4.0-alpha.18",
-    "@types/react": "^16.14.2",
-    "@types/react-dom": "^16.9.10",
     "formik": "^2.2.9",
     "prop-types": "15.7.2",
     "react": "16.14.0",
-    "react-dom": "16.14.0",
-    "typescript": "^3.9.7",
-    "webpack": "4"
+    "react-dom": "16.14.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "^7.12.7",
+    "@storybook/addon-essentials": "6.4.0-alpha.18",
+    "@storybook/addon-storyshots": "6.4.0-alpha.18",
+    "@storybook/addon-storysource": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/react": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
     "@testing-library/dom": "^7.31.2",
     "@testing-library/user-event": "^13.1.9",
-    "cross-env": "^7.0.3"
+    "@types/babel__preset-env": "^7",
+    "@types/react": "^16.14.2",
+    "@types/react-dom": "^16.9.10",
+    "cross-env": "^7.0.3",
+    "typescript": "^3.9.7",
+    "webpack": "4"
   }
 }
