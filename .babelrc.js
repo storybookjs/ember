@@ -12,7 +12,13 @@ const withTests = {
   ],
 };
 
-const modules = process.env.BABEL_ESM === 'true' ? false : 'auto';
+// type BabelMode = 'cjs' | 'esm' | 'modern';
+
+const modules = process.env.BABEL_MODE === 'cjs' ? 'auto' : false;
+
+// FIXME: optional chaining introduced in chrome 80, not supported by wepback4
+// https://github.com/webpack/webpack/issues/10227#issuecomment-642734920
+const targets = process.env.BABEL_MODE === 'modern' ? { chrome: '79' } : 'defaults';
 
 module.exports = {
   ignore: [
@@ -26,7 +32,7 @@ module.exports = {
         shippedProposals: true,
         useBuiltIns: 'usage',
         corejs: '3',
-        targets: 'defaults',
+        targets,
         modules,
       },
     ],
@@ -70,7 +76,7 @@ module.exports = {
             useBuiltIns: 'usage',
             corejs: '3',
             modules,
-            targets: 'defaults',
+            targets,
           },
         ],
         '@babel/preset-react',

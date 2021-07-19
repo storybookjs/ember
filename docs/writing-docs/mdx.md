@@ -76,7 +76,7 @@ And here's how that gets rendered in Storybook:
 
 As already mentioned [above](#mdx-flavored-csf), there's a one-to-one mapping between MDX and CSF.
 
-Based on this principle, if the Badge story included the following `ArgTypes`: 
+Based on this principle, if the Badge story included the following `ArgTypes`:
 
 <!-- prettier-ignore-start -->
 
@@ -112,7 +112,7 @@ And here's how that gets rendered in Storybook:
 
 <div class="aside">
 
-If you find yourself with a considerably sized <code>argTypes</code> implementation. You can extract them into a variable and pass them as a prop. 
+If you find yourself with a considerably sized <code>argTypes</code> implementation. You can extract them into a variable and pass them as a prop.
 
 </div>
 
@@ -159,6 +159,31 @@ If you don't define a Meta, you can write Markdown and associate with an existin
 To get a "documentation-only story", in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
 
 ![MDX docs only story](./mdx-documentation-only.png)
+
+## Linking to other stories and pages
+
+When writing MDX, you may want to provide links to other stories or documentation pages and sections. You can use the `path` query string.
+
+Considering a story with ID `some--id`, this redirects to the **Docs** tab of the story:
+```md
+[Go to specific documentation page](?path=/docs/some--id)
+```
+
+This redirects to the **Canvas** tab of the story:
+```md
+[Go to specific story canvas](?path=/story/some--id)
+```
+
+You can also use anchors to target a specific section of a page:
+```md
+[Go to the conclusion of the documentation page](?path=/docs/some--id#conclusion)
+```
+
+<div class="aside">
+💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+</div>
+
+![MDX anchor example](./mdx-anchor.webp)
 
 ## MDX file names
 

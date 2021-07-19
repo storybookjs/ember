@@ -1,8 +1,10 @@
 import React, { FC, ChangeEvent } from 'react';
 import { styled, CSSObject } from '@storybook/theming';
+import { logger } from '@storybook/client-logger';
 import { ControlProps, OptionsSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey, selectedKeys, selectedValues } from './helpers';
 import { Icons } from '../../icon/icon';
+import { getControlId } from '../helpers';
 
 const styleResets: CSSObject = {
   // resets
@@ -86,18 +88,19 @@ const SelectWrapper = styled.span`
 type SelectConfig = NormalizedOptionsConfig & { isMulti: boolean };
 type SelectProps = ControlProps<OptionsSelection> & SelectConfig;
 
-const NO_SELECTION = 'Select...';
+const NO_SELECTION = 'Choose option...';
 
 const SingleSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(options[e.currentTarget.value]);
   };
   const selection = selectedKey(value, options) || NO_SELECTION;
+  const controlId = getControlId(name);
 
   return (
     <SelectWrapper>
       <Icons icon="arrowdown" />
-      <OptionsSelect value={selection} onChange={handleChange}>
+      <OptionsSelect id={controlId} value={selection} onChange={handleChange}>
         <option key="no-selection" disabled>
           {NO_SELECTION}
         </option>
@@ -117,10 +120,11 @@ const MultiSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
     onChange(selectedValues(selection, options));
   };
   const selection = selectedKeys(value, options);
+  const controlId = getControlId(name);
 
   return (
     <SelectWrapper>
-      <OptionsSelect multiple value={selection} onChange={handleChange}>
+      <OptionsSelect id={controlId} multiple value={selection} onChange={handleChange}>
         {Object.keys(options).map((key) => (
           <option key={key}>{key}</option>
         ))}
@@ -129,6 +133,13 @@ const MultiSelect: FC<SelectProps> = ({ name, value, options, onChange }) => {
   );
 };
 
-export const SelectControl: FC<SelectProps> = (props) =>
+export const SelectControl: FC<SelectProps> = (props) => {
+  const { name, options } = props;
+  if (!options) {
+    logger.warn(`Select with no options: ${name}`);
+    return <>-</>;
+  }
+
   // eslint-disable-next-line react/destructuring-assignment
-  props.isMulti ? <MultiSelect {...props} /> : <SingleSelect {...props} />;
+  return props.isMulti ? <MultiSelect {...props} /> : <SingleSelect {...props} />;
+};

@@ -1,4 +1,4 @@
-import { window as globalWindow, document } from 'global';
+import global from 'global';
 import React, { FunctionComponent, useState, useCallback, Fragment } from 'react';
 
 import { Icons, WithTooltip, Spaced, Button, Link } from '@storybook/components';
@@ -6,6 +6,8 @@ import { logger } from '@storybook/client-logger';
 import { styled } from '@storybook/theming';
 
 import { Loader, Contained } from './Loader';
+
+const { window: globalWindow, document } = global;
 
 const TextStyle = styled.div(({ theme }) => ({
   fontSize: theme.typography.size.s2 - 1,

@@ -1,11 +1,11 @@
 {
   "name": "@storybook/addons",
-  "version": "6.3.0-alpha.16",
+  "version": "6.4.0-alpha.18",
   "description": "Storybook addons store",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/addons",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/addons",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -40,12 +40,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/api": "6.3.0-alpha.16",
-    "@storybook/channels": "6.3.0-alpha.16",
-    "@storybook/client-logger": "6.3.0-alpha.16",
-    "@storybook/core-events": "6.3.0-alpha.16",
-    "@storybook/router": "6.3.0-alpha.16",
-    "@storybook/theming": "6.3.0-alpha.16",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/channels": "6.4.0-alpha.18",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/router": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "regenerator-runtime": "^0.13.7"
@@ -57,5 +57,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f09bb7bf0016bfbc2723f43b3e214e4a1c644843"
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/public_api.js"
 }

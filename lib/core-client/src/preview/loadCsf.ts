@@ -1,20 +1,12 @@
 import { ConfigApi, ClientApi, StoryStore } from '@storybook/client-api';
-import { isExportStory, storyNameFromExport, toId } from '@storybook/csf';
+import { isExportStory } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
 import { Loadable, LoaderFunction, RequireContext } from './types';
-
-const deprecatedStoryAnnotationWarning = deprecate(
-  () => {},
-  dedent`
-    CSF .story annotations deprecated; annotate story functions directly:
-    - StoryFn.story.name => StoryFn.storyName
-    - StoryFn.story.(parameters|decorators) => StoryFn.(parameters|decorators)
-    See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#hoisted-csf-annotations for details and codemod.
-`
-);
+import { normalizeStory } from './normalizeStory';
+import { autoTitle } from './autoTitle';
 
 const duplicateKindWarning = deprecate(
   (kindName: string) => {
@@ -89,14 +81,18 @@ const loadStories = (
       return;
     }
 
-    if (!fileExports.default.title) {
+    const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
+    let exports = namedExports;
+
+    const fileName = currentExports.get(fileExports);
+    const title = autoTitle(defaultExport, fileName);
+    if (!title) {
       throw new Error(
         `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
       );
     }
 
-    const { default: meta, __namedExportsOrder, ...namedExports } = fileExports;
-    let exports = namedExports;
+    const meta = { ...defaultExport, title };
 
     // prefer a user/loader provided `__namedExportsOrder` array if supplied
     // we do this as es module exports are always ordered alphabetically
@@ -112,7 +108,6 @@ const loadStories = (
 
     const {
       title: kindName,
-      id: componentId,
       parameters: kindParameters,
       decorators: kindDecorators,
       loaders: kindLoaders = [],
@@ -136,7 +131,7 @@ const loadStories = (
       framework,
       component,
       subcomponents,
-      fileName: currentExports.get(fileExports),
+      fileName,
       ...kindParameters,
       args: kindArgs,
       argTypes: kindArgTypes,
@@ -164,33 +159,13 @@ const loadStories = (
 
     storyExports.forEach((key) => {
       if (isExportStory(key, meta)) {
-        const storyFn = exports[key];
-        const { story } = storyFn;
-        const { storyName = story?.name } = storyFn;
-
-        // storyFn.x and storyFn.story.x get merged with
-        // storyFn.x taking precedence in the merge
-        const parameters = { ...story?.parameters, ...storyFn.parameters };
-        const decorators = [...(storyFn.decorators || []), ...(story?.decorators || [])];
-        const loaders = [...(storyFn.loaders || []), ...(story?.loaders || [])];
-        const args = { ...story?.args, ...storyFn.args };
-        const argTypes = { ...story?.argTypes, ...storyFn.argTypes };
-
-        if (story) {
-          logger.debug('deprecated story', story);
-          deprecatedStoryAnnotationWarning();
-        }
-
-        const exportName = storyNameFromExport(key);
-        const storyParams = {
-          ...parameters,
-          __id: toId(componentId || kindName, exportName),
-          decorators,
-          loaders,
-          args,
-          argTypes,
-        };
-        kind.add(storyName || exportName, storyFn, storyParams);
+        const { name, storyFn, parameters } = normalizeStory(
+          key,
+          exports[key],
+          meta,
+          clientApi.globalRender
+        );
+        kind.add(name, storyFn, parameters);
       }
     });
   });

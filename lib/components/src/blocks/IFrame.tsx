@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { window as globalWindow } from 'global';
+import global from 'global';
+
+const { window: globalWindow } = global;
 
 interface IFrameProps {
   id: string;

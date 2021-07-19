@@ -3,6 +3,7 @@ import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
 import { ControlProps, DateValue, DateConfig } from './types';
+import { getControlId } from './helpers';
 
 const parseDate = (value: string) => {
   const [year, month, day] = value.split('-');
@@ -89,21 +90,23 @@ export const DateControl: FC<DateProps> = ({ name, value, onChange, onFocus, onB
     setValid(!!time);
   };
 
+  const controlId = getControlId(name);
+
   return (
     <FlexSpaced>
       <Form.Input
         type="date"
         max="9999-12-31" // I do this because of a rendering bug in chrome
         ref={dateRef as RefObject<HTMLInputElement>}
-        id={`${name}date`}
-        name={`${name}date`}
+        id={`${controlId}-date`}
+        name={`${controlId}-date`}
         onChange={onDateChange}
         {...{ onFocus, onBlur }}
       />
       <Form.Input
         type="time"
-        id={`${name}time`}
-        name={`${name}time`}
+        id={`${controlId}-time`}
+        name={`${controlId}-time`}
         ref={timeRef as RefObject<HTMLInputElement>}
         onChange={onTimeChange}
         {...{ onFocus, onBlur }}

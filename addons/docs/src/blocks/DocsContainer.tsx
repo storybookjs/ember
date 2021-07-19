@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react';
-import { document, window as globalWindow } from 'global';
+import global from 'global';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import { MDXProvider } from '@mdx-js/react';
@@ -11,6 +11,8 @@ import { storyBlockIdFromId } from './Story';
 import { SourceContainer } from './SourceContainer';
 import { CodeOrSourceMdx, AnchorMdx, HeadersMdx } from './mdx';
 import { scrollToElement } from './utils';
+
+const { document, window: globalWindow } = global;
 
 export interface DocsContainerProps {
   context: DocsContextProps;
@@ -27,7 +29,7 @@ const warnOptionsTheme = deprecate(
   () => {},
   dedent`
     Deprecated parameter: options.theme => docs.theme
-    
+
     https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/theming.md#storybook-theming
 `
 );

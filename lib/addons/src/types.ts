@@ -62,6 +62,7 @@ export type StoryContext = StoryIdentifier & {
   globals: Args;
   hooks?: HooksContext;
   viewMode?: ViewMode;
+  originalStoryFn?: ArgsStoryFn;
 };
 
 export interface WrapperSettings {
@@ -77,6 +78,7 @@ export interface StorySortObjectParameter {
   method?: StorySortMethod;
   order?: any[];
   locales?: string;
+  includeNames?: boolean;
 }
 // The `any` here is the story store's `StoreItem` record. Ideally we should probably only
 // pass a defined subset of that full data, but we pass it all so far :shrug:
@@ -195,6 +197,14 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
    * @see [Decorators](https://storybook.js.org/docs/addons/introduction/#1-decorators)
    */
   decorators?: BaseDecorators<StoryFnReturnType>;
+  /**
+   * Define a custom render function for the story(ies). If not passed, a default render function by the framework will be used.
+   */
+  render?: (args: Args, context: StoryContext) => StoryFnReturnType;
+  /**
+   * Function that is executed after the story is rendered.
+   */
+  play?: Function;
 }
 
 export interface Annotations<Args, StoryFnReturnType>
@@ -226,6 +236,8 @@ export interface BaseMeta<ComponentType> {
    *
    * Stories can be organized in a nested structure using "/" as a separator.
    *
+   * Since CSF 3.0 this property is optional.
+   *
    * @example
    * export default {
    *   ...
@@ -234,7 +246,7 @@ export interface BaseMeta<ComponentType> {
    *
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
-  title: string;
+  title?: string;
 
   /**
    * The primary component for your story.
@@ -261,11 +273,17 @@ export interface BaseMeta<ComponentType> {
   subcomponents?: Record<string, ComponentType>;
 }
 
-export interface BaseStory<Args, StoryFnReturnType> {
-  (args: Args, context: StoryContext): StoryFnReturnType;
-
+export type BaseStoryObject<Args, StoryFnReturnType> = {
   /**
    * Override the display name in the UI
    */
   storyName?: string;
-}
+};
+
+export type BaseStoryFn<Args, StoryFnReturnType> = {
+  (args: Args, context: StoryContext): StoryFnReturnType;
+} & BaseStoryObject<Args, StoryFnReturnType>;
+
+export type BaseStory<Args, StoryFnReturnType> =
+  | BaseStoryFn<Args, StoryFnReturnType>
+  | BaseStoryObject<Args, StoryFnReturnType>;

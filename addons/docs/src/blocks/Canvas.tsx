@@ -8,13 +8,9 @@ import {
 } from '@storybook/components';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
-import { getSourceProps } from './Source';
+import { getSourceProps, SourceState } from './Source';
 
-export enum SourceState {
-  OPEN = 'open',
-  CLOSED = 'closed',
-  NONE = 'none',
-}
+export { SourceState };
 
 type CanvasProps = PurePreviewProps & {
   withSource?: SourceState;
@@ -22,16 +18,13 @@ type CanvasProps = PurePreviewProps & {
 };
 
 const getPreviewProps = (
-  {
-    withSource = SourceState.CLOSED,
-    mdxSource,
-    children,
-    ...props
-  }: CanvasProps & { children?: ReactNode },
+  { withSource, mdxSource, children, ...props }: CanvasProps & { children?: ReactNode },
   docsContext: DocsContextProps,
   sourceContext: SourceContextProps
 ): PurePreviewProps => {
-  if (withSource === SourceState.NONE) {
+  const { mdxComponentMeta, mdxStoryNameToKey } = docsContext;
+  let sourceState = withSource;
+  if (sourceState === SourceState.NONE) {
     return props;
   }
   if (mdxSource) {
@@ -44,7 +37,6 @@ const getPreviewProps = (
   const stories = childArray.filter(
     (c: ReactElement) => c.props && (c.props.id || c.props.name)
   ) as ReactElement[];
-  const { mdxComponentMeta, mdxStoryNameToKey } = docsContext;
   const targetIds = stories.map(
     (s) =>
       s.props.id ||
@@ -54,10 +46,12 @@ const getPreviewProps = (
       )
   );
   const sourceProps = getSourceProps({ ids: targetIds }, docsContext, sourceContext);
+  if (!sourceState) sourceState = sourceProps.state;
+
   return {
     ...props, // pass through columns etc.
     withSource: sourceProps,
-    isExpanded: withSource === SourceState.OPEN,
+    isExpanded: sourceState === SourceState.OPEN,
   };
 };
 

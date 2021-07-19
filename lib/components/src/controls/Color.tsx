@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  ChangeEvent,
+  FocusEvent,
+} from 'react';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
 import convert from 'color-convert';
 import throttle from 'lodash/throttle';
@@ -9,6 +17,7 @@ import { TooltipNote } from '../tooltip/TooltipNote';
 import { WithTooltip } from '../tooltip/lazy-WithTooltip';
 import { Form } from '../form';
 import { Icons } from '../icon/icon';
+import { getControlId } from './helpers';
 
 const Wrapper = styled.div({
   position: 'relative',
@@ -130,7 +139,7 @@ const stringToArgs = (value: string) => {
   return [x, y, z, a].map(Number);
 };
 
-const parseValue = (value: string): ParsedColor => {
+const parseValue = (value: string): ParsedColor | undefined => {
   if (!value) return undefined;
   let valid = true;
 
@@ -207,10 +216,21 @@ const getRealValue = (value: string, color: ParsedColor, colorSpace: ColorSpace)
   return `#${r}${r}${g}${g}${b}${b}`;
 };
 
-const useColorInput = (initialValue: string, onChange: (value: string) => string | void) => {
+const useColorInput = (
+  initialValue: string | undefined,
+  onChange: (value: string) => string | void
+) => {
   const [value, setValue] = useState(initialValue || '');
   const [color, setColor] = useState(() => parseValue(value));
   const [colorSpace, setColorSpace] = useState(color?.colorSpace || ColorSpace.HEX);
+
+  // Reset state when initialValue becomes undefined (when resetting controls)
+  useEffect(() => {
+    if (initialValue !== undefined) return;
+    setValue('');
+    setColor(undefined);
+    setColorSpace(ColorSpace.HEX);
+  }, [initialValue]);
 
   const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
     value,
@@ -246,10 +266,16 @@ const id = (value: string) => value.replace(/\s*/, '').toLowerCase();
 
 const usePresets = (
   presetColors: PresetColor[],
-  currentColor: ParsedColor,
+  currentColor: ParsedColor | undefined,
   colorSpace: ColorSpace
 ) => {
   const [selectedColors, setSelectedColors] = useState(currentColor?.valid ? [currentColor] : []);
+
+  // Reset state when currentColor becomes undefined (when resetting controls)
+  useEffect(() => {
+    if (currentColor !== undefined) return;
+    setSelectedColors([]);
+  }, [currentColor]);
 
   const presets = useMemo(() => {
     const initialPresets = (presetColors || []).map((preset) => {
@@ -274,6 +300,7 @@ const usePresets = (
 
 export type ColorProps = ControlProps<ColorValue> & ColorConfig;
 export const ColorControl: FC<ColorProps> = ({
+  name,
   value: initialValue,
   onChange,
   onFocus,
@@ -303,9 +330,10 @@ export const ColorControl: FC<ColorProps> = ({
             />
             {presets.length > 0 && (
               <Swatches>
-                {presets.map((preset) => (
+                {presets.map((preset, index: number) => (
                   <WithTooltip
-                    key={preset.value}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${preset.value}-${index}`}
                     hasChrome={false}
                     tooltip={<Note note={preset.keyword || preset.value} />}
                   >
@@ -324,10 +352,11 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch value={realValue} style={{ margin: 4 }} />
       </PickerTooltip>
       <Input
+        id={getControlId(name)}
         value={value}
-        onChange={(e: any) => updateValue(e.target.value)}
-        onFocus={(e) => e.target.select()}
-        placeholder="Choose color"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => updateValue(e.target.value)}
+        onFocus={(e: FocusEvent<HTMLInputElement>) => e.target.select()}
+        placeholder="Choose color..."
       />
       <ToggleIcon icon="markup" onClick={cycleColorSpace} />
     </Wrapper>

@@ -14,6 +14,7 @@ export type GeneratorOptions = {
   language: SupportedLanguage;
   storyFormat: StoryFormat;
   builder: Builder;
+  linkable: boolean;
 };
 
 export interface FrameworkOptions {
@@ -53,7 +54,7 @@ const builderDependencies = (builder: Builder) => {
     case CoreBuilder.Webpack4:
       return [];
     case CoreBuilder.Webpack5:
-      return ['@storybook/builder-webpack5'];
+      return ['@storybook/builder-webpack5', '@storybook/manager-webpack5'];
     default:
       return [builder];
   }

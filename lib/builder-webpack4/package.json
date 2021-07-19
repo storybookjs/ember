@@ -1,11 +1,11 @@
 {
   "name": "@storybook/builder-webpack4",
-  "version": "6.3.0-alpha.16",
+  "version": "6.4.0-alpha.18",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -61,20 +61,20 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.3.0-alpha.16",
-    "@storybook/api": "6.3.0-alpha.16",
-    "@storybook/channel-postmessage": "6.3.0-alpha.16",
-    "@storybook/channels": "6.3.0-alpha.16",
-    "@storybook/client-api": "6.3.0-alpha.16",
-    "@storybook/client-logger": "6.3.0-alpha.16",
-    "@storybook/components": "6.3.0-alpha.16",
-    "@storybook/core-common": "6.3.0-alpha.16",
-    "@storybook/core-events": "6.3.0-alpha.16",
-    "@storybook/node-logger": "6.3.0-alpha.16",
-    "@storybook/router": "6.3.0-alpha.16",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/channel-postmessage": "6.4.0-alpha.18",
+    "@storybook/channels": "6.4.0-alpha.18",
+    "@storybook/client-api": "6.4.0-alpha.18",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-common": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/node-logger": "6.4.0-alpha.18",
+    "@storybook/router": "6.4.0-alpha.18",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.3.0-alpha.16",
-    "@storybook/ui": "6.3.0-alpha.16",
+    "@storybook/theming": "6.4.0-alpha.18",
+    "@storybook/ui": "6.4.0-alpha.18",
     "@types/node": "^14.0.10",
     "@types/webpack": "^4.41.26",
     "autoprefixer": "^9.8.6",
@@ -94,7 +94,7 @@
     "global": "^4.4.0",
     "html-webpack-plugin": "^4.0.0",
     "pnp-webpack-plugin": "1.6.4",
-    "postcss": "^7.0.35",
+    "postcss": "^7.0.36",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-loader": "^4.2.0",
     "raw-loader": "^4.0.2",
@@ -132,5 +132,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f09bb7bf0016bfbc2723f43b3e214e4a1c644843"
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js"
 }

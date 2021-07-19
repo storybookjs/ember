@@ -388,16 +388,7 @@ object SmokeTests : BuildType({
                 cd ../ember-cli
                 yarn storybook --smoke-test --quiet
                 
-                cd ../marko-cli
-                yarn storybook --smoke-test --quiet
-                
                 cd ../official-storybook
-                yarn storybook --smoke-test --quiet
-                
-                cd ../mithril-kitchen-sink
-                yarn storybook --smoke-test --quiet
-                
-                cd ../riot-kitchen-sink
                 yarn storybook --smoke-test --quiet
                 
                 cd ../preact-kitchen-sink
@@ -435,7 +426,7 @@ object Frontpage : BuildType({
         vcs {
             quietPeriodMode = VcsTrigger.QuietPeriodMode.USE_DEFAULT
             triggerRules = "-:.teamcity/**"
-            branchFilter = "+:master"
+            branchFilter = "+:main"
         }
     }
 })
@@ -527,7 +518,7 @@ object TestWorkflow : BuildType({
             branchFilter = """
                 +:<default>
                 +:next
-                +:master
+                +:main
                 +:pull/*
             """.trimIndent()
         }

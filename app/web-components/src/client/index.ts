@@ -1,4 +1,6 @@
-import { window, EventSource } from 'global';
+import global from 'global';
+
+const { window, EventSource } = global;
 
 export {
   storiesOf,
@@ -14,6 +16,7 @@ export {
 export {
   getCustomElements,
   setCustomElements,
+  setCustomElementsManifest,
   isValidComponent,
   isValidMetaData,
 } from './customElements';

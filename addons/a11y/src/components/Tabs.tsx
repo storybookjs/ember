@@ -18,30 +18,29 @@ const Container = styled.div({
 const HighlightToggleLabel = styled.label<{}>(({ theme }) => ({
   cursor: 'pointer',
   userSelect: 'none',
-  marginBottom: 3,
-  marginRight: 3,
   color: theme.color.dark,
 }));
 
-const GlobalToggle = styled.div<{ elementWidth: number }>(({ elementWidth }) => {
+const GlobalToggle = styled.div<{ elementWidth: number }>(({ elementWidth, theme }) => {
   const maxWidthBeforeBreak = 450;
   return {
     cursor: 'pointer',
-    fontSize: '14px',
-    padding: elementWidth > maxWidthBeforeBreak ? '12px 15px 10px 0' : '12px 0px 3px 12px',
+    fontSize: 13,
+    lineHeight: '20px',
+    padding: elementWidth > maxWidthBeforeBreak ? '10px 15px 10px 0' : '10px 0px 10px 15px',
     height: '40px',
     border: 'none',
     marginTop: elementWidth > maxWidthBeforeBreak ? -40 : 0,
     float: elementWidth > maxWidthBeforeBreak ? 'right' : 'left',
-    display: elementWidth > maxWidthBeforeBreak ? 'flex' : 'block',
+    display: 'flex',
     alignItems: 'center',
     width: elementWidth > maxWidthBeforeBreak ? 'auto' : '100%',
-    borderBottom: elementWidth > maxWidthBeforeBreak ? 'none' : '1px solid rgba(0,0,0,.1)',
+    borderBottom: elementWidth > maxWidthBeforeBreak ? 'none' : `1px solid ${theme.appBorderColor}`,
 
     input: {
       marginLeft: 10,
       marginRight: 0,
-      marginTop: 0,
+      marginTop: -1,
       marginBottom: 0,
     },
   };

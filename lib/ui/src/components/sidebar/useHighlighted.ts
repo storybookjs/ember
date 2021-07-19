@@ -1,4 +1,4 @@
-import { document, window as globalWindow } from 'global';
+import global from 'global';
 import {
   Dispatch,
   MutableRefObject,
@@ -12,6 +12,8 @@ import { matchesKeyCode, matchesModifiers } from '../../keybinding';
 
 import { CombinedDataset, Highlight, Selection } from './types';
 import { cycle, isAncestor, scrollIntoView } from './utils';
+
+const { document, window: globalWindow } = global;
 
 export interface HighlightedProps {
   containerRef: MutableRefObject<HTMLElement>;

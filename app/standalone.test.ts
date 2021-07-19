@@ -4,16 +4,10 @@ jest.mock('@storybook/core/standalone');
 
 describe.each([
   ['angular'],
-  ['aurelia'],
   ['ember'],
   ['html'],
-  ['marionette'],
-  ['marko'],
-  ['mithril'],
   ['preact'],
-  ['rax'],
   ['react'],
-  ['riot'],
   ['server'],
   ['svelte'],
   ['vue'],

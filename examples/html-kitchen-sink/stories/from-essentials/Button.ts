@@ -1,6 +1,8 @@
-import { document } from 'global';
+import global from 'global';
 
 import './button.css';
+
+const { document } = global;
 
 export interface ButtonProps {
   /**

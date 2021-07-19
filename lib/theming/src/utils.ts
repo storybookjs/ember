@@ -1,7 +1,9 @@
 import { rgba, lighten, darken } from 'polished';
-import { window as globalWindow } from 'global';
+import global from 'global';
 
 import { logger } from '@storybook/client-logger';
+
+const { window: globalWindow } = global;
 
 export const mkColor = (color: string) => ({ color });
 

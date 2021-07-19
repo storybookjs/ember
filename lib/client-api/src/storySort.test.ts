@@ -6,14 +6,19 @@ describe('preview.storySort', () => {
     á: ['', { kind: 'á' }],
     A: ['', { kind: 'A' }],
     b: ['', { kind: 'b' }],
-    a_a: ['', { kind: 'a/a' }],
-    a_b: ['', { kind: 'a/b' }],
-    a_c: ['', { kind: 'a/c' }],
-    b_a_a: ['', { kind: 'b/a/a' }],
-    b_b: ['', { kind: 'b/b' }],
+    a_a: ['', { kind: 'a / a' }],
+    a_b: ['', { kind: 'a / b' }],
+    a_c: ['', { kind: 'a / c' }],
+    b_a_a: ['', { kind: 'b / a / a' }],
+    b_b: ['', { kind: 'b / b' }],
     c: ['', { kind: 'c' }],
     locale1: ['', { kind: 'Б' }],
     locale2: ['', { kind: 'Г' }],
+    c__a: ['', { kind: 'c', name: 'a' }],
+    c_b__a: ['', { kind: 'c / b', name: 'a' }],
+    c_b__b: ['', { kind: 'c / b', name: 'b' }],
+    c_b__c: ['', { kind: 'c / b', name: 'c' }],
+    c__c: ['', { kind: 'c', name: 'c' }],
   };
 
   it('uses configure order by default', () => {
@@ -74,6 +79,28 @@ describe('preview.storySort', () => {
 
     expect(sortFn(fixture.a_a, fixture.a_b)).toBeGreaterThan(0);
     expect(sortFn(fixture.a_b, fixture.a_a)).toBeLessThan(0);
+  });
+
+  it('sorts alphabetically including story names', () => {
+    const sortFn = storySort({ method: 'alphabetical', includeNames: true });
+    expect(sortFn(fixture.c_b__a, fixture.c__a)).toBeGreaterThan(0);
+    expect(sortFn(fixture.c__a, fixture.c_b__a)).toBeLessThan(0);
+
+    expect(sortFn(fixture.c__c, fixture.c__a)).toBeGreaterThan(0);
+    expect(sortFn(fixture.c__a, fixture.c__c)).toBeLessThan(0);
+  });
+
+  it('sorts according to the order array including story names', () => {
+    const sortFn = storySort({
+      order: ['c', ['b', ['c', 'b', 'a'], 'c', 'a']],
+      includeNames: true,
+    });
+    expect(sortFn(fixture.c_b__a, fixture.c_b__b)).toBeGreaterThan(0);
+    expect(sortFn(fixture.c_b__b, fixture.c_b__c)).toBeGreaterThan(0);
+    expect(sortFn(fixture.c_b__a, fixture.c_b__c)).toBeGreaterThan(0);
+    expect(sortFn(fixture.c_b__a, fixture.c__a)).toBeLessThan(0);
+    expect(sortFn(fixture.c_b__a, fixture.c__c)).toBeLessThan(0);
+    expect(sortFn(fixture.c__a, fixture.c__c)).toBeGreaterThan(0);
   });
 
   it('sorts according to the order array with a wildcard', () => {

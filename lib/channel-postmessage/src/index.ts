@@ -1,9 +1,11 @@
-import { window as globalWindow, document, location } from 'global';
+import global from 'global';
 import * as EVENTS from '@storybook/core-events';
 import Channel, { ChannelEvent, ChannelHandler } from '@storybook/channels';
 import { logger, pretty } from '@storybook/client-logger';
 import { isJSON, parse, stringify } from 'telejson';
 import qs from 'qs';
+
+const { window: globalWindow, document, location } = global;
 
 interface Config {
   page: 'manager' | 'preview';

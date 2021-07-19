@@ -40,6 +40,7 @@ For example, here's the story from `Checkbox` example above, rewritten in CSF:
   paths={[
     'react/checkbox-story-csf.js.mdx',
     'vue/checkbox-story-csf.js.mdx',
+    'svelte/checkbox-story-csf.native-format.mdx',
   ]}
 />
 

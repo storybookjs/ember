@@ -5,9 +5,10 @@ const { plugins } = babelConfig();
 
 const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   '@storybook/node_logger',
+  'node_modules/acorn-jsx',
+  'node_modules/highlight.js',
   'node_modules/json5',
   'node_modules/semver',
-  'node_modules/highlight.js',
 ];
 
 export const es6Transpiler: () => RuleSetRule = () => {
@@ -17,7 +18,7 @@ export const es6Transpiler: () => RuleSetRule = () => {
     return (
       !!nodeModulesThatNeedToBeParsedBecauseTheyExposeES6.find((p) => input.includes(p)) ||
       !!input.match(
-        /[\\/]node_modules[\\/](@storybook\/node-logger|are-you-es5|better-opn|boxen|chalk|commander|find-cache-dir|find-up|fs-extra|json5|node-fetch|pkg-dir|prettier|resolve-from|semver|highlight.js)/
+        /[\\/]node_modules[\\/](@storybook\/node-logger|are-you-es5|better-opn|boxen|chalk|commander|find-cache-dir|find-up|fs-extra|json5|node-fetch|pkg-dir|prettier|resolve-from|semver|highlight\.js|acorn-jsx)/
       )
     );
   };
@@ -34,6 +35,7 @@ export const es6Transpiler: () => RuleSetRule = () => {
               {
                 shippedProposals: true,
                 modules: false,
+                loose: true,
                 targets: 'defaults',
               },
             ],

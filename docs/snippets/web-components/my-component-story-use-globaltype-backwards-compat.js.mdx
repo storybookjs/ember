@@ -1,0 +1,10 @@
+```js
+// MyComponent.stories.js
+
+import { html } from 'lit-html';
+
+export const StoryWithLocale = ({ globals: { locale } }) => {
+  const caption = getCaptionForLocale(locale);
+  return html`<p>${caption}</p>`;
+};
+```

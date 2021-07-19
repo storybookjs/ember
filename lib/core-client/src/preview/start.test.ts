@@ -1,6 +1,8 @@
-import { document, window as globalWindow } from 'global';
+import global from 'global';
 
 import start from './start';
+
+const { document, window: globalWindow } = global;
 
 jest.mock('@storybook/client-logger');
 jest.mock('global', () => ({

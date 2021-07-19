@@ -1,3 +1,3 @@
 import { addActionsFromArgTypes, inferActionsFromArgTypesRegex } from './addArgsHelpers';
 
-export const argTypesEnhancers = [addActionsFromArgTypes, inferActionsFromArgTypesRegex];
+export const argsEnhancers = [addActionsFromArgTypes, inferActionsFromArgTypesRegex];

@@ -1,4 +1,6 @@
-import { window as globalWindow } from 'global';
+import global from 'global';
+
+const { window: globalWindow } = global;
 
 export const importPolyfills = () => {
   const polyfills = [];

@@ -55,6 +55,10 @@ export abstract class JsPackageManager {
     done();
   }
 
+  /**
+   * Read the `package.json` file available in the directory the command was call from
+   * If there is no `package.json` it will create one.
+   */
   public retrievePackageJson(): PackageJsonWithDepsAndDevDeps {
     let packageJson = readPackageJson();
     if (!packageJson) {
@@ -151,6 +155,15 @@ export abstract class JsPackageManager {
     return Promise.all(packageNames.map((packageName) => this.getVersion(packageName)));
   }
 
+  /**
+   * Return the latest version of the input package available on npmjs registry.
+   * If constraint are provided it return the latest version matching the constraints.
+   *
+   * For `@storybook/*` packages the latest version is retrieved from `cli/src/versions.json` file directly
+   *
+   * @param packageName The name of the package
+   * @param constraint A valid semver constraint, example: '1.x || >=2.5.0 || 5.0.0 - 7.2.3'
+   */
   public async getVersion(packageName: string, constraint?: string): Promise<string> {
     let current: string;
 

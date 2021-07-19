@@ -1,7 +1,9 @@
-import { RELEASE_NOTES_DATA } from 'global';
+import global from 'global';
 import memoize from 'memoizerific';
 
 import { ModuleFn } from '../index';
+
+const { RELEASE_NOTES_DATA } = global;
 
 export interface ReleaseNotes {
   success?: boolean;

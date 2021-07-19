@@ -137,10 +137,9 @@ export interface MobileProps {
   Preview: ComponentType<any>;
   Panel: ComponentType<any>;
   Notifications: ComponentType<any>;
-
   viewMode: State['viewMode'];
-
   pages: Page[];
+  docsOnly: boolean;
 }
 
 export interface MobileState {
@@ -158,9 +157,18 @@ class Mobile extends Component<MobileProps, MobileState> {
   }
 
   render() {
-    const { Sidebar, Preview, Panel, Notifications, pages, viewMode, options } = this.props;
-    const { active } = this.state;
+    const {
+      Sidebar,
+      Preview,
+      Panel,
+      Notifications,
+      pages,
+      viewMode,
+      options,
+      docsOnly,
+    } = this.props;
 
+    const { active } = this.state;
     return (
       <Root>
         <Notifications
@@ -196,7 +204,7 @@ class Mobile extends Component<MobileProps, MobileState> {
               <Route key={key}>{key}</Route>
             ))}
           </TabButton>
-          {viewMode ? (
+          {viewMode && !docsOnly ? (
             <TabButton onClick={() => this.setState({ active: ADDONS })} active={active === ADDONS}>
               Addons
             </TabButton>

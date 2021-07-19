@@ -1,4 +1,5 @@
 import { html } from 'lit-html';
+import { styleMap } from 'lit-html/directives/style-map';
 import './button.css';
 
 export interface ButtonProps {
@@ -26,14 +27,14 @@ export interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary, backgroundColor, size, label, onClick }: ButtonProps) => {
+export const Button = ({ primary, backgroundColor = null, size, label, onClick }: ButtonProps) => {
   const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
 
   return html`
     <button
       type="button"
       class=${['storybook-button', `storybook-button--${size || 'medium'}`, mode].join(' ')}
-      style=${backgroundColor && { backgroundColor }}
+      style=${styleMap({ backgroundColor })}
       @click=${onClick}
     >
       ${label}

@@ -1,11 +1,11 @@
 {
   "name": "@storybook/ui",
-  "version": "6.3.0-alpha.16",
+  "version": "6.4.0-alpha.18",
   "description": "Core Storybook UI",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/ui",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/ui",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -41,15 +41,15 @@
   },
   "dependencies": {
     "@emotion/core": "^10.1.1",
-    "@storybook/addons": "6.3.0-alpha.16",
-    "@storybook/api": "6.3.0-alpha.16",
-    "@storybook/channels": "6.3.0-alpha.16",
-    "@storybook/client-logger": "6.3.0-alpha.16",
-    "@storybook/components": "6.3.0-alpha.16",
-    "@storybook/core-events": "6.3.0-alpha.16",
-    "@storybook/router": "6.3.0-alpha.16",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/channels": "6.4.0-alpha.18",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/router": "6.4.0-alpha.18",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.3.0-alpha.16",
+    "@storybook/theming": "6.4.0-alpha.18",
     "@types/markdown-to-jsx": "^6.11.3",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.2",
@@ -87,5 +87,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f09bb7bf0016bfbc2723f43b3e214e4a1c644843"
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js"
 }

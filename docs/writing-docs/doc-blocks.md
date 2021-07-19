@@ -60,11 +60,25 @@ To use the `ArgsTable` in [DocsPage](./docs-page.md#component-parameter), export
 
 To use the `ArgsTable` block in MDX, add the following:
 
+#### For components
+
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'common/component-story-mdx-argstable-block.mdx.mdx',
+    'common/component-story-mdx-argstable-block-for-component.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+#### For Stories
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-mdx-argstable-block-for-story.mdx.mdx',
   ]}
 />
 
@@ -135,6 +149,7 @@ Looking at the following component:
     'angular/button-implementation.ts.mdx',
     'vue/button-implementation.2.mdx',
     'vue/button-implementation.3.mdx',
+    'svelte/button-implementation.js.mdx',
   ]}
 />
 
@@ -253,6 +268,8 @@ As an example, if you had the following story:
     'vue/button-story-default-docs-code.2.js.mdx',
     'vue/button-story-default-docs-code.3.js.mdx',
     'angular/button-story-default-docs-code.ts.mdx',
+    'svelte/button-story-default-docs-code.js.mdx',
+    'svelte/button-story-default-docs-code.native-format.mdx',
   ]}
 />
 

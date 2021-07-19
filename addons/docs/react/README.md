@@ -78,7 +78,7 @@ module.exports = {
 Finally, you can create MDX files like this:
 
 ```md
-import { Meta, Story, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable } from '@storybook/addon-docs';
 import { Button } from './Button';
 
 <Meta title='Button' component={Button} />

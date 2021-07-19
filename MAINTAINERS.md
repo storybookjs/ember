@@ -58,9 +58,9 @@ This document outlines some of the processes that the maintainers should adhere 
 | nx                             | Issue, bug, or pull request related to Storybook's integration with [NX](https://nx.dev/)                                                           |
 | other                          | Storybook's miscellaneous issue or pull request                                                                                                     |
 | P(n)                           | Bug or issue priority. Ranges from `0` (most urgent) to `N` (least urgent)                                                                          |
-| patch                          | Bug fix and documentation pull request that will be picked to the master branch                                                                     |
+| patch                          | Bug fix and documentation pull request that will be picked to the main branch                                                                     |
 | performance issue              | Issue, bug or pull request that affects Storybook's performance                                                                                     |
-| picked                         | Patch PRs cherry-picked to the master branch                                                                                                        |
+| picked                         | Patch PRs cherry-picked to the main branch                                                                                                        |
 | presets                        | Issue, bug, or pull requests that affect Storybook's presets                                                                                        |
 | question / support             | General question about Storybook                                                                                                                    |
 | run e2e extended test suite    | Pull request that affects Storybook's testing suite                                                                                                 |

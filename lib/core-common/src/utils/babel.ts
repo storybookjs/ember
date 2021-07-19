@@ -43,7 +43,7 @@ const plugins = [
 ];
 
 const presets = [
-  [require.resolve('@babel/preset-env'), { shippedProposals: true }],
+  [require.resolve('@babel/preset-env'), { shippedProposals: true, loose: true }],
   require.resolve('@babel/preset-typescript'),
 ];
 

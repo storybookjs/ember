@@ -1,0 +1,17 @@
+```js
+// Button.test.js
+
+import { h } from 'preact';
+
+import { render, screen } from '@testing-library/preact';
+
+import '@testing-library/jest-dom/extend-expect';
+
+//👇 Imports a specific story for the test
+import { Primary } from './Button.stories';
+
+it('renders the button in the primary state', () => {
+  render(<Primary {...Primary.args} />);
+  expect(screen.getByRole('button')).toHaveTextContent('Primary');
+});
+```

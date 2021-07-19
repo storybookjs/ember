@@ -1,21 +1,11 @@
 import type { StorybookConfig } from '@storybook/react/types';
 
 const config: StorybookConfig = {
-  stories: ['./src/*.stories.*'],
+  stories: [{ directory: './src', titlePrefix: 'Demo' }],
   logLevel: 'debug',
   addons: [
     '@storybook/addon-essentials',
-    '@storybook/addon-controls',
     '@storybook/addon-storysource',
-    {
-      name: '@storybook/addon-docs',
-      options: {
-        sourceLoaderOptions: {
-          parser: 'typescript',
-          injectStoryParameters: false,
-        },
-      },
-    },
     '@storybook/addon-storyshots',
   ],
   typescript: {
@@ -30,6 +20,7 @@ const config: StorybookConfig = {
   },
   features: {
     postcss: false,
+    previewCsfV3: true,
   },
 };
 

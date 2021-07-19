@@ -18,7 +18,7 @@ This is the core addon API. This is how to get the addon API:
 
 ### addons.getChannel()
 
-Get an instance to the channel where you can communicate with the manager and the preview. You can find this in both the addon register code and in your addon’s wrapper component (where used inside a story).
+Get an instance to the channel where you can communicate with the manager and the preview. You can find this in both the addon register code and your addon’s wrapper component (where used inside a story).
 
 It has a NodeJS [EventEmitter](https://nodejs.org/api/events.html) compatible API. So, you can use it to emit events and listen for events.
 
@@ -58,11 +58,12 @@ The render function is called with `active` and `key`.
 
 When the panel is in focus in the UI, the `active` will be true.
 
-As you can see, you can set any React Component as the panel. Currently, it's one line of text. But you can do anything you want. You should specify the panel title. It could be a plain text.
+As you can see, you can set any React Component as the panel. Currently, it's one line of text. But you can do anything you want. 
+It's a good practice to specify the panel title with the `title` key. You can use any plain text with it.
 
 ## makeDecorator API
 
-The `makeDecorator` API can be used to create decorators in the style of the official addons. Use it like so:
+Use the `makeDecorator` API to create decorators in the style of the official addons. Like so:
 
 <!-- prettier-ignore-start -->
 
@@ -84,7 +85,7 @@ The options to `makeDecorator` are:
 
 <div class="aside">
 
-Note if the parameters to a story include `{ foo: { disable: true } }` (where `foo` is the `parameterName` of your addon), your decorator will not be called.
+💡 <strong>Note:</strong>If the story's parameters include `{ foo: { disable: true } }` (where `foo` is the `parameterName` of your addon), your decorator will not be called.
 
 </div>
 
@@ -106,10 +107,10 @@ Writing addons can be simplified a lot by using these Storybook hooks:
 
 <!-- prettier-ignore-end -->
 
-Allows full access to the entire storybook state.
+It allows full access to the entire storybook state.
 Your component will re-render whenever the storybook state changes.
 
-If you use this, remember your component wil be re-rendered a lot, and you may need to optimize for that using [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) or [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent).
+If you use this, remember your component will be re-rendered a lot, and you may need to optimize for that using [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) or [`PureComponent`](https://reactjs.org/docs/react-api.html#reactpurecomponent).
 
 ### useStorybookApi
 
@@ -123,9 +124,9 @@ If you use this, remember your component wil be re-rendered a lot, and you may n
 
 <!-- prettier-ignore-end -->
 
-Allows full access to the storybook API.
+It allows full access to the storybook API.
 
-Detail on the storybook api are further down.
+Details on the Storybook API are further down.
 
 ### useChannel
 
@@ -139,9 +140,9 @@ Detail on the storybook api are further down.
 
 <!-- prettier-ignore-end -->
 
-Allows for both setting subscriptions to events and getting the emitter for emitting custom event unto the channel.
+Allows for both setting subscriptions to events and getting the emitter for emitting custom events unto the channel.
 
-The messages can be listened for on both the iframe and the manager side.
+The messages can be listened to on both the iframe and the manager side.
 
 ### useAddonState
 
@@ -155,13 +156,13 @@ The messages can be listened for on both the iframe and the manager side.
 
 <!-- prettier-ignore-end -->
 
-Extremely useful for addons that need to persist some state.
+Extremely useful for addons that need to persist in some form of state.
 
-Storybook may unmount your addon component, and so keeping local state, might not work really well.
+Storybook may unmount your addon component, and so keeping local state might not work well.
 
-Also some addons consist of multiple parts, some part being in a panel, some in the toolbar etc.
+Also, some addons consist of multiple parts, some parts being in a panel, some in the toolbar, etc.
 
-With this hook they can all get access to the same bit of state which is persisted even if the components are unmounted.
+With this hook, addons can get access to the same portion of the state, persisted even if the components are unmounted.
 
 ### useParameter
 
@@ -197,6 +198,21 @@ It allows you to retrieve and update any Storybook Globals you want.
 
 If you use this hook, remember that your component will render a lot, and you may need to optimize for that using [`React.memo`](https://reactjs.org/docs/react-api.html#reactmemo) or [`useMemo`](https://reactjs.org/docs/hooks-reference.html#usememo) or [`useCallback`](https://reactjs.org/docs/hooks-reference.html#usecallback).
 
+
+### useArgs
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/args-usage-with-addons.js.mdx'
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+A handy Storybook hook that you can use in your addon if you need to read or update [`args`](../writing-stories/args.md). 
+
 ---
 
 ## Storybook API
@@ -221,6 +237,8 @@ Let's say you've got a story like this:
     'react/button-story-with-addon-example.js.mdx',
     'vue/button-story-with-addon-example.js.mdx',
     'angular/button-story-with-addon-example.ts.mdx',
+    'svelte/button-story-with-addon-example.js.mdx',
+    'svelte/button-story-with-addon-example.native-format.mdx',
   ]}
 />
 
@@ -254,7 +272,7 @@ Same as `selectStory`, but accepts a story inside current kind as the only param
 
 ### api.setQueryParams()
 
-This method allows you to set query string parameters. You can use that as temporary storage for addons. Here's how you set query params.
+This method allows you to set query string parameters. You can use that as temporary storage for addons. Here's how you define query params:
 
 <!-- prettier-ignore-start -->
 
@@ -268,7 +286,7 @@ This method allows you to set query string parameters. You can use that as tempo
 
 <div class="aside">
 
-If you need to remove a query param, use `null` for that. For an example, let's say we need to remove bbc query param. This is how we do it:
+💡 <strong>Note:</strong> If you need to remove a query param, use `null` for that. For example, let's say we need to remove the `bbc` query param. See below how to do it:
 
 </div>
 
@@ -284,7 +302,7 @@ If you need to remove a query param, use `null` for that. For an example, let's 
 
 ### api.getQueryParam()
 
-This method allows you to get a query param set by above API `setQueryParams`. For example, let's say we need to get the bbc query param. Then this how we do it:
+This method allows you to get a query param set by the above API `setQueryParams`. For example, let's say we need to get the `bbc` query param. Then this how we do it:
 
 <!-- prettier-ignore-start -->
 
@@ -298,7 +316,7 @@ This method allows you to get a query param set by above API `setQueryParams`. F
 
 ### api.getUrlState(overrideParams)
 
-This method allows you to get application url state with some changed params. For example, if you want to get a link to a particular story:
+This method allows you to get the application URL state with some changed params. For example, if you want to get a link to a particular story:
 
 <!-- prettier-ignore-start -->
 
@@ -312,7 +330,7 @@ This method allows you to get application url state with some changed params. Fo
 
 ### api.on(eventName, fn)
 
-This method allows you to register a handler function which will be called whenever the user navigates between stories.
+This method allows you to register a handler function called whenever the user navigates between stories.
 
 <!-- prettier-ignore-start -->
 

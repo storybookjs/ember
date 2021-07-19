@@ -1,7 +1,7 @@
 ```md
 <!-- MyComponent.stories.mdx -->
 
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 <Meta
   title='Stories'
@@ -14,13 +14,15 @@ import { Meta, Story } from '@storybook/addon-docs/blocks';
 />
 
 <Story
-  name="MyStory"
-  parameters={{
+name="MyStory"
+parameters={{
     viewport: {
       defaultViewport: 'iphonex'
     }
   }}
+
 >
+
   <div />
 </Story>
 ```

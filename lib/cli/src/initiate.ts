@@ -32,6 +32,7 @@ import riotGenerator from './generators/RIOT';
 import preactGenerator from './generators/PREACT';
 import svelteGenerator from './generators/SVELTE';
 import raxGenerator from './generators/RAX';
+import serverGenerator from './generators/SERVER';
 import { warn } from './warn';
 import { JsPackageManagerFactory, readPackageJson } from './js-package-manager';
 import { NpmOptions } from './NpmOptions';
@@ -48,6 +49,7 @@ type CommandOptions = {
   parser?: string;
   yes?: boolean;
   builder?: Builder;
+  linkable?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -69,6 +71,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
     storyFormat: options.storyFormat || defaultStoryFormat,
     language,
     builder: options.builder || CoreBuilder.Webpack4,
+    linkable: !!options.linkable,
   };
 
   const end = () => {
@@ -230,6 +233,11 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
       case ProjectType.AURELIA:
         return aureliaGenerator(packageManager, npmOptions, generatorOptions)
           .then(commandLog('Adding Storybook support to your "Aurelia" app'))
+          .then(end);
+
+      case ProjectType.SERVER:
+        return serverGenerator(packageManager, npmOptions, generatorOptions)
+          .then(commandLog('Adding Storybook support to your "Server" app'))
           .then(end);
 
       case ProjectType.UNSUPPORTED:

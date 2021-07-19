@@ -9,6 +9,7 @@ exports[`Storyshots Basics / Component / With ng-content / Button with different
           style="background-color: rgb(94, 173, 245);"
         />
       </sb-button>
+      
     </button>
   </sb-button>
 </storybook-wrapper>
@@ -41,6 +42,7 @@ exports[`Storyshots Basics / Component / With ng-content / Button with different
       <sb-emoji>
         👾
       </sb-emoji>
+      
     </button>
   </sb-button>
 </storybook-wrapper>
@@ -55,6 +57,7 @@ exports[`Storyshots Basics / Component / With ng-content / Button with different
       >
         🌵
       </sb-emoji>
+      
     </button>
   </sb-button>
 </storybook-wrapper>

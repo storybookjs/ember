@@ -11,7 +11,7 @@ For example, let’s customize the backgrounds addon via a parameter. We’ll us
 We can set a parameter for a single story with the `parameters` key on a CSF export:
 
 ```js
-// Button.stories.js | Button.stories.ts
+// Button.stories.js | Button.stories.ts | Button.stories.jsx | Button.stories.tsx 
 
 export const Primary = Template.bind({});
 Primary.args = {
@@ -33,7 +33,7 @@ Primary.parameters = {
 We can set the parameters for all stories of a component using the `parameters` key on the default CSF export:
 
 ```js
-// Button.stories.js | Button.stories.ts
+// Button.stories.js | Button.stories.ts | Button.stories.jsx | Button.stories.tsx 
 
 import Button from './Button';
 

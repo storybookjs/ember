@@ -158,6 +158,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       path,
       refId,
       viewMode = props.docsMode ? 'docs' : 'story',
+      singleStory,
       storyId,
       docsMode,
       navigate,
@@ -168,7 +169,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       setState: (stateChange: Partial<State>, callback) => this.setState(stateChange, callback),
     });
 
-    const routeData = { location, path, viewMode, storyId, refId };
+    const routeData = { location, path, viewMode, singleStory, storyId, refId };
 
     // Initialize the state to be the initial (persisted) state of the store.
     // This gives the modules the chance to read the persisted state, apply their defaults

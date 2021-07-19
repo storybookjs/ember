@@ -275,7 +275,6 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
           className="modalInput"
           onBlur={this.onBlur}
           onFocus={this.onFocus(feature)}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           onKeyDown={this.onKeyDown}
           value={shortcut ? shortcutToHumanString(shortcut) : ''}

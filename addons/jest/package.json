@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-jest",
-  "version": "6.3.0-alpha.16",
+  "version": "6.4.0-alpha.18",
   "description": "React storybook addon that show component jest report",
   "keywords": [
     "addon",
@@ -12,7 +12,7 @@
     "unit-testing",
     "test"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/jest",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/jest",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -47,11 +47,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-alpha.16",
-    "@storybook/api": "6.3.0-alpha.16",
-    "@storybook/components": "6.3.0-alpha.16",
-    "@storybook/core-events": "6.3.0-alpha.16",
-    "@storybook/theming": "6.3.0-alpha.16",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "react-sizeme": "^3.0.1",
@@ -76,7 +76,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f09bb7bf0016bfbc2723f43b3e214e4a1c644843",
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Jest",
     "icon": "https://pbs.twimg.com/profile_images/821713465245102080/mMtKIMax_400x400.jpg",

@@ -20,7 +20,7 @@
 Let's get started with an example that combines markdown with a single story:
 
 ```md
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 import { Checkbox } from './Checkbox';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
@@ -79,7 +79,7 @@ There's a one-to-one mapping from the code in `MDX` to `CSF`, which in turn dire
 Now let's look at a more realistic example to see a few more things we can do:
 
 ```md
-import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import { Badge } from './Badge';
 import { Icon } from './Icon';
@@ -136,7 +136,7 @@ And here's how that gets rendered in Storybook:
 Suppose you have an existing story and want to embed it into your docs. Here's how to show a story with ID `some--id` (check the browser URL in Storybook v5+ to see a story's ID):
 
 ```md
-import { Story } from "@storybook/addon-docs/blocks";
+import { Story } from "@storybook/addon-docs";
 
 # Some header
 
