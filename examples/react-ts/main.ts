@@ -5,17 +5,7 @@ const config: StorybookConfig = {
   logLevel: 'debug',
   addons: [
     '@storybook/addon-essentials',
-    '@storybook/addon-controls',
     '@storybook/addon-storysource',
-    {
-      name: '@storybook/addon-docs',
-      options: {
-        sourceLoaderOptions: {
-          parser: 'typescript',
-          injectStoryParameters: false,
-        },
-      },
-    },
     '@storybook/addon-storyshots',
   ],
   typescript: {
