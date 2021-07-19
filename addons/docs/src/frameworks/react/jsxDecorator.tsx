@@ -118,11 +118,11 @@ export const renderJsx = (code: React.ReactElement, options: JSXOptions) => {
 
     if (string.indexOf('&quot;') > -1) {
       const matches = string.match(/\S+=\\"([^"]*)\\"/g);
-        if (matches) {
-          matches.forEach((match) => {
-            string = string.replace(match, match.replace(/&quot;/g, "'"));
-          });
-        }
+      if (matches) {
+        matches.forEach((match) => {
+          string = string.replace(match, match.replace(/&quot;/g, "'"));
+        });
+      }
     }
 
     return string;
