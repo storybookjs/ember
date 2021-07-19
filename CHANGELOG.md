@@ -1,3 +1,18 @@
+## 6.4.0-alpha.19 (July 19, 2021)
+
+### Features
+
+- Vue: Add support for tsx ([#11936](https://github.com/storybookjs/storybook/pull/11936))
+
+### Bug Fixes
+
+- CLI: Fix trailing comma handling for "-s" command line paramenter ([#15615](https://github.com/storybookjs/storybook/pull/15615))
+- Components: Lazy-load syntax highlighter ([#15607](https://github.com/storybookjs/storybook/pull/15607))
+
+### Maintenance
+
+- Examples: Fix react-ts to be runnable standalone ([#15621](https://github.com/storybookjs/storybook/pull/15621))
+
 ## 6.4.0-alpha.18 (July 16, 2021)
 
 ### Features
