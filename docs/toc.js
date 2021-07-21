@@ -152,6 +152,11 @@ module.exports = {
           title: 'Toolbars & globals',
           type: 'link',
         },
+        {
+          pathSegment: 'measure-and-outline',
+          title: 'Measure & Outline',
+          type: 'link',
+        },
       ],
     },
     {
