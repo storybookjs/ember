@@ -19,9 +19,9 @@ Storybook uses the `component` key in the story file’s default export to extra
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/my-component-story.js.mdx',
-]}
+  paths={[
+    'common/my-component-story.js.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
@@ -35,10 +35,10 @@ DocsPage has the concept of a "primary" component defined by the `component` par
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/button-group-story-subcomponents.js.mdx',
-'common/button-group-story-subcomponents.ts.mdx'
-]}
+  paths={[
+    'common/button-group-story-subcomponents.js.mdx',
+    'common/button-group-story-subcomponents.ts.mdx'
+  ]}
 />
 
 <!-- prettier-ignore-end -->
@@ -60,27 +60,24 @@ Override the `docs.page` [parameter](../writing-stories/parameters.md) with `nul
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/button-story-disable-docspage-component.js.mdx',
-]}
+  paths={[
+    'common/button-story-disable-docspage-component.js.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
 
 ### With MDX documentation
 
-Write your documentation in MDX and update the `docs.page` [parameter](../writing-stories/parameters.md) to display it. The `id` of reference follows the pattern: `category-title--name`, where:
-- `category`: is what comes **before** the `/` in your `title`
-- `title`: is the story title, which comes **after** the `/` in your `title`
-- `name`: is the story variant's name (the component name, for instance)
+Write your documentation in MDX and update the `docs.page` [parameter](../writing-stories/parameters.md) to display it. The `id` of reference follows the pattern: `group-subgroup-...--name`, where the `groups` and `subgroups` are defined as according to the [Grouping Documentation](https://storybook.js.org/docs/react/writing-stories/naming-components-and-hierarchy#grouping).
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/custom-docs-page.mdx.mdx',
-'common/button-story-docspage-with-mdx.js.mdx',
-]}
+  paths={[
+    'common/custom-docs-page.mdx.mdx',
+    'common/button-story-docspage-with-mdx.js.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
@@ -133,11 +130,11 @@ Finally write your custom React component and and update the `docs.page` [parame
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/custom-docs-page.js-component.js.mdx',
-'common/custom-docs-page.ts-component.ts.mdx',
-'common/button-story-docspage-with-custom-component.js.mdx',
-]}
+  paths={[
+    'common/custom-docs-page.js-component.js.mdx',
+    'common/custom-docs-page.ts-component.ts.mdx',
+    'common/button-story-docspage-with-custom-component.js.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
@@ -153,10 +150,10 @@ Here's an example of rebuilding DocsPage for the Button component using doc bloc
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/button-story-remix-docspage.js.mdx',
-'common/button-story-remix-docspage.ts.mdx',
-]}
+  paths={[
+    'common/button-story-remix-docspage.js.mdx',
+    'common/button-story-remix-docspage.ts.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
@@ -186,9 +183,9 @@ Here’s an example of how to render Vue stories inline. The following docs conf
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
-paths={[
-'common/storybook-preview-prepareforinline.js.mdx',
-]}
+  paths={[
+    'common/storybook-preview-prepareforinline.js.mdx',
+  ]}
 />
 
 <!-- prettier-ignore-end -->
