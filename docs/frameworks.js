@@ -30,6 +30,16 @@ module.exports = {
           supported: ['react', 'vue', 'angular', 'web-components', 'ember'],
           path: 'essentials/controls',
         },
+         {
+          name: 'Measure',
+          unsupported: [],
+          path: 'essentials/measure-and-outline#measure-addon',
+        },
+        {
+          name: 'Outline',
+          unsupported: [],
+          path: 'essentials/measure-and-outline#outline-addon',
+        },
       ],
     },
     {
