@@ -1,4 +1,4 @@
-import { document, window } from 'global';
+import global from 'global';
 import React, { FunctionComponent, useMemo, ComponentProps, useCallback, forwardRef } from 'react';
 
 import { Icons, WithTooltip, Spaced, TooltipLinkList } from '@storybook/components';
@@ -9,6 +9,8 @@ import { useStorybookApi } from '@storybook/api';
 import { MenuItemIcon } from './Menu';
 import { RefType } from './types';
 import { getStateType } from './utils';
+
+const { document, window: globalWindow } = global;
 
 export type ClickHandler = ComponentProps<typeof TooltipLinkList>['links'][number]['onClick'];
 export interface IndicatorIconProps {
@@ -31,8 +33,8 @@ const IndicatorPlacement = styled.aside(({ theme }) => ({
 }));
 
 const IndicatorClickTarget = styled.button(({ theme }) => ({
-  height: 21,
-  width: 21,
+  height: 20,
+  width: 20,
   padding: 0,
   margin: 0,
   display: 'flex',
@@ -56,8 +58,8 @@ const IndicatorClickTarget = styled.button(({ theme }) => ({
     borderColor: theme.color.secondary,
   },
   svg: {
-    height: 11,
-    width: 11,
+    height: 10,
+    width: 10,
     transition: 'all 150ms ease-out',
     color: 'inherit',
   },
@@ -200,7 +202,7 @@ export const RefIndicator = React.memo(
               </MessageWrapper>
             }
           >
-            <IndicatorClickTarget>
+            <IndicatorClickTarget data-action="toggle-indicator" aria-label="toggle indicator">
               <Icons icon="globe" />
             </IndicatorClickTarget>
           </WithTooltip>
@@ -235,7 +237,7 @@ const ReadyMessage: FunctionComponent<{
   componentCount: number;
   leafCount: number;
 }> = ({ url, componentCount, leafCount }) => (
-  <Message href={url} target="_blank">
+  <Message href={url.replace(/\/?$/, '/index.html')} target="_blank">
     <BlueIcon icon="globe" />
     <div>
       <MessageTitle>View external Storybook</MessageTitle>
@@ -249,7 +251,7 @@ const ReadyMessage: FunctionComponent<{
 const LoginRequiredMessage: FunctionComponent<RefType> = ({ loginUrl, id }) => {
   const open = useCallback((e) => {
     e.preventDefault();
-    const childWindow = window.open(loginUrl, `storybook_auth_${id}`, 'resizable,scrollbars');
+    const childWindow = globalWindow.open(loginUrl, `storybook_auth_${id}`, 'resizable,scrollbars');
 
     // poll for window to close
     const timer = setInterval(() => {
@@ -284,7 +286,7 @@ const ReadDocsMessage: FunctionComponent = () => (
 );
 
 const ErrorOccurredMessage: FunctionComponent<{ url: string }> = ({ url }) => (
-  <Message href={url} target="_blank">
+  <Message href={url.replace(/\/?$/, '/index.html')} target="_blank">
     <RedIcon icon="alert" />
     <div>
       <MessageTitle>Something went wrong</MessageTitle>
@@ -294,7 +296,7 @@ const ErrorOccurredMessage: FunctionComponent<{ url: string }> = ({ url }) => (
 );
 
 const LoadingMessage: FunctionComponent<{ url: string }> = ({ url }) => (
-  <Message href={url} target="_blank">
+  <Message href={url.replace(/\/?$/, '/index.html')} target="_blank">
     <BlueIcon icon="time" />
     <div>
       <MessageTitle>Please wait</MessageTitle>

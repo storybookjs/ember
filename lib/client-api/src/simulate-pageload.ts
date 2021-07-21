@@ -1,4 +1,6 @@
-import { document } from 'global';
+import global from 'global';
+
+const { document } = global;
 
 // https://html.spec.whatwg.org/multipage/scripting.html
 const runScriptTypes = [
@@ -82,15 +84,17 @@ export function simulatePageLoad($container: any) {
       const typeAttr = $script.getAttribute('type');
 
       // only run script tags without the type attribute
-      // or with a javascript mime attribute value
-      if (!typeAttr || !runScriptTypes.includes(typeAttr)) {
+      // or with a javascript mime attribute value from the list
+      if (!typeAttr || runScriptTypes.includes(typeAttr)) {
         scriptsToExecute.push((callback: any) => insertScript($script, callback, $scriptsRoot));
       }
     });
 
     // insert the script tags sequentially
     // to preserve execution order
-    insertScriptsSequentially(scriptsToExecute, simulateDOMContentLoaded, undefined);
+    if (scriptsToExecute.length) {
+      insertScriptsSequentially(scriptsToExecute, simulateDOMContentLoaded, undefined);
+    }
   } else {
     simulateDOMContentLoaded();
   }

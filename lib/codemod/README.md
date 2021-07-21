@@ -10,13 +10,13 @@ The preferred way to run these codemods is via the CLI's `migrate` command.
 To get a list of available codemods:
 
 ```
-npx -p @storybook/cli@next sb migrate --list
+npx sb migrate --list
 ```
 
 To run a codemod `<name-of-codemod>`:
 
 ```
-npx -p @storybook/cli@next sb migrate <name-of-codemod> --glob="**/*.stories.js"
+npx sb migrate <name-of-codemod> --glob="**/*.stories.js"
 ```
 
 ## Installation
@@ -227,7 +227,7 @@ story2.story = { name: 'second story' };
 Becomes:
 
 ```md
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 # Button
 
@@ -253,7 +253,7 @@ For example:
 ```js
 import React from 'react';
 import Button from './Button';
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 <Meta title='Button' />
 

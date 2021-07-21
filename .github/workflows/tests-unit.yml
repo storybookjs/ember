@@ -7,21 +7,15 @@ jobs:
     name: Core Unit Tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - uses: actions/checkout@v2
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: build-v2-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          build-v2-${{ env.cache-name }}-
-          build-v2-
-    - name: install, bootstrap
-      run: |
-        yarn bootstrap --core
-    - name: test
-      run: |
-        yarn test --core
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "12.x"
+          cache: yarn
+      - name: install, bootstrap
+        run: |
+          yarn install --immutable
+          yarn bootstrap --core
+      - name: test
+        run: |
+          yarn test --runInBand --ci

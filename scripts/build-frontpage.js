@@ -9,8 +9,8 @@ const { FRONTPAGE_WEBHOOK, FRONTPAGE_WEBHOOK_NEXT } = process.env;
 const branch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
 
 const branchToHook = {
-  master: FRONTPAGE_WEBHOOK,
-  'next': FRONTPAGE_WEBHOOK_NEXT,
+  main: FRONTPAGE_WEBHOOK,
+  next: FRONTPAGE_WEBHOOK_NEXT,
 };
 
 console.log('build-frontpage');

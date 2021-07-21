@@ -1,5 +1,7 @@
-import { document } from 'global';
+import global from 'global';
 import Button from './Button.svelte';
+
+const { document } = global;
 
 let target;
 let component;
@@ -8,7 +10,7 @@ describe('Button Component', () => {
   beforeEach(() => {
     target = document.createElement('div');
 
-    component = new Button.default({ target }); // eslint-disable-line new-cap
+    component = new Button({ target });
   });
 
   it('should render `text` property', () => {

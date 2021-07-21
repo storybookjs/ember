@@ -1,8 +1,8 @@
 {
   "name": "@storybook/ember",
-  "version": "6.1.0-alpha.22",
+  "version": "6.4.0-alpha.18",
   "description": "Storybook for Ember: Develop Ember Component in isolation with Hot Reloading.",
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/ember",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/ember",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -11,9 +11,21 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/ember"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/client/index.js",
-  "jsnext:main": "src/client/index.js",
+  "main": "dist/cjs/client/index.js",
+  "module": "dist/esm/client/index.js",
+  "types": "dist/ts3.9/client/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "bin": {
     "build-storybook": "./bin/build.js",
     "start-storybook": "./bin/index.js",
@@ -24,19 +36,22 @@
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@ember/test-helpers": "^1.7.0",
-    "@storybook/core": "6.1.0-alpha.22",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "regenerator-runtime": "^0.13.3",
-    "ts-dedent": "^1.1.1"
+    "@ember/test-helpers": "^2.1.4",
+    "@storybook/core": "6.4.0-alpha.18",
+    "@storybook/core-common": "6.4.0-alpha.18",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "read-pkg-up": "^7.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {
     "@babel/core": "*",
@@ -45,17 +60,11 @@
     "ember-source": "^3.16.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "062478198c765be53467ac3fee581e9f8a7f851f",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
-  }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/client/index.js"
 }

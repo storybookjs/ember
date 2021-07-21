@@ -15,6 +15,12 @@ import { SourceType } from '../shared';
 
 import { enhanceSource } from './enhanceSource';
 
+export enum SourceState {
+  OPEN = 'open',
+  CLOSED = 'closed',
+  NONE = 'none',
+}
+
 interface CommonProps {
   language?: string;
   dark?: boolean;
@@ -50,17 +56,25 @@ const getStoryContext = (storyId: StoryId, docsContext: DocsContextProps): Story
   return storyContext;
 };
 
+const getSourceState = (storyIds: string[], docsContext: DocsContextProps) => {
+  const states = storyIds
+    .map((storyId) => {
+      const storyContext = getStoryContext(storyId, docsContext);
+      if (!storyContext) return null;
+      return storyContext.parameters.docs?.source?.state;
+    })
+    .filter(Boolean);
+
+  if (states.length === 0) return SourceState.CLOSED;
+  // FIXME: handling multiple stories is a pain
+  return states[0];
+};
+
 const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): string => {
   const { sources } = sourceContext;
-
-  const source = sources?.[storyId];
-
-  if (!source) {
-    logger.warn(`Unable to find source for story ID '${storyId}'`);
-    return '';
-  }
-
-  return source;
+  // source rendering is async so source is unavailable at the start of the render cycle,
+  // so we fail gracefully here without warning
+  return sources?.[storyId] || '';
 };
 
 const getSnippet = (snippet: string, storyContext?: StoryContext): string => {
@@ -94,22 +108,26 @@ const getSnippet = (snippet: string, storyContext?: StoryContext): string => {
   return enhanced?.docs?.source?.code || '';
 };
 
+type SourceStateProps = { state: SourceState };
+
 export const getSourceProps = (
   props: SourceProps,
   docsContext: DocsContextProps,
   sourceContext: SourceContextProps
-): PureSourceProps => {
-  const { id: currentId } = docsContext;
+): PureSourceProps & SourceStateProps => {
+  const { id: currentId, parameters = {} } = docsContext;
 
   const codeProps = props as CodeProps;
   const singleProps = props as SingleSourceProps;
   const multiProps = props as MultiSourceProps;
 
   let source = codeProps.code; // prefer user-specified code
+
+  const targetId =
+    singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
+  const targetIds = multiProps.ids || [targetId];
+
   if (!source) {
-    const targetId =
-      singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
-    const targetIds = multiProps.ids || [targetId];
     source = targetIds
       .map((storyId) => {
         const storySource = getStorySource(storyId, sourceContext);
@@ -118,9 +136,21 @@ export const getSourceProps = (
       })
       .join('\n\n');
   }
+
+  const state = getSourceState(targetIds, docsContext);
+
+  const { docs: docsParameters = {} } = parameters;
+  const { source: sourceParameters = {} } = docsParameters;
+  const { language: docsLanguage = null } = sourceParameters;
+
   return source
-    ? { code: source, language: props.language || 'jsx', dark: props.dark || false }
-    : { error: SourceError.SOURCE_UNAVAILABLE };
+    ? {
+        code: source,
+        state,
+        language: props.language || docsLanguage || 'jsx',
+        dark: props.dark || false,
+      }
+    : { error: SourceError.SOURCE_UNAVAILABLE, state };
 };
 
 /**

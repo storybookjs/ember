@@ -1,12 +1,14 @@
 import { linkTo } from '@storybook/addon-links';
 import { Welcome } from '@storybook/react/demo';
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 
 <Meta
-  title='Welcome MDX'
+  title="Welcome MDX"
   parameters={{
     component: Welcome,
   }}
 />
 
-<Story name='to Storybook'><Welcome showApp={linkTo('Button')} /></Story>
+<Story name="to Storybook">
+  <Welcome showApp={linkTo('Button')} />
+</Story>

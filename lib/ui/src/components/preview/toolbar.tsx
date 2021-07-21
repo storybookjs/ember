@@ -1,10 +1,11 @@
-import React, { Fragment, useMemo, FunctionComponent, ReactElement } from 'react';
+import React, { Fragment, useMemo, FunctionComponent } from 'react';
 
 import { styled } from '@storybook/theming';
 
 import { FlexBar, IconButton, Icons, Separator, TabButton, TabBar } from '@storybook/components';
-import { Consumer, Combo, API, Story, Group, State } from '@storybook/api';
-import { Addon, types } from '@storybook/addons';
+import { Consumer, Combo, API, Story, Group, State, merge } from '@storybook/api';
+import { shortcutToHumanString } from '@storybook/api/shortcut';
+import { addons, Addon, types } from '@storybook/addons';
 
 import { Location, RenderData } from '@storybook/router';
 import { zoomTool } from './tools/zoom';
@@ -14,6 +15,7 @@ import * as S from './utils/components';
 import { PreviewProps } from './utils/types';
 import { copyTool } from './tools/copy';
 import { ejectTool } from './tools/eject';
+import { menuTool } from './tools/menu';
 
 export const getTools = (getFn: API['getElements']) => Object.values(getFn<Addon>(types.TOOL));
 
@@ -40,19 +42,21 @@ export const Toolbar = styled(Bar)(
 const fullScreenMapper = ({ api, state }: Combo) => ({
   toggle: api.toggleFullscreen,
   value: state.layout.isFullscreen,
+  shortcut: shortcutToHumanString(api.getShortcutKeys().fullScreen),
 });
 
 export const fullScreenTool: Addon = {
   title: 'fullscreen',
-  match: (p) => p.viewMode === 'story',
+  id: 'fullscreen',
+  match: (p) => ['story', 'docs'].includes(p.viewMode),
   render: () => (
     <Consumer filter={fullScreenMapper}>
-      {({ toggle, value }) => (
+      {({ toggle, value, shortcut }) => (
         <S.DesktopOnly>
           <IconButton
             key="full"
             onClick={toggle as any}
-            title={value ? 'Exit full screen' : 'Go full screen'}
+            title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
           >
             <Icons icon={value ? 'close' : 'expand'} />
           </IconButton>
@@ -72,6 +76,7 @@ const tabsMapper = ({ state }: Combo) => ({
 
 export const createTabsTool = (tabs: Addon[]): Addon => ({
   title: 'title',
+  id: 'title',
   render: () => (
     <Consumer filter={tabsMapper}>
       {(rp) => (
@@ -109,32 +114,22 @@ const useTools = (
   location: PreviewProps['location'],
   path: PreviewProps['path']
 ) => {
-  const toolsFromConfig = useMemo(() => {
-    return getTools(getElements);
-  }, [getElements]);
+  const toolsFromConfig = useMemo(() => getTools(getElements), [getElements]);
+  const toolsExtraFromConfig = useMemo(() => getToolsExtra(getElements), [getElements]);
 
-  const toolsExtraFromConfig = useMemo(() => {
-    return getToolsExtra(getElements);
-  }, [getElements]);
-
-  const tools = useMemo(() => {
-    return [...defaultTools, ...toolsFromConfig];
-  }, [defaultTools, toolsFromConfig]);
-
-  const toolsExtra = useMemo(() => {
-    return [...defaultToolsExtra, ...toolsExtraFromConfig];
-  }, [defaultToolsExtra, toolsExtraFromConfig]);
+  const tools = useMemo(() => [...defaultTools, ...toolsFromConfig], [
+    defaultTools,
+    toolsFromConfig,
+  ]);
+  const toolsExtra = useMemo(() => [...defaultToolsExtra, ...toolsExtraFromConfig], [
+    defaultToolsExtra,
+    toolsExtraFromConfig,
+  ]);
 
   return useMemo(() => {
-    if (story && story.parameters) {
-      return filterTools(tools, toolsExtra, tabs, {
-        viewMode,
-        story,
-        location,
-        path,
-      });
-    }
-    return { left: tools, right: toolsExtra };
+    return story && story.parameters
+      ? filterTools(tools, toolsExtra, tabs, { viewMode, story, location, path })
+      : { left: tools, right: toolsExtra };
   }, [viewMode, story, location, path, tools, toolsExtra, tabs]);
 };
 
@@ -144,42 +139,44 @@ export interface ToolData {
   api: API;
   story: Story | Group;
 }
-export const ToolRes: FunctionComponent<ToolData & RenderData> = ({
-  api,
-  story,
-  tabs,
-  isShown,
-  location,
-  path,
-  viewMode,
-}) => {
-  const { left, right } = useTools(api.getElements, tabs, viewMode, story, location, path);
 
-  return left || right ? (
-    <Toolbar key="toolbar" shown={isShown} border>
-      <Tools key="left" list={left} />
-      <Tools key="right" list={right} />
-    </Toolbar>
-  ) : null;
-};
+export const ToolRes: FunctionComponent<ToolData & RenderData> = React.memo<ToolData & RenderData>(
+  ({ api, story, tabs, isShown, location, path, viewMode }) => {
+    const { left, right } = useTools(api.getElements, tabs, viewMode, story, location, path);
 
-export const ToolbarComp: FunctionComponent<ToolData> = (p) => (
-  <Location>{(l) => <ToolRes {...l} {...p} />}</Location>
+    return left || right ? (
+      <Toolbar key="toolbar" shown={isShown} border>
+        <Tools key="left" list={left} />
+        <Tools key="right" list={right} />
+      </Toolbar>
+    ) : null;
+  }
 );
 
-export const Tools: FunctionComponent<{
-  list: Addon[];
-}> = ({ list }) =>
-  list.filter(Boolean).reduce((acc, { render: Render, id, ...t }, index) => {
-    // @ts-ignore
-    const key = id || t.key || `f-${index}`;
-    return (
-      <Fragment key={key}>
-        {acc}
-        <Render />
-      </Fragment>
-    );
-  }, null as ReactElement);
+export const ToolbarComp = React.memo<ToolData>((props) => (
+  <Location>
+    {({ location, path, viewMode }) => <ToolRes {...props} {...{ location, path, viewMode }} />}
+  </Location>
+));
+
+export const Tools = React.memo<{ list: Addon[] }>(({ list }) => (
+  <>
+    {list.filter(Boolean).map(({ render: Render, id, ...t }, index) => (
+      // @ts-ignore
+      <Render key={id || t.key || `f-${index}`} />
+    ))}
+  </>
+));
+
+function toolbarItemHasBeenExcluded(item: Partial<Addon>, story: PreviewProps['story']) {
+  const toolbarItemsFromStoryParameters =
+    'toolbar' in story.parameters ? story.parameters.toolbar : undefined;
+  const { toolbar: toolbarItemsFromAddonsConfig } = addons.getConfig();
+
+  const toolbarItems = merge(toolbarItemsFromAddonsConfig, toolbarItemsFromStoryParameters);
+
+  return toolbarItems ? !!toolbarItems[item.id]?.hidden : false;
+}
 
 export function filterTools(
   tools: Addon[],
@@ -197,8 +194,11 @@ export function filterTools(
     path: State['path'];
   }
 ) {
-  const tabsTool = createTabsTool(tabs);
-  const toolsLeft = [tabs.filter((p) => !p.hidden).length > 1 ? tabsTool : null, ...tools];
+  const toolsLeft = [
+    menuTool,
+    tabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(tabs),
+    ...tools,
+  ];
   const toolsRight = [...toolsExtra];
 
   const filter = (item: Partial<Addon>) =>
@@ -210,7 +210,8 @@ export function filterTools(
         viewMode,
         location,
         path,
-      }));
+      })) &&
+    !toolbarItemHasBeenExcluded(item, story);
 
   const left = toolsLeft.filter(filter);
   const right = toolsRight.filter(filter);

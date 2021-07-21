@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Title,
-  Subtitle,
-  Description,
-  Primary,
-  ArgsTable,
-  Stories,
-} from '@storybook/addon-docs/blocks';
+import { Title, Subtitle, Description, Primary, ArgsTable, Stories } from '@storybook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 import BaseButton from '../../components/BaseButton';
 import { ButtonGroup, SubGroup } from '../../components/ButtonGroup';

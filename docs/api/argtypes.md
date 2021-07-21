@@ -59,7 +59,7 @@ In this ArgTypes data structure, name, type, defaultValue, and description are s
 
 #### Manual specification
 
-If you want more control over the args table or any other aspect of using argTypes, you can overwrite the generated argTypes for you component on a per-arg basis. For instance, with the above inferred argTypes and the following default export:
+If you want more control over the args table or any other aspect of using argTypes, you can overwrite the generated argTypes for your component on a per-arg basis. For instance, with the above inferred argTypes and the following default export:
 
 <!-- prettier-ignore-start -->
 
@@ -84,6 +84,12 @@ These values--description, table.type, and controls.type--get merged over the de
 <!-- prettier-ignore-end -->
 
 In particular, this would render a row with a modified description, a type display with a dropdown that shows the detail, and no control.
+
+<div class="aside">
+
+As it happens with other properties such as `args`, `argTypes` can be overridden in a single story.
+
+</div>
 
 #### Using argTypes in addons
 

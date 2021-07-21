@@ -1,13 +1,10 @@
 import AngularSnapshotSerializer from 'jest-preset-angular/build/AngularSnapshotSerializer';
 import HTMLCommentSerializer from 'jest-preset-angular/build/HTMLCommentSerializer';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { TestBed } from '@angular/core/testing';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { addSerializer } from 'jest-specific-snapshot';
-import { initModuleData } from './helpers';
+import { getStorybookModuleMetadata } from '@storybook/angular/renderer';
+import { BehaviorSubject } from 'rxjs';
 
 addSerializer(HTMLCommentSerializer);
 addSerializer(AngularSnapshotSerializer);
@@ -15,18 +12,22 @@ addSerializer(AngularSnapshotSerializer);
 function getRenderedTree(story: any) {
   const currentStory = story.render();
 
-  const { moduleMeta, AppComponent } = initModuleData(currentStory);
-
-  TestBed.configureTestingModule(
-    // TODO: take a look at `bootstrap` because it looks it does not exists in TestModuleMetadata
+  const moduleMeta = getStorybookModuleMetadata(
     {
-      imports: [...moduleMeta.imports],
-      declarations: [...moduleMeta.declarations],
-      providers: [...moduleMeta.providers],
-      schemas: [NO_ERRORS_SCHEMA, ...moduleMeta.schemas],
-      bootstrap: [...moduleMeta.bootstrap],
-    } as any
+      storyFnAngular: currentStory,
+      parameters: story.parameters,
+      // TODO : To change with the story Id in v7. Currently keep with static id to avoid changes in snapshots
+      targetSelector: 'storybook-wrapper',
+    },
+    new BehaviorSubject(currentStory.props)
   );
+
+  TestBed.configureTestingModule({
+    imports: [...moduleMeta.imports],
+    declarations: [...moduleMeta.declarations],
+    providers: [...moduleMeta.providers],
+    schemas: [...moduleMeta.schemas],
+  });
 
   TestBed.overrideModule(BrowserDynamicTestingModule, {
     set: {
@@ -35,10 +36,11 @@ function getRenderedTree(story: any) {
   });
 
   return TestBed.compileComponents().then(() => {
-    const tree = TestBed.createComponent(AppComponent);
+    const tree = TestBed.createComponent(moduleMeta.bootstrap[0] as any);
     tree.detectChanges();
 
-    return tree;
+    // Empty componentInstance remove attributes of the internal main component (<storybook-wrapper>) in snapshot
+    return { ...tree, componentInstance: {} };
   });
 }
 

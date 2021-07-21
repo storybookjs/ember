@@ -28,11 +28,15 @@ The usage is documented in the [documentation](https://storybook.js.org/docs/rea
 
 ## FAQs
 
-- [How will this replace addon-knobs?](#how-will-this-replace-addon-knobs)
-- [How do I migrate from addon-knobs?](#how-do-i-migrate-from-addon-knobs)
-- [My controls aren't being auto-generated. What should I do?](#my-controls-arent-being-auto-generated-what-should-i-do)
-- [How can I disable controls for certain fields on a particular story?](#how-can-i-disable-controls-for-certain-fields-on-a-particular-story)
-- [How do controls work with MDX?](#how-do-controls-work-with-mdx)
+- [Storybook Controls Addon](#storybook-controls-addon)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [FAQs](#faqs)
+    - [How will this replace addon-knobs?](#how-will-this-replace-addon-knobs)
+    - [How do I migrate from addon-knobs?](#how-do-i-migrate-from-addon-knobs)
+    - [My controls aren't being auto-generated. What should I do?](#my-controls-arent-being-auto-generated-what-should-i-do)
+    - [How can I disable controls for certain fields on a particular story?](#how-can-i-disable-controls-for-certain-fields-on-a-particular-story)
+    - [How do controls work with MDX?](#how-do-controls-work-with-mdx)
 
 ### How will this replace addon-knobs?
 
@@ -40,11 +44,11 @@ Addon-knobs is one of Storybook's most popular addons with over 1M weekly downlo
 
 Therefore, rather than deprecating addon-knobs immediately, we will continue to release knobs with the Storybook core distribution until 7.0. This will give us time to improve Controls based on user feedback, and also give knobs users ample time to migrate.
 
-If you are somehow tied to knobs or prefer the knobs interface, we are happy to take on maintainers for the knobs project. If this interests you, hop on our [Discord](https://discord.gg/UUt2PJb).
+If you are somehow tied to knobs or prefer the knobs interface, we are happy to take on maintainers for the knobs project. If this interests you, hop on our [Discord](https://discord.gg/storybook).
 
 ### How do I migrate from addon-knobs?
 
-If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/master/addons/knobs) you should consider migrating to Controls.
+If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/main/addons/knobs) you should consider migrating to Controls.
 
 You're probably using it for something that can be satisfied by one of the cases [described above](#writing-stories).
 
@@ -73,16 +77,15 @@ Basic.args = { label: 'hello' };
 Similarly, we can also consider a story that uses knob inputs to change its behavior:
 
 ```jsx
-import range from 'lodash/range';
 import { number, text } from '@storybook/addon-knobs';
 
 export const Reflow = () => {
   const count = number('Count', 10, { min: 0, max: 100, range: true });
-  const label = number('Label', 'reflow');
+  const label = text('Label', 'reflow');
   return (
     <>
-      {range(count).map((i) => (
-        <Button label={`button ${i}`} />
+      {[...Array(count)].map((_, i) => (
+        <Button key={i} label={`button ${i}`} />
       ))}
     </>
   );
@@ -93,11 +96,26 @@ And again, as above, this can be rewritten using [fully custom args](https://sto
 
 ```jsx
 export const Reflow = ({ count, label, ...args }) => (
-  <>{range(count).map((i) => <Button label={`${label} ${i}` {...args}} />)}</>
+  <>
+    {[...Array(count)].map((_, i) => (
+      <Button key={i} label={`${label} ${i}`} {...args} />
+    ))}
+  </>
 );
-Reflow.args = { count: 3, label: 'reflow' };
+
+Reflow.args = {
+  count: 3,
+  label: 'reflow',
+};
+
 Reflow.argTypes = {
-  count: { control: { type: 'range', min: 0, max: 20 } }
+  count: {
+    control: {
+      type: 'range',
+      min: 0,
+      max: 20,
+    },
+  },
 };
 ```
 
@@ -117,11 +135,12 @@ export default {
   title: 'Button',
   argTypes: {
     label: { control: 'text' },
-    borderWidth: { control: { type: 'number', min: 0, max: 10 }},
+    borderWidth: { control: { type: 'number', min: 0, max: 10 } },
   },
 };
 
 export const Basic = (args) => <Button {...args} />;
+
 Basic.args = {
   label: 'hello',
   borderWidth: 1,
@@ -179,7 +198,7 @@ Basic.args = { label: 'hello', background: '#ff0' };
 Here's the MDX equivalent:
 
 ```jsx
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 import { Button } from './Button';
 
 <Meta title="Button" component={Button} argTypes={{ background: { control: 'color' } }} />

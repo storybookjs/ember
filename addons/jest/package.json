@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-jest",
-  "version": "6.1.0-alpha.22",
+  "version": "6.4.0-alpha.18",
   "description": "React storybook addon that show component jest report",
   "keywords": [
     "addon",
@@ -9,9 +9,10 @@
     "report",
     "results",
     "storybook",
-    "unit-testing"
+    "unit-testing",
+    "test"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/jest",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/jest",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -20,46 +21,68 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/jest"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "author": "Renaud Tertrais <renaud.tertrais@gmail.com> (https://github.com/renaudtertrais)",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.1.0-alpha.22",
-    "@storybook/api": "6.1.0-alpha.22",
-    "@storybook/components": "6.1.0-alpha.22",
-    "@storybook/core-events": "6.1.0-alpha.22",
-    "@storybook/theming": "6.1.0-alpha.22",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-sizeme": "^2.5.2",
-    "regenerator-runtime": "^0.13.3",
-    "upath": "^1.1.0"
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "react-sizeme": "^3.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "upath": "^1.2.0"
   },
   "devDependencies": {
-    "@types/webpack-env": "^1.15.2"
+    "@types/webpack-env": "^1.16.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "062478198c765be53467ac3fee581e9f8a7f851f",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "sbmodern": "dist/modern/index.js",
+  "storybook": {
+    "displayName": "Jest",
+    "icon": "https://pbs.twimg.com/profile_images/821713465245102080/mMtKIMax_400x400.jpg",
+    "unsupportedFrameworks": [
+      "react-native"
+    ]
   }
 }

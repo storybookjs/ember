@@ -1,7 +1,10 @@
 import { styled, Color, Theme } from '@storybook/theming';
 import { Icons } from '@storybook/components';
-import { DOCS_MODE } from 'global';
+import global from 'global';
+import { transparentize } from 'polished';
 import React, { FunctionComponent, ComponentProps } from 'react';
+
+const { DOCS_MODE } = global;
 
 export const CollapseIcon = styled.span<{ isExpanded: boolean }>(({ theme, isExpanded }) => ({
   display: 'inline-block',
@@ -10,9 +13,10 @@ export const CollapseIcon = styled.span<{ isExpanded: boolean }>(({ theme, isExp
   marginTop: 6,
   marginLeft: 8,
   marginRight: 5,
+  color: transparentize(0.4, theme.color.mediumdark),
   borderTop: '3px solid transparent',
   borderBottom: '3px solid transparent',
-  borderLeft: `3px solid ${theme.color.mediumdark}99`,
+  borderLeft: `3px solid`,
   transform: isExpanded ? 'rotateZ(90deg)' : 'none',
   transition: 'transform .1s ease-out',
 }));
@@ -41,9 +45,9 @@ const TypeIcon = styled(Icons)(
     marginRight: 5,
     flex: '0 0 auto',
   },
-  ({ theme, icon }) => {
+  ({ theme, icon, symbol = icon }) => {
     const colors = theme.base === 'dark' ? iconColors.dark : iconColors.light;
-    const color = colors[icon as keyof typeof colors];
+    const color = colors[symbol as keyof typeof colors];
     return { color: isColor(theme, color) ? theme.color[color] : color };
   }
 );
@@ -52,9 +56,8 @@ const BranchNode = styled.button<{
   depth?: number;
   isExpandable?: boolean;
   isExpanded?: boolean;
-  isHighlighted?: boolean;
   isComponent?: boolean;
-}>(({ theme, depth = 0, isExpandable = false, isHighlighted = false }) => ({
+}>(({ theme, depth = 0, isExpandable = false }) => ({
   width: '100%',
   border: 'none',
   cursor: 'pointer',
@@ -65,50 +68,37 @@ const BranchNode = styled.button<{
   paddingLeft: `${(isExpandable ? 2 : 18) + depth * 16}px`,
   color: 'inherit',
   fontSize: `${theme.typography.size.s2 - 1}px`,
-  background: isHighlighted ? `${theme.color.secondary}22` : 'transparent',
+  background: 'transparent',
   '&:hover, &:focus': {
-    background: isHighlighted ? `${theme.color.secondary}22` : theme.background.hoverable,
+    background: theme.background.hoverable,
     outline: 'none',
   },
 }));
 
-const LeafNode = styled.a<{
-  depth?: number;
-  isSelected?: boolean;
-  isHighlighted?: boolean;
-}>(
-  ({ theme, isSelected = false, isHighlighted = false }) => {
-    if (isSelected)
-      return {
-        color: theme.color.lightest,
-        background: theme.color.secondary,
-        fontWeight: theme.typography.weight.bold,
-        '&:hover, &:focus': { background: theme.color.secondary },
-        svg: { color: theme.color.lightest },
-      };
-    if (isHighlighted)
-      return {
-        color: theme.color.defaultText,
-        background: `${theme.color.secondary}22`,
-        '&:hover, &:focus': { background: `${theme.color.secondary}22` },
-      };
-    return {
-      color: theme.color.defaultText,
-      background: 'transparent',
-      '&:hover, &:focus': { background: theme.background.hoverable },
-    };
+const LeafNode = styled.a<{ depth?: number }>(({ theme, depth = 0 }) => ({
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'start',
+  padding: 3,
+  paddingLeft: `${18 + depth * 16}px`,
+  fontSize: `${theme.typography.size.s2 - 1}px`,
+  textDecoration: 'none',
+  color: theme.color.defaultText,
+  background: 'transparent',
+  '&:hover, &:focus': {
+    outline: 'none',
+    background: theme.background.hoverable,
   },
-  ({ theme, depth = 0 }) => ({
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'start',
-    padding: 3,
-    paddingLeft: `${18 + depth * 16}px`,
-    fontSize: `${theme.typography.size.s2 - 1}px`,
-    textDecoration: 'none',
-    '&:hover, &:focus': { outline: 'none' },
-  })
-);
+  '&[data-selected="true"]': {
+    color: theme.color.lightest,
+    background: theme.color.secondary,
+    fontWeight: theme.typography.weight.bold,
+    '&:hover, &:focus': {
+      background: theme.color.secondary,
+    },
+    svg: { color: theme.color.lightest },
+  },
+}));
 
 export const Path = styled.span(({ theme }) => ({
   display: 'grid',
@@ -134,15 +124,17 @@ export const Path = styled.span(({ theme }) => ({
   },
 }));
 
-export const RootNode = styled.span(({ theme }) => ({
+export const RootNode = styled.div(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  margin: '15px 20px 5px 20px',
-  minHeight: 21,
+  padding: '0 20px',
+  marginTop: 16,
+  marginBottom: 4,
   fontSize: `${theme.typography.size.s1 - 1}px`,
   fontWeight: theme.typography.weight.black,
-  lineHeight: '15px',
+  lineHeight: '16px',
+  minHeight: 20,
   letterSpacing: '0.35em',
   textTransform: 'uppercase',
   color: theme.color.mediumdark,
@@ -153,7 +145,7 @@ export const GroupNode: FunctionComponent<
 > = React.memo(({ children, isExpanded = false, isExpandable = false, ...props }) => (
   <BranchNode isExpandable={isExpandable} tabIndex={-1} {...props}>
     {isExpandable ? <CollapseIcon isExpanded={isExpanded} /> : null}
-    <TypeIcon icon="folder" color="primary" />
+    <TypeIcon symbol="folder" color="primary" />
     {children}
   </BranchNode>
 ));
@@ -162,7 +154,7 @@ export const ComponentNode: FunctionComponent<ComponentProps<typeof BranchNode>>
   ({ theme, children, isExpanded, isExpandable, ...props }) => (
     <BranchNode isExpandable={isExpandable} tabIndex={-1} {...props}>
       {isExpandable && <CollapseIcon isExpanded={isExpanded} />}
-      <TypeIcon icon="component" color="secondary" />
+      <TypeIcon symbol="component" color="secondary" />
       {children}
     </BranchNode>
   )
@@ -171,7 +163,7 @@ export const ComponentNode: FunctionComponent<ComponentProps<typeof BranchNode>>
 export const DocumentNode: FunctionComponent<ComponentProps<typeof LeafNode>> = React.memo(
   ({ theme, children, ...props }) => (
     <LeafNode tabIndex={-1} {...props}>
-      <TypeIcon icon="document" />
+      <TypeIcon symbol="document" />
       {children}
     </LeafNode>
   )
@@ -180,7 +172,7 @@ export const DocumentNode: FunctionComponent<ComponentProps<typeof LeafNode>> = 
 export const StoryNode: FunctionComponent<ComponentProps<typeof LeafNode>> = React.memo(
   ({ theme, children, ...props }) => (
     <LeafNode tabIndex={-1} {...props}>
-      <TypeIcon icon="bookmarkhollow" />
+      <TypeIcon symbol="bookmarkhollow" />
       {children}
     </LeafNode>
   )

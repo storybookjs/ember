@@ -2,16 +2,12 @@ import path from 'path';
 import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
 
-import { DllReferencePlugin } from 'webpack';
-
 // @ts-ignore
-import createCompiler from '../../mdx/mdx-compiler-plugin';
+import { createCompiler } from '@storybook/csf-tools/mdx';
 
-const coreDirName = path.dirname(require.resolve('@storybook/core/package.json'));
-// TODO: improve node_modules detection
-const context = coreDirName.includes('node_modules')
-  ? path.join(coreDirName, '../../') // Real life case, already in node_modules
-  : path.join(coreDirName, '../../node_modules'); // SB Monorepo
+const resolvedBabelLoader = require.resolve('babel-loader', {
+  paths: [require.resolve('@storybook/builder-webpack4')], // FIXME!!!
+});
 
 // for frameworks that are not working with react, we need to configure
 // the jsx to transpile mdx, for now there will be a flag for that
@@ -37,10 +33,6 @@ function createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }: Bab
     plugins,
   };
 }
-
-export const webpackDlls = (dlls: string[], options: any) => {
-  return options.dll ? [...dlls, './sb_dll/storybook_docs_dll.js'] : [];
-};
 
 export function webpack(webpackConfig: any = {}, options: any = {}) {
   const { module = {} } = webpackConfig;
@@ -78,7 +70,7 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
         test: /\.md$/,
         use: [
           {
-            loader: require.resolve('babel-loader'),
+            loader: resolvedBabelLoader,
             options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
           },
           {
@@ -101,7 +93,7 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
           include: new RegExp(`node_modules\\${path.sep}acorn-jsx`),
           use: [
             {
-              loader: require.resolve('babel-loader'),
+              loader: resolvedBabelLoader,
               options: {
                 presets: [[require.resolve('@babel/preset-env'), { modules: 'commonjs' }]],
               },
@@ -109,10 +101,10 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
           ],
         },
         {
-          test: /\.(stories|story).mdx$/,
+          test: /(stories|story)\.mdx$/,
           use: [
             {
-              loader: require.resolve('babel-loader'),
+              loader: resolvedBabelLoader,
               options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
             },
             {
@@ -126,10 +118,10 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
         },
         {
           test: /\.mdx$/,
-          exclude: /\.(stories|story).mdx$/,
+          exclude: /(stories|story)\.mdx$/,
           use: [
             {
-              loader: require.resolve('babel-loader'),
+              loader: resolvedBabelLoader,
               options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
             },
             {
@@ -143,29 +135,5 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
     },
   };
 
-  if (options.dll) {
-    result.plugins.push(
-      new DllReferencePlugin({
-        context,
-        manifest: require.resolve('@storybook/core/dll/storybook_docs-manifest.json'),
-      })
-    );
-  }
-
   return result;
-}
-
-export function managerEntries(entry: any[] = [], options: any) {
-  return [...entry, require.resolve('../../register')];
-}
-
-export function config(entry: any[] = [], options: any = {}) {
-  const { framework } = options;
-  const docsConfig = [require.resolve('./config')];
-  try {
-    docsConfig.push(require.resolve(`../${framework}/config`));
-  } catch (err) {
-    // there is no custom config for the user's framework, do nothing
-  }
-  return [...docsConfig, ...entry];
 }

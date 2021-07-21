@@ -13,7 +13,7 @@ The actions addon is used to display data received by event handler (callback) a
 
 ## Action args
 
-Actions works via supplying special Storybook-generated “action” arguments (referred to as "args" for short) to your stories. There are two ways to get an action arg:
+Actions work via supplying special Storybook-generated “action” arguments (referred to as "args" for short) to your stories. There are two ways to get an action arg:
 
 ### Action argType annotation
 
@@ -24,6 +24,7 @@ You can use [argTypes](../api/argtypes.md) to tell Storybook that an arg to your
 <CodeSnippets
   paths={[
     'common/button-story-onclick-action-argtype.js.mdx',
+    'common/button-story-onclick-action-argtype.mdx.mdx',
   ]}
 />
 
@@ -42,6 +43,7 @@ Another option is to use a parameter to match all [argTypes](../api/argtypes.md)
 <CodeSnippets
   paths={[
     'common/button-story-matching-argtypes.js.mdx',
+    'common/button-story-matching-argtypes.mdx.mdx',
   ]}
 />
 
@@ -62,6 +64,7 @@ It is also possible to detect if your component is emitting the correct HTML eve
 <CodeSnippets
   paths={[
     'common/button-story-action-event-handle.js.mdx',
+    'common/button-story-action-event-handle.mdx.mdx',
   ]}
 />
 

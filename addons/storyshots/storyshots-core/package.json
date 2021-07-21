@@ -1,12 +1,13 @@
 {
   "name": "@storybook/addon-storyshots",
-  "version": "6.1.0-alpha.22",
-  "description": "StoryShots is a Jest Snapshot Testing Addon for Storybook.",
+  "version": "6.4.0-alpha.18",
+  "description": "Take a code snapshot of every story automatically with Jest",
   "keywords": [
     "addon",
-    "storybook"
+    "storybook",
+    "test"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/storyshots/storyshots-core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -15,15 +16,26 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/storyshots/storyshots-core"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/ts3.9/index.js",
+  "module": "dist/ts3.9/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "build-storybook": "build-storybook",
@@ -32,57 +44,119 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "@jest/transform": "^26.0.0",
-    "@storybook/addons": "6.1.0-alpha.22",
-    "@storybook/client-api": "6.1.0-alpha.22",
-    "@storybook/core": "6.1.0-alpha.22",
-    "@types/glob": "^7.1.1",
-    "@types/jest": "^25.1.1",
+    "@jest/transform": "^26.6.2",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/client-api": "6.4.0-alpha.18",
+    "@storybook/core": "6.4.0-alpha.18",
+    "@storybook/core-common": "6.4.0-alpha.18",
+    "@types/glob": "^7.1.3",
+    "@types/jest": "^26.0.16",
     "@types/jest-specific-snapshot": "^0.5.3",
     "babel-plugin-require-context-hook": "^1.0.0",
-    "core-js": "^3.0.1",
-    "glob": "^7.1.3",
-    "global": "^4.3.2",
+    "core-js": "^3.8.2",
+    "glob": "^7.1.6",
+    "global": "^4.4.0",
     "jest-specific-snapshot": "^4.0.0",
-    "pretty-format": "^26.4.0",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-test-renderer": "^16.8.3",
-    "read-pkg-up": "^7.0.0",
-    "regenerator-runtime": "^0.13.3",
-    "ts-dedent": "^1.1.1"
+    "preact-render-to-string": "^5.1.19",
+    "pretty-format": "^26.6.2",
+    "react-test-renderer": "^16.8.0 || ^17.0.0",
+    "read-pkg-up": "^7.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "6.1.0-alpha.22",
-    "@storybook/react": "6.1.0-alpha.22",
-    "babel-loader": "^8.0.6",
+    "@angular/core": "^11.2.0",
+    "@angular/platform-browser-dynamic": "^11.2.0",
+    "@storybook/addon-docs": "6.4.0-alpha.18",
+    "@storybook/angular": "6.4.0-alpha.18",
+    "@storybook/react": "6.4.0-alpha.18",
+    "@storybook/vue": "6.4.0-alpha.18",
+    "@storybook/vue3": "6.4.0-alpha.18",
+    "babel-loader": "^8.2.2",
     "enzyme": "^3.11.0",
-    "enzyme-to-json": "^3.4.1",
-    "jest-emotion": "^10.0.17",
-    "jest-preset-angular": "^8.2.0",
-    "jest-vue-preprocessor": "^1.5.0"
+    "enzyme-to-json": "^3.6.1",
+    "jest-emotion": "^10.0.32",
+    "jest-preset-angular": "^8.3.2",
+    "jest-vue-preprocessor": "^1.7.1",
+    "rxjs": "^6.6.3",
+    "vue-jest": "^5.0.0-alpha.8"
   },
   "peerDependencies": {
+    "@angular/core": ">=6.0.0",
+    "@angular/platform-browser-dynamic": ">=6.0.0",
+    "@storybook/angular": "*",
+    "@storybook/react": "*",
+    "@storybook/vue": "*",
+    "@storybook/vue3": "*",
+    "jest": "*",
     "jest-preset-angular": "*",
-    "jest-vue-preprocessor": "*"
+    "jest-vue-preprocessor": "*",
+    "preact": "^10.5.13",
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0",
+    "rxjs": "*",
+    "svelte": "*",
+    "vue": "*",
+    "vue-jest": "*"
   },
   "peerDependenciesMeta": {
+    "@angular/core": {
+      "optional": true
+    },
+    "@angular/platform-browser-dynamic": {
+      "optional": true
+    },
+    "@storybook/angular": {
+      "optional": true
+    },
+    "@storybook/react": {
+      "optional": true
+    },
+    "@storybook/vue": {
+      "optional": true
+    },
+    "@storybook/vue3": {
+      "optional": true
+    },
     "jest-preset-angular": {
       "optional": true
     },
     "jest-vue-preprocessor": {
+      "optional": true
+    },
+    "preact": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "rxjs": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    },
+    "vue-jest": {
       "optional": true
     }
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "062478198c765be53467ac3fee581e9f8a7f851f",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "storybook": {
+    "displayName": "Storyshots",
+    "icon": "https://user-images.githubusercontent.com/263385/101991676-48cdf300-3c7c-11eb-8aa1-944dab6ab29b.png",
+    "unsupportedFrameworks": [
+      "ember",
+      "mithril",
+      "marko"
+    ]
   }
 }
