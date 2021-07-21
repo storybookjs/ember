@@ -19,6 +19,7 @@ import {
   interpolate,
   Options,
   hasDotenv,
+  NormalizedStoriesEntry,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -107,7 +108,13 @@ export default async ({
     const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
     virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
       // Make sure we also replace quotes for this one
-      .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
+      .replace(
+        "'{{stories}}'",
+        stories
+          .map((s: NormalizedStoriesEntry) => s.glob)
+          .map(toRequireContextString)
+          .join(',')
+      );
   }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
@@ -129,7 +136,6 @@ export default async ({
       logging: 'error',
     },
     watchOptions: {
-      aggregateTimeout: 10,
       ignored: /node_modules/,
     },
     ignoreWarnings: [
@@ -156,6 +162,7 @@ export default async ({
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
             FEATURES: features,
+            STORIES: stories,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -210,6 +217,7 @@ export default async ({
       runtimeChunk: true,
       sideEffects: true,
       usedExports: true,
+      moduleIds: 'named',
       minimizer: isProd
         ? [
             new TerserWebpackPlugin({

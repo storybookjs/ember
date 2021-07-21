@@ -12,10 +12,10 @@
 - Add to your `.storybook/preview.js`
 
   ```js
-  import { setCustomElements } from '@storybook/web-components';
+  import { setCustomElementsManifest } from '@storybook/web-components';
   import customElements from '../custom-elements.json';
 
-  setCustomElements(customElements);
+  setCustomElementsManifest(customElements);
   ```
 
 - Add to your story files
@@ -33,8 +33,12 @@ In order to get [Props tables](..docs/../../docs/props-tables.md) documentation 
 
 You can hand write it or better generate it. Depending on the web components sugar you are choosing your milage may vary.
 
-Known analyzers that output `custom-elements.json`:
+Known analyzers that output `custom-elements.json` v1.0.0:
 
+- [@custom-elements-manifest/analyzer](https://github.com/open-wc/custom-elements-manifest)
+  - Supports Vanilla, LitElement, FASTElement, Stencil, Catalyst, Atomico
+
+Known analyzers that output older versions of `custom-elements.json`:
 - [web-component-analyzer](https://github.com/runem/web-component-analyzer)
   - Supports LitElement, Polymer, Vanilla, (Stencil)
 - [stenciljs](https://stenciljs.com/)
@@ -53,22 +57,51 @@ The file looks something like this:
 
 ```json
 {
-  "version": 2,
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "demo-wc-card",
-      "properties": [
+      "kind": "javascript-module",
+      "path": "src/my-element.js",
+      "declarations": [
         {
-          "name": "header",
-          "type": "String",
-          "attribute": "header",
-          "description": "Shown at the top of the card",
-          "default": "Your Message"
+          "kind": "class",
+          "description": "",
+          "name": "MyElement",
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "method",
+              "name": "fire"
+            }
+          ],
+          "events": [
+            {
+              "name": "disabled-changed",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "my-element"
         }
       ],
-      "events": [],
-      "slots": [],
-      "cssProperties": []
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "my-element",
+          "declaration": {
+            "name": "MyElement",
+            "module": "src/my-element.js"
+          }
+        }
+      ]
     }
   ]
 }

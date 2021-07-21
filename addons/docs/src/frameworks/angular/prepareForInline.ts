@@ -1,5 +1,6 @@
 import React from 'react';
 import pLimit from 'p-limit';
+import { nanoid } from 'nanoid';
 
 import { IStory, StoryContext } from '@storybook/angular';
 import { rendererFactory } from '@storybook/angular/renderer';
@@ -18,7 +19,7 @@ export const prepareForInline = (storyFn: StoryFn<IStory>, { id, parameters }: S
       }
 
       return limit(async () => {
-        const renderer = await rendererFactory.getRendererInstance(id, node);
+        const renderer = await rendererFactory.getRendererInstance(`${id}-${nanoid(10)}`, node);
         await renderer.render({
           forced: false,
           parameters,

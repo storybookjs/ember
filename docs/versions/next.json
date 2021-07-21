@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.4","info":{"plain":"### Bug Fixes\n\n- Actions: Don't override existing action args ([#15394](https://github.com/storybookjs/storybook/pull/15394))"}}
+{"version":"6.4.0-alpha.18","info":{"plain":"### Features\n\n- UI: Allow keyboard shortcut to copy code in preview blocks ([#15559](https://github.com/storybookjs/storybook/pull/15559))\n\n### Maintenance\n\n- Avoid slow regex.match call in renderJsx ([#15581](https://github.com/storybookjs/storybook/pull/15581))"}}

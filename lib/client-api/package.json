@@ -1,11 +1,11 @@
 {
   "name": "@storybook/client-api",
-  "version": "6.4.0-alpha.4",
+  "version": "6.4.0-alpha.18",
   "description": "Storybook Client API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/client-api",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/client-api",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -40,11 +40,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.4",
-    "@storybook/channel-postmessage": "6.4.0-alpha.4",
-    "@storybook/channels": "6.4.0-alpha.4",
-    "@storybook/client-logger": "6.4.0-alpha.4",
-    "@storybook/core-events": "6.4.0-alpha.4",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/channel-postmessage": "6.4.0-alpha.18",
+    "@storybook/channels": "6.4.0-alpha.18",
+    "@storybook/client-logger": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
     "@storybook/csf": "0.0.1",
     "@types/qs": "^6.9.5",
     "@types/webpack-env": "^1.16.0",
@@ -66,6 +66,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0feb4147b27a31982db054a4fc5954515d506f7d",
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
   "sbmodern": "dist/modern/index.js"
 }

@@ -1,13 +1,13 @@
 {
   "name": "@storybook/addon-actions",
-  "version": "6.4.0-alpha.4",
+  "version": "6.4.0-alpha.18",
   "description": "Get UI feedback when an action is performed on an interactive element",
   "keywords": [
     "storybook",
     "essentials",
     "data-state"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/actions",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/actions",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -41,12 +41,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.4",
-    "@storybook/api": "6.4.0-alpha.4",
-    "@storybook/client-api": "6.4.0-alpha.4",
-    "@storybook/components": "6.4.0-alpha.4",
-    "@storybook/core-events": "6.4.0-alpha.4",
-    "@storybook/theming": "6.4.0-alpha.4",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/client-api": "6.4.0-alpha.18",
+    "@storybook/components": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/theming": "6.4.0-alpha.18",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",
     "global": "^4.4.0",
@@ -78,7 +78,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0feb4147b27a31982db054a4fc5954515d506f7d",
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Actions",

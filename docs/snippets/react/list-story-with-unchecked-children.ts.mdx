@@ -1,9 +1,11 @@
 ```ts
-// List.stories.tsx
+// List.stories.ts | List.stories.tsx
 
 import React from 'react';
 
 import { List, ListProps } from './List';
+
+//👇 Instead of importing ListItem, we import the stories
 import { Unchecked } from './ListItem.stories';
 
 const Template: Story<ListProps> = (args) => <List {...args} />;

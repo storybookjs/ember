@@ -228,8 +228,15 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
 
       updated[id] = { ...ref, ...data };
 
+      /* eslint-disable no-param-reassign */
+      const ordered = Object.keys(initialState).reduce((obj: any, key) => {
+        obj[key] = updated[key];
+        return obj;
+      }, {});
+      /* eslint-enable no-param-reassign */
+
       store.setState({
-        refs: updated,
+        refs: ordered,
       });
     },
   };

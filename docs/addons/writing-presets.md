@@ -66,6 +66,20 @@ For example, here is how Storybook automatically adopts `create-react-app`'s con
 - `webpackFinal` is applied to the preview config after all user presets have been applied
 - `managerWebpack` is applied to the manager config
 
+As of Storybook 6.3, Storybook can run with either `webpack4` or `webpack5` builder. If your addon needs to know which version of Webpack it's running inside, the version and the actual webpack instance itself are both available inside your preset:
+
+```js
+// .storybook/main.js
+
+export function webpackFinal(config, { presets }) {
+  const version = await presets.apply('webpackVersion');
+  const instance = (await presets.apply('webpackInstance'))?.default;
+
+  logger.info(`=> Running in webpack ${version}: ${instance}`);
+  return config;
+}
+```
+
 ### Manager entries
 
 The addon config `managerEntries` allows you to add addons to Storybook from within a preset. For addons that require custom webpack/babel configuration, it is easier to install the preset, and it will take care of everything.

@@ -43,6 +43,12 @@
     "@storybook/addon-links": {
       "implicitDependencies": []
     },
+    "@storybook/addon-measure": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-outline": {
+      "implicitDependencies": []
+    },
     "@storybook/addon-storyshots": {
       "implicitDependencies": []
     },

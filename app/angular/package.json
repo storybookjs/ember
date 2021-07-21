@@ -1,11 +1,11 @@
 {
   "name": "@storybook/angular",
-  "version": "6.4.0-alpha.4",
+  "version": "6.4.0-alpha.18",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/angular",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/angular",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -45,12 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.4",
-    "@storybook/api": "6.4.0-alpha.4",
-    "@storybook/core": "6.4.0-alpha.4",
-    "@storybook/core-common": "6.4.0-alpha.4",
-    "@storybook/core-events": "6.4.0-alpha.4",
-    "@storybook/node-logger": "6.4.0-alpha.4",
+    "@storybook/addons": "6.4.0-alpha.18",
+    "@storybook/api": "6.4.0-alpha.18",
+    "@storybook/core": "6.4.0-alpha.18",
+    "@storybook/core-common": "6.4.0-alpha.18",
+    "@storybook/core-events": "6.4.0-alpha.18",
+    "@storybook/node-logger": "6.4.0-alpha.18",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -65,6 +65,7 @@
     "regenerator-runtime": "^0.13.7",
     "sass-loader": "^10.1.0",
     "strip-json-comments": "3.1.1",
+    "telejson": "^5.3.2",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
@@ -128,5 +129,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "0feb4147b27a31982db054a4fc5954515d506f7d"
+  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035"
 }
