@@ -1,7 +1,8 @@
-## 6.4.0-alpha.19 (July 19, 2021)
+## 6.4.0-alpha.19 (July 22, 2021)
 
 ### Features
 
+- Controls: Don't set arg in validateOptions if it would be `undefined` ([#15654](https://github.com/storybookjs/storybook/pull/15654))
 - Vue: Add support for tsx ([#11936](https://github.com/storybookjs/storybook/pull/11936))
 
 ### Bug Fixes
@@ -11,6 +12,7 @@
 
 ### Maintenance
 
+- Controls: Clean up arg unboxing and switch statements ([#14394](https://github.com/storybookjs/storybook/pull/14394))
 - Examples: Fix react-ts to be runnable standalone ([#15621](https://github.com/storybookjs/storybook/pull/15621))
 
 ## 6.4.0-alpha.18 (July 16, 2021)
