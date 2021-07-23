@@ -1,3 +1,13 @@
+## 6.4.0-alpha.20 (July 24, 2021)
+
+### Bug Fixes
+
+- CSF3: Fix custom render function ([#15668](https://github.com/storybookjs/storybook/pull/15668))
+
+### Dependency Upgrades
+
+- Remove glob-base dependency ([#15399](https://github.com/storybookjs/storybook/pull/15399))
+
 ## 6.3.5 (July 22, 2021)
 
 ### Bug Fixes
