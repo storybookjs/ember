@@ -1,7 +1,7 @@
-import globBase from 'glob-base';
-import { makeRe } from 'micromatch';
+import { makeRe, scan } from 'micromatch';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import path from 'path';
 
 // LEGACY support for bad glob patterns we had in SB 5 - remove in SB7
 const fixBadGlob = deprecate(
@@ -29,10 +29,18 @@ export const toRequireContext = (input: any) => {
   const fixedInput = detectBadGlob(input);
   switch (true) {
     case typeof input === 'string': {
-      const { base, glob } = globBase(fixedInput);
+      const globResult = scan(fixedInput);
+      const base = globResult.isGlob
+        ? globResult.prefix + globResult.base
+        : path.dirname(fixedInput);
+      const globFallback = base !== '.' ? fixedInput.substr(base.length) : fixedInput;
+      const glob = globResult.isGlob ? globResult.glob : globFallback;
 
-      const recursive = glob.includes('**') || glob.split('/').length > 1;
-      const regex = makeRe(glob, { fastpaths: false, noglobstar: false, bash: false });
+      const regex = makeRe(glob, {
+        fastpaths: false,
+        noglobstar: false,
+        bash: false,
+      });
       const { source } = regex;
 
       if (source.startsWith('^')) {
@@ -40,6 +48,7 @@ export const toRequireContext = (input: any) => {
         // Globs starting `**` require special treatment due to the regex they
         // produce, specifically a negative look-ahead
         const match = ['^\\.', glob.startsWith('**') ? '' : '\\/', source.substring(1)].join('');
+        const recursive = glob.includes('**') || glob.split('/').length > 1;
 
         return { path: base, recursive, match };
       }
