@@ -4,6 +4,7 @@ import ClientApi, {
   addLoader,
   addArgsEnhancer,
   addArgTypesEnhancer,
+  setGlobalRender,
 } from './client_api';
 import { defaultDecorateStory } from './decorators';
 import { combineParameters } from './parameters';
@@ -30,6 +31,7 @@ export {
   addDecorator,
   addLoader,
   addParameters,
+  setGlobalRender,
   ClientApi,
   combineParameters,
   ConfigApi,
