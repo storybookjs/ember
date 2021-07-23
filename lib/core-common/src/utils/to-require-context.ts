@@ -25,17 +25,14 @@ const detectBadGlob = (val: string) => {
 const isObject = (val: Record<string, any>) =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
 
-const dirname = (pattern: string) => {
-  if (pattern.slice(-1) === '/') return pattern;
-  return path.dirname(pattern);
-};
-
 export const toRequireContext = (input: any) => {
   const fixedInput = detectBadGlob(input);
   switch (true) {
     case typeof input === 'string': {
       const globResult = scan(fixedInput);
-      const base = globResult.isGlob ? globResult.prefix + globResult.base : dirname(fixedInput);
+      const base = globResult.isGlob
+        ? globResult.prefix + globResult.base
+        : path.dirname(fixedInput);
       const globFallback = base !== '.' ? fixedInput.substr(base.length) : fixedInput;
       const glob = globResult.isGlob ? globResult.glob : globFallback;
 
