@@ -1,4 +1,6 @@
 import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/dom';
 import { HighlightStyles } from './HighlightStyles';
 
 import { ComponentNode, DocumentNode, GroupNode, StoryNode } from './TreeNode';
@@ -6,6 +8,7 @@ import { ComponentNode, DocumentNode, GroupNode, StoryNode } from './TreeNode';
 export default {
   title: 'UI/Sidebar/TreeNode',
   parameters: { layout: 'fullscreen' },
+  component: StoryNode,
 };
 
 export const Types = () => (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider, useTheme, Theme } from '@storybook/theming';
 import { action } from '@storybook/addon-actions';
+import { screen } from '@testing-library/dom';
 
 import { Heading } from './Heading';
 
@@ -184,4 +185,12 @@ export const noBrand = () => {
       <Heading menu={menuItems} />
     </ThemeProvider>
   );
+};
+
+export const skipLinkFocused = {
+  args: { menu: menuItems },
+  decorators: [
+    (storyFn: any) => <div style={{ padding: '20px', maxWidth: '230px' }}>{storyFn()}</div>,
+  ],
+  play: () => screen.getByTestId('header-skip').focus(),
 };

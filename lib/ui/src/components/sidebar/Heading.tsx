@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ComponentProps } from 'react';
 import { styled } from '@storybook/theming';
+import { Button } from '@storybook/components';
 
 import { Brand } from './Brand';
 import { SidebarMenu, MenuList } from './Menu';
@@ -34,6 +35,18 @@ const HeadingWrapper = styled.div({
   position: 'relative',
 });
 
+const SkipToContentLink = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  width: '100%',
+  padding: '10px 15px',
+  fontSize: theme.typography.size.s1,
+  zIndex: 1,
+  transform: 'translate(0,-100px)',
+  '&:hover,&:focus': {
+    transform: 'translate(0,-10px)',
+  },
+}));
+
 export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof HeadingWrapper>> = ({
   menuHighlighted = false,
   menu,
@@ -44,6 +57,16 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
       <BrandArea>
         <Brand />
       </BrandArea>
+
+      <SkipToContentLink
+        secondary
+        isLink
+        tabIndex={0}
+        data-testid="header-skip"
+        href="#storybook-preview-iframe"
+      >
+        Skip to story
+      </SkipToContentLink>
 
       <SidebarMenu menu={menu} isHighlighted={menuHighlighted} />
     </HeadingWrapper>

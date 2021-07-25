@@ -1,5 +1,6 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
-import { Global, CSSObject } from '@storybook/theming';
+import { Button } from '@storybook/components';
+import { Global, CSSObject, styled } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
 import { stringifyQueryParams } from './utils/stringifyQueryParams';
@@ -11,6 +12,17 @@ const getActive = (refId: FramesRendererProps['refId']) => {
 
   return 'storybook-preview-iframe';
 };
+
+const SkipToContentLink = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  top: '10px',
+  right: '15px',
+  padding: '10px 15px',
+  fontSize: theme.typography.size.s1,
+  '&:focus': {
+    zIndex: 2,
+  },
+}));
 
 export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   refs,
@@ -74,6 +86,9 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
       <Global styles={styles} />
       {Object.entries(frames).map(([id, src]) => (
         <Fragment key={id}>
+          <SkipToContentLink secondary isLink tabIndex={0} href={`#${storyId}`}>
+            Skip to sidebar
+          </SkipToContentLink>
           <IFrame
             active={id === active}
             key={refs[id] ? refs[id].url : id}

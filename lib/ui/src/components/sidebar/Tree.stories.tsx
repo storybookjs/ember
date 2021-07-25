@@ -1,5 +1,6 @@
 import React from 'react';
 import type { StoriesHash } from '@storybook/api';
+import { screen } from '@testing-library/dom';
 
 import { Tree } from './Tree';
 import { stories } from './mockdata.large';
@@ -94,4 +95,22 @@ export const SingleStoryComponents = () => {
       onSelectStoryId={setSelectedId}
     />
   );
+};
+
+// node must be selected, highlighted, and focused
+// in order to tab to 'Skip to content' link
+export const SkipToContentInteraction = {
+  args: {
+    isBrowsing: true,
+    isMain: true,
+    refId,
+    data: stories,
+    highlightedRef: { current: { itemId: 'tooltip-tooltipbuildlist--default', refId } },
+    setHighlightedItemId: log,
+    selectedStoryId: 'tooltip-tooltipbuildlist--default',
+    onSelectStoryId: () => {},
+  },
+  play: () => {
+    screen.getByTestId('node--skip').focus();
+  },
 };
