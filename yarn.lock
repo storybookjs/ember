@@ -7894,7 +7894,6 @@ __metadata:
     "@storybook/semver": ^7.3.2
     "@storybook/theming": 6.4.0-alpha.22
     "@testing-library/react": ^11.2.2
-    "@types/markdown-to-jsx": ^7.0.1
     babel-loader: ^8.2.2
     chromatic: ^5.6.0
     copy-to-clipboard: ^3.3.1
@@ -8994,15 +8993,6 @@ __metadata:
   version: 4.14.168
   resolution: "@types/lodash@npm:4.14.168"
   checksum: fa5b4d9cd8ebc4b0ae3f235e1eade891385fefbd977985387d3a90c4e6384e35a741d1193c4a1587ae9c5a1993da74dc6a58c22aaea8e00f94be6cd831671aaf
-  languageName: node
-  linkType: hard
-
-"@types/markdown-to-jsx@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@types/markdown-to-jsx@npm:7.0.1"
-  dependencies:
-    markdown-to-jsx: "*"
-  checksum: 80b26f4b23013b66c4240d1fc614d4c063149882ad09a8289b07d9663aca76fe92fac5521dd7caffc78f0c955b427a4388ad1be39612cd6cfe86f4a30ef20ca6
   languageName: node
   linkType: hard
 
@@ -29671,7 +29661,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"markdown-to-jsx@npm:*, markdown-to-jsx@npm:^7.1.3":
+"markdown-to-jsx@npm:^7.1.3":
   version: 7.1.3
   resolution: "markdown-to-jsx@npm:7.1.3"
   peerDependencies:

@@ -50,7 +50,6 @@
     "@storybook/router": "6.4.0-alpha.22",
     "@storybook/semver": "^7.3.2",
     "@storybook/theming": "6.4.0-alpha.22",
-    "@types/markdown-to-jsx": "^7.0.1",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.2",
     "core-js-pure": "^3.8.2",
