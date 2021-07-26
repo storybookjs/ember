@@ -26,7 +26,6 @@
     "@storybook/addons": "portal:../../lib/addons",
     "@storybook/api": "portal:../../lib/api",
     "@storybook/builder-webpack4": "portal:../../lib/builder-webpack4",
-    "@storybook/builder-webpack5": "portal:../../lib/builder-webpack5",
     "@storybook/channel-postmessage": "portal:../../lib/channel-postmessage",
     "@storybook/channel-websocket": "portal:../../lib/channel-websocket",
     "@storybook/channels": "portal:../../lib/channels",
@@ -41,7 +40,6 @@
     "@storybook/core-server": "portal:../../lib/core-server",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
-    "@storybook/manager-webpack5": "portal:../../lib/manager-webpack5",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",
     "@storybook/router": "portal:../../lib/router",
@@ -49,6 +47,8 @@
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
     "@storybook/web-components": "portal:../../app/web-components",
+    "babel-plugin-macros": "3.1.0",
+    "fork-ts-checker-webpack-plugin": "6.2.13",
     "typescript": "4.2.4"
   },
   "dependencies": {
