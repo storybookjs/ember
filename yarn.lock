@@ -6799,6 +6799,7 @@ __metadata:
     "@storybook/builder-webpack5": 6.4.0-alpha.21
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
+    webpack: "*"
   peerDependenciesMeta:
     "@storybook/builder-webpack5":
       optional: true
@@ -6811,6 +6812,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/csf-tools@workspace:lib/csf-tools"
   dependencies:
+    "@babel/core": ^7.12.10
     "@babel/generator": ^7.12.11
     "@babel/parser": ^7.12.11
     "@babel/plugin-transform-react-jsx": ^7.12.12
