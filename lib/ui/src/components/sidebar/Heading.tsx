@@ -42,7 +42,7 @@ const SkipToContentLink = styled(Button)(({ theme }) => ({
   fontSize: theme.typography.size.s1,
   zIndex: 1,
   transform: 'translate(0,-100px)',
-  '&:hover,&:focus': {
+  '&:focus': {
     transform: 'translate(0,-10px)',
   },
 }));
@@ -54,10 +54,6 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
 }) => {
   return (
     <HeadingWrapper {...props}>
-      <BrandArea>
-        <Brand />
-      </BrandArea>
-
       <SkipToContentLink
         secondary
         isLink
@@ -65,8 +61,12 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
         data-testid="header-skip"
         href="#storybook-preview-iframe"
       >
-        Skip to story
+        Skip to canvas
       </SkipToContentLink>
+
+      <BrandArea>
+        <Brand />
+      </BrandArea>
 
       <SidebarMenu menu={menu} isHighlighted={menuHighlighted} />
     </HeadingWrapper>

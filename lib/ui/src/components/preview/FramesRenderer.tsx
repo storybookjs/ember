@@ -19,8 +19,10 @@ const SkipToContentLink = styled(Button)(({ theme }) => ({
   right: '15px',
   padding: '10px 15px',
   fontSize: theme.typography.size.s1,
+  transform: 'translateY(-100px)',
   '&:focus': {
-    zIndex: 2,
+    transform: 'translateY(0)',
+    zIndex: 1,
   },
 }));
 

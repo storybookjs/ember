@@ -106,13 +106,13 @@ const SkipToContentLink = styled(Button)(({ theme }) => ({
   position: 'absolute',
   top: 1,
   right: 20,
-  zIndex: -1,
   height: '20px',
   fontSize: '10px',
   padding: '5px 10px',
+  transform: 'translateX(100px)',
   '&:focus': {
     background: 'white',
-    zIndex: 1,
+    transform: 'translateX(0)',
   },
 }));
 
@@ -173,11 +173,10 @@ const Node = React.memo<NodeProps>(
               secondary
               outline
               isLink
-              tabIndex={0}
               href="#storybook-preview-iframe"
               data-testid="node--skip"
             >
-              Skip to content
+              Skip to canvas
             </SkipToContentLink>
           )}
         </LeafNodeStyleWrapper>
