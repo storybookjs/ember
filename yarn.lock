@@ -5338,6 +5338,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.0-rc.2":
+  version: 0.5.0-rc.2
+  resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.0-rc.2"
+  dependencies:
+    ansi-html: ^0.0.7
+    core-js-pure: ^3.8.1
+    error-stack-parser: ^2.0.6
+    html-entities: ^2.1.0
+    loader-utils: ^2.0.0
+    schema-utils: ^3.0.0
+    source-map: ^0.7.3
+  peerDependencies:
+    "@types/webpack": 4.x || 5.x
+    react-refresh: ^0.10.0
+    sockjs-client: ^1.4.0
+    type-fest: 1.x
+    webpack: ">=4.43.0 <6.0.0"
+    webpack-dev-server: 3.x || >=4.0.0-beta.0
+    webpack-hot-middleware: 2.x
+    webpack-plugin-serve: 0.x || 1.x
+  peerDependenciesMeta:
+    "@types/webpack":
+      optional: true
+    sockjs-client:
+      optional: true
+    type-fest:
+      optional: true
+    webpack-dev-server:
+      optional: true
+    webpack-hot-middleware:
+      optional: true
+    webpack-plugin-serve:
+      optional: true
+  checksum: ea66a047e04540367c944f8e82421e42a26801fec3be04e91f060ce4362230f7fc67234b924a8eb113688eace92f5f895c3e34363cc446ed11429f99c3ebee19
+  languageName: node
+  linkType: hard
+
 "@popperjs/core@npm:^2.5.4, @popperjs/core@npm:^2.6.0":
   version: 2.8.3
   resolution: "@popperjs/core@npm:2.8.3"
@@ -7200,7 +7237,7 @@ __metadata:
   dependencies:
     "@babel/preset-flow": ^7.12.1
     "@babel/preset-react": ^7.12.10
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.4.3
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.0-rc.2
     "@storybook/addons": 6.4.0-alpha.21
     "@storybook/client-api": 6.4.0-alpha.21
     "@storybook/core": 6.4.0-alpha.21
@@ -7219,7 +7256,7 @@ __metadata:
     lodash: ^4.17.20
     prop-types: ^15.7.2
     react-dev-utils: ^11.0.3
-    react-refresh: ^0.8.3
+    react-refresh: ^0.10.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
@@ -16139,6 +16176,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js-pure@npm:^3.8.1":
+  version: 3.15.2
+  resolution: "core-js-pure@npm:3.15.2"
+  checksum: 2a419c5a340dd7e6d6690824efb2ffaf39431de7d1dd56279d41f6d8533c8d649fcd59d95f420701aab5e747d2339a0722617ca60b5d4d3cb60227027c511ba9
+  languageName: node
+  linkType: hard
+
 "core-js@npm:3.8.3":
   version: 3.8.3
   resolution: "core-js@npm:3.8.3"
@@ -23536,6 +23580,13 @@ fsevents@^1.2.7:
   version: 1.4.0
   resolution: "html-entities@npm:1.4.0"
   checksum: eb2de616fb5948e681157805687672ea90e67c8a4f21a3215888ab422a984cab61fec96860708dca3bde0ae52577515683c8e28157ac8637220bb6a57a031b85
+  languageName: node
+  linkType: hard
+
+"html-entities@npm:^2.1.0":
+  version: 2.3.2
+  resolution: "html-entities@npm:2.3.2"
+  checksum: 69b50d032435e02765175d40ac3d94ceeb19b3ee32b869f79804f24f8efadf7928a1c3c4eddb85273809f95f7cffa416d05ca43e88d219575e8c5f6dd75bfc8d
   languageName: node
   linkType: hard
 
@@ -35908,6 +35959,13 @@ fsevents@^1.2.7:
     "@popperjs/core": ^2.0.0
     react: ^16.8.0 || ^17
   checksum: ac1ffc1ecdb408ec3f0e3449bac824c58d9949cf65effe96d94d1cf56fe2a60d0d45ef4a41cebb6344f917f16d04146555b936d20578766b5d9d3716164fb669
+  languageName: node
+  linkType: hard
+
+"react-refresh@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "react-refresh@npm:0.10.0"
+  checksum: 616e82bed3787bf4e55dcc1c9836f251b93523dd4b0ffb1c24c2dcf5d09f686fbf3cffc7d489cd7f12429f76ddf66eb431748fc07df56b18a888a7705cbc079e
   languageName: node
   linkType: hard
 
