@@ -39,10 +39,10 @@ export const Action = styled.button(({ theme }) => ({
       : transparentize(0.6, theme.color.defaultText),
 
   '&:hover': {
-    color: theme.barSelectedColor,
+    color: theme.color.secondary,
   },
   '&:focus': {
-    color: theme.barSelectedColor,
+    color: theme.color.secondary,
     borderColor: theme.color.secondary,
 
     '&:not(:focus-visible)': {

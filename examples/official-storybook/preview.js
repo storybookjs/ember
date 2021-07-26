@@ -222,7 +222,7 @@ export const globalTypes = {
         },
         previous: {
           label: 'Go to previous language',
-          keys: ['shift', 'L'],
+          keys: ['K'],
         },
         reset: {
           label: 'Reset language',

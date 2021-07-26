@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-backgrounds",
-  "version": "6.4.0-alpha.11",
+  "version": "6.4.0-alpha.21",
   "description": "Switch backgrounds to view components in different settings",
   "keywords": [
     "addon",
@@ -10,7 +10,7 @@
     "essentials",
     "design"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/backgrounds",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/backgrounds",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -45,12 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.11",
-    "@storybook/api": "6.4.0-alpha.11",
-    "@storybook/client-logger": "6.4.0-alpha.11",
-    "@storybook/components": "6.4.0-alpha.11",
-    "@storybook/core-events": "6.4.0-alpha.11",
-    "@storybook/theming": "6.4.0-alpha.11",
+    "@storybook/addons": "6.4.0-alpha.21",
+    "@storybook/api": "6.4.0-alpha.21",
+    "@storybook/client-logger": "6.4.0-alpha.21",
+    "@storybook/components": "6.4.0-alpha.21",
+    "@storybook/core-events": "6.4.0-alpha.21",
+    "@storybook/theming": "6.4.0-alpha.21",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3",
@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
+  "gitHead": "02b6a8dd92c9e139452eb65618231defcac89d97",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Backgrounds",

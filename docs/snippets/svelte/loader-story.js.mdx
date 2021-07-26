@@ -5,14 +5,19 @@ import fetch from 'node-fetch';
 
 import TodoItem from './TodoItem.svelte';
 
+export default {
+  component: TodoItem,
+  title: 'Examples/Loader',
+};
+
 export const Primary = (args, { loaded: { todo } }) => ({
   Component: TodoItem,
-  props: {...args, ...todo},
+  props: { ...args, ...todo },
 });
 
 Primary.loaders = [
   async () => ({
-    todo: (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
   }),
 ];
 ```

@@ -98,20 +98,6 @@ Finally, we'll need to import the theme into Storybook. Create a new file called
 
 <!-- prettier-ignore-end -->
 
-
-Adjust your `storybook` script in your package.json and include the [`--no-manager-cache`](../api/cli-options.md#start-storybook) flag. For instance:
-
-```json
-{
-  "scripts":{
-    "storybook": "start-storybook -p 6006 --no-manager-cache",
-  },
-}
-```
-<div class="aside">
-💡 <strong>Note:</strong> Once you've finished configuring your theme, you can remove the <code>--no-manager-cache</code>flag from the <code>storybook</code> script at will. Leaving it in can severely impact loading times.
-</div>
-
 Now your custom theme will replace Storybook's default theme, and you'll see a similar set of changes in the UI.
 
 ![Storybook starter theme](./storybook-starter-custom-theme.png)

@@ -1,11 +1,11 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-alpha.11",
+  "version": "6.4.0-alpha.21",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -40,12 +40,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/builder-webpack4": "6.4.0-alpha.11",
-    "@storybook/core-client": "6.4.0-alpha.11",
-    "@storybook/core-common": "6.4.0-alpha.11",
-    "@storybook/csf-tools": "6.4.0-alpha.11",
-    "@storybook/manager-webpack4": "6.4.0-alpha.11",
-    "@storybook/node-logger": "6.4.0-alpha.11",
+    "@storybook/builder-webpack4": "6.4.0-alpha.21",
+    "@storybook/core-client": "6.4.0-alpha.21",
+    "@storybook/core-common": "6.4.0-alpha.21",
+    "@storybook/csf-tools": "6.4.0-alpha.21",
+    "@storybook/manager-webpack4": "6.4.0-alpha.21",
+    "@storybook/node-logger": "6.4.0-alpha.21",
     "@storybook/semver": "^7.3.2",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
@@ -75,15 +75,15 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-alpha.11",
+    "@storybook/builder-webpack5": "6.4.0-alpha.21",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-alpha.11",
-    "@storybook/manager-webpack5": "6.4.0-alpha.11",
+    "@storybook/builder-webpack5": "6.4.0-alpha.21",
+    "@storybook/manager-webpack5": "6.4.0-alpha.21",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -101,6 +101,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
+  "gitHead": "02b6a8dd92c9e139452eb65618231defcac89d97",
   "sbmodern": "dist/modern/index.js"
 }

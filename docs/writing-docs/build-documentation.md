@@ -28,7 +28,7 @@ At any point during your development, you can preview the documentation you've w
 
 Depending on your configuration, when you execute the `storybook-docs` script. Storybook will be put into documentation mode and will generate a different build.
 
-It will look for any stories available either in [MDX](./mdx.md) or[CSF](../writing-stories/introduction.md#component-story-format) and based on the documentation you've added it will display it...
+It will look for any stories available either in [MDX](./mdx.md) or [CSF](../writing-stories/introduction.md#component-story-format) and based on the documentation you've added it will display it...
 
 ![Storybook in documentation mode](./storybook-docs-build.png)
 

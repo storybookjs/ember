@@ -14,13 +14,25 @@ export async function webpack(config: Configuration, { presets }: Options) {
     options: {},
   });
   config.module.rules.push({
-    test: /\.tsx?$/,
+    test: /\.ts$/,
     use: [
       {
         loader: require.resolve('ts-loader'),
         options: {
           transpileOnly: !typescriptOptions.check,
           appendTsSuffixTo: [/\.vue$/],
+        },
+      },
+    ],
+  });
+  config.module.rules.push({
+    test: /\.tsx$/,
+    use: [
+      {
+        loader: require.resolve('ts-loader'),
+        options: {
+          transpileOnly: true,
+          appendTsxSuffixTo: [/\.vue$/],
         },
       },
     ],

@@ -31,7 +31,7 @@ describe('inferControls', () => {
       warnSpy.mockRestore();
     });
 
-    it('should return color type when matching color', () => {
+    it('should return color type when using color matcher', () => {
       // passing a string, should return control type color
       const inferredControls = inferControls(
         getStoryContext({
@@ -39,7 +39,6 @@ describe('inferControls', () => {
             background: {
               type: {
                 name: 'string',
-                value: 'red',
               },
               name: 'background',
             },
@@ -55,31 +54,42 @@ describe('inferControls', () => {
       expect(inferredControls.background.control.type).toEqual('color');
     });
 
-    it('should return inferred type when matches color but arg is not a string', () => {
-      // passing an object which is unsupported, should infer the type to object
-      const inferredControls = inferControls(
-        getStoryContext({
-          argTypes: {
-            background: {
-              type: {
-                name: 'object',
-                value: {
-                  rgb: [255, 255, 0],
-                },
-              },
-              name: 'background',
+    it('should return inferred type when using color matcher but arg passed is not a string', () => {
+      const sampleTypes = [
+        {
+          name: 'object',
+          value: {
+            rgb: {
+              name: 'number',
             },
           },
-          controls: {
-            matchers: {
-              color: /background/,
-            },
-          },
-        })
-      );
+        },
+        { name: 'number' },
+        { name: 'boolean' },
+      ];
 
-      expect(warnSpy).toHaveBeenCalled();
-      expect(inferredControls.background.control.type).toEqual('object');
+      sampleTypes.forEach((type) => {
+        const inferredControls = inferControls(
+          getStoryContext({
+            argTypes: {
+              background: {
+                // passing an object which is unsupported
+                // should ignore color control and infer the type instead
+                type,
+                name: 'background',
+              },
+            },
+            controls: {
+              matchers: {
+                color: /background/,
+              },
+            },
+          })
+        );
+
+        expect(warnSpy).toHaveBeenCalled();
+        expect(inferredControls.background.control.type).toEqual(type.name);
+      });
     });
   });
 

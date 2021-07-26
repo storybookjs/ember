@@ -72,7 +72,9 @@ export const combineArgs = (value: any, update: any): Args => {
 export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(argTypes).reduce((acc, [key, { options }]) => {
     if (!options) {
-      acc[key] = args[key];
+      if (key in args) {
+        acc[key] = args[key];
+      }
       return acc;
     }
 

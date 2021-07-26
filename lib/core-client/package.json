@@ -1,11 +1,11 @@
 {
   "name": "@storybook/core-client",
-  "version": "6.4.0-alpha.11",
+  "version": "6.4.0-alpha.21",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -40,13 +40,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.11",
-    "@storybook/channel-postmessage": "6.4.0-alpha.11",
-    "@storybook/client-api": "6.4.0-alpha.11",
-    "@storybook/client-logger": "6.4.0-alpha.11",
-    "@storybook/core-events": "6.4.0-alpha.11",
+    "@storybook/addons": "6.4.0-alpha.21",
+    "@storybook/channel-postmessage": "6.4.0-alpha.21",
+    "@storybook/client-api": "6.4.0-alpha.21",
+    "@storybook/client-logger": "6.4.0-alpha.21",
+    "@storybook/core-events": "6.4.0-alpha.21",
     "@storybook/csf": "0.0.1",
-    "@storybook/ui": "6.4.0-alpha.11",
+    "@storybook/ui": "6.4.0-alpha.21",
     "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
@@ -71,6 +71,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "52cc8f0ba8fc0601c38620f7173a47b0fd7d38e2",
+  "gitHead": "02b6a8dd92c9e139452eb65618231defcac89d97",
   "sbmodern": "dist/modern/index.js"
 }
