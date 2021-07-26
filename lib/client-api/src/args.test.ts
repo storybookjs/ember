@@ -185,6 +185,11 @@ describe('combineArgs', () => {
 });
 
 describe('validateOptions', () => {
+  // https://github.com/storybookjs/storybook/issues/15630
+  it('does not set args to `undefined` if they are unset', () => {
+    expect(validateOptions({}, { a: {} })).toStrictEqual({});
+  });
+
   it('omits arg and warns if value is not one of options', () => {
     expect(validateOptions({ a: 1 }, { a: { options: [2, 3] } })).toStrictEqual({});
     expect(once.warn).toHaveBeenCalledWith(

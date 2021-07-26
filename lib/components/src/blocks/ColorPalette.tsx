@@ -81,7 +81,7 @@ const SwatchColors = styled.div(({ theme }) => ({
   overflow: 'hidden',
   backgroundColor: 'white',
   backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
-  backgroundClip: 'padding-box'
+  backgroundClip: 'padding-box',
 }));
 
 const SwatchSpecimen = styled.div({
