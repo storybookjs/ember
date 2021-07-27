@@ -173,7 +173,6 @@ const Node = React.memo<NodeProps>(
               secondary
               outline
               isLink
-              tabIndex={0}
               href="#storybook-preview-iframe"
               data-testid="node--skip"
             >

@@ -89,16 +89,6 @@ export const useHighlighted = ({
 
       const isArrowUp = matchesKeyCode('ArrowUp', event);
       const isArrowDown = matchesKeyCode('ArrowDown', event);
-      const isEnter = matchesKeyCode('Enter', event);
-
-      // ensure skip-to-content links in tree nodes are respected
-      if (
-        !!isEnter &&
-        target.hasAttribute('data-testid') &&
-        target.getAttribute('data-testid') === 'node--skip' // move to constant?
-      ) {
-        globalWindow.location.href = target.getAttribute('href');
-      }
 
       if (!(isArrowUp || isArrowDown)) return;
       event.preventDefault();
