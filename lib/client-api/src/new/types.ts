@@ -8,11 +8,57 @@ import {
   StoryId,
   StoryKind,
   StoryName,
+  ViewMode,
+  LegacyStoryFn,
+  StoryFn,
 } from '@storybook/addons';
 
-export type { StoryId };
+import { HooksContext } from '../hooks';
+
+export type { StoryId, ViewMode, Parameters, Args, ArgTypes, LegacyStoryFn, ArgsStoryFn };
 
 export type ModuleExports = Record<string, any>;
+export interface StoryIdentifier {
+  id: StoryId;
+  kind: StoryKind; // TODO -- rename this to componentTitle or just title?
+  name: StoryName;
+  // TODO -- do we still need story here?
+}
+
+// TODO -- these should probably have their own definition
+export type Globals = Args;
+export type GlobalTypes = ArgTypes;
+
+export type StoryContext = StoryIdentifier & {
+  parameters: Parameters;
+  args: Args;
+  argTypes: ArgTypes;
+  globals: Globals;
+  hooks: HooksContext;
+};
+
+// Theoretically you can update anything, in practice you should probably only be able to update args + globals?
+// TODO - should we reflect that in the type?
+export type StoryContextUpdate = Partial<StoryContext>;
+
+export type LoadedStoryContext = StoryContext & {
+  loaded: Record<string, any>;
+};
+
+export declare type RenderContextWithoutStoryContext = StoryIdentifier & {
+  forceRender: boolean;
+  showMain: () => void;
+  showError: (error: { title: string; description: string }) => void;
+  showException: (err: Error) => void;
+};
+
+export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext &
+  LoadedStoryContext & {
+    storyFn: LegacyStoryFn<StoryFnReturnType>;
+  };
+
+export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
+export type ArgsEnhancer = (context: StoryContext) => Args;
 
 export type Meta<StoryFnReturnType> = {
   decorators?: DecoratorFunction<StoryFnReturnType>[];
@@ -20,50 +66,89 @@ export type Meta<StoryFnReturnType> = {
   args?: Args;
   argTypes?: ArgTypes;
   loaders?: LoaderFunction[];
+  render?: ArgsStoryFn<StoryFnReturnType>;
+  play?: () => Promise<void>; // TODO -- should this take story context
 };
 
-export type GlobalMeta<StoryFnReturnType> = Meta<StoryFnReturnType>;
+export type GlobalMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
+  applyDecorators?: DecoratorApplicator<StoryFnReturnType>;
+  argsEnhancers?: ArgsEnhancer[];
+  argTypesEnhancers?: ArgTypesEnhancer[];
+  globals?: Globals;
+  globalTypes?: GlobalTypes;
+};
+
+export type WebGlobalMeta<StoryFnReturnType> = GlobalMeta<StoryFnReturnType> & {
+  renderToDOM?: (context: RenderContext<StoryFnReturnType>, element: Element) => Promise<void>;
+};
 
 export type ComponentTitle = StoryKind;
+type StoryDescriptor = string[] | RegExp;
 export type ComponentMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
   title: ComponentTitle;
 
-  // component,
-  // subcomponents,
+  // TODO - check these
+  component?: any;
+  subcomponents?: Record<string, any>;
+  includeStories?: StoryDescriptor;
+  excludeStories?: StoryDescriptor;
 };
 
 export type StoryMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
-  render: ArgsStoryFn<StoryFnReturnType>;
+  id: StoryId;
+  name: StoryName;
 };
 
 export type CSFFile<StoryFnReturnType> = {
-  metadata: ComponentMeta<StoryFnReturnType>;
-} & Record<StoryId, StoryMeta<StoryFnReturnType>>;
+  meta: ComponentMeta<StoryFnReturnType>;
+  stories: Record<StoryId, StoryMeta<StoryFnReturnType>>;
+};
+
+export type Story<StoryFnReturnType> = StoryIdentifier & {
+  parameters: Parameters;
+  initialArgs: Args;
+  argTypes: ArgTypes;
+  hooks: HooksContext;
+  applyLoaders: (context: StoryContext) => Promise<LoadedStoryContext>;
+  storyFn: LegacyStoryFn<StoryFnReturnType>;
+  runPlayFunction: () => Promise<void>; // TODO -- should this take story context?
+  cleanup: () => void;
+};
 
 export type Path = string;
 
-// TODO -- these types probably need to live in a common spot w/ where stories.json is generated
-export interface StoriesMetadataStory {
+export interface StoriesListStory {
   id: StoryId;
   name: StoryName;
+  kind: ComponentTitle; // TODO -- should we rename this?
   parameters: { fileName: Path };
 }
 
-export interface StoriesMetadata {
+export interface StoriesList {
   v: number;
-  stories: Record<StoryId, StoriesMetadataStory>;
+  stories: Record<StoryId, StoriesListStory>;
 }
 
-export type ModuleImporter = (path: Path) => ModuleExports;
-
-export type StoryContext = {
-  id: StoryId;
-  parameters: Parameters;
-  args: Args;
-  argTypes: ArgTypes;
-  globals: Args;
-};
+export type ModuleImportFn = (path: Path) => ModuleExports;
 
 export type Channel = any;
 
-export type Globals = Args;
+export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+
+export interface SelectionSpecifier {
+  storySpecifier: StorySpecifier;
+  viewMode: ViewMode;
+  singleStory?: boolean;
+  args?: Args;
+  globals?: Args;
+}
+
+export interface Selection {
+  storyId: StoryId;
+  viewMode: ViewMode;
+}
+
+export type DecoratorApplicator<StoryFnReturnType> = (
+  storyFn: LegacyStoryFn<StoryFnReturnType>,
+  decorators: DecoratorFunction<StoryFnReturnType>[]
+) => LegacyStoryFn<StoryFnReturnType>;

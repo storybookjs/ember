@@ -1,25 +1,25 @@
-import { Channel, StoryId, Args } from './types';
+import { StoryId, Args, SelectionSpecifier } from './types';
 
 export class ArgsStore {
-  argsByStoryId: Record<StoryId, Args>;
+  argsByStoryId: Record<StoryId, Args> = {};
 
-  constructor({ channel }: { channel: Channel }) {
-    // TODO -- watch + emit on channel
-
-    // QN -- how do args get initialized?
-    //   -- we need pass args when a story is first rendered
-    this.argsByStoryId = {};
-  }
-
-  argsForStoryId(storyId: StoryId) {
-    if (!storyId in this.argsForStoryId) {
-      throw new Error(`No args know for ${storyId} -- has it been rendered yet?`);
+  get(storyId: StoryId) {
+    if (!(storyId in this.argsByStoryId)) {
+      throw new Error(`No args known for ${storyId} -- has it been rendered yet?`);
     }
 
     return this.argsByStoryId[storyId];
   }
 
-  updateArgsByStoryId() {
-    // TODO: set, emit
+  set(storyId: StoryId, args: Args) {
+    this.argsByStoryId[storyId] = args;
+  }
+
+  update(storyId: StoryId, argsUpdate: Partial<Args>) {
+    if (!(storyId in this.argsByStoryId)) {
+      throw new Error(`No args known for ${storyId} -- has it been rendered yet?`);
+    }
+
+    this.argsByStoryId[storyId] = { ...this.argsByStoryId[storyId], ...argsUpdate };
   }
 }
