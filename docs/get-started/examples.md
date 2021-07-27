@@ -40,7 +40,7 @@ Learn how leading teams build design systems.
 - [Shopify Polaris](https://main--5d559397bae39100201eedc1.chromatic.com)
 - [Airbnb Dates](http://airbnb.io/react-dates/?path=/story/daterangepicker-drp--default)
 - [Lonely Planet](http://lonelyplanet.github.io/backpack-ui/?path=/story/styles--design-tokens)
-- [Wix Style](https://www.wix.com/pages/wix-style-react/?path=/story/*)
+- [Wix Style](https://www.wix-style-react.com/?path=/story/introduction-getting-started--getting-started)
 - [Chakra UI](https://chakra-ui.netlify.app/?path=/story/*)
 - [Grommet](https://storybook.grommet.io/?path=/story/all--all)
 - [Reaviz](https://reaviz.io/?path=/story/docs-intro--page)
