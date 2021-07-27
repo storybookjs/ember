@@ -1,9 +1,12 @@
 import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ThemeProvider, useTheme, Theme } from '@storybook/theming';
 import { action } from '@storybook/addon-actions';
 import { screen } from '@testing-library/dom';
 
 import { Heading } from './Heading';
+
+type Story = ComponentStory<typeof Heading>;
 
 export default {
   component: Heading,
@@ -11,9 +14,9 @@ export default {
   excludeStories: /.*Data$/,
   parameters: { layout: 'fullscreen' },
   decorators: [
-    (storyFn: any) => <div style={{ padding: '0 20px', maxWidth: '230px' }}>{storyFn()}</div>,
+    (storyFn) => <div style={{ padding: '0 20px', maxWidth: '230px' }}>{storyFn()}</div>,
   ],
-};
+} as ComponentMeta<typeof Heading>;
 
 const menuItems = [
   { title: 'Menu Item 1', onClick: action('onActivateMenuItem'), id: '1' },
@@ -21,11 +24,11 @@ const menuItems = [
   { title: 'Menu Item 3', onClick: action('onActivateMenuItem'), id: '3' },
 ];
 
-export const menuHighlighted = () => <Heading menuHighlighted menu={menuItems} />;
+export const menuHighlighted: Story = () => <Heading menuHighlighted menu={menuItems} />;
 
 export const standardData = { menu: menuItems };
 
-export const standard = () => {
+export const standard: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -43,7 +46,7 @@ export const standard = () => {
   );
 };
 
-export const standardNoLink = () => {
+export const standardNoLink: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -61,7 +64,7 @@ export const standardNoLink = () => {
   );
 };
 
-export const linkAndText = () => {
+export const linkAndText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -79,7 +82,7 @@ export const linkAndText = () => {
   );
 };
 
-export const onlyText = () => {
+export const onlyText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -97,7 +100,7 @@ export const onlyText = () => {
   );
 };
 
-export const longText = () => {
+export const longText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -115,7 +118,7 @@ export const longText = () => {
   );
 };
 
-export const customBrandImage = () => {
+export const customBrandImage: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -133,7 +136,7 @@ export const customBrandImage = () => {
   );
 };
 
-export const customBrandImageTall = () => {
+export const customBrandImageTall: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -151,7 +154,7 @@ export const customBrandImageTall = () => {
   );
 };
 
-export const customBrandImageUnsizedSVG = () => {
+export const customBrandImageUnsizedSVG: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -169,7 +172,7 @@ export const customBrandImageUnsizedSVG = () => {
   );
 };
 
-export const noBrand = () => {
+export const noBrand: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -187,10 +190,8 @@ export const noBrand = () => {
   );
 };
 
-export const skipLinkFocused = {
+export const skipLinkFocused: Story = {
   args: { menu: menuItems },
-  decorators: [
-    (storyFn: any) => <div style={{ padding: '20px', maxWidth: '230px' }}>{storyFn()}</div>,
-  ],
+  parameters: { layout: 'padded' },
   play: () => screen.getByTestId('header-skip').focus(),
 };
