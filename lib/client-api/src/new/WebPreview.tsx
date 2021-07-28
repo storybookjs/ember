@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
@@ -15,11 +15,13 @@ import {
   Globals,
   StoryId,
   Args,
+  DocsContext,
 } from './types';
 import { StoryStore } from './StoryStore';
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { StorySpecifier } from '../types';
+import { NoDocs } from './NoDocs';
 
 const { navigator, window: globalWindow } = global;
 
@@ -216,47 +218,49 @@ export class WebPreview<StoryFnReturnType> {
     // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
     this.previousSelection = selection;
 
+    const { id, title, name } = story;
+
     if (selection.viewMode === 'docs') {
       const element = this.view.prepareForDocs();
+      const docsContext = {
+        id,
+        title,
+        name,
+        storyStore: this.storyStore,
+        renderStoryToElement: this.renderStoryToElement.bind(this),
+      };
 
       const { docs } = story.parameters;
       if (docs?.page && !docs?.container) {
         throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
       }
 
-      const DocsContainer: Component =
+      const DocsContainer: ComponentType<{ context: DocsContext }> =
         docs.container || (({ children }: { children: Element }) => <>{children}</>);
-      const Page: Component = docs.page || NoDocs;
+      const Page: ComponentType = docs.page || NoDocs;
 
-      // TODO -- what is docs context? pass in here?
-      // Docs context includes the storyStore. Probably it would be better if it didn't but that can be fixed in a later refactor
-
-      await new Promise((resolve) => {
-        ReactDOM.render(
-          <DocsContainer context={{ storyStore, ...context }}>
-            <Page />
-          </DocsContainer>,
-          document.getElementById('docs-root'),
-          resolve
-        );
-      });
-
-      // TODO -- changed the API, previous it had a kind -- did we use it?
-      this.channel.emit(Events.DOCS_RENDERED, selection.storyId);
+      const docsElement = (
+        <DocsContainer context={docsContext}>
+          <Page />
+        </DocsContainer>
+      );
+      ReactDOM.render(docsElement, element, () =>
+        // TODO -- changed the API, previous it had a kind -- did we use it?
+        this.channel.emit(Events.DOCS_RENDERED, selection.storyId)
+      );
       return;
     }
 
     const element = this.view.prepareForStory(story, forceRender);
-
-    const { id, kind, name } = story;
     const renderContext: RenderContextWithoutStoryContext = {
       id,
-      kind,
+      title,
+      kind: title,
       name,
+      story: name,
       forceRender,
       showMain: () => this.view.showMain(),
-      showError: ({ title, description }: { title: string; description: string }) =>
-        this.renderError({ title, description }),
+      showError: (err: { title: string; description: string }) => this.renderError(err),
       showException: (err: Error) => this.renderException(err),
     };
 

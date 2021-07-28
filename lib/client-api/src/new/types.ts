@@ -156,3 +156,6 @@ export type DecoratorApplicator<StoryFnReturnType> = (
   storyFn: LegacyStoryFn<StoryFnReturnType>,
   decorators: DecoratorFunction<StoryFnReturnType>[]
 ) => LegacyStoryFn<StoryFnReturnType>;
+
+// TODO
+export type DocsContext = any;

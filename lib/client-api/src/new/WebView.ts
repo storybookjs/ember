@@ -4,7 +4,6 @@ import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
 
 import { Story, ViewMode } from './types';
-import { NoDocs } from './NoDocs';
 
 const { document, FEATURES = {} } = global;
 
@@ -40,7 +39,7 @@ export class WebView {
     return this.storyRoot();
   }
 
-  storyRoot() {
+  storyRoot(): Element {
     return document.getElementById('root');
   }
 
@@ -51,7 +50,7 @@ export class WebView {
     return this.docsRoot();
   }
 
-  docsRoot() {
+  docsRoot(): Element {
     return document.getElementById('docs-root');
   }
 
