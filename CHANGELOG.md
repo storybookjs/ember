@@ -1,3 +1,23 @@
+## 6.4.0-alpha.22 (July 28, 2021)
+
+### Features
+
+- CSF3: Add auto-titles from standard glob patterns ([#15697](https://github.com/storybookjs/storybook/pull/15697))
+- CSF3: Add startCase to auto-generated titles ([#15618](https://github.com/storybookjs/storybook/pull/15618))
+
+### Bug Fixes
+
+- CLI: Fix Svelte CLI template markup ([#15689](https://github.com/storybookjs/storybook/pull/15689))
+
+### Maintenance
+
+- Server: Upgrade to CSF3 ([#15698](https://github.com/storybookjs/storybook/pull/15698))
+
+### Dependency Upgrades
+
+- Fix some transitive peer dependency warnings ([#15687](https://github.com/storybookjs/storybook/pull/15687))
+- Upgrade react-refresh plugin to fix fast refresh on Webpack5 ([#15616](https://github.com/storybookjs/storybook/pull/15616))
+
 ## 6.3.6 (July 26, 2021)
 
 ### Bug Fixes
