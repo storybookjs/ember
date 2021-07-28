@@ -1,5 +1,5 @@
 module.exports = {
-  stories: [{ directory: '../stories/', files: '**/*.stories.@(json|yaml|yml)' }],
+  stories: ['../stories/**/*.stories.@(json|yaml|yml)'],
   logLevel: 'debug',
   addons: [
     '@storybook/addon-docs',
