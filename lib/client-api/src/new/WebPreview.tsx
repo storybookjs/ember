@@ -150,7 +150,7 @@ export class WebPreview<StoryFnReturnType> {
   }
 
   async onResetArgs({ storyId, argNames }: { storyId: string; argNames?: string[] }) {
-    const { initialArgs } = await this.storyStore.getStory({ storyId });
+    const { initialArgs } = await this.storyStore.loadStory({ storyId });
 
     // TODO ensure this technique works with falsey/null initialArgs
     const updatedArgs = argNames.reduce((acc, argName) => {
@@ -179,7 +179,7 @@ export class WebPreview<StoryFnReturnType> {
 
     const { selection } = this.urlStore;
 
-    const story = await this.storyStore.getStory({ storyId: selection.storyId });
+    const story = await this.storyStore.loadStory({ storyId: selection.storyId });
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
     }
@@ -193,7 +193,7 @@ export class WebPreview<StoryFnReturnType> {
     const implementationChanged = false;
 
     if (this.previousSelection?.viewMode === 'story' && (storyChanged || viewModeChanged)) {
-      const previousStory = await this.storyStore.getStory({
+      const previousStory = await this.storyStore.loadStory({
         storyId: this.previousSelection.storyId,
       });
       this.removeStory({ story: previousStory });
@@ -218,40 +218,53 @@ export class WebPreview<StoryFnReturnType> {
     // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
     this.previousSelection = selection;
 
-    const { id, title, name } = story;
-
     if (selection.viewMode === 'docs') {
-      const element = this.view.prepareForDocs();
-      const docsContext = {
-        id,
-        title,
-        name,
-        storyStore: this.storyStore,
-        renderStoryToElement: this.renderStoryToElement.bind(this),
-      };
+      await this.renderDocs({ story });
+    } else {
+      await this.renderStory({ story, forceRender });
+    }
+  }
 
-      const { docs } = story.parameters;
-      if (docs?.page && !docs?.container) {
-        throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
-      }
+  async renderDocs({ story }: { story: Story<StoryFnReturnType> }) {
+    const { id, title, name } = story;
+    const element = this.view.prepareForDocs();
+    const docsContext = {
+      id,
+      title,
+      name,
+      storyStore: this.storyStore,
+      renderStoryToElement: this.renderStoryToElement.bind(this),
+    };
 
-      const DocsContainer: ComponentType<{ context: DocsContext }> =
-        docs.container || (({ children }: { children: Element }) => <>{children}</>);
-      const Page: ComponentType = docs.page || NoDocs;
-
-      const docsElement = (
-        <DocsContainer context={docsContext}>
-          <Page />
-        </DocsContainer>
-      );
-      ReactDOM.render(docsElement, element, () =>
-        // TODO -- changed the API, previous it had a kind -- did we use it?
-        this.channel.emit(Events.DOCS_RENDERED, selection.storyId)
-      );
-      return;
+    const { docs } = story.parameters;
+    if (docs?.page && !docs?.container) {
+      throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
     }
 
+    const DocsContainer: ComponentType<{ context: DocsContext }> =
+      docs.container || (({ children }: { children: Element }) => <>{children}</>);
+    const Page: ComponentType = docs.page || NoDocs;
+
+    const docsElement = (
+      <DocsContainer context={docsContext}>
+        <Page />
+      </DocsContainer>
+    );
+    ReactDOM.render(docsElement, element, () =>
+      // TODO -- changed the API, previous it had a kind -- did we use it?
+      this.channel.emit(Events.DOCS_RENDERED, id)
+    );
+  }
+
+  async renderStory({
+    story,
+    forceRender,
+  }: {
+    story: Story<StoryFnReturnType>;
+    forceRender: boolean;
+  }) {
     const element = this.view.prepareForStory(story, forceRender);
+    const { id, title, name } = story;
     const renderContext: RenderContextWithoutStoryContext = {
       id,
       title,

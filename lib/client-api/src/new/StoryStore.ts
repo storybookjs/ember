@@ -42,7 +42,7 @@ export class StoryStore<StoryFnReturnType> {
     return processCSFFile({ moduleExports, path });
   }
 
-  getStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
+  loadStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
     const csfFile = this.loadCSFFileByStoryId(storyId);
 
     const storyMeta = csfFile.stories[storyId];
