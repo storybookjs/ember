@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import global from 'global';
 import { logger } from '@storybook/client-logger';
 import AnsiToHtml from 'ansi-to-html';
@@ -28,16 +26,10 @@ const ansiConverter = new AnsiToHtml({
 });
 
 export class WebView {
-  currentViewMode: ViewMode;
-
   currentLayoutClass?: typeof layoutClassMap[keyof typeof layoutClassMap] | null;
 
   // Get ready to render a story, returning the element to render to
   prepareForStory(story: Story<any>, forceRender: boolean) {
-    if (this.currentViewMode === 'docs') {
-      ReactDOM.unmountComponentAtNode(document.getElementById('docs-root'));
-    }
-
     this.applyLayout(story.parameters.layout);
 
     if (!forceRender) {
@@ -45,38 +37,22 @@ export class WebView {
       document.documentElement.scrollLeft = 0;
     }
 
-    this.currentViewMode = 'story';
+    return this.storyRoot();
+  }
+
+  storyRoot() {
     return document.getElementById('root');
   }
 
-  async renderDocs(story: Story<any>) {
+  prepareForDocs() {
     this.showMain();
     this.showDocs();
     this.applyLayout('fullscreen');
+    return this.docsRoot();
+  }
 
-    const { docs } = story.parameters;
-    if (docs?.page && !docs?.container) {
-      throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
-    }
-
-    const DocsContainer: Component =
-      docs.container || (({ children }: { children: Element }) => <>{children}</>);
-    const Page: Component = docs.page || NoDocs;
-
-    // TODO -- what is docs context? pass in here?
-    // Docs context includes the storyStore. Probably it would be better if it didn't but that can be fixed in a later refactor
-
-    await new Promise((resolve) => {
-      ReactDOM.render(
-        <DocsContainer context={{ storyStore, ...context }}>
-          <Page />
-        </DocsContainer>,
-        document.getElementById('docs-root'),
-        resolve
-      );
-    });
-
-    this.currentViewMode = 'docs';
+  docsRoot() {
+    return document.getElementById('docs-root');
   }
 
   applyLayout(layout: Layout = 'padded') {

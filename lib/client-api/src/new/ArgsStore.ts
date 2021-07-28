@@ -1,4 +1,5 @@
-import { StoryId, Args, SelectionSpecifier } from './types';
+import { StoryId, Story, Args } from './types';
+import { combineArgs, mapArgsToTypes } from '../args';
 
 export class ArgsStore {
   argsByStoryId: Record<StoryId, Args> = {};
@@ -13,6 +14,13 @@ export class ArgsStore {
 
   set(storyId: StoryId, args: Args) {
     this.argsByStoryId[storyId] = args;
+  }
+
+  updateFromPersisted(story: Story<any>, persisted: Args) {
+    this.argsByStoryId[story.id] = combineArgs(
+      this.argsByStoryId[story.id],
+      mapArgsToTypes(persisted, story.argTypes)
+    );
   }
 
   update(storyId: StoryId, argsUpdate: Partial<Args>) {

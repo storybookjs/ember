@@ -34,8 +34,8 @@ export class GlobalsStore {
     );
   }
 
-  updateFromCache(cachedGlobals: Globals) {
-    const allowedUrlGlobals = Object.entries(cachedGlobals).reduce((acc, [key, value]) => {
+  updateFromPersisted(persisted: Globals) {
+    const allowedUrlGlobals = Object.entries(persisted).reduce((acc, [key, value]) => {
       if (this.allowedGlobalNames.has(key)) acc[key] = value;
       return acc;
     }, {} as Globals);

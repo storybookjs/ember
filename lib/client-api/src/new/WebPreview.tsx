@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { global } from 'global';
@@ -71,11 +73,7 @@ export class WebPreview<StoryFnReturnType> {
     }
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({
-      selectionSpecifier: this.urlStore.selectionSpecifier,
-      importFn,
-      globalMeta,
-    });
+    this.storyStore = new StoryStore({ importFn, globalMeta });
     this.view = new WebView();
   }
 
@@ -107,10 +105,10 @@ export class WebPreview<StoryFnReturnType> {
     this.urlStore.setSelection({ storyId, viewMode });
 
     if (globals) {
-      this.storyStore.globals.updateFromCache(globals);
+      this.storyStore.globals.updateFromPersisted(globals);
     }
 
-    await this.renderSelection({ forceRender: false, cachedArgs: args });
+    await this.renderSelection({ forceRender: false, persistedArgs: args });
   }
 
   onKeydown(event: KeyboardEvent) {
@@ -150,7 +148,7 @@ export class WebPreview<StoryFnReturnType> {
   }
 
   async onResetArgs({ storyId, argNames }: { storyId: string; argNames?: string[] }) {
-    const { initialArgs } = await this.storyStore.getStory(storyId);
+    const { initialArgs } = await this.storyStore.getStory({ storyId });
 
     // TODO ensure this technique works with falsey/null initialArgs
     const updatedArgs = argNames.reduce((acc, argName) => {
@@ -166,14 +164,23 @@ export class WebPreview<StoryFnReturnType> {
   //     in which case we render it to the root element, OR
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
-  async renderSelection({ forceRender, cachedArgs }: { forceRender: boolean; cachedArgs: Args }) {
+  async renderSelection({
+    forceRender,
+    persistedArgs,
+  }: {
+    forceRender: boolean;
+    persistedArgs?: Args;
+  }) {
     if (!this.urlStore.selection) {
       throw new Error('Cannot render story as no selection was made');
     }
 
     const { selection } = this.urlStore;
 
-    const story = await this.storyStore.getStory({ storyId: selection.storyId, cachedArgs });
+    const story = await this.storyStore.getStory({ storyId: selection.storyId });
+    if (persistedArgs) {
+      this.storyStore.args.updateFromPersisted(story, persistedArgs);
+    }
 
     // We need to:
 
@@ -188,6 +195,10 @@ export class WebPreview<StoryFnReturnType> {
         storyId: this.previousSelection.storyId,
       });
       this.removeStory({ story: previousStory });
+    }
+
+    if (viewModeChanged && this.previousSelection.viewMode === 'docs') {
+      ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
     // Don't re-render the story if nothing has changed to justify it
@@ -206,7 +217,30 @@ export class WebPreview<StoryFnReturnType> {
     this.previousSelection = selection;
 
     if (selection.viewMode === 'docs') {
-      await this.view.renderDocs(story);
+      const element = this.view.prepareForDocs();
+
+      const { docs } = story.parameters;
+      if (docs?.page && !docs?.container) {
+        throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
+      }
+
+      const DocsContainer: Component =
+        docs.container || (({ children }: { children: Element }) => <>{children}</>);
+      const Page: Component = docs.page || NoDocs;
+
+      // TODO -- what is docs context? pass in here?
+      // Docs context includes the storyStore. Probably it would be better if it didn't but that can be fixed in a later refactor
+
+      await new Promise((resolve) => {
+        ReactDOM.render(
+          <DocsContainer context={{ storyStore, ...context }}>
+            <Page />
+          </DocsContainer>,
+          document.getElementById('docs-root'),
+          resolve
+        );
+      });
+
       // TODO -- changed the API, previous it had a kind -- did we use it?
       this.channel.emit(Events.DOCS_RENDERED, selection.storyId);
       return;

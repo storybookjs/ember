@@ -14,6 +14,7 @@ import {
   ArgTypes,
   ArgsEnhancer,
   ArgTypesEnhancer,
+  StoryContextForEnhancers,
 } from './types';
 
 import { combineParameters } from '../parameters';
@@ -83,33 +84,6 @@ export function prepareStory<StoryFnReturnType>(
   // eslint-disable-next-line no-underscore-dangle
   parameters.__isArgsStory = passArgsFirst && render.length > 0;
 
-  const contextForEnhancers: StoryContext = {
-    id,
-    name,
-    kind: title, // TODO ?
-    parameters,
-    argTypes: passedArgTypes,
-    hooks,
-    // TODO -- does it make sense for this to include args? globals?
-    args: {},
-    globals: {},
-  };
-
-  // BACKCOMPAT: do argTypeEnhancers expect to find existing argTypes on enhancers?
-  const argTypes = argTypesEnhancers.reduce(
-    (accumulatedArgTypes, enhancer) => ({
-      ...accumulatedArgTypes,
-      ...enhancer({
-        ...contextForEnhancers,
-        argTypes: accumulatedArgTypes,
-      }),
-    }),
-    {} as ArgTypes
-  );
-
-  // TODO -- are we still doing this?
-  // parameters.argTypes = argTypes;
-
   // Pull out args[X] || argTypes[X].defaultValue into initialArgs
   // TODO -- generalize combineParameters
   const passedArgs: Args = combineParameters(
@@ -119,7 +93,7 @@ export function prepareStory<StoryFnReturnType>(
   ) as Args;
 
   const defaultArgs: Args = Object.entries(
-    argTypes as Record<string, { defaultValue: any }>
+    passedArgTypes as Record<string, { defaultValue: any }>
   ).reduce((acc, [arg, { defaultValue }]) => {
     if (typeof defaultValue !== 'undefined') {
       acc[arg] = defaultValue;
@@ -131,15 +105,39 @@ export function prepareStory<StoryFnReturnType>(
   }
 
   const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
-  const initialArgs = argsEnhancers.reduce(
+  const contextForEnhancers: StoryContextForEnhancers = {
+    id,
+    name,
+    story: name, // Back compat
+    title,
+    kind: title, // Back compat
+    parameters,
+    hooks,
+    initialArgs: initialArgsBeforeEnhancers,
+    argTypes: passedArgTypes,
+  };
+
+  contextForEnhancers.initialArgs = argsEnhancers.reduce(
     (accumulatedArgs: Args, enhancer) => ({
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        args: accumulatedArgs,
+        initialArgs: accumulatedArgs,
       }),
     }),
     initialArgsBeforeEnhancers
+  );
+
+  // BACKCOMPAT: do argTypeEnhancers expect to find existing argTypes on enhancers?
+  contextForEnhancers.argTypes = argTypesEnhancers.reduce(
+    (accumulatedArgTypes, enhancer) => ({
+      ...accumulatedArgTypes,
+      ...enhancer({
+        ...contextForEnhancers,
+        argTypes: accumulatedArgTypes,
+      }),
+    }),
+    contextForEnhancers.argTypes
   );
 
   const applyLoaders = async (context: StoryContext) => {
@@ -175,13 +173,7 @@ export function prepareStory<StoryFnReturnType>(
   };
 
   return {
-    id,
-    name,
-    kind: title, // TODO ?
-    parameters,
-    initialArgs,
-    argTypes,
-    hooks,
+    ...contextForEnhancers,
     applyLoaders,
     storyFn,
     runPlayFunction,

@@ -4,7 +4,6 @@ import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
 import { prepareStory } from './prepareStory';
 import { Args, CSFFile, StoryId, ModuleImportFn, GlobalMeta, Story, StoryContext } from './types';
-import { combineArgs, mapArgsToTypes } from '../args';
 
 export class StoryStore<StoryFnReturnType> {
   storiesList: StoriesListStore;
@@ -43,13 +42,7 @@ export class StoryStore<StoryFnReturnType> {
     return processCSFFile({ moduleExports, path });
   }
 
-  getStory({
-    storyId,
-    cachedArgs,
-  }: {
-    storyId: StoryId;
-    cachedArgs?: Args;
-  }): Story<StoryFnReturnType> {
+  getStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
     const csfFile = this.loadCSFFileByStoryId(storyId);
 
     const storyMeta = csfFile.stories[storyId];
@@ -62,19 +55,8 @@ export class StoryStore<StoryFnReturnType> {
 
     // TODO -- we need some kind of cache at this point.
 
-    let { initialArgs } = story;
-    if (cachedArgs) {
-      initialArgs = combineArgs(initialArgs, mapArgsToTypes(cachedArgs, story.argTypes));
-    }
-    this.args.set(storyId, initialArgs);
-
-    // QN: how do we currently distinguish first from subsequent render of a story?
-    // -- ANS: we have a concept of "unmounting" a story
-    // -- second answer: the StoryRenderer currently knows
-
-    // TODO
-    // If we are setting args once when the story is first rendered, we need to
-    // some how do it at the point of rendering
+    // TODO(HMR) -- figure out when we set this on first run vs HMR
+    this.args.set(storyId, story.initialArgs);
 
     return story;
   }

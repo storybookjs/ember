@@ -20,26 +20,30 @@ export type { StoryId, ViewMode, Parameters, Args, ArgTypes, LegacyStoryFn, Args
 export type ModuleExports = Record<string, any>;
 export interface StoryIdentifier {
   id: StoryId;
-  kind: StoryKind; // TODO -- rename this to componentTitle or just title?
+  kind: ComponentTitle; // deprecated
+  title: ComponentTitle;
   name: StoryName;
-  // TODO -- do we still need story here?
+  story: StoryName; // deprecated
 }
 
 // TODO -- these should probably have their own definition
 export type Globals = Args;
 export type GlobalTypes = ArgTypes;
 
-export type StoryContext = StoryIdentifier & {
+export type StoryContextForEnhancers = StoryIdentifier & {
   parameters: Parameters;
-  args: Args;
-  argTypes: ArgTypes;
   globals: Globals;
   hooks: HooksContext;
+  initialArgs: Args;
+  argTypes: ArgTypes;
 };
 
-// Theoretically you can update anything, in practice you should probably only be able to update args + globals?
-// TODO - should we reflect that in the type?
-export type StoryContextUpdate = Partial<StoryContext>;
+export type StoryContextUpdate = {
+  args: Args;
+  globals: Globals;
+};
+
+export type StoryContext = StoryContextForEnhancers & StoryContextUpdate;
 
 export type LoadedStoryContext = StoryContext & {
   loaded: Record<string, any>;
@@ -57,8 +61,8 @@ export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext 
     storyFn: LegacyStoryFn<StoryFnReturnType>;
   };
 
-export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
-export type ArgsEnhancer = (context: StoryContext) => Args;
+export type ArgTypesEnhancer = (context: StoryContextForEnhancers) => ArgTypes;
+export type ArgsEnhancer = (context: StoryContextForEnhancers) => Args;
 
 export type Meta<StoryFnReturnType> = {
   decorators?: DecoratorFunction<StoryFnReturnType>[];
