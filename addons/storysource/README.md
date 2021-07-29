@@ -4,7 +4,7 @@ This addon is used to show stories source in the addon panel.
 
 [Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
 
-![Storysource Demo](./docs/demo.gif)
+![Storysource Demo](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/storysource/docs/demo.gif)
 
 - [Getting Started](#getting-started)
   - [Install using preset](#install-using-preset)
@@ -57,7 +57,8 @@ To customize the `source-loader`, pass `loaderOptions`. Valid configurations are
 ## Theming
 
 Storysource will automatically use the light or dark syntax theme based on your storybook theme. See [Theming Storybook](https://storybook.js.org/docs/react/configure/theming) for more information.
-![Storysource Light/Dark Themes](./docs/theming-light-dark.png)
+
+![Storysource Light/Dark Themes](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/storysource/docs/theming-light-dark.png)
 
 ## Displaying full source
 
