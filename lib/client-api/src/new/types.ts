@@ -32,7 +32,6 @@ export type GlobalTypes = ArgTypes;
 
 export type StoryContextForEnhancers = StoryIdentifier & {
   parameters: Parameters;
-  globals: Globals;
   hooks: HooksContext;
   initialArgs: Args;
   argTypes: ArgTypes;
@@ -87,9 +86,11 @@ export type WebGlobalMeta<StoryFnReturnType> = GlobalMeta<StoryFnReturnType> & {
 };
 
 export type ComponentTitle = StoryKind;
+export type ComponentId = string;
 type StoryDescriptor = string[] | RegExp;
 export type ComponentMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
   title: ComponentTitle;
+  id?: ComponentId;
 
   // TODO - check these
   component?: any;

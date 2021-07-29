@@ -16,12 +16,13 @@ import {
   StoryId,
   Args,
   DocsContext,
-} from './types';
-import { StoryStore } from './StoryStore';
+  StorySpecifier,
+} from '@storybook/client-api/dist/ts3.9/new/types';
+import { StoryStore } from '@storybook/client-api/dist/ts3.9/new/StoryStore';
+
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { StorySpecifier } from '../types';
-import { NoDocs } from './NoDocs';
+import { NoDocs } from '../NoDocs';
 
 const { navigator, window: globalWindow } = global;
 

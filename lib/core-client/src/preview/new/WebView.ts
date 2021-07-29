@@ -3,7 +3,7 @@ import { logger } from '@storybook/client-logger';
 import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
 
-import { Story, ViewMode } from './types';
+import { Story } from '@storybook/client-api/dist/ts3.9/new/types';
 
 const { document, FEATURES = {} } = global;
 

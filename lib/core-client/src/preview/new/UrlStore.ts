@@ -1,8 +1,7 @@
-import Events from '@storybook/core-events';
+import { SelectionSpecifier, Selection } from '@storybook/client-api/dist/ts3.9/new/types';
 
-import { Channel, SelectionSpecifier, Selection } from './types';
 // TODO -- this import is wrong
-import { getSelectionSpecifierFromPath, setPath } from '../../../core-client/src/preview/url';
+import { getSelectionSpecifierFromPath, setPath } from '../url';
 
 export class UrlStore {
   selectionSpecifier: SelectionSpecifier;
