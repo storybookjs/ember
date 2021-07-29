@@ -193,5 +193,5 @@ export const noBrand: Story = () => {
 export const skipLinkFocused: Story = {
   args: { menu: menuItems },
   parameters: { layout: 'padded' },
-  play: () => screen.getByTestId('header-skip').focus(),
+  play: () => screen.getByTestId('heading--skip').focus(),
 };

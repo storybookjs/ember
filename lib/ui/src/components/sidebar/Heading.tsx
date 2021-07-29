@@ -58,8 +58,8 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
         secondary
         isLink
         tabIndex={0}
-        data-testid="header-skip"
-        href="#storybook-preview-iframe"
+        data-testid="heading--skip"
+        href="#storybook-preview-wrapper"
       >
         Skip to canvas
       </SkipToContentLink>

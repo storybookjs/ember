@@ -103,16 +103,16 @@ const LeafNodeStyleWrapper = styled.div(({ theme }) => ({
 }));
 
 const SkipToContentLink = styled(Button)(({ theme }) => ({
+  zIndex: -1,
   position: 'absolute',
   top: 1,
   right: 20,
   height: '20px',
   fontSize: '10px',
   padding: '5px 10px',
-  transform: 'translateX(100px)',
   '&:focus': {
     background: 'white',
-    transform: 'translateX(0)',
+    zIndex: 1,
   },
 }));
 
@@ -173,7 +173,7 @@ const Node = React.memo<NodeProps>(
               secondary
               outline
               isLink
-              href="#storybook-preview-iframe"
+              href="#storybook-preview-wrapper"
               data-testid="node--skip"
             >
               Skip to canvas
