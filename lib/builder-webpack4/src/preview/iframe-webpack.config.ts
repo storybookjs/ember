@@ -13,6 +13,7 @@ import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 // @ts-ignore
 import FilterWarningsPlugin from 'webpack-filter-warnings-plugin';
+import dedent from 'ts-dedent';
 
 import themingPaths from '@storybook/theming/paths';
 
@@ -55,6 +56,7 @@ export default async ({
   configDir,
   babelOptions,
   entries,
+  configs,
   stories,
   outputDir = path.join('.', 'public'),
   quiet,
@@ -77,50 +79,48 @@ export default async ({
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
-  // TODO FIX ME - does this need to be ESM?
-  const entryTemplate = await fse.readFile(path.join(__dirname, 'virtualModuleEntry.template.js'), {
-    encoding: 'utf8',
-  });
-  const storyTemplate = await fse.readFile(path.join(__dirname, 'virtualModuleStory.template.js'), {
-    encoding: 'utf8',
-  });
-  const frameworkInitEntry = path.resolve(
-    path.join(configDir, 'storybook-init-framework-entry.js')
-  );
-  // Allows for custom frameworks that are not published under the @storybook namespace
-  const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
-  const virtualModuleMapping = {
-    // Ensure that the client API is initialized by the framework before any other iframe code
-    // is loaded. That way our client-apis can assume the existence of the API+store
-    [frameworkInitEntry]: `import '${frameworkImportPath}';`,
-  };
-  entries.forEach((entryFilename: any) => {
-    const match = entryFilename.match(/(.*)-generated-(config|other)-entry.js$/);
-    if (match) {
-      const configFilename = match[1];
-      const clientApi = storybookPaths['@storybook/client-api'];
-      const clientLogger = storybookPaths['@storybook/client-logger'];
+  const configEntry = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
 
-      virtualModuleMapping[entryFilename] = interpolate(entryTemplate, {
-        configFilename,
-        clientApi,
-        clientLogger,
-      });
-    }
-  });
-  if (stories) {
-    const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
-    // Make sure we also replace quotes for this one
-    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
-      frameworkImportPath,
-    }).replace(
-      "'{{stories}}'",
-      stories
-        .map((s: NormalizedStoriesEntry) => s.glob)
-        .map(toRequireContextString)
-        .join(',')
-    );
-  }
+  // Allows for custom frameworks that are not published under the @storybook namespace
+  const virtualModuleMapping = {
+    [configEntry]: dedent`
+    import { getGlobalsFromEntries } from '@storybook/core-client/dist/esm/preview/new/getGlobalsFromEntries';
+    import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
+
+    ${configs
+      .map(
+        (fileName: string, index: number) =>
+          `import * as configModuleExport${index} from "${fileName}";`
+      )
+      .join('\n')}
+
+    // TODO -- non-hardcoded importFn
+    const importFn = async (path) => import('./src/' + path.replace(/^src\//, ''));
+
+    const getGlobalMeta = () =>
+      getGlobalsFromEntries([
+        ${configs
+          .map((fileName: string, index: number) => `configModuleExport${index}`)
+          .join(',\n')}
+      ]);
+
+    window.__STORYBOOK_PREVIEW__ = new WebPreview({ importFn, getGlobalMeta });`,
+  };
+
+  console.log(virtualModuleMapping[configEntry]);
+  // if (stories) {
+  //   const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
+  //   // Make sure we also replace quotes for this one
+  //   virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
+  //     frameworkImportPath,
+  //   }).replace(
+  //     "'{{stories}}'",
+  //     stories
+  //       .map((s: NormalizedStoriesEntry) => s.glob)
+  //       .map(toRequireContextString)
+  //       .join(',')
+  //   );
+  // }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
   const tsCheckOptions = typescriptOptions.checkOptions || {};
@@ -130,7 +130,7 @@ export default async ({
     mode: isProd ? 'production' : 'development',
     bail: isProd,
     devtool: 'cheap-module-source-map',
-    entry: entries,
+    entry: [...entries, configEntry],
     // stats: 'errors-only',
     output: {
       path: path.resolve(process.cwd(), outputDir),

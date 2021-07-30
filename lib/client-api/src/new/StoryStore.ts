@@ -3,7 +3,16 @@ import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
 import { prepareStory } from './prepareStory';
-import { Args, CSFFile, StoryId, ModuleImportFn, GlobalMeta, Story, StoryContext } from './types';
+import {
+  Args,
+  CSFFile,
+  StoryId,
+  ModuleImportFn,
+  GlobalMeta,
+  Story,
+  StoryContext,
+  StoriesList,
+} from './types';
 
 export class StoryStore<StoryFnReturnType> {
   storiesList: StoriesListStore;
@@ -19,11 +28,13 @@ export class StoryStore<StoryFnReturnType> {
   constructor({
     importFn,
     globalMeta,
+    fetchStoriesList,
   }: {
     importFn: ModuleImportFn;
     globalMeta: GlobalMeta<StoryFnReturnType>;
+    fetchStoriesList: () => Promise<StoriesList>;
   }) {
-    this.storiesList = new StoriesListStore();
+    this.storiesList = new StoriesListStore({ fetchStoriesList });
     this.importFn = importFn;
     this.globalMeta = globalMeta;
 
@@ -36,14 +47,14 @@ export class StoryStore<StoryFnReturnType> {
     await this.storiesList.initialize();
   }
 
-  loadCSFFileByStoryId(storyId: StoryId): CSFFile<StoryFnReturnType> {
+  async loadCSFFileByStoryId(storyId: StoryId): CSFFile<StoryFnReturnType> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
-    const moduleExports = this.importFn(path);
+    const moduleExports = await this.importFn(path);
     return processCSFFile({ moduleExports, path });
   }
 
-  loadStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
-    const csfFile = this.loadCSFFileByStoryId(storyId);
+  async loadStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
+    const csfFile = await this.loadCSFFileByStoryId(storyId);
 
     const storyMeta = csfFile.stories[storyId];
     if (!storyMeta) {

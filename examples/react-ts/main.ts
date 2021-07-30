@@ -4,6 +4,7 @@ const config: StorybookConfig = {
   stories: [{ directory: './src', titlePrefix: 'Demo' }],
   logLevel: 'debug',
   addons: [
+    '@storybook/react',
     '@storybook/addon-essentials',
     '@storybook/addon-storysource',
     '@storybook/addon-storyshots',
@@ -21,6 +22,7 @@ const config: StorybookConfig = {
   features: {
     postcss: false,
     previewCsfV3: true,
+    buildStoriesJson: true,
   },
 };
 

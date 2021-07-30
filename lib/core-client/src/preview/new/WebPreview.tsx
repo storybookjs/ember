@@ -2,9 +2,10 @@ import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import { global } from 'global';
+import global from 'global';
 import { addons, Channel } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
+import fetch from 'unfetch';
 
 import {
   WebGlobalMeta,
@@ -12,13 +13,14 @@ import {
   Selection,
   Story,
   RenderContextWithoutStoryContext,
+  RenderContext,
   Globals,
   StoryId,
   Args,
   DocsContext,
   StorySpecifier,
 } from '@storybook/client-api/dist/ts3.9/new/types';
-import { StoryStore } from '@storybook/client-api/dist/ts3.9/new/StoryStore';
+import { StoryStore } from '@storybook/client-api/dist/esm/new/StoryStore';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
@@ -75,9 +77,16 @@ export class WebPreview<StoryFnReturnType> {
       return;
     }
 
+    const fetchStoriesList = async () => {
+      const response = await fetch('/stories.json');
+      return response.json();
+    };
+
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, globalMeta });
+    this.storyStore = new StoryStore({ importFn, globalMeta, fetchStoriesList });
     this.view = new WebView();
+
+    this.initialize();
   }
 
   async initialize() {
@@ -200,7 +209,7 @@ export class WebPreview<StoryFnReturnType> {
       this.removeStory({ story: previousStory });
     }
 
-    if (viewModeChanged && this.previousSelection.viewMode === 'docs') {
+    if (viewModeChanged && this.previousSelection?.viewMode === 'docs') {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
@@ -285,7 +294,7 @@ export class WebPreview<StoryFnReturnType> {
   // but also by the `<ModernStory>` docs component
   async renderStoryToElement({
     story,
-    renderContext,
+    renderContext: renderContextWithoutStoryContext,
     element,
   }: {
     story: Story<StoryFnReturnType>;
@@ -298,7 +307,15 @@ export class WebPreview<StoryFnReturnType> {
 
     const loadedContext = await applyLoaders(storyContext);
 
-    await this.renderToDOM({ ...loadedContext, ...renderContext, storyFn }, element);
+    const renderContext: RenderContext<StoryFnReturnType> = {
+      ...renderContextWithoutStoryContext,
+      unboundStoryFn: storyFn,
+      storyContext: {
+        ...loadedContext,
+        storyFn: () => storyFn(loadedContext),
+      },
+    };
+    await this.renderToDOM(renderContext, element);
 
     // TODO -- discuss why not forceRender? and do features better
     if (global.FEATURES.previewCsfV3 && !renderContext.forceRender) {

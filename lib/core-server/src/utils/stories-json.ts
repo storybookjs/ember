@@ -70,7 +70,9 @@ export async function useStoriesJson(router: any, options: Options) {
   });
   const globs = stories.map((s) => s.glob);
   extractStoriesJson(storiesJson, globs, options.configDir);
+  console.log('extracted');
   router.use('/stories.json', async (_req: any, res: any) => {
+    console.log('getting stories.json');
     for (let i = 0; i < timeout / step; i += 1) {
       if (fs.existsSync(storiesJson)) {
         // eslint-disable-next-line no-await-in-loop

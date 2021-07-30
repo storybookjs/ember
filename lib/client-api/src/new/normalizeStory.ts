@@ -32,14 +32,13 @@ export function normalizeStory<StoryFnReturnType>(
 
   const { decorators, parameters, args, argTypes, loaders, render, play } = storyObject;
 
+  // TODO back compat for exports.story.X
+
   return {
     id,
     name: storyObject.name || storyObject.storyName || exportName,
     decorators,
-    parameters: {
-      ...parameters,
-      __id: id,
-    },
+    parameters,
     args,
     argTypes,
     loaders,

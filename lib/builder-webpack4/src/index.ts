@@ -9,6 +9,7 @@ import {
   useProgressReporting,
   checkWebpackVersion,
   Options,
+  loadPreviewOrConfigFile,
   normalizeStories,
 } from '@storybook/core-common';
 
@@ -32,12 +33,17 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
-  const entries = await presets.apply('entries', [], options);
+  const entries = await presets.apply('previewEntries', [], options);
   const stories = normalizeStories(await presets.apply('stories', [], options), {
     configDir: options.configDir,
     workingDir: process.cwd(),
   });
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
+
+  const configs = [
+    loadPreviewOrConfigFile(options),
+    ...(await presets.apply('config', [], options)),
+  ].filter(Boolean);
 
   return presets.apply(
     'webpack',
@@ -46,6 +52,7 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
       ...options,
       babelOptions,
       entries,
+      configs,
       stories,
       typescriptOptions,
       [`${options.framework}Options`]: frameworkOptions,

@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { AccountForm, AccountFormProps } from './AccountForm';
 
 export default {
+  title: 'AccountForm',
   component: AccountForm,
   parameters: {
     layout: 'centered',

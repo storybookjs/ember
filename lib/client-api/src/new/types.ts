@@ -55,10 +55,13 @@ export declare type RenderContextWithoutStoryContext = StoryIdentifier & {
   showException: (err: Error) => void;
 };
 
-export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext &
-  LoadedStoryContext & {
+export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext & {
+  // TODO -- this is pretty surprising -- why is this here?
+  unboundStoryFn: LegacyStoryFn<StoryFnReturnType>;
+  storyContext: LoadedStoryContext & {
     storyFn: LegacyStoryFn<StoryFnReturnType>;
   };
+};
 
 export type ArgTypesEnhancer = (context: StoryContextForEnhancers) => ArgTypes;
 export type ArgsEnhancer = (context: StoryContextForEnhancers) => Args;
@@ -92,7 +95,8 @@ export type ComponentMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
   title: ComponentTitle;
   id?: ComponentId;
 
-  // TODO - check these
+  // TODO - should we have a type parameter for these?
+  // Also TODO -- can you override at the story level?
   component?: any;
   subcomponents?: Record<string, any>;
   includeStories?: StoryDescriptor;
@@ -110,6 +114,8 @@ export type CSFFile<StoryFnReturnType> = {
 };
 
 export type Story<StoryFnReturnType> = StoryIdentifier & {
+  component?: any;
+  subcomponents?: Record<string, any>;
   parameters: Parameters;
   initialArgs: Args;
   argTypes: ArgTypes;

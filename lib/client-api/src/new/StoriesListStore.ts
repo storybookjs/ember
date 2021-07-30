@@ -6,19 +6,21 @@ import { StoryId, StorySpecifier, Path, StoriesList } from './types';
 // const { fetch } = global;
 
 export class StoriesListStore {
+  fetchStoriesList: () => Promise<StoriesList>;
+
   storiesList: StoriesList;
 
   // TODO -- add a node-channel and watch it
-  // constructor() {}
-
-  async initialize() {
-    return this.fetchStoriesList();
+  constructor({ fetchStoriesList }: { fetchStoriesList: () => Promise<StoriesList> }) {
+    this.fetchStoriesList = fetchStoriesList;
   }
 
-  async fetchStoriesList() {
-    // TODO -- what is the URL here, how can we get this in a portable way?
-    // await fetch('/stories.json')
-    this.storiesList = { v: 1, stories: {} };
+  async initialize() {
+    return this.cacheStoriesList();
+  }
+
+  async cacheStoriesList() {
+    this.storiesList = await this.fetchStoriesList();
   }
 
   storyIdFromSpecifier(specifier: StorySpecifier) {

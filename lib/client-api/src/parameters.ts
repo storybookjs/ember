@@ -8,9 +8,9 @@ import isPlainObject from 'lodash/isPlainObject';
  * are plain objects. In this case flag the key as "special" and handle
  * it with a heuristic.
  */
-export const combineParameters = (...parameterSets: Parameters[]) => {
+export const combineParameters = (...parameterSets: (Parameters | undefined)[]) => {
   const mergeKeys: Record<string, boolean> = {};
-  const combined = parameterSets.reduce((acc, p) => {
+  const combined = parameterSets.filter(Boolean).reduce((acc, p) => {
     Object.entries(p).forEach(([key, value]) => {
       const existing = acc[key];
       if (Array.isArray(value) || typeof existing === 'undefined') {

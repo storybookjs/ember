@@ -57,6 +57,7 @@ export async function createPreviewEntry(options: { configDir: string; presets: 
     logger.info(`=> Loading ${other.length} other ${noun} in "${configDir}"`);
     entries.push(...other.map((filename: string) => `${filename}-generated-other-entry.js`));
   }
+  console.log(configs, other, entries);
 
   if (stories && stories.length) {
     entries.push(path.resolve(path.join(configDir, `generated-stories-entry.js`)));

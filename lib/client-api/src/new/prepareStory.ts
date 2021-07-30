@@ -54,9 +54,9 @@ export function prepareStory<StoryFnReturnType>(
   );
 
   const decorators = [
-    ...storyMeta.decorators,
-    ...componentMeta.decorators,
-    ...globalMeta.decorators,
+    ...(storyMeta.decorators || []),
+    ...(componentMeta.decorators || []),
+    ...(globalMeta.decorators || []),
   ];
 
   // Currently it is only possible to set these globally
@@ -66,7 +66,11 @@ export function prepareStory<StoryFnReturnType>(
     argsEnhancers = [],
   } = globalMeta;
 
-  const loaders = [...globalMeta.loaders, ...componentMeta.loaders, ...storyMeta.loaders];
+  const loaders = [
+    ...(globalMeta.loaders || []),
+    ...(componentMeta.loaders || []),
+    ...(storyMeta.loaders || []),
+  ];
 
   const hooks = new HooksContext();
   const cleanup = () => hooks.clean();
@@ -157,7 +161,9 @@ export function prepareStory<StoryFnReturnType>(
       ...context,
       args: validateOptions(mappedArgs, context.argTypes),
     };
-    return context.parameters.passArgsFirst
+
+    const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
+    return renderTimePassArgsFirst
       ? (render as ArgsStoryFn<StoryFnReturnType>)(validatedContext.args, validatedContext)
       : (render as LegacyStoryFn<StoryFnReturnType>)(validatedContext);
   };
@@ -174,6 +180,8 @@ export function prepareStory<StoryFnReturnType>(
 
   return {
     ...contextForEnhancers,
+    component: componentMeta.component,
+    subcomponents: componentMeta.subcomponents,
     applyLoaders,
     storyFn,
     runPlayFunction,
