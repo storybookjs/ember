@@ -19,6 +19,7 @@ import {
   Args,
   DocsContext,
   StorySpecifier,
+  Parameters,
 } from '@storybook/client-api/dist/ts3.9/new/types';
 import { StoryStore } from '@storybook/client-api/dist/esm/new/StoryStore';
 
@@ -93,6 +94,9 @@ export class WebPreview<StoryFnReturnType> {
     await this.storyStore.initialize();
     this.setupListeners();
     await this.selectSpecifiedStory();
+
+    // TODO -- which way round is SET_STORIES/STORY_WAS_SELECTED in 6.3/
+    this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
   }
 
   setupListeners() {
@@ -115,6 +119,10 @@ export class WebPreview<StoryFnReturnType> {
     }
 
     this.urlStore.setSelection({ storyId, viewMode });
+    this.channel.emit(Events.STORY_SPECIFIED, this.urlStore.selection);
+
+    // TODO -- previously this only emitted if the selection failed. I don't know if we really need it
+    this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
 
     if (globals) {
       this.storyStore.globals.updateFromPersisted(globals);
@@ -317,8 +325,7 @@ export class WebPreview<StoryFnReturnType> {
     };
     await this.renderToDOM(renderContext, element);
 
-    // TODO -- discuss why not forceRender? and do features better
-    if (global.FEATURES.previewCsfV3 && !renderContext.forceRender) {
+    if (!renderContext.forceRender) {
       await runPlayFunction();
     }
     this.channel.emit(Events.STORY_RENDERED, id);

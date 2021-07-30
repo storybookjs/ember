@@ -171,9 +171,11 @@ export function prepareStory<StoryFnReturnType>(
   // TODO -- fix types
   const storyFn = applyHooks(applyDecorators)(undecoratedStoryFn, decorators as any);
 
+  // TODO -- can you define play functions at other levels?
+  const { play } = storyMeta;
   const runPlayFunction = async () => {
-    if (parameters.play) {
-      return parameters.play();
+    if (play) {
+      return play();
     }
     return undefined;
   };

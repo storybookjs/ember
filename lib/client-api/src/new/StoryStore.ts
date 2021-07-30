@@ -12,6 +12,7 @@ import {
   Story,
   StoryContext,
   StoriesList,
+  Parameters,
 } from './types';
 
 export class StoryStore<StoryFnReturnType> {
@@ -77,6 +78,25 @@ export class StoryStore<StoryFnReturnType> {
       ...story,
       args: this.args.get(story.id),
       globals: this.globals.get(),
+    };
+  }
+
+  getSetStoriesPayload() {
+    const { v, stories } = this.storiesList.storiesList;
+    const kindParameters: Parameters = Object.values(stories).reduce(
+      (acc: Parameters, { kind }) => {
+        acc[kind] = {};
+        return acc;
+      },
+      {} as Parameters
+    );
+
+    return {
+      v,
+      globals: this.globals.get(),
+      globalParameters: {},
+      kindParameters,
+      stories,
     };
   }
 }
