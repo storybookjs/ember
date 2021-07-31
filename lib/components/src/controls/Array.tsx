@@ -2,7 +2,7 @@ import React, { FC, ChangeEvent, useCallback, useState } from 'react';
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import { ControlProps, ArrayValue, ArrayConfig } from './types';
 
 const parse = (value: string, separator: string): ArrayValue =>
@@ -39,7 +39,11 @@ export const ArrayControl: FC<ArrayProps> = ({
     setForceVisible(true);
   }, [setForceVisible]);
   if (value === undefined) {
-    return <Form.Button onClick={onForceVisible}>Set array</Form.Button>;
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onForceVisible}>
+        Set array
+      </Form.Button>
+    );
   }
 
   const isValid = Array.isArray(value);

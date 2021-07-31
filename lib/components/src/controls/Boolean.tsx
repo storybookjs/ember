@@ -3,7 +3,7 @@ import React, { FC, useCallback } from 'react';
 import { opacify, transparentize } from 'polished';
 import { styled } from '@storybook/theming';
 
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import { Form } from '../form';
 import { ControlProps, BooleanValue, BooleanConfig } from './types';
 
@@ -85,7 +85,11 @@ export type BooleanProps = ControlProps<BooleanValue> & BooleanConfig;
 export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => {
   const onSetFalse = useCallback(() => onChange(false), [onChange]);
   if (value === undefined) {
-    return <Form.Button onClick={onSetFalse}>Set boolean</Form.Button>;
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onSetFalse}>
+        Set boolean
+      </Form.Button>
+    );
   }
 
   return (
