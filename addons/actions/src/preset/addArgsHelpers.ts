@@ -14,7 +14,7 @@ import { action } from '../index';
 
 export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
   const {
-    args,
+    initialArgs,
     argTypes,
     parameters: { actions },
   } = context;
@@ -28,7 +28,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
   );
 
   return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
-    if (typeof args[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined') {
       acc[name] = action(name);
     }
     return acc;
@@ -40,7 +40,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
  */
 export const addActionsFromArgTypes: ArgsEnhancer = (context) => {
   const {
-    args,
+    initialArgs,
     argTypes,
     parameters: { actions },
   } = context;
@@ -51,7 +51,7 @@ export const addActionsFromArgTypes: ArgsEnhancer = (context) => {
   const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType.action);
 
   return argTypesWithAction.reduce((acc, [name, argType]) => {
-    if (typeof args[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined') {
       acc[name] = action(typeof argType.action === 'string' ? argType.action : name);
     }
     return acc;
