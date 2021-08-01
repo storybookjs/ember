@@ -79,13 +79,24 @@ export default async ({
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
-  const configEntry = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+  const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+  const storiesFilename = 'storybook-stories.js';
+  const storiesPath = path.resolve(path.join(configDir, storiesFilename));
 
   // Allows for custom frameworks that are not published under the @storybook namespace
   const virtualModuleMapping = {
-    [configEntry]: dedent`
+    [storiesPath]: dedent`
+      // TODO -- non-hardcoded importFn
+      export const importFn = async (path) => {
+        console.log('importFn ' + path);
+        return import('./src/' + path.replace(/^src\//, ''));
+      };
+    `,
+    [configEntryPath]: dedent`
     import { getGlobalsFromEntries } from '@storybook/core-client/dist/esm/preview/new/getGlobalsFromEntries';
     import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
+
+    import { importFn } from './${storiesFilename}';
 
     ${configs
       .map(
@@ -94,9 +105,6 @@ export default async ({
       )
       .join('\n')}
 
-    // TODO -- non-hardcoded importFn
-    const importFn = async (path) => import('./src/' + path.replace(/^src\//, ''));
-
     const getGlobalMeta = () =>
       getGlobalsFromEntries([
         ${configs
@@ -104,10 +112,21 @@ export default async ({
           .join(',\n')}
       ]);
 
-    window.__STORYBOOK_PREVIEW__ = new WebPreview({ importFn, getGlobalMeta });`,
+    const preview = new WebPreview({ importFn, getGlobalMeta });
+    window.__STORYBOOK_PREVIEW__ = preview;
+    
+    if (module.hot) {
+      module.hot.accept('./${storiesFilename}', () => {
+        console.log('configEntry HMR accept storybook-stories.js');
+        console.log(arguments);
+        // importFn has changed so we need to patch the new one in
+        preview.onModuleReload({ importFn });
+      });
+    }
+    `,
   };
 
-  console.log(virtualModuleMapping[configEntry]);
+  console.log(virtualModuleMapping[configEntryPath]);
   // if (stories) {
   //   const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
   //   // Make sure we also replace quotes for this one
@@ -130,7 +149,7 @@ export default async ({
     mode: isProd ? 'production' : 'development',
     bail: isProd,
     devtool: 'cheap-module-source-map',
-    entry: [...entries, configEntry],
+    entry: [...entries, configEntryPath],
     // stats: 'errors-only',
     output: {
       path: path.resolve(process.cwd(), outputDir),

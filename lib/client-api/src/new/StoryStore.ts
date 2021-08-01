@@ -1,3 +1,5 @@
+import memoize from 'memoizerific';
+
 import { StoriesListStore } from './StoriesListStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
@@ -13,7 +15,16 @@ import {
   StoryContext,
   StoriesList,
   Parameters,
+  ModuleExports,
 } from './types';
+
+// TODO -- what are reasonable values for these?
+const CSF_CACHE_SIZE = 100;
+const STORY_CACHE_SIZE = 1000;
+
+// TODO -- are these caches even worth it? how long does it actually take to process/prepare a single story?
+const processCSFFileWithCache = memoize(CSF_CACHE_SIZE)(processCSFFile);
+const prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory);
 
 export class StoryStore<StoryFnReturnType> {
   storiesList: StoriesListStore;
@@ -51,7 +62,7 @@ export class StoryStore<StoryFnReturnType> {
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<StoryFnReturnType>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
-    return processCSFFile({ moduleExports, path });
+    return processCSFFileWithCache(moduleExports, path);
   }
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<StoryFnReturnType>> {
@@ -63,11 +74,8 @@ export class StoryStore<StoryFnReturnType> {
     }
     const componentMeta = csfFile.meta;
 
-    const story = prepareStory(storyMeta, componentMeta, this.globalMeta);
+    const story = prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
 
-    // TODO -- we need some kind of cache at this point.
-
-    // TODO(HMR) -- figure out when we set this on first run vs HMR
     this.args.set(storyId, story.initialArgs);
 
     return story;

@@ -58,6 +58,8 @@ export class WebPreview<StoryFnReturnType> {
 
   previousSelection: Selection;
 
+  previousStory: Story<StoryFnReturnType>;
+
   constructor({
     getGlobalMeta,
     importFn,
@@ -65,6 +67,7 @@ export class WebPreview<StoryFnReturnType> {
     getGlobalMeta: () => WebGlobalMeta<StoryFnReturnType>;
     importFn: ModuleImportFn;
   }) {
+    console.log('creating WebPreview');
     this.channel = getOrCreateChannel();
 
     let globalMeta;
@@ -179,6 +182,12 @@ export class WebPreview<StoryFnReturnType> {
     this.onUpdateArgs({ storyId, updatedArgs });
   }
 
+  // This happens when a glob gets HMR-ed
+  onModuleReload({ importFn }: { importFn: ModuleImportFn }) {
+    this.storyStore.importFn = importFn;
+    this.renderSelection({ forceRender: false });
+  }
+
   // We can either have:
   // - a story selected in "story" viewMode,
   //     in which case we render it to the root element, OR
@@ -202,19 +211,15 @@ export class WebPreview<StoryFnReturnType> {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
     }
 
-    // We need to:
-
     const storyChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    // TODO -- think about this. Do we just compare previousStory === story?
-    const implementationChanged = false;
+    console.log(story, this.previousStory, story === this.previousStory);
+
+    const implementationChanged = story !== this.previousStory;
 
     if (this.previousSelection?.viewMode === 'story' && (storyChanged || viewModeChanged)) {
-      const previousStory = await this.storyStore.loadStory({
-        storyId: this.previousSelection.storyId,
-      });
-      this.removeStory({ story: previousStory });
+      this.removeStory({ story: this.previousStory });
     }
 
     if (viewModeChanged && this.previousSelection?.viewMode === 'docs') {
@@ -235,6 +240,7 @@ export class WebPreview<StoryFnReturnType> {
 
     // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
     this.previousSelection = selection;
+    this.previousStory = story;
 
     if (selection.viewMode === 'docs') {
       await this.renderDocs({ story });

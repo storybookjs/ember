@@ -32,13 +32,11 @@ const checkDisallowedParameters = (parameters: Parameters) => {
 };
 
 // Given the raw exports of a CSF file, check and normalize it.
-export function processCSFFile<StoryFnReturnType>({
-  moduleExports,
-  path,
-}: {
-  moduleExports: ModuleExports;
-  path: Path;
-}): CSFFile<StoryFnReturnType> {
+export function processCSFFile<StoryFnReturnType>(
+  moduleExports: ModuleExports,
+  path: Path
+): CSFFile<StoryFnReturnType> {
+  console.log(`processCSFFile ${path}`);
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
   let exports = namedExports;
 
