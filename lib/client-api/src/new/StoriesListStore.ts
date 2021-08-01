@@ -1,22 +1,43 @@
-// import global from 'global';
+import createChannel from '@storybook/channel-websocket';
+import { Channel } from '@storybook/addons';
 
 import { StoryId, StorySpecifier, Path, StoriesList } from './types';
-
-// TODO -- can we use fetch? how to do this in a portable way?
-// const { fetch } = global;
 
 export class StoriesListStore {
   fetchStoriesList: () => Promise<StoriesList>;
 
+  channel: Channel;
+
   storiesList: StoriesList;
 
-  // TODO -- add a node-channel and watch it
   constructor({ fetchStoriesList }: { fetchStoriesList: () => Promise<StoriesList> }) {
     this.fetchStoriesList = fetchStoriesList;
+
+    // TODO -- where do we get the URL from?
+    this.channel = createChannel({
+      url: 'ws://localhost:8080',
+      async: false,
+      onError: this.onChannelError.bind(this),
+    });
   }
 
   async initialize() {
+    // TODO -- constants
+    // this.channel.on('INITIALIZE_STORIES', this.onStoriesChanged.bind(this));
+    this.channel.on('PATCH_STORIES', this.onStoriesChanged.bind(this));
+    this.channel.on('DELETE_STORIES', this.onStoriesChanged.bind(this));
+
     return this.cacheStoriesList();
+  }
+
+  // TODO -- what to do here?
+  onChannelError(err: Error) {
+    console.log(err);
+  }
+
+  async onStoriesChanged() {
+    console.log('onStoriesChanged');
+    this.storiesList = await this.fetchStoriesList();
   }
 
   async cacheStoriesList() {
