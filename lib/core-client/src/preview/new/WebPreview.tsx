@@ -14,6 +14,7 @@ import {
   Story,
   RenderContextWithoutStoryContext,
   RenderContext,
+  GlobalMeta,
   Globals,
   StoryId,
   Args,
@@ -70,14 +71,8 @@ export class WebPreview<StoryFnReturnType> {
     console.log('creating WebPreview');
     this.channel = getOrCreateChannel();
 
-    let globalMeta;
-    try {
-      globalMeta = getGlobalMeta();
-      this.renderToDOM = globalMeta.renderToDOM;
-    } catch (err) {
-      // This is an error extracting the globalMeta (i.e. evaluating the previewEntries) and
-      // needs to be show to the user as a simple error
-      this.renderPreviewEntryError(err);
+    const globalMeta = this.getGlobalMetaOrRenderError(getGlobalMeta);
+    if (!globalMeta) {
       return;
     }
 
@@ -91,6 +86,22 @@ export class WebPreview<StoryFnReturnType> {
     this.view = new WebView();
 
     this.initialize();
+  }
+
+  getGlobalMetaOrRenderError(
+    getGlobalMeta: () => WebGlobalMeta<StoryFnReturnType>
+  ): GlobalMeta<StoryFnReturnType> | undefined {
+    let globalMeta;
+    try {
+      globalMeta = getGlobalMeta();
+      this.renderToDOM = globalMeta.renderToDOM;
+      return globalMeta;
+    } catch (err) {
+      // This is an error extracting the globalMeta (i.e. evaluating the previewEntries) and
+      // needs to be show to the user as a simple error
+      this.renderPreviewEntryError(err);
+      return undefined;
+    }
   }
 
   async initialize() {
@@ -183,8 +194,23 @@ export class WebPreview<StoryFnReturnType> {
   }
 
   // This happens when a glob gets HMR-ed
-  onModuleReload({ importFn }: { importFn: ModuleImportFn }) {
+  onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
     this.storyStore.importFn = importFn;
+    this.renderSelection({ forceRender: false });
+  }
+
+  // This happens when a config file gets reloade
+  onGetGlobalMetaChanged({
+    getGlobalMeta,
+  }: {
+    getGlobalMeta: () => GlobalMeta<StoryFnReturnType>;
+  }) {
+    const globalMeta = this.getGlobalMetaOrRenderError(getGlobalMeta);
+    if (!globalMeta) {
+      return;
+    }
+
+    this.storyStore.globalMeta = globalMeta;
     this.renderSelection({ forceRender: false });
   }
 

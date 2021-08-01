@@ -120,7 +120,14 @@ export default async ({
         console.log('configEntry HMR accept storybook-stories.js');
         console.log(arguments);
         // importFn has changed so we need to patch the new one in
-        preview.onModuleReload({ importFn });
+        preview.onImportFnChanged({ importFn });
+      });
+
+      module.hot.accept([${configs.map((fileName: string) => `'${fileName}'`).join(',')}], () => {
+        console.log('configEntry HMR accept config file');
+        console.log(arguments);
+        // getGlobalMeta has changed so we need to patch the new one in
+        preview.onGetGlobalMetaChanged({ getGlobalMeta });
       });
     }
     `,
