@@ -48,13 +48,13 @@ export class StoryStore<StoryFnReturnType> {
     await this.storiesList.initialize();
   }
 
-  async loadCSFFileByStoryId(storyId: StoryId): CSFFile<StoryFnReturnType> {
+  async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<StoryFnReturnType>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
     return processCSFFile({ moduleExports, path });
   }
 
-  async loadStory({ storyId }: { storyId: StoryId }): Story<StoryFnReturnType> {
+  async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<StoryFnReturnType>> {
     const csfFile = await this.loadCSFFileByStoryId(storyId);
 
     const storyMeta = csfFile.stories[storyId];
