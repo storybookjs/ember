@@ -93,7 +93,7 @@ export default async ({
       };
     `,
     [configEntryPath]: dedent`
-    import { getGlobalsFromEntries } from '@storybook/core-client/dist/esm/preview/new/getGlobalsFromEntries';
+    import { composeConfigs } from '@storybook/core-client/dist/esm/preview/new/composeConfigs';
     import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
 
     import { importFn } from './${storiesFilename}';
@@ -106,7 +106,7 @@ export default async ({
       .join('\n')}
 
     const getGlobalMeta = () =>
-      getGlobalsFromEntries([
+      composeConfigs([
         ${configs
           .map((fileName: string, index: number) => `configModuleExport${index}`)
           .join(',\n')}

@@ -17,7 +17,7 @@ function getSingletonField(moduleExportList: ModuleExports[], field: string): an
   return getField(moduleExportList, field)[0];
 }
 
-export function getGlobalsFromEntries<StoryFnReturnType>(
+export function composeConfigs<StoryFnReturnType>(
   moduleExportList: ModuleExports[]
 ): WebGlobalMeta<StoryFnReturnType> {
   return {
