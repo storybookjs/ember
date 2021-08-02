@@ -141,7 +141,7 @@ describe('framework-preset-angular-cli', () => {
     });
     it('throws error', async () => {
       await expect(() => webpackFinal(newWebpackConfiguration(), options)).rejects.toThrowError(
-        'Missing required options in project target. Check "tsConfig, assets, optimization"'
+        'Missing required options in project target. Check "tsConfig"'
       );
       expect(logger.error).toHaveBeenCalledWith(`=> Could not get angular cli webpack config`);
     });
@@ -353,6 +353,19 @@ describe('framework-preset-angular-cli', () => {
     });
   });
 
+  describe('when angular.json haven\'t "options.tsConfig" config', () => {
+    beforeEach(() => {
+      initMockWorkspace('without-tsConfig');
+    });
+
+    it('throws error', async () => {
+      await expect(() => webpackFinal(newWebpackConfiguration(), options)).rejects.toThrowError(
+        'Missing required options in project target. Check "tsConfig"'
+      );
+      expect(logger.error).toHaveBeenCalledWith(`=> Could not get angular cli webpack config`);
+    });
+  });
+
   describe('when is a nx with angular.json', () => {
     beforeEach(() => {
       initMockWorkspace('with-nx');
@@ -501,6 +514,60 @@ describe('framework-preset-angular-cli', () => {
         },
         {
           include: [`${workspaceRoot}/src/styles.css`, `${workspaceRoot}/src/styles.scss`],
+          test: /\.styl$/,
+          use: expect.anything(),
+        },
+        ...baseWebpackConfig.module.rules,
+      ]);
+    });
+  });
+
+  describe('when angular.json have only one lib project', () => {
+    beforeEach(() => {
+      initMockWorkspace('with-lib');
+    });
+
+    it('should extends webpack base config', async () => {
+      const baseWebpackConfig = newWebpackConfiguration();
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
+
+      expect(webpackFinalConfig).toEqual({
+        ...baseWebpackConfig,
+        entry: [...(baseWebpackConfig.entry as any[])],
+        module: { ...baseWebpackConfig.module, rules: expect.anything() },
+        plugins: expect.anything(),
+        resolve: {
+          ...baseWebpackConfig.resolve,
+          modules: expect.arrayContaining(baseWebpackConfig.resolve.modules),
+          // the base resolve.plugins are not kept 🤷‍♂️
+          plugins: expect.not.arrayContaining(baseWebpackConfig.resolve.plugins),
+        },
+        resolveLoader: expect.anything(),
+      });
+    });
+
+    it('should set webpack "module.rules"', async () => {
+      const baseWebpackConfig = newWebpackConfiguration();
+      const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
+
+      expect(webpackFinalConfig.module.rules).toEqual([
+        {
+          exclude: [],
+          test: /\.css$/,
+          use: expect.anything(),
+        },
+        {
+          exclude: [],
+          test: /\.scss$|\.sass$/,
+          use: expect.anything(),
+        },
+        {
+          exclude: [],
+          test: /\.less$/,
+          use: expect.anything(),
+        },
+        {
+          exclude: [],
           test: /\.styl$/,
           use: expect.anything(),
         },

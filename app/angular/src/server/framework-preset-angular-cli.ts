@@ -72,7 +72,7 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
   }
 
   // Use angular-cli to get some webpack config
-  let angularCliWebpackConfig;
+  let angularCliWebpackConfig: AngularCliWebpackConfig;
   try {
     angularCliWebpackConfig = await extractAngularCliWebpackConfig(dirToSearch, project, target);
     logger.info(`=> Using angular-cli webpack config`);
