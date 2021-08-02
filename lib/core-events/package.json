@@ -1,11 +1,11 @@
 {
   "name": "@storybook/core-events",
-  "version": "6.3.0-rc.8",
+  "version": "6.4.0-alpha.22",
   "description": "Event names used in storybook core",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core-events",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core-events",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -45,6 +45,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a9256a360ce67dc2eab408046a4baa4e13430a8b",
+  "gitHead": "1af5a50d379d84d33f9bbe798f18e8141d967010",
   "sbmodern": "dist/modern/index.js"
 }

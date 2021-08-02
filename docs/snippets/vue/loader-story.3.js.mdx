@@ -1,0 +1,28 @@
+```js
+// TodoItem.stories.js
+
+import TodoItem from './TodoItem.vue';
+
+import fetch from 'node-fetch';
+
+export default {
+  component: TodoItem,
+  title: 'Examples/Loader',
+};
+
+export const Primary = (args, { loaded: { todo } }) => {
+  return {
+    components: { TodoItem },
+    setup() {
+      return { args, todo: todo };
+    },
+    template: `<TodoItem :todo="todo"/>`,
+  };
+};
+
+Primary.loaders = [
+  async () => ({
+    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+  }),
+];
+```

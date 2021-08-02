@@ -3,11 +3,11 @@
 exports[`Storyshots Core / Parameters / Layout Centered 1`] = `
 <storybook-wrapper>
   <storybook-button-component
-    _nghost-a-c16=""
+    _nghost-a-c43=""
     ng-reflect-text="Button"
   >
     <button
-      _ngcontent-a-c16=""
+      _ngcontent-a-c43=""
     >
       Button
     </button>
@@ -18,11 +18,11 @@ exports[`Storyshots Core / Parameters / Layout Centered 1`] = `
 exports[`Storyshots Core / Parameters / Layout Default 1`] = `
 <storybook-wrapper>
   <storybook-button-component
-    _nghost-a-c14=""
+    _nghost-a-c43=""
     ng-reflect-text="Button"
   >
     <button
-      _ngcontent-a-c14=""
+      _ngcontent-a-c43=""
     >
       Button
     </button>
@@ -36,16 +36,17 @@ exports[`Storyshots Core / Parameters / Layout Fullscreen 1`] = `
     style="background-color: yellow;"
   >
     <storybook-button-component
-      _nghost-a-c15=""
+      _nghost-a-c43=""
       ng-reflect-text="Button"
       text="Button"
     >
       <button
-        _ngcontent-a-c15=""
+        _ngcontent-a-c43=""
       >
         Button
       </button>
     </storybook-button-component>
+    
   </div>
 </storybook-wrapper>
 `;
@@ -53,11 +54,11 @@ exports[`Storyshots Core / Parameters / Layout Fullscreen 1`] = `
 exports[`Storyshots Core / Parameters / Layout None 1`] = `
 <storybook-wrapper>
   <storybook-button-component
-    _nghost-a-c18=""
+    _nghost-a-c43=""
     ng-reflect-text="Button"
   >
     <button
-      _ngcontent-a-c18=""
+      _ngcontent-a-c43=""
     >
       Button
     </button>
@@ -68,11 +69,11 @@ exports[`Storyshots Core / Parameters / Layout None 1`] = `
 exports[`Storyshots Core / Parameters / Layout Padded 1`] = `
 <storybook-wrapper>
   <storybook-button-component
-    _nghost-a-c17=""
+    _nghost-a-c43=""
     ng-reflect-text="Button"
   >
     <button
-      _ngcontent-a-c17=""
+      _ngcontent-a-c43=""
     >
       Button
     </button>

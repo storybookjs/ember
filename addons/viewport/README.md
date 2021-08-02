@@ -4,7 +4,7 @@ Storybook Viewport Addon allows your stories to be displayed in different sizes 
 
 [Framework Support](https://storybook.js.org/docs/react/api/frameworks-feature-support)
 
-![Screenshot](https://github.com/storybookjs/storybook/blob/master/addons/viewport/docs/viewport.png)
+![Screenshot](https://github.com/storybookjs/storybook/blob/main/addons/viewport/docs/viewport.png)
 
 ## Installation
 

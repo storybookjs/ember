@@ -14,7 +14,7 @@ Object {
       },
     },
     "type": Object {
-      "name": "void",
+      "name": "string",
     },
   },
   "_value": Object {
@@ -30,7 +30,7 @@ Object {
       },
     },
     "type": Object {
-      "name": "void",
+      "name": "string",
     },
   },
   "accent": Object {
@@ -129,7 +129,7 @@ Object {
       },
     },
     "type": Object {
-      "name": "void",
+      "name": "string",
     },
   },
   "isDisabled": Object {
@@ -225,7 +225,7 @@ Object {
       },
     },
     "type": Object {
-      "name": "void",
+      "name": "object",
     },
   },
   "protectedMethod": Object {

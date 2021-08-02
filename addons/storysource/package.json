@@ -1,13 +1,13 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.3.0-rc.8",
+  "version": "6.4.0-alpha.22",
   "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
     "storybook",
     "code"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/storysource",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/storysource",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -41,17 +41,17 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-rc.8",
-    "@storybook/api": "6.3.0-rc.8",
-    "@storybook/client-logger": "6.3.0-rc.8",
-    "@storybook/components": "6.3.0-rc.8",
-    "@storybook/router": "6.3.0-rc.8",
-    "@storybook/source-loader": "6.3.0-rc.8",
-    "@storybook/theming": "6.3.0-rc.8",
+    "@storybook/addons": "6.4.0-alpha.22",
+    "@storybook/api": "6.4.0-alpha.22",
+    "@storybook/client-logger": "6.4.0-alpha.22",
+    "@storybook/components": "6.4.0-alpha.22",
+    "@storybook/router": "6.4.0-alpha.22",
+    "@storybook/source-loader": "6.4.0-alpha.22",
+    "@storybook/theming": "6.4.0-alpha.22",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
     "react-syntax-highlighter": "^13.5.3",
     "regenerator-runtime": "^0.13.7"
@@ -75,7 +75,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a9256a360ce67dc2eab408046a4baa4e13430a8b",
+  "gitHead": "1af5a50d379d84d33f9bbe798f18e8141d967010",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",

@@ -11,7 +11,7 @@ exports[`Storyshots Addons/Jest app.component with jest tests 1`] = `
   
     </div>
     <div
-      style="text-align:center"
+      style="text-align: center;"
     >
       <h1>
          Welcome to app! 

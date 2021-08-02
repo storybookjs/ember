@@ -5,7 +5,7 @@
 Storybook for Server is a UI development environment for your plain HTML snippets rendered by your server backend.
 With it, you can visualize different states of your UI components and develop them interactively.
 
-![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/master/media/storybook-intro.gif)
+![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/main/media/storybook-intro.gif)
 
 Storybook runs outside of your app.
 So you can develop UI components in isolation without worrying about app specific dependencies and requirements.
@@ -62,7 +62,7 @@ module.exports = {
 
 Notice that the JSON does not specify a rendering function -- `@storybook/server` will instead call your `parameters.server.url` with the story's server id appended.
 
-For example the JSON story above is requivalent to the CSF definition:
+For example the JSON story above is requivalent to the CSF3 definition:
 
 ```javascript
 export default {
@@ -74,11 +74,12 @@ export default {
   },
 };
 
-export const Default = (args) => {};
-Default.storyName = 'Default';
-Default.parameters = {
-  server: {
-    id: 'path/of/your/story"',
+export const Default = {
+  name: 'Default',
+  parameters: {
+    server: {
+      id: 'path/of/your/story"',
+    },
   },
 };
 ```

@@ -177,7 +177,7 @@ Those can be customized with `setupTimeout` and `testTimeout` parameters.
 ### Integrate Puppeteer storyshots with regular app
 
 You may want to use another Jest project to run your Puppeteer storyshots as they require more resources: Chrome and Storybook built/served.
-You can find a working example of this in the [official-storybook](https://github.com/storybookjs/storybook/tree/master/examples/official-storybook) example.
+You can find a working example of this in the [official-storybook](https://github.com/storybookjs/storybook/tree/main/examples/official-storybook) example.
 
 ### Integrate Puppeteer storyshots with [Create React App](https://github.com/facebookincubator/create-react-app)
 
@@ -326,6 +326,7 @@ initStoryshots({
 `getScreenshotOptions` receives an object `{ context: {kind, story}, url}`. _kind_ is the kind of the story and the _story_ its name. _url_ is the URL the browser will use to screenshot.
 
 To create a screenshot of just a single element (with its children), rather than the page or current viewport, an ElementHandle can be returned from `beforeScreenshot`:
+
 ```js
 import initStoryshots from '@storybook/addon-storyshots';
 import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer';

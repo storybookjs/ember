@@ -15,4 +15,8 @@ export class CanvasRenderer extends AbstractRenderer {
   async beforeFullRender(): Promise<void> {
     await CanvasRenderer.resetPlatformBrowserDynamic();
   }
+
+  async afterFullRender(): Promise<void> {
+    await AbstractRenderer.resetCompiledComponents();
+  }
 }

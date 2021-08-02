@@ -1,12 +1,12 @@
 {
   "name": "@storybook/source-loader",
-  "version": "6.3.0-rc.8",
+  "version": "6.4.0-alpha.22",
   "description": "Source loader",
   "keywords": [
     "lib",
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/source-loader",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/source-loader",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -41,15 +41,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.3.0-rc.8",
-    "@storybook/client-logger": "6.3.0-rc.8",
+    "@storybook/addons": "6.4.0-alpha.22",
+    "@storybook/client-logger": "6.4.0-alpha.22",
     "@storybook/csf": "0.0.1",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "global": "^4.4.0",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.20",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "regenerator-runtime": "^0.13.7"
   },
   "peerDependencies": {
@@ -59,6 +59,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "a9256a360ce67dc2eab408046a4baa4e13430a8b",
+  "gitHead": "1af5a50d379d84d33f9bbe798f18e8141d967010",
   "sbmodern": "dist/modern/index.js"
 }

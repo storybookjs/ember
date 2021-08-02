@@ -29,6 +29,7 @@ title: 'Install Storybook'
 
 Storybook needs to be installed into a project that is already setup with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework including:
 
+- 📦 [Create an Angular Workspace](https://angular.io/cli/new)
 - 📦 [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
 - 📦 [Vue CLI](https://cli.vuejs.org/)
 - 📦 [Ember CLI](https://guides.emberjs.com/release/getting-started/quick-start/)

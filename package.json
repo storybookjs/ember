@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.3.0-rc.8",
+  "version": "6.4.0-alpha.22",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -134,6 +134,8 @@
     "@storybook/addon-essentials": "workspace:*",
     "@storybook/addon-jest": "workspace:*",
     "@storybook/addon-links": "workspace:*",
+    "@storybook/addon-measure": "workspace:*",
+    "@storybook/addon-outline": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",
     "@storybook/addon-storysource": "workspace:*",
@@ -246,7 +248,7 @@
     "npmlog": "^4.1.2",
     "p-limit": "^3.1.0",
     "postcss-loader": "^4.2.0",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "prompts": "^2.4.0",
     "raf": "^3.4.1",
     "regenerator-runtime": "^0.13.7",
@@ -269,6 +271,42 @@
     "webpack": "4",
     "webpack-dev-middleware": "^3.7.3",
     "window-size": "^1.1.1"
+  },
+  "dependenciesMeta": {
+    "@compodoc/compodoc": {
+      "built": false
+    },
+    "core-js": {
+      "built": false
+    },
+    "core-js-pure": {
+      "built": false
+    },
+    "ejs": {
+      "built": false
+    },
+    "level": {
+      "built": false
+    },
+    "node-uuid": {
+      "built": false,
+      "unplugged": false
+    },
+    "nodemon": {
+      "built": false
+    },
+    "parcel": {
+      "built": false
+    },
+    "preact": {
+      "built": false
+    },
+    "styled-components": {
+      "built": false
+    },
+    "yorkie": {
+      "built": false
+    }
   },
   "optionalDependencies": {
     "@cypress/webpack-preprocessor": "^5.7.0",

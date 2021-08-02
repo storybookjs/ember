@@ -82,7 +82,7 @@ export const Item = (props: ItemProps) => {
               transform: `rotate(${open ? 0 : -90}deg)`,
             }}
           />
-          {item.description}
+          {item.help}
         </HeaderBar>
         <HighlightToggleElement>
           <HighlightToggle toggleId={highlightToggleId} elementsToHighlight={item.nodes} />
