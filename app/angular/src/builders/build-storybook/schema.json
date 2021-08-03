@@ -9,6 +9,10 @@
       "description": "Build target to be served in project-name:builder:config format. Should generally target on the builder: '@angular-devkit/build-angular:browser'. Useful for Storybook to use options (styles, assets, ...).",
       "pattern": "^[^:\\s]+:[^:\\s]+(:[^\\s]+)?$"
     },
+    "tsConfig": {
+      "type": "string",
+      "description": "The full path for the TypeScript configuration file, relative to the current workspace."
+    },
     "staticDir": {
       "type": "array",
       "description": "Directory where to load static files from, array of strings.",
@@ -56,5 +60,12 @@
     }
   },
   "additionalProperties": false,
-  "required": ["browserTarget"]
+  "oneOf": [
+    {
+      "required": ["browserTarget"]
+    },
+    {
+      "required": ["tsConfig"]
+    }
+  ]
 }
