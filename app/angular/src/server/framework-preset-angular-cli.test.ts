@@ -612,6 +612,25 @@ describe('framework-preset-angular-cli', () => {
       expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
     });
   });
+
+  describe('with only tsConfig option', () => {
+    beforeEach(() => {
+      initMockWorkspace('without-projects-entry');
+      options = { tsConfig: 'projects/pattern-lib/tsconfig.lib.json' } as Options;
+    });
+    it('should log', async () => {
+      const baseWebpackConfig = newWebpackConfiguration();
+      await webpackFinal(baseWebpackConfig, options);
+
+      expect(logger.info).toHaveBeenCalledTimes(3);
+      expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
+      expect(logger.info).toHaveBeenNthCalledWith(
+        2,
+        '=> Using default angular project with "tsConfig:projects/pattern-lib/tsconfig.lib.json"'
+      );
+      expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
+    });
+  });
 });
 
 const newWebpackConfiguration = (

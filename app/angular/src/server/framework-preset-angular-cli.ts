@@ -19,6 +19,7 @@ import { filterOutStylingRules } from './utils/filter-out-styling-rules';
 
 export type Options = CoreOptions & {
   angularBrowserTarget?: string;
+  tsConfig?: string;
 };
 
 export async function webpackFinal(baseConfig: webpack.Configuration, options: Options) {
@@ -66,9 +67,15 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
       `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
     );
   } catch (error) {
-    logger.error(`=> Could not find angular project: ${error.message}`);
-    logger.info(`=> Fail to load angular-cli config. Using base config`);
-    return baseConfig;
+    if (!options.tsConfig) {
+      logger.error(`=> Could not find angular project: ${error.message}`);
+      logger.info(`=> Fail to load angular-cli config. Using base config`);
+      return baseConfig;
+    }
+    logger.info(`=> Using default angular project with "tsConfig:${options.tsConfig}"`);
+
+    project = { root: '', extensions: {}, targets: undefined };
+    target = { builder: '', options: { tsConfig: options.tsConfig } };
   }
 
   // Use angular-cli to get some webpack config
