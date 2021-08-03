@@ -110,7 +110,8 @@ export const SkipToCanvasLinkFocused = {
     selectedStoryId: 'tooltip-tooltipbuildlist--default',
     onSelectStoryId: () => {},
   },
-  play: () => {
-    screen.getByTestId('node--skip').focus();
+  parameters: { chromatic: { delay: 300 } },
+  play: async () => {
+    await screen.getByTestId('node--skip').focus();
   },
 };

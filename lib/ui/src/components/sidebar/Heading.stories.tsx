@@ -192,6 +192,8 @@ export const noBrand: Story = () => {
 
 export const skipToCanvasLinkFocused: Story = {
   args: { menu: menuItems },
-  parameters: { layout: 'padded' },
-  play: () => screen.getByTestId('heading--skip').focus(),
+  parameters: { layout: 'padded', chromatic: { delay: 300 } },
+  play: async () => {
+    await screen.getByTestId('heading--skip').focus();
+  },
 };
