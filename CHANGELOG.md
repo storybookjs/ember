@@ -1,3 +1,22 @@
+## 6.4.0-alpha.23 (August 3, 2021)
+
+### Features
+
+- CLI: Add --no-open flag ([#15739](https://github.com/storybookjs/storybook/pull/15739))
+
+### Bug Fixes
+
+- Angular: Fix incomplete property metadata when using inheritance ([#15586](https://github.com/storybookjs/storybook/pull/15586))
+
+### Maintenance
+
+- Build: Upgrade to Yarn 3 ([#15682](https://github.com/storybookjs/storybook/pull/15682))
+
+### Dependency Upgrades
+
+- Lower babel-loader required version ([#14811](https://github.com/storybookjs/storybook/pull/14811))
+- Relax prettier version constraint ([#15298](https://github.com/storybookjs/storybook/pull/15298))
+
 ## 6.4.0-alpha.22 (July 28, 2021)
 
 ### Features
