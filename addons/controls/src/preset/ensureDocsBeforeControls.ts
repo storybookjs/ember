@@ -8,7 +8,7 @@ type Entry = string | OptionsEntry;
 const findIndex = (addon: string, addons: Entry[]) =>
   addons.findIndex((entry) => {
     const name = (entry as OptionsEntry).name || (entry as string);
-    return name && name.startsWith(addon);
+    return name && name.includes(addon);
   });
 
 const indexOfAddonOrEssentials = (addon: string, addons: Entry[]) => {
@@ -37,6 +37,7 @@ export const ensureDocsBeforeControls = (configDir: string) => {
     if (!verifyDocsBeforeControls(main.addons)) {
       logger.warn(dedent`
         Expected '@storybook/addon-docs' to be listed before '@storybook/addon-controls' (or '@storybook/addon-essentials'). Check your main.js?
+        If addon-docs or addon-essentials is included by another addon/preset you can safely ignore this warning.
         
         https://github.com/storybookjs/storybook/issues/11442
       `);

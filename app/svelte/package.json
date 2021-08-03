@@ -1,11 +1,11 @@
 {
   "name": "@storybook/svelte",
-  "version": "6.1.0-alpha.28",
+  "version": "6.4.0-alpha.23",
   "description": "Storybook for Svelte: Develop Svelte Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/svelte",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/svelte",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,9 +14,21 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/svelte"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/client/index.js",
-  "types": "dist/client/index.d.ts",
+  "main": "dist/cjs/client/index.js",
+  "module": "dist/esm/client/index.js",
+  "types": "dist/ts3.9/client/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "bin": {
     "build-storybook": "./bin/build.js",
     "start-storybook": "./bin/index.js",
@@ -27,43 +39,40 @@
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.1.0-alpha.28",
-    "@storybook/core": "6.1.0-alpha.28",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "regenerator-runtime": "^0.13.3",
-    "sveltedoc-parser": "^3.0.4",
-    "ts-dedent": "^1.1.1"
+    "@storybook/addons": "6.4.0-alpha.23",
+    "@storybook/core": "6.4.0-alpha.23",
+    "@storybook/core-common": "6.4.0-alpha.23",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "read-pkg-up": "^7.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "sveltedoc-parser": "^4.1.0",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "@types/webpack-env": "^1.15.2",
-    "svelte": "^3.18.1",
-    "svelte-loader": "^2.13.4"
+    "@types/webpack-env": "^1.16.0",
+    "svelte": "^3.31.2",
+    "svelte-loader": "^3.0.0"
   },
   "peerDependencies": {
     "@babel/core": "*",
     "svelte": "^3.1.0",
-    "svelte-loader": "^2.9.1"
+    "svelte-loader": "*"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9f44d66ee89c9d9b1ec33afd42866673344078be",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
-  }
+  "gitHead": "691fc1f7155bd50179573b146c45f9528d2dc7df",
+  "sbmodern": "dist/modern/client/index.js"
 }

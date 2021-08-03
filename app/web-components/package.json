@@ -1,13 +1,13 @@
 {
   "name": "@storybook/web-components",
-  "version": "6.1.0-alpha.28",
+  "version": "6.4.0-alpha.23",
   "description": "Storybook for web-components: View web components snippets in isolation with Hot Reloading.",
   "keywords": [
     "lit-html",
     "storybook",
     "web-components"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/web-components",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/web-components",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -16,9 +16,21 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/web-components"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/client/index.js",
-  "types": "dist/client/index.d.ts",
+  "main": "dist/cjs/client/index.js",
+  "module": "dist/esm/client/index.js",
+  "types": "dist/ts3.9/client/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "bin": {
     "build-storybook": "./bin/build.js",
     "start-storybook": "./bin/index.js",
@@ -29,8 +41,7 @@
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
@@ -38,37 +49,33 @@
   "dependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/preset-env": "^7.11.5",
-    "@storybook/addons": "6.1.0-alpha.28",
-    "@storybook/client-api": "6.1.0-alpha.28",
-    "@storybook/core": "6.1.0-alpha.28",
-    "@types/webpack-env": "^1.15.2",
+    "@babel/preset-env": "^7.12.11",
+    "@storybook/addons": "6.4.0-alpha.23",
+    "@storybook/client-api": "6.4.0-alpha.23",
+    "@storybook/core": "6.4.0-alpha.23",
+    "@storybook/core-common": "6.4.0-alpha.23",
+    "@types/webpack-env": "^1.16.0",
     "babel-plugin-bundled-import-meta": "^0.3.1",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "regenerator-runtime": "^0.13.3",
-    "ts-dedent": "^1.1.1"
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "read-pkg-up": "^7.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "lit-html": "^1.0.0"
+    "lit-html": "^2.0.0-rc.3"
   },
   "peerDependencies": {
-    "@babel/core": "*",
-    "babel-loader": "^7.0.0 || ^8.0.0",
-    "lit-html": "^1.0.0"
+    "lit-html": "^1.4.1 || ^2.0.0-rc.3"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.13.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9f44d66ee89c9d9b1ec33afd42866673344078be",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
-  }
+  "gitHead": "691fc1f7155bd50179573b146c45f9528d2dc7df",
+  "sbmodern": "dist/modern/client/index.js"
 }

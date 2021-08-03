@@ -1,4 +1,4 @@
-import { document } from 'global';
+import global from 'global';
 import React, { Fragment, useEffect } from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import {
@@ -10,10 +10,11 @@ import {
   styled,
   useTheme,
 } from '@storybook/theming';
-import { withCssResources } from '@storybook/addon-cssresources';
-import { DocsPage } from '@storybook/addon-docs/blocks';
+import { Symbols } from '@storybook/components';
 
 import addHeadWarning from './head-warning';
+
+const { document } = global;
 
 if (process.env.NODE_ENV === 'development') {
   if (!process.env.DOTENV_DEVELOPMENT_DISPLAY_WARNING) {
@@ -86,22 +87,22 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  withCssResources,
   (StoryFn, { globals: { theme = 'light' } }) => {
     switch (theme) {
       case 'side-by-side': {
         return (
           <Fragment>
+            <Symbols icons={['folder', 'component', 'document', 'bookmarkhollow']} />
             <ThemeProvider theme={convert(themes.light)}>
               <Global styles={createReset} />
             </ThemeProvider>
             <ThemeProvider theme={convert(themes.light)}>
-              <ThemeBlock side="left">
+              <ThemeBlock side="left" data-side="left">
                 <StoryFn />
               </ThemeBlock>
             </ThemeProvider>
             <ThemeProvider theme={convert(themes.dark)}>
-              <ThemeBlock side="right">
+              <ThemeBlock side="right" data-side="right">
                 <StoryFn />
               </ThemeBlock>
             </ThemeProvider>
@@ -111,16 +112,17 @@ export const decorators = [
       case 'stacked': {
         return (
           <Fragment>
+            <Symbols icons={['folder', 'component', 'document', 'bookmarkhollow']} />
             <ThemeProvider theme={convert(themes.light)}>
               <Global styles={createReset} />
             </ThemeProvider>
             <ThemeProvider theme={convert(themes.light)}>
-              <ThemeStack side="left">
+              <ThemeStack side="left" data-side="left">
                 <StoryFn />
               </ThemeStack>
             </ThemeProvider>
             <ThemeProvider theme={convert(themes.dark)}>
-              <ThemeStack side="right">
+              <ThemeStack side="right" data-side="right">
                 <StoryFn />
               </ThemeStack>
             </ThemeProvider>
@@ -130,6 +132,7 @@ export const decorators = [
       default: {
         return (
           <ThemeProvider theme={convert(themes[theme])}>
+            <Symbols icons={['folder', 'component', 'document', 'bookmarkhollow']} />
             <Global styles={createReset} />
             <ThemedSetRoot />
             <StoryFn />
@@ -155,7 +158,33 @@ export const parameters = {
   },
   docs: {
     theme: themes.light,
-    page: () => <DocsPage subtitleSlot={({ kind }) => `Subtitle: ${kind}`} />,
+  },
+  controls: {
+    presetColors: [
+      { color: '#ff4785', title: 'Coral' },
+      { color: '#1EA7FD', title: 'Ocean' },
+      { color: 'rgb(252, 82, 31)', title: 'Orange' },
+      { color: 'RGBA(255, 174, 0, 0.5)', title: 'Gold' },
+      { color: 'hsl(101, 52%, 49%)', title: 'Green' },
+      { color: 'HSLA(179,65%,53%,0.5)', title: 'Seafoam' },
+      { color: '#6F2CAC', title: 'Purple' },
+      { color: '#2A0481', title: 'Ultraviolet' },
+      { color: 'black' },
+      { color: '#333', title: 'Darkest' },
+      { color: '#444', title: 'Darker' },
+      { color: '#666', title: 'Dark' },
+      { color: '#999', title: 'Mediumdark' },
+      { color: '#ddd', title: 'Medium' },
+      { color: '#EEE', title: 'Mediumlight' },
+      { color: '#F3F3F3', title: 'Light' },
+      { color: '#F8F8F8', title: 'Lighter' },
+      { color: '#FFFFFF', title: 'Lightest' },
+      '#fe4a49',
+      '#FED766',
+      'rgba(0, 159, 183, 1)',
+      'HSLA(240,11%,91%,0.5)',
+      'slategray',
+    ],
   },
 };
 
@@ -172,6 +201,7 @@ export const globalTypes = {
     defaultValue: isChromatic() ? 'stacked' : 'light',
     toolbar: {
       icon: 'circlehollow',
+      title: 'Theme',
       items: [
         { value: 'light', icon: 'circlehollow', title: 'light' },
         { value: 'dark', icon: 'circle', title: 'dark' },
@@ -183,10 +213,24 @@ export const globalTypes = {
   locale: {
     name: 'Locale',
     description: 'Internationalization locale',
-    defaultValue: 'en',
     toolbar: {
       icon: 'globe',
+      shortcuts: {
+        next: {
+          label: 'Go to next language',
+          keys: ['L'],
+        },
+        previous: {
+          label: 'Go to previous language',
+          keys: ['K'],
+        },
+        reset: {
+          label: 'Reset language',
+          keys: ['meta', 'shift', 'L'],
+        },
+      },
       items: [
+        { title: 'Reset locale', type: 'reset' },
         { value: 'en', right: '🇺🇸', title: 'English' },
         { value: 'es', right: '🇪🇸', title: 'Español' },
         { value: 'zh', right: '🇨🇳', title: '中文' },

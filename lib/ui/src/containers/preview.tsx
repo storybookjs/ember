@@ -1,9 +1,12 @@
-import { PREVIEW_URL } from 'global';
+import global from 'global';
 import React from 'react';
 
-import { Consumer, Combo, StoriesHash, isRoot, isGroup, isStory } from '@storybook/api';
+import type { Combo, StoriesHash } from '@storybook/api';
+import { Consumer, isRoot, isGroup, isStory } from '@storybook/api';
 
 import { Preview } from '../components/preview/preview';
+
+const { PREVIEW_URL } = global;
 
 export type Item = StoriesHash[keyof StoriesHash];
 
@@ -38,6 +41,7 @@ const mapper = ({ api, state }: Combo) => {
     viewMode,
     path,
     refs,
+    storyId,
     baseUrl: PREVIEW_URL || 'iframe.html',
     queryParams: customQueryParams,
     docsOnly,

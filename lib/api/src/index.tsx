@@ -4,6 +4,7 @@ import React, {
   FunctionComponent,
   ReactElement,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -23,7 +24,8 @@ import { Listener } from '@storybook/channels';
 import { createContext } from './context';
 import Store, { Options } from './store';
 import getInitialState from './initial-state';
-import { StoriesHash, Story, Root, Group, isGroup, isRoot, isStory } from './lib/stories';
+import type { StoriesHash, Story, Root, Group } from './lib/stories';
+import { isGroup, isRoot, isStory } from './lib/stories';
 
 import * as provider from './modules/provider';
 import * as addons from './modules/addons';
@@ -41,7 +43,9 @@ import * as globals from './modules/globals';
 
 const { ActiveTabs } = layout;
 
-export { Options as StoreOptions, Listener as ChannelListener, ActiveTabs };
+export { default as merge } from './lib/merge';
+export type { Options as StoreOptions, Listener as ChannelListener };
+export { ActiveTabs };
 
 const ManagerContext = createContext({ api: undefined, state: getInitialState({}) });
 
@@ -154,6 +158,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       path,
       refId,
       viewMode = props.docsMode ? 'docs' : 'story',
+      singleStory,
       storyId,
       docsMode,
       navigate,
@@ -164,7 +169,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       setState: (stateChange: Partial<State>, callback) => this.setState(stateChange, callback),
     });
 
-    const routeData = { location, path, viewMode, storyId, refId };
+    const routeData = { location, path, viewMode, singleStory, storyId, refId };
 
     // Initialize the state to be the initial (persisted) state of the store.
     // This gives the modules the chance to read the persisted state, apply their defaults
@@ -323,17 +328,8 @@ export function useStorybookApi(): API {
   return api;
 }
 
-export {
-  ManagerConsumer as Consumer,
-  ManagerProvider as Provider,
-  StoriesHash,
-  Story,
-  Root,
-  Group,
-  isGroup,
-  isRoot,
-  isStory,
-};
+export type { StoriesHash, Story, Root, Group };
+export { ManagerConsumer as Consumer, ManagerProvider as Provider, isGroup, isRoot, isStory };
 
 export interface EventMap {
   [eventId: string]: Listener;
@@ -438,17 +434,21 @@ export function useAddonState<S>(addonId: string, defaultState?: S) {
   return useSharedState<S>(addonId, defaultState);
 }
 
-export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: [string]) => void] {
+export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: string[]) => void] {
   const { getCurrentStoryData, updateStoryArgs, resetStoryArgs } = useStorybookApi();
 
   const data = getCurrentStoryData();
   const args = isStory(data) ? data.args : {};
+  const updateArgs = useCallback((newArgs: Args) => updateStoryArgs(data as Story, newArgs), [
+    data,
+    updateStoryArgs,
+  ]);
+  const resetArgs = useCallback((argNames?: string[]) => resetStoryArgs(data as Story, argNames), [
+    data,
+    resetStoryArgs,
+  ]);
 
-  return [
-    args,
-    (newArgs: Args) => updateStoryArgs(data as Story, newArgs),
-    (argNames?: [string]) => resetStoryArgs(data as Story, argNames),
-  ];
+  return [args, updateArgs, resetArgs];
 }
 
 export function useGlobals(): [Args, (newGlobals: Args) => void] {

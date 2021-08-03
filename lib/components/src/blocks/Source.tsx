@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { styled, ThemeProvider, convert, themes } from '@storybook/theming';
 import { EmptyBlock } from './EmptyBlock';
 
-import { SyntaxHighlighter } from '../syntaxhighlighter/syntaxhighlighter';
+import { SyntaxHighlighter } from '../syntaxhighlighter/lazy-syntaxhighlighter';
 
 const StyledSyntaxHighlighter = styled(SyntaxHighlighter)<{}>(({ theme }) => ({
   // DocBlocks-specific styling and overrides
@@ -71,4 +71,4 @@ const Source: FunctionComponent<SourceProps> = (props) => {
 Source.defaultProps = {
   format: false,
 };
-export { Source };
+export { Source, StyledSyntaxHighlighter };

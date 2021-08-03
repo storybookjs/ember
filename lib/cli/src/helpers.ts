@@ -29,7 +29,13 @@ export function readFileAsJson(jsonPath: string, allowComments?: boolean) {
 
   const fileContent = fs.readFileSync(filePath, 'utf8');
   const jsonContent = allowComments ? stripJsonComments(fileContent) : fileContent;
-  return JSON.parse(jsonContent);
+
+  try {
+    return JSON.parse(jsonContent);
+  } catch (e) {
+    logger.error(chalk.red(`Invalid json in file: ${filePath}`));
+    throw e;
+  }
 }
 
 export const writeFileAsJson = (jsonPath: string, content: unknown) => {
@@ -175,6 +181,7 @@ export function copyTemplate(templateRoot: string, storyFormat: StoryFormat) {
 
     throw new Error(`Unsupported story format: ${storyFormat}`);
   }
+
   fse.copySync(templateDir, '.', { overwrite: true });
 }
 

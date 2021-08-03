@@ -30,12 +30,16 @@ export interface StoryMetadata {
   loaders?: LoaderFunction[];
 }
 export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
+export type ArgsEnhancer = (context: StoryContext) => Args;
 
-type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 
 export interface StoreSelectionSpecifier {
   storySpecifier: StorySpecifier;
   viewMode: ViewMode;
+  singleStory?: boolean;
+  args?: Args;
+  globals?: Args;
 }
 
 export interface StoreSelection {
@@ -55,6 +59,7 @@ export type StoreItem = StoryIdentifier & {
   getDecorated: () => StoryFn<any>;
   getOriginal: () => StoryFn<any>;
   applyLoaders: () => Promise<StoryContext>;
+  runPlayFunction: () => Promise<any>;
   storyFn: StoryFn<any>;
   unboundStoryFn: StoryFn<any>;
   hooks: HooksContext;
@@ -79,7 +84,7 @@ export interface ClientApiParams {
 
 export type ClientApiReturnFn<StoryFnReturnType> = (...args: any[]) => StoryApi<StoryFnReturnType>;
 
-export { StoryApi, DecoratorFunction };
+export type { StoryApi, DecoratorFunction };
 
 export interface ClientApiAddon<StoryFnReturnType = unknown> extends Addon {
   apply: (a: StoryApi<StoryFnReturnType>, b: any[]) => any;
@@ -102,12 +107,16 @@ export interface GetStorybookKind {
 
 // This really belongs in lib/core, but that depends on lib/ui which (dev) depends on app/react
 // which needs this type. So we put it here to avoid the circular dependency problem.
-export type RenderContext = StoreItem & {
+export type RenderContextWithoutStoryContext = StoreItem & {
   forceRender: boolean;
 
   showMain: () => void;
   showError: (error: { title: string; description: string }) => void;
   showException: (err: Error) => void;
+};
+
+export type RenderContext = RenderContextWithoutStoryContext & {
+  storyContext: StoryContext;
 };
 
 interface SBBaseType {

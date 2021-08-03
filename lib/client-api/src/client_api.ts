@@ -10,6 +10,7 @@ import {
   DecoratorFunction,
   ClientApiAddons,
   StoryApi,
+  ArgsEnhancer,
   ArgTypesEnhancer,
 } from './types';
 import { applyHooks } from './hooks';
@@ -65,6 +66,13 @@ export const addLoader = (loader: LoaderFunction, deprecationWarning = true) => 
   singleton.addLoader(loader);
 };
 
+export const addArgsEnhancer = (enhancer: ArgsEnhancer) => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call addArgsEnhancer`);
+
+  singleton.addArgsEnhancer(enhancer);
+};
+
 export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
   if (!singleton)
     throw new Error(`Singleton client API not yet initialized, cannot call addArgTypesEnhancer`);
@@ -72,12 +80,28 @@ export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
   singleton.addArgTypesEnhancer(enhancer);
 };
 
+export const getGlobalRender = () => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call getGlobalRender`);
+
+  return singleton.globalRender;
+};
+
+export const setGlobalRender = (render: StoryFn) => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call setGobalRender`);
+  singleton.globalRender = render;
+};
+
+const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi {
   private _storyStore: StoryStore;
 
   private _addons: ClientApiAddons<unknown>;
 
   private _decorateStory: DecorateStoryFunction;
+
+  private _globalRender: StoryFn<any>;
 
   // React Native Fast refresh doesn't allow multiple dispose calls
   private _noStoryModuleAddMethodHotDispose: boolean;
@@ -136,9 +160,21 @@ export default class ClientApi {
     this._storyStore.addGlobalMetadata({ loaders: [loader] });
   };
 
+  addArgsEnhancer = (enhancer: ArgsEnhancer) => {
+    this._storyStore.addArgsEnhancer(enhancer);
+  };
+
   addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
     this._storyStore.addArgTypesEnhancer(enhancer);
   };
+
+  get globalRender(): StoryFn {
+    return this._globalRender;
+  }
+
+  set globalRender(render: StoryFn) {
+    this._globalRender = render;
+  }
 
   // what are the occasions that "m" is a boolean vs an obj
   storiesOf = <StoryFnReturnType = unknown>(
@@ -206,6 +242,12 @@ export default class ClientApi {
         throw new Error(`Invalid or missing storyName provided for a "${kind}" story.`);
       }
 
+      if (!storyFn || Array.isArray(storyFn) || invalidStoryTypes.has(typeof storyFn)) {
+        throw new Error(
+          `Cannot load story "${storyName}" in "${kind}" due to invalid format. Storybook expected a function/object but received ${typeof storyFn} instead.`
+        );
+      }
+
       if (!this._noStoryModuleAddMethodHotDispose && m && m.hot && m.hot.dispose) {
         m.hot.dispose(() => {
           const { _storyStore } = this;
@@ -237,7 +279,7 @@ export default class ClientApi {
     api.addDecorator = (decorator: DecoratorFunction<StoryFnReturnType>) => {
       if (hasAdded)
         throw new Error(`You cannot add a decorator after the first story for a kind.
-Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decorators-parameters-after-stories`);
+Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decoratorsparameters-after-stories`);
 
       this._storyStore.addKindMetadata(kind, { decorators: [decorator] });
       return api;
@@ -253,7 +295,7 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     api.addParameters = (parameters: Parameters) => {
       if (hasAdded)
         throw new Error(`You cannot add parameters after the first story for a kind.
-Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decorators-parameters-after-stories`);
+Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decoratorsparameters-after-stories`);
 
       this._storyStore.addKindMetadata(kind, { parameters });
       return api;

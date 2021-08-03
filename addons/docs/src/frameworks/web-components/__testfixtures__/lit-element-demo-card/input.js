@@ -1,5 +1,7 @@
-import { CustomEvent } from 'global';
+import global from 'global';
 import { LitElement, html, css } from 'lit-element';
+
+const { CustomEvent } = global;
 
 const demoWcCardStyle = css`
   :host {
@@ -151,9 +153,7 @@ export class DemoWcCard extends LitElement {
   render() {
     return html`
       <div id="front" part="front">
-        <div class="header">
-          ${this.header}
-        </div>
+        <div class="header">${this.header}</div>
         <div class="content">
           <slot></slot>
         </div>
@@ -163,9 +163,7 @@ export class DemoWcCard extends LitElement {
         </div>
       </div>
       <div id="back" part="back">
-        <div class="header">
-          ${this.header}
-        </div>
+        <div class="header">${this.header}</div>
 
         <div class="content">
           ${this.rows.length === 0

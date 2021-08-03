@@ -1,12 +1,22 @@
-import React, { Children, FunctionComponent, ReactElement, ReactNode, useState } from 'react';
+import React, {
+  Children,
+  ClipboardEvent,
+  FunctionComponent,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useState,
+} from 'react';
 import { darken } from 'polished';
 import { styled } from '@storybook/theming';
 
+import global from 'global';
 import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
 import { Source, SourceProps } from './Source';
 import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
+import { Zoom } from '../Zoom/Zoom';
 
 export interface PreviewProps {
   isColumn?: boolean;
@@ -20,7 +30,7 @@ export interface PreviewProps {
 
 type layout = 'padded' | 'fullscreen' | 'centered';
 
-const ChildrenContainer = styled.div<PreviewProps & { zoom: number; layout: layout }>(
+const ChildrenContainer = styled.div<PreviewProps & { layout: layout }>(
   ({ isColumn, columns, layout }) => ({
     display: isColumn || !columns ? 'block' : 'flex',
     position: 'relative',
@@ -28,7 +38,7 @@ const ChildrenContainer = styled.div<PreviewProps & { zoom: number; layout: layo
     overflow: 'auto',
     flexDirection: isColumn ? 'column' : 'row',
 
-    '& > *': isColumn
+    '& .innerZoomElementWrapper > *': isColumn
       ? {
           width: layout !== 'fullscreen' ? 'calc(100% - 20px)' : '100%',
           display: 'block',
@@ -43,7 +53,7 @@ const ChildrenContainer = styled.div<PreviewProps & { zoom: number; layout: layo
       ? {
           padding: '30px 20px',
           margin: -10,
-          '& > *': {
+          '& .innerZoomElementWrapper > *': {
             width: 'auto',
             border: '10px solid transparent!important',
           },
@@ -59,13 +69,10 @@ const ChildrenContainer = styled.div<PreviewProps & { zoom: number; layout: layo
           alignItems: 'center',
         }
       : {},
-  ({ zoom = 1 }) => ({
-    '> *': {
-      zoom: 1 / zoom,
-    },
-  }),
   ({ columns }) =>
-    columns && columns > 1 ? { '> *': { minWidth: `calc(100% / ${columns} - 20px)` } } : {}
+    columns && columns > 1
+      ? { '.innerZoomElementWrapper > *': { minWidth: `calc(100% / ${columns} - 20px)` } }
+      : {}
 );
 
 const StyledSource = styled(Source)<{}>(({ theme }) => ({
@@ -114,6 +121,7 @@ const getSource = (
         source: null,
         actionItem: {
           title: 'No code available',
+          className: 'docblock-code-toggle docblock-code-toggle--disabled',
           disabled: true,
           onClick: () => setExpanded(false),
         },
@@ -122,13 +130,21 @@ const getSource = (
     case expanded: {
       return {
         source: <StyledSource {...withSource} dark />,
-        actionItem: { title: 'Hide code', onClick: () => setExpanded(false) },
+        actionItem: {
+          title: 'Hide code',
+          className: 'docblock-code-toggle docblock-code-toggle--expanded',
+          onClick: () => setExpanded(false),
+        },
       };
     }
     default: {
       return {
-        source: null,
-        actionItem: { title: 'Show code', onClick: () => setExpanded(true) },
+        source: <StyledSource {...withSource} dark />,
+        actionItem: {
+          title: 'Show code',
+          className: 'docblock-code-toggle',
+          onClick: () => setExpanded(true),
+        },
       };
     }
   }
@@ -190,12 +206,44 @@ const Preview: FunctionComponent<PreviewProps> = ({
   const previewClasses = [className].concat(['sbdocs', 'sbdocs-preview']);
 
   const defaultActionItems = withSource ? [actionItem] : [];
-  const actionItems = additionalActions
-    ? [...defaultActionItems, ...additionalActions]
-    : defaultActionItems;
+  const [additionalActionItems, setAdditionalActionItems] = useState(
+    additionalActions ? [...additionalActions] : []
+  );
+  const actionItems = [...defaultActionItems, ...additionalActionItems];
 
   // @ts-ignore
   const layout = getLayout(Children.count(children) === 1 ? [children] : children);
+
+  const { window: globalWindow } = global;
+
+  const copyToClipboard = useCallback(async (text: string) => {
+    const { createCopyToClipboardFunction } = await import(
+      '../syntaxhighlighter/syntaxhighlighter'
+    );
+    createCopyToClipboardFunction();
+  }, []);
+
+  const onCopyCapture = (e: ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (additionalActionItems.filter((item) => item.title === 'Copied').length === 0) {
+      copyToClipboard(source.props.code).then(() => {
+        setAdditionalActionItems([
+          ...additionalActionItems,
+          {
+            title: 'Copied',
+            onClick: () => {},
+          },
+        ]);
+        globalWindow.setTimeout(
+          () =>
+            setAdditionalActionItems(
+              additionalActionItems.filter((item) => item.title !== 'Copied')
+            ),
+          1500
+        );
+      });
+    }
+  };
 
   return (
     <PreviewContainer
@@ -213,24 +261,25 @@ const Preview: FunctionComponent<PreviewProps> = ({
         />
       )}
       <ZoomContext.Provider value={{ scale }}>
-        <Relative className="docs-story">
+        <Relative className="docs-story" onCopyCapture={withSource && onCopyCapture}>
           <ChildrenContainer
             isColumn={isColumn || !Array.isArray(children)}
             columns={columns}
-            zoom={scale}
             layout={layout}
           >
-            {Array.isArray(children) ? (
-              // eslint-disable-next-line react/no-array-index-key
-              children.map((child, i) => <div key={i}>{child}</div>)
-            ) : (
-              <div>{children}</div>
-            )}
+            <Zoom.Element scale={scale}>
+              {Array.isArray(children) ? (
+                // eslint-disable-next-line react/no-array-index-key
+                children.map((child, i) => <div key={i}>{child}</div>)
+              ) : (
+                <div>{children}</div>
+              )}
+            </Zoom.Element>
           </ChildrenContainer>
           <ActionBar actionItems={actionItems} />
         </Relative>
       </ZoomContext.Provider>
-      {withSource && source}
+      {withSource && expanded && source}
     </PreviewContainer>
   );
 };

@@ -14,7 +14,6 @@ module.exports = {
     '@storybook/addon-docs',
     '@storybook/addon-controls',
     '@storybook/addon-links',
-    '@storybook/addon-knobs',
     '@storybook/addon-viewport',
     '@storybook/addon-backgrounds',
   ],
@@ -26,5 +25,8 @@ module.exports = {
       enforce: 'pre',
     });
     return config;
+  },
+  core: {
+    builder: 'webpack4',
   },
 };

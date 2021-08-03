@@ -2,6 +2,12 @@
 title: 'MDX'
 ---
 
+<div class="aside">
+
+💡 <strong>NOTE</strong>: Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
+
+</div>
+
 MDX is a [standard file format](https://mdxjs.com/) that combines Markdown with JSX. This means you can use Markdown’s terse syntax (such as # heading) for your documentation, write stories that compile to our component story format, and freely embed JSX component blocks at any point in the file. All at once.
 
 In addition, you can write pure documentation pages in MDX and add them to Storybook alongside your stories.
@@ -66,6 +72,50 @@ And here's how that gets rendered in Storybook:
 
 ![MDX page](./mdx-page.png)
 
+## Customizing ArgTypes with MDX
+
+As already mentioned [above](#mdx-flavored-csf), there's a one-to-one mapping between MDX and CSF.
+
+Based on this principle, if the Badge story included the following `ArgTypes`:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/badge-story-custom-argtypes.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+
+Transitioning them into MDX format is quite seamless and would only require the following change to the story:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/badge-story-custom-argtypes.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+And here's how that gets rendered in Storybook:
+
+<video autoPlay muted playsInline loop>
+  <source
+    src="custom-argTypes-mdx-optimized.mp4"
+    type="video/mp4"
+  />
+</video>
+
+<div class="aside">
+
+If you find yourself with a considerably sized <code>argTypes</code> implementation. You can extract them into a variable and pass them as a prop.
+
+</div>
+
 ## Embedding stories
 
 Suppose you have an existing story and want to embed it into your docs. Here's how to show a story with ID some--id. Check the browser URL in Storybook v5+ to find a story's ID.
@@ -109,6 +159,31 @@ If you don't define a Meta, you can write Markdown and associate with an existin
 To get a "documentation-only story", in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
 
 ![MDX docs only story](./mdx-documentation-only.png)
+
+## Linking to other stories and pages
+
+When writing MDX, you may want to provide links to other stories or documentation pages and sections. You can use the `path` query string.
+
+Considering a story with ID `some--id`, this redirects to the **Docs** tab of the story:
+```md
+[Go to specific documentation page](?path=/docs/some--id)
+```
+
+This redirects to the **Canvas** tab of the story:
+```md
+[Go to specific story canvas](?path=/story/some--id)
+```
+
+You can also use anchors to target a specific section of a page:
+```md
+[Go to the conclusion of the documentation page](?path=/docs/some--id#conclusion)
+```
+
+<div class="aside">
+💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+</div>
+
+![MDX anchor example](./mdx-anchor.webp)
 
 ## MDX file names
 

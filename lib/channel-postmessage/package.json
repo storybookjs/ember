@@ -1,11 +1,11 @@
 {
   "name": "@storybook/channel-postmessage",
-  "version": "6.1.0-alpha.28",
+  "version": "6.4.0-alpha.23",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/channel-postmessage",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/channel-postmessage",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,37 +14,43 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/channel-postmessage"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.4/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/channels": "6.1.0-alpha.28",
-    "@storybook/client-logger": "6.1.0-alpha.28",
-    "@storybook/core-events": "6.1.0-alpha.28",
-    "core-js": "^3.0.1",
-    "global": "^4.3.2",
-    "qs": "^6.6.0",
-    "telejson": "^5.0.2"
+    "@storybook/channels": "6.4.0-alpha.23",
+    "@storybook/client-logger": "6.4.0-alpha.23",
+    "@storybook/core-events": "6.4.0-alpha.23",
+    "core-js": "^3.8.2",
+    "global": "^4.4.0",
+    "qs": "^6.10.0",
+    "telejson": "^5.3.2"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9f44d66ee89c9d9b1ec33afd42866673344078be",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
-  }
+  "gitHead": "691fc1f7155bd50179573b146c45f9528d2dc7df",
+  "sbmodern": "dist/modern/index.js"
 }

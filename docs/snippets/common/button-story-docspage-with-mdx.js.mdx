@@ -1,0 +1,28 @@
+```js
+// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+
+import { Button } from './Button';
+
+import CustomMDXDocumentation from './Custom-MDX-Documentation.mdx' 
+
+export default {
+  title: 'Example/Button',
+  component: Button,
+  argTypes: {
+    backgroundColor: { control: 'color' },
+  },
+  parameters: {
+    docs: {
+      page: CustomMDXDocumentation,
+    }
+  },
+};
+
+export const Primary = () => <Button backgroundColor="primary" />;
+
+export const Secondary = () => <Button backgroundColor="secondary" />;
+
+export const Large = () => <Button size="large" />;
+
+export const Small = () => <Button size="small" />;
+```

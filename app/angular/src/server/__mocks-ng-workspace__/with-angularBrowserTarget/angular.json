@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "projects": {
+    "foo-project": {
+      "root": "",
+      "architect": {
+        "build": {
+          "options": {
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": []
+          }
+        }
+      }
+    },
+    "target-project": {
+      "root": "",
+      "architect": {
+        "target-build": {
+          "options": {
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "foo-project"
+}

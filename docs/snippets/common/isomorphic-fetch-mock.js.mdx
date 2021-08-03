@@ -14,7 +14,7 @@ export default async function fetch() {
   nextJson = null;
 }
 
-// the decorator to be used in ./storybook/preview to apply the mock to all stories
+// The decorator to be used in ./storybook/preview to apply the mock to all stories
 
 export function decorator(story, { parameters }) {
   if (parameters && parameters.fetch) {
