@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Story } from './types-6-3';
+import { Story, Parameters } from './types-6-3';
 import renderToDOM from './render';
 
 export const render: Story = (args, { id, component: Component }) => {
@@ -13,3 +13,5 @@ export const render: Story = (args, { id, component: Component }) => {
 };
 
 export { renderToDOM };
+
+export const parameters: Parameters = { framework: 'react' };
