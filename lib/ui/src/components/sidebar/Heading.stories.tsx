@@ -190,7 +190,7 @@ export const noBrand: Story = () => {
   );
 };
 
-export const skipLinkFocused: Story = {
+export const skipToCanvasLinkFocused: Story = {
   args: { menu: menuItems },
   parameters: { layout: 'padded' },
   play: () => screen.getByTestId('heading--skip').focus(),

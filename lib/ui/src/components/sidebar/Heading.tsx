@@ -35,7 +35,7 @@ const HeadingWrapper = styled.div({
   position: 'relative',
 });
 
-const SkipToContentLink = styled(Button)(({ theme }) => ({
+const SkipToCanvasLink = styled(Button)(({ theme }) => ({
   position: 'absolute',
   width: '100%',
   padding: '10px 15px',
@@ -54,7 +54,7 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
 }) => {
   return (
     <HeadingWrapper {...props}>
-      <SkipToContentLink
+      <SkipToCanvasLink
         secondary
         isLink
         tabIndex={0}
@@ -62,7 +62,7 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
         href="#storybook-preview-wrapper"
       >
         Skip to canvas
-      </SkipToContentLink>
+      </SkipToCanvasLink>
 
       <BrandArea>
         <Brand />

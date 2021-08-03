@@ -98,8 +98,8 @@ export const SingleStoryComponents = () => {
 };
 
 // node must be selected, highlighted, and focused
-// in order to tab to 'Skip to content' link
-export const SkipToContentInteraction = {
+// in order to tab to 'Skip to canvas' link
+export const SkipToCanvasLinkFocused = {
   args: {
     isBrowsing: true,
     isMain: true,

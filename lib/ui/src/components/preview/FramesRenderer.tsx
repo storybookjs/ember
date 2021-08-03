@@ -13,7 +13,7 @@ const getActive = (refId: FramesRendererProps['refId']) => {
   return 'storybook-preview-iframe';
 };
 
-const SkipToContentLink = styled(Button)`
+const SkipToSidebarLink = styled(Button)`
   display: none;
   @media (min-width: 600px) {
     display: block;
@@ -92,9 +92,9 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
       <Global styles={styles} />
       {Object.entries(frames).map(([id, src]) => (
         <Fragment key={id}>
-          <SkipToContentLink secondary isLink tabIndex={0} href={`#${storyId}`}>
+          <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
             Skip to sidebar
-          </SkipToContentLink>
+          </SkipToSidebarLink>
           <IFrame
             active={id === active}
             key={refs[id] ? refs[id].url : id}
