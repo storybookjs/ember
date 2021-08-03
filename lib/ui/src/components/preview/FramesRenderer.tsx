@@ -13,22 +13,22 @@ const getActive = (refId: FramesRendererProps['refId']) => {
   return 'storybook-preview-iframe';
 };
 
-const SkipToSidebarLink = styled(Button)`
-  display: none;
-  @media (min-width: 600px) {
-    display: block;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    padding: 10px 15px;
-    font-size: ${(props) => props.theme.typography.size.s1};
-    transform: translateY(-100px);
-    &:focus {
-      transform: translateY(0);
-      z-index: 1;
-    }
-  }
-`;
+const SkipToSidebarLink = styled(Button)(({ theme }) => ({
+  display: 'none',
+  '@media (min-width: 600px)': {
+    display: 'block',
+    position: 'absolute',
+    top: '10px',
+    right: '15px',
+    padding: '10px 15px',
+    fontSize: theme.typography.size.s1,
+    transform: 'translateY(-100px)',
+    '&:focus': {
+      transform: 'translateY(0)',
+      zIndex: 1,
+    },
+  },
+}));
 
 export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   refs,
