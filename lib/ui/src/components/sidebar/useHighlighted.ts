@@ -82,14 +82,11 @@ export const useHighlighted = ({
 
     let lastRequestId: number;
     const navigateTree = (event: KeyboardEvent) => {
-      const target = event.target as Element;
-
       if (isLoading || !isBrowsing || !containerRef.current) return; // allow event.repeat
       if (!matchesModifiers(false, event)) return;
 
       const isArrowUp = matchesKeyCode('ArrowUp', event);
       const isArrowDown = matchesKeyCode('ArrowDown', event);
-
       if (!(isArrowUp || isArrowDown)) return;
       event.preventDefault();
 
@@ -97,6 +94,7 @@ export const useHighlighted = ({
         globalWindow.cancelAnimationFrame(lastRequestId);
         lastRequestId = requestId;
 
+        const target = event.target as Element;
         if (!isAncestor(menuElement, target) && !isAncestor(target, menuElement)) return;
         if (target.hasAttribute('data-action')) (target as HTMLButtonElement).blur();
 
