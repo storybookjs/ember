@@ -90,11 +90,11 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   return (
     <Fragment>
       <Global styles={styles} />
+      <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
+        Skip to sidebar
+      </SkipToSidebarLink>
       {Object.entries(frames).map(([id, src]) => (
         <Fragment key={id}>
-          <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
-            Skip to sidebar
-          </SkipToSidebarLink>
           <IFrame
             active={id === active}
             key={refs[id] ? refs[id].url : id}
