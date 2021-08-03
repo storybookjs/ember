@@ -17,7 +17,7 @@ export const assertIsFn = (val: any) => {
 };
 
 // Hacky utility for adding mdxStoryToId to the default context
-export const AddContext: FC<DocsContextProps> = (props) => {
+export const AddContext: FC<DocsContextProps<any>> = (props) => {
   const { children, ...rest } = props;
   const parentContext = React.useContext(DocsContext);
   return (

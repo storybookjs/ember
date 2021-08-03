@@ -164,5 +164,22 @@ export type DecoratorApplicator<StoryFnReturnType> = (
   decorators: DecoratorFunction<StoryFnReturnType>[]
 ) => LegacyStoryFn<StoryFnReturnType>;
 
-// TODO
-export type DocsContext = any;
+export interface DocsContextProps<StoryFnReturnType> {
+  id: string;
+  title: string;
+  name: string;
+  storyById: (id: StoryId) => Story<StoryFnReturnType>;
+  componentStories: () => Story<StoryFnReturnType>[];
+  renderStoryToElement: (story: Story<StoryFnReturnType>) => void;
+
+  // TODO -- we need this for the `prepareForInline` docs approach
+  bindStoryFn: (story: Story<StoryFnReturnType>) => LegacyStoryFn<StoryFnReturnType>;
+
+  /**
+   * mdxStoryNameToKey is an MDX-compiler-generated mapping of an MDX story's
+   * display name to its story key for ID generation. It's used internally by the `<Story>`
+   * and `Preview` doc blocks.
+   */
+  mdxStoryNameToKey?: Record<string, string>;
+  mdxComponentMeta?: any;
+}

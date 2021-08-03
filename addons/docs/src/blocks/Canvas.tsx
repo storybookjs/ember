@@ -19,7 +19,7 @@ type CanvasProps = PurePreviewProps & {
 
 const getPreviewProps = (
   { withSource, mdxSource, children, ...props }: CanvasProps & { children?: ReactNode },
-  docsContext: DocsContextProps,
+  docsContext: DocsContextProps<any>,
   sourceContext: SourceContextProps
 ): PurePreviewProps => {
   const { mdxComponentMeta, mdxStoryNameToKey } = docsContext;

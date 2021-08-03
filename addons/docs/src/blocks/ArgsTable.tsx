@@ -16,7 +16,7 @@ import Events from '@storybook/core-events';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
-import { getComponentName, getDocsStories } from './utils';
+import { getComponentName } from './utils';
 import { ArgTypesExtractor } from '../lib/docgen/types';
 import { lookupStoryId } from './Story';
 
@@ -75,12 +75,12 @@ const useArgs = (
 
 export const extractComponentArgTypes = (
   component: Component,
-  { parameters }: DocsContextProps,
+  { id, storyById }: DocsContextProps<any>,
   include?: PropDescriptor,
   exclude?: PropDescriptor
 ): ArgTypes => {
-  const params = parameters || {};
-  const { extractArgTypes }: { extractArgTypes: ArgTypesExtractor } = params.docs || {};
+  const { parameters } = storyById(id);
+  const { extractArgTypes }: { extractArgTypes: ArgTypesExtractor } = parameters.docs || {};
   if (!extractArgTypes) {
     throw new Error(ArgsTableError.ARGS_UNSUPPORTED);
   }
@@ -94,11 +94,13 @@ const isShortcut = (value?: string) => {
   return value && [CURRENT_SELECTION, PRIMARY_STORY].includes(value);
 };
 
-export const getComponent = (props: ArgsTableProps = {}, context: DocsContextProps): Component => {
+export const getComponent = (
+  props: ArgsTableProps = {},
+  { id, storyById }: DocsContextProps<any>
+): Component => {
   const { of } = props as OfProps;
   const { story } = props as StoryProps;
-  const { parameters = {} } = context;
-  const { component } = parameters;
+  const { component } = storyById(id);
   if (isShortcut(of) || isShortcut(story)) {
     return component || null;
   }
@@ -111,7 +113,7 @@ export const getComponent = (props: ArgsTableProps = {}, context: DocsContextPro
 const addComponentTabs = (
   tabs: Record<string, PureArgsTableProps>,
   components: Record<string, Component>,
-  context: DocsContextProps,
+  context: DocsContextProps<any>,
   include?: PropDescriptor,
   exclude?: PropDescriptor,
   sort?: SortType
@@ -127,39 +129,44 @@ export const StoryTable: FC<
   StoryProps & { component: Component; subcomponents: Record<string, Component> }
 > = (props) => {
   const context = useContext(DocsContext);
+  const { id: currentId, storyById, componentStories } = context;
   const {
-    id: currentId,
-    parameters: { argTypes },
-    storyStore,
-  } = context;
-  const { story, component, subcomponents, showComponent, include, exclude, sort } = props;
-  let storyArgTypes;
+    story: storyName,
+    component,
+    subcomponents,
+    showComponent,
+    include,
+    exclude,
+    sort,
+  } = props;
+  const { argTypes, parameters } = storyById(currentId);
+  let storyArgTypes: ArgTypes;
   try {
     let storyId;
-    switch (story) {
+    switch (storyName) {
       case CURRENT_SELECTION: {
         storyId = currentId;
         storyArgTypes = argTypes;
         break;
       }
       case PRIMARY_STORY: {
-        const primaryStory = getDocsStories(context)[0];
+        const primaryStory = componentStories()[0];
         storyId = primaryStory.id;
-        storyArgTypes = primaryStory.parameters.argTypes;
+        storyArgTypes = primaryStory.argTypes;
         break;
       }
       default: {
-        storyId = lookupStoryId(story, context);
-        const data = storyStore.fromId(storyId);
-        storyArgTypes = data.parameters.argTypes;
+        storyId = lookupStoryId(storyName, context);
+        storyArgTypes = storyById(storyId).argTypes;
       }
     }
     storyArgTypes = filterArgTypes(storyArgTypes, include, exclude);
 
     const mainLabel = getComponentName(component) || 'Story';
 
+    // TODO -- how to get the current args and channel?
     // eslint-disable-next-line prefer-const
-    let [args, updateArgs, resetArgs] = useArgs(storyId, storyStore);
+    let [args, updateArgs, resetArgs] = [storyById(storyId).initialArgs, () => 0, () => 0];
     let tabs = { [mainLabel]: { rows: storyArgTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
@@ -203,15 +210,19 @@ export const ComponentsTable: FC<ComponentsProps> = (props) => {
 
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
   const context = useContext(DocsContext);
-  const { parameters: { subcomponents, controls } = {} } = context;
+  const { id, storyById } = context;
+  const {
+    parameters: { controls },
+    subcomponents,
+  } = storyById(id);
 
   const { include, exclude, components, sort: sortProp } = props as ComponentsProps;
-  const { story } = props as StoryProps;
+  const { story: storyName } = props as StoryProps;
 
   const sort = sortProp || controls?.sort;
 
   const main = getComponent(props, context);
-  if (story) {
+  if (storyName) {
     return <StoryTable {...(props as StoryProps)} component={main} {...{ subcomponents, sort }} />;
   }
 

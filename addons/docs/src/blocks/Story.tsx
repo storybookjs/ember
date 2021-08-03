@@ -34,22 +34,25 @@ export type StoryProps = (StoryDefProps | StoryRefProps | StoryImportProps) & Co
 
 export const lookupStoryId = (
   storyName: string,
-  { mdxStoryNameToKey, mdxComponentMeta }: DocsContextProps
+  { mdxStoryNameToKey, mdxComponentMeta }: DocsContextProps<any>
 ) =>
   toId(
     mdxComponentMeta.id || mdxComponentMeta.title,
     storyNameFromExport(mdxStoryNameToKey[storyName])
   );
 
-export const getStoryProps = (props: StoryProps, context: DocsContextProps): PureStoryProps => {
+export const getStoryProps = (
+  props: StoryProps,
+  context: DocsContextProps<any>
+): PureStoryProps => {
   const { id } = props as StoryRefProps;
   const { name } = props as StoryDefProps;
   const inputId = id === CURRENT_SELECTION ? context.id : id;
   const previewId = inputId || lookupStoryId(name, context);
-  const data = context.storyStore.fromId(previewId) || {};
+  const story = context.storyById(previewId);
 
   const { height, inline } = props;
-  const { storyFn = undefined, name: storyName = undefined, parameters = {} } = data;
+  const { storyFn, name: storyName, parameters } = story;
   const { docs = {} } = parameters;
 
   if (docs.disable) {
@@ -65,11 +68,14 @@ export const getStoryProps = (props: StoryProps, context: DocsContextProps): Pur
     );
   }
 
+  const boundStoryFn = context.bindStoryFn(story);
   return {
     parameters,
     inline: storyIsInline,
     id: previewId,
-    storyFn: prepareForInline && storyFn ? () => prepareForInline(storyFn, data) : storyFn,
+    // TODO -- how can `storyFn` be undefined?
+    storyFn:
+      prepareForInline && boundStoryFn ? () => prepareForInline(boundStoryFn, story) : boundStoryFn,
     height: height || (storyIsInline ? undefined : iframeHeight),
     title: storyName,
   };

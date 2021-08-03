@@ -18,9 +18,10 @@ import {
   Globals,
   StoryId,
   Args,
-  DocsContext,
+  DocsContextProps,
   StorySpecifier,
   Parameters,
+  CSFFile,
 } from '@storybook/client-api/dist/ts3.9/new/types';
 import { StoryStore } from '@storybook/client-api/dist/esm/new/StoryStore';
 
@@ -28,7 +29,7 @@ import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { NoDocs } from '../NoDocs';
 
-const { navigator, window: globalWindow } = global;
+const { window: globalWindow } = global;
 
 // TODO -- what's up with this code? Is it for HMR? Can we be smarter?
 function getOrCreateChannel() {
@@ -278,12 +279,21 @@ export class WebPreview<StoryFnReturnType> {
   async renderDocs({ story }: { story: Story<StoryFnReturnType> }) {
     const { id, title, name } = story;
     const element = this.view.prepareForDocs();
+    const csfFile: CSFFile<StoryFnReturnType> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
       title,
       name,
-      storyStore: this.storyStore,
+      // NOTE: these two functions are *sync* so cannot access stories from other CSF files
+      storyById: (storyId: StoryId) => this.storyStore.storyFromCSFFile({ storyId, csfFile }),
+      componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
+
+      // TODO -- this is for prepareForInline. Note this *DOES NOT* run loaders,
+      // or play, or any of the stuff that `renderStoryToElement` below does.
+      // If we want to stick with this approach, we should refactor to share code.
+      bindStoryFn: (renderedStory: Story<StoryFnReturnType>) => () =>
+        renderedStory.storyFn(this.storyStore.getStoryContext(renderedStory)),
     };
 
     const { docs } = story.parameters;
@@ -291,7 +301,7 @@ export class WebPreview<StoryFnReturnType> {
       throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
     }
 
-    const DocsContainer: ComponentType<{ context: DocsContext }> =
+    const DocsContainer: ComponentType<{ context: DocsContextProps<StoryFnReturnType> }> =
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 

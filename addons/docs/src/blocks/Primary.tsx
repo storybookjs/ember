@@ -1,15 +1,14 @@
 import React, { useContext, FC } from 'react';
 import { DocsContext } from './DocsContext';
 import { DocsStory } from './DocsStory';
-import { getDocsStories } from './utils';
 
 interface PrimaryProps {
   name?: string;
 }
 
 export const Primary: FC<PrimaryProps> = ({ name }) => {
-  const context = useContext(DocsContext);
-  const componentStories = getDocsStories(context);
+  const { componentStories: getComponentStories } = useContext(DocsContext);
+  const componentStories = getComponentStories();
   let story;
   if (componentStories) {
     story = name ? componentStories.find((s) => s.name === name) : componentStories[0];

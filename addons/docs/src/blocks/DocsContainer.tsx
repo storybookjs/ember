@@ -14,8 +14,8 @@ import { scrollToElement } from './utils';
 
 const { document, window: globalWindow } = global;
 
-export interface DocsContainerProps {
-  context: DocsContextProps;
+export interface DocsContainerProps<StoryFnReturnType> {
+  context: DocsContextProps<StoryFnReturnType>;
 }
 
 const defaultComponents = {
@@ -34,9 +34,14 @@ const warnOptionsTheme = deprecate(
 `
 );
 
-export const DocsContainer: FunctionComponent<DocsContainerProps> = ({ context, children }) => {
-  const { id: storyId = null, parameters = {} } = context || {};
-  const { options = {}, docs = {} } = parameters;
+export const DocsContainer: FunctionComponent<DocsContainerProps<any>> = ({
+  context,
+  children,
+}) => {
+  const { id: storyId, storyById } = context;
+  const {
+    parameters: { options = {}, docs = {} },
+  } = storyById(storyId);
   let themeVars = docs.theme;
   if (!themeVars && options.theme) {
     warnOptionsTheme();

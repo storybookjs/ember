@@ -7,6 +7,7 @@ import {
 import { StoryId } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
 import { StoryContext } from '@storybook/addons';
+import { Story } from '@storybook/client-api/dist/ts3.9/new/types';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
@@ -43,25 +44,11 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
-const getStoryContext = (storyId: StoryId, docsContext: DocsContextProps): StoryContext | null => {
-  const { storyStore } = docsContext;
-  const storyContext = storyStore?.fromId(storyId);
-
-  if (!storyContext) {
-    // Fallback if we can't get the story data for this story
-    logger.warn(`Unable to find information for story ID '${storyId}'`);
-    return null;
-  }
-
-  return storyContext;
-};
-
-const getSourceState = (storyIds: string[], docsContext: DocsContextProps) => {
+const getSourceState = (storyIds: string[], docsContext: DocsContextProps<any>) => {
   const states = storyIds
     .map((storyId) => {
-      const storyContext = getStoryContext(storyId, docsContext);
-      if (!storyContext) return null;
-      return storyContext.parameters.docs?.source?.state;
+      const story = docsContext.storyById(storyId);
+      return story.parameters.docs?.source?.state;
     })
     .filter(Boolean);
 
@@ -77,12 +64,12 @@ const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): st
   return sources?.[storyId] || '';
 };
 
-const getSnippet = (snippet: string, storyContext?: StoryContext): string => {
-  if (!storyContext) {
+const getSnippet = (snippet: string, story?: Story<any>): string => {
+  if (!story) {
     return snippet;
   }
 
-  const { parameters } = storyContext;
+  const { parameters } = story;
   // eslint-disable-next-line no-underscore-dangle
   const isArgsStory = parameters.__isArgsStory;
   const type = parameters.docs?.source?.type || SourceType.AUTO;
@@ -95,16 +82,16 @@ const getSnippet = (snippet: string, storyContext?: StoryContext): string => {
 
   // if user has explicitly set this as dynamic, use snippet
   if (type === SourceType.DYNAMIC) {
-    return parameters.docs?.transformSource?.(snippet, storyContext) || snippet;
+    return parameters.docs?.transformSource?.(snippet, story) || snippet;
   }
 
   // if this is an args story and there's a snippet
   if (type === SourceType.AUTO && snippet && isArgsStory) {
-    return parameters.docs?.transformSource?.(snippet, storyContext) || snippet;
+    return parameters.docs?.transformSource?.(snippet, story) || snippet;
   }
 
   // otherwise, use the source code logic
-  const enhanced = enhanceSource(storyContext) || parameters;
+  const enhanced = enhanceSource(story) || parameters;
   return enhanced?.docs?.source?.code || '';
 };
 
@@ -112,10 +99,11 @@ type SourceStateProps = { state: SourceState };
 
 export const getSourceProps = (
   props: SourceProps,
-  docsContext: DocsContextProps,
+  docsContext: DocsContextProps<any>,
   sourceContext: SourceContextProps
 ): PureSourceProps & SourceStateProps => {
-  const { id: currentId, parameters = {} } = docsContext;
+  const { id: currentId, storyById } = docsContext;
+  const { parameters } = storyById(currentId);
 
   const codeProps = props as CodeProps;
   const singleProps = props as SingleSourceProps;
@@ -131,8 +119,8 @@ export const getSourceProps = (
     source = targetIds
       .map((storyId) => {
         const storySource = getStorySource(storyId, sourceContext);
-        const storyContext = getStoryContext(storyId, docsContext);
-        return getSnippet(storySource, storyContext);
+        const story = docsContext.storyById(storyId);
+        return getSnippet(storySource, story);
       })
       .join('\n\n');
   }

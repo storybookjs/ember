@@ -6,16 +6,15 @@ import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
 import { prepareStory } from './prepareStory';
 import {
-  Args,
   CSFFile,
   StoryId,
   ModuleImportFn,
   GlobalMeta,
+  StoryMeta,
   Story,
   StoryContext,
   StoriesList,
   Parameters,
-  ModuleExports,
 } from './types';
 
 // TODO -- what are reasonable values for these?
@@ -67,7 +66,16 @@ export class StoryStore<StoryFnReturnType> {
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<StoryFnReturnType>> {
     const csfFile = await this.loadCSFFileByStoryId(storyId);
+    return this.storyFromCSFFile({ storyId, csfFile });
+  }
 
+  storyFromCSFFile({
+    storyId,
+    csfFile,
+  }: {
+    storyId: StoryId;
+    csfFile: CSFFile<StoryFnReturnType>;
+  }): Story<StoryFnReturnType> {
     const storyMeta = csfFile.stories[storyId];
     if (!storyMeta) {
       throw new Error(`Didn't find '${storyId}' in CSF file, this is unexpected`);
@@ -75,10 +83,18 @@ export class StoryStore<StoryFnReturnType> {
     const componentMeta = csfFile.meta;
 
     const story = prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
-
-    this.args.set(storyId, story.initialArgs);
-
+    this.args.set(story.id, story.initialArgs);
     return story;
+  }
+
+  componentStoriesFromCSFFile({
+    csfFile,
+  }: {
+    csfFile: CSFFile<StoryFnReturnType>;
+  }): Story<StoryFnReturnType>[] {
+    return Object.keys(csfFile.stories).map((storyId: StoryId) =>
+      this.storyFromCSFFile({ storyId, csfFile })
+    );
   }
 
   getStoryContext(story: Story<StoryFnReturnType>): StoryContext {
