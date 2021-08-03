@@ -16,7 +16,7 @@ import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalon
 import { runCompodoc } from '../utils/run-compodoc';
 
 export type StorybookBuilderOptions = JsonObject & {
-  browserTarget?: string;
+  browserTarget?: string | null;
   tsConfig?: string;
   compodoc: boolean;
   compodocArgs: string[];

@@ -102,7 +102,7 @@ describe('Start Storybook Builder', () => {
     expect(output.success).toBeTruthy();
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
-      angularBrowserTarget: undefined,
+      angularBrowserTarget: null,
       ci: false,
       configDir: '.storybook',
       docsMode: false,

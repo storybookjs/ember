@@ -5,7 +5,7 @@ export type StandaloneOptions = Partial<
     LoadOptions &
     BuilderOptions & {
       mode?: 'static' | 'dev';
-      angularBrowserTarget?: string;
+      angularBrowserTarget?: string | null;
       tsConfig?: string;
     }
 >;

@@ -616,7 +616,10 @@ describe('framework-preset-angular-cli', () => {
   describe('with only tsConfig option', () => {
     beforeEach(() => {
       initMockWorkspace('without-projects-entry');
-      options = { tsConfig: 'projects/pattern-lib/tsconfig.lib.json' } as Options;
+      options = {
+        tsConfig: 'projects/pattern-lib/tsconfig.lib.json',
+        angularBrowserTarget: null,
+      } as Options;
     });
     it('should log', async () => {
       const baseWebpackConfig = newWebpackConfiguration();

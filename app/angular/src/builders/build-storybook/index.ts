@@ -16,7 +16,7 @@ import { BrowserBuilderOptions } from '@angular-devkit/build-angular';
 import { runCompodoc } from '../utils/run-compodoc';
 
 export type StorybookBuilderOptions = JsonObject & {
-  browserTarget?: string;
+  browserTarget?: string | null;
   tsConfig?: string;
   compodoc: boolean;
   compodocArgs: string[];

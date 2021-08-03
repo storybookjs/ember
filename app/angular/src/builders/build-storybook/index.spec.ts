@@ -95,7 +95,7 @@ describe('Build Storybook Builder', () => {
     expect(output.success).toBeTruthy();
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
-      angularBrowserTarget: undefined,
+      angularBrowserTarget: null,
       configDir: '.storybook',
       docsMode: false,
       loglevel: undefined,
