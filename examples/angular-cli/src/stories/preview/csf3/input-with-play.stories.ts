@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { InputComponent } from './sb-input.component';
 
 export default {
-  title: 'CSF3/Input',
+  title: 'Preview/CSF3/WithPlayFunction',
   component: InputComponent,
 };
 
