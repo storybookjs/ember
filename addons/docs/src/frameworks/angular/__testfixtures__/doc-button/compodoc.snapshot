@@ -163,7 +163,7 @@ like <strong>bold</strong>, <em>italic</em>, and <code>inline code</code>.</p>
           "name": "click",
         },
       ],
-      "id": "component-InputComponent-568feeafa68e593b062061c27c4625a9",
+      "id": "component-InputComponent-fd2eff3e4da750f1c06d4928670993b3",
       "inputs": Array [],
       "inputsClass": Array [
         Object {
@@ -332,7 +332,7 @@ like <strong>bold</strong>, <em>italic</em>, and <code>inline code</code>.</p>
               "deprecated": false,
               "deprecationMessage": "",
               "name": Object {
-                "end": 3518,
+                "end": 3678,
                 "escapedText": "x",
                 "flags": 4227072,
                 "kind": 78,
@@ -341,7 +341,7 @@ like <strong>bold</strong>, <em>italic</em>, and <code>inline code</code>.</p>
                 "transformFlags": 0,
               },
               "tagName": Object {
-                "end": 3516,
+                "end": 3676,
                 "escapedText": "param",
                 "flags": 4227072,
                 "kind": 78,
@@ -357,7 +357,7 @@ like <strong>bold</strong>, <em>italic</em>, and <code>inline code</code>.</p>
               "deprecated": false,
               "deprecationMessage": "",
               "name": Object {
-                "end": 3563,
+                "end": 3724,
                 "escapedText": "y",
                 "flags": 4227072,
                 "kind": 78,
@@ -366,7 +366,7 @@ like <strong>bold</strong>, <em>italic</em>, and <code>inline code</code>.</p>
                 "transformFlags": 0,
               },
               "tagName": Object {
-                "end": 3561,
+                "end": 3722,
                 "escapedText": "param",
                 "flags": 4227072,
                 "kind": 78,
@@ -445,7 +445,7 @@ An internal calculation method which adds \`x\` and \`y\` together.
               "deprecated": false,
               "deprecationMessage": "",
               "name": Object {
-                "end": 4079,
+                "end": 4263,
                 "escapedText": "password",
                 "flags": 4227072,
                 "kind": 78,
@@ -454,7 +454,7 @@ An internal calculation method which adds \`x\` and \`y\` together.
                 "transformFlags": 0,
               },
               "tagName": Object {
-                "end": 4070,
+                "end": 4254,
                 "escapedText": "param",
                 "flags": 4227072,
                 "kind": 78,
@@ -500,7 +500,7 @@ A private method.
               "deprecated": false,
               "deprecationMessage": "",
               "name": Object {
-                "end": 3938,
+                "end": 4113,
                 "escapedText": "id",
                 "flags": 4227072,
                 "kind": 78,
@@ -510,7 +510,7 @@ A private method.
               },
               "optional": true,
               "tagName": Object {
-                "end": 3935,
+                "end": 4110,
                 "escapedText": "param",
                 "flags": 4227072,
                 "kind": 78,
@@ -945,7 +945,7 @@ export class InputComponent<T> {
       "deprecated": false,
       "deprecationMessage": "",
       "file": "addons/docs/src/frameworks/angular/__testfixtures__/doc-button/input.ts",
-      "id": "interface-ISomeInterface-568feeafa68e593b062061c27c4625a9",
+      "id": "interface-ISomeInterface-fd2eff3e4da750f1c06d4928670993b3",
       "indexSignatures": Array [],
       "kind": 163,
       "methods": Array [],
