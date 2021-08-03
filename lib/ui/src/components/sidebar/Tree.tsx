@@ -103,16 +103,20 @@ const LeafNodeStyleWrapper = styled.div(({ theme }) => ({
 }));
 
 const SkipToContentLink = styled(Button)(({ theme }) => ({
-  zIndex: -1,
-  position: 'absolute',
-  top: 1,
-  right: 20,
-  height: '20px',
-  fontSize: '10px',
-  padding: '5px 10px',
-  '&:focus': {
-    background: 'white',
-    zIndex: 1,
+  display: 'none',
+  '@media (min-width: 600px)': {
+    display: 'block',
+    zIndex: -1,
+    position: 'absolute',
+    top: 1,
+    right: 20,
+    height: '20px',
+    fontSize: '10px',
+    padding: '5px 10px',
+    '&:focus': {
+      background: 'white',
+      zIndex: 1,
+    },
   },
 }));
 

@@ -36,14 +36,18 @@ const HeadingWrapper = styled.div({
 });
 
 const SkipToCanvasLink = styled(Button)(({ theme }) => ({
-  position: 'absolute',
-  width: '100%',
-  padding: '10px 15px',
-  fontSize: theme.typography.size.s1,
-  zIndex: 1,
-  transform: 'translate(0,-100px)',
-  '&:focus': {
-    transform: 'translate(0,-10px)',
+  display: 'none',
+  '@media (min-width: 600px)': {
+    display: 'block',
+    position: 'absolute',
+    width: '100%',
+    padding: '10px 15px',
+    fontSize: theme.typography.size.s1,
+    zIndex: 1,
+    transform: 'translate(0,-100px)',
+    '&:focus': {
+      transform: 'translate(0,-10px)',
+    },
   },
 }));
 
