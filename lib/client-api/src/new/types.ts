@@ -10,7 +10,6 @@ import {
   StoryName,
   ViewMode,
   LegacyStoryFn,
-  StoryFn,
 } from '@storybook/addons';
 
 import { HooksContext } from '../hooks';
@@ -32,7 +31,6 @@ export type GlobalTypes = ArgTypes;
 
 export type StoryContextForEnhancers = StoryIdentifier & {
   parameters: Parameters;
-  hooks: HooksContext;
   initialArgs: Args;
   argTypes: ArgTypes;
 };
@@ -40,6 +38,7 @@ export type StoryContextForEnhancers = StoryIdentifier & {
 export type StoryContextUpdate = {
   args: Args;
   globals: Globals;
+  hooks: HooksContext;
 };
 
 export type StoryContext = StoryContextForEnhancers & StoryContextUpdate;
@@ -119,7 +118,6 @@ export type Story<StoryFnReturnType> = StoryIdentifier & {
   parameters: Parameters;
   initialArgs: Args;
   argTypes: ArgTypes;
-  hooks: HooksContext;
   applyLoaders: (context: StoryContext) => Promise<LoadedStoryContext>;
   storyFn: LegacyStoryFn<StoryFnReturnType>;
   runPlayFunction: () => Promise<void>; // TODO -- should this take story context?

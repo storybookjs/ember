@@ -12,8 +12,6 @@ import {
   Story,
   Args,
   ArgTypes,
-  ArgsEnhancer,
-  ArgTypesEnhancer,
   StoryContextForEnhancers,
 } from './types';
 
@@ -117,7 +115,6 @@ export function prepareStory<StoryFnReturnType>(
     title,
     kind: title, // Back compat
     parameters,
-    hooks,
     initialArgs: initialArgsBeforeEnhancers,
     argTypes: passedArgTypes,
   };

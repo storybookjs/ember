@@ -16,6 +16,7 @@ import {
   StoriesList,
   Parameters,
 } from './types';
+import { HooksContext } from '../hooks';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;
@@ -36,6 +37,8 @@ export class StoryStore<StoryFnReturnType> {
 
   args: ArgsStore;
 
+  hooks: Record<StoryId, HooksContext>;
+
   constructor({
     importFn,
     globalMeta,
@@ -52,6 +55,7 @@ export class StoryStore<StoryFnReturnType> {
     const { globals, globalTypes } = globalMeta;
     this.globals = new GlobalsStore({ globals, globalTypes });
     this.args = new ArgsStore();
+    this.hooks = {};
   }
 
   async initialize() {
@@ -84,6 +88,7 @@ export class StoryStore<StoryFnReturnType> {
 
     const story = prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
     this.args.set(story.id, story.initialArgs);
+    this.hooks[story.id] = new HooksContext();
     return story;
   }
 
@@ -102,6 +107,7 @@ export class StoryStore<StoryFnReturnType> {
       ...story,
       args: this.args.get(story.id),
       globals: this.globals.get(),
+      hooks: this.hooks[story.id],
     };
   }
 
