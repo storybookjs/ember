@@ -5,11 +5,11 @@ import { logger } from '@storybook/node-logger';
 import { resolvePathInStorybookCache, Options, normalizeStories } from '@storybook/core-common';
 import { readCsf } from '@storybook/csf-tools';
 
+// TODO -- use proper types for these? share with StoriesListStory?
 interface ExtractedStory {
-  id: string;
-  kind: string;
+  title: string;
   name: string;
-  parameters: Record<string, any>;
+  importPath: string;
 }
 
 type ExtractedStories = Record<string, ExtractedStory>;
@@ -42,11 +42,11 @@ export async function extractStoriesJson(
       }
       try {
         const csf = (await readCsf(absolutePath)).parse();
-        csf.stories.forEach((story) => {
-          stories[story.id] = {
-            ...story,
-            kind: csf.meta.title,
-            parameters: { ...story.parameters, fileName: relativePath },
+        csf.stories.forEach(({ id, name }) => {
+          stories[id] = {
+            title: csf.meta.title,
+            name,
+            importPath: relativePath,
           };
         });
       } catch (err) {

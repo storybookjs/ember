@@ -9,7 +9,22 @@ export class UrlStore {
   selection: Selection;
 
   constructor() {
-    this.selectionSpecifier = getSelectionSpecifierFromPath();
+    const oldSpec = getSelectionSpecifierFromPath();
+
+    if (!oldSpec) {
+      this.selectionSpecifier = null;
+    } else if (typeof oldSpec.storySpecifier === 'string') {
+      this.selectionSpecifier = {
+        ...oldSpec,
+        storySpecifier: oldSpec.storySpecifier as string,
+      };
+    } else {
+      const { name, kind: title } = oldSpec.storySpecifier;
+      this.selectionSpecifier = {
+        ...oldSpec,
+        storySpecifier: { name, title },
+      };
+    }
   }
 
   setSelection(selection: Selection) {

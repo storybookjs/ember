@@ -61,10 +61,12 @@ export class StoriesListStore {
     }
 
     // Try and find a story matching the name/kind, setting no selection if they don't exist.
-    const { name, kind } = specifier;
-    return Object.values(this.storiesList.stories).find(
-      (story) => story.name === name && story.kind === kind
-    )?.id;
+    const { name, title } = specifier;
+    const match = Object.entries(this.storiesList.stories).find(
+      ([id, story]) => story.name === name && story.title === title
+    );
+
+    return match && match[0];
   }
 
   storyIdToCSFFilePath(storyId: StoryId): Path {
@@ -73,14 +75,11 @@ export class StoriesListStore {
       throw new Error(`Didn't find '${storyId}' in story metadata (\`stories.json\`)`);
     }
 
-    const path = storyMetadata.parameters?.fileName;
-    if (!path) {
+    if (!storyMetadata.importPath) {
       // TODO: Is this possible or are we guaranteeing this will exist now?
-      throw new Error(
-        `No \`parameters.fileName\` for '${storyId}' in story metadata (\`stories.json\`)`
-      );
+      throw new Error(`No \`importPath\` for '${storyId}' in story metadata (\`stories.json\`)`);
     }
 
-    return path;
+    return storyMetadata.importPath;
   }
 }

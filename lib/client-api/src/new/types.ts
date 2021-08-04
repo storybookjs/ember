@@ -131,10 +131,9 @@ export type Story<StoryFnReturnType> = StoryIdentifier & {
 export type Path = string;
 
 export interface StoriesListStory {
-  id: StoryId;
   name: StoryName;
-  kind: ComponentTitle; // TODO -- should we rename this?
-  parameters: { fileName: Path };
+  title: ComponentTitle;
+  importPath: Path;
 }
 
 export interface StoriesList {
@@ -146,7 +145,7 @@ export type ModuleImportFn = (path: Path) => ModuleExports;
 
 export type Channel = any;
 
-export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+export type StorySpecifier = StoryId | { name: StoryName; title: ComponentTitle } | '*';
 
 export interface SelectionSpecifier {
   storySpecifier: StorySpecifier;

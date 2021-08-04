@@ -114,8 +114,8 @@ export class StoryStore<StoryFnReturnType> {
   getSetStoriesPayload() {
     const { v, stories } = this.storiesList.storiesList;
     const kindParameters: Parameters = Object.values(stories).reduce(
-      (acc: Parameters, { kind }) => {
-        acc[kind] = {};
+      (acc: Parameters, { title }) => {
+        acc[title] = {};
         return acc;
       },
       {} as Parameters
@@ -126,7 +126,15 @@ export class StoryStore<StoryFnReturnType> {
       globals: this.globals.get(),
       globalParameters: {},
       kindParameters,
-      stories,
+      stories: Object.entries(stories).reduce((acc: any, [id, { name, title, importPath }]) => {
+        acc[id] = {
+          id,
+          name,
+          kind: title,
+          parameters: { fileName: importPath },
+        };
+        return acc;
+      }, {}),
     };
   }
 }
