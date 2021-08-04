@@ -5,6 +5,7 @@ import { Addon } from '@storybook/addons';
 
 const menuMapper = ({ api, state }: Combo) => ({
   isVisible: state.layout.showNav,
+  singleStory: state.singleStory,
   toggle: () => api.toggleNav(),
 });
 
@@ -14,7 +15,8 @@ export const menuTool: Addon = {
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={menuMapper}>
-      {({ isVisible, toggle }) =>
+      {({ isVisible, toggle, singleStory }) =>
+        !singleStory &&
         !isVisible && (
           <>
             <IconButton aria-label="Show sidebar" key="menu" onClick={toggle} title="Show sidebar">
