@@ -29,7 +29,11 @@ export interface StoryMetadata {
   decorators?: DecoratorFunction[];
   loaders?: LoaderFunction[];
 }
-export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
+export type ArgTypesEnhancer = (
+  context: StoryContext
+) => ArgTypes & {
+  secondPass?: boolean;
+};
 export type ArgsEnhancer = (context: StoryContext) => Args;
 
 export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';

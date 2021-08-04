@@ -63,7 +63,11 @@ export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext 
 };
 
 export type ArgTypesEnhancer = (context: StoryContextForEnhancers) => ArgTypes;
-export type ArgsEnhancer = (context: StoryContextForEnhancers) => Args;
+export type ArgsEnhancer = (
+  context: StoryContextForEnhancers
+) => Args & {
+  secondPass?: boolean;
+};
 
 export type Meta<StoryFnReturnType> = {
   decorators?: DecoratorFunction<StoryFnReturnType>[];

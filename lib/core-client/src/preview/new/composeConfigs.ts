@@ -20,13 +20,18 @@ function getSingletonField(moduleExportList: ModuleExports[], field: string): an
 export function composeConfigs<StoryFnReturnType>(
   moduleExportList: ModuleExports[]
 ): WebGlobalMeta<StoryFnReturnType> {
+  const allArgTypeEnhancers = getArrayField(moduleExportList, 'argTypesEnhancers');
+
   return {
     parameters: combineParameters(...getField(moduleExportList, 'parameters')),
     decorators: getArrayField(moduleExportList, 'decorators'),
     args: getObjectField(moduleExportList, 'args'),
     argsEnhancers: getArrayField(moduleExportList, 'argsEnhancers'),
     argTypes: getObjectField(moduleExportList, 'argTypes'),
-    argTypesEnhancers: getArrayField(moduleExportList, 'argTypesEnhancers'),
+    argTypesEnhancers: [
+      ...allArgTypeEnhancers.filter((e) => !e.secondPass),
+      ...allArgTypeEnhancers.filter((e) => e.secondPass),
+    ],
     globals: getObjectField(moduleExportList, 'globals'),
     globalTypes: getObjectField(moduleExportList, 'globalTypes'),
     loaders: getArrayField(moduleExportList, 'loaders'),
