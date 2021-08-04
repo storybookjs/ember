@@ -29,6 +29,7 @@ export class WebView {
 
   // Get ready to render a story, returning the element to render to
   prepareForStory(story: Story<any>, forceRender: boolean) {
+    this.showStory();
     this.applyLayout(story.parameters.layout);
 
     if (!forceRender) {

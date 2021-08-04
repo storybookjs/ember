@@ -241,8 +241,6 @@ export class WebPreview<StoryFnReturnType> {
     const storyChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    console.log(story, this.previousStory, story === this.previousStory);
-
     const implementationChanged = story !== this.previousStory;
 
     if (this.previousSelection?.viewMode === 'story' && (storyChanged || viewModeChanged)) {
