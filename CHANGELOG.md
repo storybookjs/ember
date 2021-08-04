@@ -1,3 +1,9 @@
+## 6.4.0-alpha.24 (August 4, 2021)
+
+### Features
+
+- HTML: Dynamic source snippets ([#15748](https://github.com/storybookjs/storybook/pull/15748))
+
 ## 6.4.0-alpha.23 (August 3, 2021)
 
 ### Features
