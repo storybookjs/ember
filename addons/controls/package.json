@@ -48,10 +48,12 @@
     "@storybook/addons": "6.4.0-alpha.19",
     "@storybook/api": "6.4.0-alpha.19",
     "@storybook/client-api": "6.4.0-alpha.19",
+    "@storybook/client-logger": "6.4.0-alpha.19",
     "@storybook/components": "6.4.0-alpha.19",
     "@storybook/node-logger": "6.4.0-alpha.19",
     "@storybook/theming": "6.4.0-alpha.19",
     "core-js": "^3.8.2",
+    "lodash": "^4.17.20",
     "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {

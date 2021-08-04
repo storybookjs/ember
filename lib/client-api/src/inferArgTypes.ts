@@ -41,10 +41,9 @@ const inferType = (value: any, name: string, visited: Set<any>): SBType => {
 };
 
 export const inferArgTypes: ArgTypesEnhancer = (context) => {
-  const { id, parameters } = context;
-  const { argTypes: userArgTypes = {}, args = {} } = parameters;
-  if (!args) return userArgTypes;
-  const argTypes = mapValues(args, (arg, key) => ({
+  const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
+  if (!initialArgs) return userArgTypes;
+  const argTypes = mapValues(initialArgs, (arg, key) => ({
     type: inferType(arg, `${id}.${key}`, new Set()),
   }));
   return combineParameters(argTypes, userArgTypes);

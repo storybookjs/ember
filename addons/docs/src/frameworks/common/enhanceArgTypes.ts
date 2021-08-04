@@ -3,7 +3,11 @@ import { ArgTypesEnhancer, combineParameters } from '@storybook/client-api';
 import { normalizeArgTypes } from './normalizeArgTypes';
 
 export const enhanceArgTypes: ArgTypesEnhancer = (context) => {
-  const { component, argTypes: userArgTypes = {}, docs = {} } = context.parameters;
+  const {
+    component,
+    argTypes: userArgTypes,
+    parameters: { docs = {} },
+  } = context;
   const { extractArgTypes } = docs;
 
   const normalizedArgTypes = normalizeArgTypes(userArgTypes);
