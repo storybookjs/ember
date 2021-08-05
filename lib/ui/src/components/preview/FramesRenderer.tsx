@@ -18,8 +18,8 @@ const SkipToSidebarLink = styled(Button)(({ theme }) => ({
   '@media (min-width: 600px)': {
     display: 'block',
     position: 'absolute',
-    top: '10px',
-    right: '15px',
+    top: 10,
+    right: 15,
     padding: '10px 15px',
     fontSize: theme.typography.size.s1,
     transform: 'translateY(-100px)',
