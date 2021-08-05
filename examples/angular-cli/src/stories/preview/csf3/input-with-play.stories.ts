@@ -5,6 +5,10 @@ import { InputComponent } from './sb-input.component';
 export default {
   title: 'Preview/CSF3/WithPlayFunction',
   component: InputComponent,
+  parameters: {
+    // disabled : Not compatible yet with csf3
+    storyshots: { disable: true },
+  },
 };
 
 export const Default = {
