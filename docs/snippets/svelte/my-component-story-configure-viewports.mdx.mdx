@@ -1,0 +1,33 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.svelte';
+
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+
+<Meta
+  title='Stories'
+  parameters={{
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+      defaultViewport: 'iphone6'
+    },
+  }}
+/>
+
+<Story
+  name="MyStory"
+  parameters={{
+    viewport: {
+      defaultViewport: 'iphonex'
+    }
+  }}>
+   {() => {
+    return {
+      Component: MyComponent,
+    };
+  }}
+</Story>
+```

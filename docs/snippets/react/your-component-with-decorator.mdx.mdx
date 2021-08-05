@@ -1,0 +1,17 @@
+```md
+<!-- YourComponent.stories.mdx -->
+
+import { Meta } from '@storybook/addon-docs';
+
+<Meta
+  title="YourComponent"
+  component={YourComponent}
+  decorators={[
+    (Story) => (
+      <div style={{ margin: "3em" }}>
+        <Story />
+      </div>
+    ),
+  ]}
+/>
+```

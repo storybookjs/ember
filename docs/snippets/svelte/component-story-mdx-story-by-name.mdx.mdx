@@ -2,11 +2,13 @@
 <!-- Button.stories.mdx --->
 
 import { Story } from '@storybook/addon-docs';
-import { Button } from './Button';
 
-<!--- This is your Story template function, shown here in React -->
+import Button from './Button.svelte';
 
-export const Template = (args) => <Button {...args} />;
+export const Template = (args) => ({
+  Component: Button,
+  props: args,
+});
 
 <Story name="Basic" args={{ label: ‘hello’ }}>
 {Template.bind({})}

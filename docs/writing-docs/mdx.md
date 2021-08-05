@@ -22,7 +22,11 @@ Let's get started with an example that combines Markdown with a single story:
 
 <CodeSnippets
   paths={[
-    'common/checkbox-story.mdx.mdx',
+    'react/checkbox-story.mdx.mdx',
+    'angular/checkbox-story.mdx.mdx',
+    'vue/checkbox-story.mdx-2.mdx.mdx',
+    'vue/checkbox-story.mdx-3.mdx.mdx',
+    'svelte/checkbox-story.mdx.mdx',
   ]}
 />
 
@@ -62,7 +66,11 @@ Let's look at a more realistic example to see how MDX works:
 
 <CodeSnippets
   paths={[
-    'common/badge-story.mdx.mdx',
+    'react/badge-story.mdx.mdx',
+    'angular/badge-story.mdx.mdx',
+    'vue/badge-story.mdx-2.mdx.mdx',
+    'vue/badge-story.mdx-3.mdx.mdx',
+    'svelte/badge-story.mdx.mdx',
   ]}
 />
 

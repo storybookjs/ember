@@ -3,14 +3,11 @@
 
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
-import { Badge } from './Badge';
-import { Icon } from './Icon';
+import { Badge } from './badge.component';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!--- This is your Story template function, shown here in React -->
-
-export const Template = (args) => <Badge {...args } />
+export const Template = (args) => ({ props: args });
 
 # Badge
 
@@ -55,12 +52,6 @@ with unique URLs, which is great for review and testing.
     status: 'error', 
     label: 'Error' 
   }}>
-    {Template.bind({})}
-  </Story>
-  <Story name="with icon" args={{
-    status: 'warning', 
-    label: (<Icon icon="check" inline /> with icon)
-  )}}>
     {Template.bind({})}
   </Story>
 </Canvas>
