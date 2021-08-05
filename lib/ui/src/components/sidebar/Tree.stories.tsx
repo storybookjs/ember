@@ -111,7 +111,7 @@ export const SkipToCanvasLinkFocused = {
     onSelectStoryId: () => {},
   },
   parameters: { chromatic: { delay: 300 } },
-  play: async () => {
-    await screen.getByTestId('node--skip').focus();
+  play: () => {
+    screen.getAllByText('Skip to canvas')[0].focus();
   },
 };

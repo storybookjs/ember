@@ -58,13 +58,7 @@ export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof Hea
 }) => {
   return (
     <HeadingWrapper {...props}>
-      <SkipToCanvasLink
-        secondary
-        isLink
-        tabIndex={0}
-        data-testid="heading--skip"
-        href="#storybook-preview-wrapper"
-      >
+      <SkipToCanvasLink secondary isLink tabIndex={0} href="#storybook-preview-wrapper">
         Skip to canvas
       </SkipToCanvasLink>
 

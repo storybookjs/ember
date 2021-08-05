@@ -173,13 +173,7 @@ const Node = React.memo<NodeProps>(
             {item.renderLabel?.(item) || item.name}
           </LeafNode>
           {isSelected && (
-            <SkipToContentLink
-              secondary
-              outline
-              isLink
-              href="#storybook-preview-wrapper"
-              data-testid="node--skip"
-            >
+            <SkipToContentLink secondary outline isLink href="#storybook-preview-wrapper">
               Skip to canvas
             </SkipToContentLink>
           )}
