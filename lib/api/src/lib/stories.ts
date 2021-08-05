@@ -63,8 +63,8 @@ export interface Story {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  args: Args;
-  initialArgs: Args;
+  args?: Args;
+  initialArgs?: Args;
 }
 
 export interface StoryInput {
@@ -72,7 +72,6 @@ export interface StoryInput {
   name: string;
   refId?: string;
   kind: StoryKind;
-  children: string[];
   parameters: {
     fileName: string;
     options: {
@@ -82,9 +81,8 @@ export interface StoryInput {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  isLeaf: boolean;
-  args: Args;
-  initialArgs: Args;
+  args?: Args;
+  initialArgs?: Args;
 }
 
 export interface StoriesHash {
@@ -97,6 +95,20 @@ export type GroupsList = (Root | Group)[];
 
 export interface StoriesRaw {
   [id: string]: StoryInput;
+}
+
+// TODO reconcile these types with the same ones in the frontend
+type StoryName = string;
+type ComponentTitle = StoryKind;
+type Path = string;
+export interface StoriesListStory {
+  name: StoryName;
+  title: ComponentTitle;
+  importPath: Path;
+}
+export interface StoriesListJson {
+  v: number;
+  stories: Record<StoryId, StoriesListStory>;
 }
 
 export type SetStoriesPayload =
@@ -148,6 +160,25 @@ export const denormalizeStoryParameters = ({
 };
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
+
+export const transformStoriesListToStoriesHash = (
+  list: StoriesListJson,
+  { provider }: { provider: Provider }
+): StoriesHash => {
+  const input = Object.entries(list.stories).reduce((acc, [id, { title, name, importPath }]) => {
+    acc[id] = {
+      id,
+      kind: title,
+      name,
+      // TODO -- does the manager use this? Should we wait for this to come over with parameters
+      // and store `importPath` unchanged or not at all (given it is a preview "concern")
+      parameters: { fileName: importPath, options: {} },
+    };
+    return acc;
+  }, {} as StoriesRaw);
+
+  return transformStoriesRawToStoriesHash(input, { provider });
+};
 
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,

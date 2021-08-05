@@ -17,6 +17,7 @@ import {
   transformStoriesRawToStoriesHash,
   isStory,
   isRoot,
+  transformStoriesListToStoriesHash,
 } from '../lib/stories';
 import type {
   StoriesHash,
@@ -26,6 +27,7 @@ import type {
   Root,
   StoriesRaw,
   SetStoriesPayload,
+  StoriesListJson,
 } from '../lib/stories';
 
 import { Args, ModuleFn } from '../index';
@@ -68,6 +70,8 @@ export interface SubAPI {
   updateStoryArgs(story: Story, newArgs: Args): void;
   resetStoryArgs: (story: Story, argNames?: string[]) => void;
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
+  fetchStoryList: () => Promise<void>;
+  setStoryList: (storyList: StoriesListJson) => Promise<void>;
 }
 
 interface Meta {
@@ -327,9 +331,30 @@ export const init: ModuleFn = ({
         },
       });
     },
+    fetchStoryList: async () => {
+      // TODO where to get endpoint from?
+      const result = await global.fetch('/stories.json');
+      // TODO deal with errors
+      const storyList = (await result.json()) as StoriesListJson;
+
+      fullAPI.setStoryList(storyList);
+    },
+    setStoryList: async (storyList: StoriesListJson) => {
+      const hash = transformStoriesListToStoriesHash(storyList, {
+        provider,
+      });
+
+      await store.setState({
+        storiesHash: hash,
+        storiesConfigured: true,
+        storiesFailed: null,
+      });
+    },
   };
 
   const initModule = () => {
+    fullAPI.fetchStoryList();
+
     // On initial load, the local iframe will select the first story (or other "selection specifier")
     // and emit STORY_SPECIFIED with the id. We need to ensure we respond to this change.
     fullAPI.on(
@@ -372,18 +397,11 @@ export const init: ModuleFn = ({
 
     fullAPI.on(SET_STORIES, function handler(data: SetStoriesPayload) {
       const { ref } = getEventMetadata(this, fullAPI);
-      const error = data.error || undefined;
       const stories = data.v ? denormalizeStoryParameters(data) : data.stories;
 
       if (!ref) {
-        if (!data.v) {
-          throw new Error('Unexpected legacy SET_STORIES event from local source');
-        }
-
-        fullAPI.setStories(stories, error);
-        const options = fullAPI.getCurrentParameter('options');
-        checkDeprecatedOptionParameters(options);
-        fullAPI.setOptions(options);
+        // Or silently drop it.
+        throw new Error('Cannot SET_STORIES from a local source');
       } else {
         fullAPI.setRef(ref.id, { ...ref, ...data, stories }, true);
       }

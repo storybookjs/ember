@@ -110,8 +110,9 @@ export class WebPreview<StoryFnReturnType> {
     this.setupListeners();
     await this.selectSpecifiedStory();
 
-    // TODO -- which way round is SET_STORIES/STORY_WAS_SELECTED in 6.3/
-    this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+    // TODO are we doing this? back-compat?
+    // TODO -- which way round is SET_STORIES/STORY_WAS_SELECTED in 6.3?
+    // this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
   }
 
   setupListeners() {
