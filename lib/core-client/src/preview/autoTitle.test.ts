@@ -47,6 +47,12 @@ describe('autoTitle', () => {
         auto('/path/to_my/file', { glob: '', specifier: { directory: '/path' } })
       ).toMatchInlineSnapshot(`To My/File`);
     });
+
+    it('match with windows path', () => {
+      expect(
+        auto('/path/to_my/file', { glob: '', specifier: { directory: '\\path' } })
+      ).toMatchInlineSnapshot(`To My/File`);
+    });
   });
 
   describe('trailing slash', () => {
@@ -83,6 +89,12 @@ describe('autoTitle', () => {
     it('match with underscore path', () => {
       expect(
         auto('/path/to_my/file', { glob: '', specifier: { directory: '/path/' } })
+      ).toMatchInlineSnapshot(`To My/File`);
+    });
+
+    it('match with windows path', () => {
+      expect(
+        auto('/path/to_my/file', { glob: '', specifier: { directory: '\\path\\' } })
       ).toMatchInlineSnapshot(`To My/File`);
     });
   });
