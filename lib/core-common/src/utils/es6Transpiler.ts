@@ -9,6 +9,7 @@ const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   'node_modules/highlight.js',
   'node_modules/json5',
   'node_modules/semver',
+  'node_modules/slash',
 ];
 
 export const es6Transpiler: () => RuleSetRule = () => {
@@ -18,7 +19,7 @@ export const es6Transpiler: () => RuleSetRule = () => {
     return (
       !!nodeModulesThatNeedToBeParsedBecauseTheyExposeES6.find((p) => input.includes(p)) ||
       !!input.match(
-        /[\\/]node_modules[\\/](@storybook\/node-logger|are-you-es5|better-opn|boxen|chalk|commander|find-cache-dir|find-up|fs-extra|json5|node-fetch|pkg-dir|prettier|resolve-from|semver|highlight\.js|acorn-jsx)/
+        /[\\/]node_modules[\\/](@storybook\/node-logger|are-you-es5|better-opn|boxen|chalk|commander|find-cache-dir|find-up|fs-extra|json5|node-fetch|pkg-dir|prettier|resolve-from|semver|slash|highlight\.js|acorn-jsx)/
       )
     );
   };
