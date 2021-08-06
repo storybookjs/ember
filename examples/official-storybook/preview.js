@@ -87,7 +87,8 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  (StoryFn, { globals: { theme = 'light' } }) => {
+  (StoryFn, { globals, parameters }) => {
+    const theme = parameters.theme || globals.theme || 'light';
     switch (theme) {
       case 'side-by-side': {
         return (

@@ -110,8 +110,8 @@ export const SkipToCanvasLinkFocused = {
     selectedStoryId: 'tooltip-tooltipbuildlist--default',
     onSelectStoryId: () => {},
   },
-  parameters: { chromatic: { delay: 300 } },
+  parameters: { theme: 'light', chromatic: { delay: 300 } },
   play: () => {
-    screen.getAllByText('Skip to canvas')[0].focus();
+    screen.getByText('Skip to canvas').focus();
   },
 };

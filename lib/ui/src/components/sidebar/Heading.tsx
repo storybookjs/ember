@@ -8,6 +8,7 @@ import { SidebarMenu, MenuList } from './Menu';
 export interface HeadingProps {
   menuHighlighted?: boolean;
   menu: MenuList;
+  skipLinkHref?: string;
 }
 
 const BrandArea = styled.div(({ theme }) => ({
@@ -54,13 +55,16 @@ const SkipToCanvasLink = styled(Button)(({ theme }) => ({
 export const Heading: FunctionComponent<HeadingProps & ComponentProps<typeof HeadingWrapper>> = ({
   menuHighlighted = false,
   menu,
+  skipLinkHref,
   ...props
 }) => {
   return (
     <HeadingWrapper {...props}>
-      <SkipToCanvasLink secondary isLink tabIndex={0} href="#storybook-preview-wrapper">
-        Skip to canvas
-      </SkipToCanvasLink>
+      {skipLinkHref && (
+        <SkipToCanvasLink secondary isLink tabIndex={0} href={skipLinkHref}>
+          Skip to canvas
+        </SkipToCanvasLink>
+      )}
 
       <BrandArea>
         <Brand />
