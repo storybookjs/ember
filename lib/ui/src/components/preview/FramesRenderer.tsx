@@ -1,4 +1,5 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
+import { Consumer, Combo } from '@storybook/api';
 import { Button } from '@storybook/components';
 import { Global, CSSObject, styled } from '@storybook/theming';
 import { IFrame } from './iframe';
@@ -29,6 +30,11 @@ const SkipToSidebarLink = styled(Button)(({ theme }) => ({
     },
   },
 }));
+
+const whenSidebarIsVisible = ({ state }: Combo) => ({
+  isFullscreen: state.layout.isFullscreen,
+  showNav: state.layout.showNav,
+});
 
 export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   refs,
@@ -90,9 +96,16 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   return (
     <Fragment>
       <Global styles={styles} />
-      <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
-        Skip to sidebar
-      </SkipToSidebarLink>
+      <Consumer filter={whenSidebarIsVisible}>
+        {({ isFullscreen, showNav }) =>
+          !isFullscreen &&
+          !!showNav && (
+            <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
+              Skip to sidebar
+            </SkipToSidebarLink>
+          )
+        }
+      </Consumer>
       {Object.entries(frames).map(([id, src]) => (
         <Fragment key={id}>
           <IFrame
