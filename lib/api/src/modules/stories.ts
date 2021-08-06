@@ -1,6 +1,7 @@
 import global from 'global';
 import { toId, sanitize } from '@storybook/csf';
 import {
+  STORY_PREPARED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
   STORY_ARGS_UPDATED,
@@ -39,6 +40,7 @@ type Direction = -1 | 1;
 type ParameterName = string;
 
 type ViewMode = 'story' | 'info' | 'settings' | string | undefined;
+type StoryUpdate = Pick<Story, 'parameters' | 'initialArgs' | 'argTypes' | 'args'>;
 
 export interface SubState {
   storiesHash: StoriesHash;
@@ -72,6 +74,7 @@ export interface SubAPI {
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
   fetchStoryList: () => Promise<void>;
   setStoryList: (storyList: StoriesListJson) => Promise<void>;
+  updateStory: (storyId: StoryId, update: StoryUpdate, ref?: ComposedRef) => Promise<void>;
 }
 
 interface Meta {
@@ -144,7 +147,13 @@ export const init: ModuleFn = ({
 
       if (isStory(data)) {
         const { parameters } = data;
-        return parameterName ? parameters[parameterName] : parameters;
+
+        if (parameters) {
+          return parameterName ? parameters[parameterName] : parameters;
+        }
+
+        // TODO -- is this right?
+        return null;
       }
 
       return null;
@@ -350,6 +359,27 @@ export const init: ModuleFn = ({
         storiesFailed: null,
       });
     },
+    updateStory: async (
+      storyId: StoryId,
+      update: StoryUpdate,
+      ref?: ComposedRef
+    ): Promise<void> => {
+      if (!ref) {
+        const { storiesHash } = store.getState();
+        storiesHash[storyId] = {
+          ...storiesHash[storyId],
+          ...update,
+        } as Story;
+        await store.setState({ storiesHash });
+      } else {
+        const { id: refId, stories } = ref;
+        stories[storyId] = {
+          ...stories[storyId],
+          ...update,
+        } as Story;
+        await fullAPI.updateRef(refId, { stories });
+      }
+    },
   };
 
   const initModule = () => {
@@ -428,20 +458,16 @@ export const init: ModuleFn = ({
       }
     );
 
+    fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
+      const { ref } = getEventMetadata(this, fullAPI);
+      fullAPI.updateStory(id, update, ref);
+    });
+
     fullAPI.on(
       STORY_ARGS_UPDATED,
       function handleStoryArgsUpdated({ storyId, args }: { storyId: StoryId; args: Args }) {
         const { ref } = getEventMetadata(this, fullAPI);
-
-        if (!ref) {
-          const { storiesHash } = store.getState();
-          (storiesHash[storyId] as Story).args = args;
-          store.setState({ storiesHash });
-        } else {
-          const { id: refId, stories } = ref;
-          (stories[storyId] as Story).args = args;
-          fullAPI.updateRef(refId, { stories });
-        }
+        fullAPI.updateStory(storyId, { args }, ref);
       }
     );
   };

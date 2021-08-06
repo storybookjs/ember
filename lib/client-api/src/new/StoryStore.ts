@@ -87,7 +87,7 @@ export class StoryStore<StoryFnReturnType> {
     const componentMeta = csfFile.meta;
 
     const story = prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
-    this.args.set(story.id, story.initialArgs);
+    this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();
     return story;
   }

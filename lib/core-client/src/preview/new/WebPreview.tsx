@@ -354,6 +354,14 @@ export class WebPreview<StoryFnReturnType> {
 
     const storyContext = this.storyStore.getStoryContext(story);
 
+    const { name, title, parameters, initialArgs, argTypes, args } = storyContext;
+    this.channel.emit(Events.STORY_PREPARED, {
+      id,
+      parameters,
+      initialArgs,
+      argTypes,
+      args,
+    });
     const loadedContext = await applyLoaders(storyContext);
 
     const renderContext: RenderContext<StoryFnReturnType> = {

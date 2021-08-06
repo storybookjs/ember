@@ -12,8 +12,10 @@ export class ArgsStore {
     return this.argsByStoryId[storyId];
   }
 
-  set(storyId: StoryId, args: Args) {
-    this.argsByStoryId[storyId] = args;
+  setInitial(storyId: StoryId, args: Args) {
+    if (!this.argsByStoryId[storyId]) {
+      this.argsByStoryId[storyId] = args;
+    }
   }
 
   updateFromPersisted(story: Story<any>, persisted: Args) {

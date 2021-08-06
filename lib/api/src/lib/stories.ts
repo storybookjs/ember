@@ -4,7 +4,7 @@ import dedent from 'ts-dedent';
 import { sanitize } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
 
-import { StoryId, StoryKind, Args, Parameters, combineParameters } from '../index';
+import { StoryId, StoryKind, Args, ArgTypes, Parameters, combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
@@ -64,6 +64,7 @@ export interface Story {
     [parameterName: string]: any;
   };
   args?: Args;
+  argTypes?: ArgTypes;
   initialArgs?: Args;
 }
 

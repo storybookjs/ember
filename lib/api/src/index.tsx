@@ -460,8 +460,15 @@ export function useGlobals(): [Args, (newGlobals: Args) => void] {
   return [oldGlobals, updateGlobals];
 }
 
+// TODO what if a kind is selected? Is that possible?
+function useCurrentStory(): Story {
+  const { getCurrentStoryData } = useStorybookApi();
+
+  return getCurrentStoryData() as Story;
+}
+
 export function useArgTypes(): ArgTypes {
-  return useParameter<ArgTypes>('argTypes', {});
+  return useCurrentStory()?.argTypes || {};
 }
 
 export function useGlobalTypes(): ArgTypes {
