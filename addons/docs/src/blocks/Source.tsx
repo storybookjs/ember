@@ -6,7 +6,6 @@ import {
 } from '@storybook/components';
 import { StoryId } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
-import { StoryContext } from '@storybook/addons';
 import { Story } from '@storybook/client-api/dist/ts3.9/new/types';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
@@ -44,11 +43,25 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
+const getStory = (storyId: StoryId, docsContext: DocsContextProps<any>): Story<any> | null => {
+  const { storyById } = docsContext;
+  const story = storyById(storyId);
+
+  // TODO we could move this warning to docsContext.storyById() et al.
+  if (!story) {
+    // Fallback if we can't get the story data for this story
+    logger.warn(`Unable to find information for story ID '${storyId}'`);
+    return null;
+  }
+
+  return story;
+};
+
 const getSourceState = (storyIds: string[], docsContext: DocsContextProps<any>) => {
   const states = storyIds
     .map((storyId) => {
-      const story = docsContext.storyById(storyId);
-      return story.parameters.docs?.source?.state;
+      const story = getStory(storyId, docsContext);
+      return story?.parameters.docs?.source?.state;
     })
     .filter(Boolean);
 
@@ -119,7 +132,7 @@ export const getSourceProps = (
     source = targetIds
       .map((storyId) => {
         const storySource = getStorySource(storyId, sourceContext);
-        const story = docsContext.storyById(storyId);
+        const story = getStory(storyId, docsContext);
         return getSnippet(storySource, story);
       })
       .join('\n\n');
