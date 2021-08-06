@@ -171,7 +171,11 @@ export interface DocsContextProps<StoryFnReturnType> {
   name: string;
   storyById: (id: StoryId) => Story<StoryFnReturnType>;
   componentStories: () => Story<StoryFnReturnType>[];
-  renderStoryToElement: (story: Story<StoryFnReturnType>) => void;
+  renderStoryToElement: (args: {
+    story: Story<StoryFnReturnType>;
+    renderContext: RenderContextWithoutStoryContext;
+    element: Element;
+  }) => void;
 
   // TODO -- we need this for the `prepareForInline` docs approach
   bindStoryFn: (story: Story<StoryFnReturnType>) => LegacyStoryFn<StoryFnReturnType>;

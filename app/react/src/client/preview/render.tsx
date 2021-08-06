@@ -6,8 +6,6 @@ import { StoryContext, RenderContext } from './types';
 
 const { document, FRAMEWORK_OPTIONS } = global;
 
-const rootEl = document ? document.getElementById('root') : null;
-
 const render = (node: ReactElement, el: Element) =>
   new Promise((resolve) => {
     ReactDOM.render(node, el, resolve);
@@ -47,13 +45,10 @@ class ErrorBoundary extends Component<{
 
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
-export default async function renderMain({
-  storyContext,
-  unboundStoryFn,
-  showMain,
-  showException,
-  forceRender,
-}: RenderContext) {
+export default async function renderMain(
+  { storyContext, unboundStoryFn, showMain, showException, forceRender }: RenderContext,
+  domElement: Element
+) {
   const Story = unboundStoryFn as FunctionComponent<StoryContext>;
 
   const content = (
@@ -71,8 +66,8 @@ export default async function renderMain({
   // https://github.com/storybookjs/react-storybook/issues/81
   // But forceRender means that it's the same story, so we want too keep the state in that case.
   if (!forceRender) {
-    ReactDOM.unmountComponentAtNode(rootEl);
+    ReactDOM.unmountComponentAtNode(domElement);
   }
 
-  await render(element, rootEl);
+  await render(element, domElement);
 }

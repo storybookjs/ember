@@ -264,6 +264,11 @@ export interface StorybookConfig {
      * Activate preview of CSF v3.0
      */
     previewCsfV3?: boolean;
+
+    /**
+     * Activate modern inline rendering
+     */
+    modernInlineRender?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

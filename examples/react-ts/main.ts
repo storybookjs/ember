@@ -23,6 +23,7 @@ const config: StorybookConfig = {
     postcss: false,
     previewCsfV3: true,
     buildStoriesJson: true,
+    modernInlineRender: true,
   },
 };
 
