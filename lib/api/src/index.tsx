@@ -452,12 +452,12 @@ export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: string[])
 }
 
 export function useGlobals(): [Args, (newGlobals: Args) => void] {
-  const {
-    state: { globals: oldGlobals },
-    api: { updateGlobals },
-  } = useContext(ManagerContext);
+  const api = useStorybookApi();
+  return [api.getGlobals(), api.updateGlobals];
+}
 
-  return [oldGlobals, updateGlobals];
+export function useGlobalTypes(): ArgTypes {
+  return useStorybookApi().getGlobalTypes();
 }
 
 // TODO what if a kind is selected? Is that possible?
@@ -469,8 +469,4 @@ function useCurrentStory(): Story {
 
 export function useArgTypes(): ArgTypes {
   return useCurrentStory()?.argTypes || {};
-}
-
-export function useGlobalTypes(): ArgTypes {
-  return useParameter<ArgTypes>('globalTypes', {});
 }

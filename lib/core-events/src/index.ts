@@ -25,8 +25,11 @@ enum events {
   STORY_ARGS_UPDATED = 'storyArgsUpdated',
   // Reset either a single arg of a story all args of a story
   RESET_STORY_ARGS = 'resetStoryArgs',
-  // As above
+  // Emitted by the preview at startup once it knows the initial set of globals+globalTypes
+  SET_GLOBALS = 'setGlobals',
+  // Tell the preview to update the value of a global
   UPDATE_GLOBALS = 'updateGlobals',
+  // A global was just updated
   GLOBALS_UPDATED = 'globalsUpdated',
   REGISTER_SUBSCRIPTION = 'registerSubscription',
   // Tell the manager that the user pressed a key in the preview
@@ -63,6 +66,7 @@ export const {
   UPDATE_STORY_ARGS,
   STORY_ARGS_UPDATED,
   RESET_STORY_ARGS,
+  SET_GLOBALS,
   UPDATE_GLOBALS,
   GLOBALS_UPDATED,
   REGISTER_SUBSCRIPTION,

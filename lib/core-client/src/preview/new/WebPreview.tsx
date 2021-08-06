@@ -143,6 +143,10 @@ export class WebPreview<StoryFnReturnType> {
     if (globals) {
       this.storyStore.globals.updateFromPersisted(globals);
     }
+    this.channel.emit(Events.SET_GLOBALS, {
+      globals: this.storyStore.globals.get(),
+      globalTypes: this.storyStore.globalMeta.globalTypes,
+    });
 
     await this.renderSelection({ forceRender: false, persistedArgs: args });
   }
@@ -354,7 +358,7 @@ export class WebPreview<StoryFnReturnType> {
 
     const storyContext = this.storyStore.getStoryContext(story);
 
-    const { name, title, parameters, initialArgs, argTypes, args } = storyContext;
+    const { parameters, initialArgs, argTypes, args } = storyContext;
     this.channel.emit(Events.STORY_PREPARED, {
       id,
       parameters,
