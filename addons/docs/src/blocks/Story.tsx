@@ -92,7 +92,7 @@ export const getStoryProps = (
     );
   }
 
-  const boundStoryFn = context.bindStoryFn(story);
+  const boundStoryFn = () => story.storyFn(context.getStoryContext(story));
   return {
     parameters,
     inline: storyIsInline,
@@ -123,9 +123,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   };
   useEffect(() => {
     if (story && ref.current) {
-      setTimeout(() => {
-        context.renderStoryToElement({ story, renderContext, element: ref.current as Element });
-      }, 1000);
+      context.renderStoryToElement({ story, renderContext, element: ref.current as Element });
     }
     return () => story?.cleanup();
   }, [story]);

@@ -176,9 +176,7 @@ export interface DocsContextProps<StoryFnReturnType> {
     renderContext: RenderContextWithoutStoryContext;
     element: Element;
   }) => void;
-
-  // TODO -- we need this for the `prepareForInline` docs approach
-  bindStoryFn: (story: Story<StoryFnReturnType>) => LegacyStoryFn<StoryFnReturnType>;
+  getStoryContext: (story: Story<StoryFnReturnType>) => StoryContext;
 
   /**
    * mdxStoryNameToKey is an MDX-compiler-generated mapping of an MDX story's

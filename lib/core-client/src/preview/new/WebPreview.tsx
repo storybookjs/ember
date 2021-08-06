@@ -291,12 +291,8 @@ export class WebPreview<StoryFnReturnType> {
       storyById: (storyId: StoryId) => this.storyStore.storyFromCSFFile({ storyId, csfFile }),
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
-
-      // TODO -- this is for prepareForInline. Note this *DOES NOT* run loaders,
-      // or play, or any of the stuff that `renderStoryToElement` below does.
-      // If we want to stick with this approach, we should refactor to share code.
-      bindStoryFn: (renderedStory: Story<StoryFnReturnType>) => () =>
-        renderedStory.storyFn(this.storyStore.getStoryContext(renderedStory)),
+      getStoryContext: (renderedStory: Story<StoryFnReturnType>) =>
+        this.storyStore.getStoryContext(renderedStory),
     };
 
     const { docs } = story.parameters;
