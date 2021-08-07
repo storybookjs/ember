@@ -1,3 +1,18 @@
+## 6.4.0-alpha.25 (August 8, 2021)
+
+### Features
+
+- Angular: Add global CSF3 renderer ([#15742](https://github.com/storybookjs/storybook/pull/15742))
+
+### Bug Fixes
+
+- Addon-docs/Angular: Use compodoc rawdescription where available ([#15774](https://github.com/storybookjs/storybook/pull/15774))
+- Core: Fix main.js glob resolution for direct paths in stories ([#15775](https://github.com/storybookjs/storybook/pull/15775))
+
+### Maintenance
+
+- CSF: Optionally pass Args generic type from BaseAnnotations to ArgTypes ([#14356](https://github.com/storybookjs/storybook/pull/14356))
+
 ## 6.4.0-alpha.24 (August 4, 2021)
 
 ### Features
