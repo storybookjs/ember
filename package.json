@@ -119,7 +119,7 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/runtime": "^7.12.5",
-    "@compodoc/compodoc": "^1.1.11",
+    "@compodoc/compodoc": "^1.1.14",
     "@emotion/snapshot-serializer": "^0.8.2",
     "@nicolo-ribaudo/chokidar-2": "^2.1.8",
     "@nrwl/cli": "12.3.4",
