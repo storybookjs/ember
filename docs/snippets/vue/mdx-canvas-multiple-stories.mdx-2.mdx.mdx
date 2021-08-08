@@ -1,7 +1,9 @@
 ```md
 <!-- Badge.stories.mdx --->
 
-import { Canvas } from '@storybook/addon-docs';
+import { Canvas, Story } from '@storybook/addon-docs';
+
+import Badge from './Badge.vue';
 
 export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
@@ -10,13 +12,30 @@ export const Template = (args, { argTypes }) => ({
 });
 
 <Canvas>
-  <Story name="warning" args={{status: 'warning', label: 'Warning'}}>
+  <Story 
+    name='warning' 
+    args={{
+      status: 'warning', 
+      label: 'Warning',
+    }}>
     {Template.bind({})}
   </Story>
-  <Story name="neutral" args={{status: 'neutral', label: 'Neutral' }}>
+  
+  <Story 
+    name='neutral' 
+    args={{
+      status: 'neutral', 
+      label: 'Neutral',
+    }}>
     {Template.bind({})}
   </Story>
-  <Story name="error" args={{status: 'error', label: 'Error' }}>
+  
+  <Story 
+    name='error' 
+    args={{
+      status: 'error', 
+      label: 'Error',
+    }}>
     {Template.bind({})}
   </Story>
 </Canvas>

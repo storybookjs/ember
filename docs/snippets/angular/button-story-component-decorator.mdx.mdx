@@ -7,11 +7,11 @@ import { componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import Button from './button.component';
 
-import ParentComponent from "./parent.component";
+import ParentComponent from './parent.component';
 
 <!-- With a template -->
 <Meta
-  title="Components/Button"
+  title='Components/Button'
   component={Button}
   decorators={[
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)
@@ -20,13 +20,13 @@ import ParentComponent from "./parent.component";
 
 <!-- With component which contains ng-content -->
 <Meta
-  title="Components/Button"
+  title='Components/Button'
   component={Button}
   decorators={[
     moduleMetadata({
       declarations: [ParentComponent],
     }),
-     componentWrapperDecorator(ParentComponent),
+    componentWrapperDecorator(ParentComponent),
   ]}
 />
 

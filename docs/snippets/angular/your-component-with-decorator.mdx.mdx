@@ -5,8 +5,10 @@ import { Meta } from '@storybook/addon-docs';
 
 import { componentWrapperDecorator } from '@storybook/angular';
 
+import { YourComponent } from './your-component.component';
+
 <Meta
-  title="YourComponent"
+  title='YourComponent'
   component={YourComponent}
   decorators={[componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)]}
 />

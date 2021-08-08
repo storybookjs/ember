@@ -20,12 +20,12 @@ export const Template = ({propertyA,propertyB,...rest})=>{
   <!---👇 Assigns the function result to a variable -->
 
 const someFunctionResult = someFunction(propertyA, propertyB);
-return <YourComponent someProperty={someFunctionResult} {...rest} />;
+  return <YourComponent someProperty={someFunctionResult} {...rest} />;
 }
 
 <Canvas>
   <Story
-    name="A complex case with a function"
+    name='A complex case with a function'
     argTypes={{
       propertyA: {
         options: [

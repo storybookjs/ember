@@ -6,23 +6,25 @@ import { moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
-import Badge from './Badge.component';
-import Icon from './Icon.component';
+import Badge from './badge.component';
+import Icon from './icon.component';
 
-<Meta title="MDX/Badge" component={Badge} />
+<Meta title='MDX/Badge' component={Badge} />
 
 # Badge
 
 Let's define a story for our `Badge` component:
 
-<Story name="positive">
-  <Badge status="positive">Positive</Badge>
+<Story name='positive'>
+  {{
+    template:`<Badge status="positive">Positive</Badge>`,
+  }}
 </Story>
 
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name="negative">
+  <Story name='negative'>
     {{
       template: `<Badge status="negative">Negative</Badge>`,
     }}
@@ -34,38 +36,40 @@ gets rendered as a group, but defines individual stories
 with unique URLs and isolated snapshot tests.
 
 <Canvas>
-  <Story name="warning">
+  <Story name='warning'>
     {{
       template: `<Badge status="warning">Warning</Badge>`,
     }}
   </Story>
-  <Story name="neutral">
+
+  <Story name='neutral'>
     {{
       template: `<Badge status="neutral">Neutral</Badge>`,
     }}
   </Story>
-  <Story name="error">
+  
+  <Story name='error'>
     {{
       template: `<Badge status="error">Error</Badge>`,
     }}
   </Story>
+  
   <Story 
-    name="with icon"
+    name='with icon'
     decorators={[
-        moduleMetadata({
-          declarations: [Badge, Icon],
-          imports: [CommonModule],
-        })
+      moduleMetadata({
+        declarations: [Badge, Icon],
+        imports: [CommonModule],
+      })
     ]}>
     {{
       template: `
         <Badge status="warning">
           <Icon icon="check" inline></Icon>
-           with icon
+          with icon
         </Badge>
       `,
     }}
-    
   </Story>
 </Canvas>
 ```

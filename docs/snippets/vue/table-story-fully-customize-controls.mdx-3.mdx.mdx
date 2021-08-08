@@ -3,6 +3,8 @@
 
 import { Story } from '@storybook/addon-docs';
 
+import Table from './Table.vue';
+
 export const TableStory = (args) => ({
   components: { Table },
   setup() {
@@ -19,15 +21,14 @@ export const TableStory = (args) => ({
 });
 
 <Story
-  name="Numeric"
+  name='Numeric'
   args={{
     data: [
       [1, 2, 3],
       [4, 5, 6],
     ],
-    size: "large",
-  }}
->
+    size: 'large',
+  }}>
   {TableStory.bind({})}
 </Story>
 ```
