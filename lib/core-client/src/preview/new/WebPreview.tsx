@@ -62,6 +62,8 @@ export class WebPreview<StoryFnReturnType> {
 
   previousStory: Story<StoryFnReturnType>;
 
+  previousCleanup: () => void;
+
   constructor({
     getGlobalMeta,
     importFn,
@@ -148,7 +150,7 @@ export class WebPreview<StoryFnReturnType> {
       globalTypes: this.storyStore.globalMeta.globalTypes,
     });
 
-    await this.renderSelection({ forceRender: false, persistedArgs: args });
+    await this.renderSelection({ persistedArgs: args });
   }
 
   onKeydown(event: KeyboardEvent) {
@@ -164,7 +166,7 @@ export class WebPreview<StoryFnReturnType> {
   onSetCurrentStory(selection: Selection) {
     this.urlStore.setSelection(selection);
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
-    this.renderSelection({ forceRender: false });
+    this.renderSelection();
   }
 
   onUpdateGlobals({ globals }: { globals: Globals }) {
@@ -174,8 +176,6 @@ export class WebPreview<StoryFnReturnType> {
       globals,
       initialGlobals: this.storyStore.globals.initialGlobals,
     });
-
-    this.renderSelection({ forceRender: true });
   }
 
   onUpdateArgs({ storyId, updatedArgs }: { storyId: StoryId; updatedArgs: Args }) {
@@ -184,7 +184,6 @@ export class WebPreview<StoryFnReturnType> {
       storyId,
       args: this.storyStore.args.get(storyId),
     });
-    this.renderSelection({ forceRender: true });
   }
 
   async onResetArgs({ storyId, argNames }: { storyId: string; argNames?: string[] }) {
@@ -202,7 +201,7 @@ export class WebPreview<StoryFnReturnType> {
   // This happens when a glob gets HMR-ed
   onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
     this.storyStore.importFn = importFn;
-    this.renderSelection({ forceRender: false });
+    this.renderSelection();
   }
 
   // This happens when a config file gets reloade
@@ -217,7 +216,7 @@ export class WebPreview<StoryFnReturnType> {
     }
 
     this.storyStore.globalMeta = globalMeta;
-    this.renderSelection({ forceRender: false });
+    this.renderSelection();
   }
 
   // We can either have:
@@ -225,13 +224,7 @@ export class WebPreview<StoryFnReturnType> {
   //     in which case we render it to the root element, OR
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
-  async renderSelection({
-    forceRender,
-    persistedArgs,
-  }: {
-    forceRender: boolean;
-    persistedArgs?: Args;
-  }) {
+  async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
     if (!this.urlStore.selection) {
       throw new Error('Cannot render story as no selection was made');
     }
@@ -248,19 +241,18 @@ export class WebPreview<StoryFnReturnType> {
 
     const implementationChanged = story !== this.previousStory;
 
-    if (this.previousSelection?.viewMode === 'story' && (storyChanged || viewModeChanged)) {
-      this.removeStory({ story: this.previousStory });
+    // Don't re-render the story if nothing has changed to justify it
+    if (!storyChanged && !implementationChanged && !viewModeChanged) {
+      // TODO -- the api of this changed, but the previous API made no sense. Did we use it?
+      this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
+      return;
     }
-
     if (viewModeChanged && this.previousSelection?.viewMode === 'docs') {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    // Don't re-render the story if nothing has changed to justify it
-    if (!forceRender && !storyChanged && !implementationChanged && !viewModeChanged) {
-      // TODO -- the api of this changed, but the previous API made no sense. Did we use it?
-      this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
-      return;
+    if (this.previousSelection?.viewMode === 'story') {
+      this.removePreviousStory();
     }
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
@@ -275,7 +267,7 @@ export class WebPreview<StoryFnReturnType> {
     if (selection.viewMode === 'docs') {
       await this.renderDocs({ story });
     } else {
-      await this.renderStory({ story, forceRender });
+      this.previousCleanup = await this.renderStory({ story });
     }
   }
 
@@ -315,14 +307,8 @@ export class WebPreview<StoryFnReturnType> {
     );
   }
 
-  async renderStory({
-    story,
-    forceRender,
-  }: {
-    story: Story<StoryFnReturnType>;
-    forceRender: boolean;
-  }) {
-    const element = this.view.prepareForStory(story, forceRender);
+  async renderStory({ story }: { story: Story<StoryFnReturnType> }) {
+    const element = this.view.prepareForStory(story);
     const { id, title, name } = story;
     const renderContext: RenderContextWithoutStoryContext = {
       id,
@@ -330,13 +316,12 @@ export class WebPreview<StoryFnReturnType> {
       kind: title,
       name,
       story: name,
-      forceRender,
       showMain: () => this.view.showMain(),
       showError: (err: { title: string; description: string }) => this.renderError(err),
       showException: (err: Error) => this.renderException(err),
     };
 
-    await this.renderStoryToElement({ story, renderContext, element });
+    return this.renderStoryToElement({ story, renderContext, element });
   }
 
   // We want this function to be called directly by `renderSelection` above,
@@ -366,6 +351,7 @@ export class WebPreview<StoryFnReturnType> {
 
     const renderContext: RenderContext<StoryFnReturnType> = {
       ...renderContextWithoutStoryContext,
+      forceRender: false,
       unboundStoryFn: storyFn,
       storyContext: {
         ...loadedContext,
@@ -378,10 +364,45 @@ export class WebPreview<StoryFnReturnType> {
       await runPlayFunction();
     }
     this.channel.emit(Events.STORY_RENDERED, id);
+
+    const rerenderStory = async () => {
+      // This story context will have the updated values of args and globals
+      const rerenderStoryContext = this.storyStore.getStoryContext(story);
+      const rerenderRenderContext: RenderContext<StoryFnReturnType> = {
+        ...renderContext,
+        forceRender: true,
+        storyContext: {
+          // NOTE: loaders are not getting run again. So we are just patching
+          // the output of the loaders over the top of the updated story context.
+          // Loaders aren't allowed to touch anything but the `loaded` key but
+          // this means loaders never run again with new values of args/globals
+          ...loadedContext,
+          ...rerenderStoryContext,
+        },
+      };
+
+      await this.renderToDOM(rerenderRenderContext, element);
+      this.channel.emit(Events.STORY_RENDERED, id);
+    };
+    const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
+      if (storyId === story.id) rerenderStory();
+    };
+
+    // Listen to events and re-render story
+    this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
+    this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
+    this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
+
+    return () => {
+      story.cleanup();
+      this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
+      this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
+      this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
+    };
   }
 
-  removeStory({ story }: { story: Story<StoryFnReturnType> }) {
-    story.cleanup();
+  removePreviousStory() {
+    this.previousCleanup();
   }
 
   renderPreviewEntryError(err: Error) {

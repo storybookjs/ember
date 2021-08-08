@@ -53,13 +53,13 @@ export type LoadedStoryContext = StoryContext & {
 };
 
 export declare type RenderContextWithoutStoryContext = StoryIdentifier & {
-  forceRender: boolean;
   showMain: () => void;
   showError: (error: { title: string; description: string }) => void;
   showException: (err: Error) => void;
 };
 
 export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext & {
+  forceRender: boolean;
   // TODO -- this is pretty surprising -- why is this here?
   unboundStoryFn: LegacyStoryFn<StoryFnReturnType>;
   storyContext: LoadedStoryContext & {
@@ -175,7 +175,7 @@ export interface DocsContextProps<StoryFnReturnType> {
     story: Story<StoryFnReturnType>;
     renderContext: RenderContextWithoutStoryContext;
     element: Element;
-  }) => void;
+  }) => () => void;
   getStoryContext: (story: Story<StoryFnReturnType>) => StoryContext;
 
   /**

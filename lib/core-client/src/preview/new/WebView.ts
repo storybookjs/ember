@@ -28,14 +28,12 @@ export class WebView {
   currentLayoutClass?: typeof layoutClassMap[keyof typeof layoutClassMap] | null;
 
   // Get ready to render a story, returning the element to render to
-  prepareForStory(story: Story<any>, forceRender: boolean) {
+  prepareForStory(story: Story<any>) {
     this.showStory();
     this.applyLayout(story.parameters.layout);
 
-    if (!forceRender) {
-      document.documentElement.scrollTop = 0;
-      document.documentElement.scrollLeft = 0;
-    }
+    document.documentElement.scrollTop = 0;
+    document.documentElement.scrollLeft = 0;
 
     return this.storyRoot();
   }

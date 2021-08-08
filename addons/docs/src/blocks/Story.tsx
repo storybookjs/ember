@@ -122,10 +122,20 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     showException: () => {},
   };
   useEffect(() => {
+    let cleanup: () => void;
     if (story && ref.current) {
-      context.renderStoryToElement({ story, renderContext, element: ref.current as Element });
+      cleanup = context
+        .renderStoryToElement({
+          story,
+          renderContext,
+          element: ref.current as Element,
+        })
+        // TODO -- no .then() -- should renderStoryToElement not be async?
+        .then((cleanupFn: () => void) => {
+          cleanup = cleanupFn;
+        });
     }
-    return () => story?.cleanup();
+    return () => cleanup && cleanup();
   }, [story]);
 
   if (global?.FEATURES.modernInlineRender) {
