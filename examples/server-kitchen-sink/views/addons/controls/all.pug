@@ -5,8 +5,8 @@
 - dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
 - style = `border: 2px dotted ${colour}; padding: 8px 22px; border-radius: 8px`;
 - today = new Date(today);
-- items = items.split(',');
-- other = JSON.parse(other)
+- items = JSON.parse(tems);
+- other = JSON.parse(other);
 
 div(style=`${style}`)
   h1 My name is #{name},
