@@ -11,14 +11,14 @@ type ControlsMatchers = {
   color: RegExp;
 };
 
-const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers): any => {
+const inferControl = (argType: ArgType, key: string, matchers: ControlsMatchers): any => {
   const { type, options } = argType;
   if (!type && !options) {
     return undefined;
   }
 
   // args that end with background or color e.g. iconColor
-  if (matchers.color && matchers.color.test(name)) {
+  if (matchers.color && matchers.color.test(key)) {
     const controlType = argType.type.name;
 
     if (controlType === 'string') {
@@ -31,7 +31,7 @@ const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers
   }
 
   // args that end with date e.g. purchaseDate
-  if (matchers.date && matchers.date.test(name)) {
+  if (matchers.date && matchers.date.test(key)) {
     return { control: { type: 'date' } };
   }
 
@@ -66,8 +66,8 @@ export const inferControls: ArgTypesEnhancer = (context) => {
   if (!__isArgsStory) return argTypes;
 
   const filteredArgTypes = filterArgTypes(argTypes, include, exclude);
-  const withControls = mapValues(filteredArgTypes, (argType, name) => {
-    return argType?.type && inferControl(argType, name, matchers);
+  const withControls = mapValues(filteredArgTypes, (argType, key) => {
+    return argType?.type && inferControl(argType, key, matchers);
   });
 
   return combineParameters(withControls, filteredArgTypes);

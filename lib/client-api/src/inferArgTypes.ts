@@ -44,7 +44,13 @@ export const inferArgTypes: ArgTypesEnhancer = (context) => {
   const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
   if (!initialArgs) return userArgTypes;
   const argTypes = mapValues(initialArgs, (arg, key) => ({
+    name: key,
     type: inferType(arg, `${id}.${key}`, new Set()),
   }));
-  return combineParameters(argTypes, userArgTypes);
+  const userArgTypesNames = mapValues(userArgTypes, (argType, key) => ({
+    name: key,
+  }));
+  return combineParameters(argTypes, userArgTypesNames, userArgTypes);
 };
+
+inferArgTypes.secondPass = true;
