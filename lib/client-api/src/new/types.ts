@@ -30,6 +30,11 @@ export type Globals = Args;
 export type GlobalTypes = ArgTypes;
 
 export type StoryContextForEnhancers = StoryIdentifier & {
+  // TODO - should we have a type parameter for these?
+  // Also TODO -- can you override at the story level?
+  component?: any;
+  subcomponents?: Record<string, any>;
+
   parameters: Parameters;
   initialArgs: Args;
   argTypes: ArgTypes;
@@ -97,11 +102,6 @@ type StoryDescriptor = string[] | RegExp;
 export type ComponentMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
   title: ComponentTitle;
   id?: ComponentId;
-
-  // TODO - should we have a type parameter for these?
-  // Also TODO -- can you override at the story level?
-  component?: any;
-  subcomponents?: Record<string, any>;
   includeStories?: StoryDescriptor;
   excludeStories?: StoryDescriptor;
 };

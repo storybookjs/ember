@@ -114,6 +114,8 @@ export function prepareStory<StoryFnReturnType>(
     story: name, // Back compat
     title,
     kind: title, // Back compat
+    component: componentMeta.component,
+    subcomponents: componentMeta.subcomponents,
     parameters,
     initialArgs: initialArgsBeforeEnhancers,
     argTypes: passedArgTypes,
@@ -180,8 +182,6 @@ export function prepareStory<StoryFnReturnType>(
 
   return {
     ...contextForEnhancers,
-    component: componentMeta.component,
-    subcomponents: componentMeta.subcomponents,
     applyLoaders,
     storyFn,
     runPlayFunction,
