@@ -9,7 +9,7 @@ import {
   SortType,
   TabbedArgsTable,
 } from '@storybook/components';
-import { Args } from '@storybook/addons';
+import { addons, Args } from '@storybook/addons';
 import { StoryStore, filterArgTypes } from '@storybook/client-api';
 import type { PropDescriptor } from '@storybook/client-api';
 import Events from '@storybook/core-events';
@@ -45,29 +45,33 @@ type ArgsTableProps = BaseProps | OfProps | ComponentsProps | StoryProps;
 
 const useArgs = (
   storyId: string,
-  storyStore: StoryStore
+  context: DocsContextProps<any>
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
-  const story = storyStore.fromId(storyId);
+  const channel = addons.getChannel();
+
+  const story = context.storyById(storyId);
   if (!story) {
     throw new Error(`Unknown story: ${storyId}`);
   }
 
-  const { args: initialArgs } = story;
-  const [args, setArgs] = useState(initialArgs);
+  const storyContext = context.getStoryContext(story);
+
+  const [args, setArgs] = useState(storyContext.args);
   useEffect(() => {
     const cb = (changed: { storyId: string; args: Args }) => {
       if (changed.storyId === storyId) {
         setArgs(changed.args);
       }
     };
-    storyStore._channel.on(Events.STORY_ARGS_UPDATED, cb);
-    return () => storyStore._channel.off(Events.STORY_ARGS_UPDATED, cb);
+    channel.on(Events.STORY_ARGS_UPDATED, cb);
+    return () => channel.off(Events.STORY_ARGS_UPDATED, cb);
   }, [storyId]);
-  const updateArgs = useCallback((newArgs) => storyStore.updateStoryArgs(storyId, newArgs), [
-    storyId,
-  ]);
+  const updateArgs = useCallback(
+    (updatedArgs) => channel.emit(Events.UPDATE_STORY_ARGS, { storyId, updatedArgs }),
+    [storyId]
+  );
   const resetArgs = useCallback(
-    (argNames?: string[]) => storyStore.resetStoryArgs(storyId, argNames),
+    (argNames?: string[]) => channel.emit(Events.RESET_STORY_ARGS, { storyId, argNames }),
     [storyId]
   );
   return [args, updateArgs, resetArgs];
@@ -164,9 +168,8 @@ export const StoryTable: FC<
 
     const mainLabel = getComponentName(component) || 'Story';
 
-    // TODO -- how to get the current args and channel?
     // eslint-disable-next-line prefer-const
-    let [args, updateArgs, resetArgs] = [storyById(storyId).initialArgs, () => 0, () => 0];
+    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     let tabs = { [mainLabel]: { rows: storyArgTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
