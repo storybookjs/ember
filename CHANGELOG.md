@@ -1,3 +1,10 @@
+## 6.4.0-alpha.26 (August 9, 2021)
+
+### Maintenance
+
+- Server: Update example to use options and labels for options controls ([#15789](https://github.com/storybookjs/storybook/pull/15789))
+- Controls: Remove ArrayControl ([#15788](https://github.com/storybookjs/storybook/pull/15788))
+
 ## 6.4.0-alpha.25 (August 8, 2021)
 
 ### Features
