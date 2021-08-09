@@ -36,16 +36,20 @@ export interface Args {
   [key: string]: any;
 }
 
-export interface ArgType {
+export interface ArgType<Arg = unknown> {
   name?: string;
   description?: string;
-  defaultValue?: any;
+  defaultValue?: Arg;
   [key: string]: any;
 }
 
-export type ArgTypes<Args = Record<string, any>> = {
-  [key in keyof Partial<Args>]: ArgType;
-};
+export type ArgTypes<GenericArgs = Args> = {
+  [key in keyof Partial<GenericArgs>]: ArgType<GenericArgs[key]>;
+} &
+  {
+    // for custom defined args
+    [key in string]: ArgType<unknown>;
+  };
 
 export interface StoryIdentifier {
   id: StoryId;
