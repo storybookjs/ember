@@ -81,4 +81,4 @@ export const {
   wrapAllByQueryWithSuggestion,
   wrapSingleQueryWithSuggestion,
   prettyFormat,
-} = instrument(dom, false)
+} = instrument(dom, false, false)

@@ -14,24 +14,26 @@ export const Standard = {
 
 export const StandardEmailFilled = {
   ...Standard,
-  play: () => userEvent.type(screen.getByTestId("email"), "michael@chromatic.com"),
+  play: async () => {
+    await userEvent.type(screen.getByTestId("email"), "michael@chromatic.com")
+  },
 }
 
 export const StandardEmailFailed = {
   ...Standard,
-  play: () => {
-    userEvent.type(screen.getByTestId("email"), "michael@chromatic.com.com@com")
-    userEvent.type(screen.getByTestId("password1"), "testpasswordthatwontfail")
-    userEvent.click(screen.getByTestId("submit"))
+  play: async () => {
+    await userEvent.type(screen.getByTestId("email"), "michael@chromatic.com.com@com")
+    await userEvent.type(screen.getByTestId("password1"), "testpasswordthatwontfail")
+    await userEvent.click(screen.getByTestId("submit"))
   },
 }
 
 export const StandardPasswordFailed = {
   ...Standard,
   play: async () => {
-    StandardEmailFilled.play()
-    userEvent.type(screen.getByTestId("password1"), "asdf")
-    userEvent.click(screen.getByTestId("submit"))
+    await StandardEmailFilled.play()
+    await userEvent.type(screen.getByTestId("password1"), "asdf")
+    await userEvent.click(screen.getByTestId("submit"))
   },
 }
 
