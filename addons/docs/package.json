@@ -192,7 +192,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "09a919286d2d3caf1709026386085eafaa1ebea9",
+  "gitHead": "6962d573023a8c779b676c3221b14b9d89c20cfc",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Docs",
