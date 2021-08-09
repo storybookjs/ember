@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<{
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
 export default async function renderMain(
-  { storyContext, unboundStoryFn, showMain, showException, forceRender }: RenderContext,
+  { storyContext, unboundStoryFn, showMain, showException, forceRemount }: RenderContext,
   domElement: Element
 ) {
   const Story = unboundStoryFn as FunctionComponent<StoryContext>;
@@ -60,12 +60,12 @@ export default async function renderMain(
   // For React 15, StrictMode & Fragment doesn't exists.
   const element = Wrapper ? <Wrapper>{content}</Wrapper> : content;
 
-  // We need to unmount the existing set of components in the DOM node.
+  // In most cases, we need to unmount the existing set of components in the DOM node.
   // Otherwise, React may not recreate instances for every story run.
   // This could leads to issues like below:
   // https://github.com/storybookjs/react-storybook/issues/81
-  // But forceRender means that it's the same story, so we want too keep the state in that case.
-  if (!forceRender) {
+  // (This is not the case when we change args or globals to the story however)
+  if (forceRemount) {
     ReactDOM.unmountComponentAtNode(domElement);
   }
 

@@ -59,7 +59,7 @@ export declare type RenderContextWithoutStoryContext = StoryIdentifier & {
 };
 
 export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext & {
-  forceRender: boolean;
+  forceRemount: boolean;
   // TODO -- this is pretty surprising -- why is this here?
   unboundStoryFn: LegacyStoryFn<StoryFnReturnType>;
   storyContext: LoadedStoryContext & {

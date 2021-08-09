@@ -365,7 +365,8 @@ export class WebPreview<StoryFnReturnType> {
       const updatedStoryContext = this.storyStore.getStoryContext(story);
       renderContext = {
         ...renderContextWithoutStoryContext,
-        forceRender: false,
+        // Whenever the selection changes we want to force the component to be remounted.
+        forceRemount: true,
         unboundStoryFn: storyFn,
         storyContext: {
           storyFn: () => storyFn(loadedContext),
@@ -414,7 +415,7 @@ export class WebPreview<StoryFnReturnType> {
       const rerenderStoryContext = this.storyStore.getStoryContext(story);
       const rerenderRenderContext: RenderContext<StoryFnReturnType> = {
         ...renderContext,
-        forceRender: true,
+        forceRemount: false,
         storyContext: {
           // NOTE: loaders are not getting run again. So we are just patching
           // the updated story context over the previous value (that included loader output).

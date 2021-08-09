@@ -114,8 +114,6 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     kind: title,
     name,
     story: name,
-    // TODO -- shouldn't this be true sometimes? How to react to arg changes
-    forceRender: false,
     // TODO what to do when these fail?
     showMain: () => {},
     showError: () => {},
