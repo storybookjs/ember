@@ -124,16 +124,11 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   useEffect(() => {
     let cleanup: () => void;
     if (story && ref.current) {
-      cleanup = context
-        .renderStoryToElement({
-          story,
-          renderContext,
-          element: ref.current as Element,
-        })
-        // TODO -- no .then() -- should renderStoryToElement not be async?
-        .then((cleanupFn: () => void) => {
-          cleanup = cleanupFn;
-        });
+      cleanup = context.renderStoryToElement({
+        story,
+        renderContext,
+        element: ref.current as Element,
+      });
     }
     return () => cleanup && cleanup();
   }, [story]);

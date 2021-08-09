@@ -29,7 +29,7 @@ import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { NoDocs } from '../NoDocs';
 
-const { window: globalWindow } = global;
+const { window: globalWindow, AbortController } = global;
 
 // TODO -- what's up with this code? Is it for HMR? Can we be smarter?
 function getOrCreateChannel() {
@@ -46,6 +46,8 @@ function focusInInput(event: Event) {
   const target = event.target as Element;
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
+
+type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
 
 export class WebPreview<StoryFnReturnType> {
   channel: Channel;
@@ -267,7 +269,7 @@ export class WebPreview<StoryFnReturnType> {
     if (selection.viewMode === 'docs') {
       await this.renderDocs({ story });
     } else {
-      this.previousCleanup = await this.renderStory({ story });
+      this.previousCleanup = this.renderStory({ story });
     }
   }
 
@@ -307,7 +309,7 @@ export class WebPreview<StoryFnReturnType> {
     );
   }
 
-  async renderStory({ story }: { story: Story<StoryFnReturnType> }) {
+  renderStory({ story }: { story: Story<StoryFnReturnType> }) {
     const element = this.view.prepareForStory(story);
     const { id, title, name } = story;
     const renderContext: RenderContextWithoutStoryContext = {
@@ -326,7 +328,7 @@ export class WebPreview<StoryFnReturnType> {
 
   // We want this function to be called directly by `renderSelection` above,
   // but also by the `<ModernStory>` docs component
-  async renderStoryToElement({
+  renderStoryToElement({
     story,
     renderContext: renderContextWithoutStoryContext,
     element,
@@ -337,35 +339,77 @@ export class WebPreview<StoryFnReturnType> {
   }) {
     const { id, applyLoaders, storyFn, runPlayFunction } = story;
 
-    const storyContext = this.storyStore.getStoryContext(story);
+    const controller = new AbortController();
+    let initialRenderPhase: InitialRenderPhase = 'init';
+    let renderContext: RenderContext<StoryFnReturnType>;
+    const initialRender = async () => {
+      const storyContext = this.storyStore.getStoryContext(story);
 
-    const { parameters, initialArgs, argTypes, args } = storyContext;
-    this.channel.emit(Events.STORY_PREPARED, {
-      id,
-      parameters,
-      initialArgs,
-      argTypes,
-      args,
-    });
-    const loadedContext = await applyLoaders(storyContext);
+      const { parameters, initialArgs, argTypes, args } = storyContext;
+      this.channel.emit(Events.STORY_PREPARED, {
+        id,
+        parameters,
+        initialArgs,
+        argTypes,
+        args,
+      });
 
-    const renderContext: RenderContext<StoryFnReturnType> = {
-      ...renderContextWithoutStoryContext,
-      forceRender: false,
-      unboundStoryFn: storyFn,
-      storyContext: {
-        ...loadedContext,
-        storyFn: () => storyFn(loadedContext),
-      },
-    };
-    await this.renderToDOM(renderContext, element);
+      const loadedContext = await applyLoaders(storyContext);
+      if (controller.signal.aborted) {
+        return;
+      }
+      initialRenderPhase = 'loaded';
 
-    if (!renderContext.forceRender) {
+      // By this stage, it is possible that new args/globals have been received for this story
+      // and we need to ensure we render it with the new values
+      const updatedStoryContext = this.storyStore.getStoryContext(story);
+      renderContext = {
+        ...renderContextWithoutStoryContext,
+        forceRender: false,
+        unboundStoryFn: storyFn,
+        storyContext: {
+          storyFn: () => storyFn(loadedContext),
+          ...loadedContext,
+          ...updatedStoryContext,
+        },
+      };
+      await this.renderToDOM(renderContext, element);
+      if (controller.signal.aborted) {
+        return;
+      }
+      initialRenderPhase = 'rendered';
+
+      // NOTE: if the story is torn down during the play function, there could be negative
+      // side-effects (as the play function tries to modify something that is no longer visible).
+      // In the future we will likely pass the AbortController signal into play(), and also
+      // attempt to scope the play function by passing the element.
+      //
+      // NOTE: it is possible that args/globals have changed in between us starting to render
+      // the story and executing the play function (it is also possible that they change mid-way
+      // through executing the play function). We explicitly allow such changes to re-render the
+      // story by setting `initialRenderDone=true` immediate after `renderToDOM` completes.
       await runPlayFunction();
-    }
-    this.channel.emit(Events.STORY_RENDERED, id);
+      if (controller.signal.aborted) {
+        return;
+      }
+      initialRenderPhase = 'done';
+
+      this.channel.emit(Events.STORY_RENDERED, id);
+    };
 
     const rerenderStory = async () => {
+      // The story has not finished rendered the first time. The loaders are still running
+      // and we will pick up the new args/globals values when renderToDOM is called.
+      if (initialRenderPhase === 'init') {
+        return;
+      }
+      // The loaders are done but we are part way through rendering the story to the DOM
+      // This is a bit of an edge case and not something we can deal with sensibly, let's just warn
+      if (initialRenderPhase === 'loaded') {
+        logger.warn('Changed story args during rendering. Arg changes have been ignored.');
+        return;
+      }
+
       // This story context will have the updated values of args and globals
       const rerenderStoryContext = this.storyStore.getStoryContext(story);
       const rerenderRenderContext: RenderContext<StoryFnReturnType> = {
@@ -373,10 +417,10 @@ export class WebPreview<StoryFnReturnType> {
         forceRender: true,
         storyContext: {
           // NOTE: loaders are not getting run again. So we are just patching
-          // the output of the loaders over the top of the updated story context.
+          // the updated story context over the previous value (that included loader output).
           // Loaders aren't allowed to touch anything but the `loaded` key but
           // this means loaders never run again with new values of args/globals
-          ...loadedContext,
+          ...renderContext.storyContext,
           ...rerenderStoryContext,
         },
       };
@@ -384,16 +428,21 @@ export class WebPreview<StoryFnReturnType> {
       await this.renderToDOM(rerenderRenderContext, element);
       this.channel.emit(Events.STORY_RENDERED, id);
     };
-    const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) rerenderStory();
-    };
+
+    // Start the first render
+    initialRender().catch((err) => logger.error(`Error rendering story: ${err}`));
 
     // Listen to events and re-render story
     this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
+    const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
+      if (storyId === story.id) rerenderStory();
+    };
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
 
     return () => {
+      // Make sure the story stops rendering, as much as we can.
+      controller.abort();
       story.cleanup();
       this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
