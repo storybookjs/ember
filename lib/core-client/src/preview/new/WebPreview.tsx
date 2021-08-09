@@ -398,6 +398,16 @@ export class WebPreview<StoryFnReturnType> {
       this.channel.emit(Events.STORY_RENDERED, id);
     };
 
+    // Setup a callback to run when the story needs to be re-rendered due to args or globals changes
+    // We need to be careful for race conditions if the initial rendering of the story (which
+    // can take some time due to loaders + the play function) hasn't completed yet.
+    // Our current approach is to either stop, or rerender immediately depending on which phase
+    // the initial render is in (see comments below).
+    // An alternative approach would be to *wait* until the initial render is done, before
+    // re-rendering with the new args. This would be relatively easy if we tracked the initial
+    // render via awaiting result of the call to `initialRender`. (We would also need to track
+    // if a subsequent *re-render* is in progress, but that is less likely)
+    // See also the note about cancelling below.
     const rerenderStory = async () => {
       // The story has not finished rendered the first time. The loaders are still running
       // and we will pick up the new args/globals values when renderToDOM is called.
@@ -409,6 +419,12 @@ export class WebPreview<StoryFnReturnType> {
       if (initialRenderPhase === 'loaded') {
         logger.warn('Changed story args during rendering. Arg changes have been ignored.');
         return;
+      }
+
+      if (initialRenderPhase === 'rendered') {
+        logger.warn(
+          'Changed story args during play function. Continuing but there may be problems.'
+        );
       }
 
       // This story context will have the updated values of args and globals
@@ -442,7 +458,13 @@ export class WebPreview<StoryFnReturnType> {
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
 
     return () => {
-      // Make sure the story stops rendering, as much as we can.
+      // If the story is torn down (either a new story is rendered or the docs page removes it)
+      // we need to consider the fact that the initial render may not be finished
+      // (possibly the loaders or the play function are still running). We use the controller
+      // as a method to abort them, ASAP, but this is not foolproof as we cannot control what
+      // happens inside the user's code. Still, we do render the new story right away.
+      // Alternatively, we could make this function async and await the teardown before rendering
+      // the new story. This might be a bit complicated for docs however.
       controller.abort();
       story.cleanup();
       this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
