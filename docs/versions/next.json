@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.26","info":{"plain":"### Maintenance\n\n- Server: Update example to use options and labels for options controls ([#15789](https://github.com/storybookjs/storybook/pull/15789))\n- Controls: Remove ArrayControl ([#15788](https://github.com/storybookjs/storybook/pull/15788))"}}
+{"version":"6.4.0-alpha.28","info":{"plain":"Fix bad publish of `6.4.0-alpha.27` to the `latest` tag"}}
