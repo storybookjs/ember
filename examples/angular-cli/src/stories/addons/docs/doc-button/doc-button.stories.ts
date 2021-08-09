@@ -8,7 +8,7 @@ export default {
 export const Basic = (args) => ({
   props: args,
 });
-Basic.args = { label: 'Args test', isDisabled: false };
+Basic.args = { label: 'Args test', isDisabled: false, appearance: 'primary' };
 
 export const WithTemplate = (args) => ({
   props: args,
