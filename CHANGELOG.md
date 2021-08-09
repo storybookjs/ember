@@ -1,3 +1,7 @@
+## 6.3.7 (August 10, 2021)
+
+Fix bad publish of `6.4.0-alpha.27` to the `latest` tag
+
 ## 6.4.0-alpha.26 (August 9, 2021)
 
 ### Maintenance
