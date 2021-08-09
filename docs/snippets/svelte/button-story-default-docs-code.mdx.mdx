@@ -7,7 +7,7 @@ import Button from './Button.svelte';
 
 <!-- 👇 Creates specific argTypes -->
 <Meta
-  title='Button'
+  title="Button"
   component={Button}
   argTypes={{
     backgroundColor: {
@@ -23,13 +23,12 @@ export const someFunction = (someValue) => {
 
 <!-- 👇 Destructure the label from the args object and assigns the function result to a variable and pass it as a prop into the component -->
 <Story
-  name='ExampleStory'
+  name="ExampleStory"
   args={{
     primary: true,
     size: 'small',
     label: "button",
-  }}
->
+  }}>
   {(args) => {
     const { label } = args;
     const functionResult = someFunction(label);

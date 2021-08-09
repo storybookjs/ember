@@ -9,13 +9,13 @@ import { CommonModule } from '@angular/common';
 import Badge from './badge.component';
 import Icon from './icon.component';
 
-<Meta title='MDX/Badge' component={Badge} />
+<Meta title="MDX/Badge" component={Badge} />
 
 # Badge
 
 Let's define a story for our `Badge` component:
 
-<Story name='positive'>
+<Story name="positive">
   {{
     template:`<Badge status="positive">Positive</Badge>`,
   }}
@@ -24,7 +24,7 @@ Let's define a story for our `Badge` component:
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name='negative'>
+  <Story name="negative">
     {{
       template: `<Badge status="negative">Negative</Badge>`,
     }}
@@ -36,26 +36,26 @@ gets rendered as a group, but defines individual stories
 with unique URLs and isolated snapshot tests.
 
 <Canvas>
-  <Story name='warning'>
+  <Story name="warning">
     {{
       template: `<Badge status="warning">Warning</Badge>`,
     }}
   </Story>
 
-  <Story name='neutral'>
+  <Story name="neutral">
     {{
       template: `<Badge status="neutral">Neutral</Badge>`,
     }}
   </Story>
   
-  <Story name='error'>
+  <Story name="error">
     {{
       template: `<Badge status="error">Error</Badge>`,
     }}
   </Story>
   
   <Story 
-    name='with icon'
+    name="with icon"
     decorators={[
       moduleMetadata({
         declarations: [Badge, Icon],

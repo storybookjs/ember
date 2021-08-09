@@ -5,7 +5,7 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
 
-<Meta title='Components/Button' component={Button} />
+<Meta title="Components/Button" component={Button} />
 
 export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
@@ -14,10 +14,10 @@ export const Template = (args, { argTypes }) => ({
 });
 
 <Story
-  name='Primary'
+  name="Primary"
   args={{
     primary: true,
-    label: "Button",
+    label: 'Button',
   }}>
   {Template.bind({})}
 </Story>

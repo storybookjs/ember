@@ -7,10 +7,10 @@ import TodoItem from './TodoItem.svelte';
 
 import fetch from 'node-fetch';
 
-<Meta title='Examples/Loader' component={TodoItem} />
+<Meta title="Examples/Loader" component={TodoItem} />
 
 <Story
-  name='Primary'
+  name="Primary"
   loaders={[
     async () => ({
       todo: await (

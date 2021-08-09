@@ -5,7 +5,7 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import { Checkbox } from './Checkbox';
 
-<Meta title='MDX/Checkbox' component={Checkbox} />
+<Meta title="MDX/Checkbox" component={Checkbox} />
 
 # Checkbox
 
@@ -16,28 +16,28 @@ export const Template = (args) => <Checkbox {...args} />
 
 <Canvas>
   <Story 
-    name='Unchecked' 
+    name="Unchecked"
     args={{ 
-      label: 'Unchecked'
+      label: 'Unchecked',
   }}>
   {Template.bind({})}
   </Story>
 
   <Story 
-    name='Checked'
+    name="Checked"
     args={{ 
       label: 'Unchecked', 
-      checked: true 
+      checked: true,
   }}>
   {Template.bind({})}
   </Story>
 
   <Story 
-    name='Secondary' 
+    name="Secondary" 
     args={{
       label: 'Secondary', 
       checked: true, 
-      appearance: 'secondary'
+      appearance: 'secondary',
   }}>
   {Template.bind({})}
   </Story>

@@ -6,7 +6,7 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs';
 import { Badge } from './Badge';
 import { Icon } from './Icon';
 
-<Meta title='MDX/Badge' component={Badge} />
+<Meta title="MDX/Badge" component={Badge} />
 
 export const Template = (args) => <Badge {...args } />
 
@@ -15,7 +15,7 @@ export const Template = (args) => <Badge {...args } />
 Let's define a story for our `Badge` component:
 
 <Story 
-  name='positive' 
+  name="positive"
   args={{
     status: 'positive',
     label: 'Positive'
@@ -27,7 +27,7 @@ We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
   <Story 
-    name='negative' 
+    name="negative"
     args={{
       status: 'negative', 
       label: 'Negative'
@@ -42,7 +42,7 @@ with unique URLs, which is great for review and testing.
 
 <Canvas>
   <Story 
-    name='warning' 
+    name="warning"
     args={{
       status: 'warning',
       label: 'Warning' 
@@ -50,15 +50,17 @@ with unique URLs, which is great for review and testing.
     {Template.bind({})}
   </Story>
 
-  <Story name='neutral' args={{
-    status: 'neutral', 
-    label: 'Neutral' 
+  <Story 
+    name="neutral" 
+    args={{
+      status: 'neutral', 
+      label: 'Neutral' 
   }}>
     {Template.bind({})}
   </Story>
 
   <Story 
-    name='error'
+    name="error"
     args={{
       status: 'error', 
       label: 'Error' 
@@ -67,7 +69,7 @@ with unique URLs, which is great for review and testing.
   </Story>
 
   <Story 
-    name='with icon' 
+    name="with icon" 
     args={{
       status: 'warning', 
       label: (<Icon icon="check" inline /> with icon)

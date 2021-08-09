@@ -5,14 +5,14 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import imageFile from './static/image.png';
 
-<Meta title='img' />
+<Meta title="img" />
 
 export const image = {
   src: imageFile,
   alt: 'my image',
 };
 
-<Story name='withAnImage'>
+<Story name="withAnImage">
   <img src={image.src} alt={image.alt} />;
 </Story>
 ```

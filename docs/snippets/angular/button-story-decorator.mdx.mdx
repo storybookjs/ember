@@ -5,14 +5,14 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { componentWrapperDecorator,moduleMetadata } from '@storybook/angular';
 
-import Button from './button.component.ts';
+import Button from './button.component';
 import { ParentComponent } from './parent.component';
 
-<Meta title='Components/Button' component={Button}/>
+<Meta title="Components/Button" component={Button}/>
 
 <!-- With a template -->
 <Story 
-  name='Primary' 
+  name="Primary"
   decorators={[
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)
   ]}>
@@ -23,7 +23,7 @@ import { ParentComponent } from './parent.component';
 
 <!-- With a component -->
 <Story 
-  name='InsideParent' 
+  name="InsideParent"
   decorators={[
     moduleMetadata({
       declarations: [ParentComponent],

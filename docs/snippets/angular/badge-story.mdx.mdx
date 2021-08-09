@@ -5,7 +5,7 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import Badge from './badge.component';
 
-<Meta title='MDX/Badge' component={Badge} />
+<Meta title="MDX/Badge" component={Badge} />
 
 export const Template = (args) => ({ props: args });
 
@@ -14,7 +14,7 @@ export const Template = (args) => ({ props: args });
 Let's define a story for our `Badge` component:
 
 <Story
-  name='positive' 
+  name="positive"
   args={{
     status: 'positive',
    label: 'Positive',
@@ -26,7 +26,7 @@ We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
   <Story 
-    name='negative' 
+    name="negative"
     args={{
       status: 'negative',
       label: 'Negative',
@@ -41,7 +41,7 @@ with unique URLs, which is great for review and testing.
 
 <Canvas>
   <Story 
-    name='warning' 
+    name="warning" 
     args={{
       status: 'warning',
      label: 'Warning',
@@ -50,7 +50,7 @@ with unique URLs, which is great for review and testing.
   </Story>
 
   <Story 
-    name='neutral' 
+    name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral', 
@@ -59,7 +59,7 @@ with unique URLs, which is great for review and testing.
   </Story>
   
   <Story 
-    name='error' 
+    name="error"
     args={{
       status: 'error', 
       label: 'Error', 
