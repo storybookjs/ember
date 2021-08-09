@@ -59,7 +59,7 @@ export class DocButtonComponent<T> {
   @Input()
   public accent: ButtonAccent = ButtonAccent.Normal;
 
-  /** Specifies some arbitrary object */
+  /** Specifies some arbitrary object. This comment is to test certain chars like apostrophes - it's working */
   @Input() public someDataObject: ISomeInterface;
 
   /**
