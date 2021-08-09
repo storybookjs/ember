@@ -5,17 +5,11 @@ const callsByResult = new Map();
 const channel = addons.getChannel();
 
 let next
-channel.on(EVENTS.NEXT, () => {
-  console.log(next)
-  if (next) next()
-});
-
-channel.on(EVENTS.RELOAD, () => {
-  window.location.reload()
-});
+channel.on(EVENTS.NEXT, () => next && next());
+channel.on(EVENTS.RELOAD, () => window.location.reload());
 
 function intercept(fn) {
-  if (!window.parent.__debugging__) return fn
+  if (!window.parent.__STORYBOOK_DEBUGGING__) return fn;
   return (...args) => new Promise(resolve => (next = resolve)).then(() => {
     next = undefined
     return fn(...args)
@@ -30,7 +24,7 @@ function track(key, fn, originalArgs, intercepted) {
   const args = originalArgs.map((arg) => callsByResult.get(arg) || arg);
   const result = intercepted ? intercept(fn)(...originalArgs) : fn(...originalArgs)
   callsByResult.set(result, { __callId__: id });
-  console.log({key, intercepted})
+  console.log(key, args)
   channel.emit(EVENTS.CALL, { id, key, args, intercepted });
   return result
 }

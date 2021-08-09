@@ -2,6 +2,7 @@ import React from "react";
 import { useChannel } from "@storybook/api";
 import { AddonPanel, Button, Icons } from "@storybook/components";
 import { EVENTS } from "./constants";
+import global from 'global'
 
 interface PanelProps {
   active: boolean;
@@ -12,7 +13,11 @@ interface Call {
   key: string;
   args: any[];
   intercepted?: boolean;
+  state?: string;//'done' | 'next' | 'pending';
 }
+
+const setDebugging = (value: boolean) => (global.window.__STORYBOOK_DEBUGGING__ = !!value);
+const isDebugging = () => !!global.window.__STORYBOOK_DEBUGGING__;
 
 const fold = (calls: Call[]) => {
   const callsById = calls.reduce<Record<Call["id"], Call>>((acc, call) => {
@@ -22,11 +27,11 @@ const fold = (calls: Call[]) => {
 
   const seen = new Set();
   return calls.reduceRight<Call[]>((acc, call) => {
-    // if (seen.has(call.id)) return acc;
+    if (seen.has(call.id)) return acc;
     call.args = call.args.map((arg) => {
       if (!arg?.__callId__) return arg;
       seen.add(arg.__callId__);
-      return callsById[arg.__callId__];
+      return callsById[arg.__callId__] || arg;
     });
     acc.unshift(call);
     seen.add(call.id);
@@ -34,15 +39,16 @@ const fold = (calls: Call[]) => {
   }, []);
 };
 
-const Call = ({ call, state, nested }: { call: Call, state: "done" | "next" | "pending", nested?: boolean }) => {
+const Call = ({ call, nested }: { call: Call, nested?: boolean }) => {
   const params = call.args
     .map((arg) => {
       if (arg?.id && arg?.key && arg?.args)
-        return <Call key={call.id} call={arg} state="done" nested />;
+        return <Call key={call.id} call={arg} nested />;
+      const color = ({ string: 'forestgreen', number: '#FC521F' })[typeof arg as string] || '#FFAE00'
       try {
-        return <span key={arg}>{JSON.stringify(arg)}</span>;
+        return <span key={arg} style={{ color }}>{JSON.stringify(arg)}</span>;
       } catch (e) {
-        return <span key={arg}>{String(arg)}</span>;
+        return <span key={arg} style={{ color }}>{String(arg)}</span>;
       }
     })
     .flatMap((elem, index, array) =>
@@ -51,74 +57,78 @@ const Call = ({ call, state, nested }: { call: Call, state: "done" | "next" | "p
   const style = {
     display: nested ? "inline-block" : "flex",
     alignItems: "center",
-    padding: nested ? "none" : "5px 10px",
-    background: state === "next" ? "#FFF5CF" : "transparent",
+    padding: nested ? "none" : "8px 10px",
+    background: call.state === "next" ? "#FFF5CF" : "transparent",
     borderBottom: nested ? "none" : "1px solid #eee",
-    opacity: state === "pending" && !nested ? 0.4 : 1,
+    opacity: call.state === "pending" && !nested ? 0.4 : 1,
+    fontFamily: 'Monaco, monospace',
+    fontSize: 12
   };
   return (
     <div style={style}>
-      {!nested && state === "done" && <Icons icon="check" style={{width: 12, height: 12, padding: 1, marginRight: 5, color: 'green'}} />}
-      {!nested && state === "next" && <Icons icon="stop" style={{width: 12, height: 12, marginRight: 5, color: 'red'}} />}
-      {!nested && state === "pending" && <Icons icon="circle" style={{width: 12, height: 12, padding: 4, marginRight: 5, color: 'gray'}} />}
-      {call.key}({params})
+      {!nested && call.state === "done" && <Icons icon="check" style={{ flexShrink: 0, width: 12, height: 12, padding: 1, marginRight: 5, color: 'green'}} />}
+      {!nested && call.state === "next" && <Icons icon="stop" style={{ flexShrink: 0, width: 12, height: 12, marginRight: 5, color: 'red'}} />}
+      {!nested && call.state === "pending" && <Icons icon="circle" style={{ flexShrink: 0, width: 12, height: 12, padding: 4, marginRight: 5, color: 'gray'}} />}
+      {call.key.split('.').flatMap((elem, index, array) =>
+        index === array.length - 1
+          ? [<span key={index} style={{color: "#4776D6"}}>{elem}</span>]
+          : [
+            <span key={index} style={{color: '#444'}}>{elem}</span>,
+            <span key={'dot' + index} style={{color: '#444'}}>.</span>
+          ]
+      )}({params})
     </div>
   );
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
-  const calls = React.useRef([]);
+  const calls = React.useRef([])
   const [log, setLog] = React.useState([] as Call[]);
-  const [debugIndex, setDebugIndex] = React.useState(-1)
+  const [lastLog, setLastLog] = React.useState([] as Call[]);
 
   const emit = useChannel({
     [EVENTS.CALL]: (call) => {
-      if (window.__debugging__) return
-      calls.current.push(call);
+      calls.current = [...calls.current, call]
+      setLog(calls.current)
     },
     storyChanged: () => {
-      window.__debugging__ = false
-      setDebugIndex(-1)
+      setDebugging(false)
+      calls.current = []
+      setLog([])
+      setLastLog([])
     },
     storyRendered: () => {
-      if (!window.__debugging__) {
-        setLog(calls.current);
-        calls.current = []
-      }
-      setDebugIndex(-1)
-      window.__debugging__ = false
+      setDebugging(false)
+      setLastLog(calls.current)
+      calls.current = []
     },
   });
 
   const startDebugger = () => {
-    window.__debugging__ = true
-    setDebugIndex(log.findIndex(call => call.intercepted))
+    setDebugging(true)
+    calls.current = []
     emit(EVENTS.RELOAD);
   }
 
   const stepOver = () => {
     emit(EVENTS.NEXT);
-    setDebugIndex(log.findIndex((call, index) => call.intercepted && index > debugIndex))
   };
 
-  const [done, next, pending] = fold(log).reduce((acc, call, index) => {
-    if (index < debugIndex || debugIndex === -1) acc[0].push(call)
-    else if (index === debugIndex) acc[1] = call
-    else if (index > debugIndex) acc[2].push(call)
+  const mapped = log.reduce((acc, call, index) => {
+    acc[index] = { ...call, state: 'done' };
     return acc
-  }, [[], null, []])
+  }, lastLog.map(call => ({ ...call, state: 'pending' })))
+  if (isDebugging()) mapped[log.length - 1].state = 'next'
   
   return (
     <AddonPanel {...props}>
-      {done.filter(call => call.intercepted).map((call) => <Call call={call} state="done" key={call.id} />)}
-      {next && <Call call={next} state="next" key={next.id} />}
-      {pending.filter(call => call.intercepted).map((call) => <Call call={call} state="pending" key={call.id} />)}
+      {fold(mapped).map((call) => <Call call={call} key={call.id} />)}
 
       <div style={{ padding: 3 }}>
         <Button outline containsIcon title="Start debugging" onClick={startDebugger}>
           <Icons icon="undo" />
         </Button>
-        <Button outline containsIcon title="Step over" onClick={stepOver} disabled={!next}>
+        <Button outline containsIcon title="Step over" onClick={stepOver} disabled={!isDebugging()}>
           <Icons icon="arrowrightalt" />
         </Button>
       </div>
