@@ -5628,10 +5628,12 @@ __metadata:
     "@storybook/addons": 6.4.0-alpha.19
     "@storybook/api": 6.4.0-alpha.19
     "@storybook/client-api": 6.4.0-alpha.19
+    "@storybook/client-logger": 6.4.0-alpha.19
     "@storybook/components": 6.4.0-alpha.19
     "@storybook/node-logger": 6.4.0-alpha.19
     "@storybook/theming": 6.4.0-alpha.19
     core-js: ^3.8.2
+    lodash: ^4.17.20
     ts-dedent: ^2.0.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -6432,7 +6434,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/channel-websocket@workspace:*, @storybook/channel-websocket@workspace:lib/channel-websocket":
+"@storybook/channel-websocket@6.4.0-alpha.19, @storybook/channel-websocket@workspace:*, @storybook/channel-websocket@workspace:lib/channel-websocket":
   version: 0.0.0-use.local
   resolution: "@storybook/channel-websocket@workspace:lib/channel-websocket"
   dependencies:
@@ -6504,6 +6506,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.4.0-alpha.19
     "@storybook/channel-postmessage": 6.4.0-alpha.19
+    "@storybook/channel-websocket": 6.4.0-alpha.19
     "@storybook/channels": 6.4.0-alpha.19
     "@storybook/client-logger": 6.4.0-alpha.19
     "@storybook/core-events": 6.4.0-alpha.19

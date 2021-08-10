@@ -67,7 +67,12 @@ export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext 
   };
 };
 
-export type ArgTypesEnhancer = (context: StoryContextForEnhancers) => ArgTypes;
+export type ArgTypesEnhancer = (
+  context: StoryContextForEnhancers
+) => ArgTypes & {
+  secondPass?: boolean;
+};
+
 export type ArgsEnhancer = (
   context: StoryContextForEnhancers
 ) => Args & {
@@ -104,6 +109,8 @@ export type ComponentMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {
   id?: ComponentId;
   includeStories?: StoryDescriptor;
   excludeStories?: StoryDescriptor;
+  component?: any;
+  subcomponents?: Record<string, any>;
 };
 
 export type StoryMeta<StoryFnReturnType> = Meta<StoryFnReturnType> & {

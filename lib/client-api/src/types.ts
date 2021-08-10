@@ -34,7 +34,11 @@ export type ArgTypesEnhancer = (
 ) => ArgTypes & {
   secondPass?: boolean;
 };
-export type ArgsEnhancer = (context: StoryContext) => Args;
+export type ArgsEnhancer = (
+  context: StoryContext
+) => Args & {
+  secondPass?: boolean;
+};
 
 export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 

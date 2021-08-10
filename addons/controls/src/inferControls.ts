@@ -75,6 +75,7 @@ const inferControls: ArgTypesEnhancer = (context) => {
   return combineParameters(withControls, filteredArgTypes);
 };
 
+// @ts-ignore FIXME
 inferControls.secondPass = true;
 
 export const argTypesEnhancers = [inferControls];

@@ -53,4 +53,5 @@ export const inferArgTypes: ArgTypesEnhancer = (context) => {
   return combineParameters(argTypes, userArgTypesNames, userArgTypes);
 };
 
+// @ts-ignore FIXME
 inferArgTypes.secondPass = true;

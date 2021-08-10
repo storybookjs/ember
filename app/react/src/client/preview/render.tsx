@@ -46,6 +46,7 @@ class ErrorBoundary extends Component<{
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
 export default async function renderMain(
+  // @ts-ignore FIXME refactor in progress
   { storyContext, unboundStoryFn, showMain, showException, forceRemount }: RenderContext,
   domElement: Element
 ) {

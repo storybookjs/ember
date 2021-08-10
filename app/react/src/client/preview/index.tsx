@@ -24,6 +24,7 @@ const globalRender: Story = (args, { parameters }) => {
   return <Component {...args} />;
 };
 
+// @ts-ignore FIXME
 const api = start(render);
 api.clientApi.globalRender = globalRender;
 

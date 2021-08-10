@@ -4,3 +4,7 @@ declare class AnsiToHtml {
 
   toHtml: (ansi: string) => string;
 }
+
+// FIXME refactor in progress
+declare module '@storybook/client-api/dist/esm/new/StoryStore';
+declare type StoryStore<T> = any;
