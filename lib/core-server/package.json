@@ -40,7 +40,6 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.6.22",
     "@storybook/builder-webpack4": "6.4.0-alpha.28",
     "@storybook/core-client": "6.4.0-alpha.28",
     "@storybook/core-common": "6.4.0-alpha.28",
