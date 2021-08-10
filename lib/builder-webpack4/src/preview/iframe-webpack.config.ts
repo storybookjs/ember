@@ -25,6 +25,7 @@ import {
   nodeModulesPaths,
   Options,
   NormalizedStoriesEntry,
+  toImportFn,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -85,13 +86,7 @@ export default async ({
 
   // Allows for custom frameworks that are not published under the @storybook namespace
   const virtualModuleMapping = {
-    [storiesPath]: dedent`
-      // TODO -- non-hardcoded importFn
-      export const importFn = async (path) => {
-        console.log('importFn ' + path);
-        return import('./src/' + path.replace(/^src\//, ''));
-      };
-    `,
+    [storiesPath]: toImportFn(stories),
     [configEntryPath]: dedent`
     import { composeConfigs } from '@storybook/core-client/dist/esm/preview/new/composeConfigs';
     import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
@@ -133,6 +128,7 @@ export default async ({
     `,
   };
 
+  console.log(virtualModuleMapping[storiesPath]);
   console.log(virtualModuleMapping[configEntryPath]);
   // if (stories) {
   //   const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
