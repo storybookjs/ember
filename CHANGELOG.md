@@ -1,3 +1,15 @@
+## 6.4.0-alpha.29 (August 10, 2021)
+
+### Features
+
+- Addon-docs/Angular: Render user defined template as source if it exists ([#15743](https://github.com/storybookjs/storybook/pull/15743))
+- Core: Add MDX support to built-in stories.json generation ([#15808](https://github.com/storybookjs/storybook/pull/15808))
+
+### Maintenance
+
+- Controls: Add better icon for reset button ([#15737](https://github.com/storybookjs/storybook/pull/15737))
+- Add checkboxes to pull request template ([#15799](https://github.com/storybookjs/storybook/pull/15799))
+
 ## 6.4.0-alpha.28 (August 10, 2021)
 
 Fix bad publish of `6.4.0-alpha.27` to the `latest` tag
