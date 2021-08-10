@@ -1,11 +1,12 @@
 ```md
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.svelte';
 
-<Meta title="Button" component={Button}/>
+<Meta title="Components/Button" component={Button} />
 
-# Button
 
 <Story name="Primary">
   {{
@@ -20,7 +21,7 @@ import Button from './Button.svelte';
   {{
     props: {
       background: '#ff0',
-      label: '😄👍😍💯'
+      label: '😄👍😍💯',
     },
   }}
 </Story>

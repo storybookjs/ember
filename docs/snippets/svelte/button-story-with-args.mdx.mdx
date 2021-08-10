@@ -1,0 +1,23 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Button from './Button.svelte';
+
+<Meta title="Components/Button" component={Button} />
+
+export const Template = (args) => ({
+  Component: Button,
+  props: args,
+});
+
+<Story
+  name="Primary"
+  args={{
+    primary: true,
+    label: 'Button',
+  }}>
+  {Template.bind({})}
+</Story>
+```

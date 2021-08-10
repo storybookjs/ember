@@ -1,0 +1,32 @@
+```md
+<!-- Table.stories.mdx -->
+
+import { Story } from '@storybook/addon-docs';
+
+import Table from './Table.vue';
+
+export const TableStory = (args, { argTypes }) => ({
+  components: { Table },
+  props: Object.keys(argTypes),
+  template: `
+    <Table v-bind="$props">
+      <tr v-for="(row, idx1) in data">
+        <td v-for="(col, idx2) in row">
+          {{ data[idx1][idx2] }}
+        </td>
+      </tr>
+    </Table>`,
+});
+
+<Story
+  name="Numeric"
+  args={{
+    data: [
+      [1, 2, 3],
+      [4, 5, 6],
+    ],
+    size: 'large',
+  }}>
+  {TableStory.bind({})}
+</Story>
+```

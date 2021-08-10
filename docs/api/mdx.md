@@ -12,7 +12,9 @@ Let's get started with an example that combines Markdown with a single story:
 
 <CodeSnippets
   paths={[
-    'common/checkbox-story-starter-example.mdx.mdx',
+    'react/checkbox-story-starter-example.mdx.mdx',
+    'vue/checkbox-story-starter-example.mdx.mdx',
+    'angular/checkbox-story-starter-example.mdx.mdx',
   ]}
 />
 
@@ -40,6 +42,7 @@ For example, here's the story from `Checkbox` example above, rewritten in CSF:
   paths={[
     'react/checkbox-story-csf.js.mdx',
     'vue/checkbox-story-csf.js.mdx',
+    'angular/checkbox-story-csf.ts.mdx',
     'svelte/checkbox-story-csf.native-format.mdx',
   ]}
 />
@@ -56,7 +59,9 @@ Now let's look at a more realistic example to see a few more things we can do:
 
 <CodeSnippets
   paths={[
-    'common/badge-story-starter-example.mdx.mdx',
+    'react/badge-story-starter-example.mdx.mdx',
+    'vue/badge-story-starter-example.mdx.mdx',
+    'angular/badge-story-starter-example.mdx.mdx',
   ]}
 />
 

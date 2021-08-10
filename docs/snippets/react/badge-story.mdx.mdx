@@ -8,27 +8,29 @@ import { Icon } from './Icon';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!--- This is your Story template function, shown here in React -->
-
 export const Template = (args) => <Badge {...args } />
 
 # Badge
 
 Let's define a story for our `Badge` component:
 
-<Story name="positive" args={{
-  status: 'positive',
-  label: 'Positive'
+<Story 
+  name="positive"
+  args={{
+    status: 'positive',
+    label: 'Positive'
 }}>
-{Template.bind({})}
+  {Template.bind({})}
 </Story>
 
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name="negative" args={{
-    status: 'negative', 
-    label: 'Negative'
+  <Story 
+    name="negative"
+    args={{
+      status: 'negative', 
+      label: 'Negative'
   }}>
     {Template.bind({})}
   </Story>
@@ -39,27 +41,38 @@ gets rendered as a group but defines individual stories
 with unique URLs, which is great for review and testing.
 
 <Canvas>
-  <Story name="warning" args={{
-    status: 'warning',
-    label: 'Warning' 
+  <Story 
+    name="warning"
+    args={{
+      status: 'warning',
+      label: 'Warning' 
   }}>
     {Template.bind({})}
   </Story>
-  <Story name="neutral" args={{
-    status: 'neutral', 
-    label: 'Neutral' 
+
+  <Story 
+    name="neutral" 
+    args={{
+      status: 'neutral', 
+      label: 'Neutral' 
   }}>
     {Template.bind({})}
   </Story>
-  <Story name="error" args={{
-    status: 'error', 
-    label: 'Error' 
+
+  <Story 
+    name="error"
+    args={{
+      status: 'error', 
+      label: 'Error' 
   }}>
     {Template.bind({})}
   </Story>
-  <Story name="with icon" args={{
-    status: 'warning', 
-    label: (<Icon icon="check" inline /> with icon)
+
+  <Story 
+    name="with icon" 
+    args={{
+      status: 'warning', 
+      label: (<Icon icon="check" inline /> with icon)
   )}}>
     {Template.bind({})}
   </Story>

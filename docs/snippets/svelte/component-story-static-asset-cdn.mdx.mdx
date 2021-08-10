@@ -1,0 +1,21 @@
+```md
+<!-- MyComponent.stories.js -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.svelte';
+
+<Meta title="img" />
+
+<Story name="withAnImage">
+  {() => {
+    return {
+      Component: MyComponent,
+      props: {
+        src: 'https://place-hold.it/350x150',
+        alt: 'my image',
+      },
+    };
+  }}
+</Story>
+```

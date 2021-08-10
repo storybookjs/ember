@@ -14,7 +14,7 @@ const Template = (args, { argTypes }) => ({
     return { args };
   },
   template: `
-    <page v-bind="$props">
+    <page v-bind="args">
       <footer v-if="footer" v-slot=footer v-html="footer"/>
     </page>
   `,
