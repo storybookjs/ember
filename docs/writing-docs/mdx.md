@@ -169,7 +169,7 @@ To get a "documentation-only story" in your UI, define a `<Meta>` as you normall
 
 ### Syntax highlighting
 
-When writing your documentation with Storybook and MDX, you get syntax highlighting out of the box for most available languages (e.g., Javascript, Markdown, CSS, HTML, Typescript, GraphQL). For other formats, for instance, SCSS, you'll need to activate the syntax highlighter manually as such:
+When writing your documentation with Storybook and MDX, you get syntax highlighting out of the box for a handful of popular languages (Javascript, Markdown, CSS, HTML, Typescript, GraphQL). For other formats, for instance, SCSS, you'll need to extend the syntax highlighter manually:
 
 <!-- prettier-ignore-start -->
 
