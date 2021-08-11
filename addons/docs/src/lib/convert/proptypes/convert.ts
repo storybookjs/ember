@@ -13,7 +13,12 @@ export const convert = (type: PTType): SBType | any => {
 
   switch (name) {
     case 'enum': {
-      const values = computed ? value : value.map((v: PTType) => trimQuotes(v.value));
+      const values = computed
+        ? value
+        : value.map((v: PTType) => {
+            const trimmedValue = trimQuotes(v.value);
+            return Number.isNaN(Number(trimmedValue)) ? trimmedValue : Number(trimmedValue);
+          });
       return { ...base, name, value: values };
     }
     case 'string':

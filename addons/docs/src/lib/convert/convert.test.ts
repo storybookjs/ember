@@ -594,6 +594,7 @@ describe('storybook type system', () => {
         export const Component = (props) => <>JSON.stringify(props)</>;
         Component.propTypes = {
           oneOfNumber: PropTypes.oneOf([1, 2, 3]),
+          oneOfStringNumber: PropTypes.oneOf(['1', '2', '3']),
           oneOfString: PropTypes.oneOf(['static', 'timed']),
         };
         "
@@ -603,9 +604,17 @@ describe('storybook type system', () => {
           "oneOfNumber": {
             "name": "enum",
             "value": [
-              "1",
-              "2",
-              "3"
+              1,
+              2,
+              3
+            ]
+          },
+          "oneOfStringNumber": {
+            "name": "enum",
+            "value": [
+              1,
+              2,
+              3
             ]
           },
           "oneOfString": {
