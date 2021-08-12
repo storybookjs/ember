@@ -192,8 +192,9 @@ export const noBrand: Story = () => {
 
 export const skipToCanvasLinkFocused: Story = {
   args: { menu: menuItems, skipLinkHref: '#storybook-preview-wrapper' },
-  parameters: { layout: 'padded', theme: 'light', chromatic: { delay: 300 } },
+  parameters: { layout: 'padded', chromatic: { delay: 300 } },
   play: () => {
-    screen.getByText('Skip to canvas').focus();
+    // focus each instance for chromatic/storybook's stacked theme
+    screen.getAllByText('Skip to canvas').forEach((x) => x.focus());
   },
 };
