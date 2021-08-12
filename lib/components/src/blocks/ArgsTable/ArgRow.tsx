@@ -35,7 +35,10 @@ const Description = styled.div(({ theme }) => ({
     },
   },
 
-  code: codeCommon({ theme }),
+  code: {
+    ...codeCommon({ theme }),
+    fontSize: 12,
+  },
 
   '& code': {
     margin: 0,
