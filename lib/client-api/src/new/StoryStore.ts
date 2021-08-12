@@ -10,7 +10,6 @@ import {
   StoryId,
   ModuleImportFn,
   GlobalMeta,
-  StoryMeta,
   Story,
   StoryContext,
   StoriesList,
@@ -109,6 +108,10 @@ export class StoryStore<StoryFnReturnType> {
       globals: this.globals.get(),
       hooks: this.hooks[story.id],
     };
+  }
+
+  cleanupStory(story: Story<StoryFnReturnType>): void {
+    this.hooks[story.id].clean();
   }
 
   getSetStoriesPayload() {

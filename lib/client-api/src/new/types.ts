@@ -132,7 +132,6 @@ export type Story<StoryFnReturnType> = StoryIdentifier & {
   applyLoaders: (context: StoryContext) => Promise<LoadedStoryContext>;
   storyFn: LegacyStoryFn<StoryFnReturnType>;
   runPlayFunction: () => Promise<void>; // TODO -- should this take story context?
-  cleanup: () => void;
 };
 
 export type Path = string;

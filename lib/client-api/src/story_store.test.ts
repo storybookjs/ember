@@ -133,76 +133,7 @@ describe('preview.story_store', () => {
     });
   });
 
-  describe('getRawStory', () => {
-    it('produces a story with inherited decorators applied', () => {
-      const store = new StoryStore({ channel });
-
-      const globalDecorator = jest.fn().mockImplementation((s) => s());
-      store.addGlobalMetadata({ parameters: {}, decorators: [globalDecorator] });
-
-      const kindDecorator = jest.fn().mockImplementation((s) => s());
-      store.addKindMetadata('a', { parameters: {}, decorators: [kindDecorator] });
-
-      const story = jest.fn();
-      addStoryToStore(store, 'a', '1', story);
-
-      const context = store.getRawStory('a', '1');
-      context.getDecorated()(context);
-
-      expect(globalDecorator).toHaveBeenCalled();
-      expect(kindDecorator).toHaveBeenCalled();
-      expect(story).toHaveBeenCalled();
-    });
-  });
-
   describe('args', () => {
-    it('composes component-level and story-level args, favoring story-level', () => {
-      const store = new StoryStore({ channel });
-      store.addKindMetadata('a', {
-        parameters: { args: { arg1: 1, arg2: 2, arg3: 3, arg4: { complex: 'object' } } },
-      });
-      addStoryToStore(store, 'a', '1', () => 0, {
-        args: {
-          arg1: 4,
-          arg2: undefined,
-          arg4: { other: 'object ' },
-        },
-      });
-      expect(store.getRawStory('a', '1').args).toEqual({
-        arg1: 4,
-        arg2: undefined,
-        arg3: 3,
-        arg4: { other: 'object ' },
-      });
-    });
-
-    it('is initialized to the value stored in parameters.args[name] || parameters.argType[name].defaultValue', () => {
-      const store = new StoryStore({ channel });
-      addStoryToStore(store, 'a', '1', () => 0, {
-        argTypes: {
-          arg1: { defaultValue: 'arg1' },
-          arg2: { defaultValue: 2 },
-          arg3: { defaultValue: { complex: { object: ['type'] } } },
-          arg4: {},
-          arg5: {},
-          arg6: { defaultValue: 0 }, // See https://github.com/storybookjs/storybook/issues/12767
-        },
-        args: {
-          arg2: 3,
-          arg4: 'foo',
-          arg7: false,
-        },
-      });
-      expect(store.getRawStory('a', '1').args).toEqual({
-        arg1: 'arg1',
-        arg2: 3,
-        arg3: { complex: { object: ['type'] } },
-        arg4: 'foo',
-        arg6: 0,
-        arg7: false,
-      });
-    });
-
     it('automatically infers argTypes based on args', () => {
       const store = new StoryStore({ channel });
       store.startConfiguring();
@@ -246,24 +177,6 @@ describe('preview.story_store', () => {
       );
     });
 
-    it('mapping changes arg values that are passed to the story in the context', () => {
-      const storyFn = jest.fn();
-      const store = new StoryStore({ channel });
-      addStoryToStore(store, 'a', '1', storyFn, {
-        argTypes: {
-          one: { mapping: { 1: 'mapped' } },
-          two: { mapping: { 1: 'no match' } },
-        },
-        args: { one: 1, two: 2, three: 3 },
-      });
-      store.getRawStory('a', '1').storyFn();
-
-      expect(storyFn).toHaveBeenCalledWith(
-        { one: 'mapped', two: 2, three: 3 },
-        expect.objectContaining({ args: { one: 'mapped', two: 2, three: 3 } })
-      );
-    });
-
     it('updateStoryArgs emits STORY_ARGS_UPDATED', () => {
       const onArgsChangedChannel = jest.fn();
       const testChannel = mockChannel();
@@ -290,41 +203,6 @@ describe('preview.story_store', () => {
       testChannel.emit(Events.UPDATE_STORY_ARGS, { storyId: 'a--1', updatedArgs: { foo: 'bar' } });
 
       expect(store.getRawStory('a', '1').args).toEqual({ foo: 'bar' });
-    });
-
-    it('passes args as the first argument to the story if `parameters.passArgsFirst` is true', () => {
-      const store = new StoryStore({ channel });
-
-      store.addKindMetadata('a', {
-        parameters: {
-          argTypes: {
-            a: { defaultValue: 1 },
-          },
-        },
-        decorators: [],
-      });
-
-      const storyOne = jest.fn();
-      addStoryToStore(store, 'a', '1', storyOne, { passArgsFirst: false });
-
-      store.getRawStory('a', '1').storyFn();
-      expect(storyOne).toHaveBeenCalledWith(
-        expect.objectContaining({
-          args: { a: 1 },
-          parameters: expect.objectContaining({}),
-        })
-      );
-
-      const storyTwo = jest.fn();
-      addStoryToStore(store, 'a', '2', storyTwo, { passArgsFirst: true });
-      store.getRawStory('a', '2').storyFn();
-      expect(storyTwo).toHaveBeenCalledWith(
-        { a: 1 },
-        expect.objectContaining({
-          args: { a: 1 },
-          parameters: expect.objectContaining({}),
-        })
-      );
     });
 
     it('resetStoryArgs resets a single arg', () => {
@@ -645,119 +523,7 @@ describe('preview.story_store', () => {
     });
   });
 
-  describe('argsEnhancer', () => {
-    it('allows you to add args', () => {
-      const store = new StoryStore({ channel });
-
-      const enhancer = jest.fn((context) => ({ c: 'd' }));
-      store.addArgsEnhancer(enhancer);
-
-      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
-
-      expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
-      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd' });
-    });
-
-    it('does not pass result of earlier enhancers into subsequent ones, but composes their output', () => {
-      const store = new StoryStore({ channel });
-
-      const enhancerOne = jest.fn((context) => ({ c: 'd' }));
-      store.addArgsEnhancer(enhancerOne);
-
-      const enhancerTwo = jest.fn((context) => ({ e: 'f' }));
-      store.addArgsEnhancer(enhancerTwo);
-
-      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
-
-      expect(enhancerOne).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
-      expect(enhancerTwo).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
-      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd', e: 'f' });
-    });
-  });
-
   describe('argTypesEnhancer', () => {
-    it('records when the given story processes args', () => {
-      const store = new StoryStore({ channel });
-
-      const enhancer = jest.fn((context) => ({ ...context.parameters.argTypes, c: 'd' }));
-      store.addArgTypesEnhancer(enhancer);
-
-      addStoryToStore(store, 'a', '1', (args: any) => 0, { argTypes: { a: 'b' } });
-
-      expect(enhancer).toHaveBeenCalledWith(
-        expect.objectContaining({ parameters: { __isArgsStory: true, argTypes: { a: 'b' } } })
-      );
-      expect(store.getRawStory('a', '1').parameters.argTypes).toEqual({ a: 'b', c: 'd' });
-    });
-
-    it('allows you to alter argTypes when stories are added', () => {
-      const store = new StoryStore({ channel });
-
-      const enhancer = jest.fn((context) => ({ ...context.parameters.argTypes, c: 'd' }));
-      store.addArgTypesEnhancer(enhancer);
-
-      addStoryToStore(store, 'a', '1', () => 0, { argTypes: { a: 'b' } });
-
-      expect(enhancer).toHaveBeenCalledWith(
-        expect.objectContaining({ parameters: { __isArgsStory: false, argTypes: { a: 'b' } } })
-      );
-      expect(store.getRawStory('a', '1').parameters.argTypes).toEqual({ a: 'b', c: 'd' });
-    });
-
-    it('recursively passes argTypes to successive enhancers', () => {
-      const store = new StoryStore({ channel });
-
-      const firstEnhancer = jest.fn((context) => ({ ...context.parameters.argTypes, c: 'd' }));
-      store.addArgTypesEnhancer(firstEnhancer);
-      const secondEnhancer = jest.fn((context) => ({ ...context.parameters.argTypes, e: 'f' }));
-      store.addArgTypesEnhancer(secondEnhancer);
-
-      addStoryToStore(store, 'a', '1', () => 0, { argTypes: { a: 'b' } });
-
-      expect(firstEnhancer).toHaveBeenCalledWith(
-        expect.objectContaining({ parameters: { __isArgsStory: false, argTypes: { a: 'b' } } })
-      );
-      expect(secondEnhancer).toHaveBeenCalledWith(
-        expect.objectContaining({
-          parameters: { __isArgsStory: false, argTypes: { a: 'b', c: 'd' } },
-        })
-      );
-      expect(store.getRawStory('a', '1').parameters.argTypes).toEqual({ a: 'b', c: 'd', e: 'f' });
-    });
-
-    it('does not merge argType enhancer results', () => {
-      const store = new StoryStore({ channel });
-
-      const enhancer = jest.fn().mockReturnValue({ c: 'd' });
-      store.addArgTypesEnhancer(enhancer);
-
-      addStoryToStore(store, 'a', '1', () => 0, { argTypes: { a: 'b' } });
-
-      expect(enhancer).toHaveBeenCalledWith(
-        expect.objectContaining({ parameters: { __isArgsStory: false, argTypes: { a: 'b' } } })
-      );
-      expect(store.getRawStory('a', '1').parameters.argTypes).toEqual({ c: 'd' });
-    });
-
-    it('allows you to alter argTypes when stories are re-added', () => {
-      const store = new StoryStore({ channel });
-      addons.setChannel(channel);
-
-      const enhancer = jest.fn((context) => ({ ...context.parameters.argTypes, c: 'd' }));
-      store.addArgTypesEnhancer(enhancer);
-
-      addStoryToStore(store, 'a', '1', () => 0, { argTypes: { a: 'b' } });
-
-      enhancer.mockClear();
-      store.removeStoryKind('a');
-
-      addStoryToStore(store, 'a', '1', () => 0, { argTypes: { e: 'f' } });
-      expect(enhancer).toHaveBeenCalledWith(
-        expect.objectContaining({ parameters: { __isArgsStory: false, argTypes: { e: 'f' } } })
-      );
-      expect(store.getRawStory('a', '1').parameters.argTypes).toEqual({ e: 'f', c: 'd' });
-    });
-
     it('automatically infers argTypes from args', () => {
       const store = new StoryStore({ channel });
       store.startConfiguring();

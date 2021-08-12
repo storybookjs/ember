@@ -466,7 +466,7 @@ export class WebPreview<StoryFnReturnType> {
       // Alternatively, we could make this function async and await the teardown before rendering
       // the new story. This might be a bit complicated for docs however.
       controller.abort();
-      story.cleanup();
+      this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
