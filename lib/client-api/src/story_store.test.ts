@@ -97,47 +97,6 @@ describe('preview.story_store', () => {
       });
     });
 
-    it('is passed to the story in the context', () => {
-      const storyFn = jest.fn();
-      const store = new StoryStore({ channel });
-      addStoryToStore(store, 'a', '1', storyFn, { passArgsFirst: false });
-      store.updateStoryArgs('a--1', { foo: 'bar' });
-      store.getRawStory('a', '1').storyFn();
-
-      expect(storyFn).toHaveBeenCalledWith(
-        expect.objectContaining({
-          args: { foo: 'bar' },
-        })
-      );
-    });
-
-    it('updateStoryArgs emits STORY_ARGS_UPDATED', () => {
-      const onArgsChangedChannel = jest.fn();
-      const testChannel = mockChannel();
-      testChannel.on(Events.STORY_ARGS_UPDATED, onArgsChangedChannel);
-
-      const store = new StoryStore({ channel: testChannel });
-      addStoryToStore(store, 'a', '1', () => 0);
-
-      store.updateStoryArgs('a--1', { foo: 'bar' });
-      expect(onArgsChangedChannel).toHaveBeenCalledWith({ storyId: 'a--1', args: { foo: 'bar' } });
-
-      store.updateStoryArgs('a--1', { baz: 'bing' });
-      expect(onArgsChangedChannel).toHaveBeenCalledWith({
-        storyId: 'a--1',
-        args: { foo: 'bar', baz: 'bing' },
-      });
-    });
-
-    it('should update if the UPDATE_STORY_ARGS event is received', () => {
-      const testChannel = mockChannel();
-      const store = new StoryStore({ channel: testChannel });
-      addStoryToStore(store, 'a', '1', () => 0);
-
-      testChannel.emit(Events.UPDATE_STORY_ARGS, { storyId: 'a--1', updatedArgs: { foo: 'bar' } });
-
-      expect(store.getRawStory('a', '1').args).toEqual({ foo: 'bar' });
-    });
 
     it('resetStoryArgs resets a single arg', () => {
       const store = new StoryStore({ channel });
@@ -306,96 +265,6 @@ describe('preview.story_store', () => {
         arg5: 'new',
       });
     });
-    it('is passed to the story in the context', () => {
-      const storyFn = jest.fn();
-      const store = new StoryStore({ channel });
-
-      store.updateGlobals({ foo: 'bar' });
-      addStoryToStore(store, 'a', '1', storyFn, { passArgsFirst: false });
-      store.getRawStory('a', '1').storyFn();
-
-      expect(storyFn).toHaveBeenCalledWith(
-        expect.objectContaining({
-          globals: { foo: 'bar' },
-        })
-      );
-
-      store.updateGlobals({ baz: 'bing' });
-      store.getRawStory('a', '1').storyFn();
-
-      expect(storyFn).toHaveBeenCalledWith(
-        expect.objectContaining({
-          globals: { foo: 'bar', baz: 'bing' },
-        })
-      );
-    });
-
-    it('updateGlobals emits GLOBALS_UPDATED', () => {
-      const onGlobalsChangedChannel = jest.fn();
-      const testChannel = mockChannel();
-      testChannel.on(Events.GLOBALS_UPDATED, onGlobalsChangedChannel);
-
-      const store = new StoryStore({ channel: testChannel });
-      addStoryToStore(store, 'a', '1', () => 0);
-      store.addGlobalMetadata({
-        parameters: {
-          globalTypes: {
-            foo: { defaultValue: 'Foo' },
-            bar: { defaultValue: 'Bar' },
-          },
-          globals: { baz: 'Baz', qux: 'Qux' },
-        },
-      });
-      store.finishConfiguring();
-
-      store.updateGlobals({ foo: 'FUD' });
-      expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
-        globals: { foo: 'FUD', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
-        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
-      });
-
-      store.updateGlobals({ baz: 'BING' });
-      expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
-        globals: { foo: 'FUD', bar: 'Bar', baz: 'BING', qux: 'Qux' },
-        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
-      });
-    });
-
-    it('should update if the UPDATE_GLOBALS event is received', () => {
-      const testChannel = mockChannel();
-      const store = new StoryStore({ channel: testChannel });
-      addStoryToStore(store, 'a', '1', () => 0);
-
-      testChannel.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
-
-      expect(store.getRawStory('a', '1').globals).toEqual({ foo: 'bar' });
-    });
-
-    it('DOES NOT pass globals as the first argument to the story if `parameters.passArgsFirst` is true', () => {
-      const store = new StoryStore({ channel });
-
-      const storyOne = jest.fn();
-      addStoryToStore(store, 'a', '1', storyOne, { passArgsFirst: false });
-
-      store.updateGlobals({ foo: 'bar' });
-
-      store.getRawStory('a', '1').storyFn();
-      expect(storyOne).toHaveBeenCalledWith(
-        expect.objectContaining({
-          globals: { foo: 'bar' },
-        })
-      );
-
-      const storyTwo = jest.fn();
-      addStoryToStore(store, 'a', '2', storyTwo, { passArgsFirst: true });
-      store.getRawStory('a', '2').storyFn();
-      expect(storyTwo).toHaveBeenCalledWith(
-        {},
-        expect.objectContaining({
-          globals: { foo: 'bar' },
-        })
-      );
-    });
   });
 
   describe('argTypesEnhancer', () => {
@@ -445,43 +314,6 @@ describe('preview.story_store', () => {
       expect(store._argTypesEnhancers.length).toBe(4);
     });
   });
-
-  describe('selection specifiers', () => {
-    describe('with args', () => {
-      it('overrides args on the story', () => {
-        const store = new StoryStore({ channel });
-        const argTypes = {
-          a: { type: { name: 'number' }, defaultValue: 1 },
-          b: { type: { name: 'number' }, defaultValue: 2 },
-          c: { type: { name: 'boolean' } },
-        };
-        store.setSelectionSpecifier({
-          storySpecifier: 'a--1',
-          viewMode: 'story',
-          args: {
-            a: 2,
-            b: 'two',
-            c: 'true',
-          },
-        });
-        addStoryToStore(store, 'a', '1', () => 0, { argTypes });
-        store.finishConfiguring();
-
-        expect(store._stories['a--1'].args).toEqual({ a: 2, b: NaN, c: true });
-      });
-    });
-
-    describe('if you use no specifier', () => {
-      it('selects nothing', () => {
-        const store = new StoryStore({ channel });
-        addStoryToStore(store, 'a', '1', () => 0);
-        addStoryToStore(store, 'a', '2', () => 0);
-        addStoryToStore(store, 'b', '1', () => 0);
-        store.finishConfiguring();
-
-        expect(store.getSelection()).toEqual(undefined);
-      });
-    });
 
     describe('HMR behaviour', () => {
       it('retains successful selection', () => {

@@ -20,7 +20,6 @@ import {
   Args,
   DocsContextProps,
   StorySpecifier,
-  Parameters,
   CSFFile,
 } from '@storybook/client-api/dist/ts3.9/new/types';
 import { StoryStore } from '@storybook/client-api/dist/esm/new/StoryStore';
@@ -73,8 +72,8 @@ export class WebPreview<StoryFnReturnType> {
     getGlobalMeta: () => WebGlobalMeta<StoryFnReturnType>;
     importFn: ModuleImportFn;
   }) {
-    console.log('creating WebPreview');
     this.channel = getOrCreateChannel();
+    this.view = new WebView();
 
     const globalMeta = this.getGlobalMetaOrRenderError(getGlobalMeta);
     if (!globalMeta) {
@@ -88,9 +87,6 @@ export class WebPreview<StoryFnReturnType> {
 
     this.urlStore = new UrlStore();
     this.storyStore = new StoryStore({ importFn, globalMeta, fetchStoriesList });
-    this.view = new WebView();
-
-    this.initialize();
   }
 
   getGlobalMetaOrRenderError(
@@ -130,7 +126,21 @@ export class WebPreview<StoryFnReturnType> {
 
   // Use the selection specifier to choose a story
   async selectSpecifiedStory() {
-    const { storySpecifier, viewMode, globals, args } = this.urlStore.selectionSpecifier;
+    const { globals } = this.urlStore.selectionSpecifier || {};
+    if (globals) {
+      this.storyStore.globals.updateFromPersisted(globals);
+    }
+    this.channel.emit(Events.SET_GLOBALS, {
+      globals: this.storyStore.globals.get(),
+      globalTypes: this.storyStore.globalMeta.globalTypes,
+    });
+
+    if (!this.urlStore.selectionSpecifier) {
+      this.renderMissingStory();
+      return;
+    }
+
+    const { storySpecifier, viewMode, args } = this.urlStore.selectionSpecifier;
     const storyId = this.storyStore.storiesList.storyIdFromSpecifier(storySpecifier);
 
     if (!storyId) {
@@ -143,14 +153,6 @@ export class WebPreview<StoryFnReturnType> {
 
     // TODO -- previously this only emitted if the selection failed. I don't know if we really need it
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
-
-    if (globals) {
-      this.storyStore.globals.updateFromPersisted(globals);
-    }
-    this.channel.emit(Events.SET_GLOBALS, {
-      globals: this.storyStore.globals.get(),
-      globalTypes: this.storyStore.globalMeta.globalTypes,
-    });
 
     await this.renderSelection({ persistedArgs: args });
   }
@@ -175,7 +177,7 @@ export class WebPreview<StoryFnReturnType> {
     this.storyStore.globals.update(globals);
 
     this.channel.emit(Events.GLOBALS_UPDATED, {
-      globals,
+      globals: this.storyStore.globals.get(),
       initialGlobals: this.storyStore.globals.initialGlobals,
     });
   }
@@ -482,7 +484,7 @@ export class WebPreview<StoryFnReturnType> {
     // TODO -- should we emit here?
   }
 
-  renderMissingStory(storySpecifier: StorySpecifier) {
+  renderMissingStory(storySpecifier?: StorySpecifier) {
     this.view.showNoPreview();
     this.channel.emit(Events.STORY_MISSING, storySpecifier);
   }
