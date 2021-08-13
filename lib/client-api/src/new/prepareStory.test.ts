@@ -15,18 +15,18 @@ describe('prepareStory', () => {
         {
           title,
           parameters: {
-            a: 'component',
-            b: 'component',
-            nested: { z: 'component', y: 'component' },
+            a: { name: 'component' },
+            b: { name: 'component' },
+            nested: { z: { name: 'component' }, y: { name: 'component' } },
           },
         },
         {
           render,
           parameters: {
-            a: 'global',
-            b: 'global',
-            c: 'global',
-            nested: { z: 'global', x: 'global' },
+            a: { name: 'global' },
+            b: { name: 'global' },
+            c: { name: 'global' },
+            nested: { z: { name: 'global' }, x: { name: 'global' } },
           },
         }
       );
@@ -34,9 +34,9 @@ describe('prepareStory', () => {
       expect(parameters).toEqual({
         __isArgsStory: true,
         a: 'story',
-        b: 'component',
-        c: 'global',
-        nested: { z: 'story', y: 'component', x: 'global' },
+        b: { name: 'component' },
+        c: { name: 'global' },
+        nested: { z: 'story', y: { name: 'component' }, x: { name: 'global' } },
       });
     });
 
@@ -191,74 +191,78 @@ describe('prepareStory', () => {
   describe('argTypes', () => {
     it('are combined in the right order', () => {
       const { argTypes } = prepareStory(
-        { id, name, argTypes: { a: 'story', nested: { z: 'story' } } },
+        { id, name, argTypes: { a: { name: 'story' }, nested: { z: { name: 'story' } } } },
         {
           title,
           argTypes: {
-            a: 'component',
-            b: 'component',
-            nested: { z: 'component', y: 'component' },
+            a: { name: 'component' },
+            b: { name: 'component' },
+            nested: { z: { name: 'component' }, y: { name: 'component' } },
           },
         },
         {
           render,
           argTypes: {
-            a: 'global',
-            b: 'global',
-            c: 'global',
-            nested: { z: 'global', x: 'global' },
+            a: { name: 'global' },
+            b: { name: 'global' },
+            c: { name: 'global' },
+            nested: { z: { name: 'global' }, x: { name: 'global' } },
           },
         }
       );
 
       expect(argTypes).toEqual({
-        a: 'story',
-        b: 'component',
-        c: 'global',
-        nested: { z: 'story', y: 'component', x: 'global' },
+        a: { name: 'story' },
+        b: { name: 'component' },
+        c: { name: 'global' },
+        nested: { z: { name: 'story' }, y: { name: 'component' }, x: { name: 'global' } },
       });
     });
     describe('argTypesEnhancers', () => {
       it('allows you to alter argTypes when stories are added', () => {
-        const enhancer = jest.fn((context) => ({ ...context.argTypes, c: 'd' }));
+        const enhancer = jest.fn((context) => ({ ...context.argTypes, c: { name: 'd' } }));
         const { argTypes } = prepareStory(
-          { id, name, argTypes: { a: 'b' } },
+          { id, name, argTypes: { a: { name: 'b' } } },
           { title },
           { render, argTypesEnhancers: [enhancer] }
         );
 
-        expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ argTypes: { a: 'b' } }));
-        expect(argTypes).toEqual({ a: 'b', c: 'd' });
+        expect(enhancer).toHaveBeenCalledWith(
+          expect.objectContaining({ argTypes: { a: { name: 'b' } } })
+        );
+        expect(argTypes).toEqual({ a: { name: 'b' }, c: { name: 'd' } });
       });
 
       it('does not merge argType enhancer results', () => {
-        const enhancer = jest.fn(() => ({ c: 'd' }));
+        const enhancer = jest.fn(() => ({ c: { name: 'd' } }));
         const { argTypes } = prepareStory(
-          { id, name, argTypes: { a: 'b' } },
+          { id, name, argTypes: { a: { name: 'b' } } },
           { title },
           { render, argTypesEnhancers: [enhancer] }
         );
 
-        expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ argTypes: { a: 'b' } }));
-        expect(argTypes).toEqual({ c: 'd' });
+        expect(enhancer).toHaveBeenCalledWith(
+          expect.objectContaining({ argTypes: { a: { name: 'b' } } })
+        );
+        expect(argTypes).toEqual({ c: { name: 'd' } });
       });
 
       it('recursively passes argTypes to successive enhancers', () => {
-        const firstEnhancer = jest.fn((context) => ({ ...context.argTypes, c: 'd' }));
-        const secondEnhancer = jest.fn((context) => ({ ...context.argTypes, e: 'f' }));
+        const firstEnhancer = jest.fn((context) => ({ ...context.argTypes, c: { name: 'd' } }));
+        const secondEnhancer = jest.fn((context) => ({ ...context.argTypes, e: { name: 'f' } }));
         const { argTypes } = prepareStory(
-          { id, name, argTypes: { a: 'b' } },
+          { id, name, argTypes: { a: { name: 'b' } } },
           { title },
           { render, argTypesEnhancers: [firstEnhancer, secondEnhancer] }
         );
 
         expect(firstEnhancer).toHaveBeenCalledWith(
-          expect.objectContaining({ argTypes: { a: 'b' } })
+          expect.objectContaining({ argTypes: { a: { name: 'b' } } })
         );
         expect(secondEnhancer).toHaveBeenCalledWith(
-          expect.objectContaining({ argTypes: { a: 'b', c: 'd' } })
+          expect.objectContaining({ argTypes: { a: { name: 'b' }, c: { name: 'd' } } })
         );
-        expect(argTypes).toEqual({ a: 'b', c: 'd', e: 'f' });
+        expect(argTypes).toEqual({ a: { name: 'b' }, c: { name: 'd' }, e: { name: 'f' } });
       });
     });
   });
@@ -334,7 +338,7 @@ describe('prepareStory', () => {
       );
 
       const context = { args: story.initialArgs, ...story };
-      story.undecoratedStoryFn(context);
+      story.undecoratedStoryFn(context as any);
       expect(renderMock).toHaveBeenCalledWith(
         { one: 'mapped', two: 2, three: 3 },
         expect.objectContaining({ args: { one: 'mapped', two: 2, three: 3 } })
@@ -349,7 +353,7 @@ describe('prepareStory', () => {
         { render: renderMock }
       );
 
-      firstStory.undecoratedStoryFn({ args: firstStory.initialArgs, ...firstStory });
+      firstStory.undecoratedStoryFn({ args: firstStory.initialArgs, ...firstStory } as any);
       expect(renderMock).toHaveBeenCalledWith(
         { a: 1 },
         expect.objectContaining({ args: { a: 1 } })
@@ -361,7 +365,7 @@ describe('prepareStory', () => {
         { render: renderMock }
       );
 
-      secondStory.undecoratedStoryFn({ args: secondStory.initialArgs, ...secondStory });
+      secondStory.undecoratedStoryFn({ args: secondStory.initialArgs, ...secondStory } as any);
       expect(renderMock).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 1 } }));
     });
   });

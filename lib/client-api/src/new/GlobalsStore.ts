@@ -39,9 +39,10 @@ export class GlobalsStore {
       if (this.allowedGlobalNames.has(key)) acc[key] = value;
       return acc;
     }, {} as Globals);
+
     // Note that unlike args, we do not have the same type information for globals to allow us
     // to type check them here, so we just set them naively
-    this.globals = combineParameters(this.globals, allowedUrlGlobals);
+    this.globals = { ...this.globals, ...allowedUrlGlobals };
   }
 
   get() {

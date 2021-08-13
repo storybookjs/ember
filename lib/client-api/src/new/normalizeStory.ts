@@ -37,12 +37,12 @@ export function normalizeStory<StoryFnReturnType>(
   return {
     id,
     name: storyObject.name || storyObject.storyName || exportName,
-    decorators,
-    parameters,
-    args,
-    argTypes,
-    loaders,
-    render,
-    play,
+    ...(decorators && { decorators }),
+    ...(parameters && { parameters }),
+    ...(args && { args }),
+    ...(argTypes && { argTypes }),
+    ...(loaders && { loaders }),
+    ...(render && { render }),
+    ...(play && { play }),
   };
 }
