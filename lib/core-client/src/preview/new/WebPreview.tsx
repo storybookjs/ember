@@ -193,8 +193,8 @@ export class WebPreview<StoryFnReturnType> {
   async onResetArgs({ storyId, argNames }: { storyId: string; argNames?: string[] }) {
     const { initialArgs } = await this.storyStore.loadStory({ storyId });
 
-    // TODO ensure this technique works with falsey/null initialArgs
-    const updatedArgs = argNames.reduce((acc, argName) => {
+    const argNamesToReset = argNames || Object.keys(this.storyStore.args.get(storyId));
+    const updatedArgs = argNamesToReset.reduce((acc, argName) => {
       acc[argName] = initialArgs[argName];
       return acc;
     }, {} as Partial<Args>);

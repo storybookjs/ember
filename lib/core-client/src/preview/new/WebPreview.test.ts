@@ -41,24 +41,16 @@ jest.mock('global', () => ({
 jest.mock('@storybook/client-logger');
 jest.mock('react-dom');
 
-// The functions on the preview that trigger rendering don't wait for
-// the async parts, so we need to listen for the "done" events
-const renderedEvents = [
-  Events.STORY_RENDERED,
-  Events.DOCS_RENDERED,
-  Events.STORY_THREW_EXCEPTION,
-  Events.STORY_ERRORED,
-];
-const waitForStoryRender = () => {
+const waitForEvents = (events: string[]) => {
   // We've already emitted a render event. NOTE if you want to test a second call,
   // ensure you call `mockChannel.emit.mockClear()` before `waitForStoryRender`
-  if (mockChannel.emit.mock.calls.find((call) => renderedEvents.includes(call[0]))) {
+  if (mockChannel.emit.mock.calls.find((call) => events.includes(call[0]))) {
     return Promise.resolve(null);
   }
 
   return new Promise((resolve, reject) => {
     mockChannel.emit.mockImplementation((event) => {
-      if (renderedEvents.includes(event)) {
+      if (events.includes(event)) {
         resolve(null);
       }
     });
@@ -67,6 +59,16 @@ const waitForStoryRender = () => {
     setTimeout(() => reject(new Error('Story did not render in time')), 100);
   });
 };
+
+// The functions on the preview that trigger rendering don't wait for
+// the async parts, so we need to listen for the "done" events
+const waitForStoryRender = () =>
+  waitForEvents([
+    Events.STORY_RENDERED,
+    Events.DOCS_RENDERED,
+    Events.STORY_THREW_EXCEPTION,
+    Events.STORY_ERRORED,
+  ]);
 
 const componentOneExports = {
   default: {
@@ -670,7 +672,78 @@ describe('WebPreview', () => {
   });
 
   describe('onResetArgs', () => {
-    // grab existing tests
+    it('resetStoryArgs emits STORY_ARGS_UPDATED', async () => {
+      document.location.search = '?id=component-one--a';
+      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.UPDATE_STORY_ARGS, {
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'new' },
+      });
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'new' },
+      });
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.RESET_STORY_ARGS, {
+        storyId: 'component-one--a',
+        argNames: ['foo'],
+      });
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a' },
+      });
+    });
+
+    it('resetStoryArgs resets a single arg', async () => {
+      document.location.search = '?id=component-one--a';
+      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.UPDATE_STORY_ARGS, {
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'new', new: 'value' },
+      });
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.RESET_STORY_ARGS, {
+        storyId: 'component-one--a',
+        argNames: ['foo'],
+      });
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a', new: 'value' },
+      });
+    });
+
+    it('resetStoryArgs resets all args', async () => {
+      document.location.search = '?id=component-one--a';
+      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.UPDATE_STORY_ARGS, {
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'new', new: 'value' },
+      });
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.RESET_STORY_ARGS, {
+        storyId: 'component-one--a',
+      });
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a' },
+      });
+    });
   });
 
   describe('onSetCurrentStory', () => {
