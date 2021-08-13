@@ -8,12 +8,19 @@ interface PanelProps {
   active: boolean;
 }
 
+enum TestingStates {
+  DONE = 'done',
+  NEXT = 'next',
+  PENDING = 'pending',
+};
+
+type TestState = TestingStates.DONE | TestingStates.NEXT | TestingStates.PENDING;
 interface Call {
   id: string;
   key: string;
   args: any[];
   intercepted?: boolean;
-  state?: string;//'done' | 'next' | 'pending';
+  state?: TestState;
 }
 
 const setDebugging = (value: boolean) => (global.window.__STORYBOOK_DEBUGGING__ = !!value);
@@ -58,17 +65,17 @@ const Call = ({ call, nested }: { call: Call, nested?: boolean }) => {
     display: nested ? "inline-block" : "flex",
     alignItems: "center",
     padding: nested ? "none" : "8px 10px",
-    background: call.state === "next" ? "#FFF5CF" : "transparent",
+    background: call.state === TestingStates.NEXT ? "#FFF5CF" : "transparent",
     borderBottom: nested ? "none" : "1px solid #eee",
-    opacity: call.state === "pending" && !nested ? 0.4 : 1,
+    opacity: call.state === TestingStates.PENDING && !nested ? 0.4 : 1,
     fontFamily: 'Monaco, monospace',
     fontSize: 12
   };
   return (
     <div style={style}>
-      {!nested && call.state === "done" && <Icons icon="check" style={{ flexShrink: 0, width: 12, height: 12, padding: 1, marginRight: 5, color: 'green'}} />}
-      {!nested && call.state === "next" && <Icons icon="stop" style={{ flexShrink: 0, width: 12, height: 12, marginRight: 5, color: 'red'}} />}
-      {!nested && call.state === "pending" && <Icons icon="circle" style={{ flexShrink: 0, width: 12, height: 12, padding: 4, marginRight: 5, color: 'gray'}} />}
+      {!nested && call.state === TestingStates.DONE && <Icons icon="check" style={{ flexShrink: 0, width: 12, height: 12, padding: 1, marginRight: 5, color: 'green'}} />}
+      {!nested && call.state === TestingStates.NEXT && <Icons icon="stop" style={{ flexShrink: 0, width: 12, height: 12, marginRight: 5, color: 'red'}} />}
+      {!nested && call.state === TestingStates.PENDING && <Icons icon="circle" style={{ flexShrink: 0, width: 12, height: 12, padding: 4, marginRight: 5, color: 'gray'}} />}
       {call.key.split('.').flatMap((elem, index, array) =>
         index === array.length - 1
           ? [<span key={index} style={{color: "#4776D6"}}>{elem}</span>]
@@ -114,11 +121,11 @@ export const Panel: React.FC<PanelProps> = (props) => {
     emit(EVENTS.NEXT);
   };
 
-  const mapped = log.reduce((acc, call, index) => {
-    acc[index] = { ...call, state: 'done' };
+  const mapped: Call[] = log.reduce((acc, call, index) => {
+    acc[index] = { ...call, state: TestingStates.DONE };
     return acc
-  }, lastLog.map(call => ({ ...call, state: 'pending' })))
-  if (isDebugging()) mapped[log.length - 1].state = 'next'
+  }, lastLog.map(call => ({ ...call, state: TestingStates.PENDING })))
+  if (isDebugging()) mapped[log.length - 1].state = TestingStates.NEXT
   
   return (
     <AddonPanel {...props}>
