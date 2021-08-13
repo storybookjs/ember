@@ -79,60 +79,6 @@ describe('preview.story_store', () => {
     });
   });
 
-  describe('getDataForManager', () => {
-    it('produces stories objects with normalized metadata', () => {
-      const store = new StoryStore({ channel });
-
-      store.addGlobalMetadata({ parameters: { global: 'global' }, decorators: [] });
-
-      store.addKindMetadata('a', { parameters: { kind: 'kind' }, decorators: [] });
-
-      addStoryToStore(store, 'a', '1', () => 0, { story: 'story' });
-
-      const { v, globalParameters, kindParameters, stories } = store.getDataForManager();
-
-      expect(v).toBe(2);
-      expect(globalParameters).toEqual({ global: 'global' });
-      expect(Object.keys(kindParameters)).toEqual(['a']);
-      expect(kindParameters.a).toEqual({ kind: 'kind' });
-
-      expect(Object.keys(stories)).toEqual(['a--1']);
-      expect(stories['a--1']).toMatchObject({
-        id: 'a--1',
-        kind: 'a',
-        name: '1',
-        parameters: { story: 'story' },
-      });
-    });
-  });
-
-  describe('getStoriesJsonData', () => {
-    it('produces stories objects with normalized metadata', () => {
-      const store = new StoryStore({ channel });
-
-      store.addGlobalMetadata({ parameters: { global: 'global' }, decorators: [] });
-
-      store.addKindMetadata('a', { parameters: { kind: 'kind' }, decorators: [] });
-
-      addStoryToStore(store, 'a', '1', () => 0, { story: 'story' });
-
-      const { v, globalParameters, kindParameters, stories } = store.getStoriesJsonData();
-
-      expect(v).toBe(2);
-      expect(globalParameters).toEqual({});
-      expect(kindParameters).toEqual({ a: {} });
-      expect(kindParameters.a).toEqual({});
-
-      expect(Object.keys(stories)).toEqual(['a--1']);
-      expect(stories['a--1']).toMatchObject({
-        id: 'a--1',
-        kind: 'a',
-        name: '1',
-        parameters: { __isArgsStory: false },
-      });
-    });
-  });
-
   describe('args', () => {
     it('automatically infers argTypes based on args', () => {
       const store = new StoryStore({ channel });
