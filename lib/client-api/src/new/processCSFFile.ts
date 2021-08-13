@@ -36,7 +36,6 @@ export function processCSFFile<StoryFnReturnType>(
   moduleExports: ModuleExports,
   path: Path
 ): CSFFile<StoryFnReturnType> {
-  console.log(`processCSFFile ${path}`);
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
   let exports = namedExports;
 

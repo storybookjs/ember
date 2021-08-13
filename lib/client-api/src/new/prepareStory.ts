@@ -38,7 +38,6 @@ export function prepareStory<StoryFnReturnType>(
   componentMeta: ComponentMeta<StoryFnReturnType>,
   globalMeta: GlobalMeta<StoryFnReturnType>
 ): Story<StoryFnReturnType> {
-  console.log(`prepareStory ${storyMeta.id}`);
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
   // will have a limited cost. If this proves misguided, we can refactor it.
