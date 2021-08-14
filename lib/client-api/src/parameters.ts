@@ -27,6 +27,7 @@ export const combineParameters = (...parameterSets: (Parameters | undefined)[]) 
 
   Object.keys(mergeKeys).forEach((key) => {
     const mergeValues = parameterSets
+      .filter(Boolean)
       .map((p) => p[key])
       .filter((value) => typeof value !== 'undefined');
     if (mergeValues.every((value) => isPlainObject(value))) {
