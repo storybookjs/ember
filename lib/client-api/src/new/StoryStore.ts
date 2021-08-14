@@ -10,7 +10,6 @@ import {
   StoryId,
   ModuleImportFn,
   GlobalMeta,
-  StoryMeta,
   Story,
   StoryContext,
   StoriesList,
@@ -21,10 +20,6 @@ import { HooksContext } from '../hooks';
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;
 const STORY_CACHE_SIZE = 1000;
-
-// TODO -- are these caches even worth it? how long does it actually take to process/prepare a single story?
-const processCSFFileWithCache = memoize(CSF_CACHE_SIZE)(processCSFFile);
-const prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory);
 
 export class StoryStore<StoryFnReturnType> {
   storiesList: StoriesListStore;
@@ -38,6 +33,10 @@ export class StoryStore<StoryFnReturnType> {
   args: ArgsStore;
 
   hooks: Record<StoryId, HooksContext>;
+
+  processCSFFileWithCache: typeof processCSFFile;
+
+  prepareStoryWithCache: typeof prepareStory;
 
   constructor({
     importFn,
@@ -56,6 +55,9 @@ export class StoryStore<StoryFnReturnType> {
     this.globals = new GlobalsStore({ globals, globalTypes });
     this.args = new ArgsStore();
     this.hooks = {};
+
+    this.processCSFFileWithCache = memoize(CSF_CACHE_SIZE)(processCSFFile) as typeof processCSFFile;
+    this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
   }
 
   async initialize() {
@@ -65,7 +67,7 @@ export class StoryStore<StoryFnReturnType> {
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<StoryFnReturnType>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
-    return processCSFFileWithCache(moduleExports, path);
+    return this.processCSFFileWithCache(moduleExports, path);
   }
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<StoryFnReturnType>> {
@@ -86,7 +88,7 @@ export class StoryStore<StoryFnReturnType> {
     }
     const componentMeta = csfFile.meta;
 
-    const story = prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
+    const story = this.prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
     this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();
     return story;
@@ -109,6 +111,10 @@ export class StoryStore<StoryFnReturnType> {
       globals: this.globals.get(),
       hooks: this.hooks[story.id],
     };
+  }
+
+  cleanupStory(story: Story<StoryFnReturnType>): void {
+    this.hooks[story.id].clean();
   }
 
   getSetStoriesPayload() {

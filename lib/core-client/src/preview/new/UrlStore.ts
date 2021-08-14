@@ -1,6 +1,6 @@
 import { SelectionSpecifier, Selection } from '@storybook/client-api/dist/ts3.9/new/types';
 
-// TODO -- this import is wrong
+// TODO -- move this import inside this file, fix types, add tests
 import { getSelectionSpecifierFromPath, setPath } from '../url';
 
 export class UrlStore {

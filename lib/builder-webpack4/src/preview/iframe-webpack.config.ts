@@ -109,6 +109,7 @@ export default async ({
 
     const preview = new WebPreview({ importFn, getGlobalMeta });
     window.__STORYBOOK_PREVIEW__ = preview;
+    preview.initialize();
     
     if (module.hot) {
       module.hot.accept('./${storiesFilename}', () => {

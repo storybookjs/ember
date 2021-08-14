@@ -38,7 +38,6 @@ export function prepareStory<StoryFnReturnType>(
   componentMeta: ComponentMeta<StoryFnReturnType>,
   globalMeta: GlobalMeta<StoryFnReturnType>
 ): Story<StoryFnReturnType> {
-  console.log(`prepareStory ${storyMeta.id}`);
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
   // will have a limited cost. If this proves misguided, we can refactor it.
@@ -71,12 +70,8 @@ export function prepareStory<StoryFnReturnType>(
     ...(storyMeta.loaders || []),
   ];
 
-  const hooks = new HooksContext();
-  const cleanup = () => hooks.clean();
-
   const render = storyMeta.render || componentMeta.render || globalMeta.render;
 
-  // TODO -- generalize combineParameters
   const passedArgTypes: ArgTypes = combineParameters(
     globalMeta.argTypes,
     componentMeta.argTypes,
@@ -88,7 +83,6 @@ export function prepareStory<StoryFnReturnType>(
   parameters.__isArgsStory = passArgsFirst && render.length > 0;
 
   // Pull out args[X] || argTypes[X].defaultValue into initialArgs
-  // TODO -- generalize combineParameters
   const passedArgs: Args = combineParameters(
     globalMeta.args,
     componentMeta.args,
@@ -126,21 +120,15 @@ export function prepareStory<StoryFnReturnType>(
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        initialArgs: accumulatedArgs,
+        initialArgs: initialArgsBeforeEnhancers,
       }),
     }),
     initialArgsBeforeEnhancers
   );
 
-  // BACKCOMPAT: do argTypeEnhancers expect to find existing argTypes on enhancers?
   contextForEnhancers.argTypes = argTypesEnhancers.reduce(
-    (accumulatedArgTypes, enhancer) => ({
-      ...accumulatedArgTypes,
-      ...enhancer({
-        ...contextForEnhancers,
-        argTypes: accumulatedArgTypes,
-      }),
-    }),
+    (accumulatedArgTypes, enhancer) =>
+      enhancer({ ...contextForEnhancers, argTypes: accumulatedArgTypes }),
     contextForEnhancers.argTypes
   );
 
@@ -157,21 +145,23 @@ export function prepareStory<StoryFnReturnType>(
       return acc;
     }, {} as Args);
 
-    const validatedContext = {
-      ...context,
-      args: validateOptions(mappedArgs, context.argTypes),
-    };
+    // TODO -- I think we are only supposed to validate args that come from the URL
+    // Also there is a bug that needs to be backported
+    // const validatedContext = {
+    //   ...context,
+    //   args: validateOptions(mappedArgs, context.argTypes),
+    // };
 
+    const mappedContext = { ...context, args: mappedArgs };
     const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
     return renderTimePassArgsFirst
-      ? (render as ArgsStoryFn<StoryFnReturnType>)(validatedContext.args, validatedContext)
-      : (render as LegacyStoryFn<StoryFnReturnType>)(validatedContext);
+      ? (render as ArgsStoryFn<StoryFnReturnType>)(mappedArgs, mappedContext)
+      : (render as LegacyStoryFn<StoryFnReturnType>)(mappedContext);
   };
   // TODO -- should this be unboundStoryFn?
   // TODO -- fix types
   const storyFn = applyHooks(applyDecorators)(undecoratedStoryFn, decorators as any);
 
-  // TODO -- can you define play functions at other levels?
   const { play } = storyMeta;
   const runPlayFunction = async () => {
     if (play) {
@@ -182,10 +172,10 @@ export function prepareStory<StoryFnReturnType>(
 
   return {
     ...contextForEnhancers,
+    undecoratedStoryFn,
     applyLoaders,
     storyFn,
     runPlayFunction,
-    cleanup,
   };
 }
 
