@@ -1,3 +1,10 @@
+## 6.4.0-alpha.30 (August 14, 2021)
+
+### Maintenance
+
+- CLI: Improve typings of Angular components ([#15832](https://github.com/storybookjs/storybook/pull/15832))
+- Controls: Fix `esm is not defined` error with built Storybook ([#15812](https://github.com/storybookjs/storybook/pull/15812))
+
 ## 6.4.0-alpha.29 (August 10, 2021)
 
 ### Features
