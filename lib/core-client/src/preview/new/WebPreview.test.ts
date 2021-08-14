@@ -5,19 +5,18 @@ import fetch from 'unfetch';
 import * as ReactDOM from 'react-dom';
 import { EventEmitter } from 'events';
 import { logger } from '@storybook/client-logger';
+import { addons } from '@storybook/addons';
 
 import { WebPreview } from './WebPreview';
 
 const emitter = new EventEmitter();
 const mockChannel = {
   on: emitter.on.bind(emitter),
+  removeListener: jest.fn(),
+  off: jest.fn(),
   emit: jest.fn(),
 };
-jest.mock('@storybook/addons', () => ({
-  // @ts-ignore
-  ...jest.requireActual('@storybook/addons'),
-  addons: { getChannel: () => mockChannel },
-}));
+addons.setChannel(mockChannel as any);
 
 jest.mock('./WebView');
 jest.mock('unfetch', () =>
@@ -726,7 +725,6 @@ describe('WebPreview', () => {
     it('resetStoryArgs resets all args', async () => {
       document.location.search = '?id=component-one--a';
       await new WebPreview({ getGlobalMeta, importFn }).initialize();
-      mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
@@ -747,19 +745,225 @@ describe('WebPreview', () => {
   });
 
   describe('onSetCurrentStory', () => {
-    it.skip('updates URL', async () => {});
+    it('updates URL', async () => {
+      document.location.search = '?id=component-one--a';
+      await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
-    it.skip('emits CURRENT_STORY_WAS_SET', async () => {});
+      emitter.emit(Events.SET_CURRENT_STORY, {
+        storyId: 'component-one--b',
+        viewMode: 'story',
+      });
 
-    it.skip('renders missing if the story specified does not exist', async () => {});
-
-    describe('if the selection is unchanged', () => {
-      it.skip('does NOT call renderToDOM', async () => {});
-
-      it.skip('emits STORY_UNCHANGED', async () => {});
+      expect(history.replaceState).toHaveBeenCalledWith(
+        {},
+        '',
+        'pathname?id=component-one--b&viewMode=story'
+      );
     });
 
-    describe('when changing story in story viewMode', () => {
+    it('emits CURRENT_STORY_WAS_SET', async () => {
+      document.location.search = '?id=component-one--a';
+      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+      emitter.emit(Events.SET_CURRENT_STORY, {
+        storyId: 'component-one--b',
+        viewMode: 'story',
+      });
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CURRENT_STORY_WAS_SET, {
+        storyId: 'component-one--b',
+        viewMode: 'story',
+      });
+    });
+
+    it('renders missing if the story specified does not exist', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = new WebPreview({ getGlobalMeta, importFn });
+      await preview.initialize();
+
+      emitter.emit(Events.SET_CURRENT_STORY, {
+        storyId: 'random',
+        viewMode: 'story',
+      });
+
+      await waitForEvents([Events.STORY_MISSING]);
+      expect(preview.view.showNoPreview).toHaveBeenCalled();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
+    });
+
+    describe('if the selection is unchanged', () => {
+      it('emits STORY_UNCHANGED', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+
+        await waitForEvents([Events.STORY_UNCHANGED]);
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_UNCHANGED, 'component-one--a');
+      });
+
+      it('does NOT call renderToDOM', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        globalMeta.renderToDOM.mockClear();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+
+        // The renderToDOM would have been async so we need to wait a tick.
+        await new Promise((r) => setTimeout(r, 100));
+        expect(globalMeta.renderToDOM).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when changing story from docs viewMode to story', () => {
+      it('updates URL', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+
+        expect(history.replaceState).toHaveBeenCalledWith(
+          {},
+          '',
+          'pathname?id=component-one--a&viewMode=story'
+        );
+      });
+      it('emits STORY_CHANGED', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_CHANGED, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+      });
+
+      it('emits STORY_PREPARED', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+
+        await waitForEvents([Events.STORY_PREPARED]);
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
+          id: 'component-one--a',
+          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          initialArgs: { foo: 'a' },
+          argTypes: { foo: { type: { name: 'string' } } },
+          args: { foo: 'a' },
+        });
+      });
+
+      it('applies loaders with story context', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        await waitForStoryRender();
+
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            id: 'component-one--a',
+            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            initialArgs: { foo: 'a' },
+            argTypes: { foo: { type: { name: 'string' } } },
+            args: { foo: 'a' },
+          })
+        );
+      });
+
+      it('passes loaded context to renderToDOM', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        await waitForStoryRender();
+
+        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              id: 'component-one--a',
+              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              globals: { a: 'b' },
+              initialArgs: { foo: 'a' },
+              argTypes: { foo: { type: { name: 'string' } } },
+              args: { foo: 'a' },
+              loaded: { l: 7 },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+      });
+
+      it('renders error if the story calls showError', async () => {
+        const error = { title: 'title', description: 'description' };
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        await waitForStoryRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ERRORED, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith({
+          message: error.title,
+          stack: error.description,
+        });
+      });
+
+      it('renders exception if the story calls showException', async () => {
+        const error = new Error('error');
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        await waitForStoryRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+      });
+
+      it('executes runPlayFunction', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        await waitForStoryRender();
+
+        expect(componentOneExports.a.play).toHaveBeenCalled();
+      });
+
+      it('emits STORY_RENDERED', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+        await waitForStoryRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
       describe('while story is still rendering', () => {
         it.skip('stops initial story after loaders if running', async () => {});
 
@@ -767,23 +971,6 @@ describe('WebPreview', () => {
 
         it.skip('stops initial story after runPlayFunction if running', async () => {});
       });
-
-      it.skip('updates URL', async () => {});
-      it.skip('emits STORY_CHANGED', async () => {});
-
-      it.skip('renders error if the new story calls showError', async () => {});
-
-      it.skip('renders exception if the new story calls showException', async () => {});
-
-      it.skip('emits STORY_PREPARED', async () => {});
-
-      it.skip('applies loaders with story context', async () => {});
-
-      it.skip('passes loaded context to renderToDOM', async () => {});
-
-      it.skip('executes runPlayFunction', async () => {});
-
-      it.skip('emits STORY_RENDERED', async () => {});
     });
 
     describe('when changing from story viewMode to docs', () => {

@@ -235,7 +235,14 @@ export class WebPreview<StoryFnReturnType> {
 
     const { selection } = this.urlStore;
 
-    const story = await this.storyStore.loadStory({ storyId: selection.storyId });
+    let story;
+    try {
+      story = await this.storyStore.loadStory({ storyId: selection.storyId });
+    } catch (err) {
+      this.renderMissingStory(selection.storyId);
+      return;
+    }
+
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
     }
