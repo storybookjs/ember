@@ -81,7 +81,7 @@ const componentOneExports = {
     },
   },
   a: { args: { foo: 'a' }, play: jest.fn() },
-  b: { args: { foo: 'b' } },
+  b: { args: { foo: 'b' }, play: jest.fn() },
 };
 const componentTwoExports = {
   default: { title: 'Component Two' },
@@ -824,92 +824,90 @@ describe('WebPreview', () => {
       });
     });
 
-    describe.skip('when changing story in story viewMode FIXME', () => {
+    describe('when changing story in story viewMode', () => {
       it('updates URL', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
 
         expect(history.replaceState).toHaveBeenCalledWith(
           {},
           '',
-          'pathname?id=component-one--a&viewMode=story'
+          'pathname?id=component-one--b&viewMode=story'
         );
       });
 
-      // NOTE: I am not sure this entirely makes sense but this is the behaviour from 6.3
       it('emits STORY_CHANGED', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
 
         await waitForEvents([Events.STORY_CHANGED]);
-        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--b');
       });
 
       it('emits STORY_PREPARED', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
 
-        //  TODO: not sure if thes event makes sense here either
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
-          id: 'component-one--a',
+          id: 'component-one--b',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
-          initialArgs: { foo: 'a' },
+          initialArgs: { foo: 'b' },
           argTypes: { foo: { type: { name: 'string' } } },
-          args: { foo: 'a' },
+          args: { foo: 'b' },
         });
       });
 
       it('applies loaders with story context', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
 
         await waitForRender();
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
-            id: 'component-one--a',
+            id: 'component-one--b',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
-            initialArgs: { foo: 'a' },
+            initialArgs: { foo: 'b' },
             argTypes: { foo: { type: { name: 'string' } } },
-            args: { foo: 'a' },
+            args: { foo: 'b' },
           })
         );
       });
 
       it('passes loaded context to renderToDOM', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
         await waitForRender();
@@ -918,12 +916,12 @@ describe('WebPreview', () => {
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
-              id: 'component-one--a',
+              id: 'component-one--b',
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
-              initialArgs: { foo: 'a' },
+              initialArgs: { foo: 'b' },
               argTypes: { foo: { type: { name: 'string' } } },
-              args: { foo: 'a' },
+              args: { foo: 'b' },
               loaded: { l: 7 },
             }),
           }),
@@ -932,17 +930,17 @@ describe('WebPreview', () => {
       });
 
       it('renders error if the story calls showError', async () => {
-        const error = { title: 'title', description: 'description' };
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
-
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         const preview = new WebPreview({ getGlobalMeta, importFn });
         await preview.initialize();
         await waitForRender();
 
+        const error = { title: 'title', description: 'description' };
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
         await waitForRender();
@@ -955,17 +953,17 @@ describe('WebPreview', () => {
       });
 
       it('renders exception if the story calls showException', async () => {
-        const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
-
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         const preview = new WebPreview({ getGlobalMeta, importFn });
         await preview.initialize();
         await waitForRender();
 
+        const error = new Error('error');
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
         await waitForRender();
@@ -975,33 +973,33 @@ describe('WebPreview', () => {
       });
 
       it('executes runPlayFunction', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
         await waitForRender();
 
-        expect(componentOneExports.a.play).toHaveBeenCalled();
+        expect(componentOneExports.b.play).toHaveBeenCalled();
       });
 
       it('emits STORY_RENDERED', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
+        document.location.search = '?id=component-one--a';
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
-          storyId: 'component-one--a',
+          storyId: 'component-one--b',
           viewMode: 'story',
         });
         await waitForRender();
 
-        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
       });
 
       describe('while story is still rendering', () => {
