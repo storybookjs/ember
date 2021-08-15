@@ -69,6 +69,14 @@ const waitForRender = () =>
     Events.STORY_ERRORED,
   ]);
 
+const createGate = () => {
+  let openGate = (_?: any) => {};
+  const gate = new Promise<any | undefined>((resolve) => {
+    openGate = resolve;
+  });
+  return { gate, openGate };
+};
+
 const componentOneExports = {
   default: {
     title: 'Component One',
@@ -548,13 +556,10 @@ describe('WebPreview', () => {
 
     describe('while story is still rendering', () => {
       it('silently changes args if still running loaders', async () => {
-        let resolve = (_: any) => {};
-        const fence = new Promise<{ l: number }>((r) => {
-          resolve = r;
-        });
+        const { gate, openGate } = createGate();
 
         document.location.search = '?id=component-one--a';
-        componentOneExports.default.loaders[0].mockImplementationOnce(async () => fence);
+        componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -563,7 +568,7 @@ describe('WebPreview', () => {
         });
 
         // Now let the loader resolve
-        resolve({ l: 8 });
+        openGate({ l: 8 });
         await waitForRender();
 
         // Story gets rendered with updated args
@@ -581,13 +586,10 @@ describe('WebPreview', () => {
       });
 
       it('does nothing and warns renderToDOM is running', async () => {
-        let resolve = () => {};
-        const fence = new Promise<void>((r) => {
-          resolve = r;
-        });
+        const { gate, openGate } = createGate();
 
         document.location.search = '?id=component-one--a';
-        globalMeta.renderToDOM.mockImplementationOnce(async () => fence);
+        globalMeta.renderToDOM.mockImplementationOnce(async () => gate);
         await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -597,7 +599,7 @@ describe('WebPreview', () => {
         expect(logger.warn).toHaveBeenCalled();
 
         // Now let the renderToDOM call resolve
-        resolve();
+        openGate();
         await waitForRender();
 
         expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(1);
@@ -615,11 +617,8 @@ describe('WebPreview', () => {
       });
 
       it('warns and calls renderToDOM again if play function is running', async () => {
-        let resolvePlay = () => {};
-        const fence = new Promise<void>((r) => {
-          resolvePlay = r;
-        });
-        componentOneExports.a.play.mockImplementationOnce(async () => fence);
+        const { gate, openGate } = createGate();
+        componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
         const renderToDOMCalled = new Promise((resolve) => {
           globalMeta.renderToDOM.mockImplementationOnce(() => {
@@ -665,7 +664,7 @@ describe('WebPreview', () => {
         );
 
         // Now let the runPlayFunction call resolve
-        resolvePlay();
+        openGate();
       });
     });
   });
@@ -1003,11 +1002,118 @@ describe('WebPreview', () => {
       });
 
       describe('while story is still rendering', () => {
-        it.skip('stops initial story after loaders if running', async () => {});
+        it('stops initial story after loaders if running', async () => {
+          const { gate, openGate } = createGate();
+          componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
 
-        it.skip('stops initial story after renderToDOM if running', async () => {});
+          document.location.search = '?id=component-one--a';
+          await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
-        it.skip('stops initial story after runPlayFunction if running', async () => {});
+          emitter.emit(Events.SET_CURRENT_STORY, {
+            storyId: 'component-one--b',
+            viewMode: 'story',
+          });
+          await waitForRender();
+
+          // Now let the loader resolve
+          openGate({ l: 8 });
+          await waitForRender();
+
+          // Story gets rendered with updated args
+          expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(1);
+          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              forceRemount: true,
+              storyContext: expect.objectContaining({
+                id: 'component-one--b',
+                loaded: { l: 7 },
+              }),
+            }),
+            undefined // this is coming from view.prepareForStory, not super important
+          );
+        });
+
+        it('stops initial story after renderToDOM if running', async () => {
+          const { gate, openGate } = createGate();
+
+          document.location.search = '?id=component-one--a';
+          globalMeta.renderToDOM.mockImplementationOnce(async () => gate);
+          await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+          emitter.emit(Events.SET_CURRENT_STORY, {
+            storyId: 'component-one--b',
+            viewMode: 'story',
+          });
+          await waitForRender();
+
+          // Now let the renderToDOM call resolve
+          openGate();
+
+          expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(2);
+          expect(componentOneExports.a.play).not.toHaveBeenCalled();
+          expect(componentOneExports.b.play).toHaveBeenCalled();
+
+          expect(mockChannel.emit).not.toHaveBeenCalledWith(
+            Events.STORY_RENDERED,
+            'component-one--a'
+          );
+          expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
+        });
+
+        it('stops initial story after runPlayFunction if running', async () => {
+          const { gate, openGate } = createGate();
+          componentOneExports.a.play.mockImplementationOnce(async () => gate);
+
+          const renderToDOMCalled = new Promise((resolve) => {
+            globalMeta.renderToDOM.mockImplementationOnce(() => {
+              resolve(null);
+            });
+          });
+
+          document.location.search = '?id=component-one--a';
+          await new WebPreview({ getGlobalMeta, importFn }).initialize();
+
+          await renderToDOMCalled;
+          // Story gets rendered with original args
+          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              forceRemount: true,
+              storyContext: expect.objectContaining({
+                storyId: 'component-one--a',
+                loaded: { l: 7 },
+              }),
+            }),
+            undefined // this is coming from view.prepareForStory, not super important
+          );
+
+          emitter.emit(Events.SET_CURRENT_STORY, {
+            storyId: 'component-one--b',
+            viewMode: 'story',
+          });
+          await waitForRender();
+
+          // New story gets rendered, (play function is still running)
+          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              forceRemount: true,
+              storyContext: expect.objectContaining({
+                storyId: 'component-one--b',
+                loaded: { l: 7 },
+              }),
+            }),
+            undefined // this is coming from view.prepareForStory, not super important
+          );
+
+          // Now let the runPlayFunction call resolve
+          openGate();
+
+          // Final story rendered is not emitted for the first story
+          await new Promise((r) => setTimeout(r, 100));
+          expect(mockChannel.emit).not.toHaveBeenCalledWith(
+            Events.STORY_RENDERED,
+            'component-one--a'
+          );
+        });
       });
     });
 
