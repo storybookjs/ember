@@ -38,6 +38,7 @@ const Description = styled.div(({ theme }) => ({
   code: {
     ...codeCommon({ theme }),
     fontSize: 12,
+    fontFamily: theme.typography.fonts.mono,
   },
 
   '& code': {
