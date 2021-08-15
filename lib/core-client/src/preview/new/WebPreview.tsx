@@ -378,12 +378,17 @@ export class WebPreview<StoryFnReturnType> {
         forceRemount: true,
         unboundStoryFn: storyFn,
         storyContext: {
-          storyFn: () => storyFn(loadedContext),
           ...loadedContext,
           ...updatedStoryContext,
+          storyFn: () => storyFn(loadedContext),
         },
       };
-      await this.renderToDOM(renderContext, element);
+      try {
+        await this.renderToDOM(renderContext, element);
+      } catch (err) {
+        renderContextWithoutStoryContext.showException(err);
+        return;
+      }
       if (controller.signal.aborted) {
         return;
       }
@@ -451,7 +456,12 @@ export class WebPreview<StoryFnReturnType> {
         },
       };
 
-      await this.renderToDOM(rerenderRenderContext, element);
+      try {
+        await this.renderToDOM(rerenderRenderContext, element);
+      } catch (err) {
+        renderContextWithoutStoryContext.showException(err);
+        return;
+      }
       this.channel.emit(Events.STORY_RENDERED, id);
     };
 
