@@ -1079,7 +1079,7 @@ describe('WebPreview', () => {
             expect.objectContaining({
               forceRemount: true,
               storyContext: expect.objectContaining({
-                storyId: 'component-one--a',
+                id: 'component-one--a',
                 loaded: { l: 7 },
               }),
             }),
@@ -1097,7 +1097,7 @@ describe('WebPreview', () => {
             expect.objectContaining({
               forceRemount: true,
               storyContext: expect.objectContaining({
-                storyId: 'component-one--b',
+                id: 'component-one--b',
                 loaded: { l: 7 },
               }),
             }),
@@ -1118,16 +1118,95 @@ describe('WebPreview', () => {
     });
 
     describe('when changing from story viewMode to docs', () => {
-      it.skip('updates URL', async () => {});
-      it.skip('emits STORY_CHANGED', async () => {});
+      it('updates URL', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
-      it.skip('calls view.prepareForDocs', async () => {});
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
 
-      it.skip('throws an error if no docs container exists', async () => {});
+        expect(history.replaceState).toHaveBeenCalledWith(
+          {},
+          '',
+          'pathname?id=component-one--a&viewMode=docs'
+        );
+      });
 
-      it.skip('render the docs container with the correct context', async () => {});
+      it('emits STORY_CHANGED', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await waitForRender();
 
-      it.skip('emits DOCS_RENDERED', async () => {});
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+
+        await waitForEvents([Events.STORY_CHANGED]);
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
+      });
+
+      it('calls view.prepareForDocs', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+        await waitForRender();
+
+        expect(preview.view.prepareForDocs).toHaveBeenCalled();
+      });
+
+      it('render the docs container with the correct context', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+        await waitForRender();
+
+        expect(ReactDOM.render).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: componentOneExports.default.parameters.docs.container,
+            props: expect.objectContaining({
+              context: expect.objectContaining({
+                id: 'component-one--a',
+                title: 'Component One',
+                name: 'A',
+              }),
+            }),
+          }),
+          undefined,
+          expect.any(Function)
+        );
+      });
+
+      it('emits DOCS_RENDERED', async () => {
+        document.location.search = '?id=component-one--a';
+        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
+      });
     });
 
     describe('when changing from docs viewMode to story', () => {
