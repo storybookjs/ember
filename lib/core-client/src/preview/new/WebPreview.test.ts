@@ -1427,7 +1427,204 @@ describe('WebPreview', () => {
   });
 
   describe('onImportFnChanged', () => {
-    it.skip('rerenders the current story from scratch', async () => {});
+    describe('when the current story changes', () => {
+      const newComponentOneExports = { ...componentOneExports };
+      const newImportFn = jest.fn(async (path) => {
+        return path === './src/ComponentOne.stories.js'
+          ? newComponentOneExports
+          : componentTwoExports;
+      });
+
+      it('does not emit STORY_UNCHANGED', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+        mockChannel.emit.mockClear();
+
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_UNCHANGED);
+      });
+
+      it('does not emit STORY_CHANGED', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+        mockChannel.emit.mockClear();
+
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_CHANGED);
+      });
+
+      it('emits STORY_PREPARED', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+        mockChannel.emit.mockClear();
+
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
+          id: 'component-one--a',
+          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          initialArgs: { foo: 'a' },
+          argTypes: { foo: { type: { name: 'string' } } },
+          args: { foo: 'a' },
+        });
+      });
+
+      it('applies loaders with story context', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        componentOneExports.default.loaders[0].mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            id: 'component-one--a',
+            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            initialArgs: { foo: 'a' },
+            argTypes: { foo: { type: { name: 'string' } } },
+            args: { foo: 'a' },
+          })
+        );
+      });
+
+      it('passes loaded context to renderToDOM', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        globalMeta.renderToDOM.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              id: 'component-one--a',
+              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              globals: { a: 'b' },
+              initialArgs: { foo: 'a' },
+              argTypes: { foo: { type: { name: 'string' } } },
+              args: { foo: 'a' },
+              loaded: { l: 7 },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+      });
+
+      // TODO -- is this actually what we want?
+      it('retains the stories args', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { new: 'arg' },
+        });
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        globalMeta.renderToDOM.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              id: 'component-one--a',
+              args: { foo: 'a', new: 'arg' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+      });
+
+      it('renders error if the story calls showError', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        const error = { title: 'title', description: 'description' };
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+
+        mockChannel.emit.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ERRORED, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith({
+          message: error.title,
+          stack: error.description,
+        });
+      });
+
+      it('renders exception if the story calls showException', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        const error = new Error('error');
+        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+
+        mockChannel.emit.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+      });
+
+      it('executes runPlayFunction', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        componentOneExports.a.play.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(componentOneExports.a.play).toHaveBeenCalled();
+      });
+
+      it('emits STORY_RENDERED', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+    });
+
     it.skip('re-imports and processes the current story, if it is new', async () => {});
     it.skip('re-imports but does not process the current story, if it is the same', async () => {});
     it.skip('renders missing it the current story no longer exists', async () => {});
@@ -1442,6 +1639,34 @@ describe('WebPreview', () => {
   });
 
   describe('onKeydown', () => {
-    it.skip('emits PREVIEW_KEYDOWN', async () => {});
+    it('emits PREVIEW_KEYDOWN for regular elements', async () => {
+      document.location.search = '?id=component-one--a&viewMode=docs';
+      const preview = new WebPreview({ getGlobalMeta, importFn });
+      await preview.initialize();
+
+      preview.onKeydown({
+        target: { tagName: 'div', getAttribute: jest.fn().mockReturnValue(null) },
+      } as any);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.PREVIEW_KEYDOWN,
+        expect.objectContaining({})
+      );
+    });
+
+    it('does not emit PREVIEW_KEYDOWN for input elements', async () => {
+      document.location.search = '?id=component-one--a&viewMode=docs';
+      const preview = new WebPreview({ getGlobalMeta, importFn });
+      await preview.initialize();
+
+      preview.onKeydown({
+        target: { tagName: 'input', getAttribute: jest.fn().mockReturnValue(null) },
+      } as any);
+
+      expect(mockChannel.emit).not.toHaveBeenCalledWith(
+        Events.PREVIEW_KEYDOWN,
+        expect.objectContaining({})
+      );
+    });
   });
 });
