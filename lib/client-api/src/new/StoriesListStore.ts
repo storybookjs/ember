@@ -32,7 +32,7 @@ export class StoriesListStore {
 
   // TODO -- what to do here?
   onChannelError(err: Error) {
-    console.log(err);
+    // console.log(err);
   }
 
   async onStoriesChanged() {

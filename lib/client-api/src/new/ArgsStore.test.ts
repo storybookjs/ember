@@ -1,5 +1,7 @@
 import { ArgsStore } from './ArgsStore';
 
+jest.mock('@storybook/client-logger');
+
 describe('ArgsStore', () => {
   describe('setInitial / get', () => {
     it('returns in a straightforward way', () => {
@@ -91,6 +93,22 @@ describe('ArgsStore', () => {
         a: { foo: 'bar', baz: 'bing' },
         b: ['1', '2', '4'],
       });
+    });
+
+    it('checks args are allowed options', () => {
+      const store = new ArgsStore();
+
+      store.setInitial('id', {});
+
+      const story = {
+        id: 'id',
+        argTypes: { a: { type: { name: 'string' }, options: ['a', 'b'] } },
+      } as any;
+      store.updateFromPersisted(story, { a: 'random' });
+      expect(store.get('id')).toEqual({});
+
+      store.updateFromPersisted(story, { a: 'a' });
+      expect(store.get('id')).toEqual({ a: 'a' });
     });
   });
 });

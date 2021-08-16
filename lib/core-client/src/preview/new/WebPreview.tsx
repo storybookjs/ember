@@ -151,7 +151,6 @@ export class WebPreview<StoryFnReturnType> {
     this.urlStore.setSelection({ storyId, viewMode });
     this.channel.emit(Events.STORY_SPECIFIED, this.urlStore.selection);
 
-    // TODO -- previously this only emitted if the selection failed. I don't know if we really need it
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
 
     await this.renderSelection({ persistedArgs: args });
@@ -235,7 +234,14 @@ export class WebPreview<StoryFnReturnType> {
 
     const { selection } = this.urlStore;
 
-    const story = await this.storyStore.loadStory({ storyId: selection.storyId });
+    let story;
+    try {
+      story = await this.storyStore.loadStory({ storyId: selection.storyId });
+    } catch (err) {
+      this.renderMissingStory(selection.storyId);
+      return;
+    }
+
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
     }
@@ -371,12 +377,17 @@ export class WebPreview<StoryFnReturnType> {
         forceRemount: true,
         unboundStoryFn: storyFn,
         storyContext: {
-          storyFn: () => storyFn(loadedContext),
           ...loadedContext,
           ...updatedStoryContext,
+          storyFn: () => storyFn(loadedContext),
         },
       };
-      await this.renderToDOM(renderContext, element);
+      try {
+        await this.renderToDOM(renderContext, element);
+      } catch (err) {
+        renderContextWithoutStoryContext.showException(err);
+        return;
+      }
       if (controller.signal.aborted) {
         return;
       }
@@ -444,7 +455,12 @@ export class WebPreview<StoryFnReturnType> {
         },
       };
 
-      await this.renderToDOM(rerenderRenderContext, element);
+      try {
+        await this.renderToDOM(rerenderRenderContext, element);
+      } catch (err) {
+        renderContextWithoutStoryContext.showException(err);
+        return;
+      }
       this.channel.emit(Events.STORY_RENDERED, id);
     };
 
