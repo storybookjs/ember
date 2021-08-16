@@ -1,6 +1,6 @@
-import userEvent from "@testing-library/user-event"
-import { instrument } from './instrument'
+import userEvent from '@testing-library/user-event';
+import { instrument } from './instrument';
 
-instrument({ userEvent })
+instrument({ userEvent }, { mutate: true, intercept: true });
 
-export default userEvent
+export default userEvent;

@@ -1,5 +1,5 @@
-import * as dom from "@testing-library/dom"
-import { instrument } from './instrument'
+import * as dom from '@testing-library/dom';
+import { instrument } from './instrument';
 
 // console.log(Object.keys(dom).join(',\n'))
 export const {
@@ -81,4 +81,4 @@ export const {
   wrapAllByQueryWithSuggestion,
   wrapSingleQueryWithSuggestion,
   prettyFormat,
-} = instrument(dom, false, false)
+} = instrument(dom);

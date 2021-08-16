@@ -2425,6 +2425,11 @@
   dependencies:
     lodash "^4.17.15"
 
+"@storybook/expect@^1.0.0-rc.1":
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@storybook/expect/-/expect-1.0.0-rc.1.tgz#4dec215eff42b4e0afa0f2570dfbed5c79d47a1c"
+  integrity sha512-MkiaBBOCqdnF2ExXd4P2lJ4BaaKKiJm8zWjqPOLUXU5pq/S7sHzP/ViF59YHLUgtJvWAx7wZvqHYSaygU2kl5g==
+
 "@storybook/manager-webpack4@6.4.0-alpha.13":
   version "6.4.0-alpha.13"
   resolved "https://registry.yarnpkg.com/@storybook/manager-webpack4/-/manager-webpack4-6.4.0-alpha.13.tgz#9562e970eb96c9847c1b61593e971522c3614f05"
