@@ -151,7 +151,6 @@ export class WebPreview<StoryFnReturnType> {
     this.urlStore.setSelection({ storyId, viewMode });
     this.channel.emit(Events.STORY_SPECIFIED, this.urlStore.selection);
 
-    // TODO -- previously this only emitted if the selection failed. I don't know if we really need it
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
 
     await this.renderSelection({ persistedArgs: args });
