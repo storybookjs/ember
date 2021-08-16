@@ -4,6 +4,7 @@ import { useChannel } from '@storybook/api';
 import { AddonPanel, Button, Icons } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { EVENTS } from './constants';
+import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import global from 'global';
 
 import { MethodCall } from './components/MethodCall';
@@ -12,13 +13,13 @@ interface PanelProps {
   active: boolean;
 }
 
-enum TestingStates {
+export enum TestingStates {
   DONE = 'done',
   ERROR = 'error',
   PENDING = 'pending',
 }
 
-type TestState = TestingStates.DONE | TestingStates.ERROR | TestingStates.PENDING;
+export type TestState = TestingStates.DONE | TestingStates.ERROR | TestingStates.PENDING;
 
 export interface CallRef {
   __callId__: string;
@@ -114,45 +115,7 @@ const Row = ({
   return (
     <RowContainer>
       <RowLabel onClick={onClick}>
-        {call.state === TestingStates.DONE && (
-          <Icons
-            icon="check"
-            style={{
-              flexShrink: 0,
-              width: 12,
-              height: 12,
-              padding: 1,
-              marginRight: 5,
-              color: 'green',
-            }}
-          />
-        )}
-        {call.state === TestingStates.PENDING && (
-          <Icons
-            icon="circle"
-            style={{
-              flexShrink: 0,
-              width: 12,
-              height: 12,
-              padding: 4,
-              marginRight: 5,
-              color: 'gray',
-            }}
-          />
-        )}
-        {call.state === TestingStates.ERROR && (
-          <span
-            style={{
-              flexShrink: 0,
-              width: 8,
-              height: 8,
-              margin: 2,
-              marginRight: 7,
-              background: '#FF4400',
-              borderRadius: 1,
-            }}
-          />
-        )}
+        <StatusIcon status={call.state} />
         <MethodCall call={call} callsById={callsById} />
       </RowLabel>
       {call.state === TestingStates.ERROR && (
@@ -254,6 +217,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
 
   const tabButton = document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
+  // for panel tabs
   const statusIcon = hasException ? (
     <span
       style={{ width: 8, height: 8, margin: 2, marginLeft: 7, background: '#F40', borderRadius: 1 }}
