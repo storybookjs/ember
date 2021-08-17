@@ -2,6 +2,8 @@ import { ArgsStore } from './ArgsStore';
 
 jest.mock('@storybook/client-logger');
 
+const stringType = { type: { name: 'string' } };
+
 describe('ArgsStore', () => {
   describe('setInitial / get', () => {
     it('returns in a straightforward way', () => {
@@ -57,7 +59,7 @@ describe('ArgsStore', () => {
 
       const story = {
         id: 'id',
-        argTypes: { a: { type: { name: 'string' } } },
+        argTypes: { a: stringType },
       } as any;
       store.updateFromPersisted(story, { a: 'str' });
       expect(store.get('id')).toEqual({ a: 'str' });
@@ -120,12 +122,14 @@ describe('ArgsStore', () => {
         const previousStory = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
         store.setInitial('id', previousStory.initialArgs);
 
         const story = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
 
         store.resetOnImplementationChange(story, previousStory);
@@ -138,18 +142,22 @@ describe('ArgsStore', () => {
         const previousStory = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
         store.setInitial('id', previousStory.initialArgs);
 
+        // NOTE: I'm not sure technically you should be allowed to set c here
         store.update('id', { a: 'update', c: 'update' });
 
         const story = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
 
         store.resetOnImplementationChange(story, previousStory);
-        expect(store.get(story.id)).toEqual({ a: 'update', b: '1', c: 'update' });
+        // In any case c is not retained.
+        expect(store.get(story.id)).toEqual({ a: 'update', b: '1' });
       });
     });
 
@@ -160,12 +168,14 @@ describe('ArgsStore', () => {
         const previousStory = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
         store.setInitial('id', previousStory.initialArgs);
 
         const story = {
           id: 'id',
           initialArgs: { a: '1', c: '1' },
+          argTypes: { a: stringType, c: stringType },
         } as any;
 
         store.resetOnImplementationChange(story, previousStory);
@@ -178,18 +188,22 @@ describe('ArgsStore', () => {
         const previousStory = {
           id: 'id',
           initialArgs: { a: '1', b: '1' },
+          argTypes: { a: stringType, b: stringType },
         } as any;
         store.setInitial('id', previousStory.initialArgs);
 
+        // NOTE: I'm not sure technically you should be allowed to set c here
         store.update('id', { a: 'update', c: 'update' });
 
         const story = {
           id: 'id',
           initialArgs: { a: '2', d: '2' },
+          argTypes: { a: stringType, d: stringType },
         } as any;
 
         store.resetOnImplementationChange(story, previousStory);
-        expect(store.get(story.id)).toEqual({ a: 'update', c: 'update', d: '2' });
+        // In any case c is not retained.
+        expect(store.get(story.id)).toEqual({ a: 'update', d: '2' });
       });
     });
   });

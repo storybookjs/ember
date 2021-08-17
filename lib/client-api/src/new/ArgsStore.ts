@@ -35,10 +35,10 @@ export class ArgsStore {
   resetOnImplementationChange(story: Story<any>, previousStory: Story<any>) {
     const delta = deepDiff(previousStory.initialArgs, this.get(story.id));
 
-    const newArgs =
-      delta === DEEPLY_EQUAL ? story.initialArgs : combineArgs(story.initialArgs, delta);
-
-    this.argsByStoryId[story.id] = newArgs;
+    this.argsByStoryId[story.id] = story.initialArgs;
+    if (delta !== DEEPLY_EQUAL) {
+      this.updateFromPersisted(story, delta);
+    }
   }
 
   update(storyId: StoryId, argsUpdate: Partial<Args>) {
