@@ -1790,7 +1790,7 @@ describe('WebPreview', () => {
       };
     };
 
-    it.skip('updates globals to their new values', async () => {
+    it('updates globals to their new values', async () => {
       document.location.search = '?id=component-one--a';
       const preview = new WebPreview({ getGlobalMeta, importFn });
       await preview.initialize();
@@ -1798,8 +1798,9 @@ describe('WebPreview', () => {
 
       mockChannel.emit.mockClear();
       preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
+      await waitForRender();
 
-      expect(preview.storyStore.globals.get()).toEqual({ a: 'second' });
+      expect(preview.storyStore.globals.get()).toEqual({ a: 'edited' });
     });
 
     it('updates args to their new values', async () => {
@@ -1819,7 +1820,7 @@ describe('WebPreview', () => {
       });
     });
 
-    it.skip('rerenders the current story with new global meta-generated context', async () => {
+    it('rerenders the current story with new global meta-generated context', async () => {
       document.location.search = '?id=component-one--a';
       const preview = new WebPreview({ getGlobalMeta, importFn });
       await preview.initialize();
@@ -1834,9 +1835,10 @@ describe('WebPreview', () => {
         expect.objectContaining({
           storyContext: expect.objectContaining({
             args: { foo: 'a', global: 'added' },
-            globals: { a: 'second' },
+            globals: { a: 'edited' },
           }),
-        })
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
       );
     });
   });

@@ -218,7 +218,7 @@ export class WebPreview<StoryFnReturnType> {
       return;
     }
 
-    this.storyStore.globalMeta = globalMeta;
+    this.storyStore.updateGlobalMeta(globalMeta);
     this.renderSelection();
   }
 

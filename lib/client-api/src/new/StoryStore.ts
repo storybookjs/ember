@@ -64,6 +64,12 @@ export class StoryStore<StoryFnReturnType> {
     await this.storiesList.initialize();
   }
 
+  updateGlobalMeta(globalMeta: GlobalMeta<StoryFnReturnType>) {
+    this.globalMeta = globalMeta;
+    const { globals, globalTypes } = globalMeta;
+    this.globals.resetOnGlobalMetaChange({ globals, globalTypes });
+  }
+
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<StoryFnReturnType>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
