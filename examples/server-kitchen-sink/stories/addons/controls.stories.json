@@ -38,11 +38,17 @@
       },
       "argTypes": {
         "stock": { "control": { "type": "range", "min": 0, "max": 30, "step": 5} },
-        "fruit": { "control": { "type": "select", "options": {
-          "Apple": "apples",
-          "Banana": "bananas",
-          "Cherry": "cherries"
-        }} },
+        "fruit": { 
+          "options": ["apples", "bananas", "cherries"],
+          "control": { 
+            "type": "select", 
+            "labels": {
+              "apples": "Apple",
+              "bananas": "Banana",
+              "cherries": "Cherry"
+            }
+          } 
+        },
         "colour": { "control": { "type": "color"} },
         "today": { "control": { "type": "date"} }
       }

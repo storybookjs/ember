@@ -28,4 +28,5 @@ export interface StoryFnAngularReturnType {
   moduleMetadata?: NgModuleMetadata;
   template?: string;
   styles?: string[];
+  userDefinedTemplate?: boolean;
 }

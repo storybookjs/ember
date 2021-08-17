@@ -21,6 +21,7 @@ const config: StorybookConfig = {
   features: {
     postcss: false,
     previewCsfV3: true,
+    buildStoriesJson: true,
   },
 };
 

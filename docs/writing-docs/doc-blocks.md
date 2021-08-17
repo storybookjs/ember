@@ -265,11 +265,14 @@ As an example, if you had the following story:
   paths={[
     'react/button-story-default-docs-code.js.mdx',
     'react/button-story-default-docs-code.ts.mdx',
-    'vue/button-story-default-docs-code.2.js.mdx',
+    'react/button-story-default-docs-code.mdx.mdx',
     'vue/button-story-default-docs-code.3.js.mdx',
+    'vue/button-story-default-docs-code.mdx-3.mdx.mdx',
     'angular/button-story-default-docs-code.ts.mdx',
+    'angular/button-story-default-docs-code.mdx.mdx',
     'svelte/button-story-default-docs-code.js.mdx',
     'svelte/button-story-default-docs-code.native-format.mdx',
+    'svelte/button-story-default-docs-code.mdx.mdx',
   ]}
 />
 
@@ -372,7 +375,11 @@ In MDX, the `Story` block is not only a way of displaying stories, but also the 
 
 <CodeSnippets
   paths={[
-    'common/component-story-mdx-story-by-name.mdx.mdx',
+    'react/component-story-mdx-story-by-name.mdx.mdx',
+    'angular/component-story-mdx-story-by-name.mdx.mdx',
+    'vue/component-story-mdx-story-by-name.mdx-2.mdx.mdx',
+    'vue/component-story-mdx-story-by-name.mdx-3.mdx.mdx',
+    'svelte/component-story-mdx-story-by-name.mdx.mdx',
   ]}
 />
 
@@ -414,7 +421,11 @@ In MDX, `Canvas` is more flexible: in addition to the DocsPage behavior, it can 
 
 <CodeSnippets
   paths={[
-    'common/mdx-canvas-multiple-stories.mdx.mdx',
+    'react/mdx-canvas-multiple-stories.mdx.mdx',
+    'angular/mdx-canvas-multiple-stories.mdx.mdx',
+    'vue/mdx-canvas-multiple-stories.mdx-2.mdx.mdx',
+    'vue/mdx-canvas-multiple-stories.mdx-3.mdx.mdx',
+    'svelte/mdx-canvas-multiple-stories.mdx.mdx',
   ]}
 />
 

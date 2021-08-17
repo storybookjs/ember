@@ -1,0 +1,24 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import imageFile from './static/image.png';
+
+<Meta title="img" />
+
+export const image = {
+  src: imageFile,
+  alt: 'my image',
+};
+
+<Story name="withAnImage">
+  {{
+    props: {
+      src: image.src,
+      alt: image.alt,
+    },
+    template: `<img src="{{src}}" alt="{{alt}}" />`,
+  }}
+</Story>
+```

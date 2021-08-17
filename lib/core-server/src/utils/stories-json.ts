@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
 import { resolvePathInStorybookCache, Options, normalizeStories } from '@storybook/core-common';
-import { readCsf } from '@storybook/csf-tools';
+import { readCsfOrMdx } from '@storybook/csf-tools';
 
 interface ExtractedStory {
   id: string;
@@ -15,7 +15,7 @@ interface ExtractedStory {
 type ExtractedStories = Record<string, ExtractedStory>;
 
 export async function extractStoriesJson(
-  ouputFile: string,
+  outputFile: string,
   storiesGlobs: string[],
   configDir: string
 ) {
@@ -36,12 +36,12 @@ export async function extractStoriesJson(
     storyFiles.map(async (absolutePath) => {
       const ext = path.extname(absolutePath);
       const relativePath = path.relative(configDir, absolutePath);
-      if (!['.js', '.jsx', '.ts', '.tsx'].includes(ext)) {
+      if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
         logger.info(`Skipping ${ext} file ${relativePath}`);
         return;
       }
       try {
-        const csf = (await readCsf(absolutePath)).parse();
+        const csf = (await readCsfOrMdx(absolutePath)).parse();
         csf.stories.forEach((story) => {
           stories[story.id] = {
             ...story,
@@ -55,7 +55,7 @@ export async function extractStoriesJson(
       }
     })
   );
-  await fs.writeJson(ouputFile, { v: 3, stories });
+  await fs.writeJson(outputFile, { v: 3, stories });
 }
 
 const timeout = 30000; // 30s

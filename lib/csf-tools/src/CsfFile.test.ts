@@ -191,6 +191,29 @@ describe('CsfFile', () => {
               __id: foo-bar--a
       `);
     });
+
+    it('docs-only story', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const __page = () => {};
+          __page.parameters = { docsOnly: true };
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--page
+            name: __page
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--page
+              docsOnly: true
+      `);
+    });
   });
 
   // NOTE: this does not have a public API, but we can still test it

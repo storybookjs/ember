@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-links",
-  "version": "6.4.0-alpha.23",
+  "version": "6.4.0-alpha.30",
   "description": "Link stories together to build demos and prototypes with your UI components",
   "keywords": [
     "addon",
@@ -41,11 +41,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.23",
-    "@storybook/client-logger": "6.4.0-alpha.23",
-    "@storybook/core-events": "6.4.0-alpha.23",
+    "@storybook/addons": "6.4.0-alpha.30",
+    "@storybook/client-logger": "6.4.0-alpha.30",
+    "@storybook/core-events": "6.4.0-alpha.30",
     "@storybook/csf": "0.0.1",
-    "@storybook/router": "6.4.0-alpha.23",
+    "@storybook/router": "6.4.0-alpha.30",
     "@types/qs": "^6.9.5",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -72,7 +72,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "691fc1f7155bd50179573b146c45f9528d2dc7df",
+  "gitHead": "271665e76bd5ef0287fe0651831f771e693b3b1c",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Links",

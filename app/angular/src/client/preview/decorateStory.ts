@@ -1,6 +1,5 @@
 import { DecoratorFunction, StoryContext, StoryFn } from '@storybook/addons';
 import { computesTemplateFromComponent } from './angular-beta/ComputesTemplateFromComponent';
-
 import { StoryFnAngularReturnType } from './types';
 
 const defaultContext: StoryContext = {
@@ -43,13 +42,14 @@ const prepareMain = (
   let { template } = story;
 
   const component = story.component ?? context.parameters.component;
+  const userDefinedTemplate = !hasNoTemplate(template);
 
-  if (hasNoTemplate(template) && component) {
+  if (!userDefinedTemplate && component) {
     template = computesTemplateFromComponent(component, story.props, '');
   }
   return {
     ...story,
-    ...(template ? { template } : {}),
+    ...(template ? { template, userDefinedTemplate } : {}),
   };
 };
 

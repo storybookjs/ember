@@ -1,0 +1,20 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Button from './button.component';
+
+<!-- 👇 Creates specific argTypes for args and turns every Button story into primary -->
+<Meta 
+  title="Button"
+  component={Button}
+  argTypes={{
+    backgroundColor: { control: 'color' },
+  }},
+  args={{
+    primary: true,
+  }}/>
+
+<!-- Remainder story implementation -->
+```
