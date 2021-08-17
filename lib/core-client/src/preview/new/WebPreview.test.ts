@@ -970,6 +970,46 @@ describe('WebPreview', () => {
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
       });
 
+      it('retains any arg changes', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { updatedArg: 'arg' },
+        });
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'a',
+          updatedArg: 'arg',
+        });
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'a',
+          updatedArg: 'arg',
+        });
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'a',
+          updatedArg: 'arg',
+        });
+      });
+
       describe('while story is still rendering', () => {
         it('stops initial story after loaders if running', async () => {
           const { gate, openGate } = createGate();
