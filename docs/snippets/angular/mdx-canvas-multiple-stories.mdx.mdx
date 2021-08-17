@@ -1,0 +1,36 @@
+```md
+<!-- Badge.stories.mdx --->
+
+import { Canvas, Story } from '@storybook/addon-docs';
+
+export const Template = (args) => ({ props: args });
+
+<Canvas>
+  <Story 
+    name="warning"
+    args={{ 
+      status: 'warning', 
+      label: 'Warning',
+    }}>
+    {Template.bind({})}
+  </Story>
+
+  <Story 
+    name="neutral"
+    args={{ 
+      status: 'neutral', 
+      label: 'Neutral',
+     }}>
+    {Template.bind({})}
+  </Story>
+  
+  <Story 
+    name="error"
+    args={{ 
+      status: 'error', 
+      label: 'Error',
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+```

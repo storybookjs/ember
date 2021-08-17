@@ -1,0 +1,26 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Button from './Button.vue';
+
+<Meta
+  title="Components/Button"
+  component={Button}/>
+
+export const Template = () => ({
+  components: { Button },
+  template: '<Button primary label="Hello World"/>',
+});
+
+<Story
+  name="Primary"
+  decorators={[
+    () => ({
+      template: '<div style="margin: 3em;"><story /></div>',
+    }),
+  ]}>
+  {Template.bind({})}
+</Story>
+```

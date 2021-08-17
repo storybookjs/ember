@@ -1,0 +1,26 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Page from './page.component.ts';
+
+<Meta title="Page" component={Page} />
+
+export const Template = (args) => ({ 
+  props: args,
+  template:`
+    <storybook-page>
+       <ng-container footer>${args.footer}</ng-container>
+    </storybook-page>
+  `,
+});
+
+<Story
+  name="CustomFooter"
+  args={{
+    footer: 'Built with Storybook',
+  }}>
+  {Template.bind({})}
+</Story>
+```

@@ -322,3 +322,23 @@ Yes, check the [addon's examples](https://github.com/mswjs/msw-storybook-addon/t
 ### Can I mock GraphQL mutations with Storybook's MSW addon?
 
 No, currently, the MSW addon only has support for GraphQL queries. If you're interested in including this feature, open an issue in the [MSW addon repository](https://github.com/mswjs/msw-storybook-addon) and follow up with the maintainer.
+
+### Why aren't my code blocks highlighted with Storybook MDX
+
+Out of the box, Storybook provides syntax highlighting for a set of languages (e.g., Javascript, Markdown, CSS, HTML, Typescript, GraphQL) that you can use with your code blocks. If you're writing your custom code blocks with MDX, you'll need to import the syntax highlighter manually. For example, if you're adding a code block for SCSS, adjust your story to the following:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-custom-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+💡 Check <code>react-syntax-highlighter</code>'s <a href="https://github.com/react-syntax-highlighter/react-syntax-highlighter">documentation</a> for a list of available languages.
+</div>
+
+Applying this small change will enable you to add syntax highlight for SCSS or any other language available.

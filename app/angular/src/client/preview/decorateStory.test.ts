@@ -37,6 +37,7 @@ describe('decorateStory', () => {
         },
         template:
           '<great-grandparent><grandparent [grandparentInput]="grandparentInput"><parent [parentInput]="parentInput" (parentOutput)="parentOutput($event)"></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -75,6 +76,7 @@ describe('decorateStory', () => {
         },
         template:
           '<great-grandparent><grandparent [grandparentInput]="grandparentInput"><parent [parentInput]="parentInput" (parentOutput)="parentOutput($event)"></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -89,6 +91,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -121,6 +124,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -153,6 +157,7 @@ describe('decorateStory', () => {
       expect(decorated()).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -185,6 +190,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: false,
       });
     });
 
@@ -218,6 +224,7 @@ describe('decorateStory', () => {
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
         component: FooComponent,
+        userDefinedTemplate: false,
       });
     });
 
@@ -258,6 +265,7 @@ describe('decorateStory', () => {
         )
       ).toEqual({
         template: 'Args available in the story : withControl,withAction',
+        userDefinedTemplate: true,
       });
     });
   });

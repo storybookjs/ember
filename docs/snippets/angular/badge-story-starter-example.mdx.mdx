@@ -1,0 +1,75 @@
+```md
+<!--- Badge.stories.mdx --->
+
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { moduleMetadata } from '@storybook/angular';
+
+import { CommonModule } from '@angular/common';
+
+import Badge from './badge.component';
+import Icon from './icon.component';
+
+<Meta title="MDX/Badge" component={Badge} />
+
+# Badge
+
+Let's define a story for our `Badge` component:
+
+<Story name="positive">
+  {{
+    template:`<Badge status="positive">Positive</Badge>`,
+  }}
+</Story>
+
+We can drop it in a `Canvas` to get a code snippet:
+
+<Canvas>
+  <Story name="negative">
+    {{
+      template: `<Badge status="negative">Negative</Badge>`,
+    }}
+  </Story>
+</Canvas>
+
+We can even preview multiple stories in a block. This
+gets rendered as a group, but defines individual stories
+with unique URLs and isolated snapshot tests.
+
+<Canvas>
+  <Story name="warning">
+    {{
+      template: `<Badge status="warning">Warning</Badge>`,
+    }}
+  </Story>
+
+  <Story name="neutral">
+    {{
+      template: `<Badge status="neutral">Neutral</Badge>`,
+    }}
+  </Story>
+  
+  <Story name="error">
+    {{
+      template: `<Badge status="error">Error</Badge>`,
+    }}
+  </Story>
+  
+  <Story 
+    name="with icon"
+    decorators={[
+      moduleMetadata({
+        declarations: [Badge, Icon],
+        imports: [CommonModule],
+      })
+    ]}>
+    {{
+      template: `
+        <Badge status="warning">
+          <Icon icon="check" inline></Icon>
+          with icon
+        </Badge>
+      `,
+    }}
+  </Story>
+</Canvas>
+```

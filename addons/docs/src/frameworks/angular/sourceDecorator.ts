@@ -36,13 +36,13 @@ export const sourceDecorator = (storyFn: StoryFn<IStory>, context: StoryContext)
     return story;
   }
   const channel = addons.getChannel();
-  const { props, template } = story;
+  const { props, template, userDefinedTemplate } = story;
 
   const {
     parameters: { component, argTypes },
   } = context;
 
-  if (component) {
+  if (component && !userDefinedTemplate) {
     const source = computesTemplateSourceFromComponent(component, props, argTypes);
 
     // We might have a story with a Directive or Service defined as the component

@@ -42,15 +42,16 @@ export const ArgControl: FC<ArgControlProps> = ({ row, arg, updateArgs }) => {
   const { key, control } = row;
 
   const [isFocused, setFocused] = useState(false);
-  const [value, setValue] = useState(() => arg);
+  // box because arg can be a fn (e.g. actions) and useState calls fn's
+  const [boxedValue, setBoxedValue] = useState({ value: arg });
 
   useEffect(() => {
-    if (!isFocused) setValue(arg);
+    if (!isFocused) setBoxedValue({ value: arg });
   }, [isFocused, arg]);
 
   const onChange = useCallback(
     (argVal: any) => {
-      setValue(argVal);
+      setBoxedValue({ value: argVal });
       updateArgs({ [key]: argVal });
       return argVal;
     },
@@ -64,7 +65,7 @@ export const ArgControl: FC<ArgControlProps> = ({ row, arg, updateArgs }) => {
 
   // row.name is a display name and not a suitable DOM input id or name - i might contain whitespace etc.
   // row.key is a hash key and therefore a much safer choice
-  const props = { name: key, argType: row, value, onChange, onBlur, onFocus };
+  const props = { name: key, argType: row, value: boxedValue.value, onChange, onBlur, onFocus };
   const Control = Controls[control.type] || NoControl;
   return <Control {...props} {...control} controlType={control.type} />;
 };

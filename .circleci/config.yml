@@ -202,7 +202,7 @@ jobs:
           destination: cypress
   e2e-tests-core:
     executor:
-      class: medium
+      class: large
       name: sb_cypress_6_node_12
     parallelism: 2
     steps:

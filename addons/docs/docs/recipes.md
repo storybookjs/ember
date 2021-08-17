@@ -347,7 +347,7 @@ const Example = () => <Button />;
 Example.parameters = {
   docs: {
     description: {
-      story: "Individiual story description, may conatin `markdown` markup"
+      story: "Individual story description, may contain `markdown` markup"
     },
   },
 };

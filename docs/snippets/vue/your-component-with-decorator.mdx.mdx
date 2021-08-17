@@ -1,0 +1,17 @@
+```md
+<!-- YourComponent.stories.mdx -->
+
+import { Meta } from '@storybook/addon-docs';
+
+import YourComponent from './YourComponent.vue';
+
+<Meta
+  title="YourComponent"
+  component={YourComponent}
+  decorators={[
+    () => ({
+      template: '<div style="margin: 3em;"><story /></div>',
+    }),
+  ]}
+/>
+```
