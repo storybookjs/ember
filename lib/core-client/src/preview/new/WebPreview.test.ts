@@ -1,10 +1,10 @@
 import global from 'global';
 import Events from '@storybook/core-events';
-import { RenderContext } from '@storybook/client-api/dist/ts3.9/new/types';
 import fetch from 'unfetch';
 import * as ReactDOM from 'react-dom';
 import { logger } from '@storybook/client-logger';
 import { addons } from '@storybook/addons';
+import merge from 'lodash/merge';
 
 import { WebPreview } from './WebPreview';
 import {
@@ -454,7 +454,10 @@ describe('WebPreview', () => {
         updatedArgs: { new: 'arg' },
       });
 
-      expect(preview.storyStore.args.get('component-one--a')).toEqual({ foo: 'a', new: 'arg' });
+      expect(preview.storyStore.args.get('component-one--a')).toEqual({
+        foo: 'a',
+        new: 'arg',
+      });
     });
 
     it('passes new args in context to renderToDOM', async () => {
@@ -1416,7 +1419,9 @@ describe('WebPreview', () => {
 
   describe('onImportFnChanged', () => {
     describe('when the current story changes', () => {
-      const newComponentOneExports = { ...componentOneExports };
+      const newComponentOneExports = merge({}, componentOneExports, {
+        a: { args: { foo: 'edited' } },
+      });
       const newImportFn = jest.fn(async (path) => {
         return path === './src/ComponentOne.stories.js'
           ? newComponentOneExports
@@ -1465,9 +1470,9 @@ describe('WebPreview', () => {
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
-          initialArgs: { foo: 'a' },
+          initialArgs: { foo: 'edited' },
           argTypes: { foo: { type: { name: 'string' } } },
-          args: { foo: 'a' },
+          args: { foo: 'edited' },
         });
       });
 
@@ -1486,9 +1491,9 @@ describe('WebPreview', () => {
           expect.objectContaining({
             id: 'component-one--a',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
-            initialArgs: { foo: 'a' },
+            initialArgs: { foo: 'edited' },
             argTypes: { foo: { type: { name: 'string' } } },
-            args: { foo: 'a' },
+            args: { foo: 'edited' },
           })
         );
       });
@@ -1511,9 +1516,9 @@ describe('WebPreview', () => {
               id: 'component-one--a',
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
-              initialArgs: { foo: 'a' },
+              initialArgs: { foo: 'edited' },
               argTypes: { foo: { type: { name: 'string' } } },
-              args: { foo: 'a' },
+              args: { foo: 'edited' },
               loaded: { l: 7 },
             }),
           }),
@@ -1521,8 +1526,7 @@ describe('WebPreview', () => {
         );
       });
 
-      // TODO -- is this actually what we want?
-      it('retains the args', async () => {
+      it('retains the same delta to the args, but uses new values', async () => {
         document.location.search = '?id=component-one--a';
         const preview = new WebPreview({ getGlobalMeta, importFn });
         await preview.initialize();
@@ -1530,7 +1534,7 @@ describe('WebPreview', () => {
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
-          updatedArgs: { new: 'arg' },
+          updatedArgs: { updatedArg: 'arg' },
         });
         await waitForRender();
 
@@ -1544,7 +1548,7 @@ describe('WebPreview', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              args: { foo: 'a', new: 'arg' },
+              args: { foo: 'edited', updatedArg: 'arg' },
             }),
           }),
           undefined // this is coming from view.prepareForStory, not super important
@@ -1740,8 +1744,8 @@ describe('WebPreview', () => {
     const newGetGlobalMeta = () => {
       return {
         ...globalMeta,
-        args: { a: 'second' },
-        globals: { a: 'second' },
+        args: { global: 'added' },
+        globals: { a: 'edited' },
         decorators: [newGlobalDecorator],
       };
     };
@@ -1758,7 +1762,7 @@ describe('WebPreview', () => {
       expect(preview.storyStore.globals.get()).toEqual({ a: 'second' });
     });
 
-    it.skip('updates args to their new values', async () => {
+    it('updates args to their new values', async () => {
       document.location.search = '?id=component-one--a';
       const preview = new WebPreview({ getGlobalMeta, importFn });
       await preview.initialize();
@@ -1767,7 +1771,12 @@ describe('WebPreview', () => {
       mockChannel.emit.mockClear();
       preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
 
-      expect(preview.storyStore.args.get('component-one--a')).toEqual({ a: 'second' });
+      await waitForRender();
+
+      expect(preview.storyStore.args.get('component-one--a')).toEqual({
+        foo: 'a',
+        global: 'added',
+      });
     });
 
     it.skip('rerenders the current story with new global meta-generated context', async () => {
@@ -1784,7 +1793,7 @@ describe('WebPreview', () => {
       expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           storyContext: expect.objectContaining({
-            args: { a: 'second' },
+            args: { foo: 'a', global: 'added' },
             globals: { a: 'second' },
           }),
         })

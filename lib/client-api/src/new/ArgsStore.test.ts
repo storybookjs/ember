@@ -111,4 +111,86 @@ describe('ArgsStore', () => {
       expect(store.get('id')).toEqual({ a: 'a' });
     });
   });
+
+  describe('resetOnImplementationChange', () => {
+    describe('if initialArgs are unchanged', () => {
+      it('does nothing if the args are untouched', () => {
+        const store = new ArgsStore();
+
+        const previousStory = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+        store.setInitial('id', previousStory.initialArgs);
+
+        const story = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+
+        store.resetOnImplementationChange(story, previousStory);
+        expect(store.get(story.id)).toEqual({ a: '1', b: '1' });
+      });
+
+      it('retains any arg changes', () => {
+        const store = new ArgsStore();
+
+        const previousStory = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+        store.setInitial('id', previousStory.initialArgs);
+
+        store.update('id', { a: 'update', c: 'update' });
+
+        const story = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+
+        store.resetOnImplementationChange(story, previousStory);
+        expect(store.get(story.id)).toEqual({ a: 'update', b: '1', c: 'update' });
+      });
+    });
+
+    describe('when initialArgs change', () => {
+      it('replaces old args with new if the args are untouched', () => {
+        const store = new ArgsStore();
+
+        const previousStory = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+        store.setInitial('id', previousStory.initialArgs);
+
+        const story = {
+          id: 'id',
+          initialArgs: { a: '1', c: '1' },
+        } as any;
+
+        store.resetOnImplementationChange(story, previousStory);
+        expect(store.get(story.id)).toEqual({ a: '1', c: '1' });
+      });
+
+      it('applies the same delta if the args are changed', () => {
+        const store = new ArgsStore();
+
+        const previousStory = {
+          id: 'id',
+          initialArgs: { a: '1', b: '1' },
+        } as any;
+        store.setInitial('id', previousStory.initialArgs);
+
+        store.update('id', { a: 'update', c: 'update' });
+
+        const story = {
+          id: 'id',
+          initialArgs: { a: '2', d: '2' },
+        } as any;
+
+        store.resetOnImplementationChange(story, previousStory);
+        expect(store.get(story.id)).toEqual({ a: 'update', c: 'update', d: '2' });
+      });
+    });
+  });
 });

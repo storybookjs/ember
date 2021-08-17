@@ -242,14 +242,16 @@ export class WebPreview<StoryFnReturnType> {
       return;
     }
 
-    if (persistedArgs) {
-      this.storyStore.args.updateFromPersisted(story, persistedArgs);
-    }
-
     const storyChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    const implementationChanged = story !== this.previousStory;
+    const implementationChanged = this.previousStory && story !== this.previousStory;
+
+    if (persistedArgs) {
+      this.storyStore.args.updateFromPersisted(story, persistedArgs);
+    } else if (implementationChanged) {
+      this.storyStore.args.resetOnImplementationChange(story, this.previousStory);
+    }
 
     // Don't re-render the story if nothing has changed to justify it
     if (!storyChanged && !implementationChanged && !viewModeChanged) {

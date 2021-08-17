@@ -1,5 +1,5 @@
 import { StoryId, Story, Args } from './types';
-import { combineArgs, mapArgsToTypes, validateOptions } from '../args';
+import { combineArgs, mapArgsToTypes, validateOptions, deepDiff, DEEPLY_EQUAL } from '../args';
 
 export class ArgsStore {
   argsByStoryId: Record<StoryId, Args> = {};
@@ -30,6 +30,15 @@ export class ArgsStore {
     // array values are persisted in the URL as sparse arrays, and we have to take that into
     // account when overriding the initialArgs (e.g. we patch [,'changed'] over ['initial', 'val'])
     this.argsByStoryId[story.id] = combineArgs(this.argsByStoryId[story.id], validatedPersisted);
+  }
+
+  resetOnImplementationChange(story: Story<any>, previousStory: Story<any>) {
+    const delta = deepDiff(previousStory.initialArgs, this.get(story.id));
+
+    const newArgs =
+      delta === DEEPLY_EQUAL ? story.initialArgs : combineArgs(story.initialArgs, delta);
+
+    this.argsByStoryId[story.id] = newArgs;
   }
 
   update(storyId: StoryId, argsUpdate: Partial<Args>) {
