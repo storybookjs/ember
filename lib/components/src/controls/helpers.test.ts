@@ -1,4 +1,4 @@
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 
 describe('getControlId', () => {
   it.each([
@@ -8,5 +8,16 @@ describe('getControlId', () => {
     ['all valid characters', 'some_weird-:custom.id', 'control-some_weird-:custom.id'],
   ])('%s', (a, input, expected) => {
     expect(getControlId(input)).toBe(expected);
+  });
+});
+
+describe('getControlSetterButtonId', () => {
+  it.each([
+    // caseName, input, expected
+    ['lower case', 'some-id', 'set-some-id'],
+    ['upper case', 'SOME-ID', 'set-SOME-ID'],
+    ['all valid characters', 'some_weird-:custom.id', 'set-some_weird-:custom.id'],
+  ])('%s', (a, input, expected) => {
+    expect(getControlSetterButtonId(input)).toBe(expected);
   });
 });
