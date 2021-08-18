@@ -346,7 +346,7 @@ export const init: ModuleFn = ({
       // TODO deal with errors
       const storyList = (await result.json()) as StoriesListJson;
 
-      fullAPI.setStoryList(storyList);
+      await fullAPI.setStoryList(storyList);
     },
     setStoryList: async (storyList: StoriesListJson) => {
       const hash = transformStoriesListToStoriesHash(storyList, {
