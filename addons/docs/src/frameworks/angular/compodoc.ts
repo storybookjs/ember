@@ -194,6 +194,7 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
           ? { name: 'void' }
           : extractType(item as Property, defaultValue);
       const action = section === 'outputs' ? { action: item.name } : {};
+
       const argType = {
         name: item.name,
         description: item.rawdescription || item.description,
@@ -206,6 +207,7 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
             summary: isMethod(item) ? displaySignature(item) : item.type,
             required: isMethod(item) ? false : !item.optional,
           },
+          defaultValue: { summary: defaultValue },
         },
       };
 
