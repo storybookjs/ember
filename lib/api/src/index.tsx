@@ -460,7 +460,6 @@ export function useGlobalTypes(): ArgTypes {
   return useStorybookApi().getGlobalTypes();
 }
 
-// TODO what if a kind is selected? Is that possible?
 function useCurrentStory(): Story {
   const { getCurrentStoryData } = useStorybookApi();
 

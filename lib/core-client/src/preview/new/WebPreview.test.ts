@@ -1055,12 +1055,11 @@ describe('WebPreview', () => {
         mockChannel.emit.mockClear();
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
-          updatedArgs: { updatedArg: 'arg' },
+          updatedArgs: { foo: 'updated' },
         });
         await waitForRender();
         expect(preview.storyStore.args.get('component-one--a')).toEqual({
-          foo: 'a',
-          updatedArg: 'arg',
+          foo: 'updated',
         });
 
         mockChannel.emit.mockClear();
@@ -1070,8 +1069,7 @@ describe('WebPreview', () => {
         });
         await waitForRender();
         expect(preview.storyStore.args.get('component-one--a')).toEqual({
-          foo: 'a',
-          updatedArg: 'arg',
+          foo: 'updated',
         });
 
         mockChannel.emit.mockClear();
@@ -1081,8 +1079,7 @@ describe('WebPreview', () => {
         });
         await waitForRender();
         expect(preview.storyStore.args.get('component-one--a')).toEqual({
-          foo: 'a',
-          updatedArg: 'arg',
+          foo: 'updated',
         });
       });
 
@@ -1642,7 +1639,7 @@ describe('WebPreview', () => {
         );
       });
 
-      it('retains the same delta to the args, but uses new values', async () => {
+      it('retains the same delta to the args', async () => {
         document.location.search = '?id=component-one--a';
         const preview = new WebPreview({ getGlobalMeta, importFn });
         await preview.initialize();
@@ -1650,7 +1647,7 @@ describe('WebPreview', () => {
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
-          updatedArgs: { updatedArg: 'arg' },
+          updatedArgs: { foo: 'updated' },
         });
         await waitForRender();
 
@@ -1664,7 +1661,7 @@ describe('WebPreview', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              args: { foo: 'edited', updatedArg: 'arg' },
+              args: { foo: 'updated' },
             }),
           }),
           undefined // this is coming from view.prepareForStory, not super important
