@@ -21,21 +21,15 @@ const enhance = ({
     id: 'foo--bar',
     kind: 'foo',
     name: 'bar',
+    component: 'dummy',
     parameters: {
-      component: 'dummy',
       __isArgsStory: isArgsStory,
       docs: {
         extractArgTypes: extractedArgTypes && (() => extractedArgTypes),
       },
-      argTypes: argType && {
-        input: argType,
-      },
-      args: {
-        input: arg,
-      },
     },
-    args: {},
-    argTypes: {},
+    argTypes: argType && { input: argType },
+    args: { input: arg },
     globals: {},
   };
   return enhanceArgTypes(context);
