@@ -31,7 +31,7 @@ jest.mock('unfetch', () =>
   }))
 );
 
-const { history, document } = global;
+const { window, document } = global;
 jest.mock('global', () => ({
   // @ts-ignore
   ...jest.requireActual('global'),
@@ -77,6 +77,7 @@ describe('WebPreview', () => {
       const preview = new WebPreview({ getGlobalMeta, importFn });
 
       const docsRoot = window.document.createElement('div');
+      // @ts-ignore
       preview.view.prepareForDocs.mockReturnValue(docsRoot);
       componentOneExports.default.parameters.docs.container.mockImplementationOnce(() =>
         React.createElement('div', {}, 'INSIDE')
