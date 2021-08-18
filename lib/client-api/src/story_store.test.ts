@@ -145,44 +145,6 @@ describe('preview.story_store', () => {
       expect(store._argTypesEnhancers.length).toBe(4);
     });
   });
-
-  describe('HMR behaviour', () => {
-    it('tries again with a specifier if it failed the first time', () => {
-      const store = new StoryStore({ channel });
-      store.setSelectionSpecifier({ storySpecifier: 'a--2', viewMode: 'story' });
-      addStoryToStore(store, 'a', '1', () => 0);
-      store.finishConfiguring();
-
-      expect(store.getSelection()).toEqual(undefined);
-
-      store.startConfiguring();
-      store.removeStoryKind('a');
-      addStoryToStore(store, 'a', '1', () => 0);
-      addStoryToStore(store, 'a', '2', () => 0);
-      store.finishConfiguring();
-
-      expect(store.getSelection()).toEqual({ storyId: 'a--2', viewMode: 'story' });
-    });
-
-    it('DOES NOT try again if the selection changed in the meantime', () => {
-      const store = new StoryStore({ channel });
-      store.setSelectionSpecifier({ storySpecifier: 'a--2', viewMode: 'story' });
-      addStoryToStore(store, 'a', '1', () => 0);
-      store.finishConfiguring();
-
-      expect(store.getSelection()).toEqual(undefined);
-      store.setSelection({ storyId: 'a--1', viewMode: 'story' });
-      expect(store.getSelection()).toEqual({ storyId: 'a--1', viewMode: 'story' });
-
-      store.startConfiguring();
-      store.removeStoryKind('a');
-      addStoryToStore(store, 'a', '1', () => 0);
-      addStoryToStore(store, 'a', '2', () => 0);
-      store.finishConfiguring();
-
-      expect(store.getSelection()).toEqual({ storyId: 'a--1', viewMode: 'story' });
-    });
-  });
 });
 
 describe('storySort', () => {

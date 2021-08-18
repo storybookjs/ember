@@ -174,14 +174,90 @@ describe('WebPreview', () => {
       });
     });
 
-    it('renders missing if the story specified does not exist', async () => {
-      document.location.search = '?id=random';
+    describe('if the story specified does not exist', () => {
+      it('renders missing', async () => {
+        document.location.search = '?id=random';
 
-      const preview = new WebPreview({ getGlobalMeta, importFn });
-      await preview.initialize();
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
 
-      expect(preview.view.showNoPreview).toHaveBeenCalled();
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
+        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
+      });
+
+      // TODO we need tests for story list changes
+      it.skip('tries again with a specifier if CSF file changes', async () => {
+        document.location.search = '?id=component-one--d';
+
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
+
+        mockChannel.emit.mockClear();
+        const newComponentOneExports = merge({}, componentOneExports, {
+          d: { args: { foo: 'd' }, play: jest.fn() },
+        });
+        const newImportFn = jest.fn(async (path) => {
+          return path === './src/ComponentOne.stories.js'
+            ? newComponentOneExports
+            : componentTwoExports;
+        });
+        preview.onImportFnChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
+          storyId: 'component-one--d',
+          viewMode: 'story',
+        });
+      });
+
+      it.skip('DOES NOT try again if CSF file changes if selection changed', async () => {
+        document.location.search = '?id=component-one--d';
+
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+
+        const newComponentOneExports = merge({}, componentOneExports, {
+          d: { args: { foo: 'd' }, play: jest.fn() },
+        });
+        const newImportFn = jest.fn(async (path) => {
+          return path === './src/ComponentOne.stories.js'
+            ? newComponentOneExports
+            : componentTwoExports;
+        });
+
+        preview.onImportFnChanged({ importFn: newImportFn });
+        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
+          storyId: 'component-one--d',
+          viewMode: 'story',
+        });
+      });
+
+      it.skip('tries again with a specifier if stories list changes', async () => {
+        document.location.search = '?id=component-three--d';
+
+        const preview = new WebPreview({ getGlobalMeta, importFn });
+        await preview.initialize();
+
+        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-three--d');
+
+        // Somehow update story list
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
+          storyId: 'component-three--d',
+          viewMode: 'story',
+        });
+      });
     });
 
     it('renders missing if no selection', async () => {

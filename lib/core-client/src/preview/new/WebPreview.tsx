@@ -108,6 +108,16 @@ export class WebPreview<StoryFnReturnType> {
   async initialize() {
     await this.storyStore.initialize();
     this.setupListeners();
+
+    const { globals } = this.urlStore.selectionSpecifier || {};
+    if (globals) {
+      this.storyStore.globals.updateFromPersisted(globals);
+    }
+    this.channel.emit(Events.SET_GLOBALS, {
+      globals: this.storyStore.globals.get(),
+      globalTypes: this.storyStore.globalMeta.globalTypes,
+    });
+
     await this.selectSpecifiedStory();
 
     // TODO are we doing this? back-compat?
@@ -126,15 +136,6 @@ export class WebPreview<StoryFnReturnType> {
 
   // Use the selection specifier to choose a story
   async selectSpecifiedStory() {
-    const { globals } = this.urlStore.selectionSpecifier || {};
-    if (globals) {
-      this.storyStore.globals.updateFromPersisted(globals);
-    }
-    this.channel.emit(Events.SET_GLOBALS, {
-      globals: this.storyStore.globals.get(),
-      globalTypes: this.storyStore.globalMeta.globalTypes,
-    });
-
     if (!this.urlStore.selectionSpecifier) {
       this.renderMissingStory();
       return;
@@ -204,7 +205,12 @@ export class WebPreview<StoryFnReturnType> {
   // This happens when a glob gets HMR-ed
   onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
     this.storyStore.importFn = importFn;
-    this.renderSelection();
+
+    if (this.urlStore.selection) {
+      this.renderSelection();
+    } else {
+      this.selectSpecifiedStory();
+    }
   }
 
   // This happens when a config file gets reloade
