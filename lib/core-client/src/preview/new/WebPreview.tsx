@@ -255,7 +255,6 @@ export class WebPreview<StoryFnReturnType> {
 
     // Don't re-render the story if nothing has changed to justify it
     if (!storyChanged && !implementationChanged && !viewModeChanged) {
-      // TODO -- the api of this changed, but the previous API made no sense. Did we use it?
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -313,10 +312,7 @@ export class WebPreview<StoryFnReturnType> {
         <Page />
       </DocsContainer>
     );
-    ReactDOM.render(docsElement, element, () =>
-      // TODO -- changed the API, previous it had a kind -- did we use it?
-      this.channel.emit(Events.DOCS_RENDERED, id)
-    );
+    ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
   }
 
   renderStory({ story }: { story: Story<StoryFnReturnType> }) {
