@@ -14,6 +14,7 @@ import { StoryStore, filterArgTypes } from '@storybook/client-api';
 import type { PropDescriptor } from '@storybook/client-api';
 import Events from '@storybook/core-events';
 
+import { ArgType } from '@storybook/addons/types';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
 import { getComponentName, getDocsStories } from './utils';
@@ -86,6 +87,7 @@ export const extractComponentArgTypes = (
   }
   let argTypes = extractArgTypes(component);
   argTypes = filterArgTypes(argTypes, include, exclude);
+  argTypes = addDefaultValuesToTable(argTypes);
 
   return argTypes;
 };
@@ -123,6 +125,16 @@ const addComponentTabs = (
   })),
 });
 
+const addDefaultValuesToTable = (argTypes: ArgTypes) => {
+  return Object.values(argTypes).map((value: any) => {
+    const argType = value;
+    if (!argType.table.defaultValue) {
+      argType.table.defaultValue = { summary: argType.defaultValue };
+    }
+    return argType;
+  }) as ArgTypes;
+};
+
 export const StoryTable: FC<
   StoryProps & { component: Component; subcomponents: Record<string, Component> }
 > = (props) => {
@@ -157,6 +169,7 @@ export const StoryTable: FC<
     storyArgTypes = filterArgTypes(storyArgTypes, include, exclude);
 
     const mainLabel = getComponentName(component) || 'Story';
+    storyArgTypes = addDefaultValuesToTable(storyArgTypes);
 
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, storyStore);

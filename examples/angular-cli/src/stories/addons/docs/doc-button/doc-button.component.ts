@@ -47,6 +47,10 @@ export enum ButtonAccent {
 export class DocButtonComponent<T> {
   @ViewChild('buttonRef', { static: false }) buttonRef: ElementRef;
 
+  /** Test default value. */
+  @Input()
+  public theDefaultValue = 'Default value in component';
+
   /** Appearance style of the button. */
   @Input()
   public appearance: 'primary' | 'secondary' = 'secondary';
