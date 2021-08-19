@@ -1,8 +1,8 @@
 diff --git a/node_modules/@storybook/client-api/dist/modern/story_store.js b/node_modules/@storybook/client-api/dist/modern/story_store.js
-index d1e0e21..1f13684 100644
+index d1e0e21..d99321c 100644
 --- a/node_modules/@storybook/client-api/dist/modern/story_store.js
 +++ b/node_modules/@storybook/client-api/dist/modern/story_store.js
-@@ -606,10 +606,15 @@ export default class StoryStore {
+@@ -606,10 +606,12 @@ export default class StoryStore {
      }))), initialArgsBeforeEnhancers);
  
      const runPlayFunction = async () => {
@@ -12,13 +12,10 @@ index d1e0e21..1f13684 100644
 -      return play ? play() : undefined;
 +      const { play } = combinedParameters;
 +      if (!play) return;
-+      try {
-+        const { viewMode, storyId } = this._selection;
-+        const containerId = viewMode === "docs" ? `story--${storyId}` : 'root'
-+        play({ viewMode, storyId, containerId })
-+      } catch (e) {
-+        if (typeof e !== Symbol) throw e;
-+      }
++
++      const { viewMode, storyId } = this._selection;
++      const containerId = viewMode === "docs" ? `story--${storyId}` : 'root'
++      return play({ viewMode, storyId, containerId })
      };
  
      _stories[id] = Object.assign({}, identification, {

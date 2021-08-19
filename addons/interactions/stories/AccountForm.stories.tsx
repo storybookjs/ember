@@ -18,7 +18,8 @@ export const StandardEmailFilled = {
   play: async (context) => {
     const canvas = within(document.getElementById(context.containerId));
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
-    await expect(true).not.toBe({ hello: 1 });
+    await expect(true).not.toBe(true);
+    await expect({ hello: 1 }).not.toBe(new Error("cool"));
   },
 };
 

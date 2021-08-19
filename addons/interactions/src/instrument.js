@@ -1,10 +1,18 @@
 import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 
-const IgnoredException = Symbol("IgnoredException")
+const IgnoredException = 'IgnoredException';
 const channel = addons.getChannel();
 
-let next;
+let n = 0;
+let next = undefined;
+const callRefsByResult = new Map();
+
+channel.on(EVENTS.RESET, () => {
+  n = 0;
+  next = undefined;
+  callRefsByResult.clear();
+});
 channel.on(EVENTS.NEXT, () => next && next());
 channel.on(EVENTS.RELOAD, () => window.location.reload());
 
@@ -25,36 +33,41 @@ function isPatchable(o) {
   return true;
 }
 
-const callRefsByResult = new Map();
 function run(fn, args, call) {
   // Map args that originate from a tracked function call to a call reference to enable nesting.
   // These values are often not serializable anyway (e.g. DOM elements).
   const mappedArgs = args.map((arg) => {
-    if (callRefsByResult.has(arg)) return callRefsByResult.get(arg)
+    if (callRefsByResult.has(arg)) return callRefsByResult.get(arg);
     if (arg instanceof Element) {
       const { prefix, localName, id, classList } = arg;
-      return { __element__: { prefix, localName, id, classList } }
+      return { __element__: { prefix, localName, id, classList } };
     }
-    return arg
-  })
+    return arg;
+  });
 
   try {
     const result = fn(...args);
-    callRefsByResult.set(result, { __callId__: call.id });
     channel.emit(EVENTS.CALL, { ...call, args: mappedArgs });
+    // Don't track generic results like null, undefined, true and false.
+    if (result && result !== true) callRefsByResult.set(result, { __callId__: call.id });
     return result;
-  } catch (exception) {
-    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, exception });
-    throw IgnoredException
+  } catch (e) {
+    if (e instanceof Error) {
+      const { name, message, stack, matcherResult } = e;
+      const exception = { name, message, stack, matcherResult };
+      channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, exception });
+      throw IgnoredException;
+    }
+    throw e;
   }
 }
 
-function intercept(fn, args, call) {  
+function intercept(fn, args, call) {
   // For a "jump to step" action, continue playing until we hit a call by that ID.
   // For chained calls, we can only return a Promise for the last call in the chain.
   const playUntil = getPlayUntil();
   const isChainedUpon = getChainedCallIds().has(call.id);
-  if (playUntil || isChainedUpon) {
+  if (playUntil || isChainedUpon || !isDebugging()) {
     if (playUntil === call.id) clearPlayUntil();
     return run(fn, args, call);
   }
@@ -68,10 +81,9 @@ function intercept(fn, args, call) {
 // Monkey patch an object method to record calls.
 // Returns a function that invokes the original function, records the invocation ("call") and
 // returns the original result.
-let n = 0;
 function track(method, fn, args, { path = [], ...options }) {
   const call = { id: `${n++}-${method}`, path, method };
-  const result = (options.intercept && isDebugging() ? intercept : run)(fn, args, call);
+  const result = (options.intercept ? intercept : run)(fn, args, call);
   return instrument(result, { ...options, path: [{ __callId__: call.id }] });
 }
 

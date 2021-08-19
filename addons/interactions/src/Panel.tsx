@@ -6,7 +6,7 @@ import { styled } from '@storybook/theming';
 import { EVENTS } from './constants';
 import global from 'global';
 
-import { MethodCall } from './components/MethodCall'
+import { MethodCall } from './components/MethodCall';
 
 interface PanelProps {
   active: boolean;
@@ -21,8 +21,8 @@ enum TestingStates {
 type TestState = TestingStates.DONE | TestingStates.ERROR | TestingStates.PENDING;
 
 export interface CallRef {
-  __callId__: string
-};
+  __callId__: string;
+}
 
 export interface Call {
   id: string;
@@ -188,10 +188,15 @@ export const Panel: React.FC<PanelProps> = (props) => {
       case 'call':
         const { log, cursor, callsById, isDebugging, hasException } = state;
         const { call } = action.payload;
+        call.state = call.exception ? TestingStates.ERROR : TestingStates.DONE;
+
         return {
           ...state,
           log: isDebugging
-            ? [...log.slice(0, cursor), call, ...log.slice(cursor + 1)]
+            ? log
+                .slice(0, cursor)
+                .concat(call)
+                .concat(log.slice(cursor + 1).map((c) => ({ ...c, state: TestingStates.PENDING })))
             : log.concat(call),
           cursor: cursor + 1,
           hasException: call.exception ? true : hasException,
@@ -224,9 +229,11 @@ export const Panel: React.FC<PanelProps> = (props) => {
     },
     storyRendered: () => {
       dispatch({ type: 'stop' });
+      emit(EVENTS.RESET);
     },
     setCurrentStory: () => {
       dispatch({ type: 'reset' });
+      emit(EVENTS.RESET);
     },
   });
 
@@ -245,8 +252,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
 
   const { log, callsById, isDebugging, hasException, hasPending } = state;
 
-  const folded = fold(log);
-  console.log(log, folded);
   const tabButton = document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
   const statusIcon = hasException ? (
@@ -261,7 +266,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     <AddonPanel {...props}>
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
 
-      {folded.map((call) => (
+      {fold(log).map((call) => (
         <Row call={call} callsById={callsById} key={call.id} onClick={() => start(call.id)} />
       ))}
 

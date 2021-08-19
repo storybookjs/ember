@@ -50,9 +50,7 @@ export const MethodCall = ({ call, callsById }: { call: Call; callsById: Record<
         </span>
       );
     } else {
-      const color =
-        { string: 'forestgreen', boolean: 'crimson', number: 'teal' }[typeof arg as string] ||
-        '#FFAE00';
+      const color = { string: 'forestgreen', boolean: 'crimson' }[typeof arg as string] || 'orange';
       nodes.push(
         <span key={arg} style={{ color }}>
           {stringify(arg)}
