@@ -21,23 +21,17 @@ export const storybookApp = createApp({
   },
 });
 
-export default function render({
-  storyFn,
-  kind,
-  name,
-  args,
-  showMain,
-  showError,
-  showException,
-  forceRender,
-}: RenderContext) {
+export default function render(
+  { title, name, storyFn, showMain, showError, showException }: RenderContext<StoryFnVueReturnType>,
+  domElement: HTMLElement
+) {
   storybookApp.config.errorHandler = showException;
 
   const element: StoryFnVueReturnType = storyFn();
 
   if (!element) {
     showError({
-      title: `Expecting a Vue component from the story: "${name}" of "${kind}".`,
+      title: `Expecting a Vue component from the story: "${name}" of "${title}".`,
       description: dedent`
         Did you forget to return the Vue component from the story?
         Use "() => ({ template: '<my-comp></my-comp>' })" or "() => ({ components: MyComp, template: '<my-comp></my-comp>' })" when defining the story.
@@ -51,6 +45,6 @@ export default function render({
   activeStoryComponent.value = element;
 
   if (!root) {
-    root = storybookApp.mount('#root');
+    root = storybookApp.mount(domElement);
   }
 }

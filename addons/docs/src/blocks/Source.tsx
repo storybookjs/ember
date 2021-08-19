@@ -6,7 +6,7 @@ import {
 } from '@storybook/components';
 import { StoryId } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
-import { Story } from '@storybook/client-api/dist/ts3.9/new/types';
+import { Story } from '@storybook/store';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';

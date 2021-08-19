@@ -6,7 +6,6 @@ import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
 import Events from '@storybook/core-events';
 
 // import { getSelectionSpecifierFromPath, setPath } from './url';
-import { RenderStoryFunction } from './types';
 import { loadCsf } from './loadCsf';
 import { StoryRenderer } from './StoryRenderer';
 
@@ -56,7 +55,7 @@ function focusInInput(event: Event) {
 
 // todo improve typings
 export default function start(
-  render: RenderStoryFunction,
+  render: any,
   { decorateStory }: { decorateStory?: DecorateStoryFunction } = {}
 ) {
   const channel = getOrCreateChannel();

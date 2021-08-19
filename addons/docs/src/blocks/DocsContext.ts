@@ -1,7 +1,7 @@
 import { Context, createContext } from 'react';
 import { window as globalWindow } from 'global';
 
-import { DocsContextProps } from '@storybook/client-api/dist/ts3.9/new/types';
+import { DocsContextProps } from '@storybook/store';
 
 export type { DocsContextProps };
 

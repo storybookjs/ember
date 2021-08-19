@@ -16,7 +16,11 @@ function cleanUpPreviousStory() {
   previousComponent = null;
 }
 
-export default function render({ storyFn, kind, name, showMain, showError }: RenderContext) {
+// TODO -- what is the type of storyFn result?
+export default function render(
+  { storyFn, kind, name, showMain, showError }: RenderContext<any>,
+  domElement: HTMLElement
+) {
   cleanUpPreviousStory();
 
   const target = document.getElementById('root');

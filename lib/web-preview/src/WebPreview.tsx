@@ -12,7 +12,6 @@ import {
   ModuleImportFn,
   Selection,
   Story,
-  RenderContextWithoutStoryContext,
   RenderContext,
   GlobalMeta,
   Globals,
@@ -324,7 +323,7 @@ export class WebPreview<StoryFnReturnType> {
   renderStory({ story }: { story: Story<StoryFnReturnType> }) {
     const element = this.view.prepareForStory(story);
     const { id, title, name } = story;
-    const renderContext: RenderContextWithoutStoryContext = {
+    const renderContext = {
       id,
       title,
       kind: title,
@@ -346,10 +345,13 @@ export class WebPreview<StoryFnReturnType> {
     element,
   }: {
     story: Story<StoryFnReturnType>;
-    renderContext: RenderContextWithoutStoryContext;
+    renderContext: Omit<
+      RenderContext<StoryFnReturnType>,
+      'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
+    >;
     element: Element;
   }) {
-    const { id, applyLoaders, storyFn, runPlayFunction } = story;
+    const { id, applyLoaders, storyFn: unboundStoryFn, runPlayFunction } = story;
 
     const controller = new AbortController();
     let initialRenderPhase: InitialRenderPhase = 'init';
@@ -374,17 +376,17 @@ export class WebPreview<StoryFnReturnType> {
 
       // By this stage, it is possible that new args/globals have been received for this story
       // and we need to ensure we render it with the new values
-      const updatedStoryContext = this.storyStore.getStoryContext(story);
+      const updatedStoryContext = {
+        ...loadedContext,
+        ...this.storyStore.getStoryContext(story),
+      };
       renderContext = {
         ...renderContextWithoutStoryContext,
         // Whenever the selection changes we want to force the component to be remounted.
         forceRemount: true,
-        unboundStoryFn: storyFn,
-        storyContext: {
-          ...loadedContext,
-          ...updatedStoryContext,
-          storyFn: () => storyFn(loadedContext),
-        },
+        storyContext: updatedStoryContext,
+        storyFn: () => unboundStoryFn(updatedStoryContext),
+        unboundStoryFn,
       };
       try {
         await this.renderToDOM(renderContext, element);
@@ -445,18 +447,20 @@ export class WebPreview<StoryFnReturnType> {
       }
 
       // This story context will have the updated values of args and globals
-      const rerenderStoryContext = this.storyStore.getStoryContext(story);
+
+      const rerenderStoryContext = {
+        // NOTE: loaders are not getting run again. So we are just patching
+        // the updated story context over the previous value (that included loader output).
+        // Loaders aren't allowed to touch anything but the `loaded` key but
+        // this means loaders never run again with new values of args/globals
+        ...renderContext.storyContext,
+        ...this.storyStore.getStoryContext(story),
+      };
       const rerenderRenderContext: RenderContext<StoryFnReturnType> = {
         ...renderContext,
         forceRemount: false,
-        storyContext: {
-          // NOTE: loaders are not getting run again. So we are just patching
-          // the updated story context over the previous value (that included loader output).
-          // Loaders aren't allowed to touch anything but the `loaded` key but
-          // this means loaders never run again with new values of args/globals
-          ...renderContext.storyContext,
-          ...rerenderStoryContext,
-        },
+        storyContext: rerenderStoryContext,
+        storyFn: () => unboundStoryFn(rerenderStoryContext),
       };
 
       try {

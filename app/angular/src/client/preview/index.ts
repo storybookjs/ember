@@ -1,5 +1,5 @@
 /* eslint-disable prefer-destructuring */
-import { RenderStoryFunction, start } from '@storybook/core/client';
+import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
@@ -19,7 +19,7 @@ interface ClientApi extends ClientStoryApi<StoryFnAngularReturnType> {
   load: (...args: any[]) => void;
 }
 
-const api = start((render as any) as RenderStoryFunction, { decorateStory });
+const api = start(render as any, { decorateStory });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

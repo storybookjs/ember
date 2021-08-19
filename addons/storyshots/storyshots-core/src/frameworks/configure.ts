@@ -101,11 +101,11 @@ function configure(
       storybook.addParameters({ ...parameters, globals, globalTypes });
     }
     if (argsEnhancers) {
-      argsEnhancers.forEach((enhancer: ArgsEnhancer) => storybook.addArgsEnhancer(enhancer));
+      argsEnhancers.forEach((enhancer: ArgsEnhancer) => storybook.addArgsEnhancer(enhancer as any));
     }
     if (argTypesEnhancers) {
       argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer) =>
-        storybook.addArgTypesEnhancer(enhancer)
+        storybook.addArgTypesEnhancer(enhancer as any)
       );
     }
   }

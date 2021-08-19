@@ -58,9 +58,7 @@ beforeEach(() => {
 describe('WebPreview', () => {
   describe('initial render', () => {
     it('renders story mode through the stack', async () => {
-      globalMeta.renderToDOM.mockImplementationOnce(
-        ({ storyContext: { storyFn } }: RenderContext<any>) => storyFn()
-      );
+      globalMeta.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) => storyFn());
       document.location.search = '?id=component-one--a';
       await new WebPreview({ getGlobalMeta, importFn }).initialize();
 
@@ -111,9 +109,7 @@ describe('WebPreview', () => {
       await preview.initialize();
       await waitForRender();
 
-      globalMeta.renderToDOM.mockImplementationOnce(
-        ({ storyContext: { storyFn } }: RenderContext<any>) => storyFn()
-      );
+      globalMeta.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) => storyFn());
       globalMeta.decorators[0].mockClear();
       mockChannel.emit.mockClear();
       preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });

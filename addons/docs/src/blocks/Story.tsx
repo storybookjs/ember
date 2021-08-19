@@ -11,7 +11,7 @@ import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
 import { toId, storyNameFromExport } from '@storybook/csf';
 import { Args, BaseAnnotations } from '@storybook/addons';
-import { Story as StoryType } from '@storybook/client-api/dist/ts3.9/new/types';
+import { Story as StoryType } from '@storybook/store';
 import global from 'global';
 import { CURRENT_SELECTION } from './types';
 

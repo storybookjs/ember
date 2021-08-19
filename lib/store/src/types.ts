@@ -52,19 +52,14 @@ export type LoadedStoryContext = StoryContext & {
   loaded: Record<string, any>;
 };
 
-export declare type RenderContextWithoutStoryContext = StoryIdentifier & {
+export declare type RenderContext<StoryFnReturnType> = StoryIdentifier & {
   showMain: () => void;
   showError: (error: { title: string; description: string }) => void;
   showException: (err: Error) => void;
-};
-
-export type RenderContext<StoryFnReturnType> = RenderContextWithoutStoryContext & {
   forceRemount: boolean;
-  // TODO -- this is pretty surprising -- why is this here?
+  storyContext: LoadedStoryContext;
+  storyFn: LegacyStoryFn<StoryFnReturnType>;
   unboundStoryFn: LegacyStoryFn<StoryFnReturnType>;
-  storyContext: LoadedStoryContext & {
-    storyFn: LegacyStoryFn<StoryFnReturnType>;
-  };
 };
 
 export type ArgTypesEnhancer = (
@@ -180,7 +175,11 @@ export interface DocsContextProps<StoryFnReturnType> {
   componentStories: () => Story<StoryFnReturnType>[];
   renderStoryToElement: (args: {
     story: Story<StoryFnReturnType>;
-    renderContext: RenderContextWithoutStoryContext;
+    // TODO -- duplicative with WebPreview.tsx
+    renderContext: Omit<
+      RenderContext<StoryFnReturnType>,
+      'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
+    >;
     element: Element;
   }) => () => void;
   getStoryContext: (story: Story<StoryFnReturnType>) => StoryContext;

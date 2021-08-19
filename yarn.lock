@@ -5677,6 +5677,7 @@ __metadata:
     "@storybook/postinstall": 6.4.0-alpha.19
     "@storybook/react": 6.4.0-alpha.19
     "@storybook/source-loader": 6.4.0-alpha.19
+    "@storybook/store": 6.4.0-alpha.19
     "@storybook/theming": 6.4.0-alpha.19
     "@storybook/vue": 6.4.0-alpha.19
     "@storybook/web-components": 6.4.0-alpha.19

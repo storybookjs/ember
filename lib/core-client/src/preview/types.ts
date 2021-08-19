@@ -1,18 +1,3 @@
-import { StoryIdentifier } from '@storybook/addons';
-import { StoryContext } from '@storybook/client-api';
-
-export type RenderContextWithoutStoryContext = StoryIdentifier & {
-  forceRender: boolean;
-
-  showMain: () => void;
-  showError: (error: { title: string; description: string }) => void;
-  showException: (err: Error) => void;
-};
-
-export type RenderContext = RenderContextWithoutStoryContext & {
-  storyContext: StoryContext;
-};
-
 export interface PreviewError {
   message?: string;
   stack?: string;
@@ -37,4 +22,5 @@ export type LoaderFunction = () => void | any[];
 export type Loadable = RequireContext | RequireContext[] | LoaderFunction;
 
 // The function used by a framework to render story to the DOM
-export type RenderStoryFunction = (context: RenderContext) => void;
+
+export * from '@storybook/client-api';

@@ -59,7 +59,10 @@ function render(options: OptionsArgs, el: ElementArgs) {
     });
 }
 
-export default function renderMain({ storyFn, kind, name, showMain, showError }: RenderContext) {
+export default function renderMain(
+  { storyFn, kind, name, showMain, showError }: RenderContext<OptionsArgs>,
+  domElement: HTMLElement
+) {
   const element = storyFn();
 
   if (!element) {
@@ -76,5 +79,5 @@ export default function renderMain({ storyFn, kind, name, showMain, showError }:
   }
 
   showMain();
-  render(element, rootEl);
+  render(element, { el: domElement });
 }

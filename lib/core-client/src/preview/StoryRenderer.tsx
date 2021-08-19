@@ -4,13 +4,25 @@ import global from 'global';
 import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
 
-import { StoryId, StoryKind, StoryFn, ViewMode, Channel } from '@storybook/addons';
+import { StoryId, StoryKind, StoryFn, StoryIdentifier, ViewMode, Channel } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import { StoryStore } from '@storybook/client-api';
+import { StoryStore, StoryContext } from '@storybook/client-api';
 
 // import { NoDocs } from './NoDocs';
-import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
+
+type RenderContextWithoutStoryContext = StoryIdentifier & {
+  forceRender: boolean;
+
+  showMain: () => void;
+  showError: (error: { title: string; description: string }) => void;
+  showException: (err: Error) => void;
+};
+
+type RenderContext = RenderContextWithoutStoryContext & {
+  storyContext: StoryContext;
+};
+type RenderStoryFunction = (context: RenderContext) => void;
 
 const { document, FEATURES = {} } = global;
 

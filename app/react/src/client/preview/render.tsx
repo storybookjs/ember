@@ -46,9 +46,14 @@ class ErrorBoundary extends Component<{
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
 export default async function renderMain(
-  // @ts-ignore FIXME refactor in progress
-  { storyContext, unboundStoryFn, showMain, showException, forceRemount }: RenderContext,
-  domElement: Element
+  {
+    storyContext,
+    unboundStoryFn,
+    showMain,
+    showException,
+    forceRemount,
+  }: RenderContext<React.ReactElement<any, string | React.JSXElementConstructor<any>>>,
+  domElement: HTMLElement
 ) {
   const Story = unboundStoryFn as FunctionComponent<StoryContext>;
 
