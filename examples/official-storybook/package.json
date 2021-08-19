@@ -30,7 +30,6 @@
     "@storybook/cli": "6.4.0-alpha.19",
     "@storybook/components": "6.4.0-alpha.19",
     "@storybook/core-events": "6.4.0-alpha.19",
-    "@storybook/design-system": "^5.4.7",
     "@storybook/node-logger": "6.4.0-alpha.19",
     "@storybook/react": "6.4.0-alpha.19",
     "@storybook/source-loader": "6.4.0-alpha.19",
