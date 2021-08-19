@@ -13,6 +13,7 @@ import {
   Pipe,
   Property,
   Directive,
+  JsDocTag,
 } from './types';
 
 export const isMethod = (methodOrProp: Method | Property): methodOrProp is Method => {
@@ -157,7 +158,17 @@ export const extractType = (property: Property, defaultValue: any) => {
 const extractDefaultValue = (property: Property) => {
   try {
     // eslint-disable-next-line no-eval
-    const value = eval(property.defaultValue);
+    let value = eval(property.defaultValue);
+    if (value == null && property.jsdoctags.length > 0) {
+      property.jsdoctags.forEach((tag: JsDocTag) => {
+        if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {
+          const tmp = window.document.createElement('DIV');
+          tmp.innerHTML = tag.comment;
+          value = tmp.textContent;
+        }
+      });
+    }
+
     return value;
   } catch (err) {
     logger.debug(`Error extracting ${property.name}: ${property.defaultValue}`);
@@ -189,6 +200,7 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
     data.forEach((item: Method | Property) => {
       const section = mapItemToSection(key, item);
       const defaultValue = isMethod(item) ? undefined : extractDefaultValue(item as Property);
+
       const type =
         isMethod(item) || (section !== 'inputs' && section !== 'properties')
           ? { name: 'void' }
