@@ -9,7 +9,7 @@ import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { StoryStore } from '@storybook/client-api';
 
-import { NoDocs } from './NoDocs';
+// import { NoDocs } from './NoDocs';
 import { RenderStoryFunction, RenderContextWithoutStoryContext } from './types';
 
 const { document, FEATURES = {} } = global;
@@ -269,12 +269,7 @@ export class StoryRenderer {
     document.getElementById('root').removeAttribute('hidden');
   }
 
-  async renderStory({
-    context,
-    context: { id, getDecorated },
-  }: {
-    context: RenderContextWithoutStoryContext;
-  }) {
+  async renderStory({ context, context: { id, getDecorated } }: { context: any }) {
     if (getDecorated) {
       try {
         const { applyLoaders, runPlayFunction, unboundStoryFn, forceRender } = context;
@@ -301,7 +296,7 @@ export class StoryRenderer {
     context: RenderContextWithoutStoryContext;
     storyStore: StoryStore;
   }) {
-    const { kind, parameters, id } = context;
+    const { kind, parameters, id } = context as any;
     if (id === '*' || !parameters) {
       return;
     }
@@ -313,7 +308,7 @@ export class StoryRenderer {
 
     const DocsContainer =
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
-    const Page = docs.page || NoDocs;
+    const Page = docs.page;
     // Docs context includes the storyStore. Probably it would be better if it didn't but that can be fixed in a later refactor
     ReactDOM.render(
       <DocsContainer context={{ storyStore, ...context }}>

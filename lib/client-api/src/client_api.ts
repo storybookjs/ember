@@ -4,6 +4,7 @@ import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
 import { StoryFn, Parameters, LoaderFunction, DecorateStoryFunction } from '@storybook/addons';
 import { toId } from '@storybook/csf';
+import { applyHooks, defaultDecorateStory } from '@storybook/store';
 
 import {
   ClientApiParams,
@@ -13,9 +14,7 @@ import {
   ArgsEnhancer,
   ArgTypesEnhancer,
 } from './types';
-import { applyHooks } from './hooks';
 import StoryStore from './story_store';
-import { defaultDecorateStory } from './decorators';
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
 // relevant framework instanciates them via `start.js`. The good news is this happens right away.

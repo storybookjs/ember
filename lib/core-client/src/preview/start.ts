@@ -5,7 +5,7 @@ import createChannel from '@storybook/channel-postmessage';
 import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
 import Events from '@storybook/core-events';
 
-import { getSelectionSpecifierFromPath, setPath } from './url';
+// import { getSelectionSpecifierFromPath, setPath } from './url';
 import { RenderStoryFunction } from './types';
 import { loadCsf } from './loadCsf';
 import { StoryRenderer } from './StoryRenderer';
@@ -66,12 +66,12 @@ export default function start(
 
   // Only try and do URL/event based stuff in a browser context (i.e. not in storyshots)
   if (isBrowser) {
-    const selectionSpecifier = getSelectionSpecifierFromPath();
-    if (selectionSpecifier) {
-      storyStore.setSelectionSpecifier(selectionSpecifier);
-    }
+    // const selectionSpecifier = getSelectionSpecifierFromPath();
+    // if (selectionSpecifier) {
+    //   storyStore.setSelectionSpecifier(selectionSpecifier);
+    // }
 
-    channel.on(Events.CURRENT_STORY_WAS_SET, setPath);
+    // channel.on(Events.CURRENT_STORY_WAS_SET, setPath);
 
     // Handle keyboard shortcuts
     globalWindow.onkeydown = (event: KeyboardEvent) => {

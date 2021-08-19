@@ -43,6 +43,8 @@ const storybookPaths: Record<string, string> = [
   'semver',
   'client-api',
   'client-logger',
+  'web-preview',
+  'store',
 ].reduce(
   (acc, sbPackage) => ({
     ...acc,
@@ -88,9 +90,8 @@ export default async ({
   const virtualModuleMapping = {
     [storiesPath]: toImportFn(stories),
     [configEntryPath]: dedent`
-    import { composeConfigs } from '@storybook/core-client/dist/esm/preview/new/composeConfigs';
-    import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
-
+    import { composeConfigs, WebPreview } from '@storybook/web-preview';
+    
     import { importFn } from './${storiesFilename}';
 
     ${configs

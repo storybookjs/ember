@@ -21,6 +21,14 @@ import {
   StoryId,
 } from '@storybook/addons';
 import {
+  combineArgs,
+  mapArgsToTypes,
+  validateOptions,
+  HooksContext,
+  combineParameters,
+} from '@storybook/store';
+
+import {
   DecoratorFunction,
   StoryMetadata,
   StoreData,
@@ -35,10 +43,7 @@ import {
   StoreSelection,
   StorySpecifier,
 } from './types';
-import { combineArgs, mapArgsToTypes, validateOptions } from './args';
-import { HooksContext } from './hooks';
 import { storySort } from './storySort';
-import { combineParameters } from './parameters';
 import { ensureArgTypes } from './ensureArgTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';

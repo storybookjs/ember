@@ -1,9 +1,9 @@
 import mapValues from 'lodash/mapValues';
 import { ArgType } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
+import { combineParameters } from '@storybook/store';
 
 import { SBEnumType, ArgTypesEnhancer } from './types';
-import { combineParameters } from './parameters';
 import { filterArgTypes } from './filterArgTypes';
 
 type ControlsMatchers = {

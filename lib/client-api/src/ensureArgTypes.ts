@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
+import { combineParameters } from '@storybook/store';
 import { ArgTypesEnhancer } from './types';
-import { combineParameters } from './parameters';
 
 export const ensureArgTypes: ArgTypesEnhancer = (context) => {
   const { argTypes: userArgTypes = {}, args = {} } = context.parameters;
