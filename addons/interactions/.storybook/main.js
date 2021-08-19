@@ -3,5 +3,5 @@ module.exports = {
   features: {
     previewCsfV3: true,
   },
-  addons: ["../preset.js"],
+  addons: ['../preset.js', '@storybook/addon-essentials'],
 };

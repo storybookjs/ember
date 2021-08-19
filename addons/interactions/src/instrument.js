@@ -1,7 +1,7 @@
 import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 
-const callsByResult = new Map();
+const IgnoredException = Symbol("IgnoredException")
 const channel = addons.getChannel();
 
 let next;
@@ -10,6 +10,11 @@ channel.on(EVENTS.RELOAD, () => window.location.reload());
 
 const isObject = (o) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o) => Object.prototype.toString.call(o) === '[object Module]';
+
+const isDebugging = () => !!window.parent.__STORYBOOK_IS_DEBUGGING__;
+const getChainedCallIds = () => window.parent.__STORYBOOK_CHAINED_CALL_IDS__;
+const getPlayUntil = () => window.parent.__STORYBOOK_PLAY_UNTIL__;
+const clearPlayUntil = () => (window.parent.__STORYBOOK_PLAY_UNTIL__ = undefined);
 
 function isPatchable(o) {
   if (!isObject(o) && !isModule(o)) return false;
@@ -20,40 +25,54 @@ function isPatchable(o) {
   return true;
 }
 
-function catchException(fn, args) {
+const callRefsByResult = new Map();
+function run(fn, args, call) {
+  // Map args that originate from a tracked function call to a call reference to enable nesting.
+  // These values are often not serializable anyway (e.g. DOM elements).
+  const mappedArgs = args.map((arg) => {
+    if (callRefsByResult.has(arg)) return callRefsByResult.get(arg)
+    if (arg instanceof Element) {
+      const { prefix, localName, id, classList } = arg;
+      return { __element__: { prefix, localName, id, classList } }
+    }
+    return arg
+  })
+
   try {
-    return fn(...args);
-  } catch (e) {
-    const { message, stack, matcherResult } = e;
-    channel.emit(EVENTS.EXCEPTION, { callId, message, stack, matcherResult });
+    const result = fn(...args);
+    callRefsByResult.set(result, { __callId__: call.id });
+    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs });
+    return result;
+  } catch (exception) {
+    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, exception });
+    throw IgnoredException
   }
 }
 
-function intercept(fn, callId) {
-  if (!window.parent.__IS_DEBUGGING__) return fn;
-  return (...args) => {
-    if (window.parent.__CHAINED_CALL_IDS__.includes(callId)) return fn(...args);
-    if (window.parent.__PLAY_UNTIL__) {
-      if (window.parent.__PLAY_UNTIL__ === callId) window.parent.__PLAY_UNTIL__ = undefined;
-      return fn(...args);
-    }
-    return new Promise((resolve) => (next = resolve))
-      .then(() => (next = undefined))
-      .then(() => catchException(fn, args));
-  };
+function intercept(fn, args, call) {  
+  // For a "jump to step" action, continue playing until we hit a call by that ID.
+  // For chained calls, we can only return a Promise for the last call in the chain.
+  const playUntil = getPlayUntil();
+  const isChainedUpon = getChainedCallIds().has(call.id);
+  if (playUntil || isChainedUpon) {
+    if (playUntil === call.id) clearPlayUntil();
+    return run(fn, args, call);
+  }
+
+  // Instead of invoking the function, defer the function call until we continue playing.
+  return new Promise((resolve) => (next = resolve))
+    .then(() => (next = undefined))
+    .then(() => run(fn, args, call));
 }
 
 // Monkey patch an object method to record calls.
-// Returns a function that invokes the original function, records the
-// invocation ("call") and returns the original result.
+// Returns a function that invokes the original function, records the invocation ("call") and
+// returns the original result.
 let n = 0;
-function track(method, fn, originalArgs, { path = [], ...options }) {
-  const id = `${n++}-${method}`;
-  const args = originalArgs.map((arg) => callsByResult.get(arg) || arg);
-  const result = catchException(options.intercept ? intercept(fn, id) : fn, originalArgs);
-  channel.emit(EVENTS.CALL, { id, path, method, args });
-  callsByResult.set(result, { __callId__: id });
-  return instrument(result, { ...options, path: [{ __callId__: id }] });
+function track(method, fn, args, { path = [], ...options }) {
+  const call = { id: `${n++}-${method}`, path, method };
+  const result = (options.intercept && isDebugging() ? intercept : run)(fn, args, call);
+  return instrument(result, { ...options, path: [{ __callId__: call.id }] });
 }
 
 function patch(method, fn, options) {

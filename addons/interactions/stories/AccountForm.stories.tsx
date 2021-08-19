@@ -1,5 +1,5 @@
 import { AccountForm } from './AccountForm';
-import { screen } from '../src/dom';
+import { within } from '../src/dom';
 import userEvent from '../src/user-event';
 import { sleep } from '../src/sleep';
 import { expect } from '../src/expect';
@@ -15,36 +15,40 @@ export const Standard = {
 
 export const StandardEmailFilled = {
   ...Standard,
-  play: async () => {
-    await userEvent.type(screen.getByTestId('email'), 'michael@chromatic.com');
-    await expect(true).not.toBe(true);
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
+    await expect(true).not.toBe({ hello: 1 });
   },
 };
 
 export const StandardEmailFailed = {
   ...Standard,
-  play: async () => {
-    await userEvent.type(screen.getByTestId('email'), 'michael@chromatic.com.com@com');
-    await userEvent.type(screen.getByTestId('password1'), 'testpasswordthatwontfail');
-    await userEvent.click(screen.getByTestId('submit'));
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com.com@com');
+    await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
+    await userEvent.click(canvas.getByTestId('submit'));
   },
 };
 
 export const StandardPasswordFailed = {
   ...Standard,
-  play: async () => {
-    await StandardEmailFilled.play();
-    await userEvent.type(screen.getByTestId('password1'), 'asdf');
-    await userEvent.click(screen.getByTestId('submit'));
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await StandardEmailFilled.play(context);
+    await userEvent.type(canvas.getByTestId('password1'), 'asdf');
+    await userEvent.click(canvas.getByTestId('submit'));
   },
 };
 
 export const StandardFailHover = {
   ...StandardPasswordFailed,
-  play: async () => {
-    await StandardPasswordFailed.play();
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await StandardPasswordFailed.play(context);
     // await sleep(1000)
-    await userEvent.hover(screen.getByTestId('password-error-info'));
+    await userEvent.hover(canvas.getByTestId('password-error-info'));
   },
 };
 
@@ -54,32 +58,35 @@ export const Verification = {
 
 export const VerificationPasssword1 = {
   ...Verification,
-  play: async () => {
-    await StandardEmailFilled.play();
-    await userEvent.type(screen.getByTestId('password1'), 'asdfasdf');
-    await userEvent.click(screen.getByTestId('submit'));
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await StandardEmailFilled.play(context);
+    await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
+    await userEvent.click(canvas.getByTestId('submit'));
   },
 };
 
 export const VerificationPasswordMismatch = {
   ...Verification,
-  play: async () => {
-    await StandardEmailFilled.play();
-    await userEvent.type(screen.getByTestId('password1'), 'asdfasdf');
-    await userEvent.type(screen.getByTestId('password2'), 'asdf1234');
-    await userEvent.click(screen.getByTestId('submit'));
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await StandardEmailFilled.play(context);
+    await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
+    await userEvent.type(canvas.getByTestId('password2'), 'asdf1234');
+    await userEvent.click(canvas.getByTestId('submit'));
   },
 };
 
 export const VerificationSuccess = {
   ...Verification,
-  play: async () => {
-    await StandardEmailFilled.play();
+  play: async (context) => {
+    const canvas = within(document.getElementById(context.containerId));
+    await StandardEmailFilled.play(context);
     await sleep(1000);
-    await userEvent.type(screen.getByTestId('password1'), 'asdfasdf', { delay: 50 });
+    await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf', { delay: 50 });
     await sleep(1000);
-    await userEvent.type(screen.getByTestId('password2'), 'asdfasdf', { delay: 50 });
+    await userEvent.type(canvas.getByTestId('password2'), 'asdfasdf', { delay: 50 });
     await sleep(1000);
-    await userEvent.click(screen.getByTestId('submit'));
+    await userEvent.click(canvas.getByTestId('submit'));
   },
 };

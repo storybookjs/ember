@@ -9,5 +9,4 @@ export const EVENTS = {
   NEXT: `${ADDON_ID}/next`,
   GOTO: `${ADDON_ID}/goto`,
   RELOAD: `${ADDON_ID}/reload`,
-  EXCEPTION: `${ADDON_ID}/exception`,
 };

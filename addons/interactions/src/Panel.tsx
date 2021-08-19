@@ -6,6 +6,8 @@ import { styled } from '@storybook/theming';
 import { EVENTS } from './constants';
 import global from 'global';
 
+import { MethodCall } from './components/MethodCall'
+
 interface PanelProps {
   active: boolean;
 }
@@ -18,9 +20,11 @@ enum TestingStates {
 
 type TestState = TestingStates.DONE | TestingStates.ERROR | TestingStates.PENDING;
 
-type CallRef = { __callId__: string };
+export interface CallRef {
+  __callId__: string
+};
 
-interface Call {
+export interface Call {
   id: string;
   path: Array<string | CallRef>;
   method: string;
@@ -36,79 +40,43 @@ interface CaughtException {
   matcherResult: object;
 }
 
-global.window.__CHAINED_CALL_IDS__ = [];
-const addChainedCall = (callRef: CallRef) =>
-  global.window.__CHAINED_CALL_IDS__.push(callRef.__callId__);
-const setDebugging = (value: boolean) => (global.window.__IS_DEBUGGING__ = !!value);
-const isDebugging = () => !!global.window.__IS_DEBUGGING__;
-const setPlayUntil = (value: string) => (global.window.__PLAY_UNTIL__ = value);
-
-const stringify = (value: any) => {
-  try {
-    return JSON.stringify(value);
-  } catch (e) {
-    return String(value);
-  }
+global.window.__STORYBOOK_IS_DEBUGGING__ = false;
+const setDebugging = (value: boolean) => {
+  global.window.__STORYBOOK_IS_DEBUGGING__ = value;
 };
 
-const fold = (calls: Call[], callsById: Record<Call['id'], Call>) => {
+global.window.__STORYBOOK_PLAY_UNTIL__ = undefined;
+const setPlayUntil = (value: Call['id']) => {
+  global.window.__STORYBOOK_PLAY_UNTIL__ = value;
+};
+
+global.window.__STORYBOOK_CHAINED_CALL_IDS__ = new Set<Call['id']>();
+const addChainedCall = (callRef: CallRef) => {
+  global.window.__STORYBOOK_CHAINED_CALL_IDS__.add(callRef.__callId__);
+};
+const clearChainedCalls = () => {
+  global.window.__STORYBOOK_CHAINED_CALL_IDS__.clear();
+};
+
+const fold = (calls: Call[]) => {
   const seen = new Set();
   return calls.reduceRight<Call[]>((acc, call) => {
-    if (seen.has(call.id)) return acc;
+    call.args.forEach((arg) => {
+      if (arg?.__callId__) {
+        seen.add(arg.__callId__);
+      }
+    });
     call.path.forEach((node) => {
-      if ((node as CallRef).__callId__) seen.add((node as CallRef).__callId__);
+      if ((node as CallRef).__callId__) {
+        seen.add((node as CallRef).__callId__);
+      }
     });
-    call.args = call.args.map((arg) => {
-      if (!arg?.__callId__) return arg;
-      seen.add(arg.__callId__);
-      return callsById[arg.__callId__] || arg;
-    });
-    acc.unshift(call);
-    seen.add(call.id);
+    if (!seen.has(call.id)) {
+      acc.unshift(call);
+      seen.add(call.id);
+    }
     return acc;
   }, []);
-};
-
-const MethodCall = ({ call, callsById }: { call: Call; callsById: Record<Call['id'], Call> }) => {
-  const path = call.path.flatMap((elem, index) => {
-    const callId = (elem as CallRef).__callId__;
-    return [
-      callId ? (
-        <MethodCall call={callsById[callId]} callsById={callsById} key={index} />
-      ) : (
-        <span key={index}>{elem}</span>
-      ),
-      <span key={'dot' + index}>.</span>,
-    ];
-  });
-
-  const args = call.args.flatMap((arg, index, array) => {
-    const nodes = [];
-    if (arg?.id && arg?.method && arg?.args) {
-      nodes.push(<MethodCall key={call.id} call={arg} callsById={callsById} />);
-    } else {
-      const color =
-        { string: 'forestgreen', boolean: '#FC521F', number: '#FC521F' }[typeof arg as string] ||
-        '#FFAE00';
-      nodes.push(
-        <span key={arg} style={{ color }}>
-          {stringify(arg)}
-        </span>
-      );
-    }
-    if (index < array.length - 1) {
-      nodes.push(<span key={index}>,&nbsp;</span>);
-    }
-    return nodes;
-  });
-
-  return (
-    <>
-      <span>{path}</span>
-      <span style={{ color: '#4776D6' }}>{call.method}</span>
-      <span>({args})</span>
-    </>
-  );
 };
 
 const Row = ({
@@ -133,10 +101,10 @@ const Row = ({
     display: 'flex',
     alignItems: 'center',
     padding: '8px 10px',
-    cursor: 'pointer',
+    cursor: call.state === TestingStates.ERROR ? 'default' : 'pointer',
     opacity: call.state === TestingStates.PENDING ? 0.4 : 1,
     '&:hover': {
-      background: '#F3FAFF',
+      background: call.state === TestingStates.ERROR ? 'transparent' : '#F3FAFF',
     },
   });
   const detailStyle = {
@@ -194,81 +162,93 @@ const Row = ({
   );
 };
 
+interface PanelState {
+  log: Call[];
+  cursor: number;
+  isDebugging: boolean;
+  hasException: boolean;
+  hasPending: boolean;
+  callsById: Record<Call['id'], Call>;
+}
+
 export const Panel: React.FC<PanelProps> = (props) => {
-  const calls = React.useRef([]);
-  const callsById = React.useRef({} as Record<Call['id'], Call>);
-  const [log, setLog] = React.useState([] as Call[]);
-  const [lastLog, setLastLog] = React.useState([] as Call[]);
-  const [caughtExceptions, setCaughtExceptions] = React.useState(
-    {} as Record<Call['id'], CaughtException>
-  );
+  const initialState: PanelState = {
+    log: [],
+    cursor: 0,
+    isDebugging: false,
+    hasException: false,
+    hasPending: false,
+    callsById: {},
+  };
+  const reducer = (
+    state: PanelState,
+    action: { type: string; payload?: { call?: Call; playUntil?: Call['id'] } }
+  ) => {
+    switch (action.type) {
+      case 'call':
+        const { log, cursor, callsById, isDebugging, hasException } = state;
+        const { call } = action.payload;
+        return {
+          ...state,
+          log: isDebugging
+            ? [...log.slice(0, cursor), call, ...log.slice(cursor + 1)]
+            : log.concat(call),
+          cursor: cursor + 1,
+          hasException: call.exception ? true : hasException,
+          hasPending: isDebugging && !!log[cursor + 1],
+          callsById: { ...callsById, [call.id]: call },
+        };
+
+      case 'start':
+        setDebugging(true);
+        setPlayUntil(action.payload?.playUntil);
+        return { ...state, isDebugging: true, cursor: 0 };
+
+      case 'stop':
+        setDebugging(false);
+        setPlayUntil(undefined);
+        return { ...state, isDebugging: false };
+
+      case 'reset':
+        setDebugging(false);
+        setPlayUntil(undefined);
+        return initialState;
+    }
+  };
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const emit = useChannel({
     [EVENTS.CALL]: (call) => {
+      dispatch({ type: 'call', payload: { call } });
       call.path.filter((ref: CallRef) => ref?.__callId__).forEach(addChainedCall);
-      calls.current = [...calls.current, call];
-      callsById.current[call.id] = call;
-      setLog(calls.current);
-    },
-    [EVENTS.EXCEPTION]: (ex) => {
-      setCaughtExceptions((exceptions) => ({ ...exceptions, [ex.callId]: ex }));
-    },
-    storyChanged: () => {
-      setPlayUntil(undefined);
-      setDebugging(false);
-      setCaughtExceptions({});
-      calls.current = [];
-      callsById.current = {};
-      setLog([]);
-      setLastLog([]);
     },
     storyRendered: () => {
-      setPlayUntil(undefined);
-      setDebugging(false);
-      setLastLog([...calls.current]);
-      calls.current = [];
+      dispatch({ type: 'stop' });
+    },
+    setCurrentStory: () => {
+      dispatch({ type: 'reset' });
     },
   });
 
-  const startDebugger = () => {
-    setPlayUntil(undefined);
-    setDebugging(true);
-    calls.current = [];
+  const start = (playUntil?: Call['id']) => {
+    dispatch({ type: 'start', payload: { playUntil } });
     emit(EVENTS.RELOAD);
   };
-
-  const stepOver = () => {
+  const stop = () => {
+    dispatch({ type: 'stop' });
+    emit(EVENTS.NEXT);
+  };
+  const next = () => {
     setPlayUntil(undefined);
     emit(EVENTS.NEXT);
   };
 
-  const playUntil = (callId: string) => {
-    setDebugging(true);
-    setPlayUntil(callId);
-    calls.current = [];
-    emit(EVENTS.RELOAD);
-  };
+  const { log, callsById, isDebugging, hasException, hasPending } = state;
 
-  const play = () => {
-    setPlayUntil(undefined);
-    setDebugging(false);
-    emit(EVENTS.NEXT);
-  };
-
-  const combined = log.reduce(
-    (acc, call, index) => {
-      acc[index] = caughtExceptions[call.id]
-        ? { ...call, state: TestingStates.ERROR, exception: caughtExceptions[call.id] }
-        : { ...call, state: TestingStates.DONE };
-      return acc;
-    },
-    lastLog.map((call) => ({ ...call, state: TestingStates.PENDING }))
-  );
-
-  const folded = fold(combined, callsById.current);
+  const folded = fold(log);
+  console.log(log, folded);
   const tabButton = document.getElementById('tabbutton-interactions');
-  const hasException = Object.keys(caughtExceptions).length > 0;
-  const showStatus = hasException || isDebugging();
+  const showStatus = hasException || isDebugging;
   const statusIcon = hasException ? (
     <span
       style={{ width: 8, height: 8, margin: 2, marginLeft: 7, background: '#F40', borderRadius: 1 }}
@@ -282,22 +262,17 @@ export const Panel: React.FC<PanelProps> = (props) => {
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
 
       {folded.map((call) => (
-        <Row
-          call={call}
-          callsById={callsById.current}
-          key={call.id}
-          onClick={() => playUntil(call.id)}
-        />
+        <Row call={call} callsById={callsById} key={call.id} onClick={() => start(call.id)} />
       ))}
 
       <div style={{ padding: 3 }}>
-        <Button outline containsIcon title="Start debugging" onClick={startDebugger}>
+        <Button outline containsIcon title="Start debugging" onClick={() => start()}>
           <Icons icon="undo" />
         </Button>
-        <Button outline containsIcon title="Step over" onClick={stepOver} disabled={!isDebugging()}>
+        <Button outline containsIcon title="Step over" onClick={next} disabled={!hasPending}>
           <Icons icon="arrowrightalt" />
         </Button>
-        <Button outline containsIcon title="Play" onClick={play} disabled={!isDebugging()}>
+        <Button outline containsIcon title="Play" onClick={stop} disabled={!hasPending}>
           <Icons icon="play" />
         </Button>
       </div>
