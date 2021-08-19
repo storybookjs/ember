@@ -47,7 +47,7 @@ const SkipToCanvasLink = styled(Button)(({ theme }) => ({
     zIndex: 1,
     transform: 'translate(0,-100px)',
     '&:focus': {
-      transform: 'translate(0,-10px)',
+      transform: 'translate(0)',
     },
   },
 }));
