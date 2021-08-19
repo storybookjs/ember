@@ -273,6 +273,10 @@
       "root": "lib/source-loader",
       "type": "library"
     },
+    "@storybook/store": {
+      "root": "lib/store",
+      "type": "library"
+    },
     "@storybook/theming": {
       "root": "lib/theming",
       "type": "library"

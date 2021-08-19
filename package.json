@@ -168,6 +168,7 @@
     "@storybook/semver": "^7.3.2",
     "@storybook/server": "workspace:*",
     "@storybook/source-loader": "workspace:*",
+    "@storybook/store": "workspace:*",
     "@storybook/svelte": "workspace:*",
     "@storybook/theming": "workspace:*",
     "@storybook/ui": "workspace:*",

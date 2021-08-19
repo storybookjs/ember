@@ -7545,6 +7545,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@storybook/store@workspace:lib/store":
+  version: 0.0.0-use.local
+  resolution: "@storybook/store@workspace:lib/store"
+  dependencies:
+    "@storybook/addons": 6.4.0-alpha.19
+    "@storybook/channel-websocket": 6.4.0-alpha.19
+    "@storybook/client-logger": 6.4.0-alpha.19
+    "@storybook/csf": 0.0.1
+    core-js: ^3.8.2
+    global: ^4.4.0
+    lodash: ^4.17.20
+    memoizerific: ^1.11.3
+    ts-dedent: ^2.0.0
+    util-deprecate: ^1.0.2
+  languageName: unknown
+  linkType: soft
+
 "@storybook/svelte@6.4.0-alpha.19, @storybook/svelte@workspace:*, @storybook/svelte@workspace:app/svelte":
   version: 0.0.0-use.local
   resolution: "@storybook/svelte@workspace:app/svelte"

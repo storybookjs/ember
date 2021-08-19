@@ -15,7 +15,7 @@ import {
   StoriesList,
   Parameters,
 } from './types';
-import { HooksContext } from '../hooks';
+import { HooksContext } from './hooks';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;

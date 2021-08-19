@@ -2,7 +2,7 @@ import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
 import { Globals, GlobalTypes } from './types';
-import { combineArgs, deepDiff, DEEPLY_EQUAL } from '../args';
+import { deepDiff, DEEPLY_EQUAL } from './args';
 
 const setUndeclaredWarning = deprecate(
   () => {},

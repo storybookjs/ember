@@ -15,10 +15,9 @@ import {
   StoryContextForEnhancers,
 } from './types';
 
-import { combineParameters } from '../parameters';
-import { applyHooks, HooksContext } from '../hooks';
-import { validateOptions } from '../args';
-import { defaultDecorateStory } from '../decorators';
+import { combineParameters } from './parameters';
+import { applyHooks } from './hooks';
+import { defaultDecorateStory } from './decorators';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},

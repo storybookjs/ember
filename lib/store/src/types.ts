@@ -12,7 +12,7 @@ import {
   LegacyStoryFn,
 } from '@storybook/addons';
 
-import { HooksContext } from '../hooks';
+import { HooksContext } from './hooks';
 
 export type { StoryId, ViewMode, Parameters, Args, ArgTypes, LegacyStoryFn, ArgsStoryFn };
 
@@ -193,3 +193,5 @@ export interface DocsContextProps<StoryFnReturnType> {
   mdxStoryNameToKey?: Record<string, string>;
   mdxComponentMeta?: any;
 }
+
+export type { DecoratorFunction };

@@ -1,5 +1,5 @@
 import { StoryId, Story, Args } from './types';
-import { combineArgs, mapArgsToTypes, validateOptions, deepDiff, DEEPLY_EQUAL } from '../args';
+import { combineArgs, mapArgsToTypes, validateOptions, deepDiff, DEEPLY_EQUAL } from './args';
 
 export class ArgsStore {
   argsByStoryId: Record<StoryId, Args> = {};
