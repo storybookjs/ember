@@ -34,6 +34,7 @@ const SkipToSidebarLink = styled(Button)(({ theme }) => ({
 const whenSidebarIsVisible = ({ state }: Combo) => ({
   isFullscreen: state.layout.isFullscreen,
   showNav: state.layout.showNav,
+  selectedStoryId: state.storyId,
 });
 
 export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
@@ -97,14 +98,16 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
     <Fragment>
       <Global styles={styles} />
       <Consumer filter={whenSidebarIsVisible}>
-        {({ isFullscreen, showNav }) =>
-          !isFullscreen &&
-          !!showNav && (
-            <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${storyId}`}>
-              Skip to sidebar
-            </SkipToSidebarLink>
-          )
-        }
+        {({ isFullscreen, showNav, selectedStoryId }) => {
+          if (!isFullscreen && !!showNav && selectedStoryId) {
+            return (
+              <SkipToSidebarLink secondary isLink tabIndex={0} href={`#${selectedStoryId}`}>
+                Skip to sidebar
+              </SkipToSidebarLink>
+            );
+          }
+          return null;
+        }}
       </Consumer>
       {Object.entries(frames).map(([id, src]) => (
         <Fragment key={id}>
