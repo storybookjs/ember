@@ -19,7 +19,7 @@ import {
   waitForEvents,
   waitForRender,
   waitForQuiescence,
-} from './WebPreview.testdata';
+} from './WebPreview.mockdata';
 
 addons.setChannel(mockChannel as any);
 

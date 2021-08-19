@@ -1,6 +1,6 @@
 import React from 'react';
 import global from 'global';
-import { RenderContext } from '@storybook/client-api/dist/ts3.9/new/types';
+import { RenderContext } from '@storybook/store';
 import { addons } from '@storybook/addons';
 
 import { WebPreview } from './WebPreview';
@@ -12,10 +12,8 @@ import {
   storiesList,
   emitter,
   mockChannel,
-  waitForEvents,
   waitForRender,
-  waitForQuiescence,
-} from './WebPreview.testdata';
+} from './WebPreview.mockdata';
 
 // WebPreview.test mocks out all rendering
 //   - ie. from`renderToDOM()` (stories) or`ReactDOM.render()` (docs) in.

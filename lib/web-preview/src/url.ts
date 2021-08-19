@@ -1,8 +1,7 @@
 import global from 'global';
 import qs from 'qs';
 import deprecate from 'util-deprecate';
-import { StoreSelectionSpecifier, StoreSelection } from '@storybook/client-api';
-import { StoryId, ViewMode } from '@storybook/addons';
+import { StoryName, StoryKind, Args, StoryId, ViewMode } from '@storybook/addons';
 
 import { parseArgsParam } from './parseArgsParam';
 
@@ -14,6 +13,21 @@ export function pathToId(path: string) {
     throw new Error(`Invalid path '${path}',  must start with '/story/'`);
   }
   return match[1];
+}
+
+export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+
+export interface StoreSelectionSpecifier {
+  storySpecifier: StorySpecifier;
+  viewMode: ViewMode;
+  singleStory?: boolean;
+  args?: Args;
+  globals?: Args;
+}
+
+export interface StoreSelection {
+  storyId: StoryId;
+  viewMode: ViewMode;
 }
 
 // todo add proper types

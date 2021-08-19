@@ -1,5 +1,4 @@
-import { ModuleExports, WebGlobalMeta } from '@storybook/client-api/dist/ts3.4/new/types';
-import { combineParameters } from '@storybook/client-api';
+import { combineParameters, ModuleExports, WebGlobalMeta } from '@storybook/store';
 
 function getField(moduleExportList: ModuleExports[], field: string): any[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);

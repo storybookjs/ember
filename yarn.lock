@@ -7317,11 +7317,13 @@ __metadata:
     "@storybook/semver": ^7.3.2
     "@storybook/server": "workspace:*"
     "@storybook/source-loader": "workspace:*"
+    "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
     "@storybook/vue": "workspace:*"
     "@storybook/web-components": "workspace:*"
+    "@storybook/web-preview": "workspace:*"
     "@testing-library/dom": ^7.29.4
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.2
@@ -7545,7 +7547,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/store@workspace:lib/store":
+"@storybook/store@6.4.0-alpha.19, @storybook/store@workspace:*, @storybook/store@workspace:lib/store":
   version: 0.0.0-use.local
   resolution: "@storybook/store@workspace:lib/store"
   dependencies:
@@ -7759,6 +7761,29 @@ __metadata:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
     storybook-server: ./bin/index.js
+  languageName: unknown
+  linkType: soft
+
+"@storybook/web-preview@workspace:*, @storybook/web-preview@workspace:lib/web-preview":
+  version: 0.0.0-use.local
+  resolution: "@storybook/web-preview@workspace:lib/web-preview"
+  dependencies:
+    "@storybook/addons": 6.4.0-alpha.19
+    "@storybook/channel-postmessage": 6.4.0-alpha.19
+    "@storybook/client-logger": 6.4.0-alpha.19
+    "@storybook/core-events": 6.4.0-alpha.19
+    "@storybook/store": 6.4.0-alpha.19
+    ansi-to-html: ^0.6.11
+    core-js: ^3.8.2
+    global: ^4.4.0
+    lodash: ^4.17.20
+    qs: ^6.10.0
+    ts-dedent: ^2.0.0
+    unfetch: ^4.2.0
+    util-deprecate: ^1.0.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
   languageName: unknown
   linkType: soft
 

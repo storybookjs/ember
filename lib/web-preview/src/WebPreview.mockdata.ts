@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import Events from '@storybook/core-events';
-import { StoriesList } from '@storybook/client-api/dist/ts3.9/new/types';
+import { StoriesList } from '@storybook/store';
 
 export const componentOneExports = {
   default: {

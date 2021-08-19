@@ -288,6 +288,10 @@
     "@storybook/ui": {
       "root": "lib/ui",
       "type": "library"
+    },
+    "@storybook/web-preview": {
+      "root": "lib/web-preview",
+      "type": "library"
     }
   }
 }

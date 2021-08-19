@@ -234,6 +234,9 @@
     },
     "@storybook/ui": {
       "implicitDependencies": []
+    },
+    "@storybook/web-preview": {
+      "implicitDependencies": []
     }
   },
   "affected": {

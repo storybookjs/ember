@@ -21,12 +21,12 @@ import {
   DocsContextProps,
   StorySpecifier,
   CSFFile,
-} from '@storybook/client-api/dist/ts3.9/new/types';
-import { StoryStore } from '@storybook/client-api/dist/esm/new/StoryStore';
+  StoryStore,
+} from '@storybook/store';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { NoDocs } from '../NoDocs';
+import { NoDocs } from './NoDocs';
 
 const { window: globalWindow, AbortController } = global;
 
