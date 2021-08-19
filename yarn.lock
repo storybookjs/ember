@@ -6283,7 +6283,6 @@ __metadata:
     "@storybook/api": 6.4.0-alpha.19
     "@storybook/channel-postmessage": 6.4.0-alpha.19
     "@storybook/channels": 6.4.0-alpha.19
-    "@storybook/client-api": 6.4.0-alpha.19
     "@storybook/client-logger": 6.4.0-alpha.19
     "@storybook/components": 6.4.0-alpha.19
     "@storybook/core-common": 6.4.0-alpha.19
@@ -6293,6 +6292,7 @@ __metadata:
     "@storybook/semver": ^7.3.2
     "@storybook/theming": 6.4.0-alpha.19
     "@storybook/ui": 6.4.0-alpha.19
+    "@storybook/web-preview": 6.4.0-alpha.19
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
     "@types/dotenv-webpack": ^3.0.0
     "@types/node": ^14.0.10
@@ -6511,6 +6511,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-alpha.19
     "@storybook/core-events": 6.4.0-alpha.19
     "@storybook/csf": 0.0.1
+    "@storybook/store": 6.4.0-alpha.19
     "@types/qs": ^6.9.5
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
@@ -7554,6 +7555,7 @@ __metadata:
     "@storybook/addons": 6.4.0-alpha.19
     "@storybook/channel-websocket": 6.4.0-alpha.19
     "@storybook/client-logger": 6.4.0-alpha.19
+    "@storybook/core-events": 6.4.0-alpha.19
     "@storybook/csf": 0.0.1
     core-js: ^3.8.2
     global: ^4.4.0
@@ -7764,7 +7766,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/web-preview@workspace:*, @storybook/web-preview@workspace:lib/web-preview":
+"@storybook/web-preview@6.4.0-alpha.19, @storybook/web-preview@workspace:*, @storybook/web-preview@workspace:lib/web-preview":
   version: 0.0.0-use.local
   resolution: "@storybook/web-preview@workspace:lib/web-preview"
   dependencies:
