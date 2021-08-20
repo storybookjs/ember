@@ -15,6 +15,6 @@ export const Runs = {
   args: { status: TestingStates.PENDING },
 };
 
-export const Error = {
+export const Fail = {
   args: { status: TestingStates.ERROR },
 };
