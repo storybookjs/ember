@@ -18,7 +18,7 @@ const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
   flexShrink: 0,
   width: 12,
   height: 12,
-  padding: 1,
+  padding: status === TestingStates.PENDING ? 3 : 1,
   marginRight: 5,
   color: status === TestingStates.PENDING ? gray[500] : status === TestingStates.DONE ? green : red,
 }));
