@@ -152,7 +152,6 @@ export type StorySpecifier = StoryId | { name: StoryName; title: ComponentTitle 
 export interface SelectionSpecifier {
   storySpecifier: StorySpecifier;
   viewMode: ViewMode;
-  singleStory?: boolean;
   args?: Args;
   globals?: Args;
 }

@@ -1,6 +1,6 @@
 import global from 'global';
 
-import { pathToId, setPath, parseQueryParameters, getSelectionSpecifierFromPath } from './url';
+import { pathToId, setPath, parseQueryParameters, getSelectionSpecifierFromPath } from './UrlStore';
 
 const { history, document } = global;
 
@@ -14,7 +14,7 @@ jest.mock('global', () => ({
   },
 }));
 
-describe('url', () => {
+describe('UrlStore', () => {
   describe('pathToId', () => {
     it('should parse valid ids', () => {
       expect(pathToId('/story/story--id')).toEqual('story--id');
@@ -56,15 +56,6 @@ describe('url', () => {
     });
   });
 
-  describe('parseQueryParameters', () => {
-    it('should parse id', () => {
-      expect(parseQueryParameters('?foo=bar&id=story--id')).toBe('story--id');
-    });
-    it('should not parse non-ids', () => {
-      expect(parseQueryParameters('')).toBeUndefined();
-    });
-  });
-
   describe('getSelectionSpecifierFromPath', () => {
     it('should handle no search', () => {
       document.location.search = '';
@@ -75,7 +66,6 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'story--id',
         viewMode: 'story',
-        singleStory: false,
       });
     });
     it('should handle id queries with *', () => {
@@ -83,15 +73,13 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: '*',
         viewMode: 'story',
-        singleStory: false,
       });
     });
     it('should redirect legacy queries', () => {
       document.location.search = '?selectedKind=kind&selectedStory=story';
       expect(getSelectionSpecifierFromPath()).toEqual({
-        storySpecifier: { kind: 'kind', name: 'story' },
+        storySpecifier: { title: 'kind', name: 'story' },
         viewMode: 'story',
-        singleStory: false,
       });
     });
     it('should parse args', () => {
@@ -99,7 +87,6 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'story--id',
         viewMode: 'story',
-        singleStory: false,
         args: { obj: { key: 'val' } },
       });
     });
@@ -108,7 +95,6 @@ describe('url', () => {
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: 'abc',
         viewMode: 'story',
-        singleStory: true,
       });
     });
   });
