@@ -136,5 +136,14 @@ export const getComponentDecoratorMetadata = (component: any): Component | undef
       ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
       : component[decoratorKey];
 
-  return (decorators || []).find((d) => d instanceof Component);
+  if (!decorators) {
+    return (
+      component.decorators &&
+      component.decorators[0] &&
+      component.decorators[0].args &&
+      component.decorators[0].args[0]
+    );
+  }
+
+  return decorators.find((d) => d instanceof Component);
 };
