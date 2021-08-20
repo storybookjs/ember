@@ -40,6 +40,7 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
+    "@discoveryjs/json-ext": "^0.5.3",
     "@storybook/builder-webpack4": "6.4.0-alpha.30",
     "@storybook/core-client": "6.4.0-alpha.30",
     "@storybook/core-common": "6.4.0-alpha.30",
