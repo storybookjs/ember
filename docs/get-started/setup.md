@@ -4,7 +4,7 @@ title: 'Setup Storybook'
 
 Now that you’ve learned what stories are and how to browse them, let’s demo working on one of your components.
 
-Pick a simple component from your project, like a Button, and write a `.stories.js` file to go along with it. It might look something like this:
+Pick a simple component from your project, like a Button, and write a `.stories.js`, or a `.stories.mdx` file to go along with it. It might look something like this:
 
 <!-- prettier-ignore-start -->
 
@@ -12,11 +12,16 @@ Pick a simple component from your project, like a Button, and write a `.stories.
   paths={[
     'react/your-component.js.mdx',
     'react/your-component.ts.mdx',
+    'react/your-component.mdx.mdx',
     'angular/your-component.ts.mdx',
+    'angular/your-component.mdx.mdx',
     'vue/your-component.2.js.mdx',
+    'vue/your-component.mdx-2.mdx.mdx',
     'vue/your-component.3.js.mdx',
+    'vue/your-component.mdx-3.mdx.mdx',
     'svelte/your-component.js.mdx',
     'svelte/your-component.native-format.mdx',
+    'svelte/your-component.mdx.mdx',
     'web-components/your-component.js.mdx',
   ]}
 />

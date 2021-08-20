@@ -1,3 +1,77 @@
+## 6.4.0-alpha.30 (August 14, 2021)
+
+### Maintenance
+
+- CLI: Improve typings of Angular components ([#15832](https://github.com/storybookjs/storybook/pull/15832))
+- Controls: Fix `esm is not defined` error with built Storybook ([#15812](https://github.com/storybookjs/storybook/pull/15812))
+
+## 6.4.0-alpha.29 (August 10, 2021)
+
+### Features
+
+- Addon-docs/Angular: Render user defined template as source if it exists ([#15743](https://github.com/storybookjs/storybook/pull/15743))
+- Core: Add MDX support to built-in stories.json generation ([#15808](https://github.com/storybookjs/storybook/pull/15808))
+
+### Maintenance
+
+- Controls: Add better icon for reset button ([#15737](https://github.com/storybookjs/storybook/pull/15737))
+- Add checkboxes to pull request template ([#15799](https://github.com/storybookjs/storybook/pull/15799))
+
+## 6.4.0-alpha.28 (August 10, 2021)
+
+Fix bad publish of `6.4.0-alpha.27` to the `latest` tag
+
+## 6.3.7 (August 10, 2021)
+
+Fix bad publish of `6.4.0-alpha.27` to the `latest` tag
+
+## 6.4.0-alpha.26 (August 9, 2021)
+
+### Maintenance
+
+- Server: Update example to use options and labels for options controls ([#15789](https://github.com/storybookjs/storybook/pull/15789))
+- Controls: Remove ArrayControl ([#15788](https://github.com/storybookjs/storybook/pull/15788))
+
+## 6.4.0-alpha.25 (August 8, 2021)
+
+### Features
+
+- Angular: Add global CSF3 renderer ([#15742](https://github.com/storybookjs/storybook/pull/15742))
+
+### Bug Fixes
+
+- Addon-docs/Angular: Use compodoc rawdescription where available ([#15774](https://github.com/storybookjs/storybook/pull/15774))
+- Core: Fix main.js glob resolution for direct paths in stories ([#15775](https://github.com/storybookjs/storybook/pull/15775))
+
+### Maintenance
+
+- CSF: Optionally pass Args generic type from BaseAnnotations to ArgTypes ([#14356](https://github.com/storybookjs/storybook/pull/14356))
+
+## 6.4.0-alpha.24 (August 4, 2021)
+
+### Features
+
+- HTML: Dynamic source snippets ([#15748](https://github.com/storybookjs/storybook/pull/15748))
+
+## 6.4.0-alpha.23 (August 3, 2021)
+
+### Features
+
+- CLI: Add --no-open flag ([#15739](https://github.com/storybookjs/storybook/pull/15739))
+
+### Bug Fixes
+
+- Angular: Fix incomplete property metadata when using inheritance ([#15586](https://github.com/storybookjs/storybook/pull/15586))
+
+### Maintenance
+
+- Build: Upgrade to Yarn 3 ([#15682](https://github.com/storybookjs/storybook/pull/15682))
+
+### Dependency Upgrades
+
+- Lower babel-loader required version ([#14811](https://github.com/storybookjs/storybook/pull/14811))
+- Relax prettier version constraint ([#15298](https://github.com/storybookjs/storybook/pull/15298))
+
 ## 6.4.0-alpha.22 (July 28, 2021)
 
 ### Features

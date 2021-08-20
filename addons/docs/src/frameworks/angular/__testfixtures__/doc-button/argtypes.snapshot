@@ -19,8 +19,8 @@ Object {
   },
   "_value": Object {
     "defaultValue": "Private hello",
-    "description": "<p>Private value. </p>
-",
+    "description": "
+Private value.",
     "name": "_value",
     "table": Object {
       "category": "properties",
@@ -35,8 +35,7 @@ Object {
   },
   "accent": Object {
     "defaultValue": undefined,
-    "description": "<p>Specify the accent-type of the button </p>
-",
+    "description": "Specify the accent-type of the button",
     "name": "accent",
     "table": Object {
       "category": "inputs",
@@ -51,8 +50,7 @@ Object {
   },
   "appearance": Object {
     "defaultValue": "secondary",
-    "description": "<p>Appearance style of the button. </p>
-",
+    "description": "Appearance style of the button.",
     "name": "appearance",
     "table": Object {
       "category": "inputs",
@@ -86,7 +84,10 @@ Object {
   },
   "calc": Object {
     "defaultValue": undefined,
-    "description": "<p>An internal calculation method which adds <code>x</code> and <code>y</code> together.</p>
+    "description": "
+
+An internal calculation method which adds \`x\` and \`y\` together.
+
 ",
     "name": "calc",
     "table": Object {
@@ -100,10 +101,24 @@ Object {
       "name": "void",
     },
   },
+  "focus": Object {
+    "defaultValue": false,
+    "description": "",
+    "name": "focus",
+    "table": Object {
+      "category": "properties",
+      "type": Object {
+        "required": true,
+        "summary": "",
+      },
+    },
+    "type": Object {
+      "name": "boolean",
+    },
+  },
   "inputValue": Object {
     "defaultValue": undefined,
-    "description": "<p>Setter for <code>inputValue</code> that is also an <code>@Input</code>. </p>
-",
+    "description": "Setter for \`inputValue\` that is also an \`@Input\`.",
     "name": "inputValue",
     "table": Object {
       "category": "inputs",
@@ -118,8 +133,8 @@ Object {
   },
   "internalProperty": Object {
     "defaultValue": "Public hello",
-    "description": "<p>Public value. </p>
-",
+    "description": "
+Public value.",
     "name": "internalProperty",
     "table": Object {
       "category": "properties",
@@ -134,14 +149,13 @@ Object {
   },
   "isDisabled": Object {
     "defaultValue": false,
-    "description": "<p>Sets the button to a disabled state. </p>
-",
+    "description": "Sets the button to a disabled state.",
     "name": "isDisabled",
     "table": Object {
       "category": "inputs",
       "type": Object {
         "required": true,
-        "summary": undefined,
+        "summary": "boolean",
       },
     },
     "type": Object {
@@ -165,8 +179,7 @@ Object {
   },
   "label": Object {
     "defaultValue": undefined,
-    "description": "<p>The inner text of the button.</p>
-",
+    "description": "The inner text of the button.",
     "name": "label",
     "table": Object {
       "category": "inputs",
@@ -182,8 +195,11 @@ Object {
   "onClick": Object {
     "action": "onClick",
     "defaultValue": undefined,
-    "description": "<p>Handler to be called when the button is clicked by a user.</p>
-<p>Will also block the emission of the event if <code>isDisabled</code> is true.</p>
+    "description": "
+
+Handler to be called when the button is clicked by a user.
+
+Will also block the emission of the event if \`isDisabled\` is true.
 ",
     "name": "onClick",
     "table": Object {
@@ -197,9 +213,27 @@ Object {
       "name": "void",
     },
   },
+  "onClickListener": Object {
+    "defaultValue": undefined,
+    "description": undefined,
+    "name": "onClickListener",
+    "table": Object {
+      "category": "methods",
+      "type": Object {
+        "required": false,
+        "summary": "(btn: ) => void",
+      },
+    },
+    "type": Object {
+      "name": "void",
+    },
+  },
   "privateMethod": Object {
     "defaultValue": undefined,
-    "description": "<p>A private method.</p>
+    "description": "
+
+A private method.
+
 ",
     "name": "privateMethod",
     "table": Object {
@@ -230,7 +264,10 @@ Object {
   },
   "protectedMethod": Object {
     "defaultValue": undefined,
-    "description": "<p>A protected method.</p>
+    "description": "
+
+A protected method.
+
 ",
     "name": "protectedMethod",
     "table": Object {
@@ -246,8 +283,8 @@ Object {
   },
   "publicMethod": Object {
     "defaultValue": undefined,
-    "description": "<p>A public method using an interface. </p>
-",
+    "description": "
+A public method using an interface.",
     "name": "publicMethod",
     "table": Object {
       "category": "methods",
@@ -277,8 +314,7 @@ Object {
   },
   "size": Object {
     "defaultValue": "medium",
-    "description": "<p>Size of the button. </p>
-",
+    "description": "Size of the button.",
     "name": "size",
     "table": Object {
       "category": "inputs",
@@ -293,8 +329,7 @@ Object {
   },
   "someDataObject": Object {
     "defaultValue": undefined,
-    "description": "<p>Specifies some arbitrary object </p>
-",
+    "description": "Specifies some arbitrary object",
     "name": "someDataObject",
     "table": Object {
       "category": "inputs",
@@ -309,14 +344,13 @@ Object {
   },
   "somethingYouShouldNotUse": Object {
     "defaultValue": false,
-    "description": "<p>Some input you shouldn&#39;t use.</p>
-",
+    "description": "Some input you shouldn't use.",
     "name": "somethingYouShouldNotUse",
     "table": Object {
       "category": "inputs",
       "type": Object {
         "required": true,
-        "summary": undefined,
+        "summary": "boolean",
       },
     },
     "type": Object {

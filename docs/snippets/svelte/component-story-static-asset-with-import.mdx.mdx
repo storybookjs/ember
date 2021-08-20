@@ -1,0 +1,27 @@
+```md
+<!-- MyComponent.stories.js -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.svelte';
+
+import imageFile from './static/image.png';
+
+<Meta title="img" />
+
+export const image = {
+  src: imageFile,
+  alt: 'my image',
+};
+
+<Story name="withAnImage">
+  {() => {
+    return {
+      Component: MyComponent,
+      props: {
+        image: image,
+      },
+    };
+  }}
+</Story>
+```

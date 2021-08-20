@@ -142,6 +142,23 @@ const testCases = [
       '../src/stories/components/Icon/Icon.mdx',
     ],
   },
+  {
+    glob: '../src/stories/components/Icon.stories.js',
+    recursive: false,
+    validPaths: ['../src/stories/components/Icon.stories.js'],
+    invalidPaths: [
+      '../src/Icon.stories.mdx',
+      '../src/stories/components/Icon.stories/Icon.stories.mdx',
+      '../src/stories/components/Icon/Icon.mdx',
+      '../src/stories/components/Icon/Icon.stories.js',
+      '../src/stories/components/Icon/Icon.stories.ts',
+      '../src/stories/Icon.stories.js',
+      '../src/stories/Icon.stories.mdx',
+      './Icon.stories.js',
+      './src/stories/Icon.stories.js',
+      './stories.js',
+    ],
+  },
   // DUMB GLOB
   {
     glob: '../src/stories/**/*.stories.[tj]sx',

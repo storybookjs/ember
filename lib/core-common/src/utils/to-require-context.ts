@@ -33,7 +33,7 @@ export const toRequireContext = (input: any) => {
       const base = globResult.isGlob
         ? globResult.prefix + globResult.base
         : path.dirname(fixedInput);
-      const globFallback = base !== '.' ? fixedInput.substr(base.length) : fixedInput;
+      const globFallback = base !== '.' ? fixedInput.substr(base.length + 1) : fixedInput;
       const glob = globResult.isGlob ? globResult.glob : globFallback;
 
       const regex = makeRe(glob, {

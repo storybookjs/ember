@@ -10,9 +10,9 @@ export default {
 };
 
 //👇 We create a “template” of how args map to rendering
-const Template = (args) => ({
+const Template = (args, { argTypes }) => ({
   components: { YourComponent },
-  props: { args },
+  props: Object.keys(argTypes),
   template: '<YourComponent v-bind="$props"/>',
 });
 

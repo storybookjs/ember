@@ -134,6 +134,7 @@ export interface CLIOptions {
   sslKey?: string;
   smokeTest?: boolean;
   managerCache?: boolean;
+  open?: boolean;
   ci?: boolean;
   loglevel?: string;
   quiet?: boolean;

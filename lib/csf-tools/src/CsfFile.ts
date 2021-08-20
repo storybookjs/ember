@@ -265,10 +265,15 @@ export class CsfFile {
 
     // default export can come at any point in the file, so we do this post processing last
     if (self._meta?.title || self._meta?.component) {
-      self._stories = Object.entries(self._stories).reduce((acc, [key, story]) => {
+      const entries = Object.entries(self._stories);
+      self._stories = entries.reduce((acc, [key, story]) => {
         if (isExportStory(key, self._meta)) {
           const id = toId(self._meta.title, storyNameFromExport(key));
-          acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+          const parameters: Record<string, any> = { ...story.parameters, __id: id };
+          if (entries.length === 1 && key === '__page') {
+            parameters.docsOnly = true;
+          }
+          acc[key] = { ...story, id, parameters };
         }
         return acc;
       }, {} as Record<string, Story>);

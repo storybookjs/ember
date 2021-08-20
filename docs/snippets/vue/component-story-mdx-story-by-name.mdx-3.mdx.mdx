@@ -1,0 +1,19 @@
+```md
+<!-- Button.stories.mdx --->
+
+import { Story } from '@storybook/addon-docs';
+
+import Button from './Button.vue';
+
+export const Template = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
+});
+
+<Story name="Basic" args={{ label: 'hello' }}>
+  {Template.bind({})}
+</Story>
+```
