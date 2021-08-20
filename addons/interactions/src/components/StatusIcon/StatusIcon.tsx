@@ -18,6 +18,7 @@ const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
   width: status === TestingStates.PENDING ? 6 : 12,
   height: status === TestingStates.PENDING ? 6 : 12,
   color: status === TestingStates.PENDING ? gray[500] : status === TestingStates.DONE ? green : red,
+  justifySelf: 'center',
 }));
 
 /**
@@ -37,6 +38,7 @@ export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
           height: 10,
           background: red,
           borderRadius: 1,
+          justifySelf: 'center',
         }}
       />
     );
