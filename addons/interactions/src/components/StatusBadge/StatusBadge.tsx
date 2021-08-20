@@ -26,11 +26,6 @@ const StyledBadge = styled.div(({ status }: StatusBadgeProps) => ({
   textAlign: 'center',
 }));
 
-/**
- * StatusBadge
- * @param status: StatusBadgeProps
- * @returns styled badge based on status
- */
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const badgeText =
     status === TestingStates.ERROR ? 'Fail' : status === TestingStates.DONE ? 'Pass' : 'Runs';
