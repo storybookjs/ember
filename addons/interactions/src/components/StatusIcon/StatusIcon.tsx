@@ -21,11 +21,6 @@ const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
   justifySelf: 'center',
 }));
 
-/**
- * StatusIcon
- * @param status: StatusIconProps
- * @returns styled icon based on status
- */
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   // TODO: update when stop icon is added to design library
   const icon = status === TestingStates.PENDING ? 'circle' : 'check';
