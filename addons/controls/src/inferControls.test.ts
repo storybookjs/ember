@@ -1,25 +1,27 @@
-import { StoryContext } from '@storybook/addons';
+import { StoryContextForEnhancers } from '@storybook/store';
 import { logger } from '@storybook/client-logger';
-import { inferControls } from './inferControls';
+import { argTypesEnhancers } from './inferControls';
 
-const getStoryContext = (customParams = {}): StoryContext => ({
+const getStoryContext = (overrides: any = {}): StoryContextForEnhancers => ({
   id: '',
+  title: '',
   kind: '',
   name: '',
-  args: {},
-  globals: {},
-  argTypes: {},
+  story: '',
+  initialArgs: {},
+  argTypes: {
+    label: { control: 'text' },
+    labelName: { control: 'text' },
+    borderWidth: { control: { type: 'number', min: 0, max: 10 } },
+  },
+  ...overrides,
   parameters: {
-    argTypes: {
-      label: { control: 'text' },
-      labelName: { control: 'text' },
-      borderWidth: { control: { type: 'number', min: 0, max: 10 } },
-    },
     __isArgsStory: true,
-    ...customParams,
+    ...overrides.parameters,
   },
 });
 
+const [inferControls] = argTypesEnhancers;
 describe('inferControls', () => {
   describe('with custom matchers', () => {
     let warnSpy: jest.SpyInstance;
@@ -43,9 +45,11 @@ describe('inferControls', () => {
               name: 'background',
             },
           },
-          controls: {
-            matchers: {
-              color: /background/,
+          parameters: {
+            controls: {
+              matchers: {
+                color: /background/,
+              },
             },
           },
         })
@@ -79,9 +83,11 @@ describe('inferControls', () => {
                 name: 'background',
               },
             },
-            controls: {
-              matchers: {
-                color: /background/,
+            parameters: {
+              controls: {
+                matchers: {
+                  color: /background/,
+                },
               },
             },
           })
@@ -100,9 +106,9 @@ describe('inferControls', () => {
 
   it('should return filtered argTypes when include is passed', () => {
     const [includeString, includeArray, includeRegex] = [
-      inferControls(getStoryContext({ controls: { include: 'label' } })),
-      inferControls(getStoryContext({ controls: { include: ['label'] } })),
-      inferControls(getStoryContext({ controls: { include: /label*/ } })),
+      inferControls(getStoryContext({ parameters: { controls: { include: 'label' } } })),
+      inferControls(getStoryContext({ parameters: { controls: { include: ['label'] } } })),
+      inferControls(getStoryContext({ parameters: { controls: { include: /label*/ } } })),
     ];
 
     expect(Object.keys(includeString)).toEqual(['label', 'labelName']);
@@ -112,9 +118,9 @@ describe('inferControls', () => {
 
   it('should return filtered argTypes when exclude is passed', () => {
     const [excludeString, excludeArray, excludeRegex] = [
-      inferControls(getStoryContext({ controls: { exclude: 'label' } })),
-      inferControls(getStoryContext({ controls: { exclude: ['label'] } })),
-      inferControls(getStoryContext({ controls: { exclude: /label*/ } })),
+      inferControls(getStoryContext({ parameters: { controls: { exclude: 'label' } } })),
+      inferControls(getStoryContext({ parameters: { controls: { exclude: ['label'] } } })),
+      inferControls(getStoryContext({ parameters: { controls: { exclude: /label*/ } } })),
     ];
 
     expect(Object.keys(excludeString)).toEqual(['borderWidth']);
