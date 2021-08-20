@@ -99,7 +99,8 @@ const Row = ({
   });
 
   const RowLabel = styled.div({
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '15px 1fr',
     alignItems: 'center',
     padding: '8px 10px',
     cursor: call.state === TestingStates.ERROR ? 'default' : 'pointer',
@@ -116,7 +117,9 @@ const Row = ({
     <RowContainer>
       <RowLabel onClick={onClick}>
         <StatusIcon status={call.state} />
-        <MethodCall call={call} callsById={callsById} />
+        <div style={{ marginLeft: 5 }}>
+          <MethodCall call={call} callsById={callsById} />
+        </div>
       </RowLabel>
       {call.state === TestingStates.ERROR && (
         <pre style={detailStyle}>{call.exception.message}</pre>
