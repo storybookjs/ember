@@ -15,11 +15,8 @@ const {
 } = theme;
 
 const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
-  flexShrink: 0,
-  width: 12,
-  height: 12,
-  padding: status === TestingStates.PENDING ? 3 : 1,
-  marginRight: 5,
+  width: status === TestingStates.PENDING ? 6 : 12,
+  height: status === TestingStates.PENDING ? 6 : 12,
   color: status === TestingStates.PENDING ? gray[500] : status === TestingStates.DONE ? green : red,
 }));
 
@@ -29,7 +26,19 @@ const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
  * @returns styled icon based on status
  */
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
-  const icon =
-    status === TestingStates.PENDING ? 'circle' : status === TestingStates.DONE ? 'check' : 'stop';
+  // TODO: update when stop icon is added to design library
+  const icon = status === TestingStates.PENDING ? 'circle' : 'check';
+  if (status === TestingStates.ERROR)
+    return (
+      <span
+        style={{
+          display: 'block',
+          width: 10,
+          height: 10,
+          background: red,
+          borderRadius: 1,
+        }}
+      />
+    );
   return <StyledStatusIcon status={status} icon={icon} />;
 };
