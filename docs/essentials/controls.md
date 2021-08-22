@@ -146,7 +146,6 @@ One way to deal with this is to use primitive values (e.g. strings) as arg value
     'react/component-story-custom-args-complex.js.mdx',
     'react/component-story-custom-args-complex.ts.mdx',
     'react/component-story-custom-args-complex.mdx.mdx',
-    'vue/component-story-custom-args-complex.2.js.mdx',
     'vue/component-story-custom-args-complex.3.js.mdx',
     'vue/component-story-custom-args-complex.mdx-3.mdx.mdx',
     'angular/component-story-custom-args-complex.ts.mdx',

@@ -266,7 +266,6 @@ As an example, if you had the following story:
     'react/button-story-default-docs-code.js.mdx',
     'react/button-story-default-docs-code.ts.mdx',
     'react/button-story-default-docs-code.mdx.mdx',
-    'vue/button-story-default-docs-code.2.js.mdx',
     'vue/button-story-default-docs-code.3.js.mdx',
     'vue/button-story-default-docs-code.mdx-3.mdx.mdx',
     'angular/button-story-default-docs-code.ts.mdx',

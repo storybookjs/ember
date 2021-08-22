@@ -167,8 +167,6 @@ export const useExpanded = ({
         (target as HTMLButtonElement).blur();
       }
 
-      event.preventDefault();
-
       const type = highlightedElement.getAttribute('data-nodetype');
       if ((isEnter || isSpace) && ['component', 'story', 'document'].includes(type)) {
         onSelectStoryId(highlightedItemId);
