@@ -2242,7 +2242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-classes@npm:^7.12.11, @babel/plugin-transform-classes@npm:^7.14.9":
+"@babel/plugin-transform-classes@npm:^7.14.9":
   version: 7.14.9
   resolution: "@babel/plugin-transform-classes@npm:7.14.9"
   dependencies:
@@ -7106,11 +7106,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-ie11@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@storybook/addon-ie11@npm:0.0.4"
+"@storybook/addon-ie11@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@storybook/addon-ie11@npm:0.0.6"
   dependencies:
-    "@babel/plugin-transform-classes": ^7.12.11
     "@babel/preset-env": ^7.12.11
     "@storybook/node-logger": "*"
     babel-loader: ^8.1.0
@@ -7119,7 +7118,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 1f48666a2677ae11151e0c9fb70735da27db44356c9776c7b2b759e21f74f3d71cf1785c2be6191c9f9368bbb6108531fb50db8e4d873cb9457e15e6ca401936
+  checksum: a7b900e102c8064e65b3cbfb87632965c75b830c8a605d8cc03ad9a8b1200ee2800081c31fb632e542a8713b31c8485c6ec71fa4ff1739b8c196f8ea580346e1
   languageName: node
   linkType: hard
 
@@ -17734,7 +17733,7 @@ __metadata:
     "@storybook/addon-actions": 6.4.0-alpha.30
     "@storybook/addon-backgrounds": 6.4.0-alpha.30
     "@storybook/addon-docs": 6.4.0-alpha.30
-    "@storybook/addon-ie11": ^0.0.4
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-jest": 6.4.0-alpha.30
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addon-storyshots": 6.4.0-alpha.30
@@ -17759,7 +17758,7 @@ __metadata:
   resolution: "cra-react15@workspace:examples/cra-react15"
   dependencies:
     "@storybook/addon-actions": 6.4.0-alpha.30
-    "@storybook/addon-ie11": ^0.0.4
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30
@@ -17782,7 +17781,7 @@ __metadata:
   resolution: "cra-ts-essentials@workspace:examples/cra-ts-essentials"
   dependencies:
     "@storybook/addon-essentials": 6.4.0-alpha.30
-    "@storybook/addon-ie11": ^0.0.4
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30
     "@storybook/preset-create-react-app": ^3.1.6
@@ -17807,7 +17806,7 @@ __metadata:
     "@storybook/addon-a11y": 6.4.0-alpha.30
     "@storybook/addon-actions": 6.4.0-alpha.30
     "@storybook/addon-docs": 6.4.0-alpha.30
-    "@storybook/addon-ie11": ^0.0.4
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30
