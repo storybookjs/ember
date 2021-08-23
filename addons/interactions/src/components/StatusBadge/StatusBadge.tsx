@@ -3,7 +3,7 @@ import { styled, typography } from '@storybook/theming';
 import { TestState, TestingStates } from '../../Panel';
 import { theme } from '../../theme';
 
-interface StatusBadgeProps {
+export interface StatusBadgeProps {
   status: TestState;
 }
 const {
