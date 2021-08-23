@@ -13,7 +13,12 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
-import { getComponentInputsOutputs, isComponent, isDeclarable } from './NgComponentAnalyzer';
+import {
+  getComponentInputsOutputs,
+  isComponent,
+  isDeclarable,
+  getComponentDecoratorMetadata,
+} from './NgComponentAnalyzer';
 
 describe('getComponentInputsOutputs', () => {
   it('should return empty if no I/O found', () => {
@@ -156,6 +161,15 @@ describe('isComponent', () => {
     class FooDirective {}
 
     expect(isComponent(FooDirective)).toEqual(false);
+  });
+});
+
+describe('getComponentDecoratorMetadata', () => {
+  it('should return Component with a Component', () => {
+    @Component({})
+    class FooComponent {}
+
+    expect(getComponentDecoratorMetadata(FooComponent)).toBeInstanceOf(Component);
   });
 });
 
