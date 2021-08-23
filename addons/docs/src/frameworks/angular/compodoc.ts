@@ -157,8 +157,7 @@ export const extractType = (property: Property, defaultValue: any) => {
 
 const extractDefaultValue = (property: Property) => {
   try {
-    // eslint-disable-next-line no-eval
-    let value = eval(property.defaultValue);
+    let value = property.defaultValue?.replace(/^'(.*)'$/, '$1');
     if (value == null && property.jsdoctags.length > 0) {
       property.jsdoctags.forEach((tag: JsDocTag) => {
         if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {

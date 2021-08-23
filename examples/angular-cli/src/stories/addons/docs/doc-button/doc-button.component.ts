@@ -53,7 +53,7 @@ export class DocButtonComponent<T> {
 
   /**
    * Setting default value here because compodoc won't get the default value for accessors
-   * @default The default value
+   * @default Another default value
    * */
   @Input()
   get anotherDefaultValue() {
@@ -64,7 +64,7 @@ export class DocButtonComponent<T> {
     this._anotherDefaultValue = v;
   }
 
-  _anotherDefaultValue = 'The default value';
+  _anotherDefaultValue = 'Another default value';
 
   /** Appearance style of the button. */
   @Input()

@@ -120,13 +120,13 @@ An internal calculation method which adds \`x\` and \`y\` together.
     },
   },
   "focus": Object {
-    "defaultValue": false,
+    "defaultValue": "false",
     "description": "",
     "name": "focus",
     "table": Object {
       "category": "properties",
       "defaultValue": Object {
-        "summary": false,
+        "summary": "false",
       },
       "type": Object {
         "required": true,
@@ -134,7 +134,7 @@ An internal calculation method which adds \`x\` and \`y\` together.
       },
     },
     "type": Object {
-      "name": "boolean",
+      "name": "string",
     },
   },
   "inputValue": Object {
@@ -175,13 +175,13 @@ Public value.",
     },
   },
   "isDisabled": Object {
-    "defaultValue": false,
+    "defaultValue": "false",
     "description": "Sets the button to a disabled state.",
     "name": "isDisabled",
     "table": Object {
       "category": "inputs",
       "defaultValue": Object {
-        "summary": false,
+        "summary": "false",
       },
       "type": Object {
         "required": true,
@@ -230,7 +230,7 @@ Public value.",
   },
   "onClick": Object {
     "action": "onClick",
-    "defaultValue": undefined,
+    "defaultValue": "new EventEmitter<Event>()",
     "description": "
 
 Handler to be called when the button is clicked by a user.
@@ -241,7 +241,7 @@ Will also block the emission of the event if \`isDisabled\` is true.
     "table": Object {
       "category": "outputs",
       "defaultValue": Object {
-        "summary": undefined,
+        "summary": "new EventEmitter<Event>()",
       },
       "type": Object {
         "required": true,
@@ -406,13 +406,13 @@ A public method using an interface.",
     },
   },
   "somethingYouShouldNotUse": Object {
-    "defaultValue": false,
+    "defaultValue": "false",
     "description": "Some input you shouldn't use.",
     "name": "somethingYouShouldNotUse",
     "table": Object {
       "category": "inputs",
       "defaultValue": Object {
-        "summary": false,
+        "summary": "false",
       },
       "type": Object {
         "required": true,
