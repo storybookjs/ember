@@ -7106,6 +7106,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@storybook/addon-ie11@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@storybook/addon-ie11@npm:0.0.6"
+  dependencies:
+    "@babel/preset-env": ^7.12.11
+    "@storybook/node-logger": "*"
+    babel-loader: ^8.1.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: a7b900e102c8064e65b3cbfb87632965c75b830c8a605d8cc03ad9a8b1200ee2800081c31fb632e542a8713b31c8485c6ec71fa4ff1739b8c196f8ea580346e1
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-jest@6.4.0-alpha.30, @storybook/addon-jest@workspace:*, @storybook/addon-jest@workspace:addons/jest":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-jest@workspace:addons/jest"
@@ -7902,6 +7918,7 @@ __metadata:
     lodash: ^4.17.20
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
+    slash: ^3.0.0
     ts-dedent: ^2.0.0
     unfetch: ^4.2.0
     util-deprecate: ^1.0.2
@@ -8386,6 +8403,19 @@ __metadata:
     pretty-hrtime: ^1.0.3
   languageName: unknown
   linkType: soft
+
+"@storybook/node-logger@npm:*":
+  version: 6.3.7
+  resolution: "@storybook/node-logger@npm:6.3.7"
+  dependencies:
+    "@types/npmlog": ^4.1.2
+    chalk: ^4.1.0
+    core-js: ^3.8.2
+    npmlog: ^4.1.2
+    pretty-hrtime: ^1.0.3
+  checksum: b7978cac35ba4eed256739a6fb96331708d12af326674b9811a8e0ac4bc4ced10b7cc6f31464d658eb5163f97e45e4ec34287a0560b28762917c1938d36c098f
+  languageName: node
+  linkType: hard
 
 "@storybook/node-logger@npm:^6.1.14":
   version: 6.3.0
@@ -17703,6 +17733,7 @@ __metadata:
     "@storybook/addon-actions": 6.4.0-alpha.30
     "@storybook/addon-backgrounds": 6.4.0-alpha.30
     "@storybook/addon-docs": 6.4.0-alpha.30
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-jest": 6.4.0-alpha.30
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addon-storyshots": 6.4.0-alpha.30
@@ -17727,6 +17758,7 @@ __metadata:
   resolution: "cra-react15@workspace:examples/cra-react15"
   dependencies:
     "@storybook/addon-actions": 6.4.0-alpha.30
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30
@@ -17749,6 +17781,7 @@ __metadata:
   resolution: "cra-ts-essentials@workspace:examples/cra-ts-essentials"
   dependencies:
     "@storybook/addon-essentials": 6.4.0-alpha.30
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30
     "@storybook/preset-create-react-app": ^3.1.6
@@ -17773,6 +17806,7 @@ __metadata:
     "@storybook/addon-a11y": 6.4.0-alpha.30
     "@storybook/addon-actions": 6.4.0-alpha.30
     "@storybook/addon-docs": 6.4.0-alpha.30
+    "@storybook/addon-ie11": ^0.0.6
     "@storybook/addon-links": 6.4.0-alpha.30
     "@storybook/addons": 6.4.0-alpha.30
     "@storybook/builder-webpack4": 6.4.0-alpha.30

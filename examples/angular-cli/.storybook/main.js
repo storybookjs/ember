@@ -16,11 +16,11 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
-  angularOptions: {
-    enableIvy: true,
-  },
   features: {
     previewCsfV3: true,
+  },
+  angularOptions: {
+    enableIvy: true,
   },
   // These are just here to test composition. They could be added to any storybook example project
   refs: {

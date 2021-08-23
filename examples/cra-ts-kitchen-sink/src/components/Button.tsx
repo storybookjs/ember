@@ -5,15 +5,15 @@ export type Type = 'default' | 'action';
 interface Props {
   /**
    * Click event `handler`
-   * 
+   *
    * Example function:
-   * 
+   *
    * ```
    * () => {
    *   doThis();
    * }
    * ```
-   * 
+   *
    * @default null
    */
   onClick?: () => void;
