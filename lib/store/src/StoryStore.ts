@@ -1,38 +1,48 @@
 import memoize from 'memoizerific';
 
+import {
+  Parameters,
+  DecoratorFunction,
+  Args,
+  ArgTypes,
+  StoryId,
+  StoryName,
+  StoryIdentifier,
+  ViewMode,
+  LegacyStoryFn,
+  StoryContextForLoaders,
+  StoryContext,
+  ComponentTitle,
+  Framework,
+  GlobalAnnotations,
+  ComponentAnnotations,
+  StoryAnnotations,
+} from '@storybook/csf';
+
 import { StoriesListStore } from './StoriesListStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
 import { prepareStory } from './prepareStory';
-import {
-  CSFFile,
-  StoryId,
-  ModuleImportFn,
-  GlobalMeta,
-  Story,
-  StoryContext,
-  StoriesList,
-  Parameters,
-} from './types';
+import { CSFFile, ModuleImportFn, Story, StoriesList } from './types';
 import { HooksContext } from './hooks';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;
 const STORY_CACHE_SIZE = 1000;
 
-export class StoryStore<StoryFnReturnType> {
+export class StoryStore<TFramework extends Framework> {
   storiesList: StoriesListStore;
 
   importFn: ModuleImportFn;
 
-  globalMeta: GlobalMeta<StoryFnReturnType>;
+  globalMeta: GlobalAnnotations<TFramework>;
 
   globals: GlobalsStore;
 
   args: ArgsStore;
 
-  hooks: Record<StoryId, HooksContext>;
+  hooks: Record<StoryId, HooksContext<TFramework>>;
 
   processCSFFileWithCache: typeof processCSFFile;
 
@@ -44,7 +54,7 @@ export class StoryStore<StoryFnReturnType> {
     fetchStoriesList,
   }: {
     importFn: ModuleImportFn;
-    globalMeta: GlobalMeta<StoryFnReturnType>;
+    globalMeta: GlobalAnnotations<TFramework>;
     fetchStoriesList: () => Promise<StoriesList>;
   }) {
     this.storiesList = new StoriesListStore({ fetchStoriesList });
@@ -64,19 +74,19 @@ export class StoryStore<StoryFnReturnType> {
     await this.storiesList.initialize();
   }
 
-  updateGlobalMeta(globalMeta: GlobalMeta<StoryFnReturnType>) {
+  updateGlobalAnnotations(globalMeta: GlobalAnnotations<TFramework>) {
     this.globalMeta = globalMeta;
     const { globals, globalTypes } = globalMeta;
-    this.globals.resetOnGlobalMetaChange({ globals, globalTypes });
+    this.globals.resetOnGlobalAnnotationsChange({ globals, globalTypes });
   }
 
-  async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<StoryFnReturnType>> {
+  async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
     return this.processCSFFileWithCache(moduleExports, path);
   }
 
-  async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<StoryFnReturnType>> {
+  async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {
     const csfFile = await this.loadCSFFileByStoryId(storyId);
     return this.storyFromCSFFile({ storyId, csfFile });
   }
@@ -86,8 +96,8 @@ export class StoryStore<StoryFnReturnType> {
     csfFile,
   }: {
     storyId: StoryId;
-    csfFile: CSFFile<StoryFnReturnType>;
-  }): Story<StoryFnReturnType> {
+    csfFile: CSFFile<TFramework>;
+  }): Story<TFramework> {
     const storyMeta = csfFile.stories[storyId];
     if (!storyMeta) {
       throw new Error(`Didn't find '${storyId}' in CSF file, this is unexpected`);
@@ -100,26 +110,22 @@ export class StoryStore<StoryFnReturnType> {
     return story;
   }
 
-  componentStoriesFromCSFFile({
-    csfFile,
-  }: {
-    csfFile: CSFFile<StoryFnReturnType>;
-  }): Story<StoryFnReturnType>[] {
+  componentStoriesFromCSFFile({ csfFile }: { csfFile: CSFFile<TFramework> }): Story<TFramework>[] {
     return Object.keys(csfFile.stories).map((storyId: StoryId) =>
       this.storyFromCSFFile({ storyId, csfFile })
     );
   }
 
-  getStoryContext(story: Story<StoryFnReturnType>): StoryContext {
+  getStoryContext(story: Story<TFramework>): Omit<StoryContextForLoaders<TFramework>, 'viewMode'> {
     return {
       ...story,
       args: this.args.get(story.id),
       globals: this.globals.get(),
-      hooks: this.hooks[story.id],
+      hooks: this.hooks[story.id] as unknown,
     };
   }
 
-  cleanupStory(story: Story<StoryFnReturnType>): void {
+  cleanupStory(story: Story<TFramework>): void {
     this.hooks[story.id].clean();
   }
 

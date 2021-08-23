@@ -1,7 +1,7 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import { Globals, GlobalTypes } from '@storybook/csf';
 
-import { Globals, GlobalTypes } from './types';
 import { deepDiff, DEEPLY_EQUAL } from './args';
 
 const setUndeclaredWarning = deprecate(
@@ -50,7 +50,7 @@ export class GlobalsStore {
     this.globals = { ...this.globals, ...allowedUrlGlobals };
   }
 
-  resetOnGlobalMetaChange({
+  resetOnGlobalAnnotationsChange({
     globals,
     globalTypes,
   }: {

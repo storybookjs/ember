@@ -1,7 +1,7 @@
-import { isExportStory } from '@storybook/csf';
+import { isExportStory, sanitize, Parameters, Framework } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
-import { ModuleExports, CSFFile, ComponentMeta, StoryMeta, Path, Parameters } from './types';
+import { ModuleExports, CSFFile, Path, ComponentAnnotationsWithId } from './types';
 import { autoTitle } from './autoTitle';
 import { normalizeStory } from './normalizeStory';
 
@@ -32,10 +32,10 @@ const checkDisallowedParameters = (parameters: Parameters) => {
 };
 
 // Given the raw exports of a CSF file, check and normalize it.
-export function processCSFFile<StoryFnReturnType>(
+export function processCSFFile<TFramework extends Framework>(
   moduleExports: ModuleExports,
   path: Path
-): CSFFile<StoryFnReturnType> {
+): CSFFile<TFramework> {
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
   let exports = namedExports;
 
@@ -46,7 +46,11 @@ export function processCSFFile<StoryFnReturnType>(
     );
   }
 
-  const meta: ComponentMeta<StoryFnReturnType> = { ...defaultExport, title };
+  const meta: ComponentAnnotationsWithId<TFramework> = {
+    id: sanitize(defaultExport.id || title),
+    ...defaultExport,
+    title,
+  };
   checkDisallowedParameters(meta.parameters);
 
   // prefer a user/loader provided `__namedExportsOrder` array if supplied
@@ -61,14 +65,14 @@ export function processCSFFile<StoryFnReturnType>(
     });
   }
 
-  const csfFile: CSFFile<StoryFnReturnType> = { meta, stories: {} };
+  const csfFile: CSFFile<TFramework> = { meta, stories: {} };
 
   Object.keys(exports).forEach((key) => {
     if (isExportStory(key, meta)) {
-      const storyMeta: StoryMeta<StoryFnReturnType> = normalizeStory(key, exports[key], meta);
+      const storyMeta = normalizeStory(key, exports[key], meta);
       checkDisallowedParameters(storyMeta.parameters);
 
-      csfFile.stories[storyMeta.id] = storyMeta;
+      csfFile.stories[key] = storyMeta;
     }
   });
 

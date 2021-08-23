@@ -92,7 +92,12 @@ export const getStoryProps = (
     );
   }
 
-  const boundStoryFn = () => story.storyFn(context.getStoryContext(story));
+  // TODO -- loaders ?
+  const boundStoryFn = () =>
+    story.unboundStoryFn({
+      ...context.getStoryContext(story),
+      loaded: {},
+    });
   return {
     parameters,
     inline: storyIsInline,
@@ -107,11 +112,12 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const ref = useRef();
   const story = getStory(props, context);
-  const { id, title, name } = story;
+  const { componentId, id, title, name } = story;
   const renderContext = {
-    id,
+    componentId,
     title,
     kind: title,
+    id,
     name,
     story: name,
     // TODO what to do when these fail?

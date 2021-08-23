@@ -6,22 +6,18 @@ import global from 'global';
 import { addons, Channel } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import fetch from 'unfetch';
-
+import { Framework, StoryId, GlobalAnnotations, Args, Globals, ViewMode } from '@storybook/csf';
 import {
-  WebGlobalMeta,
   ModuleImportFn,
   Selection,
   Story,
   RenderContext,
-  GlobalMeta,
-  Globals,
-  StoryId,
-  Args,
-  DocsContextProps,
-  StorySpecifier,
   CSFFile,
   StoryStore,
+  StorySpecifier,
 } from '@storybook/store';
+
+import { WebGlobalAnnotations, DocsContextProps } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
@@ -47,34 +43,34 @@ function focusInInput(event: Event) {
 
 type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
 
-export class WebPreview<StoryFnReturnType> {
+export class WebPreview<TFramework extends Framework> {
   channel: Channel;
 
   urlStore: UrlStore;
 
-  storyStore: StoryStore<StoryFnReturnType>;
+  storyStore: StoryStore<TFramework>;
 
   view: WebView;
 
-  renderToDOM: WebGlobalMeta<StoryFnReturnType>['renderToDOM'];
+  renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'];
 
   previousSelection: Selection;
 
-  previousStory: Story<StoryFnReturnType>;
+  previousStory: Story<TFramework>;
 
   previousCleanup: () => void;
 
   constructor({
-    getGlobalMeta,
+    getGlobalAnnotations,
     importFn,
   }: {
-    getGlobalMeta: () => WebGlobalMeta<StoryFnReturnType>;
+    getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
     importFn: ModuleImportFn;
   }) {
     this.channel = getOrCreateChannel();
     this.view = new WebView();
 
-    const globalMeta = this.getGlobalMetaOrRenderError(getGlobalMeta);
+    const globalMeta = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
     if (!globalMeta) {
       return;
     }
@@ -88,12 +84,12 @@ export class WebPreview<StoryFnReturnType> {
     this.storyStore = new StoryStore({ importFn, globalMeta, fetchStoriesList });
   }
 
-  getGlobalMetaOrRenderError(
-    getGlobalMeta: () => WebGlobalMeta<StoryFnReturnType>
-  ): GlobalMeta<StoryFnReturnType> | undefined {
+  getGlobalAnnotationsOrRenderError(
+    getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>
+  ): GlobalAnnotations<TFramework> | undefined {
     let globalMeta;
     try {
-      globalMeta = getGlobalMeta();
+      globalMeta = getGlobalAnnotations();
       this.renderToDOM = globalMeta.renderToDOM;
       return globalMeta;
     } catch (err) {
@@ -213,17 +209,17 @@ export class WebPreview<StoryFnReturnType> {
   }
 
   // This happens when a config file gets reloade
-  onGetGlobalMetaChanged({
-    getGlobalMeta,
+  onGetGlobalAnnotationsChanged({
+    getGlobalAnnotations,
   }: {
-    getGlobalMeta: () => GlobalMeta<StoryFnReturnType>;
+    getGlobalAnnotations: () => GlobalAnnotations<TFramework>;
   }) {
-    const globalMeta = this.getGlobalMetaOrRenderError(getGlobalMeta);
+    const globalMeta = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
     if (!globalMeta) {
       return;
     }
 
-    this.storyStore.updateGlobalMeta(globalMeta);
+    this.storyStore.updateGlobalAnnotations(globalMeta);
     this.renderSelection();
   }
 
@@ -287,10 +283,10 @@ export class WebPreview<StoryFnReturnType> {
     }
   }
 
-  async renderDocs({ story }: { story: Story<StoryFnReturnType> }) {
+  async renderDocs({ story }: { story: Story<TFramework> }) {
     const { id, title, name } = story;
     const element = this.view.prepareForDocs();
-    const csfFile: CSFFile<StoryFnReturnType> = await this.storyStore.loadCSFFileByStoryId(id);
+    const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
       title,
@@ -299,8 +295,10 @@ export class WebPreview<StoryFnReturnType> {
       storyById: (storyId: StoryId) => this.storyStore.storyFromCSFFile({ storyId, csfFile }),
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
-      getStoryContext: (renderedStory: Story<StoryFnReturnType>) =>
-        this.storyStore.getStoryContext(renderedStory),
+      getStoryContext: (renderedStory: Story<TFramework>) => ({
+        ...this.storyStore.getStoryContext(renderedStory),
+        viewMode: 'docs' as ViewMode,
+      }),
     };
 
     const { docs } = story.parameters;
@@ -308,7 +306,7 @@ export class WebPreview<StoryFnReturnType> {
       throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
     }
 
-    const DocsContainer: ComponentType<{ context: DocsContextProps<StoryFnReturnType> }> =
+    const DocsContainer: ComponentType<{ context: DocsContextProps<TFramework> }> =
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 
@@ -320,13 +318,14 @@ export class WebPreview<StoryFnReturnType> {
     ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
   }
 
-  renderStory({ story }: { story: Story<StoryFnReturnType> }) {
+  renderStory({ story }: { story: Story<TFramework> }) {
     const element = this.view.prepareForStory(story);
-    const { id, title, name } = story;
+    const { id, componentId, title, name } = story;
     const renderContext = {
-      id,
+      componentId,
       title,
       kind: title,
+      id,
       name,
       story: name,
       showMain: () => this.view.showMain(),
@@ -344,18 +343,18 @@ export class WebPreview<StoryFnReturnType> {
     renderContext: renderContextWithoutStoryContext,
     element,
   }: {
-    story: Story<StoryFnReturnType>;
+    story: Story<TFramework>;
     renderContext: Omit<
-      RenderContext<StoryFnReturnType>,
+      RenderContext<TFramework>,
       'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
     >;
     element: Element;
   }) {
-    const { id, applyLoaders, storyFn: unboundStoryFn, runPlayFunction } = story;
+    const { id, applyLoaders, unboundStoryFn, runPlayFunction } = story;
 
     const controller = new AbortController();
     let initialRenderPhase: InitialRenderPhase = 'init';
-    let renderContext: RenderContext<StoryFnReturnType>;
+    let renderContext: RenderContext<TFramework>;
     const initialRender = async () => {
       const storyContext = this.storyStore.getStoryContext(story);
 
@@ -368,7 +367,8 @@ export class WebPreview<StoryFnReturnType> {
         args,
       });
 
-      const loadedContext = await applyLoaders(storyContext);
+      const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
+      const loadedContext = await applyLoaders({ ...storyContext, viewMode });
       if (controller.signal.aborted) {
         return;
       }
@@ -456,7 +456,7 @@ export class WebPreview<StoryFnReturnType> {
         ...renderContext.storyContext,
         ...this.storyStore.getStoryContext(story),
       };
-      const rerenderRenderContext: RenderContext<StoryFnReturnType> = {
+      const rerenderRenderContext: RenderContext<TFramework> = {
         ...renderContext,
         forceRemount: false,
         storyContext: rerenderStoryContext,

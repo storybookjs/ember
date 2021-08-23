@@ -1,4 +1,6 @@
-import { combineParameters, ModuleExports, WebGlobalMeta } from '@storybook/store';
+import { Framework } from '@storybook/csf';
+import { combineParameters, ModuleExports } from '@storybook/store';
+import { WebGlobalAnnotations } from './types';
 
 function getField(moduleExportList: ModuleExports[], field: string): any[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);
@@ -16,9 +18,9 @@ function getSingletonField(moduleExportList: ModuleExports[], field: string): an
   return getField(moduleExportList, field)[0];
 }
 
-export function composeConfigs<StoryFnReturnType>(
+export function composeConfigs<TFramework extends Framework>(
   moduleExportList: ModuleExports[]
-): WebGlobalMeta<StoryFnReturnType> {
+): WebGlobalAnnotations<TFramework> {
   const allArgTypeEnhancers = getArrayField(moduleExportList, 'argTypesEnhancers');
 
   return {

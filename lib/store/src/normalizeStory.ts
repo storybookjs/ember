@@ -1,9 +1,6 @@
-// TODO -- Copied/Adapted from core-client
-
-import { storyNameFromExport, toId } from '@storybook/csf';
+import { storyNameFromExport, toId, ComponentAnnotations, Framework } from '@storybook/csf';
 import dedent from 'ts-dedent';
-
-import { ComponentMeta, StoryMeta } from './types';
+import { StoryAnnotationsWithId } from './types';
 
 const deprecatedStoryAnnotation = dedent`
 CSF .story annotations deprecated; annotate story functions directly:
@@ -12,11 +9,11 @@ CSF .story annotations deprecated; annotate story functions directly:
 See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#hoisted-csf-annotations for details and codemod.
 `;
 
-export function normalizeStory<StoryFnReturnType>(
+export function normalizeStory<TFramework extends Framework>(
   key: string,
   storyExport: any,
-  meta: ComponentMeta<StoryFnReturnType>
-): StoryMeta<StoryFnReturnType> {
+  meta: ComponentAnnotations<TFramework>
+): StoryAnnotationsWithId<TFramework> {
   let storyObject = storyExport;
   if (typeof storyExport === 'function') {
     storyObject = { ...storyExport };

@@ -1,10 +1,10 @@
 import React from 'react';
-import { StoryFn } from '@storybook/addons';
+import { StoryFn } from '@storybook/csf';
 
 export const parameters = {
   docs: {
     inlineStories: true,
-    prepareForInline: (storyFn: StoryFn<string>) => {
+    prepareForInline: (storyFn: StoryFn<any>) => {
       const html = storyFn();
       if (typeof html === 'string') {
         // eslint-disable-next-line react/no-danger

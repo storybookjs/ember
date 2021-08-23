@@ -1,14 +1,11 @@
 import deepEqual from 'fast-deep-equal';
-import { Args, ArgTypes } from '@storybook/addons';
+import { Args, ArgTypes } from '@storybook/csf';
 import { once } from '@storybook/client-logger';
 import isPlainObject from 'lodash/isPlainObject';
 import dedent from 'ts-dedent';
 
-type ValueType = { name: string; value?: ObjectValueType | ValueType };
-type ObjectValueType = Record<string, ValueType>;
-
 const INCOMPATIBLE = Symbol('incompatible');
-const map = (arg: unknown, type: ValueType): any => {
+const map = (arg: unknown, type: ArgTypes[any]['type']): any => {
   if (arg === undefined || arg === null || !type) return arg;
   switch (type.name) {
     case 'string':
@@ -22,7 +19,7 @@ const map = (arg: unknown, type: ValueType): any => {
     case 'array':
       if (!type.value || !Array.isArray(arg)) return INCOMPATIBLE;
       return arg.reduce((acc, item, index) => {
-        const mapped = map(item, type.value as ValueType);
+        const mapped = map(item, type.value);
         if (mapped !== INCOMPATIBLE) acc[index] = mapped;
         return acc;
       }, new Array(arg.length));
@@ -30,7 +27,7 @@ const map = (arg: unknown, type: ValueType): any => {
       if (typeof arg === 'string' || typeof arg === 'number') return arg;
       if (!type.value || typeof arg !== 'object') return INCOMPATIBLE;
       return Object.entries(arg).reduce((acc, [key, val]) => {
-        const mapped = map(val, (type.value as ObjectValueType)[key]);
+        const mapped = map(val, type.value[key]);
         return mapped === INCOMPATIBLE ? acc : Object.assign(acc, { [key]: mapped });
       }, {} as Args);
     default:

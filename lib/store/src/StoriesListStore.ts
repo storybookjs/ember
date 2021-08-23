@@ -1,7 +1,8 @@
 import createChannel from '@storybook/channel-websocket';
 import { Channel } from '@storybook/addons';
+import { StoryId } from '@storybook/csf';
 
-import { StoryId, StorySpecifier, Path, StoriesList } from './types';
+import { StorySpecifier, Path, StoriesList } from './types';
 
 export class StoriesListStore {
   fetchStoriesList: () => Promise<StoriesList>;
