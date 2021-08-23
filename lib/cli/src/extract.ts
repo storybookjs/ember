@@ -52,7 +52,7 @@ const useLocation: (input: string) => Promise<[string, () => void]> = async (inp
 const usePuppeteerBrowser: () => Promise<puppeteerCore.Browser> = async () => {
   const args = ['--no-sandbox ', '--disable-setuid-sandbox'];
   try {
-    return await puppeteerCore.launch({ args });
+    return await puppeteerCore.launch({ args, executablePath: process.env.SB_CHROMIUM_PATH });
   } catch (e) {
     // it's not installed
     logger.info('installing puppeteer...');
