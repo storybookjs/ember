@@ -5,6 +5,7 @@ import dedent from 'ts-dedent';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider, ensure as ensureTheme } from '@storybook/theming';
 import { DocsWrapper, DocsContent, components as htmlComponents } from '@storybook/components';
+import { Framework } from '@storybook/csf';
 import { DocsContextProps, DocsContext } from './DocsContext';
 import { anchorBlockIdFromId } from './Anchor';
 import { storyBlockIdFromId } from './Story';
@@ -14,8 +15,8 @@ import { scrollToElement } from './utils';
 
 const { document, window: globalWindow } = global;
 
-export interface DocsContainerProps<StoryFnReturnType> {
-  context: DocsContextProps<StoryFnReturnType>;
+export interface DocsContainerProps<TFramework extends Framework> {
+  context: DocsContextProps<TFramework>;
 }
 
 const defaultComponents = {

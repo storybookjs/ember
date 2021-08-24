@@ -1,4 +1,16 @@
-import { StorySortObjectParameter, StorySortComparator } from '@storybook/addons';
+import { StoryId, Parameters } from '@storybook/csf';
+
+// TODO -- these types were moved from lib/addons
+type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
+type StorySortMethod = 'configure' | 'alphabetical';
+interface StorySortObjectParameter {
+  method?: StorySortMethod;
+  order?: any[];
+  locales?: string;
+  includeNames?: boolean;
+}
+
+type StorySortComparator = Comparator<[StoryId, any, Parameters, Parameters]>;
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 

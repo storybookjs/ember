@@ -9,8 +9,7 @@ import React, {
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
-import { toId, storyNameFromExport } from '@storybook/csf';
-import { Args, BaseAnnotations } from '@storybook/addons';
+import { toId, storyNameFromExport, StoryAnnotations, Framework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import global from 'global';
 import { CURRENT_SELECTION } from './types';
@@ -21,7 +20,11 @@ export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
-type CommonProps = BaseAnnotations<Args, any> & {
+type Annotations = Pick<
+  StoryAnnotations<Framework>,
+  'decorators' | 'parameters' | 'args' | 'argTypes' | 'loaders'
+>;
+type CommonProps = Annotations & {
   height?: string;
   inline?: boolean;
 };
@@ -44,10 +47,10 @@ export type StoryProps = (StoryDefProps | StoryRefProps | StoryImportProps) & Co
 
 export const lookupStoryId = (
   storyName: string,
-  { mdxStoryNameToKey, mdxComponentMeta }: DocsContextProps<any>
+  { mdxStoryNameToKey, mdxComponentAnnotations }: DocsContextProps<any>
 ) =>
   toId(
-    mdxComponentMeta.id || mdxComponentMeta.title,
+    mdxComponentAnnotations.id || mdxComponentAnnotations.title,
     storyNameFromExport(mdxStoryNameToKey[storyName])
   );
 

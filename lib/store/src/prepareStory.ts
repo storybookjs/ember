@@ -150,10 +150,7 @@ export function prepareStory<TFramework extends Framework>(
       ? (render as ArgsStoryFn<TFramework>)(mappedArgs, mappedContext)
       : (render as LegacyStoryFn<TFramework>)(mappedContext);
   };
-  const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(
-    undecoratedStoryFn,
-    decorators as any
-  );
+  const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
 
   const { play } = storyAnnotations;
   const runPlayFunction = async () => {

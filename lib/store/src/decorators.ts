@@ -47,7 +47,11 @@ export function defaultDecorateStory<TFramework extends Framework>(
   const bindWithContext = (
     decoratedStoryFn: LegacyStoryFn<TFramework>
   ): PartialStoryFn<TFramework> => ({ args, globals } = {} as StoryContextUpdate) => {
-    contextStore.value = { ...contextStore.value, args, globals };
+    contextStore.value = {
+      ...contextStore.value,
+      ...(args && { args }),
+      ...(globals && { globals }),
+    };
     return decoratedStoryFn(contextStore.value);
   };
 

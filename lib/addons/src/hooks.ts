@@ -185,8 +185,10 @@ export const applyHooks = <TFramework extends Framework>(
   storyFn: LegacyStoryFn<TFramework>,
   decorators: DecoratorFunction<TFramework>[]
 ) => {
-  const hookedDecorators: DecoratorFunction<TFramework>[] = decorators.map(hookify);
-  const decorated = applyDecorators(hookify(storyFn), hookedDecorators);
+  const decorated = applyDecorators(
+    hookify(storyFn),
+    decorators.map((decorator) => hookify(decorator))
+  );
   return (context) => {
     const { hooks } = context as { hooks: HooksContext<TFramework> };
     hooks.prevMountedDecorators = hooks.mountedDecorators;

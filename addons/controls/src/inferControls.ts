@@ -1,20 +1,14 @@
 import mapValues from 'lodash/mapValues';
-import { ArgType } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
-
-import {
-  SBEnumType,
-  ArgTypesEnhancer,
-  filterArgTypes,
-  combineParameters,
-} from '@storybook/client-api';
+import { Framework, SBEnumType, InputType, ArgTypesEnhancer } from '@storybook/csf';
+import { filterArgTypes, combineParameters } from '@storybook/store';
 
 type ControlsMatchers = {
   date: RegExp;
   color: RegExp;
 };
 
-const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers): any => {
+const inferControl = (argType: InputType, name: string, matchers: ControlsMatchers): any => {
   const { type, options } = argType;
   if (!type && !options) {
     return undefined;
@@ -60,7 +54,7 @@ const inferControl = (argType: ArgType, name: string, matchers: ControlsMatchers
   }
 };
 
-const inferControls: ArgTypesEnhancer = (context) => {
+const inferControls: ArgTypesEnhancer<Framework> = (context) => {
   const {
     argTypes,
     parameters: { __isArgsStory, controls: { include = null, exclude = null, matchers = {} } = {} },
@@ -75,7 +69,6 @@ const inferControls: ArgTypesEnhancer = (context) => {
   return combineParameters(withControls, filteredArgTypes);
 };
 
-// @ts-ignore FIXME
 inferControls.secondPass = true;
 
 export const argTypesEnhancers = [inferControls];

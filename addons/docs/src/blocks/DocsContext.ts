@@ -2,6 +2,7 @@ import { Context, createContext } from 'react';
 import { window as globalWindow } from 'global';
 
 import { DocsContextProps } from '@storybook/web-preview';
+import { Framework } from '@storybook/csf';
 
 export type { DocsContextProps };
 
@@ -16,5 +17,4 @@ if (globalWindow.__DOCS_CONTEXT__ === undefined) {
   globalWindow.__DOCS_CONTEXT__.displayName = 'DocsContext';
 }
 
-// TODO -- how to parameterize this by <TFramework>
-export const DocsContext: Context<DocsContextProps<any>> = globalWindow.__DOCS_CONTEXT__;
+export const DocsContext: Context<DocsContextProps<Framework>> = globalWindow.__DOCS_CONTEXT__;

@@ -71,7 +71,7 @@
     "@storybook/components": "6.4.0-alpha.19",
     "@storybook/core": "6.4.0-alpha.19",
     "@storybook/core-events": "6.4.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.3b9fb86.0",
+    "@storybook/csf": "0.0.2--canary.856a16c.0",
     "@storybook/csf-tools": "6.4.0-alpha.19",
     "@storybook/node-logger": "6.4.0-alpha.19",
     "@storybook/postinstall": "6.4.0-alpha.19",
@@ -141,6 +141,7 @@
   },
   "peerDependencies": {
     "@storybook/angular": "6.4.0-alpha.19",
+    "@storybook/react": "6.4.0-alpha.19",
     "@storybook/vue": "6.4.0-alpha.19",
     "@storybook/vue3": "6.4.0-alpha.19",
     "@storybook/web-components": "6.4.0-alpha.19",
@@ -155,6 +156,9 @@
   },
   "peerDependenciesMeta": {
     "@storybook/angular": {
+      "optional": true
+    },
+    "@storybook/react": {
       "optional": true
     },
     "@storybook/vue": {

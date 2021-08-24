@@ -72,7 +72,7 @@ export function processCSFFile<TFramework extends Framework>(
       const storyMeta = normalizeStory(key, exports[key], meta);
       checkDisallowedParameters(storyMeta.parameters);
 
-      csfFile.stories[key] = storyMeta;
+      csfFile.stories[storyMeta.id] = storyMeta;
     }
   });
 

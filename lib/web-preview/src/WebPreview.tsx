@@ -389,6 +389,7 @@ export class WebPreview<TFramework extends Framework> {
         unboundStoryFn,
       };
       try {
+        console.log({ updatedStoryContext });
         await this.renderToDOM(renderContext, element);
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);

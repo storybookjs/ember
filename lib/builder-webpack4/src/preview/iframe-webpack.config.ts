@@ -101,14 +101,14 @@ export default async ({
       )
       .join('\n')}
 
-    const getGlobalMeta = () =>
+    const getGlobalAnnotations = () =>
       composeConfigs([
         ${configs
           .map((fileName: string, index: number) => `configModuleExport${index}`)
           .join(',\n')}
       ]);
 
-    const preview = new WebPreview({ importFn, getGlobalMeta });
+    const preview = new WebPreview({ importFn, getGlobalAnnotations });
     window.__STORYBOOK_PREVIEW__ = preview;
     preview.initialize();
     
@@ -123,8 +123,8 @@ export default async ({
       module.hot.accept([${configs.map((fileName: string) => `'${fileName}'`).join(',')}], () => {
         console.log('configEntry HMR accept config file');
         console.log(arguments);
-        // getGlobalMeta has changed so we need to patch the new one in
-        preview.onGetGlobalMetaChanged({ getGlobalMeta });
+        // getGlobalAnnotations has changed so we need to patch the new one in
+        preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations });
       });
     }
     `,

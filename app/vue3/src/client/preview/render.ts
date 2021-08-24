@@ -1,6 +1,7 @@
 import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
 import { RenderContext, StoryFnVueReturnType } from './types';
+import { VueFramework } from './types-6-0';
 
 const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
 
@@ -22,7 +23,7 @@ export const storybookApp = createApp({
 });
 
 export default function render(
-  { title, name, storyFn, showMain, showError, showException }: RenderContext<StoryFnVueReturnType>,
+  { title, name, storyFn, showMain, showError, showException }: RenderContext<VueFramework>,
   domElement: HTMLElement
 ) {
   storybookApp.config.errorHandler = showException;

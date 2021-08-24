@@ -2,15 +2,17 @@ import type { ConcreteComponent, Component, ComponentOptions, App } from 'vue';
 import { h } from 'vue';
 import { start } from '@storybook/core/client';
 import {
-  ClientStoryApi,
   StoryFn,
   DecoratorFunction,
   StoryContext,
-  Loadable,
-} from '@storybook/addons';
+  StoryContextUpdate,
+  LegacyStoryFn,
+} from '@storybook/csf';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { IStorybookSection, StoryFnVueReturnType } from './types';
+import { VueFramework } from './types-6-0';
 
 import render, { storybookApp } from './render';
 
@@ -24,7 +26,10 @@ function normalizeFunctionalComponent(options: ConcreteComponent): ComponentOpti
   return typeof options === 'function' ? { render: options, name: options.name } : options;
 }
 
-function prepare(rawStory: StoryFnVueReturnType, innerStory?: ConcreteComponent): Component | null {
+function prepare(
+  rawStory: VueFramework['storyResult'],
+  innerStory?: ConcreteComponent
+): Component | null {
   const story = rawStory as ComponentOptions;
 
   if (story == null) {
@@ -46,29 +51,19 @@ function prepare(rawStory: StoryFnVueReturnType, innerStory?: ConcreteComponent)
   };
 }
 
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
-
 function decorateStory(
-  storyFn: StoryFn<StoryFnVueReturnType>,
-  decorators: DecoratorFunction<ConcreteComponent>[]
-): StoryFn<Component> {
+  storyFn: StoryFn<VueFramework>,
+  decorators: DecoratorFunction<VueFramework>[]
+): LegacyStoryFn<VueFramework> {
   return decorators.reduce(
-    (decorated: StoryFn<ConcreteComponent>, decorator) => (
-      context: StoryContext = defaultContext
+    (decorated: LegacyStoryFn<VueFramework>, decorator) => (
+      context: StoryContext<VueFramework>
     ) => {
-      let story;
+      let story: VueFramework['storyResult'];
 
-      const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          story = decorated({ ...context, ...innerContext });
+      const decoratedStory: VueFramework['storyResult'] = decorator(
+        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
+          story = decorated({ ...context, ...(args && { args }), ...(globals && { globals }) });
           return story;
         },
         context
@@ -82,14 +77,14 @@ function decorateStory(
         return story;
       }
 
-      return prepare(decoratedStory, story);
+      return prepare(decoratedStory, story) as VueFramework['storyResult'];
     },
-    (context) => prepare(storyFn(context))
+    (context) => prepare(storyFn(context)) as LegacyStoryFn<VueFramework>
   );
 }
 const framework = 'vue3';
 
-interface ClientApi extends ClientStoryApi<StoryFnVueReturnType> {
+interface ClientApi extends ClientStoryApi<VueFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

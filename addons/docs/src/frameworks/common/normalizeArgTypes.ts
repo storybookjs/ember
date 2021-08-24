@@ -1,8 +1,9 @@
 import mapValues from 'lodash/mapValues';
-import { ArgTypes } from '@storybook/csf';
+import { ArgTypes, SBType } from '@storybook/csf';
 
-const normalizeType = (type: ArgTypes[any]['type'] | string) =>
-  typeof type === 'string' ? { name: type } : type;
+const normalizeType = (type: SBType | SBType['name']) => {
+  return (type as SBType).name ? type : ({ name: type } as SBType);
+};
 
 const normalizeControl = (control?: any) =>
   typeof control === 'string' ? { type: control } : control;

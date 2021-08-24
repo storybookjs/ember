@@ -3,12 +3,13 @@ import React, { Component, FunctionComponent, ReactElement, StrictMode, Fragment
 import ReactDOM from 'react-dom';
 
 import { StoryContext, RenderContext } from './types';
+import { ReactFramework } from './types-6-0';
 
-const { document, FRAMEWORK_OPTIONS } = global;
+const { FRAMEWORK_OPTIONS } = global;
 
-const render = (node: ReactElement, el: Element) =>
+const render = async (node: ReactElement, el: Element) =>
   new Promise((resolve) => {
-    ReactDOM.render(node, el, resolve);
+    ReactDOM.render(node, el, () => resolve(null));
   });
 
 class ErrorBoundary extends Component<{
@@ -52,10 +53,10 @@ export default async function renderMain(
     showMain,
     showException,
     forceRemount,
-  }: RenderContext<React.ReactElement<any, string | React.JSXElementConstructor<any>>>,
+  }: RenderContext<ReactFramework>,
   domElement: HTMLElement
 ) {
-  const Story = unboundStoryFn as FunctionComponent<StoryContext>;
+  const Story = unboundStoryFn as FunctionComponent<StoryContext<ReactFramework>>;
 
   const content = (
     <ErrorBoundary showMain={showMain} showException={showException}>

@@ -54,6 +54,7 @@
     "@storybook/client-api": "6.4.0-alpha.19",
     "@storybook/core": "6.4.0-alpha.19",
     "@storybook/core-common": "6.4.0-alpha.19",
+    "@storybook/csf": "0.0.2--canary.856a16c.0",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-bundled-import-meta": "^0.3.1",
     "core-js": "^3.8.2",

@@ -7,18 +7,12 @@ import { render, TemplateResult } from 'lit-html';
 import { isTemplateResult } from 'lit-html/directive-helpers.js';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
+import { WebComponentsFramework } from './types-6-0';
 
 const { Node } = global;
 
 export default function renderMain(
-  {
-    storyFn,
-    kind,
-    name,
-    showMain,
-    showError,
-    forceRemount,
-  }: RenderContext<TemplateResult | string | Node>,
+  { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<WebComponentsFramework>,
   domElement: HTMLElement
 ) {
   const element = storyFn();

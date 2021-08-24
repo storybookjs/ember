@@ -4,11 +4,12 @@ import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import render from './render';
-import { StoryFnHtmlReturnType, IStorybookSection } from './types';
+import { IStorybookSection } from './types';
+import { WebComponentsFramework } from './types-6-0';
 
 const framework = 'web-components';
 
-interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
+interface ClientApi extends ClientStoryApi<WebComponentsFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

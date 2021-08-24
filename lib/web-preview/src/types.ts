@@ -4,7 +4,6 @@ import { WebPreview } from './WebPreview';
 
 export type WebGlobalAnnotations<TFramework extends Framework> = GlobalAnnotations<TFramework> & {
   renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void>;
-  applyDecorators?: DecoratorApplicator<TFramework>;
 };
 
 export interface DocsContextProps<TFramework extends Framework> {

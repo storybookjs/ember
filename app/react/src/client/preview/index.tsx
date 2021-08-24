@@ -5,12 +5,13 @@ import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import render from './render';
-import { IStorybookSection, StoryFnReactReturnType } from './types';
+import { IStorybookSection } from './types';
+import { ReactFramework } from './types-6-0';
 import { Story } from './types-6-3';
 
 const framework = 'react';
 
-interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
+interface ClientApi extends ClientStoryApi<ReactFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

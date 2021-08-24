@@ -1,29 +1,23 @@
-import { DecoratorFunction, StoryContext, StoryFn } from '@storybook/addons';
+import { DecoratorFunction, StoryContext, StoryContextUpdate, StoryFn } from '@storybook/csf';
 import { computesTemplateFromComponent } from './angular-beta/ComputesTemplateFromComponent';
 
-import { StoryFnAngularReturnType } from './types';
-
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
+import { AngularFramework } from './types-6-0';
 
 export default function decorateStory(
-  mainStoryFn: StoryFn<StoryFnAngularReturnType>,
-  decorators: DecoratorFunction<StoryFnAngularReturnType>[]
-): StoryFn<StoryFnAngularReturnType> {
+  mainStoryFn: StoryFn<AngularFramework>,
+  decorators: DecoratorFunction<AngularFramework>[]
+): StoryFn<AngularFramework> {
   const returnDecorators = [cleanArgsDecorator, ...decorators].reduce(
-    (previousStoryFn: StoryFn<StoryFnAngularReturnType>, decorator) => (
-      context: StoryContext = defaultContext
+    (previousStoryFn: StoryFn<AngularFramework>, decorator) => (
+      context: StoryContext<AngularFramework>
     ) => {
       const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          return previousStoryFn({ ...context, ...innerContext });
+        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
+          return previousStoryFn({
+            ...context,
+            ...(args && { args }),
+            ...(globals && { globals }),
+          });
         },
         context
       );
@@ -37,9 +31,9 @@ export default function decorateStory(
 }
 
 const prepareMain = (
-  story: StoryFnAngularReturnType,
-  context: StoryContext
-): StoryFnAngularReturnType => {
+  story: AngularFramework['storyResult'],
+  context: StoryContext<AngularFramework>
+): AngularFramework['storyResult'] => {
   let { template } = story;
 
   const component = story.component ?? context.parameters.component;
@@ -57,7 +51,7 @@ function hasNoTemplate(template: string | null | undefined): template is undefin
   return template === null || template === undefined;
 }
 
-const cleanArgsDecorator: DecoratorFunction<StoryFnAngularReturnType> = (storyFn, context) => {
+const cleanArgsDecorator: DecoratorFunction<AngularFramework> = (storyFn, context) => {
   if (!context.argTypes || !context.args) {
     return storyFn();
   }

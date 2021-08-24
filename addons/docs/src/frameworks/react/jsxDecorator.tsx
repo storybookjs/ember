@@ -3,8 +3,10 @@ import reactElementToJSXString, { Options } from 'react-element-to-jsx-string';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
-import { addons, StoryContext } from '@storybook/addons';
+import { addons } from '@storybook/addons';
+import { StoryContext, StoryFn, ArgsStoryFn } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
+import { ReactFramework } from '@storybook/react';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 import { getDocgenSection } from '../../lib/docgen';
@@ -22,7 +24,7 @@ type JSXOptions = Options & {
   /** Deprecated: A function ran after the story is rendered */
   onBeforeRender?(dom: string): string;
   /** A function ran after a story is rendered (prefer this over `onBeforeRender`) */
-  transformSource?(dom: string, context?: StoryContext): string;
+  transformSource?(dom: string, context?: StoryContext<ReactFramework>): string;
 };
 
 /** Run the user supplied onBeforeRender function if it exists */
@@ -44,7 +46,11 @@ const applyBeforeRender = (domString: string, options: JSXOptions) => {
 };
 
 /** Run the user supplied transformSource function if it exists */
-const applyTransformSource = (domString: string, options: JSXOptions, context?: StoryContext) => {
+const applyTransformSource = (
+  domString: string,
+  options: JSXOptions,
+  context?: StoryContext<ReactFramework>
+) => {
   if (typeof options.transformSource !== 'function') {
     return domString;
   }
@@ -138,7 +144,7 @@ const defaultOpts = {
   showDefaultProps: false,
 };
 
-export const skipJsxRender = (context: StoryContext) => {
+export const skipJsxRender = (context: StoryContext<ReactFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -165,7 +171,10 @@ const mdxToJsx = (node: any) => {
   return createElement(originalType, rest, ...jsxChildren);
 };
 
-export const jsxDecorator = (storyFn: any, context: StoryContext) => {
+export const jsxDecorator = (
+  storyFn: StoryFn<ReactFramework>,
+  context: StoryContext<ReactFramework>
+) => {
   const story = storyFn();
 
   // We only need to render JSX if the source block is actually going to
@@ -183,7 +192,7 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
 
   // Exclude decorators from source code snippet by default
   const storyJsx = context?.parameters.docs?.source?.excludeDecorators
-    ? context.originalStoryFn(context.args)
+    ? (context.originalStoryFn as ArgsStoryFn<ReactFramework>)(context.args, context)
     : story;
 
   const sourceJsx = mdxToJsx(storyJsx);

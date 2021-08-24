@@ -5,11 +5,12 @@ import { ClientStoryApi, Loadable } from '@storybook/addons';
 import './globals';
 import render from './render';
 import decorateStory from './decorateStory';
-import { IStorybookSection, StoryFnAngularReturnType } from './types';
+import { IStorybookSection } from './types';
+import { AngularFramework } from './types-6-0';
 
 const framework = 'angular';
 
-interface ClientApi extends ClientStoryApi<StoryFnAngularReturnType> {
+interface ClientApi extends ClientStoryApi<AngularFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

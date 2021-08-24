@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/addons';
+import type { ArgTypes } from '@storybook/csf';
 import pickBy from 'lodash/pickBy';
 
 export type PropDescriptor = string[] | RegExp;

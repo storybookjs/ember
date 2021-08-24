@@ -1,11 +1,11 @@
 import deepEqual from 'fast-deep-equal';
-import { Args, ArgTypes } from '@storybook/csf';
+import { SBType, Args, ArgTypes } from '@storybook/csf';
 import { once } from '@storybook/client-logger';
 import isPlainObject from 'lodash/isPlainObject';
 import dedent from 'ts-dedent';
 
 const INCOMPATIBLE = Symbol('incompatible');
-const map = (arg: unknown, type: ArgTypes[any]['type']): any => {
+const map = (arg: unknown, type: SBType): any => {
   if (arg === undefined || arg === null || !type) return arg;
   switch (type.name) {
     case 'string':
@@ -38,7 +38,9 @@ const map = (arg: unknown, type: ArgTypes[any]['type']): any => {
 export const mapArgsToTypes = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(args).reduce((acc, [key, value]) => {
     if (!argTypes[key]) return acc;
-    const mapped = map(value, argTypes[key].type);
+    // FIXME: this is not typesafe. The type key is allowed to be a string and this is assuming
+    // it will be "enhanced" by docs by now, but the user doesn't have to use docs.
+    const mapped = map(value, argTypes[key].type as SBType);
     return mapped === INCOMPATIBLE ? acc : Object.assign(acc, { [key]: mapped });
   }, {});
 };

@@ -1,16 +1,12 @@
 /* eslint-disable prefer-destructuring */
 import Vue, { VueConstructor, ComponentOptions } from 'vue';
 import { start } from '@storybook/core/client';
-import {
-  ClientStoryApi,
-  StoryFn,
-  DecoratorFunction,
-  StoryContext,
-  Loadable,
-} from '@storybook/addons';
+import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { IStorybookSection, StoryFnVueReturnType } from './types';
+import { VueFramework } from './types-6-0';
 
 import render, { VALUES } from './render';
 import { extractProps } from './util';
@@ -63,27 +59,17 @@ function prepare(
   });
 }
 
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
-
 function decorateStory(
-  storyFn: StoryFn<StoryFnVueReturnType>,
-  decorators: DecoratorFunction<VueConstructor>[]
-): StoryFn<VueConstructor> {
+  storyFn: StoryFn<VueFramework>,
+  decorators: DecoratorFunction<VueFramework>[]
+): StoryFn<VueFramework> {
   return decorators.reduce(
-    (decorated: StoryFn<VueConstructor>, decorator) => (context: StoryContext = defaultContext) => {
+    (decorated: StoryFn<VueFramework>, decorator) => (context: StoryContext<VueFramework>) => {
       let story;
 
       const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          story = decorated({ ...context, ...innerContext });
+        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
+          story = decorated({ ...context, ...(args && { args }), ...(globals && { globals }) });
           return story;
         },
         context
@@ -97,14 +83,14 @@ function decorateStory(
         return story;
       }
 
-      return prepare(decoratedStory, story);
+      return prepare(decoratedStory, story as any);
     },
     (context) => prepare(storyFn(context))
   );
 }
 const framework = 'vue';
 
-interface ClientApi extends ClientStoryApi<StoryFnVueReturnType> {
+interface ClientApi extends ClientStoryApi<VueFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

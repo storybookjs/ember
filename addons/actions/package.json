@@ -43,9 +43,9 @@
   "dependencies": {
     "@storybook/addons": "6.4.0-alpha.19",
     "@storybook/api": "6.4.0-alpha.19",
-    "@storybook/client-api": "6.4.0-alpha.19",
     "@storybook/components": "6.4.0-alpha.19",
     "@storybook/core-events": "6.4.0-alpha.19",
+    "@storybook/csf": "0.0.2--canary.856a16c.0",
     "@storybook/theming": "6.4.0-alpha.19",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",

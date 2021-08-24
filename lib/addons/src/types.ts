@@ -14,6 +14,7 @@ import {
 import { Addon } from './index';
 
 export type {
+  Framework,
   StoryId,
   StoryKind,
   StoryName,

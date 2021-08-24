@@ -1,4 +1,10 @@
-import { StoryFn as StoryFunction, StoryContext, useMemo, useEffect } from '@storybook/addons';
+import {
+  Framework,
+  StoryFn as StoryFunction,
+  StoryContext,
+  useMemo,
+  useEffect,
+} from '@storybook/addons';
 
 import { PARAM_KEY as BACKGROUNDS_PARAM_KEY } from '../constants';
 import {
@@ -8,7 +14,10 @@ import {
   isReduceMotionEnabled,
 } from '../helpers';
 
-export const withBackground = (StoryFn: StoryFunction, context: StoryContext) => {
+export const withBackground = (
+  StoryFn: StoryFunction<Framework>,
+  context: StoryContext<Framework>
+) => {
   const { globals, parameters } = context;
   const globalsBackgroundColor = globals[BACKGROUNDS_PARAM_KEY]?.value;
   const backgroundsConfig = parameters[BACKGROUNDS_PARAM_KEY];

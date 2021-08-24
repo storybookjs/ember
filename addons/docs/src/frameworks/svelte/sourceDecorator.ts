@@ -1,5 +1,5 @@
-import { addons, StoryContext } from '@storybook/addons';
-import { ArgTypes, Args } from '@storybook/api';
+import { addons } from '@storybook/addons';
+import { ArgTypes, Args, StoryContext, Framework } from '@storybook/csf';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 
@@ -8,7 +8,7 @@ import { SourceType, SNIPPET_RENDERED } from '../../shared';
  *
  * @param context StoryContext
  */
-const skipSourceRender = (context: StoryContext) => {
+const skipSourceRender = (context: StoryContext<Framework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -144,7 +144,7 @@ function getWrapperProperties(component: any) {
  * @param storyFn Fn
  * @param context  StoryContext
  */
-export const sourceDecorator = (storyFn: any, context: StoryContext) => {
+export const sourceDecorator = (storyFn: any, context: StoryContext<Framework>) => {
   const story = storyFn();
 
   if (skipSourceRender(context)) {
