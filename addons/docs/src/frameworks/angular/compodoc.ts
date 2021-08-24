@@ -161,9 +161,9 @@ const extractDefaultValue = (property: Property) => {
     if (value == null && property.jsdoctags.length > 0) {
       property.jsdoctags.forEach((tag: JsDocTag) => {
         if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {
-          const tmp = window.document.createElement('DIV');
-          tmp.innerHTML = tag.comment;
-          value = tmp.textContent;
+          // @ts-ignore
+          const dom = new window.DOMParser().parseFromString(tag.comment, 'text/html');
+          value = dom.body.textContent;
         }
       });
     }
