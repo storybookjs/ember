@@ -8742,6 +8742,7 @@ __metadata:
     webpack: 4
     webpack-dev-middleware: ^3.7.3
     window-size: ^1.1.1
+    zx: ^3.0.0
   dependenciesMeta:
     "@compodoc/compodoc":
       built: false
@@ -9803,6 +9804,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/fs-extra@npm:^9.0.11":
+  version: 9.0.12
+  resolution: "@types/fs-extra@npm:9.0.12"
+  dependencies:
+    "@types/node": "*"
+  checksum: 4284e2ff62312ac1580553f83bab4ee9cde53fdaddfee01c54ea9238e94a08941779db27dcd4e0a889e80e1ff7c5d7c0c671493c4d558ee16a33edba209703b9
+  languageName: node
+  linkType: hard
+
 "@types/fs-extra@npm:^9.0.6":
   version: 9.0.7
   resolution: "@types/fs-extra@npm:9.0.7"
@@ -10098,6 +10108,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/minimist@npm:^1.2.1":
+  version: 1.2.2
+  resolution: "@types/minimist@npm:1.2.2"
+  checksum: f220f57f682bbc3793dab4518f8e2180faa79d8e2589c79614fd777d7182be203ba399020c3a056a115064f5d57a065004a32b522b2737246407621681b24137
+  languageName: node
+  linkType: hard
+
 "@types/mock-fs@npm:^4.13.0":
   version: 4.13.0
   resolution: "@types/mock-fs@npm:4.13.0"
@@ -10111,6 +10128,16 @@ __metadata:
   version: 2.1.1
   resolution: "@types/node-cleanup@npm:2.1.1"
   checksum: 806eaa0e9f820e7e8b75020abdbfe3927c49a58f039a3171e10af3df4f7e14266da7e4faba54103c74eb179cf310b50300ba44bb0efd20634a9d9fea4703afd7
+  languageName: node
+  linkType: hard
+
+"@types/node-fetch@npm:^2.5.10":
+  version: 2.5.12
+  resolution: "@types/node-fetch@npm:2.5.12"
+  dependencies:
+    "@types/node": "*"
+    form-data: ^3.0.0
+  checksum: aaa69c354e596f9e293136ac43c9e5d91503415fb4eddfae3a9689153f0f033863bbd627e700b3f419ce14d06303e18e1d61b788d9085411f1fc12fc56afe356
   languageName: node
   linkType: hard
 
@@ -10142,6 +10169,13 @@ __metadata:
   version: 14.14.20
   resolution: "@types/node@npm:14.14.20"
   checksum: e7d85a34923dba7ec101c436344899fa4a0036f1dcec64a8a0aa1b650fe5087b9407dcf114ff44fa20dec2f78debb7243e5fe7368b0e15faae34c7fce3c148f2
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.0":
+  version: 16.6.1
+  resolution: "@types/node@npm:16.6.1"
+  checksum: 6fb1cff755290d1ecc6bf1d036fb822112d583e9fdc69c685b40c3b2ea965d0e4da71e1f24aaa000911b24ec8ac76683ee5df914351678c37f9dee5304d0bbf2
   languageName: node
   linkType: hard
 
@@ -13121,6 +13155,13 @@ __metadata:
   version: 2.1.0
   resolution: "array-union@npm:2.1.0"
   checksum: 429897e68110374f39b771ec47a7161fc6a8fc33e196857c0a396dc75df0b5f65e4d046674db764330b6bb66b39ef48dd7c53b6a2ee75cfb0681e0c1a7033962
+  languageName: node
+  linkType: hard
+
+"array-union@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "array-union@npm:3.0.1"
+  checksum: b5271d7e5688d2d1932928b271796dbbddc422448557ab05ef6f34a9f84fb645eb855384feec6234bf59c226053a0e21b8a00b0e6cd588874b90a5c13dbeb64e
   languageName: node
   linkType: hard
 
@@ -22548,7 +22589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.5":
+"fast-glob@npm:^3.2.5, fast-glob@npm:^3.2.7":
   version: 3.2.7
   resolution: "fast-glob@npm:3.2.7"
   dependencies:
@@ -24354,6 +24395,20 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"globby@npm:^12.0.0":
+  version: 12.0.1
+  resolution: "globby@npm:12.0.1"
+  dependencies:
+    array-union: ^3.0.1
+    dir-glob: ^3.0.1
+    fast-glob: ^3.2.7
+    ignore: ^5.1.8
+    merge2: ^1.4.1
+    slash: ^4.0.0
+  checksum: 103844cf485dee2d9b811702204c05f9a6cac7ab70d13a8e352551f0ba037de0fb602c7524eaf35d92bc6ddbae9b635478a1e1d2b7ae97e5b35274b8c18125ba
+  languageName: node
+  linkType: hard
+
 "globby@npm:^5.0.0":
   version: 5.0.0
   resolution: "globby@npm:5.0.0"
@@ -25803,7 +25858,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"ignore@npm:^5.0.0, ignore@npm:^5.0.4, ignore@npm:^5.1.1, ignore@npm:^5.1.4":
+"ignore@npm:^5.0.0, ignore@npm:^5.0.4, ignore@npm:^5.1.1, ignore@npm:^5.1.4, ignore@npm:^5.1.8":
   version: 5.1.8
   resolution: "ignore@npm:5.1.8"
   checksum: 3d09e733049c7bad1c0982be8fe3e767bd7b756dd0bfeceff11acda0b7b57634b5516acc3554d2d536e64b2701b3d08d0e5fa4dbf46389847dd3f8fa49d437bb
@@ -31328,7 +31383,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"merge2@npm:^1.2.3, merge2@npm:^1.3.0":
+"merge2@npm:^1.2.3, merge2@npm:^1.3.0, merge2@npm:^1.4.1":
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 254a8a4605b58f450308fc474c82ac9a094848081bf4c06778200207820e5193726dc563a0d2c16468810516a5c97d9d3ea0ca6585d23c58ccfff2403e8dbbeb
@@ -40339,6 +40394,13 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
+"slash@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "slash@npm:4.0.0"
+  checksum: b522ca75d80d107fd30d29df0549a7b2537c83c4c4ecd12cd7d4ea6c8aaca2ab17ada002e7a1d78a9d736a0261509f26ea5b489082ee443a3a810586ef8eff18
+  languageName: node
+  linkType: hard
+
 "slice-ansi@npm:0.0.4":
   version: 0.0.4
   resolution: "slice-ansi@npm:0.0.4"
@@ -46874,5 +46936,25 @@ resolve@1.19.0:
   version: 1.0.5
   resolution: "zwitch@npm:1.0.5"
   checksum: 26dc7d32e5596824b565db1da9650d00d32659c1211195bef50c25c60820f9c942aa7abefe678fc1ed0b97c1755036ac1bde5f97881d7d0e73e04e02aca56957
+  languageName: node
+  linkType: hard
+
+"zx@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "zx@npm:3.0.0"
+  dependencies:
+    "@types/fs-extra": ^9.0.11
+    "@types/minimist": ^1.2.1
+    "@types/node": ^16.0
+    "@types/node-fetch": ^2.5.10
+    chalk: ^4.1.1
+    fs-extra: ^10.0.0
+    globby: ^12.0.0
+    minimist: ^1.2.5
+    node-fetch: ^2.6.1
+    which: ^2.0.2
+  bin:
+    zx: zx.mjs
+  checksum: 51e8e236858b2c9b7d0c5505fe2af45b8142de75c020a3f7d52631649383061a3b84083138afe9fe79d4cead546529e36b75ad71962eb7bfc03a4a8c02ba5d27
   languageName: node
   linkType: hard
