@@ -1,3 +1,14 @@
+## 6.4.0-alpha.32 (August 24, 2021)
+
+### Features
+
+- CLI/Storyshots: Specify custom sb extract Chromium exe ([#15878](https://github.com/storybookjs/storybook/pull/15878))
+
+### Bug Fixes
+
+- Angular: Fix Cannot read property 'selector' of undefined ([#15874](https://github.com/storybookjs/storybook/pull/15874))
+- Addon-docs: Fix refs support in Docs pages ([#15890](https://github.com/storybookjs/storybook/pull/15890))
+
 ## 6.4.0-alpha.31 (August 23, 2021)
 
 ### Features
