@@ -13,12 +13,10 @@ export const enhanceArgTypes = <TFramework extends Framework>(
   } = context;
   const { extractArgTypes } = docs;
 
-  const normalizedArgTypes = normalizeArgTypes(userArgTypes);
-  const namedArgTypes = mapValues(normalizedArgTypes, (val, key) => ({ name: key, ...val }));
   const extractedArgTypes = extractArgTypes && component ? extractArgTypes(component) : {};
   const withExtractedTypes = extractedArgTypes
-    ? combineParameters(extractedArgTypes, namedArgTypes)
-    : namedArgTypes;
+    ? combineParameters(extractedArgTypes, userArgTypes)
+    : userArgTypes;
 
   return withExtractedTypes;
 };

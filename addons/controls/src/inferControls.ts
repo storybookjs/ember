@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
 import { logger } from '@storybook/client-logger';
-import { Framework, SBEnumType, InputType, ArgTypesEnhancer } from '@storybook/csf';
+import { Framework, SBEnumType, StrictInputType, ArgTypesEnhancer } from '@storybook/csf';
 import { filterArgTypes, combineParameters } from '@storybook/store';
 
 type ControlsMatchers = {
@@ -8,7 +8,7 @@ type ControlsMatchers = {
   color: RegExp;
 };
 
-const inferControl = (argType: InputType, name: string, matchers: ControlsMatchers): any => {
+const inferControl = (argType: StrictInputType, name: string, matchers: ControlsMatchers): any => {
   const { type, options } = argType;
   if (!type && !options) {
     return undefined;
@@ -46,8 +46,8 @@ const inferControl = (argType: InputType, name: string, matchers: ControlsMatche
       return { control: { type: value?.length <= 5 ? 'radio' : 'select' }, options: value };
     }
     case 'function':
-    case 'symbol':
-    case 'void':
+      // case 'symbol':
+      // case 'void':
       return null;
     default:
       return { control: { type: options ? 'select' : 'object' } };

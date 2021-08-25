@@ -1,4 +1,4 @@
-import type { ArgTypes } from '@storybook/csf';
+import type { StrictArgTypes } from '@storybook/csf';
 import pickBy from 'lodash/pickBy';
 
 export type PropDescriptor = string[] | RegExp;
@@ -7,7 +7,7 @@ const matches = (name: string, descriptor: PropDescriptor) =>
   Array.isArray(descriptor) ? descriptor.includes(name) : name.match(descriptor);
 
 export const filterArgTypes = (
-  argTypes: ArgTypes,
+  argTypes: StrictArgTypes,
   include?: PropDescriptor,
   exclude?: PropDescriptor
 ) => {
