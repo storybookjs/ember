@@ -1,3 +1,30 @@
+## 6.4.0-alpha.32 (August 24, 2021)
+
+### Features
+
+- CLI/Storyshots: Specify custom sb extract Chromium exe ([#15878](https://github.com/storybookjs/storybook/pull/15878))
+
+### Bug Fixes
+
+- Angular: Fix Cannot read property 'selector' of undefined ([#15874](https://github.com/storybookjs/storybook/pull/15874))
+- Addon-docs: Fix refs support in Docs pages ([#15890](https://github.com/storybookjs/storybook/pull/15890))
+
+## 6.4.0-alpha.31 (August 23, 2021)
+
+### Features
+
+- UI: Add skip to canvas/sidebar links ([#15740](https://github.com/storybookjs/storybook/pull/15740))
+- Controls: Add id to setter button for undefined values ([#15729](https://github.com/storybookjs/storybook/pull/15729))
+
+### Bug Fixes
+
+- CSF3: Normalize windows paths in autoTitle ([#15770](https://github.com/storybookjs/storybook/pull/15770))
+- Addon-docs: Fix newline handling in ArgsTable code blocks ([#12882](https://github.com/storybookjs/storybook/pull/12882))
+
+### Maintenance
+
+- Build: Update `caniuse-lite` dependency ([#15863](https://github.com/storybookjs/storybook/pull/15863))
+
 ## 6.4.0-alpha.30 (August 14, 2021)
 
 ### Maintenance

@@ -123,6 +123,8 @@ initStoryshots({
 });
 ```
 
+Alternatively, you may set the `SB_CHROMIUM_PATH` environment variable. If both are set, then `chromeExecutablePath` will take precedence.
+
 ### Specifying a custom Puppeteer `browser` instance
 
 You might use the async `getCustomBrowser` function to obtain a custom instance of a Puppeteer `browser` object. This will prevent `storyshots-puppeteer` from creating its own `browser`. It will create and close pages within the `browser`, and it is your responsibility to manage the lifecycle of the `browser` itself.
