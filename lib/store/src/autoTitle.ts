@@ -1,26 +1,5 @@
-// TODO copied over from core-client ??
-
-import global from 'global';
-
-// TODO
-// import type { NormalizedStoriesEntry } from './types';
-interface NormalizedStoriesEntrySpecifier {
-  directory: string;
-  titlePrefix?: string;
-}
-interface NormalizedStoriesEntry {
-  specifier: NormalizedStoriesEntrySpecifier;
-}
-
-const { FEATURES = {}, STORIES = [] } = global;
-
-interface Meta {
-  title?: string;
-}
-
-const autoTitleV2 = (meta: Meta, fileName: string) => {
-  return meta.title;
-};
+import { ComponentAnnotations, Framework } from '@storybook/csf';
+import { NormalizedStoriesEntry } from './types';
 
 const stripExtension = (titleWithExtension: string) => {
   let parts = titleWithExtension.split('/');
@@ -35,22 +14,24 @@ const stripExtension = (titleWithExtension: string) => {
   return parts.join('/');
 };
 
-export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEntry) => {
+const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEntry) => {
   const { directory, titlePrefix = '' } = entry.specifier || {};
   if (fileName.startsWith(directory)) {
     const suffix = fileName.replace(directory, '');
-    return stripExtension([titlePrefix, suffix].join('/'));
+    return titlePrefix ? [titlePrefix, stripExtension(suffix)].join('/') : stripExtension(suffix);
   }
   return undefined;
 };
 
-const autoTitleV3 = (meta: Meta, fileName: string) => {
+export const autoTitle = (
+  meta: ComponentAnnotations<Framework>,
+  fileName: string,
+  entries: NormalizedStoriesEntry[]
+) => {
   if (meta.title) return meta.title;
-  for (let i = 0; i < STORIES.length; i += 1) {
-    const title = autoTitleFromEntry(fileName, STORIES[i]);
+  for (let i = 0; i < entries.length; i += 1) {
+    const title = autoTitleFromEntry(fileName, entries[i]);
     if (title) return title;
   }
   return undefined;
 };
-
-export const autoTitle = FEATURES.previewCsfV3 ? autoTitleV3 : autoTitleV2;

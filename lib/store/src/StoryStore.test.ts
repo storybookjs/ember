@@ -1,7 +1,10 @@
+import { Framework, GlobalAnnotations } from '@storybook/csf';
+import { HooksContext } from '../../addons/dist/ts3.9/hooks';
+
 import { prepareStory } from './prepareStory';
 import { processCSFFile } from './processCSFFile';
 import { StoryStore } from './StoryStore';
-import { StoriesList, GlobalMeta } from './types';
+import { StoriesList } from './types';
 
 // Spy on prepareStory/processCSFFile
 jest.mock('./prepareStory', () => ({
@@ -24,7 +27,12 @@ const importFn = jest.fn(async (path) => {
   return path === './src/ComponentOne.stories.js' ? componentOneExports : componentTwoExports;
 });
 
-const globalMeta: GlobalMeta<any> = { globals: { a: 'b' }, globalTypes: {}, render: jest.fn() };
+const globalAnnotations: GlobalAnnotations<any> = {
+  globals: { a: 'b' },
+  globalTypes: { a: { type: 'string' } },
+  argTypes: { a: { type: 'string' } },
+  render: jest.fn(),
+};
 
 const storiesList: StoriesList = {
   v: 3,
@@ -49,9 +57,36 @@ const storiesList: StoriesList = {
 const fetchStoriesList = async () => storiesList;
 
 describe('StoryStore', () => {
+  describe('globalAnnotations', () => {
+    it('normalizes on initialization', async () => {
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      await store.initialize();
+
+      expect(store.globalAnnotations.globalTypes).toEqual({
+        a: { name: 'a', type: { name: 'string' } },
+      });
+      expect(store.globalAnnotations.argTypes).toEqual({
+        a: { name: 'a', type: { name: 'string' } },
+      });
+    });
+
+    it('normalizes on updateGlobalAnnotations', async () => {
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      await store.initialize();
+
+      store.updateGlobalAnnotations(globalAnnotations);
+      expect(store.globalAnnotations.globalTypes).toEqual({
+        a: { name: 'a', type: { name: 'string' } },
+      });
+      expect(store.globalAnnotations.argTypes).toEqual({
+        a: { name: 'a', type: { name: 'string' } },
+      });
+    });
+  });
+
   describe('loadStory', () => {
     it('pulls the story via the importFn', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       importFn.mockClear();
@@ -65,7 +100,7 @@ describe('StoryStore', () => {
     });
 
     it('uses a cache', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -89,7 +124,7 @@ describe('StoryStore', () => {
 
   describe('componentStoriesFromCSFFile', () => {
     it('returns all the stories in the file', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const csfFile = await store.loadCSFFileByStoryId('component-one--a');
@@ -102,7 +137,7 @@ describe('StoryStore', () => {
 
   describe('getStoryContext', () => {
     it('returns the args and globals correctly', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -114,7 +149,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the args and globals correctly when they change', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -129,7 +164,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the same hooks each time', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -141,12 +176,12 @@ describe('StoryStore', () => {
 
   describe('cleanupStory', () => {
     it('cleans the hooks from the context', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
-      const { hooks } = store.getStoryContext(story);
+      const { hooks } = store.getStoryContext(story) as { hooks: HooksContext<Framework> };
       hooks.clean = jest.fn();
       store.cleanupStory(story);
       expect(hooks.clean).toHaveBeenCalled();
@@ -155,7 +190,7 @@ describe('StoryStore', () => {
 
   describe('getSetStoriesPayload', () => {
     it('maps stories list to payload correctly', async () => {
-      const store = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
       await store.initialize();
 
       expect(store.getSetStoriesPayload()).toMatchInlineSnapshot(`

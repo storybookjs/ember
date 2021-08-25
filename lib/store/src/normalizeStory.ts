@@ -1,6 +1,19 @@
-import { storyNameFromExport, toId, ComponentAnnotations, Framework } from '@storybook/csf';
+import {
+  storyNameFromExport,
+  toId,
+  ComponentAnnotations,
+  Framework,
+  DecoratorFunction,
+  ArgTypes,
+  StoryAnnotationsOrFn,
+  StoryId,
+  StoryAnnotations,
+} from '@storybook/csf';
 import dedent from 'ts-dedent';
-import { StoryAnnotationsWithId } from './types';
+import { logger } from '@storybook/client-logger';
+import deprecate from 'util-deprecate';
+import { NormalizedStoryAnnotations } from './types';
+import { normalizeInputTypes } from './normalizeInputTypes';
 
 const deprecatedStoryAnnotation = dedent`
 CSF .story annotations deprecated; annotate story functions directly:
@@ -9,35 +22,44 @@ CSF .story annotations deprecated; annotate story functions directly:
 See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#hoisted-csf-annotations for details and codemod.
 `;
 
+const deprecatedStoryAnnotationWarning = deprecate(() => {}, deprecatedStoryAnnotation);
+
 export function normalizeStory<TFramework extends Framework>(
-  key: string,
-  storyExport: any,
+  key: StoryId,
+  storyAnnotations: StoryAnnotationsOrFn<TFramework>,
   meta: ComponentAnnotations<TFramework>
-): StoryAnnotationsWithId<TFramework> {
-  let storyObject = storyExport;
-  if (typeof storyExport === 'function') {
-    storyObject = { ...storyExport };
-    storyObject.render = storyExport;
+): NormalizedStoryAnnotations<TFramework> {
+  let storyObject: StoryAnnotations<TFramework>;
+  if (typeof storyAnnotations === 'function') {
+    // eslint-disable-next-line prefer-object-spread
+    storyObject = Object.assign({ render: storyAnnotations }, storyAnnotations);
+  } else {
+    storyObject = storyAnnotations;
   }
 
-  if (storyObject.story) {
-    throw new Error(deprecatedStoryAnnotation);
+  const { story } = storyObject;
+  if (story) {
+    logger.debug('deprecated story', story);
+    deprecatedStoryAnnotationWarning();
   }
 
   const exportName = storyNameFromExport(key);
   const id = toId(meta.id || meta.title, exportName);
-
-  const { decorators, parameters, args, argTypes, loaders, render, play } = storyObject;
-
-  // TODO back compat for exports.story.X
+  const name = storyObject.name || storyObject.storyName || story?.name || exportName;
+  const decorators = storyObject.decorators || story?.decorators;
+  const parameters = storyObject.parameters || story?.parameters;
+  const args = storyObject.args || story?.args;
+  const argTypes = storyObject.argTypes || story?.argTypes;
+  const loaders = storyObject.loaders || story?.loaders;
+  const { render, play } = storyObject;
 
   return {
     id,
-    name: storyObject.name || storyObject.storyName || exportName,
+    name,
     ...(decorators && { decorators }),
     ...(parameters && { parameters }),
     ...(args && { args }),
-    ...(argTypes && { argTypes }),
+    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     ...(loaders && { loaders }),
     ...(render && { render }),
     ...(play && { play }),

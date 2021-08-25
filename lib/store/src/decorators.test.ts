@@ -1,8 +1,8 @@
-import { StoryContext } from '@storybook/addons';
+import { Framework, StoryContext } from '@storybook/csf';
 
 import { defaultDecorateStory } from './decorators';
 
-function makeContext(input: Record<string, any> = {}): StoryContext {
+function makeContext(input: Record<string, any> = {}): StoryContext<Framework> {
   return {
     id: 'id',
     kind: 'kind',
@@ -10,7 +10,7 @@ function makeContext(input: Record<string, any> = {}): StoryContext {
     viewMode: 'story',
     parameters: {},
     ...input,
-  } as StoryContext;
+  } as StoryContext<Framework>;
 }
 
 describe('client-api.decorators', () => {
@@ -31,33 +31,31 @@ describe('client-api.decorators', () => {
   it('passes context through to sub decorators', () => {
     const contexts = [];
     const decorators = [
-      (s, c) => contexts.push(c) && s({ k: 1 }),
-      (s, c) => contexts.push(c) && s({ k: 2 }),
-      (s, c) => contexts.push(c) && s({ k: 3 }),
+      (s, c) => contexts.push(c) && s({ args: { k: 1 } }),
+      (s, c) => contexts.push(c) && s({ args: { k: 2 } }),
+      (s, c) => contexts.push(c) && s({ args: { k: 3 } }),
     ];
     const decorated = defaultDecorateStory((c) => contexts.push(c), decorators);
 
     expect(contexts).toEqual([]);
-    decorated(makeContext({ k: 0 }));
-    expect(contexts.map((c) => c.k)).toEqual([0, 3, 2, 1]);
+    decorated(makeContext({ args: { k: 0 } }));
+    expect(contexts.map((c) => c.args.k)).toEqual([0, 3, 2, 1]);
   });
 
   it('passes context through to sub decorators additively', () => {
     const contexts = [];
     const decorators = [
-      (s, c) => contexts.push(c) && s({ b: 1 }),
-      (s, c) => contexts.push(c) && s({ c: 2 }),
-      (s, c) => contexts.push(c) && s({ d: 3 }),
+      (s, c) => contexts.push(c) && s({ args: { a: 1 } }),
+      (s, c) => contexts.push(c) && s({ globals: { g: 2 } }),
     ];
     const decorated = defaultDecorateStory((c) => contexts.push(c), decorators);
 
     expect(contexts).toEqual([]);
-    decorated(makeContext({ a: 0 }));
-    expect(contexts.map(({ a, b, c, d }) => ({ a, b, c, d }))).toEqual([
-      { a: 0, b: undefined, c: undefined, d: undefined },
-      { a: 0, b: undefined, c: undefined, d: 3 },
-      { a: 0, b: undefined, c: 2, d: 3 },
-      { a: 0, b: 1, c: 2, d: 3 },
+    decorated(makeContext({}));
+    expect(contexts.map(({ args, globals }) => ({ args, globals }))).toEqual([
+      { args: undefined, globals: undefined },
+      { globals: { g: 2 } },
+      { args: { a: 1 }, globals: { g: 2 } },
     ]);
   });
 
@@ -103,19 +101,6 @@ describe('client-api.decorators', () => {
 
     expect(contexts[0].value).toBe(1);
     expect(contexts[1].value).toBe(2);
-  });
-
-  it('merges contexts', () => {
-    const contexts = [];
-    const decorators = [(s, c) => contexts.push(c) && s({ c: 'd' })];
-    const decorated = defaultDecorateStory((c) => contexts.push(c), decorators);
-
-    expect(contexts).toEqual([]);
-    decorated(makeContext({ a: 'b' }));
-    expect(contexts).toEqual([
-      expect.objectContaining({ a: 'b' }),
-      expect.objectContaining({ a: 'b', c: 'd' }),
-    ]);
   });
 
   it('DOES NOT merge core metadata or pass through core metadata keys in context', () => {

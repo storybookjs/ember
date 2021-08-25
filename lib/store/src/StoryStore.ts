@@ -2,21 +2,10 @@ import memoize from 'memoizerific';
 
 import {
   Parameters,
-  DecoratorFunction,
-  Args,
-  ArgTypes,
   StoryId,
-  StoryName,
-  StoryIdentifier,
-  ViewMode,
-  LegacyStoryFn,
   StoryContextForLoaders,
-  StoryContext,
-  ComponentTitle,
   Framework,
   GlobalAnnotations,
-  ComponentAnnotations,
-  StoryAnnotations,
 } from '@storybook/csf';
 
 import { StoriesListStore } from './StoriesListStore';
@@ -24,19 +13,41 @@ import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
 import { prepareStory } from './prepareStory';
-import { CSFFile, ModuleImportFn, Story, StoriesList } from './types';
+import {
+  CSFFile,
+  ModuleImportFn,
+  Story,
+  StoriesList,
+  NormalizedGlobalAnnotations,
+  NormalizedStoriesEntry,
+} from './types';
 import { HooksContext } from './hooks';
+import { normalizeInputTypes } from './normalizeInputTypes';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;
 const STORY_CACHE_SIZE = 1000;
 
+function normalizeGlobalAnnotations<TFramework extends Framework>({
+  argTypes,
+  globalTypes,
+  ...annotations
+}: GlobalAnnotations<TFramework>): NormalizedGlobalAnnotations<TFramework> {
+  return {
+    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
+    ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
+    ...annotations,
+  };
+}
+
+// FIXME: what are we doing with autoTitle and entries?
+const entries: NormalizedStoriesEntry[] = [];
 export class StoryStore<TFramework extends Framework> {
   storiesList: StoriesListStore;
 
   importFn: ModuleImportFn;
 
-  globalMeta: GlobalAnnotations<TFramework>;
+  globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
   globals: GlobalsStore;
 
@@ -50,18 +61,18 @@ export class StoryStore<TFramework extends Framework> {
 
   constructor({
     importFn,
-    globalMeta,
+    globalAnnotations,
     fetchStoriesList,
   }: {
     importFn: ModuleImportFn;
-    globalMeta: GlobalAnnotations<TFramework>;
+    globalAnnotations: GlobalAnnotations<TFramework>;
     fetchStoriesList: () => Promise<StoriesList>;
   }) {
     this.storiesList = new StoriesListStore({ fetchStoriesList });
     this.importFn = importFn;
-    this.globalMeta = globalMeta;
+    this.globalAnnotations = normalizeGlobalAnnotations(globalAnnotations);
 
-    const { globals, globalTypes } = globalMeta;
+    const { globals, globalTypes } = globalAnnotations;
     this.globals = new GlobalsStore({ globals, globalTypes });
     this.args = new ArgsStore();
     this.hooks = {};
@@ -74,16 +85,16 @@ export class StoryStore<TFramework extends Framework> {
     await this.storiesList.initialize();
   }
 
-  updateGlobalAnnotations(globalMeta: GlobalAnnotations<TFramework>) {
-    this.globalMeta = globalMeta;
-    const { globals, globalTypes } = globalMeta;
+  updateGlobalAnnotations(globalAnnotations: GlobalAnnotations<TFramework>) {
+    this.globalAnnotations = normalizeGlobalAnnotations(globalAnnotations);
+    const { globals, globalTypes } = globalAnnotations;
     this.globals.resetOnGlobalAnnotationsChange({ globals, globalTypes });
   }
 
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {
     const path = this.storiesList.storyIdToCSFFilePath(storyId);
     const moduleExports = await this.importFn(path);
-    return this.processCSFFileWithCache(moduleExports, path);
+    return this.processCSFFileWithCache(moduleExports, path, entries);
   }
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {
@@ -104,7 +115,7 @@ export class StoryStore<TFramework extends Framework> {
     }
     const componentMeta = csfFile.meta;
 
-    const story = this.prepareStoryWithCache(storyMeta, componentMeta, this.globalMeta);
+    const story = this.prepareStoryWithCache(storyMeta, componentMeta, this.globalAnnotations);
     this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();
     return story;

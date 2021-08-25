@@ -1,9 +1,16 @@
 import { isExportStory, sanitize, Parameters, Framework } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
-import { ModuleExports, CSFFile, Path, ComponentAnnotationsWithId } from './types';
+import {
+  ModuleExports,
+  CSFFile,
+  Path,
+  NormalizedComponentAnnotations,
+  NormalizedStoriesEntry,
+} from './types';
 import { autoTitle } from './autoTitle';
 import { normalizeStory } from './normalizeStory';
+import { normalizeInputTypes } from './normalizeInputTypes';
 
 const checkGlobals = (parameters: Parameters) => {
   const { globals, globalTypes } = parameters;
@@ -34,22 +41,25 @@ const checkDisallowedParameters = (parameters: Parameters) => {
 // Given the raw exports of a CSF file, check and normalize it.
 export function processCSFFile<TFramework extends Framework>(
   moduleExports: ModuleExports,
-  path: Path
+  path: Path,
+  entries: NormalizedStoriesEntry[]
 ): CSFFile<TFramework> {
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
   let exports = namedExports;
 
-  const title = autoTitle(defaultExport, path);
+  const title = autoTitle(defaultExport, path, entries);
   if (!title) {
     throw new Error(
       `Unexpected default export without title: ${JSON.stringify(moduleExports.default)}`
     );
   }
 
-  const meta: ComponentAnnotationsWithId<TFramework> = {
-    id: sanitize(defaultExport.id || title),
+  const { id, argTypes } = defaultExport;
+  const meta: NormalizedComponentAnnotations<TFramework> = {
+    id: sanitize(id || title),
     ...defaultExport,
     title,
+    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
   };
   checkDisallowedParameters(meta.parameters);
 

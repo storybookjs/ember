@@ -1,3 +1,4 @@
+import { Framework, StoryAnnotationsOrFn } from '@storybook/csf';
 import { normalizeStory } from './normalizeStory';
 
 describe('normalizeStory', () => {
@@ -39,12 +40,6 @@ describe('normalizeStory', () => {
           "render": [Function],
         }
       `);
-    });
-    it('should throw on story annotation', async () => {
-      const storyFn = () => {};
-      storyFn.story = { name: 'v1 style name' };
-      const meta = { title: 'title' };
-      await expect(async () => normalizeStory('storyExport', storyFn, meta)).rejects.toThrow();
     });
   });
 
@@ -109,37 +104,42 @@ describe('normalizeStory', () => {
       });
 
       it('full annotations', () => {
-        const storyObj = {
+        const storyObj: StoryAnnotationsOrFn<Framework> = {
           name: 'story name',
           parameters: { storyParam: 'val' },
           decorators: [() => {}],
-          loaders: [() => {}],
+          loaders: [async () => ({})],
           args: { storyArg: 'val' },
-          argTypes: { storyArgType: 'val' },
+          argTypes: { storyArgType: { type: 'string' } },
         };
         const meta = { title: 'title' };
         const normalized = normalizeStory('storyExport', storyObj, meta);
         expect(normalized).toMatchInlineSnapshot(`
-            Object {
-              "argTypes": Object {
-                "storyArgType": "val",
+          Object {
+            "argTypes": Object {
+              "storyArgType": Object {
+                "name": "storyArgType",
+                "type": Object {
+                  "name": "string",
+                },
               },
-              "args": Object {
-                "storyArg": "val",
-              },
-              "decorators": Array [
-                [Function],
-              ],
-              "id": "title--story-export",
-              "loaders": Array [
-                [Function],
-              ],
-              "name": "story name",
-              "parameters": Object {
-                "storyParam": "val",
-              },
-            }
-          `);
+            },
+            "args": Object {
+              "storyArg": "val",
+            },
+            "decorators": Array [
+              [Function],
+            ],
+            "id": "title--story-export",
+            "loaders": Array [
+              [Function],
+            ],
+            "name": "story name",
+            "parameters": Object {
+              "storyParam": "val",
+            },
+          }
+        `);
       });
     });
   });

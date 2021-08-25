@@ -388,7 +388,7 @@ describe('prepareStory', () => {
 
       addons.setChannel({ on: jest.fn(), removeListener: jest.fn() } as any);
       const hooks = new HooksContext();
-      story.storyFn({ args: story.initialArgs, hooks, ...story } as any);
+      story.unboundStoryFn({ args: story.initialArgs, hooks, ...story } as any);
 
       expect(globalDecorator).toHaveBeenCalled();
       expect(componentDecorator).toHaveBeenCalled();
