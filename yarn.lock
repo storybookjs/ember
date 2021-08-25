@@ -8564,7 +8564,6 @@ __metadata:
     "@babel/runtime": ^7.12.5
     "@compodoc/compodoc": ^1.1.14
     "@cypress/webpack-preprocessor": ^5.7.0
-    "@discoveryjs/json-ext": ^0.5.3
     "@emotion/snapshot-serializer": ^0.8.2
     "@nicolo-ribaudo/chokidar-2": ^2.1.8
     "@nrwl/cli": 12.3.4
