@@ -47,47 +47,15 @@ export function isSupportedType(type: Types): boolean {
   return !!Object.values(types).find((typeVal) => typeVal === type);
 }
 
-// TODO -- these constraints?
-// export interface Parameters {
-//   fileName?: string;
-//   options?: OptionsParameter;
-//   /** The layout property defines basic styles added to the preview body where the story is rendered. If you pass 'none', no styles are applied. */
-//   layout?: 'centered' | 'fullscreen' | 'padded' | 'none';
-//   docsOnly?: boolean;
-//   [key: string]: any;
-// }
-
-// export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
-// export type StorySortMethod = 'configure' | 'alphabetical';
-// export interface StorySortObjectParameter {
-//   method?: StorySortMethod;
-//   order?: any[];
-//   locales?: string;
-//   includeNames?: boolean;
-// }
-// // The `any` here is the story store's `StoreItem` record. Ideally we should probably only
-// // pass a defined subset of that full data, but we pass it all so far :shrug:
-// export type StorySortComparator = Comparator<[StoryId, any, Parameters, Parameters]>;
-// export type StorySortParameter = StorySortComparator | StorySortObjectParameter;
-
-export interface OptionsParameter extends Object {
-  // storySort?: StorySortParameter;
-  theme?: {
-    base: string;
-    brandTitle?: string;
-  };
-  [key: string]: any;
-}
-
 export interface WrapperSettings {
-  options: OptionsParameter;
+  options: object;
   parameters: {
     [key: string]: any;
   };
 }
 
 export type StoryWrapper<TFramework extends Framework> = (
-  getStory: LegacyStoryFn<TFramework>,
+  storyFn: LegacyStoryFn<TFramework>,
   context: StoryContext<TFramework>,
   settings: WrapperSettings
 ) => any;

@@ -25,17 +25,6 @@ import { NoDocs } from './NoDocs';
 
 const { window: globalWindow, AbortController } = global;
 
-// TODO -- what's up with this code? Is it for HMR? Can we be smarter?
-function getOrCreateChannel() {
-  try {
-    return addons.getChannel();
-  } catch (err) {
-    const channel = createChannel({ page: 'preview' });
-    addons.setChannel(channel);
-    return channel;
-  }
-}
-
 function focusInInput(event: Event) {
   const target = event.target as Element;
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
@@ -67,7 +56,7 @@ export class WebPreview<TFramework extends Framework> {
     getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
     importFn: ModuleImportFn;
   }) {
-    this.channel = getOrCreateChannel();
+    this.channel = addons.getChannel();
     this.view = new WebView();
 
     const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
