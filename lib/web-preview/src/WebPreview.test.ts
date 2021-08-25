@@ -11,8 +11,8 @@ import {
   componentOneExports,
   componentTwoExports,
   importFn,
-  globalMeta,
-  getGlobalMeta,
+  globalAnnotations,
+  getGlobalAnnotations,
   storiesList,
   emitter,
   mockChannel,
@@ -61,9 +61,9 @@ beforeEach(() => {
   componentOneExports.default.loaders[0].mockReset().mockImplementation(async () => ({ l: 7 }));
   componentOneExports.default.parameters.docs.container.mockClear();
   componentOneExports.a.play.mockReset();
-  globalMeta.renderToDOM.mockReset();
-  globalMeta.render.mockClear();
-  globalMeta.decorators[0].mockClear();
+  globalAnnotations.renderToDOM.mockReset();
+  globalAnnotations.render.mockClear();
+  globalAnnotations.decorators[0].mockClear();
   // @ts-ignore
   ReactDOM.render.mockReset().mockImplementation((_: any, _2: any, cb: () => any) => cb());
   // @ts-ignore
@@ -72,9 +72,9 @@ beforeEach(() => {
 
 describe('WebPreview', () => {
   describe('constructor', () => {
-    it('shows an error if getGlobalMeta throws', async () => {
+    it('shows an error if getGlobalAnnotations throws', async () => {
       const preview = new WebPreview({
-        getGlobalMeta: () => {
+        getGlobalAnnotations: () => {
           throw new Error('meta error');
         },
         importFn,
@@ -86,21 +86,21 @@ describe('WebPreview', () => {
 
   describe('initialize', () => {
     it('fetches the story list', async () => {
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       expect(fetch).toHaveBeenCalledWith('/stories.json');
     });
 
     it('sets globals from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       expect(preview.storyStore.globals.get()).toEqual({ a: 'c' });
     });
 
     it('emits the SET_GLOBALS event', async () => {
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: { a: 'b' },
@@ -111,7 +111,7 @@ describe('WebPreview', () => {
     it('emits the SET_GLOBALS event from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: { a: 'c' },
@@ -122,7 +122,7 @@ describe('WebPreview', () => {
     it('sets args from the URL', async () => {
       document.location.search = '?id=component-one--a&args=foo:url';
 
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
@@ -138,7 +138,7 @@ describe('WebPreview', () => {
     it('selects the story specified in the URL', async () => {
       document.location.search = '?id=component-one--a';
 
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       expect(preview.urlStore.selection).toEqual({
@@ -155,7 +155,7 @@ describe('WebPreview', () => {
     it('emits the STORY_SPECIFIED event', async () => {
       document.location.search = '?id=component-one--a';
 
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
         storyId: 'component-one--a',
@@ -166,7 +166,7 @@ describe('WebPreview', () => {
     it('emits the CURRENT_STORY_WAS_SET event', async () => {
       document.location.search = '?id=component-one--a';
 
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CURRENT_STORY_WAS_SET, {
         storyId: 'component-one--a',
@@ -178,7 +178,7 @@ describe('WebPreview', () => {
       it('renders missing', async () => {
         document.location.search = '?id=random';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -189,7 +189,7 @@ describe('WebPreview', () => {
       it.skip('tries again with a specifier if CSF file changes', async () => {
         document.location.search = '?id=component-one--d';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -216,7 +216,7 @@ describe('WebPreview', () => {
       it.skip('DOES NOT try again if CSF file changes if selection changed', async () => {
         document.location.search = '?id=component-one--d';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -246,7 +246,7 @@ describe('WebPreview', () => {
       it.skip('tries again with a specifier if stories list changes', async () => {
         document.location.search = '?id=component-three--d';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -261,7 +261,7 @@ describe('WebPreview', () => {
     });
 
     it('renders missing if no selection', async () => {
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -272,7 +272,7 @@ describe('WebPreview', () => {
       it('calls view.prepareForStory', async () => {
         document.location.search = '?id=component-one--a';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.prepareForStory).toHaveBeenCalledWith(
@@ -284,20 +284,20 @@ describe('WebPreview', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
           initialArgs: { foo: 'a' },
-          argTypes: { foo: { type: { name: 'string' } } },
+          argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
         });
       });
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
@@ -306,7 +306,7 @@ describe('WebPreview', () => {
             id: 'component-one--a',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
             initialArgs: { foo: 'a' },
-            argTypes: { foo: { type: { name: 'string' } } },
+            argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
           })
         );
@@ -314,11 +314,11 @@ describe('WebPreview', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -326,7 +326,7 @@ describe('WebPreview', () => {
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
-              argTypes: { foo: { type: { name: 'string' } } },
+              argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
               args: { foo: 'a' },
               loaded: { l: 7 },
             }),
@@ -337,12 +337,12 @@ describe('WebPreview', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce(() => {
+        globalAnnotations.renderToDOM.mockImplementationOnce(() => {
           throw error;
         });
 
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         await waitForRender();
@@ -353,10 +353,10 @@ describe('WebPreview', () => {
 
       it('renders error if the story calls showError', async () => {
         const error = { title: 'title', description: 'description' };
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) => context.showError(error));
 
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         await waitForRender();
@@ -370,10 +370,12 @@ describe('WebPreview', () => {
 
       it('renders exception if the story calls showException', async () => {
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) =>
+          context.showException(error)
+        );
 
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         await waitForRender();
@@ -384,7 +386,7 @@ describe('WebPreview', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
@@ -393,7 +395,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
@@ -405,7 +407,7 @@ describe('WebPreview', () => {
       it('calls view.prepareForDocs', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         expect(preview.view.prepareForDocs).toHaveBeenCalled();
@@ -414,7 +416,7 @@ describe('WebPreview', () => {
       it('render the docs container with the correct context', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
@@ -437,7 +439,7 @@ describe('WebPreview', () => {
       it('emits DOCS_RENDERED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await waitForRender();
 
@@ -449,7 +451,7 @@ describe('WebPreview', () => {
   describe('onUpdateGlobals', () => {
     it('emits GLOBALS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
@@ -461,7 +463,7 @@ describe('WebPreview', () => {
 
     it('sets new globals on the store', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
@@ -471,16 +473,16 @@ describe('WebPreview', () => {
 
     it('passes new globals in context to renderToDOM', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
-      globalMeta.renderToDOM.mockClear();
+      globalAnnotations.renderToDOM.mockClear();
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
       await waitForRender();
 
-      expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+      expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           forceRemount: false,
           storyContext: expect.objectContaining({
@@ -493,7 +495,7 @@ describe('WebPreview', () => {
 
     it('emits STORY_RENDERED', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -507,7 +509,7 @@ describe('WebPreview', () => {
   describe('onUpdateArgs', () => {
     it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -522,7 +524,7 @@ describe('WebPreview', () => {
 
     it('sets new args on the store', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -538,19 +540,19 @@ describe('WebPreview', () => {
 
     it('passes new args in context to renderToDOM', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
-      globalMeta.renderToDOM.mockClear();
+      globalAnnotations.renderToDOM.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
         updatedArgs: { new: 'arg' },
       });
       await waitForRender();
 
-      expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+      expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           forceRemount: false,
           storyContext: expect.objectContaining({
@@ -564,7 +566,7 @@ describe('WebPreview', () => {
 
     it('emits STORY_RENDERED', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -583,7 +585,7 @@ describe('WebPreview', () => {
 
         document.location.search = '?id=component-one--a';
         componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -595,8 +597,8 @@ describe('WebPreview', () => {
         await waitForRender();
 
         // Story gets rendered with updated args
-        expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(1);
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -612,8 +614,8 @@ describe('WebPreview', () => {
         const { gate, openGate } = createGate();
 
         document.location.search = '?id=component-one--a';
-        globalMeta.renderToDOM.mockImplementationOnce(async () => gate);
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        globalAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -625,9 +627,9 @@ describe('WebPreview', () => {
         openGate();
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(1);
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
         // renderToDOM call happens with original args, does not get retried.
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -644,17 +646,17 @@ describe('WebPreview', () => {
         componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
         const renderToDOMCalled = new Promise((resolve) => {
-          globalMeta.renderToDOM.mockImplementationOnce(() => {
+          globalAnnotations.renderToDOM.mockImplementationOnce(() => {
             resolve(null);
           });
         });
 
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         await renderToDOMCalled;
         // Story gets rendered with original args
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -675,7 +677,7 @@ describe('WebPreview', () => {
         await waitForRender();
 
         // Story gets rendered with updated args
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: false,
             storyContext: expect.objectContaining({
@@ -695,7 +697,7 @@ describe('WebPreview', () => {
   describe('onResetArgs', () => {
     it('resetStoryArgs emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -723,7 +725,7 @@ describe('WebPreview', () => {
 
     it('resetStoryArgs resets a single arg', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -746,7 +748,7 @@ describe('WebPreview', () => {
 
     it('resetStoryArgs resets all args', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
@@ -769,7 +771,7 @@ describe('WebPreview', () => {
   describe('onSetCurrentStory', () => {
     it('updates URL', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       emitter.emit(Events.SET_CURRENT_STORY, {
         storyId: 'component-one--b',
@@ -785,7 +787,7 @@ describe('WebPreview', () => {
 
     it('emits CURRENT_STORY_WAS_SET', async () => {
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       emitter.emit(Events.SET_CURRENT_STORY, {
         storyId: 'component-one--b',
@@ -800,7 +802,7 @@ describe('WebPreview', () => {
 
     it('renders missing if the story specified does not exist', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       emitter.emit(Events.SET_CURRENT_STORY, {
@@ -816,7 +818,7 @@ describe('WebPreview', () => {
     describe('if the selection is unchanged', () => {
       it('emits STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
@@ -830,10 +832,10 @@ describe('WebPreview', () => {
 
       it('does NOT call renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
 
-        globalMeta.renderToDOM.mockClear();
+        globalAnnotations.renderToDOM.mockClear();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -842,14 +844,14 @@ describe('WebPreview', () => {
 
         // The renderToDOM would have been async so we need to wait a tick.
         await waitForQuiescence();
-        expect(globalMeta.renderToDOM).not.toHaveBeenCalled();
+        expect(globalAnnotations.renderToDOM).not.toHaveBeenCalled();
       });
     });
 
     describe('when changing story in story viewMode', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--b',
@@ -865,7 +867,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -880,7 +882,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -894,14 +896,14 @@ describe('WebPreview', () => {
           id: 'component-one--b',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
           initialArgs: { foo: 'b' },
-          argTypes: { foo: { type: { name: 'string' } } },
+          argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'b' },
         });
       });
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -916,7 +918,7 @@ describe('WebPreview', () => {
             id: 'component-one--b',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
             initialArgs: { foo: 'b' },
-            argTypes: { foo: { type: { name: 'string' } } },
+            argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'b' },
           })
         );
@@ -924,7 +926,7 @@ describe('WebPreview', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -934,7 +936,7 @@ describe('WebPreview', () => {
         });
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -942,7 +944,7 @@ describe('WebPreview', () => {
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
               initialArgs: { foo: 'b' },
-              argTypes: { foo: { type: { name: 'string' } } },
+              argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
               args: { foo: 'b' },
               loaded: { l: 7 },
             }),
@@ -953,12 +955,12 @@ describe('WebPreview', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce(() => {
+        globalAnnotations.renderToDOM.mockImplementationOnce(() => {
           throw error;
         });
 
@@ -975,12 +977,12 @@ describe('WebPreview', () => {
 
       it('renders error if the story calls showError', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = { title: 'title', description: 'description' };
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) => context.showError(error));
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
@@ -998,12 +1000,14 @@ describe('WebPreview', () => {
 
       it('renders exception if the story calls showException', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) =>
+          context.showException(error)
+        );
 
         mockChannel.emit.mockClear();
         emitter.emit(Events.SET_CURRENT_STORY, {
@@ -1018,7 +1022,7 @@ describe('WebPreview', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1033,7 +1037,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1048,7 +1052,7 @@ describe('WebPreview', () => {
 
       it('retains any arg changes', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1089,7 +1093,7 @@ describe('WebPreview', () => {
           componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
 
           document.location.search = '?id=component-one--a';
-          await new WebPreview({ getGlobalMeta, importFn }).initialize();
+          await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
@@ -1102,8 +1106,8 @@ describe('WebPreview', () => {
           await waitForRender();
 
           // Story gets rendered with updated args
-          expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(1);
-          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect(globalAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+          expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
               storyContext: expect.objectContaining({
@@ -1119,8 +1123,8 @@ describe('WebPreview', () => {
           const { gate, openGate } = createGate();
 
           document.location.search = '?id=component-one--a';
-          globalMeta.renderToDOM.mockImplementationOnce(async () => gate);
-          await new WebPreview({ getGlobalMeta, importFn }).initialize();
+          globalAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
+          await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
@@ -1131,7 +1135,7 @@ describe('WebPreview', () => {
           // Now let the renderToDOM call resolve
           openGate();
 
-          expect(globalMeta.renderToDOM).toHaveBeenCalledTimes(2);
+          expect(globalAnnotations.renderToDOM).toHaveBeenCalledTimes(2);
           expect(componentOneExports.a.play).not.toHaveBeenCalled();
           expect(componentOneExports.b.play).toHaveBeenCalled();
 
@@ -1147,17 +1151,17 @@ describe('WebPreview', () => {
           componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
           const renderToDOMCalled = new Promise((resolve) => {
-            globalMeta.renderToDOM.mockImplementationOnce(() => {
+            globalAnnotations.renderToDOM.mockImplementationOnce(() => {
               resolve(null);
             });
           });
 
           document.location.search = '?id=component-one--a';
-          await new WebPreview({ getGlobalMeta, importFn }).initialize();
+          await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
           await renderToDOMCalled;
           // Story gets rendered with original args
-          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
               storyContext: expect.objectContaining({
@@ -1175,7 +1179,7 @@ describe('WebPreview', () => {
           await waitForRender();
 
           // New story gets rendered, (play function is still running)
-          expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+          expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
               storyContext: expect.objectContaining({
@@ -1202,7 +1206,7 @@ describe('WebPreview', () => {
     describe('when changing from story viewMode to docs', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -1218,7 +1222,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1233,7 +1237,7 @@ describe('WebPreview', () => {
 
       it('calls view.prepareForDocs', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1249,7 +1253,7 @@ describe('WebPreview', () => {
 
       it('render the docs container with the correct context', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1277,7 +1281,7 @@ describe('WebPreview', () => {
 
       it('emits DOCS_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1294,7 +1298,7 @@ describe('WebPreview', () => {
     describe('when changing from docs viewMode to story', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -1310,7 +1314,7 @@ describe('WebPreview', () => {
 
       it('unmounts docs', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1326,7 +1330,7 @@ describe('WebPreview', () => {
       // NOTE: I am not sure this entirely makes sense but this is the behaviour from 6.3
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1341,7 +1345,7 @@ describe('WebPreview', () => {
 
       it('calls view.prepareForStory', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1361,7 +1365,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1376,14 +1380,14 @@ describe('WebPreview', () => {
           id: 'component-one--a',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
           initialArgs: { foo: 'a' },
-          argTypes: { foo: { type: { name: 'string' } } },
+          argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
         });
       });
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1398,7 +1402,7 @@ describe('WebPreview', () => {
             id: 'component-one--a',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
             initialArgs: { foo: 'a' },
-            argTypes: { foo: { type: { name: 'string' } } },
+            argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
           })
         );
@@ -1406,7 +1410,7 @@ describe('WebPreview', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1416,7 +1420,7 @@ describe('WebPreview', () => {
         });
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -1424,7 +1428,7 @@ describe('WebPreview', () => {
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
-              argTypes: { foo: { type: { name: 'string' } } },
+              argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
               args: { foo: 'a' },
               loaded: { l: 7 },
             }),
@@ -1435,12 +1439,12 @@ describe('WebPreview', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce(() => {
+        globalAnnotations.renderToDOM.mockImplementationOnce(() => {
           throw error;
         });
 
@@ -1457,10 +1461,10 @@ describe('WebPreview', () => {
 
       it('renders error if the story calls showError', async () => {
         const error = { title: 'title', description: 'description' };
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) => context.showError(error));
 
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1480,10 +1484,12 @@ describe('WebPreview', () => {
 
       it('renders exception if the story calls showException', async () => {
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) =>
+          context.showException(error)
+        );
 
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1500,7 +1506,7 @@ describe('WebPreview', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1515,7 +1521,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new WebPreview({ getGlobalMeta, importFn }).initialize();
+        await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1543,7 +1549,7 @@ describe('WebPreview', () => {
 
       it('does not emit STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
         mockChannel.emit.mockClear();
@@ -1559,7 +1565,7 @@ describe('WebPreview', () => {
 
       it('does not emit STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
         mockChannel.emit.mockClear();
@@ -1572,7 +1578,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
         mockChannel.emit.mockClear();
@@ -1584,14 +1590,14 @@ describe('WebPreview', () => {
           id: 'component-one--a',
           parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
           initialArgs: { foo: 'edited' },
-          argTypes: { foo: { type: { name: 'string' } } },
+          argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'edited' },
         });
       });
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1605,7 +1611,7 @@ describe('WebPreview', () => {
             id: 'component-one--a',
             parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
             initialArgs: { foo: 'edited' },
-            argTypes: { foo: { type: { name: 'string' } } },
+            argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'edited' },
           })
         );
@@ -1613,16 +1619,16 @@ describe('WebPreview', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        globalMeta.renderToDOM.mockClear();
+        globalAnnotations.renderToDOM.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -1630,7 +1636,7 @@ describe('WebPreview', () => {
               parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
               globals: { a: 'b' },
               initialArgs: { foo: 'edited' },
-              argTypes: { foo: { type: { name: 'string' } } },
+              argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
               args: { foo: 'edited' },
               loaded: { l: 7 },
             }),
@@ -1641,7 +1647,7 @@ describe('WebPreview', () => {
 
       it('retains the same delta to the args', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1652,11 +1658,11 @@ describe('WebPreview', () => {
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        globalMeta.renderToDOM.mockClear();
+        globalAnnotations.renderToDOM.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
         await waitForRender();
 
-        expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+        expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
@@ -1670,12 +1676,12 @@ describe('WebPreview', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce(() => {
+        globalAnnotations.renderToDOM.mockImplementationOnce(() => {
           throw error;
         });
 
@@ -1689,12 +1695,12 @@ describe('WebPreview', () => {
 
       it('renders error if the story calls showError', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = { title: 'title', description: 'description' };
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showError(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) => context.showError(error));
 
         mockChannel.emit.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
@@ -1709,12 +1715,14 @@ describe('WebPreview', () => {
 
       it('renders exception if the story calls showException', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         const error = new Error('error');
-        globalMeta.renderToDOM.mockImplementationOnce((context) => context.showException(error));
+        globalAnnotations.renderToDOM.mockImplementationOnce((context) =>
+          context.showException(error)
+        );
 
         mockChannel.emit.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
@@ -1726,7 +1734,7 @@ describe('WebPreview', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1740,7 +1748,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1762,7 +1770,7 @@ describe('WebPreview', () => {
 
       it('emits STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1776,16 +1784,16 @@ describe('WebPreview', () => {
 
       it('does not re-render the story', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        globalMeta.renderToDOM.mockClear();
+        globalAnnotations.renderToDOM.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
         await waitForQuiescence();
 
-        expect(globalMeta.renderToDOM).not.toHaveBeenCalled();
+        expect(globalAnnotations.renderToDOM).not.toHaveBeenCalled();
         expect(mockChannel.emit).not.toHaveBeenCalledWith(
           Events.STORY_RENDERED,
           'component-one--a'
@@ -1804,7 +1812,7 @@ describe('WebPreview', () => {
 
       it('renders story missing', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
@@ -1818,16 +1826,16 @@ describe('WebPreview', () => {
 
       it('does not re-render the story', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new WebPreview({ getGlobalMeta, importFn });
+        const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        globalMeta.renderToDOM.mockClear();
+        globalAnnotations.renderToDOM.mockClear();
         preview.onImportFnChanged({ importFn: newImportFn });
         await waitForQuiescence();
 
-        expect(globalMeta.renderToDOM).not.toHaveBeenCalled();
+        expect(globalAnnotations.renderToDOM).not.toHaveBeenCalled();
         expect(mockChannel.emit).not.toHaveBeenCalledWith(
           Events.STORY_RENDERED,
           'component-one--a'
@@ -1836,16 +1844,16 @@ describe('WebPreview', () => {
     });
   });
 
-  describe('onGetGlobalMetaChanged', () => {
+  describe('onGetGlobalAnnotationsChanged', () => {
     it('shows an error the new value throws', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
-      preview.onGetGlobalMetaChanged({
-        getGlobalMeta: () => {
+      preview.onGetGlobalAnnotationsChanged({
+        getGlobalAnnotations: () => {
           throw new Error('error getting meta');
         },
       });
@@ -1856,7 +1864,7 @@ describe('WebPreview', () => {
     const newGlobalDecorator = jest.fn((s) => s());
     const newGetGlobalMeta = () => {
       return {
-        ...globalMeta,
+        ...globalAnnotations,
         args: { global: 'added' },
         globals: { a: 'edited' },
         decorators: [newGlobalDecorator],
@@ -1865,12 +1873,12 @@ describe('WebPreview', () => {
 
     it('updates globals to their new values', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
-      preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
+      preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations: newGetGlobalMeta });
       await waitForRender();
 
       expect(preview.storyStore.globals.get()).toEqual({ a: 'edited' });
@@ -1878,12 +1886,12 @@ describe('WebPreview', () => {
 
     it('updates args to their new values', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
       mockChannel.emit.mockClear();
-      preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
+      preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations: newGetGlobalMeta });
 
       await waitForRender();
 
@@ -1895,16 +1903,16 @@ describe('WebPreview', () => {
 
     it('rerenders the current story with new global meta-generated context', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
-      globalMeta.renderToDOM.mockClear();
+      globalAnnotations.renderToDOM.mockClear();
       mockChannel.emit.mockClear();
-      preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
+      preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations: newGetGlobalMeta });
       await waitForRender();
 
-      expect(globalMeta.renderToDOM).toHaveBeenCalledWith(
+      expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           storyContext: expect.objectContaining({
             args: { foo: 'a', global: 'added' },
@@ -1919,7 +1927,7 @@ describe('WebPreview', () => {
   describe('onKeydown', () => {
     it('emits PREVIEW_KEYDOWN for regular elements', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       preview.onKeydown({
@@ -1934,7 +1942,7 @@ describe('WebPreview', () => {
 
     it('does not emit PREVIEW_KEYDOWN for input elements', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
 
       preview.onKeydown({

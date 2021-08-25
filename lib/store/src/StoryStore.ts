@@ -92,9 +92,9 @@ export class StoryStore<TFramework extends Framework> {
   }
 
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {
-    const path = this.storiesList.storyIdToCSFFilePath(storyId);
-    const moduleExports = await this.importFn(path);
-    return this.processCSFFileWithCache(moduleExports, path, entries);
+    const { importPath, title } = this.storiesList.storyIdToMetadata(storyId);
+    const moduleExports = await this.importFn(importPath);
+    return this.processCSFFileWithCache(moduleExports, title);
   }
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {

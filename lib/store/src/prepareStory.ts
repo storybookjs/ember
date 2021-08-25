@@ -10,10 +10,16 @@ import {
   StoryContextForEnhancers,
   StoryContext,
   Framework,
-  GlobalAnnotations,
+  StrictArgTypes,
+  StrictInputType,
 } from '@storybook/csf';
 
-import { ComponentAnnotationsWithId, Story, StoryAnnotationsWithId } from './types';
+import {
+  NormalizedComponentAnnotations,
+  Story,
+  NormalizedStoryAnnotations,
+  NormalizedGlobalAnnotations,
+} from './types';
 import { combineParameters } from './parameters';
 import { applyHooks } from './hooks';
 import { defaultDecorateStory } from './decorators';
@@ -32,9 +38,9 @@ const argTypeDefaultValueWarning = deprecate(
 // Note that this story function is *stateless* in the sense that it does not track args or globals
 // Instead, it is expected these are tracked separately (if necessary) and are passed into each invocation.
 export function prepareStory<TFramework extends Framework>(
-  storyAnnotations: StoryAnnotationsWithId<TFramework>,
-  componentAnnotations: ComponentAnnotationsWithId<TFramework>,
-  globalAnnotations: GlobalAnnotations<TFramework>
+  storyAnnotations: NormalizedStoryAnnotations<TFramework>,
+  componentAnnotations: NormalizedComponentAnnotations<TFramework>,
+  globalAnnotations: NormalizedGlobalAnnotations<TFramework>
 ): Story<TFramework> {
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
@@ -70,11 +76,11 @@ export function prepareStory<TFramework extends Framework>(
 
   const render = storyAnnotations.render || componentAnnotations.render || globalAnnotations.render;
 
-  const passedArgTypes: ArgTypes = combineParameters(
+  const passedArgTypes: StrictArgTypes = combineParameters(
     globalAnnotations.argTypes,
     componentAnnotations.argTypes,
     storyAnnotations.argTypes
-  ) as ArgTypes;
+  ) as StrictArgTypes;
 
   const { passArgsFirst = true } = parameters;
   // eslint-disable-next-line no-underscore-dangle
@@ -139,7 +145,7 @@ export function prepareStory<TFramework extends Framework>(
 
   const undecoratedStoryFn: LegacyStoryFn<TFramework> = (context: StoryContext<TFramework>) => {
     const mappedArgs = Object.entries(context.args).reduce((acc, [key, val]) => {
-      const { mapping } = context.argTypes[key] || {};
+      const mapping = context.argTypes[key]?.mapping;
       acc[key] = mapping && val in mapping ? mapping[val] : val;
       return acc;
     }, {} as Args);

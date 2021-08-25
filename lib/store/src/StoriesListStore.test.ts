@@ -132,29 +132,35 @@ describe('StoriesListStore', () => {
     });
   });
 
-  describe('storyIdToCSFFilePath', () => {
+  describe('storyIdToMetadata', () => {
     it('works when the story exists', async () => {
       const store = new StoriesListStore({ fetchStoriesList });
       await store.initialize();
 
-      expect(store.storyIdToCSFFilePath('component-one--a')).toEqual(
-        './src/ComponentOne.stories.js'
-      );
+      expect(store.storyIdToMetadata('component-one--a')).toEqual({
+        name: 'A',
+        title: 'Component One',
+        importPath: './src/ComponentOne.stories.js',
+      });
 
-      expect(store.storyIdToCSFFilePath('component-one--b')).toEqual(
-        './src/ComponentOne.stories.js'
-      );
+      expect(store.storyIdToMetadata('component-one--b')).toEqual({
+        name: 'B',
+        title: 'Component One',
+        importPath: './src/ComponentOne.stories.js',
+      });
 
-      expect(store.storyIdToCSFFilePath('component-two--c')).toEqual(
-        './src/ComponentTwo.stories.js'
-      );
+      expect(store.storyIdToMetadata('component-two--c')).toEqual({
+        name: 'C',
+        title: 'Component Two',
+        importPath: './src/ComponentTwo.stories.js',
+      });
     });
 
     it('throws when the story does not', async () => {
       const store = new StoriesListStore({ fetchStoriesList });
       await store.initialize();
 
-      expect(() => store.storyIdToCSFFilePath('random')).toThrow(/Didn't find 'random'/);
+      expect(() => store.storyIdToMetadata('random')).toThrow(/Didn't find 'random'/);
     });
   });
 });

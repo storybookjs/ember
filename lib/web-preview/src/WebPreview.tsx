@@ -70,8 +70,8 @@ export class WebPreview<TFramework extends Framework> {
     this.channel = getOrCreateChannel();
     this.view = new WebView();
 
-    const globalMeta = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
-    if (!globalMeta) {
+    const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
+    if (!globalAnnotations) {
       return;
     }
 
@@ -81,19 +81,19 @@ export class WebPreview<TFramework extends Framework> {
     };
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, globalMeta, fetchStoriesList });
+    this.storyStore = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
   }
 
   getGlobalAnnotationsOrRenderError(
     getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>
   ): GlobalAnnotations<TFramework> | undefined {
-    let globalMeta;
+    let globalAnnotations;
     try {
-      globalMeta = getGlobalAnnotations();
-      this.renderToDOM = globalMeta.renderToDOM;
-      return globalMeta;
+      globalAnnotations = getGlobalAnnotations();
+      this.renderToDOM = globalAnnotations.renderToDOM;
+      return globalAnnotations;
     } catch (err) {
-      // This is an error extracting the globalMeta (i.e. evaluating the previewEntries) and
+      // This is an error extracting the globalAnnotations (i.e. evaluating the previewEntries) and
       // needs to be show to the user as a simple error
       this.renderPreviewEntryError(err);
       return undefined;
@@ -110,7 +110,7 @@ export class WebPreview<TFramework extends Framework> {
     }
     this.channel.emit(Events.SET_GLOBALS, {
       globals: this.storyStore.globals.get(),
-      globalTypes: this.storyStore.globalMeta.globalTypes,
+      globalTypes: this.storyStore.globalAnnotations.globalTypes,
     });
 
     await this.selectSpecifiedStory();
@@ -214,12 +214,12 @@ export class WebPreview<TFramework extends Framework> {
   }: {
     getGlobalAnnotations: () => GlobalAnnotations<TFramework>;
   }) {
-    const globalMeta = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
-    if (!globalMeta) {
+    const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
+    if (!globalAnnotations) {
       return;
     }
 
-    this.storyStore.updateGlobalAnnotations(globalMeta);
+    this.storyStore.updateGlobalAnnotations(globalAnnotations);
     this.renderSelection();
   }
 
@@ -389,7 +389,6 @@ export class WebPreview<TFramework extends Framework> {
         unboundStoryFn,
       };
       try {
-        console.log({ updatedStoryContext });
         await this.renderToDOM(renderContext, element);
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);

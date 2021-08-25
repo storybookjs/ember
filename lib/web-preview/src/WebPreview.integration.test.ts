@@ -7,8 +7,8 @@ import { WebPreview } from './WebPreview';
 import {
   componentOneExports,
   importFn,
-  globalMeta,
-  getGlobalMeta,
+  globalAnnotations,
+  getGlobalAnnotations,
   storiesList,
   emitter,
   mockChannel,
@@ -50,27 +50,29 @@ beforeEach(() => {
   componentOneExports.default.loaders[0].mockReset().mockImplementation(async () => ({ l: 7 }));
   componentOneExports.default.parameters.docs.container.mockClear();
   componentOneExports.a.play.mockReset();
-  globalMeta.renderToDOM.mockReset();
-  globalMeta.render.mockClear();
-  globalMeta.decorators[0].mockClear();
+  globalAnnotations.renderToDOM.mockReset();
+  globalAnnotations.render.mockClear();
+  globalAnnotations.decorators[0].mockClear();
 });
 
 describe('WebPreview', () => {
   describe('initial render', () => {
     it('renders story mode through the stack', async () => {
-      globalMeta.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) => storyFn());
+      globalAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
+        storyFn()
+      );
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalMeta, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
 
       await waitForRender();
 
-      expect(globalMeta.decorators[0]).toHaveBeenCalled();
-      expect(globalMeta.render).toHaveBeenCalled();
+      expect(globalAnnotations.decorators[0]).toHaveBeenCalled();
+      expect(globalAnnotations.render).toHaveBeenCalled();
     });
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -94,9 +96,9 @@ describe('WebPreview', () => {
 
   describe('onGetGlobalMeta changed (HMR)', () => {
     const newGlobalDecorator = jest.fn((s) => s());
-    const newGetGlobalMeta = () => {
+    const newGetGlobalAnnotations = () => {
       return {
-        ...globalMeta,
+        ...globalAnnotations,
         args: { a: 'second' },
         globals: { a: 'second' },
         decorators: [newGlobalDecorator],
@@ -105,19 +107,21 @@ describe('WebPreview', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalMeta, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn });
       await preview.initialize();
       await waitForRender();
 
-      globalMeta.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) => storyFn());
-      globalMeta.decorators[0].mockClear();
+      globalAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
+        storyFn()
+      );
+      globalAnnotations.decorators[0].mockClear();
       mockChannel.emit.mockClear();
-      preview.onGetGlobalMetaChanged({ getGlobalMeta: newGetGlobalMeta });
+      preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations: newGetGlobalAnnotations });
       await waitForRender();
 
-      expect(globalMeta.decorators[0]).not.toHaveBeenCalled();
+      expect(globalAnnotations.decorators[0]).not.toHaveBeenCalled();
       expect(newGlobalDecorator).toHaveBeenCalled();
-      expect(globalMeta.render).toHaveBeenCalled();
+      expect(globalAnnotations.render).toHaveBeenCalled();
     });
   });
 });

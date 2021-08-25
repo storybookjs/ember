@@ -2,7 +2,7 @@ import createChannel from '@storybook/channel-websocket';
 import { Channel } from '@storybook/addons';
 import { StoryId } from '@storybook/csf';
 
-import { StorySpecifier, Path, StoriesList } from './types';
+import { StorySpecifier, Path, StoriesList, StoriesListStory } from './types';
 
 export class StoriesListStore {
   fetchStoriesList: () => Promise<StoriesList>;
@@ -70,17 +70,12 @@ export class StoriesListStore {
     return match && match[0];
   }
 
-  storyIdToCSFFilePath(storyId: StoryId): Path {
+  storyIdToMetadata(storyId: StoryId): StoriesListStory {
     const storyMetadata = this.storiesList.stories[storyId];
     if (!storyMetadata) {
       throw new Error(`Didn't find '${storyId}' in story metadata (\`stories.json\`)`);
     }
 
-    if (!storyMetadata.importPath) {
-      // TODO: Is this possible or are we guaranteeing this will exist now?
-      throw new Error(`No \`importPath\` for '${storyId}' in story metadata (\`stories.json\`)`);
-    }
-
-    return storyMetadata.importPath;
+    return storyMetadata;
   }
 }
