@@ -2,7 +2,7 @@ import mapValues from 'lodash/mapValues';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
 import { combineParameters } from '@storybook/store';
-import { SBType, ArgTypesEnhancer } from './types';
+import { Framework, SBType, ArgTypesEnhancer } from '@storybook/csf';
 
 const inferType = (value: any, name: string, visited: Set<any>): SBType => {
   const type = typeof value;
@@ -40,7 +40,7 @@ const inferType = (value: any, name: string, visited: Set<any>): SBType => {
   return { name: 'object', value: {} };
 };
 
-export const inferArgTypes: ArgTypesEnhancer = (context) => {
+export const inferArgTypes: ArgTypesEnhancer<Framework> = (context) => {
   const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
   if (!initialArgs) return userArgTypes;
   const argTypes = mapValues(initialArgs, (arg, key) => ({

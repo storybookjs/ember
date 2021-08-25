@@ -1,3 +1,3 @@
-import { inferArgTypes } from '@storybook/client-api/dist/esm/inferArgTypes';
+import { inferArgTypes } from '@storybook/core-client';
 
 export const argTypesEnhancers = [inferArgTypes];
