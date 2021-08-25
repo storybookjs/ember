@@ -123,13 +123,12 @@ export const getSourceProps = (
 
   let source = codeProps.code; // prefer user-specified code
 
-  const targetId =
-    singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
-  const targetIds = multiProps.ids || [targetId];
+  const targetIds = multiProps.ids || [singleProps.id || currentId];
 
   if (!source) {
     source = targetIds
-      .map((storyId) => {
+      .map((targetId) => {
+        const storyId = targetId === CURRENT_SELECTION ? currentId : targetId;
         const storySource = getStorySource(storyId, sourceContext);
         const storyContext = getStoryContext(storyId, docsContext);
         return getSnippet(storySource, storyContext);
