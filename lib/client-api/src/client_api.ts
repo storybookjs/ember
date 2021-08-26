@@ -2,23 +2,32 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
-import { StoryFn, Parameters, LoaderFunction, DecorateStoryFunction } from '@storybook/addons';
-import { toId } from '@storybook/csf';
-import { applyHooks, defaultDecorateStory } from '@storybook/store';
-
 import {
-  ClientApiParams,
+  Framework,
+  toId,
   DecoratorFunction,
-  ClientApiAddons,
-  StoryApi,
-  ArgsEnhancer,
+  Parameters,
   ArgTypesEnhancer,
-} from './types';
-import StoryStore from './story_store';
+  ArgsEnhancer,
+  LoaderFunction,
+  StoryFn,
+  sanitize,
+} from '@storybook/csf';
+import {
+  CSFFile,
+  NormalizedComponentAnnotations,
+  NormalizedGlobalAnnotations,
+  Path,
+  StoriesList,
+  combineParameters,
+  ModuleImportFn,
+} from '@storybook/store';
+
+import { ClientApiAddons, StoryApi } from '@storybook/addons';
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
 // relevant framework instanciates them via `start.js`. The good news is this happens right away.
-let singleton: ClientApi;
+let singleton: ClientApi<Framework>;
 
 const addDecoratorDeprecationWarning = deprecate(
   () => {},
@@ -26,7 +35,10 @@ const addDecoratorDeprecationWarning = deprecate(
 Instead, use \`export const decorators = [];\` in your \`preview.js\`.
 Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
 );
-export const addDecorator = (decorator: DecoratorFunction, deprecationWarning = true) => {
+export const addDecorator = (
+  decorator: DecoratorFunction<Framework>,
+  deprecationWarning = true
+) => {
   if (!singleton)
     throw new Error(`Singleton client API not yet initialized, cannot call addDecorator`);
 
@@ -56,7 +68,7 @@ const addLoaderDeprecationWarning = deprecate(
 Instead, use \`export const loaders = [];\` in your \`preview.js\`.
 Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
 );
-export const addLoader = (loader: LoaderFunction, deprecationWarning = true) => {
+export const addLoader = (loader: LoaderFunction<Framework>, deprecationWarning = true) => {
   if (!singleton)
     throw new Error(`Singleton client API not yet initialized, cannot call addParameters`);
 
@@ -65,61 +77,63 @@ export const addLoader = (loader: LoaderFunction, deprecationWarning = true) => 
   singleton.addLoader(loader);
 };
 
-export const addArgsEnhancer = (enhancer: ArgsEnhancer) => {
+export const addArgsEnhancer = (enhancer: ArgsEnhancer<Framework>) => {
   if (!singleton)
     throw new Error(`Singleton client API not yet initialized, cannot call addArgsEnhancer`);
 
   singleton.addArgsEnhancer(enhancer);
 };
 
-export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
+export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<Framework>) => {
   if (!singleton)
     throw new Error(`Singleton client API not yet initialized, cannot call addArgTypesEnhancer`);
 
   singleton.addArgTypesEnhancer(enhancer);
 };
 
-export const getGlobalRender = () => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call getGlobalRender`);
-
-  return singleton.globalRender;
-};
-
-export const setGlobalRender = (render: StoryFn) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call setGobalRender`);
-  singleton.globalRender = render;
-};
-
 const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
-export default class ClientApi {
-  private _storyStore: StoryStore;
+export default class ClientApi<TFramework extends Framework> {
+  globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
-  private _addons: ClientApiAddons<unknown>;
+  storiesList: StoriesList;
 
-  private _decorateStory: DecorateStoryFunction;
+  private _csfFiles: Record<Path, CSFFile<TFramework>>;
 
-  private _globalRender: StoryFn<any>;
+  private _addons: ClientApiAddons<TFramework>;
 
-  // React Native Fast refresh doesn't allow multiple dispose calls
-  private _noStoryModuleAddMethodHotDispose: boolean;
+  // If we don't get passed modules so don't know filenames, we can
+  // just use numeric indexes
+  private _lastFileName = 0;
 
-  constructor({
-    storyStore,
-    decorateStory = defaultDecorateStory,
-    noStoryModuleAddMethodHotDispose,
-  }: ClientApiParams) {
-    this._storyStore = storyStore;
+  constructor() {
+    this.globalAnnotations = {
+      loaders: [],
+      decorators: [],
+      parameters: {},
+      argsEnhancers: [],
+      argTypesEnhancers: [],
+    };
+
+    this.storiesList = {
+      v: 3,
+      stories: {},
+    };
+
+    this._csfFiles = {};
+
     this._addons = {};
 
-    this._noStoryModuleAddMethodHotDispose = noStoryModuleAddMethodHotDispose || false;
-
-    this._decorateStory = decorateStory;
-
-    if (!storyStore) throw new Error('storyStore is required');
-
     singleton = this;
+  }
+
+  // This doesn't actually import anything because the client-api loads fully
+  // on startup, but this is a shim after all.
+  importFn(path: Path) {
+    // _csfFiles are already in the format returned by processCSFFile for
+    // type safety, but for convenience, let's map it back to moduleExports
+    // it is pretty low effort to remap.
+    const { meta, stories } = this._csfFiles[path];
+    return { default: meta, ...stories };
   }
 
   setAddon = deprecate(
@@ -136,13 +150,13 @@ export default class ClientApi {
     `
   );
 
-  addDecorator = (decorator: DecoratorFunction) => {
-    this._storyStore.addGlobalMetadata({ decorators: [decorator] });
+  addDecorator = (decorator: DecoratorFunction<TFramework>) => {
+    this.globalAnnotations.decorators.push(decorator);
   };
 
   clearDecorators = deprecate(
     () => {
-      this._storyStore.clearGlobalDecorators();
+      this.globalAnnotations.decorators = [];
     },
     dedent`
       \`clearDecorators\` is deprecated and will be removed in Storybook 7.0.
@@ -152,34 +166,26 @@ export default class ClientApi {
   );
 
   addParameters = (parameters: Parameters) => {
-    this._storyStore.addGlobalMetadata({ parameters });
+    this.globalAnnotations.parameters = combineParameters(
+      this.globalAnnotations.parameters,
+      parameters
+    );
   };
 
-  addLoader = (loader: LoaderFunction) => {
-    this._storyStore.addGlobalMetadata({ loaders: [loader] });
+  addLoader = (loader: LoaderFunction<TFramework>) => {
+    this.globalAnnotations.loaders.push(loader);
   };
 
-  addArgsEnhancer = (enhancer: ArgsEnhancer) => {
-    this._storyStore.addArgsEnhancer(enhancer);
+  addArgsEnhancer = (enhancer: ArgsEnhancer<TFramework>) => {
+    this.globalAnnotations.argsEnhancers.push(enhancer);
   };
 
-  addArgTypesEnhancer = (enhancer: ArgTypesEnhancer) => {
-    this._storyStore.addArgTypesEnhancer(enhancer);
+  addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<TFramework>) => {
+    this.globalAnnotations.argTypesEnhancers.push(enhancer);
   };
-
-  get globalRender(): StoryFn {
-    return this._globalRender;
-  }
-
-  set globalRender(render: StoryFn) {
-    this._globalRender = render;
-  }
 
   // what are the occasions that "m" is a boolean vs an obj
-  storiesOf = <StoryFnReturnType = unknown>(
-    kind: string,
-    m: NodeModule
-  ): StoryApi<StoryFnReturnType> => {
+  storiesOf = (kind: string, m: NodeModule): StoryApi<TFramework> => {
     if (!kind && typeof kind !== 'string') {
       throw new Error('Invalid or missing kind provided for stories, should be a string');
     }
@@ -200,18 +206,15 @@ export default class ClientApi {
       }
     }
 
-    if (m && m.hot && m.hot.dispose) {
-      m.hot.dispose(() => {
-        const { _storyStore } = this;
-        // If HMR dispose happens in a story file, we know that HMR will pass up to the configuration file (preview.js)
-        // and be handled by the HMR.allow in config_api, leading to a re-run of configuration.
-        // So configuration is about to happen--we can skip the safety check.
-        _storyStore.removeStoryKind(kind, { allowUnsafe: true });
+    if (m && m.hot && m.hot.accept) {
+      m.hot.accept(() => {
+        // Need to do this somehow:
+        // preview.onImportFnChanged({ importFn });
       });
     }
 
     let hasAdded = false;
-    const api: StoryApi<StoryFnReturnType> = {
+    const api: StoryApi<TFramework> = {
       kind: kind.toString(),
       add: () => api,
       addDecorator: () => api,
@@ -228,11 +231,21 @@ export default class ClientApi {
       };
     });
 
-    api.add = (
-      storyName: string,
-      storyFn: StoryFn<StoryFnReturnType>,
-      parameters: Parameters = {}
-    ) => {
+    // eslint-disable-next-line no-plusplus
+    const fileName = m && m.id ? `${m.id}` : (this._lastFileName++).toString();
+    const meta: NormalizedComponentAnnotations<TFramework> = {
+      id: sanitize(kind),
+      title: kind,
+      decorators: [],
+      loaders: [],
+      parameters: {},
+    };
+    this._csfFiles[fileName] = {
+      meta,
+      stories: {},
+    };
+
+    api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;
 
       const id = parameters.__id || toId(kind, storyName);
@@ -247,47 +260,38 @@ export default class ClientApi {
         );
       }
 
-      if (!this._noStoryModuleAddMethodHotDispose && m && m.hot && m.hot.dispose) {
-        m.hot.dispose(() => {
-          const { _storyStore } = this;
-          // See note about allowUnsafe above
-          _storyStore.remove(id, { allowUnsafe: true });
-        });
-      }
-
-      const fileName = m && m.id ? `${m.id}` : undefined;
-
       const { decorators, loaders, ...storyParameters } = parameters;
-      this._storyStore.addStory(
-        {
-          id,
-          kind,
-          name: storyName,
-          storyFn,
-          parameters: { fileName, ...storyParameters },
-          decorators,
-          loaders,
-        },
-        {
-          applyDecorators: applyHooks(this._decorateStory),
-        }
-      );
+
+      this.storiesList.stories[id] = {
+        title: kind,
+        name: storyName,
+        importPath: fileName,
+      };
+      this._csfFiles[fileName].stories[id] = {
+        id,
+        name: storyName,
+        parameters: { fileName, ...storyParameters },
+        decorators,
+        loaders,
+        render: storyFn,
+      };
+
       return api;
     };
 
-    api.addDecorator = (decorator: DecoratorFunction<StoryFnReturnType>) => {
+    api.addDecorator = (decorator: DecoratorFunction<TFramework>) => {
       if (hasAdded)
         throw new Error(`You cannot add a decorator after the first story for a kind.
 Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decoratorsparameters-after-stories`);
 
-      this._storyStore.addKindMetadata(kind, { decorators: [decorator] });
+      meta.decorators.push(decorator);
       return api;
     };
 
-    api.addLoader = (loader: LoaderFunction) => {
+    api.addLoader = (loader: LoaderFunction<TFramework>) => {
       if (hasAdded) throw new Error(`You cannot add a loader after the first story for a kind.`);
 
-      this._storyStore.addKindMetadata(kind, { loaders: [loader] });
+      meta.loaders.push(loader);
       return api;
     };
 
@@ -296,18 +300,15 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
         throw new Error(`You cannot add parameters after the first story for a kind.
 Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md#can-no-longer-add-decoratorsparameters-after-stories`);
 
-      this._storyStore.addKindMetadata(kind, { parameters });
+      meta.parameters = combineParameters(meta.parameters, parameters);
       return api;
     };
 
     return api;
   };
 
-  getStorybook = () => this._storyStore.getStorybook();
+  // TODO
+  // getStorybook = () => this._storyStore.getStorybook();
 
-  raw = () => this._storyStore.raw();
-
-  // FIXME: temporary expose the store for react-native
-  // Longer term react-native should use the Provider/Consumer api
-  store = () => this._storyStore;
+  // raw = () => this._storyStore.raw();
 }

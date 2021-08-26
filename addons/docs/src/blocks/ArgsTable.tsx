@@ -10,8 +10,7 @@ import {
   TabbedArgsTable,
 } from '@storybook/components';
 import { addons, Args } from '@storybook/addons';
-import { StoryStore, filterArgTypes } from '@storybook/client-api';
-import type { PropDescriptor } from '@storybook/client-api';
+import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
 
 import { DocsContext, DocsContextProps } from './DocsContext';

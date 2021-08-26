@@ -48,6 +48,7 @@
     "@storybook/csf": "0.0.2--canary.9c0fda0.0",
     "@storybook/store": "6.4.0-alpha.19",
     "@storybook/ui": "6.4.0-alpha.19",
+    "@storybook/web-preview": "6.4.0-alpha.19",
     "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",

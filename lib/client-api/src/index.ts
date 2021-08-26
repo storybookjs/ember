@@ -6,21 +6,11 @@ import ClientApi, {
   addArgTypesEnhancer,
 } from './client_api';
 
-import StoryStore from './story_store';
-import ConfigApi from './config_api';
-import pathToId from './pathToId';
 import { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';
 
 import { getQueryParams, getQueryParam } from './queryparams';
 
-import { filterArgTypes } from './filterArgTypes';
-
 export * from '@storybook/store';
-
-// FIXME: for react-argtypes.stories; remove on refactor
-export * from './inferControls';
-
-export type { PropDescriptor } from './filterArgTypes';
 
 export {
   addArgsEnhancer,
@@ -29,13 +19,14 @@ export {
   addLoader,
   addParameters,
   ClientApi,
-  ConfigApi,
-  // defaultDecorateStory,
-  filterArgTypes,
+  // TODO -- back compat?
+  // ConfigApi,
+  // TODO -- keep for back-compat?
   getQueryParam,
   getQueryParams,
-  pathToId,
+  // Now in lib/store/UrlStore - TODO - rexport for back-compat?
+  // pathToId,
+  // TODO -- move somewhere appropriate (utils for app layers)
   simulateDOMContentLoaded,
   simulatePageLoad,
-  StoryStore,
 };

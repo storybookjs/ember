@@ -1,15 +1,24 @@
-import { ClientApi, StoryStore, ConfigApi } from '@storybook/client-api';
+import { ClientApi } from '@storybook/client-api';
 import { toId } from '@storybook/csf';
-import start from './start';
+import { start } from './start';
 
 export default {
   start,
   toId,
   ClientApi,
-  ConfigApi,
-  StoryStore,
+
+  // TODO -- back compat
+  // ConfigApi,
+  // StoryStore,
 };
 
-export { start, toId, ClientApi, ConfigApi, StoryStore };
+export {
+  start,
+  toId,
+  ClientApi,
+  // TODO back compat
+  // ConfigApi,
+  // StoryStore,
+};
 
 export { inferArgTypes } from './inferArgTypes';

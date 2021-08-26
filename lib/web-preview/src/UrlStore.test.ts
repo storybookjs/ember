@@ -1,6 +1,6 @@
 import global from 'global';
 
-import { pathToId, setPath, parseQueryParameters, getSelectionSpecifierFromPath } from './UrlStore';
+import { pathToId, setPath, getSelectionSpecifierFromPath } from './UrlStore';
 
 const { history, document } = global;
 

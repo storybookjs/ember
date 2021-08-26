@@ -15,6 +15,7 @@ import {
   CSFFile,
   StoryStore,
   StorySpecifier,
+  StoriesList,
 } from '@storybook/store';
 
 import { WebGlobalAnnotations, DocsContextProps } from './types';
@@ -52,9 +53,11 @@ export class WebPreview<TFramework extends Framework> {
   constructor({
     getGlobalAnnotations,
     importFn,
+    fetchStoriesList,
   }: {
     getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
     importFn: ModuleImportFn;
+    fetchStoriesList: () => Promise<StoriesList>;
   }) {
     this.channel = createChannel({ page: 'preview' });
     addons.setChannel(this.channel);
@@ -64,11 +67,6 @@ export class WebPreview<TFramework extends Framework> {
     if (!globalAnnotations) {
       return;
     }
-
-    const fetchStoriesList = async () => {
-      const response = await fetch('/stories.json');
-      return response.json();
-    };
 
     this.urlStore = new UrlStore();
     this.storyStore = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });

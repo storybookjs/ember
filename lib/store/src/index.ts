@@ -1,6 +1,7 @@
 export { StoryStore } from './StoryStore';
 export { combineParameters } from './parameters';
 export { filterArgTypes } from './filterArgTypes';
+export type { PropDescriptor } from './filterArgTypes';
 
 export * from './types';
 
