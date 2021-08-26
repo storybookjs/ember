@@ -1,7 +1,6 @@
 import React from 'react';
 import global from 'global';
 import { RenderContext } from '@storybook/store';
-import { addons } from '@storybook/addons';
 
 import { WebPreview } from './WebPreview';
 import {
@@ -19,7 +18,7 @@ import {
 //   - ie. from`renderToDOM()` (stories) or`ReactDOM.render()` (docs) in.
 // This file lets them rip.
 
-addons.setChannel(mockChannel as any);
+jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
 
 jest.mock('./WebView');
 const mockStoriesList = storiesList;

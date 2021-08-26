@@ -3,7 +3,6 @@ import Events from '@storybook/core-events';
 import fetch from 'unfetch';
 import * as ReactDOM from 'react-dom';
 import { logger } from '@storybook/client-logger';
-import { addons } from '@storybook/addons';
 import merge from 'lodash/merge';
 
 import { WebPreview } from './WebPreview';
@@ -20,8 +19,6 @@ import {
   waitForRender,
   waitForQuiescence,
 } from './WebPreview.mockdata';
-
-addons.setChannel(mockChannel as any);
 
 jest.mock('./WebView');
 const mockStoriesList = storiesList;
@@ -45,6 +42,8 @@ jest.mock('global', () => ({
 
 jest.mock('@storybook/client-logger');
 jest.mock('react-dom');
+
+jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
 
 const createGate = () => {
   let openGate = (_?: any) => {};
@@ -73,14 +72,16 @@ beforeEach(() => {
 describe('WebPreview', () => {
   describe('constructor', () => {
     it('shows an error if getGlobalAnnotations throws', async () => {
+      const err = new Error('meta error');
       const preview = new WebPreview({
         getGlobalAnnotations: () => {
-          throw new Error('meta error');
+          throw err;
         },
         importFn,
       });
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
     });
   });
 
@@ -1576,7 +1577,7 @@ describe('WebPreview', () => {
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
       });
 
-      it('emits STORY_PREPARED', async () => {
+      it('emits STORY_PREPARED with new annotations', async () => {
         document.location.search = '?id=component-one--a';
         const preview = new WebPreview({ getGlobalAnnotations, importFn });
         await preview.initialize();
@@ -1852,13 +1853,15 @@ describe('WebPreview', () => {
       await waitForRender();
 
       mockChannel.emit.mockClear();
+      const err = new Error('error getting meta');
       preview.onGetGlobalAnnotationsChanged({
         getGlobalAnnotations: () => {
-          throw new Error('error getting meta');
+          throw err;
         },
       });
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
     });
 
     const newGlobalDecorator = jest.fn((s) => s());

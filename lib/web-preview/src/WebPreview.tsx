@@ -56,7 +56,8 @@ export class WebPreview<TFramework extends Framework> {
     getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
     importFn: ModuleImportFn;
   }) {
-    this.channel = addons.getChannel();
+    this.channel = createChannel({ page: 'preview' });
+    addons.setChannel(this.channel);
     this.view = new WebView();
 
     const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
@@ -494,7 +495,7 @@ export class WebPreview<TFramework extends Framework> {
 
   renderPreviewEntryError(err: Error) {
     this.view.showErrorDisplay(err);
-    // TODO -- should we emit here?
+    this.channel.emit(Events.CONFIG_ERROR, err);
   }
 
   renderMissingStory(storySpecifier?: StorySpecifier) {
