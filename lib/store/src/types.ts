@@ -17,6 +17,7 @@ import {
   StoryFn,
   StrictArgTypes,
   StrictGlobalTypes,
+  ComponentId,
 } from '@storybook/csf';
 
 export type Path = string;
@@ -26,16 +27,16 @@ export type ModuleImportFn = (path: Path) => ModuleExports;
 export type NormalizedGlobalAnnotations<
   TFramework extends Framework
 > = GlobalAnnotations<TFramework> & {
-  argTypes: StrictArgTypes;
-  globalTypes: StrictGlobalTypes;
+  argTypes?: StrictArgTypes;
+  globalTypes?: StrictGlobalTypes;
 };
 
 export type NormalizedComponentAnnotations<
   TFramework extends Framework
 > = ComponentAnnotations<TFramework> & {
   // Useful to guarantee that id exists
-  id: StoryId;
-  argTypes: StrictArgTypes;
+  id: ComponentId;
+  argTypes?: StrictArgTypes;
 };
 
 export type NormalizedStoryAnnotations<TFramework extends Framework> = Omit<
@@ -44,7 +45,7 @@ export type NormalizedStoryAnnotations<TFramework extends Framework> = Omit<
 > & {
   // You cannot actually set id on story annotations, but we normalize it to be there for convience
   id: StoryId;
-  argTypes: StrictArgTypes;
+  argTypes?: StrictArgTypes;
 };
 
 export type CSFFile<TFramework extends Framework> = {
