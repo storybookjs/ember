@@ -49,6 +49,7 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@storybook/codemod": "6.4.0-alpha.32",
+    "@storybook/core-common": "6.4.0-alpha.32",
     "@storybook/node-logger": "6.4.0-alpha.32",
     "@storybook/semver": "^7.3.2",
     "boxen": "^4.2.0",

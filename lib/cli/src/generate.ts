@@ -11,7 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
-import { generateStorybookBabelConfig } from './babal-config';
+import { generateStorybookBabelConfigInCWD } from './babal-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
@@ -41,7 +41,7 @@ program
 program
   .command('babelrc')
   .description('generate the default storybook babel config into your current working directory')
-  .action(() => generateStorybookBabelConfig());
+  .action(() => generateStorybookBabelConfigInCWD());
 
 program
   .command('upgrade')
