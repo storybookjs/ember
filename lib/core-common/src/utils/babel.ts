@@ -47,7 +47,7 @@ const presets = [
   require.resolve('@babel/preset-typescript'),
 ];
 
-export const babelConfig: () => TransformOptions = () => {
+export const getStorybookBabelConfig: () => TransformOptions = () => {
   return {
     sourceType: 'unambiguous',
     presets: [...presets],

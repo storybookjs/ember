@@ -1,7 +1,7 @@
 import { RuleSetRule } from 'webpack';
-import { babelConfig } from './babel';
+import { getStorybookBabelConfig } from './babel';
 
-const { plugins } = babelConfig();
+const { plugins } = getStorybookBabelConfig();
 
 const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   '@storybook[\\\\/]node_logger',

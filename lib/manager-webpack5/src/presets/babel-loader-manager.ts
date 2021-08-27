@@ -1,7 +1,7 @@
 import { RuleSetRule } from 'webpack';
-import { getProjectRoot, babelConfig } from '@storybook/core-common';
+import { getProjectRoot, getStorybookBabelConfig } from '@storybook/core-common';
 
-const { plugins, presets } = babelConfig();
+const { plugins, presets } = getStorybookBabelConfig();
 
 export const babelLoader: () => RuleSetRule = () => ({
   test: /\.(mjs|tsx?|jsx?)$/,
@@ -17,6 +17,8 @@ export const babelLoader: () => RuleSetRule = () => ({
           // transformed for frameworks like ember
           require.resolve('@babel/plugin-transform-template-literals'),
         ],
+        babelrc: false,
+        babelConfig: false,
       },
     },
   ],
