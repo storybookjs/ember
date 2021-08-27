@@ -1,8 +1,18 @@
 diff --git a/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js b/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
-index c0e5a90..c32ef19 100644
+index c0e5a90..f384076 100644
 --- a/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
 +++ b/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
-@@ -342,6 +342,8 @@ export class StoryRenderer {
+@@ -294,7 +294,8 @@ export class StoryRenderer {
+         }));
+ 
+         if (FEATURES.previewCsfV3 && !forceRender) {
+-          await runPlayFunction();
++          const containerId = storyContext.viewMode === "docs" ? `story--${storyContext.storyId}` : 'root'
++          await runPlayFunction(Object.assign({}, storyContext, { containerId }));
+         }
+ 
+         this.channel.emit(Events.STORY_RENDERED, id);
+@@ -342,6 +343,8 @@ export class StoryRenderer {
  
  
    renderException(err) {

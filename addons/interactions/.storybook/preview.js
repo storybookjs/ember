@@ -1,9 +1,10 @@
 import React from 'react';
-import { ThemeProvider, convert, themes } from '@storybook/theming';
+import { Global, ThemeProvider, convert, createReset, themes } from '@storybook/theming';
 
 export const decorators = [
   (StoryFn) => (
     <ThemeProvider theme={convert(themes.light)}>
+      <Global styles={createReset} />
       <StoryFn />
     </ThemeProvider>
   ),

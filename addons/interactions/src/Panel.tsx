@@ -30,6 +30,7 @@ export interface Call {
   path: Array<string | CallRef>;
   method: string;
   args: any[];
+  interceptable: boolean;
   state?: TestState;
   exception?: CaughtException;
 }
@@ -72,7 +73,7 @@ const fold = (calls: Call[]) => {
         seen.add((node as CallRef).__callId__);
       }
     });
-    if (!seen.has(call.id)) {
+    if (call.interceptable && !seen.has(call.id)) {
       acc.unshift(call);
       seen.add(call.id);
     }
@@ -183,6 +184,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
       case 'reset':
         setDebugging(false);
         setPlayUntil(undefined);
+        clearChainedCalls();
         return initialState;
     }
   };

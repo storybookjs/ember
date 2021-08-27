@@ -4,14 +4,15 @@ import { EVENTS } from './constants';
 const IgnoredException = 'IgnoredException';
 const channel = addons.getChannel();
 
+// TODO move to some global object
 let n = 0;
 let next = undefined;
-const callRefsByResult = new Map();
+window.callRefsByResult = new Map();
 
 channel.on(EVENTS.RESET, () => {
   n = 0;
   next = undefined;
-  callRefsByResult.clear();
+  window.callRefsByResult.clear();
 });
 channel.on(EVENTS.NEXT, () => next && next());
 channel.on(EVENTS.RELOAD, () => window.location.reload());
@@ -37,7 +38,7 @@ function run(fn, args, call) {
   // Map args that originate from a tracked function call to a call reference to enable nesting.
   // These values are often not serializable anyway (e.g. DOM elements).
   const mappedArgs = args.map((arg) => {
-    if (callRefsByResult.has(arg)) return callRefsByResult.get(arg);
+    if (window.callRefsByResult.has(arg)) return window.callRefsByResult.get(arg);
     if (arg instanceof Element) {
       const { prefix, localName, id, classList } = arg;
       return { __element__: { prefix, localName, id, classList } };
@@ -82,7 +83,7 @@ function intercept(fn, args, call) {
 // Returns a function that invokes the original function, records the invocation ("call") and
 // returns the original result.
 function track(method, fn, args, { path = [], ...options }) {
-  const call = { id: `${n++}-${method}`, path, method };
+  const call = { id: `${n++}-${method}`, path, method, interceptable: !!options.intercept };
   const result = (options.intercept ? intercept : run)(fn, args, call);
   return instrument(result, { ...options, path: [{ __callId__: call.id }] });
 }
@@ -103,10 +104,14 @@ export function instrument(obj, options = {}) {
   return Object.keys(obj).reduce(
     (acc, key) => {
       const value = obj[key];
-      acc[key] =
-        typeof value === 'function'
-          ? patch(key, value, options)
-          : instrument(value, { ...options, path: path.concat(key) });
+      if (typeof value === 'function') {
+        acc[key] = patch(key, value, options);
+        if (Object.keys(value).length > 0) {
+          Object.assign(acc[key], instrument({ ...value }, { ...options, path: path.concat(key) }));
+        }
+      } else {
+        acc[key] = instrument(value, { ...options, path: path.concat(key) });
+      }
       return acc;
     },
     mutate ? obj : obj.constructor ? new obj.constructor() : {}
