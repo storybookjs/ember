@@ -1,7 +1,51 @@
-import { ClientApi, RenderContext } from '@storybook/client-api';
+import { ClientApi, CSFFile, ModuleExports, ModuleImportFn } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
-import { Framework } from '@storybook/csf';
-import { Loadable } from './types';
+import { Framework, StoryName, Parameters, toId, storyNameFromExport } from '@storybook/csf';
+import { logger } from '@storybook/client-logger';
+
+import { Loadable, RequireContext, LoaderFunction } from './types';
+
+function runLoadable(loadable: Loadable) {
+  let reqs = null;
+  // todo discuss / improve type check
+  if (Array.isArray(loadable)) {
+    reqs = loadable;
+  } else if ((loadable as RequireContext).keys) {
+    reqs = [loadable as RequireContext];
+  }
+
+  let exportsMap = new Map<string, ModuleExports>();
+  if (reqs) {
+    reqs.forEach((req) => {
+      req.keys().forEach((filename: string) => {
+        try {
+          const fileExports = req(filename) as ModuleExports;
+          exportsMap.set(
+            typeof req.resolve === 'function' ? req.resolve(filename) : filename,
+            fileExports
+          );
+        } catch (error) {
+          logger.warn(`Unexpected error while loading ${filename}: ${error}`);
+        }
+      });
+    });
+  } else {
+    const exported = (loadable as LoaderFunction)();
+    if (Array.isArray(exported) && exported.every((obj) => obj.default != null)) {
+      exportsMap = new Map(
+        exported.map((fileExports, index) => [`exports-map-${index}`, fileExports])
+      );
+    } else if (exported) {
+      logger.warn(
+        `Loader function passed to 'configure' should return void or an array of module exports that all contain a 'default' export. Received: ${JSON.stringify(
+          exported
+        )}`
+      );
+    }
+  }
+
+  return exportsMap;
+}
 
 export function start<TFramework extends Framework>(
   render: WebGlobalAnnotations<TFramework>['renderToDOM'],
@@ -22,8 +66,51 @@ export function start<TFramework extends Framework>(
       const getGlobalAnnotations = () => {
         // TODO
         // clientApi.resetGlobalAnnotations();
-        // TODO
-        // const exports = runLoadable(loadable)
+
+        const exportsMap = runLoadable(loadable);
+        console.log(exportsMap);
+        Array.from(exportsMap.entries()).forEach(([fileName, fileExports]) => {
+          console.log(fileName, fileExports);
+          const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
+          const { title } = defaultExport || {};
+          if (!title) {
+            throw new Error(
+              `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
+            );
+          }
+
+          clientApi.csfFiles[fileName] = {
+            meta: defaultExport,
+            stories: namedExports,
+          } as any;
+
+          let exports = namedExports;
+          if (Array.isArray(__namedExportsOrder)) {
+            exports = {};
+            __namedExportsOrder.forEach((name) => {
+              if (namedExports[name]) {
+                exports[name] = namedExports[name];
+              }
+            });
+          }
+          Object.entries(exports).forEach(
+            ([key, { name, storyName, parameters = {} }]: [
+              string,
+              { name?: StoryName; storyName?: StoryName; parameters?: Parameters }
+            ]) => {
+              // FIXME
+              const actualName = name || storyName || storyNameFromExport(key);
+              // eslint-disable-next-line no-underscore-dangle
+              const id = parameters.__id || toId(title, actualName);
+              clientApi.storiesList.stories[id] = {
+                name: actualName,
+                title,
+                importPath: fileName,
+              };
+            }
+          );
+        });
+
         return {
           ...clientApi.globalAnnotations,
           renderToDOM: render,

@@ -26,7 +26,13 @@ export class GlobalsStore {
     this.globals = this.initialGlobals;
   }
 
-  setInitialGlobals({ globals, globalTypes }: { globals: Globals; globalTypes: GlobalTypes }) {
+  setInitialGlobals({
+    globals = {},
+    globalTypes = {},
+  }: {
+    globals?: Globals;
+    globalTypes?: GlobalTypes;
+  }) {
     this.allowedGlobalNames = new Set([...Object.keys(globals), ...Object.keys(globalTypes)]);
 
     const defaultGlobals = Object.entries(globalTypes).reduce((acc, [key, { defaultValue }]) => {

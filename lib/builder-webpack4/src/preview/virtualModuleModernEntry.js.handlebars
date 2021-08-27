@@ -1,0 +1,35 @@
+import { composeConfigs, WebPreview } from '@storybook/web-preview';    
+import { importFn } from './{{storiesFilename}}';
+import fetch from 'unfetch';
+
+const getGlobalAnnotations = () =>
+  composeConfigs([
+    {{#each configs}}
+    require('{{this}}'),
+    {{/each}}
+  ]);
+
+const fetchStoriesList = async () => {
+  const result = await fetch('./stories.json');
+  return result.json();
+}
+
+const preview = new WebPreview({ importFn, getGlobalAnnotations, fetchStoriesList });
+window.__STORYBOOK_PREVIEW__ = preview;
+preview.initialize();
+
+if (module.hot) {
+  module.hot.accept('./{{storiesFilename}}', () => {
+    console.log('configEntry HMR accept storybook-stories.js');
+    console.log(arguments);
+    // importFn has changed so we need to patch the new one in
+    preview.onImportFnChanged({ importFn });
+  });
+
+  module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
+    console.log('configEntry HMR accept config file');
+    console.log(arguments);
+    // getGlobalAnnotations has changed so we need to patch the new one in
+    preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations });
+  });
+}

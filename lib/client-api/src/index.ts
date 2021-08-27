@@ -4,6 +4,8 @@ import ClientApi, {
   addLoader,
   addArgsEnhancer,
   addArgTypesEnhancer,
+  setGlobalRender,
+  getGlobalRender,
 } from './client_api';
 
 import { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';
@@ -18,6 +20,8 @@ export {
   addDecorator,
   addLoader,
   addParameters,
+  setGlobalRender,
+  getGlobalRender,
   ClientApi,
   // TODO -- back compat?
   // ConfigApi,

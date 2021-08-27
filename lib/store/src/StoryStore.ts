@@ -141,6 +141,7 @@ export class StoryStore<TFramework extends Framework> {
   }
 
   getSetStoriesPayload() {
+    console.log(this.storiesList.storiesList);
     const { v, stories } = this.storiesList.storiesList;
     const kindParameters: Parameters = Object.values(stories).reduce(
       (acc: Parameters, { title }) => {

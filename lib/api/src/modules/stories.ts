@@ -430,8 +430,7 @@ export const init: ModuleFn = ({
       const stories = data.v ? denormalizeStoryParameters(data) : data.stories;
 
       if (!ref) {
-        // Or silently drop it.
-        throw new Error('Cannot SET_STORIES from a local source');
+        fullAPI.setStories(stories);
       } else {
         fullAPI.setRef(ref.id, { ...ref, ...data, stories }, true);
       }

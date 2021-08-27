@@ -5,7 +5,6 @@ import { logger } from '@storybook/client-logger';
 import global from 'global';
 import { addons, Channel } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
-import fetch from 'unfetch';
 import { Framework, StoryId, GlobalAnnotations, Args, Globals, ViewMode } from '@storybook/csf';
 import {
   ModuleImportFn,
@@ -105,7 +104,7 @@ export class WebPreview<TFramework extends Framework> {
 
     // TODO are we doing this? back-compat?
     // TODO -- which way round is SET_STORIES/STORY_WAS_SELECTED in 6.3?
-    // this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+    this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
   }
 
   setupListeners() {
@@ -493,6 +492,7 @@ export class WebPreview<TFramework extends Framework> {
 
   renderPreviewEntryError(err: Error) {
     this.view.showErrorDisplay(err);
+    console.log(err);
     this.channel.emit(Events.CONFIG_ERROR, err);
   }
 

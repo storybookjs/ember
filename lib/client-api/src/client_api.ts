@@ -20,6 +20,7 @@ import {
   Path,
   StoriesList,
   combineParameters,
+  NormalizedStoryAnnotations,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -90,13 +91,26 @@ export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<Framework>) => {
   singleton.addArgTypesEnhancer(enhancer);
 };
 
+export const getGlobalRender = () => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call getGlobalRender`);
+
+  return singleton.globalAnnotations.render;
+};
+
+export const setGlobalRender = (render: StoryFn<Framework>) => {
+  if (!singleton)
+    throw new Error(`Singleton client API not yet initialized, cannot call setGobalRender`);
+  singleton.globalAnnotations.render = render;
+};
+
 const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi<TFramework extends Framework> {
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
   storiesList: StoriesList;
 
-  private _csfFiles: Record<Path, CSFFile<TFramework>>;
+  csfFiles: Record<Path, CSFFile<TFramework>>;
 
   private _addons: ClientApiAddons<TFramework>;
 
@@ -118,7 +132,7 @@ export default class ClientApi<TFramework extends Framework> {
       stories: {},
     };
 
-    this._csfFiles = {};
+    this.csfFiles = {};
 
     this._addons = {};
 
@@ -128,10 +142,12 @@ export default class ClientApi<TFramework extends Framework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    // _csfFiles are already in the format returned by processCSFFile for
+    // FIXME swap back and in start.ts
+    // csfFiles are already in the format returned by processCSFFile for
     // type safety, but for convenience, let's map it back to moduleExports
     // it is pretty low effort to remap.
-    const { meta, stories } = this._csfFiles[path];
+    console.log(path, this.csfFiles, this.csfFiles[path]);
+    const { meta, stories } = this.csfFiles[path];
     return { default: meta, ...stories };
   }
 
@@ -182,6 +198,23 @@ export default class ClientApi<TFramework extends Framework> {
   addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<TFramework>) => {
     this.globalAnnotations.argTypesEnhancers.push(enhancer);
   };
+
+  addComponentMeta(fileName: Path, meta: NormalizedComponentAnnotations<TFramework>) {
+    this.csfFiles[fileName] = {
+      meta,
+      stories: {},
+    };
+  }
+
+  addStory(fileName: Path, story: NormalizedStoryAnnotations<TFramework>) {
+    const { id, name } = story;
+    this.storiesList.stories[id] = {
+      title: this.csfFiles[fileName].meta.title,
+      name,
+      importPath: fileName,
+    };
+    this.csfFiles[fileName].stories[id] = story;
+  }
 
   // what are the occasions that "m" is a boolean vs an obj
   storiesOf = (kind: string, m: NodeModule): StoryApi<TFramework> => {
@@ -239,10 +272,7 @@ export default class ClientApi<TFramework extends Framework> {
       loaders: [],
       parameters: {},
     };
-    this._csfFiles[fileName] = {
-      meta,
-      stories: {},
-    };
+    this.addComponentMeta(fileName, meta);
 
     api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;
@@ -261,19 +291,14 @@ export default class ClientApi<TFramework extends Framework> {
 
       const { decorators, loaders, ...storyParameters } = parameters;
 
-      this.storiesList.stories[id] = {
-        title: kind,
-        name: storyName,
-        importPath: fileName,
-      };
-      this._csfFiles[fileName].stories[id] = {
+      this.addStory(fileName, {
         id,
         name: storyName,
         parameters: { fileName, ...storyParameters },
         decorators,
         loaders,
         render: storyFn,
-      };
+      });
 
       return api;
     };
