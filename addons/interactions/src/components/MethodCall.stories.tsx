@@ -1,5 +1,5 @@
 import React from 'react';
-import { Call } from '../Panel';
+import { Call } from '../types';
 import { MethodCall } from './MethodCall';
 
 export default {

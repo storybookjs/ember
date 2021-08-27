@@ -1,20 +1,20 @@
-import { TestingStates } from '../../Panel';
+import { CallState } from '../../types';
 import { StatusIcon } from './StatusIcon';
 
 export default {
   title: 'StatusIcon',
   component: StatusIcon,
-  args: { status: TestingStates.PENDING },
+  args: { status: CallState.PENDING },
 };
 
 export const Pending = {
-  args: { status: TestingStates.PENDING },
+  args: { status: CallState.PENDING },
 };
 
 export const Error = {
-  args: { status: TestingStates.ERROR },
+  args: { status: CallState.ERROR },
 };
 
 export const Done = {
-  args: { status: TestingStates.DONE },
+  args: { status: CallState.DONE },
 };
