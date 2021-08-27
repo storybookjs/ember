@@ -1,11 +1,11 @@
 import React from 'react';
 import { Icons, IconsProps } from '@storybook/components';
 import { styled } from '@storybook/theming';
-import { TestState, TestingStates } from '../../Panel';
+import { CallState } from '../../types';
 import { theme } from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
-  status: TestState;
+  status: `${CallState}`;
 }
 
 const {
@@ -15,16 +15,16 @@ const {
 } = theme;
 
 const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
-  width: status === TestingStates.PENDING ? 6 : 12,
-  height: status === TestingStates.PENDING ? 6 : 12,
-  color: status === TestingStates.PENDING ? gray[500] : status === TestingStates.DONE ? green : red,
+  width: status === CallState.PENDING ? 6 : 12,
+  height: status === CallState.PENDING ? 6 : 12,
+  color: status === CallState.PENDING ? gray[500] : status === CallState.DONE ? green : red,
   justifySelf: 'center',
 }));
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   // TODO: update when stop icon is added to design library
-  const icon = status === TestingStates.PENDING ? 'circle' : 'check';
-  if (status === TestingStates.ERROR)
+  const icon = status === CallState.PENDING ? 'circle' : 'check';
+  if (status === CallState.ERROR)
     return (
       <span
         style={{

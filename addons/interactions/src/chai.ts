@@ -1,3 +1,4 @@
+// @ts-ignore
 import * as chai from 'chai';
 import { instrument } from './instrument';
 

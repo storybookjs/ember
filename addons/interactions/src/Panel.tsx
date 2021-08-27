@@ -8,38 +8,10 @@ import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import global from 'global';
 
 import { MethodCall } from './components/MethodCall';
+import { Call, CallRef, CallState } from './types';
 
 interface PanelProps {
   active: boolean;
-}
-
-export enum TestingStates {
-  DONE = 'done',
-  ERROR = 'error',
-  PENDING = 'pending',
-}
-
-export type TestState = TestingStates.DONE | TestingStates.ERROR | TestingStates.PENDING;
-
-export interface CallRef {
-  __callId__: string;
-}
-
-export interface Call {
-  id: string;
-  path: Array<string | CallRef>;
-  method: string;
-  args: any[];
-  interceptable: boolean;
-  state?: TestState;
-  exception?: CaughtException;
-}
-
-interface CaughtException {
-  callId: Call['id'];
-  message: Error['message'];
-  stack: Error['stack'];
-  matcherResult: object;
 }
 
 global.window.__STORYBOOK_IS_DEBUGGING__ = false;
@@ -93,7 +65,7 @@ const Row = ({
   const RowContainer = styled.div({
     display: 'flex',
     flexDirection: 'column',
-    background: call.state === TestingStates.ERROR ? '#FFF5CF' : 'transparent',
+    background: call.state === CallState.ERROR ? '#FFF5CF' : 'transparent',
     borderBottom: '1px solid #eee',
     fontFamily: 'Monaco, monospace',
     fontSize: 12,
@@ -104,10 +76,10 @@ const Row = ({
     gridTemplateColumns: '15px 1fr',
     alignItems: 'center',
     padding: '8px 10px',
-    cursor: call.state === TestingStates.ERROR ? 'default' : 'pointer',
-    opacity: call.state === TestingStates.PENDING ? 0.4 : 1,
+    cursor: call.state === CallState.ERROR ? 'default' : 'pointer',
+    opacity: call.state === CallState.PENDING ? 0.4 : 1,
     '&:hover': {
-      background: call.state === TestingStates.ERROR ? 'transparent' : '#F3FAFF',
+      background: call.state === CallState.ERROR ? 'transparent' : '#F3FAFF',
     },
   });
   const detailStyle = {
@@ -122,7 +94,7 @@ const Row = ({
           <MethodCall call={call} callsById={callsById} />
         </div>
       </RowLabel>
-      {call.state === TestingStates.ERROR && (
+      {call.state === CallState.ERROR && (
         <pre style={detailStyle}>{call.exception.message}</pre>
       )}
     </RowContainer>
@@ -155,7 +127,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
       case 'call':
         const { log, cursor, callsById, isDebugging, hasException } = state;
         const { call } = action.payload;
-        call.state = call.exception ? TestingStates.ERROR : TestingStates.DONE;
+        call.state = call.exception ? CallState.ERROR : CallState.DONE;
 
         return {
           ...state,
@@ -163,7 +135,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
             ? log
                 .slice(0, cursor)
                 .concat(call)
-                .concat(log.slice(cursor + 1).map((c) => ({ ...c, state: TestingStates.PENDING })))
+                .concat(log.slice(cursor + 1).map((c) => ({ ...c, state: CallState.PENDING })))
             : log.concat(call),
           cursor: cursor + 1,
           hasException: call.exception ? true : hasException,
