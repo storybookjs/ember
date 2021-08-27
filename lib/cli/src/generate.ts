@@ -11,6 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
+import { generateStorybookBabelConfig } from './babal-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
@@ -36,6 +37,11 @@ program
   .option('-N --use-npm', 'Use NPM to build the Storybook server')
   .option('-s --skip-postinstall', 'Skip package specific postinstall config modifications')
   .action((addonName, options) => add(addonName, options));
+
+program
+  .command('babelrc')
+  .description('generate the default storybook babel config into your current working directory')
+  .action(() => generateStorybookBabelConfig());
 
 program
   .command('upgrade')
