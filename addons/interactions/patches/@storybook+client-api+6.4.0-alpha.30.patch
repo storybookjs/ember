@@ -1,8 +1,8 @@
 diff --git a/node_modules/@storybook/client-api/dist/modern/story_store.js b/node_modules/@storybook/client-api/dist/modern/story_store.js
-index d1e0e21..2b3f5ae 100644
+index d1e0e21..2ff1384 100644
 --- a/node_modules/@storybook/client-api/dist/modern/story_store.js
 +++ b/node_modules/@storybook/client-api/dist/modern/story_store.js
-@@ -599,7 +599,7 @@ export default class StoryStore {
+@@ -599,17 +599,15 @@ export default class StoryStore {
  
      const initialArgs = this._argsEnhancers.reduce((accumulatedArgs, enhancer) => Object.assign({}, accumulatedArgs, enhancer(Object.assign({}, identification, {
        parameters: combinedParameters,
@@ -11,3 +11,16 @@ index d1e0e21..2b3f5ae 100644
        argTypes,
        globals: {},
        originalStoryFn: getOriginal()
+     }))), initialArgsBeforeEnhancers);
+ 
+-    const runPlayFunction = async () => {
+-      const {
+-        play
+-      } = combinedParameters;
+-      return play ? play() : undefined;
++    const runPlayFunction = async (context) => {
++      const { play } = combinedParameters;
++      return play ? play(context) : undefined;
+     };
+ 
+     _stories[id] = Object.assign({}, identification, {
