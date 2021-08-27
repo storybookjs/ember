@@ -1,7 +1,7 @@
 import { RuleSetRule } from 'webpack';
 import { getProjectRoot, getStorybookBabelConfig } from '@storybook/core-common';
 
-export const babelLoader: () => RuleSetRule = () => {
+export const babelLoader = () => {
   const { plugins, presets } = getStorybookBabelConfig();
 
   return {
@@ -25,5 +25,5 @@ export const babelLoader: () => RuleSetRule = () => {
     ],
     include: [getProjectRoot()],
     exclude: [/node_modules/, /dist/],
-  };
+  } as RuleSetRule;
 };

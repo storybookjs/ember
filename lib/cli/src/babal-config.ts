@@ -11,7 +11,7 @@ export const generateStorybookBabelConfigInCWD = async () => {
 export const generateStorybookBabelConfig = async ({ target }: { target: string }) => {
   logger.info(`Generating the storybook default babel config at ${target}`);
 
-  const config = getStorybookBabelConfig();
+  const config = getStorybookBabelConfig({ local: true });
   const contents = JSON.stringify(config, null, 2);
 
   const fileName = '.babelrc.json';

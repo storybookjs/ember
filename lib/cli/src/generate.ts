@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import envinfo from 'envinfo';
 import leven from 'leven';
 import { sync } from 'read-pkg-up';
-import initiate from './initiate';
+import { initiate } from './initiate';
 import { add } from './add';
 import { migrate } from './migrate';
 import { extract } from './extract';
