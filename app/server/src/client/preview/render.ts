@@ -3,7 +3,7 @@ import global from 'global';
 import dedent from 'ts-dedent';
 import { Args, ArgTypes } from '@storybook/api';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
-import { RenderContext, FetchStoryHtmlType } from './types';
+import { RenderContext, FetchStoryHtmlType, ServerFramework } from './types';
 
 const { fetch, Node } = global;
 
@@ -56,7 +56,7 @@ export async function renderMain(
     storyFn,
     storyContext,
     storyContext: { parameters, args, argTypes },
-  }: RenderContext<void>,
+  }: RenderContext<ServerFramework>,
   domElement: HTMLElement
 ) {
   // Some addons wrap the storyFn so we need to call it even though Server doesn't need the answer

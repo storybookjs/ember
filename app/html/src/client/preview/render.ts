@@ -3,11 +3,12 @@ import global from 'global';
 import dedent from 'ts-dedent';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext } from './types';
+import { HtmlFramework } from './types-6-0';
 
 const { Node } = global;
 
 export default function renderMain(
-  { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<string | Node>,
+  { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<HtmlFramework>,
   domElement: HTMLElement
 ) {
   const element = storyFn();

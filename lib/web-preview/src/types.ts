@@ -3,7 +3,7 @@ import { RenderContext, DecoratorApplicator, Story } from '@storybook/store';
 import { WebPreview } from './WebPreview';
 
 export type WebGlobalAnnotations<TFramework extends Framework> = GlobalAnnotations<TFramework> & {
-  renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void>;
+  renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
 };
 
 export interface DocsContextProps<TFramework extends Framework> {

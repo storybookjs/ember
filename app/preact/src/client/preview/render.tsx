@@ -1,6 +1,7 @@
 import * as preact from 'preact';
 import dedent from 'ts-dedent';
 import { RenderContext, StoryFnPreactReturnType } from './types';
+import { PreactFramework } from './types-6-0';
 
 let renderedStory: Element;
 
@@ -16,7 +17,7 @@ function preactRender(story: StoryFnPreactReturnType, domElement: HTMLElement): 
 const StoryHarness: preact.FunctionalComponent<{
   name: string;
   title: string;
-  showError: RenderContext<StoryFnPreactReturnType>['showError'];
+  showError: RenderContext<PreactFramework>['showError'];
   storyFn: () => any;
   domElement: HTMLElement;
 }> = ({ showError, name, title, storyFn, domElement }) => {
@@ -35,14 +36,7 @@ const StoryHarness: preact.FunctionalComponent<{
 };
 
 export default function renderMain(
-  {
-    storyFn,
-    title,
-    name,
-    showMain,
-    showError,
-    forceRemount,
-  }: RenderContext<StoryFnPreactReturnType>,
+  { storyFn, title, name, showMain, showError, forceRemount }: RenderContext<PreactFramework>,
   domElement: HTMLElement
 ) {
   if (forceRemount) {

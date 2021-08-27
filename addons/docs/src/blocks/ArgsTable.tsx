@@ -5,13 +5,13 @@ import {
   ArgsTable as PureArgsTable,
   ArgsTableProps as PureArgsTableProps,
   ArgsTableError,
-  ArgTypes,
   SortType,
   TabbedArgsTable,
 } from '@storybook/components';
-import { addons, Args } from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
+import { StrictArgTypes, Args } from '@storybook/csf';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
@@ -81,7 +81,7 @@ export const extractComponentArgTypes = (
   { id, storyById }: DocsContextProps<any>,
   include?: PropDescriptor,
   exclude?: PropDescriptor
-): ArgTypes => {
+): StrictArgTypes => {
   const { parameters } = storyById(id);
   const { extractArgTypes }: { extractArgTypes: ArgTypesExtractor } = parameters.docs || {};
   if (!extractArgTypes) {
@@ -143,7 +143,7 @@ export const StoryTable: FC<
     sort,
   } = props;
   const { argTypes, parameters } = storyById(currentId);
-  let storyArgTypes: ArgTypes;
+  let storyArgTypes: StrictArgTypes;
   try {
     let storyId;
     switch (storyName) {

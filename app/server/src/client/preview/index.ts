@@ -3,11 +3,11 @@ import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { renderMain as render } from './render';
-import { StoryFnServerReturnType, IStorybookSection } from './types';
+import { IStorybookSection, ServerFramework } from './types';
 
 const framework = 'server';
 
-interface ClientApi extends ClientStoryApi<StoryFnServerReturnType> {
+interface ClientApi extends ClientStoryApi<ServerFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

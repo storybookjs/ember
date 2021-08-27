@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { HtmlFramework } from './types-6-0';
 
 import './globals';
 import render from './render';
@@ -8,7 +9,7 @@ import { StoryFnHtmlReturnType, IStorybookSection } from './types';
 
 const framework = 'html';
 
-interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
+interface ClientApi extends ClientStoryApi<HtmlFramework> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

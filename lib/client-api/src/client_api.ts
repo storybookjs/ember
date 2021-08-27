@@ -308,7 +308,7 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
   };
 
   // TODO
-  // getStorybook = () => this._storyStore.getStorybook();
+  getStorybook: () => [];
 
-  // raw = () => this._storyStore.raw();
+  raw: () => {};
 }

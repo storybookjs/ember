@@ -1,9 +1,21 @@
 /* eslint-disable prefer-destructuring */
 import { start } from '@storybook/core/client';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import render from './render';
-import { ClientApi } from './types';
+import { IStorybookSection } from './types';
+import { PreactFramework } from './types-6-0';
+
+export interface ClientApi extends ClientStoryApi<PreactFramework> {
+  setAddon(addon: any): void;
+  configure(loader: Loadable, module: NodeModule): void;
+  getStorybook(): IStorybookSection[];
+  clearDecorators(): void;
+  forceReRender(): void;
+  raw: () => any; // todo add type
+  load: (...args: any[]) => void;
+}
 
 const framework = 'preact';
 const api = start(render);

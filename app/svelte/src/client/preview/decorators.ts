@@ -1,15 +1,6 @@
-import { StoryFn, DecoratorFunction, StoryContext } from '@storybook/addons';
+import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
 import SlotDecorator from './SlotDecorator.svelte';
-
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
+import { SvelteFramework } from './types';
 
 /**
  * Check if an object is a svelte component.
@@ -39,7 +30,7 @@ function unWrap(obj: any) {
  * @param story  the current story
  * @param originalStory the story decorated by the current story
  */
-function prepareStory(context: StoryContext, story: any, originalStory?: any) {
+function prepareStory(context: StoryContext<SvelteFramework>, story: any, originalStory?: any) {
   let result = unWrap(story);
   if (isSvelteComponent(result)) {
     // wrap the component
@@ -73,13 +64,17 @@ function prepareStory(context: StoryContext, story: any, originalStory?: any) {
 
 export function decorateStory(storyFn: any, decorators: any[]) {
   return decorators.reduce(
-    (previousStoryFn: StoryFn, decorator: DecoratorFunction) => (
-      context: StoryContext = defaultContext
+    (previousStoryFn: StoryFn<SvelteFramework>, decorator: DecoratorFunction<SvelteFramework>) => (
+      context: StoryContext<SvelteFramework>
     ) => {
       let story;
       const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          story = previousStoryFn({ ...context, ...innerContext });
+        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
+          story = previousStoryFn({
+            ...context,
+            ...(args && { args }),
+            ...(globals && { globals }),
+          });
           return story;
         },
         context
@@ -95,6 +90,6 @@ export function decorateStory(storyFn: any, decorators: any[]) {
 
       return prepareStory(context, decoratedStory, story);
     },
-    (context: StoryContext) => prepareStory(context, storyFn(context))
+    (context: StoryContext<SvelteFramework>) => prepareStory(context, storyFn(context))
   );
 }

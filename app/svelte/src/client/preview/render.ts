@@ -1,12 +1,10 @@
 import global from 'global';
-import { RenderContext } from './types';
+import { RenderContext, SvelteFramework } from './types';
 import PreviewRender from './PreviewRender.svelte';
 
 const { document } = global;
 
-type Component = any;
-
-let previousComponent: Component = null;
+let previousComponent: SvelteFramework['component'] = null;
 
 function cleanUpPreviousStory() {
   if (!previousComponent) {
@@ -18,7 +16,7 @@ function cleanUpPreviousStory() {
 
 // TODO -- what is the type of storyFn result?
 export default function render(
-  { storyFn, kind, name, showMain, showError }: RenderContext<any>,
+  { storyFn, kind, name, showMain, showError }: RenderContext<SvelteFramework>,
   domElement: HTMLElement
 ) {
   cleanUpPreviousStory();

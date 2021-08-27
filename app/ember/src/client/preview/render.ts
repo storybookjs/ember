@@ -1,6 +1,6 @@
 import global from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext, ElementArgs, OptionsArgs } from './types';
+import { RenderContext, ElementArgs, OptionsArgs, EmberFramework } from './types';
 
 const { window: globalWindow, document } = global;
 
@@ -60,7 +60,7 @@ function render(options: OptionsArgs, el: ElementArgs) {
 }
 
 export default function renderMain(
-  { storyFn, kind, name, showMain, showError }: RenderContext<OptionsArgs>,
+  { storyFn, kind, name, showMain, showError }: RenderContext<EmberFramework>,
   domElement: HTMLElement
 ) {
   const element = storyFn();

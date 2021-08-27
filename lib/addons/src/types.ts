@@ -77,6 +77,17 @@ export interface ClientApiAddons<TFramework extends Framework> {
   [key: string]: ClientApiAddon<TFramework>;
 }
 
+// Old types for getStorybook()
+export interface IStorybookStory {
+  name: string;
+  render: () => any;
+}
+
+export interface IStorybookSection {
+  kind: string;
+  stories: IStorybookStory[];
+}
+
 export type ClientApiReturnFn<TFramework extends Framework> = (
   ...args: any[]
 ) => StoryApi<TFramework>;
@@ -98,6 +109,8 @@ export interface ClientStoryApi<TFramework extends Framework> {
   storiesOf(kind: StoryKind, module: NodeModule): StoryApi<TFramework>;
   addDecorator(decorator: DecoratorFunction<TFramework>): StoryApi<TFramework>;
   addParameters(parameter: Parameters): StoryApi<TFramework>;
+  getStorybook(): IStorybookSection[];
+  raw: () => any;
 }
 
 type LoadFn = () => any;
