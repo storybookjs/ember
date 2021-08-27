@@ -11,7 +11,7 @@ import {
   RegExpNode,
   ClassNode,
   StringNode,
-  BooleanNode
+  BooleanNode,
 } from './ArgValues';
 
 export const MethodCall = ({
@@ -29,7 +29,7 @@ export const MethodCall = ({
       ) : (
         <span key={index}>{elem}</span>
       ),
-      <wbr />,
+      <wbr key={'wbr' + index} />,
       <span key={'dot' + index}>.</span>,
     ];
   });
@@ -52,9 +52,9 @@ export const MethodCall = ({
       case typeof arg === 'function':
         node = <FunctionNode key={call.id} value={arg} />;
         break;
-        case arg instanceof Date:
-          node = <DateNode key={call.id} value={arg} />;
-          break;
+      case arg instanceof Date:
+        node = <DateNode key={call.id} value={arg} />;
+        break;
       case arg instanceof Error:
         node = <ErrorNode key={call.id} value={arg} />;
         break;
@@ -73,14 +73,20 @@ export const MethodCall = ({
       default:
         node = <ObjectNode key={call.id} value={arg} />;
     }
-    return index < array.length - 1 ? [node, <span key={index}>,&nbsp;</span>, <wbr />] : [node];
+    return index < array.length - 1
+      ? [node, <span key={'comma' + index}>,&nbsp;</span>, <wbr key={'wbr' + index} />]
+      : [node];
   });
 
   return (
     <>
       <span>{path}</span>
       <span style={{ color: 'royalblue' }}>{call.method}</span>
-      <span>(<wbr />{args}<wbr />)</span>
+      <span>
+        (<wbr />
+        {args}
+        <wbr />)
+      </span>
     </>
   );
 };
