@@ -1,4 +1,3 @@
-import dedent from 'ts-dedent';
 import {
   getPreviewBodyTemplate,
   getPreviewHeadTemplate,
@@ -9,7 +8,6 @@ import {
   loadEnvs,
   Options,
 } from '@storybook/core-common';
-import { once } from '@storybook/node-logger';
 
 export const babel = async (_: unknown, options: Options) => {
   const { configDir, presets } = options;
