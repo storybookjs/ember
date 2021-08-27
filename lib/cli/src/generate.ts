@@ -11,7 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
-import { generateStorybookBabelConfigInCWD } from './babal-config';
+import { generateStorybookBabelConfigInCWD } from './babel-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
