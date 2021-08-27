@@ -18,7 +18,7 @@ export const babelLoader: () => RuleSetRule = () => ({
           require.resolve('@babel/plugin-transform-template-literals'),
         ],
         babelrc: false,
-        babelConfig: false,
+        configFile: false,
       },
     },
   ],

@@ -50,9 +50,12 @@ export async function managerWebpack(
     getManagerHeadTemplate(configDir, process.env)
   );
   const isProd = configType === 'PRODUCTION';
-  const refsTemplate = fse.readFileSync(path.join(__dirname, 'virtualModuleRef.template.js'), {
-    encoding: 'utf8',
-  });
+  const refsTemplate = fse.readFileSync(
+    path.join(__dirname, '..', 'virtualModuleRef.template.js'),
+    {
+      encoding: 'utf8',
+    }
+  );
   const {
     packageJson: { version },
   } = await readPackage({ cwd: __dirname });
