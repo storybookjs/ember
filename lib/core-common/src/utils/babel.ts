@@ -51,3 +51,28 @@ export const getStorybookBabelConfig = ({ local = false }: { local?: boolean } =
     ],
   } as TransformOptions;
 };
+
+export const getStorybookBabelDependencies = () => [
+  '@babel/preset-env',
+  '@babel/preset-typescript',
+  '@babel/plugin-transform-shorthand-properties',
+  '@babel/plugin-transform-block-scoping',
+  '@babel/plugin-proposal-decorators',
+  '@babel/plugin-proposal-class-properties',
+  '@babel/plugin-proposal-private-methods',
+  '@babel/plugin-proposal-export-default-from',
+  '@babel/plugin-syntax-dynamic-import',
+  '@babel/plugin-proposal-object-rest-spread',
+  '@babel/plugin-transform-classes',
+  '@babel/plugin-transform-arrow-functions',
+  '@babel/plugin-transform-parameters',
+  '@babel/plugin-transform-destructuring',
+  '@babel/plugin-transform-spread',
+  '@babel/plugin-transform-for-of',
+  'babel-plugin-macros',
+  '@babel/plugin-proposal-optional-chaining',
+  '@babel/plugin-proposal-nullish-coalescing-operator',
+  'babel-plugin-polyfill-corejs3',
+  'babel-loader',
+  'core-js',
+];
