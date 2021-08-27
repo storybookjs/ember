@@ -14,7 +14,7 @@ import uiPaths from '@storybook/ui/paths';
 import readPackage from 'read-pkg-up';
 import {
   resolvePathInStorybookCache,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   es6Transpiler,
   getManagerHeadTemplate,
   getManagerMainTemplate,
@@ -106,7 +106,7 @@ export default async ({
       (new Dotenv({ silent: true }) as any) as WebpackPluginInstance,
       // graphql sources check process variable
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }) as WebpackPluginInstance,
       // isProd &&
