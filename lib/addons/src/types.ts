@@ -5,6 +5,7 @@ import {
   LoaderFunction,
   Parameters,
   StoryContext,
+  StoryContextForEnhancers,
   StoryFn,
   StoryId,
   StoryKind,
@@ -110,7 +111,8 @@ export interface ClientStoryApi<TFramework extends Framework> {
   addDecorator(decorator: DecoratorFunction<TFramework>): StoryApi<TFramework>;
   addParameters(parameter: Parameters): StoryApi<TFramework>;
   getStorybook(): IStorybookSection[];
-  raw: () => any;
+  // TODO -- should be Story from store?
+  raw: () => StoryContextForEnhancers<TFramework>[];
 }
 
 type LoadFn = () => any;

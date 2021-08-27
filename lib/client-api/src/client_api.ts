@@ -20,7 +20,6 @@ import {
   Path,
   StoriesList,
   combineParameters,
-  ModuleImportFn,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -310,5 +309,5 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
   // TODO
   getStorybook: () => [];
 
-  raw: () => {};
+  raw: () => [];
 }
