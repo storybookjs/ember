@@ -8,22 +8,27 @@ import ListItem from './ListItem';
 
 export default {
   component: List,
-  title: 'List',
 };
 
-export const Empty = (args) => <List {...args} />;
+export const Empty = {
+  render: (args) => <List {...args} />,
+};
 
-export const OneItem = (args) => (
-  <List {...args}>
-    <ListItem />
-  </List>
-);
+export const OneItem = {
+  render: (args) => (
+    <List {...args}>
+      <ListItem />
+    </List>
+  ),
+};
 
-export const ManyItems = (args) => (
-  <List {...args}>
-    <ListItem />
-    <ListItem />
-    <ListItem />
-  </List>
-);
+export const ManyItems = {
+  render: (args) => (
+    <List {...args}>
+      <ListItem />
+      <ListItem />
+      <ListItem />
+    </List>
+  ),
+};
 ```

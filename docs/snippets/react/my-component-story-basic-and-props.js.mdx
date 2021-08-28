@@ -6,10 +6,12 @@ import React from 'react';
 import MyComponent from './MyComponent';
 
 export default {
-  title: 'Path/To/MyComponent',
   component: MyComponent,
 };
 
-export const Basic = () => <MyComponent />;
-export const WithProp = () => <MyComponent prop="value" />;
+export const Basic = {};
+
+export const WithProp = {
+  render: () => <MyComponent prop="value" />,
+};
 ```

@@ -6,36 +6,43 @@ import ListItem from './ListItem.vue';
 
 export default {
   component: List,
-  title: 'List',
 };
 
-export const Empty = (args) => ({
-  components: { List },
-  setup() {
-    return { args };
-  },
-  template: '<list v-bind="args"/>',
-});
+export const Empty = {
+  render: (args) => ({
+    components: { List },
+    setup() {
+      return { args };
+    },
+    template: '<List v-bind="args">',
+  }),
+};
 
-export const OneItem = (args) => ({
-  components: { List, ListItem },
-  setup() {
-    return { args };
-  },
-  template: '<list v-bind="args"><list-item/></list>',
-});
+export const OneItem = {
+  render: (args) => ({
+    components: { List, ListItem },
+    setup() {
+      return { args };
+    },
+    template: `
+      <List v-bind="args">
+        <list-item/>
+      </List>`,
+  }),
+};
 
-export const ManyItems = (args) => ({
-  components: { List, ListItem },
-  setup() {
-    return { args };
-  },
-  template: `
-    <list v-bind="args">
-      <list-item/>
-      <list-item/>
-      <list-item/>
-    </list>
-    `,
-});
+export const ManyItems = {
+  render: (args) => ({
+    components: { List, ListItem },
+    setup() {
+      return { ...args };
+    },
+    template: `
+      <List v-bind="args">
+        <list-item/>
+        <list-item/>
+        <list-item/>
+      </List>`,
+  }),
+};
 ```

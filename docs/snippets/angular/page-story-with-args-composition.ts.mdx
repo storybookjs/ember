@@ -1,8 +1,7 @@
 ```ts
 // YourPage.stories.ts
 
-import { moduleMetadata } from '@storybook/angular'
-import { Story, Meta } from '@storybook/angular/types-6-0';
+import { moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
@@ -18,24 +17,19 @@ import * as DocumentListStories from './DocumentList.stories';
 
 export default {
   component: DocumentScreen,
-  title: 'DocumentScreen',
   decorators: [
     moduleMetadata({
-      // imports components to allow component composition with Storybook
-      declarations: [DocumentList, DocumentHeader,PageLayout],
+      declarations: [DocumentList, DocumentHeader, PageLayout],
       imports: [CommonModule],
     }),
   ],
-} as Meta;
+};
 
-const Template: Story<DocumentScreen> = (args) => ({
-  props: args,
-});
-
-export const Simple = Template.bind({});
-Simple.args = {
-  user: PageLayoutStories.PageLayoutSimple.args.user,
-  document: DocumentHeaderStories.DocumentHeaderSimple.args.document,
-  subdocuments: DocumentListStories.DocumentListSimple.args.documents
+export const Simple = {
+  args: {
+    user: PageLayoutStories.Simple.args.user,
+    document: DocumentHeaderStories.Simple.args.document,
+    subdocuments: DocumentListStories.Simple.args.documents,
+  },
 };
 ```

@@ -1,11 +1,12 @@
 ```ts
-// your-component.stories.ts
+// YourComponent.stories.ts
 
-import { Meta, componentWrapperDecorator } from '@storybook/angular';
+import { componentWrapperDecorator } from '@storybook/angular';
+
+import YourComponent from './your.component';
 
 export default {
-  title: 'YourComponent',
   component: YourComponent,
   decorators: [componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)],
-} as Meta;
+};
 ```

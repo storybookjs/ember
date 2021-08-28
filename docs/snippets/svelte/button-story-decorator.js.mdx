@@ -1,8 +1,17 @@
 ```js
 // Button.stories.js
 
+import Button from './Button.svelte';
 import MarginDecorator from './MarginDecorator.svelte';
 
-export const Primary = …
-Primary.decorators = [() => MarginDecorator]
+export default {
+  component: Button,
+};
+
+export const Primary = {
+  render: () => ({
+    component: Button,
+  }),
+  decorators: [() => MarginDecorator],
+};
 ```

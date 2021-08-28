@@ -4,23 +4,25 @@
 import imageFile from './static/image.png';
 
 export default {
-  title: 'img'
+  title: 'img',
 };
 
 const image = {
   src: imageFile,
-  alt: 'my image'
+  alt: 'my image',
 };
 
-export const withAnImage = () => ({
-  template: `<img :src="src" :alt="alt"/>`,
-  props: {
-    src: {
-      default: () => image.src,
+export const withAnImage = {
+  render: () => ({
+    props: {
+      src: {
+        default: () => image.src,
+      },
+      alt: {
+        default: () => image.alt,
+      },
     },
-    alt: {
-      default: () => image.alt,
-    }
-  }
-});
+    template: `<img :src="src" :alt="alt"/>`,
+  }),
+};
 ```

@@ -1,7 +1,7 @@
-```js
-// Button.stories.js
+```ts
+// Button.stories.ts
 
-import Button from 'Button.vue';
+import Button from './Button.component';
 
 import { action } from '@storybook/addon-actions';
 
@@ -11,9 +11,8 @@ export default {
 
 export const Text = {
   render: () => ({
-    components: { Button },
-    template: '<Button label="Hello" @click="onClick" />',
-    methods: {
+    props: {
+      label: 'Button',
       onClick: action('clicked'),
     },
   }),

@@ -1,5 +1,17 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-export const Text = ({ label, onClick }) => <Button label={label} onClick={onClick} />;
+import React from 'react';
+
+import { action } from '@storybook/addon-actions';
+
+import Button from './Button';
+
+export default {
+  component: Button,
+};
+
+export const Text = {
+  render: ({ label, onClick }) => <Button label={label} onClick={onClick} />,
+};
 ```

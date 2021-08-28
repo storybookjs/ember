@@ -10,19 +10,18 @@ import * as DocumentListStories from './DocumentList.stories';
 
 export default {
   component: DocumentScreen,
-  title: 'DocumentScreen',
 };
 
-const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { DocumentScreen },
-  template: '<DocumentScreen v-bind="$props"/>',
-});
-
-export const Simple = Template.bind({});
-Simple.args = {
-  user: PageLayoutStories.Simple.args.user,
-  document: DocumentHeaderStories.Simple.args.document,
-  subdocuments: DocumentListStories.Simple.args.documents,
+export const Simple = {
+  args: {
+    user: PageLayoutStories.Simple.args.user,
+    document: DocumentHeaderStories.Simple.args.document,
+    subdocuments: DocumentListStories.Simple.args.documents,
+  },
+  render: (args, { argTypes }) => ({
+    components: { DocumentScreen },
+    props: Object.keys(argTypes),
+    template: '<DocumentScreen v-bind="$props" />',
+  }),
 };
 ```

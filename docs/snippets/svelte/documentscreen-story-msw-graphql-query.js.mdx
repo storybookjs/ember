@@ -3,13 +3,12 @@
 
 import { graphql } from 'msw';
 
-import DocumentScreen from './DocumentScreen.svelte';
+import DocumentScreen from './YourPage.svelte';
 import MockApolloWrapperClient from './MockApolloWrapperClient.svelte';
 
 export default {
   component: DocumentScreen,
   decorators: [() => MockGraphqlProvider],
-  title: 'Mock GraphQL query with Storybook and MSW',
 };
 
 //👇The mocked data that will be used in the story
@@ -61,32 +60,38 @@ const TestData = {
   ],
 };
 
-const PageTemplate = (args) => ({
-  Component: DocumentScreen,
-  props: args,
-});
-
-export const MockedSuccess = PageTemplate.bind({});
-MockedSuccess.parameters = {
-  msw: [
-    graphql.query('AllInfoQuery', (req, res, ctx) => {
-      return res(ctx.data(TestData));
-    }),
-  ],
+export const MockedSuccess = {
+  parameters: {
+    msw: [
+      graphql.query('AllInfoQuery', (req, res, ctx) => {
+        return res(ctx.data(TestData));
+      }),
+    ],
+  },
+  render: (args) => ({
+    Component: DocumentScreen,
+    props: args,
+  }),
 };
-export const MockedError = PageTemplate.bind({});
-MockedError.parameters = {
-  msw: [
-    graphql.query('AllInfoQuery', (req, res, ctx) => {
-      return res(
-        ctx.delay(800),
-        ctx.errors([
-          {
-            message: 'Access denied',
-          },
-        ])
-      );
-    }),
-  ],
+
+export const MockedError = {
+  parameters: {
+    msw: [
+      graphql.query('AllInfoQuery', (req, res, ctx) => {
+        return res(
+          ctx.delay(800),
+          ctx.errors([
+            {
+              message: 'Access denied',
+            },
+          ])
+        );
+      }),
+    ],
+  },
+  render: (args) => ({
+    Component: DocumentScreen,
+    props: args,
+  }),
 };
 ```

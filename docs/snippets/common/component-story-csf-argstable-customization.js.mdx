@@ -1,16 +1,17 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
+import Button from './Button';
+
 export default {
-  title: 'Button',
   component: Button,
   argTypes: {
     label: {
       description: 'Overwritten description',
       table: {
-        type: { 
-          summary: 'Something short', 
-          detail: 'Something really really long' 
+        type: {
+          summary: 'Something short',
+          detail: 'Something really really long',
         },
       },
       control: {

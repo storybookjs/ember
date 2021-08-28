@@ -1,8 +1,10 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
+import Button from './Button';
+
 export default {
-  title: 'CustomDescription',
+  component: Button,
   parameters: {
     docs: {
       description: {
@@ -12,11 +14,12 @@ export default {
   },
 };
 
-export const WithStoryDescription = Template.bind({});
-WithStoryDescription.parameters = {
-  docs: {
-    description: {
-      story: 'Some story **markdown**',
+export const WithStoryDescription = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Some story **markdown**',
+      },
     },
   },
 };

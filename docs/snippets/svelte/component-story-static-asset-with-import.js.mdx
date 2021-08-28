@@ -7,18 +7,17 @@ import imageFile from './static/image.png';
 
 export default {
   component: MyComponent,
-  title: 'img',
 };
 
 const image = {
   src: imageFile,
-  alt: "my image",
+  alt: 'my image',
 };
 
-export const WithAnImage = () => ({
-  Component: MyComponent,
-  props: {
-    image: image
-  },
-});
+export const WithAnImage = {
+  render: () => ({
+    Component: MyComponent,
+    props: image,
+  }),
+};
 ```

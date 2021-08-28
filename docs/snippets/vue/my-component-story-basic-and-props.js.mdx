@@ -4,17 +4,20 @@
 import MyComponent from './MyComponent.vue';
 
 export default {
-  title: 'Path/To/MyComponent',
   component: MyComponent,
 };
 
-export const Basic = () => ({
-  components: { MyComponent },
-  template: '<MyComponent />',
-});
+export const Basic = {
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
 
-export const WithProp = () => ({
-  components: { MyComponent },
-  template: '<MyComponent prop="value"/>',
-});
+export const WithProp = {
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent prop="value"/>',
+  }),
+};
 ```

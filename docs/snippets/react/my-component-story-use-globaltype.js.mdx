@@ -1,19 +1,33 @@
 ```js
 // MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
 
+import React from 'react';
+
+import MyComponent from './MyComponent';
+
+export default {
+  component: MyComponent,
+};
+
 const getCaptionForLocale = (locale) => {
-  switch(locale) {
-    case 'es': return 'Hola!';
-    case 'fr': return 'Bonjour!';
-    case 'kr': return '안녕하세요!';
-    case 'zh': return '你好!';
+  switch (locale) {
+    case 'es':
+      return 'Hola!';
+    case 'fr':
+      return 'Bonjour!';
+    case 'kr':
+      return '안녕하세요!';
+    case 'zh':
+      return '你好!';
     default:
       return 'Hello!';
   }
 };
 
-export const StoryWithLocale = (args, { globals: { locale } }) => {
-  const caption = getCaptionForLocale(locale);
-  return <>{caption}</>;
+export const StoryWithLocale = {
+  render: (args, { globals: { locale } }) => {
+    const caption = getCaptionForLocale(locale);
+    return <>{caption}</>;
+  },
 };
 ```

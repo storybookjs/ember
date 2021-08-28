@@ -1,31 +1,48 @@
 ```ts
 // List.stories.ts
 
-import { Story } from '@storybook/angular/types-6-0';
+import { moduleMetadata } from '@storybook/angular';
 
-import ListComponent from './List.component';
-import ListItemComponent from './ListItem.component';
+import { CommonModule } from '@angular/common';
+
+import ListItemComponent from './list-item.component';
+import ListComponent from './list.component';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-const ListTemplate: Story<ListComponent> = (args) => ({
-  moduleMetadata: {
-    declarations: [ListComponent, ListItemComponent],
-  },
-  props: args,
-  template: `
-    <list-component>
+export default {
+  component: ListComponent,
+  decorators: [
+    moduleMetadata({
+      declarations: [ListItemComponent],
+      imports: [CommonModule],
+    }),
+  ],
+};
+
+const ListTemplate = {
+  render: (args) => ({
+    props: args,
+    template: `
+      <list>
         <div *ngFor="let item of items">
-            <listitem-component [item]="item"></listitem-component>
+          <list-item [item]="item"></list-item>
         </div>
-    </list-component>`,
-});
+      </list>
+    `,
+  }),
+};
 
-export const EmptyWithTemplate = ListTemplate.bind({});
-Empty.args = { items: [] };
+export const Empty = {
+  ...ListTemplate,
+  args: { items: [] },
+};
 
-
-export const OneItemWithTemplate = ListTemplate.bind({});
-OneItemWithTemplate.args = { items: [Unchecked.args.item] };
+export const OneItem = {
+  ...ListTemplate,
+  args: {
+    items: [{ ...Unchecked.args }],
+  },
+};
 ```

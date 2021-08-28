@@ -5,23 +5,19 @@ import Button from './Button.vue';
 
 export default {
   component: Button,
-  title: 'Components/Button',
 };
 
-//👇 We create a “template” of how args map to rendering
-const Template = (args) => ({
-  components: { Button },
-  setup() {
-    //👇 The args will now be passed down to the template
-    return { args };
+export const Primary = {
+  args: {
+    primary: true,
+    label: 'Button',
   },
-  template: '<Button v-bind="args" />',
-});
-
-//👇 Each story then reuses that template
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
+  render: (args) => ({
+    components: { Button },
+    setup() {
+      return { args };
+    },
+    template: '<Button v-bind="args" />',
+  }),
 };
 ```

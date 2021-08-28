@@ -2,9 +2,11 @@
 // MyComponent.stories.js
 
 export default {
-  title: "img",
+  title: 'img',
 };
-export const withAnImage = () => ({
-  template: '<img src="image.png" alt="my image" />'
-});
+export const withAnImage = {
+  render: () => ({
+    template: '<img src="image.png" alt="my image" />',
+  }),
+};
 ```

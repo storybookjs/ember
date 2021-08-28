@@ -10,7 +10,7 @@ import UserPosts from './UserPosts';
 import { normal as UserFriendsNormal } from './UserFriends.stories';
 
 export default {
-  title: 'ProfilePage',
+  component: ProfilePage,
 };
 
 const ProfilePageProps = {
@@ -29,11 +29,11 @@ const context = {
   UserFriendsContainer: UserFriendsNormal,
 };
 
-export const normal = () => {
-  return (
+export const Normal = {
+  render: () => (
     <ProfilePageContext.Provider value={context}>
       <ProfilePage {...ProfilePageProps} />
     </ProfilePageContext.Provider>
-  );
+  ),
 };
 ```

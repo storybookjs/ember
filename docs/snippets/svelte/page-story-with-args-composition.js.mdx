@@ -1,7 +1,7 @@
 ```js
 // YourPage.stories.js
 
-import DocumentScreen from './DocumentScreen.svelte';
+import DocumentScreen from './YourPage.svelte';
 
 //👇 Imports the required stories
 import * as PageLayoutStories from './PageLayout.stories';
@@ -10,18 +10,17 @@ import * as DocumentListStories from './DocumentList.stories';
 
 export default {
   component: DocumentScreen,
-  title: 'DocumentScreen',
 };
 
-const Template = (args) => ({
-  Component: DocumentScreen,
-  props: args,
-});
-
-export const SimplePage = Template.bind({});
-SimplePage.args = {
-  user: PageLayoutStories.Simple.args.user,
-  document: DocumentHeaderStories.Simple.args.document,
-  subdocuments: DocumentListStories.Simple.args.documents,
+export const Simple = {
+  args: {
+    user: PageLayoutStories.Simple.args.user,
+    document: DocumentHeaderStories.Simple.args.document,
+    subdocuments: DocumentListStories.Simple.args.documents,
+  },
+  render: (args) => ({
+    Components: DocumentScreen,
+    props: args,
+  }),
 };
 ```

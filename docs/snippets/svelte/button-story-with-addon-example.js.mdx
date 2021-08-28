@@ -13,8 +13,10 @@ export default {
   },
 };
 
-export const Basic = (args) => ({
-  Component: Button,
-  props: args,
-});
+export const Basic = {
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
+};
 ```

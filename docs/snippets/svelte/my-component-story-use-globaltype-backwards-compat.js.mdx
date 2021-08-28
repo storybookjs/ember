@@ -1,13 +1,15 @@
 ```js
 // MyComponent.stories.js
 
-export const StoryWithLocale = ({ globals: { locale } }) => {
-  const caption = getCaptionForLocale(locale);
-  return {
-    component: SampleComponent,
-    props: {
-      locale: caption,
-    },
-  };
+export const StoryWithLocale = {
+  render: ({ globals: { locale } }) => {
+    const caption = getCaptionForLocale(locale);
+    return {
+      component: MyComponent,
+      props: {
+        locale: caption,
+      },
+    };
+  },
 };
 ```
