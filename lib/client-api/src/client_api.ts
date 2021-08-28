@@ -21,6 +21,7 @@ import {
   StoriesList,
   combineParameters,
   NormalizedStoryAnnotations,
+  ModuleExports,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -110,7 +111,7 @@ export default class ClientApi<TFramework extends Framework> {
 
   storiesList: StoriesList;
 
-  csfFiles: Record<Path, CSFFile<TFramework>>;
+  csfExports: Record<Path, ModuleExports>;
 
   private _addons: ClientApiAddons<TFramework>;
 
@@ -132,7 +133,7 @@ export default class ClientApi<TFramework extends Framework> {
       stories: {},
     };
 
-    this.csfFiles = {};
+    this.csfExports = {};
 
     this._addons = {};
 
@@ -142,13 +143,7 @@ export default class ClientApi<TFramework extends Framework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    // FIXME swap back and in start.ts
-    // csfFiles are already in the format returned by processCSFFile for
-    // type safety, but for convenience, let's map it back to moduleExports
-    // it is pretty low effort to remap.
-    console.log(path, this.csfFiles, this.csfFiles[path]);
-    const { meta, stories } = this.csfFiles[path];
-    return { default: meta, ...stories };
+    return this.csfExports[path];
   }
 
   setAddon = deprecate(
@@ -199,21 +194,21 @@ export default class ClientApi<TFramework extends Framework> {
     this.globalAnnotations.argTypesEnhancers.push(enhancer);
   };
 
+  // We map these back to a simple default export, even though we have type guarantees at this point
   addComponentMeta(fileName: Path, meta: NormalizedComponentAnnotations<TFramework>) {
-    this.csfFiles[fileName] = {
-      meta,
-      stories: {},
+    this.csfExports[fileName] = {
+      default: meta,
     };
   }
 
   addStory(fileName: Path, story: NormalizedStoryAnnotations<TFramework>) {
     const { id, name } = story;
     this.storiesList.stories[id] = {
-      title: this.csfFiles[fileName].meta.title,
+      title: this.csfExports[fileName].default.title,
       name,
       importPath: fileName,
     };
-    this.csfFiles[fileName].stories[id] = story;
+    this.csfExports[fileName][id] = story;
   }
 
   // what are the occasions that "m" is a boolean vs an obj

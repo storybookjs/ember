@@ -4,7 +4,6 @@ import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
 import { addons, Channel } from '@storybook/addons';
-import createChannel from '@storybook/channel-postmessage';
 import { Framework, StoryId, GlobalAnnotations, Args, Globals, ViewMode } from '@storybook/csf';
 import {
   ModuleImportFn,
@@ -58,8 +57,7 @@ export class WebPreview<TFramework extends Framework> {
     importFn: ModuleImportFn;
     fetchStoriesList: () => Promise<StoriesList>;
   }) {
-    this.channel = createChannel({ page: 'preview' });
-    addons.setChannel(this.channel);
+    this.channel = addons.getChannel();
     this.view = new WebView();
 
     const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);

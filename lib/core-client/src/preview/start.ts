@@ -1,7 +1,9 @@
-import { ClientApi, CSFFile, ModuleExports, ModuleImportFn } from '@storybook/client-api';
+import { ClientApi, ModuleExports } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
-import { Framework, StoryName, Parameters, toId, storyNameFromExport } from '@storybook/csf';
+import { Framework, toId, storyNameFromExport } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
+import createChannel from '@storybook/channel-postmessage';
+import { addons } from '@storybook/addons';
 
 import { Loadable, RequireContext, LoaderFunction } from './types';
 
@@ -51,6 +53,8 @@ export function start<TFramework extends Framework>(
   render: WebGlobalAnnotations<TFramework>['renderToDOM'],
   { decorateStory }: { decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'] } = {}
 ) {
+  addons.setChannel(createChannel({ page: 'preview' }));
+
   const clientApi = new ClientApi<TFramework>();
   let preview: WebPreview<TFramework>;
 
@@ -69,47 +73,43 @@ export function start<TFramework extends Framework>(
 
         const exportsMap = runLoadable(loadable);
         console.log(exportsMap);
-        Array.from(exportsMap.entries()).forEach(([fileName, fileExports]) => {
-          console.log(fileName, fileExports);
-          const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
-          const { title } = defaultExport || {};
-          if (!title) {
-            throw new Error(
-              `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
-            );
-          }
+        Array.from(exportsMap.entries())
+          .filter(([, fileExports]) => !!fileExports.default)
+          .forEach(([fileName, fileExports]) => {
+            const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
+            const { title } = defaultExport || {};
+            if (!title) {
+              throw new Error(
+                `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
+              );
+            }
 
-          clientApi.csfFiles[fileName] = {
-            meta: defaultExport,
-            stories: namedExports,
-          } as any;
+            clientApi.csfExports[fileName] = fileExports;
 
-          let exports = namedExports;
-          if (Array.isArray(__namedExportsOrder)) {
-            exports = {};
-            __namedExportsOrder.forEach((name) => {
-              if (namedExports[name]) {
-                exports[name] = namedExports[name];
-              }
-            });
-          }
-          Object.entries(exports).forEach(
-            ([key, { name, storyName, parameters = {} }]: [
-              string,
-              { name?: StoryName; storyName?: StoryName; parameters?: Parameters }
-            ]) => {
-              // FIXME
-              const actualName = name || storyName || storyNameFromExport(key);
+            let exports = namedExports;
+            if (Array.isArray(__namedExportsOrder)) {
+              exports = {};
+              __namedExportsOrder.forEach((name) => {
+                if (namedExports[name]) {
+                  exports[name] = namedExports[name];
+                }
+              });
+            }
+            Object.entries(exports).forEach(([key, storyExport]: [string, any]) => {
+              const actualName: string =
+                storyExport.name ||
+                storyExport.storyName ||
+                storyExport.story?.name ||
+                storyNameFromExport(key);
               // eslint-disable-next-line no-underscore-dangle
-              const id = parameters.__id || toId(title, actualName);
+              const id = storyExport.parameters?.__id || toId(title, actualName);
               clientApi.storiesList.stories[id] = {
                 name: actualName,
                 title,
                 importPath: fileName,
               };
-            }
-          );
-        });
+            });
+          });
 
         return {
           ...clientApi.globalAnnotations,
