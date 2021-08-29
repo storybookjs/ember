@@ -66,13 +66,13 @@ export function start<TFramework extends Framework>(
     raw: (): void => {},
 
     clientApi,
-    configure(framework: string, loadable: Loadable, m: NodeModule) {
+    // TODO -- add framework to globalAnnotations.parameters?
+    configure(framework: string, loadable: Loadable, m?: NodeModule) {
       const getGlobalAnnotations = () => {
         // TODO
         // clientApi.resetGlobalAnnotations();
 
         const exportsMap = runLoadable(loadable);
-        console.log(exportsMap);
         Array.from(exportsMap.entries())
           .filter(([, fileExports]) => !!fileExports.default)
           .forEach(([fileName, fileExports]) => {
@@ -97,7 +97,7 @@ export function start<TFramework extends Framework>(
             }
             Object.entries(exports).forEach(([key, storyExport]: [string, any]) => {
               const actualName: string =
-                storyExport.name ||
+                (typeof storyExport !== 'function' && storyExport.name) ||
                 storyExport.storyName ||
                 storyExport.story?.name ||
                 storyNameFromExport(key);

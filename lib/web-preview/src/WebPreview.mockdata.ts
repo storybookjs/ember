@@ -89,6 +89,7 @@ export const waitForRender = () =>
     Events.DOCS_RENDERED,
     Events.STORY_THREW_EXCEPTION,
     Events.STORY_ERRORED,
+    Events.STORY_MISSING,
   ]);
 
 export const waitForQuiescence = async () => new Promise((r) => setTimeout(r, 100));

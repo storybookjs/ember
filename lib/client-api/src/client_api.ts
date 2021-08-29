@@ -201,18 +201,8 @@ export default class ClientApi<TFramework extends Framework> {
     };
   }
 
-  addStory(fileName: Path, story: NormalizedStoryAnnotations<TFramework>) {
-    const { id, name } = story;
-    this.storiesList.stories[id] = {
-      title: this.csfExports[fileName].default.title,
-      name,
-      importPath: fileName,
-    };
-    this.csfExports[fileName][id] = story;
-  }
-
   // what are the occasions that "m" is a boolean vs an obj
-  storiesOf = (kind: string, m: NodeModule): StoryApi<TFramework> => {
+  storiesOf = (kind: string, m?: NodeModule): StoryApi<TFramework> => {
     if (!kind && typeof kind !== 'string') {
       throw new Error('Invalid or missing kind provided for stories, should be a string');
     }
@@ -272,8 +262,6 @@ export default class ClientApi<TFramework extends Framework> {
     api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;
 
-      const id = parameters.__id || toId(kind, storyName);
-
       if (typeof storyName !== 'string') {
         throw new Error(`Invalid or missing storyName provided for a "${kind}" story.`);
       }
@@ -286,14 +274,22 @@ export default class ClientApi<TFramework extends Framework> {
 
       const { decorators, loaders, ...storyParameters } = parameters;
 
-      this.addStory(fileName, {
-        id,
+      const csfExports = this.csfExports[fileName];
+      // Whack a _ on the front incase it is "default"
+      csfExports[`_${sanitize(storyName)}`] = {
         name: storyName,
         parameters: { fileName, ...storyParameters },
         decorators,
         loaders,
         render: storyFn,
-      });
+      };
+
+      const storyId = parameters?.__id || toId(kind, storyName);
+      this.storiesList.stories[storyId] = {
+        title: csfExports.default.title,
+        name: storyName,
+        importPath: fileName,
+      };
 
       return api;
     };
