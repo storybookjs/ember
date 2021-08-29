@@ -1,5 +1,5 @@
 import { StatusBadge } from './StatusBadge';
-import { TestingStates } from '../../Panel';
+import { CallState } from '../../types';
 
 export default {
   title: 'StatusBadge',
@@ -8,13 +8,13 @@ export default {
 };
 
 export const Pass = {
-  args: { status: TestingStates.DONE },
+  args: { status: CallState.DONE },
 };
 
 export const Runs = {
-  args: { status: TestingStates.PENDING },
+  args: { status: CallState.PENDING },
 };
 
 export const Fail = {
-  args: { status: TestingStates.ERROR },
+  args: { status: CallState.ERROR },
 };

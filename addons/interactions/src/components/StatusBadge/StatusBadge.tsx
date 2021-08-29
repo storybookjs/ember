@@ -1,10 +1,10 @@
 import React from 'react';
 import { styled, typography } from '@storybook/theming';
-import { TestState, TestingStates } from '../../Panel';
+import { CallState } from '../../types';
 import { theme } from '../../theme';
 
 export interface StatusBadgeProps {
-  status: TestState;
+  status: `${CallState}`;
 }
 const {
   colors: {
@@ -14,9 +14,9 @@ const {
 
 const StyledBadge = styled.div(({ status }: StatusBadgeProps) => {
   const backgroundColor = {
-    [TestingStates.DONE]: green,
-    [TestingStates.ERROR]: red,
-    [TestingStates.PENDING]: ochre,
+    [CallState.DONE]: green,
+    [CallState.ERROR]: red,
+    [CallState.PENDING]: ochre,
   }[status];
   return {
     padding: '4px 8px',
@@ -35,9 +35,9 @@ const StyledBadge = styled.div(({ status }: StatusBadgeProps) => {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const badgeText = {
-    [TestingStates.DONE]: 'Pass',
-    [TestingStates.ERROR]: 'Fail',
-    [TestingStates.PENDING]: 'Runs',
+    [CallState.DONE]: 'Pass',
+    [CallState.ERROR]: 'Fail',
+    [CallState.PENDING]: 'Runs',
   }[status];
   return <StyledBadge status={status}>{badgeText}</StyledBadge>;
 };
