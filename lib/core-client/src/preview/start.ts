@@ -65,7 +65,7 @@ export function start<TFramework extends Framework>(
         preview = new WebPreview({
           importFn: (path: Path) => clientApi.importFn(path),
           getGlobalAnnotations,
-          fetchStoriesList: async () => clientApi.storiesList,
+          fetchStoriesList: async () => clientApi.getStoriesList(),
         });
         clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
 

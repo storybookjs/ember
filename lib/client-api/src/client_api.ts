@@ -19,9 +19,9 @@ import {
   NormalizedGlobalAnnotations,
   Path,
   StoriesList,
-  combineParameters,
   ModuleExports,
   ModuleImportFn,
+  combineParameters,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -109,9 +109,11 @@ const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi<TFramework extends Framework> {
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
-  storiesList: StoriesList;
+  private fileNames: Record<Path, boolean>;
 
-  csfExports: Record<Path, ModuleExports>;
+  private stories: StoriesList['stories'];
+
+  private csfExports: Record<Path, ModuleExports>;
 
   onImportFnChanged?: ({ importFn: ModuleImportFn }) => void;
 
@@ -130,10 +132,7 @@ export default class ClientApi<TFramework extends Framework> {
       argTypesEnhancers: [],
     };
 
-    this.storiesList = {
-      v: 3,
-      stories: {},
-    };
+    this.stories = {};
 
     this.csfExports = {};
 
@@ -146,6 +145,21 @@ export default class ClientApi<TFramework extends Framework> {
   // on startup, but this is a shim after all.
   importFn(path: Path) {
     return this.csfExports[path];
+  }
+
+  getStoriesList() {
+    const fileNameOrder = Object.keys(this.csfExports);
+    const sortedStoryEntries = Object.entries(this.stories).sort(([id1, story1], [id2, story2]) => {
+      return fileNameOrder.indexOf(story1.importPath) - fileNameOrder.indexOf(story2.importPath);
+    });
+
+    return {
+      v: 3,
+      stories: sortedStoryEntries.reduce((acc, [id, entry]) => {
+        acc[id] = entry;
+        return acc;
+      }, {} as StoriesList['stories']),
+    };
   }
 
   setAddon = deprecate(
@@ -293,7 +307,7 @@ export default class ClientApi<TFramework extends Framework> {
       };
 
       const storyId = parameters?.__id || toId(kind, storyName);
-      this.storiesList.stories[storyId] = {
+      this.stories[storyId] = {
         title: csfExports.default.title,
         name: storyName,
         importPath: fileName,
@@ -336,12 +350,14 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     }
 
     // Clear this module's stories from the storyList and existing exports
-    Object.entries(this.storiesList.stories).forEach(([id, { importPath }]) => {
+    Object.entries(this.stories).forEach(([id, { importPath }]) => {
       if (importPath === fileName) {
-        delete this.storiesList.stories[id];
+        delete this.stories[id];
       }
     });
-    delete this.csfExports[fileName];
+
+    // We keep this as an empty record so we can use it to maintain component order
+    this.csfExports[fileName] = {};
   }
 
   // NOTE: we could potentially share some of this code with the stories.json generation
@@ -380,7 +396,7 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
         storyNameFromExport(key);
       // eslint-disable-next-line no-underscore-dangle
       const id = storyExport.parameters?.__id || toId(title, actualName);
-      this.storiesList.stories[id] = {
+      this.stories[id] = {
         name: actualName,
         title,
         importPath: fileName,

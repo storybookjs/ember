@@ -576,7 +576,6 @@ describe('start', () => {
       `);
 
       mockChannel.emit.mockClear();
-      console.log('rerunning');
       disposeCallback(module.hot.data);
       configure('test', () => [componentCExports], module as any);
 
