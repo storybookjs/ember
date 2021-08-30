@@ -1,5 +1,4 @@
 import memoize from 'memoizerific';
-
 import {
   Parameters,
   StoryId,
@@ -20,6 +19,8 @@ import {
   StoriesList,
   NormalizedGlobalAnnotations,
   NormalizedStoriesEntry,
+  Path,
+  ExtractOptions,
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
@@ -54,6 +55,8 @@ export class StoryStore<TFramework extends Framework> {
   args: ArgsStore;
 
   hooks: Record<StoryId, HooksContext<TFramework>>;
+
+  cachedCSFFiles?: Record<Path, CSFFile<TFramework>>;
 
   processCSFFileWithCache: typeof processCSFFile;
 
@@ -103,6 +106,31 @@ export class StoryStore<TFramework extends Framework> {
     return this.processCSFFileWithCache(moduleExports, title);
   }
 
+  async loadAllCSFFiles(): Promise<Record<Path, CSFFile<TFramework>>> {
+    const importPaths: Record<Path, StoryId> = {};
+    Object.entries(this.storiesList.storiesList.stories).forEach(([storyId, { importPath }]) => {
+      importPaths[importPath] = storyId;
+    });
+
+    const csfFileList = await Promise.all(
+      Object.entries(importPaths).map(
+        async ([importPath, storyId]): Promise<[Path, CSFFile<TFramework>]> => [
+          importPath,
+          await this.loadCSFFileByStoryId(storyId),
+        ]
+      )
+    );
+
+    return csfFileList.reduce((acc, [importPath, csfFile]) => {
+      acc[importPath] = csfFile;
+      return acc;
+    }, {} as Record<Path, CSFFile<TFramework>>);
+  }
+
+  async cacheAllCSFFiles(): Promise<void> {
+    this.cachedCSFFiles = await this.loadAllCSFFiles();
+  }
+
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {
     const csfFile = await this.loadCSFFileByStoryId(storyId);
     return this.storyFromCSFFile({ storyId, csfFile });
@@ -146,30 +174,51 @@ export class StoryStore<TFramework extends Framework> {
     this.hooks[story.id].clean();
   }
 
+  extract(options: ExtractOptions = {}) {
+    if (!this.cachedCSFFiles) {
+      throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
+    }
+
+    return Object.entries(this.storiesList.storiesList.stories)
+      .map(([storyId, { importPath }]) => {
+        const csfFile = this.cachedCSFFiles[importPath];
+        const story = this.storyFromCSFFile({ storyId, csfFile });
+
+        // TODO: docs only
+        if (options.includeDocsOnly && story.parameters.docsOnly) {
+          return false;
+        }
+
+        return Object.entries(story).reduce((acc, [key, value]) => {
+          if (typeof value === 'function') {
+            return acc;
+          }
+          if (['hooks'].includes(key)) {
+            return acc;
+          }
+          if (Array.isArray(value)) {
+            return Object.assign(acc, { [key]: value.slice().sort() });
+          }
+          return Object.assign(acc, { [key]: value });
+        }, {});
+      })
+      .filter(Boolean);
+  }
+
   getSetStoriesPayload() {
-    const { v, stories } = this.storiesList.storiesList;
-    const kindParameters: Parameters = Object.values(stories).reduce(
-      (acc: Parameters, { title }) => {
-        acc[title] = {};
-        return acc;
-      },
-      {} as Parameters
-    );
+    const stories = this.extract();
+
+    const kindParameters: Parameters = stories.reduce((acc: Parameters, { title }) => {
+      acc[title] = {};
+      return acc;
+    }, {} as Parameters);
 
     return {
-      v,
+      v: 2,
       globals: this.globals.get(),
       globalParameters: {},
       kindParameters,
-      stories: Object.entries(stories).reduce((acc: any, [id, { name, title, importPath }]) => {
-        acc[id] = {
-          id,
-          name,
-          kind: title,
-          parameters: { fileName: importPath },
-        };
-        return acc;
-      }, {}),
+      stories,
     };
   }
 }

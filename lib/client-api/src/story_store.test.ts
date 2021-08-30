@@ -51,34 +51,6 @@
 //     }
 //   );
 
-// describe('preview.story_store', () => {
-//   describe('extract', () => {
-//     it('produces stories objects with inherited (denormalized) metadata', () => {
-//       const store = new StoryStore({ channel });
-
-//       store.addGlobalMetadata({ parameters: { global: 'global' }, decorators: [] });
-
-//       store.addKindMetadata('a', { parameters: { kind: 'kind' }, decorators: [] });
-
-//       addStoryToStore(store, 'a', '1', () => 0, { story: 'story' });
-//       addStoryToStore(store, 'a', '2', () => 0);
-//       addStoryToStore(store, 'b', '1', () => 0);
-
-//       const extracted = store.extract();
-
-//       // We need exact key ordering, even if in theory JS doesn't guarantee it
-//       expect(Object.keys(extracted)).toEqual(['a--1', 'a--2', 'b--1']);
-
-//       // content of item should be correct
-//       expect(extracted['a--1']).toMatchObject({
-//         id: 'a--1',
-//         kind: 'a',
-//         name: '1',
-//         parameters: { global: 'global', kind: 'kind', story: 'story' },
-//       });
-//     });
-//   });
-
 // describe('configuration', () => {
 //   it('does not allow addStory if not configuring, unless allowUsafe=true', () => {
 //     const store = new StoryStore({ channel });

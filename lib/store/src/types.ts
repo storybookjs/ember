@@ -109,3 +109,7 @@ export interface NormalizedStoriesEntry {
   glob?: string;
   specifier?: NormalizedStoriesEntrySpecifier;
 }
+
+export type ExtractOptions = {
+  includeDocsOnly?: boolean;
+};

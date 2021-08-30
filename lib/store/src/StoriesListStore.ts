@@ -37,7 +37,6 @@ export class StoriesListStore {
   }
 
   async onStoriesChanged() {
-    console.log('onStoriesChanged');
     this.storiesList = await this.fetchStoriesList();
   }
 
