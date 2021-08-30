@@ -149,9 +149,10 @@ export default class ClientApi<TFramework extends Framework> {
 
   getStoriesList() {
     const fileNameOrder = Object.keys(this.csfExports);
-    const sortedStoryEntries = Object.entries(this.stories).sort(([id1, story1], [id2, story2]) => {
-      return fileNameOrder.indexOf(story1.importPath) - fileNameOrder.indexOf(story2.importPath);
-    });
+    const sortedStoryEntries = Object.entries(this.stories).sort(
+      ([id1, story1], [id2, story2]) =>
+        fileNameOrder.indexOf(story1.importPath) - fileNameOrder.indexOf(story2.importPath)
+    );
 
     return {
       v: 3,

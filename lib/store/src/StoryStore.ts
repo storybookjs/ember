@@ -91,6 +91,12 @@ export class StoryStore<TFramework extends Framework> {
     this.globals.resetOnGlobalAnnotationsChange({ globals, globalTypes });
   }
 
+  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
+    this.importFn = importFn;
+    // We need to refetch the stories list as it may have changed too
+    await this.storiesList.cacheStoriesList();
+  }
+
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {
     const { importPath, title } = this.storiesList.storyIdToMetadata(storyId);
     const moduleExports = await this.importFn(importPath);

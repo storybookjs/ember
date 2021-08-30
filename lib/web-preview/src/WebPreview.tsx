@@ -185,7 +185,7 @@ export class WebPreview<TFramework extends Framework> {
 
   // This happens when a glob gets HMR-ed
   async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
-    this.storyStore.importFn = importFn;
+    await this.storyStore.onImportFnChanged({ importFn });
 
     if (this.urlStore.selection) {
       this.renderSelection();
