@@ -53,13 +53,15 @@ export const storiesList: StoriesList = {
     },
   },
 };
+export const fetchStoriesList = async () => storiesList;
 
 export const emitter = new EventEmitter();
 export const mockChannel = {
   on: emitter.on.bind(emitter),
-  removeListener: jest.fn(),
-  off: jest.fn(),
-  emit: jest.fn(),
+  off: emitter.off.bind(emitter),
+  removeListener: emitter.off.bind(emitter),
+  emit: jest.fn(emitter.emit.bind(emitter)),
+  // emit: emitter.emit.bind(emitter),
 };
 
 export const waitForEvents = (events: string[]) => {
@@ -70,11 +72,11 @@ export const waitForEvents = (events: string[]) => {
   }
 
   return new Promise((resolve, reject) => {
-    mockChannel.emit.mockImplementation((event) => {
-      if (events.includes(event)) {
-        resolve(null);
-      }
-    });
+    const listener = () => {
+      events.forEach((event) => mockChannel.off(event, listener));
+      resolve(null);
+    };
+    events.forEach((event) => mockChannel.on(event, listener));
 
     // Don't wait too long
     waitForQuiescence().then(() => reject(new Error('Event was not emitted in time')));

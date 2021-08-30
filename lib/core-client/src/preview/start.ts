@@ -1,9 +1,11 @@
-import { ClientApi, ModuleExports } from '@storybook/client-api';
+import { ClientApi } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
 import { Framework, toId, storyNameFromExport } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
+import Events from '@storybook/core-events';
+import { Path, ModuleExports } from '@storybook/store';
 
 import { Loadable, RequireContext, LoaderFunction } from './types';
 
@@ -53,15 +55,14 @@ export function start<TFramework extends Framework>(
   render: WebGlobalAnnotations<TFramework>['renderToDOM'],
   { decorateStory }: { decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'] } = {}
 ) {
-  addons.setChannel(createChannel({ page: 'preview' }));
+  const channel = createChannel({ page: 'preview' });
+  addons.setChannel(channel);
 
   const clientApi = new ClientApi<TFramework>();
   let preview: WebPreview<TFramework>;
 
   return {
-    // TODO
-    // forceReRender: () => preview.forceReRender(),
-    forceReRender: (): void => {},
+    forceReRender: () => channel.emit(Events.FORCE_RE_RENDER),
     getStorybook: (): void[] => [],
     raw: (): void => {},
 
@@ -119,7 +120,7 @@ export function start<TFramework extends Framework>(
       };
 
       preview = new WebPreview({
-        importFn: (path) => clientApi.importFn(path),
+        importFn: (path: Path) => clientApi.importFn(path),
         getGlobalAnnotations,
         fetchStoriesList: async () => clientApi.storiesList,
       });

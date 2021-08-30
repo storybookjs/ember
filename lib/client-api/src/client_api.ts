@@ -194,13 +194,6 @@ export default class ClientApi<TFramework extends Framework> {
     this.globalAnnotations.argTypesEnhancers.push(enhancer);
   };
 
-  // We map these back to a simple default export, even though we have type guarantees at this point
-  addComponentMeta(fileName: Path, meta: NormalizedComponentAnnotations<TFramework>) {
-    this.csfExports[fileName] = {
-      default: meta,
-    };
-  }
-
   // what are the occasions that "m" is a boolean vs an obj
   storiesOf = (kind: string, m?: NodeModule): StoryApi<TFramework> => {
     if (!kind && typeof kind !== 'string') {
@@ -257,7 +250,8 @@ export default class ClientApi<TFramework extends Framework> {
       loaders: [],
       parameters: {},
     };
-    this.addComponentMeta(fileName, meta);
+    // We map these back to a simple default export, even though we have type guarantees at this point
+    this.csfExports[fileName] = { default: meta };
 
     api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;

@@ -1,6 +1,7 @@
 import React from 'react';
 import global from 'global';
 import { RenderContext } from '@storybook/store';
+import addons from '@storybook/addons';
 
 import { WebPreview } from './WebPreview';
 import {
@@ -8,7 +9,7 @@ import {
   importFn,
   globalAnnotations,
   getGlobalAnnotations,
-  storiesList,
+  fetchStoriesList,
   emitter,
   mockChannel,
   waitForRender,
@@ -21,12 +22,6 @@ import {
 jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
 
 jest.mock('./WebView');
-const mockStoriesList = storiesList;
-jest.mock('unfetch', () =>
-  jest.fn(() => ({
-    json: () => mockStoriesList,
-  }))
-);
 
 const { window, document } = global;
 jest.mock('global', () => ({
@@ -52,6 +47,8 @@ beforeEach(() => {
   globalAnnotations.renderToDOM.mockReset();
   globalAnnotations.render.mockClear();
   globalAnnotations.decorators[0].mockClear();
+
+  addons.setChannel(mockChannel as any);
 });
 
 describe('WebPreview', () => {
@@ -61,7 +58,7 @@ describe('WebPreview', () => {
         storyFn()
       );
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalAnnotations, importFn }).initialize();
+      await new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList }).initialize();
 
       await waitForRender();
 
@@ -71,7 +68,7 @@ describe('WebPreview', () => {
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getGlobalAnnotations, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -106,7 +103,7 @@ describe('WebPreview', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalAnnotations, importFn });
+      const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
       await preview.initialize();
       await waitForRender();
 

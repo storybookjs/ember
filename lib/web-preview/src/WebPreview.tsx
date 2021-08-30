@@ -462,6 +462,7 @@ export class WebPreview<TFramework extends Framework> {
 
     // Listen to events and re-render story
     this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
+    this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
     const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) rerenderStory();
     };
@@ -479,6 +480,7 @@ export class WebPreview<TFramework extends Framework> {
       controller.abort();
       this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
+      this.channel.off(Events.FORCE_RE_RENDER, rerenderStory);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
     };
@@ -490,7 +492,6 @@ export class WebPreview<TFramework extends Framework> {
 
   renderPreviewEntryError(err: Error) {
     this.view.showErrorDisplay(err);
-    console.log(err);
     this.channel.emit(Events.CONFIG_ERROR, err);
   }
 

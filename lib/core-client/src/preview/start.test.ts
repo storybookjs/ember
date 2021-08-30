@@ -2,7 +2,11 @@ import global from 'global';
 import { EventEmitter } from 'events';
 import Events from '@storybook/core-events';
 
-import { waitForRender, mockChannel } from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
+import {
+  waitForRender,
+  emitter,
+  mockChannel,
+} from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
 
 import { start } from './start';
 
@@ -22,6 +26,10 @@ jest.mock('global', () => ({
 }));
 
 jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
+
+beforeEach(() => {
+  // mockChannel.emit.mockClear();
+});
 
 describe('start', () => {
   describe('when configure is called with storiesOf only', () => {
@@ -108,6 +116,55 @@ describe('start', () => {
 
       await waitForRender();
 
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+    });
+
+    it('allows global metadata via client-api', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi } = start(render);
+
+      const loader = jest.fn(async () => ({ val: 'loaded' }));
+      const decorator = jest.fn();
+      configure('test', () => {
+        clientApi.addLoader(loader);
+        clientApi.addDecorator(decorator);
+        clientApi.addParameters({ param: 'global' });
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForRender();
+
+      expect(loader).toHaveBeenCalled();
+      expect(decorator).toHaveBeenCalled();
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          storyContext: expect.objectContaining({
+            parameters: expect.objectContaining({
+              param: 'global',
+            }),
+          }),
+        }),
+        undefined
+      );
+    });
+
+    it('supports forceRerender()', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+
+      mockChannel.emit.mockClear();
+      forceReRender();
+
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
     });
   });
