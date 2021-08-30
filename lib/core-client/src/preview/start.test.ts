@@ -1,10 +1,10 @@
 import global from 'global';
-import { EventEmitter } from 'events';
 import Events from '@storybook/core-events';
 
 import {
   waitForRender,
   waitForEvents,
+  emitter,
   mockChannel,
 } from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
 
@@ -28,7 +28,9 @@ jest.mock('global', () => ({
 jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
 
 beforeEach(() => {
-  // mockChannel.emit.mockClear();
+  mockChannel.emit.mockClear();
+  // Preview doesn't clean itself up as it isn't designed to ever be stopped :shrug:
+  emitter.removeAllListeners();
 });
 
 describe('start', () => {

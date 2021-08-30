@@ -6,7 +6,7 @@ import ClientApi, {
   addArgTypesEnhancer,
   setGlobalRender,
   getGlobalRender,
-} from './client_api';
+} from './ClientApi';
 
 import { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';
 

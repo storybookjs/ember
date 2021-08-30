@@ -5,6 +5,7 @@ import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import { Path } from '@storybook/store';
+import { logger } from '@storybook/client-logger';
 
 import { Loadable } from './types';
 import { executeLoadable } from './executeLoadable';
@@ -72,8 +73,8 @@ export function start<TFramework extends Framework>(
         // TODO
         preview
           .initialize()
-          .then(() => console.log('init!'))
-          .catch((err) => console.error(err));
+          .then(() => {})
+          .catch((err: Error) => logger.error(err));
       } else {
         getGlobalAnnotations();
         preview.onImportFnChanged({ importFn: clientApi.importFn.bind(clientApi) });
