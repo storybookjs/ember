@@ -226,13 +226,7 @@ export default class ClientApi<TFramework extends Framework> {
       // itself automatically without us needing to look at our imports
       m.hot.accept();
       m.hot.dispose(() => {
-        // Clear this module's stories from the storyList and existing exports
-        Object.entries(this.storiesList.stories).forEach(([id, { importPath }]) => {
-          if (importPath === fileName) {
-            delete this.storiesList.stories[id];
-          }
-        });
-        delete this.csfExports[fileName];
+        this.clearFilenameExports(fileName);
 
         // We need to update the importFn as soon as the module re-evaluates
         // (and calls storiesOf() again, etc). We could call `onImportFnChanged()`
@@ -336,8 +330,29 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     return api;
   };
 
+  clearFilenameExports(fileName: Path) {
+    if (!this.csfExports[fileName]) {
+      return;
+    }
+
+    // Clear this module's stories from the storyList and existing exports
+    Object.entries(this.storiesList.stories).forEach(([id, { importPath }]) => {
+      if (importPath === fileName) {
+        delete this.storiesList.stories[id];
+      }
+    });
+    delete this.csfExports[fileName];
+  }
+
   // NOTE: we could potentially share some of this code with the stories.json generation
   addStoriesFromExports(fileName: Path, fileExports: ModuleExports) {
+    // if the export haven't changed since last time we added them, this is a no-op
+    if (this.csfExports[fileName] === fileExports) {
+      return;
+    }
+    // OTOH, if they have changed, let's clear them out first
+    this.clearFilenameExports(fileName);
+
     const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
     const { title } = defaultExport || {};
     if (!title) {

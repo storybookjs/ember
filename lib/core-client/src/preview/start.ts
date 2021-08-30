@@ -26,18 +26,34 @@ export function start<TFramework extends Framework>(
 
     clientApi,
     configure(framework: string, loadable: Loadable, m?: NodeModule) {
+      let lastExportsMap: ReturnType<typeof executeLoadable> =
+        m?.hot?.data?.lastExportsMap || new Map();
+      if (m?.hot?.dispose) {
+        m.hot.accept();
+        m.hot.dispose((data) => {
+          // eslint-disable-next-line no-param-reassign
+          data.lastExportsMap = lastExportsMap;
+        });
+      }
+
       clientApi.addParameters({ framework });
 
       const getGlobalAnnotations = () => {
-        // TODO
-        // clientApi.resetGlobalAnnotations();
-
         const exportsMap = executeLoadable(loadable);
         Array.from(exportsMap.entries())
           .filter(([, fileExports]) => !!fileExports.default)
           .forEach(([fileName, fileExports]) => {
+            // Exports haven't changed so there is so no need to do anything
+            if (lastExportsMap.get(fileName) === fileExports) {
+              return;
+            }
+
             clientApi.addStoriesFromExports(fileName, fileExports);
           });
+        Array.from(lastExportsMap.keys())
+          .filter((fileName) => !exportsMap.has(fileName))
+          .forEach((fileName) => clientApi.clearFilenameExports(fileName));
+        lastExportsMap = exportsMap;
 
         return {
           ...clientApi.globalAnnotations,
@@ -45,17 +61,23 @@ export function start<TFramework extends Framework>(
           applyDecorators: decorateStory,
         };
       };
+      if (!preview) {
+        preview = new WebPreview({
+          importFn: (path: Path) => clientApi.importFn(path),
+          getGlobalAnnotations,
+          fetchStoriesList: async () => clientApi.storiesList,
+        });
+        clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
 
-      preview = new WebPreview({
-        importFn: (path: Path) => clientApi.importFn(path),
-        getGlobalAnnotations,
-        fetchStoriesList: async () => clientApi.storiesList,
-      });
-
-      clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
-
-      // TODO
-      preview.initialize().then(() => console.log('init!'));
+        // TODO
+        preview
+          .initialize()
+          .then(() => console.log('init!'))
+          .catch((err) => console.error(err));
+      } else {
+        getGlobalAnnotations();
+        preview.onImportFnChanged({ importFn: clientApi.importFn.bind(clientApi) });
+      }
     },
   };
 }

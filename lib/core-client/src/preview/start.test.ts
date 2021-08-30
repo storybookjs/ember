@@ -4,7 +4,7 @@ import Events from '@storybook/core-events';
 
 import {
   waitForRender,
-  emitter,
+  waitForEvents,
   mockChannel,
 } from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
 
@@ -49,9 +49,7 @@ describe('start', () => {
           .add('Story Three', jest.fn());
       });
 
-      await waitForRender();
-
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_STORIES, expect.any(Object));
+      await waitForEvents([Events.SET_STORIES]);
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`
@@ -204,6 +202,147 @@ describe('start', () => {
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
       expect(secondImplementation).toHaveBeenCalled();
     });
+
+    it('re-emits SET_STORIES when a story is added', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      configure('test', () => {
+        clientApi.storiesOf('Component A', module as any).add('default', jest.fn());
+      });
+
+      await waitForRender();
+
+      mockChannel.emit.mockClear();
+      disposeCallback();
+      clientApi
+        .storiesOf('Component A', module as any)
+        .add('default', jest.fn())
+        .add('new', jest.fn());
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Object {
+            "component-a--default": Object {
+              "id": "component-a--default",
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "fileName": "file1",
+              },
+            },
+            "component-a--new": Object {
+              "id": "component-a--new",
+              "kind": "Component A",
+              "name": "new",
+              "parameters": Object {
+                "fileName": "file1",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+    });
+
+    it('re-emits SET_STORIES when a story file is removed', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const moduleB = {
+        id: 'file2',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as any).add('default', jest.fn());
+        clientApi.storiesOf('Component B', moduleB as any).add('default', jest.fn());
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+            "Component B": Object {},
+          },
+          "stories": Object {
+            "component-a--default": Object {
+              "id": "component-a--default",
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "fileName": "file1",
+              },
+            },
+            "component-b--default": Object {
+              "id": "component-b--default",
+              "kind": "Component B",
+              "name": "default",
+              "parameters": Object {
+                "fileName": "file2",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+      mockChannel.emit.mockClear();
+      disposeCallback();
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Object {
+            "component-a--default": Object {
+              "id": "component-a--default",
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "fileName": "file1",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+    });
   });
 
   const componentCExports = {
@@ -221,9 +360,7 @@ describe('start', () => {
       const { configure } = start(render);
       configure('test', () => [componentCExports]);
 
-      await waitForRender();
-
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_STORIES, expect.any(Object));
+      await waitForEvents([Events.SET_STORIES]);
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`
@@ -267,6 +404,214 @@ describe('start', () => {
         undefined
       );
     });
+
+    it('supports HMR when a story file changes', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+
+      const { configure } = start(render);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-c--story-one'
+      );
+      expect(componentCExports.StoryOne).toHaveBeenCalled();
+      expect(module.hot.accept).toHaveBeenCalled();
+      expect(disposeCallback).toBeDefined();
+
+      mockChannel.emit.mockClear();
+      disposeCallback(module.hot.data);
+      const secondImplementation = jest.fn();
+      configure(
+        'test',
+        () => [{ ...componentCExports, StoryOne: secondImplementation }],
+        module as any
+      );
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-c--story-one'
+      );
+      expect(secondImplementation).toHaveBeenCalled();
+    });
+
+    it('re-emits SET_STORIES when a story is added', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const { configure } = start(render);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForRender();
+
+      mockChannel.emit.mockClear();
+      disposeCallback(module.hot.data);
+      configure('test', () => [{ ...componentCExports, StoryThree: jest.fn() }], module as any);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+          },
+          "stories": Object {
+            "component-c--story-one": Object {
+              "id": "component-c--story-one",
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+            "component-c--story-three": Object {
+              "id": "component-c--story-three",
+              "kind": "Component C",
+              "name": "Story Three",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+            "component-c--story-two": Object {
+              "id": "component-c--story-two",
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+    });
+
+    it('re-emits SET_STORIES when a story file is removed', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const { configure } = start(render);
+      configure(
+        'test',
+        () => [componentCExports, { default: { title: 'Component D' }, StoryFour: jest.fn() }],
+        module as any
+      );
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+            "Component D": Object {},
+          },
+          "stories": Object {
+            "component-c--story-one": Object {
+              "id": "component-c--story-one",
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+            "component-c--story-two": Object {
+              "id": "component-c--story-two",
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+            "component-d--story-four": Object {
+              "id": "component-d--story-four",
+              "kind": "Component D",
+              "name": "Story Four",
+              "parameters": Object {
+                "fileName": "exports-map-1",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+
+      mockChannel.emit.mockClear();
+      console.log('rerunning');
+      disposeCallback(module.hot.data);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+          },
+          "stories": Object {
+            "component-c--story-one": Object {
+              "id": "component-c--story-one",
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+            "component-c--story-two": Object {
+              "id": "component-c--story-two",
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "fileName": "exports-map-0",
+              },
+            },
+          },
+          "v": 3,
+        }
+      `);
+    });
   });
 
   describe('when configure is called with a combination', () => {
@@ -287,9 +632,7 @@ describe('start', () => {
         return [componentCExports];
       });
 
-      await waitForRender();
-
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_STORIES, expect.any(Object));
+      await waitForEvents([Events.SET_STORIES]);
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`

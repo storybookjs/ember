@@ -78,6 +78,7 @@ export class WebPreview<TFramework extends Framework> {
       this.renderToDOM = globalAnnotations.renderToDOM;
       return globalAnnotations;
     } catch (err) {
+      logger.warn(err);
       // This is an error extracting the globalAnnotations (i.e. evaluating the previewEntries) and
       // needs to be show to the user as a simple error
       this.renderPreviewEntryError(err);
@@ -100,8 +101,7 @@ export class WebPreview<TFramework extends Framework> {
 
     await this.selectSpecifiedStory();
 
-    // TODO are we doing this? back-compat?
-    // TODO -- which way round is SET_STORIES/STORY_WAS_SELECTED in 6.3?
+    // TODO -- only with feature
     this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
   }
 
@@ -183,7 +183,7 @@ export class WebPreview<TFramework extends Framework> {
   }
 
   // This happens when a glob gets HMR-ed
-  onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
+  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
     this.storyStore.importFn = importFn;
 
     if (this.urlStore.selection) {
@@ -191,6 +191,9 @@ export class WebPreview<TFramework extends Framework> {
     } else {
       this.selectSpecifiedStory();
     }
+
+    // TODO -- only with feature
+    this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
   }
 
   // This happens when a config file gets reloade
@@ -224,7 +227,6 @@ export class WebPreview<TFramework extends Framework> {
     try {
       story = await this.storyStore.loadStory({ storyId: selection.storyId });
     } catch (err) {
-      logger.warn('Issue loading story:');
       logger.warn(err);
       this.renderMissingStory(selection.storyId);
       return;
