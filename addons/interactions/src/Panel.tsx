@@ -1,36 +1,27 @@
+import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel } from '@storybook/api';
 import { AddonPanel, Button, Icons } from '@storybook/components';
 import { styled } from '@storybook/theming';
-import { EVENTS } from './constants';
-import { StatusIcon } from './components/StatusIcon/StatusIcon';
-import global from 'global';
 
-import { MethodCall } from './components/MethodCall';
+import { EVENTS } from './constants';
 import { Call, CallRef, CallState } from './types';
+import { MatcherResult } from './components/MatcherResult';
+import { MethodCall } from './components/MethodCall';
+import { StatusIcon } from './components/StatusIcon/StatusIcon';
 
 interface PanelProps {
   active: boolean;
 }
 
-global.window.__STORYBOOK_IS_DEBUGGING__ = false;
-const setDebugging = (value: boolean) => {
-  global.window.__STORYBOOK_IS_DEBUGGING__ = value;
+global.window.__STORYBOOK_ADDON_TEST__ = global.window.__STORYBOOK_ADDON_TEST__ || {
+  isDebugging: false,
+  chainedCallIds: new Set<Call['id']>(),
+  playUntil: undefined,
 };
 
-global.window.__STORYBOOK_PLAY_UNTIL__ = undefined;
-const setPlayUntil = (value: Call['id']) => {
-  global.window.__STORYBOOK_PLAY_UNTIL__ = value;
-};
-
-global.window.__STORYBOOK_CHAINED_CALL_IDS__ = new Set<Call['id']>();
-const addChainedCall = (callRef: CallRef) => {
-  global.window.__STORYBOOK_CHAINED_CALL_IDS__.add(callRef.__callId__);
-};
-const clearChainedCalls = () => {
-  global.window.__STORYBOOK_CHAINED_CALL_IDS__.clear();
-};
+const sharedState = global.window.__STORYBOOK_ADDON_TEST__;
 
 const fold = (calls: Call[]) => {
   const seen = new Set();
@@ -84,7 +75,7 @@ const Row = ({
   });
   const detailStyle = {
     margin: 0,
-    padding: '8px 10px 8px 27px',
+    padding: '8px 10px 8px 30px',
   };
   return (
     <RowContainer>
@@ -94,9 +85,12 @@ const Row = ({
           <MethodCall call={call} callsById={callsById} />
         </div>
       </RowLabel>
-      {call.state === CallState.ERROR && (
-        <pre style={detailStyle}>{call.exception.message}</pre>
-      )}
+      {call.state === CallState.ERROR &&
+        (call.exception.message.startsWith('expect(') ? (
+          <MatcherResult {...call.exception} />
+        ) : (
+          <pre style={detailStyle}>{call.exception.message}</pre>
+        ))}
     </RowContainer>
   );
 };
@@ -144,19 +138,19 @@ export const Panel: React.FC<PanelProps> = (props) => {
         };
 
       case 'start':
-        setDebugging(true);
-        setPlayUntil(action.payload?.playUntil);
+        sharedState.isDebugging = true;
+        sharedState.playUntil = action.payload?.playUntil;
         return { ...state, isDebugging: true, cursor: 0 };
 
       case 'stop':
-        setDebugging(false);
-        setPlayUntil(undefined);
+        sharedState.isDebugging = false;
+        sharedState.playUntil = undefined;
         return { ...state, isDebugging: false };
 
       case 'reset':
-        setDebugging(false);
-        setPlayUntil(undefined);
-        clearChainedCalls();
+        sharedState.isDebugging = false;
+        sharedState.playUntil = undefined;
+        sharedState.chainedCallIds.clear();
         return initialState;
     }
   };
@@ -165,14 +159,16 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: (call) => {
       dispatch({ type: 'call', payload: { call } });
-      call.path.filter((ref: CallRef) => ref?.__callId__).forEach(addChainedCall);
-    },
-    storyRendered: () => {
-      dispatch({ type: 'stop' });
-      emit(EVENTS.RESET);
+      call.path
+        .filter((ref: CallRef) => ref?.__callId__)
+        .forEach((ref: CallRef) => sharedState.chainedCallIds.add(ref.__callId__));
     },
     setCurrentStory: () => {
       dispatch({ type: 'reset' });
+      emit(EVENTS.RESET);
+    },
+    storyRendered: () => {
+      dispatch({ type: 'stop' });
       emit(EVENTS.RESET);
     },
   });
@@ -186,7 +182,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     emit(EVENTS.NEXT);
   };
   const next = () => {
-    setPlayUntil(undefined);
+    sharedState.playUntil = undefined;
     emit(EVENTS.NEXT);
   };
 

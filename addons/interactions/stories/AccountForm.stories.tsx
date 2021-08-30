@@ -55,11 +55,9 @@ export const StandardEmailSuccess = {
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
     await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
     await userEvent.click(canvas.getByTestId('submit'));
-    await expect(args.onSubmit).toHaveBeenCalledWith({
-      email: 'michael@chromatic.coma',
-      password: 'testpasswordthatwontfail',
-    });
-    await userEvent.type(canvas.getByTestId('email'), 'yeah');
+    await tick();
+    await expect(args.onSubmit).toHaveBeenCalledTimes(1);
+    await expect(args.onSubmit).toHaveBeenCalledWith();
   },
 };
 

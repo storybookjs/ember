@@ -1,9 +1,10 @@
 import React from 'react';
 import { Call } from '../types';
-import { MethodCall } from './MethodCall';
+import { Node, MethodCall } from './MethodCall';
 
 export default {
   title: 'MethodCall',
+  component: MethodCall,
   decorators: [
     (Story: any) => (
       <span style={{ fontFamily: 'Monaco, monospace', fontSize: 12 }}>
@@ -12,6 +13,47 @@ export default {
     ),
   ],
 };
+
+class FooBar {}
+export const Args = () => (
+  <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 10 }}>
+    <Node value={null} />
+    <Node value={undefined} />
+    <Node value="Hello world" />
+    <Node value="https://github.com/storybookjs/storybook/blob/next/README.md" />
+    <Node value="012345678901234567890123456789012345678901234567890123456789" />
+    <Node value={true} />
+    <Node value={false} />
+    <Node value={12345} />
+    <Node value={['foo', 1, { hello: 'world' }]} />
+    <Node value={[...Array(23)].map((_, i) => i)} />
+    <Node value={{ hello: 'world' }} />
+    <Node value={{ hello: 'world', arr: [1, 2, 3], more: 1 }} />
+    <Node value={new FooBar()} />
+    <Node value={function goFaster() {}} />
+    <Node value={{ __element__: { localName: 'div', id: 'foo' } }} />
+    <Node value={{ __element__: { localName: 'span', classList: ['foo', 'bar'] } }} />
+    <Node value={{ __element__: { prefix: 'foo', localName: 'bar' } }} />
+    <Node value={new Date(Date.UTC(2012, 11, 20, 0, 0, 0))} />
+    <Node value={new Date(1600000000000)} />
+    <Node value={new Date(1600000000123)} />
+    <Node value={new EvalError()} />
+    <Node value={new SyntaxError("Can't do that")} />
+    <Node value={new TypeError("Cannot read property 'foo' of undefined")} />
+    <Node value={new ReferenceError('Invalid left-hand side in assignment')} />
+    <Node
+      value={
+        new Error(
+          "XMLHttpRequest cannot load https://example.com. No 'Access-Control-Allow-Origin' header is present on the requested resource."
+        )
+      }
+    />
+    <Node value={/hello/i} />
+    <Node value={new RegExp(`src(.*)\\.js$`)} />
+    <Node value={Symbol()} />
+    <Node value={Symbol('Hello world')} />
+  </div>
+);
 
 const calls = [
   {
@@ -53,7 +95,7 @@ const calls = [
     id: '6',
     path: [],
     method: 'expect',
-    args: [{ __callId__: '5'}],
+    args: [{ __callId__: '5' }],
     interceptable: false,
   },
   {
@@ -65,9 +107,9 @@ const calls = [
   },
   {
     id: '8',
-    path: [{ __callId__: '6'}, 'not'],
+    path: [{ __callId__: '6' }, 'not'],
     method: 'toHaveBeenCalledWith',
-    args: [{ __callId__: '7'}, new Error("Cannot read property 'foo' of undefined")],
+    args: [{ __callId__: '7' }, new Error("Cannot read property 'foo' of undefined")],
     interceptable: false,
   },
 ];

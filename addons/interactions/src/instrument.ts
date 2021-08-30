@@ -17,28 +17,25 @@ export interface PatchedFunction extends Function {
   _original: Function;
 }
 
-// TODO move to some global object
-let n = 0;
-let next: (value?: unknown) => void = undefined;
-global.window.callRefsByResult = new Map();
+global.window.__STORYBOOK_ADDON_TEST__ = global.window.__STORYBOOK_ADDON_TEST__ || {
+  n: 0,
+  next: undefined,
+  callRefsByResult: new Map(),
+};
 
-channel.on(EVENTS.RESET, () => {
-  n = 0;
-  next = undefined;
-  global.window.callRefsByResult.clear();
-});
-channel.on(EVENTS.NEXT, () => next && next());
+const iframeState = global.window.__STORYBOOK_ADDON_TEST__;
+const sharedState = global.window.parent.__STORYBOOK_ADDON_TEST__;
+
+channel.on(EVENTS.NEXT, () => iframeState.next && iframeState.next());
 channel.on(EVENTS.RELOAD, () => global.window.location.reload());
+channel.on(EVENTS.RESET, () => {
+  iframeState.n = 0;
+  iframeState.next = undefined;
+  iframeState.callRefsByResult.clear();
+});
 
 const isObject = (o: unknown) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown) => Object.prototype.toString.call(o) === '[object Module]';
-
-const isDebugging = () => !!global.window.parent.__STORYBOOK_IS_DEBUGGING__;
-const getChainedCallIds = () => global.window.parent.__STORYBOOK_CHAINED_CALL_IDS__;
-const getPlayUntil = () => global.window.parent.__STORYBOOK_PLAY_UNTIL__;
-const clearPlayUntil = () => {
-  global.window.parent.__STORYBOOK_PLAY_UNTIL__ = undefined;
-};
 
 function isPatchable(o: unknown) {
   if (!isObject(o) && !isModule(o)) return false;
@@ -61,8 +58,8 @@ function run(fn: Function, call: Call) {
   // Map args that originate from a tracked function call to a call reference to enable nesting.
   // These values are often not fully serializable anyway (e.g. DOM elements).
   const mappedArgs = call.args.map((arg) => {
-    if (global.window.callRefsByResult.has(arg)) {
-      return global.window.callRefsByResult.get(arg);
+    if (iframeState.callRefsByResult.has(arg)) {
+      return iframeState.callRefsByResult.get(arg);
     }
     if (arg instanceof Element) {
       const { prefix, localName, id, classList } = arg;
@@ -77,7 +74,7 @@ function run(fn: Function, call: Call) {
     if (result && result !== true) {
       // Track the result so we can trace later uses of it back to the originating call.
       // Generic results like null, undefined, true and false are ignored.
-      global.window.callRefsByResult.set(result, { __callId__: call.id });
+      iframeState.callRefsByResult.set(result, { __callId__: call.id });
     }
     return result;
   } catch (e) {
@@ -95,16 +92,15 @@ function run(fn: Function, call: Call) {
 function intercept(fn: Function, call: Call) {
   // For a "jump to step" action, continue playing until we hit a call by that ID.
   // For chained calls, we can only return a Promise for the last call in the chain.
-  const playUntil = getPlayUntil();
-  const isChainedUpon = getChainedCallIds().has(call.id);
-  if (playUntil || isChainedUpon || !isDebugging()) {
-    if (playUntil === call.id) clearPlayUntil();
+  const isChainedUpon = sharedState.chainedCallIds.has(call.id);
+  if (sharedState.playUntil || isChainedUpon || !sharedState.isDebugging) {
+    if (sharedState.playUntil === call.id) sharedState.playUntil = undefined;
     return run(fn, call);
   }
 
   // Instead of invoking the function, defer the function call until we continue playing.
-  return new Promise((resolve) => (next = resolve))
-    .then(() => (next = undefined))
+  return new Promise((resolve) => (iframeState.next = resolve))
+    .then(() => (iframeState.next = undefined))
     .then(() => run(fn, call));
 }
 
@@ -112,7 +108,7 @@ function intercept(fn: Function, call: Call) {
 // Returns a function that invokes the original function, records the invocation ("call") and
 // returns the original result.
 function track(method: string, fn: Function, args: any[], { path = [], ...options }: Options) {
-  const id = `${n++}-${method}`;
+  const id = `${iframeState.n++}-${method}`;
   const call: Call = { id, path, method, args, interceptable: !!options.intercept };
   const result = (options.intercept ? intercept : run)(fn, call);
   return instrument(result, { ...options, path: [{ __callId__: call.id }] });
