@@ -1,6 +1,6 @@
-import { ClientApi, ModuleExports } from '@storybook/client-api';
+import { ClientApi } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
-import { Framework, toId, storyNameFromExport } from '@storybook/csf';
+import { Framework } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
@@ -52,8 +52,7 @@ export function start<TFramework extends Framework>(
         fetchStoriesList: async () => clientApi.storiesList,
       });
 
-      // m.accept(() => { preview.onGlobalAnnotationsChanged() });
-      // clientApi.onImportFnChanged = () => preview.onImportFnChanged();
+      clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
 
       // TODO
       preview.initialize().then(() => console.log('init!'));

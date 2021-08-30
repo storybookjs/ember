@@ -15,13 +15,13 @@ import {
   storyNameFromExport,
 } from '@storybook/csf';
 import {
-  CSFFile,
   NormalizedComponentAnnotations,
   NormalizedGlobalAnnotations,
   Path,
   StoriesList,
   combineParameters,
   ModuleExports,
+  ModuleImportFn,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -112,6 +112,8 @@ export default class ClientApi<TFramework extends Framework> {
   storiesList: StoriesList;
 
   csfExports: Record<Path, ModuleExports>;
+
+  onImportFnChanged?: ({ importFn: ModuleImportFn }) => void;
 
   private _addons: ClientApiAddons<TFramework>;
 
@@ -216,10 +218,30 @@ export default class ClientApi<TFramework extends Framework> {
       }
     }
 
+    // eslint-disable-next-line no-plusplus
+    const fileName = m && m.id ? `${m.id}` : (this._lastFileName++).toString();
+
     if (m && m.hot && m.hot.accept) {
-      m.hot.accept(() => {
-        // Need to do this somehow:
-        // preview.onImportFnChanged({ importFn });
+      // This module used storiesOf(), so when it re-runs on HMR, it will reload
+      // itself automatically without us needing to look at our imports
+      m.hot.accept();
+      m.hot.dispose(() => {
+        // Clear this module's stories from the storyList and existing exports
+        Object.entries(this.storiesList.stories).forEach(([id, { importPath }]) => {
+          if (importPath === fileName) {
+            delete this.storiesList.stories[id];
+          }
+        });
+        delete this.csfExports[fileName];
+
+        // We need to update the importFn as soon as the module re-evaluates
+        // (and calls storiesOf() again, etc). We could call `onImportFnChanged()`
+        // at the end of every setStories call (somehow), but then we'd need to
+        // debounce it somehow for initial startup. Instead, we'll take advantage of
+        // the fact that the evaluation of the module happens immediately in the same tick
+        setTimeout(() => {
+          this.onImportFnChanged?.({ importFn: this.importFn.bind(this) });
+        }, 0);
       });
     }
 
@@ -241,8 +263,6 @@ export default class ClientApi<TFramework extends Framework> {
       };
     });
 
-    // eslint-disable-next-line no-plusplus
-    const fileName = m && m.id ? `${m.id}` : (this._lastFileName++).toString();
     const meta: NormalizedComponentAnnotations<TFramework> = {
       id: sanitize(kind),
       title: kind,

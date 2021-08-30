@@ -224,6 +224,8 @@ export class WebPreview<TFramework extends Framework> {
     try {
       story = await this.storyStore.loadStory({ storyId: selection.storyId });
     } catch (err) {
+      logger.warn('Issue loading story:');
+      logger.warn(err);
       this.renderMissingStory(selection.storyId);
       return;
     }

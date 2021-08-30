@@ -168,6 +168,42 @@ describe('start', () => {
       await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
     });
+
+    it('supports HMR when a story file changes', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const firstImplementation = jest.fn();
+      configure('test', () => {
+        clientApi.storiesOf('Component A', module as any).add('default', firstImplementation);
+      });
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+      expect(firstImplementation).toHaveBeenCalled();
+      expect(module.hot.accept).toHaveBeenCalled();
+      expect(disposeCallback).toBeDefined();
+
+      mockChannel.emit.mockClear();
+      disposeCallback();
+      const secondImplementation = jest.fn();
+      clientApi.storiesOf('Component A', module as any).add('default', secondImplementation);
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+      expect(secondImplementation).toHaveBeenCalled();
+    });
   });
 
   const componentCExports = {
