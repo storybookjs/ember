@@ -269,6 +269,11 @@ export interface StorybookConfig {
      * Activate modern inline rendering
      */
     modernInlineRender?: boolean;
+
+    /**
+     * Activate on demand story store
+     */
+    storyStoreV7?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

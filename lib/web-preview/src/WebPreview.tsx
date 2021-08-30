@@ -22,7 +22,7 @@ import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { NoDocs } from './NoDocs';
 
-const { window: globalWindow, AbortController } = global;
+const { window: globalWindow, AbortController, FEATURES } = global;
 
 function focusInInput(event: Event) {
   const target = event.target as Element;
@@ -101,8 +101,9 @@ export class WebPreview<TFramework extends Framework> {
 
     await this.selectSpecifiedStory();
 
-    // TODO -- only with feature
-    this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
+    if (!FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
+    }
   }
 
   setupListeners() {
@@ -192,8 +193,9 @@ export class WebPreview<TFramework extends Framework> {
       this.selectSpecifiedStory();
     }
 
-    // TODO -- only with feature
-    this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
+    if (!FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
+    }
   }
 
   // This happens when a config file gets reloade

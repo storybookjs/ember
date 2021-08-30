@@ -92,8 +92,7 @@ export default async ({
   const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
 
   const virtualModuleMapping: Record<string, string> = {};
-  // TODO -- this is likely a separate feature onDemandStore?
-  if (features.buildStoriesJson) {
+  if (features?.storyStoreV7) {
     const storiesFilename = 'storybook-stories.js';
     const storiesPath = path.resolve(path.join(configDir, storiesFilename));
 
