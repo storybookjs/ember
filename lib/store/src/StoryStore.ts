@@ -5,6 +5,7 @@ import {
   StoryContextForLoaders,
   Framework,
   GlobalAnnotations,
+  ComponentTitle,
 } from '@storybook/csf';
 
 import { StoriesListStore } from './StoriesListStore';
@@ -208,10 +209,13 @@ export class StoryStore<TFramework extends Framework> {
   getSetStoriesPayload() {
     const stories = this.extract();
 
-    const kindParameters: Parameters = stories.reduce((acc: Parameters, { title }) => {
-      acc[title] = {};
-      return acc;
-    }, {} as Parameters);
+    const kindParameters: Parameters = stories.reduce(
+      (acc: Parameters, { title }: { title: ComponentTitle }) => {
+        acc[title] = {};
+        return acc;
+      },
+      {} as Parameters
+    );
 
     return {
       v: 2,
