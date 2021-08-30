@@ -12,6 +12,7 @@ import {
   LoaderFunction,
   StoryFn,
   sanitize,
+  storyNameFromExport,
 } from '@storybook/csf';
 import {
   CSFFile,
@@ -20,7 +21,6 @@ import {
   Path,
   StoriesList,
   combineParameters,
-  NormalizedStoryAnnotations,
   ModuleExports,
 } from '@storybook/store';
 
@@ -315,6 +315,43 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
 
     return api;
   };
+
+  // NOTE: we could potentially share some of this code with the stories.json generation
+  addStoriesFromExports(fileName: Path, fileExports: ModuleExports) {
+    const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
+    const { title } = defaultExport || {};
+    if (!title) {
+      throw new Error(
+        `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
+      );
+    }
+
+    this.csfExports[fileName] = fileExports;
+
+    let exports = namedExports;
+    if (Array.isArray(__namedExportsOrder)) {
+      exports = {};
+      __namedExportsOrder.forEach((name) => {
+        if (namedExports[name]) {
+          exports[name] = namedExports[name];
+        }
+      });
+    }
+    Object.entries(exports).forEach(([key, storyExport]: [string, any]) => {
+      const actualName: string =
+        (typeof storyExport !== 'function' && storyExport.name) ||
+        storyExport.storyName ||
+        storyExport.story?.name ||
+        storyNameFromExport(key);
+      // eslint-disable-next-line no-underscore-dangle
+      const id = storyExport.parameters?.__id || toId(title, actualName);
+      this.storiesList.stories[id] = {
+        name: actualName,
+        title,
+        importPath: fileName,
+      };
+    });
+  }
 
   // TODO
   getStorybook: () => [];

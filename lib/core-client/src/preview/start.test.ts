@@ -141,6 +141,7 @@ describe('start', () => {
         expect.objectContaining({
           storyContext: expect.objectContaining({
             parameters: expect.objectContaining({
+              framework: 'test',
               param: 'global',
             }),
           }),
