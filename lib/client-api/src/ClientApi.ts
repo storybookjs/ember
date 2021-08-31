@@ -123,7 +123,7 @@ export default class ClientApi<TFramework extends Framework> {
 
   storyStore?: StoryStore<TFramework>;
 
-  onImportFnChanged?: ({ importFn: ModuleImportFn }) => void;
+  onImportFnChanged?: ({ importFn }: { importFn: ModuleImportFn }) => void;
 
   private stories: StoriesList['stories'];
 
@@ -404,7 +404,6 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
         storyExport.storyName ||
         storyExport.story?.name ||
         storyNameFromExport(key);
-      // eslint-disable-next-line no-underscore-dangle
       const id = storyExport.parameters?.__id || toId(title, actualName);
       this.stories[id] = {
         name: actualName,
