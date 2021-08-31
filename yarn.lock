@@ -8038,7 +8038,7 @@ __metadata:
     commander: ^6.2.1
     compression: ^1.7.4
     core-js: ^3.8.2
-    cpy: ^8.1.1
+    cpy: ^8.1.2
     detect-port: ^1.3.0
     express: ^4.17.1
     file-system-cache: ^1.0.5
@@ -17757,9 +17757,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cpy@npm:^8.1.1":
-  version: 8.1.1
-  resolution: "cpy@npm:8.1.1"
+"cpy@npm:^8.1.2":
+  version: 8.1.2
+  resolution: "cpy@npm:8.1.2"
   dependencies:
     arrify: ^2.0.1
     cp-file: ^7.0.0
@@ -17770,7 +17770,7 @@ __metadata:
     p-all: ^2.1.0
     p-filter: ^2.1.0
     p-map: ^3.0.0
-  checksum: efbaa7bc83f196cf3db8625b6d55eae47091b2cbb892c9ff766822cd5cc0c194b971c6cbcae71cf211c83f2db4763d457c8d206346055749d2aeed93d3bd58ea
+  checksum: 84611fdd526a0582ae501a0fa1e1d55e16348c69110eb17be5fc0c087b7b2aa6caec014286b669e4f123750d01e0c4db77d32fdcdb9840c3df4d161a137a345a
   languageName: node
   linkType: hard
 
