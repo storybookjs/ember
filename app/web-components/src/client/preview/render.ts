@@ -5,7 +5,7 @@ import { render, TemplateResult } from 'lit-html';
 // Keep `.js` extension to avoid issue with Webpack (related to export map?)
 // eslint-disable-next-line import/extensions
 import { isTemplateResult } from 'lit-html/directive-helpers.js';
-import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/web-preview';
 import { RenderContext } from './types';
 import { WebComponentsFramework } from './types-6-0';
 
