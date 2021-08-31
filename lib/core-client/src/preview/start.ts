@@ -1,3 +1,4 @@
+import { global } from 'global';
 import { ClientApi } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
 import { Framework } from '@storybook/csf';
@@ -9,6 +10,8 @@ import { Path } from '@storybook/store';
 import { Loadable } from './types';
 import { executeLoadableForChanges } from './executeLoadable';
 
+const { window: globalWindow } = global;
+
 export function start<TFramework extends Framework>(
   renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'],
   { decorateStory }: { decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'] } = {}
@@ -18,6 +21,11 @@ export function start<TFramework extends Framework>(
 
   let preview: WebPreview<TFramework>;
   const clientApi = new ClientApi<TFramework>();
+
+  if (globalWindow) {
+    globalWindow.__STORYBOOK_CLIENT_API__ = clientApi;
+    globalWindow.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+  }
 
   return {
     forceReRender: () => channel.emit(Events.FORCE_RE_RENDER),
@@ -56,6 +64,11 @@ export function start<TFramework extends Framework>(
           getGlobalAnnotations,
           fetchStoriesList: async () => clientApi.getStoriesList(),
         });
+        if (globalWindow) {
+          // eslint-disable-next-line no-underscore-dangle
+          globalWindow.__STORYBOOK_PREVIEW__ = preview;
+          globalWindow.__STORYBOOK_STORY_STORE__ = preview.storyStore;
+        }
 
         // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
         // direct reference to `WebPreview`, so we need to patch in bits

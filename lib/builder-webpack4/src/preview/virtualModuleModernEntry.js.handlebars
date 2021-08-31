@@ -16,9 +16,14 @@ const fetchStoriesList = async () => {
   return result.json();
 }
 
-addons.setChannel(createChannel({ page: 'preview' }));
+const channel = createChannel({ page: 'preview' });
+addons.setChannel(channel);
 const preview = new WebPreview({ importFn, getGlobalAnnotations, fetchStoriesList });
+
 window.__STORYBOOK_PREVIEW__ = preview;
+window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
+window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+
 preview.initialize();
 
 if (module.hot) {
