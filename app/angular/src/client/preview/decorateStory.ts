@@ -1,4 +1,5 @@
-import { DecoratorFunction, StoryContext, StoryContextUpdate, StoryFn } from '@storybook/csf';
+import { DecoratorFunction, StoryContext, StoryFn } from '@storybook/csf';
+import { sanitizeStoryContextUpdate } from '@storybook/store';
 import { computesTemplateFromComponent } from './angular-beta/ComputesTemplateFromComponent';
 
 import { AngularFramework } from './types-6-0';
@@ -11,16 +12,12 @@ export default function decorateStory(
     (previousStoryFn: StoryFn<AngularFramework>, decorator) => (
       context: StoryContext<AngularFramework>
     ) => {
-      const decoratedStory = decorator(
-        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
-          return previousStoryFn({
-            ...context,
-            ...(args && { args }),
-            ...(globals && { globals }),
-          });
-        },
-        context
-      );
+      const decoratedStory = decorator((update) => {
+        return previousStoryFn({
+          ...context,
+          ...sanitizeStoryContextUpdate(update),
+        });
+      }, context);
 
       return decoratedStory;
     },

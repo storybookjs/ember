@@ -3,6 +3,7 @@ import Vue, { VueConstructor, ComponentOptions } from 'vue';
 import { start } from '@storybook/core/client';
 import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { sanitizeStoryContextUpdate } from '@storybook/store';
 
 import './globals';
 import { IStorybookSection, StoryFnVueReturnType } from './types';
@@ -67,13 +68,10 @@ function decorateStory(
     (decorated: StoryFn<VueFramework>, decorator) => (context: StoryContext<VueFramework>) => {
       let story;
 
-      const decoratedStory = decorator(
-        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
-          story = decorated({ ...context, ...(args && { args }), ...(globals && { globals }) });
-          return story;
-        },
-        context
-      );
+      const decoratedStory = decorator((update) => {
+        story = decorated({ ...context, ...sanitizeStoryContextUpdate(update) });
+        return story;
+      }, context);
 
       if (!story) {
         story = decorated(context);

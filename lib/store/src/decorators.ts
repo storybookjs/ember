@@ -22,6 +22,28 @@ export function decorateStory<TFramework extends Framework>(
 
 type ContextStore<TFramework extends Framework> = { value?: StoryContext<TFramework> };
 
+/**
+ * Currently StoryContextUpdates are allowed to have any key in the type.
+ * However, you cannot overwrite any of the build-it "static" keys.
+ *
+ * @param inputContextUpdate StoryContextUpdate
+ * @returns StoryContextUpdate
+ */
+export function sanitizeStoryContextUpdate({
+  componentId,
+  title,
+  kind,
+  id,
+  name,
+  story,
+  parameters,
+  initialArgs,
+  argTypes,
+  ...update
+}: StoryContextUpdate = {}): StoryContextUpdate {
+  return update;
+}
+
 export function defaultDecorateStory<TFramework extends Framework>(
   storyFn: LegacyStoryFn<TFramework>,
   decorators: DecoratorFunction<TFramework>[]
@@ -46,11 +68,10 @@ export function defaultDecorateStory<TFramework extends Framework>(
    */
   const bindWithContext = (
     decoratedStoryFn: LegacyStoryFn<TFramework>
-  ): PartialStoryFn<TFramework> => ({ args, globals } = {} as StoryContextUpdate) => {
+  ): PartialStoryFn<TFramework> => (update) => {
     contextStore.value = {
       ...contextStore.value,
-      ...(args && { args }),
-      ...(globals && { globals }),
+      ...sanitizeStoryContextUpdate(update),
     };
     return decoratedStoryFn(contextStore.value);
   };

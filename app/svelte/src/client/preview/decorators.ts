@@ -1,4 +1,5 @@
 import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
+import { sanitizeStoryContextUpdate } from '@storybook/store';
 import SlotDecorator from './SlotDecorator.svelte';
 import { SvelteFramework } from './types';
 
@@ -68,17 +69,13 @@ export function decorateStory(storyFn: any, decorators: any[]) {
       context: StoryContext<SvelteFramework>
     ) => {
       let story;
-      const decoratedStory = decorator(
-        ({ args, globals }: StoryContextUpdate = {} as StoryContextUpdate) => {
-          story = previousStoryFn({
-            ...context,
-            ...(args && { args }),
-            ...(globals && { globals }),
-          });
-          return story;
-        },
-        context
-      );
+      const decoratedStory = decorator((update) => {
+        story = previousStoryFn({
+          ...context,
+          ...sanitizeStoryContextUpdate(update),
+        });
+        return story;
+      }, context);
 
       if (!story) {
         story = previousStoryFn(context);
