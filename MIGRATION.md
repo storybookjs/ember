@@ -195,7 +195,7 @@ In the new mode, Storybook expects you to provide a configuration file. If you w
 npx sb@next babelrc
 ```
 
-This will create a `.babelrc.json` file. You may need to add package dependencies.
+This will create a `.babelrc.json` file. This file includes a bunch of babel plugins, so you may need to add new package devDependencies accordingly.
 
 ## From version 6.2.x to 6.3.0
 
