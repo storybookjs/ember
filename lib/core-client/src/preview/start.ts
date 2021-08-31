@@ -1,4 +1,4 @@
-import { global } from 'global';
+import global from 'global';
 import { ClientApi } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
 import { Framework } from '@storybook/csf';

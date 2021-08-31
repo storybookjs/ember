@@ -904,7 +904,7 @@ describe('start', () => {
   // a ClientApi and a StoryStore
   describe('ClientApi.getStorybook', () => {
     it('should transform the storybook to an array with filenames', async () => {
-      const { configure, clientApi } = start(jest.fn);
+      const { configure, clientApi } = start(jest.fn());
 
       let book;
 
@@ -957,7 +957,7 @@ describe('start', () => {
     });
 
     it('reads filename from module', async () => {
-      const { configure, clientApi } = start(jest.fn);
+      const { configure, clientApi } = start(jest.fn());
 
       const fn = jest.fn();
       await configure('test', () => {
@@ -981,7 +981,7 @@ describe('start', () => {
     });
 
     it('should stringify ids from module', async () => {
-      const { configure, clientApi } = start(jest.fn);
+      const { configure, clientApi } = start(jest.fn());
 
       const fn = jest.fn();
       await configure('test', () => {
