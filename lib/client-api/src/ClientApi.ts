@@ -1,4 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
@@ -13,6 +12,7 @@ import {
   StoryFn,
   sanitize,
   storyNameFromExport,
+  ComponentTitle,
 } from '@storybook/csf';
 import {
   NormalizedComponentAnnotations,
@@ -22,9 +22,21 @@ import {
   ModuleExports,
   ModuleImportFn,
   combineParameters,
+  StoryStore,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
+
+export interface GetStorybookStory<TFramework extends Framework> {
+  name: string;
+  render: StoryFn<TFramework>;
+}
+
+export interface GetStorybookKind<TFramework extends Framework> {
+  kind: string;
+  fileName: string;
+  stories: GetStorybookStory<TFramework>[];
+}
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
 // relevant framework instanciates them via `start.js`. The good news is this happens right away.
@@ -109,19 +121,19 @@ const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi<TFramework extends Framework> {
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
-  private fileNames: Record<Path, boolean>;
+  storyStore?: StoryStore<TFramework>;
+
+  onImportFnChanged?: ({ importFn: ModuleImportFn }) => void;
 
   private stories: StoriesList['stories'];
 
   private csfExports: Record<Path, ModuleExports>;
 
-  onImportFnChanged?: ({ importFn: ModuleImportFn }) => void;
-
-  private _addons: ClientApiAddons<TFramework>;
+  private addons: ClientApiAddons<TFramework>;
 
   // If we don't get passed modules so don't know filenames, we can
   // just use numeric indexes
-  private _lastFileName = 0;
+  private lastFileName = 0;
 
   constructor() {
     this.globalAnnotations = {
@@ -136,7 +148,7 @@ export default class ClientApi<TFramework extends Framework> {
 
     this.csfExports = {};
 
-    this._addons = {};
+    this.addons = {};
 
     singleton = this;
   }
@@ -165,10 +177,7 @@ export default class ClientApi<TFramework extends Framework> {
 
   setAddon = deprecate(
     (addon: any) => {
-      this._addons = {
-        ...this._addons,
-        ...addon,
-      };
+      this.addons = { ...this.addons, ...addon };
     },
     dedent`
       \`setAddon\` is deprecated and will be removed in Storybook 7.0.
@@ -234,7 +243,7 @@ export default class ClientApi<TFramework extends Framework> {
     }
 
     // eslint-disable-next-line no-plusplus
-    const fileName = m && m.id ? `${m.id}` : (this._lastFileName++).toString();
+    const fileName = m && m.id ? `${m.id}` : (this.lastFileName++).toString();
 
     if (m && m.hot && m.hot.accept) {
       // This module used storiesOf(), so when it re-runs on HMR, it will reload
@@ -264,8 +273,8 @@ export default class ClientApi<TFramework extends Framework> {
     };
 
     // apply addons
-    Object.keys(this._addons).forEach((name) => {
-      const addon = this._addons[name];
+    Object.keys(this.addons).forEach((name) => {
+      const addon = this.addons[name];
       api[name] = (...args: any[]) => {
         addon.apply(api, args);
         return api;
@@ -405,8 +414,23 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     });
   }
 
-  // TODO
-  getStorybook: () => [];
+  getStorybook(): GetStorybookKind<TFramework>[] {
+    const storiesList = this.getStoriesList();
 
-  raw: () => [];
+    const kinds: Record<ComponentTitle, GetStorybookKind<TFramework>> = {};
+    Object.entries(storiesList.stories).forEach(([storyId, { title, name, importPath }]) => {
+      if (!kinds[title]) {
+        kinds[title] = { kind: title, fileName: importPath, stories: [] };
+      }
+
+      const csfFile = this.storyStore.cachedCSFFiles[importPath];
+      const { unboundStoryFn } = this.storyStore.storyFromCSFFile({
+        storyId,
+        csfFile,
+      });
+      kinds[title].stories.push({ name, render: unboundStoryFn });
+    });
+
+    return Object.values(kinds);
+  }
 }
