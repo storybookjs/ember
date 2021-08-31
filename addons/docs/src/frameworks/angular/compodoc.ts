@@ -173,7 +173,6 @@ const extractDefaultValue = (property: Property) => {
 
     return value;
   } catch (err) {
-    console.log('UNABLE TO EVAL: ', err);
     logger.debug(`Error extracting ${property.name}: ${property.defaultValue}`);
     return undefined;
   }
