@@ -4,13 +4,14 @@ import chalk from 'chalk';
 import envinfo from 'envinfo';
 import leven from 'leven';
 import { sync } from 'read-pkg-up';
-import initiate from './initiate';
+import { initiate } from './initiate';
 import { add } from './add';
 import { migrate } from './migrate';
 import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
+import { generateStorybookBabelConfigInCWD } from './babel-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
 
@@ -36,6 +37,11 @@ program
   .option('-N --use-npm', 'Use NPM to build the Storybook server')
   .option('-s --skip-postinstall', 'Skip package specific postinstall config modifications')
   .action((addonName, options) => add(addonName, options));
+
+program
+  .command('babelrc')
+  .description('generate the default storybook babel config into your current working directory')
+  .action(() => generateStorybookBabelConfigInCWD());
 
 program
   .command('upgrade')

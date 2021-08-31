@@ -44,6 +44,8 @@ Object {
           Object {
             "loader": "NODE_MODULES/babel-loader/lib/index.js",
             "options": Object {
+              "babelrc": false,
+              "configFile": false,
               "plugins": Array [
                 "NODE_MODULES/@babel/plugin-transform-shorthand-properties/lib/index.js",
                 "NODE_MODULES/@babel/plugin-transform-block-scoping/lib/index.js",

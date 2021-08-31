@@ -7775,6 +7775,7 @@ __metadata:
     "@babel/preset-env": ^7.12.11
     "@storybook/client-api": 6.4.0-alpha.32
     "@storybook/codemod": 6.4.0-alpha.32
+    "@storybook/core-common": 6.4.0-alpha.32
     "@storybook/node-logger": 6.4.0-alpha.32
     "@storybook/semver": ^7.3.2
     "@types/cross-spawn": ^6.0.2

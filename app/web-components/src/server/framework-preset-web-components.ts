@@ -1,7 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Configuration } from 'webpack';
+import type { Options } from '@storybook/core-common';
 
-export function webpack(config: Configuration) {
+export function webpack(config: Configuration, options: Options) {
+  const babelrcOptions = options.features?.babelModeV7 ? null : { babelrc: false };
   config.module.rules.push({
     test: [
       new RegExp(`src(.*)\\.js$`),
@@ -30,7 +32,7 @@ export function webpack(config: Configuration) {
             },
           ],
         ],
-        babelrc: false,
+        ...babelrcOptions,
       },
     },
   });

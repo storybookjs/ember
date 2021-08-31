@@ -4,7 +4,7 @@ import path from 'path';
 import { logger } from '@storybook/node-logger';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import type { BuilderOptions, LoadedPreset, Options } from '@storybook/core-common';
+import type { LoadedPreset, Options } from '@storybook/core-common';
 
 const warnImplicitPostcssPlugins = deprecate(
   () => ({
