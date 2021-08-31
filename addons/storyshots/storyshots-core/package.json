@@ -49,7 +49,7 @@
     "@storybook/client-api": "6.4.0-alpha.19",
     "@storybook/core": "6.4.0-alpha.19",
     "@storybook/core-common": "6.4.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.cc8c2b0.0",
+    "@storybook/csf": "0.0.2--canary.c10361d.0",
     "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.16",
     "@types/jest-specific-snapshot": "^0.5.3",
