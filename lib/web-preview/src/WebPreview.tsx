@@ -4,7 +4,15 @@ import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
 import { addons, Channel } from '@storybook/addons';
-import { Framework, StoryId, GlobalAnnotations, Args, Globals, ViewMode } from '@storybook/csf';
+import {
+  Framework,
+  StoryId,
+  GlobalAnnotations,
+  Args,
+  Globals,
+  ViewMode,
+  StoryContextForLoaders,
+} from '@storybook/csf';
 import {
   ModuleImportFn,
   Selection,
@@ -286,10 +294,11 @@ export class WebPreview<TFramework extends Framework> {
       storyById: (storyId: StoryId) => this.storyStore.storyFromCSFFile({ storyId, csfFile }),
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
-      getStoryContext: (renderedStory: Story<TFramework>) => ({
-        ...this.storyStore.getStoryContext(renderedStory),
-        viewMode: 'docs' as ViewMode,
-      }),
+      getStoryContext: (renderedStory: Story<TFramework>) =>
+        ({
+          ...this.storyStore.getStoryContext(renderedStory),
+          viewMode: 'docs' as ViewMode,
+        } as StoryContextForLoaders<TFramework>),
     };
 
     const { docs } = story.parameters;
@@ -359,7 +368,10 @@ export class WebPreview<TFramework extends Framework> {
       });
 
       const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
-      const loadedContext = await applyLoaders({ ...storyContext, viewMode });
+      const loadedContext = await applyLoaders({
+        ...storyContext,
+        viewMode,
+      } as StoryContextForLoaders<TFramework>);
       if (controller.signal.aborted) {
         return;
       }
