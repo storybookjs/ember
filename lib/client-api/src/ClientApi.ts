@@ -1,5 +1,6 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import { global } from 'global';
 import { logger } from '@storybook/client-logger';
 import {
   Framework,
@@ -27,6 +28,8 @@ import {
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
 
+const { FEATURES } = global;
+
 export interface GetStorybookStory<TFramework extends Framework> {
   name: string;
   render: StoryFn<TFramework>;
@@ -42,78 +45,82 @@ export interface GetStorybookKind<TFramework extends Framework> {
 // relevant framework instanciates them via `start.js`. The good news is this happens right away.
 let singleton: ClientApi<Framework>;
 
-const addDecoratorDeprecationWarning = deprecate(
-  () => {},
-  `\`addDecorator\` is deprecated, and will be removed in Storybook 7.0.
-Instead, use \`export const decorators = [];\` in your \`preview.js\`.
-Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
-);
+const warningAlternatives = {
+  addDecorator: `Instead, use \`export const decorators = [];\` in your \`preview.js\`.`,
+  addParameters: `Instead, use \`export const parameters = {};\` in your \`preview.js\`.`,
+  addLoaders: `Instead, use \`export const loaders = [];\` in your \`preview.js\`.`,
+};
+
+const warningMessage = (method: keyof typeof warningAlternatives) =>
+  deprecate(
+    () => {},
+    dedent`
+  \`${method}\` is deprecated, and will be removed in Storybook 7.0.
+
+  ${warningAlternatives[method]}
+
+  Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
+  );
+
+const warnings = {
+  addDecorator: warningMessage('addDecorator'),
+  addParameters: warningMessage('addParameters'),
+  addLoaders: warningMessage('addLoaders'),
+};
+
+const checkMethod = (method: string, deprecationWarning: boolean) => {
+  if (FEATURES.storyStoreV7) {
+    throw new Error(
+      dedent`You cannot use \`${method}\` with the new Story Store.
+      
+      ${warningAlternatives[method as keyof typeof warningAlternatives]}`
+    );
+  }
+
+  if (!singleton) {
+    throw new Error(`Singleton client API not yet initialized, cannot call \`${method}\`.`);
+  }
+
+  if (deprecationWarning) {
+    warnings[method as keyof typeof warningAlternatives]();
+  }
+};
+
 export const addDecorator = (
   decorator: DecoratorFunction<Framework>,
   deprecationWarning = true
 ) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call addDecorator`);
-
-  if (deprecationWarning) addDecoratorDeprecationWarning();
-
+  checkMethod('addDecorator', deprecationWarning);
   singleton.addDecorator(decorator);
 };
 
-const addParametersDeprecationWarning = deprecate(
-  () => {},
-  `\`addParameters\` is deprecated, and will be removed in Storybook 7.0.
-Instead, use \`export const parameters = {};\` in your \`preview.js\`.
-Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
-);
 export const addParameters = (parameters: Parameters, deprecationWarning = true) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call addParameters`);
-
-  if (deprecationWarning) addParametersDeprecationWarning();
-
+  checkMethod('addParameters', deprecationWarning);
   singleton.addParameters(parameters);
 };
 
-const addLoaderDeprecationWarning = deprecate(
-  () => {},
-  `\`addLoader\` is deprecated, and will be removed in Storybook 7.0.
-Instead, use \`export const loaders = [];\` in your \`preview.js\`.
-Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-addparameters-and-adddecorator).`
-);
 export const addLoader = (loader: LoaderFunction<Framework>, deprecationWarning = true) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call addParameters`);
-
-  if (deprecationWarning) addLoaderDeprecationWarning();
-
+  checkMethod('addLoader', deprecationWarning);
   singleton.addLoader(loader);
 };
 
 export const addArgsEnhancer = (enhancer: ArgsEnhancer<Framework>) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call addArgsEnhancer`);
-
+  checkMethod('addArgsEnhancer', false);
   singleton.addArgsEnhancer(enhancer);
 };
 
 export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<Framework>) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call addArgTypesEnhancer`);
-
+  checkMethod('addArgTypesEnhancer', false);
   singleton.addArgTypesEnhancer(enhancer);
 };
 
 export const getGlobalRender = () => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call getGlobalRender`);
-
+  checkMethod('getGlobalRender', false);
   return singleton.globalAnnotations.render;
 };
 
 export const setGlobalRender = (render: StoryFn<Framework>) => {
-  if (!singleton)
-    throw new Error(`Singleton client API not yet initialized, cannot call setGobalRender`);
+  checkMethod('setGlobalRender', false);
   singleton.globalAnnotations.render = render;
 };
 
