@@ -1,37 +1,59 @@
 import {
-  DecoratorFunction,
   Framework,
-  LegacyStoryFn,
-  LoaderFunction,
+  InputType,
   Parameters,
-  StoryContext,
-  StoryContextForEnhancers,
-  StoryFn,
+  StoryContext as StoryContextForFramework,
+  LegacyStoryFn as LegacyStoryFnForFramework,
+  PartialStoryFn as PartialStoryFnForFramework,
+  ArgsStoryFn as ArgsStoryFnForFramework,
+  StoryFn as StoryFnForFramework,
+  DecoratorFunction as DecoratorFunctionForFramework,
+  LoaderFunction as LoaderFunctionForFramework,
   StoryId,
   StoryKind,
   StoryName,
+  Args,
 } from '@storybook/csf';
 
 import { Addon } from './index';
 
+// NOTE: The types exported from this file are simplified versions of the types exported
+// by @storybook/csf, with the simpler form retained for backwards compatibility.
+// We will likely start exporting the more complex <StoryFnReturnType> based types in 7.0
+
 export type {
-  Framework,
   StoryId,
   StoryKind,
   StoryName,
+  StoryIdentifier,
   ViewMode,
   Parameters,
   Args,
-  ArgTypes,
-  StoryContextUpdate,
-  StoryContext,
-  PartialStoryFn,
-  LegacyStoryFn,
-  ArgsStoryFn,
-  StoryFn,
-  DecoratorFunction,
-  LoaderFunction,
 } from '@storybook/csf';
+
+export type ArgTypes<TArgs = Args> = {
+  [key in keyof Partial<TArgs>]: InputType;
+};
+
+export type StoryContext = StoryContextForFramework<Framework>;
+export type StoryContextUpdate = Partial<StoryContext>;
+
+type ReturnTypeFramework<ReturnType> = { component: any; storyResult: ReturnType };
+export type PartialStoryFn<ReturnType = unknown> = PartialStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type LegacyStoryFn<ReturnType = unknown> = LegacyStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type ArgsStoryFn<ReturnType = unknown> = ArgsStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type StoryFn<ReturnType = unknown> = StoryFnForFramework<ReturnTypeFramework<ReturnType>>;
+
+export type DecoratorFunction<StoryFnReturnType = unknown> = DecoratorFunctionForFramework<
+  ReturnTypeFramework<StoryFnReturnType>
+>;
+export type LoaderFunction = LoaderFunctionForFramework<ReturnTypeFramework<unknown>>;
 
 export enum types {
   TAB = 'tab',
@@ -55,27 +77,27 @@ export interface WrapperSettings {
   };
 }
 
-export type StoryWrapper<TFramework extends Framework> = (
-  storyFn: LegacyStoryFn<TFramework>,
-  context: StoryContext<TFramework>,
+export type StoryWrapper = (
+  storyFn: LegacyStoryFn,
+  context: StoryContext,
   settings: WrapperSettings
 ) => any;
 
 export type MakeDecoratorResult = (...args: any) => any;
 
-export interface AddStoryArgs<TFramework extends Framework> {
+export interface AddStoryArgs<StoryFnReturnType = unknown> {
   id: StoryId;
   kind: StoryKind;
   name: StoryName;
-  storyFn: StoryFn<TFramework>;
+  storyFn: StoryFn<StoryFnReturnType>;
   parameters: Parameters;
 }
 
-export interface ClientApiAddon<TFramework extends Framework> extends Addon {
-  apply: (a: StoryApi<TFramework>, b: any[]) => any;
+export interface ClientApiAddon<StoryFnReturnType = unknown> extends Addon {
+  apply: (a: StoryApi<StoryFnReturnType>, b: any[]) => any;
 }
-export interface ClientApiAddons<TFramework extends Framework> {
-  [key: string]: ClientApiAddon<TFramework>;
+export interface ClientApiAddons<StoryFnReturnType> {
+  [key: string]: ClientApiAddon<StoryFnReturnType>;
 }
 
 // Old types for getStorybook()
@@ -89,30 +111,27 @@ export interface IStorybookSection {
   stories: IStorybookStory[];
 }
 
-export type ClientApiReturnFn<TFramework extends Framework> = (
+export type ClientApiReturnFn<StoryFnReturnType = unknown> = (
   ...args: any[]
-) => StoryApi<TFramework>;
+) => StoryApi<StoryFnReturnType>;
 
-export interface StoryApi<TFramework extends Framework> {
+export interface StoryApi<StoryFnReturnType = unknown> {
   kind: StoryKind;
   add: (
     storyName: StoryName,
-    storyFn: StoryFn<TFramework>,
+    storyFn: StoryFn<StoryFnReturnType>,
     parameters?: Parameters
-  ) => StoryApi<TFramework>;
-  addDecorator: (decorator: DecoratorFunction<TFramework>) => StoryApi<TFramework>;
-  addLoader: (decorator: LoaderFunction<TFramework>) => StoryApi<TFramework>;
-  addParameters: (parameters: Parameters) => StoryApi<TFramework>;
-  [k: string]: string | ClientApiReturnFn<TFramework>;
+  ) => StoryApi<StoryFnReturnType>;
+  addDecorator: (decorator: DecoratorFunction<StoryFnReturnType>) => StoryApi<StoryFnReturnType>;
+  addLoader: (decorator: LoaderFunction) => StoryApi<StoryFnReturnType>;
+  addParameters: (parameters: Parameters) => StoryApi<StoryFnReturnType>;
+  [k: string]: string | ClientApiReturnFn<StoryFnReturnType>;
 }
 
-export interface ClientStoryApi<TFramework extends Framework> {
-  storiesOf(kind: StoryKind, module: NodeModule): StoryApi<TFramework>;
-  addDecorator(decorator: DecoratorFunction<TFramework>): StoryApi<TFramework>;
-  addParameters(parameter: Parameters): StoryApi<TFramework>;
-  getStorybook(): IStorybookSection[];
-  // TODO -- should be Story from store?
-  raw: () => StoryContextForEnhancers<TFramework>[];
+export interface ClientStoryApi<StoryFnReturnType = unknown> {
+  storiesOf(kind: StoryKind, module: NodeModule): StoryApi<StoryFnReturnType>;
+  addDecorator(decorator: DecoratorFunction<StoryFnReturnType>): StoryApi<StoryFnReturnType>;
+  addParameters(parameter: Parameters): StoryApi<StoryFnReturnType>;
 }
 
 type LoadFn = () => any;

@@ -1,26 +1,21 @@
-import { Framework, LegacyStoryFn, StoryContext } from '@storybook/csf';
-
-import { StoryWrapper } from './types';
+import { StoryWrapper, LegacyStoryFn, StoryContext } from './types';
 
 type MakeDecoratorResult = (...args: any) => any;
 
-interface MakeDecoratorOptions<TFramework extends Framework> {
+interface MakeDecoratorOptions {
   name: string;
   parameterName: string;
   skipIfNoParametersOrOptions?: boolean;
-  wrapper: StoryWrapper<TFramework>;
+  wrapper: StoryWrapper;
 }
 
-export const makeDecorator = <TFramework extends Framework>({
+export const makeDecorator = ({
   name,
   parameterName,
   wrapper,
   skipIfNoParametersOrOptions = false,
-}: MakeDecoratorOptions<TFramework>): MakeDecoratorResult => {
-  const decorator: any = (options: object) => (
-    storyFn: LegacyStoryFn<TFramework>,
-    context: StoryContext<TFramework>
-  ) => {
+}: MakeDecoratorOptions): MakeDecoratorResult => {
+  const decorator: any = (options: object) => (storyFn: LegacyStoryFn, context: StoryContext) => {
     const parameters = context.parameters && context.parameters[parameterName];
 
     if (parameters && parameters.disable) {
