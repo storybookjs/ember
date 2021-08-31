@@ -234,4 +234,16 @@ export class StoryStore<TFramework extends Framework> {
       stories,
     };
   }
+
+  raw() {
+    throw new Error(
+      `StoryStore.raw() is no longer implemented. If you were relying on this API, please contact us on Discord.`
+    );
+  }
+
+  fromId() {
+    throw new Error(
+      `StoryStore.fromId() is no longer implemented. If you were relying on this API, please contact us on Discord.`
+    );
+  }
 }
