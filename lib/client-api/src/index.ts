@@ -19,6 +19,4 @@ export {
   setGlobalRender,
   getGlobalRender,
   ClientApi,
-  // TODO -- back compat?
-  // ConfigApi,
 };
