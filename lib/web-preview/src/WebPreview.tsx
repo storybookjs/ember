@@ -86,8 +86,8 @@ export class WebPreview<TFramework extends Framework> {
     }
   }
 
-  async initialize() {
-    await this.storyStore.initialize();
+  async initialize({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
+    await this.storyStore.initialize({ cacheAllCSFFiles });
     this.setupListeners();
 
     const { globals } = this.urlStore.selectionSpecifier || {};

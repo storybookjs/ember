@@ -85,8 +85,12 @@ export class StoryStore<TFramework extends Framework> {
     this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
   }
 
-  async initialize() {
+  async initialize({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
     await this.storiesList.initialize();
+
+    if (cacheAllCSFFiles) {
+      await this.cacheAllCSFFiles();
+    }
   }
 
   updateGlobalAnnotations(globalAnnotations: GlobalAnnotations<TFramework>) {
@@ -97,8 +101,13 @@ export class StoryStore<TFramework extends Framework> {
 
   async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
     this.importFn = importFn;
+
     // We need to refetch the stories list as it may have changed too
     await this.storiesList.cacheStoriesList();
+
+    if (this.cachedCSFFiles) {
+      await this.cacheAllCSFFiles();
+    }
   }
 
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {

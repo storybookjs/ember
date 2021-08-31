@@ -5,20 +5,19 @@ import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
 import { Path } from '@storybook/store';
-import { logger } from '@storybook/client-logger';
 
 import { Loadable } from './types';
-import { executeLoadable } from './executeLoadable';
+import { executeLoadableForChanges } from './executeLoadable';
 
 export function start<TFramework extends Framework>(
-  render: WebGlobalAnnotations<TFramework>['renderToDOM'],
+  renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'],
   { decorateStory }: { decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'] } = {}
 ) {
   const channel = createChannel({ page: 'preview' });
   addons.setChannel(channel);
 
-  const clientApi = new ClientApi<TFramework>();
   let preview: WebPreview<TFramework>;
+  const clientApi = new ClientApi<TFramework>();
 
   return {
     forceReRender: () => channel.emit(Events.FORCE_RE_RENDER),
@@ -26,58 +25,47 @@ export function start<TFramework extends Framework>(
     raw: (): void => {},
 
     clientApi,
-    configure(framework: string, loadable: Loadable, m?: NodeModule) {
-      let lastExportsMap: ReturnType<typeof executeLoadable> =
-        m?.hot?.data?.lastExportsMap || new Map();
-      if (m?.hot?.dispose) {
-        m.hot.accept();
-        m.hot.dispose((data) => {
-          // eslint-disable-next-line no-param-reassign
-          data.lastExportsMap = lastExportsMap;
-        });
-      }
-
+    // This gets called each time the user calls configure (i.e. once per HMR)
+    // The first time, it constructs the preview, subsequently it updates it
+    async configure(framework: string, loadable: Loadable, m?: NodeModule) {
       clientApi.addParameters({ framework });
 
+      // We need to run the `executeLoadableForChanges` function *inside* the `getGlobalAnnotations
+      // function in case it throws. So we also need to process its output there also
       const getGlobalAnnotations = () => {
-        const exportsMap = executeLoadable(loadable);
-        Array.from(exportsMap.entries())
-          .filter(([, fileExports]) => !!fileExports.default)
-          .forEach(([fileName, fileExports]) => {
-            // Exports haven't changed so there is so no need to do anything
-            if (lastExportsMap.get(fileName) === fileExports) {
-              return;
-            }
+        const { added, removed } = executeLoadableForChanges(loadable, m);
 
-            clientApi.addStoriesFromExports(fileName, fileExports);
-          });
-        Array.from(lastExportsMap.keys())
-          .filter((fileName) => !exportsMap.has(fileName))
-          .forEach((fileName) => clientApi.clearFilenameExports(fileName));
-        lastExportsMap = exportsMap;
+        Array.from(added.entries()).forEach(([fileName, fileExports]) =>
+          clientApi.addStoriesFromExports(fileName, fileExports)
+        );
+
+        Array.from(removed.entries()).forEach(([fileName]) =>
+          clientApi.clearFilenameExports(fileName)
+        );
 
         return {
           ...clientApi.globalAnnotations,
-          renderToDOM: render,
+          renderToDOM,
           applyDecorators: decorateStory,
         };
       };
+
       if (!preview) {
         preview = new WebPreview({
           importFn: (path: Path) => clientApi.importFn(path),
           getGlobalAnnotations,
           fetchStoriesList: async () => clientApi.getStoriesList(),
         });
-        clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
 
-        // TODO
-        preview
-          .initialize()
-          .then(() => {})
-          .catch((err: Error) => logger.error(err));
+        // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
+        // direct reference to `WebPreview`, so we need to patch in bits
+        clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
+        clientApi.storyStore = preview.storyStore;
+
+        await preview.initialize({ cacheAllCSFFiles: true });
       } else {
         getGlobalAnnotations();
-        preview.onImportFnChanged({ importFn: clientApi.importFn.bind(clientApi) });
+        preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });
       }
     },
   };

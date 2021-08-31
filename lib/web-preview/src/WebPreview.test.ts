@@ -31,6 +31,9 @@ jest.mock('global', () => ({
       search: '?id=*',
     },
   },
+  FEATURES: {
+    storyStoreV7: true,
+  },
 }));
 
 jest.mock('@storybook/client-logger');

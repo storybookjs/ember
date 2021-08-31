@@ -1,5 +1,5 @@
 import { logger } from '@storybook/client-logger';
-import { ModuleExports } from '@storybook/store';
+import { Path, ModuleExports } from '@storybook/store';
 import { Loadable, RequireContext, LoaderFunction } from './types';
 
 /**
@@ -7,7 +7,7 @@ import { Loadable, RequireContext, LoaderFunction } from './types';
  * and returns a map of filename => module exports
  *
  * @param loadable Loadable
- * @returns Map<string, ModuleExports>
+ * @returns Map<Path, ModuleExports>
  */
 export function executeLoadable(loadable: Loadable) {
   let reqs = null;
@@ -18,7 +18,7 @@ export function executeLoadable(loadable: Loadable) {
     reqs = [loadable as RequireContext];
   }
 
-  let exportsMap = new Map<string, ModuleExports>();
+  let exportsMap = new Map<Path, ModuleExports>();
   if (reqs) {
     reqs.forEach((req) => {
       req.keys().forEach((filename: string) => {
@@ -49,4 +49,43 @@ export function executeLoadable(loadable: Loadable) {
   }
 
   return exportsMap;
+}
+
+/**
+ * Executes a Loadable (function that returns exports or require context(s))
+ * and compares it's output to the last time it was run (as stored on a node module)
+ *
+ * @param loadable Loadable
+ * @param m NodeModule
+ * @returns { added: Map<Path, ModuleExports>, removed: Map<Path, ModuleExports> }
+ */
+export function executeLoadableForChanges(loadable: Loadable, m?: NodeModule) {
+  let lastExportsMap: ReturnType<typeof executeLoadable> =
+    m?.hot?.data?.lastExportsMap || new Map();
+  if (m?.hot?.dispose) {
+    m.hot.accept();
+    m.hot.dispose((data) => {
+      // eslint-disable-next-line no-param-reassign
+      data.lastExportsMap = lastExportsMap;
+    });
+  }
+
+  const exportsMap = executeLoadable(loadable);
+  const added = new Map<Path, ModuleExports>();
+  Array.from(exportsMap.entries())
+    // Ignore files that do not have a default export
+    .filter(([, fileExports]) => !!fileExports.default)
+    // Ignore exports that are equal (by reference) to last time, this means the file hasn't changed
+    .filter(([fileName, fileExports]) => lastExportsMap.get(fileName) !== fileExports)
+    .forEach(([fileName, fileExports]) => added.set(fileName, fileExports));
+
+  const removed = new Map<Path, ModuleExports>();
+  Array.from(lastExportsMap.keys())
+    .filter((fileName) => !exportsMap.has(fileName))
+    .forEach((fileName) => removed.set(fileName, lastExportsMap.get(fileName)));
+
+  // Save the value for the dispose() call above
+  lastExportsMap = exportsMap;
+
+  return { added, removed };
 }

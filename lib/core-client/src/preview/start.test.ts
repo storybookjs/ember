@@ -62,33 +62,60 @@ describe('start', () => {
             "Component A": Object {},
             "Component B": Object {},
           },
-          "stories": Object {
-            "component-a--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--story-one",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "Story One",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-a--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--story-two",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "Story Two",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-b--story-three": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-b",
               "id": "component-b--story-three",
+              "initialArgs": Object {},
               "kind": "Component B",
               "name": "Story Three",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file2",
+                "framework": "test",
               },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component B",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
 
@@ -243,25 +270,43 @@ describe('start', () => {
           "kindParameters": Object {
             "Component A": Object {},
           },
-          "stories": Object {
-            "component-a--default": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--default",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-a--new": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--new",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "new",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "new",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
     });
@@ -297,25 +342,43 @@ describe('start', () => {
             "Component A": Object {},
             "Component B": Object {},
           },
-          "stories": Object {
-            "component-a--default": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--default",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-b--default": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-b",
               "id": "component-b--default",
+              "initialArgs": Object {},
               "kind": "Component B",
               "name": "default",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file2",
+                "framework": "test",
               },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component B",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
       mockChannel.emit.mockClear();
@@ -331,17 +394,26 @@ describe('start', () => {
           "kindParameters": Object {
             "Component A": Object {},
           },
-          "stories": Object {
-            "component-a--default": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--default",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
     });
@@ -372,25 +444,41 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Object {
-            "component-c--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-one",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story One",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-c--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-two",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story Two",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
 
@@ -484,33 +572,57 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Object {
-            "component-c--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-one",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story One",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-c--story-three": Object {
-              "id": "component-c--story-three",
-              "kind": "Component C",
-              "name": "Story Three",
-              "parameters": Object {
-                "fileName": "exports-map-0",
-              },
-            },
-            "component-c--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-two",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story Two",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-          },
-          "v": 3,
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-three",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Three",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "framework": "test",
+              },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+          ],
+          "v": 2,
         }
       `);
     });
@@ -547,33 +659,57 @@ describe('start', () => {
             "Component C": Object {},
             "Component D": Object {},
           },
-          "stories": Object {
-            "component-c--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-one",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story One",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-c--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-two",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story Two",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-d--story-four": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-d",
               "id": "component-d--story-four",
+              "initialArgs": Object {},
               "kind": "Component D",
               "name": "Story Four",
               "parameters": Object {
-                "fileName": "exports-map-1",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Four",
+              "subcomponents": undefined,
+              "title": "Component D",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
 
@@ -591,25 +727,41 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Object {
-            "component-c--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-one",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story One",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-c--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-two",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story Two",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
     });
@@ -645,49 +797,92 @@ describe('start', () => {
             "Component B": Object {},
             "Component C": Object {},
           },
-          "stories": Object {
-            "component-a--story-one": Object {
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--story-one",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "Story One",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-a--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
               "id": "component-a--story-two",
+              "initialArgs": Object {},
               "kind": "Component A",
               "name": "Story Two",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file1",
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component A",
             },
-            "component-b--story-three": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-b",
               "id": "component-b--story-three",
+              "initialArgs": Object {},
               "kind": "Component B",
               "name": "Story Three",
               "parameters": Object {
+                "__isArgsStory": false,
                 "fileName": "file2",
+                "framework": "test",
               },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component B",
             },
-            "component-c--story-one": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-one",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story One",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-            "component-c--story-two": Object {
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-c",
               "id": "component-c--story-two",
+              "initialArgs": Object {},
               "kind": "Component C",
               "name": "Story Two",
               "parameters": Object {
-                "fileName": "exports-map-0",
+                "__isArgsStory": false,
+                "framework": "test",
               },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
             },
-          },
-          "v": 3,
+          ],
+          "v": 2,
         }
       `);
 
@@ -702,6 +897,111 @@ describe('start', () => {
         }),
         undefined
       );
+    });
+  });
+
+  // These tests need to be in here, as they require a convoluted hookup between
+  // a ClientApi and a StoryStore
+  describe('ClientApi.getStorybook', () => {
+    it('should transform the storybook to an array with filenames', async () => {
+      const { configure, clientApi } = start(jest.fn);
+
+      let book;
+
+      book = clientApi.getStorybook();
+      expect(book).toEqual([]);
+
+      await configure('test', () => {
+        clientApi
+          .storiesOf('kind 1', { id: 'file1' } as any)
+          .add('name 1', () => '1')
+          .add('name 2', () => '2');
+
+        clientApi
+          .storiesOf('kind 2', { id: 'file2' } as any)
+          .add('name 1', () => '1')
+          .add('name 2', () => '2');
+      });
+      book = clientApi.getStorybook();
+
+      expect(book).toEqual([
+        expect.objectContaining({
+          fileName: expect.any(String),
+          kind: 'kind 1',
+          stories: [
+            {
+              name: 'name 1',
+              render: expect.any(Function),
+            },
+            {
+              name: 'name 2',
+              render: expect.any(Function),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          fileName: expect.any(String),
+          kind: 'kind 2',
+          stories: [
+            {
+              name: 'name 1',
+              render: expect.any(Function),
+            },
+            {
+              name: 'name 2',
+              render: expect.any(Function),
+            },
+          ],
+        }),
+      ]);
+    });
+
+    it('reads filename from module', async () => {
+      const { configure, clientApi } = start(jest.fn);
+
+      const fn = jest.fn();
+      await configure('test', () => {
+        clientApi.storiesOf('kind', { id: 'foo.js' } as NodeModule).add('name', fn);
+      });
+
+      const storybook = clientApi.getStorybook();
+
+      expect(storybook).toEqual([
+        {
+          kind: 'kind',
+          fileName: 'foo.js',
+          stories: [
+            {
+              name: 'name',
+              render: expect.any(Function),
+            },
+          ],
+        },
+      ]);
+    });
+
+    it('should stringify ids from module', async () => {
+      const { configure, clientApi } = start(jest.fn);
+
+      const fn = jest.fn();
+      await configure('test', () => {
+        clientApi.storiesOf('kind', { id: 1211 } as any).add('name', fn);
+      });
+
+      const storybook = clientApi.getStorybook();
+
+      expect(storybook).toEqual([
+        {
+          kind: 'kind',
+          fileName: '1211',
+          stories: [
+            {
+              name: 'name',
+              render: expect.any(Function),
+            },
+          ],
+        },
+      ]);
     });
   });
 });

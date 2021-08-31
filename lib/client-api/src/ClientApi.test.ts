@@ -1,9 +1,12 @@
-import { logger } from '@storybook/client-logger';
-import { addons, mockChannel } from '@storybook/addons';
-import Events from '@storybook/core-events';
-import ClientApi from './client_api';
+import { Path, ModuleExports } from '@storybook/store';
+import addons, { mockChannel } from '@storybook/addons';
+import ClientApi from './ClientApi';
 
-// import ConfigApi from './config_api';
+const getExportChanges = () => ({ added: new Map<Path, ModuleExports>(), removed: new Map() });
+
+beforeEach(() => {
+  addons.setChannel(mockChannel());
+});
 
 describe('ClientApi', () => {
   describe('setAddon', () => {
@@ -93,109 +96,6 @@ describe('ClientApi', () => {
       // @ts-ignore
       clientApi.storiesOf(kind, module).aa();
       expect(data).toBe(kind);
-    });
-  });
-
-  // TODO
-  describe.skip('getStorybook', () => {
-    it('should transform the storybook to an array with filenames', () => {
-      const {
-        clientApi: { getStorybook, storiesOf },
-      } = getContext();
-
-      let book;
-
-      book = getStorybook();
-      expect(book).toEqual([]);
-
-      storiesOf('kind 1', module)
-        .add('name 1', () => '1')
-        .add('name 2', () => '2');
-
-      storiesOf('kind 2', module)
-        .add('name 1', () => '1')
-        .add('name 2', () => '2');
-
-      book = getStorybook();
-
-      expect(book).toEqual([
-        expect.objectContaining({
-          fileName: expect.any(String),
-          kind: 'kind 1',
-          stories: [
-            {
-              name: 'name 1',
-              render: expect.any(Function),
-            },
-            {
-              name: 'name 2',
-              render: expect.any(Function),
-            },
-          ],
-        }),
-        expect.objectContaining({
-          fileName: expect.any(String),
-          kind: 'kind 2',
-          stories: [
-            {
-              name: 'name 1',
-              render: expect.any(Function),
-            },
-            {
-              name: 'name 2',
-              render: expect.any(Function),
-            },
-          ],
-        }),
-      ]);
-    });
-
-    it('reads filename from module', () => {
-      const {
-        clientApi: { getStorybook, storiesOf },
-      } = getContext();
-
-      const fn = jest.fn();
-      storiesOf('kind', { id: 'foo.js' } as NodeModule).add('name', fn);
-
-      const storybook = getStorybook();
-
-      expect(storybook).toEqual([
-        {
-          kind: 'kind',
-          fileName: 'foo.js',
-          stories: [
-            {
-              name: 'name',
-              render: expect.any(Function),
-            },
-          ],
-        },
-      ]);
-    });
-
-    it('should stringify ids from module', () => {
-      const {
-        clientApi: { getStorybook, storiesOf },
-      } = getContext();
-
-      const fn = jest.fn();
-      storiesOf('kind', { id: 1211 } as NodeModule).add('name', fn);
-
-      const storybook = getStorybook();
-
-      expect(storybook).toEqual([
-        {
-          kind: 'kind',
-          fileName: '1211',
-          stories: [
-            {
-              name: 'name',
-              render: expect.any(Function),
-            },
-          ],
-        },
-      ]);
     });
   });
 

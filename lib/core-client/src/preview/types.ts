@@ -1,3 +1,5 @@
+import { ModuleExports, Path } from '@storybook/store';
+
 export interface PreviewError {
   message?: string;
   stack?: string;
