@@ -9,6 +9,7 @@ import ClientApi, {
 } from './ClientApi';
 
 export * from '@storybook/store';
+export * from './types';
 
 export {
   addArgsEnhancer,

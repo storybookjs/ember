@@ -136,7 +136,7 @@ export default class ClientApi<TFramework extends Framework> {
 
   private csfExports: Record<Path, ModuleExports>;
 
-  private addons: ClientApiAddons<TFramework>;
+  private addons: ClientApiAddons<TFramework['storyResult']>;
 
   // If we don't get passed modules so don't know filenames, we can
   // just use numeric indexes
@@ -228,7 +228,7 @@ export default class ClientApi<TFramework extends Framework> {
   };
 
   // what are the occasions that "m" is a boolean vs an obj
-  storiesOf = (kind: string, m?: NodeModule): StoryApi<TFramework> => {
+  storiesOf = (kind: string, m?: NodeModule): StoryApi<TFramework['storyResult']> => {
     if (!kind && typeof kind !== 'string') {
       throw new Error('Invalid or missing kind provided for stories, should be a string');
     }
@@ -271,7 +271,7 @@ export default class ClientApi<TFramework extends Framework> {
     }
 
     let hasAdded = false;
-    const api: StoryApi<TFramework> = {
+    const api: StoryApi<TFramework['storyResult']> = {
       kind: kind.toString(),
       add: () => api,
       addDecorator: () => api,
