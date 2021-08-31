@@ -115,6 +115,15 @@ Object {
               ],
               "presets": Array [
                 Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+                Array [
                   "NODE_MODULES/babel-preset-react-app/index.js",
                   Object {
                     "runtime": "automatic",
@@ -309,6 +318,29 @@ Object {
         ],
       },
       Object {
+        "include": "NODE_MODULES[\\\\\\\\/](@storybook[\\\\\\\\/]node_logger|@testing-library[\\\\\\\\/]dom|@testing-library[\\\\\\\\/]user-event|acorn-jsx|ansi-align|ansi-colors|ansi-escapes|ansi-regex|ansi-styles|better-opn|boxen|camelcase|chalk|color-convert|commander|find-cache-dir|find-up|fs-extra|highlight.js|json5|node-fetch|pkg-dir|prettier|pretty-format|react-dev-utils|resolve-from|semver|slash|strip-ansi|uuid)/",
+        "test": "/\\\\.js$/",
+        "use": Array [
+          Object {
+            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "options": Object {
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
+              "sourceType": "unambiguous",
+            },
+          },
+        ],
+      },
+      Object {
         "include": "NODE_MODULES\\\\/acorn-jsx/",
         "test": "/\\\\.js$/",
         "use": Array [
@@ -358,7 +390,17 @@ Object {
                   },
                 ],
               ],
-              "presets": Array [],
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
             },
           },
           Object {
@@ -407,7 +449,17 @@ Object {
                   },
                 ],
               ],
-              "presets": Array [],
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
             },
           },
           Object {

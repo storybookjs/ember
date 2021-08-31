@@ -265,6 +265,11 @@ export interface StorybookConfig {
      * Activate preview of CSF v3.0
      */
     previewCsfV3?: boolean;
+
+    /**
+     * Use Storybook 7.0 babel config scheme
+     */
+    babelModeV7?: boolean;
   };
   /**
    * Tells Storybook where to find stories.
