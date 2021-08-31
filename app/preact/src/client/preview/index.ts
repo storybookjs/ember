@@ -7,7 +7,7 @@ import render from './render';
 import { IStorybookSection } from './types';
 import { PreactFramework } from './types-6-0';
 
-export interface ClientApi extends ClientStoryApi<PreactFramework> {
+export interface ClientApi extends ClientStoryApi<PreactFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

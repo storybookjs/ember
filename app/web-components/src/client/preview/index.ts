@@ -9,7 +9,7 @@ import { WebComponentsFramework } from './types-6-0';
 
 const framework = 'web-components';
 
-interface ClientApi extends ClientStoryApi<WebComponentsFramework> {
+interface ClientApi extends ClientStoryApi<WebComponentsFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

@@ -8,7 +8,7 @@ import render from './render';
 import { IStorybookSection } from './types';
 import { ReactFramework } from './types-6-0';
 
-interface ClientApi extends ClientStoryApi<ReactFramework> {
+interface ClientApi extends ClientStoryApi<ReactFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

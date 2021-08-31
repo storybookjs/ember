@@ -9,7 +9,7 @@ import { StoryFnHtmlReturnType, IStorybookSection } from './types';
 
 const framework = 'html';
 
-interface ClientApi extends ClientStoryApi<HtmlFramework> {
+interface ClientApi extends ClientStoryApi<HtmlFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

@@ -10,7 +10,7 @@ import { AngularFramework } from './types-6-0';
 
 const framework = 'angular';
 
-interface ClientApi extends ClientStoryApi<AngularFramework> {
+interface ClientApi extends ClientStoryApi<AngularFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

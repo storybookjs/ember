@@ -88,7 +88,7 @@ function decorateStory(
 }
 const framework = 'vue';
 
-interface ClientApi extends ClientStoryApi<VueFramework> {
+interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];

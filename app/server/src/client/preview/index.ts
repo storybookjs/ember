@@ -7,7 +7,7 @@ import { IStorybookSection, ServerFramework } from './types';
 
 const framework = 'server';
 
-interface ClientApi extends ClientStoryApi<ServerFramework> {
+interface ClientApi extends ClientStoryApi<ServerFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
