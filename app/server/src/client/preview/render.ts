@@ -2,8 +2,9 @@
 import global from 'global';
 import dedent from 'ts-dedent';
 import { Args, ArgTypes } from '@storybook/api';
+import { RenderContext } from '@storybook/store';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/web-preview';
-import { RenderContext, FetchStoryHtmlType, ServerFramework } from './types';
+import { FetchStoryHtmlType, ServerFramework } from './types';
 
 const { fetch, Node } = global;
 

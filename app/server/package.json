@@ -52,6 +52,7 @@
     "@storybook/core-common": "6.4.0-alpha.19",
     "@storybook/csf": "0.0.2--canary.c10361d.0",
     "@storybook/node-logger": "6.4.0-alpha.19",
+    "@storybook/store": "6.4.0-alpha.19",
     "@storybook/web-preview": "6.4.0-alpha.19",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",

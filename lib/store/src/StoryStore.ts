@@ -42,8 +42,6 @@ function normalizeGlobalAnnotations<TFramework extends Framework>({
   };
 }
 
-// FIXME: what are we doing with autoTitle and entries?
-const entries: NormalizedStoriesEntry[] = [];
 export class StoryStore<TFramework extends Framework> {
   storiesList: StoriesListStore;
 

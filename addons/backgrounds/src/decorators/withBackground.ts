@@ -1,10 +1,5 @@
-import {
-  Framework,
-  StoryFn as StoryFunction,
-  StoryContext,
-  useMemo,
-  useEffect,
-} from '@storybook/addons';
+import { useMemo, useEffect } from '@storybook/addons';
+import { Framework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 
 import { PARAM_KEY as BACKGROUNDS_PARAM_KEY } from '../constants';
 import {

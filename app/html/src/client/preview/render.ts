@@ -2,7 +2,7 @@
 import global from 'global';
 import dedent from 'ts-dedent';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/web-preview';
-import { RenderContext } from './types';
+import { RenderContext } from '@storybook/store';
 import { HtmlFramework } from './types-6-0';
 
 const { Node } = global;

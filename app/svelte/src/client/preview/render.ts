@@ -1,5 +1,6 @@
 import global from 'global';
-import { RenderContext, SvelteFramework } from './types';
+import { RenderContext } from '@storybook/store';
+import { SvelteFramework } from './types';
 import PreviewRender from './PreviewRender.svelte';
 
 const { document } = global;

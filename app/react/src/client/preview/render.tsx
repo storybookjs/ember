@@ -1,8 +1,9 @@
 import global from 'global';
 import React, { Component, FunctionComponent, ReactElement, StrictMode, Fragment } from 'react';
 import ReactDOM from 'react-dom';
+import { RenderContext } from '@storybook/store';
 
-import { StoryContext, RenderContext } from './types';
+import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
 
 const { FRAMEWORK_OPTIONS } = global;

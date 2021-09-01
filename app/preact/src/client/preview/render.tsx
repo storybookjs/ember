@@ -1,6 +1,7 @@
 import * as preact from 'preact';
 import dedent from 'ts-dedent';
-import { RenderContext, StoryFnPreactReturnType } from './types';
+import { RenderContext } from '@storybook/store';
+import { StoryFnPreactReturnType } from './types';
 import { PreactFramework } from './types-6-0';
 
 let renderedStory: Element;

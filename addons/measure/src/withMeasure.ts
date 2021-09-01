@@ -1,5 +1,6 @@
 /* eslint-env browser */
-import { Framework, StoryFn as StoryFunction, StoryContext, useEffect } from '@storybook/addons';
+import { useEffect } from '@storybook/addons';
+import { Framework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 import { drawSelectedElement } from './box-model/visualizer';
 import { init, rescale, destroy } from './box-model/canvas';
 import { deepElementFromPoint } from './util';

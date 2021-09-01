@@ -1,6 +1,7 @@
 import global from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext, ElementArgs, OptionsArgs, EmberFramework } from './types';
+import { RenderContext } from '@storybook/store';
+import { ElementArgs, OptionsArgs, EmberFramework } from './types';
 
 const { window: globalWindow, document } = global;
 

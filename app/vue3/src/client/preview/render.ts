@@ -1,6 +1,7 @@
 import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
-import { RenderContext, StoryFnVueReturnType } from './types';
+import { RenderContext } from '@storybook/store';
+import { StoryFnVueReturnType } from './types';
 import { VueFramework } from './types-6-0';
 
 const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);

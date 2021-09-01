@@ -1,6 +1,6 @@
 import dedent from 'ts-dedent';
 import Vue, { VNode } from 'vue';
-import { RenderContext } from './types';
+import { RenderContext } from '@storybook/store';
 import { VueFramework } from './types-6-0';
 
 export const COMPONENT = 'STORYBOOK_COMPONENT';

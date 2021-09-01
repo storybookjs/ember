@@ -6,7 +6,7 @@ import { render, TemplateResult } from 'lit-html';
 // eslint-disable-next-line import/extensions
 import { isTemplateResult } from 'lit-html/directive-helpers.js';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/web-preview';
-import { RenderContext } from './types';
+import { RenderContext } from '@storybook/store';
 import { WebComponentsFramework } from './types-6-0';
 
 const { Node } = global;
