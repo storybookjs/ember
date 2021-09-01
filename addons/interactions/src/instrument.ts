@@ -1,10 +1,10 @@
 import { addons } from '@storybook/addons';
+import { IGNORED_EXCEPTION } from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
 import { Call, CallRef } from './types';
 
-const IgnoredException = 'IgnoredException';
 const channel = addons.getChannel();
 
 export interface Options {
@@ -83,7 +83,7 @@ function run(fn: Function, call: Call) {
       const { name, message, stack, matcherResult } = e;
       const exception = { name, message, stack, matcherResult };
       channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, exception });
-      throw IgnoredException; // Storybook will catch and silently ignore this
+      throw IGNORED_EXCEPTION; // Storybook will catch and silently ignore this
     }
     throw e;
   }
