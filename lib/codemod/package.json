@@ -1,11 +1,11 @@
 {
   "name": "@storybook/codemod",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-alpha.33",
   "description": "A collection of codemod scripts written with JSCodeshift",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/codemod",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/codemod",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/codemod"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "sideEffects": false,
@@ -37,15 +41,17 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
+    "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
     "@storybook/csf": "0.0.1",
-    "@storybook/node-logger": "6.2.0-rc.9",
+    "@storybook/csf-tools": "6.4.0-alpha.33",
+    "@storybook/node-logger": "6.4.0-alpha.33",
     "core-js": "^3.8.2",
     "cross-spawn": "^7.0.3",
     "globby": "^11.0.2",
     "jscodeshift": "^0.7.0",
     "lodash": "^4.17.20",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "recast": "^0.19.0",
     "regenerator-runtime": "^0.13.7"
   },
@@ -56,5 +62,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d"
+  "gitHead": "269aa6d39991bd4002754fda53f45d3b3d34ba98",
+  "sbmodern": "dist/modern/index.js"
 }

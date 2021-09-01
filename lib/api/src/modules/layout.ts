@@ -1,10 +1,12 @@
-import { DOCS_MODE, document } from 'global';
+import global from 'global';
 import pick from 'lodash/pick';
 import deepEqual from 'fast-deep-equal';
 import { themes, ThemeVars } from '@storybook/theming';
 
 import merge from '../lib/merge';
 import { State, ModuleFn } from '../index';
+
+const { DOCS_MODE, document } = global;
 
 export type PanelPositions = 'bottom' | 'right';
 export type ActiveTabsType = 'sidebar' | 'canvas' | 'addons';
@@ -82,7 +84,7 @@ export const focusableUIElements = {
   storyPanelRoot: 'storybook-panel-root',
 };
 
-export const init: ModuleFn = ({ store, provider }) => {
+export const init: ModuleFn = ({ store, provider, singleStory }) => {
   const api = {
     toggleFullscreen(toggled?: boolean) {
       return store.setState(
@@ -96,7 +98,7 @@ export const init: ModuleFn = ({ store, provider }) => {
             layout: {
               ...state.layout,
               isFullscreen: value,
-              showNav: shouldShowNav ? true : showNav,
+              showNav: !singleStory && shouldShowNav ? true : showNav,
             },
           };
         },
@@ -151,16 +153,17 @@ export const init: ModuleFn = ({ store, provider }) => {
     toggleNav(toggled?: boolean) {
       return store.setState(
         (state: State) => {
-          const { showPanel, isFullscreen } = state.layout;
+          if (singleStory) return { layout: state.layout };
 
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
-          const shouldToggleFullScreen = showPanel === false && value === false;
+          const { showPanel, isFullscreen } = state.layout;
+          const showNav = typeof toggled !== 'undefined' ? toggled : !state.layout.showNav;
+          const shouldToggleFullScreen = showPanel === false && showNav === false;
 
           return {
             layout: {
               ...state.layout,
-              showNav: value,
-              isFullscreen: shouldToggleFullScreen ? true : isFullscreen,
+              showNav,
+              isFullscreen: shouldToggleFullScreen ? true : !showNav && isFullscreen,
             },
           };
         },
@@ -219,6 +222,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         layout: {
           ...defaultState.layout,
           ...pick(options, Object.keys(defaultState.layout)),
+          ...(singleStory && { showNav: false }),
         },
         ui: {
           ...defaultState.ui,
@@ -236,6 +240,7 @@ export const init: ModuleFn = ({ store, provider }) => {
         const updatedLayout = {
           ...layout,
           ...pick(options, Object.keys(layout)),
+          ...(singleStory && { showNav: false }),
         };
 
         const updatedUi = {

@@ -37,6 +37,7 @@ describe('decorateStory', () => {
         },
         template:
           '<great-grandparent><grandparent [grandparentInput]="grandparentInput"><parent [parentInput]="parentInput" (parentOutput)="parentOutput($event)"></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -75,6 +76,7 @@ describe('decorateStory', () => {
         },
         template:
           '<great-grandparent><grandparent [grandparentInput]="grandparentInput"><parent [parentInput]="parentInput" (parentOutput)="parentOutput($event)"></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -89,6 +91,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -121,6 +124,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -153,6 +157,7 @@ describe('decorateStory', () => {
       expect(decorated()).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: true,
       });
     });
 
@@ -185,6 +190,7 @@ describe('decorateStory', () => {
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
+        userDefinedTemplate: false,
       });
     });
 
@@ -218,6 +224,7 @@ describe('decorateStory', () => {
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
         component: FooComponent,
+        userDefinedTemplate: false,
       });
     });
 
@@ -229,6 +236,36 @@ describe('decorateStory', () => {
 
       expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
         template: '<parent></parent>',
+      });
+    });
+
+    it('should only keeps args with a control or an action in argTypes', () => {
+      const decorated = decorateStory(
+        (context: StoryContext) => ({
+          template: `Args available in the story : ${Object.keys(context.args).join()}`,
+        }),
+        []
+      );
+
+      expect(
+        decorated(
+          makeContext({
+            parameters: { component: FooComponent },
+            argTypes: {
+              withControl: { control: { type: 'object' }, name: 'withControl' },
+              withAction: { action: 'onClick', name: 'withAction' },
+              toRemove: { name: 'toRemove' },
+            },
+            args: {
+              withControl: 'withControl',
+              withAction: () => ({}),
+              toRemove: 'toRemove',
+            },
+          })
+        )
+      ).toEqual({
+        template: 'Args available in the story : withControl,withAction',
+        userDefinedTemplate: true,
       });
     });
   });

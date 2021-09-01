@@ -11,12 +11,14 @@ const Template = (initialValue: any) => {
   return (
     <>
       <ObjectControl name="object" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value && JSON.stringify(value)}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
 export const Basic = () => Template({ name: 'Michael', nested: { something: true } });
+
+export const Empty = () => Template({});
 
 export const Null = () => Template(null);
 

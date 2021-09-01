@@ -1,27 +1,15 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug report 🐞
+about: Something is broken and you have a reliable reproduction? Let us know here. For questions, please use "Question" below.
+labels: needs triage, bug
 ---
 
 **Describe the bug**
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
-
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Code snippets**
-If applicable, add code samples to help explain your problem.
+Please create a reproduction by running `npx sb@next repro` and following the instructions. Read our [documentation](https://storybook.js.org/docs/react/contribute/how-to-reproduce) to learn more about creating reproductions.
+Paste your repository and deployed reproduction here. We prioritize issues with reproductions over those without.
 
 **System**
 Please paste the results of `npx sb@next info` here.

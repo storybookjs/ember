@@ -1,9 +1,10 @@
-import { document, fetch, Node } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import { Args, ArgTypes } from '@storybook/api';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
 import { RenderContext, FetchStoryHtmlType } from './types';
 
+const { document, fetch, Node } = global;
 const rootElement = document.getElementById('root');
 
 const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, storyContext) => {
@@ -27,12 +28,6 @@ const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
         // For cross framework & language support we pick a consistent representation of Dates as strings
         storyArgs[key] = new Date(argValue).toISOString();
         break;
-      case 'array': {
-        // use the supplied separator when serializing an array as a string
-        const separator = control.separator || ',';
-        storyArgs[key] = argValue.join(separator);
-        break;
-      }
       case 'object':
         // send objects as JSON strings
         storyArgs[key] = JSON.stringify(argValue);

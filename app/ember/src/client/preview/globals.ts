@@ -1,4 +1,6 @@
-import { window } from 'global';
+import global from 'global';
 
-window.STORYBOOK_NAME = process.env.STORYBOOK_NAME;
-window.STORYBOOK_ENV = 'ember';
+const { window: globalWindow } = global;
+
+globalWindow.STORYBOOK_NAME = process.env.STORYBOOK_NAME;
+globalWindow.STORYBOOK_ENV = 'ember';

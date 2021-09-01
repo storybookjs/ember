@@ -1,11 +1,11 @@
 {
   "name": "@storybook/builder-webpack5",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-alpha.33",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,13 +14,17 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/core"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -56,41 +60,37 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.2.0-rc.9",
-    "@storybook/api": "6.2.0-rc.9",
-    "@storybook/channel-postmessage": "6.2.0-rc.9",
-    "@storybook/channels": "6.2.0-rc.9",
-    "@storybook/client-api": "6.2.0-rc.9",
-    "@storybook/client-logger": "6.2.0-rc.9",
-    "@storybook/components": "6.2.0-rc.9",
-    "@storybook/core-common": "6.2.0-rc.9",
-    "@storybook/core-events": "6.2.0-rc.9",
-    "@storybook/node-logger": "6.2.0-rc.9",
-    "@storybook/router": "6.2.0-rc.9",
+    "@storybook/addons": "6.4.0-alpha.33",
+    "@storybook/api": "6.4.0-alpha.33",
+    "@storybook/channel-postmessage": "6.4.0-alpha.33",
+    "@storybook/channels": "6.4.0-alpha.33",
+    "@storybook/client-api": "6.4.0-alpha.33",
+    "@storybook/client-logger": "6.4.0-alpha.33",
+    "@storybook/components": "6.4.0-alpha.33",
+    "@storybook/core-common": "6.4.0-alpha.33",
+    "@storybook/core-events": "6.4.0-alpha.33",
+    "@storybook/node-logger": "6.4.0-alpha.33",
+    "@storybook/router": "6.4.0-alpha.33",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.2.0-rc.9",
+    "@storybook/theming": "6.4.0-alpha.33",
     "@types/node": "^14.0.10",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.0.0",
     "babel-plugin-macros": "^3.0.1",
     "babel-plugin-polyfill-corejs3": "^0.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "core-js": "^3.8.2",
     "css-loader": "^5.0.1",
-    "dotenv-webpack": "^6.0.0",
-    "file-loader": "^6.2.0",
+    "dotenv-webpack": "^7.0.0",
     "fork-ts-checker-webpack-plugin": "^6.0.4",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^5.0.0",
-    "pnp-webpack-plugin": "1.6.4",
-    "raw-loader": "^4.0.2",
     "react-dev-utils": "^11.0.3",
     "stable": "^0.1.8",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
     "ts-dedent": "^2.0.0",
-    "url-loader": "^4.1.1",
     "util-deprecate": "^1.0.2",
     "webpack": "^5.9.0",
     "webpack-dev-middleware": "^4.1.0",
@@ -118,5 +118,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d"
+  "gitHead": "269aa6d39991bd4002754fda53f45d3b3d34ba98",
+  "sbmodern": "dist/modern/index.js"
 }

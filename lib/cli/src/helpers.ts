@@ -181,6 +181,7 @@ export function copyTemplate(templateRoot: string, storyFormat: StoryFormat) {
 
     throw new Error(`Unsupported story format: ${storyFormat}`);
   }
+
   fse.copySync(templateDir, '.', { overwrite: true });
 }
 

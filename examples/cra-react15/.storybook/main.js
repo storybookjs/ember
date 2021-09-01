@@ -5,6 +5,7 @@ module.exports = {
   logLevel: 'debug',
   addons: [
     '@storybook/preset-create-react-app',
+    '@storybook/addon-ie11',
     '@storybook/addon-actions',
     '@storybook/addon-links',
   ],

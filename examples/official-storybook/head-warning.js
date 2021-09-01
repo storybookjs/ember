@@ -1,4 +1,6 @@
-import { document } from 'global';
+import global from 'global';
+
+const { document } = global;
 
 // HMR will cause this code to be invoked multiple times, so each warning should have a unique ID
 export default function addHeadWarning(id, text) {

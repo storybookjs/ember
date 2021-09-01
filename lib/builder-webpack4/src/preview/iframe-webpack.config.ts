@@ -23,6 +23,7 @@ import {
   interpolate,
   nodeModulesPaths,
   Options,
+  NormalizedStoriesEntry,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -63,12 +64,14 @@ export default async ({
   frameworkPath,
   presets,
   typescriptOptions,
+  modern,
+  features,
 }: Options & Record<string, any>): Promise<Configuration> => {
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
 
-  const headHtmlSnippet = await presets.apply('previewHeadTemplate');
-  const bodyHtmlSnippet = await presets.apply('previewBodyTemplate');
+  const headHtmlSnippet = await presets.apply('previewHead');
+  const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
   const envs = await presets.apply<Record<string, string>>('env');
 
@@ -107,9 +110,16 @@ export default async ({
   });
   if (stories) {
     const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
-    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
-      // Make sure we also replace quotes for this one
-      .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
+    // Make sure we also replace quotes for this one
+    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
+      frameworkImportPath,
+    }).replace(
+      "'{{stories}}'",
+      stories
+        .map((s: NormalizedStoriesEntry) => s.glob)
+        .map(toRequireContextString)
+        .join(',')
+    );
   }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
@@ -128,7 +138,6 @@ export default async ({
       publicPath: '',
     },
     watchOptions: {
-      aggregateTimeout: 10,
       ignored: /node_modules/,
     },
     plugins: [
@@ -152,6 +161,8 @@ export default async ({
           globals: {
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            FEATURES: features,
+            STORIES: stories,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
@@ -194,7 +205,7 @@ export default async ({
     resolve: {
       extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.cjs'],
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
-      mainFields: ['browser', 'module', 'main'],
+      mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
         ...themingPaths,
         ...storybookPaths,
@@ -217,7 +228,7 @@ export default async ({
       runtimeChunk: true,
       sideEffects: true,
       usedExports: true,
-      concatenateModules: true,
+      moduleIds: 'named',
       minimizer: isProd
         ? [
             new TerserWebpackPlugin({

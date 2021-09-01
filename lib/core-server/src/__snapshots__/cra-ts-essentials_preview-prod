@@ -3,8 +3,8 @@
 exports[`cra-ts-essentials preview production mode 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-server/src/globals/polyfills.ts",
-    "ROOT/lib/core-server/src/globals/globals.ts",
+    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
+    "ROOT/lib/core-client/dist/esm/globals/globals.js",
     "ROOT/examples/cra-ts-essentials/.storybook/storybook-init-framework-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-other-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/react/config.js-generated-other-entry.js",
@@ -12,6 +12,8 @@ Object {
     "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-other-entry.js",
     "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-other-entry.js",
     "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-other-entry.js",
+    "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-other-entry.js",
+    "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-other-entry.js",
     "ROOT/examples/cra-ts-essentials/.storybook/preview.js-generated-config-entry.js",
     "ROOT/examples/cra-ts-essentials/.storybook/generated-stories-entry.js",
   ],
@@ -46,33 +48,18 @@ Object {
         },
       },
       Object {
-        "enforce": "pre",
-        "include": Array [
-          "ROOT/src",
-          "ROOT/examples/cra-ts-essentials/.storybook",
-        ],
-        "test": "/\\\\.(js|mjs|jsx|ts|tsx)$/",
-        "use": Array [
-          Object {
-            "loader": "NODE_MODULES/eslint-loader/dist/cjs.js",
-            "options": Object {
-              "baseConfig": Object {
-                "extends": Array [
-                  "NODE_MODULES/eslint-config-react-app/index.js",
-                ],
-              },
-              "cache": true,
-              "eslintPath": "NODE_MODULES/eslint/lib/api.js",
-              "formatter": "NODE_MODULES/react-dev-utils/eslintFormatter.js",
-              "ignore": false,
-              "resolvePluginsRelativeTo": "NODE_MODULES/react-scripts/config",
-              "useEslintrc": false,
-            },
-          },
-        ],
-      },
-      Object {
         "oneOf": Array [
+          Object {
+            "loader": "NODE_MODULES/url-loader/dist/cjs.js",
+            "options": Object {
+              "limit": 10000,
+              "mimetype": "image/avif",
+              "name": "static/media/[name].[hash:8].[ext]",
+            },
+            "test": Array [
+              "/\\\\.avif$/",
+            ],
+          },
           Object {
             "loader": "NODE_MODULES/url-loader/dist/cjs.js",
             "options": Object {
@@ -96,7 +83,7 @@ Object {
               "babelrc": false,
               "cacheCompression": false,
               "cacheDirectory": true,
-              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@9.1.2:react-dev-utils@10.2.1:react-scripts@3.4.4",
+              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
               "compact": true,
               "configFile": false,
               "customize": "NODE_MODULES/babel-preset-react-app/webpack-overrides.js",
@@ -127,7 +114,21 @@ Object {
                 ],
               ],
               "presets": Array [
-                "NODE_MODULES/babel-preset-react-app/index.js",
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+                Array [
+                  "NODE_MODULES/babel-preset-react-app/index.js",
+                  Object {
+                    "runtime": "automatic",
+                  },
+                ],
               ],
             },
             "test": "/\\\\.(js|mjs|jsx|ts|tsx)$/",
@@ -142,7 +143,7 @@ Object {
               "babelrc": false,
               "cacheCompression": false,
               "cacheDirectory": true,
-              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@9.1.2:react-dev-utils@10.2.1:react-scripts@3.4.4",
+              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
               "compact": false,
               "configFile": false,
               "inputSourceMap": true,
@@ -248,6 +249,7 @@ Object {
               Object {
                 "loader": "NODE_MODULES/resolve-url-loader/index.js",
                 "options": Object {
+                  "root": "ROOT/src",
                   "sourceMap": true,
                 },
               },
@@ -289,6 +291,7 @@ Object {
               Object {
                 "loader": "NODE_MODULES/resolve-url-loader/index.js",
                 "options": Object {
+                  "root": "ROOT/src",
                   "sourceMap": true,
                 },
               },
@@ -310,6 +313,29 @@ Object {
             "loader": "NODE_MODULES/file-loader/dist/cjs.js",
             "options": Object {
               "name": "static/media/[name].[hash:8].[ext]",
+            },
+          },
+        ],
+      },
+      Object {
+        "include": "NODE_MODULES[\\\\\\\\/](@storybook[\\\\\\\\/]node_logger|@testing-library[\\\\\\\\/]dom|@testing-library[\\\\\\\\/]user-event|acorn-jsx|ansi-align|ansi-colors|ansi-escapes|ansi-regex|ansi-styles|better-opn|boxen|camelcase|chalk|color-convert|commander|find-cache-dir|find-up|fs-extra|highlight.js|json5|node-fetch|pkg-dir|prettier|pretty-format|react-dev-utils|resolve-from|semver|slash|strip-ansi|uuid)/",
+        "test": "/\\\\.js$/",
+        "use": Array [
+          Object {
+            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "options": Object {
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
+              "sourceType": "unambiguous",
             },
           },
         ],
@@ -364,7 +390,17 @@ Object {
                   },
                 ],
               ],
-              "presets": Array [],
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
             },
           },
           Object {
@@ -413,7 +449,17 @@ Object {
                   },
                 ],
               ],
-              "presets": Array [],
+              "presets": Array [
+                Array [
+                  "@babel/preset-env",
+                  Object {
+                    "targets": Object {
+                      "ie": "11",
+                    },
+                  },
+                  "storybook-addon-ie11",
+                ],
+              ],
             },
           },
           Object {
@@ -451,8 +497,8 @@ Object {
     "MiniCssExtractPlugin",
     "ManifestPlugin",
     "IgnorePlugin",
-    "GenerateSW",
     "ForkTsCheckerWebpackPlugin",
+    "ESLintWebpackPlugin",
     "DocgenPlugin",
   ],
 }

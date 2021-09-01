@@ -1,0 +1,57 @@
+```md
+<!--- YourComponent.stories.mdx -->
+
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+
+import YourComponent from './your-component.component';
+
+<Meta title="Example of how to use argTypes and functions" component={YourComponent}/>
+
+<!---👇 A function to apply some computations -->
+
+export const someFunction = (valuePropertyA, valuePropertyB) => {
+
+  <!--- Makes some computations and returns something -->
+
+};
+
+export const Template = (args)=>{
+  const { propertyA, propertyB } = args;
+
+  <!---👇 Assigns the function result to a variable -->
+  const someFunctionResult = someFunction(propertyA, propertyB);
+  return {
+    props: {
+      ...args,
+      someProperty: someFunctionResult,
+    },
+  };
+}
+
+<Canvas>
+  <Story
+    name="A complex case with a function"
+    argTypes={{
+      propertyA: {
+        options: [
+          'Item One',
+          'Item Two',
+          'Item Three',
+        ],
+      },
+      propertyB: {
+        options: [
+          'Another Item One',
+          'Another Item Two',
+          'Another Item Three',
+        ],
+      },
+    }}
+    args={{
+      propertyA: 'Item One',
+      propertyB: 'Another Item One',
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+```

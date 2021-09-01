@@ -48,7 +48,7 @@ If you are somehow tied to knobs or prefer the knobs interface, we are happy to 
 
 ### How do I migrate from addon-knobs?
 
-If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/master/addons/knobs) you should consider migrating to Controls.
+If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/main/addons/knobs) you should consider migrating to Controls.
 
 You're probably using it for something that can be satisfied by one of the cases [described above](#writing-stories).
 
@@ -77,7 +77,6 @@ Basic.args = { label: 'hello' };
 Similarly, we can also consider a story that uses knob inputs to change its behavior:
 
 ```jsx
-import range from 'lodash/range';
 import { number, text } from '@storybook/addon-knobs';
 
 export const Reflow = () => {
@@ -85,8 +84,8 @@ export const Reflow = () => {
   const label = text('Label', 'reflow');
   return (
     <>
-      {range(count).map((i) => (
-        <Button label={`button ${i}`} />
+      {[...Array(count)].map((_, i) => (
+        <Button key={i} label={`button ${i}`} />
       ))}
     </>
   );
@@ -97,11 +96,26 @@ And again, as above, this can be rewritten using [fully custom args](https://sto
 
 ```jsx
 export const Reflow = ({ count, label, ...args }) => (
-  <>{range(count).map((i) => <Button label={`${label} ${i}` {...args}} />)}</>
+  <>
+    {[...Array(count)].map((_, i) => (
+      <Button key={i} label={`${label} ${i}`} {...args} />
+    ))}
+  </>
 );
-Reflow.args = { count: 3, label: 'reflow' };
+
+Reflow.args = {
+  count: 3,
+  label: 'reflow',
+};
+
 Reflow.argTypes = {
-  count: { control: { type: 'range', min: 0, max: 20 } }
+  count: {
+    control: {
+      type: 'range',
+      min: 0,
+      max: 20,
+    },
+  },
 };
 ```
 
@@ -126,6 +140,7 @@ export default {
 };
 
 export const Basic = (args) => <Button {...args} />;
+
 Basic.args = {
   label: 'hello',
   borderWidth: 1,
@@ -183,7 +198,7 @@ Basic.args = { label: 'hello', background: '#ff0' };
 Here's the MDX equivalent:
 
 ```jsx
-import { Meta, Story } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs';
 import { Button } from './Button';
 
 <Meta title="Button" component={Button} argTypes={{ background: { control: 'color' } }} />

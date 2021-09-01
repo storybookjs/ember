@@ -1,0 +1,18 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="img" />
+
+<Story name="withAnImage">
+  {() => {
+    return {
+      setup() {
+        return { image };
+      },
+      template: `<img src="image.png" alt="my image" />`,
+    };
+  }}
+</Story>
+```

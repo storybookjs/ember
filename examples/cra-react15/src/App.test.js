@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { document } from 'global';
+import global from 'global';
 import App from './App';
+
+const { document } = global;
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

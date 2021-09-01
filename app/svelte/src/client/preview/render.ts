@@ -1,6 +1,8 @@
-import { document } from 'global';
+import global from 'global';
 import { RenderContext } from './types';
 import PreviewRender from './PreviewRender.svelte';
+
+const { document } = global;
 
 type Component = any;
 

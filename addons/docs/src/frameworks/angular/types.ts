@@ -4,6 +4,7 @@ export interface Method {
   returnType: string;
   decorators?: Decorator[];
   description?: string;
+  rawdescription?: string;
 }
 
 export interface Property {
@@ -13,6 +14,7 @@ export interface Property {
   optional: boolean;
   defaultValue?: string;
   description?: string;
+  rawdescription?: string;
 }
 
 export interface Class {

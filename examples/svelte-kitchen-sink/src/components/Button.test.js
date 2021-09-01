@@ -1,5 +1,7 @@
-import { document } from 'global';
+import global from 'global';
 import Button from './Button.svelte';
+
+const { document } = global;
 
 let target;
 let component;

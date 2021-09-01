@@ -140,11 +140,16 @@ export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boo
           '@supports (-webkit-appearance:none)': {
             borderWidth: 1,
             borderStyle: 'solid',
-            borderColor:
-              !inAddonPanel &&
-              (theme.base === 'light'
-                ? transparentize(0.035, theme.appBorderColor)
-                : opacify(0.05, theme.appBorderColor)),
+            ...(inAddonPanel && {
+              borderColor: 'transparent',
+            }),
+
+            ...(!inAddonPanel && {
+              borderColor:
+                theme.base === 'light'
+                  ? transparentize(0.035, theme.appBorderColor)
+                  : opacify(0.05, theme.appBorderColor),
+            }),
           },
         },
 
@@ -389,7 +394,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
                   Control{' '}
                   {resetArgs && (
                     <ResetButton onClick={() => resetArgs()} title="Reset controls">
-                      <Icons icon="sync" aria-hidden />
+                      <Icons icon="undo" aria-hidden />
                     </ResetButton>
                   )}
                 </ControlHeadingWrapper>

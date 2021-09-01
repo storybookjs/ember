@@ -8,9 +8,7 @@ module.exports = {
     '@storybook/addon-actions',
     '@storybook/addon-backgrounds',
     '@storybook/addon-controls',
-    '@storybook/addon-events',
     '@storybook/addon-jest',
-    '@storybook/addon-knobs',
     '@storybook/addon-links',
     {
       name: '@storybook/addon-postcss',
@@ -26,4 +24,15 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
+  // Test code for built-in stories.json extraction
+  //
+  // refs: {
+  //   'react-ts': {
+  //     title: 'React TS',
+  //     // development
+  //     url: 'http://localhost:9011',
+  //     // production
+  //     // url: 'http://localhost:8080',
+  //   },
+  // },
 };

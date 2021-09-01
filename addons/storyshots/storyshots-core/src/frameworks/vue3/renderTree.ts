@@ -1,6 +1,8 @@
 import * as Vue from 'vue';
-import { document } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
+
+const { document } = global;
 
 // This is cast as `any` to workaround type errors caused by Vue 2 types
 const { render, h } = Vue as any;

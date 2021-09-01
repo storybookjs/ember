@@ -2,7 +2,9 @@ import ClientApi, {
   addDecorator,
   addParameters,
   addLoader,
+  addArgsEnhancer,
   addArgTypesEnhancer,
+  setGlobalRender,
 } from './client_api';
 import { defaultDecorateStory } from './decorators';
 import { combineParameters } from './parameters';
@@ -24,10 +26,12 @@ export * from './inferControls';
 export type { PropDescriptor } from './filterArgTypes';
 
 export {
+  addArgsEnhancer,
   addArgTypesEnhancer,
   addDecorator,
   addLoader,
   addParameters,
+  setGlobalRender,
   ClientApi,
   combineParameters,
   ConfigApi,

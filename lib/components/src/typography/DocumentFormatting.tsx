@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { styled, CSSObject } from '@storybook/theming';
 import { withReset, withMargin, headerCommon, codeCommon } from './shared';
-import { SyntaxHighlighter } from '../syntaxhighlighter/lazy-syntaxhighlighter';
+import { StyledSyntaxHighlighter } from '../blocks/Source';
 
 export const H1 = styled.h1<{}>(withReset, headerCommon, ({ theme }) => ({
   fontSize: `${theme.typography.size.l1}px`,
@@ -73,7 +73,6 @@ export const Pre = styled.pre<{}>(withReset, withMargin, ({ theme }) => ({
 const Link: FunctionComponent<any> = ({ href: input, children, ...props }) => {
   const isStorybookPath = /^\//.test(input);
   const isAnchorUrl = /^#.*/.test(input);
-
   const href = isStorybookPath ? `?path=${input}` : input;
   const target = isAnchorUrl ? '_self' : '_top';
 
@@ -331,14 +330,33 @@ const DefaultCodeBlock = styled.code<{}>(
   codeCommon
 );
 
-export const Code = ({ className, ...props }: React.ComponentProps<typeof DefaultCodeBlock>) => {
+export const Code = ({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof DefaultCodeBlock>) => {
   const language = (className || '').match(/lang-(\S+)/);
+  const isInlineCode = !(children as string).match(/[\n\r]/g);
 
-  if (!language) {
-    return <DefaultCodeBlock {...props} className={className} />;
+  if (isInlineCode) {
+    return (
+      <DefaultCodeBlock {...props} className={className}>
+        {children}
+      </DefaultCodeBlock>
+    );
   }
 
-  return <SyntaxHighlighter bordered copyable language={language[1]} format={false} {...props} />;
+  return (
+    <StyledSyntaxHighlighter
+      bordered
+      copyable
+      language={language?.[1] ?? 'plaintext'}
+      format={false}
+      {...props}
+    >
+      {children}
+    </StyledSyntaxHighlighter>
+  );
 };
 
 export const TT = styled.title<{}>(codeCommon);

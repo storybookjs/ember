@@ -18,6 +18,24 @@ export interface ArgControlProps {
   updateArgs: (args: Args) => void;
 }
 
+const Controls: Record<string, FC> = {
+  array: ObjectControl,
+  object: ObjectControl,
+  boolean: BooleanControl,
+  color: ColorControl,
+  date: DateControl,
+  number: NumberControl,
+  check: OptionsControl,
+  'inline-check': OptionsControl,
+  radio: OptionsControl,
+  'inline-radio': OptionsControl,
+  select: OptionsControl,
+  'multi-select': OptionsControl,
+  range: RangeControl,
+  text: TextControl,
+  file: FilesControl,
+};
+
 const NoControl = () => <>-</>;
 
 export const ArgControl: FC<ArgControlProps> = ({ row, arg, updateArgs }) => {
@@ -48,32 +66,6 @@ export const ArgControl: FC<ArgControlProps> = ({ row, arg, updateArgs }) => {
   // row.name is a display name and not a suitable DOM input id or name - i might contain whitespace etc.
   // row.key is a hash key and therefore a much safer choice
   const props = { name: key, argType: row, value: boxedValue.value, onChange, onBlur, onFocus };
-  switch (control.type) {
-    case 'array':
-    case 'object':
-      return <ObjectControl {...props} {...control} />;
-    case 'boolean':
-      return <BooleanControl {...props} {...control} />;
-    case 'color':
-      return <ColorControl {...props} {...control} />;
-    case 'date':
-      return <DateControl {...props} {...control} />;
-    case 'number':
-      return <NumberControl {...props} {...control} />;
-    case 'check':
-    case 'inline-check':
-    case 'radio':
-    case 'inline-radio':
-    case 'select':
-    case 'multi-select':
-      return <OptionsControl {...props} {...control} controlType={control.type} />;
-    case 'range':
-      return <RangeControl {...props} {...control} />;
-    case 'text':
-      return <TextControl {...props} {...control} />;
-    case 'file':
-      return <FilesControl {...props} {...control} />;
-    default:
-      return <NoControl />;
-  }
+  const Control = Controls[control.type] || NoControl;
+  return <Control {...props} {...control} controlType={control.type} />;
 };

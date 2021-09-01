@@ -1,11 +1,11 @@
 {
   "name": "@storybook/channels",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-alpha.33",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/channels",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/channels",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,6 +14,10 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/channels"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "sideEffects": false,
   "main": "dist/cjs/index.js",
@@ -21,7 +25,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -43,5 +47,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d"
+  "gitHead": "269aa6d39991bd4002754fda53f45d3b3d34ba98",
+  "sbmodern": "dist/modern/index.js"
 }

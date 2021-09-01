@@ -53,6 +53,7 @@ describe('mapArgsToTypes', () => {
 
   it('maps numbers', () => {
     expect(mapArgsToTypes({ a: '42' }, { a: { type: numberType } })).toStrictEqual({ a: 42 });
+    expect(mapArgsToTypes({ a: '4.2' }, { a: { type: numberType } })).toStrictEqual({ a: 4.2 });
     expect(mapArgsToTypes({ a: 'a' }, { a: { type: numberType } })).toStrictEqual({ a: NaN });
   });
 
@@ -84,6 +85,14 @@ describe('mapArgsToTypes', () => {
     expect(mapArgsToTypes({ a: { b: 1 } }, { a: { type: undefined } })).toStrictEqual({
       a: { b: 1 },
     });
+  });
+
+  it('passes string for object type', () => {
+    expect(mapArgsToTypes({ a: 'A' }, { a: { type: boolObjectType } })).toStrictEqual({ a: 'A' });
+  });
+
+  it('passes number for object type', () => {
+    expect(mapArgsToTypes({ a: 1.2 }, { a: { type: boolObjectType } })).toStrictEqual({ a: 1.2 });
   });
 
   it('deeply maps objects', () => {
@@ -176,6 +185,11 @@ describe('combineArgs', () => {
 });
 
 describe('validateOptions', () => {
+  // https://github.com/storybookjs/storybook/issues/15630
+  it('does not set args to `undefined` if they are unset', () => {
+    expect(validateOptions({}, { a: {} })).toStrictEqual({});
+  });
+
   it('omits arg and warns if value is not one of options', () => {
     expect(validateOptions({ a: 1 }, { a: { options: [2, 3] } })).toStrictEqual({});
     expect(once.warn).toHaveBeenCalledWith(

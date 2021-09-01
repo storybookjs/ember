@@ -1,47 +1,32 @@
 import React from 'react';
+import pLimit from 'p-limit';
+import { nanoid } from 'nanoid';
+
 import { IStory, StoryContext } from '@storybook/angular';
-import { ElementRendererService } from '@storybook/angular/element-renderer';
+import { rendererFactory } from '@storybook/angular/renderer';
 import { StoryFn } from '@storybook/addons';
 
-const customElementsVersions: Record<string, number> = {};
+const limit = pLimit(1);
 
 /**
- * Uses angular element to generate on-the-fly web components and reference it with `customElements`
- * then it is added into react
+ * Uses the angular renderer to generate a story. Uses p-limit to run synchronously
  */
 export const prepareForInline = (storyFn: StoryFn<IStory>, { id, parameters }: StoryContext) => {
-  // Upgrade story version in order that the next defined component has a unique key
-  customElementsVersions[id] =
-    customElementsVersions[id] !== undefined ? customElementsVersions[id] + 1 : 0;
+  return React.createElement('div', {
+    ref: async (node?: HTMLDivElement): Promise<void> => {
+      if (!node) {
+        return null;
+      }
 
-  const customElementsName = `${id}_${customElementsVersions[id]}`;
-
-  const Story = class Story extends React.Component {
-    wrapperRef: React.RefObject<unknown>;
-
-    elementName: string;
-
-    constructor(props: any) {
-      super(props);
-      this.wrapperRef = React.createRef();
-    }
-
-    async componentDidMount() {
-      // eslint-disable-next-line no-undef
-      customElements.define(
-        customElementsName,
-        await new ElementRendererService().renderAngularElement({
-          storyFnAngular: storyFn(),
+      return limit(async () => {
+        const renderer = await rendererFactory.getRendererInstance(`${id}-${nanoid(10)}`, node);
+        await renderer.render({
+          forced: false,
           parameters,
-        })
-      );
-    }
-
-    render() {
-      return React.createElement(customElementsName, {
-        ref: this.wrapperRef,
+          storyFnAngular: storyFn(),
+          targetDOMNode: node,
+        });
       });
-    }
-  };
-  return React.createElement(Story);
+    },
+  });
 };

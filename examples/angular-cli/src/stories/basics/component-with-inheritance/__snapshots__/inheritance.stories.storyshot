@@ -16,6 +16,7 @@ exports[`Storyshots Basics / Component / With Inheritance icon button 1`] = `
 <storybook-wrapper>
   <storybook-icon-button
     ng-reflect-icon="this is icon"
+    ng-reflect-label="this is label"
   >
     <button>
       this is label - this is icon

@@ -1,0 +1,32 @@
+```md
+<!-- Table.stories.mdx -->
+
+import { Story } from '@storybook/addon-docs';
+
+export const TableStory = (args) => ({
+  props: args,
+  template: `
+    <table>
+      <tbody>
+        <tr *ngFor="let row of data; let i=index">
+          <td *ngFor="let col of row; let j=index">
+            {{data[i][j]}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    `,
+});
+
+<Story
+  name="Numeric"
+  args={{
+    data: [
+      [1, 2, 3],
+      [4, 5, 6],
+    ],
+    size: 'large',
+  }}>
+  {TableStory.bind({})}
+</Story>
+```

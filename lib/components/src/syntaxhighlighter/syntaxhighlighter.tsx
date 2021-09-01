@@ -1,40 +1,48 @@
-import React, { ComponentProps, FunctionComponent, MouseEvent, useState } from 'react';
+import React, {
+  ClipboardEvent,
+  ComponentProps,
+  FunctionComponent,
+  MouseEvent,
+  useState,
+} from 'react';
 import { logger } from '@storybook/client-logger';
 import { styled } from '@storybook/theming';
-import { navigator, document, window } from 'global';
+import global from 'global';
 import memoize from 'memoizerific';
 
 // @ts-ignore
-import jsx from 'react-syntax-highlighter/dist/cjs/languages/prism/jsx';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
 // @ts-ignore
-import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
 // @ts-ignore
-import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
+import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
 // @ts-ignore
-import jsExtras from 'react-syntax-highlighter/dist/cjs/languages/prism/js-extras';
+import jsExtras from 'react-syntax-highlighter/dist/esm/languages/prism/js-extras';
 // @ts-ignore
-import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
+import json from 'react-syntax-highlighter/dist/esm/languages/prism/json';
 // @ts-ignore
-import graphql from 'react-syntax-highlighter/dist/cjs/languages/prism/graphql';
+import graphql from 'react-syntax-highlighter/dist/esm/languages/prism/graphql';
 // @ts-ignore
-import html from 'react-syntax-highlighter/dist/cjs/languages/prism/markup';
+import html from 'react-syntax-highlighter/dist/esm/languages/prism/markup';
 // @ts-ignore
-import md from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
+import md from 'react-syntax-highlighter/dist/esm/languages/prism/markdown';
 // @ts-ignore
-import yml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
+import yml from 'react-syntax-highlighter/dist/esm/languages/prism/yaml';
 // @ts-ignore
-import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
+import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
 // @ts-ignore
-import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
+import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
 
 // @ts-ignore
-import ReactSyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/prism-light';
+import ReactSyntaxHighlighter from 'react-syntax-highlighter/dist/esm/prism-light';
 
 import { ActionBar } from '../ActionBar/ActionBar';
 import { ScrollArea } from '../ScrollArea/ScrollArea';
 
 import { formatter } from './formatter';
 import type { SyntaxHighlighterProps } from './syntaxhighlighter-types';
+
+const { navigator, document, window: globalWindow } = global;
 
 ReactSyntaxHighlighter.registerLanguage('jsextra', jsExtras);
 ReactSyntaxHighlighter.registerLanguage('jsx', jsx);
@@ -52,12 +60,13 @@ const themedSyntax = memoize(2)((theme) =>
   Object.entries(theme.code || {}).reduce((acc, [key, val]) => ({ ...acc, [`* .${key}`]: val }), {})
 );
 
-let copyToClipboard: (text: string) => Promise<void>;
+const copyToClipboard: (text: string) => Promise<void> = createCopyToClipboardFunction();
 
-if (navigator?.clipboard) {
-  copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
-} else {
-  copyToClipboard = async (text: string) => {
+export function createCopyToClipboardFunction() {
+  if (navigator?.clipboard) {
+    return (text: string) => navigator.clipboard.writeText(text);
+  }
+  return async (text: string) => {
     const tmp = document.createElement('TEXTAREA');
     const focus = document.activeElement;
 
@@ -70,6 +79,7 @@ if (navigator?.clipboard) {
     focus.focus();
   };
 }
+
 export interface WrapperProps {
   bordered?: boolean;
   padded?: boolean;
@@ -150,19 +160,22 @@ export const SyntaxHighlighter: FunctionComponent<Props> = ({
   const highlightableCode = format ? formatter(children) : children.trim();
   const [copied, setCopied] = useState(false);
 
-  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const onClick = (e: MouseEvent<HTMLButtonElement> | ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    copyToClipboard(highlightableCode)
+    const selectedText = globalWindow.getSelection().toString();
+    const textToCopy = e.type !== 'click' && selectedText ? selectedText : highlightableCode;
+
+    copyToClipboard(textToCopy)
       .then(() => {
         setCopied(true);
-        window.setTimeout(() => setCopied(false), 1500);
+        globalWindow.setTimeout(() => setCopied(false), 1500);
       })
       .catch(logger.error);
   };
 
   return (
-    <Wrapper bordered={bordered} padded={padded} className={className}>
+    <Wrapper bordered={bordered} padded={padded} className={className} onCopyCapture={onClick}>
       <Scroller>
         <ReactSyntaxHighlighter
           padded={padded || bordered}

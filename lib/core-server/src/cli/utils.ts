@@ -2,7 +2,10 @@ import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
 export function parseList(str: string): string[] {
-  return str.split(',');
+  return str
+    .split(',')
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
 }
 
 export function getEnvConfig(program: Record<string, any>, configEnv: Record<string, any>): void {

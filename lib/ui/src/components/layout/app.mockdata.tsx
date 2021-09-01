@@ -1,4 +1,4 @@
-import { setInterval } from 'global';
+import global from 'global';
 import React, { Component, FunctionComponent } from 'react';
 import { styled } from '@storybook/theming';
 import { Collection } from '@storybook/addons';
@@ -10,6 +10,8 @@ import { Preview } from '../preview/preview';
 import { previewProps } from '../preview/preview.mockdata';
 import { mockDataset } from '../sidebar/mockdata';
 import { DesktopProps } from './desktop';
+
+const { setInterval } = global;
 
 export const shortcuts: State['shortcuts'] = {
   fullScreen: ['F'],

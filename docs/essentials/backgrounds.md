@@ -36,6 +36,7 @@ You can also set backgrounds on per-story or per-component basis by using [param
 <CodeSnippets
   paths={[
     'common/storybook-addon-backgrounds-configure-backgrounds.js.mdx',
+    'common/storybook-addon-backgrounds-configure-backgrounds.mdx.mdx',
   ]}
 />
 
@@ -48,6 +49,7 @@ You can also only override a single key on the backgrounds parameter, for instan
 <CodeSnippets
   paths={[
     'common/storybook-addon-backgrounds-override-background-color.js.mdx',
+    'common/storybook-addon-backgrounds-override-background-color.mdx.mdx',
   ]}
 />
 
@@ -60,6 +62,7 @@ If you want to disable backgrounds in a story, you can do so by setting the `bac
 <CodeSnippets
   paths={[
     'common/storybook-addon-backgrounds-disable-backgrounds.js.mdx',
+    'common/storybook-addon-backgrounds-disable-backgrounds.mdx.mdx',
   ]}
 />
 
@@ -78,6 +81,7 @@ Each of these properties have the following default values in case they are not 
 <CodeSnippets
   paths={[
     'common/storybook-addon-backgrounds-configure-grid.js.mdx',
+    'common/storybook-addon-backgrounds-configure-grid.mdx.mdx',
   ]}
 />
 
@@ -90,6 +94,7 @@ If you wish to disable the grid in a story, you can do so by setting the `backgr
 <CodeSnippets
   paths={[
     'common/storybook-addon-backgrounds-disable-grid.js.mdx',
+    'common/storybook-addon-backgrounds-disable-grid.mdx.mdx',
   ]}
 />
 

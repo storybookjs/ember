@@ -5,7 +5,7 @@ const { identifier } = require('safe-identifier');
 
 export function stringifyObject(object: any, level = 0, excludeOuterParams = false): string {
   if (typeof object === 'string') {
-    return `'${object}'`;
+    return JSON.stringify(object);
   }
   const indent = '  '.repeat(level);
   if (Array.isArray(object)) {
@@ -53,25 +53,19 @@ export function stringifyDefault(section: StorybookSection): string {
 
   return dedent`
   export default {
-    title: '${title}',${decoratorsString}${optionsString}
+    title: ${JSON.stringify(title)},${decoratorsString}${optionsString}
   };
   
   `;
 }
 
 export function stringifyStory(story: StorybookStory): string {
-  const { name, storyFn, ...options } = story;
+  const { name, ...options } = story;
   const storyId = identifier(name);
 
-  const storyStrings = [
-    `export const ${storyId} = ${storyFn};`,
-    `${storyId}.storyName = '${name}';`,
-  ];
+  const exportedStory = { name, ...options };
 
-  Object.keys(options).forEach((key) => {
-    storyStrings.push(`${storyId}.${key} = ${stringifyObject(options[key])};`);
-  });
-  storyStrings.push('');
+  const storyStrings = [`export const ${storyId} = ${stringifyObject(exportedStory)};`, ''];
 
   return storyStrings.join('\n');
 }

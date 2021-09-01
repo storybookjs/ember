@@ -122,9 +122,23 @@ You can change your story through [parameters](../writing-stories/parameters.md)
     'react/my-component-story-configure-viewports.js.mdx',
     'react/my-component-story-configure-viewports.mdx.mdx',
     'vue/my-component-story-configure-viewports.js.mdx',
+    'vue/my-component-story-configure-viewports.mdx.mdx',
     'angular/my-component-story-configure-viewports.ts.mdx',
+    'angular/my-component-story-configure-viewports.mdx.mdx',
     'web-components/my-component-story-configure-viewports.js.mdx',
+    'svelte/my-component-story-configure-viewports.js.mdx',
+    'svelte/my-component-story-configure-viewports.native-format.mdx',
+    'svelte/my-component-story-configure-viewports.mdx.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
+
+### Keyboard shortcuts
+
+* Previous viewport: <kbd>shift</kbd> + <kbd>v</kbd>
+* Next viewport: <kbd>v</kbd>
+* Reset viewport: <kbd>alt</kbd> + <kbd>v</kbd>
+
+
+These shortcuts can be edited in Storybook's Keyboard shortcuts page.

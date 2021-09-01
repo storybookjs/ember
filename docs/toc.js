@@ -152,6 +152,11 @@ module.exports = {
           title: 'Toolbars & globals',
           type: 'link',
         },
+        {
+          pathSegment: 'measure-and-outline',
+          title: 'Measure & Outline',
+          type: 'link',
+        },
       ],
     },
     {
@@ -402,6 +407,45 @@ module.exports = {
         {
           pathSegment: 'frameworks-feature-support',
           title: 'Feature support for frameworks',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🛠 Contribute',
+      pathSegment: 'contribute',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'how-to-contribute',
+          title: 'How to',
+          type: 'link',
+        },
+        {
+          pathSegment: 'code',
+          title: 'Code',
+          type: 'link',
+        },
+        {
+          pathSegment: '',
+          title: 'Documentation',
+          type: 'menu',
+          children: [
+            {
+              pathSegment: 'documentation-updates',
+              title: 'Content',
+              type: 'link',
+            },
+            {
+              pathSegment: 'new-snippets',
+              title: 'Code snippets',
+              type: 'link',
+            },
+          ],
+        },
+        {
+          pathSegment: 'how-to-reproduce',
+          title: 'Reproduce',
           type: 'link',
         },
       ],

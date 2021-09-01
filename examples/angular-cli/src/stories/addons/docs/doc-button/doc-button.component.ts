@@ -59,7 +59,7 @@ export class DocButtonComponent<T> {
   @Input()
   public accent: ButtonAccent = ButtonAccent.Normal;
 
-  /** Specifies some arbitrary object */
+  /** Specifies some arbitrary object. This comment is to test certain chars like apostrophes - it's working */
   @Input() public someDataObject: ISomeInterface;
 
   /**
@@ -116,9 +116,10 @@ export class DocButtonComponent<T> {
     return this._inputValue;
   }
 
-  @HostListener('click', ['$event.target'])
-  onClickListener(btn) {
-    console.log('button', btn);
+  @HostListener('click', ['$event'])
+  onClickListener(event) {
+    console.log('button', event.target);
+    this.handleClick(event);
   }
 
   @HostBinding('class.focused') focus = false;

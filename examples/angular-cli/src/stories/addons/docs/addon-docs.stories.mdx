@@ -1,8 +1,7 @@
 import { moduleMetadata } from '@storybook/angular';
-import { Story, Meta, ArgsTable } from '@storybook/addon-docs/blocks';
+import { Story, Meta, ArgsTable } from '@storybook/addon-docs';
 import { Welcome, Button } from '@storybook/angular/demo';
 import { linkTo } from '@storybook/addon-links';
-import { text, withKnobs } from '@storybook/addon-knobs';
 import { DocButtonComponent } from './doc-button/doc-button.component';
 
 # Storybook Docs for Angular
@@ -21,7 +20,7 @@ How you like them apples?!
 
 Just like in React, we first declare our component.
 
-<Meta title="Addons/Docs" decorators={[withKnobs, moduleMetadata({ declarations: [Button] })]} />
+<Meta title="Addons/Docs" decorators={[moduleMetadata({ declarations: [Button] })]} />
 
 This declaration doesn't show up in the MDX output.
 
@@ -55,7 +54,7 @@ Similarly, here's how we do it in the Docs MDX format. We've already added the d
   {{
     template: `<storybook-button-component [text]="text" (onClick)="onClick($event)"></storybook-button-component>`,
     props: {
-      text: text('Button text', 'Hello Button'),
+      text: 'hello button',
       onClick: () => {},
     },
   }}

@@ -26,6 +26,7 @@ const map = (arg: unknown, type: ValueType): any => {
         return acc;
       }, new Array(arg.length));
     case 'object':
+      if (typeof arg === 'string' || typeof arg === 'number') return arg;
       if (!type.value || typeof arg !== 'object') return INCOMPATIBLE;
       return Object.entries(arg).reduce((acc, [key, val]) => {
         const mapped = map(val, (type.value as ObjectValueType)[key]);
@@ -71,7 +72,9 @@ export const combineArgs = (value: any, update: any): Args => {
 export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(argTypes).reduce((acc, [key, { options }]) => {
     if (!options) {
-      acc[key] = args[key];
+      if (key in args) {
+        acc[key] = args[key];
+      }
       return acc;
     }
 

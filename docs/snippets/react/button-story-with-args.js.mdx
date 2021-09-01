@@ -1,7 +1,14 @@
 ```js
-// Button.stories.js
+// Button.stories.js | Button.stories.jsx
 
 import React from 'react';
+
+import { Button } from './Button';
+
+export default {
+  component: Button,
+  title: 'Components/Button',
+};
 
 //👇 We create a “template” of how args map to rendering
 const Template = (args) => <Button {...args} />;
@@ -11,6 +18,6 @@ export const Primary = Template.bind({});
 
 Primary.args = {
   primary: true,
-  label: 'Primary',
+  label: 'Button',
 };
 ```

@@ -1,5 +1,14 @@
 ```ts
-// Button.stories.tsx
+// Button.stories.ts | Button.stories.tsx
+
+import { Meta } from '@storybook/react';
+
+import { Button } from './Button';
+
+export default {
+  component: Button,
+  title: 'Components/Button',
+} as Meta;
 
 export const Primary: React.VFC<{}> = () => <Button background="#ff0" label="Button" />;
 export const Secondary: React.VFC<{}> = () => <Button background="#ff0" label="😄👍😍💯" />;

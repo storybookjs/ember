@@ -1,9 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import createChannel from '@storybook/channel-postmessage';
 import { toId } from '@storybook/csf';
-import addons, { mockChannel } from '@storybook/addons';
+import { addons, mockChannel } from '@storybook/addons';
 import Events from '@storybook/core-events';
-import store2 from 'store2';
 
 import StoryStore from './story_store';
 import { defaultDecorateStory } from './decorators';
@@ -15,8 +14,6 @@ jest.mock('@storybook/node-logger', () => ({
     error: jest.fn(),
   },
 }));
-
-jest.mock('store2');
 
 let channel;
 beforeEach(() => {
@@ -49,6 +46,7 @@ const addStoryToStore = (store, kind, name, storyFn, parameters = {}) =>
       id: toId(kind, name),
     },
     {
+      // FIXME: need applyHooks, but this breaks the current tests
       applyDecorators: defaultDecorateStory,
     }
   );
@@ -148,8 +146,8 @@ describe('preview.story_store', () => {
       const story = jest.fn();
       addStoryToStore(store, 'a', '1', story);
 
-      const { getDecorated } = store.getRawStory('a', '1');
-      getDecorated()();
+      const context = store.getRawStory('a', '1');
+      context.getDecorated()(context);
 
       expect(globalDecorator).toHaveBeenCalled();
       expect(kindDecorator).toHaveBeenCalled();
@@ -433,14 +431,6 @@ describe('preview.story_store', () => {
       });
     });
 
-    it('sets session storage on initialization', () => {
-      (store2.session.set as any).mockClear();
-      const store = new StoryStore({ channel });
-      addStoryToStore(store, 'a', '1', () => 0);
-      store.finishConfiguring();
-      expect(store2.session.set).toHaveBeenCalled();
-    });
-
     it('on HMR it sensibly re-initializes with memory', () => {
       const store = new StoryStore({ channel });
       addons.setChannel(channel);
@@ -509,7 +499,10 @@ describe('preview.story_store', () => {
     });
 
     it('sensibly re-initializes with memory based on session storage', () => {
-      (store2.session.get as any).mockReturnValueOnce({
+      const store = new StoryStore({ channel });
+      store.setSelectionSpecifier({
+        storySpecifier: '*',
+        viewMode: 'story',
         globals: {
           arg1: 'arg1',
           arg2: 2,
@@ -517,8 +510,6 @@ describe('preview.story_store', () => {
           arg4: 4,
         },
       });
-
-      const store = new StoryStore({ channel });
       addons.setChannel(channel);
 
       addStoryToStore(store, 'a', '1', () => 0);
@@ -541,6 +532,7 @@ describe('preview.story_store', () => {
       expect(store.getRawStory('a', '1').globals).toEqual({
         // We should keep the previous values because we cannot tell if the user changed it or not in the UI
         // and we don't want to revert to the defaults every HMR
+        // arg1 is missing because it's not one of allowedGlobals
         arg2: 2,
         arg3: { complex: { object: ['type'] } },
         arg4: 4,
@@ -559,15 +551,6 @@ describe('preview.story_store', () => {
 
       store.updateGlobals({ baz: 'bing' });
       expect(store.getRawStory('a', '1').globals).toEqual({ foo: 'bar', baz: 'bing' });
-    });
-
-    it('updateGlobals sets session storage', () => {
-      const store = new StoryStore({ channel });
-      addStoryToStore(store, 'a', '1', () => 0);
-
-      (store2.session.set as any).mockClear();
-      store.updateGlobals({ foo: 'bar' });
-      expect(store2.session.set).toHaveBeenCalled();
     });
 
     it('is passed to the story in the context', () => {
@@ -601,13 +584,27 @@ describe('preview.story_store', () => {
 
       const store = new StoryStore({ channel: testChannel });
       addStoryToStore(store, 'a', '1', () => 0);
+      store.addGlobalMetadata({
+        parameters: {
+          globalTypes: {
+            foo: { defaultValue: 'Foo' },
+            bar: { defaultValue: 'Bar' },
+          },
+          globals: { baz: 'Baz', qux: 'Qux' },
+        },
+      });
+      store.finishConfiguring();
 
-      store.updateGlobals({ foo: 'bar' });
-      expect(onGlobalsChangedChannel).toHaveBeenCalledWith({ globals: { foo: 'bar' } });
-
-      store.updateGlobals({ baz: 'bing' });
+      store.updateGlobals({ foo: 'FUD' });
       expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
-        globals: { foo: 'bar', baz: 'bing' },
+        globals: { foo: 'FUD', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
+        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
+      });
+
+      store.updateGlobals({ baz: 'BING' });
+      expect(onGlobalsChangedChannel).toHaveBeenCalledWith({
+        globals: { foo: 'FUD', bar: 'Bar', baz: 'BING', qux: 'Qux' },
+        initialGlobals: { foo: 'Foo', bar: 'Bar', baz: 'Baz', qux: 'Qux' },
       });
     });
 
@@ -645,6 +642,36 @@ describe('preview.story_store', () => {
           globals: { foo: 'bar' },
         })
       );
+    });
+  });
+
+  describe('argsEnhancer', () => {
+    it('allows you to add args', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancer = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancer);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancer).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd' });
+    });
+
+    it('does not pass result of earlier enhancers into subsequent ones, but composes their output', () => {
+      const store = new StoryStore({ channel });
+
+      const enhancerOne = jest.fn((context) => ({ c: 'd' }));
+      store.addArgsEnhancer(enhancerOne);
+
+      const enhancerTwo = jest.fn((context) => ({ e: 'f' }));
+      store.addArgsEnhancer(enhancerTwo);
+
+      addStoryToStore(store, 'a', '1', (args: any) => 0, { args: { a: 'b' } });
+
+      expect(enhancerOne).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(enhancerTwo).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 'b' } }));
+      expect(store.getRawStory('a', '1').args).toEqual({ a: 'b', c: 'd', e: 'f' });
     });
   });
 
@@ -1083,6 +1110,42 @@ describe('preview.story_store', () => {
       ]);
     });
 
+    it('sorts stories in specified order or alphabetically with wildcards', () => {
+      const store = new StoryStore({ channel });
+      store.addGlobalMetadata({
+        decorators: [],
+        parameters: {
+          options: {
+            storySort: {
+              method: 'alphabetical',
+              order: ['b', ['bc', '*', 'bb'], '*', 'c'],
+            },
+          },
+        },
+      });
+      addStoryToStore(store, 'a/b', '1', () => 0);
+      addStoryToStore(store, 'a', '1', () => 0);
+      addStoryToStore(store, 'c', '1', () => 0);
+      addStoryToStore(store, 'b/bd', '1', () => 0);
+      addStoryToStore(store, 'b/bb', '1', () => 0);
+      addStoryToStore(store, 'b/ba', '1', () => 0);
+      addStoryToStore(store, 'b/bc', '1', () => 0);
+      addStoryToStore(store, 'b', '1', () => 0);
+
+      const extracted = store.extract();
+
+      expect(Object.keys(extracted)).toEqual([
+        'b--1',
+        'b-bc--1',
+        'b-ba--1',
+        'b-bd--1',
+        'b-bb--1',
+        'a--1',
+        'a-b--1',
+        'c--1',
+      ]);
+    });
+
     it('sorts stories in specified order or by configure order', () => {
       const store = new StoryStore({ channel });
       store.addGlobalMetadata({
@@ -1114,6 +1177,124 @@ describe('preview.story_store', () => {
         'b-ba--1',
         'b-bc--1',
         'a--1',
+        'a-b--1',
+        'c--1',
+      ]);
+    });
+
+    it('sorts stories in specified order or by configure order with wildcard', () => {
+      const store = new StoryStore({ channel });
+      store.addGlobalMetadata({
+        decorators: [],
+        parameters: {
+          options: {
+            storySort: {
+              method: 'configure',
+              order: ['b', '*', 'c'],
+            },
+          },
+        },
+      });
+      addStoryToStore(store, 'a/b', '1', () => 0);
+      addStoryToStore(store, 'a', '1', () => 0);
+      addStoryToStore(store, 'c', '1', () => 0);
+      addStoryToStore(store, 'b/bd', '1', () => 0);
+      addStoryToStore(store, 'b/bb', '1', () => 0);
+      addStoryToStore(store, 'b/ba', '1', () => 0);
+      addStoryToStore(store, 'b/bc', '1', () => 0);
+      addStoryToStore(store, 'b', '1', () => 0);
+      addStoryToStore(store, 'e', '1', () => 0);
+      addStoryToStore(store, 'd', '1', () => 0);
+
+      const extracted = store.extract();
+
+      expect(Object.keys(extracted)).toEqual([
+        'b--1',
+        'b-bd--1',
+        'b-bb--1',
+        'b-ba--1',
+        'b-bc--1',
+        'a--1',
+        'a-b--1',
+        'e--1',
+        'd--1',
+        'c--1',
+      ]);
+    });
+
+    it('sorts stories in specified order including story names or configure', () => {
+      const store = new StoryStore({ channel });
+      store.addGlobalMetadata({
+        decorators: [],
+        parameters: {
+          options: {
+            storySort: {
+              method: 'configure',
+              order: ['b', ['bc', 'ba', 'bb'], 'a', 'c'],
+              includeNames: true,
+            },
+          },
+        },
+      });
+      addStoryToStore(store, 'a/b', '1', () => 0);
+      addStoryToStore(store, 'a', '2', () => 0);
+      addStoryToStore(store, 'a', '1', () => 0);
+      addStoryToStore(store, 'c', '1', () => 0);
+      addStoryToStore(store, 'b/bd', '1', () => 0);
+      addStoryToStore(store, 'b/bb', '1', () => 0);
+      addStoryToStore(store, 'b/ba', '1', () => 0);
+      addStoryToStore(store, 'b/bc', '1', () => 0);
+      addStoryToStore(store, 'b', '1', () => 0);
+
+      const extracted = store.extract();
+
+      expect(Object.keys(extracted)).toEqual([
+        'b-bc--1',
+        'b-ba--1',
+        'b-bb--1',
+        'b-bd--1',
+        'b--1',
+        'a-b--1',
+        'a--2',
+        'a--1',
+        'c--1',
+      ]);
+    });
+
+    it('sorts stories in specified order including story names or alphabetically', () => {
+      const store = new StoryStore({ channel });
+      store.addGlobalMetadata({
+        decorators: [],
+        parameters: {
+          options: {
+            storySort: {
+              method: 'alphabetical',
+              order: ['b', ['bc', 'ba', 'bb'], 'a', 'c'],
+              includeNames: true,
+            },
+          },
+        },
+      });
+      addStoryToStore(store, 'a/b', '1', () => 0);
+      addStoryToStore(store, 'a', '2', () => 0);
+      addStoryToStore(store, 'a', '1', () => 0);
+      addStoryToStore(store, 'c', '1', () => 0);
+      addStoryToStore(store, 'b/bd', '1', () => 0);
+      addStoryToStore(store, 'b/bb', '1', () => 0);
+      addStoryToStore(store, 'b/ba', '1', () => 0);
+      addStoryToStore(store, 'b/bc', '1', () => 0);
+      addStoryToStore(store, 'b', '1', () => 0);
+
+      const extracted = store.extract();
+
+      expect(Object.keys(extracted)).toEqual([
+        'b-bc--1',
+        'b-ba--1',
+        'b-bb--1',
+        'b--1',
+        'b-bd--1',
+        'a--1',
+        'a--2',
         'a-b--1',
         'c--1',
       ]);
@@ -1427,6 +1608,80 @@ describe('preview.story_store', () => {
       onStorySpecified.mockClear();
       store.setSelection({ storyId: 'a--1', viewMode: 'story' });
       expect(onStorySpecified).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('In Single Story mode', () => {
+    describe('when storySpecifier is story id', () => {
+      it('adds only one story specified in selection specifier when addStory is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: toId('kind-1', 'story-1.1'),
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        addStoryToStore(store, 'kind-1', 'story-1.1', () => 0);
+        addStoryToStore(store, 'kind-1', 'story-1.2', () => 0);
+        store.finishConfiguring();
+
+        expect(store.fromId(toId('kind-1', 'story-1.1'))).toBeTruthy();
+        expect(store.fromId(toId('kind-1', 'story-1.2'))).toBeFalsy();
+      });
+
+      it('adds only kind metadata specified in selection specifier when addKindMetadata is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: toId('kind-1', 'story-1.1'),
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        store.addKindMetadata('kind-1', {});
+        store.addKindMetadata('kind-2', {});
+        store.finishConfiguring();
+
+        expect(store._kinds['kind-1']).toBeDefined();
+        expect(store._kinds['kind-2']).not.toBeDefined();
+      });
+    });
+
+    describe('when storySpecifier is object', () => {
+      it('adds only one story specified in selection specifier when addStory is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: { kind: 'kind-1', name: 'story-1.1' },
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        addStoryToStore(store, 'kind-1', 'story-1.1', () => 0);
+        addStoryToStore(store, 'kind-1', 'story-1.2', () => 0);
+        store.finishConfiguring();
+
+        expect(store.fromId(toId('kind-1', 'story-1.1'))).toBeTruthy();
+        expect(store.fromId(toId('kind-1', 'story-1.2'))).toBeFalsy();
+      });
+
+      it('adds only kind metadata specified in selection specifier when addKindMetadata is called', () => {
+        const store = new StoryStore({ channel });
+        store.setSelectionSpecifier({
+          storySpecifier: { kind: 'kind-1', name: 'story-1.1' },
+          viewMode: 'story',
+          singleStory: true,
+        });
+
+        store.startConfiguring();
+        store.addKindMetadata('kind-1', {});
+        store.addKindMetadata('kind-2', {});
+        store.finishConfiguring();
+
+        expect(store._kinds['kind-1']).toBeDefined();
+        expect(store._kinds['kind-2']).not.toBeDefined();
+      });
     });
   });
 });

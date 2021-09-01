@@ -74,6 +74,21 @@
             "scripts": [],
             "assets": ["src/favicon.ico", "src/assets"]
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "browserTarget": "angular-cli:build",
+            "port": 4400,
+            "staticDir": ["src/assets"]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "angular-cli:build",
+            "staticDir": ["src/assets"]
+          }
         }
       }
     },

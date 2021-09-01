@@ -1,5 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import type { PluginOptions } from 'react-docgen-typescript-plugin';
+import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
 import { Router } from 'express';
@@ -20,8 +20,9 @@ export interface TypescriptConfig {
   };
 }
 
-interface CoreConfig {
+export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
+  disableWebpackDefaults?: boolean;
 }
 
 export interface Presets {
@@ -32,7 +33,7 @@ export interface Presets {
   ): Promise<TypescriptConfig>;
   apply(extension: 'babel', config: {}, args: any): Promise<TransformOptions>;
   apply(extension: 'entries', config: [], args: any): Promise<unknown>;
-  apply(extension: 'stories', config: [], args: any): Promise<unknown>;
+  apply(extension: 'stories', config: [], args: any): Promise<StoriesEntry[]>;
   apply(
     extension: 'webpack',
     config: {},
@@ -123,6 +124,7 @@ export interface CLIOptions {
   port?: number;
   ignorePreview?: boolean;
   previewUrl?: string;
+  forceBuildPreview?: boolean;
   host?: string;
   staticDir?: string[];
   configDir?: string;
@@ -132,6 +134,7 @@ export interface CLIOptions {
   sslKey?: string;
   smokeTest?: boolean;
   managerCache?: boolean;
+  open?: boolean;
   ci?: boolean;
   loglevel?: string;
   quiet?: boolean;
@@ -142,8 +145,9 @@ export interface CLIOptions {
   docsDll?: boolean;
   uiDll?: boolean;
   debugWebpack?: boolean;
-  webpackStatsJson?: string;
+  webpackStatsJson?: string | boolean;
   outputDir?: string;
+  modern?: boolean;
 }
 
 export interface BuilderOptions {
@@ -152,8 +156,10 @@ export interface BuilderOptions {
   cache: FileSystemCache;
   configDir: string;
   docsMode: boolean;
+  features?: StorybookConfig['features'];
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
+  disableWebpackDefaults?: boolean;
 }
 
 export interface StorybookConfigOptions {
@@ -169,6 +175,7 @@ export interface Builder<Config, Stats> {
     options: Options;
     startTime: ReturnType<typeof process.hrtime>;
     router: Router;
+    server: Server;
   }) => Promise<void | {
     stats: Stats;
     totalTime: ReturnType<typeof process.hrtime>;
@@ -212,6 +219,19 @@ export interface TypescriptOptions {
   reactDocgenTypescriptOptions: PluginOptions;
 }
 
+interface StoriesSpecifier {
+  directory: string;
+  files?: string;
+  titlePrefix?: string;
+}
+
+export type StoriesEntry = string | StoriesSpecifier;
+
+export interface NormalizedStoriesEntry {
+  glob: string;
+  specifier?: StoriesSpecifier;
+}
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -228,12 +248,35 @@ export interface StorybookConfig {
         options?: any;
       }
   >;
+  core?: CoreConfig;
+  logLevel?: string;
+  features?: {
+    /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
+    postcss?: boolean;
+
+    /**
+     * Build stories.json automatically on start/build
+     */
+    buildStoriesJson?: boolean;
+
+    /**
+     * Activate preview of CSF v3.0
+     */
+    previewCsfV3?: boolean;
+
+    /**
+     * Use Storybook 7.0 babel config scheme
+     */
+    babelModeV7?: boolean;
+  };
   /**
    * Tells Storybook where to find stories.
    *
    * @example `['./src/*.stories.@(j|t)sx?']`
    */
-  stories: string[];
+  stories: StoriesEntry[];
   /**
    * Controls how Storybook handles TypeScript files.
    */

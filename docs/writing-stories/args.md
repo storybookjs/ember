@@ -10,7 +10,7 @@ Learn how and why to write stories in [the introduction](./introduction.md#using
 
 ## Args object
 
-The args object can be defined at the story and component level (see below). It is an object with string keys, where values can have any type that is allowed to be passed into a component in your framework.
+The args object can be defined at the story and component level (see below). It is a JSON serializable object, composed of string keys with matching valid value types that can be passed into a component for your framework.
 
 ## Story args
 
@@ -22,10 +22,16 @@ To define the args of a single story, use the `args` CSF story key:
   paths={[
     'react/button-story-with-args.js.mdx',
     'react/button-story-with-args.ts.mdx',
+    'react/button-story-with-args.mdx.mdx',
     'vue/button-story-with-args.2.js.mdx',
+    'vue/button-story-with-args.mdx-2.mdx.mdx',
     'vue/button-story-with-args.3.js.mdx',
+    'vue/button-story-with-args.mdx-3.mdx.mdx',
     'angular/button-story-with-args.ts.mdx',
+    'angular/button-story-with-args.mdx.mdx',
     'svelte/button-story-with-args.js.mdx',
+    'svelte/button-story-with-args.native-format.mdx',
+    'svelte/button-story-with-args.mdx.mdx',
     'web-components/button-story-with-args.js.mdx',
   ]}
 />
@@ -56,9 +62,14 @@ You can also define args at the component level; such args will apply to all sto
   paths={[
     'react/button-story-component-args-primary.js.mdx',
     'react/button-story-component-args-primary.ts.mdx',
+    'react/button-story-component-args-primary.mdx.mdx',
     'vue/button-story-component-args-primary.js.mdx',
+    'vue/button-story-component-args-primary.mdx.mdx',
     'angular/button-story-component-args-primary.ts.mdx',
+    'angular/button-story-component-args-primary.mdx.mdx',
     'svelte/button-story-component-args-primary.js.mdx',
+    'svelte/button-story-component-args-primary.native-format.mdx',
+    'svelte/button-story-component-args-primary.mdx.mdx',
     'web-components/button-story-component-args-primary.js.mdx',
   ]}
 />
@@ -112,8 +123,14 @@ Args are used in story templates to configure the component appearance just as y
   paths={[
     'react/page-story-slots.js.mdx',
     'react/page-story-slots.ts.mdx',
+    'react/page-story-slots.mdx.mdx',
     'vue/page-story-slots.2.js.mdx',
+    'vue/page-story-slots.mdx-2.mdx.mdx',
     'vue/page-story-slots.3.js.mdx',
+    'vue/page-story-slots.mdx-3.mdx.mdx',
+    'angular/page-story-slots.ts.mdx',
+    'angular/page-story-slots.mdx.mdx',
+    'svelte/page-story-slots.native-format.mdx',
   ]}
 />
 
@@ -131,7 +148,7 @@ In order to protect against [XSS](https://owasp.org/www-community/attacks/xss/) 
 
 The `args` param is always a set of `key:value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 
-```
+```js
 {
   obj: { key: 'val' },
   arr: ['one', 'two'],
@@ -147,7 +164,7 @@ Args specified through the URL will extend and override any default values of ar
 
 Complex values such as JSX elements cannot be serialized to the manager (e.g. the Controls addon) or synced with the URL. To work around this limitation, arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes`. This works on any type of arg, but makes most sense when used with the `select` control type.
 
-```
+```js
 argTypes: {
   label: {
     options: ['Normal', 'Bold', 'Italic'],
