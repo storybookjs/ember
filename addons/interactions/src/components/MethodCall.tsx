@@ -1,6 +1,62 @@
 import React, { Fragment, ReactElement } from 'react';
 import { Call, CallRef } from '../types';
 
+// Light theme
+const colors = {
+  base: 'black',
+  nullish: 'slategray',
+  string: 'forestgreen',
+  number: 'mediumblue',
+  boolean: 'crimson',
+  objectkey: 'slategray',
+  instance: 'orangered',
+  function: 'orange',
+  muted: 'darkgray',
+  tag: {
+    name: 'purple',
+    suffix: 'darkblue',
+  },
+  date: 'blueviolet',
+  error: {
+    name: 'orangered',
+    message: 'orange',
+  },
+  regex: {
+    source: 'orangered',
+    flags: 'orange',
+  },
+  meta: 'orange',
+  method: 'royalblue',
+};
+
+// Dark theme
+// const colors = {
+//   base: 'gainsboro',
+//   nullish: 'gray',
+//   string: 'yellowgreen',
+//   number: 'dodgerblue',
+//   boolean: 'hotpink',
+//   objectkey: 'darkgray',
+//   instance: 'tomato',
+//   function: 'gold',
+//   muted: 'darkgray',
+//   tag: {
+//     name: 'cornflowerblue',
+//     suffix: 'skyblue',
+//   },
+//   date: 'mediumslateblue',
+//   error: {
+//     name: 'orangered',
+//     message: 'orange',
+//   },
+//   regex: {
+//     source: 'springgreen',
+//     flags: 'seagreen',
+//   },
+//   meta: 'orange',
+//   method: 'cornflowerblue',
+// };
+
 const special = /[^A-Z0-9]/i;
 const trimEnd = /[\s.,…]+$/gm;
 const ellipsize = (string: string, maxlength: number) => {
@@ -74,46 +130,46 @@ export const Node = ({
 };
 
 export const NullNode = (props: object) => (
-  <span style={{ color: 'slategray' }} {...props}>
+  <span style={{ color: colors.nullish }} {...props}>
     null
   </span>
 );
 
 export const UndefinedNode = (props: object) => (
-  <span style={{ color: 'slategray' }} {...props}>
+  <span style={{ color: colors.nullish }} {...props}>
     undefined
   </span>
 );
 
 export const StringNode = ({ value, ...props }: { value: string }) => (
-  <span style={{ color: 'forestgreen' }} {...props}>
+  <span style={{ color: colors.string }} {...props}>
     {JSON.stringify(ellipsize(value, 50))}
   </span>
 );
 
 export const NumberNode = ({ value, ...props }: { value: number }) => (
-  <span style={{ color: 'mediumblue' }} {...props}>
+  <span style={{ color: colors.number }} {...props}>
     {value}
   </span>
 );
 
 export const BooleanNode = ({ value, ...props }: { value: boolean }) => (
-  <span style={{ color: 'crimson' }} {...props}>
+  <span style={{ color: colors.boolean }} {...props}>
     {String(value)}
   </span>
 );
 
 export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: boolean }) => {
   if (nested) {
-    return <span>[…]</span>;
+    return <span style={{ color: colors.base }}>[…]</span>;
   }
   const nodes = value.slice(0, 3).map((v, i) => <Node key={`${i}`} value={v} nested={true} />);
   const nodelist = interleave(nodes, <span>, </span>);
   if (value.length <= 3) {
-    return <span>[{nodelist}]</span>;
+    return <span style={{ color: colors.base }}>[{nodelist}]</span>;
   }
   return (
-    <span>
+    <span style={{ color: colors.base }}>
       ({value.length}) [{nodelist}, …]
     </span>
   );
@@ -121,14 +177,14 @@ export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: bo
 
 export const ObjectNode = ({ value, nested = false }: { value: object; nested?: boolean }) => {
   if (nested) {
-    return <span>{'{…}'}</span>;
+    return <span style={{ color: colors.base }}>{'{…}'}</span>;
   }
   const nodelist = interleave(
     Object.entries(value)
       .slice(0, 1)
       .map(([k, v], i) => (
         <Fragment key={'node' + i}>
-          <span style={{ color: 'slategray' }}>{k}: </span>
+          <span style={{ color: colors.objectkey }}>{k}: </span>
           <Node value={v} nested />
         </Fragment>
       )),
@@ -136,7 +192,7 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
   );
   if (Object.keys(value).length <= 2) {
     return (
-      <span>
+      <span style={{ color: colors.base }}>
         {'{ '}
         {nodelist}
         {' }'}
@@ -144,7 +200,7 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
     );
   }
   return (
-    <span>
+    <span style={{ color: colors.base }}>
       ({Object.keys(value).length}) {'{ '}
       {nodelist}
       {', … }'}
@@ -153,11 +209,11 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
 };
 
 export const ClassNode = ({ value }: { value: Object }) => (
-  <span style={{ color: 'orangered' }}>{value.constructor.name}</span>
+  <span style={{ color: colors.instance }}>{value.constructor.name}</span>
 );
 
 export const FunctionNode = ({ value }: { value: Function }) => (
-  <span style={{ color: 'orange' }}>{value.name || 'anonymous'}</span>
+  <span style={{ color: colors.function }}>{value.name || 'anonymous'}</span>
 );
 
 export const ElementNode = ({
@@ -169,16 +225,16 @@ export const ElementNode = ({
   const name = prefix ? `${prefix}:${localName}` : localName;
   return (
     <span style={{ wordBreak: 'keep-all' }}>
-      <span key={`${name}_open`} style={{ color: 'darkgray' }}>
+      <span key={`${name}_open`} style={{ color: colors.muted }}>
         &lt;
       </span>
-      <span key={`${name}_tag`} style={{ color: 'purple' }}>
+      <span key={`${name}_tag`} style={{ color: colors.tag.name }}>
         {name}
       </span>
-      <span key={`${name}_suffix`} style={{ color: 'darkblue' }}>
+      <span key={`${name}_suffix`} style={{ color: colors.tag.suffix }}>
         {id ? `#${id}` : [...classList].reduce((acc, className) => `${acc}.${className}`, '')}
       </span>
-      <span key={`${name}_close`} style={{ color: 'darkgray' }}>
+      <span key={`${name}_close`} style={{ color: colors.muted }}>
         &gt;
       </span>
     </span>
@@ -188,7 +244,7 @@ export const ElementNode = ({
 export const DateNode = ({ value }: { value: Date }) => {
   const [date, time, ms] = value.toISOString().split(/[T.Z]/);
   return (
-    <span style={{ whiteSpace: 'nowrap', color: 'blueviolet' }}>
+    <span style={{ whiteSpace: 'nowrap', color: colors.date }}>
       {date}
       <span style={{ opacity: 0.3 }}>T</span>
       {time === '00:00:00' ? <span style={{ opacity: 0.3 }}>{time}</span> : time}
@@ -199,11 +255,14 @@ export const DateNode = ({ value }: { value: Date }) => {
 };
 
 export const ErrorNode = ({ value }: { value: Error }) => (
-  <span style={{ color: 'orangered' }}>
+  <span style={{ color: colors.error.name }}>
     {value.name}
     {value.message && ': '}
     {value.message && (
-      <span style={{ color: 'orange' }} title={value.message.length > 50 ? value.message : ''}>
+      <span
+        style={{ color: colors.error.message }}
+        title={value.message.length > 50 ? value.message : ''}
+      >
         {ellipsize(value.message, 50)}
       </span>
     )}
@@ -211,9 +270,9 @@ export const ErrorNode = ({ value }: { value: Error }) => (
 );
 
 export const RegExpNode = ({ value }: { value: RegExp }) => (
-  <span style={{ whiteSpace: 'nowrap', color: 'orange' }}>
+  <span style={{ whiteSpace: 'nowrap', color: colors.regex.flags }}>
     {'/'}
-    <span style={{ color: 'orangered' }}>{value.source}</span>
+    <span style={{ color: colors.regex.source }}>{value.source}</span>
     {'/'}
     {value.flags}
   </span>
@@ -221,10 +280,10 @@ export const RegExpNode = ({ value }: { value: RegExp }) => (
 
 export const SymbolNode = ({ value }: { value: Symbol }) => {
   return (
-    <span style={{ whiteSpace: 'nowrap', color: 'orangered' }}>
+    <span style={{ whiteSpace: 'nowrap', color: colors.instance }}>
       Symbol(
       {value.description && (
-        <span style={{ color: 'orange' }}>{JSON.stringify(value.description)}</span>
+        <span style={{ color: colors.meta }}>{JSON.stringify(value.description)}</span>
       )}
       )
     </span>
@@ -232,7 +291,7 @@ export const SymbolNode = ({ value }: { value: Symbol }) => {
 };
 
 export const OtherNode = ({ value }: { value: any }) => {
-  return <span style={{ color: 'orange' }}>{stringify(value)}</span>;
+  return <span style={{ color: colors.meta }}>{stringify(value)}</span>;
 };
 
 export const MethodCall = ({
@@ -267,9 +326,9 @@ export const MethodCall = ({
 
   return (
     <>
-      <span>{path}</span>
-      <span style={{ color: 'royalblue' }}>{call.method}</span>
-      <span>
+      <span style={{ color: colors.base }}>{path}</span>
+      <span style={{ color: colors.method }}>{call.method}</span>
+      <span style={{ color: colors.base }}>
         (<wbr />
         {args}
         <wbr />)
