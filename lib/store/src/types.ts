@@ -22,7 +22,7 @@ import {
 
 export type Path = string;
 export type ModuleExports = Record<string, any>;
-export type ModuleImportFn = (path: Path) => ModuleExports;
+export type ModuleImportFn = (path: Path) => Promise<ModuleExports> | ModuleExports;
 
 export type NormalizedGlobalAnnotations<
   TFramework extends Framework

@@ -1,6 +1,5 @@
 import global from 'global';
 import { addons, mockChannel } from '@storybook/addons';
-import { Framework, StoryContextForLoaders } from '@storybook/csf';
 import ensureOptionsDefaults from './ensureOptionsDefaults';
 import snapshotsTests from './snapshotsTestsTemplate';
 import integrityTest from './integrityTestTemplate';
@@ -51,8 +50,7 @@ function testStorySnapshots(options: StoryshotsOptions = {}) {
   };
 
   const data = storybook.raw().reduce(
-    // TODO
-    (acc, item: StoryContextForLoaders<Framework>) => {
+    (acc, item) => {
       if (storyNameRegex && !item.name.match(storyNameRegex)) {
         return acc;
       }
@@ -61,8 +59,6 @@ function testStorySnapshots(options: StoryshotsOptions = {}) {
         return acc;
       }
 
-      // FIXME -- need raw() to return story s
-      // @ts-ignore
       const { kind, storyFn: render, parameters } = item;
       const existing = acc.find((i: any) => i.kind === kind);
       const { fileName } = item.parameters;

@@ -35,7 +35,7 @@ export function start<TFramework extends Framework>(
     clientApi,
     // This gets called each time the user calls configure (i.e. once per HMR)
     // The first time, it constructs the preview, subsequently it updates it
-    async configure(framework: string, loadable: Loadable, m?: NodeModule) {
+    configure(framework: string, loadable: Loadable, m?: NodeModule) {
       clientApi.addParameters({ framework });
 
       // We need to run the `executeLoadableForChanges` function *inside* the `getGlobalAnnotations
@@ -62,7 +62,7 @@ export function start<TFramework extends Framework>(
         preview = new WebPreview({
           importFn: (path: Path) => clientApi.importFn(path),
           getGlobalAnnotations,
-          fetchStoriesList: async () => clientApi.getStoriesList(),
+          fetchStoriesList: () => clientApi.getStoriesList(),
         });
         if (globalWindow) {
           // eslint-disable-next-line no-underscore-dangle
@@ -75,7 +75,7 @@ export function start<TFramework extends Framework>(
         clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
         clientApi.storyStore = preview.storyStore;
 
-        await preview.initialize({ cacheAllCSFFiles: true });
+        preview.initializeSync({ cacheAllCSFFiles: true });
       } else {
         getGlobalAnnotations();
         preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });

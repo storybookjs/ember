@@ -63,7 +63,7 @@ export class WebPreview<TFramework extends Framework> {
   }: {
     getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
     importFn: ModuleImportFn;
-    fetchStoriesList: () => Promise<StoriesList>;
+    fetchStoriesList: ConstructorParameters<typeof StoryStore>[0]['fetchStoriesList'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
@@ -96,6 +96,16 @@ export class WebPreview<TFramework extends Framework> {
 
   async initialize({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
     await this.storyStore.initialize({ cacheAllCSFFiles });
+    await this.setupListenersAndRenderSelection();
+  }
+
+  initializeSync({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
+    this.storyStore.initializeSync({ cacheAllCSFFiles });
+    // NOTE: we don't await this, but return the promise so the caller can await it if they want
+    return this.setupListenersAndRenderSelection();
+  }
+
+  async setupListenersAndRenderSelection() {
     this.setupListeners();
 
     const { globals } = this.urlStore.selectionSpecifier || {};

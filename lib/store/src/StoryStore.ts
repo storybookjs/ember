@@ -6,6 +6,7 @@ import {
   Framework,
   GlobalAnnotations,
   ComponentTitle,
+  StoryContext,
 } from '@storybook/csf';
 
 import { StoriesListStore } from './StoriesListStore';
@@ -19,9 +20,9 @@ import {
   Story,
   StoriesList,
   NormalizedGlobalAnnotations,
-  NormalizedStoriesEntry,
   Path,
   ExtractOptions,
+  ModuleExports,
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
@@ -68,7 +69,7 @@ export class StoryStore<TFramework extends Framework> {
   }: {
     importFn: ModuleImportFn;
     globalAnnotations: GlobalAnnotations<TFramework>;
-    fetchStoriesList: () => Promise<StoriesList>;
+    fetchStoriesList: ConstructorParameters<typeof StoriesListStore>[0]['fetchStoriesList'];
   }) {
     this.storiesList = new StoriesListStore({ fetchStoriesList });
     this.importFn = importFn;
@@ -88,6 +89,14 @@ export class StoryStore<TFramework extends Framework> {
 
     if (cacheAllCSFFiles) {
       await this.cacheAllCSFFiles();
+    }
+  }
+
+  initializeSync({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
+    this.storiesList.initializeSync();
+
+    if (cacheAllCSFFiles) {
+      this.cacheAllCSFFilesSync();
     }
   }
 
@@ -114,6 +123,17 @@ export class StoryStore<TFramework extends Framework> {
     return this.processCSFFileWithCache(moduleExports, title);
   }
 
+  loadCSFFileByStoryIdSync(storyId: StoryId): CSFFile<TFramework> {
+    const { importPath, title } = this.storiesList.storyIdToMetadata(storyId);
+    const moduleExports = this.importFn(importPath);
+    if (Promise.resolve(moduleExports) === moduleExports) {
+      throw new Error(
+        `importFn() returned a promise, did you pass an async version then call initializeSync()?`
+      );
+    }
+    return this.processCSFFileWithCache(moduleExports as ModuleExports, title);
+  }
+
   async loadAllCSFFiles(): Promise<Record<Path, CSFFile<TFramework>>> {
     const importPaths: Record<Path, StoryId> = {};
     Object.entries(this.storiesList.storiesList.stories).forEach(([storyId, { importPath }]) => {
@@ -135,8 +155,29 @@ export class StoryStore<TFramework extends Framework> {
     }, {} as Record<Path, CSFFile<TFramework>>);
   }
 
+  loadAllCSFFilesSync(): Record<Path, CSFFile<TFramework>> {
+    const importPaths: Record<Path, StoryId> = {};
+    Object.entries(this.storiesList.storiesList.stories).forEach(([storyId, { importPath }]) => {
+      importPaths[importPath] = storyId;
+    });
+
+    const csfFileList = Object.entries(importPaths).map(([importPath, storyId]): [
+      Path,
+      CSFFile<TFramework>
+    ] => [importPath, this.loadCSFFileByStoryIdSync(storyId)]);
+
+    return csfFileList.reduce((acc, [importPath, csfFile]) => {
+      acc[importPath] = csfFile;
+      return acc;
+    }, {} as Record<Path, CSFFile<TFramework>>);
+  }
+
   async cacheAllCSFFiles(): Promise<void> {
     this.cachedCSFFiles = await this.loadAllCSFFiles();
+  }
+
+  cacheAllCSFFilesSync() {
+    this.cachedCSFFiles = this.loadAllCSFFilesSync();
   }
 
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {
@@ -234,14 +275,23 @@ export class StoryStore<TFramework extends Framework> {
   }
 
   raw() {
-    throw new Error(
-      `StoryStore.raw() is no longer implemented. If you were relying on this API, please contact us on Discord.`
-    );
+    return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
   }
 
-  fromId() {
-    throw new Error(
-      `StoryStore.fromId() is no longer implemented. If you were relying on this API, please contact us on Discord.`
-    );
+  fromId(storyId: StoryId): StoryContextForLoaders<TFramework> {
+    if (!this.cachedCSFFiles) {
+      throw new Error('Cannot call fromId/raw() unless you call cacheAllCSFFiles() first.');
+    }
+
+    const { importPath } = this.storiesList.storyIdToMetadata(storyId);
+    if (!importPath) {
+      throw new Error(`Unknown storyId ${storyId}`);
+    }
+    const csfFile = this.cachedCSFFiles[importPath];
+    const story = this.storyFromCSFFile({ storyId, csfFile });
+    return {
+      ...this.getStoryContext(story),
+      viewMode: 'story',
+    } as StoryContextForLoaders<TFramework>;
   }
 }

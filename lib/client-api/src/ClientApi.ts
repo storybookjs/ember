@@ -440,6 +440,7 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     return Object.values(kinds);
   }
 
+  // @deprecated
   raw() {
     return this.storyStore.raw();
   }

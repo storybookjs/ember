@@ -13,9 +13,9 @@ export interface ClientApi<TFramework extends Framework>
   clearDecorators: ClientApiClass<TFramework>['clearDecorators'];
   getStorybook: ClientApiClass<TFramework>['getStorybook'];
   setAddon: ClientApiClass<TFramework>['setAddon'];
-  raw: ClientApiClass<TFramework>['raw'];
   addArgsEnhancer: ClientApiClass<TFramework>['addArgsEnhancer'];
   addArgTypesEnhancer: ClientApiClass<TFramework>['addArgTypesEnhancer'];
+  raw: ClientApiClass<TFramework>['raw'];
 }
 
 // TODO -- this is untyped for now, we could import each framework's Framework type

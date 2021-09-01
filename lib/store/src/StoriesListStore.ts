@@ -1,34 +1,33 @@
-import createChannel from '@storybook/channel-websocket';
+// import createChannel from '@storybook/channel-websocket';
 import { Channel } from '@storybook/addons';
 import { StoryId } from '@storybook/csf';
 
 import { StorySpecifier, Path, StoriesList, StoriesListStory } from './types';
 
 export class StoriesListStore {
-  fetchStoriesList: () => Promise<StoriesList>;
+  fetchStoriesList: () => Promise<StoriesList> | StoriesList;
 
   channel: Channel;
 
   storiesList: StoriesList;
 
-  constructor({ fetchStoriesList }: { fetchStoriesList: () => Promise<StoriesList> }) {
+  constructor({ fetchStoriesList }: { fetchStoriesList: StoriesListStore['fetchStoriesList'] }) {
     this.fetchStoriesList = fetchStoriesList;
 
     // TODO -- where do we get the URL from?
-    this.channel = createChannel({
-      url: 'ws://localhost:8080',
-      async: false,
-      onError: this.onChannelError.bind(this),
-    });
+    // this.channel = createChannel({
+    //   url: 'ws://localhost:8080',
+    //   async: false,
+    //   onError: this.onChannelError.bind(this),
+    // });
   }
 
   async initialize() {
-    // TODO -- constants
-    // this.channel.on('INITIALIZE_STORIES', this.onStoriesChanged.bind(this));
-    this.channel.on('PATCH_STORIES', this.onStoriesChanged.bind(this));
-    this.channel.on('DELETE_STORIES', this.onStoriesChanged.bind(this));
-
     return this.cacheStoriesList();
+  }
+
+  initializeSync() {
+    return this.cacheStoriesListSync();
   }
 
   // TODO -- what to do here?
@@ -42,6 +41,15 @@ export class StoriesListStore {
 
   async cacheStoriesList() {
     this.storiesList = await this.fetchStoriesList();
+  }
+
+  async cacheStoriesListSync() {
+    this.storiesList = this.fetchStoriesList() as StoriesList;
+    if (!this.storiesList.v) {
+      throw new Error(
+        `fetchStoriesList() didn't return a stories list, did you pass an async version then call initializeSync()?`
+      );
+    }
   }
 
   storyIdFromSpecifier(specifier: StorySpecifier) {
