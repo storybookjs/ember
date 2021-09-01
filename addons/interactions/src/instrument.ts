@@ -37,7 +37,7 @@ channel.on(EVENTS.RESET, () => {
 const isObject = (o: unknown) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown) => Object.prototype.toString.call(o) === '[object Module]';
 
-function isPatchable(o: unknown) {
+function isInstrumentable(o: unknown) {
   if (!isObject(o) && !isModule(o)) return false;
   if (o.constructor === undefined) return true;
   const proto = o.constructor.prototype;
@@ -124,13 +124,15 @@ function patch(method: string, fn: Function, options: Options): PatchedFunction 
 // Returns the original object, or a new object with the same constructor,
 // depending on whether it should mutate.
 export function instrument(obj: unknown, options: Options = {}) {
-  if (!isPatchable(obj)) return obj;
+  if (!isInstrumentable(obj)) return obj;
   const { mutate = false, path = [] } = options;
   return Object.keys(obj).reduce(
     (acc, key) => {
       const value = (obj as Record<string, any>)[key];
       if (typeof value === 'function') {
         acc[key] = patch(key, value, options);
+        // Deal with functions that also act like an object
+        // TODO might be able to make functions instrumentable so we can omit this extra if statement
         if (Object.keys(value).length > 0) {
           Object.assign(acc[key], instrument({ ...value }, { ...options, path: path.concat(key) }));
         }
