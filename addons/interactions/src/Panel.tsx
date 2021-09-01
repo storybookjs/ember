@@ -158,9 +158,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: (call) => {
       dispatch({ type: 'call', payload: { call } });
-      call.path
-        .filter((ref: CallRef) => ref?.__callId__)
-        .forEach((ref: CallRef) => sharedState.chainedCallIds.add(ref.__callId__));
     },
     setCurrentStory: () => {
       dispatch({ type: 'reset' });

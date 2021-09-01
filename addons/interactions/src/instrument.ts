@@ -68,6 +68,11 @@ function run(fn: Function, call: Call) {
     return arg;
   });
 
+  // TODO can we get rid of this by using playUntil for `next`?
+  call.path.forEach((ref: any) => {
+    ref?.__callId__ && sharedState.chainedCallIds.add(ref.__callId__);
+  });
+
   try {
     const result = fn(...call.args);
     channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, state: CallState.DONE });
