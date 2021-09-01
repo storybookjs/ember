@@ -12,9 +12,7 @@ export default {
   },
 };
 
-export const Demo = (args) => (
-  <button onClick={() => args.onSubmit('clicked')}>Click</button>
-);
+export const Demo = (args) => <button onClick={() => args.onSubmit('clicked')}>Click</button>;
 Demo.argTypes = {
   onSubmit: { action: true },
 };
@@ -29,7 +27,7 @@ export const Standard = {
 
 export const StandardEmailFilled = {
   ...Standard,
-  play: async ({ args, canvasId }) => {
+  play: async ({ canvasId }) => {
     const canvas = within(document.getElementById(canvasId));
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
     await expect({ hello: 1 }).not.toBe(new Error('cool'));
@@ -57,7 +55,10 @@ export const StandardEmailSuccess = {
     await userEvent.click(canvas.getByTestId('submit'));
     await tick();
     await expect(args.onSubmit).toHaveBeenCalledTimes(1);
-    await expect(args.onSubmit).toHaveBeenCalledWith();
+    await expect(args.onSubmit).toHaveBeenCalledWith({
+      email: 'michael@chromatic.com',
+      password: 'testpasswordthatwontfail',
+    });
   },
 };
 
@@ -109,9 +110,9 @@ export const VerificationPasswordMismatch = {
 
 export const VerificationSuccess = {
   ...Verification,
-  play: async ({ args, canvasId }) => {
+  play: async ({ canvasId }) => {
     const canvas = within(document.getElementById(canvasId));
-    await StandardEmailFilled.play({ args, canvasId });
+    await StandardEmailFilled.play({ canvasId });
     await sleep(1000);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf', { delay: 50 });
     await sleep(1000);
