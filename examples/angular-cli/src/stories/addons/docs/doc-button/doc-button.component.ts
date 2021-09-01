@@ -66,6 +66,18 @@ export class DocButtonComponent<T> {
 
   _anotherDefaultValue = 'Another default value';
 
+  /** Test null default value. */
+  @Input()
+  public aNullValue = null;
+
+  /** Test null default value. */
+  @Input()
+  public anUndefinedValue;
+
+  /** Test numeric default value. */
+  @Input()
+  public aNumericValue = 123;
+
   /** Appearance style of the button. */
   @Input()
   public appearance: 'primary' | 'secondary' = 'secondary';

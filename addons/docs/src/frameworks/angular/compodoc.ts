@@ -155,20 +155,55 @@ export const extractType = (property: Property, defaultValue: any) => {
   }
 };
 
+const castDefaultValue = (property: Property, defaultValue: any) => {
+  const compodocType = property.type;
+
+  // All these checks are necessary as compodoc does not always set the type ie. @HostBinding have empty types.
+  // null and undefined also have 'any' type
+  if (['boolean', 'number', 'string'].includes(compodocType)) {
+    switch (compodocType) {
+      case 'boolean':
+        return defaultValue === 'true';
+      case 'number':
+        return Number(defaultValue);
+      default:
+        return defaultValue;
+    }
+  } else {
+    switch (defaultValue) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      case 'null':
+        return null;
+      case 'undefined':
+        return undefined;
+      default:
+        return defaultValue;
+    }
+  }
+};
+
+const extractDefaultValueFromComments = (property: Property, value: any) => {
+  let commentValue = value;
+  property.jsdoctags.forEach((tag: JsDocTag) => {
+    if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {
+      // @ts-ignore
+      const dom = new window.DOMParser().parseFromString(tag.comment, 'text/html');
+      commentValue = dom.body.textContent;
+    }
+  });
+  return commentValue;
+};
+
 const extractDefaultValue = (property: Property) => {
   try {
     let value: string | boolean = property.defaultValue?.replace(/^'(.*)'$/, '$1');
-    if (value === 'true') value = true;
-    if (value === 'false') value = false;
+    value = castDefaultValue(property, value);
 
     if (value == null && property.jsdoctags?.length > 0) {
-      property.jsdoctags.forEach((tag: JsDocTag) => {
-        if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {
-          // @ts-ignore
-          const dom = new window.DOMParser().parseFromString(tag.comment, 'text/html');
-          value = dom.body.textContent;
-        }
-      });
+      value = extractDefaultValueFromComments(property, value);
     }
 
     return value;
