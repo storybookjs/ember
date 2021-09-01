@@ -121,7 +121,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
       case 'call':
         const { log, cursor, callsById, isDebugging, hasException } = state;
         const { call } = action.payload;
-        call.state = call.exception ? CallState.ERROR : CallState.DONE;
 
         return {
           ...state,

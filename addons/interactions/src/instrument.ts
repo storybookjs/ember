@@ -3,7 +3,7 @@ import { IGNORED_EXCEPTION } from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
-import { Call, CallRef } from './types';
+import { Call, CallRef, CallState } from './types';
 
 const channel = addons.getChannel();
 
@@ -70,19 +70,18 @@ function run(fn: Function, call: Call) {
 
   try {
     const result = fn(...call.args);
-    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs });
-    if (result && result !== true) {
+    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, state: CallState.DONE });
+    if (result && typeof result === 'object') {
       // Track the result so we can trace later uses of it back to the originating call.
-      // Generic results like null, undefined, true and false are ignored.
+      // Primitive results (undefined, string, number, boolean) and null are ignored.
       iframeState.callRefsByResult.set(result, { __callId__: call.id });
     }
     return result;
   } catch (e) {
     if (e instanceof Error) {
-      // @ts-expect-error Support Jest's matcherResult without directly depending on Jest
-      const { name, message, stack, matcherResult } = e;
-      const exception = { name, message, stack, matcherResult };
-      channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, exception });
+      const { name, message, stack } = e;
+      const exception = { name, message, stack };
+      channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, state: CallState.ERROR, exception });
       throw IGNORED_EXCEPTION; // Storybook will catch and silently ignore this
     }
     throw e;

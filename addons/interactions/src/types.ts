@@ -22,5 +22,4 @@ interface CaughtException {
   callId: Call['id'];
   message: Error['message'];
   stack: Error['stack'];
-  matcherResult: object;
 }
