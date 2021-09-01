@@ -15,13 +15,13 @@ interface PanelProps {
   active: boolean;
 }
 
-global.window.__STORYBOOK_ADDON_TEST__ = global.window.__STORYBOOK_ADDON_TEST__ || {
+global.window.__STORYBOOK_ADDON_TEST_MANAGER__ = global.window.__STORYBOOK_ADDON_TEST_MANAGER__ || {
   isDebugging: false,
   chainedCallIds: new Set<Call['id']>(),
   playUntil: undefined,
 };
 
-const sharedState = global.window.__STORYBOOK_ADDON_TEST__;
+const sharedState = global.window.__STORYBOOK_ADDON_TEST_MANAGER__;
 
 const fold = (calls: Call[]) => {
   const seen = new Set();

@@ -17,14 +17,18 @@ export interface PatchedFunction extends Function {
   _original: Function;
 }
 
-global.window.__STORYBOOK_ADDON_TEST__ = global.window.__STORYBOOK_ADDON_TEST__ || {
+global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ || {
   n: 0,
   next: undefined,
   callRefsByResult: new Map(),
 };
 
-const iframeState = global.window.__STORYBOOK_ADDON_TEST__;
-const sharedState = global.window.parent.__STORYBOOK_ADDON_TEST__;
+const iframeState = global.window.__STORYBOOK_ADDON_TEST_PREVIEW__;
+const sharedState = global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__ || {
+  isDebugging: false,
+  chainedCallIds: new Set<Call['id']>(),
+  playUntil: undefined,
+};
 
 channel.on(EVENTS.NEXT, () => iframeState.next && iframeState.next());
 channel.on(EVENTS.RELOAD, () => global.window.location.reload());
