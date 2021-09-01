@@ -24,13 +24,13 @@ export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
     <span style={{ color: 'crimson' }}>{value}</span>
   );
 
-export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) =>{
+export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
   if (parsed) {
-    if (typeof value === 'string' && value.startsWith('called with')) return value;
-    return <Node value={value} style={{ color: 'green' }} />
+    if (typeof value === 'string' && value.startsWith('called with')) return <>{value}</>;
+    return <Node value={value} style={{ color: 'green' }} />;
   }
-  return <span style={{ color: 'green' }}>{value}</span>
-}
+  return <span style={{ color: 'green' }}>{value}</span>;
+};
 
 export const MatcherResult = ({ message }: { message: string }) => {
   const lines = message.split('\n');
