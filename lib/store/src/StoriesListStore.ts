@@ -1,4 +1,3 @@
-// import createChannel from '@storybook/channel-websocket';
 import { Channel } from '@storybook/addons';
 import { StoryId } from '@storybook/csf';
 
@@ -13,13 +12,6 @@ export class StoriesListStore {
 
   constructor({ fetchStoriesList }: { fetchStoriesList: StoriesListStore['fetchStoriesList'] }) {
     this.fetchStoriesList = fetchStoriesList;
-
-    // TODO -- where do we get the URL from?
-    // this.channel = createChannel({
-    //   url: 'ws://localhost:8080',
-    //   async: false,
-    //   onError: this.onChannelError.bind(this),
-    // });
   }
 
   async initialize() {
@@ -28,11 +20,6 @@ export class StoriesListStore {
 
   initializeSync() {
     return this.cacheStoriesListSync();
-  }
-
-  // TODO -- what to do here?
-  onChannelError(err: Error) {
-    // console.log(err);
   }
 
   async onStoriesChanged() {

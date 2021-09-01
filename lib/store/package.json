@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@storybook/addons": "6.4.0-alpha.19",
-    "@storybook/channel-websocket": "6.4.0-alpha.19",
     "@storybook/client-logger": "6.4.0-alpha.19",
     "@storybook/core-events": "6.4.0-alpha.19",
     "@storybook/csf": "0.0.2--canary.c10361d.0",
