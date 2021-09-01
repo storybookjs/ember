@@ -230,7 +230,7 @@ Public value.",
   },
   "onClick": Object {
     "action": "onClick",
-    "defaultValue": "new EventEmitter<Event>()",
+    "defaultValue": undefined,
     "description": "
 
 Handler to be called when the button is clicked by a user.
@@ -241,7 +241,7 @@ Will also block the emission of the event if \`isDisabled\` is true.
     "table": Object {
       "category": "outputs",
       "defaultValue": Object {
-        "summary": "new EventEmitter<Event>()",
+        "summary": undefined,
       },
       "type": Object {
         "required": true,

@@ -160,12 +160,14 @@ const castDefaultValue = (property: Property, defaultValue: any) => {
 
   // All these checks are necessary as compodoc does not always set the type ie. @HostBinding have empty types.
   // null and undefined also have 'any' type
-  if (['boolean', 'number', 'string'].includes(compodocType)) {
+  if (['boolean', 'number', 'string', 'EventEmitter'].includes(compodocType)) {
     switch (compodocType) {
       case 'boolean':
         return defaultValue === 'true';
       case 'number':
         return Number(defaultValue);
+      case 'EventEmitter':
+        return undefined;
       default:
         return defaultValue;
     }
