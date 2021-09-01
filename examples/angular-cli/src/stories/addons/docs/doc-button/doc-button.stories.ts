@@ -9,6 +9,13 @@ export const Basic = (args) => ({
   props: args,
 });
 Basic.args = { label: 'Args test', isDisabled: false };
+Basic.ArgTypes = {
+  theDefaultValue: {
+    table: {
+      defaultValue: { summary: 'Basic default value' },
+    },
+  },
+};
 
 export const WithTemplate = (args) => ({
   props: args,
