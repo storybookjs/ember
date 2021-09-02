@@ -31,8 +31,18 @@ export function checkDeprecatedFlags(options: {
   dll?: boolean;
   uiDll?: boolean;
   docsDll?: boolean;
+  staticDirs?: string[];
 }) {
   if (!options.dll || options.uiDll || options.docsDll) {
     warnDLLsDeprecated();
+  } else if (options.staticDirs) {
+    deprecate(
+      () => {},
+      dedent`
+      --static-dir CLI flag is deprecated, see:
+
+      https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-static-dir-flag
+    `
+    );
   }
 }
