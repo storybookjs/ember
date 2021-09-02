@@ -21,7 +21,7 @@ describe('decorateStory', () => {
       expect(
         decorated(
           makeContext({
-            parameters: { component: FooComponent },
+            component: FooComponent,
             args: {
               parentInput: 'Parent input',
               grandparentInput: 'grandparent input',
@@ -63,7 +63,7 @@ describe('decorateStory', () => {
       expect(
         decorated(
           makeContext({
-            parameters: { component: FooComponent },
+            component: FooComponent,
           })
         )
       ).toEqual({
@@ -86,7 +86,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ template: '</child>' }), decorators);
 
-      expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
+      expect(decorated(makeContext({ component: FooComponent }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
       });
@@ -118,7 +118,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ template: '</child>' }), decorators);
 
-      expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
+      expect(decorated(makeContext({ component: FooComponent }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
       });
@@ -182,7 +182,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({}), decorators);
 
-      expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
+      expect(decorated(makeContext({ component: FooComponent }))).toEqual({
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
       });
@@ -227,7 +227,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ template: '' }), decorators);
 
-      expect(decorated(makeContext({ parameters: { component: FooComponent } }))).toEqual({
+      expect(decorated(makeContext({ component: FooComponent }))).toEqual({
         template: '<parent></parent>',
       });
     });
@@ -243,7 +243,7 @@ describe('decorateStory', () => {
       expect(
         decorated(
           makeContext({
-            parameters: { component: FooComponent },
+            component: FooComponent,
             argTypes: {
               withControl: { control: { type: 'object' }, name: 'withControl' },
               withAction: { action: 'onClick', name: 'withAction' },

@@ -33,7 +33,7 @@ const prepareMain = (
 ): AngularFramework['storyResult'] => {
   let { template } = story;
 
-  const component = story.component ?? context.parameters.component;
+  const component = story.component ?? context.component;
 
   if (hasNoTemplate(template) && component) {
     template = computesTemplateFromComponent(component, story.props, '');

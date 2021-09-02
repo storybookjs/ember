@@ -20,7 +20,7 @@ interface ClientApi extends ClientStoryApi<AngularFramework['storyResult']> {
   load: (...args: any[]) => void;
 }
 
-const api = start(render as any, { decorateStory });
+const api = start(render, { decorateStory });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({
