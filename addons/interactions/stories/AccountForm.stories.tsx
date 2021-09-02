@@ -77,7 +77,7 @@ export const StandardFailHover = {
   play: async (context) => {
     const canvas = within(document.getElementById(context.canvasId));
     await StandardPasswordFailed.play(context);
-    // await sleep(1000)
+    await sleep(1000);
     await userEvent.hover(canvas.getByTestId('password-error-info'));
   },
 };
