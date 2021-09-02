@@ -18,12 +18,23 @@ export function getEnvConfig(program: Record<string, any>, configEnv: Record<str
   });
 }
 
-const warnDLLsDeprecated = deprecate(
-  () => {},
-  dedent`
+const warnDeprecatedFlag = (message: string) => {
+  return deprecate(() => {}, dedent(message));
+};
+
+const warnDLLsDeprecated = warnDeprecatedFlag(
+  `
     DLL-related CLI flags are deprecated, see:
     
     https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-dll-flags
+  `
+);
+
+const warnStaticDirDeprecated = warnDeprecatedFlag(
+  `
+    --static-dir CLI flag is deprecated, see:
+
+    https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-static-dir-flag
   `
 );
 
@@ -36,13 +47,6 @@ export function checkDeprecatedFlags(options: {
   if (!options.dll || options.uiDll || options.docsDll) {
     warnDLLsDeprecated();
   } else if (options.staticDirs) {
-    deprecate(
-      () => {},
-      dedent`
-      --static-dir CLI flag is deprecated, see:
-
-      https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-static-dir-flag
-    `
-    );
+    warnStaticDirDeprecated();
   }
 }
