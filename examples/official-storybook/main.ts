@@ -33,6 +33,11 @@ const config: StorybookConfig = {
   features: {
     previewCsfV3: true,
   },
+  staticDirs: [
+    './statics/public',
+    { from: './statics/examples/example1', to: '/example1' },
+    { from: './statics/examples/example2', to: '/example2' },
+  ],
 };
 
 module.exports = config;
