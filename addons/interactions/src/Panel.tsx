@@ -156,7 +156,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const emit = useChannel({
-    [EVENTS.CALL]: (call) => {
+    [EVENTS.CALL]: (call: Call) => {
       dispatch({ type: 'call', payload: { call } });
     },
     setCurrentStory: () => {
