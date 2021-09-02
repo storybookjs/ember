@@ -97,4 +97,48 @@ describe('inferArgTypes', () => {
     });
     expect(logger.warn).toHaveBeenCalled();
   });
+
+  it('ensures names', () => {
+    (logger.warn as jest.MockedFunction<typeof logger.warn>).mockClear();
+    expect(
+      inferArgTypes({
+        initialArgs: {
+          a: 1,
+        },
+        argTypes: {
+          a: {
+            control: {
+              type: 'range',
+            },
+          },
+        },
+      } as any)
+    ).toEqual({
+      a: {
+        name: 'a',
+        type: { name: 'number' },
+        control: { type: 'range' },
+      },
+    });
+  });
+
+  it('ensures names even with no arg', () => {
+    (logger.warn as jest.MockedFunction<typeof logger.warn>).mockClear();
+    expect(
+      inferArgTypes({
+        argTypes: {
+          a: {
+            type: {
+              name: 'string',
+            },
+          },
+        },
+      } as any)
+    ).toEqual({
+      a: {
+        name: 'a',
+        type: { name: 'string' },
+      },
+    });
+  });
 });

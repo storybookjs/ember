@@ -42,7 +42,6 @@ const inferType = (value: any, name: string, visited: Set<any>): SBType => {
 
 export const inferArgTypes: ArgTypesEnhancer<Framework> = (context) => {
   const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
-  if (!initialArgs) return userArgTypes;
   const argTypes = mapValues(initialArgs, (arg, key) => ({
     name: key,
     type: inferType(arg, `${id}.${key}`, new Set()),
@@ -53,5 +52,4 @@ export const inferArgTypes: ArgTypesEnhancer<Framework> = (context) => {
   return combineParameters(argTypes, userArgTypesNames, userArgTypes);
 };
 
-// @ts-ignore FIXME
 inferArgTypes.secondPass = true;
