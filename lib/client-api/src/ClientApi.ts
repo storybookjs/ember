@@ -15,6 +15,8 @@ import {
   sanitize,
   storyNameFromExport,
   ComponentTitle,
+  Globals,
+  GlobalTypes,
 } from '@storybook/csf';
 import {
   NormalizedComponentAnnotations,
@@ -25,6 +27,7 @@ import {
   ModuleImportFn,
   combineParameters,
   StoryStore,
+  normalizeInputTypes,
 } from '@storybook/store';
 
 import { ClientApiAddons, StoryApi } from '@storybook/addons';
@@ -70,7 +73,7 @@ const warnings = {
 };
 
 const checkMethod = (method: string, deprecationWarning: boolean) => {
-  if (FEATURES.storyStoreV7) {
+  if (FEATURES?.storyStoreV7) {
     throw new Error(
       dedent`You cannot use \`${method}\` with the new Story Store.
       
@@ -209,11 +212,21 @@ export default class ClientApi<TFramework extends Framework> {
     `
   );
 
-  addParameters = (parameters: Parameters) => {
+  addParameters = ({
+    globals,
+    globalTypes,
+    ...parameters
+  }: Parameters & { globals?: Globals; globalTypes?: GlobalTypes }) => {
     this.globalAnnotations.parameters = combineParameters(
       this.globalAnnotations.parameters,
       parameters
     );
+    if (globals) {
+      this.globalAnnotations.globals = globals;
+    }
+    if (globalTypes) {
+      this.globalAnnotations.globalTypes = normalizeInputTypes(globalTypes);
+    }
   };
 
   addLoader = (loader: LoaderFunction<TFramework>) => {
