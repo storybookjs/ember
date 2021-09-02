@@ -1,4 +1,5 @@
 import { logger } from '@storybook/node-logger';
+import { Options, StorybookConfig } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
@@ -9,8 +10,17 @@ import dedent from 'ts-dedent';
 
 const defaultFavIcon = require.resolve('../public/favicon.ico');
 
-export async function useStatics(router: any, options: { staticDir?: string[] }) {
+export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
+  const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
+
+  staticDirs.forEach((dir) => {
+    const from = typeof dir === 'string' ? dir : dir.from;
+    const to = typeof dir === 'string' ? '/' : dir.to;
+
+    logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
+    router.use(to, express.static(from, { index: false }));
+  });
 
   if (options.staticDir && options.staticDir.length > 0) {
     await Promise.all(

@@ -25,6 +25,11 @@ export interface CoreConfig {
   disableWebpackDefaults?: boolean;
 }
 
+interface DirectoryMapping {
+  from: string;
+  to: string;
+}
+
 export interface Presets {
   apply(
     extension: 'typescript',
@@ -249,6 +254,12 @@ export interface StorybookConfig {
       }
   >;
   core?: CoreConfig;
+  /**
+   * Sets a list of directories of static files to be loaded by Storybook server
+   *
+   * @example `['./public']` or `[{from: './public', 'to': '/assets'}]`
+   */
+  staticDirs: (DirectoryMapping | string)[];
   logLevel?: string;
   features?: {
     /**
