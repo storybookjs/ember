@@ -53,7 +53,7 @@ export type CSFFile<TFramework extends Framework> = {
   stories: Record<StoryId, NormalizedStoryAnnotations<TFramework>>;
 };
 
-export type UnboundStory<TFramework extends Framework> = StoryContextForEnhancers<TFramework> & {
+export type Story<TFramework extends Framework> = StoryContextForEnhancers<TFramework> & {
   originalStoryFn: StoryFn<TFramework>;
   undecoratedStoryFn: LegacyStoryFn<TFramework>;
   unboundStoryFn: LegacyStoryFn<TFramework>;
@@ -61,7 +61,7 @@ export type UnboundStory<TFramework extends Framework> = StoryContextForEnhancer
   runPlayFunction: () => Promise<void>;
 };
 
-export type Story<TFramework extends Framework> = UnboundStory<TFramework> & {
+export type BoundStory<TFramework extends Framework> = Story<TFramework> & {
   storyFn: LegacyStoryFn<TFramework>;
 };
 

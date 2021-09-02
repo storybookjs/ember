@@ -4,19 +4,17 @@ import deprecate from 'util-deprecate';
 import {
   Parameters,
   Args,
-  ArgTypes,
   LegacyStoryFn,
   ArgsStoryFn,
   StoryContextForEnhancers,
   StoryContext,
   Framework,
   StrictArgTypes,
-  StrictInputType,
 } from '@storybook/csf';
 
 import {
   NormalizedComponentAnnotations,
-  UnboundStory,
+  Story,
   NormalizedStoryAnnotations,
   NormalizedGlobalAnnotations,
 } from './types';
@@ -41,7 +39,7 @@ export function prepareStory<TFramework extends Framework>(
   storyAnnotations: NormalizedStoryAnnotations<TFramework>,
   componentAnnotations: NormalizedComponentAnnotations<TFramework>,
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>
-): UnboundStory<TFramework> {
+): Story<TFramework> {
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
   // will have a limited cost. If this proves misguided, we can refactor it.
