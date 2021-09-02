@@ -131,6 +131,9 @@ export interface CLIOptions {
   previewUrl?: string;
   forceBuildPreview?: boolean;
   host?: string;
+  /**
+   * @deprecated Use 'staticDirs' Storybook Configuration option instead
+   */
   staticDir?: string[];
   configDir?: string;
   https?: boolean;
