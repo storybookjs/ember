@@ -30,11 +30,11 @@ const deprecatedStoryComponentWarning = deprecate(
 export const getStorybookModuleMetadata = (
   {
     storyFnAngular,
-    parameters,
+    component: annotatedComponent,
     targetSelector,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
-    parameters: Parameters;
+    component?: any;
     targetSelector: string;
   },
   storyProps$: Subject<ICollection>
@@ -45,7 +45,7 @@ export const getStorybookModuleMetadata = (
   if (storyComponent) {
     deprecatedStoryComponentWarning();
   }
-  const component = storyComponent ?? parameters.component;
+  const component = storyComponent ?? annotatedComponent;
 
   if (hasNoTemplate(template) && component) {
     template = computesTemplateFromComponent(component, props, '');

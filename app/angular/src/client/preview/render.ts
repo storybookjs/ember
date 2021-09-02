@@ -28,7 +28,8 @@ export default async function renderMain(
 
   await renderer.render({
     storyFnAngular: storyFn(),
-    parameters: { ...parameters, component },
+    component,
+    parameters,
     forced: !forceRemount,
     targetDOMNode: element,
   });

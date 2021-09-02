@@ -92,16 +92,19 @@ export abstract class AbstractRenderer {
    * @param forced {boolean} If :
    * - true render will only use the StoryFn `props' in storyProps observable that will update sotry's component/template properties. Improves performance without reloading the whole module&component if props changes
    * - false fully recharges or initializes angular module & component
+   * @param component {Component}
    * @param parameters {Parameters}
    */
   public async render({
     storyFnAngular,
     forced,
     parameters,
+    component,
     targetDOMNode,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
+    component?: any;
     parameters: Parameters;
     targetDOMNode: HTMLElement;
   }) {
@@ -109,7 +112,7 @@ export abstract class AbstractRenderer {
 
     const newStoryProps$ = new BehaviorSubject<ICollection>(storyFnAngular.props);
     const moduleMetadata = getStorybookModuleMetadata(
-      { storyFnAngular, parameters, targetSelector },
+      { storyFnAngular, component, targetSelector },
       newStoryProps$
     );
 

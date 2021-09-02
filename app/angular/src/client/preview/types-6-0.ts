@@ -32,7 +32,6 @@ export type Story<TArgs = Args> = StoryAnnotationsOrFn<AngularFramework, TArgs>;
 export type Parameters = DefaultParameters & {
   /** Uses legacy angular rendering engine that use dynamic component */
   angularLegacyRendering?: boolean;
-  component: unknown;
   bootstrapModuleOptions?: unknown;
 };
 
