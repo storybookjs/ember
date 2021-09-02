@@ -1,4 +1,5 @@
 import { ArgType, ArgTypes } from '@storybook/api';
+import { StrictInputType } from '@storybook/csf';
 import { enhanceArgTypes } from './enhanceArgTypes';
 
 expect.addSnapshotSerializer({
@@ -12,15 +13,18 @@ const enhance = ({
   extractedArgTypes,
   isArgsStory = true,
 }: {
-  argType?: ArgType;
+  argType?: StrictInputType;
   arg?: any;
   extractedArgTypes?: ArgTypes;
   isArgsStory?: boolean;
 }) => {
   const context = {
-    id: 'foo--bar',
+    componentId: 'foo',
+    title: 'foo',
     kind: 'foo',
+    id: 'foo--bar',
     name: 'bar',
+    story: 'bar',
     component: 'dummy',
     parameters: {
       __isArgsStory: isArgsStory,
@@ -29,6 +33,7 @@ const enhance = ({
       },
     },
     argTypes: argType && { input: argType },
+    initialArgs: { input: arg },
     args: { input: arg },
     globals: {},
   };
@@ -40,7 +45,7 @@ describe('enhanceArgTypes', () => {
     it('should no-op', () => {
       expect(
         enhance({
-          argType: { foo: 'unmodified', type: { name: 'number' } },
+          argType: { name: 'input', foo: 'unmodified', type: { name: 'number' } },
           isArgsStory: false,
         }).input
       ).toMatchInlineSnapshot(`
@@ -60,7 +65,7 @@ describe('enhanceArgTypes', () => {
         it('number', () => {
           expect(
             enhance({
-              argType: { type: { name: 'number' } },
+              argType: { name: 'input', type: { name: 'number' } },
             }).input
           ).toMatchInlineSnapshot(`
             {
@@ -93,7 +98,7 @@ describe('enhanceArgTypes', () => {
         it('range', () => {
           expect(
             enhance({
-              argType: { control: { type: 'range', min: 0, max: 100 } },
+              argType: { name: 'input', control: { type: 'range', min: 0, max: 100 } },
             }).input
           ).toMatchInlineSnapshot(`
             {
@@ -109,7 +114,7 @@ describe('enhanceArgTypes', () => {
         it('options', () => {
           expect(
             enhance({
-              argType: { control: { type: 'radio', options: [1, 2] } },
+              argType: { name: 'input', control: { type: 'radio', options: [1, 2] } },
             }).input
           ).toMatchInlineSnapshot(`
             {
@@ -131,7 +136,7 @@ describe('enhanceArgTypes', () => {
       it('user-specified argTypes take precedence over extracted argTypes', () => {
         expect(
           enhance({
-            argType: { type: { name: 'number' } },
+            argType: { name: 'input', type: { name: 'number' } },
             extractedArgTypes: { input: { type: { name: 'string' } } },
           }).input
         ).toMatchInlineSnapshot(`
@@ -147,7 +152,7 @@ describe('enhanceArgTypes', () => {
       it('user-specified argTypes take precedence over inferred argTypes', () => {
         expect(
           enhance({
-            argType: { type: { name: 'number' } },
+            argType: { name: 'input', type: { name: 'number' } },
             arg: 'hello',
           }).input
         ).toMatchInlineSnapshot(`
@@ -178,7 +183,7 @@ describe('enhanceArgTypes', () => {
       it('user-specified controls take precedence over inferred controls', () => {
         expect(
           enhance({
-            argType: { defaultValue: 5, control: { type: 'range', step: 50 } },
+            argType: { name: 'input', defaultValue: 5, control: { type: 'range', step: 50 } },
             arg: 3,
             extractedArgTypes: { input: { name: 'input' } },
           }).input
@@ -217,7 +222,7 @@ describe('enhanceArgTypes', () => {
       it('includes extracted argTypes when user-specified argTypes match', () => {
         expect(
           enhance({
-            argType: { type: { name: 'number' } },
+            argType: { name: 'input', type: { name: 'number' } },
             extractedArgTypes: { input: { name: 'input' }, foo: { type: { name: 'number' } } },
           })
         ).toMatchInlineSnapshot(`
@@ -240,7 +245,7 @@ describe('enhanceArgTypes', () => {
       it('excludes extracted argTypes when user-specified argTypes do not match', () => {
         expect(
           enhance({
-            argType: { type: { name: 'number' } },
+            argType: { name: 'input', type: { name: 'number' } },
             extractedArgTypes: { foo: { type: { name: 'number' } } },
           })
         ).toMatchInlineSnapshot(`
