@@ -4,6 +4,9 @@ import { logger } from '@storybook/node-logger';
 import { parseList, getEnvConfig, checkDeprecatedFlags } from './utils';
 
 export interface ProdCliOptions {
+  /**
+   * @deprecated Use 'staticDirs' Storybook Configuration option instead
+   */
   staticDir?: string[];
   outputDir?: string;
   configDir?: string;
