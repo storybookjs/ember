@@ -72,7 +72,7 @@ function run(fn: Function, call: Call) {
     return arg;
   });
 
-  // TODO can we get rid of this by using playUntil for `next`?
+  // Mark any parent calls as "chained upon" so we won't attempt to defer it later.
   call.path.forEach((ref: any) => {
     ref?.__callId__ && sharedState.chainedCallIds.add(ref.__callId__);
   });

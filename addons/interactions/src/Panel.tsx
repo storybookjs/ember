@@ -23,27 +23,6 @@ global.window.__STORYBOOK_ADDON_TEST_MANAGER__ = global.window.__STORYBOOK_ADDON
 
 const sharedState = global.window.__STORYBOOK_ADDON_TEST_MANAGER__;
 
-const fold = (calls: Call[]) => {
-  const seen = new Set();
-  return calls.reduceRight<Call[]>((acc, call) => {
-    call.args.forEach((arg) => {
-      if (arg?.__callId__) {
-        seen.add(arg.__callId__);
-      }
-    });
-    call.path.forEach((node) => {
-      if ((node as CallRef).__callId__) {
-        seen.add((node as CallRef).__callId__);
-      }
-    });
-    if (call.interceptable && !seen.has(call.id)) {
-      acc.unshift(call);
-      seen.add(call.id);
-    }
-    return acc;
-  }, []);
-};
-
 const Row = ({
   call,
   callsById,
@@ -97,62 +76,89 @@ const Row = ({
 
 interface PanelState {
   log: Call[];
-  cursor: number;
+  shadowLog: Call[];
+  interactions: Call[];
   isDebugging: boolean;
-  hasException: boolean;
-  hasPending: boolean;
   callsById: Record<Call['id'], Call>;
 }
 
-export const Panel: React.FC<PanelProps> = (props) => {
-  const initialState: PanelState = {
-    log: [],
-    cursor: 0,
-    isDebugging: false,
-    hasException: false,
-    hasPending: false,
-    callsById: {},
-  };
-  const reducer = (
-    state: PanelState,
-    action: { type: string; payload?: { call?: Call; playUntil?: Call['id'] } }
-  ) => {
-    switch (action.type) {
-      case 'call':
-        const { log, cursor, callsById, isDebugging, hasException } = state;
-        const { call } = action.payload;
+const initialState: PanelState = {
+  log: [],
+  shadowLog: [],
+  interactions: [],
+  isDebugging: false,
+  callsById: {},
+};
 
-        return {
-          ...state,
-          log: isDebugging
-            ? log
-                .slice(0, cursor)
-                .concat(call)
-                .concat(log.slice(cursor + 1).map((c) => ({ ...c, state: CallState.PENDING })))
-            : log.concat(call),
-          cursor: cursor + 1,
-          hasException: call.exception ? true : hasException,
-          hasPending: isDebugging && !!log[cursor + 1],
-          callsById: { ...callsById, [call.id]: call },
-        };
-
-      case 'start':
-        sharedState.isDebugging = true;
-        sharedState.playUntil = action.payload?.playUntil;
-        return { ...state, isDebugging: true, cursor: 0 };
-
-      case 'stop':
-        sharedState.isDebugging = false;
-        sharedState.playUntil = undefined;
-        return { ...state, isDebugging: false };
-
-      case 'reset':
-        sharedState.isDebugging = false;
-        sharedState.playUntil = undefined;
-        sharedState.chainedCallIds.clear();
-        return initialState;
+const fold = (log: Call[]) => {
+  const seen = new Set();
+  return log.reduceRight<Call[]>((acc, call) => {
+    call.args.forEach((arg) => {
+      if (arg?.__callId__) {
+        seen.add(arg.__callId__);
+      }
+    });
+    call.path.forEach((node) => {
+      if ((node as CallRef).__callId__) {
+        seen.add((node as CallRef).__callId__);
+      }
+    });
+    if (call.interceptable && !seen.has(call.id)) {
+      acc.unshift(call);
+      seen.add(call.id);
     }
-  };
+    return acc;
+  }, []);
+};
+
+const reducer = (
+  state: PanelState,
+  action: { type: string; payload?: { call?: Call; playUntil?: Call['id'] } }
+) => {
+  switch (action.type) {
+    case 'call':
+      const { call } = action.payload;
+      const log = state.log.concat(call);
+      const interactions = fold(
+        log.reduce<Call[]>(
+          (acc, call, index) => {
+            acc[index] = call;
+            return acc;
+          },
+          state.shadowLog.map((c) => ({ ...c, state: CallState.PENDING }))
+        )
+      );
+      return {
+        ...state,
+        log,
+        interactions,
+        callsById: { ...state.callsById, [call.id]: call },
+      };
+
+    case 'start':
+      sharedState.isDebugging = true;
+      sharedState.playUntil = action.payload?.playUntil;
+      return {
+        ...state,
+        log: [] as Call[],
+        shadowLog: state.isDebugging ? state.shadowLog : [...state.log],
+        isDebugging: true,
+      };
+
+    case 'stop':
+      sharedState.isDebugging = false;
+      sharedState.playUntil = undefined;
+      return { ...state, isDebugging: false };
+
+    case 'reset':
+      sharedState.isDebugging = false;
+      sharedState.playUntil = undefined;
+      sharedState.chainedCallIds.clear();
+      return initialState;
+  }
+};
+
+export const Panel: React.FC<PanelProps> = (props) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const emit = useChannel({
@@ -169,24 +175,40 @@ export const Panel: React.FC<PanelProps> = (props) => {
     },
   });
 
-  const start = (playUntil?: Call['id']) => {
-    dispatch({ type: 'start', payload: { playUntil } });
+  const { log, interactions, callsById, isDebugging } = state;
+  const hasException = interactions.some((call) => call.state === CallState.ERROR);
+  const hasPrevious = interactions.some(call => call.state !== CallState.PENDING);
+  const hasNext = interactions.some((call) => call.state === CallState.PENDING);
+  const nextIndex = interactions.findIndex((call) => call.state === CallState.PENDING);
+  const nextCall = interactions[nextIndex];
+  const prevCall = interactions[nextIndex - 2] || (isDebugging ? undefined : interactions.slice(-2)[0]);
+
+  const start = () => {
+    const playUntil = log
+      .slice(0, log.findIndex((call) => call.id === interactions[0].id))
+      .filter((call) => call.interceptable)
+      .slice(-1)[0];
+    dispatch({ type: 'start', payload: { playUntil: playUntil?.id } });
     emit(EVENTS.RELOAD);
   };
+  const goto = (call: Call) => {
+    if (call.state === CallState.PENDING) {
+      if (call !== nextCall) sharedState.playUntil = call.id;
+      emit(EVENTS.NEXT);
+    } else {
+      dispatch({ type: 'start', payload: { playUntil: call.id } });
+      emit(EVENTS.RELOAD);
+    }
+  };
+  const next = () => goto(nextCall)
+  const prev = () => prevCall ? goto(prevCall) : start()
   const stop = () => {
     dispatch({ type: 'stop' });
     emit(EVENTS.NEXT);
   };
-  const next = () => {
-    sharedState.playUntil = undefined;
-    emit(EVENTS.NEXT);
-  };
-
-  const { log, callsById, isDebugging, hasException, hasPending } = state;
 
   const tabButton = document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
-  // for panel tabs
   const statusIcon = hasException ? (
     <span
       style={{ width: 8, height: 8, margin: 2, marginLeft: 7, background: '#F40', borderRadius: 1 }}
@@ -199,18 +221,21 @@ export const Panel: React.FC<PanelProps> = (props) => {
     <AddonPanel {...props}>
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
 
-      {fold(log).map((call) => (
-        <Row call={call} callsById={callsById} key={call.id} onClick={() => start(call.id)} />
+      {interactions.map((call) => (
+        <Row call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
       ))}
 
       <div style={{ padding: 3 }}>
-        <Button outline containsIcon title="Start debugging" onClick={() => start()}>
+        <Button outline containsIcon title="Start debugging" onClick={start}>
           <Icons icon="undo" />
         </Button>
-        <Button outline containsIcon title="Step over" onClick={next} disabled={!hasPending}>
+        <Button outline containsIcon title="Step back" onClick={prev} disabled={!hasPrevious}>
+          <Icons icon="arrowleftalt" />
+        </Button>
+        <Button outline containsIcon title="Step over" onClick={next} disabled={!hasNext}>
           <Icons icon="arrowrightalt" />
         </Button>
-        <Button outline containsIcon title="Play" onClick={stop} disabled={!hasPending}>
+        <Button outline containsIcon title="Play" onClick={stop} disabled={!hasNext}>
           <Icons icon="play" />
         </Button>
       </div>
