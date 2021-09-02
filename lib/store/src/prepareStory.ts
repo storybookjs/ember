@@ -16,7 +16,7 @@ import {
 
 import {
   NormalizedComponentAnnotations,
-  Story,
+  UnboundStory,
   NormalizedStoryAnnotations,
   NormalizedGlobalAnnotations,
 } from './types';
@@ -41,7 +41,7 @@ export function prepareStory<TFramework extends Framework>(
   storyAnnotations: NormalizedStoryAnnotations<TFramework>,
   componentAnnotations: NormalizedComponentAnnotations<TFramework>,
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>
-): Story<TFramework> {
+): UnboundStory<TFramework> {
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
   // will have a limited cost. If this proves misguided, we can refactor it.
@@ -175,11 +175,3 @@ export function prepareStory<TFramework extends Framework>(
     runPlayFunction,
   };
 }
-
-// function preparedStoryToFunction(preparedStory) {
-//   return () => {
-//     const result = preparedStory.unboundStoryFn(preparedStory.initialContext)
-//     preparedStory.cleanup();
-
-//     return result;
-//   }

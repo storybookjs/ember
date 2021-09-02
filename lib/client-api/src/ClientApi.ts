@@ -5,6 +5,7 @@ import { logger } from '@storybook/client-logger';
 import {
   Framework,
   toId,
+  isExportStory,
   DecoratorFunction,
   Parameters,
   ArgTypesEnhancer,
@@ -387,7 +388,7 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     this.clearFilenameExports(fileName);
 
     const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
-    const { title } = defaultExport || {};
+    const { id: componentId, title } = defaultExport || {};
     if (!title) {
       throw new Error(
         `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
@@ -396,31 +397,27 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
 
     this.csfExports[fileName] = fileExports;
 
-    let exports = namedExports;
-    if (Array.isArray(__namedExportsOrder)) {
-      exports = {};
-      __namedExportsOrder.forEach((name) => {
-        if (namedExports[name]) {
-          exports[name] = namedExports[name];
-        }
+    Object.entries(namedExports)
+      .filter(([key]) => isExportStory(key, defaultExport))
+      .forEach(([key, storyExport]: [string, any]) => {
+        // TODO -- this little block of code is common with `processCSFFile`
+        const exportName = storyNameFromExport(key);
+        const id = storyExport.parameters?.__id || toId(componentId || title, exportName);
+        const name =
+          (typeof storyExport !== 'function' && storyExport.name) ||
+          storyExport.storyName ||
+          storyExport.story?.name ||
+          exportName;
+
+        this.stories[id] = {
+          name,
+          title,
+          importPath: fileName,
+        };
       });
-    }
-    Object.entries(exports).forEach(([key, storyExport]: [string, any]) => {
-      const actualName: string =
-        (typeof storyExport !== 'function' && storyExport.name) ||
-        storyExport.storyName ||
-        storyExport.story?.name ||
-        storyNameFromExport(key);
-      const id = storyExport.parameters?.__id || toId(title, actualName);
-      this.stories[id] = {
-        name: actualName,
-        title,
-        importPath: fileName,
-      };
-    });
   }
 
-  getStorybook(): GetStorybookKind<TFramework>[] {
+  getStorybook = (): GetStorybookKind<TFramework>[] => {
     const storiesList = this.getStoriesList();
 
     const kinds: Record<ComponentTitle, GetStorybookKind<TFramework>> = {};
@@ -429,19 +426,16 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
         kinds[title] = { kind: title, fileName: importPath, stories: [] };
       }
 
-      const csfFile = this.storyStore.cachedCSFFiles[importPath];
-      const { unboundStoryFn } = this.storyStore.storyFromCSFFile({
-        storyId,
-        csfFile,
-      });
-      kinds[title].stories.push({ name, render: unboundStoryFn });
+      const { storyFn } = this.storyStore.fromId(storyId);
+
+      kinds[title].stories.push({ name, render: storyFn });
     });
 
     return Object.values(kinds);
-  }
+  };
 
   // @deprecated
-  raw() {
+  raw = () => {
     return this.storyStore.raw();
-  }
+  };
 }

@@ -23,6 +23,7 @@ import {
   Path,
   ExtractOptions,
   ModuleExports,
+  UnboundStory,
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
@@ -201,7 +202,15 @@ export class StoryStore<TFramework extends Framework> {
     const story = this.prepareStoryWithCache(storyMeta, componentMeta, this.globalAnnotations);
     this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();
-    return story;
+    return {
+      ...story,
+      storyFn: (context) =>
+        story.unboundStoryFn({
+          ...this.getStoryContext(story),
+          viewMode: 'story',
+          ...context,
+        }),
+    };
   }
 
   componentStoriesFromCSFFile({ csfFile }: { csfFile: CSFFile<TFramework> }): Story<TFramework>[] {
@@ -210,7 +219,9 @@ export class StoryStore<TFramework extends Framework> {
     );
   }
 
-  getStoryContext(story: Story<TFramework>): Omit<StoryContextForLoaders<TFramework>, 'viewMode'> {
+  getStoryContext(
+    story: UnboundStory<TFramework>
+  ): Omit<StoryContextForLoaders<TFramework>, 'viewMode'> {
     return {
       ...story,
       args: this.args.get(story.id),
@@ -278,7 +289,7 @@ export class StoryStore<TFramework extends Framework> {
     return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
   }
 
-  fromId(storyId: StoryId): StoryContextForLoaders<TFramework> {
+  fromId(storyId: StoryId): Story<TFramework> {
     if (!this.cachedCSFFiles) {
       throw new Error('Cannot call fromId/raw() unless you call cacheAllCSFFiles() first.');
     }
@@ -288,10 +299,6 @@ export class StoryStore<TFramework extends Framework> {
       throw new Error(`Unknown storyId ${storyId}`);
     }
     const csfFile = this.cachedCSFFiles[importPath];
-    const story = this.storyFromCSFFile({ storyId, csfFile });
-    return {
-      ...this.getStoryContext(story),
-      viewMode: 'story',
-    } as StoryContextForLoaders<TFramework>;
+    return this.storyFromCSFFile({ storyId, csfFile });
   }
 }
