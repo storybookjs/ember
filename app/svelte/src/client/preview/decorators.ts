@@ -23,7 +23,7 @@ function unWrap(obj: any) {
  * Transform a story to be compatible with the PreviewRender component.
  *
  * - `() => MyComponent` is translated to `() => ({ Component: MyComponent })`
- * - `() => ({})` is translated to `() => ({ Component: <from parameters.component> })`
+ * - `() => ({})` is translated to `() => ({ Component: <from context.component> })`
  * - A decorator component is wrapped with SlotDecorator. The decorated component is inject through
  * a <slot/>
  *
@@ -55,8 +55,8 @@ function prepareStory(context: StoryContext<SvelteFramework>, story: any, origin
   } else {
     let cpn = result.Component;
     if (!cpn) {
-      // if the component is not defined, get it from parameters
-      cpn = context.parameters.component;
+      // if the component is not defined, get it the context
+      cpn = context.component;
     }
     result.Component = unWrap(cpn);
   }
