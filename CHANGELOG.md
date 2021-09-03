@@ -1,3 +1,20 @@
+## 6.4.0-alpha.33 (September 1, 2021)
+
+### Bug Fixes
+
+- TypeScript: Fix glob pattern used in package `typesVersions` config ([#15918](https://github.com/storybookjs/storybook/pull/15918))
+
+### Maintenance
+
+- Core: Add Babel mode v7 ([#15928](https://github.com/storybookjs/storybook/pull/15928))
+- Core: Write JSON stats file in streaming fashion and omit `chunks` for brevity ([#15889](https://github.com/storybookjs/storybook/pull/15889))
+- UI: Add playback icons ([#15909](https://github.com/storybookjs/storybook/pull/15909))
+- Misc: Generate and push repros to a GitHub repo every night ([#15877](https://github.com/storybookjs/storybook/pull/15877))
+
+### Dependency Upgrades
+
+- Bump cpy to 8.1.2 for security ([#15953](https://github.com/storybookjs/storybook/pull/15953))
+
 ## 6.4.0-alpha.32 (August 24, 2021)
 
 ### Features

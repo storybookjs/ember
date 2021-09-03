@@ -7,6 +7,13 @@ export interface Method {
   rawdescription?: string;
 }
 
+export interface JsDocTag {
+  comment?: string;
+  tagName?: {
+    escapedText?: string;
+  };
+}
+
 export interface Property {
   name: string;
   decorators?: Decorator[];
@@ -15,6 +22,7 @@ export interface Property {
   defaultValue?: string;
   description?: string;
   rawdescription?: string;
+  jsdoctags?: JsDocTag[];
 }
 
 export interface Class {

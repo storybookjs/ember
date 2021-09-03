@@ -1,6 +1,6 @@
 {
   "name": "@storybook/api",
-  "version": "6.4.0-alpha.32",
+  "version": "6.4.0-alpha.33",
   "description": "Core Storybook API & Context",
   "keywords": [
     "storybook"
@@ -23,7 +23,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -39,13 +39,13 @@
   },
   "dependencies": {
     "@reach/router": "^1.3.4",
-    "@storybook/channels": "6.4.0-alpha.32",
-    "@storybook/client-logger": "6.4.0-alpha.32",
-    "@storybook/core-events": "6.4.0-alpha.32",
+    "@storybook/channels": "6.4.0-alpha.33",
+    "@storybook/client-logger": "6.4.0-alpha.33",
+    "@storybook/core-events": "6.4.0-alpha.33",
     "@storybook/csf": "0.0.1",
-    "@storybook/router": "6.4.0-alpha.32",
+    "@storybook/router": "6.4.0-alpha.33",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.4.0-alpha.32",
+    "@storybook/theming": "6.4.0-alpha.33",
     "@types/reach__router": "^1.3.7",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",
@@ -72,6 +72,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ee3198a84adf021e9214b929da9f59c525d8adc6",
+  "gitHead": "269aa6d39991bd4002754fda53f45d3b3d34ba98",
   "sbmodern": "dist/modern/index.js"
 }
