@@ -3,7 +3,7 @@ import {
   Parameters,
   StoryId,
   StoryContextForLoaders,
-  Framework,
+  AnyFramework,
   GlobalAnnotations,
   ComponentTitle,
 } from '@storybook/csf';
@@ -32,7 +32,7 @@ import { inferControls } from './inferControls';
 const CSF_CACHE_SIZE = 100;
 const STORY_CACHE_SIZE = 1000;
 
-function normalizeGlobalAnnotations<TFramework extends Framework>({
+function normalizeGlobalAnnotations<TFramework extends AnyFramework>({
   argTypes,
   globalTypes,
   argTypesEnhancers,
@@ -51,7 +51,7 @@ function normalizeGlobalAnnotations<TFramework extends Framework>({
   };
 }
 
-export class StoryStore<TFramework extends Framework> {
+export class StoryStore<TFramework extends AnyFramework> {
   storiesList: StoriesListStore;
 
   importFn: ModuleImportFn;

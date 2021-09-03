@@ -1,7 +1,7 @@
 import global from 'global';
 import { ClientApi } from '@storybook/client-api';
 import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
-import { Framework } from '@storybook/csf';
+import { AnyFramework } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
@@ -12,7 +12,7 @@ import { executeLoadableForChanges } from './executeLoadable';
 
 const { window: globalWindow } = global;
 
-export function start<TFramework extends Framework>(
+export function start<TFramework extends AnyFramework>(
   renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'],
   { decorateStory }: { decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'] } = {}
 ) {

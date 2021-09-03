@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, ReactNode, ReactNodeArray, useContext } from 'react';
 import { MDXProvider } from '@mdx-js/react';
-import { toId, storyNameFromExport, Framework } from '@storybook/csf';
+import { toId, storyNameFromExport, AnyFramework } from '@storybook/csf';
 import {
   resetComponents,
   Preview as PurePreview,
@@ -19,7 +19,7 @@ type CanvasProps = PurePreviewProps & {
 
 const getPreviewProps = (
   { withSource, mdxSource, children, ...props }: CanvasProps & { children?: ReactNode },
-  docsContext: DocsContextProps<Framework>,
+  docsContext: DocsContextProps<AnyFramework>,
   sourceContext: SourceContextProps
 ): PurePreviewProps => {
   const { mdxComponentAnnotations, mdxStoryNameToKey } = docsContext;

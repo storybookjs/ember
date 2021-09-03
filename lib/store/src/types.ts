@@ -10,7 +10,7 @@ import {
   StoryContextForLoaders,
   StoryContext,
   ComponentTitle,
-  Framework,
+  AnyFramework,
   GlobalAnnotations,
   ComponentAnnotations,
   StoryAnnotations,
@@ -25,21 +25,21 @@ export type ModuleExports = Record<string, any>;
 export type ModuleImportFn = (path: Path) => Promise<ModuleExports> | ModuleExports;
 
 export type NormalizedGlobalAnnotations<
-  TFramework extends Framework
+  TFramework extends AnyFramework
 > = GlobalAnnotations<TFramework> & {
   argTypes?: StrictArgTypes;
   globalTypes?: StrictGlobalTypes;
 };
 
 export type NormalizedComponentAnnotations<
-  TFramework extends Framework
+  TFramework extends AnyFramework
 > = ComponentAnnotations<TFramework> & {
   // Useful to guarantee that id exists
   id: ComponentId;
   argTypes?: StrictArgTypes;
 };
 
-export type NormalizedStoryAnnotations<TFramework extends Framework> = Omit<
+export type NormalizedStoryAnnotations<TFramework extends AnyFramework> = Omit<
   StoryAnnotations<TFramework>,
   'storyName' | 'story'
 > & {
@@ -48,12 +48,12 @@ export type NormalizedStoryAnnotations<TFramework extends Framework> = Omit<
   argTypes?: StrictArgTypes;
 };
 
-export type CSFFile<TFramework extends Framework> = {
+export type CSFFile<TFramework extends AnyFramework> = {
   meta: NormalizedComponentAnnotations<TFramework>;
   stories: Record<StoryId, NormalizedStoryAnnotations<TFramework>>;
 };
 
-export type Story<TFramework extends Framework> = StoryContextForEnhancers<TFramework> & {
+export type Story<TFramework extends AnyFramework> = StoryContextForEnhancers<TFramework> & {
   originalStoryFn: StoryFn<TFramework>;
   undecoratedStoryFn: LegacyStoryFn<TFramework>;
   unboundStoryFn: LegacyStoryFn<TFramework>;
@@ -61,11 +61,11 @@ export type Story<TFramework extends Framework> = StoryContextForEnhancers<TFram
   runPlayFunction: () => Promise<void>;
 };
 
-export type BoundStory<TFramework extends Framework> = Story<TFramework> & {
+export type BoundStory<TFramework extends AnyFramework> = Story<TFramework> & {
   storyFn: LegacyStoryFn<TFramework>;
 };
 
-export declare type RenderContext<TFramework extends Framework> = StoryIdentifier & {
+export declare type RenderContext<TFramework extends AnyFramework> = StoryIdentifier & {
   showMain: () => void;
   showError: (error: { title: string; description: string }) => void;
   showException: (err: Error) => void;
@@ -100,7 +100,7 @@ export interface Selection {
   viewMode: ViewMode;
 }
 
-export type DecoratorApplicator<TFramework extends Framework> = (
+export type DecoratorApplicator<TFramework extends AnyFramework> = (
   storyFn: LegacyStoryFn<TFramework>,
   decorators: DecoratorFunction<TFramework>[]
 ) => LegacyStoryFn<TFramework>;

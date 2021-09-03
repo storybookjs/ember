@@ -52,7 +52,7 @@
     "@storybook/addons": "6.4.0-alpha.19",
     "@storybook/core": "6.4.0-alpha.19",
     "@storybook/core-common": "6.4.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.c10361d.0",
+    "@storybook/csf": "0.0.2--canary.a1972cb.0",
     "@storybook/node-logger": "6.4.0-alpha.19",
     "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.253f8c1.0",
     "@storybook/semver": "^7.3.2",

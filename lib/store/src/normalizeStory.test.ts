@@ -1,4 +1,4 @@
-import { Framework, StoryAnnotationsOrFn } from '@storybook/csf';
+import { AnyFramework, StoryAnnotationsOrFn } from '@storybook/csf';
 import { normalizeStory } from './normalizeStory';
 
 describe('normalizeStory', () => {
@@ -104,7 +104,7 @@ describe('normalizeStory', () => {
       });
 
       it('full annotations', () => {
-        const storyObj: StoryAnnotationsOrFn<Framework> = {
+        const storyObj: StoryAnnotationsOrFn<AnyFramework> = {
           name: 'story name',
           parameters: { storyParam: 'val' },
           decorators: [() => {}],

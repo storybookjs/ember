@@ -1,5 +1,5 @@
 import { Args } from '@storybook/addons';
-import { Framework, ArgsEnhancer } from '@storybook/csf';
+import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { action } from '../index';
 
 // interface ActionsParameter {
@@ -12,7 +12,7 @@ import { action } from '../index';
  * matches a regex, such as `^on.*` for react-style `onClick` etc.
  */
 
-export const inferActionsFromArgTypesRegex: ArgsEnhancer<Framework> = (context) => {
+export const inferActionsFromArgTypesRegex: ArgsEnhancer<AnyFramework> = (context) => {
   const {
     initialArgs,
     argTypes,
@@ -38,7 +38,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer<Framework> = (context) 
 /**
  * Add action args for list of strings.
  */
-export const addActionsFromArgTypes: ArgsEnhancer<Framework> = (context) => {
+export const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = (context) => {
   const {
     initialArgs,
     argTypes,

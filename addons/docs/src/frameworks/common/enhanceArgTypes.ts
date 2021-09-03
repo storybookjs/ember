@@ -1,8 +1,8 @@
 import mapValues from 'lodash/mapValues';
-import { Framework, StoryContextForEnhancers } from '@storybook/csf';
+import { AnyFramework, StoryContextForEnhancers } from '@storybook/csf';
 import { combineParameters } from '@storybook/store';
 
-export const enhanceArgTypes = <TFramework extends Framework>(
+export const enhanceArgTypes = <TFramework extends AnyFramework>(
   context: StoryContextForEnhancers<TFramework>
 ) => {
   const {

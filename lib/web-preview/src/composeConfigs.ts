@@ -1,4 +1,4 @@
-import { Framework } from '@storybook/csf';
+import { AnyFramework } from '@storybook/csf';
 import { combineParameters, ModuleExports } from '@storybook/store';
 import { WebGlobalAnnotations } from './types';
 
@@ -18,7 +18,7 @@ function getSingletonField(moduleExportList: ModuleExports[], field: string): an
   return getField(moduleExportList, field)[0];
 }
 
-export function composeConfigs<TFramework extends Framework>(
+export function composeConfigs<TFramework extends AnyFramework>(
   moduleExportList: ModuleExports[]
 ): WebGlobalAnnotations<TFramework> {
   const allArgTypeEnhancers = getArrayField(moduleExportList, 'argTypesEnhancers');

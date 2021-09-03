@@ -1,4 +1,4 @@
-import { Framework, GlobalAnnotations } from '@storybook/csf';
+import { AnyFramework, GlobalAnnotations } from '@storybook/csf';
 import { HooksContext } from '../../addons/dist/ts3.9/hooks';
 
 import { prepareStory } from './prepareStory';
@@ -181,7 +181,7 @@ describe('StoryStore', () => {
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
-      const { hooks } = store.getStoryContext(story) as { hooks: HooksContext<Framework> };
+      const { hooks } = store.getStoryContext(story) as { hooks: HooksContext<AnyFramework> };
       hooks.clean = jest.fn();
       store.cleanupStory(story);
       expect(hooks.clean).toHaveBeenCalled();

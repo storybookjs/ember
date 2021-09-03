@@ -2,7 +2,7 @@ import {
   storyNameFromExport,
   toId,
   ComponentAnnotations,
-  Framework,
+  AnyFramework,
   DecoratorFunction,
   ArgTypes,
   StoryAnnotationsOrFn,
@@ -24,7 +24,7 @@ See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#hoisted-csf-
 
 const deprecatedStoryAnnotationWarning = deprecate(() => {}, deprecatedStoryAnnotation);
 
-export function normalizeStory<TFramework extends Framework>(
+export function normalizeStory<TFramework extends AnyFramework>(
   key: StoryId,
   storyAnnotations: StoryAnnotationsOrFn<TFramework>,
   meta: ComponentAnnotations<TFramework>

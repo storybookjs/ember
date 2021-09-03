@@ -13,7 +13,7 @@ import {
   LoaderFunction,
   StoryContext,
 } from '@storybook/addons';
-import { Framework, StoryIdentifier, GlobalAnnotations } from '@storybook/csf';
+import { AnyFramework, StoryIdentifier, GlobalAnnotations } from '@storybook/csf';
 import { StoryStore, HooksContext } from '@storybook/store';
 
 export type {
@@ -74,7 +74,7 @@ export type StoreItem = StoryIdentifier & {
   runPlayFunction: () => Promise<any>;
   storyFn: StoryFn<any>;
   unboundStoryFn: StoryFn<any>;
-  hooks: HooksContext<Framework>;
+  hooks: HooksContext<AnyFramework>;
   args: Args;
   initialArgs: Args;
   argTypes: ArgTypes;
@@ -89,8 +89,8 @@ export interface StoreData {
 }
 
 export interface ClientApiParams {
-  storyStore: StoryStore<Framework>;
-  decorateStory?: GlobalAnnotations<Framework>['applyDecorators'];
+  storyStore: StoryStore<AnyFramework>;
+  decorateStory?: GlobalAnnotations<AnyFramework>['applyDecorators'];
   noStoryModuleAddMethodHotDispose?: boolean;
 }
 

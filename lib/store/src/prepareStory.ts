@@ -9,7 +9,7 @@ import {
   ArgsStoryFn,
   StoryContextForEnhancers,
   StoryContext,
-  Framework,
+  AnyFramework,
   StrictArgTypes,
 } from '@storybook/csf';
 
@@ -36,7 +36,7 @@ const argTypeDefaultValueWarning = deprecate(
 //
 // Note that this story function is *stateless* in the sense that it does not track args or globals
 // Instead, it is expected these are tracked separately (if necessary) and are passed into each invocation.
-export function prepareStory<TFramework extends Framework>(
+export function prepareStory<TFramework extends AnyFramework>(
   storyAnnotations: NormalizedStoryAnnotations<TFramework>,
   componentAnnotations: NormalizedComponentAnnotations<TFramework>,
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>

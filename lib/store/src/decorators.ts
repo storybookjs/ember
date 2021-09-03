@@ -4,10 +4,10 @@ import {
   StoryContextUpdate,
   PartialStoryFn,
   LegacyStoryFn,
-  Framework,
+  AnyFramework,
 } from '@storybook/csf';
 
-export function decorateStory<TFramework extends Framework>(
+export function decorateStory<TFramework extends AnyFramework>(
   storyFn: LegacyStoryFn<TFramework>,
   decorator: DecoratorFunction<TFramework>,
   bindWithContext: (storyFn: LegacyStoryFn<TFramework>) => PartialStoryFn<TFramework>
@@ -20,7 +20,7 @@ export function decorateStory<TFramework extends Framework>(
   return (context) => decorator(boundStoryFunction, context);
 }
 
-type ContextStore<TFramework extends Framework> = { value?: StoryContext<TFramework> };
+type ContextStore<TFramework extends AnyFramework> = { value?: StoryContext<TFramework> };
 
 /**
  * Currently StoryContextUpdates are allowed to have any key in the type.
@@ -44,7 +44,7 @@ export function sanitizeStoryContextUpdate({
   return update;
 }
 
-export function defaultDecorateStory<TFramework extends Framework>(
+export function defaultDecorateStory<TFramework extends AnyFramework>(
   storyFn: LegacyStoryFn<TFramework>,
   decorators: DecoratorFunction<TFramework>[]
 ): LegacyStoryFn<TFramework> {

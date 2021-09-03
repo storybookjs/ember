@@ -1,8 +1,8 @@
-import { Framework, StoryContext } from '@storybook/csf';
+import { AnyFramework, StoryContext } from '@storybook/csf';
 
 import { defaultDecorateStory } from './decorators';
 
-function makeContext(input: Record<string, any> = {}): StoryContext<Framework> {
+function makeContext(input: Record<string, any> = {}): StoryContext<AnyFramework> {
   return {
     id: 'id',
     kind: 'kind',
@@ -10,7 +10,7 @@ function makeContext(input: Record<string, any> = {}): StoryContext<Framework> {
     viewMode: 'story',
     parameters: {},
     ...input,
-  } as StoryContext<Framework>;
+  } as StoryContext<AnyFramework>;
 }
 
 describe('client-api.decorators', () => {

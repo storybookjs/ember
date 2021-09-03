@@ -11,5 +11,3 @@ export default {
 };
 
 export { start, toId, ClientApi, StoryStore };
-
-export { inferArgTypes } from './inferArgTypes';

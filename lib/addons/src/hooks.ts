@@ -1,7 +1,7 @@
 import global from 'global';
 import { logger } from '@storybook/client-logger';
 import {
-  Framework,
+  AnyFramework,
   DecoratorFunction,
   DecoratorApplicator,
   StoryContext,
@@ -36,7 +36,7 @@ type AbstractFunction = (...args: any[]) => any;
 
 const RenderEvents = [STORY_RENDERED, DOCS_RENDERED];
 
-export class HooksContext<TFramework extends Framework> {
+export class HooksContext<TFramework extends AnyFramework> {
   hookListsMap: WeakMap<AbstractFunction, Hook[]>;
 
   mountedDecorators: Set<AbstractFunction>;
@@ -129,13 +129,13 @@ export class HooksContext<TFramework extends Framework> {
   }
 }
 
-function hookify<TFramework extends Framework>(
+function hookify<TFramework extends AnyFramework>(
   storyFn: LegacyStoryFn<TFramework>
 ): LegacyStoryFn<TFramework>;
-function hookify<TFramework extends Framework>(
+function hookify<TFramework extends AnyFramework>(
   decorator: DecoratorFunction<TFramework>
 ): DecoratorFunction<TFramework>;
-function hookify<TFramework extends Framework>(fn: AbstractFunction) {
+function hookify<TFramework extends AnyFramework>(fn: AbstractFunction) {
   return (...args: any[]) => {
     const { hooks }: { hooks: HooksContext<TFramework> } =
       typeof args[0] === 'function' ? args[1] : args[0];
@@ -179,7 +179,7 @@ function hookify<TFramework extends Framework>(fn: AbstractFunction) {
 // Counter to prevent infinite loops.
 let numberOfRenders = 0;
 const RENDER_LIMIT = 25;
-export const applyHooks = <TFramework extends Framework>(
+export const applyHooks = <TFramework extends AnyFramework>(
   applyDecorators: DecoratorApplicator<TFramework>
 ): DecoratorApplicator<TFramework> => (
   storyFn: LegacyStoryFn<TFramework>,
@@ -219,11 +219,11 @@ const areDepsEqual = (deps: any[], nextDeps: any[]) =>
 const invalidHooksError = () =>
   new Error('Storybook preview hooks can only be called inside decorators and story functions.');
 
-function getHooksContextOrNull<TFramework extends Framework>(): HooksContext<TFramework> | null {
+function getHooksContextOrNull<TFramework extends AnyFramework>(): HooksContext<TFramework> | null {
   return globalWindow.STORYBOOK_HOOKS_CONTEXT || null;
 }
 
-function getHooksContextOrThrow<TFramework extends Framework>(): HooksContext<TFramework> {
+function getHooksContextOrThrow<TFramework extends AnyFramework>(): HooksContext<TFramework> {
   const hooks = getHooksContextOrNull<TFramework>();
   if (hooks == null) {
     throw invalidHooksError();
@@ -408,7 +408,7 @@ export function useChannel(eventMap: EventMap, deps: any[] = []) {
 }
 
 /* Returns current story context */
-export function useStoryContext<TFramework extends Framework>(): StoryContext<TFramework> {
+export function useStoryContext<TFramework extends AnyFramework>(): StoryContext<TFramework> {
   const { currentContext } = getHooksContextOrThrow();
   if (currentContext == null) {
     throw invalidHooksError();

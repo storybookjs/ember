@@ -3,7 +3,7 @@ import dedent from 'ts-dedent';
 import global from 'global';
 import { logger } from '@storybook/client-logger';
 import {
-  Framework,
+  AnyFramework,
   toId,
   isExportStory,
   DecoratorFunction,
@@ -34,12 +34,12 @@ import { ClientApiAddons, StoryApi } from '@storybook/addons';
 
 const { FEATURES } = global;
 
-export interface GetStorybookStory<TFramework extends Framework> {
+export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
   render: StoryFn<TFramework>;
 }
 
-export interface GetStorybookKind<TFramework extends Framework> {
+export interface GetStorybookKind<TFramework extends AnyFramework> {
   kind: string;
   fileName: string;
   stories: GetStorybookStory<TFramework>[];
@@ -47,7 +47,7 @@ export interface GetStorybookKind<TFramework extends Framework> {
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the
 // relevant framework instanciates them via `start.js`. The good news is this happens right away.
-let singleton: ClientApi<Framework>;
+let singleton: ClientApi<AnyFramework>;
 
 const warningAlternatives = {
   addDecorator: `Instead, use \`export const decorators = [];\` in your \`preview.js\`.`,
@@ -91,7 +91,7 @@ const checkMethod = (method: string, deprecationWarning: boolean) => {
 };
 
 export const addDecorator = (
-  decorator: DecoratorFunction<Framework>,
+  decorator: DecoratorFunction<AnyFramework>,
   deprecationWarning = true
 ) => {
   checkMethod('addDecorator', deprecationWarning);
@@ -103,17 +103,17 @@ export const addParameters = (parameters: Parameters, deprecationWarning = true)
   singleton.addParameters(parameters);
 };
 
-export const addLoader = (loader: LoaderFunction<Framework>, deprecationWarning = true) => {
+export const addLoader = (loader: LoaderFunction<AnyFramework>, deprecationWarning = true) => {
   checkMethod('addLoader', deprecationWarning);
   singleton.addLoader(loader);
 };
 
-export const addArgsEnhancer = (enhancer: ArgsEnhancer<Framework>) => {
+export const addArgsEnhancer = (enhancer: ArgsEnhancer<AnyFramework>) => {
   checkMethod('addArgsEnhancer', false);
   singleton.addArgsEnhancer(enhancer);
 };
 
-export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<Framework>) => {
+export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<AnyFramework>) => {
   checkMethod('addArgTypesEnhancer', false);
   singleton.addArgTypesEnhancer(enhancer);
 };
@@ -123,13 +123,13 @@ export const getGlobalRender = () => {
   return singleton.globalAnnotations.render;
 };
 
-export const setGlobalRender = (render: StoryFn<Framework>) => {
+export const setGlobalRender = (render: StoryFn<AnyFramework>) => {
   checkMethod('setGlobalRender', false);
   singleton.globalAnnotations.render = render;
 };
 
 const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
-export default class ClientApi<TFramework extends Framework> {
+export default class ClientApi<TFramework extends AnyFramework> {
   globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
 
   storyStore?: StoryStore<TFramework>;

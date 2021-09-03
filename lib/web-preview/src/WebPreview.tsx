@@ -5,7 +5,7 @@ import { logger } from '@storybook/client-logger';
 import global from 'global';
 import { addons, Channel } from '@storybook/addons';
 import {
-  Framework,
+  AnyFramework,
   StoryId,
   GlobalAnnotations,
   Args,
@@ -39,7 +39,7 @@ function focusInInput(event: Event) {
 
 type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
 
-export class WebPreview<TFramework extends Framework> {
+export class WebPreview<TFramework extends AnyFramework> {
   channel: Channel;
 
   urlStore: UrlStore;

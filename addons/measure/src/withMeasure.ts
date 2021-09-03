@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { useEffect } from '@storybook/addons';
-import { Framework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
+import { AnyFramework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 import { drawSelectedElement } from './box-model/visualizer';
 import { init, rescale, destroy } from './box-model/canvas';
 import { deepElementFromPoint } from './util';
@@ -14,8 +14,8 @@ function findAndDrawElement(x: number, y: number) {
 }
 
 export const withMeasure = (
-  StoryFn: StoryFunction<Framework>,
-  context: StoryContext<Framework>
+  StoryFn: StoryFunction<AnyFramework>,
+  context: StoryContext<AnyFramework>
 ) => {
   const { measureEnabled } = context.globals;
 

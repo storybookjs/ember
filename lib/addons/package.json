@@ -44,7 +44,7 @@
     "@storybook/channels": "6.4.0-alpha.19",
     "@storybook/client-logger": "6.4.0-alpha.19",
     "@storybook/core-events": "6.4.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.c10361d.0",
+    "@storybook/csf": "0.0.2--canary.a1972cb.0",
     "@storybook/router": "6.4.0-alpha.19",
     "@storybook/theming": "6.4.0-alpha.19",
     "core-js": "^3.8.2",

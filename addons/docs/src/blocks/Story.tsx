@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
-import { toId, storyNameFromExport, StoryAnnotations, Framework } from '@storybook/csf';
+import { toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import global from 'global';
 import { CURRENT_SELECTION } from './types';
@@ -21,7 +21,7 @@ export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
 type Annotations = Pick<
-  StoryAnnotations<Framework>,
+  StoryAnnotations<AnyFramework>,
   'decorators' | 'parameters' | 'args' | 'argTypes' | 'loaders'
 >;
 type CommonProps = Annotations & {

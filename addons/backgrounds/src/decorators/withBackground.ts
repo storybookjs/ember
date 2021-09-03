@@ -1,5 +1,5 @@
 import { useMemo, useEffect } from '@storybook/addons';
-import { Framework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
+import { AnyFramework, StoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 
 import { PARAM_KEY as BACKGROUNDS_PARAM_KEY } from '../constants';
 import {
@@ -10,8 +10,8 @@ import {
 } from '../helpers';
 
 export const withBackground = (
-  StoryFn: StoryFunction<Framework>,
-  context: StoryContext<Framework>
+  StoryFn: StoryFunction<AnyFramework>,
+  context: StoryContext<AnyFramework>
 ) => {
   const { globals, parameters } = context;
   const globalsBackgroundColor = globals[BACKGROUNDS_PARAM_KEY]?.value;

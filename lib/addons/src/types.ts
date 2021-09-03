@@ -1,5 +1,5 @@
 import {
-  Framework,
+  AnyFramework,
   InputType,
   Parameters,
   StoryContext as StoryContextForFramework,
@@ -35,7 +35,7 @@ export type ArgTypes<TArgs = Args> = {
   [key in keyof Partial<TArgs>]: InputType;
 };
 
-export type StoryContext = StoryContextForFramework<Framework>;
+export type StoryContext = StoryContextForFramework<AnyFramework>;
 export type StoryContextUpdate = Partial<StoryContext>;
 
 type ReturnTypeFramework<ReturnType> = { component: any; storyResult: ReturnType };

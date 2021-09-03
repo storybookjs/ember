@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
 import { logger } from '@storybook/client-logger';
-import { Framework, SBEnumType, StrictInputType, ArgTypesEnhancer } from '@storybook/csf';
+import { AnyFramework, SBEnumType, StrictInputType, ArgTypesEnhancer } from '@storybook/csf';
 import { filterArgTypes } from './filterArgTypes';
 import { combineParameters } from './parameters';
 
@@ -55,7 +55,7 @@ const inferControl = (argType: StrictInputType, name: string, matchers: Controls
   }
 };
 
-export const inferControls: ArgTypesEnhancer<Framework> = (context) => {
+export const inferControls: ArgTypesEnhancer<AnyFramework> = (context) => {
   const {
     argTypes,
     parameters: { __isArgsStory, controls: { include = null, exclude = null, matchers = {} } = {} },

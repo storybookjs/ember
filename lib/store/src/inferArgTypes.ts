@@ -1,7 +1,7 @@
 import mapValues from 'lodash/mapValues';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
-import { Framework, SBType, ArgTypesEnhancer } from '@storybook/csf';
+import { AnyFramework, SBType, ArgTypesEnhancer } from '@storybook/csf';
 import { combineParameters } from './parameters';
 
 const inferType = (value: any, name: string, visited: Set<any>): SBType => {
@@ -40,7 +40,7 @@ const inferType = (value: any, name: string, visited: Set<any>): SBType => {
   return { name: 'object', value: {} };
 };
 
-export const inferArgTypes: ArgTypesEnhancer<Framework> = (context) => {
+export const inferArgTypes: ArgTypesEnhancer<AnyFramework> = (context) => {
   const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
   const argTypes = mapValues(initialArgs, (arg, key) => ({
     name: key,

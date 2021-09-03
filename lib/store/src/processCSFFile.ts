@@ -1,4 +1,4 @@
-import { isExportStory, sanitize, Parameters, Framework, ComponentTitle } from '@storybook/csf';
+import { isExportStory, sanitize, Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
 import { ModuleExports, CSFFile, NormalizedComponentAnnotations } from './types';
@@ -32,7 +32,7 @@ const checkDisallowedParameters = (parameters: Parameters) => {
 };
 
 // Given the raw exports of a CSF file, check and normalize it.
-export function processCSFFile<TFramework extends Framework>(
+export function processCSFFile<TFramework extends AnyFramework>(
   moduleExports: ModuleExports,
   title: ComponentTitle
 ): CSFFile<TFramework> {

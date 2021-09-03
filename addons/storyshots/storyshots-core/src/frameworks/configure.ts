@@ -3,7 +3,7 @@ import path from 'path';
 import { toRequireContext } from '@storybook/core-common';
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import global from 'global';
-import { Framework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
+import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
 
 import { ClientApi } from './Loader';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
@@ -69,7 +69,7 @@ function getConfigPathParts(input: string): Output {
   return { preview: configDir };
 }
 
-function configure<TFramework extends Framework>(
+function configure<TFramework extends AnyFramework>(
   options: {
     storybook: ClientApi<TFramework>;
   } & StoryshotsOptions
