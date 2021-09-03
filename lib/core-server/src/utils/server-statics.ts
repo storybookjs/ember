@@ -14,9 +14,9 @@ export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
   const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
 
-  staticDirs.forEach((dir) => {
-    const from = typeof dir === 'string' ? dir : dir.from;
-    const to = typeof dir === 'string' ? '/' : dir.to;
+  staticDirs.forEach(async (dir) => {
+    const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
+    const { staticPath: from, targetEndpoint: to } = await parseStaticDir(staticDirAndTarget);
 
     logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
     router.use(to, express.static(from, { index: false }));
