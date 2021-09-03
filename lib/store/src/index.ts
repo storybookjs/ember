@@ -3,6 +3,7 @@ export { combineParameters } from './parameters';
 export { filterArgTypes } from './filterArgTypes';
 export { normalizeInputTypes } from './normalizeInputTypes';
 export type { PropDescriptor } from './filterArgTypes';
+export { inferControls } from './inferControls';
 
 export * from './types';
 
