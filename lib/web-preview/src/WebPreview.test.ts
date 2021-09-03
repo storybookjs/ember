@@ -33,6 +33,7 @@ jest.mock('global', () => ({
   },
   FEATURES: {
     storyStoreV7: true,
+    breakingChangesV7: true,
   },
 }));
 

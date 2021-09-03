@@ -14,6 +14,13 @@ jest.mock('./processCSFFile', () => ({
   processCSFFile: jest.fn(jest.requireActual('./processCSFFile').processCSFFile),
 }));
 
+jest.mock('global', () => ({
+  ...(jest.requireActual('global') as any),
+  FEATURES: {
+    breakingChangesV7: true,
+  },
+}));
+
 const componentOneExports = {
   default: { title: 'Component One' },
   a: { args: { foo: 'a' } },
@@ -226,6 +233,12 @@ describe('StoryStore', () => {
                   "name": "string",
                 },
               },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
             },
             "component": undefined,
             "componentId": "component-one",
@@ -250,6 +263,12 @@ describe('StoryStore', () => {
                   "name": "string",
                 },
               },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
             },
             "component": undefined,
             "componentId": "component-one",
@@ -270,6 +289,12 @@ describe('StoryStore', () => {
             "argTypes": Object {
               "a": Object {
                 "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
                 "type": Object {
                   "name": "string",
                 },
@@ -320,6 +345,12 @@ describe('StoryStore', () => {
                     "name": "string",
                   },
                 },
+                "foo": Object {
+                  "name": "foo",
+                  "type": Object {
+                    "name": "string",
+                  },
+                },
               },
               "component": undefined,
               "componentId": "component-one",
@@ -344,6 +375,12 @@ describe('StoryStore', () => {
                     "name": "string",
                   },
                 },
+                "foo": Object {
+                  "name": "foo",
+                  "type": Object {
+                    "name": "string",
+                  },
+                },
               },
               "component": undefined,
               "componentId": "component-one",
@@ -364,6 +401,12 @@ describe('StoryStore', () => {
               "argTypes": Object {
                 "a": Object {
                   "name": "a",
+                  "type": Object {
+                    "name": "string",
+                  },
+                },
+                "foo": Object {
+                  "name": "foo",
                   "type": Object {
                     "name": "string",
                   },
