@@ -32,7 +32,7 @@
     "prebuild": "yarn clean",
     "build": "concurrently \"yarn buildBabel\" \"yarn buildTsc\"",
     "build:watch": "concurrently \"yarn buildBabel:esm -- --watch\" \"yarn buildTsc -- --watch\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "storybook": "start-storybook -p 7007",
     "start": "concurrently -r \"yarn build:watch\" \"yarn storybook --no-manager-cache --quiet --modern\"",
     "prebuild-storybook": "yarn build",
@@ -53,6 +53,7 @@
     "@storybook/source-loader": "^6.4.0-alpha.33",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.1.9",
+    "@types/jest": "^27.0.1",
     "@types/react-dom": "^17.0.9",
     "auto": "^10.3.0",
     "babel-loader": "^8.1.0",
@@ -60,6 +61,7 @@
     "concurrently": "^6.2.0",
     "dedent": "^0.7.0",
     "formik": "^2.2.9",
+    "jest": "^27.1.0",
     "jest-mock": "^27.0.6",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
@@ -101,5 +103,10 @@
       "angular"
     ],
     "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src/"
+    ]
   }
 }
