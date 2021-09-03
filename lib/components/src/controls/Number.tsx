@@ -2,7 +2,7 @@ import React, { FC, ChangeEvent, useState, useCallback, useEffect, useRef } from
 import { styled } from '@storybook/theming';
 
 import { Form } from '../form';
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import { ControlProps, NumberValue, NumberConfig } from './types';
 
 const Wrapper = styled.label({
@@ -59,7 +59,11 @@ export const NumberControl: FC<NumberProps> = ({
   }, [forceVisible]);
 
   if (!forceVisible && value === undefined) {
-    return <Form.Button onClick={onForceVisible}>Set number</Form.Button>;
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onForceVisible}>
+        Set number
+      </Form.Button>
+    );
   }
 
   return (

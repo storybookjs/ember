@@ -113,7 +113,12 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
       <Container className="container sidebar-container">
         <CustomScrollArea vertical>
           <StyledSpaced row={1.6}>
-            <Heading className="sidebar-header" menuHighlighted={menuHighlighted} menu={menu} />
+            <Heading
+              className="sidebar-header"
+              menuHighlighted={menuHighlighted}
+              menu={menu}
+              skipLinkHref="#storybook-preview-wrapper"
+            />
 
             <Search
               dataset={dataset}
