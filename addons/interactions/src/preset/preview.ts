@@ -1,19 +1,20 @@
 import { Args, addons } from '@storybook/addons';
 import { ArgsEnhancer } from '@storybook/client-api';
-import { jest } from '../jest-mock';
+import { fn } from 'jest-mock';
 import { EVENTS } from '../constants';
+import { instrument } from '../instrument';
 
+const { fn: spy } = instrument({ fn }, { retain: true, path: ['jest'] });
 const channel = addons.getChannel();
+const spies: any[] = [];
 
-const addActionsFromArgTypes: ArgsEnhancer = ({ args }) => {
-  const mocks: any[] = [];
-  channel.on(EVENTS.RESET, () => {
-    // mocks.forEach(mock => mock.mockReset())
-  });
+channel.on(EVENTS.SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockReset()));
+
+const addActionsFromArgTypes: ArgsEnhancer = ({ id, args }) => {
   return Object.entries(args).reduce((acc, [key, val]) => {
     if (typeof val === 'function' && val.name === 'actionHandler') {
-      acc[key] = jest.fn(val);
-      mocks.push(acc[key]);
+      acc[key] = spy(val);
+      spies.push(acc[key]);
       return acc;
     }
     acc[key] = val;

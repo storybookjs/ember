@@ -21,7 +21,7 @@ global.window = {
 
 beforeEach(() => {
   callSpy.mockReset();
-  addons.getChannel().emit(EVENTS.RESET);
+  addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 0;
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.next = {};
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map();
@@ -126,7 +126,7 @@ describe('instrument', () => {
     expect(callSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
         method: 'fn2',
-        args: [{ __callId__: callSpy.mock.calls[0][0].id }],
+        args: [{ __callId__: callSpy.mock.calls[0][0].id, retain: false }],
       })
     );
   });
@@ -158,10 +158,10 @@ describe('instrument', () => {
           /* call 3 */ 'foo',
           /* call 4 */ 1,
           /* call 5 */ BigInt(1),
-          { __callId__: callSpy.mock.calls[6][0].id },
-          { __callId__: callSpy.mock.calls[7][0].id },
-          { __callId__: callSpy.mock.calls[8][0].id },
-          { __callId__: callSpy.mock.calls[9][0].id },
+          { __callId__: callSpy.mock.calls[6][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[7][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[8][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[9][0].id, retain: false },
         ],
       })
     );
@@ -242,11 +242,11 @@ describe('instrument', () => {
     expect(global.window.location.reload).toHaveBeenCalled();
   });
 
-  it('resets preview state on the "reset" event', () => {
+  it('resets preview state when switching stories', () => {
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 123;
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.next = { ref: () => {} };
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map([[{}, 'ref']]);
-    addons.getChannel().emit(EVENTS.RESET);
+    addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
     expect(global.window.__STORYBOOK_ADDON_TEST_PREVIEW__).toStrictEqual({
       n: 0,
       next: {},

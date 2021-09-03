@@ -15,15 +15,23 @@ interface PanelProps {
   active: boolean;
 }
 
-global.window.__STORYBOOK_ADDON_TEST_MANAGER__ = global.window.__STORYBOOK_ADDON_TEST_MANAGER__ || {
-  isDebugging: false,
-  chainedCallIds: new Set<Call['id']>(),
-  playUntil: undefined,
-};
+interface SharedState {
+  isDebugging: boolean;
+  chainedCallIds: Set<Call['id']>;
+  playUntil: Call['id'];
+}
 
-const sharedState = global.window.__STORYBOOK_ADDON_TEST_MANAGER__;
+if (!global.window.__STORYBOOK_ADDON_TEST_MANAGER__) {
+  global.window.__STORYBOOK_ADDON_TEST_MANAGER__ = {
+    isDebugging: false,
+    chainedCallIds: new Set<Call['id']>(),
+    playUntil: undefined,
+  };
+}
 
-const Row = ({
+const sharedState: SharedState = global.window.__STORYBOOK_ADDON_TEST_MANAGER__;
+
+const Interaction = ({
   call,
   callsById,
   onClick,
@@ -116,7 +124,7 @@ const reducer = (
   action: { type: string; payload?: { call?: Call; playUntil?: Call['id'] } }
 ) => {
   switch (action.type) {
-    case 'call':
+    case 'call': {
       const { call } = action.payload;
       const log = state.log.concat(call);
       const interactions = fold(
@@ -134,8 +142,8 @@ const reducer = (
         interactions,
         callsById: { ...state.callsById, [call.id]: call },
       };
-
-    case 'start':
+    }
+    case 'start': {
       sharedState.isDebugging = true;
       sharedState.playUntil = action.payload?.playUntil;
       return {
@@ -144,17 +152,26 @@ const reducer = (
         shadowLog: state.isDebugging ? state.shadowLog : [...state.log],
         isDebugging: true,
       };
-
-    case 'stop':
+    }
+    case 'stop': {
       sharedState.isDebugging = false;
       sharedState.playUntil = undefined;
       return { ...state, isDebugging: false };
-
-    case 'reset':
+    }
+    case 'reset': {
       sharedState.isDebugging = false;
       sharedState.playUntil = undefined;
       sharedState.chainedCallIds.clear();
-      return initialState;
+      const { log, callsById } = state;
+      return {
+        ...initialState,
+        log: log.filter((call) => call.retain),
+        callsById: Object.entries(callsById).reduce<typeof callsById>((acc, [id, call]) => {
+          if (call.retain) acc[id] = call;
+          return acc;
+        }, {}),
+      };
+    }
   }
 };
 
@@ -167,25 +184,27 @@ export const Panel: React.FC<PanelProps> = (props) => {
     },
     setCurrentStory: () => {
       dispatch({ type: 'reset' });
-      emit(EVENTS.RESET);
     },
     storyRendered: () => {
       dispatch({ type: 'stop' });
-      emit(EVENTS.RESET);
     },
   });
 
   const { log, interactions, callsById, isDebugging } = state;
   const hasException = interactions.some((call) => call.state === CallState.ERROR);
-  const hasPrevious = interactions.some(call => call.state !== CallState.PENDING);
+  const hasPrevious = interactions.some((call) => call.state !== CallState.PENDING);
   const hasNext = interactions.some((call) => call.state === CallState.PENDING);
   const nextIndex = interactions.findIndex((call) => call.state === CallState.PENDING);
   const nextCall = interactions[nextIndex];
-  const prevCall = interactions[nextIndex - 2] || (isDebugging ? undefined : interactions.slice(-2)[0]);
+  const prevCall =
+    interactions[nextIndex - 2] || (isDebugging ? undefined : interactions.slice(-2)[0]);
 
   const start = () => {
     const playUntil = log
-      .slice(0, log.findIndex((call) => call.id === interactions[0].id))
+      .slice(
+        0,
+        log.findIndex((call) => call.id === interactions[0].id)
+      )
       .filter((call) => call.interceptable)
       .slice(-1)[0];
     dispatch({ type: 'start', payload: { playUntil: playUntil?.id } });
@@ -200,8 +219,8 @@ export const Panel: React.FC<PanelProps> = (props) => {
       emit(EVENTS.RELOAD);
     }
   };
-  const next = () => goto(nextCall)
-  const prev = () => prevCall ? goto(prevCall) : start()
+  const next = () => goto(nextCall);
+  const prev = () => (prevCall ? goto(prevCall) : start());
   const stop = () => {
     dispatch({ type: 'stop' });
     emit(EVENTS.NEXT);
@@ -222,7 +241,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
 
       {interactions.map((call) => (
-        <Row call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
+        <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
       ))}
 
       <div style={{ padding: 3 }}>

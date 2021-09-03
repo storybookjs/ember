@@ -7,6 +7,7 @@ import { Call, CallRef, CallState } from './types';
 
 export interface Options {
   intercept?: boolean;
+  retain?: boolean;
   mutate?: boolean;
   path?: Array<string | CallRef>;
 }
@@ -43,10 +44,12 @@ const init = () => {
 
   channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
   channel.on(EVENTS.RELOAD, () => global.window.location.reload());
-  channel.on(EVENTS.RESET, () => {
-    iframeState.n = 0;
+  channel.on(EVENTS.SET_CURRENT_STORY, () => {
+    iframeState.callRefsByResult = new Map(
+      Array.from(iframeState.callRefsByResult.entries()).filter(([, val]) => val.retain)
+    );
+    iframeState.n = iframeState.callRefsByResult.size;
     iframeState.next = {};
-    iframeState.callRefsByResult.clear();
   });
 };
 
@@ -95,7 +98,7 @@ function invoke(fn: Function, call: Call) {
     if (result && ['object', 'function', 'symbol'].includes(typeof result)) {
       // Track the result so we can trace later uses of it back to the originating call.
       // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
-      iframeState.callRefsByResult.set(result, { __callId__: call.id });
+      iframeState.callRefsByResult.set(result, { __callId__: call.id, retain: call.retain });
     }
     return result;
   } catch (e) {
@@ -129,7 +132,8 @@ function intercept(fn: Function, call: Call) {
 // returns the original result.
 function track(method: string, fn: Function, args: any[], { path = [], ...options }: Options) {
   const id = `${iframeState.n++}-${method}`;
-  const call: Call = { id, path, method, args, interceptable: !!options.intercept };
+  const { intercept: interceptable = false, retain = false } = options;
+  const call: Call = { id, path, method, args, interceptable, retain };
   const result = (options.intercept ? intercept : invoke)(fn, call);
   return instrument(result, { ...options, mutate: true, path: [{ __callId__: call.id }] });
 }

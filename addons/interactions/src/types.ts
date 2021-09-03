@@ -4,12 +4,14 @@ export interface Call {
   method: string;
   args: any[];
   interceptable: boolean;
+  retain: boolean;
   state?: `${CallState}`;
   exception?: CaughtException;
 }
 
 export interface CallRef {
   __callId__: Call['id'];
+  retain?: boolean;
 }
 
 export enum CallState {
