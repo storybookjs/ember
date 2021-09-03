@@ -62,6 +62,3 @@ export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
 });
-
-// TODO -- this feels like it should live in core-client or client-api
-export const config = (entry: string[] = []) => [...entry, require.resolve('./inferArgTypes')];

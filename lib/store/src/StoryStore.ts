@@ -25,6 +25,7 @@ import {
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
+import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
 
 // TODO -- what are reasonable values for these?
@@ -40,8 +41,12 @@ function normalizeGlobalAnnotations<TFramework extends Framework>({
   return {
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
-    // For backwards compatibilty reasons we add this, remove in 7.0 TODO -- explanation
-    argTypesEnhancers: [...(argTypesEnhancers || []), inferControls],
+    argTypesEnhancers: [
+      ...(argTypesEnhancers || []),
+      inferArgTypes,
+      // For backwards compatibilty reasons we add this, remove in 7.0 TODO -- explanation
+      inferControls,
+    ],
     ...annotations,
   };
 }

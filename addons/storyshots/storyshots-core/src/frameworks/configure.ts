@@ -4,8 +4,6 @@ import { toRequireContext } from '@storybook/core-common';
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import global from 'global';
 import { Framework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
-import { inferArgTypes } from '@storybook/core-client';
-import { addArgTypesEnhancer } from '@storybook/client-api';
 
 import { ClientApi } from './Loader';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
@@ -77,9 +75,6 @@ function configure<TFramework extends Framework>(
   } & StoryshotsOptions
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
-
-  // TODO -- this is temporary while we work out a better approach
-  addArgTypesEnhancer(inferArgTypes);
 
   if (config && typeof config === 'function') {
     config(storybook);
