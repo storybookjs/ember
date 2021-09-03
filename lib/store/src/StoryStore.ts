@@ -25,6 +25,7 @@ import {
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
+import { inferControls } from './inferControls';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 100;
@@ -33,11 +34,14 @@ const STORY_CACHE_SIZE = 1000;
 function normalizeGlobalAnnotations<TFramework extends Framework>({
   argTypes,
   globalTypes,
+  argTypesEnhancers,
   ...annotations
 }: GlobalAnnotations<TFramework>): NormalizedGlobalAnnotations<TFramework> {
   return {
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
+    // For backwards compatibilty reasons we add this, remove in 7.0 TODO -- explanation
+    argTypesEnhancers: [...(argTypesEnhancers || []), inferControls],
     ...annotations,
   };
 }

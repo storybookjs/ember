@@ -49,23 +49,21 @@ function hasNoTemplate(template: string | null | undefined): template is undefin
 }
 
 const cleanArgsDecorator: DecoratorFunction<AngularFramework> = (storyFn, context) => {
-  // TODO --temporary
+  if (!context.argTypes || !context.args) {
+    return storyFn();
+  }
+
+  const argsToClean = context.args;
+
+  context.args = Object.entries(argsToClean).reduce((obj, [key, arg]) => {
+    const argType = context.argTypes[key];
+
+    // Only keeps args with a control or an action in argTypes
+    if (argType.action || argType.control) {
+      return { ...obj, [key]: arg };
+    }
+    return obj;
+  }, {});
+
   return storyFn();
-  // if (!context.argTypes || !context.args) {
-  //   return storyFn();
-  // }
-
-  // const argsToClean = context.args;
-
-  // context.args = Object.entries(argsToClean).reduce((obj, [key, arg]) => {
-  //   const argType = context.argTypes[key];
-
-  //   // Only keeps args with a control or an action in argTypes
-  //   if (argType.action || argType.control) {
-  //     return { ...obj, [key]: arg };
-  //   }
-  //   return obj;
-  // }, {});
-
-  // return storyFn();
 };
