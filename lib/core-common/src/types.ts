@@ -278,7 +278,7 @@ export interface StorybookConfig {
     /**
      * Enable a set of planned breaking changes for SB7.0
      */
-    breakingChangesV7: boolean;
+    breakingChangesV7?: boolean;
   };
   /**
    * Tells Storybook where to find stories.
