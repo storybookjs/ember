@@ -231,7 +231,7 @@ export class StoryStore<TFramework extends Framework> {
     this.hooks[story.id].clean();
   }
 
-  extract(options: ExtractOptions = {}) {
+  extract(options: ExtractOptions = { includeDocsOnly: false }) {
     if (!this.cachedCSFFiles) {
       throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
     }
@@ -241,8 +241,7 @@ export class StoryStore<TFramework extends Framework> {
         const csfFile = this.cachedCSFFiles[importPath];
         const story = this.storyFromCSFFile({ storyId, csfFile });
 
-        // TODO: docs only
-        if (options.includeDocsOnly && story.parameters.docsOnly) {
+        if (!options.includeDocsOnly && story.parameters.docsOnly) {
           return false;
         }
 
