@@ -274,6 +274,11 @@ export interface StorybookConfig {
      * Activate on demand story store
      */
     storyStoreV7?: boolean;
+
+    /**
+     * Enable a set of planned breaking changes for SB7.0
+     */
+    breakingChangesV7: boolean;
   };
   /**
    * Tells Storybook where to find stories.

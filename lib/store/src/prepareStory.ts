@@ -1,5 +1,6 @@
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
+import global from 'global';
 
 import {
   Parameters,
@@ -134,6 +135,17 @@ export function prepareStory<TFramework extends Framework>(
       enhancer({ ...contextForEnhancers, argTypes: accumulatedArgTypes }),
     contextForEnhancers.argTypes
   );
+
+  // Add some of our metadata into parameters as we used to do this in 6.x and users may be relying on it
+  if (!global.FEATURES?.breakingChangesV7) {
+    contextForEnhancers.parameters = {
+      ...contextForEnhancers.parameters,
+      __id: id,
+      globalTypes: globalAnnotations.globalTypes,
+      args: contextForEnhancers.initialArgs,
+      argTypes: contextForEnhancers.argTypes,
+    };
+  }
 
   const applyLoaders = async (context: StoryContext<TFramework>) => {
     const loadResults = await Promise.all(loaders.map((loader) => loader(context)));
