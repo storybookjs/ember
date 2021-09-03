@@ -4,7 +4,7 @@ import { fn } from 'jest-mock';
 import { EVENTS } from '../constants';
 import { instrument } from '../instrument';
 
-const { fn: spy } = instrument({ fn }, { retain: true, path: ['jest'] });
+const { action } = instrument({ action: fn }, { retain: true });
 const channel = addons.getChannel();
 const spies: any[] = [];
 
@@ -13,7 +13,8 @@ channel.on(EVENTS.SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockRese
 const addActionsFromArgTypes: ArgsEnhancer = ({ id, args }) => {
   return Object.entries(args).reduce((acc, [key, val]) => {
     if (typeof val === 'function' && val.name === 'actionHandler') {
-      acc[key] = spy(val);
+      Object.defineProperty(val, 'name', { value: key, writable: false });
+      acc[key] = action(val);
       spies.push(acc[key]);
       return acc;
     }
