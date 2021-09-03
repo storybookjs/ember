@@ -13,6 +13,7 @@ import { map, switchMap } from 'rxjs/operators';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import { runCompodoc } from '../utils/run-compodoc';
+import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 
 export type StorybookBuilderOptions = JsonObject & {
   browserTarget: string;
@@ -81,7 +82,7 @@ function runInstance(options: StandaloneOptions) {
     // This Observable intentionally never complete, leaving the process running ;)
     buildStandalone(options).then(
       () => observer.next(),
-      (error) => observer.error(error)
+      (error) => observer.error(buildStandaloneErrorHandler(error))
     );
   });
 }

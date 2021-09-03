@@ -5,14 +5,15 @@ import {
   targetFromTargetString,
 } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import { BrowserBuilderOptions } from '@angular-devkit/build-angular';
 import { runCompodoc } from '../utils/run-compodoc';
+import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 
 export type StorybookBuilderOptions = JsonObject & {
   browserTarget: string;
@@ -66,5 +67,7 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
 }
 
 function runInstance(options: StandaloneOptions) {
-  return from(buildStandalone(options));
+  return from(buildStandalone(options)).pipe(
+    catchError((error: any) => throwError(buildStandaloneErrorHandler(error)))
+  );
 }
