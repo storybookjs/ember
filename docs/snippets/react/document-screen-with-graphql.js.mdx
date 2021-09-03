@@ -5,9 +5,9 @@ import React from 'react';
 
 import { useQuery, gql } from '@apollo/client';
 
-import PageLayout from './PageLayout';
-import DocumentHeader from './DocumentHeader';
-import DocumentList from './DocumentList';
+import { PageLayout } from './PageLayout';
+import { DocumentHeader } from './DocumentHeader';
+import { DocumentList } from './DocumentList';
 
 const AllInfoQuery = gql`
   query AllInfo {
@@ -38,7 +38,7 @@ function useFetchInfo() {
   return { loading, error, data };
 }
 
-function DocumentScreen() {
+export function DocumentScreen() {
   const { loading, error, data } = useFetchInfo();
 
   if (loading) {
@@ -56,5 +56,4 @@ function DocumentScreen() {
     </PageLayout>
   );
 }
-export default DocumentScreen;
 ```

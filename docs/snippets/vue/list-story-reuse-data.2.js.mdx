@@ -7,6 +7,10 @@ import ListItem from './ListItem.vue';
 //👇 We're importing the necessary stories from ListItem
 import { Selected, Unselected } from './ListItem.stories';
 
+export default {
+  component: List,
+};
+
 export const ManyItems = {
   args: {
     Selected: Selected.args.isSelected,

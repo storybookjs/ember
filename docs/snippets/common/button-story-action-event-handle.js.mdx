@@ -1,9 +1,10 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-import Button from './Button';
+import { Button } from './Button';
 
 export default {
+  component: Button,
   parameters: {
     actions: {
       handles: ['mouseover', 'click .btn'],

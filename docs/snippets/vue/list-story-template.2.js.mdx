@@ -7,6 +7,10 @@ import ListItem from './ListItem.vue';
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
+export default {
+  component: List,
+};
+
 //👇 The ListTemplate construct will be spread to the existing stories.
 const ListTemplate = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
