@@ -1,5 +1,7 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import { CLIOptions } from '@storybook/core-common';
+import { ProdCliOptions } from './prod';
 
 export function parseList(str: string): string[] {
   return str
@@ -38,15 +40,16 @@ const warnStaticDirDeprecated = warnDeprecatedFlag(
   `
 );
 
-export function checkDeprecatedFlags(options: {
-  dll?: boolean;
-  uiDll?: boolean;
-  docsDll?: boolean;
-  staticDirs?: string[];
-}) {
-  if (!options.dll || options.uiDll || options.docsDll) {
+export function checkDeprecatedFlags({
+  dll,
+  uiDll,
+  docsDll,
+  staticDir,
+}: CLIOptions | ProdCliOptions) {
+  if (!dll || uiDll || docsDll) {
     warnDLLsDeprecated();
-  } else if (options.staticDirs) {
+  }
+  if (staticDir) {
     warnStaticDirDeprecated();
   }
 }
