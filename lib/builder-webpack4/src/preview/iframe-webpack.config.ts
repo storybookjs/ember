@@ -100,7 +100,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     virtualModuleMapping[storiesPath] = toImportFn(stories);
     const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
-      await readTemplate('virtualModuleModernEntry.js.handlebars'),
+      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
       {
         storiesFilename,
         configs,
@@ -115,7 +115,9 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     virtualModuleMapping[frameworkInitEntry] = `import '${frameworkImportPath}';`;
     entries.push(frameworkInitEntry);
 
-    const entryTemplate = await readTemplate('virtualModuleEntry.template.js');
+    const entryTemplate = await readTemplate(
+      path.join(__dirname, 'virtualModuleEntry.template.js')
+    );
 
     configs.forEach((configFilename: any) => {
       const clientApi = storybookPaths['@storybook/client-api'];
@@ -132,7 +134,9 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       entries.push(`${configFilename}-generated-config-entry.js`);
     });
     if (stories) {
-      const storyTemplate = await readTemplate('virtualModuleStory.template.js');
+      const storyTemplate = await readTemplate(
+        path.join(__dirname, 'virtualModuleStory.template.js')
+      );
       const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
