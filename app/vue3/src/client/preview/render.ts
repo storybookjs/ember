@@ -2,7 +2,7 @@ import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
 import { RenderContext, StoryFnVueReturnType } from './types';
 
-const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
+export const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
 
 let root: ComponentPublicInstance | null = null;
 
