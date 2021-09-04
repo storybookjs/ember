@@ -1,3 +1,4 @@
+import { StoryId } from '@storybook/api';
 import { AnyFramework, GlobalAnnotations } from '@storybook/csf';
 import { HooksContext } from '../../addons/dist/ts3.9/hooks';
 
@@ -317,6 +318,33 @@ describe('StoryStore', () => {
           },
         ]
       `);
+    });
+
+    it('does not include docs only stories by default', async () => {
+      const docsOnlyImportFn = jest.fn(async (path) => {
+        return path === './src/ComponentOne.stories.js'
+          ? {
+              ...componentOneExports,
+              a: { ...componentOneExports.a, parameters: { docsOnly: true } },
+            }
+          : componentTwoExports;
+      });
+      const store = new StoryStore({
+        importFn: docsOnlyImportFn,
+        globalAnnotations,
+        fetchStoriesList,
+      });
+      await store.initialize();
+      await store.cacheAllCSFFiles();
+
+      expect((store.extract() as { id: StoryId }[]).map((s) => s.id)).toEqual([
+        'component-one--b',
+        'component-two--c',
+      ]);
+
+      expect(
+        (store.extract({ includeDocsOnly: true }) as { id: StoryId }[]).map((s) => s.id)
+      ).toEqual(['component-one--a', 'component-one--b', 'component-two--c']);
     });
   });
 
