@@ -76,6 +76,7 @@
     "file-system-cache": "^1.0.5",
     "find-up": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^6.0.4",
+    "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "glob-base": "^0.3.0",
     "handlebars": "^4.7.7",

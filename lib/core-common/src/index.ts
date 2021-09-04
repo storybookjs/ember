@@ -25,5 +25,6 @@ export * from './utils/to-require-context';
 export * from './utils/has-dotenv';
 export * from './utils/normalize-stories';
 export * from './utils/to-importFn';
+export * from './utils/readTemplate';
 
 export * from './types';

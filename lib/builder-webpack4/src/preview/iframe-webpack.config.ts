@@ -1,5 +1,4 @@
 import path from 'path';
-import fse from 'fs-extra';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 // @ts-ignore
@@ -26,6 +25,8 @@ import {
   NormalizedStoriesEntry,
   toImportFn,
   normalizeStories,
+  loadPreviewOrConfigFile,
+  readTemplate,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -54,18 +55,10 @@ const storybookPaths: Record<string, string> = [
   }),
   {}
 );
-
-async function readTemplate(filename: string) {
-  return fse.readFile(path.join(__dirname, filename), {
-    encoding: 'utf8',
-  });
-}
-
 export default async (options: Options & Record<string, any>): Promise<Configuration> => {
   const {
     configDir,
     babelOptions,
-    configs,
     outputDir = path.join('.', 'public'),
     quiet,
     packageJson,
@@ -87,7 +80,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
-  const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+
+  const configs = [
+    loadPreviewOrConfigFile(options),
+    ...(await presets.apply('config', [], options)),
+  ].filter(Boolean);
 
   const entries = (await presets.apply('entries', [], options)) as string[];
   const stories = normalizeStories(await presets.apply('stories', [], options), {
@@ -101,6 +98,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     const storiesPath = path.resolve(path.join(configDir, storiesFilename));
 
     virtualModuleMapping[storiesPath] = toImportFn(stories);
+    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
       await readTemplate('virtualModuleModernEntry.js.handlebars'),
       {

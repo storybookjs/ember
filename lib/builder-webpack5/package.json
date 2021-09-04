@@ -82,7 +82,6 @@
     "css-loader": "^5.0.1",
     "dotenv-webpack": "^7.0.0",
     "fork-ts-checker-webpack-plugin": "^6.0.4",
-    "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^5.0.0",
