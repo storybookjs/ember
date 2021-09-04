@@ -44,7 +44,10 @@ function normalizeGlobalAnnotations<TFramework extends AnyFramework>({
     argTypesEnhancers: [
       ...(argTypesEnhancers || []),
       inferArgTypes,
-      // For backwards compatibilty reasons we add this, remove in 7.0 TODO -- explanation
+      // inferControls technically should only run if the user is using the controls addon,
+      // and so should be added by a preset there. However, as it seems some code relies on controls
+      // annotations (in particular the angular implementation's `cleanArgsDecorator`), for backwards
+      // compatibility reasons, we will leave this in the store until 7.0
       inferControls,
     ],
     ...annotations,
