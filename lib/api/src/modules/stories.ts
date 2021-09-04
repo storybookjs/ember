@@ -391,9 +391,7 @@ export const init: ModuleFn = ({
     },
   };
 
-  const initModule = () => {
-    fullAPI.fetchStoryList();
-
+  const initModule = async () => {
     // On initial load, the local iframe will select the first story (or other "selection specifier")
     // and emit STORY_SPECIFIED with the id. We need to ensure we respond to this change.
     fullAPI.on(
@@ -439,7 +437,14 @@ export const init: ModuleFn = ({
       const stories = data.v ? denormalizeStoryParameters(data) : data.stories;
 
       if (!ref) {
+        if (!data.v) {
+          throw new Error('Unexpected legacy SET_STORIES event from local source');
+        }
+
         fullAPI.setStories(stories);
+        const options = fullAPI.getCurrentParameter('options');
+        checkDeprecatedOptionParameters(options);
+        fullAPI.setOptions(options);
       } else {
         fullAPI.setRef(ref.id, { ...ref, ...data, stories }, true);
       }
@@ -469,6 +474,13 @@ export const init: ModuleFn = ({
     fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
       const { ref } = getEventMetadata(this, fullAPI);
       fullAPI.updateStory(id, { ...update, prepared: true }, ref);
+
+      if (!store.getState().hasCalledSetOptions) {
+        const { options } = update.parameters;
+        checkDeprecatedOptionParameters(options);
+        fullAPI.setOptions(options);
+        store.setState({ hasCalledSetOptions: true });
+      }
     });
 
     fullAPI.on(
@@ -478,6 +490,8 @@ export const init: ModuleFn = ({
         fullAPI.updateStory(storyId, { args }, ref);
       }
     );
+
+    await fullAPI.fetchStoryList();
   };
 
   return {
@@ -487,6 +501,7 @@ export const init: ModuleFn = ({
       storyId: initialStoryId,
       viewMode: initialViewMode,
       storiesConfigured: false,
+      hasCalledSetOptions: false,
     },
     init: initModule,
   };

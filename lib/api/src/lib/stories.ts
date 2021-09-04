@@ -1,10 +1,19 @@
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { sanitize } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
+import {
+  StoryId,
+  ComponentTitle,
+  StoryKind,
+  StoryName,
+  Args,
+  ArgTypes,
+  Parameters,
+  sanitize,
+} from '@storybook/csf';
 
-import { StoryId, StoryKind, Args, ArgTypes, Parameters, combineParameters } from '../index';
+import { combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
@@ -99,9 +108,6 @@ export interface StoriesRaw {
   [id: string]: StoryInput;
 }
 
-// TODO reconcile these types with the same ones in the frontend
-type StoryName = string;
-type ComponentTitle = StoryKind;
 type Path = string;
 export interface StoriesListStory {
   name: StoryName;
@@ -184,7 +190,7 @@ export const transformStoriesListToStoriesHash = (
 
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,
-  { provider, prepared = false }: { provider: Provider; prepared?: Story['prepared'] }
+  { provider, prepared = true }: { provider: Provider; prepared?: Story['prepared'] }
 ): StoriesHash => {
   const values = Object.values(input).filter(Boolean);
   const usesOldHierarchySeparator = values.some(({ kind }) => kind.match(/\.|\|/)); // dot or pipe
