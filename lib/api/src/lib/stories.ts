@@ -54,6 +54,7 @@ export interface Story {
   isRoot: false;
   isLeaf: true;
   renderLabel?: (item: Story) => React.ReactNode;
+  prepared: boolean;
   parameters?: {
     fileName: string;
     options: {
@@ -178,12 +179,12 @@ export const transformStoriesListToStoriesHash = (
     return acc;
   }, {} as StoriesRaw);
 
-  return transformStoriesRawToStoriesHash(input, { provider });
+  return transformStoriesRawToStoriesHash(input, { provider, prepared: false });
 };
 
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,
-  { provider }: { provider: Provider }
+  { provider, prepared = false }: { provider: Provider; prepared?: Story['prepared'] }
 ): StoriesHash => {
   const values = Object.values(input).filter(Boolean);
   const usesOldHierarchySeparator = values.some(({ kind }) => kind.match(/\.|\|/)); // dot or pipe
@@ -272,6 +273,7 @@ export const transformStoriesRawToStoriesHash = (
       isComponent: false,
       isRoot: false,
       renderLabel,
+      prepared,
     };
 
     return acc;

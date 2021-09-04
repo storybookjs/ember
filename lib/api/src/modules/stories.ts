@@ -64,6 +64,7 @@ export interface SubAPI {
   jumpToComponent: (direction: Direction) => void;
   jumpToStory: (direction: Direction) => void;
   getData: (storyId: StoryId, refId?: string) => Story | Group;
+  isPrepared: (storyId: StoryId, refId?: string) => boolean;
   getParameters: (
     storyId: StoryId | { storyId: StoryId; refId: string },
     parameterName?: ParameterName
@@ -125,6 +126,14 @@ export const init: ModuleFn = ({
       const result = api.resolveStory(storyId, refId);
 
       return isRoot(result) ? undefined : result;
+    },
+    isPrepared: (storyId, refId) => {
+      const data = api.getData(storyId, refId);
+      if (data.isLeaf) {
+        return data.prepared;
+      }
+      // Groups are always prepared :shrug:
+      return true;
     },
     resolveStory: (storyId, refId) => {
       const { refs, storiesHash } = store.getState();
@@ -459,7 +468,7 @@ export const init: ModuleFn = ({
 
     fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
       const { ref } = getEventMetadata(this, fullAPI);
-      fullAPI.updateStory(id, update, ref);
+      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
     });
 
     fullAPI.on(
