@@ -13,10 +13,8 @@ import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 // @ts-ignore
 import FilterWarningsPlugin from 'webpack-filter-warnings-plugin';
-import dedent from 'ts-dedent';
 
 import themingPaths from '@storybook/theming/paths';
-
 import {
   toRequireContextString,
   stringifyEnvs,
@@ -27,6 +25,7 @@ import {
   Options,
   NormalizedStoriesEntry,
   toImportFn,
+  normalizeStories,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -62,23 +61,22 @@ async function readTemplate(filename: string) {
   });
 }
 
-export default async ({
-  configDir,
-  babelOptions,
-  entries,
-  configs,
-  stories,
-  outputDir = path.join('.', 'public'),
-  quiet,
-  packageJson,
-  configType,
-  framework,
-  frameworkPath,
-  presets,
-  typescriptOptions,
-  modern,
-  features,
-}: Options & Record<string, any>): Promise<Configuration> => {
+export default async (options: Options & Record<string, any>): Promise<Configuration> => {
+  const {
+    configDir,
+    babelOptions,
+    configs,
+    outputDir = path.join('.', 'public'),
+    quiet,
+    packageJson,
+    configType,
+    framework,
+    frameworkPath,
+    presets,
+    typescriptOptions,
+    modern,
+    features,
+  } = options;
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
 
@@ -90,6 +88,12 @@ export default async ({
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
   const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+
+  const entries = (await presets.apply('entries', [], options)) as string[];
+  const stories = normalizeStories(await presets.apply('stories', [], options), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
 
   const virtualModuleMapping: Record<string, string> = {};
   if (features?.storyStoreV7) {
@@ -145,12 +149,6 @@ export default async ({
     }
   }
 
-  Object.entries(virtualModuleMapping).forEach(([filePath, file]) => {
-    console.log(filePath);
-    console.log();
-    console.log(file);
-  });
-
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
   const tsCheckOptions = typescriptOptions.checkOptions || {};
 
@@ -182,10 +180,10 @@ export default async ({
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, options) => ({
+        templateParameters: (compilation, files, templateOptions) => ({
           compilation,
           files,
-          options,
+          options: templateOptions,
           version: packageJson.version,
           globals: {
             LOGLEVEL: logLevel,

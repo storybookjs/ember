@@ -10,7 +10,6 @@ import {
   checkWebpackVersion,
   Options,
   loadPreviewOrConfigFile,
-  normalizeStories,
 } from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
@@ -33,11 +32,7 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
-  const entries = await presets.apply('entries', [], options);
-  const stories = normalizeStories(await presets.apply('stories', [], options), {
-    configDir: options.configDir,
-    workingDir: process.cwd(),
-  });
+
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
   const configs = [
@@ -51,9 +46,7 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
     {
       ...options,
       babelOptions,
-      entries,
       configs,
-      stories,
       typescriptOptions,
       [`${options.framework}Options`]: frameworkOptions,
     }

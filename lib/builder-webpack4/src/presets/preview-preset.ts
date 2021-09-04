@@ -1,5 +1,4 @@
 import webpackConfig from '../preview/iframe-webpack.config';
-import { createPreviewEntry } from '../preview/entries';
 
 export const webpack = async (_: any, options: any) => webpackConfig(options);
 
