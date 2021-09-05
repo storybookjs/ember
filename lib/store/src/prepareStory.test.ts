@@ -1,11 +1,36 @@
 import addons, { HooksContext } from '@storybook/addons';
+import { AnyFramework, ArgsEnhancer, SBObjectType, SBScalarType } from '@storybook/csf';
 import { prepareStory } from './prepareStory';
-import { ArgsEnhancer } from './types';
+
+jest.mock('global', () => ({
+  ...(jest.requireActual('global') as any),
+  FEATURES: {
+    breakingChangesV7: true,
+  },
+}));
 
 const id = 'id';
 const name = 'name';
 const title = 'title';
 const render = (args: any) => {};
+
+const stringType: SBScalarType = { name: 'string' };
+const numberType: SBScalarType = { name: 'number' };
+const booleanType: SBScalarType = { name: 'boolean' };
+const complexType: SBObjectType = {
+  name: 'object',
+  value: {
+    complex: {
+      name: 'object',
+      value: {
+        object: {
+          name: 'array',
+          value: { name: 'string' },
+        },
+      },
+    },
+  },
+};
 
 describe('prepareStory', () => {
   describe('parameters', () => {
@@ -13,6 +38,7 @@ describe('prepareStory', () => {
       const { parameters } = prepareStory(
         { id, name, parameters: { a: 'story', nested: { z: 'story' } } },
         {
+          id,
           title,
           parameters: {
             a: { name: 'component' },
@@ -41,7 +67,7 @@ describe('prepareStory', () => {
     });
 
     it('sets a value even if metas do not have parameters', () => {
-      const { parameters } = prepareStory({ id, name }, { title }, { render });
+      const { parameters } = prepareStory({ id, name }, { id, title }, { render });
 
       expect(parameters).toEqual({ __isArgsStory: true });
     });
@@ -49,7 +75,7 @@ describe('prepareStory', () => {
     it('does not set `__isArgsStory` if `passArgsFirst` is disabled', () => {
       const { parameters } = prepareStory(
         { id, name, parameters: { passArgsFirst: false } },
-        { title },
+        { id, title },
         { render }
       );
 
@@ -57,7 +83,7 @@ describe('prepareStory', () => {
     });
 
     it('does not set `__isArgsStory` if `render` does not take args', () => {
-      const { parameters } = prepareStory({ id, name }, { title }, { render: () => {} });
+      const { parameters } = prepareStory({ id, name }, { id, title }, { render: () => {} });
 
       expect(parameters).toEqual({ __isArgsStory: false });
     });
@@ -68,6 +94,7 @@ describe('prepareStory', () => {
       const { initialArgs } = prepareStory(
         { id, name, args: { a: 'story', nested: { z: 'story' } } },
         {
+          id,
           title,
           args: {
             a: 'component',
@@ -95,7 +122,7 @@ describe('prepareStory', () => {
     });
 
     it('sets a value even if metas do not have args', () => {
-      const { initialArgs } = prepareStory({ id, name }, { title }, { render });
+      const { initialArgs } = prepareStory({ id, name }, { id, title }, { render });
 
       expect(initialArgs).toEqual({});
     });
@@ -111,15 +138,19 @@ describe('prepareStory', () => {
             arg7: false,
           },
           argTypes: {
-            arg1: { defaultValue: 'arg1' },
-            arg2: { defaultValue: 2 },
-            arg3: { defaultValue: { complex: { object: ['type'] } } },
-            arg4: {},
-            arg5: {},
-            arg6: { defaultValue: 0 }, // See https://github.com/storybookjs/storybook/issues/12767 }
+            arg1: { name: 'arg1', type: stringType, defaultValue: 'arg1' },
+            arg2: { name: 'arg2', type: numberType, defaultValue: 2 },
+            arg3: {
+              name: 'arg3',
+              type: complexType,
+              defaultValue: { complex: { object: ['type'] } },
+            },
+            arg4: { name: 'arg4', type: stringType },
+            arg5: { name: 'arg5', type: stringType },
+            arg6: { name: 'arg6', type: numberType, defaultValue: 0 }, // See https://github.com/storybookjs/storybook/issues/12767 }
           },
         },
-        { title },
+        { id, title },
         { render: () => {} }
       );
 
@@ -136,18 +167,18 @@ describe('prepareStory', () => {
     describe('argsEnhancers', () => {
       it('are applied in the right order', () => {
         const run = [];
-        const enhancerOne: ArgsEnhancer = () => {
+        const enhancerOne: ArgsEnhancer<AnyFramework> = () => {
           run.push(1);
           return {};
         };
-        const enhancerTwo: ArgsEnhancer = () => {
+        const enhancerTwo: ArgsEnhancer<AnyFramework> = () => {
           run.push(2);
           return {};
         };
 
         prepareStory(
           { id, name },
-          { title },
+          { id, title },
           { render, argsEnhancers: [enhancerOne, enhancerTwo] }
         );
 
@@ -159,7 +190,7 @@ describe('prepareStory', () => {
 
         const { initialArgs } = prepareStory(
           { id, name, args: { a: 'b' } },
-          { title },
+          { id, title },
           { render, argsEnhancers: [enhancer] }
         );
 
@@ -173,7 +204,7 @@ describe('prepareStory', () => {
 
         const { initialArgs } = prepareStory(
           { id, name, args: { a: 'b' } },
-          { title },
+          { id, title },
           { render, argsEnhancers: [enhancerOne, enhancerTwo] }
         );
 
@@ -191,31 +222,39 @@ describe('prepareStory', () => {
   describe('argTypes', () => {
     it('are combined in the right order', () => {
       const { argTypes } = prepareStory(
-        { id, name, argTypes: { a: { name: 'story' }, nested: { z: { name: 'story' } } } },
         {
+          id,
+          name,
+          argTypes: {
+            a: { name: 'a-story', type: booleanType },
+            nested: { name: 'nested', type: booleanType, a: 'story' },
+          },
+        },
+        {
+          id,
           title,
           argTypes: {
-            a: { name: 'component' },
-            b: { name: 'component' },
-            nested: { z: { name: 'component' }, y: { name: 'component' } },
+            a: { name: 'a-component', type: stringType },
+            b: { name: 'b-component', type: stringType },
+            nested: { name: 'nested', type: booleanType, a: 'component', b: 'component' },
           },
         },
         {
           render,
           argTypes: {
-            a: { name: 'global' },
-            b: { name: 'global' },
-            c: { name: 'global' },
-            nested: { z: { name: 'global' }, x: { name: 'global' } },
+            a: { name: 'a-global', type: numberType },
+            b: { name: 'b-global', type: numberType },
+            c: { name: 'c-global', type: numberType },
+            nested: { name: 'nested', type: booleanType, a: 'global', b: 'global', c: 'global' },
           },
         }
       );
 
       expect(argTypes).toEqual({
-        a: { name: 'story' },
-        b: { name: 'component' },
-        c: { name: 'global' },
-        nested: { z: { name: 'story' }, y: { name: 'component' }, x: { name: 'global' } },
+        a: { name: 'a-story', type: booleanType },
+        b: { name: 'b-component', type: stringType },
+        c: { name: 'c-global', type: numberType },
+        nested: { name: 'nested', type: booleanType, a: 'story', b: 'component', c: 'global' },
       });
     });
     describe('argTypesEnhancers', () => {
@@ -223,7 +262,7 @@ describe('prepareStory', () => {
         const enhancer = jest.fn((context) => ({ ...context.argTypes, c: { name: 'd' } }));
         const { argTypes } = prepareStory(
           { id, name, argTypes: { a: { name: 'b' } } },
-          { title },
+          { id, title },
           { render, argTypesEnhancers: [enhancer] }
         );
 
@@ -237,7 +276,7 @@ describe('prepareStory', () => {
         const enhancer = jest.fn(() => ({ c: { name: 'd' } }));
         const { argTypes } = prepareStory(
           { id, name, argTypes: { a: { name: 'b' } } },
-          { title },
+          { id, title },
           { render, argTypesEnhancers: [enhancer] }
         );
 
@@ -252,7 +291,7 @@ describe('prepareStory', () => {
         const secondEnhancer = jest.fn((context) => ({ ...context.argTypes, e: { name: 'f' } }));
         const { argTypes } = prepareStory(
           { id, name, argTypes: { a: { name: 'b' } } },
-          { title },
+          { id, title },
           { render, argTypesEnhancers: [firstEnhancer, secondEnhancer] }
         );
 
@@ -270,7 +309,11 @@ describe('prepareStory', () => {
   describe('applyLoaders', () => {
     it('awaits the result of a loader', async () => {
       const loader = jest.fn(async () => new Promise((r) => setTimeout(() => r({ foo: 7 }), 100)));
-      const { applyLoaders } = prepareStory({ id, name, loaders: [loader] }, { title }, { render });
+      const { applyLoaders } = prepareStory(
+        { id, name, loaders: [loader] },
+        { id, title },
+        { render }
+      );
 
       const storyContext = { context: 'value' } as any;
       const loadedContext = await applyLoaders(storyContext);
@@ -289,7 +332,7 @@ describe('prepareStory', () => {
 
       const { applyLoaders } = prepareStory(
         { id, name, loaders: [storyLoader] },
-        { title, loaders: [componentLoader] },
+        { id, title, loaders: [componentLoader] },
         { render, loaders: [globalLoader] }
       );
 
@@ -308,7 +351,7 @@ describe('prepareStory', () => {
         async () => new Promise((r) => setTimeout(() => r({ foo: 3 }), 50)),
       ];
 
-      const { applyLoaders } = prepareStory({ id, name, loaders }, { title }, { render });
+      const { applyLoaders } = prepareStory({ id, name, loaders }, { id, title }, { render });
 
       const storyContext = { context: 'value' } as any;
       const loadedContext = await applyLoaders(storyContext);
@@ -328,12 +371,12 @@ describe('prepareStory', () => {
           id,
           name,
           argTypes: {
-            one: { mapping: { 1: 'mapped' } },
-            two: { mapping: { 1: 'no match' } },
+            one: { name: 'one', type: { name: 'string' }, mapping: { 1: 'mapped' } },
+            two: { name: 'two', type: { name: 'string' }, mapping: { 1: 'no match' } },
           },
           args: { one: 1, two: 2, three: 3 },
         },
-        { title },
+        { id, title },
         { render: renderMock }
       );
 
@@ -349,7 +392,7 @@ describe('prepareStory', () => {
       const renderMock = jest.fn();
       const firstStory = prepareStory(
         { id, name, args: { a: 1 }, parameters: { passArgsFirst: true } },
-        { title },
+        { id, title },
         { render: renderMock }
       );
 
@@ -361,7 +404,7 @@ describe('prepareStory', () => {
 
       const secondStory = prepareStory(
         { id, name, args: { a: 1 }, parameters: { passArgsFirst: false } },
-        { title },
+        { id, title },
         { render: renderMock }
       );
 
@@ -382,7 +425,7 @@ describe('prepareStory', () => {
           name,
           decorators: [storyDecorator],
         },
-        { title, decorators: [componentDecorator] },
+        { id, title, decorators: [componentDecorator] },
         { render: renderMock, decorators: [globalDecorator] }
       );
 
@@ -406,7 +449,7 @@ describe('prepareStory', () => {
         await new Promise((r) => setTimeout(r, 0)); // Ensure this puts an async boundary in
         inner();
       });
-      const { runPlayFunction } = prepareStory({ id, name, play }, { title }, { render });
+      const { runPlayFunction } = prepareStory({ id, name, play }, { id, title }, { render });
 
       await runPlayFunction();
       expect(play).toHaveBeenCalled();
