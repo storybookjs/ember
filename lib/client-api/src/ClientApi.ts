@@ -404,7 +404,9 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     const { id: componentId, title } = defaultExport || {};
     if (!title) {
       throw new Error(
-        `Unexpected default export without title: ${JSON.stringify(fileExports.default)}`
+        `Unexpected default export without title in '${fileName}': ${JSON.stringify(
+          fileExports.default
+        )}`
       );
     }
 
