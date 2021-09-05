@@ -5,7 +5,6 @@ import { logger } from '@storybook/node-logger';
 import { resolvePathInStorybookCache, Options, normalizeStories } from '@storybook/core-common';
 import { readCsfOrMdx } from '@storybook/csf-tools';
 
-// TODO -- use proper types for these? share with StoriesListStory?
 interface ExtractedStory {
   title: string;
   name: string;

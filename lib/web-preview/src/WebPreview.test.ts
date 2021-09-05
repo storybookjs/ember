@@ -123,9 +123,6 @@ describe('WebPreview', () => {
         foo: 'url',
       });
     });
-
-    // TODO
-    // it('emits SET_STORIES if configured', async () => { });
   });
 
   describe('initial selection', () => {
@@ -1387,7 +1384,6 @@ describe('WebPreview', () => {
           viewMode: 'story',
         });
 
-        //  TODO: not sure if thes event makes sense here either
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
@@ -1814,7 +1810,6 @@ describe('WebPreview', () => {
       });
     });
 
-    // TODO -- also we need test for when the CSF file no longer exists (story list changed)
     describe('if the story no longer exists', () => {
       const { a, ...componentOneExportsWithoutA } = componentOneExports;
       const newImportFn = jest.fn(async (path) => {

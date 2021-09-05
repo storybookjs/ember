@@ -178,8 +178,6 @@ export const transformStoriesListToStoriesHash = (
       id,
       kind: title,
       name,
-      // TODO -- does the manager use this? Should we wait for this to come over with parameters
-      // and store `importPath` unchanged or not at all (given it is a preview "concern")
       parameters: { fileName: importPath, options: {} },
     };
     return acc;

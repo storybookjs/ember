@@ -413,7 +413,6 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     Object.entries(namedExports)
       .filter(([key]) => isExportStory(key, defaultExport))
       .forEach(([key, storyExport]: [string, any]) => {
-        // TODO -- this little block of code is common with `processCSFFile`
         const exportName = storyNameFromExport(key);
         const id = storyExport.parameters?.__id || toId(componentId || title, exportName);
         const name =

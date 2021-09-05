@@ -15,7 +15,6 @@ function cleanUpPreviousStory() {
   previousComponent = null;
 }
 
-// TODO -- what is the type of storyFn result?
 export default function render(
   { storyFn, kind, name, showMain, showError }: RenderContext<SvelteFramework>,
   domElement: HTMLElement

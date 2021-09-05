@@ -18,7 +18,6 @@ export interface ClientApi<TFramework extends AnyFramework>
   raw: ClientApiClass<TFramework>['raw'];
 }
 
-// TODO -- this is untyped for now, we could import each framework's AnyFramework type
 export interface Loader {
   load: (
     options: StoryshotsOptions

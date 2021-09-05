@@ -161,8 +161,7 @@ export const init: ModuleFn = ({
           return parameterName ? parameters[parameterName] : parameters;
         }
 
-        // TODO -- is this right?
-        return null;
+        return {};
       }
 
       return null;
@@ -350,9 +349,8 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      // TODO where to get endpoint from?
+      // This needs some fleshing out as part of the stories list server project
       const result = await global.fetch('/stories.json');
-      // TODO deal with errors
       const storyList = (await result.json()) as StoriesListJson;
 
       await fullAPI.setStoryList(storyList);

@@ -286,7 +286,6 @@ export class StoryStore<TFramework extends AnyFramework> {
     };
   }
 
-  // TODO -- do we need this?
   getStoriesJsonData = () => {
     const value = this.getSetStoriesPayload();
     const allowedParameters = ['fileName', 'docsOnly', 'framework', '__id', '__isArgsStory'];

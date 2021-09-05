@@ -44,17 +44,7 @@ type NoneProps = CommonProps;
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
 const getStory = (storyId: StoryId, docsContext: DocsContextProps<any>): Story<any> | null => {
-  const { storyById } = docsContext;
-  const story = storyById(storyId);
-
-  // TODO we could move this warning to docsContext.storyById() et al.
-  if (!story) {
-    // Fallback if we can't get the story data for this story
-    logger.warn(`Unable to find information for story ID '${storyId}'`);
-    return null;
-  }
-
-  return story;
+  return docsContext.storyById(storyId);
 };
 
 const getSourceState = (storyIds: string[], docsContext: DocsContextProps<any>) => {
