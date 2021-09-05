@@ -78,8 +78,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const isProd = configType === 'PRODUCTION';
 
   const configs = [
-    loadPreviewOrConfigFile(options),
     ...(await presets.apply('config', [], options)),
+    loadPreviewOrConfigFile(options),
   ].filter(Boolean);
   const entries = (await presets.apply('entries', [], options)) as string[];
   const stories = normalizeStories(await presets.apply('stories', [], options), {
