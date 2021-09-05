@@ -7,6 +7,8 @@ import {
   GlobalAnnotations,
   ComponentTitle,
 } from '@storybook/csf';
+import mapValues from 'lodash/mapValues';
+import pick from 'lodash/pick';
 
 import { StoriesListStore } from './StoriesListStore';
 import { ArgsStore } from './ArgsStore';
@@ -283,6 +285,22 @@ export class StoryStore<TFramework extends AnyFramework> {
       stories,
     };
   }
+
+  // TODO -- do we need this?
+  getStoriesJsonData = () => {
+    const value = this.getSetStoriesPayload();
+    const allowedParameters = ['fileName', 'docsOnly', 'framework', '__id', '__isArgsStory'];
+
+    return {
+      v: 2,
+      globalParameters: pick(value.globalParameters, allowedParameters),
+      kindParameters: mapValues(value.kindParameters, (v) => pick(v, allowedParameters)),
+      stories: mapValues(value.stories, (v: any) => ({
+        ...pick(v, ['id', 'name', 'kind', 'story']),
+        parameters: pick(v.parameters, allowedParameters),
+      })),
+    };
+  };
 
   raw() {
     return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
