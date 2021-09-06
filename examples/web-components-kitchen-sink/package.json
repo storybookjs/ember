@@ -50,7 +50,7 @@
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
     "@storybook/web-components": "portal:../../app/web-components",
-    "@storybook/web-preview": "portal:../../app/web-preview",
+    "@storybook/web-preview": "portal:../../lib/web-preview",
     "typescript": "4.2.4"
   },
   "dependencies": {
