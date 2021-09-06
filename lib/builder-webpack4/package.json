@@ -65,6 +65,7 @@
     "@storybook/api": "6.4.0-alpha.19",
     "@storybook/channel-postmessage": "6.4.0-alpha.19",
     "@storybook/channels": "6.4.0-alpha.19",
+    "@storybook/client-api": "6.4.0-alpha.19",
     "@storybook/client-logger": "6.4.0-alpha.19",
     "@storybook/components": "6.4.0-alpha.19",
     "@storybook/core-common": "6.4.0-alpha.19",
