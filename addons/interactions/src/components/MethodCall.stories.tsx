@@ -55,13 +55,14 @@ export const Args = () => (
   </div>
 );
 
-const calls = [
+const calls: Call[] = [
   {
     id: '1',
     path: ['screen'],
     method: 'getByText',
     args: ['Click'],
     interceptable: false,
+    retain: false,
   },
   {
     id: '2',
@@ -69,6 +70,7 @@ const calls = [
     method: 'click',
     args: [{ __callId__: '1' }],
     interceptable: true,
+    retain: false,
   },
   {
     id: '3',
@@ -76,6 +78,7 @@ const calls = [
     method: 'expect',
     args: [true],
     interceptable: true,
+    retain: false,
   },
   {
     id: '4',
@@ -83,6 +86,7 @@ const calls = [
     method: 'toBe',
     args: [false],
     interceptable: true,
+    retain: false,
   },
   {
     id: '5',
@@ -90,6 +94,7 @@ const calls = [
     method: 'fn',
     args: [function actionHandler() {}],
     interceptable: false,
+    retain: false,
   },
   {
     id: '6',
@@ -97,6 +102,7 @@ const calls = [
     method: 'expect',
     args: [{ __callId__: '5' }],
     interceptable: false,
+    retain: false,
   },
   {
     id: '7',
@@ -104,6 +110,7 @@ const calls = [
     method: 'stringMatching',
     args: [/hello/i],
     interceptable: false,
+    retain: false,
   },
   {
     id: '8',
@@ -111,6 +118,7 @@ const calls = [
     method: 'toHaveBeenCalledWith',
     args: [{ __callId__: '7' }, new Error("Cannot read property 'foo' of undefined")],
     interceptable: false,
+    retain: false,
   },
 ];
 
