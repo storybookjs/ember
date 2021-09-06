@@ -1,5 +1,5 @@
 import { AccountForm } from './AccountForm';
-import { screen, within } from '../src/dom';
+import { screen, within, waitFor } from '../src/dom';
 import userEvent from '../src/user-event';
 import { sleep, tick } from '../src/time';
 import { expect } from '../src/expect';
@@ -19,6 +19,19 @@ Demo.argTypes = {
 Demo.play = async ({ args }) => {
   await userEvent.click(screen.getByText('Click'));
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
+};
+
+export const WaitFor = (args) => (
+  <button onClick={() => setTimeout(() => args.onSubmit('clicked'), 200)}>Click</button>
+);
+WaitFor.argTypes = {
+  onSubmit: { action: true },
+};
+WaitFor.play = async ({ args }) => {
+  await userEvent.click(screen.getByText('Click'));
+  await waitFor(() =>
+    expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi))
+  );
 };
 
 export const Standard = {
