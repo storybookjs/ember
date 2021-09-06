@@ -46,6 +46,7 @@ export type NormalizedStoryAnnotations<TFramework extends AnyFramework> = Omit<
   // You cannot actually set id on story annotations, but we normalize it to be there for convience
   id: StoryId;
   argTypes?: StrictArgTypes;
+  userStoryFn?: StoryFn<TFramework>;
 };
 
 export type CSFFile<TFramework extends AnyFramework> = {

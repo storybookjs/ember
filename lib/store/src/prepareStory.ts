@@ -73,7 +73,12 @@ export function prepareStory<TFramework extends AnyFramework>(
     ...(storyAnnotations.loaders || []),
   ];
 
-  const render = storyAnnotations.render || componentAnnotations.render || globalAnnotations.render;
+  // TODO make a note about what's happening here
+  const render =
+    storyAnnotations.userStoryFn ||
+    storyAnnotations.render ||
+    componentAnnotations.render ||
+    globalAnnotations.render;
 
   const passedArgTypes: StrictArgTypes = combineParameters(
     globalAnnotations.argTypes,

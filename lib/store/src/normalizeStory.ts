@@ -5,9 +5,10 @@ import {
   AnyFramework,
   DecoratorFunction,
   ArgTypes,
-  StoryAnnotationsOrFn,
+  LegacyStoryAnnotationsOrFn,
   StoryId,
   StoryAnnotations,
+  StoryFn,
 } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
@@ -26,13 +27,14 @@ const deprecatedStoryAnnotationWarning = deprecate(() => {}, deprecatedStoryAnno
 
 export function normalizeStory<TFramework extends AnyFramework>(
   key: StoryId,
-  storyAnnotations: StoryAnnotationsOrFn<TFramework>,
+  storyAnnotations: LegacyStoryAnnotationsOrFn<TFramework>,
   meta: ComponentAnnotations<TFramework>
 ): NormalizedStoryAnnotations<TFramework> {
+  let userStoryFn: StoryFn<TFramework>;
   let storyObject: StoryAnnotations<TFramework>;
   if (typeof storyAnnotations === 'function') {
-    // eslint-disable-next-line prefer-object-spread
-    storyObject = Object.assign({ render: storyAnnotations }, storyAnnotations);
+    userStoryFn = storyAnnotations;
+    storyObject = storyAnnotations;
   } else {
     storyObject = storyAnnotations;
   }
@@ -62,6 +64,7 @@ export function normalizeStory<TFramework extends AnyFramework>(
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     ...(loaders && { loaders }),
     ...(render && { render }),
+    ...(userStoryFn && { userStoryFn }),
     ...(play && { play }),
   };
 }
