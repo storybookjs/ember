@@ -460,8 +460,8 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
       default: {
         ...defaultExport,
         parameters: {
-          ...defaultExport.parameters,
           fileName,
+          ...defaultExport.parameters,
         },
       },
     };
