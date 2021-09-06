@@ -264,7 +264,16 @@ export default class ClientApi<TFramework extends AnyFramework> {
     }
 
     // eslint-disable-next-line no-plusplus
-    const fileName = m && m.id ? `${m.id}` : (this.lastFileName++).toString();
+    const baseFilename = m && m.id ? `${m.id}` : (this.lastFileName++).toString();
+    let fileName = baseFilename;
+    let i = 1;
+    // Deal with `storiesOf()` being called twice in the same file.
+    // On HMR, `this.csfExports[fileName]` will be reset to `{}`, so an empty object is due
+    // to this export, not a second call of `storiesOf()`.
+    while (this.csfExports[fileName] && Object.keys(this.csfExports[fileName]).length > 0) {
+      i += 1;
+      fileName = `${baseFilename}-${i}`;
+    }
 
     if (m && m.hot && m.hot.accept) {
       // This module used storiesOf(), so when it re-runs on HMR, it will reload

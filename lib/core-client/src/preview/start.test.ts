@@ -8,11 +8,11 @@ import {
   mockChannel,
 } from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
 
+import { AnyFramework } from '@storybook/csf';
 import { start } from './start';
 
 jest.mock('@storybook/web-preview/dist/cjs/WebView');
 
-const { history, document } = global;
 jest.mock('global', () => ({
   // @ts-ignore
   ...jest.requireActual('global'),
@@ -147,6 +147,31 @@ describe('start', () => {
       await waitForRender();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+    });
+
+    it('deals with storiesOf from the same file twice', async () => {
+      const render = jest.fn();
+
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+        clientApi.storiesOf('Component B', { id: 'file1' } as NodeModule).add('default', jest.fn());
+        clientApi.storiesOf('Component C', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+
+      const storiesOfData = mockChannel.emit.mock.calls.find(
+        (call: [string, any]) => call[0] === Events.SET_STORIES
+      )[1];
+      expect(Object.values(storiesOfData.stories).map((s: any) => s.parameters.fileName)).toEqual([
+        'file1',
+        'file1-2',
+        'file1-3',
+      ]);
     });
 
     it('allows global metadata via client-api', async () => {

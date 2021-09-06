@@ -1,8 +1,5 @@
-import { Path, ModuleExports } from '@storybook/store';
 import addons, { mockChannel } from '@storybook/addons';
 import ClientApi from './ClientApi';
-
-const getExportChanges = () => ({ added: new Map<Path, ModuleExports>(), removed: new Map() });
 
 beforeEach(() => {
   addons.setChannel(mockChannel());
