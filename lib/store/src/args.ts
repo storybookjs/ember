@@ -38,8 +38,6 @@ const map = (arg: unknown, type: SBType): any => {
 export const mapArgsToTypes = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(args).reduce((acc, [key, value]) => {
     if (!argTypes[key]) return acc;
-    // FIXME: this is not typesafe. The type key is allowed to be a string and this is assuming
-    // it will be "enhanced" by docs by now, but the user doesn't have to use docs.
     const mapped = map(value, argTypes[key].type as SBType);
     return mapped === INCOMPATIBLE ? acc : Object.assign(acc, { [key]: mapped });
   }, {});

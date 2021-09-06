@@ -34,6 +34,3 @@ declare module 'file-system-cache' {
 
   export = create;
 }
-
-// FIXME refactor in progress
-declare module '@storybook/client-api/dist/esm/inferArgTypes';
