@@ -40,12 +40,12 @@ jest.mock('global', () => ({
 jest.mock('@storybook/client-logger');
 jest.mock('react-dom');
 
-const createGate = () => {
+const createGate = (): [Promise<any | undefined>, (_?: any) => void] => {
   let openGate = (_?: any) => {};
   const gate = new Promise<any | undefined>((resolve) => {
     openGate = resolve;
   });
-  return { gate, openGate };
+  return [gate, openGate];
 };
 
 beforeEach(() => {
@@ -585,7 +585,7 @@ describe('WebPreview', () => {
 
     describe('while story is still rendering', () => {
       it('silently changes args if still running loaders', async () => {
-        const { gate, openGate } = createGate();
+        const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
         componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
@@ -615,7 +615,7 @@ describe('WebPreview', () => {
       });
 
       it('does nothing and warns renderToDOM is running', async () => {
-        const { gate, openGate } = createGate();
+        const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
         globalAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
@@ -646,7 +646,7 @@ describe('WebPreview', () => {
       });
 
       it('warns and calls renderToDOM again if play function is running', async () => {
-        const { gate, openGate } = createGate();
+        const [gate, openGate] = createGate();
         componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
         const renderToDOMCalled = new Promise((resolve) => {
@@ -699,7 +699,7 @@ describe('WebPreview', () => {
   });
 
   describe('onResetArgs', () => {
-    it('resetStoryArgs emits STORY_ARGS_UPDATED', async () => {
+    it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
       await new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList }).initialize();
       mockChannel.emit.mockClear();
@@ -1133,7 +1133,7 @@ describe('WebPreview', () => {
 
       describe('while story is still rendering', () => {
         it('stops initial story after loaders if running', async () => {
-          const { gate, openGate } = createGate();
+          const [gate, openGate] = createGate();
           componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
 
           document.location.search = '?id=component-one--a';
@@ -1164,7 +1164,7 @@ describe('WebPreview', () => {
         });
 
         it('stops initial story after renderToDOM if running', async () => {
-          const { gate, openGate } = createGate();
+          const [gate, openGate] = createGate();
 
           document.location.search = '?id=component-one--a';
           globalAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
@@ -1191,7 +1191,7 @@ describe('WebPreview', () => {
         });
 
         it('stops initial story after runPlayFunction if running', async () => {
-          const { gate, openGate } = createGate();
+          const [gate, openGate] = createGate();
           componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
           const renderToDOMCalled = new Promise((resolve) => {
