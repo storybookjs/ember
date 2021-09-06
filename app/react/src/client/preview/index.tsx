@@ -4,7 +4,7 @@ import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import render from './render';
+import { renderToDOM, render } from './render';
 import { IStorybookSection } from './types';
 import { ReactFramework } from './types-6-0';
 
@@ -18,7 +18,7 @@ interface ClientApi extends ClientStoryApi<ReactFramework['storyResult']> {
 }
 const framework = 'react';
 
-const api = start(render);
+const api = start(renderToDOM, { render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({
