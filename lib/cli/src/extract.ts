@@ -11,6 +11,11 @@ const read = async (url: string) => {
 
   await page.goto(url);
 
+  // for v7 store. This may not be necessary ultimately as this store relies on a static stories.json
+  await page.waitForFunction(
+    'window.__STORYBOOK_STORY_STORE__ && window.__STORYBOOK_STORY_STORE__.cacheAllCSFFiles && window.__STORYBOOK_STORY_STORE__.cacheAllCSFFiles()'
+  );
+
   await page.waitForFunction(
     'window.__STORYBOOK_STORY_STORE__ && window.__STORYBOOK_STORY_STORE__.extract && window.__STORYBOOK_STORY_STORE__.extract()'
   );
