@@ -1,7 +1,6 @@
 import {
   AnyFramework,
   InputType,
-  Parameters,
   StoryContext as StoryContextForFramework,
   LegacyStoryFn as LegacyStoryFnForFramework,
   PartialStoryFn as PartialStoryFnForFramework,
@@ -27,13 +26,43 @@ export type {
   StoryName,
   StoryIdentifier,
   ViewMode,
-  Parameters,
   Args,
 } from '@storybook/csf';
 
 export type ArgTypes<TArgs = Args> = {
   [key in keyof Partial<TArgs>]: InputType;
 };
+
+export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
+export type StorySortMethod = 'configure' | 'alphabetical';
+export interface StorySortObjectParameter {
+  method?: StorySortMethod;
+  order?: any[];
+  locales?: string;
+  includeNames?: boolean;
+}
+// The `any` here is the story store's `StoreItem` record. Ideally we should probably only
+// pass a defined subset of that full data, but we pass it all so far :shrug:
+export type StorySortComparator = Comparator<[StoryId, any, Parameters, Parameters]>;
+export type StorySortParameter = StorySortComparator | StorySortObjectParameter;
+
+export interface OptionsParameter extends Object {
+  storySort?: StorySortParameter;
+  theme?: {
+    base: string;
+    brandTitle?: string;
+  };
+  [key: string]: any;
+}
+
+export interface Parameters {
+  fileName?: string;
+  options?: OptionsParameter;
+  /** The layout property defines basic styles added to the preview body where the story is rendered. If you pass 'none', no styles are applied. */
+  layout?: 'centered' | 'fullscreen' | 'padded' | 'none';
+  docsOnly?: boolean;
+  [key: string]: any;
+}
 
 export type StoryContext = StoryContextForFramework<AnyFramework>;
 export type StoryContextUpdate = Partial<StoryContext>;
