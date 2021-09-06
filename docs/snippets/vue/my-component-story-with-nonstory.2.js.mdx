@@ -1,15 +1,13 @@
 ```js
-// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.jsx | MyComponent.stories.tsx
+// MyComponent.stories.js
 
-import React from 'react';
-
-import { MyComponent } from './MyComponent';
+import MyComponent from './MyComponent.vue';
 
 import someData from './data.json';
 
 export default {
   component: MyComponent,
-  includeStories: ['SimpleStory', 'ComplexStory'], // 👈 Storybook loads these stories
+  includeStories: ['SimpleStory', 'ComplexStory'],
   excludeStories: /.*Data$/, // 👈 Storybook ignores anything that contains Data
 };
 
@@ -20,11 +18,21 @@ export const SimpleStory = {
   args: {
     data: simpleData,
   },
+  render: (args, { argTypes }) => ({
+    components: { MyComponent },
+    props: Object.keys(argTypes),
+    template: `<MyComponent v-bind="$props"/>`,
+  }),
 };
 
 export const ComplexStory = {
   args: {
     data: complexData,
   },
+  render: (args, { argTypes }) => ({
+    components: { MyComponent },
+    props: Object.keys(argTypes),
+    template: `<MyComponent v-bind="$props"/>`,
+  }),
 };
 ```

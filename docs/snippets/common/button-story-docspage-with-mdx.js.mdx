@@ -20,18 +20,26 @@ export default {
 };
 
 export const Primary = {
-  render: () => <Button backgroundColor="primary" />,
+  args:{
+    backgroundColor: 'primary',
+  },
 };
 
 export const Secondary = {
-  render: () => <Button size="large" />,
+  args:{
+     backgroundColor: 'secondary',
+  },
 };
 
 export const Large =  = {
-  render: () => <Button size="large" />,
+  args:{
+    size:'large',
+  }
 };
 
 export const Small = {
-  render: () => <Button size="small" />,
+  args:{
+    size:'small',
+  },
 };
 ```

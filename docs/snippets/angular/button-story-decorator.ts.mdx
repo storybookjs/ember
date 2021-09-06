@@ -4,10 +4,10 @@
 import { componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import { Button } from './button.component';
-import { ParentComponent } from './parent.component'; // ParentComponent contains ng-content
+import { Parent } from './parent.component'; // Parent contains ng-content
 
 export default {
-  component: ButtonComponent,
+  component: Button,
 };
 
 export const Primary = {
@@ -17,9 +17,9 @@ export const Primary = {
 export const InsideParent = {
   decorators: [
     moduleMetadata({
-      declarations: [ParentComponent],
+      declarations: [Parent],
     }),
-    componentWrapperDecorator(ParentComponent),
+    componentWrapperDecorator(Parent),
   ],
 };
 ```

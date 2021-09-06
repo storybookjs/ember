@@ -5,15 +5,15 @@ import { moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
-import { ListItemComponent } from './list-item.component';
-import { ListComponent } from './list.component';
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 export default {
-  component: ListComponent,
-  subcomponents: { ListItemComponent }, //👈 Adds the ListItem component as a subcomponent
+  component: List,
+  subcomponents: { ListItem }, //👈 Adds the ListItem component as a subcomponent
   decorators: [
     moduleMetadata({
-      declarations: [ListItemComponent],
+      declarations: [ListItem],
       imports: [CommonModule],
     }),
   ],

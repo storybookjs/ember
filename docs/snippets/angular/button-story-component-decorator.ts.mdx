@@ -4,7 +4,7 @@
 import { componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import { Button } from './button.component';
-import { ParentComponent } from './parent.component'; // ParentComponent contains ng-content
+import { Parent } from './parent.component'; // Parent contains ng-content
 
 export default {
   component: Button,
@@ -15,7 +15,7 @@ export default {
     // With template
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`),
     // With component which contains ng-content
-    componentWrapperDecorator(ParentComponent),
+    componentWrapperDecorator(Parent),
   ],
 };
 ```

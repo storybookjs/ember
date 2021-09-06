@@ -21,7 +21,7 @@ export default {
 export const Empty = {
   render: (args) => ({
     props: args,
-    template: '<app-list></app-list>',
+    template: '<list></list>',
   }),
 };
 
@@ -29,8 +29,8 @@ export const OneItem = {
   render: (args) => ({
     props: args,
     template: `
-      <app-list>
-        <app-listitem></app-listitem>
+      <list>
+        <list-item></app-list-item>
       </app-list>`,
   }),
 };
@@ -39,10 +39,10 @@ export const ManyItems = {
   render: (args) => ({
     props: args,
     template: `
-      <app-list>
-        <app-listitem></app-listitem>
-        <app-listitem></app-listitem>
-        <app-listitem></app-listitem>
+      <list>
+        <list-item></list-item>
+        <list-item></list-item>
+        <list-item></list-item>
       </app-list>
     `,
   }),

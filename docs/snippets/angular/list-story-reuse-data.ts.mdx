@@ -29,10 +29,10 @@ export const ManyItems = {
   render: (args) => ({
     props: args,
     template: `
-      <app-list>
-        <app-listitem [isSelected]="Selected"></app-listitem>
-        <app-listitem [isSelected]="Unselected"></app-listitem>
-        <app-listitem [isSelected]="Unselected"></app-listitem>
+      <list>
+        <list-item [isSelected]="Selected"></list-item>
+        <list-item [isSelected]="Unselected"></list-item>
+        <list-item [isSelected]="Unselected"></list-item>
       </app-list>
     `,
   }),

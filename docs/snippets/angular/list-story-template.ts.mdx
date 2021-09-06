@@ -5,17 +5,17 @@ import { moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
-import { ListItemComponent } from './list-item.component';
-import { ListComponent } from './list.component';
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
 export default {
-  component: ListComponent,
+  component: List,
   decorators: [
     moduleMetadata({
-      declarations: [ListItemComponent],
+      declarations: [ListItem],
       imports: [CommonModule],
     }),
   ],
