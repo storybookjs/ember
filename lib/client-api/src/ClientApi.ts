@@ -30,7 +30,7 @@ import {
   combineParameters,
   StoryStore,
   normalizeInputTypes,
-  NormalizedStoryAnnotations,
+  Story,
 } from '@storybook/store';
 import { ClientApiAddons, StoryApi, Comparator } from '@storybook/addons';
 
@@ -180,24 +180,21 @@ export default class ClientApi<TFramework extends AnyFramework> {
 
     const storyEntries = Object.entries(this.stories);
     // Add the kind parameters and global parameters to each entry
-    const stories: [
-      StoryId,
-      NormalizedStoryAnnotations<TFramework>,
-      Parameters,
-      Parameters
-    ][] = storyEntries.map(([storyId, { importPath }]) => {
-      const exports = this.csfExports[importPath];
-      const csfFile = this.storyStore.processCSFFileWithCache<TFramework>(
-        exports,
-        exports.default.title
-      );
-      return [
-        storyId,
-        this.storyStore.storyFromCSFFile({ storyId, csfFile }),
-        csfFile.meta.parameters,
-        this.globalAnnotations.parameters,
-      ];
-    });
+    const stories: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
+      ([storyId, { importPath }]) => {
+        const exports = this.csfExports[importPath];
+        const csfFile = this.storyStore.processCSFFileWithCache<TFramework>(
+          exports,
+          exports.default.title
+        );
+        return [
+          storyId,
+          this.storyStore.storyFromCSFFile({ storyId, csfFile }),
+          csfFile.meta.parameters,
+          this.globalAnnotations.parameters,
+        ];
+      }
+    );
 
     if (storySortParameter) {
       let sortFn: Comparator<any>;
@@ -458,7 +455,16 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
       );
     }
 
-    this.csfExports[fileName] = fileExports;
+    this.csfExports[fileName] = {
+      ...fileExports,
+      default: {
+        ...defaultExport,
+        parameters: {
+          ...defaultExport.parameters,
+          fileName,
+        },
+      },
+    };
 
     Object.entries(namedExports)
       .filter(([key]) => isExportStory(key, defaultExport))

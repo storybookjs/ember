@@ -102,6 +102,19 @@ describe('WebPreview', () => {
       });
     });
 
+    it('SET_GLOBALS sets globals and types even when undefined', async () => {
+      await new WebPreview({
+        getGlobalAnnotations: () => ({}),
+        importFn,
+        fetchStoriesList,
+      }).initialize();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
+        globals: {},
+        globalTypes: {},
+      });
+    });
+
     it('emits the SET_GLOBALS event from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 

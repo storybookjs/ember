@@ -113,8 +113,8 @@ export class WebPreview<TFramework extends AnyFramework> {
       this.storyStore.globals.updateFromPersisted(globals);
     }
     this.channel.emit(Events.SET_GLOBALS, {
-      globals: this.storyStore.globals.get(),
-      globalTypes: this.storyStore.globalAnnotations.globalTypes,
+      globals: this.storyStore.globals.get() || {},
+      globalTypes: this.storyStore.globalAnnotations.globalTypes || {},
     });
 
     await this.selectSpecifiedStory();
@@ -285,7 +285,7 @@ export class WebPreview<TFramework extends AnyFramework> {
     this.previousSelection = selection;
     this.previousStory = story;
 
-    if (selection.viewMode === 'docs') {
+    if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
       await this.renderDocs({ story });
     } else {
       this.previousCleanup = this.renderStory({ story });

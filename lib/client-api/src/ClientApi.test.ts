@@ -99,6 +99,13 @@ describe('ClientApi', () => {
   describe('getStoriesList', () => {
     it('should remember the order that files were added in', async () => {
       const clientApi = new ClientApi();
+      const store = {
+        processCSFFileWithCache: jest.fn(() => ({ meta: { title: 'title' } })),
+        storyFromCSFFile: jest.fn(({ storyId }) => ({
+          parameters: { fileName: storyId.split('-')[0].replace('kind', 'file') },
+        })),
+      };
+      clientApi.storyStore = store as any;
 
       let disposeCallback: () => void;
       const module1 = {

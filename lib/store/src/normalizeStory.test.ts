@@ -37,7 +37,7 @@ describe('normalizeStory', () => {
         Object {
           "id": "title--story-export",
           "name": "Story Export",
-          "render": [Function],
+          "userStoryFn": [Function],
         }
       `);
     });

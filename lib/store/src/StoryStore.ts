@@ -267,7 +267,7 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   getSetStoriesPayload() {
-    const stories = this.extract();
+    const stories = this.extract({ includeDocsOnly: true });
 
     const kindParameters: Parameters = stories.reduce(
       (acc: Parameters, { title }: { title: ComponentTitle }) => {

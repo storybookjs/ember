@@ -1,4 +1,3 @@
-import global from 'global';
 import Events from '@storybook/core-events';
 
 import {
@@ -29,6 +28,7 @@ jest.mock('global', () => ({
 }));
 
 jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
+jest.mock('react-dom');
 
 beforeEach(() => {
   mockChannel.emit.mockClear();
@@ -133,6 +133,53 @@ describe('start', () => {
         }),
         undefined
       );
+    });
+
+    it('sends over docs only stories', async () => {
+      const render = jest.fn();
+
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('Story One', jest.fn(), { docsOnly: true, docs: {} });
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-one",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "docs": Object {},
+                "docsOnly": true,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+          ],
+          "v": 2,
+        }
+      `);
     });
 
     it('deals with stories with "default" name', async () => {
@@ -483,6 +530,7 @@ describe('start', () => {
               "name": "Story One",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story One",
@@ -499,6 +547,7 @@ describe('start', () => {
               "name": "Story Two",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Two",
@@ -611,6 +660,7 @@ describe('start', () => {
               "name": "Story One",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story One",
@@ -627,6 +677,7 @@ describe('start', () => {
               "name": "Story Two",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Two",
@@ -643,6 +694,7 @@ describe('start', () => {
               "name": "Story Three",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Three",
@@ -698,6 +750,7 @@ describe('start', () => {
               "name": "Story One",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story One",
@@ -714,6 +767,7 @@ describe('start', () => {
               "name": "Story Two",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Two",
@@ -730,6 +784,7 @@ describe('start', () => {
               "name": "Story Four",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-1",
                 "framework": "test",
               },
               "story": "Story Four",
@@ -766,6 +821,7 @@ describe('start', () => {
               "name": "Story One",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story One",
@@ -782,6 +838,7 @@ describe('start', () => {
               "name": "Story Two",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Two",
@@ -887,6 +944,7 @@ describe('start', () => {
               "name": "Story One",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story One",
@@ -903,6 +961,7 @@ describe('start', () => {
               "name": "Story Two",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "exports-map-0",
                 "framework": "test",
               },
               "story": "Story Two",

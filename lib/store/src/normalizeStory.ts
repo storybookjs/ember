@@ -47,7 +47,11 @@ export function normalizeStory<TFramework extends AnyFramework>(
 
   const exportName = storyNameFromExport(key);
   const id = toId(meta.id || meta.title, exportName);
-  const name = storyObject.name || storyObject.storyName || story?.name || exportName;
+  const name =
+    (typeof storyObject !== 'function' && storyObject.name) ||
+    storyObject.storyName ||
+    story?.name ||
+    exportName;
   const decorators = storyObject.decorators || story?.decorators;
   const parameters = storyObject.parameters || story?.parameters;
   const args = storyObject.args || story?.args;
