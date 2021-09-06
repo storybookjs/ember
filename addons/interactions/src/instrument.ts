@@ -21,37 +21,8 @@ interface IframeState {
 let channel: Channel;
 let iframeState: IframeState;
 let sharedState: any;
-
-const init = () => {
-  if (!global.window.__STORYBOOK_ADDON_TEST_PREVIEW__) {
-    global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = {
-      n: 0,
-      next: {},
-      callRefsByResult: new Map(),
-    };
-  }
-  if (!global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__) {
-    global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__ = {
-      isDebugging: false,
-      chainedCallIds: new Set<Call['id']>(),
-      playUntil: undefined,
-    };
-  }
-
-  channel = addons.getChannel();
-  iframeState = global.window.__STORYBOOK_ADDON_TEST_PREVIEW__;
-  sharedState = global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__;
-
-  channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
-  channel.on(EVENTS.RELOAD, () => global.window.location.reload());
-  channel.on(EVENTS.SET_CURRENT_STORY, () => {
-    iframeState.callRefsByResult = new Map(
-      Array.from(iframeState.callRefsByResult.entries()).filter(([, val]) => val.retain)
-    );
-    iframeState.n = iframeState.callRefsByResult.size;
-    iframeState.next = {};
-  });
-};
+let initialized = false;
+let unavailable = false;
 
 const isObject = (o: unknown) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown) => Object.prototype.toString.call(o) === '[object Module]';
@@ -144,12 +115,50 @@ function patch(method: string, fn: Function, options: Options) {
   return patched;
 }
 
+const initialize = () => {
+  try {
+    if (!global.window.__STORYBOOK_ADDON_TEST_PREVIEW__) {
+      global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = {
+        n: 0,
+        next: {},
+        callRefsByResult: new Map(),
+      };
+    }
+    if (!global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__) {
+      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__ = {
+        isDebugging: false,
+        chainedCallIds: new Set<Call['id']>(),
+        playUntil: undefined,
+      };
+    }
+
+    channel = addons.getChannel();
+    iframeState = global.window.__STORYBOOK_ADDON_TEST_PREVIEW__;
+    sharedState = global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__;
+
+    channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
+    channel.on(EVENTS.RELOAD, () => global.window.location.reload());
+    channel.on(EVENTS.SET_CURRENT_STORY, () => {
+      iframeState.callRefsByResult = new Map(
+        Array.from(iframeState.callRefsByResult.entries()).filter(([, val]) => val.retain)
+      );
+      iframeState.n = iframeState.callRefsByResult.size;
+      iframeState.next = {};
+    });
+    initialized = true;
+  } catch (e) {
+    console.warn(e);
+    unavailable = true;
+  }
+};
+
 // Traverses the object structure to recursively patch all function properties.
 // Returns the original object, or a new object with the same constructor,
 // depending on whether it should mutate.
 export function instrument(obj: unknown, options: Options = {}) {
   if (!isInstrumentable(obj)) return obj;
-  if (!channel) init();
+  if (!initialized) initialize();
+  if (unavailable) return obj;
 
   const { mutate = false, path = [] } = options;
   return Object.keys(obj).reduce(
