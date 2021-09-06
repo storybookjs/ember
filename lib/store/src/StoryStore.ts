@@ -205,13 +205,17 @@ export class StoryStore<TFramework extends AnyFramework> {
     storyId: StoryId;
     csfFile: CSFFile<TFramework>;
   }): Story<TFramework> {
-    const storyMeta = csfFile.stories[storyId];
-    if (!storyMeta) {
+    const storyAnnotations = csfFile.stories[storyId];
+    if (!storyAnnotations) {
       throw new Error(`Didn't find '${storyId}' in CSF file, this is unexpected`);
     }
-    const componentMeta = csfFile.meta;
+    const componentAnnotations = csfFile.meta;
 
-    const story = this.prepareStoryWithCache(storyMeta, componentMeta, this.globalAnnotations);
+    const story = this.prepareStoryWithCache(
+      storyAnnotations,
+      componentAnnotations,
+      this.globalAnnotations
+    );
     this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();
     return story;
