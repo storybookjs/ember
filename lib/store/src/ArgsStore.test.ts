@@ -3,6 +3,7 @@ import { ArgsStore } from './ArgsStore';
 jest.mock('@storybook/client-logger');
 
 const stringType = { type: { name: 'string' } };
+const booleanType = { type: { name: 'boolean' } };
 
 describe('ArgsStore', () => {
   describe('setInitial / get', () => {
@@ -141,23 +142,24 @@ describe('ArgsStore', () => {
 
         const previousStory = {
           id: 'id',
-          initialArgs: { a: '1', b: '1' },
-          argTypes: { a: stringType, b: stringType },
+          initialArgs: { a: '1', b: false, c: 'unchanged' },
+          argTypes: { a: stringType, b: booleanType, c: stringType },
         } as any;
         store.setInitial('id', previousStory.initialArgs);
 
-        // NOTE: I'm not sure technically you should be allowed to set c here
-        store.update('id', { a: 'update', c: 'update' });
+        // NOTE: I'm not sure technically you should be allowed to set d here, but
+        // let's make sure we behave sensibly if you do
+        store.update('id', { a: 'update', b: true, d: 'update' });
 
         const story = {
           id: 'id',
-          initialArgs: { a: '1', b: '1' },
-          argTypes: { a: stringType, b: stringType },
+          initialArgs: { a: '1', b: false, c: 'unchanged' },
+          argTypes: { a: stringType, b: booleanType, c: stringType },
         } as any;
 
         store.resetOnImplementationChange(story, previousStory);
         // In any case c is not retained.
-        expect(store.get(story.id)).toEqual({ a: 'update', b: '1' });
+        expect(store.get(story.id)).toEqual({ a: 'update', b: true, c: 'unchanged' });
       });
     });
 

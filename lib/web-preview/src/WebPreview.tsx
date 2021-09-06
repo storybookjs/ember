@@ -255,7 +255,8 @@ export class WebPreview<TFramework extends AnyFramework> {
     const storyChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    const implementationChanged = this.previousStory && story !== this.previousStory;
+    const implementationChanged =
+      !storyChanged && this.previousStory && story !== this.previousStory;
 
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
