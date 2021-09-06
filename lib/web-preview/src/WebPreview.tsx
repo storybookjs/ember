@@ -268,11 +268,14 @@ export class WebPreview<TFramework extends AnyFramework> {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
-    if (viewModeChanged && this.previousSelection?.viewMode === 'docs') {
+    const previousViewMode = this.previousStory?.parameters?.docsOnly
+      ? 'docs'
+      : this.previousSelection?.viewMode;
+    if (viewModeChanged && previousViewMode === 'docs') {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    if (this.previousSelection?.viewMode === 'story') {
+    if (previousViewMode === 'story') {
       this.removePreviousStory();
     }
 
