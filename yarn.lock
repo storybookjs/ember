@@ -7599,6 +7599,7 @@ __metadata:
     global: ^4.4.0
     lodash: ^4.17.20
     memoizerific: ^1.11.3
+    regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   languageName: unknown
@@ -7828,6 +7829,7 @@ __metadata:
     global: ^4.4.0
     lodash: ^4.17.20
     qs: ^6.10.0
+    regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
     unfetch: ^4.2.0
     util-deprecate: ^1.0.2
