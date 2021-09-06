@@ -181,12 +181,12 @@ export function prepareStory<TFramework extends AnyFramework>(
     return undefined;
   };
 
-  return {
+  return Object.freeze({
     ...contextForEnhancers,
     originalStoryFn: render,
     undecoratedStoryFn,
     unboundStoryFn,
     applyLoaders,
     runPlayFunction,
-  };
+  });
 }
