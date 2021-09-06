@@ -339,9 +339,41 @@ describe('WebPreview', () => {
         );
       });
 
+      it('renders exception if a loader throws', async () => {
+        const error = new Error('error');
+        componentOneExports.default.loaders[0].mockImplementationOnce(() => {
+          throw error;
+        });
+
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
+        await preview.initialize();
+
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+      });
+
       it('renders exception if renderToDOM throws', async () => {
         const error = new Error('error');
         globalAnnotations.renderToDOM.mockImplementationOnce(() => {
+          throw error;
+        });
+
+        document.location.search = '?id=component-one--a';
+        const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
+        await preview.initialize();
+
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+      });
+
+      it('renders exception if the play function throws', async () => {
+        const error = new Error('error');
+        componentOneExports.a.play.mockImplementationOnce(() => {
           throw error;
         });
 

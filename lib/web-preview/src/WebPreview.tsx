@@ -412,12 +412,8 @@ export class WebPreview<TFramework extends AnyFramework> {
         storyFn: () => unboundStoryFn(updatedStoryContext),
         unboundStoryFn,
       };
-      try {
-        await this.renderToDOM(renderContext, element);
-      } catch (err) {
-        renderContextWithoutStoryContext.showException(err);
-        return;
-      }
+      await this.renderToDOM(renderContext, element);
+
       if (controller.signal.aborted) {
         return;
       }
@@ -497,7 +493,10 @@ export class WebPreview<TFramework extends AnyFramework> {
     };
 
     // Start the first render
-    initialRender().catch((err) => logger.error(`Error rendering story: ${err}`));
+    // NOTE: we don't await here because we need to return the "cleanup" function below
+    // right away, so if the user changes story during the first render we can cancel
+    // it without having to first wait for it to finish.
+    initialRender().catch((err) => renderContextWithoutStoryContext.showException(err));
 
     // Listen to events and re-render story
     this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
