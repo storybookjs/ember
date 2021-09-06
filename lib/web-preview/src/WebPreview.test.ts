@@ -727,7 +727,7 @@ describe('WebPreview', () => {
       });
     });
 
-    it('resetStoryArgs resets a single arg', async () => {
+    it('resets a single arg', async () => {
       document.location.search = '?id=component-one--a';
       await new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList }).initialize();
       mockChannel.emit.mockClear();
@@ -742,7 +742,18 @@ describe('WebPreview', () => {
         argNames: ['foo'],
       });
 
-      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+      await waitForRender();
+
+      expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({
+          forceRemount: false,
+          storyContext: expect.objectContaining({
+            initialArgs: { foo: 'a' },
+            args: { foo: 'a', new: 'value' },
+          }),
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
@@ -750,7 +761,7 @@ describe('WebPreview', () => {
       });
     });
 
-    it('resetStoryArgs resets all args', async () => {
+    it('resets all args', async () => {
       document.location.search = '?id=component-one--a';
       await new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList }).initialize();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -763,8 +774,18 @@ describe('WebPreview', () => {
         storyId: 'component-one--a',
       });
 
-      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+      await waitForRender();
 
+      expect(globalAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({
+          forceRemount: false,
+          storyContext: expect.objectContaining({
+            initialArgs: { foo: 'a' },
+            args: { foo: 'a' },
+          }),
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a' },

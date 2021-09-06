@@ -190,7 +190,14 @@ export class WebPreview<TFramework extends AnyFramework> {
   }
 
   async onResetArgs({ storyId, argNames }: { storyId: string; argNames?: string[] }) {
-    const { initialArgs } = await this.storyStore.loadStory({ storyId });
+    // NOTE: we have to be careful here and avoid await-ing when updating the current story's args.
+    // That's because below in `renderStoryToElement` we have also bound to this event and will
+    // render the story in the same tick.
+    // However, we can do that safely as the current story is available in `this.previousStory`
+    const { initialArgs } =
+      storyId === this.previousStory.id
+        ? this.previousStory
+        : await this.storyStore.loadStory({ storyId });
 
     const argNamesToReset = argNames || Object.keys(this.storyStore.args.get(storyId));
     const updatedArgs = argNamesToReset.reduce((acc, argName) => {
