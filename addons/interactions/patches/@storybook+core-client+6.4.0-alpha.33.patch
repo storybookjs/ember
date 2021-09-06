@@ -165,29 +165,29 @@ index 13fb770..83cf9b9 100644
        this.showErrorDisplay(err); // Log the stack to the console. So, user could check the source code.
  
 diff --git a/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js b/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
-index c0e5a90..143e70f 100644
+index c0e5a90..8c4c8e0 100644
 --- a/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
 +++ b/node_modules/@storybook/core-client/dist/modern/preview/StoryRenderer.js
-@@ -294,7 +294,10 @@ export class StoryRenderer {
+@@ -294,7 +294,9 @@ export class StoryRenderer {
          }));
  
          if (FEATURES.previewCsfV3 && !forceRender) {
 -          await runPlayFunction();
 +          const canvasId = storyContext.viewMode === 'docs' ? `story--${storyContext.storyId}` : 'root';
-+          await runPlayFunction(Object.assign({}, storyContext, {
-+            canvasId
-+          }));
++          const canvasElement = document.getElementById(canvasId);
++          await runPlayFunction(Object.assign({}, storyContext, { canvasId, canvasElement }));
          }
  
          this.channel.emit(Events.STORY_RENDERED, id);
-@@ -342,6 +345,7 @@ export class StoryRenderer {
- 
+@@ -343,6 +345,8 @@ export class StoryRenderer {
  
    renderException(err) {
-+    if (err === Events.IGNORED_EXCEPTION) return;
      this.channel.emit(Events.STORY_THREW_EXCEPTION, err);
++    if (err === Events.IGNORED_EXCEPTION) return;
++
      this.showErrorDisplay(err); // Log the stack to the console. So, user could check the source code.
  
+     logger.error(err);
 diff --git a/node_modules/@storybook/core-client/dist/ts3.4/preview/StoryRenderer.d.ts b/node_modules/@storybook/core-client/dist/ts3.4/preview/StoryRenderer.d.ts
 index 36c5b4c..0252821 100644
 --- a/node_modules/@storybook/core-client/dist/ts3.4/preview/StoryRenderer.d.ts
