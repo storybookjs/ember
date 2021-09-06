@@ -115,7 +115,7 @@ function patch(method: string, fn: Function, options: Options) {
   return patched;
 }
 
-const initialize = () => {
+function initialize() {
   try {
     if (!global.window.__STORYBOOK_ADDON_TEST_PREVIEW__) {
       global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = {
@@ -145,6 +145,7 @@ const initialize = () => {
       iframeState.n = iframeState.callRefsByResult.size;
       iframeState.next = {};
     });
+
     initialized = true;
   } catch (e) {
     console.warn(e);

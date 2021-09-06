@@ -22,7 +22,7 @@ Demo.play = async ({ args }) => {
 };
 
 export const WaitFor = (args) => (
-  <button onClick={() => setTimeout(() => args.onSubmit('clicked'), 200)}>Click</button>
+  <button onClick={() => setTimeout(() => args.onSubmit('clicked'), 100)}>Click</button>
 );
 WaitFor.argTypes = {
   onSubmit: { action: true },
