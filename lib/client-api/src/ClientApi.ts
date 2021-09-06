@@ -1,8 +1,10 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import global from 'global';
+import stable from 'stable';
 import { logger } from '@storybook/client-logger';
 import {
+  StoryId,
   AnyFramework,
   toId,
   isExportStory,
@@ -28,9 +30,11 @@ import {
   combineParameters,
   StoryStore,
   normalizeInputTypes,
+  NormalizedStoryAnnotations,
 } from '@storybook/store';
+import { ClientApiAddons, StoryApi, Comparator } from '@storybook/addons';
 
-import { ClientApiAddons, StoryApi } from '@storybook/addons';
+import { storySort } from './storySort';
 
 const { FEATURES } = global;
 
@@ -172,15 +176,50 @@ export default class ClientApi<TFramework extends AnyFramework> {
 
   getStoriesList() {
     const fileNameOrder = Object.keys(this.csfExports);
-    const sortedStoryEntries = Object.entries(this.stories).sort(
-      ([id1, story1], [id2, story2]) =>
-        fileNameOrder.indexOf(story1.importPath) - fileNameOrder.indexOf(story2.importPath)
-    );
+    const storySortParameter = this.globalAnnotations.parameters?.options?.storySort;
+
+    const storyEntries = Object.entries(this.stories);
+    // Add the kind parameters and global parameters to each entry
+    const stories: [
+      StoryId,
+      NormalizedStoryAnnotations<TFramework>,
+      Parameters,
+      Parameters
+    ][] = storyEntries.map(([storyId, { importPath }]) => {
+      const exports = this.csfExports[importPath];
+      const csfFile = this.storyStore.processCSFFileWithCache<TFramework>(
+        exports,
+        exports.default.title
+      );
+      return [
+        storyId,
+        this.storyStore.storyFromCSFFile({ storyId, csfFile }),
+        csfFile.meta.parameters,
+        this.globalAnnotations.parameters,
+      ];
+    });
+
+    if (storySortParameter) {
+      let sortFn: Comparator<any>;
+      if (typeof storySortParameter === 'function') {
+        sortFn = storySortParameter;
+      } else {
+        sortFn = storySort(storySortParameter);
+      }
+      stable.inplace(stories, sortFn);
+    } else {
+      stable.inplace(
+        stories,
+        (s1, s2) =>
+          fileNameOrder.indexOf(s1[1].parameters.fileName) -
+          fileNameOrder.indexOf(s2[1].parameters.fileName)
+      );
+    }
 
     return {
       v: 3,
-      stories: sortedStoryEntries.reduce((acc, [id, entry]) => {
-        acc[id] = entry;
+      stories: stories.reduce((acc, [id]) => {
+        acc[id] = this.stories[id];
         return acc;
       }, {} as StoriesList['stories']),
     };
