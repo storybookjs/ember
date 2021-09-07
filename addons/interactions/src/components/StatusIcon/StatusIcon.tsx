@@ -10,14 +10,19 @@ export interface StatusIconProps extends IconsProps {
 
 const {
   colors: {
-    pure: { green, red, gray },
+    pure: { gray },
   },
 } = theme;
 
-const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
+const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => ({
   width: status === CallState.PENDING ? 6 : 12,
   height: status === CallState.PENDING ? 6 : 12,
-  color: status === CallState.PENDING ? gray[500] : status === CallState.DONE ? green : red,
+  color:
+    status === CallState.PENDING
+      ? gray[500]
+      : status === CallState.DONE
+      ? theme.color.positive
+      : theme.color.negative,
   justifySelf: 'center',
 }));
 
