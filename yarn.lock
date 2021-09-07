@@ -8125,7 +8125,7 @@ __metadata:
     "@babel/traverse": ^7.12.11
     "@babel/types": ^7.12.11
     "@mdx-js/mdx": ^1.6.22
-    "@storybook/csf": ^0.0.1
+    "@storybook/csf": 0.0.2--canary.5459c65.0
     "@types/fs-extra": ^9.0.6
     core-js: ^3.8.2
     fs-extra: ^9.0.1
@@ -8145,15 +8145,6 @@ __metadata:
   dependencies:
     lodash: ^4.17.15
   checksum: 67e8adfddbc4eb96f6cfdca0fe03cfcac460302489bde3b99d31f88eab14759d7d856592871434cd2d8caffebb465f8b81c87576ecb9da755baace09f83b5c57
-  languageName: node
-  linkType: hard
-
-"@storybook/csf@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@storybook/csf@npm:0.0.1"
-  dependencies:
-    lodash: ^4.17.15
-  checksum: 7b0f75763415f9147692a460b44417ee56ea9639433716a1fd4d1df4c8b0221cbc71b8da0fbed4dcecb3ccd6c7ed64be39f5c255c713539a6088a1d6488aaa24
   languageName: node
   linkType: hard
 
