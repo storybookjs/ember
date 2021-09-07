@@ -252,21 +252,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
       {interactions.map((call) => (
         <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
       ))}
-
-      <div style={{ padding: 3 }}>
-        <Button outline containsIcon title="Start debugging" onClick={start}>
-          <Icons icon="undo" />
-        </Button>
-        <Button outline containsIcon title="Step back" onClick={prev} disabled={!hasPrevious}>
-          <Icons icon="arrowleftalt" />
-        </Button>
-        <Button outline containsIcon title="Step over" onClick={next} disabled={!hasNext}>
-          <Icons icon="arrowrightalt" />
-        </Button>
-        <Button outline containsIcon title="Play" onClick={stop} disabled={!hasNext}>
-          <Icons icon="play" />
-        </Button>
-      </div>
     </AddonPanel>
   );
 };
