@@ -44,7 +44,7 @@
     "@storybook/addons": "6.4.0-alpha.34",
     "@storybook/client-logger": "6.4.0-alpha.34",
     "@storybook/core-events": "6.4.0-alpha.34",
-    "@storybook/csf": "0.0.2--canary.a925d24.0",
+    "@storybook/csf": "0.0.2--canary.5459c65.0",
     "@storybook/router": "6.4.0-alpha.34",
     "@types/qs": "^6.9.5",
     "core-js": "^3.8.2",
