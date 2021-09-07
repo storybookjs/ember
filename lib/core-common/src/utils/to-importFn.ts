@@ -6,14 +6,14 @@ import { toRequireContext } from './to-require-context';
 export function toImportFnPart(entry: NormalizedStoriesEntry) {
   const { path: base, match } = toRequireContext(entry.glob);
 
-  const webpackIncludeRegex = new RegExp(match.source.substring(1));
+  const webpackIncludeRegex = new RegExp(match.substring(1));
 
   // NOTE: `base` looks like './src' but `path`, (and what micromatch expects)
   // is something that starts with `src/`. So to strip off base from path, we
   // need to drop `base.length - 1` chars.
   return dedent`
       async (path) => {
-        if (!${match}.exec(path)) {
+        if (!/${match}/.exec(path)) {
           return;
         }
         const remainder = path.substring(${base.length - 1});
