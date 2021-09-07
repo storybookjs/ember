@@ -13,7 +13,7 @@ const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
     [CallState.PENDING]: theme.color.warning,
   }[status];
   return {
-    padding: '4px 8px',
+    padding: '4px 6px 4px 8px;',
     borderRadius: '4px',
     backgroundColor: backgroundColor,
     color: 'white',
