@@ -45,7 +45,7 @@
     "@ember/test-helpers": "^2.1.4",
     "@storybook/core": "6.4.0-alpha.34",
     "@storybook/core-common": "6.4.0-alpha.34",
-    "@storybook/store": "6.4.0-alpha.19",
+    "@storybook/store": "6.4.0-alpha.34",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "react": "16.14.0",
