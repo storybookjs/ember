@@ -82,7 +82,7 @@ export function start<TFramework extends AnyFramework>(
         clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
         clientApi.storyStore = preview.storyStore;
 
-        preview.initializeSync({ cacheAllCSFFiles: true });
+        preview.initialize({ cacheAllCSFFiles: true, sync: true });
       } else {
         getProjectAnnotations();
         preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });
