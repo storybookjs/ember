@@ -383,4 +383,9 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
   raw = () => {
     return this.storyStore.raw();
   };
+
+  // @deprecated
+  get _storyStore() {
+    return this.storyStore;
+  }
 }
