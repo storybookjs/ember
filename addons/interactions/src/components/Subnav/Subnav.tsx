@@ -26,6 +26,8 @@ export interface SubnavProps {
   onReplay: () => void;
   goToEnd: () => void;
   storyFileName?: string;
+  hasPrevious: boolean;
+  hasNext: boolean;
 }
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -88,6 +90,8 @@ export const Subnav: React.FC<SubnavProps> = ({
   onReplay,
   goToEnd,
   storyFileName,
+  hasNext,
+  hasPrevious,
 }) => {
   const buttonText = status === CallState.ERROR ? 'Jump to error' : 'Jump to end';
   const [isAnimating, setIsAnimating] = useState(false);
@@ -101,14 +105,21 @@ export const Subnav: React.FC<SubnavProps> = ({
       <Group>
         <StatusBadge status={status} />
 
-        <JumpToEndButton onClick={goToEnd}>{buttonText}</JumpToEndButton>
+        <JumpToEndButton onClick={goToEnd} disabled={!hasNext}>
+          {buttonText}
+        </JumpToEndButton>
 
         <StyledSeparator />
 
-        <PlaybackButton containsIcon title="Previous step" onClick={onPrevious}>
+        <PlaybackButton
+          containsIcon
+          title="Previous step"
+          onClick={onPrevious}
+          disabled={!hasPrevious}
+        >
           <Icons icon="playback" />
         </PlaybackButton>
-        <StyledIconButton containsIcon title="Next step" onClick={onNext}>
+        <StyledIconButton containsIcon title="Next step" onClick={onNext} disabled={!hasNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
         <StyledAnimatedIconButton

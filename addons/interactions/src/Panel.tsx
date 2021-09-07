@@ -248,6 +248,8 @@ export const Panel: React.FC<PanelProps> = (props) => {
         onNext={next}
         onReplay={stop}
         goToEnd={stop}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
       />
       {interactions.map((call) => (
         <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
