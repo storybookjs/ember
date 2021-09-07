@@ -289,8 +289,8 @@
       "root": "lib/ui",
       "type": "library"
     },
-    "@storybook/web-preview": {
-      "root": "lib/web-preview",
+    "@storybook/preview-web": {
+      "root": "lib/preview-web",
       "type": "library"
     }
   }

@@ -39,7 +39,7 @@ function focusInInput(event: Event) {
 
 type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
 
-export class WebPreview<TFramework extends AnyFramework> {
+export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
 
   urlStore: UrlStore;

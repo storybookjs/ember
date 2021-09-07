@@ -1,4 +1,4 @@
-import { composeConfigs, WebPreview } from '@storybook/web-preview';    
+import { composeConfigs, PreviewWeb } from '@storybook/preview-web';    
 import { importFn } from './{{storiesFilename}}';
 import { addons } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
@@ -19,7 +19,7 @@ const fetchStoriesList = async () => {
 const channel = createChannel({ page: 'preview' });
 addons.setChannel(channel);
 
-const preview = new WebPreview({ importFn, getProjectAnnotations, fetchStoriesList });
+const preview = new PreviewWeb({ importFn, getProjectAnnotations, fetchStoriesList });
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;

@@ -478,7 +478,7 @@ Object {
               "@storybook/semver": "NODE_MODULES/@storybook/semver",
               "@storybook/store": "ROOT/lib/store",
               "@storybook/theming": "ROOT/lib/theming",
-              "@storybook/web-preview": "ROOT/lib/web-preview",
+              "@storybook/preview-web": "ROOT/lib/preview-web",
               "emotion-theming": "NODE_MODULES/emotion-theming",
               "react": "NODE_MODULES/react",
               "react-dom": "NODE_MODULES/react-dom",

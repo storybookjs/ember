@@ -44,13 +44,13 @@
     "@storybook/manager-webpack5": "portal:../../lib/manager-webpack5",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",
+    "@storybook/preview-web": "portal:../../lib/preview-web",
     "@storybook/router": "portal:../../lib/router",
     "@storybook/source-loader": "portal:../../lib/source-loader",
     "@storybook/store": "portal:../../lib/store",
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
     "@storybook/web-components": "portal:../../app/web-components",
-    "@storybook/web-preview": "portal:../../lib/web-preview",
     "typescript": "4.2.4"
   },
   "dependencies": {

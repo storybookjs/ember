@@ -5,12 +5,12 @@ import {
   waitForEvents,
   emitter,
   mockChannel,
-} from '@storybook/web-preview/dist/cjs/WebPreview.mockdata';
+  // eslint-disable-next-line import/extensions
+} from '@storybook/preview-web/dist/cjs/PreviewWeb.mockdata';
 
-import { AnyFramework } from '@storybook/csf';
 import { start } from './start';
 
-jest.mock('@storybook/web-preview/dist/cjs/WebView');
+jest.mock('@storybook/preview-web/dist/cjs/WebView');
 
 jest.mock('global', () => ({
   // @ts-ignore

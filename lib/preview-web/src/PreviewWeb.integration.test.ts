@@ -3,7 +3,7 @@ import global from 'global';
 import { RenderContext } from '@storybook/store';
 import addons from '@storybook/addons';
 
-import { WebPreview } from './WebPreview';
+import { PreviewWeb } from './PreviewWeb';
 import {
   componentOneExports,
   importFn,
@@ -13,9 +13,9 @@ import {
   emitter,
   mockChannel,
   waitForRender,
-} from './WebPreview.mockdata';
+} from './PreviewWeb.mockdata';
 
-// WebPreview.test mocks out all rendering
+// PreviewWeb.test mocks out all rendering
 //   - ie. from`renderToDOM()` (stories) or`ReactDOM.render()` (docs) in.
 // This file lets them rip.
 
@@ -54,14 +54,14 @@ beforeEach(() => {
   addons.setChannel(mockChannel as any);
 });
 
-describe('WebPreview', () => {
+describe('PreviewWeb', () => {
   describe('initial render', () => {
     it('renders story mode through the stack', async () => {
       projectAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
         storyFn()
       );
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList }).initialize();
+      await new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList }).initialize();
 
       await waitForRender();
 
@@ -71,7 +71,7 @@ describe('WebPreview', () => {
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList });
+      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -106,7 +106,7 @@ describe('WebPreview', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList });
+      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList });
       await preview.initialize();
       await waitForRender();
 

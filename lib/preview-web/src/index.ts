@@ -1,4 +1,4 @@
-export { WebPreview } from './WebPreview';
+export { PreviewWeb } from './PreviewWeb';
 
 export { composeConfigs } from './composeConfigs';
 export { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';

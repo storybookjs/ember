@@ -1,18 +1,18 @@
 {
-  "name": "@storybook/web-preview",
+  "name": "@storybook/preview-web",
   "version": "6.4.0-alpha.19",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/web-preview",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/preview-web",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
-    "directory": "lib/web-preview"
+    "directory": "lib/preview-web"
   },
   "funding": {
     "type": "opencollective",

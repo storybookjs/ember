@@ -1,6 +1,6 @@
 import global from 'global';
 import { ClientApi } from '@storybook/client-api';
-import { WebProjectAnnotations, WebPreview } from '@storybook/web-preview';
+import { WebProjectAnnotations, PreviewWeb } from '@storybook/preview-web';
 import { AnyFramework, ArgsStoryFn } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
@@ -25,7 +25,7 @@ export function start<TFramework extends AnyFramework>(
   const channel = createChannel({ page: 'preview' });
   addons.setChannel(channel);
 
-  let preview: WebPreview<TFramework>;
+  let preview: PreviewWeb<TFramework>;
   const clientApi = new ClientApi<TFramework>();
 
   if (globalWindow) {
@@ -66,7 +66,7 @@ export function start<TFramework extends AnyFramework>(
       };
 
       if (!preview) {
-        preview = new WebPreview({
+        preview = new PreviewWeb({
           importFn: (path: Path) => clientApi.importFn(path),
           getProjectAnnotations,
           fetchStoriesList: () => clientApi.getStoriesList(),
@@ -78,7 +78,7 @@ export function start<TFramework extends AnyFramework>(
         }
 
         // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
-        // direct reference to `WebPreview`, so we need to patch in bits
+        // direct reference to `PreviewWeb`, so we need to patch in bits
         clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
         clientApi.storyStore = preview.storyStore;
 

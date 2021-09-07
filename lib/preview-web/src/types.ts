@@ -1,6 +1,6 @@
 import { StoryId, AnyFramework, ProjectAnnotations, StoryContextForLoaders } from '@storybook/csf';
 import { RenderContext, DecoratorApplicator, Story } from '@storybook/store';
-import { WebPreview } from './WebPreview';
+import { PreviewWeb } from './PreviewWeb';
 
 export type WebProjectAnnotations<
   TFramework extends AnyFramework
@@ -14,7 +14,7 @@ export interface DocsContextProps<TFramework extends AnyFramework> {
   name: string;
   storyById: (id: StoryId) => Story<TFramework>;
   componentStories: () => Story<TFramework>[];
-  renderStoryToElement: WebPreview<TFramework>['renderStoryToElement'];
+  renderStoryToElement: PreviewWeb<TFramework>['renderStoryToElement'];
   getStoryContext: (story: Story<TFramework>) => StoryContextForLoaders<TFramework>;
 
   /**

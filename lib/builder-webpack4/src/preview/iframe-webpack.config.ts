@@ -44,7 +44,7 @@ const storybookPaths: Record<string, string> = [
   'semver',
   'client-api',
   'client-logger',
-  'web-preview',
+  'preview-web',
   'store',
 ].reduce(
   (acc, sbPackage) => ({
