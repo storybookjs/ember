@@ -3,10 +3,10 @@
 
 import React from 'react';
 
-import Button from './Button';
+import { Button } from './Button';
 
 export default {
-  title: 'Button',
+  component: Button,
   //👇 Creates specific parameters for the story
   parameters: {
     myAddon: {
@@ -15,5 +15,7 @@ export default {
   },
 };
 
-export const Basic = () => <Button>hello</Button>;
+export const Basic = {
+  render: () => <Button>hello</Button>,
+};
 ```

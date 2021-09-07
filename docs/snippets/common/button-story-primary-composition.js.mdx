@@ -1,15 +1,23 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-const Primary = ButtonStory.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
-}
+import { Button } from './Button';
 
-const Secondary = ButtonStory.bind({});
-Secondary.args = {
-  ...Primary.args,
-  primary: false,
-}
+export default {
+  component: Button,
+};
+
+export const Primary = {
+  args: {
+    primary: true,
+    label: 'Button',
+  },
+};
+
+const Secondary = {
+  args: {
+    ...Primary.args,
+    primary: false,
+  },
+};
 ```

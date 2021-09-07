@@ -1,9 +1,15 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-export const Large = Template.bind({});
+import { Button } from './Button';
 
-Large.parameters = {
-  controls: { hideNoControlsWarning: true },
+export default {
+  component: Button,
+};
+
+export const Large = {
+  parameters: {
+    controls: { hideNoControlsWarning: true },
+  },
 };
 ```

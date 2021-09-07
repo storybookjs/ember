@@ -4,24 +4,23 @@
 import ButtonGroup from './ButtonGroup.vue';
 
 //👇 Imports the Button stories
-import * as ButtonStories from './MyButton.stories';
+import * as ButtonStories from './Button.stories';
 
 export default {
   component: ButtonGroup,
-  title: 'ButtonGroup',
 };
 
-const Template = (args) => ({
-  components: { ButtonGroup },
-  setup() {
-    return { args };
+export const Pair = {
+  args: {
+    buttons: [{ ...ButtonStories.Primary.args }, { ...ButtonStories.Secondary.args }],
+    orientation: 'horizontal',
   },
-  template: '<ButtonGroup v-bind="args" />',
-});
-
-export const Pair = Template.bind({});
-Pair.args = {
-  buttons: [{ ...ButtonStories.Primary.args }, { ...ButtonStories.Secondary.args }],
-  orientation: 'horizontal',
+  render: (args) => ({
+    components: { ButtonGroup },
+    setup() {
+      return { args };
+    },
+    template: '<ButtonGroup v-bind="args" />',
+  }),
 };
 ```

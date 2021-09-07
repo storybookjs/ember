@@ -4,13 +4,12 @@
 import YourComponent from './YourComponent.vue';
 
 export default {
-  title: 'A complex case with a function',
   component: YourComponent,
   //👇 Creates specific argTypes with options
   argTypes: {
     propertyA: {
       options: ['Item One', 'Item Two', 'Item Three'],
-      control: { type: 'select' } // automatically inferred when 'options' is defined
+      control: { type: 'select' }, // automatically inferred when 'options' is defined
     },
     propertyB: {
       options: ['Another Item One', 'Another Item Two', 'Another Item Three'],
@@ -23,22 +22,27 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
   // Makes some computations and returns something
 };
 
-const Template = (args) => {
-  //👇 Assigns the function result to a variable
-  const functionResult = someFunction(args.propertyA, args.propertyB);
-  return {
-    components: { YourComponent },
-    setup() {
-      //👇 The args will now be passed down to the template
-      return {
-        args: {
+export const ExampleStory = {
+  args: {
+    propertyA: 'Something',
+    propertyB: 'Something else',
+  },
+  render: (args) => {
+    const { propertyA, propertyB } = args;
+    //👇 Assigns the function result to a variable
+    const functionResult = someFunction(propertyA, propertyB);
+    return {
+      components: { YourComponent },
+      setup() {
+        return {
           ...args,
           //👇 Replaces arg variable with the override (without the need of mutation)
           someProperty: functionResult,
-        },
-      };
-    },
-    template: '<YourComponent v-bind="args" />',
-  };
+        };
+      },
+      template:
+        '<YourComponent :propertyA="propertyA" :propertyB="propertyB" :someProperty="someProperty"/>',
+    };
+  },
 };
 ```

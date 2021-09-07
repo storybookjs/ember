@@ -1,11 +1,15 @@
 ```js
 // FooBar.stories.js | FooBar.stories.jsx | FooBar.stories.ts | FooBar.stories.tsx
 
+import { Foo } from './Foo';
+
 export default {
+  component: Foo,
   title: 'OtherFoo/Bar',
   id: 'Foo/Bar', // Or 'foo-bar' if you prefer
 };
 
-export const Baz = () => BarStory.bind({});
-Baz.storyName = 'Moo';
+export const Baz = {
+  name: 'Moo',
+};
 ```

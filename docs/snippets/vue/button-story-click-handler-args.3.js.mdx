@@ -1,17 +1,27 @@
 ```js
 // Button.stories.js
 
-export const Text = (args) => ({
-  components: { Button },
-  setup() {
-    return {
-      label: args.label,
-      onClick: action('clicked'),
-    };
+import Button from './Button.vue';
+
+import { action } from '@storybook/addon-actions';
+
+export default {
+  component: Button,
+};
+
+export const Text = {
+  args: {
+    label: 'Hello',
   },
-  template: '<Button @onClick="onClick" :label="label" />',
-});
-Text.args = {
-  label: 'Hello',
+  render: (args) => ({
+    components: { Button },
+    setup() {
+      return {
+        ...args,
+        onClick: action('clicked'),
+      };
+    },
+    template: '<Button @onClick="onClick" :label="label" />',
+  }),
 };
 ```

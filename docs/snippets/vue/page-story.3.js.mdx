@@ -3,23 +3,23 @@
 
 import Page from './Page.vue';
 
+//👇 Imports all Header stories
 import * as HeaderStories from './Header.stories';
 
 export default {
   component: Page,
-  title: 'Page',
 };
 
-const Template = (args) => ({
-  components: { Page },
-  setup() {
-    return { args };
+export const LoggedIn = {
+  args: {
+    ...HeaderStories.LoggedIn.args,
   },
-  template: '<page v-bind="args" />',
-});
-
-export const LoggedIn = Template.bind({});
-LoggedIn.args = {
-  ...HeaderStories.LoggedIn.args,
+  render: (args) => ({
+    components: { Page },
+    setup() {
+      return { args };
+    },
+    template: '<page v-bind="args" />',
+  }),
 };
 ```

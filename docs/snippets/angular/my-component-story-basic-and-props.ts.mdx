@@ -1,0 +1,19 @@
+```ts
+// MyComponent.stories.ts
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  component: MyComponent,
+};
+
+export const Basic = {};
+
+export const WithProp = {
+  render: () => ({
+    props: {
+      prop: 'value',
+    },
+  }),
+};
+```

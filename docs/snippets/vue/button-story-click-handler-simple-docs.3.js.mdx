@@ -1,14 +1,22 @@
 ```js
 // Button.stories.js
 
-export const Text = ({ label }) => ({
-  components: { Button },
-  setup() {
-    return {
-      label,
-      onClick: action('clicked'),
-    };
-  },
-  template: '<Button :label="label" @click="onClick" />',
-});
+import Button from './Button.vue';
+
+export default {
+  component: Button,
+};
+
+export const Text = {
+  render: ({ label }) => ({
+    components: { Button },
+    setup() {
+      return {
+        label,
+        onClick: action('clicked'),
+      };
+    },
+    template: '<Button :label="label" @click="onClick" />',
+  }),
+};
 ```

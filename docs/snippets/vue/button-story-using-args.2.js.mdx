@@ -3,25 +3,43 @@
 
 import Button from './Button.vue';
 
-export default { 
+export default {
   component: Button,
-  title: 'Components/Button'
 };
 
-//👇 We create a “template” of how args map to rendering
-const Template = (args, { argTypes }) => ({
-  components: { Button },
-  props: Object.keys(argTypes),
-  template: '<Button :background="background" :label="label" />',
-});
+export const Primary = {
+  args: {
+    backgroundColor: '#ff0',
+    label: 'Button',
+  },
+  render: (args, { argTypes }) => ({
+    components: { Button },
+    props: Object.keys(argTypes),
+    template: '<Button v-bind="$props" />',
+  }),
+};
 
-//👇 Each story then reuses that template
-export const Primary = Template.bind({});
-Primary.args = { background: '#ff0', label: 'Button' };
+export const Secondary = {
+  args: {
+    ...Primary.args,
+    label: '😄👍😍💯',
+  },
+  render: (args, { argTypes }) => ({
+    components: { Button },
+    props: Object.keys(argTypes),
+    template: '<Button v-bind="$props" />',
+  }),
+};
 
-export const Secondary = Template.bind({});
-Secondary.args = { ...Primary.args, label: '😄👍😍💯' };
-
-export const Tertiary = Template.bind({});
-Tertiary.args = { ...Primary.args, label: '📚📕📈🤓' };
+export const Tertiary = {
+  args: {
+    ...Primary.args,
+    label: '📚📕📈🤓',
+  },
+  render: (args, { argTypes }) => ({
+    components: { Button },
+    props: Object.keys(argTypes),
+    template: '<Button v-bind="$props" />',
+  }),
+};
 ```

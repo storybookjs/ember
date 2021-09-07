@@ -1,9 +1,15 @@
 ```js
 // MyComponent.story.js | MyComponent.story.jsx | MyComponent.story.ts | MyComponent.story.tsx
 
-export const Simple = () => <MyComponent />;
+import { MyComponent } from './MyComponent';
 
-Simple.storyName = 'So simple!';
-Simple.decorators = [ ... ];
-Simple.parameters = { ... };
+export default {
+  component: MyComponent,
+};
+
+export const Simple = {
+  decorators: [...],
+  name:'So simple!',
+  parameters: {...},
+};
 ```

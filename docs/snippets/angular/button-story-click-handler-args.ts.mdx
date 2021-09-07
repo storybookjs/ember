@@ -1,0 +1,22 @@
+```ts
+//  Button.stories.ts
+
+import { action } from '@storybook/addon-actions';
+
+import { Button } from './button.component';
+
+export default {
+  component: Button,
+};
+
+export const Text = {
+  args: {
+    label: 'Hello',
+    onClick: action('clicked'),
+  },
+  render: (args) => ({
+    props: args,
+    template: `<storybook-button [label]="label" (onClick)="onClick()"></storybook-button>`,
+  }),
+};
+```

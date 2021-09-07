@@ -1,19 +1,42 @@
 ```js
 // Button.stories.js
 
-//👇 We create a “template” of how args map to rendering
-const Template = (args) => ({
-  Component: Button,
-  props: args,
-});
+import Button from './Button.svelte';
 
-//👇 Each story then reuses that template
-export const Primary = Template.bind({});
-Primary.args = { background: '#ff0', label: 'Button' };
+export default {
+  component: Button,
+};
 
-export const Secondary = Template.bind({});
-Secondary.args = { ...Primary.args, label: '😄👍😍💯' };
+export const Primary = {
+  args: {
+    backgroundColor: '#ff0',
+    label: 'Button',
+  },
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
+};
 
-export const Tertiary = Template.bind({});
-Tertiary.args = { ...Primary.args, label: '📚📕📈🤓' };
+export const Secondary = {
+  args: {
+    ...Primary.args,
+    label: '😄👍😍💯',
+  },
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
+};
+
+export const Tertiary = {
+  args: {
+    ...Primary.args,
+    label: '📚📕📈🤓',
+  },
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
+};
 ```

@@ -5,11 +5,12 @@ import Button from './Button.vue';
 
 export default {
   component: Button,
-  title: 'Components/Button',
 };
 
-export const Primary = () => ({
-  components: { Button },
-  template: '<Button primary label="Button" />',
-});
+export const Primary = {
+  render: () => ({
+    components: { Button },
+    template: '<Button primary label="Button" />',
+  }),
+};
 ```

@@ -1,15 +1,33 @@
 ```js
 // YourComponent.stories.js | YourComponent.stories.jsx | YourComponent.stories.ts | YourComponent.stories.tsx
 
-ArrayInclude = Template.bind({})
-ArrayInclude.parameters = { controls: { include: ['foo', 'bar'] } };
+import { YourComponent } from './YourComponent';
 
-RegexInclude = Template.bind({})
-RegexInclude.parameters = { controls: { include: /^hello*/ } };
+export default {
+  component: YourComponent,
+};
 
-ArrayExclude = Template.bind({})
-ArrayExclude.parameters = { controls: { exclude: ['foo', 'bar'] } };
+export const ArrayInclude = {
+  parameters: {
+    controls: { include: ['foo', 'bar'] },
+  },
+};
 
-RegexExclude = Template.bind({})
-RegexExclude.parameters = { controls: { exclude: /^hello*/ } };
+export const RegexInclude = {
+  parameters: {
+    controls: { include: /^hello*/ },
+  },
+};
+
+export const ArrayExclude = {
+  parameters: {
+    controls: { exclude: ['foo', 'bar'] },
+  },
+};
+
+export const RegexExclude = {
+  parameters: {
+    controls: { exclude: /^hello*/ },
+  },
+};
 ```

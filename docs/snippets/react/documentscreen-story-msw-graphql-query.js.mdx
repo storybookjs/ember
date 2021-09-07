@@ -7,11 +7,10 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { graphql } from 'msw';
 
-import DocumentScreen from './DocumentScreen';
+import { DocumentScreen } from './YourPage';
 
 export default {
   component: DocumentScreen,
-  title: 'Mock GraphQL query with Storybook and MSW',
 };
 
 const mockedClient = new ApolloClient({
@@ -78,34 +77,40 @@ const TestData = {
   ],
 };
 
-const PageTemplate = () => (
-  <ApolloProvider client={mockedClient}>
-    <DocumentScreen />
-  </ApolloProvider>
-);
-
-export const MockedSuccess = PageTemplate.bind({});
-MockedSuccess.parameters = {
-  msw: [
-    graphql.query('AllInfoQuery', (req, res, ctx) => {
-      return res(ctx.data(TestData));
-    }),
-  ],
+export const MockedSuccess = {
+  parameters: {
+    msw: [
+      graphql.query('AllInfoQuery', (req, res, ctx) => {
+        return res(ctx.data(TestData));
+      }),
+    ],
+  },
+  render: () => (
+    <ApolloProvider client={mockedClient}>
+      <DocumentScreen />
+    </ApolloProvider>
+  ),
 };
 
-export const MockedError = PageTemplate.bind({});
-MockedError.parameters = {
-  msw: [
-    graphql.query('AllInfoQuery', (req, res, ctx) => {
-      return res(
-        ctx.delay(800),
-        ctx.errors([
-          {
-            message: 'Access denied',
-          },
-        ])
-      );
-    }),
-  ],
+export const MockedError = {
+  parameters: {
+    msw: [
+      graphql.query('AllInfoQuery', (req, res, ctx) => {
+        return res(
+          ctx.delay(800),
+          ctx.errors([
+            {
+              message: 'Access denied',
+            },
+          ])
+        );
+      }),
+    ],
+  },
+  render: () => (
+    <ApolloProvider client={mockedClient}>
+      <DocumentScreen />
+    </ApolloProvider>
+  ),
 };
 ```

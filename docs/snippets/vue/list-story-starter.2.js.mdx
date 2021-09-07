@@ -5,13 +5,14 @@ import List from './ListComponent.vue';
 
 export default {
   component: List,
-  title: 'List',
 };
 
 // Always an empty list, not super interesting
-const Template = (args, { argTypes }) => ({
-  components: { List },
-  props: Object.keys(argTypes),
-  template: '<list v-bind="$props"/>',
-});
+export const Empty = {
+  render: (args, { argTypes }) => ({
+    components: { List },
+    props: Object.keys(argTypes),
+    template: '<List v-bind="$props"/>',
+  }),
+};
 ```

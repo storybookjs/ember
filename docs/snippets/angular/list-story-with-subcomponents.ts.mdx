@@ -1,25 +1,31 @@
 ```ts
 // List.stories.ts
 
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { ListItemComponent } from './list-item.component';
-import { ListComponent } from './list.component';
+import { moduleMetadata } from '@storybook/angular';
+
+import { CommonModule } from '@angular/common';
+
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 export default {
-  title: 'List',
-  component: ListComponent,
-  subcomponents: { ListItemComponent }, //👈 Adds the ListItem component as a subcomponent
-} as Meta;
+  component: List,
+  subcomponents: { ListItem }, //👈 Adds the ListItem component as a subcomponent
+  decorators: [
+    moduleMetadata({
+      declarations: [ListItem],
+      imports: [CommonModule],
+    }),
+  ],
+};
 
-const Template: Story<ListComponent> = (args) => ({
-  props: args,
-  moduleMetadata: {
-    declarations: [ListComponent, ListItemComponent],
-  },
-});
+export const Empty = {};
 
-export const OneItem = Template.bind({});
-OneItem.args = {
-  items: [ListItemComponent],
+export const OneItem = {
+  args: {},
+  render: (args) => ({
+    props: args,
+    template: `<list><list-item></list-item></list>`,
+  }),
 };
 ```

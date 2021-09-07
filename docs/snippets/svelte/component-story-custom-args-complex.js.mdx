@@ -4,7 +4,6 @@
 import YourComponent from './YourComponent.svelte';
 
 export default {
-  title: 'A complex case with a function',
   component: YourComponent,
   //👇 Creates specific argTypes
   argTypes: {
@@ -23,17 +22,22 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
   // Makes some computations and returns something
 };
 
-const Template = (args) => {
-  const { propertyA, propertyB } = args;
-  
-  //👇 Assigns the function result to a variable
-  const someFunctionResult = someFunction(propertyA, propertyB);
-  return {
-    Component: YourComponent,
-    props: {
-      ...args,
-      someProperty: someFunctionResult,
-    },
-  };
+export const ExampleStory = {
+  args: {
+    propertyA: 'Something',
+    propertyB: 'Something else',
+  },
+  render: (args) => {
+    const { propertyA, propertyB } = args;
+    //👇 Assigns the function result to a variable
+    const someFunctionResult = someFunction(propertyA, propertyB);
+    return {
+      Component: YourComponent,
+      props: {
+        ...args,
+        someProperty: someFunctionResult,
+      },
+    };
+  },
 };
 ```
