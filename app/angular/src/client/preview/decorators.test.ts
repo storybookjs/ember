@@ -120,7 +120,7 @@ describe('moduleMetadata', () => {
 
     const [storybook] = getStorybook();
 
-    expect(storybook.stories[0].render().moduleMetadata).toEqual({
+    expect(storybook.stories[0].render({}).moduleMetadata).toEqual({
       declarations: [MockComponent],
       providers: [MockService],
       entryComponents: [MockComponent],

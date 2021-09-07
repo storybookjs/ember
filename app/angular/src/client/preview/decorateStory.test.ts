@@ -154,7 +154,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ template: '</child>' }), decorators);
 
-      expect(decorated()).toEqual({
+      expect(decorated(makeContext({}))).toEqual({
         template:
           '<great-grandparent><grandparent><parent></child></parent></grandparent></great-grandparent>',
         userDefinedTemplate: true,
@@ -220,7 +220,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ component: FooComponent }), decorators);
 
-      expect(decorated()).toEqual({
+      expect(decorated(makeContext({}))).toEqual({
         template:
           '<great-grandparent><grandparent><parent><foo></foo></parent></grandparent></great-grandparent>',
         component: FooComponent,
@@ -288,7 +288,7 @@ describe('decorateStory', () => {
       ];
       const decorated = decorateStory(() => ({ props: { a: [0] } }), decorators);
 
-      expect(decorated()).toEqual({ props: { a: [0, 1, 2, 3] } });
+      expect(decorated(makeContext({}))).toEqual({ props: { a: [0, 1, 2, 3] } });
     });
 
     it('passes context through to sub decorators', () => {
