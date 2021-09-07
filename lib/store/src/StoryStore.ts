@@ -10,7 +10,7 @@ import {
 import mapValues from 'lodash/mapValues';
 import pick from 'lodash/pick';
 
-import { StoriesListStore } from './StoriesListStore';
+import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile } from './processCSFFile';
@@ -57,7 +57,7 @@ function normalizeProjectAnnotations<TFramework extends AnyFramework>({
 }
 
 export class StoryStore<TFramework extends AnyFramework> {
-  storiesList: StoriesListStore;
+  storyIndex: StoryIndexStore;
 
   importFn: ModuleImportFn;
 
@@ -78,13 +78,13 @@ export class StoryStore<TFramework extends AnyFramework> {
   constructor({
     importFn,
     projectAnnotations,
-    fetchStoriesList,
+    fetchStoryIndex,
   }: {
     importFn: ModuleImportFn;
     projectAnnotations: ProjectAnnotations<TFramework>;
-    fetchStoriesList: ConstructorParameters<typeof StoriesListStore>[0]['fetchStoriesList'];
+    fetchStoryIndex: ConstructorParameters<typeof StoryIndexStore>[0]['fetchStoryIndex'];
   }) {
-    this.storiesList = new StoriesListStore({ fetchStoriesList });
+    this.storyIndex = new StoryIndexStore({ fetchStoryIndex });
     this.importFn = importFn;
     this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
 
@@ -98,7 +98,7 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   async initialize({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
-    await this.storiesList.initialize();
+    await this.storyIndex.initialize();
 
     if (cacheAllCSFFiles) {
       await this.cacheAllCSFFiles();
@@ -106,7 +106,7 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   initializeSync({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
-    this.storiesList.initializeSync();
+    this.storyIndex.initializeSync();
 
     if (cacheAllCSFFiles) {
       this.cacheAllCSFFilesSync();
@@ -123,7 +123,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.importFn = importFn;
 
     // We need to refetch the stories list as it may have changed too
-    await this.storiesList.cacheStoriesList();
+    await this.storyIndex.cache();
 
     if (this.cachedCSFFiles) {
       await this.cacheAllCSFFiles();
@@ -131,13 +131,13 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   async loadCSFFileByStoryId(storyId: StoryId): Promise<CSFFile<TFramework>> {
-    const { importPath, title } = this.storiesList.storyIdToMetadata(storyId);
+    const { importPath, title } = this.storyIndex.storyIdToEntry(storyId);
     const moduleExports = await this.importFn(importPath);
     return this.processCSFFileWithCache(moduleExports, title);
   }
 
   loadCSFFileByStoryIdSync(storyId: StoryId): CSFFile<TFramework> {
-    const { importPath, title } = this.storiesList.storyIdToMetadata(storyId);
+    const { importPath, title } = this.storyIndex.storyIdToEntry(storyId);
     const moduleExports = this.importFn(importPath);
     if (Promise.resolve(moduleExports) === moduleExports) {
       throw new Error(
@@ -149,7 +149,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   async loadAllCSFFiles(): Promise<Record<Path, CSFFile<TFramework>>> {
     const importPaths: Record<Path, StoryId> = {};
-    Object.entries(this.storiesList.storiesList.stories).forEach(([storyId, { importPath }]) => {
+    Object.entries(this.storyIndex.stories).forEach(([storyId, { importPath }]) => {
       importPaths[importPath] = storyId;
     });
 
@@ -170,7 +170,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   loadAllCSFFilesSync(): Record<Path, CSFFile<TFramework>> {
     const importPaths: Record<Path, StoryId> = {};
-    Object.entries(this.storiesList.storiesList.stories).forEach(([storyId, { importPath }]) => {
+    Object.entries(this.storyIndex.stories).forEach(([storyId, { importPath }]) => {
       importPaths[importPath] = storyId;
     });
 
@@ -245,7 +245,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
     }
 
-    return Object.entries(this.storiesList.storiesList.stories)
+    return Object.entries(this.storyIndex.stories)
       .map(([storyId, { importPath }]) => {
         const csfFile = this.cachedCSFFiles[importPath];
         const story = this.storyFromCSFFile({ storyId, csfFile });
@@ -314,7 +314,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       throw new Error('Cannot call fromId/raw() unless you call cacheAllCSFFiles() first.');
     }
 
-    const { importPath } = this.storiesList.storyIdToMetadata(storyId);
+    const { importPath } = this.storyIndex.storyIdToEntry(storyId);
     if (!importPath) {
       throw new Error(`Unknown storyId ${storyId}`);
     }

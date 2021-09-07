@@ -21,7 +21,6 @@ import {
   CSFFile,
   StoryStore,
   StorySpecifier,
-  StoriesList,
 } from '@storybook/store';
 
 import { WebProjectAnnotations, DocsContextProps } from './types';
@@ -59,11 +58,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   constructor({
     getProjectAnnotations,
     importFn,
-    fetchStoriesList,
+    fetchStoryIndex,
   }: {
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
     importFn: ModuleImportFn;
-    fetchStoriesList: ConstructorParameters<typeof StoryStore>[0]['fetchStoriesList'];
+    fetchStoryIndex: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
@@ -74,7 +73,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+    this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
   }
 
   getProjectAnnotationsOrRenderError(
@@ -141,7 +140,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     const { storySpecifier, viewMode, args } = this.urlStore.selectionSpecifier;
-    const storyId = this.storyStore.storiesList.storyIdFromSpecifier(storySpecifier);
+    const storyId = this.storyStore.storyIndex.storyIdFromSpecifier(storySpecifier);
 
     if (!storyId) {
       this.renderMissingStory(storySpecifier);

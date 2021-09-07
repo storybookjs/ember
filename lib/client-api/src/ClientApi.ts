@@ -486,10 +486,10 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
   }
 
   getStorybook = (): GetStorybookKind<TFramework>[] => {
-    const storiesList = this.getStoriesList();
+    const storyIndex = this.getStoriesList();
 
     const kinds: Record<ComponentTitle, GetStorybookKind<TFramework>> = {};
-    Object.entries(storiesList.stories).forEach(([storyId, { title, name, importPath }]) => {
+    Object.entries(storyIndex.stories).forEach(([storyId, { title, name, importPath }]) => {
       if (!kinds[title]) {
         kinds[title] = { kind: title, fileName: importPath, stories: [] };
       }

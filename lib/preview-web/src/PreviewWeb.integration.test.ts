@@ -9,7 +9,7 @@ import {
   importFn,
   projectAnnotations,
   getProjectAnnotations,
-  fetchStoriesList,
+  fetchStoryIndex,
   emitter,
   mockChannel,
   waitForRender,
@@ -61,7 +61,7 @@ describe('PreviewWeb', () => {
         storyFn()
       );
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList }).initialize();
+      await new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex }).initialize();
 
       await waitForRender();
 
@@ -71,7 +71,7 @@ describe('PreviewWeb', () => {
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList });
+      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -106,7 +106,7 @@ describe('PreviewWeb', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoriesList });
+      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex });
       await preview.initialize();
       await waitForRender();
 

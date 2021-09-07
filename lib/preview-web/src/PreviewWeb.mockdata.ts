@@ -33,7 +33,7 @@ export const projectAnnotations = {
 };
 export const getProjectAnnotations = () => projectAnnotations;
 
-export const storiesList: StoriesList = {
+export const storyIndex: StoriesList = {
   v: 3,
   stories: {
     'component-one--a': {
@@ -53,7 +53,7 @@ export const storiesList: StoriesList = {
     },
   },
 };
-export const fetchStoriesList = async () => storiesList;
+export const fetchStoryIndex = async () => storyIndex;
 
 export const emitter = new EventEmitter();
 export const mockChannel = {

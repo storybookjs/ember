@@ -1,9 +1,9 @@
-import { StoriesListStore } from './StoriesListStore';
-import { StoriesList } from './types';
+import { StoryIndexStore } from './StoryIndexStore';
+import { StoryIndex } from './types';
 
 jest.mock('@storybook/channel-websocket', () => () => ({ on: jest.fn() }));
 
-const stories: StoriesList = {
+const stories: StoryIndex = {
   v: 3,
   stories: {
     'component-one--a': {
@@ -23,9 +23,9 @@ const stories: StoriesList = {
     },
   },
 };
-const fetchStoriesList = async () => stories;
+const fetchStoryIndex = async () => stories;
 
-const makeFetchStoriesList = (titlesAndNames) => {
+const makeFetchStoryIndex = (titlesAndNames) => {
   return async () => ({
     v: 3,
     stories: Object.fromEntries(
@@ -41,19 +41,19 @@ const makeFetchStoriesList = (titlesAndNames) => {
   });
 };
 
-describe('StoriesListStore', () => {
+describe('StoryIndexStore', () => {
   describe('storyIdFromSpecifier', () => {
     describe('if you use *', () => {
       it('selects the first story in the store', async () => {
-        const store = new StoriesListStore({ fetchStoriesList });
+        const store = new StoryIndexStore({ fetchStoryIndex });
         await store.initialize();
 
         expect(store.storyIdFromSpecifier('*')).toEqual('component-one--a');
       });
 
       it('selects nothing if there are no stories', async () => {
-        const store = new StoriesListStore({
-          fetchStoriesList: makeFetchStoriesList([]),
+        const store = new StoryIndexStore({
+          fetchStoryIndex: makeFetchStoryIndex([]),
         });
         await store.initialize();
 
@@ -63,15 +63,15 @@ describe('StoriesListStore', () => {
 
     describe('if you use a component or group id', () => {
       it('selects the first story for the component', async () => {
-        const store = new StoriesListStore({ fetchStoriesList });
+        const store = new StoryIndexStore({ fetchStoryIndex });
         await store.initialize();
 
         expect(store.storyIdFromSpecifier('component-two')).toEqual('component-two--c');
       });
 
       it('selects the first story for the group', async () => {
-        const store = new StoriesListStore({
-          fetchStoriesList: makeFetchStoriesList([
+        const store = new StoryIndexStore({
+          fetchStoryIndex: makeFetchStoryIndex([
             ['g1/a', '1'],
             ['g2/a', '1'],
             ['g2/b', '1'],
@@ -84,8 +84,8 @@ describe('StoriesListStore', () => {
 
       // Making sure the fix #11571 doesn't break this
       it('selects the first story if there are two stories in the group of different lengths', async () => {
-        const store = new StoriesListStore({
-          fetchStoriesList: makeFetchStoriesList([
+        const store = new StoryIndexStore({
+          fetchStoryIndex: makeFetchStoryIndex([
             ['a', 'long-long-long'],
             ['a', 'short'],
           ]),
@@ -96,7 +96,7 @@ describe('StoriesListStore', () => {
       });
 
       it('selects nothing if the component or group does not exist', async () => {
-        const store = new StoriesListStore({ fetchStoriesList });
+        const store = new StoryIndexStore({ fetchStoryIndex });
         await store.initialize();
 
         expect(store.storyIdFromSpecifier('random')).toBeUndefined();
@@ -104,14 +104,14 @@ describe('StoriesListStore', () => {
     });
     describe('if you use a storyId', () => {
       it('selects a specific story', async () => {
-        const store = new StoriesListStore({ fetchStoriesList });
+        const store = new StoryIndexStore({ fetchStoryIndex });
         await store.initialize();
 
         expect(store.storyIdFromSpecifier('component-one--a')).toEqual('component-one--a');
       });
 
       it('selects nothing if you the story does not exist', async () => {
-        const store = new StoriesListStore({ fetchStoriesList });
+        const store = new StoryIndexStore({ fetchStoryIndex });
         await store.initialize();
 
         expect(store.storyIdFromSpecifier('component-one--c')).toBeUndefined();
@@ -119,8 +119,8 @@ describe('StoriesListStore', () => {
 
       // See #11571
       it('does NOT select an earlier story that this story id is a prefix of', async () => {
-        const store = new StoriesListStore({
-          fetchStoriesList: makeFetchStoriesList([
+        const store = new StoryIndexStore({
+          fetchStoryIndex: makeFetchStoryIndex([
             ['a', '31'],
             ['a', '3'],
           ]),
@@ -132,24 +132,24 @@ describe('StoriesListStore', () => {
     });
   });
 
-  describe('storyIdToMetadata', () => {
+  describe('storyIdToEntry', () => {
     it('works when the story exists', async () => {
-      const store = new StoriesListStore({ fetchStoriesList });
+      const store = new StoryIndexStore({ fetchStoryIndex });
       await store.initialize();
 
-      expect(store.storyIdToMetadata('component-one--a')).toEqual({
+      expect(store.storyIdToEntry('component-one--a')).toEqual({
         name: 'A',
         title: 'Component One',
         importPath: './src/ComponentOne.stories.js',
       });
 
-      expect(store.storyIdToMetadata('component-one--b')).toEqual({
+      expect(store.storyIdToEntry('component-one--b')).toEqual({
         name: 'B',
         title: 'Component One',
         importPath: './src/ComponentOne.stories.js',
       });
 
-      expect(store.storyIdToMetadata('component-two--c')).toEqual({
+      expect(store.storyIdToEntry('component-two--c')).toEqual({
         name: 'C',
         title: 'Component Two',
         importPath: './src/ComponentTwo.stories.js',
@@ -157,10 +157,10 @@ describe('StoriesListStore', () => {
     });
 
     it('throws when the story does not', async () => {
-      const store = new StoriesListStore({ fetchStoriesList });
+      const store = new StoryIndexStore({ fetchStoryIndex });
       await store.initialize();
 
-      expect(() => store.storyIdToMetadata('random')).toThrow(/Didn't find 'random'/);
+      expect(() => store.storyIdToEntry('random')).toThrow(/Didn't find 'random'/);
     });
   });
 });

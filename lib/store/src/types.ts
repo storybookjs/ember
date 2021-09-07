@@ -76,15 +76,15 @@ export declare type RenderContext<TFramework extends AnyFramework> = StoryIdenti
   unboundStoryFn: LegacyStoryFn<TFramework>;
 };
 
-export interface StoriesListStory {
+export interface StoryIndexEntry {
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
 }
 
-export interface StoriesList {
+export interface StoryIndex {
   v: number;
-  stories: Record<StoryId, StoriesListStory>;
+  stories: Record<StoryId, StoryIndexEntry>;
 }
 
 export type StorySpecifier = StoryId | { name: StoryName; title: ComponentTitle } | '*';

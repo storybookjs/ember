@@ -5,7 +5,7 @@ import { HooksContext } from '../../addons/dist/ts3.9/hooks';
 import { prepareStory } from './prepareStory';
 import { processCSFFile } from './processCSFFile';
 import { StoryStore } from './StoryStore';
-import { StoriesList } from './types';
+import { StoryIndex } from './types';
 
 // Spy on prepareStory/processCSFFile
 jest.mock('./prepareStory', () => ({
@@ -42,7 +42,7 @@ const projectAnnotations: ProjectAnnotations<any> = {
   render: jest.fn(),
 };
 
-const storiesList: StoriesList = {
+const storyIndex: StoryIndex = {
   v: 3,
   stories: {
     'component-one--a': {
@@ -62,12 +62,12 @@ const storiesList: StoriesList = {
     },
   },
 };
-const fetchStoriesList = async () => storiesList;
+const fetchStoryIndex = async () => storyIndex;
 
 describe('StoryStore', () => {
   describe('projectAnnotations', () => {
     it('normalizes on initialization', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       expect(store.projectAnnotations.globalTypes).toEqual({
@@ -79,7 +79,7 @@ describe('StoryStore', () => {
     });
 
     it('normalizes on updateProjectAnnotations', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       store.updateProjectAnnotations(projectAnnotations);
@@ -94,7 +94,7 @@ describe('StoryStore', () => {
 
   describe('loadStory', () => {
     it('pulls the story via the importFn', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       importFn.mockClear();
@@ -108,7 +108,7 @@ describe('StoryStore', () => {
     });
 
     it('uses a cache', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -132,7 +132,7 @@ describe('StoryStore', () => {
 
   describe('componentStoriesFromCSFFile', () => {
     it('returns all the stories in the file', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const csfFile = await store.loadCSFFileByStoryId('component-one--a');
@@ -145,7 +145,7 @@ describe('StoryStore', () => {
 
   describe('getStoryContext', () => {
     it('returns the args and globals correctly', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -157,7 +157,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the args and globals correctly when they change', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -172,7 +172,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the same hooks each time', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -184,7 +184,7 @@ describe('StoryStore', () => {
 
   describe('cleanupStory', () => {
     it('cleans the hooks from the context', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -198,7 +198,7 @@ describe('StoryStore', () => {
 
   describe('loadAllCSFFiles', () => {
     it('imports *all* csf files', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       importFn.mockClear();
@@ -213,14 +213,14 @@ describe('StoryStore', () => {
 
   describe('extract', () => {
     it('throws if you have not called cacheAllCSFFiles', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
 
       expect(() => store.extract()).toThrow(/Cannot call extract/);
     });
 
     it('produces objects with functions and hooks stripped', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
       await store.cacheAllCSFFiles();
 
@@ -332,7 +332,7 @@ describe('StoryStore', () => {
       const store = new StoryStore({
         importFn: docsOnlyImportFn,
         projectAnnotations,
-        fetchStoriesList,
+        fetchStoryIndex,
       });
       await store.initialize();
       await store.cacheAllCSFFiles();
@@ -350,7 +350,7 @@ describe('StoryStore', () => {
 
   describe('getSetStoriesPayload', () => {
     it('maps stories list to payload correctly', async () => {
-      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
       await store.initialize();
       await store.cacheAllCSFFiles();
 
