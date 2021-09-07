@@ -17,6 +17,7 @@ import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
 import { getComponentName } from './utils';
 import { ArgTypesExtractor } from '../lib/docgen/types';
 import { lookupStoryId } from './Story';
+import { useStory } from './useStory';
 
 interface BaseProps {
   include?: PropDescriptor;
@@ -141,41 +142,40 @@ export const StoryTable: FC<
     exclude,
     sort,
   } = props;
-  const { argTypes, parameters } = storyById(currentId);
-  let storyArgTypes: StrictArgTypes;
   try {
     let storyId;
     switch (storyName) {
       case CURRENT_SELECTION: {
         storyId = currentId;
-        storyArgTypes = argTypes;
         break;
       }
       case PRIMARY_STORY: {
         const primaryStory = componentStories()[0];
         storyId = primaryStory.id;
-        storyArgTypes = primaryStory.argTypes;
         break;
       }
       default: {
         storyId = lookupStoryId(storyName, context);
-        storyArgTypes = storyById(storyId).argTypes;
       }
     }
-    storyArgTypes = filterArgTypes(storyArgTypes, include, exclude);
+    const story = useStory(storyId, context);
+    if (!story) {
+      return <div>Loading...</div>;
+    }
+
+    const argTypes = filterArgTypes(story.argTypes, include, exclude);
 
     const mainLabel = getComponentName(component) || 'Story';
 
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, context);
-    let tabs = { [mainLabel]: { rows: storyArgTypes, args, updateArgs, resetArgs } } as Record<
+    let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
     >;
 
     // Use the dynamically generated component tabs if there are no controls
-    const storyHasArgsWithControls =
-      storyArgTypes && Object.values(storyArgTypes).find((v) => !!v?.control);
+    const storyHasArgsWithControls = argTypes && Object.values(argTypes).find((v) => !!v?.control);
 
     if (!storyHasArgsWithControls) {
       updateArgs = null;

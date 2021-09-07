@@ -310,6 +310,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // NOTE: these two functions are *sync* so cannot access stories from other CSF files
       storyById: (storyId: StoryId) => this.storyStore.storyFromCSFFile({ storyId, csfFile }),
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
+      loadStory: (storyId: StoryId) => this.storyStore.loadStory({ storyId }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
       getStoryContext: (renderedStory: Story<TFramework>) =>
         ({

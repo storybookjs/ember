@@ -12,9 +12,10 @@ import { resetComponents, Story as PureStory } from '@storybook/components';
 import { toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import global from 'global';
-import { CURRENT_SELECTION } from './types';
 
+import { CURRENT_SELECTION } from './types';
 import { DocsContext, DocsContextProps } from './DocsContext';
+import { useStory } from './useStory';
 
 export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 
@@ -54,13 +55,11 @@ export const lookupStoryId = (
     storyNameFromExport(mdxStoryNameToKey[storyName])
   );
 
-// TODO -- this can be async
-export const getStory = (props: StoryProps, context: DocsContextProps<any>): StoryType<any> => {
+export const getStoryId = (props: StoryProps, context: DocsContextProps<AnyFramework>): StoryId => {
   const { id } = props as StoryRefProps;
   const { name } = props as StoryDefProps;
   const inputId = id === CURRENT_SELECTION ? context.id : id;
-  const previewId = inputId || lookupStoryId(name, context);
-  return context.storyById(previewId);
+  return inputId || lookupStoryId(name, context);
 };
 
 export const getStoryProps = (
@@ -95,7 +94,6 @@ export const getStoryProps = (
     );
   }
 
-  // TODO -- loaders ?
   const boundStoryFn = () =>
     story.unboundStoryFn({
       ...context.getStoryContext(story),
@@ -114,7 +112,12 @@ export const getStoryProps = (
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const ref = useRef();
-  const story = getStory(props, context);
+  const story = useStory(getStoryId(props, context), context);
+
+  if (!story) {
+    return <div>Loading...</div>;
+  }
+
   const { componentId, id, title, name } = story;
   const renderContext = {
     componentId,
