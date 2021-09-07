@@ -3,13 +3,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel } from '@storybook/api';
 import { AddonPanel, Button, Icons } from '@storybook/components';
-import { styled } from '@storybook/theming';
+import { styled, themes } from '@storybook/theming';
 
 import { EVENTS } from './constants';
 import { Call, CallRef, CallState } from './types';
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
+import { Subnav } from './components/Subnav/Subnav';
 
 interface PanelProps {
   active: boolean;
@@ -40,20 +41,21 @@ const Interaction = ({
   callsById: Record<Call['id'], Call>;
   onClick: React.MouseEventHandler<HTMLElement>;
 }) => {
-  const RowContainer = styled.div({
+  const RowContainer = styled.div(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     background: call.state === CallState.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
-    borderBottom: '1px solid #6663',
+    borderBottom: `1px solid ${theme.color.mediumlight}`,
     fontFamily: 'Monaco, monospace',
     fontSize: 12,
-  });
+  }));
 
   const RowLabel = styled.div({
     display: 'grid',
     gridTemplateColumns: '15px 1fr',
     alignItems: 'center',
-    padding: '8px 10px',
+    height: 40,
+    padding: '8px 15px',
     cursor: call.state === CallState.ERROR ? 'default' : 'pointer',
     opacity: call.state === CallState.PENDING ? 0.4 : 1,
     '&:hover': {
@@ -240,7 +242,13 @@ export const Panel: React.FC<PanelProps> = (props) => {
   return (
     <AddonPanel {...props}>
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
-
+      <Subnav
+        status={hasException ? CallState.ERROR : CallState.DONE}
+        onPrevious={prev}
+        onNext={next}
+        onReplay={stop}
+        goToEnd={stop}
+      />
       {interactions.map((call) => (
         <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
       ))}

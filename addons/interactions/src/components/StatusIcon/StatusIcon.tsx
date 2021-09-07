@@ -22,20 +22,10 @@ const StyledStatusIcon = styled(Icons)(({ status }: StatusIconProps) => ({
 }));
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
-  // TODO: update when stop icon is added to design library
-  const icon = status === CallState.PENDING ? 'circle' : 'check';
-  if (status === CallState.ERROR)
-    return (
-      <span
-        style={{
-          display: 'block',
-          width: 10,
-          height: 10,
-          background: red,
-          borderRadius: 1,
-          justifySelf: 'center',
-        }}
-      />
-    );
+  const icon = {
+    [CallState.DONE]: 'check',
+    [CallState.PENDING]: 'circle',
+    [CallState.ERROR]: 'stopalt',
+  }[status] as IconsProps['icon'];
   return <StyledStatusIcon status={status} icon={icon} />;
 };
