@@ -14,7 +14,7 @@ import themingPaths from '@storybook/theming/paths';
 import {
   toRequireContextString,
   es6Transpiler,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   nodeModulesPaths,
   interpolate,
   Options,
@@ -178,7 +178,7 @@ export default async ({
         template,
       }),
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
       isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),

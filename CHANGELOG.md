@@ -1,3 +1,27 @@
+## 6.4.0-alpha.34 (September 7, 2021)
+
+### Features
+
+- Angular: Support storybook configuration for projects with only angular Library ([#15744](https://github.com/storybookjs/storybook/pull/15744))
+- CLI: Show framework name in startup banner ([#15966](https://github.com/storybookjs/storybook/pull/15966))
+
+### Bug Fixes
+
+- CLI: Fix sb link to yarn3 repos ([#15989](https://github.com/storybookjs/storybook/pull/15989))
+- Core: Pass proper stack of an error ([#15864](https://github.com/storybookjs/storybook/pull/15864))
+- Addon-docs/Angular: Fix default values in ArgsTable ([#15881](https://github.com/storybookjs/storybook/pull/15881))
+
+### Maintenance
+
+- Core: Replaced `process.env` override in `DefinePlugin` config ([#15925](https://github.com/storybookjs/storybook/pull/15925))
+- CSF: Infer defaultValue of argtype based on arg ([#15798](https://github.com/storybookjs/storybook/pull/15798))
+
+## 6.3.8 (September 3, 2021)
+
+### Maintenance
+
+- Core: Write JSON stats file in streaming fashion and omit `chunks` for brevity ([#15889](https://github.com/storybookjs/storybook/pull/15889))
+
 ## 6.4.0-alpha.33 (September 1, 2021)
 
 ### Bug Fixes

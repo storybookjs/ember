@@ -25,7 +25,7 @@ import { getManagerBuilder } from './utils/get-manager-builder';
 
 export async function buildDevStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   const { packageJson, versionUpdates, releaseNotes } = options;
-  const { version } = packageJson;
+  const { version, name = '' } = packageJson;
 
   // updateInfo and releaseNotesData are cached, so this is typically pretty fast
   const [port, versionCheck, releaseNotesData] = await Promise.all([
@@ -110,9 +110,14 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
     return;
   }
 
+  // Get package name and capitalize it e.g. @storybook/react -> React
+  const packageName = name.split('@storybook/').length > 0 ? name.split('@storybook/')[1] : name;
+  const frameworkName = packageName.charAt(0).toUpperCase() + packageName.slice(1);
+
   outputStartupInformation({
     updateInfo: versionCheck,
     version,
+    name: frameworkName,
     address,
     networkAddress,
     managerTotalTime,
