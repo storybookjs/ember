@@ -262,7 +262,7 @@ export interface StorybookConfig {
    *
    * @example `['./public']` or `[{from: './public', 'to': '/assets'}]`
    */
-  staticDirs: (DirectoryMapping | string)[];
+  staticDirs?: (DirectoryMapping | string)[];
   logLevel?: string;
   features?: {
     /**
