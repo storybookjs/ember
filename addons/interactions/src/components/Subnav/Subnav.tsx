@@ -8,7 +8,7 @@ import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
 
 const StyledSubnav = styled.nav(({ theme }) => ({
   background: theme.background.app,
-  borderBottom: `2px solid ${theme.color.border}`,
+  borderBottom: `1px solid ${theme.color.border}`,
   height: 40,
   display: 'flex',
   alignItems: 'center',
@@ -31,13 +31,15 @@ export interface SubnavProps {
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 4,
   padding: 6,
-  color: theme.color.mediumdark,
+  color: theme.color.dark,
   '&:hover,&:focus-visible': {
     color: theme.color.secondary,
   },
 }));
 
 const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+  color: theme.color.mediumdark,
+  margin: '0 3px',
   '&:hover,&:focus-visible': {
     background: transparentize(0.9, theme.color.secondary),
   },
@@ -59,7 +61,7 @@ const StyledSeparator = styled(Separator)({
 });
 
 const StyledLocation = styled(P)(({ theme }) => ({
-  color: theme.color.mediumdark,
+  color: theme.color.dark,
   justifyContent: 'flex-end',
   textAlign: 'right',
   paddingRight: 15,
@@ -68,11 +70,15 @@ const StyledLocation = styled(P)(({ theme }) => ({
 const Group = styled.div({
   display: 'flex',
   alignItems: 'center',
-  '> *': {
-    '&:not(:nth-child(1))': {
-      margin: '0px 3px',
-    },
-  },
+});
+
+const PlaybackButton = styled(StyledIconButton)({
+  marginLeft: 9,
+});
+
+const JumpToEndButton = styled(StyledButton)({
+  marginLeft: 9,
+  marginRight: 9,
 });
 
 export const Subnav: React.FC<SubnavProps> = ({
@@ -95,13 +101,13 @@ export const Subnav: React.FC<SubnavProps> = ({
       <Group>
         <StatusBadge status={status} />
 
-        <StyledButton onClick={goToEnd}>{buttonText}</StyledButton>
+        <JumpToEndButton onClick={goToEnd}>{buttonText}</JumpToEndButton>
 
         <StyledSeparator />
 
-        <StyledIconButton containsIcon title="Previous step" onClick={onPrevious}>
+        <PlaybackButton containsIcon title="Previous step" onClick={onPrevious}>
           <Icons icon="playback" />
-        </StyledIconButton>
+        </PlaybackButton>
         <StyledIconButton containsIcon title="Next step" onClick={onNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
@@ -111,6 +117,7 @@ export const Subnav: React.FC<SubnavProps> = ({
           onClick={animateAndReplay}
           onAnimationEnd={() => setIsAnimating(false)}
           animating={isAnimating}
+          data-test-id="button--replay"
         >
           <Icons icon="sync" />
         </StyledAnimatedIconButton>
