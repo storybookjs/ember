@@ -85,13 +85,13 @@ describe('GlobalsStore', () => {
     });
   });
 
-  describe('resetOnGlobalAnnotationsChange', () => {
+  describe('resetOnProjectAnnotationsChange', () => {
     it('is initialized to the (new) default values from globalTypes if the (new) global is unset', () => {
       const store = new GlobalsStore({ globals: {}, globalTypes: {} });
 
       expect(store.get()).toEqual({});
 
-      store.resetOnGlobalAnnotationsChange({
+      store.resetOnProjectAnnotationsChange({
         globals: {
           arg1: 'arg1',
           arg2: 2,
@@ -130,7 +130,7 @@ describe('GlobalsStore', () => {
         // You can set undeclared values (currently, deprecated)
         expect(store.get()).toEqual({ arg1: 'new-arg1', arg2: 'new-arg2', arg3: 'new-arg3' });
 
-        store.resetOnGlobalAnnotationsChange({
+        store.resetOnProjectAnnotationsChange({
           globals: {
             arg1: 'arg1',
           },
@@ -169,7 +169,7 @@ describe('GlobalsStore', () => {
           arg4: 'arg4',
         });
 
-        store.resetOnGlobalAnnotationsChange({
+        store.resetOnProjectAnnotationsChange({
           globals: {
             arg1: 'edited-arg1',
             arg4: 'edited-arg4',

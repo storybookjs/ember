@@ -1,5 +1,5 @@
 import { StoryId } from '@storybook/api';
-import { AnyFramework, GlobalAnnotations } from '@storybook/csf';
+import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
 import { HooksContext } from '../../addons/dist/ts3.9/hooks';
 
 import { prepareStory } from './prepareStory';
@@ -35,7 +35,7 @@ const importFn = jest.fn(async (path) => {
   return path === './src/ComponentOne.stories.js' ? componentOneExports : componentTwoExports;
 });
 
-const globalAnnotations: GlobalAnnotations<any> = {
+const projectAnnotations: ProjectAnnotations<any> = {
   globals: { a: 'b' },
   globalTypes: { a: { type: 'string' } },
   argTypes: { a: { type: 'string' } },
@@ -65,28 +65,28 @@ const storiesList: StoriesList = {
 const fetchStoriesList = async () => storiesList;
 
 describe('StoryStore', () => {
-  describe('globalAnnotations', () => {
+  describe('projectAnnotations', () => {
     it('normalizes on initialization', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
-      expect(store.globalAnnotations.globalTypes).toEqual({
+      expect(store.projectAnnotations.globalTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
       });
-      expect(store.globalAnnotations.argTypes).toEqual({
+      expect(store.projectAnnotations.argTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
       });
     });
 
-    it('normalizes on updateGlobalAnnotations', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+    it('normalizes on updateProjectAnnotations', async () => {
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
-      store.updateGlobalAnnotations(globalAnnotations);
-      expect(store.globalAnnotations.globalTypes).toEqual({
+      store.updateProjectAnnotations(projectAnnotations);
+      expect(store.projectAnnotations.globalTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
       });
-      expect(store.globalAnnotations.argTypes).toEqual({
+      expect(store.projectAnnotations.argTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
       });
     });
@@ -94,7 +94,7 @@ describe('StoryStore', () => {
 
   describe('loadStory', () => {
     it('pulls the story via the importFn', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       importFn.mockClear();
@@ -108,7 +108,7 @@ describe('StoryStore', () => {
     });
 
     it('uses a cache', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -132,7 +132,7 @@ describe('StoryStore', () => {
 
   describe('componentStoriesFromCSFFile', () => {
     it('returns all the stories in the file', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const csfFile = await store.loadCSFFileByStoryId('component-one--a');
@@ -145,7 +145,7 @@ describe('StoryStore', () => {
 
   describe('getStoryContext', () => {
     it('returns the args and globals correctly', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -157,7 +157,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the args and globals correctly when they change', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -172,7 +172,7 @@ describe('StoryStore', () => {
     });
 
     it('returns the same hooks each time', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -184,7 +184,7 @@ describe('StoryStore', () => {
 
   describe('cleanupStory', () => {
     it('cleans the hooks from the context', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
@@ -198,7 +198,7 @@ describe('StoryStore', () => {
 
   describe('loadAllCSFFiles', () => {
     it('imports *all* csf files', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       importFn.mockClear();
@@ -213,14 +213,14 @@ describe('StoryStore', () => {
 
   describe('extract', () => {
     it('throws if you have not called cacheAllCSFFiles', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
 
       expect(() => store.extract()).toThrow(/Cannot call extract/);
     });
 
     it('produces objects with functions and hooks stripped', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
       await store.cacheAllCSFFiles();
 
@@ -331,7 +331,7 @@ describe('StoryStore', () => {
       });
       const store = new StoryStore({
         importFn: docsOnlyImportFn,
-        globalAnnotations,
+        projectAnnotations,
         fetchStoriesList,
       });
       await store.initialize();
@@ -350,7 +350,7 @@ describe('StoryStore', () => {
 
   describe('getSetStoriesPayload', () => {
     it('maps stories list to payload correctly', async () => {
-      const store = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+      const store = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
       await store.initialize();
       await store.cacheAllCSFFiles();
 

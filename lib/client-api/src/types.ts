@@ -13,7 +13,7 @@ import {
   LoaderFunction,
   StoryContext,
 } from '@storybook/addons';
-import { AnyFramework, StoryIdentifier, GlobalAnnotations } from '@storybook/csf';
+import { AnyFramework, StoryIdentifier, ProjectAnnotations } from '@storybook/csf';
 import { StoryStore, HooksContext } from '@storybook/store';
 
 export type {
@@ -90,7 +90,7 @@ export interface StoreData {
 
 export interface ClientApiParams {
   storyStore: StoryStore<AnyFramework>;
-  decorateStory?: GlobalAnnotations<AnyFramework>['applyDecorators'];
+  decorateStory?: ProjectAnnotations<AnyFramework>['applyDecorators'];
   noStoryModuleAddMethodHotDispose?: boolean;
 }
 

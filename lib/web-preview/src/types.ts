@@ -1,10 +1,10 @@
-import { StoryId, AnyFramework, GlobalAnnotations, StoryContextForLoaders } from '@storybook/csf';
+import { StoryId, AnyFramework, ProjectAnnotations, StoryContextForLoaders } from '@storybook/csf';
 import { RenderContext, DecoratorApplicator, Story } from '@storybook/store';
 import { WebPreview } from './WebPreview';
 
-export type WebGlobalAnnotations<
+export type WebProjectAnnotations<
   TFramework extends AnyFramework
-> = GlobalAnnotations<TFramework> & {
+> = ProjectAnnotations<TFramework> & {
   renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
 };
 

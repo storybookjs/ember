@@ -7,7 +7,7 @@ import { addons, Channel } from '@storybook/addons';
 import {
   AnyFramework,
   StoryId,
-  GlobalAnnotations,
+  ProjectAnnotations,
   Args,
   Globals,
   ViewMode,
@@ -24,7 +24,7 @@ import {
   StoriesList,
 } from '@storybook/store';
 
-import { WebGlobalAnnotations, DocsContextProps } from './types';
+import { WebProjectAnnotations, DocsContextProps } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
@@ -48,7 +48,7 @@ export class WebPreview<TFramework extends AnyFramework> {
 
   view: WebView;
 
-  renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'];
+  renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'];
 
   previousSelection: Selection;
 
@@ -57,37 +57,37 @@ export class WebPreview<TFramework extends AnyFramework> {
   previousCleanup: () => void;
 
   constructor({
-    getGlobalAnnotations,
+    getProjectAnnotations,
     importFn,
     fetchStoriesList,
   }: {
-    getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>;
+    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
     importFn: ModuleImportFn;
     fetchStoriesList: ConstructorParameters<typeof StoryStore>[0]['fetchStoriesList'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
-    const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
-    if (!globalAnnotations) {
+    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
+    if (!projectAnnotations) {
       return;
     }
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, globalAnnotations, fetchStoriesList });
+    this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoriesList });
   }
 
-  getGlobalAnnotationsOrRenderError(
-    getGlobalAnnotations: () => WebGlobalAnnotations<TFramework>
-  ): GlobalAnnotations<TFramework> | undefined {
-    let globalAnnotations;
+  getProjectAnnotationsOrRenderError(
+    getProjectAnnotations: () => WebProjectAnnotations<TFramework>
+  ): ProjectAnnotations<TFramework> | undefined {
+    let projectAnnotations;
     try {
-      globalAnnotations = getGlobalAnnotations();
-      this.renderToDOM = globalAnnotations.renderToDOM;
-      return globalAnnotations;
+      projectAnnotations = getProjectAnnotations();
+      this.renderToDOM = projectAnnotations.renderToDOM;
+      return projectAnnotations;
     } catch (err) {
       logger.warn(err);
-      // This is an error extracting the globalAnnotations (i.e. evaluating the previewEntries) and
+      // This is an error extracting the projectAnnotations (i.e. evaluating the previewEntries) and
       // needs to be show to the user as a simple error
       this.renderPreviewEntryError(err);
       return undefined;
@@ -114,7 +114,7 @@ export class WebPreview<TFramework extends AnyFramework> {
     }
     this.channel.emit(Events.SET_GLOBALS, {
       globals: this.storyStore.globals.get() || {},
-      globalTypes: this.storyStore.globalAnnotations.globalTypes || {},
+      globalTypes: this.storyStore.projectAnnotations.globalTypes || {},
     });
 
     await this.selectSpecifiedStory();
@@ -224,17 +224,17 @@ export class WebPreview<TFramework extends AnyFramework> {
   }
 
   // This happens when a config file gets reloade
-  onGetGlobalAnnotationsChanged({
-    getGlobalAnnotations,
+  onGetProjectAnnotationsChanged({
+    getProjectAnnotations,
   }: {
-    getGlobalAnnotations: () => GlobalAnnotations<TFramework>;
+    getProjectAnnotations: () => ProjectAnnotations<TFramework>;
   }) {
-    const globalAnnotations = this.getGlobalAnnotationsOrRenderError(getGlobalAnnotations);
-    if (!globalAnnotations) {
+    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
+    if (!projectAnnotations) {
       return;
     }
 
-    this.storyStore.updateGlobalAnnotations(globalAnnotations);
+    this.storyStore.updateProjectAnnotations(projectAnnotations);
     this.renderSelection();
   }
 

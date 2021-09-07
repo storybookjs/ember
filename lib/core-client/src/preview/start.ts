@@ -1,6 +1,6 @@
 import global from 'global';
 import { ClientApi } from '@storybook/client-api';
-import { WebGlobalAnnotations, WebPreview } from '@storybook/web-preview';
+import { WebProjectAnnotations, WebPreview } from '@storybook/web-preview';
 import { AnyFramework, ArgsStoryFn } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
@@ -13,12 +13,12 @@ import { executeLoadableForChanges } from './executeLoadable';
 const { window: globalWindow } = global;
 
 export function start<TFramework extends AnyFramework>(
-  renderToDOM: WebGlobalAnnotations<TFramework>['renderToDOM'],
+  renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'],
   {
     decorateStory,
     render,
   }: {
-    decorateStory?: WebGlobalAnnotations<TFramework>['applyDecorators'];
+    decorateStory?: WebProjectAnnotations<TFramework>['applyDecorators'];
     render?: ArgsStoryFn<TFramework>;
   } = {}
 ) {
@@ -44,9 +44,9 @@ export function start<TFramework extends AnyFramework>(
     configure(framework: string, loadable: Loadable, m?: NodeModule) {
       clientApi.addParameters({ framework });
 
-      // We need to run the `executeLoadableForChanges` function *inside* the `getGlobalAnnotations
+      // We need to run the `executeLoadableForChanges` function *inside* the `getProjectAnnotations
       // function in case it throws. So we also need to process its output there also
-      const getGlobalAnnotations = () => {
+      const getProjectAnnotations = () => {
         const { added, removed } = executeLoadableForChanges(loadable, m);
 
         Array.from(added.entries()).forEach(([fileName, fileExports]) =>
@@ -58,7 +58,7 @@ export function start<TFramework extends AnyFramework>(
         );
 
         return {
-          ...clientApi.globalAnnotations,
+          ...clientApi.projectAnnotations,
           render,
           renderToDOM,
           applyDecorators: decorateStory,
@@ -68,7 +68,7 @@ export function start<TFramework extends AnyFramework>(
       if (!preview) {
         preview = new WebPreview({
           importFn: (path: Path) => clientApi.importFn(path),
-          getGlobalAnnotations,
+          getProjectAnnotations,
           fetchStoriesList: () => clientApi.getStoriesList(),
         });
         if (globalWindow) {
@@ -84,7 +84,7 @@ export function start<TFramework extends AnyFramework>(
 
         preview.initializeSync({ cacheAllCSFFiles: true });
       } else {
-        getGlobalAnnotations();
+        getProjectAnnotations();
         preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });
       }
     },

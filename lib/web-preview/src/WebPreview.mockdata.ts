@@ -24,14 +24,14 @@ export const importFn = jest.fn(async (path) => {
   return path === './src/ComponentOne.stories.js' ? componentOneExports : componentTwoExports;
 });
 
-export const globalAnnotations = {
+export const projectAnnotations = {
   globals: { a: 'b' },
   globalTypes: {},
   decorators: [jest.fn((s) => s())],
   render: jest.fn(),
   renderToDOM: jest.fn(),
 };
-export const getGlobalAnnotations = () => globalAnnotations;
+export const getProjectAnnotations = () => projectAnnotations;
 
 export const storiesList: StoriesList = {
   v: 3,

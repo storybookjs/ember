@@ -56,7 +56,7 @@ export class GlobalsStore {
     this.globals = { ...this.globals, ...allowedUrlGlobals };
   }
 
-  resetOnGlobalAnnotationsChange({
+  resetOnProjectAnnotationsChange({
     globals,
     globalTypes,
   }: {

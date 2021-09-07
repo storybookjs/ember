@@ -1,6 +1,6 @@
 import { AnyFramework } from '@storybook/csf';
 import { combineParameters, ModuleExports } from '@storybook/store';
-import { WebGlobalAnnotations } from './types';
+import { WebProjectAnnotations } from './types';
 
 function getField(moduleExportList: ModuleExports[], field: string): any[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);
@@ -20,7 +20,7 @@ function getSingletonField(moduleExportList: ModuleExports[], field: string): an
 
 export function composeConfigs<TFramework extends AnyFramework>(
   moduleExportList: ModuleExports[]
-): WebGlobalAnnotations<TFramework> {
+): WebProjectAnnotations<TFramework> {
   const allArgTypeEnhancers = getArrayField(moduleExportList, 'argTypesEnhancers');
 
   return {

@@ -4,7 +4,7 @@ import { addons } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
 import fetch from 'unfetch';
 
-const getGlobalAnnotations = () =>
+const getProjectAnnotations = () =>
   composeConfigs([
     {{#each configs}}
     require('{{this}}'),
@@ -18,7 +18,7 @@ const fetchStoriesList = async () => {
 
 const channel = createChannel({ page: 'preview' });
 addons.setChannel(channel);
-const preview = new WebPreview({ importFn, getGlobalAnnotations, fetchStoriesList });
+const preview = new WebPreview({ importFn, getProjectAnnotations, fetchStoriesList });
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
@@ -37,7 +37,7 @@ if (module.hot) {
   module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
     console.log('configEntry HMR accept config file');
     console.log(arguments);
-    // getGlobalAnnotations has changed so we need to patch the new one in
-    preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations });
+    // getProjectAnnotations has changed so we need to patch the new one in
+    preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
   });
 }

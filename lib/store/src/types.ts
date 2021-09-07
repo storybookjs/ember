@@ -11,7 +11,7 @@ import {
   StoryContext,
   ComponentTitle,
   AnyFramework,
-  GlobalAnnotations,
+  ProjectAnnotations,
   ComponentAnnotations,
   StoryAnnotations,
   StoryFn,
@@ -24,9 +24,9 @@ export type Path = string;
 export type ModuleExports = Record<string, any>;
 export type ModuleImportFn = (path: Path) => Promise<ModuleExports> | ModuleExports;
 
-export type NormalizedGlobalAnnotations<
+export type NormalizedProjectAnnotations<
   TFramework extends AnyFramework
-> = GlobalAnnotations<TFramework> & {
+> = ProjectAnnotations<TFramework> & {
   argTypes?: StrictArgTypes;
   globalTypes?: StrictGlobalTypes;
 };

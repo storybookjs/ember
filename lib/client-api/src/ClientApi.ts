@@ -22,7 +22,7 @@ import {
 } from '@storybook/csf';
 import {
   NormalizedComponentAnnotations,
-  NormalizedGlobalAnnotations,
+  NormalizedProjectAnnotations,
   Path,
   StoriesList,
   ModuleExports,
@@ -124,17 +124,17 @@ export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<AnyFramework>) =>
 
 export const getGlobalRender = () => {
   checkMethod('getGlobalRender', false);
-  return singleton.globalAnnotations.render;
+  return singleton.projectAnnotations.render;
 };
 
 export const setGlobalRender = (render: StoryFn<AnyFramework>) => {
   checkMethod('setGlobalRender', false);
-  singleton.globalAnnotations.render = render;
+  singleton.projectAnnotations.render = render;
 };
 
 const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
 export default class ClientApi<TFramework extends AnyFramework> {
-  globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
+  projectAnnotations: NormalizedProjectAnnotations<TFramework>;
 
   storyStore?: StoryStore<TFramework>;
 
@@ -151,7 +151,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
   private lastFileName = 0;
 
   constructor() {
-    this.globalAnnotations = {
+    this.projectAnnotations = {
       loaders: [],
       decorators: [],
       parameters: {},
@@ -176,7 +176,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
 
   getStoriesList() {
     const fileNameOrder = Object.keys(this.csfExports);
-    const storySortParameter = this.globalAnnotations.parameters?.options?.storySort;
+    const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
 
     const storyEntries = Object.entries(this.stories);
     // Add the kind parameters and global parameters to each entry
@@ -191,7 +191,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
           storyId,
           this.storyStore.storyFromCSFFile({ storyId, csfFile }),
           csfFile.meta.parameters,
-          this.globalAnnotations.parameters,
+          this.projectAnnotations.parameters,
         ];
       }
     );
@@ -234,12 +234,12 @@ export default class ClientApi<TFramework extends AnyFramework> {
   );
 
   addDecorator = (decorator: DecoratorFunction<TFramework>) => {
-    this.globalAnnotations.decorators.push(decorator);
+    this.projectAnnotations.decorators.push(decorator);
   };
 
   clearDecorators = deprecate(
     () => {
-      this.globalAnnotations.decorators = [];
+      this.projectAnnotations.decorators = [];
     },
     dedent`
       \`clearDecorators\` is deprecated and will be removed in Storybook 7.0.
@@ -253,28 +253,28 @@ export default class ClientApi<TFramework extends AnyFramework> {
     globalTypes,
     ...parameters
   }: Parameters & { globals?: Globals; globalTypes?: GlobalTypes }) => {
-    this.globalAnnotations.parameters = combineParameters(
-      this.globalAnnotations.parameters,
+    this.projectAnnotations.parameters = combineParameters(
+      this.projectAnnotations.parameters,
       parameters
     );
     if (globals) {
-      this.globalAnnotations.globals = globals;
+      this.projectAnnotations.globals = globals;
     }
     if (globalTypes) {
-      this.globalAnnotations.globalTypes = normalizeInputTypes(globalTypes);
+      this.projectAnnotations.globalTypes = normalizeInputTypes(globalTypes);
     }
   };
 
   addLoader = (loader: LoaderFunction<TFramework>) => {
-    this.globalAnnotations.loaders.push(loader);
+    this.projectAnnotations.loaders.push(loader);
   };
 
   addArgsEnhancer = (enhancer: ArgsEnhancer<TFramework>) => {
-    this.globalAnnotations.argsEnhancers.push(enhancer);
+    this.projectAnnotations.argsEnhancers.push(enhancer);
   };
 
   addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<TFramework>) => {
-    this.globalAnnotations.argTypesEnhancers.push(enhancer);
+    this.projectAnnotations.argTypesEnhancers.push(enhancer);
   };
 
   // what are the occasions that "m" is a boolean vs an obj

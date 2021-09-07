@@ -7,8 +7,8 @@ import { WebPreview } from './WebPreview';
 import {
   componentOneExports,
   importFn,
-  globalAnnotations,
-  getGlobalAnnotations,
+  projectAnnotations,
+  getProjectAnnotations,
   fetchStoriesList,
   emitter,
   mockChannel,
@@ -47,9 +47,9 @@ beforeEach(() => {
   componentOneExports.default.loaders[0].mockReset().mockImplementation(async () => ({ l: 7 }));
   componentOneExports.default.parameters.docs.container.mockClear();
   componentOneExports.a.play.mockReset();
-  globalAnnotations.renderToDOM.mockReset();
-  globalAnnotations.render.mockClear();
-  globalAnnotations.decorators[0].mockClear();
+  projectAnnotations.renderToDOM.mockReset();
+  projectAnnotations.render.mockClear();
+  projectAnnotations.decorators[0].mockClear();
 
   addons.setChannel(mockChannel as any);
 });
@@ -57,21 +57,21 @@ beforeEach(() => {
 describe('WebPreview', () => {
   describe('initial render', () => {
     it('renders story mode through the stack', async () => {
-      globalAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
+      projectAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
         storyFn()
       );
       document.location.search = '?id=component-one--a';
-      await new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList }).initialize();
+      await new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList }).initialize();
 
       await waitForRender();
 
-      expect(globalAnnotations.decorators[0]).toHaveBeenCalled();
-      expect(globalAnnotations.render).toHaveBeenCalled();
+      expect(projectAnnotations.decorators[0]).toHaveBeenCalled();
+      expect(projectAnnotations.render).toHaveBeenCalled();
     });
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
+      const preview = new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -95,9 +95,9 @@ describe('WebPreview', () => {
 
   describe('onGetGlobalMeta changed (HMR)', () => {
     const newGlobalDecorator = jest.fn((s) => s());
-    const newGetGlobalAnnotations = () => {
+    const newGetProjectAnnotations = () => {
       return {
-        ...globalAnnotations,
+        ...projectAnnotations,
         args: { a: 'second' },
         globals: { a: 'second' },
         decorators: [newGlobalDecorator],
@@ -106,21 +106,21 @@ describe('WebPreview', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new WebPreview({ getGlobalAnnotations, importFn, fetchStoriesList });
+      const preview = new WebPreview({ getProjectAnnotations, importFn, fetchStoriesList });
       await preview.initialize();
       await waitForRender();
 
-      globalAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
+      projectAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
         storyFn()
       );
-      globalAnnotations.decorators[0].mockClear();
+      projectAnnotations.decorators[0].mockClear();
       mockChannel.emit.mockClear();
-      preview.onGetGlobalAnnotationsChanged({ getGlobalAnnotations: newGetGlobalAnnotations });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
-      expect(globalAnnotations.decorators[0]).not.toHaveBeenCalled();
+      expect(projectAnnotations.decorators[0]).not.toHaveBeenCalled();
       expect(newGlobalDecorator).toHaveBeenCalled();
-      expect(globalAnnotations.render).toHaveBeenCalled();
+      expect(projectAnnotations.render).toHaveBeenCalled();
     });
   });
 });

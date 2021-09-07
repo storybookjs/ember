@@ -4,7 +4,7 @@ import {
   StoryId,
   StoryContextForLoaders,
   AnyFramework,
-  GlobalAnnotations,
+  ProjectAnnotations,
   ComponentTitle,
 } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
@@ -19,7 +19,7 @@ import {
   CSFFile,
   ModuleImportFn,
   Story,
-  NormalizedGlobalAnnotations,
+  NormalizedProjectAnnotations,
   Path,
   ExtractOptions,
   ModuleExports,
@@ -34,12 +34,12 @@ import { inferControls } from './inferControls';
 const CSF_CACHE_SIZE = 100;
 const STORY_CACHE_SIZE = 1000;
 
-function normalizeGlobalAnnotations<TFramework extends AnyFramework>({
+function normalizeProjectAnnotations<TFramework extends AnyFramework>({
   argTypes,
   globalTypes,
   argTypesEnhancers,
   ...annotations
-}: GlobalAnnotations<TFramework>): NormalizedGlobalAnnotations<TFramework> {
+}: ProjectAnnotations<TFramework>): NormalizedProjectAnnotations<TFramework> {
   return {
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
@@ -61,7 +61,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   importFn: ModuleImportFn;
 
-  globalAnnotations: NormalizedGlobalAnnotations<TFramework>;
+  projectAnnotations: NormalizedProjectAnnotations<TFramework>;
 
   globals: GlobalsStore;
 
@@ -77,18 +77,18 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   constructor({
     importFn,
-    globalAnnotations,
+    projectAnnotations,
     fetchStoriesList,
   }: {
     importFn: ModuleImportFn;
-    globalAnnotations: GlobalAnnotations<TFramework>;
+    projectAnnotations: ProjectAnnotations<TFramework>;
     fetchStoriesList: ConstructorParameters<typeof StoriesListStore>[0]['fetchStoriesList'];
   }) {
     this.storiesList = new StoriesListStore({ fetchStoriesList });
     this.importFn = importFn;
-    this.globalAnnotations = normalizeGlobalAnnotations(globalAnnotations);
+    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
 
-    const { globals, globalTypes } = globalAnnotations;
+    const { globals, globalTypes } = projectAnnotations;
     this.globals = new GlobalsStore({ globals, globalTypes });
     this.args = new ArgsStore();
     this.hooks = {};
@@ -113,10 +113,10 @@ export class StoryStore<TFramework extends AnyFramework> {
     }
   }
 
-  updateGlobalAnnotations(globalAnnotations: GlobalAnnotations<TFramework>) {
-    this.globalAnnotations = normalizeGlobalAnnotations(globalAnnotations);
-    const { globals, globalTypes } = globalAnnotations;
-    this.globals.resetOnGlobalAnnotationsChange({ globals, globalTypes });
+  updateProjectAnnotations(projectAnnotations: ProjectAnnotations<TFramework>) {
+    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+    const { globals, globalTypes } = projectAnnotations;
+    this.globals.resetOnProjectAnnotationsChange({ globals, globalTypes });
   }
 
   async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
@@ -214,7 +214,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     const story = this.prepareStoryWithCache(
       storyAnnotations,
       componentAnnotations,
-      this.globalAnnotations
+      this.projectAnnotations
     );
     this.args.setInitial(story.id, story.initialArgs);
     this.hooks[story.id] = new HooksContext();

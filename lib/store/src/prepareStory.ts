@@ -17,7 +17,7 @@ import {
   NormalizedComponentAnnotations,
   Story,
   NormalizedStoryAnnotations,
-  NormalizedGlobalAnnotations,
+  NormalizedProjectAnnotations,
 } from './types';
 import { combineParameters } from './parameters';
 import { applyHooks } from './hooks';
@@ -39,7 +39,7 @@ const argTypeDefaultValueWarning = deprecate(
 export function prepareStory<TFramework extends AnyFramework>(
   storyAnnotations: NormalizedStoryAnnotations<TFramework>,
   componentAnnotations: NormalizedComponentAnnotations<TFramework>,
-  globalAnnotations: NormalizedGlobalAnnotations<TFramework>
+  projectAnnotations: NormalizedProjectAnnotations<TFramework>
 ): Story<TFramework> {
   // NOTE: in the current implementation we are doing everything once, up front, rather than doing
   // anything at render time. The assumption is that as we don't load all the stories at once, this
@@ -49,7 +49,7 @@ export function prepareStory<TFramework extends AnyFramework>(
   const { title } = componentAnnotations;
 
   const parameters: Parameters = combineParameters(
-    globalAnnotations.parameters,
+    projectAnnotations.parameters,
     componentAnnotations.parameters,
     storyAnnotations.parameters
   );
@@ -57,7 +57,7 @@ export function prepareStory<TFramework extends AnyFramework>(
   const decorators = [
     ...(storyAnnotations.decorators || []),
     ...(componentAnnotations.decorators || []),
-    ...(globalAnnotations.decorators || []),
+    ...(projectAnnotations.decorators || []),
   ];
 
   // Currently it is only possible to set these globally
@@ -65,10 +65,10 @@ export function prepareStory<TFramework extends AnyFramework>(
     applyDecorators = defaultDecorateStory,
     argTypesEnhancers = [],
     argsEnhancers = [],
-  } = globalAnnotations;
+  } = projectAnnotations;
 
   const loaders = [
-    ...(globalAnnotations.loaders || []),
+    ...(projectAnnotations.loaders || []),
     ...(componentAnnotations.loaders || []),
     ...(storyAnnotations.loaders || []),
   ];
@@ -78,10 +78,10 @@ export function prepareStory<TFramework extends AnyFramework>(
     storyAnnotations.userStoryFn ||
     storyAnnotations.render ||
     componentAnnotations.render ||
-    globalAnnotations.render;
+    projectAnnotations.render;
 
   const passedArgTypes: StrictArgTypes = combineParameters(
-    globalAnnotations.argTypes,
+    projectAnnotations.argTypes,
     componentAnnotations.argTypes,
     storyAnnotations.argTypes
   ) as StrictArgTypes;
@@ -92,7 +92,7 @@ export function prepareStory<TFramework extends AnyFramework>(
 
   // Pull out args[X] || argTypes[X].defaultValue into initialArgs
   const passedArgs: Args = combineParameters(
-    globalAnnotations.args,
+    projectAnnotations.args,
     componentAnnotations.args,
     storyAnnotations.args
   ) as Args;
@@ -146,7 +146,7 @@ export function prepareStory<TFramework extends AnyFramework>(
     contextForEnhancers.parameters = {
       ...contextForEnhancers.parameters,
       __id: id,
-      globalTypes: globalAnnotations.globalTypes,
+      globalTypes: projectAnnotations.globalTypes,
       args: contextForEnhancers.initialArgs,
       argTypes: contextForEnhancers.argTypes,
     };
