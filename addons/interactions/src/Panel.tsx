@@ -2,8 +2,8 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel } from '@storybook/api';
-import { AddonPanel, Button, Icons } from '@storybook/components';
-import { styled, themes } from '@storybook/theming';
+import { AddonPanel, Icons } from '@storybook/components';
+import { styled } from '@storybook/theming';
 
 import { EVENTS } from './constants';
 import { Call, CallRef, CallState } from './types';
