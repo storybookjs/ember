@@ -49,7 +49,7 @@
     "@storybook/api": "6.4.0-alpha.19",
     "@storybook/client-logger": "6.4.0-alpha.19",
     "@storybook/components": "6.4.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.d61cd6c.0",
+    "@storybook/csf": "0.0.2--canary.a925d24.0",
     "@storybook/node-logger": "6.4.0-alpha.19",
     "@storybook/store": "6.4.0-alpha.19",
     "@storybook/theming": "6.4.0-alpha.19",
