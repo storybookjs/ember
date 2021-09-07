@@ -1,22 +1,16 @@
 import React from 'react';
 import { styled, typography } from '@storybook/theming';
 import { CallState } from '../../types';
-import { theme } from '../../theme';
 
 export interface StatusBadgeProps {
   status: `${CallState}`;
 }
-const {
-  colors: {
-    pure: { green, red, ochre },
-  },
-} = theme;
 
-const StyledBadge = styled.div(({ status }: StatusBadgeProps) => {
+const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
   const backgroundColor = {
-    [CallState.DONE]: green,
-    [CallState.ERROR]: red,
-    [CallState.PENDING]: ochre,
+    [CallState.DONE]: theme.color.positive,
+    [CallState.ERROR]: theme.color.negative,
+    [CallState.PENDING]: theme.color.warning,
   }[status];
   return {
     padding: '4px 8px',
@@ -27,7 +21,7 @@ const StyledBadge = styled.div(({ status }: StatusBadgeProps) => {
     textTransform: 'uppercase',
     fontSize: typography.size.s1,
     letterSpacing: 3,
-    fontWeight: 500,
+    fontWeight: typography.weight.bold,
     width: 65,
     textAlign: 'center',
   };
