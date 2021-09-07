@@ -1,4 +1,5 @@
 import { composeConfigs, PreviewWeb } from '@storybook/preview-web';    
+import { ClientApi } from '@storybook/client-api';    
 import { importFn } from './{{storiesFilename}}';
 import { addons } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
@@ -23,6 +24,7 @@ const preview = new PreviewWeb({ importFn, getProjectAnnotations, fetchStoryInde
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
 window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore });
 
 preview.initialize();
 

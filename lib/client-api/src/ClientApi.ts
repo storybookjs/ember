@@ -1,13 +1,10 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import global from 'global';
-import stable from 'stable';
 import { logger } from '@storybook/client-logger';
 import {
-  StoryId,
   AnyFramework,
   toId,
-  isExportStory,
   DecoratorFunction,
   Parameters,
   ArgTypesEnhancer,
@@ -15,24 +12,19 @@ import {
   LoaderFunction,
   StoryFn,
   sanitize,
-  storyNameFromExport,
   ComponentTitle,
   Globals,
   GlobalTypes,
 } from '@storybook/csf';
 import {
   NormalizedComponentAnnotations,
-  NormalizedProjectAnnotations,
   Path,
-  StoryIndex,
-  ModuleExports,
   ModuleImportFn,
   combineParameters,
   StoryStore,
   normalizeInputTypes,
-  Story,
 } from '@storybook/store';
-import { ClientApiAddons, StoryApi, Comparator } from '@storybook/addons';
+import { ClientApiAddons, StoryApi } from '@storybook/addons';
 
 import { StoryStoreFacade } from './StoryStoreFacade';
 
@@ -146,10 +138,12 @@ export class ClientApi<TFramework extends AnyFramework> {
   // just use numeric indexes
   private lastFileName = 0;
 
-  constructor() {
+  constructor({ storyStore }: { storyStore?: StoryStore<TFramework> } = {}) {
     this.facade = new StoryStoreFacade();
 
     this.addons = {};
+
+    this.storyStore = storyStore;
 
     singleton = this;
   }
