@@ -1,9 +1,11 @@
+import fetch from 'unfetch';
+
 import { composeConfigs, PreviewWeb } from '@storybook/preview-web';    
 import { ClientApi } from '@storybook/client-api';    
-import { importFn } from './{{storiesFilename}}';
 import { addons } from '@storybook/addons';
 import createChannel from '@storybook/channel-postmessage';
-import fetch from 'unfetch';
+
+import { importFn } from './{{storiesFilename}}';
 
 const getProjectAnnotations = () =>
   composeConfigs([
