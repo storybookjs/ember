@@ -70,9 +70,8 @@ const buildWebpackConfigOptions = async (
 ): Promise<WebpackConfigOptions> => {
   const { options: projectBuildOptions = {} } = target;
 
-  const requiredOptions = ['tsConfig', 'assets', 'optimization'];
-
-  if (!requiredOptions.every((key) => key in projectBuildOptions)) {
+  const requiredOptions = ['tsConfig'];
+  if (!requiredOptions.every((key) => !!projectBuildOptions[key])) {
     throw new Error(
       `Missing required options in project target. Check "${requiredOptions.join(', ')}"`
     );

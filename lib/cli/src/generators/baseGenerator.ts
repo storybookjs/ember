@@ -1,3 +1,5 @@
+import fse from 'fs-extra';
+import { getStorybookBabelDependencies } from '@storybook/core-common';
 import { NpmOptions } from '../NpmOptions';
 import {
   StoryFormat,
@@ -9,6 +11,7 @@ import {
 import { getBabelDependencies, copyComponents } from '../helpers';
 import { configure } from './configure';
 import { getPackageDetails, JsPackageManager } from '../js-package-manager';
+import { generateStorybookBabelConfigInCWD } from '../babel-config';
 
 export type GeneratorOptions = {
   language: SupportedLanguage;
@@ -91,6 +94,11 @@ export async function baseGenerator(
   const yarn2Dependencies =
     packageManager.type === 'yarn2' ? ['@storybook/addon-docs', '@mdx-js/react'] : [];
 
+  const files = await fse.readdir(process.cwd());
+  const isNewFolder = !files.some(
+    (fname) => fname.startsWith('.babel') || fname.startsWith('babel') || fname === 'package.json'
+  );
+
   const packageJson = packageManager.retrievePackageJson();
   const installedDependencies = new Set(Object.keys(packageJson.dependencies));
 
@@ -129,6 +137,10 @@ export async function baseGenerator(
   }
 
   const babelDependencies = addBabel ? await getBabelDependencies(packageManager, packageJson) : [];
+  if (isNewFolder) {
+    babelDependencies.push(...getStorybookBabelDependencies());
+    await generateStorybookBabelConfigInCWD();
+  }
   packageManager.addDependencies({ ...npmOptions, packageJson }, [
     ...versionedPackages,
     ...babelDependencies,

@@ -134,6 +134,7 @@ export interface CLIOptions {
   sslKey?: string;
   smokeTest?: boolean;
   managerCache?: boolean;
+  open?: boolean;
   ci?: boolean;
   loglevel?: string;
   quiet?: boolean;
@@ -279,6 +280,11 @@ export interface StorybookConfig {
      * Enable a set of planned breaking changes for SB7.0
      */
     breakingChangesV7?: boolean;
+
+    /**
+     * Use Storybook 7.0 babel config scheme
+     */
+    babelModeV7?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

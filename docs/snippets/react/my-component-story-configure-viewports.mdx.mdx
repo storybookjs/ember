@@ -3,26 +3,25 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+
 <Meta
-  title='Stories'
+  title="Stories"
   parameters={{
     viewport: {
-      viewports: MINIMAL_VIEWPORTS,
-      defaultViewport: 'iphone6'
+      viewports: INITIAL_VIEWPORTS,
+      defaultViewport: 'iphone6',
     },
   }}
 />
 
 <Story
-name="MyStory"
-parameters={{
+  name="MyStory"
+  parameters={{
     viewport: {
-      defaultViewport: 'iphonex'
-    }
-  }}
-
->
-
+      defaultViewport: 'iphonex',
+    },
+  }}>
   <div />
 </Story>
 ```

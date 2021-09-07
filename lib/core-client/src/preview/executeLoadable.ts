@@ -29,7 +29,9 @@ export function executeLoadable(loadable: Loadable) {
             fileExports
           );
         } catch (error) {
-          logger.warn(`Unexpected error while loading ${filename}: ${error}`);
+          const errorString =
+            error.message && error.stack ? `${error.message}\n ${error.stack}` : error.toString();
+          logger.warn(`Unexpected error while loading ${filename}: ${errorString}`);
         }
       });
     });

@@ -6,7 +6,6 @@ import {
   addArgsEnhancer,
   addArgTypesEnhancer,
   setGlobalRender,
-  getGlobalRender,
 } from './ClientApi';
 
 export * from './types';
@@ -22,6 +21,5 @@ export {
   addLoader,
   addParameters,
   setGlobalRender,
-  getGlobalRender,
   ClientApi,
 };

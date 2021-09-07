@@ -34,13 +34,14 @@ const prepareMain = (
   let { template } = story;
 
   const component = story.component ?? context.component;
+  const userDefinedTemplate = !hasNoTemplate(template);
 
-  if (hasNoTemplate(template) && component) {
+  if (!userDefinedTemplate && component) {
     template = computesTemplateFromComponent(component, story.props, '');
   }
   return {
     ...story,
-    ...(template ? { template } : {}),
+    ...(template ? { template, userDefinedTemplate } : {}),
   };
 };
 

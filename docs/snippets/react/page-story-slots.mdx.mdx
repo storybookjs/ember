@@ -1,0 +1,23 @@
+```md
+<!-- Page.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Page from './Page';
+
+<Meta title="Page" component={Page} />
+
+export const Template = (args) => (
+  <Page {...args}>
+    <footer>{args.footer}</footer>
+  </Page>
+);
+
+<Story 
+  name="CustomFooter" 
+  args={{ 
+    footer: 'Built with Storybook',
+  }}>
+  {Template.bind({})}
+</Story>
+```

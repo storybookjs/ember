@@ -19,6 +19,7 @@ import { filterOutStylingRules } from './utils/filter-out-styling-rules';
 
 export type Options = CoreOptions & {
   angularBrowserTarget?: string;
+  tsConfig?: string;
 };
 
 export async function webpackFinal(baseConfig: webpack.Configuration, options: Options) {
@@ -45,26 +46,36 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
   // Find angular project target
   let project: workspaces.ProjectDefinition;
   let target: workspaces.TargetDefinition;
-  let browserTarget;
   try {
-    browserTarget = options.angularBrowserTarget
-      ? targetFromTargetString(options.angularBrowserTarget)
-      : ({
-          configuration: undefined,
-          project: getDefaultProjectName(workspaceConfig),
-          target: 'build',
-        } as Target);
+    // Default behavior when `angularBrowserTarget` are not explicitly defined to null
+    if (options.angularBrowserTarget !== null) {
+      const browserTarget = options.angularBrowserTarget
+        ? targetFromTargetString(options.angularBrowserTarget)
+        : ({
+            configuration: undefined,
+            project: getDefaultProjectName(workspaceConfig),
+            target: 'build',
+          } as Target);
 
-    const fondProject = findAngularProjectTarget(
-      workspaceConfig,
-      browserTarget.project,
-      browserTarget.target
-    );
-    project = fondProject.project;
-    target = fondProject.target;
-    logger.info(
-      `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
-    );
+      const fondProject = findAngularProjectTarget(
+        workspaceConfig,
+        browserTarget.project,
+        browserTarget.target
+      );
+      project = fondProject.project;
+      target = fondProject.target;
+
+      logger.info(
+        `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
+      );
+    }
+    // Start storybook when only tsConfig is provided.
+    if (options.angularBrowserTarget === null && options.tsConfig) {
+      logger.info(`=> Using default angular project with "tsConfig:${options.tsConfig}"`);
+
+      project = { root: '', extensions: {}, targets: undefined };
+      target = { builder: '', options: { tsConfig: options.tsConfig } };
+    }
   } catch (error) {
     logger.error(`=> Could not find angular project: ${error.message}`);
     logger.info(`=> Fail to load angular-cli config. Using base config`);
@@ -72,7 +83,7 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
   }
 
   // Use angular-cli to get some webpack config
-  let angularCliWebpackConfig;
+  let angularCliWebpackConfig: AngularCliWebpackConfig;
   try {
     angularCliWebpackConfig = await extractAngularCliWebpackConfig(dirToSearch, project, target);
     logger.info(`=> Using angular-cli webpack config`);

@@ -24,6 +24,8 @@ const config: StorybookConfig = {
     previewCsfV3: true,
     modernInlineRender: true,
     storyStoreV7: true,
+    buildStoriesJson: true,
+    babelModeV7: true,
   },
 };
 

@@ -1,6 +1,10 @@
 ```md
 <!-- Table.stories.mdx -->
 
+import { Story } from '@storybook/addon-docs';
+
+import Table from './Table';
+
 export const TableStory = ({ data, ...args }) => (
   <Table {...args} >
     {data.map(row => (<TR>{row.map(item => <TD>{item}</TD>}</TR>))}

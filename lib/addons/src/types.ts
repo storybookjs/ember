@@ -29,9 +29,20 @@ export type {
   Args,
 } from '@storybook/csf';
 
+export interface ArgType<TArg = unknown> {
+  name?: string;
+  description?: string;
+  defaultValue?: TArg;
+  [key: string]: any;
+}
+
 export type ArgTypes<TArgs = Args> = {
-  [key in keyof Partial<TArgs>]: InputType;
-};
+  [key in keyof Partial<TArgs>]: ArgType<TArgs[key]>;
+} &
+  {
+    // for custom defined args
+    [key in string]: ArgType<unknown>;
+  };
 
 export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
 export type StorySortMethod = 'configure' | 'alphabetical';

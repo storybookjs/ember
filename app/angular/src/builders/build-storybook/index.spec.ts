@@ -55,7 +55,7 @@ describe('Build Storybook Builder', () => {
     jest.clearAllMocks();
   });
 
-  it('should work', async () => {
+  it('should start storybook with angularBrowserTarget', async () => {
     const run = await architect.scheduleBuilder('@storybook/angular:build-storybook', {
       browserTarget: 'angular-cli:build-2',
       compodoc: false,
@@ -69,7 +69,6 @@ describe('Build Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
       configDir: '.storybook',
       docsMode: false,
       loglevel: undefined,
@@ -79,6 +78,34 @@ describe('Build Storybook Builder', () => {
       mode: 'static',
       compodoc: false,
       compodocArgs: ['-e', 'json'],
+      tsConfig: 'src/tsconfig.app.json',
+    });
+  });
+
+  it('should start storybook with tsConfig', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:build-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      compodoc: false,
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      configDir: '.storybook',
+      docsMode: false,
+      loglevel: undefined,
+      quiet: false,
+      outputDir: 'storybook-static',
+      staticDir: [],
+      mode: 'static',
+      compodoc: false,
+      compodocArgs: ['-e', 'json'],
+      tsConfig: 'path/to/tsConfig.json',
     });
   });
 
@@ -102,7 +129,6 @@ describe('Build Storybook Builder', () => {
     ]);
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
       configDir: '.storybook',
       docsMode: false,
       loglevel: undefined,
@@ -112,6 +138,7 @@ describe('Build Storybook Builder', () => {
       mode: 'static',
       compodoc: true,
       compodocArgs: ['-e', 'json'],
+      tsConfig: 'src/tsconfig.app.json',
     });
   });
 });

@@ -16,7 +16,7 @@ import FilterWarningsPlugin from 'webpack-filter-warnings-plugin';
 import themingPaths from '@storybook/theming/paths';
 import {
   toRequireContextString,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   es6Transpiler,
   handlebars,
   interpolate,
@@ -207,7 +207,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         template,
       }),
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }),
       isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),

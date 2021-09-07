@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-docs",
-  "version": "6.4.0-alpha.19",
+  "version": "6.4.0-alpha.34",
   "description": "Document component usage and properties in Markdown",
   "keywords": [
     "addon",
@@ -29,7 +29,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -63,22 +63,22 @@
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@storybook/addons": "6.4.0-alpha.19",
-    "@storybook/api": "6.4.0-alpha.19",
-    "@storybook/builder-webpack4": "6.4.0-alpha.19",
-    "@storybook/client-api": "6.4.0-alpha.19",
-    "@storybook/client-logger": "6.4.0-alpha.19",
-    "@storybook/components": "6.4.0-alpha.19",
-    "@storybook/core": "6.4.0-alpha.19",
-    "@storybook/core-events": "6.4.0-alpha.19",
+    "@storybook/addons": "6.4.0-alpha.34",
+    "@storybook/api": "6.4.0-alpha.34",
+    "@storybook/builder-webpack4": "6.4.0-alpha.34",
+    "@storybook/client-api": "6.4.0-alpha.34",
+    "@storybook/client-logger": "6.4.0-alpha.34",
+    "@storybook/components": "6.4.0-alpha.34",
+    "@storybook/core": "6.4.0-alpha.34",
+    "@storybook/core-events": "6.4.0-alpha.34",
     "@storybook/csf": "0.0.2--canary.a925d24.0",
-    "@storybook/csf-tools": "6.4.0-alpha.19",
-    "@storybook/node-logger": "6.4.0-alpha.19",
-    "@storybook/postinstall": "6.4.0-alpha.19",
+    "@storybook/csf-tools": "6.4.0-alpha.34",
+    "@storybook/node-logger": "6.4.0-alpha.34",
+    "@storybook/postinstall": "6.4.0-alpha.34",
     "@storybook/preview-web": "6.4.0-alpha.19",
-    "@storybook/source-loader": "6.4.0-alpha.19",
+    "@storybook/source-loader": "6.4.0-alpha.34",
     "@storybook/store": "6.4.0-alpha.19",
-    "@storybook/theming": "6.4.0-alpha.19",
+    "@storybook/theming": "6.4.0-alpha.34",
     "acorn": "^7.4.1",
     "acorn-jsx": "^5.3.1",
     "acorn-walk": "^7.2.0",
@@ -93,7 +93,7 @@
     "lodash": "^4.17.20",
     "nanoid": "^3.1.23",
     "p-limit": "^3.1.0",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
     "react-element-to-jsx-string": "^14.3.2",
     "regenerator-runtime": "^0.13.7",
@@ -107,10 +107,10 @@
     "@babel/core": "^7.12.10",
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
-    "@storybook/angular": "6.4.0-alpha.19",
-    "@storybook/react": "6.4.0-alpha.19",
-    "@storybook/vue": "6.4.0-alpha.19",
-    "@storybook/web-components": "6.4.0-alpha.19",
+    "@storybook/angular": "6.4.0-alpha.34",
+    "@storybook/react": "6.4.0-alpha.34",
+    "@storybook/vue": "6.4.0-alpha.34",
+    "@storybook/web-components": "6.4.0-alpha.34",
     "@types/cross-spawn": "^6.0.2",
     "@types/doctrine": "^0.0.3",
     "@types/enzyme": "^3.10.8",
@@ -120,7 +120,7 @@
     "@types/prop-types": "^15.7.3",
     "@types/tmp": "^0.2.0",
     "@types/util-deprecate": "^1.0.0",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.0.0",
     "babel-plugin-react-docgen": "^4.2.1",
     "cross-spawn": "^7.0.3",
     "fs-extra": "^9.0.1",
@@ -140,11 +140,11 @@
     "zone.js": "^0.11.3"
   },
   "peerDependencies": {
-    "@storybook/angular": "6.4.0-alpha.19",
-    "@storybook/react": "6.4.0-alpha.19",
-    "@storybook/vue": "6.4.0-alpha.19",
-    "@storybook/vue3": "6.4.0-alpha.19",
-    "@storybook/web-components": "6.4.0-alpha.19",
+    "@storybook/angular": "6.4.0-alpha.34",
+    "@storybook/react": "6.4.0-alpha.34",
+    "@storybook/vue": "6.4.0-alpha.34",
+    "@storybook/vue3": "6.4.0-alpha.34",
+    "@storybook/web-components": "6.4.0-alpha.34",
     "lit": "^2.0.0-rc.1",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
@@ -198,7 +198,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "e7979d9dc08b35e6fb76d54bd0db302d2d0ec263",
+  "gitHead": "ccd25210cd159e42110b700b0562e951bb9b3a57",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Docs",

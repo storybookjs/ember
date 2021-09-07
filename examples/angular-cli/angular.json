@@ -104,6 +104,24 @@
           }
         }
       }
+    },
+    "without-browser-target": {
+      "root": "",
+      "projectType": "library",
+      "architect": {
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "tsConfig": "src/tsconfig.app.json"
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "tsConfig": "src/tsconfig.app.json"
+          }
+        }
+      }
     }
   },
   "defaultProject": "angular-cli"

@@ -70,8 +70,6 @@ const deprecatedDefinedRefDisabled = deprecate(
 
 export async function getManagerWebpackConfig(options: Options): Promise<Configuration> {
   const { presets } = options;
-  const typescriptOptions = await presets.apply('typescript', {}, options);
-  const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
 
   const definedRefs: Record<string, any> | undefined = await presets.apply(
     'refs',
@@ -145,5 +143,5 @@ export async function getManagerWebpackConfig(options: Options): Promise<Configu
     );
   }
 
-  return presets.apply('managerWebpack', {}, { ...options, babelOptions, entries, refs }) as any;
+  return presets.apply('managerWebpack', {}, { ...options, entries, refs }) as any;
 }

@@ -63,7 +63,7 @@ We can control how the component's stories will render with parameters and decor
 
 ```js
 storiesOf('Button', module)
-  .addParameters({backgrounds: {values: [{name: "red" value: "#f00"}]}})
+  .addParameters({backgrounds: {values: [{name: "red", value: "#f00"}]}})
   .addDecorator((Story) => <div style={{ margin: '3em' }}><Story/></div>)
   .addDecorator((Story) => <div style={{ height: '600px' }}><Story/></div>)
   .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
