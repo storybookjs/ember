@@ -24,7 +24,7 @@ import {
   NormalizedComponentAnnotations,
   NormalizedProjectAnnotations,
   Path,
-  StoriesList,
+  StoryIndex,
   ModuleExports,
   ModuleImportFn,
   combineParameters,
@@ -140,7 +140,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
 
   onImportFnChanged?: ({ importFn }: { importFn: ModuleImportFn }) => void;
 
-  private stories: StoriesList['stories'];
+  private stories: StoryIndex['stories'];
 
   private csfExports: Record<Path, ModuleExports>;
 
@@ -174,7 +174,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
     return this.csfExports[path];
   }
 
-  getStoriesList() {
+  getStoryIndex() {
     const fileNameOrder = Object.keys(this.csfExports);
     const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
 
@@ -218,7 +218,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
       stories: stories.reduce((acc, [id]) => {
         acc[id] = this.stories[id];
         return acc;
-      }, {} as StoriesList['stories']),
+      }, {} as StoryIndex['stories']),
     };
   }
 
@@ -486,10 +486,10 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
   }
 
   getStorybook = (): GetStorybookKind<TFramework>[] => {
-    const storyIndex = this.getStoriesList();
+    const storiesList = this.getStoryIndex();
 
     const kinds: Record<ComponentTitle, GetStorybookKind<TFramework>> = {};
-    Object.entries(storyIndex.stories).forEach(([storyId, { title, name, importPath }]) => {
+    Object.entries(storiesList.stories).forEach(([storyId, { title, name, importPath }]) => {
       if (!kinds[title]) {
         kinds[title] = { kind: title, fileName: importPath, stories: [] };
       }

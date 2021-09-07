@@ -69,7 +69,7 @@ export function start<TFramework extends AnyFramework>(
         preview = new PreviewWeb({
           importFn: (path: Path) => clientApi.importFn(path),
           getProjectAnnotations,
-          fetchStoryIndex: () => clientApi.getStoriesList(),
+          fetchStoryIndex: () => clientApi.getStoryIndex(),
         });
         if (globalWindow) {
           // eslint-disable-next-line no-underscore-dangle
