@@ -67,10 +67,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
-    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
-    if (!projectAnnotations) {
-      return;
-    }
+    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
     this.urlStore = new UrlStore();
     this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
