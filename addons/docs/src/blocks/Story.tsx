@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
-import { toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
+import { StoryId, toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import global from 'global';
 
