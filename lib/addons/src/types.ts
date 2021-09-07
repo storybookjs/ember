@@ -140,7 +140,7 @@ export interface ClientApiAddons<StoryFnReturnType> {
 // Old types for getStorybook()
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {

@@ -9,7 +9,7 @@ export interface ShowErrorArgs {
 
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {

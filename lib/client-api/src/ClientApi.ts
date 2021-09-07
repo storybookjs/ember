@@ -15,6 +15,7 @@ import {
   ComponentTitle,
   Globals,
   GlobalTypes,
+  LegacyStoryFn,
 } from '@storybook/csf';
 import {
   NormalizedComponentAnnotations,
@@ -32,7 +33,7 @@ const { FEATURES } = global;
 
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
-  render: StoryFn<TFramework>;
+  render: LegacyStoryFn<TFramework>;
 }
 
 export interface GetStorybookKind<TFramework extends AnyFramework> {
