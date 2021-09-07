@@ -1,9 +1,8 @@
 <h1>Migration</h1>
 
-- [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
-  - [Deprecated --static-dir CLI flag](#deprecated-static-dir-flag)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Babel mode v7](#babel-mode-v7)
+  - [Deprecated --static-dir CLI flag](#deprecated-static-dir-flag)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
