@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import Vue, { VueConstructor, ComponentOptions } from 'vue';
 import { start } from '@storybook/core/client';
-import { StoryFn, DecoratorFunction, StoryContext } from '@storybook/csf';
+import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 
@@ -61,11 +61,13 @@ function prepare(
 }
 
 function decorateStory(
-  storyFn: StoryFn<VueFramework>,
+  storyFn: LegacyStoryFn<VueFramework>,
   decorators: DecoratorFunction<VueFramework>[]
-): StoryFn<VueFramework> {
+): LegacyStoryFn<VueFramework> {
   return decorators.reduce(
-    (decorated: StoryFn<VueFramework>, decorator) => (context: StoryContext<VueFramework>) => {
+    (decorated: LegacyStoryFn<VueFramework>, decorator) => (
+      context: StoryContext<VueFramework>
+    ) => {
       let story;
 
       const decoratedStory = decorator((update) => {

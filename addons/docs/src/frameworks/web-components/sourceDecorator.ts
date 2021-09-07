@@ -1,6 +1,6 @@
 /* global window */
 import { render } from 'lit-html';
-import { ArgsStoryFn, StoryContext, StoryFn } from '@storybook/csf';
+import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import { addons } from '@storybook/addons';
 import { WebComponentsFramework } from '@storybook/web-components';
 
@@ -30,7 +30,7 @@ function applyTransformSource(
 }
 
 export function sourceDecorator(
-  storyFn: StoryFn<WebComponentsFramework>,
+  storyFn: PartialStoryFn<WebComponentsFramework>,
   context: StoryContext<WebComponentsFramework>
 ) {
   const story = context?.parameters.docs?.source?.excludeDecorators

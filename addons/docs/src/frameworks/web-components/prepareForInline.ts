@@ -1,10 +1,10 @@
-import type { StoryFn } from '@storybook/csf';
+import type { PartialStoryFn } from '@storybook/csf';
 import { WebComponentsFramework } from '@storybook/web-components';
 import React from 'react';
 
 import { render } from 'lit-html';
 
-export const prepareForInline = (storyFn: StoryFn<WebComponentsFramework>) => {
+export const prepareForInline = (storyFn: PartialStoryFn<WebComponentsFramework>) => {
   class Story extends React.Component {
     wrapperRef = React.createRef<HTMLElement>();
 

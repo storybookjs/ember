@@ -1,4 +1,4 @@
-import { StoryFn } from '@storybook/csf';
+import { PartialStoryFn } from '@storybook/csf';
 import { ReactFramework } from '@storybook/react';
 
 import { extractArgTypes } from './extractArgTypes';
@@ -9,7 +9,7 @@ export const parameters = {
   docs: {
     inlineStories: true,
     // NOTE: that the result is a react element. Hooks support is provided by the outer code.
-    prepareForInline: (storyFn: StoryFn<ReactFramework>) => storyFn(),
+    prepareForInline: (storyFn: PartialStoryFn<ReactFramework>) => storyFn(),
     extractArgTypes,
     extractComponentDescription,
   },

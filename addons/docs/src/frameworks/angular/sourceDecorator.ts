@@ -1,5 +1,5 @@
 import { addons } from '@storybook/addons';
-import { StoryFn } from '@storybook/csf';
+import { PartialStoryFn } from '@storybook/csf';
 import { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
 import prettierHtml from 'prettier/parser-html';
@@ -31,7 +31,10 @@ const prettyUp = (source: string) => {
  * @param storyFn Fn
  * @param context  StoryContext
  */
-export const sourceDecorator = (storyFn: StoryFn<AngularFramework>, context: StoryContext) => {
+export const sourceDecorator = (
+  storyFn: PartialStoryFn<AngularFramework>,
+  context: StoryContext
+) => {
   const story = storyFn();
   if (skipSourceRender(context)) {
     return story;

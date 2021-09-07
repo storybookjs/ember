@@ -1,7 +1,7 @@
 import type { ConcreteComponent, Component, ComponentOptions, App } from 'vue';
 import { h } from 'vue';
 import { start } from '@storybook/core/client';
-import { StoryFn, DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
+import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 
@@ -47,7 +47,7 @@ function prepare(
 }
 
 function decorateStory(
-  storyFn: StoryFn<VueFramework>,
+  storyFn: LegacyStoryFn<VueFramework>,
   decorators: DecoratorFunction<VueFramework>[]
 ): LegacyStoryFn<VueFramework> {
   return decorators.reduce(

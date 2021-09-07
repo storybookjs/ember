@@ -1,13 +1,13 @@
 import React from 'react';
 import * as Vue from 'vue';
-import { StoryFn, StoryContext } from '@storybook/csf';
+import { StoryContext, PartialStoryFn } from '@storybook/csf';
 import { app, VueFramework } from '@storybook/vue3';
 
 // This is cast as `any` to workaround type errors caused by Vue 2 types
 const { render, h } = Vue as any;
 
 export const prepareForInline = (
-  storyFn: StoryFn<VueFramework>,
+  storyFn: PartialStoryFn<VueFramework>,
   { args }: StoryContext<VueFramework>
 ) => {
   const component = storyFn();

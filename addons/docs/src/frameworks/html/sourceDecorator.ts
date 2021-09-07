@@ -1,6 +1,6 @@
 /* global window */
 import { addons } from '@storybook/addons';
-import { ArgsStoryFn, StoryContext, StoryFn } from '@storybook/csf';
+import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import { HtmlFramework } from '@storybook/html';
 
@@ -33,7 +33,7 @@ function applyTransformSource(source: string, context: StoryContext<HtmlFramewor
 }
 
 export function sourceDecorator(
-  storyFn: StoryFn<HtmlFramework>,
+  storyFn: PartialStoryFn<HtmlFramework>,
   context: StoryContext<HtmlFramework>
 ) {
   const story = context?.parameters.docs?.source?.excludeDecorators

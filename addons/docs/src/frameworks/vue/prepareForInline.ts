@@ -1,6 +1,6 @@
 import React from 'react';
 import Vue from 'vue';
-import { StoryFn, StoryContext } from '@storybook/csf';
+import { StoryContext, PartialStoryFn } from '@storybook/csf';
 import { VueFramework } from '@storybook/vue';
 
 // Inspired by https://github.com/egoist/vue-to-react,
@@ -11,7 +11,7 @@ const COMPONENT = 'STORYBOOK_COMPONENT';
 const VALUES = 'STORYBOOK_VALUES';
 
 export const prepareForInline = (
-  storyFn: StoryFn<VueFramework>,
+  storyFn: PartialStoryFn<VueFramework>,
   { args }: StoryContext<VueFramework>
 ) => {
   const component = storyFn();

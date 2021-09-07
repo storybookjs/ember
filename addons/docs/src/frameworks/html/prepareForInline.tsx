@@ -1,7 +1,7 @@
 import React from 'react';
-import { StoryFn } from '@storybook/csf';
+import { PartialStoryFn } from '@storybook/csf';
 
-export function prepareForInline(storyFn: StoryFn<any>) {
+export function prepareForInline(storyFn: PartialStoryFn<any>) {
   const html = storyFn();
   if (typeof html === 'string') {
     // eslint-disable-next-line react/no-danger

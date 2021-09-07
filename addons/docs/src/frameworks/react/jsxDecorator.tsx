@@ -4,7 +4,7 @@ import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
 import { addons } from '@storybook/addons';
-import { StoryContext, StoryFn, ArgsStoryFn } from '@storybook/csf';
+import { StoryContext, ArgsStoryFn, PartialStoryFn } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import { ReactFramework } from '@storybook/react';
 
@@ -172,7 +172,7 @@ const mdxToJsx = (node: any) => {
 };
 
 export const jsxDecorator = (
-  storyFn: StoryFn<ReactFramework>,
+  storyFn: PartialStoryFn<ReactFramework>,
   context: StoryContext<ReactFramework>
 ) => {
   const story = storyFn();

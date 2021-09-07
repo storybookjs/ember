@@ -6,6 +6,7 @@ import {
   AnyFramework,
   ProjectAnnotations,
   ComponentTitle,
+  StoryContext,
 } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
 import pick from 'lodash/pick';
@@ -322,12 +323,14 @@ export class StoryStore<TFramework extends AnyFramework> {
     const story = this.storyFromCSFFile({ storyId, csfFile });
     return {
       ...story,
-      storyFn: (context) =>
-        story.unboundStoryFn({
+      storyFn: (update) => {
+        const context = {
           ...this.getStoryContext(story),
           viewMode: 'story',
-          ...context,
-        }),
+        } as StoryContext<TFramework>;
+
+        return story.unboundStoryFn({ ...context, ...update });
+      },
     };
   }
 }

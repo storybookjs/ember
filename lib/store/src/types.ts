@@ -18,6 +18,7 @@ import {
   StrictArgTypes,
   StrictGlobalTypes,
   ComponentId,
+  PartialStoryFn,
 } from '@storybook/csf';
 
 export type Path = string;
@@ -63,7 +64,7 @@ export type Story<TFramework extends AnyFramework> = StoryContextForEnhancers<TF
 };
 
 export type BoundStory<TFramework extends AnyFramework> = Story<TFramework> & {
-  storyFn: LegacyStoryFn<TFramework>;
+  storyFn: PartialStoryFn<TFramework>;
 };
 
 export declare type RenderContext<TFramework extends AnyFramework> = StoryIdentifier & {
@@ -72,7 +73,7 @@ export declare type RenderContext<TFramework extends AnyFramework> = StoryIdenti
   showException: (err: Error) => void;
   forceRemount: boolean;
   storyContext: StoryContext<TFramework>;
-  storyFn: LegacyStoryFn<TFramework>;
+  storyFn: PartialStoryFn<TFramework>;
   unboundStoryFn: LegacyStoryFn<TFramework>;
 };
 
