@@ -1,7 +1,7 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { CLIOptions } from '@storybook/core-common';
-import { ProdCliOptions } from './prod';
+import type { CLIOptions } from '@storybook/core-common';
+import type { ProdCliOptions } from './prod';
 
 export function parseList(str: string): string[] {
   return str

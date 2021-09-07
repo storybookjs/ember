@@ -1,5 +1,5 @@
 import { logger } from '@storybook/node-logger';
-import { Options, StorybookConfig } from '@storybook/core-common';
+import type { Options, StorybookConfig } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
