@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import Vue, { VueConstructor, ComponentOptions } from 'vue';
 import { start } from '@storybook/core/client';
-import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
+import { StoryFn, DecoratorFunction, StoryContext } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 

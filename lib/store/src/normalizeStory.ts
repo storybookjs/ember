@@ -3,8 +3,6 @@ import {
   toId,
   ComponentAnnotations,
   AnyFramework,
-  DecoratorFunction,
-  ArgTypes,
   LegacyStoryAnnotationsOrFn,
   StoryId,
   StoryAnnotations,

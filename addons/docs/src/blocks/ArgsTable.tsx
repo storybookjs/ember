@@ -132,7 +132,7 @@ export const StoryTable: FC<
   StoryProps & { component: Component; subcomponents: Record<string, Component> }
 > = (props) => {
   const context = useContext(DocsContext);
-  const { id: currentId, storyById, componentStories } = context;
+  const { id: currentId, componentStories } = context;
   const {
     story: storyName,
     component,

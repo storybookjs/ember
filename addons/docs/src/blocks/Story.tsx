@@ -67,17 +67,6 @@ export const getStoryProps = (
   story: StoryType<any>,
   context: DocsContextProps<any>
 ): PureStoryProps => {
-  const defaultIframeHeight = 100;
-
-  if (!story) {
-    return {
-      id: story.id,
-      inline: false,
-      height: height || defaultIframeHeight.toString(),
-      title: undefined,
-    };
-  }
-
   const { name: storyName, parameters } = story;
   const { docs = {} } = parameters;
 

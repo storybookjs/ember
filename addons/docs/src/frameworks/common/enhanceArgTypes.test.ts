@@ -1,4 +1,4 @@
-import { ArgType, ArgTypes } from '@storybook/api';
+import { ArgTypes } from '@storybook/api';
 import { StrictInputType } from '@storybook/csf';
 import { enhanceArgTypes } from './enhanceArgTypes';
 

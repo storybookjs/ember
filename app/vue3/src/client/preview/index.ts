@@ -1,18 +1,12 @@
 import type { ConcreteComponent, Component, ComponentOptions, App } from 'vue';
 import { h } from 'vue';
 import { start } from '@storybook/core/client';
-import {
-  StoryFn,
-  DecoratorFunction,
-  StoryContext,
-  StoryContextUpdate,
-  LegacyStoryFn,
-} from '@storybook/csf';
+import { StoryFn, DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 
 import './globals';
-import { IStorybookSection, StoryFnVueReturnType } from './types';
+import { IStorybookSection } from './types';
 import { VueFramework } from './types-6-0';
 
 import render, { storybookApp } from './render';

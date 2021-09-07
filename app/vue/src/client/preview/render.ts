@@ -1,5 +1,5 @@
 import dedent from 'ts-dedent';
-import Vue, { VNode } from 'vue';
+import Vue from 'vue';
 import { RenderContext } from '@storybook/store';
 import { VueFramework } from './types-6-0';
 

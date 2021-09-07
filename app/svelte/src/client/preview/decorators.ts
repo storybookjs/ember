@@ -1,4 +1,4 @@
-import { StoryFn, DecoratorFunction, StoryContext, StoryContextUpdate } from '@storybook/csf';
+import { StoryFn, DecoratorFunction, StoryContext } from '@storybook/csf';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 import SlotDecorator from './SlotDecorator.svelte';
 import { SvelteFramework } from './types';

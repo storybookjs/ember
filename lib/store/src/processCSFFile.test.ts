@@ -1,7 +1,5 @@
 import { processCSFFile } from './processCSFFile';
 
-const entries = [{ specifier: { directory: './path/', titlePrefix: 'Prefix' } }];
-
 describe('processCSFFile', () => {
   it('returns a CSFFile object with meta and stories', () => {
     const { meta, stories } = processCSFFile(

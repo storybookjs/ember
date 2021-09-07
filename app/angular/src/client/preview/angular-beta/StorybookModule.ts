@@ -5,7 +5,6 @@ import dedent from 'ts-dedent';
 import { Subject } from 'rxjs';
 import deprecate from 'util-deprecate';
 import { ICollection, StoryFnAngularReturnType } from '../types';
-import { Parameters } from '../types-6-0';
 import { storyPropsProvider } from './StorybookProvider';
 import { isComponentAlreadyDeclaredInModules } from './utils/NgModulesAnalyzer';
 import { isDeclarable } from './utils/NgComponentAnalyzer';

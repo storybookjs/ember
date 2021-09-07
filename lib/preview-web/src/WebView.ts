@@ -5,7 +5,7 @@ import dedent from 'ts-dedent';
 
 import { Story } from '@storybook/store';
 
-const { document, FEATURES = {} } = global;
+const { document } = global;
 
 const layoutClassMap = {
   centered: 'sb-main-centered',

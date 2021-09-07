@@ -322,7 +322,8 @@ export class ClientApi<TFramework extends AnyFramework> {
         render: storyFn,
       };
 
-      const storyId = parameters?.__id || toId(kind, storyName);
+      // eslint-disable-next-line no-underscore-dangle
+      const storyId = parameters.__id || toId(kind, storyName);
       this.facade.stories[storyId] = {
         title: csfExports.default.title,
         name: storyName,

@@ -5,7 +5,6 @@ import {
   SourceProps as PureSourceProps,
 } from '@storybook/components';
 import { StoryId } from '@storybook/api';
-import { logger } from '@storybook/client-logger';
 import { Story } from '@storybook/store';
 
 import { DocsContext, DocsContextProps } from './DocsContext';

@@ -1,4 +1,3 @@
-import mapValues from 'lodash/mapValues';
 import { AnyFramework, StoryContextForEnhancers } from '@storybook/csf';
 import { combineParameters } from '@storybook/store';
 

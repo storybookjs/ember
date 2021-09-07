@@ -5,7 +5,7 @@ import { HtmlFramework } from './types-6-0';
 
 import './globals';
 import render from './render';
-import { StoryFnHtmlReturnType, IStorybookSection } from './types';
+import { IStorybookSection } from './types';
 
 const framework = 'html';
 

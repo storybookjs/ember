@@ -6,7 +6,6 @@ import {
   DecoratorApplicator,
   StoryContext,
   Args,
-  PartialStoryFn,
   LegacyStoryFn,
 } from '@storybook/csf';
 import {

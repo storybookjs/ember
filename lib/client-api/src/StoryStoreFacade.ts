@@ -1,4 +1,3 @@
-import global from 'global';
 import stable from 'stable';
 import {
   StoryId,

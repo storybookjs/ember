@@ -1047,7 +1047,7 @@ describe('start', () => {
       const { configure, clientApi } = start(jest.fn());
 
       const fn = jest.fn();
-      await configure('test', () => {
+      configure('test', () => {
         clientApi.storiesOf('kind', { id: 'foo.js' } as NodeModule).add('name', fn);
       });
 
@@ -1071,7 +1071,7 @@ describe('start', () => {
       const { configure, clientApi } = start(jest.fn());
 
       const fn = jest.fn();
-      await configure('test', () => {
+      configure('test', () => {
         clientApi.storiesOf('kind', { id: 1211 } as any).add('name', fn);
       });
 
