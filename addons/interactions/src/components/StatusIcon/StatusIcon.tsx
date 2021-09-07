@@ -14,17 +14,19 @@ const {
   },
 } = theme;
 
-const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => ({
-  width: status === CallState.PENDING ? 6 : 12,
-  height: status === CallState.PENDING ? 6 : 12,
-  color:
-    status === CallState.PENDING
-      ? gray[500]
-      : status === CallState.DONE
-      ? theme.color.positive
-      : theme.color.negative,
-  justifySelf: 'center',
-}));
+const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
+  const color = {
+    [CallState.PENDING]: gray[500],
+    [CallState.DONE]: theme.color.positive,
+    [CallState.ERROR]: theme.color.negative,
+  }[status];
+  return {
+    width: status === CallState.PENDING ? 6 : 12,
+    height: status === CallState.PENDING ? 6 : 12,
+    color,
+    justifySelf: 'center',
+  };
+});
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   const icon = {
