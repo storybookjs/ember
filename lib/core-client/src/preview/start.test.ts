@@ -5,7 +5,6 @@ import {
   waitForEvents,
   emitter,
   mockChannel,
-  // eslint-disable-next-line import/extensions
 } from '@storybook/preview-web/dist/cjs/PreviewWeb.mockdata';
 
 import { start } from './start';
@@ -990,15 +989,17 @@ describe('start', () => {
   // These tests need to be in here, as they require a convoluted hookup between
   // a ClientApi and a StoryStore
   describe('ClientApi.getStorybook', () => {
-    it('should transform the storybook to an array with filenames', async () => {
+    it('should transform the storybook to an array with filenames, empty', () => {
       const { configure, clientApi } = start(jest.fn());
 
-      let book;
+      configure('test', () => {});
+      expect(clientApi.getStorybook()).toEqual([]);
+    });
 
-      book = clientApi.getStorybook();
-      expect(book).toEqual([]);
+    it('should transform the storybook to an array with filenames, full', () => {
+      const { configure, clientApi } = start(jest.fn());
 
-      await configure('test', () => {
+      configure('test', () => {
         clientApi
           .storiesOf('kind 1', { id: 'file1' } as any)
           .add('name 1', () => '1')
@@ -1009,9 +1010,8 @@ describe('start', () => {
           .add('name 1', () => '1')
           .add('name 2', () => '2');
       });
-      book = clientApi.getStorybook();
 
-      expect(book).toEqual([
+      expect(clientApi.getStorybook()).toEqual([
         expect.objectContaining({
           fileName: expect.any(String),
           kind: 'kind 1',

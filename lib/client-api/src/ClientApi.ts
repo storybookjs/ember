@@ -34,7 +34,7 @@ import {
 } from '@storybook/store';
 import { ClientApiAddons, StoryApi, Comparator } from '@storybook/addons';
 
-import { storySort } from './storySort';
+import { StoryStoreFacade } from './StoryStoreFacade';
 
 const { FEATURES } = global;
 
@@ -124,102 +124,45 @@ export const addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<AnyFramework>) =>
 
 export const getGlobalRender = () => {
   checkMethod('getGlobalRender', false);
-  return singleton.projectAnnotations.render;
+  return singleton.facade.projectAnnotations.render;
 };
 
 export const setGlobalRender = (render: StoryFn<AnyFramework>) => {
   checkMethod('setGlobalRender', false);
-  singleton.projectAnnotations.render = render;
+  singleton.facade.projectAnnotations.render = render;
 };
 
 const invalidStoryTypes = new Set(['string', 'number', 'boolean', 'symbol']);
-export default class ClientApi<TFramework extends AnyFramework> {
-  projectAnnotations: NormalizedProjectAnnotations<TFramework>;
+export class ClientApi<TFramework extends AnyFramework> {
+  facade: StoryStoreFacade<TFramework>;
 
   storyStore?: StoryStore<TFramework>;
 
-  onImportFnChanged?: ({ importFn }: { importFn: ModuleImportFn }) => void;
-
-  private stories: StoryIndex['stories'];
-
-  private csfExports: Record<Path, ModuleExports>;
-
   private addons: ClientApiAddons<TFramework['storyResult']>;
+
+  onImportFnChanged?: ({ importFn }: { importFn: ModuleImportFn }) => void;
 
   // If we don't get passed modules so don't know filenames, we can
   // just use numeric indexes
   private lastFileName = 0;
 
   constructor() {
-    this.projectAnnotations = {
-      loaders: [],
-      decorators: [],
-      parameters: {},
-      argsEnhancers: [],
-      argTypesEnhancers: [],
-    };
-
-    this.stories = {};
-
-    this.csfExports = {};
+    this.facade = new StoryStoreFacade();
 
     this.addons = {};
 
     singleton = this;
   }
 
-  // This doesn't actually import anything because the client-api loads fully
-  // on startup, but this is a shim after all.
   importFn(path: Path) {
-    return this.csfExports[path];
+    return this.facade.importFn(path);
   }
 
-  getStoryIndex() {
-    const fileNameOrder = Object.keys(this.csfExports);
-    const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
-
-    const storyEntries = Object.entries(this.stories);
-    // Add the kind parameters and global parameters to each entry
-    const stories: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
-      ([storyId, { importPath }]) => {
-        const exports = this.csfExports[importPath];
-        const csfFile = this.storyStore.processCSFFileWithCache<TFramework>(
-          exports,
-          exports.default.title
-        );
-        return [
-          storyId,
-          this.storyStore.storyFromCSFFile({ storyId, csfFile }),
-          csfFile.meta.parameters,
-          this.projectAnnotations.parameters,
-        ];
-      }
-    );
-
-    if (storySortParameter) {
-      let sortFn: Comparator<any>;
-      if (typeof storySortParameter === 'function') {
-        sortFn = storySortParameter;
-      } else {
-        sortFn = storySort(storySortParameter);
-      }
-      stable.inplace(stories, sortFn);
-    } else {
-      stable.inplace(
-        stories,
-        (s1, s2) =>
-          fileNameOrder.indexOf(s1[1].parameters.fileName) -
-          fileNameOrder.indexOf(s2[1].parameters.fileName)
-      );
+  fetchStoryIndex() {
+    if (!this.storyStore) {
+      throw new Error('Cannot fetch story index before setting storyStore');
     }
-
-    return {
-      v: 3,
-      stories: stories.reduce((acc, [id]) => {
-        acc[id] = this.stories[id];
-        return acc;
-      }, {} as StoryIndex['stories']),
-    };
+    return this.facade.fetchStoryIndex(this.storyStore);
   }
 
   setAddon = deprecate(
@@ -234,12 +177,12 @@ export default class ClientApi<TFramework extends AnyFramework> {
   );
 
   addDecorator = (decorator: DecoratorFunction<TFramework>) => {
-    this.projectAnnotations.decorators.push(decorator);
+    this.facade.projectAnnotations.decorators.push(decorator);
   };
 
   clearDecorators = deprecate(
     () => {
-      this.projectAnnotations.decorators = [];
+      this.facade.projectAnnotations.decorators = [];
     },
     dedent`
       \`clearDecorators\` is deprecated and will be removed in Storybook 7.0.
@@ -253,28 +196,28 @@ export default class ClientApi<TFramework extends AnyFramework> {
     globalTypes,
     ...parameters
   }: Parameters & { globals?: Globals; globalTypes?: GlobalTypes }) => {
-    this.projectAnnotations.parameters = combineParameters(
-      this.projectAnnotations.parameters,
+    this.facade.projectAnnotations.parameters = combineParameters(
+      this.facade.projectAnnotations.parameters,
       parameters
     );
     if (globals) {
-      this.projectAnnotations.globals = globals;
+      this.facade.projectAnnotations.globals = globals;
     }
     if (globalTypes) {
-      this.projectAnnotations.globalTypes = normalizeInputTypes(globalTypes);
+      this.facade.projectAnnotations.globalTypes = normalizeInputTypes(globalTypes);
     }
   };
 
   addLoader = (loader: LoaderFunction<TFramework>) => {
-    this.projectAnnotations.loaders.push(loader);
+    this.facade.projectAnnotations.loaders.push(loader);
   };
 
   addArgsEnhancer = (enhancer: ArgsEnhancer<TFramework>) => {
-    this.projectAnnotations.argsEnhancers.push(enhancer);
+    this.facade.projectAnnotations.argsEnhancers.push(enhancer);
   };
 
   addArgTypesEnhancer = (enhancer: ArgTypesEnhancer<TFramework>) => {
-    this.projectAnnotations.argTypesEnhancers.push(enhancer);
+    this.facade.projectAnnotations.argTypesEnhancers.push(enhancer);
   };
 
   // what are the occasions that "m" is a boolean vs an obj
@@ -306,7 +249,10 @@ export default class ClientApi<TFramework extends AnyFramework> {
     // Deal with `storiesOf()` being called twice in the same file.
     // On HMR, `this.csfExports[fileName]` will be reset to `{}`, so an empty object is due
     // to this export, not a second call of `storiesOf()`.
-    while (this.csfExports[fileName] && Object.keys(this.csfExports[fileName]).length > 0) {
+    while (
+      this.facade.csfExports[fileName] &&
+      Object.keys(this.facade.csfExports[fileName]).length > 0
+    ) {
       i += 1;
       fileName = `${baseFilename}-${i}`;
     }
@@ -316,7 +262,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
       // itself automatically without us needing to look at our imports
       m.hot.accept();
       m.hot.dispose(() => {
-        this.clearFilenameExports(fileName);
+        this.facade.clearFilenameExports(fileName);
 
         // We need to update the importFn as soon as the module re-evaluates
         // (and calls storiesOf() again, etc). We could call `onImportFnChanged()`
@@ -355,7 +301,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
       parameters: {},
     };
     // We map these back to a simple default export, even though we have type guarantees at this point
-    this.csfExports[fileName] = { default: meta };
+    this.facade.csfExports[fileName] = { default: meta };
 
     api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;
@@ -372,7 +318,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
 
       const { decorators, loaders, ...storyParameters } = parameters;
 
-      const csfExports = this.csfExports[fileName];
+      const csfExports = this.facade.csfExports[fileName];
       // Whack a _ on the front incase it is "default"
       csfExports[`_${sanitize(storyName)}`] = {
         name: storyName,
@@ -383,7 +329,7 @@ export default class ClientApi<TFramework extends AnyFramework> {
       };
 
       const storyId = parameters?.__id || toId(kind, storyName);
-      this.stories[storyId] = {
+      this.facade.stories[storyId] = {
         title: csfExports.default.title,
         name: storyName,
         importPath: fileName,
@@ -420,76 +366,11 @@ Read more here: https://github.com/storybookjs/storybook/blob/master/MIGRATION.m
     return api;
   };
 
-  clearFilenameExports(fileName: Path) {
-    if (!this.csfExports[fileName]) {
-      return;
-    }
-
-    // Clear this module's stories from the storyList and existing exports
-    Object.entries(this.stories).forEach(([id, { importPath }]) => {
-      if (importPath === fileName) {
-        delete this.stories[id];
-      }
-    });
-
-    // We keep this as an empty record so we can use it to maintain component order
-    this.csfExports[fileName] = {};
-  }
-
-  // NOTE: we could potentially share some of this code with the stories.json generation
-  addStoriesFromExports(fileName: Path, fileExports: ModuleExports) {
-    // if the export haven't changed since last time we added them, this is a no-op
-    if (this.csfExports[fileName] === fileExports) {
-      return;
-    }
-    // OTOH, if they have changed, let's clear them out first
-    this.clearFilenameExports(fileName);
-
-    const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
-    const { id: componentId, title } = defaultExport || {};
-    if (!title) {
-      throw new Error(
-        `Unexpected default export without title in '${fileName}': ${JSON.stringify(
-          fileExports.default
-        )}`
-      );
-    }
-
-    this.csfExports[fileName] = {
-      ...fileExports,
-      default: {
-        ...defaultExport,
-        parameters: {
-          fileName,
-          ...defaultExport.parameters,
-        },
-      },
-    };
-
-    Object.entries(namedExports)
-      .filter(([key]) => isExportStory(key, defaultExport))
-      .forEach(([key, storyExport]: [string, any]) => {
-        const exportName = storyNameFromExport(key);
-        const id = storyExport.parameters?.__id || toId(componentId || title, exportName);
-        const name =
-          (typeof storyExport !== 'function' && storyExport.name) ||
-          storyExport.storyName ||
-          storyExport.story?.name ||
-          exportName;
-
-        this.stories[id] = {
-          name,
-          title,
-          importPath: fileName,
-        };
-      });
-  }
-
   getStorybook = (): GetStorybookKind<TFramework>[] => {
-    const storiesList = this.getStoryIndex();
+    const { stories } = this.storyStore.storyIndex;
 
     const kinds: Record<ComponentTitle, GetStorybookKind<TFramework>> = {};
-    Object.entries(storiesList.stories).forEach(([storyId, { title, name, importPath }]) => {
+    Object.entries(stories).forEach(([storyId, { title, name, importPath }]) => {
       if (!kinds[title]) {
         kinds[title] = { kind: title, fileName: importPath, stories: [] };
       }

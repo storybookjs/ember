@@ -1,4 +1,5 @@
-import ClientApi, {
+import {
+  ClientApi,
   addDecorator,
   addParameters,
   addLoader,

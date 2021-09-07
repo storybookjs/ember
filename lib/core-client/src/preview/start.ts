@@ -50,15 +50,15 @@ export function start<TFramework extends AnyFramework>(
         const { added, removed } = executeLoadableForChanges(loadable, m);
 
         Array.from(added.entries()).forEach(([fileName, fileExports]) =>
-          clientApi.addStoriesFromExports(fileName, fileExports)
+          clientApi.facade.addStoriesFromExports(fileName, fileExports)
         );
 
         Array.from(removed.entries()).forEach(([fileName]) =>
-          clientApi.clearFilenameExports(fileName)
+          clientApi.facade.clearFilenameExports(fileName)
         );
 
         return {
-          ...clientApi.projectAnnotations,
+          ...clientApi.facade.projectAnnotations,
           render,
           renderToDOM,
           applyDecorators: decorateStory,
@@ -69,7 +69,7 @@ export function start<TFramework extends AnyFramework>(
         preview = new PreviewWeb({
           importFn: (path: Path) => clientApi.importFn(path),
           getProjectAnnotations,
-          fetchStoryIndex: () => clientApi.getStoryIndex(),
+          fetchStoryIndex: () => clientApi.fetchStoryIndex(),
         });
         if (globalWindow) {
           // eslint-disable-next-line no-underscore-dangle
