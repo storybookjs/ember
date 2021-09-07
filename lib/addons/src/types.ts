@@ -29,11 +29,8 @@ export type {
   Args,
 } from '@storybook/csf';
 
-export interface ArgType<TArg = unknown> {
-  name?: string;
-  description?: string;
+export interface ArgType<TArg = unknown> extends InputType {
   defaultValue?: TArg;
-  [key: string]: any;
 }
 
 export type ArgTypes<TArgs = Args> = {
