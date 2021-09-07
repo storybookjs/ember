@@ -124,6 +124,12 @@ export function prepareStory<TFramework extends AnyFramework>(
     argTypes: passedArgTypes,
   };
 
+  contextForEnhancers.argTypes = argTypesEnhancers.reduce(
+    (accumulatedArgTypes, enhancer) =>
+      enhancer({ ...contextForEnhancers, argTypes: accumulatedArgTypes }),
+    contextForEnhancers.argTypes
+  );
+
   contextForEnhancers.initialArgs = argsEnhancers.reduce(
     (accumulatedArgs: Args, enhancer) => ({
       ...accumulatedArgs,
@@ -133,12 +139,6 @@ export function prepareStory<TFramework extends AnyFramework>(
       }),
     }),
     initialArgsBeforeEnhancers
-  );
-
-  contextForEnhancers.argTypes = argTypesEnhancers.reduce(
-    (accumulatedArgTypes, enhancer) =>
-      enhancer({ ...contextForEnhancers, argTypes: accumulatedArgTypes }),
-    contextForEnhancers.argTypes
   );
 
   // Add some of our metadata into parameters as we used to do this in 6.x and users may be relying on it
