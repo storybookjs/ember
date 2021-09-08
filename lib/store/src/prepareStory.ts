@@ -90,26 +90,13 @@ export function prepareStory<TFramework extends AnyFramework>(
   // eslint-disable-next-line no-underscore-dangle
   parameters.__isArgsStory = passArgsFirst && render.length > 0;
 
-  // Pull out args[X] || argTypes[X].defaultValue into initialArgs
+  // Pull out args[X] into initialArgs for argTypes enhancers
   const passedArgs: Args = combineParameters(
     projectAnnotations.args,
     componentAnnotations.args,
     storyAnnotations.args
   ) as Args;
 
-  const defaultArgs: Args = Object.entries(
-    passedArgTypes as Record<string, { defaultValue: any }>
-  ).reduce((acc, [arg, { defaultValue }]) => {
-    if (typeof defaultValue !== 'undefined') {
-      acc[arg] = defaultValue;
-    }
-    return acc;
-  }, {} as Args);
-  if (Object.keys(defaultArgs).length > 0) {
-    argTypeDefaultValueWarning();
-  }
-
-  const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
   const contextForEnhancers: StoryContextForEnhancers<TFramework> = {
     componentId: componentAnnotations.id,
     title,
@@ -120,7 +107,7 @@ export function prepareStory<TFramework extends AnyFramework>(
     component: componentAnnotations.component,
     subcomponents: componentAnnotations.subcomponents,
     parameters,
-    initialArgs: initialArgsBeforeEnhancers,
+    initialArgs: passedArgs,
     argTypes: passedArgTypes,
   };
 
@@ -129,6 +116,23 @@ export function prepareStory<TFramework extends AnyFramework>(
       enhancer({ ...contextForEnhancers, argTypes: accumulatedArgTypes }),
     contextForEnhancers.argTypes
   );
+
+  // Add argTypes[X].defaultValue to initial args (note this deprecated)
+  // We need to do this *after* the argTypesEnhancers as they may add defaultValues
+  const defaultArgs: Args = Object.entries(contextForEnhancers.argTypes).reduce(
+    (acc, [arg, { defaultValue }]) => {
+      if (typeof defaultValue !== 'undefined') {
+        acc[arg] = defaultValue;
+      }
+      return acc;
+    },
+    {} as Args
+  );
+  if (Object.keys(defaultArgs).length > 0) {
+    argTypeDefaultValueWarning();
+  }
+
+  const initialArgsBeforeEnhancers = { ...defaultArgs, ...passedArgs };
 
   contextForEnhancers.initialArgs = argsEnhancers.reduce(
     (accumulatedArgs: Args, enhancer) => ({
