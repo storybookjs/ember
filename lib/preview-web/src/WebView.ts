@@ -94,8 +94,9 @@ export class WebView {
 
     document.body.classList.add(classes.NOPREVIEW);
 
-    this.storyRoot().setAttribute('hidden', 'true');
-    this.docsRoot().setAttribute('hidden', 'true');
+    // In storyshots this can get called and these two can be null
+    this.storyRoot()?.setAttribute('hidden', 'true');
+    this.docsRoot()?.setAttribute('hidden', 'true');
   }
 
   showMain() {
