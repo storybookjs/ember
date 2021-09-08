@@ -54,7 +54,7 @@ const Interaction = ({
     display: 'grid',
     gridTemplateColumns: '15px 1fr',
     alignItems: 'center',
-    height: 40,
+    minHeight: 40,
     padding: '8px 15px',
     cursor: call.state === CallState.ERROR ? 'default' : 'pointer',
     opacity: call.state === CallState.PENDING ? 0.4 : 1,
