@@ -241,7 +241,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.hooks[story.id].clean();
   }
 
-  extract(options: ExtractOptions = { includeDocsOnly: false }) {
+  extract(options: ExtractOptions = { includeDocsOnly: false }): Record<string, any> {
     if (!this.cachedCSFFiles) {
       throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
     }
@@ -255,18 +255,21 @@ export class StoryStore<TFramework extends AnyFramework> {
           return false;
         }
 
-        return Object.entries(story).reduce((acc, [key, value]) => {
-          if (typeof value === 'function') {
-            return acc;
-          }
-          if (['hooks'].includes(key)) {
-            return acc;
-          }
-          if (Array.isArray(value)) {
-            return Object.assign(acc, { [key]: value.slice().sort() });
-          }
-          return Object.assign(acc, { [key]: value });
-        }, {});
+        return Object.entries(story).reduce(
+          (acc, [key, value]) => {
+            if (typeof value === 'function') {
+              return acc;
+            }
+            if (['hooks'].includes(key)) {
+              return acc;
+            }
+            if (Array.isArray(value)) {
+              return Object.assign(acc, { [key]: value.slice().sort() });
+            }
+            return Object.assign(acc, { [key]: value });
+          },
+          { args: story.initialArgs }
+        );
       })
       .filter(Boolean);
   }

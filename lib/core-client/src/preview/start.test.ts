@@ -67,6 +67,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--story-one",
@@ -84,6 +85,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--story-two",
@@ -101,6 +103,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-b",
               "id": "component-b--story-three",
@@ -158,6 +161,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--story-one",
@@ -347,6 +351,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--default",
@@ -364,6 +369,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--new",
@@ -419,6 +425,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--default",
@@ -436,6 +443,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-b",
               "id": "component-b--default",
@@ -471,6 +479,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--default",
@@ -521,6 +530,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-one",
@@ -538,6 +548,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-two",
@@ -651,6 +662,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-one",
@@ -668,6 +680,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-two",
@@ -685,6 +698,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-three",
@@ -741,6 +755,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-one",
@@ -758,6 +773,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-two",
@@ -775,6 +791,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-d",
               "id": "component-d--story-four",
@@ -812,6 +829,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-one",
@@ -829,6 +847,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-two",
@@ -884,6 +903,7 @@ describe('start', () => {
           "stories": Array [
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--story-one",
@@ -901,6 +921,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-a",
               "id": "component-a--story-two",
@@ -918,6 +939,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-b",
               "id": "component-b--story-three",
@@ -935,6 +957,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-one",
@@ -952,6 +975,7 @@ describe('start', () => {
             },
             Object {
               "argTypes": Object {},
+              "args": Object {},
               "component": undefined,
               "componentId": "component-c",
               "id": "component-c--story-two",

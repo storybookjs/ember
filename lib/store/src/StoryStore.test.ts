@@ -241,6 +241,9 @@ describe('StoryStore', () => {
                 },
               },
             },
+            "args": Object {
+              "foo": "a",
+            },
             "component": undefined,
             "componentId": "component-one",
             "id": "component-one--a",
@@ -271,6 +274,9 @@ describe('StoryStore', () => {
                 },
               },
             },
+            "args": Object {
+              "foo": "b",
+            },
             "component": undefined,
             "componentId": "component-one",
             "id": "component-one--b",
@@ -300,6 +306,9 @@ describe('StoryStore', () => {
                   "name": "string",
                 },
               },
+            },
+            "args": Object {
+              "foo": "c",
             },
             "component": undefined,
             "componentId": "component-two",
@@ -380,6 +389,9 @@ describe('StoryStore', () => {
                   },
                 },
               },
+              "args": Object {
+                "foo": "a",
+              },
               "component": undefined,
               "componentId": "component-one",
               "id": "component-one--a",
@@ -410,6 +422,9 @@ describe('StoryStore', () => {
                   },
                 },
               },
+              "args": Object {
+                "foo": "b",
+              },
               "component": undefined,
               "componentId": "component-one",
               "id": "component-one--b",
@@ -439,6 +454,9 @@ describe('StoryStore', () => {
                     "name": "string",
                   },
                 },
+              },
+              "args": Object {
+                "foo": "c",
               },
               "component": undefined,
               "componentId": "component-two",
