@@ -1,7 +1,7 @@
 import global from 'global';
 import dedent from 'ts-dedent';
 import { RenderContext } from '@storybook/store';
-import { ElementArgs, OptionsArgs, EmberFramework } from './types';
+import { OptionsArgs, EmberFramework } from './types';
 
 const { window: globalWindow, document } = global;
 
@@ -20,7 +20,7 @@ let lastPromise = app.boot();
 let hasRendered = false;
 let isRendering = false;
 
-function render(options: OptionsArgs, el: ElementArgs) {
+function render(options: OptionsArgs, el: HTMLElement) {
   if (isRendering) return;
   isRendering = true;
 
@@ -80,5 +80,5 @@ export default function renderMain(
   }
 
   showMain();
-  render(element, { el: domElement });
+  render(element, domElement);
 }
