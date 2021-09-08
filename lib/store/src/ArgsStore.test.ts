@@ -50,6 +50,15 @@ describe('ArgsStore', () => {
       store.update('id', { obj: { baz: 'bing' } });
       expect(store.get('id')).toEqual({ obj: { baz: 'bing' } });
     });
+
+    it('does not set keys to undefined, it simply unsets them', () => {
+      const store = new ArgsStore();
+
+      store.setInitial('id', { foo: 'bar' });
+
+      store.update('id', { foo: undefined });
+      expect('foo' in store.get('id')).toBe(false);
+    });
   });
 
   describe('updateFromPersisted', () => {

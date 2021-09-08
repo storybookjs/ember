@@ -3,6 +3,12 @@ import { StoryId, Args } from '@storybook/csf';
 import { Story } from './types';
 import { combineArgs, mapArgsToTypes, validateOptions, deepDiff, DEEPLY_EQUAL } from './args';
 
+function deleteUndefined(obj: Record<string, any>) {
+  // eslint-disable-next-line no-param-reassign
+  Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+  return obj;
+}
+
 export class ArgsStore {
   argsByStoryId: Record<StoryId, Args> = {};
 
@@ -52,6 +58,9 @@ export class ArgsStore {
       throw new Error(`No args known for ${storyId} -- has it been rendered yet?`);
     }
 
-    this.argsByStoryId[storyId] = { ...this.argsByStoryId[storyId], ...argsUpdate };
+    this.argsByStoryId[storyId] = deleteUndefined({
+      ...this.argsByStoryId[storyId],
+      ...argsUpdate,
+    });
   }
 }
