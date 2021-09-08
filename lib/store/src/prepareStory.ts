@@ -150,6 +150,7 @@ export function prepareStory<TFramework extends AnyFramework>(
     contextForEnhancers.parameters = {
       ...contextForEnhancers.parameters,
       __id: id,
+      globals: projectAnnotations.globals,
       globalTypes: projectAnnotations.globalTypes,
       args: contextForEnhancers.initialArgs,
       argTypes: contextForEnhancers.argTypes,

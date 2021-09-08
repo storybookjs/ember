@@ -196,10 +196,16 @@ export class ClientApi<TFramework extends AnyFramework> {
       parameters
     );
     if (globals) {
-      this.facade.projectAnnotations.globals = globals;
+      this.facade.projectAnnotations.globals = {
+        ...this.facade.projectAnnotations.globals,
+        ...globals,
+      };
     }
     if (globalTypes) {
-      this.facade.projectAnnotations.globalTypes = normalizeInputTypes(globalTypes);
+      this.facade.projectAnnotations.globalTypes = {
+        ...this.facade.projectAnnotations.globalTypes,
+        ...normalizeInputTypes(globalTypes),
+      };
     }
   };
 
