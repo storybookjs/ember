@@ -1,7 +1,7 @@
 import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useChannel } from '@storybook/api';
+import { useChannel, useParameter } from '@storybook/api';
 import { AddonPanel, Icons } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
@@ -193,6 +193,8 @@ export const Panel: React.FC<PanelProps> = (props) => {
     },
   });
 
+  const [fileName] = useParameter('fileName', '').split('/').slice(-1);
+
   const { log, interactions, callsById, isDebugging } = state;
   const hasException = interactions.some((call) => call.state === CallState.ERROR);
   const hasPrevious = interactions.some((call) => call.state !== CallState.PENDING);
@@ -244,6 +246,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
       <Subnav
         status={hasException ? CallState.ERROR : CallState.DONE}
+        storyFileName={fileName}
         onPrevious={prev}
         onNext={next}
         onReplay={stop}

@@ -67,6 +67,7 @@ const StyledLocation = styled(P)(({ theme }) => ({
   justifyContent: 'flex-end',
   textAlign: 'right',
   paddingRight: 15,
+  fontSize: 13,
 }));
 
 const Group = styled.div({
