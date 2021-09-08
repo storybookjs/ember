@@ -73,7 +73,8 @@ export function prepareStory<TFramework extends AnyFramework>(
     ...(storyAnnotations.loaders || []),
   ];
 
-  // TODO make a note about what's happening here
+  // The render function on annotations *has* to be an `ArgsStoryFn`, so when we normalize
+  // CSFv1/2, we use a new field called `userStoryFn` so we know that it can be a LegacyStoryFn
   const render =
     storyAnnotations.userStoryFn ||
     storyAnnotations.render ||
