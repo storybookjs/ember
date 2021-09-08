@@ -370,7 +370,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }) {
     const { id, applyLoaders, unboundStoryFn, runPlayFunction } = story;
 
-    const controller = new AbortController();
+    // IE11 doesn't support AbortController, so we either need to polyfill or just not support it
+    const controller = AbortController
+      ? new AbortController()
+      : {
+          signal: { aborted: false },
+          abort() {
+            this.signal.aborted = true;
+          },
+        };
     let initialRenderPhase: InitialRenderPhase = 'init';
     let renderContext: RenderContext<TFramework>;
     const initialRender = async () => {
