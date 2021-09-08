@@ -452,18 +452,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       if (initialRenderPhase === 'init') {
         return;
       }
-      // The loaders are done but we are part way through rendering the story to the DOM
-      // This is a bit of an edge case and not something we can deal with sensibly, let's just warn
-      if (initialRenderPhase === 'loaded') {
-        logger.warn('Changed story args during rendering. Arg changes have been ignored.');
-        return;
-      }
-
-      if (initialRenderPhase === 'rendered') {
-        logger.warn(
-          'Changed story args during play function. Continuing but there may be problems.'
-        );
-      }
 
       // This story context will have the updated values of args and globals
 

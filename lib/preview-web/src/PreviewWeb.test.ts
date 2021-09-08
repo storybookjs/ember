@@ -648,7 +648,7 @@ describe('PreviewWeb', () => {
         );
       });
 
-      it('does nothing and warns renderToDOM is running', async () => {
+      it('renders a second time if renderToDOM is running', async () => {
         const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
@@ -659,20 +659,63 @@ describe('PreviewWeb', () => {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
-        expect(logger.warn).toHaveBeenCalled();
 
         // Now let the renderToDOM call resolve
         openGate();
         await waitForRender();
 
-        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
-        // renderToDOM call happens with original args, does not get retried.
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(2);
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
               loaded: { l: 7 },
               args: { foo: 'a' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: false,
+            storyContext: expect.objectContaining({
+              loaded: { l: 7 },
+              args: { foo: 'a', new: 'arg' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+      });
+
+      it('works if it is called directly from inside non async renderToDOM', async () => {
+        document.location.search = '?id=component-one--a';
+        projectAnnotations.renderToDOM.mockImplementationOnce(() => {
+          emitter.emit(Events.UPDATE_STORY_ARGS, {
+            storyId: 'component-one--a',
+            updatedArgs: { new: 'arg' },
+          });
+        });
+        await new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex }).initialize();
+
+        await waitForRender();
+
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(2);
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              loaded: { l: 7 },
+              args: { foo: 'a' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: false,
+            storyContext: expect.objectContaining({
+              loaded: { l: 7 },
+              args: { foo: 'a', new: 'arg' },
             }),
           }),
           undefined // this is coming from view.prepareForStory, not super important
@@ -709,7 +752,6 @@ describe('PreviewWeb', () => {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
-        expect(logger.warn).toHaveBeenCalled();
 
         // The second call should emit STORY_RENDERED
         await waitForRender();
