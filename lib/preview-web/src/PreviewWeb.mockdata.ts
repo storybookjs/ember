@@ -95,3 +95,4 @@ export const waitForRender = () =>
   ]);
 
 export const waitForQuiescence = async () => new Promise((r) => setTimeout(r, 100));
+export const waitForTick = async () => new Promise((r) => setTimeout(r, 0));

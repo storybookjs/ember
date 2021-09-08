@@ -488,6 +488,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       }
       this.channel.emit(Events.STORY_RENDERED, id);
     };
+    // We wait a moment to re-render the story in case users are doing things like force
+    // rerender or updating args from inside story functions.
+    const rerenderStoryOnTick = () => setTimeout(rerenderStory, 0);
 
     // Start the first render
     // NOTE: we don't await here because we need to return the "cleanup" function below
@@ -496,10 +499,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     initialRender().catch((err) => renderContextWithoutStoryContext.showException(err));
 
     // Listen to events and re-render story
-    this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
-    this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
+    this.channel.on(Events.UPDATE_GLOBALS, rerenderStoryOnTick);
+    this.channel.on(Events.FORCE_RE_RENDER, rerenderStoryOnTick);
     const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) rerenderStory();
+      if (storyId === story.id) rerenderStoryOnTick();
     };
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
