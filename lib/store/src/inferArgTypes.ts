@@ -11,9 +11,8 @@ const inferType = (value: any, name: string, visited: Set<any>): SBType => {
     case 'string':
     case 'number':
     case 'function':
-      return { name: type };
     case 'symbol':
-      return { name: 'other', value: 'symbol' };
+      return { name: type };
     default:
       break;
   }

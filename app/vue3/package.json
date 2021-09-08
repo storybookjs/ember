@@ -48,7 +48,7 @@
     "@storybook/addons": "6.4.0-alpha.34",
     "@storybook/core": "6.4.0-alpha.34",
     "@storybook/core-common": "6.4.0-alpha.34",
-    "@storybook/csf": "0.0.2--canary.5459c65.0",
+    "@storybook/csf": "0.0.2--canary.b1d5348.0",
     "@storybook/store": "6.4.0-alpha.34",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",

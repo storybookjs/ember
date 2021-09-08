@@ -47,8 +47,7 @@ const inferControl = (argType: StrictInputType, name: string, matchers: Controls
       return { control: { type: value?.length <= 5 ? 'radio' : 'select' }, options: value };
     }
     case 'function':
-      // case 'symbol':
-      // case 'void':
+    case 'symbol':
       return null;
     default:
       return { control: { type: options ? 'select' : 'object' } };

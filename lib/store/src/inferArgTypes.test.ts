@@ -21,7 +21,7 @@ describe('inferArgTypes', () => {
       b: { name: 'b', type: { name: 'string' } },
       c: { name: 'c', type: { name: 'number' } },
       d: { name: 'd', type: { name: 'function' } },
-      e: { name: 'e', type: { name: 'other', value: 'symbol' } },
+      e: { name: 'e', type: { name: 'symbol' } },
     });
   });
 
