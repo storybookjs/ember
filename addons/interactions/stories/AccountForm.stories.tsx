@@ -28,7 +28,7 @@ WaitFor.argTypes = {
   onSubmit: { action: true },
 };
 WaitFor.play = async ({ args }) => {
-  await userEvent.click(screen.getByText('Click'));
+  await userEvent.click(await screen.findByText('Click'));
   await waitFor(() =>
     expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi))
   );

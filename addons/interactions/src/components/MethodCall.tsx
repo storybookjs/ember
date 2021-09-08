@@ -1,5 +1,5 @@
 import React, { Fragment, ReactElement } from 'react';
-import { Call, CallRef } from '../types';
+import { Call, CallRef, ElementRef } from '../types';
 
 // Light theme
 const colors = {
@@ -216,27 +216,37 @@ export const FunctionNode = ({ value }: { value: Function }) => (
   <span style={{ color: colors.function }}>{value.name || 'anonymous'}</span>
 );
 
-export const ElementNode = ({
-  value,
-}: {
-  value: { prefix?: string; localName: string; id?: string; classList?: string[] };
-}) => {
-  const { prefix, localName, id, classList = [] } = value;
+export const ElementNode = ({ value }: { value: ElementRef['__element__'] }) => {
+  const { prefix, localName, id, classNames = [], innerText } = value;
   const name = prefix ? `${prefix}:${localName}` : localName;
   return (
     <span style={{ wordBreak: 'keep-all' }}>
-      <span key={`${name}_open`} style={{ color: colors.muted }}>
+      <span key={`${name}_lt`} style={{ color: colors.muted }}>
         &lt;
       </span>
       <span key={`${name}_tag`} style={{ color: colors.tag.name }}>
         {name}
       </span>
       <span key={`${name}_suffix`} style={{ color: colors.tag.suffix }}>
-        {id ? `#${id}` : [...classList].reduce((acc, className) => `${acc}.${className}`, '')}
+        {id ? `#${id}` : classNames.reduce((acc, className) => `${acc}.${className}`, '')}
       </span>
-      <span key={`${name}_close`} style={{ color: colors.muted }}>
+      <span key={`${name}_gt`} style={{ color: colors.muted }}>
         &gt;
       </span>
+      {!id && classNames.length === 0 && innerText && (
+        <>
+          <span key={`${name}_text`}>{innerText}</span>
+          <span key={`${name}_close_lt`} style={{ color: colors.muted }}>
+            &lt;
+          </span>
+          <span key={`${name}_close_tag`} style={{ color: colors.tag.name }}>
+            /{name}
+          </span>
+          <span key={`${name}_close_gt`} style={{ color: colors.muted }}>
+            &gt;
+          </span>
+        </>
+      )}
     </span>
   );
 };

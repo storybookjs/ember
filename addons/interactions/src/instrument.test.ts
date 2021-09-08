@@ -7,13 +7,13 @@ const callSpy = jest.fn();
 addons.setChannel(mockChannel());
 addons.getChannel().on(EVENTS.CALL, callSpy);
 
-class Element {
+class HTMLElement {
   constructor(props: any) {
     Object.assign(this, props);
   }
 }
 global.window = {
-  Element,
+  HTMLElement,
   location: { reload: jest.fn() },
   __STORYBOOK_ADDON_TEST_PREVIEW__: {},
   parent: { __STORYBOOK_ADDON_TEST_MANAGER__: {} },
@@ -22,9 +22,15 @@ global.window = {
 beforeEach(() => {
   callSpy.mockReset();
   addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
+
+  // Reset iframeState
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 0;
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.next = {};
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map();
+  global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.parentCallId = undefined;
+  global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.forwardedException = undefined;
+
+  // Reset sharedState
   global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.isDebugging = false;
   global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.chainedCallIds = new Set();
   global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.playUntil = undefined;
@@ -113,6 +119,7 @@ describe('instrument', () => {
         method: 'fn',
         interceptable: false,
         state: 'done',
+        parentCallId: undefined,
       })
     );
   });
@@ -146,7 +153,8 @@ describe('instrument', () => {
       fn1({}),
       fn1([]),
       fn1(() => {}),
-      fn1(Symbol())
+      fn1(Symbol()),
+      fn1(new Error('Oops'))
     );
     expect(callSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
@@ -162,19 +170,61 @@ describe('instrument', () => {
           { __callId__: callSpy.mock.calls[7][0].id, retain: false },
           { __callId__: callSpy.mock.calls[8][0].id, retain: false },
           { __callId__: callSpy.mock.calls[9][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[10][0].id, retain: false },
         ],
       })
     );
   });
 
-  it('maps DOM Elements in event args to an element ref', () => {
+  it('maps HTML Elements in event args to an element ref', () => {
     const { fn } = instrument({ fn: () => {} });
-    fn(new Element({ prefix: '', localName: 'div', id: 'root', classList: [] }));
+    fn(new HTMLElement({ prefix: '', localName: 'div', id: 'root', classList: [] }));
     expect(callSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        args: [{ __element__: { prefix: '', localName: 'div', id: 'root', classList: [] } }],
+        args: [{ __element__: { prefix: '', localName: 'div', id: 'root', classNames: [] } }],
       })
     );
+  });
+
+  it('tracks the parent call id for calls inside callbacks', () => {
+    const fn = (callback: Function) => callback && callback();
+    const { fn1, fn2, fn3, fn4, fn5 } = instrument({ fn1: fn, fn2: fn, fn3: fn, fn4: fn, fn5: fn });
+    fn1(() => {
+      fn2(() => fn3());
+      fn4();
+    });
+    fn5();
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '2-fn3', parentCallId: '1-fn2' })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '3-fn4', parentCallId: '0-fn1' })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '4-fn5', parentCallId: undefined })
+    );
+  });
+
+  it('tracks the parent call id for async callbacks', () => {
+    const fn = (callback: Function) => Promise.resolve(callback && callback());
+    const { fn1, fn2, fn3 } = instrument({ fn1: fn, fn2: fn, fn3: fn });
+    return fn1(() => fn2()).then(() => fn3()).then(() => {
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
+      );
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
+      );
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ id: '2-fn3', parentCallId: undefined })
+      );
+    });
   });
 
   it('instruments the call result to support chaining', () => {
@@ -192,34 +242,25 @@ describe('instrument', () => {
     );
   });
 
-  it('emits a call event with exception metadata when the function throws', () => {
+  it('catches thrown errors and returns the error', () => {
     const { fn } = instrument({
       fn: () => {
         throw new Error('Boom!');
       },
     });
-    expect(fn).toThrow();
-    expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: '0-fn',
-        exception: {
-          name: 'Error',
-          message: 'Boom!',
-          stack: expect.stringContaining('Error: Boom!'),
-        },
-      })
-    );
+    expect(fn).not.toThrow();
+    expect(fn()).toEqual(new Error('Boom!'));
   });
 
-  it('catches thrown errors and throws an ignoredException instead', () => {
-    const { fn } = instrument({
-      fn: () => {
+  it('forwards nested exceptions', () => {
+    const { fn1, fn2 } = instrument({
+      fn1: () => {}, // doesn't forward args
+      fn2: () => {
         throw new Error('Boom!');
       },
     });
-    expect(fn).not.toThrow('Boom!');
-    expect(fn).toThrow('ignoredException');
-  });
+    expect(fn1(fn2())).toEqual(new Error('Boom!'));
+  })
 
   it("re-throws anything that isn't an error", () => {
     const { fn } = instrument({
@@ -246,12 +287,67 @@ describe('instrument', () => {
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 123;
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.next = { ref: () => {} };
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map([[{}, 'ref']]);
+    global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.parentCallId = '0-foo';
+    global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.forwardedException = new Error('Oops');
     addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
     expect(global.window.__STORYBOOK_ADDON_TEST_PREVIEW__).toStrictEqual({
       n: 0,
       next: {},
       callRefsByResult: new Map(),
+      parentCallId: undefined,
+      forwardedException: undefined,
     });
+  });
+
+  describe('with intercept: true', () => {
+    const options = { intercept: true };
+
+    it('emits a call event with exception metadata when the function throws', () => {
+      const { fn } = instrument(
+        {
+          fn: () => {
+            throw new Error('Boom!');
+          },
+        },
+        options
+      );
+      expect(fn).toThrow();
+      expect(callSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: '0-fn',
+          exception: {
+            name: 'Error',
+            message: 'Boom!',
+            stack: expect.stringContaining('Error: Boom!'),
+          },
+        })
+      );
+    });
+
+    it('catches thrown errors and throws an ignoredException instead', () => {
+      const { fn } = instrument(
+        {
+          fn: () => {
+            throw new Error('Boom!');
+          },
+        },
+        options
+      );
+      expect(fn).toThrow('ignoredException');
+    });
+
+    it('catches forwarded exceptions and throws an ignoredException instead', () => {
+      const { fn1, fn2 } = instrument(
+        {
+          fn1: () => {},
+          fn2: () => {
+            throw new Error('Boom!');
+          },
+        },
+        options
+      );
+      expect(() => fn1(fn2())).toThrow('ignoredException');
+    })
   });
 
   describe('while debugging', () => {

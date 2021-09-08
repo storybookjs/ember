@@ -31,9 +31,11 @@ export const Args = () => (
     <Node value={{ hello: 'world', arr: [1, 2, 3], more: 1 }} />
     <Node value={new FooBar()} />
     <Node value={function goFaster() {}} />
+    <Node value={{ __element__: { localName: 'hr' } }} />
+    <Node value={{ __element__: { localName: 'foo', prefix: 'x' } }} />
     <Node value={{ __element__: { localName: 'div', id: 'foo' } }} />
-    <Node value={{ __element__: { localName: 'span', classList: ['foo', 'bar'] } }} />
-    <Node value={{ __element__: { prefix: 'foo', localName: 'bar' } }} />
+    <Node value={{ __element__: { localName: 'span', classNames: ['foo', 'bar'] } }} />
+    <Node value={{ __element__: { localName: 'button', innerText: 'Click me' } }} />
     <Node value={new Date(Date.UTC(2012, 11, 20, 0, 0, 0))} />
     <Node value={new Date(1600000000000)} />
     <Node value={new Date(1600000000123)} />

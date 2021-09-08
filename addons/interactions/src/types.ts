@@ -7,6 +7,7 @@ export interface Call {
   retain: boolean;
   state?: `${CallState}`;
   exception?: CaughtException;
+  parentId?: Call['id'];
 }
 
 export interface CallRef {
@@ -24,4 +25,14 @@ interface CaughtException {
   callId: Call['id'];
   message: Error['message'];
   stack: Error['stack'];
+}
+
+export interface ElementRef {
+  __element__: {
+    prefix?: string;
+    localName: string;
+    id?: string;
+    classNames?: string[];
+    innerText?: string;
+  };
 }

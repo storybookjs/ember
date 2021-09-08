@@ -43,8 +43,8 @@ const Interaction = ({
   const RowContainer = styled.div({
     display: 'flex',
     flexDirection: 'column',
-    background: call.state === CallState.ERROR ? '#FFF5CF' : 'transparent',
-    borderBottom: '1px solid #eee',
+    background: call.state === CallState.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
+    borderBottom: '1px solid #6663',
     fontFamily: 'Monaco, monospace',
     fontSize: 12,
   });
@@ -111,9 +111,10 @@ const fold = (log: Call[]) => {
         seen.add((node as CallRef).__callId__);
       }
     });
-    if (call.interceptable && !seen.has(call.id)) {
+    if (call.interceptable && !seen.has(call.id) && !seen.has(call.parentId)) {
       acc.unshift(call);
       seen.add(call.id);
+      call.parentId && seen.add(call.parentId);
     }
     return acc;
   }, []);

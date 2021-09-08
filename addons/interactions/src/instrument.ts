@@ -16,6 +16,8 @@ interface IframeState {
   n: number;
   next: Record<string, Function>;
   callRefsByResult: Map<any, CallRef>;
+  parentCallId?: Call['id'];
+  forwardedException?: Error;
 }
 
 let channel: Channel;
@@ -46,38 +48,72 @@ function construct(obj: any) {
 
 function invoke(fn: Function, call: Call) {
   // Map args that originate from a tracked function call to a call reference to enable nesting.
-  // These values are often not fully serializable anyway (e.g. DOM elements).
-  const mappedArgs = call.args.map((arg) => {
+  // These values are often not fully serializable anyway (e.g. HTML elements).
+  const mappedArgs = call.args.map((arg, index) => {
     if (iframeState.callRefsByResult.has(arg)) {
       return iframeState.callRefsByResult.get(arg);
     }
-    if (arg instanceof global.window.Element) {
-      const { prefix, localName, id, classList } = arg;
-      return { __element__: { prefix, localName, id, classList } };
+    if (arg instanceof global.window.HTMLElement) {
+      const { prefix, localName, id, classList, innerText } = arg;
+      const classNames = Array.from(classList);
+      return { __element__: { prefix, localName, id, classNames, innerText } };
     }
     return arg;
   });
 
-  // Mark any parent calls as "chained upon" so we won't attempt to defer it later.
+  // Wrap any callback functions to provide a way to access their "parent" call.
+  call.args.forEach((arg: any, index: number) => {
+    if (typeof arg !== 'function' || Object.keys(arg).length) return;
+    call.args[index] = (...args: any) => {
+      const prev = iframeState.parentCallId;
+      iframeState.parentCallId = call.id;
+      const res = arg(...args);
+      iframeState.parentCallId = prev;
+      return res;
+    };
+  });
+
+  // Mark any ancestor calls as "chained upon" so we won't attempt to defer it later.
   call.path.forEach((ref: any) => {
     ref?.__callId__ && sharedState.chainedCallIds.add(ref.__callId__);
   });
 
+  const info = { ...call, args: mappedArgs, parentCallId: iframeState.parentCallId };
+
   try {
+    // An earlier, non-interceptable call might have forwarded an exception.
+    if (iframeState.forwardedException) {
+      throw iframeState.forwardedException;
+    }
+
     const result = fn(...call.args);
-    channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, state: CallState.DONE });
+    channel.emit(EVENTS.CALL, { ...info, state: CallState.DONE });
+
+    // Track the result so we can trace later uses of it back to the originating call.
+    // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
     if (result && ['object', 'function', 'symbol'].includes(typeof result)) {
-      // Track the result so we can trace later uses of it back to the originating call.
-      // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
       iframeState.callRefsByResult.set(result, { __callId__: call.id, retain: call.retain });
     }
+
     return result;
   } catch (e) {
     if (e instanceof Error) {
       const { name, message, stack } = e;
       const exception = { name, message, stack };
-      channel.emit(EVENTS.CALL, { ...call, args: mappedArgs, state: CallState.ERROR, exception });
-      throw IGNORED_EXCEPTION; // Storybook will catch and silently ignore this
+      channel.emit(EVENTS.CALL, { ...info, state: CallState.ERROR, exception });
+
+      // Always track errors to their originating call.
+      iframeState.callRefsByResult.set(e, { __callId__: call.id, retain: call.retain });
+
+      // We need to throw to break out of the play function, but we don't want to trigger a redbox
+      // so we throw an ignoredException, which is caught and silently ignored by Storybook.
+      if (call.interceptable) {
+        throw IGNORED_EXCEPTION;
+      }
+
+      // Non-interceptable calls need their exceptions forwarded to the next interceptable call.
+      iframeState.forwardedException = e;
+      return e;
     }
     throw e;
   }
@@ -144,6 +180,8 @@ function initialize() {
       );
       iframeState.n = iframeState.callRefsByResult.size;
       iframeState.next = {};
+      iframeState.parentCallId = undefined;
+      iframeState.forwardedException = undefined;
     });
 
     initialized = true;
@@ -151,7 +189,7 @@ function initialize() {
     console.warn(e);
     unavailable = true;
   }
-};
+}
 
 // Traverses the object structure to recursively patch all function properties.
 // Returns the original object, or a new object with the same constructor,
