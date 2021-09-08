@@ -74,7 +74,7 @@ export interface SubAPI {
   resetStoryArgs: (story: Story, argNames?: string[]) => void;
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
   fetchStoryList: () => Promise<void>;
-  setStoryList: (storyList: StoriesListJson) => Promise<void>;
+  setStoryList: (storyList: StoryIndex) => Promise<void>;
   updateStory: (storyId: StoryId, update: StoryUpdate, ref?: ComposedRef) => Promise<void>;
 }
 
