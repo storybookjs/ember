@@ -377,13 +377,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const storyContext = this.storyStore.getStoryContext(story);
 
       const { parameters, initialArgs, argTypes, args } = storyContext;
-      this.channel.emit(Events.STORY_PREPARED, {
-        id,
-        parameters,
-        initialArgs,
-        argTypes,
-        args,
-      });
+      if (FEATURES?.storyStoreV7) {
+        this.channel.emit(Events.STORY_PREPARED, {
+          id,
+          parameters,
+          initialArgs,
+          argTypes,
+          args,
+        });
+      }
 
       const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
       const loadedContext = await applyLoaders({
