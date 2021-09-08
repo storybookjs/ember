@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { addons, Channel } from '@storybook/addons';
-import { IGNORED_EXCEPTION } from '@storybook/core-events';
+import { logger } from '@storybook/client-logger';
+import IGNORED_EXCEPTION from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
@@ -34,7 +36,7 @@ function isInstrumentable(o: unknown) {
   if (o.constructor === undefined) return true;
   const proto = o.constructor.prototype;
   if (!isObject(proto)) return false;
-  if (proto.hasOwnProperty('isPrototypeOf') === false) return false;
+  if (Object.prototype.hasOwnProperty.call(proto, 'isPrototypeOf') === false) return false;
   return true;
 }
 
@@ -47,38 +49,28 @@ function construct(obj: any) {
 }
 
 function invoke(fn: Function, call: Call) {
-  // Map args that originate from a tracked function call to a call reference to enable nesting.
-  // These values are often not fully serializable anyway (e.g. HTML elements).
-  const mappedArgs = call.args.map((arg, index) => {
-    if (iframeState.callRefsByResult.has(arg)) {
-      return iframeState.callRefsByResult.get(arg);
-    }
-    if (arg instanceof global.window.HTMLElement) {
-      const { prefix, localName, id, classList, innerText } = arg;
-      const classNames = Array.from(classList);
-      return { __element__: { prefix, localName, id, classNames, innerText } };
-    }
-    return arg;
-  });
-
-  // Wrap any callback functions to provide a way to access their "parent" call.
-  call.args.forEach((arg: any, index: number) => {
-    if (typeof arg !== 'function' || Object.keys(arg).length) return;
-    call.args[index] = (...args: any) => {
-      const prev = iframeState.parentCallId;
-      iframeState.parentCallId = call.id;
-      const res = arg(...args);
-      iframeState.parentCallId = prev;
-      return res;
-    };
-  });
+  const info = {
+    ...call,
+    parentCallId: iframeState.parentCallId,
+    // Map args that originate from a tracked function call to a call reference to enable nesting.
+    // These values are often not fully serializable anyway (e.g. HTML elements).
+    args: call.args.map((arg) => {
+      if (iframeState.callRefsByResult.has(arg)) {
+        return iframeState.callRefsByResult.get(arg);
+      }
+      if (arg instanceof global.window.HTMLElement) {
+        const { prefix, localName, id, classList, innerText } = arg;
+        const classNames = Array.from(classList);
+        return { __element__: { prefix, localName, id, classNames, innerText } };
+      }
+      return arg;
+    }),
+  };
 
   // Mark any ancestor calls as "chained upon" so we won't attempt to defer it later.
   call.path.forEach((ref: any) => {
-    ref?.__callId__ && sharedState.chainedCallIds.add(ref.__callId__);
+    if (ref?.__callId__) sharedState.chainedCallIds.add(ref.__callId__);
   });
-
-  const info = { ...call, args: mappedArgs, parentCallId: iframeState.parentCallId };
 
   try {
     // An earlier, non-interceptable call might have forwarded an exception.
@@ -86,7 +78,19 @@ function invoke(fn: Function, call: Call) {
       throw iframeState.forwardedException;
     }
 
-    const result = fn(...call.args);
+    const result = fn(
+      // Wrap any callback functions to provide a way to access their "parent" call.
+      ...call.args.map((arg: any) => {
+        if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
+        return (...args: any) => {
+          const prev = iframeState.parentCallId;
+          iframeState.parentCallId = call.id;
+          const res = arg(...args);
+          iframeState.parentCallId = prev;
+          return res;
+        };
+      })
+    );
     channel.emit(EVENTS.CALL, { ...info, state: CallState.DONE });
 
     // Track the result so we can trace later uses of it back to the originating call.
@@ -129,7 +133,9 @@ function intercept(fn: Function, call: Call) {
   }
 
   // Instead of invoking the function, defer the function call until we continue playing.
-  return new Promise((resolve) => (iframeState.next[call.id] = resolve))
+  return new Promise((resolve) => {
+    iframeState.next[call.id] = resolve;
+  })
     .then(() => delete iframeState.next[call.id])
     .then(() => invoke(fn, call));
 }
@@ -138,7 +144,7 @@ function intercept(fn: Function, call: Call) {
 // Returns a function that invokes the original function, records the invocation ("call") and
 // returns the original result.
 function track(method: string, fn: Function, args: any[], { path = [], ...options }: Options) {
-  const id = `${iframeState.n++}-${method}`;
+  const id = `${(iframeState.n += 1)}-${method}`;
   const { intercept: interceptable = false, retain = false } = options;
   const call: Call = { id, path, method, args, interceptable, retain };
   const result = (options.intercept ? intercept : invoke)(fn, call);
@@ -186,7 +192,7 @@ function initialize() {
 
     initialized = true;
   } catch (e) {
-    console.warn(e);
+    logger.warn(e);
     unavailable = true;
   }
 }

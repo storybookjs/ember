@@ -1,35 +1,12 @@
 function config(entry = []) {
-  return [...entry, require.resolve('./dist/esm/preset/preview')];
+  return [...entry, require.resolve('./dist/esm/preset/argsEnhancers')];
 }
 
 function managerEntries(entry = []) {
-  return [...entry, require.resolve('./dist/esm/preset/manager')];
-}
-
-function webpack(config = {}, options = {}) {
-  const sourceLoader = {
-    loader: require.resolve('@storybook/source-loader'),
-    options: options.loaderOptions,
-  }
-  return {
-    ...config,
-    module: {
-      ...config.module,
-      rules: [
-        ...(config.module?.rules || []),
-        {
-          test: [/\.stories\.(jsx?$|tsx?$)/],
-          ...options.rule,
-          enforce: 'pre',
-          use: [sourceLoader],
-        },
-      ],
-    },
-  };
+  return [...entry, require.resolve('./dist/esm/register')];
 }
 
 module.exports = {
   config,
   managerEntries,
-  webpack,
 };

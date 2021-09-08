@@ -21,9 +21,16 @@
     "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/ts/index.d.ts",
+  "main": "dist/cjs/register.js",
+  "module": "dist/esm/register.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "dist/ts3.9/*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
@@ -31,64 +38,25 @@
     "*.d.ts"
   ],
   "scripts": {
-    "postinstall": "patch-package",
-    "clean": "rimraf ./dist",
-    "buildBabel": "concurrently \"yarn buildBabel:cjs\" \"yarn buildBabel:esm\"",
-    "buildBabel:cjs": "babel ./src -d ./dist/cjs --extensions \".js,.jsx,.ts,.tsx\"",
-    "buildBabel:esm": "babel ./src -d ./dist/esm --env-name esm --extensions \".js,.jsx,.ts,.tsx\"",
-    "buildTsc": "tsc --declaration --emitDeclarationOnly --outDir ./dist/ts",
-    "prebuild": "yarn clean",
-    "build": "concurrently \"yarn buildBabel\" \"yarn buildTsc\"",
-    "build:watch": "concurrently \"yarn buildBabel:esm -- --watch\" \"yarn buildTsc -- --watch\"",
-    "test": "jest",
-    "storybook": "start-storybook -p 7007",
-    "start": "concurrently -r \"yarn build:watch\" \"yarn storybook --no-manager-cache --quiet --modern\"",
-    "prebuild-storybook": "yarn build",
-    "build-storybook": "build-storybook",
-    "prerelease": "zx scripts/prepublish-checks.mjs",
-    "release": "yarn build && auto shipit",
-    "eject-ts": "zx scripts/eject-typescript.mjs"
+    "prepare": "node ../../scripts/prepare.js"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-react": "^7.12.5",
-    "@babel/preset-typescript": "^7.13.0",
-    "@storybook/addon-essentials": "^6.4.0-alpha.33",
+  "dependencies": {
+    "@storybook/addons": "6.4.0-alpha.33",
+    "@storybook/api": "6.4.0-alpha.33",
+    "@storybook/client-api": "6.4.0-alpha.33",
+    "@storybook/client-logger": "6.4.0-alpha.33",
+    "@storybook/components": "6.4.0-alpha.33",
+    "@storybook/core-events": "6.4.0-alpha.33",
     "@storybook/expect": "^1.0.0-rc.1",
-    "@storybook/react": "^6.4.0-alpha.33",
-    "@storybook/source-loader": "^6.4.0-alpha.33",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.1.9",
-    "@types/jest": "^27.0.1",
-    "@types/react-dom": "^17.0.9",
-    "auto": "^10.3.0",
-    "babel-loader": "^8.1.0",
-    "boxen": "^5.0.1",
-    "concurrently": "^6.2.0",
-    "dedent": "^0.7.0",
+    "@storybook/theming": "6.4.0-alpha.33",
+    "@testing-library/dom": "^8.3.0",
+    "@testing-library/user-event": "^13.2.1",
     "formik": "^2.2.9",
-    "jest": "^27.1.0",
+    "global": "^4.4.0",
     "jest-mock": "^27.0.6",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0",
-    "prettier": "^2.3.1",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "rimraf": "^3.0.2",
-    "ts-dedent": "^2.2.0",
-    "typescript": "^4.2.4",
-    "zx": "^1.14.1"
+    "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {
-    "@storybook/addons": "^6.4.0-alpha.33",
-    "@storybook/api": "^6.4.0-alpha.33",
-    "@storybook/components": "^6.4.0-alpha.33",
-    "@storybook/core-events": "^6.4.0-alpha.33",
-    "@storybook/source-loader": "^6.4.0-alpha.33",
-    "@storybook/theming": "^6.4.0-alpha.33",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -103,16 +71,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "gitHead": "ccd25210cd159e42110b700b0562e951bb9b3a57",
+  "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Interactions",
     "unsupportedFrameworks": [
       "react-native"
     ],
     "icon": "https://user-images.githubusercontent.com/263385/101991666-479cc600-3c7c-11eb-837b-be4e5ffa1bb8.png"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src/"
-    ]
   }
 }

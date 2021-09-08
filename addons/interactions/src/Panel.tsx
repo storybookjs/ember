@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -116,7 +118,9 @@ const fold = (log: Call[]) => {
     if (call.interceptable && !seen.has(call.id) && !seen.has(call.parentId)) {
       acc.unshift(call);
       seen.add(call.id);
-      call.parentId && seen.add(call.parentId);
+      if (call.parentId) {
+        seen.add(call.parentId);
+      }
     }
     return acc;
   }, []);
@@ -132,8 +136,8 @@ const reducer = (
       const log = state.log.concat(call);
       const interactions = fold(
         log.reduce<Call[]>(
-          (acc, call, index) => {
-            acc[index] = call;
+          (acc, item, index) => {
+            acc[index] = item;
             return acc;
           },
           state.shadowLog.map((c) => ({ ...c, state: CallState.PENDING }))
@@ -175,6 +179,8 @@ const reducer = (
         }, {}),
       };
     }
+    default:
+      throw new Error('Invalid action');
   }
 };
 
@@ -231,7 +237,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     emit(EVENTS.NEXT);
   };
 
-  const tabButton = document.getElementById('tabbutton-interactions');
+  const tabButton = global.document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
   const statusIcon = hasException ? (
     <span

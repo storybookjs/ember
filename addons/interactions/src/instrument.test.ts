@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import { addons, mockChannel } from '@storybook/addons';
 import global from 'global';
 import { EVENTS } from './constants';
@@ -149,11 +151,11 @@ describe('instrument', () => {
       fn1(true),
       fn1('foo'),
       fn1(1),
-      fn1(BigInt(1)),
+      fn1(BigInt(1)), // eslint-disable-line no-undef
       fn1({}),
       fn1([]),
       fn1(() => {}),
-      fn1(Symbol()),
+      fn1(Symbol('hi')),
       fn1(new Error('Oops'))
     );
     expect(callSpy).toHaveBeenLastCalledWith(
@@ -165,7 +167,7 @@ describe('instrument', () => {
           /* call 2 */ true,
           /* call 3 */ 'foo',
           /* call 4 */ 1,
-          /* call 5 */ BigInt(1),
+          /* call 5 */ BigInt(1), // eslint-disable-line no-undef
           { __callId__: callSpy.mock.calls[6][0].id, retain: false },
           { __callId__: callSpy.mock.calls[7][0].id, retain: false },
           { __callId__: callSpy.mock.calls[8][0].id, retain: false },
@@ -214,17 +216,19 @@ describe('instrument', () => {
   it('tracks the parent call id for async callbacks', () => {
     const fn = (callback: Function) => Promise.resolve(callback && callback());
     const { fn1, fn2, fn3 } = instrument({ fn1: fn, fn2: fn, fn3: fn });
-    return fn1(() => fn2()).then(() => fn3()).then(() => {
-      expect(callSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
-      );
-      expect(callSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
-      );
-      expect(callSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ id: '2-fn3', parentCallId: undefined })
-      );
-    });
+    return fn1(() => fn2())
+      .then(() => fn3())
+      .then(() => {
+        expect(callSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
+        );
+        expect(callSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
+        );
+        expect(callSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ id: '2-fn3', parentCallId: undefined })
+        );
+      });
   });
 
   it('instruments the call result to support chaining', () => {
@@ -260,12 +264,12 @@ describe('instrument', () => {
       },
     });
     expect(fn1(fn2())).toEqual(new Error('Boom!'));
-  })
+  });
 
   it("re-throws anything that isn't an error", () => {
     const { fn } = instrument({
       fn: () => {
-        throw 'Boom!';
+        throw 'Boom!'; // eslint-disable-line no-throw-literal
       },
     });
     expect(fn).toThrow('Boom!');
@@ -347,11 +351,13 @@ describe('instrument', () => {
         options
       );
       expect(() => fn1(fn2())).toThrow('ignoredException');
-    })
+    });
   });
 
   describe('while debugging', () => {
-    beforeEach(() => (global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.isDebugging = true));
+    beforeEach(() => {
+      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.isDebugging = true;
+    });
 
     it('defers calls to intercepted functions', () => {
       const { fn } = instrument({ fn: jest.fn() }, { intercept: true });
@@ -383,23 +389,23 @@ describe('instrument', () => {
       /* 3-fn */ expect(fn()).toEqual(expect.any(Promise));
     });
 
-    it('invokes the deferred function on the "next" event', (done) => {
+    it('invokes the deferred function on the "next" event', () => {
       const { fn } = instrument({ fn: jest.fn(() => 'bar') }, { intercept: true });
-      fn('foo').then((value: string) => {
+      const res = fn('foo').then((value: string) => {
         expect(value).toBe('bar');
         expect(fn._original).toHaveBeenCalledWith('foo');
-        done();
       });
       addons.getChannel().emit(EVENTS.NEXT);
+      return res;
     });
 
-    it('resolves all pending promises on the "next" event', (done) => {
+    it('resolves all pending promises on the "next" event', () => {
       const { fn } = instrument({ fn: jest.fn(() => {}) }, { intercept: true });
-      Promise.all([fn(), fn()]).then(() => {
+      const res = Promise.all([fn(), fn()]).then(() => {
         expect(fn._original).toHaveBeenCalledTimes(2);
-        done();
       });
       addons.getChannel().emit(EVENTS.NEXT);
+      return res;
     });
   });
 });
