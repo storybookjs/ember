@@ -109,14 +109,14 @@ export interface StoriesRaw {
 }
 
 type Path = string;
-export interface StoriesListStory {
+export interface StoryIndexStory {
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
 }
-export interface StoriesListJson {
+export interface StoryIndex {
   v: number;
-  stories: Record<StoryId, StoriesListStory>;
+  stories: Record<StoryId, StoryIndexStory>;
 }
 
 export type SetStoriesPayload =
@@ -169,11 +169,11 @@ export const denormalizeStoryParameters = ({
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 
-export const transformStoriesListToStoriesHash = (
-  list: StoriesListJson,
+export const transformStoryIndexToStoriesHash = (
+  index: StoryIndex,
   { provider }: { provider: Provider }
 ): StoriesHash => {
-  const input = Object.entries(list.stories).reduce((acc, [id, { title, name, importPath }]) => {
+  const input = Object.entries(index.stories).reduce((acc, [id, { title, name, importPath }]) => {
     acc[id] = {
       id,
       kind: title,

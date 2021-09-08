@@ -18,7 +18,7 @@ import {
   transformStoriesRawToStoriesHash,
   isStory,
   isRoot,
-  transformStoriesListToStoriesHash,
+  transformStoryIndexToStoriesHash,
 } from '../lib/stories';
 import type {
   StoriesHash,
@@ -28,7 +28,7 @@ import type {
   Root,
   StoriesRaw,
   SetStoriesPayload,
-  StoriesListJson,
+  StoryIndex,
 } from '../lib/stories';
 
 import { Args, ModuleFn } from '../index';
@@ -351,12 +351,17 @@ export const init: ModuleFn = ({
     fetchStoryList: async () => {
       // This needs some fleshing out as part of the stories list server project
       const result = await global.fetch('/stories.json');
-      const storyList = (await result.json()) as StoriesListJson;
+      const storyIndex = (await result.json()) as StoryIndex;
 
-      await fullAPI.setStoryList(storyList);
+      // We can only do this if the stories.json is a proper storyIndex
+      if (storyIndex.v !== 3) {
+        return;
+      }
+
+      await fullAPI.setStoryList(storyIndex);
     },
-    setStoryList: async (storyList: StoriesListJson) => {
-      const hash = transformStoriesListToStoriesHash(storyList, {
+    setStoryList: async (storyIndex: StoryIndex) => {
+      const hash = transformStoryIndexToStoriesHash(storyIndex, {
         provider,
       });
 
