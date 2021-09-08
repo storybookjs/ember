@@ -95,6 +95,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     await this.setupListenersAndRenderSelection();
   }
 
+  // We have a second "sync" code path through `initialize` for back-compat reasons.
+  // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
   initializeSync({ cacheAllCSFFiles = false }: { cacheAllCSFFiles?: boolean } = {}) {
     this.storyStore.initializeSync({ cacheAllCSFFiles });
     // NOTE: we don't await this, but return the promise so the caller can await it if they want
@@ -129,7 +131,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.on(Events.RESET_STORY_ARGS, this.onResetArgs.bind(this));
   }
 
-  // Use the selection specifier to choose a story
+  // Use the selection specifier to choose a story, then render it
   async selectSpecifiedStory() {
     if (!this.urlStore.selectionSpecifier) {
       this.renderMissingStory();
@@ -346,8 +348,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     return this.renderStoryToElement({ story, renderContext, element });
   }
 
-  // We want this function to be called directly by `renderSelection` above,
-  // but also by the `<ModernStory>` docs component
+  // Render a story into a given element and watch for the events that would trigger us
+  // to re-render it (plus deal sensibly with things like changing story mid-way through).
   renderStoryToElement({
     story,
     renderContext: renderContextWithoutStoryContext,
