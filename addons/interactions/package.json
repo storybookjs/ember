@@ -1,17 +1,25 @@
 {
-  "name": "storybook-addon-kit",
+  "name": "@storybook/addon-interactions",
   "version": "0.0.0",
-  "description": "everything you need to build a Storybook addon",
+  "description": "Automate, test and debug user interactions",
   "keywords": [
     "storybook-addons",
-    "style",
+    "data-state",
     "test"
   ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/interactions",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/storybook-addon-kit"
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "addons/interactions"
   },
-  "author": "winkerVSbecks",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -96,13 +104,11 @@
     "access": "public"
   },
   "storybook": {
-    "displayName": "Addon Kit",
-    "supportedFrameworks": [
-      "react",
-      "vue",
-      "angular"
+    "displayName": "Interactions",
+    "unsupportedFrameworks": [
+      "react-native"
     ],
-    "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
+    "icon": "https://user-images.githubusercontent.com/263385/101991666-479cc600-3c7c-11eb-837b-be4e5ffa1bb8.png"
   },
   "jest": {
     "roots": [
