@@ -323,7 +323,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     };
   };
 
-  raw() {
+  raw(): BoundStory<TFramework>[] {
     return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
   }
 
