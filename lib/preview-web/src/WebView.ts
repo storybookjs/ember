@@ -93,6 +93,9 @@ export class WebView {
     document.body.classList.remove(classes.ERROR);
 
     document.body.classList.add(classes.NOPREVIEW);
+
+    this.storyRoot().setAttribute('hidden', 'true');
+    this.docsRoot().setAttribute('hidden', 'true');
   }
 
   showMain() {
@@ -103,12 +106,12 @@ export class WebView {
   }
 
   showDocs() {
-    document.getElementById('root').setAttribute('hidden', 'true');
-    document.getElementById('docs-root').removeAttribute('hidden');
+    this.storyRoot().setAttribute('hidden', 'true');
+    this.docsRoot().removeAttribute('hidden');
   }
 
   showStory() {
-    document.getElementById('docs-root').setAttribute('hidden', 'true');
-    document.getElementById('root').removeAttribute('hidden');
+    this.docsRoot().setAttribute('hidden', 'true');
+    this.storyRoot().removeAttribute('hidden');
   }
 }

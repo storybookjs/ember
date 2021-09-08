@@ -272,16 +272,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
-    const previousViewMode = this.previousStory?.parameters?.docsOnly
-      ? 'docs'
-      : this.previousSelection?.viewMode;
-    if (viewModeChanged && previousViewMode === 'docs') {
-      ReactDOM.unmountComponentAtNode(this.view.docsRoot());
-    }
 
-    if (previousViewMode === 'story') {
-      this.removePreviousStory();
-    }
+    this.cleanupPreviousRender({ unmountDocs: viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
     if (this.previousSelection && (storyChanged || viewModeChanged)) {
@@ -532,8 +524,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     };
   }
 
-  removePreviousStory() {
-    this.previousCleanup();
+  cleanupPreviousRender({ unmountDocs = true }: { unmountDocs?: boolean } = {}) {
+    const previousViewMode = this.previousStory?.parameters?.docsOnly
+      ? 'docs'
+      : this.previousSelection?.viewMode;
+
+    if (unmountDocs && previousViewMode === 'docs') {
+      ReactDOM.unmountComponentAtNode(this.view.docsRoot());
+    }
+
+    if (previousViewMode === 'story') {
+      this.previousCleanup();
+    }
   }
 
   renderPreviewEntryError(err: Error) {
@@ -542,6 +544,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   renderMissingStory(storySpecifier?: StorySpecifier) {
+    this.cleanupPreviousRender();
     this.view.showNoPreview();
     this.channel.emit(Events.STORY_MISSING, storySpecifier);
   }
