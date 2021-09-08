@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "build": "ember build --output-path ember-output",
-    "build-storybook": "yarn storybook-prebuild && build-storybook -s ember-output",
+    "build-storybook": "yarn storybook-prebuild && build-storybook",
     "dev": "ember serve",
-    "storybook": "yarn build && start-storybook -p 9009 -s ember-output --no-manager-cache",
+    "storybook": "yarn build && start-storybook -p 9009 --no-manager-cache",
     "storybook-prebuild": "yarn build && shx cp -r public/* ember-output",
-    "storybook:dev": "yarn dev & start-storybook -p 9009 -s ember-output"
+    "storybook:dev": "yarn dev & start-storybook -p 9009"
   },
   "dependencies": {
     "ember-named-blocks-polyfill": "^0.2.3",

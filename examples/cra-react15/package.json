@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "build": "react-scripts build",
-    "build-storybook": "build-storybook -s public",
+    "build-storybook": "build-storybook",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9009 -s public --no-manager-cache",
+    "storybook": "start-storybook -p 9009 --no-manager-cache",
     "test": "react-scripts test --env=jsdom"
   },
   "dependencies": {

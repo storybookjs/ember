@@ -32,4 +32,5 @@ module.exports = {
   features: {
     previewCsfV3: true,
   },
+  staticDirs: ['../public'],
 };

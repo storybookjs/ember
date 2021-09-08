@@ -3,8 +3,8 @@
   "version": "6.4.0-alpha.33",
   "private": true,
   "scripts": {
-    "build-storybook": "build-storybook -s public",
-    "storybook": "start-storybook -p 9009 -s public --no-manager-cache"
+    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 9009 --no-manager-cache"
   },
   "dependencies": {
     "global": "^4.4.0"
