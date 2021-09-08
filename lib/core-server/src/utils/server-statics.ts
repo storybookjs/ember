@@ -1,5 +1,6 @@
 import { logger } from '@storybook/node-logger';
 import type { Options, StorybookConfig } from '@storybook/core-common';
+import { getDirectoryFromWorking } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
@@ -16,7 +17,13 @@ export async function useStatics(router: any, options: Options) {
 
   staticDirs.forEach(async (dir) => {
     const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
-    const { staticPath: from, targetEndpoint: to } = await parseStaticDir(staticDirAndTarget);
+    const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
+      getDirectoryFromWorking({
+        configDir: options.configDir,
+        workingDir: process.cwd(),
+        directory: staticDirAndTarget,
+      })
+    );
 
     logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
     router.use(to, express.static(from, { index: false }));

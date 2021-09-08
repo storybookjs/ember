@@ -55,18 +55,11 @@ interface NormalizeOptions {
   workingDir: string;
 }
 
-/**
- * Stories entries are specified relative to the configDir. Webpack filenames are produced relative to the
- * current working directory. This function rewrites the specifier.directory relative to the current working
- * directory.
- */
-export const normalizeDirectory = (
-  entry: NormalizedStoriesEntry,
-  { configDir, workingDir }: NormalizeOptions
-) => {
-  if (!entry.specifier) return entry;
-
-  const { directory } = entry.specifier;
+export const getDirectoryFromWorking = ({
+  configDir,
+  workingDir,
+  directory,
+}: NormalizeOptions & { directory: string }) => {
   const directoryFromConfig = path.resolve(configDir, directory);
   let directoryFromWorking = path.relative(workingDir, directoryFromConfig);
 
@@ -76,11 +69,24 @@ export const normalizeDirectory = (
     directoryFromWorking = `.${path.sep}${directoryFromWorking}`;
   }
 
+  return directoryFromWorking;
+};
+
+/**
+ * Stories entries are specified relative to the configDir. Webpack filenames are produced relative to the
+ * current working directory. This function rewrites the specifier.directory relative to the current working
+ * directory.
+ */
+export const normalizeDirectory = (entry: NormalizedStoriesEntry, options: NormalizeOptions) => {
+  if (!entry.specifier) return entry;
+
+  const { directory } = entry.specifier;
+
   return {
     ...entry,
     specifier: {
       ...entry.specifier,
-      directory: directoryFromWorking,
+      directory: getDirectoryFromWorking({ ...options, directory }),
     },
   };
 };
