@@ -2,7 +2,7 @@ import { CallStates } from '../../types';
 import { Subnav } from './Subnav';
 
 export default {
-  title: 'Subnav',
+  title: 'Addons/Interactions/Subnav',
   component: Subnav,
   args: {
     onPrevious: () => {},

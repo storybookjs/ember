@@ -2,7 +2,7 @@ import { StatusBadge } from './StatusBadge';
 import { CallStates } from '../../types';
 
 export default {
-  title: 'StatusBadge',
+  title: 'Addons/Interactions/StatusBadge',
   component: StatusBadge,
   paramaters: { layout: 'padded' },
 };

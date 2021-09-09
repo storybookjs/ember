@@ -7,6 +7,7 @@ import { sleep, tick } from '../src/time';
 import { expect } from '../src/expect';
 
 export default {
+  title: 'Addons/Interactions/AccountForm',
   component: AccountForm,
   parameters: { layout: 'centered' },
   argTypes: {

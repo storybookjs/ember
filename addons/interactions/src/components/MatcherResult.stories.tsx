@@ -3,7 +3,7 @@ import dedent from 'ts-dedent';
 import { MatcherResult } from './MatcherResult';
 
 export default {
-  title: 'MatcherResult',
+  title: 'Addons/Interactions/MatcherResult',
   component: MatcherResult,
   decorators: [
     (Story: any) => (

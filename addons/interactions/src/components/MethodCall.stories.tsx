@@ -3,7 +3,7 @@ import { Call } from '../types';
 import { Node, MethodCall } from './MethodCall';
 
 export default {
-  title: 'MethodCall',
+  title: 'Addons/Interactions/MethodCall',
   component: MethodCall,
   decorators: [
     (Story: any) => (

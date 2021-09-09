@@ -2,7 +2,7 @@ import { CallStates } from '../../types';
 import { StatusIcon } from './StatusIcon';
 
 export default {
-  title: 'StatusIcon',
+  title: 'Addons/Interactions/StatusIcon',
   component: StatusIcon,
   args: { status: CallStates.PENDING },
 };
