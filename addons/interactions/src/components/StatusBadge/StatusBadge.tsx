@@ -1,21 +1,21 @@
 import React from 'react';
 import { styled, typography } from '@storybook/theming';
-import { CallState } from '../../types';
+import { CallState, CallStates } from '../../types';
 
 export interface StatusBadgeProps {
-  status: `${CallState}`;
+  status: CallState;
 }
 
 const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
   const backgroundColor = {
-    [CallState.DONE]: theme.color.positive,
-    [CallState.ERROR]: theme.color.negative,
-    [CallState.PENDING]: theme.color.warning,
+    [CallStates.DONE]: theme.color.positive,
+    [CallStates.ERROR]: theme.color.negative,
+    [CallStates.PENDING]: theme.color.warning,
   }[status];
   return {
     padding: '4px 6px 4px 8px;',
     borderRadius: '4px',
-    backgroundColor: backgroundColor,
+    backgroundColor,
     color: 'white',
     fontFamily: typography.fonts.base,
     textTransform: 'uppercase',
@@ -29,9 +29,9 @@ const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const badgeText = {
-    [CallState.DONE]: 'Pass',
-    [CallState.ERROR]: 'Fail',
-    [CallState.PENDING]: 'Runs',
+    [CallStates.DONE]: 'Pass',
+    [CallStates.ERROR]: 'Fail',
+    [CallStates.PENDING]: 'Runs',
   }[status];
   return <StyledBadge status={status}>{badgeText}</StyledBadge>;
 };

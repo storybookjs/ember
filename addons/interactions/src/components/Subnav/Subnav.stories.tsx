@@ -1,4 +1,4 @@
-import { CallState } from '../../types';
+import { CallStates } from '../../types';
 import { Subnav } from './Subnav';
 
 export default {
@@ -17,26 +17,26 @@ export default {
 
 export const Pass = {
   args: {
-    status: CallState.DONE,
+    status: CallStates.DONE,
   },
 };
 
 export const Fail = {
   args: {
-    status: CallState.ERROR,
+    status: CallStates.ERROR,
   },
 };
 
 export const Runs = {
   args: {
-    status: CallState.PENDING,
+    status: CallStates.PENDING,
   },
 };
 
 export const AtTheBeginning = {
   name: 'at the beginning',
   args: {
-    status: CallState.DONE,
+    status: CallStates.DONE,
     hasPrevious: false,
   },
 };
@@ -44,7 +44,7 @@ export const AtTheBeginning = {
 export const AtTheEnd = {
   name: 'at the end',
   args: {
-    status: CallState.DONE,
+    status: CallStates.DONE,
     hasNext: false,
   },
 };

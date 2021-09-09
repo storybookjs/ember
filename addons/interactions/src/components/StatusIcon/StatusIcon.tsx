@@ -1,28 +1,28 @@
 import React from 'react';
 import { Icons, IconsProps } from '@storybook/components';
 import { styled } from '@storybook/theming';
-import { CallState } from '../../types';
-import { theme } from '../../theme';
+import { CallState, CallStates } from '../../types';
+import { theme as localTheme } from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
-  status: `${CallState}`;
+  status: CallState;
 }
 
 const {
   colors: {
     pure: { gray },
   },
-} = theme;
+} = localTheme;
 
 const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
   const color = {
-    [CallState.PENDING]: gray[500],
-    [CallState.DONE]: theme.color.positive,
-    [CallState.ERROR]: theme.color.negative,
+    [CallStates.PENDING]: gray[500],
+    [CallStates.DONE]: theme.color.positive,
+    [CallStates.ERROR]: theme.color.negative,
   }[status];
   return {
-    width: status === CallState.PENDING ? 6 : 12,
-    height: status === CallState.PENDING ? 6 : 12,
+    width: status === CallStates.PENDING ? 6 : 12,
+    height: status === CallStates.PENDING ? 6 : 12,
     color,
     justifySelf: 'center',
   };
@@ -30,9 +30,9 @@ const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   const icon = {
-    [CallState.DONE]: 'check',
-    [CallState.PENDING]: 'circle',
-    [CallState.ERROR]: 'stopalt',
+    [CallStates.DONE]: 'check',
+    [CallStates.PENDING]: 'circle',
+    [CallStates.ERROR]: 'stopalt',
   }[status] as IconsProps['icon'];
   return <StyledStatusIcon status={status} icon={icon} />;
 };

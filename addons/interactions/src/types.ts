@@ -5,7 +5,7 @@ export interface Call {
   args: any[];
   interceptable: boolean;
   retain: boolean;
-  state?: `${CallState}`;
+  state?: CallState;
   exception?: CaughtException;
   parentId?: Call['id'];
 }
@@ -15,11 +15,13 @@ export interface CallRef {
   retain?: boolean;
 }
 
-export enum CallState {
+export enum CallStates {
   DONE = 'done',
   ERROR = 'error',
   PENDING = 'pending',
 }
+
+export type CallState = CallStates.DONE | CallStates.ERROR | CallStates.PENDING;
 
 interface CaughtException {
   callId: Call['id'];

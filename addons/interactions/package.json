@@ -54,6 +54,7 @@
     "formik": "^2.2.9",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
+    "polished": "^4.0.5",
     "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {

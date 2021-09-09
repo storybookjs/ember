@@ -5,7 +5,7 @@ import IGNORED_EXCEPTION from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
-import { Call, CallRef, CallState } from './types';
+import { Call, CallRef, CallStates } from './types';
 
 export interface Options {
   intercept?: boolean;
@@ -91,7 +91,7 @@ function invoke(fn: Function, call: Call) {
         };
       })
     );
-    channel.emit(EVENTS.CALL, { ...info, state: CallState.DONE });
+    channel.emit(EVENTS.CALL, { ...info, state: CallStates.DONE });
 
     // Track the result so we can trace later uses of it back to the originating call.
     // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
@@ -104,7 +104,7 @@ function invoke(fn: Function, call: Call) {
     if (e instanceof Error) {
       const { name, message, stack } = e;
       const exception = { name, message, stack };
-      channel.emit(EVENTS.CALL, { ...info, state: CallState.ERROR, exception });
+      channel.emit(EVENTS.CALL, { ...info, state: CallStates.ERROR, exception });
 
       // Always track errors to their originating call.
       iframeState.callRefsByResult.set(e, { __callId__: call.id, retain: call.retain });

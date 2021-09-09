@@ -8,7 +8,7 @@ import { AddonPanel, Icons } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
 import { EVENTS } from './constants';
-import { Call, CallRef, CallState } from './types';
+import { Call, CallRef, CallStates } from './types';
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
@@ -46,7 +46,7 @@ const Interaction = ({
   const RowContainer = styled.div(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    background: call.state === CallState.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
+    background: call.state === CallStates.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
     borderBottom: `1px solid ${theme.color.mediumlight}`,
     fontFamily: 'Monaco, monospace',
     fontSize: 12,
@@ -58,10 +58,10 @@ const Interaction = ({
     alignItems: 'center',
     minHeight: 40,
     padding: '8px 15px',
-    cursor: call.state === CallState.ERROR ? 'default' : 'pointer',
-    opacity: call.state === CallState.PENDING ? 0.4 : 1,
+    cursor: call.state === CallStates.ERROR ? 'default' : 'pointer',
+    opacity: call.state === CallStates.PENDING ? 0.4 : 1,
     '&:hover': {
-      background: call.state === CallState.ERROR ? 'transparent' : '#F3FAFF',
+      background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
     },
   });
   const detailStyle = {
@@ -76,7 +76,7 @@ const Interaction = ({
           <MethodCall call={call} callsById={callsById} />
         </div>
       </RowLabel>
-      {call.state === CallState.ERROR &&
+      {call.state === CallStates.ERROR &&
         (call.exception.message.startsWith('expect(') ? (
           <MatcherResult {...call.exception} />
         ) : (
@@ -140,7 +140,7 @@ const reducer = (
             acc[index] = item;
             return acc;
           },
-          state.shadowLog.map((c) => ({ ...c, state: CallState.PENDING }))
+          state.shadowLog.map((c) => ({ ...c, state: CallStates.PENDING }))
         )
       );
       return {
@@ -202,10 +202,10 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const [fileName] = useParameter('fileName', '').split('/').slice(-1);
 
   const { log, interactions, callsById, isDebugging } = state;
-  const hasException = interactions.some((call) => call.state === CallState.ERROR);
-  const hasPrevious = interactions.some((call) => call.state !== CallState.PENDING);
-  const hasNext = interactions.some((call) => call.state === CallState.PENDING);
-  const nextIndex = interactions.findIndex((call) => call.state === CallState.PENDING);
+  const hasException = interactions.some((call) => call.state === CallStates.ERROR);
+  const hasPrevious = interactions.some((call) => call.state !== CallStates.PENDING);
+  const hasNext = interactions.some((call) => call.state === CallStates.PENDING);
+  const nextIndex = interactions.findIndex((call) => call.state === CallStates.PENDING);
   const nextCall = interactions[nextIndex];
   const prevCall =
     interactions[nextIndex - 2] || (isDebugging ? undefined : interactions.slice(-2)[0]);
@@ -222,7 +222,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     emit(EVENTS.RELOAD);
   };
   const goto = (call: Call) => {
-    if (call.state === CallState.PENDING) {
+    if (call.state === CallStates.PENDING) {
       if (call !== nextCall) sharedState.playUntil = call.id;
       emit(EVENTS.NEXT);
     } else {
@@ -251,7 +251,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     <AddonPanel {...props}>
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
       <Subnav
-        status={hasException ? CallState.ERROR : CallState.DONE}
+        status={hasException ? CallStates.ERROR : CallStates.DONE}
         storyFileName={fileName}
         onPrevious={prev}
         onNext={next}

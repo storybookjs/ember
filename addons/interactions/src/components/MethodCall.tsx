@@ -59,12 +59,14 @@ const colors = {
 
 const special = /[^A-Z0-9]/i;
 const trimEnd = /[\s.,…]+$/gm;
-const ellipsize = (string: string, maxlength: number) => {
+const ellipsize = (string: string, maxlength: number): string => {
   if (string.length <= maxlength) return string;
-  for (let i = maxlength - 1; i >= 0; i--) {
-    if (special.test(string[i]) && i > 10) return string.slice(0, i).replace(trimEnd, '') + '…';
+  for (let i = maxlength - 1; i >= 0; i -= 1) {
+    if (special.test(string[i]) && i > 10) {
+      return `${string.slice(0, i).replace(trimEnd, '')}…`;
+    }
   }
-  return string.slice(0, maxlength).replace(trimEnd, '') + '…';
+  return `${string.slice(0, maxlength).replace(trimEnd, '')}…`;
 };
 
 const stringify = (value: any) => {
@@ -79,7 +81,7 @@ const interleave = (nodes: ReactElement[], separator: ReactElement) =>
   nodes.flatMap((node, index) =>
     index === nodes.length - 1
       ? [node]
-      : [node, React.cloneElement(separator, { key: 'sep' + index })]
+      : [node, React.cloneElement(separator, { key: `sep${index}` })]
   );
 
 export const Node = ({
@@ -114,9 +116,11 @@ export const Node = ({
       return <ErrorNode value={value} {...props} />;
     case value instanceof RegExp:
       return <RegExpNode value={value} {...props} />;
-    case value.hasOwnProperty('__element__'):
+    case Object.prototype.hasOwnProperty.call(value, '__element__'):
+      // eslint-disable-next-line no-underscore-dangle
       return <ElementNode value={value.__element__} {...props} />;
-    case value.hasOwnProperty('__callId__'):
+    case Object.prototype.hasOwnProperty.call(value, '__callId__'):
+      // eslint-disable-next-line no-underscore-dangle
       return <MethodCall call={callsById[value.__callId__]} callsById={callsById} />;
     case typeof value === 'object' &&
       value.constructor?.name &&
@@ -163,7 +167,7 @@ export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: bo
   if (nested) {
     return <span style={{ color: colors.base }}>[…]</span>;
   }
-  const nodes = value.slice(0, 3).map((v, i) => <Node key={`${i}`} value={v} nested={true} />);
+  const nodes = value.slice(0, 3).map((v) => <Node key={v} value={v} nested />);
   const nodelist = interleave(nodes, <span>, </span>);
   if (value.length <= 3) {
     return <span style={{ color: colors.base }}>[{nodelist}]</span>;
@@ -182,8 +186,8 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
   const nodelist = interleave(
     Object.entries(value)
       .slice(0, 1)
-      .map(([k, v], i) => (
-        <Fragment key={'node' + i}>
+      .map(([k, v]) => (
+        <Fragment key={k}>
           <span style={{ color: colors.objectkey }}>{k}: </span>
           <Node value={v} nested />
         </Fragment>
@@ -208,7 +212,7 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
   );
 };
 
-export const ClassNode = ({ value }: { value: Object }) => (
+export const ClassNode = ({ value }: { value: Record<string, any> }) => (
   <span style={{ color: colors.instance }}>{value.constructor.name}</span>
 );
 
@@ -281,14 +285,11 @@ export const ErrorNode = ({ value }: { value: Error }) => (
 
 export const RegExpNode = ({ value }: { value: RegExp }) => (
   <span style={{ whiteSpace: 'nowrap', color: colors.regex.flags }}>
-    {'/'}
-    <span style={{ color: colors.regex.source }}>{value.source}</span>
-    {'/'}
-    {value.flags}
+    /<span style={{ color: colors.regex.source }}>{value.source}</span>/{value.flags}
   </span>
 );
 
-export const SymbolNode = ({ value }: { value: Symbol }) => {
+export const SymbolNode = ({ value }: { value: symbol }) => {
   return (
     <span style={{ whiteSpace: 'nowrap', color: colors.instance }}>
       Symbol(
@@ -315,22 +316,23 @@ export const MethodCall = ({
   if (!call) return null;
 
   const path = call.path.flatMap((elem, index) => {
+    // eslint-disable-next-line no-underscore-dangle
     const callId = (elem as CallRef).__callId__;
     return [
       callId ? (
-        <MethodCall key={'elem' + index} call={callsById[callId]} callsById={callsById} />
+        <MethodCall key={`elem${index}`} call={callsById[callId]} callsById={callsById} />
       ) : (
-        <span key={'elem' + index}>{elem}</span>
+        <span key={`elem${index}`}>{elem}</span>
       ),
-      <wbr key={'wbr' + index} />,
-      <span key={'dot' + index}>.</span>,
+      <wbr key={`wbr${index}`} />,
+      <span key={`dot${index}`}>.</span>,
     ];
   });
 
   const args = call.args.flatMap((arg, index, array) => {
-    const node = <Node key={'node' + index} value={arg} callsById={callsById} />;
+    const node = <Node key={`node${index}`} value={arg} callsById={callsById} />;
     return index < array.length - 1
-      ? [node, <span key={'comma' + index}>,&nbsp;</span>, <wbr key={'wbr' + index} />]
+      ? [node, <span key={`comma${index}`}>,&nbsp;</span>, <wbr key={`wbr${index}`} />]
       : [node];
   });
 

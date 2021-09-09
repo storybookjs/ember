@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
-import { CallState } from '../../types';
-import { StatusBadge } from '../StatusBadge/StatusBadge';
 import { transparentize } from 'polished';
 import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
+import { CallState, CallStates } from '../../types';
+import { StatusBadge } from '../StatusBadge/StatusBadge';
 
 const StyledSubnav = styled.nav(({ theme }) => ({
   background: theme.background.app,
@@ -20,7 +20,7 @@ const StyledSubnav = styled.nav(({ theme }) => ({
 }));
 
 export interface SubnavProps {
-  status: `${CallState}`;
+  status: CallState;
   onPrevious: () => void;
   onNext: () => void;
   onReplay: () => void;
@@ -94,7 +94,7 @@ export const Subnav: React.FC<SubnavProps> = ({
   hasNext,
   hasPrevious,
 }) => {
-  const buttonText = status === CallState.ERROR ? 'Jump to error' : 'Jump to end';
+  const buttonText = status === CallStates.ERROR ? 'Jump to error' : 'Jump to end';
   const [isAnimating, setIsAnimating] = useState(false);
   const animateAndReplay = () => {
     setIsAnimating(true);

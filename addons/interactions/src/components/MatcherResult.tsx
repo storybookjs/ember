@@ -1,15 +1,16 @@
 import React from 'react';
 import { Node } from './MethodCall';
 
-const getParams = (line: string, fromIndex = 0) => {
-  for (let i = fromIndex, depth = 1; i < line.length; i++) {
-    if (line[i] === '(') depth++;
-    else if (line[i] === ')') depth--;
+const getParams = (line: string, fromIndex = 0): string => {
+  for (let i = fromIndex, depth = 1; i < line.length; i += 1) {
+    if (line[i] === '(') depth += 1;
+    else if (line[i] === ')') depth -= 1;
     if (depth === 0) return line.slice(fromIndex, i);
   }
+  return '';
 };
 
-const parseValue = (value: string) => {
+const parseValue = (value: string): any => {
   try {
     return value === 'undefined' ? undefined : JSON.parse(value);
   } catch (e) {
@@ -47,21 +48,21 @@ export const MatcherResult = ({ message }: { message: string }) => {
             if (expected) {
               return [
                 'expect(',
-                <Received key={'received_' + received} value={received} />,
+                <Received key={`received_${received}`} value={received} />,
                 line.slice(remainderIndex, expectedIndex),
-                <Expected key={'expected_' + expected} value={expected} />,
+                <Expected key={`expected_${expected}`} value={expected} />,
                 line.slice(expectedIndex + expected.length),
-                <br key={'br' + index} />,
+                <br key={`br${index}`} />,
               ];
             }
           }
         }
 
         if (line.match(/^\s*- /)) {
-          return [<Expected key={line + index} value={line} />, <br key={'br' + index} />];
+          return [<Expected key={line + index} value={line} />, <br key={`br${index}`} />];
         }
         if (line.match(/^\s*\+ /)) {
-          return [<Received key={line + index} value={line} />, <br key={'br' + index} />];
+          return [<Received key={line + index} value={line} />, <br key={`br${index}`} />];
         }
 
         const [, assertionLabel, assertionValue] = line.match(/^(Expected|Received): (.*)$/) || [];
@@ -70,12 +71,12 @@ export const MatcherResult = ({ message }: { message: string }) => {
             ? [
                 'Expected: ',
                 <Expected key={line + index} value={parseValue(assertionValue)} parsed />,
-                <br key={'br' + index} />,
+                <br key={`br${index}`} />,
               ]
             : [
                 'Received: ',
                 <Received key={line + index} value={parseValue(assertionValue)} parsed />,
-                <br key={'br' + index} />,
+                <br key={`br${index}`} />,
               ];
         }
 
@@ -85,7 +86,7 @@ export const MatcherResult = ({ message }: { message: string }) => {
           return [
             `${prefix} of calls: `,
             <Node key={line + index} value={Number(numberOfCalls)} />,
-            <br key={'br' + index} />,
+            <br key={`br${index}`} />,
           ];
         }
 
@@ -94,11 +95,11 @@ export const MatcherResult = ({ message }: { message: string }) => {
           return [
             'Received has value: ',
             <Node key={line + index} value={parseValue(receivedValue)} />,
-            <br key={'br' + index} />,
+            <br key={`br${index}`} />,
           ];
         }
 
-        return [<span key={line + index}>{line}</span>, <br key={'br' + index} />];
+        return [<span key={line + index}>{line}</span>, <br key={`br${index}`} />];
       })}
     </pre>
   );

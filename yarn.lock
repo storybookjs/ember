@@ -7170,6 +7170,7 @@ __metadata:
     formik: ^2.2.9
     global: ^4.4.0
     jest-mock: ^27.0.6
+    polished: ^4.0.5
     ts-dedent: ^2.2.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -8340,6 +8341,15 @@ __metadata:
     ts-dedent: ^2.0.0
   languageName: unknown
   linkType: soft
+
+"@storybook/csf@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@storybook/csf@npm:0.0.1"
+  dependencies:
+    lodash: ^4.17.15
+  checksum: 7b0f75763415f9147692a460b44417ee56ea9639433716a1fd4d1df4c8b0221cbc71b8da0fbed4dcecb3ccd6c7ed64be39f5c255c713539a6088a1d6488aaa24
+  languageName: node
+  linkType: hard
 
 "@storybook/csf@npm:0.0.2--canary.b1d5348.0":
   version: 0.0.2--canary.b1d5348.0
