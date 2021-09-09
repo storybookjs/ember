@@ -44,8 +44,6 @@ enum events {
   SHARED_STATE_CHANGED = 'sharedStateChanged',
   SHARED_STATE_SET = 'sharedStateSet',
   NAVIGATE_URL = 'navigateUrl',
-  // Used to break out of the current render without showing a redbox
-  IGNORED_EXCEPTION = 'ignoredException',
 }
 
 // Enables: `import Events from ...`
@@ -83,5 +81,7 @@ export const {
   SHARED_STATE_CHANGED,
   SHARED_STATE_SET,
   NAVIGATE_URL,
-  IGNORED_EXCEPTION,
 } = events;
+
+// Used to break out of the current render without showing a redbox
+export const IGNORED_EXCEPTION = new Error('ignoredException');
