@@ -25,6 +25,10 @@
       "root": "addons/essentials",
       "type": "library"
     },
+    "@storybook/addon-interactions": {
+      "root": "addons/interactions",
+      "type": "library"
+    },
     "@storybook/addon-jest": {
       "root": "addons/jest",
       "type": "library"

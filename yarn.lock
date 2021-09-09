@@ -7153,7 +7153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-interactions@workspace:addons/interactions":
+"@storybook/addon-interactions@6.4.0-alpha.34, @storybook/addon-interactions@workspace:*, @storybook/addon-interactions@workspace:addons/interactions":
   version: 0.0.0-use.local
   resolution: "@storybook/addon-interactions@workspace:addons/interactions"
   dependencies:
@@ -8884,6 +8884,7 @@ __metadata:
     "@storybook/addon-controls": "workspace:*"
     "@storybook/addon-docs": "workspace:*"
     "@storybook/addon-essentials": "workspace:*"
+    "@storybook/addon-interactions": "workspace:*"
     "@storybook/addon-jest": "workspace:*"
     "@storybook/addon-links": "workspace:*"
     "@storybook/addon-measure": "workspace:*"
@@ -33505,6 +33506,7 @@ fsevents@^1.2.7:
     "@storybook/addon-backgrounds": 6.4.0-alpha.34
     "@storybook/addon-controls": 6.4.0-alpha.34
     "@storybook/addon-docs": 6.4.0-alpha.34
+    "@storybook/addon-interactions": 6.4.0-alpha.34
     "@storybook/addon-jest": 6.4.0-alpha.34
     "@storybook/addon-links": 6.4.0-alpha.34
     "@storybook/addon-storyshots": 6.4.0-alpha.34
