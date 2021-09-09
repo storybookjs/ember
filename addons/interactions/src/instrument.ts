@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { addons, Channel } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
-import IGNORED_EXCEPTION from '@storybook/core-events';
+import { IGNORED_EXCEPTION } from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';

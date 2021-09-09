@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
-import Events from '@storybook/core-events';
+import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
 import { addons, Channel } from '@storybook/addons';
@@ -441,6 +441,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       if (playFunction) {
         await playFunction(renderContext.storyContext);
       }
+
       if (controller.signal.aborted) {
         return;
       }
@@ -551,11 +552,13 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   // renderException is used if we fail to render the story and it is uncaught by the app layer
   renderException(err: Error) {
-    this.view.showErrorDisplay(err);
     this.channel.emit(Events.STORY_THREW_EXCEPTION, err);
 
-    // Log the stack to the console. So, user could check the source code.
-    logger.error(err);
+    // Ignored exceptions exist for control flow purposes, and are typically handled elsewhere.
+    if (err !== IGNORED_EXCEPTION) {
+      this.view.showErrorDisplay(err);
+      logger.error(err);
+    }
   }
 
   // renderError is used by the various app layers to inform the user they have done something
