@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     '../../lib/components/src/**/*.stories.@(js|tsx|mdx)',
     './stories/**/*stories.@(js|ts|tsx|mdx)',
     './../../addons/docs/**/*.stories.tsx',
-    // './../../addons/interactions/**/*.stories.tsx',
+    './../../addons/interactions/**/*.stories.tsx',
   ],
   reactOptions: {
     fastRefresh: true,
@@ -21,12 +21,11 @@ const config: StorybookConfig = {
       options: { transcludeMarkdown: true },
     },
     { name: '@storybook/addon-essentials' },
-    // '@storybook/addon-interactions',
+    '@storybook/addon-interactions',
     '@storybook/addon-storysource',
     '@storybook/addon-links',
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
-    '@storybook/addon-graphql',
   ],
   core: {
     builder: 'webpack4',

@@ -7163,6 +7163,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-alpha.33
     "@storybook/components": 6.4.0-alpha.33
     "@storybook/core-events": 6.4.0-alpha.33
+    "@storybook/csf": 0.0.2--canary.b1d5348.0
     "@storybook/expect": ^1.0.0-rc.1
     "@storybook/theming": 6.4.0-alpha.33
     "@testing-library/dom": ^8.3.0

@@ -1,5 +1,21 @@
+import { once } from '@storybook/client-logger';
 import * as dom from '@testing-library/dom';
+import dedent from 'ts-dedent';
 import { instrument } from './instrument';
+
+const instrumented = instrument(dom);
+
+const { screen: _screen } = instrumented;
+Object.defineProperty(instrumented, 'screen', {
+  get() {
+    once.warn(dedent`
+      You are using Testing Library's \`screen\` object. Use \`within(canvasElement)\` instead.
+
+      More info: https://storybook.js.org/docs/react/essentials/interactions
+    `);
+    return _screen;
+  },
+});
 
 // console.log(Object.keys(dom).join(',\n'))
 export const {
@@ -81,4 +97,4 @@ export const {
   wrapAllByQueryWithSuggestion,
   wrapSingleQueryWithSuggestion,
   prettyFormat,
-} = instrument(dom);
+} = instrumented;

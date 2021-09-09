@@ -1,5 +1,5 @@
 import { Args, addons } from '@storybook/addons';
-import { ArgsEnhancer } from '@storybook/client-api';
+import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { fn } from 'jest-mock';
 import { EVENTS } from '../constants';
 import { instrument } from '../instrument';
@@ -10,8 +10,8 @@ const spies: any[] = [];
 
 channel.on(EVENTS.SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockReset()));
 
-const addActionsFromArgTypes: ArgsEnhancer = ({ id, args }) => {
-  return Object.entries(args).reduce((acc, [key, val]) => {
+const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ initialArgs }) => {
+  return Object.entries(initialArgs).reduce((acc, [key, val]) => {
     if (typeof val === 'function' && val.name === 'actionHandler') {
       Object.defineProperty(val, 'name', { value: key, writable: false });
       acc[key] = action(val);

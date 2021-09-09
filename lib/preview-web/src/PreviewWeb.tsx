@@ -369,7 +369,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     >;
     element: Element;
   }) {
-    const { id, applyLoaders, unboundStoryFn, runPlayFunction } = story;
+    const { id, applyLoaders, unboundStoryFn, playFunction } = story;
 
     // IE11 doesn't support AbortController, so we either need to polyfill or just not support it
     const controller = AbortController
@@ -411,6 +411,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const updatedStoryContext = {
         ...loadedContext,
         ...this.storyStore.getStoryContext(story),
+        abortSignal: controller.signal,
+        canvasElement: element,
       };
       renderContext = {
         ...renderContextWithoutStoryContext,
@@ -436,7 +438,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // the story and executing the play function (it is also possible that they change mid-way
       // through executing the play function). We explicitly allow such changes to re-render the
       // story by setting `initialRenderDone=true` immediate after `renderToDOM` completes.
-      await runPlayFunction();
+      if (playFunction) {
+        await playFunction(renderContext.storyContext);
+      }
       if (controller.signal.aborted) {
         return;
       }

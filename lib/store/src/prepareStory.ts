@@ -140,7 +140,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        initialArgs: initialArgsBeforeEnhancers,
+        initialArgs: accumulatedArgs,
       }),
     }),
     initialArgsBeforeEnhancers
@@ -179,13 +179,8 @@ export function prepareStory<TFramework extends AnyFramework>(
   };
   const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
 
-  const { play } = storyAnnotations;
-  const runPlayFunction = async () => {
-    if (play) {
-      return play();
-    }
-    return undefined;
-  };
+  // TODO play function on csf needs proper signature
+  const playFunction = storyAnnotations.play as Story<TFramework>['playFunction'];
 
   return Object.freeze({
     ...contextForEnhancers,
@@ -193,6 +188,6 @@ export function prepareStory<TFramework extends AnyFramework>(
     undecoratedStoryFn,
     unboundStoryFn,
     applyLoaders,
-    runPlayFunction,
+    playFunction,
   });
 }
