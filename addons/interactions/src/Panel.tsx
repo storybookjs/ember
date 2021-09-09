@@ -4,7 +4,7 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter } from '@storybook/api';
-import { AddonPanel, Icons } from '@storybook/components';
+import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
 import { EVENTS } from './constants';
@@ -236,6 +236,10 @@ export const Panel: React.FC<PanelProps> = (props) => {
     dispatch({ type: 'stop' });
     emit(EVENTS.NEXT);
   };
+  const replay = () => {
+    dispatch({ type: 'stop' });
+    emit(EVENTS.RELOAD);
+  };
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
@@ -250,19 +254,33 @@ export const Panel: React.FC<PanelProps> = (props) => {
   return (
     <AddonPanel {...props}>
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
-      <Subnav
-        status={hasException ? CallStates.ERROR : CallStates.DONE}
-        storyFileName={fileName}
-        onPrevious={prev}
-        onNext={next}
-        onReplay={stop}
-        goToEnd={stop}
-        hasPrevious={hasPrevious}
-        hasNext={hasNext}
-      />
+      {interactions.length > 0 && (
+        <Subnav
+          status={hasException ? CallStates.ERROR : CallStates.DONE}
+          storyFileName={fileName}
+          onPrevious={prev}
+          onNext={next}
+          onReplay={replay}
+          goToEnd={stop}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+        />
+      )}
       {interactions.map((call) => (
         <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
       ))}
+      {interactions.length === 0 && (
+        <Placeholder>
+          No interactions found
+          <Link
+            href="https://storybook.js.org/docs/react/essentials/interactions"
+            target="_blank"
+            withArrow
+          >
+            Learn how to add interactions to your story
+          </Link>
+        </Placeholder>
+      )}
     </AddonPanel>
   );
 };
