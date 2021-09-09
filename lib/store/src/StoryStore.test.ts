@@ -68,7 +68,7 @@ describe('StoryStore', () => {
   describe('projectAnnotations', () => {
     it('normalizes on initialization', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       expect(store.projectAnnotations.globalTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
@@ -78,9 +78,9 @@ describe('StoryStore', () => {
       });
     });
 
-    it('normalizes on updateProjectAnnotations', async () => {
+    it('normalizes on updateGlobalAnnotations', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       store.updateProjectAnnotations(projectAnnotations);
       expect(store.projectAnnotations.globalTypes).toEqual({
@@ -95,7 +95,7 @@ describe('StoryStore', () => {
   describe('loadStory', () => {
     it('pulls the story via the importFn', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       importFn.mockClear();
       expect(await store.loadStory({ storyId: 'component-one--a' })).toMatchObject({
@@ -109,7 +109,7 @@ describe('StoryStore', () => {
 
     it('uses a cache', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
       expect(processCSFFile).toHaveBeenCalledTimes(1);
@@ -133,9 +133,9 @@ describe('StoryStore', () => {
   describe('componentStoriesFromCSFFile', () => {
     it('returns all the stories in the file', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
-      const csfFile = await store.loadCSFFileByStoryId('component-one--a');
+      const csfFile = await store.loadCSFFileByStoryId('component-one--a', { sync: false });
       const stories = store.componentStoriesFromCSFFile({ csfFile });
 
       expect(stories).toHaveLength(2);
@@ -146,7 +146,7 @@ describe('StoryStore', () => {
   describe('getStoryContext', () => {
     it('returns the args and globals correctly', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -158,7 +158,7 @@ describe('StoryStore', () => {
 
     it('returns the args and globals correctly when they change', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -173,7 +173,7 @@ describe('StoryStore', () => {
 
     it('returns the same hooks each time', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -185,7 +185,7 @@ describe('StoryStore', () => {
   describe('cleanupStory', () => {
     it('cleans the hooks from the context', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -199,10 +199,10 @@ describe('StoryStore', () => {
   describe('loadAllCSFFiles', () => {
     it('imports *all* csf files', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       importFn.mockClear();
-      const csfFiles = await store.loadAllCSFFiles();
+      const csfFiles = await store.loadAllCSFFiles(false);
 
       expect(Object.keys(csfFiles)).toEqual([
         './src/ComponentOne.stories.js',
@@ -214,15 +214,15 @@ describe('StoryStore', () => {
   describe('extract', () => {
     it('throws if you have not called cacheAllCSFFiles', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
+      await store.initialize({ sync: false });
 
       expect(() => store.extract()).toThrow(/Cannot call extract/);
     });
 
     it('produces objects with functions and hooks stripped', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
-      await store.cacheAllCSFFiles();
+      await store.initialize({ sync: false });
+      await store.cacheAllCSFFiles(false);
 
       expect(store.extract()).toMatchInlineSnapshot(`
         Array [
@@ -343,8 +343,8 @@ describe('StoryStore', () => {
         projectAnnotations,
         fetchStoryIndex,
       });
-      await store.initialize();
-      await store.cacheAllCSFFiles();
+      await store.initialize({ sync: false });
+      await store.cacheAllCSFFiles(false);
 
       expect((store.extract() as { id: StoryId }[]).map((s) => s.id)).toEqual([
         'component-one--b',
@@ -360,8 +360,8 @@ describe('StoryStore', () => {
   describe('getSetStoriesPayload', () => {
     it('maps stories list to payload correctly', async () => {
       const store = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
-      await store.initialize();
-      await store.cacheAllCSFFiles();
+      await store.initialize({ sync: false });
+      await store.cacheAllCSFFiles(false);
 
       expect(store.getSetStoriesPayload()).toMatchInlineSnapshot(`
         Object {

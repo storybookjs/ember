@@ -16,32 +16,39 @@ export class StoryIndexStore {
     this.fetchStoryIndex = fetchStoryIndex;
   }
 
-  async initialize() {
-    return this.cache();
+  initialize(options: { sync: false }): Promise<void>;
+
+  initialize(options: { sync: true }): void;
+
+  initialize({ sync = false } = {}) {
+    return sync ? this.cache(true) : this.cache(false);
   }
 
-  initializeSync() {
-    return this.cacheSync();
+  cache(sync: false): Promise<void>;
+
+  cache(sync: true): void;
+
+  cache(sync = false): Promise<void> | void {
+    const fetchResult = this.fetchStoryIndex();
+
+    if (sync) {
+      if (!(fetchResult as StoryIndex).v) {
+        throw new Error(
+          `fetchStoryIndex() didn't return an index, did you pass an async version then call initialize({ sync: true })?`
+        );
+      }
+      this.stories = (fetchResult as StoryIndex).stories;
+      return null;
+    }
+
+    return Promise.resolve(fetchResult).then(({ stories }) => {
+      this.stories = stories;
+    });
   }
 
   async onStoriesChanged() {
     const { stories } = await this.fetchStoryIndex();
     this.stories = stories;
-  }
-
-  async cache() {
-    const { stories } = await this.fetchStoryIndex();
-    this.stories = stories;
-  }
-
-  async cacheSync() {
-    const data = this.fetchStoryIndex() as StoryIndex;
-    if (!data.v) {
-      throw new Error(
-        `fetchStoryIndex() didn't return a stories list, did you pass an async version then call initializeSync()?`
-      );
-    }
-    this.stories = data.stories;
   }
 
   storyIdFromSpecifier(specifier: StorySpecifier) {
