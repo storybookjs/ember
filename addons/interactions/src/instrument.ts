@@ -227,7 +227,6 @@ export function instrument(obj: unknown, options: Options = {}) {
       acc[key]._original = value;
 
       // Deal with functions that also act like an object
-      // TODO might be able to make functions instrumentable so we can omit this extra step
       if (Object.keys(value).length > 0) {
         Object.assign(acc[key], instrument({ ...value }, { ...options, path: path.concat(key) }));
       }
