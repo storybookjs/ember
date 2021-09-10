@@ -1,19 +1,21 @@
+import globBase from 'glob-base';
+import { makeRe } from 'micromatch';
 import dedent from 'ts-dedent';
 
 import type { NormalizedStoriesEntry } from '../types';
-import { toRequireContext } from './to-require-context';
 
 export function toImportFnPart(entry: NormalizedStoriesEntry) {
-  const { path: base, match } = toRequireContext(entry.glob);
+  const { base } = globBase(entry.glob);
+  const regex = makeRe(entry.glob, { fastpaths: false, noglobstar: false, bash: false });
 
-  const webpackIncludeRegex = new RegExp(match.substring(1));
+  const webpackIncludeRegex = new RegExp(regex.source.substring(1));
 
   // NOTE: `base` looks like './src' but `path`, (and what micromatch expects)
   // is something that starts with `src/`. So to strip off base from path, we
   // need to drop `base.length - 1` chars.
   return dedent`
       async (path) => {
-        if (!/${match}/.exec(path)) {
+        if (!${regex}.exec(path)) {
           return;
         }
         const remainder = path.substring(${base.length - 1});
