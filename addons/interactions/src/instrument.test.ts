@@ -14,16 +14,16 @@ class HTMLElement {
     Object.assign(this, props);
   }
 }
-global.window = {
-  HTMLElement,
-  location: { reload: jest.fn() },
-  __STORYBOOK_ADDON_TEST_PREVIEW__: {},
-  parent: { __STORYBOOK_ADDON_TEST_MANAGER__: {} },
-};
+
+delete global.window.location;
+global.window.location = { reload: jest.fn() };
+global.window.HTMLElement = HTMLElement;
+global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = {};
+global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__ = {};
 
 beforeEach(() => {
-  callSpy.mockReset();
   addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
+  callSpy.mockReset();
 
   // Reset iframeState
   global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 0;
@@ -100,13 +100,13 @@ describe('instrument', () => {
     fn('baz');
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '0-fn',
+        id: '1-fn',
         args: ['foo', 'bar'],
       })
     );
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '1-fn',
+        id: '2-fn',
         args: ['baz'],
       })
     );
@@ -197,19 +197,19 @@ describe('instrument', () => {
     });
     fn5();
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
+      expect.objectContaining({ id: '1-fn1', parentCallId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
+      expect.objectContaining({ id: '2-fn2', parentCallId: '1-fn1' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '2-fn3', parentCallId: '1-fn2' })
+      expect.objectContaining({ id: '3-fn3', parentCallId: '2-fn2' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '3-fn4', parentCallId: '0-fn1' })
+      expect.objectContaining({ id: '4-fn4', parentCallId: '1-fn1' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '4-fn5', parentCallId: undefined })
+      expect.objectContaining({ id: '5-fn5', parentCallId: undefined })
     );
   });
 
@@ -220,13 +220,13 @@ describe('instrument', () => {
       .then(() => fn3())
       .then(() => {
         expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '0-fn1', parentCallId: undefined })
+          expect.objectContaining({ id: '1-fn1', parentCallId: undefined })
         );
         expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '1-fn2', parentCallId: '0-fn1' })
+          expect.objectContaining({ id: '2-fn2', parentCallId: '1-fn1' })
         );
         expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '2-fn3', parentCallId: undefined })
+          expect.objectContaining({ id: '3-fn3', parentCallId: undefined })
         );
       });
   });
@@ -291,7 +291,7 @@ describe('instrument', () => {
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.n = 123;
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.next = { ref: () => {} };
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map([[{}, 'ref']]);
-    global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.parentCallId = '0-foo';
+    global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.parentCallId = '1-foo';
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.forwardedException = new Error('Oops');
     addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
     expect(global.window.__STORYBOOK_ADDON_TEST_PREVIEW__).toStrictEqual({
@@ -318,7 +318,7 @@ describe('instrument', () => {
       expect(fn).toThrow();
       expect(callSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: '0-fn',
+          id: '1-fn',
           exception: {
             name: 'Error',
             message: 'Boom!',
@@ -373,7 +373,7 @@ describe('instrument', () => {
 
     it('does not defer calls to intercepted functions that are chained upon', () => {
       const { fn1 } = instrument({ fn1: jest.fn(() => ({ fn2: jest.fn() })) }, { intercept: true });
-      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.chainedCallIds.add('0-fn1');
+      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.chainedCallIds.add('1-fn1');
       const res1 = fn1();
       expect(res1.fn2()).toEqual(expect.any(Promise));
       expect(fn1._original).toHaveBeenCalled();
@@ -382,11 +382,11 @@ describe('instrument', () => {
 
     it('does not defer calls while playing until a certain call', () => {
       const { fn } = instrument({ fn: jest.fn(() => 'ok') }, { intercept: true });
-      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.playUntil = '1-fn';
-      /* 0-fn */ expect(fn()).toBe('ok');
+      global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__.playUntil = '2-fn';
       /* 1-fn */ expect(fn()).toBe('ok');
-      /* 2-fn */ expect(fn()).toEqual(expect.any(Promise));
+      /* 2-fn */ expect(fn()).toBe('ok');
       /* 3-fn */ expect(fn()).toEqual(expect.any(Promise));
+      /* 4-fn */ expect(fn()).toEqual(expect.any(Promise));
     });
 
     it('invokes the deferred function on the "next" event', () => {
