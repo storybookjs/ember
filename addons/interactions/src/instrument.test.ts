@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 
 import { addons, mockChannel } from '@storybook/addons';
+import { SET_CURRENT_STORY } from '@storybook/core-events';
 import global from 'global';
+
 import { EVENTS } from './constants';
 import { instrument } from './instrument';
 
@@ -22,7 +24,7 @@ global.window.__STORYBOOK_ADDON_TEST_PREVIEW__ = {};
 global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__ = {};
 
 beforeEach(() => {
-  addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
+  addons.getChannel().emit(SET_CURRENT_STORY);
   callSpy.mockReset();
 
   // Reset iframeState
@@ -293,7 +295,7 @@ describe('instrument', () => {
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.callRefsByResult = new Map([[{}, 'ref']]);
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.parentCallId = '1-foo';
     global.window.__STORYBOOK_ADDON_TEST_PREVIEW__.forwardedException = new Error('Oops');
-    addons.getChannel().emit(EVENTS.SET_CURRENT_STORY);
+    addons.getChannel().emit(SET_CURRENT_STORY);
     expect(global.window.__STORYBOOK_ADDON_TEST_PREVIEW__).toStrictEqual({
       n: 0,
       next: {},

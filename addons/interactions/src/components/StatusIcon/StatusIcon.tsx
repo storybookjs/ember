@@ -1,8 +1,9 @@
 import React from 'react';
 import { Icons, IconsProps } from '@storybook/components';
 import { styled } from '@storybook/theming';
+
 import { CallState, CallStates } from '../../types';
-import { theme as localTheme } from '../../theme';
+import localTheme from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
   status: CallState;

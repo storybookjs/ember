@@ -1,14 +1,14 @@
 import { Args, addons } from '@storybook/addons';
+import { SET_CURRENT_STORY } from '@storybook/core-events';
 import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { fn } from 'jest-mock';
-import { EVENTS } from '../constants';
 import { instrument } from '../instrument';
 
 const { action } = instrument({ action: fn }, { retain: true });
 const channel = addons.getChannel();
 const spies: any[] = [];
 
-channel.on(EVENTS.SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockReset()));
+channel.on(SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockReset()));
 
 const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ initialArgs }) => {
   return Object.entries(initialArgs).reduce((acc, [key, val]) => {

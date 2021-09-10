@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { addons, Channel } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
-import { IGNORED_EXCEPTION } from '@storybook/core-events';
+import { IGNORED_EXCEPTION, SET_CURRENT_STORY } from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
@@ -180,7 +180,7 @@ function initialize() {
 
     channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
     channel.on(EVENTS.RELOAD, () => global.window.location.reload());
-    channel.on(EVENTS.SET_CURRENT_STORY, () => {
+    channel.on(SET_CURRENT_STORY, () => {
       iframeState.callRefsByResult = new Map(
         Array.from(iframeState.callRefsByResult.entries()).filter(([, val]) => val.retain)
       );

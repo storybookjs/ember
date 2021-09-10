@@ -8,5 +8,4 @@ export const EVENTS = {
   CALL: `${ADDON_ID}/call`,
   NEXT: `${ADDON_ID}/next`,
   RELOAD: `${ADDON_ID}/reload`,
-  SET_CURRENT_STORY: 'setCurrentStory', // Storybook's own event
 };
