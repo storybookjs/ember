@@ -11,6 +11,7 @@ import {
   STORY_SPECIFIED,
 } from '@storybook/core-events';
 import deprecate from 'util-deprecate';
+import { logger } from '@storybook/client-logger';
 
 import { getEventMetadata } from '../lib/events';
 import {
@@ -355,6 +356,7 @@ export const init: ModuleFn = ({
 
       // We can only do this if the stories.json is a proper storyIndex
       if (storyIndex.v !== 3) {
+        logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
         return;
       }
 
