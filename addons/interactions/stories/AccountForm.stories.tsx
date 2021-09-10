@@ -58,8 +58,8 @@ export const StandardEmailFilled = {
 
 export const StandardEmailFailed = {
   ...Standard,
-  play: async ({ args, canvasId }: any) => {
-    const canvas = within(global.document.getElementById(canvasId));
+  play: async ({ args, canvasElement }: any) => {
+    const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com.com@com');
     await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
     await userEvent.click(canvas.getByTestId('submit'));
@@ -70,8 +70,8 @@ export const StandardEmailFailed = {
 
 export const StandardEmailSuccess = {
   ...Standard,
-  play: async ({ args, canvasId }: any) => {
-    const canvas = within(global.document.getElementById(canvasId));
+  play: async ({ args, canvasElement }: any) => {
+    const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
     await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
     await userEvent.click(canvas.getByTestId('submit'));
@@ -87,7 +87,7 @@ export const StandardEmailSuccess = {
 export const StandardPasswordFailed = {
   ...Standard,
   play: async (context: any) => {
-    const canvas = within(global.document.getElementById(context.canvasId));
+    const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdf');
     await userEvent.click(canvas.getByTestId('submit'));
@@ -97,7 +97,7 @@ export const StandardPasswordFailed = {
 export const StandardFailHover = {
   ...StandardPasswordFailed,
   play: async (context: any) => {
-    const canvas = within(global.document.getElementById(context.canvasId));
+    const canvas = within(context.canvasElement);
     await StandardPasswordFailed.play(context);
     await sleep(1000);
     await userEvent.hover(canvas.getByTestId('password-error-info'));
@@ -112,7 +112,7 @@ export const Verification = {
 export const VerificationPasssword1 = {
   ...Verification,
   play: async (context: any) => {
-    const canvas = within(global.document.getElementById(context.canvasId));
+    const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
     await userEvent.click(canvas.getByTestId('submit'));
@@ -122,7 +122,7 @@ export const VerificationPasssword1 = {
 export const VerificationPasswordMismatch = {
   ...Verification,
   play: async (context: any) => {
-    const canvas = within(global.document.getElementById(context.canvasId));
+    const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
     await userEvent.type(canvas.getByTestId('password2'), 'asdf1234');
@@ -132,9 +132,9 @@ export const VerificationPasswordMismatch = {
 
 export const VerificationSuccess = {
   ...Verification,
-  play: async ({ canvasId }: any) => {
-    const canvas = within(global.document.getElementById(canvasId));
-    await StandardEmailFilled.play({ canvasId });
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await StandardEmailFilled.play({ canvasElement });
     await sleep(1000);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf', { delay: 50 });
     await sleep(1000);
