@@ -7165,6 +7165,7 @@ __metadata:
     "@storybook/core-events": 6.4.0-alpha.34
     "@storybook/csf": 0.0.2--canary.b1d5348.0
     "@storybook/expect": ^1.0.0-rc.1
+    "@storybook/node-logger": 6.4.0-alpha.34
     "@storybook/theming": 6.4.0-alpha.34
     "@testing-library/dom": ^8.3.0
     "@testing-library/user-event": ^13.2.1
@@ -7500,6 +7501,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-alpha.34
     "@storybook/core-events": 6.4.0-alpha.34
     "@storybook/csf": 0.0.2--canary.b1d5348.0
+    "@storybook/node-logger": 6.4.0-alpha.34
     "@storybook/router": 6.4.0-alpha.34
     "@storybook/theming": 6.4.0-alpha.34
     core-js: ^3.8.2

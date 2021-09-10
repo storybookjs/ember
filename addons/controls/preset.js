@@ -1,7 +1,7 @@
-const { ensureDocsBeforeControls } = require('./dist/cjs/preset/ensureDocsBeforeControls');
+const { checkDocsLoaded } = require('./dist/cjs/preset/checkDocsLoaded');
 
 function managerEntries(entry = [], options) {
-  ensureDocsBeforeControls(options.configDir);
+  checkDocsLoaded(options.configDir);
   return [...entry, require.resolve('./dist/esm/register')];
 }
 
