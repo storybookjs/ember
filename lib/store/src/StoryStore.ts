@@ -34,8 +34,8 @@ import { inferControls } from './inferControls';
 type MaybePromise<T> = Promise<T> | T;
 
 // TODO -- what are reasonable values for these?
-const CSF_CACHE_SIZE = 100;
-const STORY_CACHE_SIZE = 1000;
+const CSF_CACHE_SIZE = 1000;
+const STORY_CACHE_SIZE = 10000;
 
 function normalizeProjectAnnotations<TFramework extends AnyFramework>({
   argTypes,
@@ -166,7 +166,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
     if (sync) {
       throw new Error(
-        `importFn() returned a promise, did you pass an async version then call initializeSync()?`
+        `importFn() returned a promise, did you pass an async version then call initialize({sync: true})?`
       );
     }
 
