@@ -91,7 +91,7 @@ export enum CoreBuilder {
   Webpack5 = 'webpack5',
 }
 
-export type Builder = CoreBuilder | string;
+export type Builder = CoreBuilder | (string | {});
 
 export enum SupportedLanguage {
   JAVASCRIPT = 'javascript',
