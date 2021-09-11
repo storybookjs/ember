@@ -1,14 +1,14 @@
 import React, { FC, useContext } from 'react';
 import global from 'global';
-import { BaseAnnotations } from '@storybook/csf';
+import { AnyFramework, BaseAnnotations } from '@storybook/csf';
 import { Anchor } from './Anchor';
 import { DocsContext, DocsContextProps } from './DocsContext';
 
 const { document } = global;
 
-type MetaProps = BaseAnnotations<any>;
+type MetaProps = BaseAnnotations;
 
-function getFirstStoryId(docsContext: DocsContextProps<any>): string {
+function getFirstStoryId(docsContext: DocsContextProps): string {
   const stories = docsContext.componentStories();
 
   return stories.length > 0 ? stories[0].id : null;

@@ -8,7 +8,7 @@ export type WebProjectAnnotations<
   renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
 };
 
-export interface DocsContextProps<TFramework extends AnyFramework> {
+export interface DocsContextProps<TFramework extends AnyFramework = AnyFramework> {
   id: string;
   title: string;
   name: string;

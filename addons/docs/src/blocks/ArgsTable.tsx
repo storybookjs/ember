@@ -10,7 +10,7 @@ import {
 import { addons } from '@storybook/addons';
 import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
-import { StrictArgTypes, Args } from '@storybook/csf';
+import { StrictArgTypes, Args, AnyFramework } from '@storybook/csf';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
@@ -44,7 +44,7 @@ type ArgsTableProps = BaseProps | OfProps | ComponentsProps | StoryProps;
 
 const useArgs = (
   storyId: string,
-  context: DocsContextProps<any>
+  context: DocsContextProps
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
   const channel = addons.getChannel();
 
@@ -78,7 +78,7 @@ const useArgs = (
 
 export const extractComponentArgTypes = (
   component: Component,
-  { id, storyById }: DocsContextProps<any>,
+  { id, storyById }: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor
 ): StrictArgTypes => {
@@ -99,7 +99,7 @@ const isShortcut = (value?: string) => {
 
 export const getComponent = (
   props: ArgsTableProps = {},
-  { id, storyById }: DocsContextProps<any>
+  { id, storyById }: DocsContextProps
 ): Component => {
   const { of } = props as OfProps;
   const { story } = props as StoryProps;
@@ -116,7 +116,7 @@ export const getComponent = (
 const addComponentTabs = (
   tabs: Record<string, PureArgsTableProps>,
   components: Record<string, Component>,
-  context: DocsContextProps<any>,
+  context: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor,
   sort?: SortType

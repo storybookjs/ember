@@ -160,6 +160,9 @@
     "@storybook/angular": {
       "optional": true
     },
+    "@storybook/html": {
+      "optional": true
+    },
     "@storybook/react": {
       "optional": true
     },

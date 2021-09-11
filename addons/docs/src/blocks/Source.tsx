@@ -42,11 +42,11 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
-const getStory = (storyId: StoryId, docsContext: DocsContextProps<any>): Story<any> | null => {
+const getStory = (storyId: StoryId, docsContext: DocsContextProps): Story | null => {
   return docsContext.storyById(storyId);
 };
 
-const getSourceState = (storyIds: string[], docsContext: DocsContextProps<any>) => {
+const getSourceState = (storyIds: string[], docsContext: DocsContextProps) => {
   const states = storyIds
     .map((storyId) => {
       const story = getStory(storyId, docsContext);

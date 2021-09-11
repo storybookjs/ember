@@ -22,7 +22,7 @@ export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
 type Annotations = Pick<
-  StoryAnnotations<AnyFramework>,
+  StoryAnnotations,
   'decorators' | 'parameters' | 'args' | 'argTypes' | 'loaders'
 >;
 type CommonProps = Annotations & {
@@ -48,24 +48,24 @@ export type StoryProps = (StoryDefProps | StoryRefProps | StoryImportProps) & Co
 
 export const lookupStoryId = (
   storyName: string,
-  { mdxStoryNameToKey, mdxComponentAnnotations }: DocsContextProps<any>
+  { mdxStoryNameToKey, mdxComponentAnnotations }: DocsContextProps
 ) =>
   toId(
     mdxComponentAnnotations.id || mdxComponentAnnotations.title,
     storyNameFromExport(mdxStoryNameToKey[storyName])
   );
 
-export const getStoryId = (props: StoryProps, context: DocsContextProps<AnyFramework>): StoryId => {
+export const getStoryId = (props: StoryProps, context: DocsContextProps): StoryId => {
   const { id } = props as StoryRefProps;
   const { name } = props as StoryDefProps;
   const inputId = id === CURRENT_SELECTION ? context.id : id;
   return inputId || lookupStoryId(name, context);
 };
 
-export const getStoryProps = (
+export const getStoryProps = <TFramework extends AnyFramework>(
   { height, inline }: StoryProps,
-  story: StoryType<any>,
-  context: DocsContextProps<any>
+  story: StoryType<TFramework>,
+  context: DocsContextProps<TFramework>
 ): PureStoryProps => {
   const { name: storyName, parameters } = story;
   const { docs = {} } = parameters;
