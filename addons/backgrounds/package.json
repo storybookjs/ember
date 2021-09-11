@@ -50,7 +50,7 @@
     "@storybook/client-logger": "6.4.0-alpha.34",
     "@storybook/components": "6.4.0-alpha.34",
     "@storybook/core-events": "6.4.0-alpha.34",
-    "@storybook/csf": "0.0.2--canary.b1d5348.0",
+    "@storybook/csf": "0.0.2--canary.062665d.0",
     "@storybook/theming": "6.4.0-alpha.34",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
