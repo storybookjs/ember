@@ -1,4 +1,5 @@
 import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
 
 import { renderNgApp } from './angular/helpers';
 import { AngularFramework } from './types-6-0';
@@ -7,7 +8,9 @@ import { RendererFactory } from './angular-beta/RendererFactory';
 
 export const rendererFactory = new RendererFactory();
 
-export default async function renderMain(
+export const render: ArgsStoryFn<AngularFramework> = (props) => ({ props });
+
+export async function renderToDOM(
   {
     storyFn,
     showMain,

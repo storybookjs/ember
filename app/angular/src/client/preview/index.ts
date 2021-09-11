@@ -2,10 +2,10 @@
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 import { start } from '@storybook/core/client';
 import './globals';
-import renderToDOM from './render';
+import { renderToDOM, render } from './render';
 import decorateStory from './decorateStory';
 import { IStorybookSection } from './types';
-import { AngularFramework, Story } from './types-6-0';
+import { AngularFramework } from './types-6-0';
 
 const framework = 'angular';
 
@@ -19,7 +19,6 @@ interface ClientApi extends ClientStoryApi<AngularFramework['storyResult']> {
   load: (...args: any[]) => void;
 }
 
-const render: Story = (props) => ({ props });
 const api = start(renderToDOM, { decorateStory, render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
