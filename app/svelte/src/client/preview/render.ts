@@ -15,7 +15,7 @@ function cleanUpPreviousStory() {
   previousComponent = null;
 }
 
-export default function render(
+export function renderToDOM(
   { storyFn, kind, name, showMain, showError }: RenderContext<SvelteFramework>,
   domElement: HTMLElement
 ) {

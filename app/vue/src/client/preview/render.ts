@@ -19,7 +19,7 @@ const root = new Vue({
   },
 });
 
-export default function render(
+export function renderToDOM(
   {
     title,
     name,

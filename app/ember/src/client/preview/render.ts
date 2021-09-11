@@ -60,7 +60,7 @@ function render(options: OptionsArgs, el: HTMLElement) {
     });
 }
 
-export default function renderMain(
+export function renderToDOM(
   { storyFn, kind, name, showMain, showError }: RenderContext<EmberFramework>,
   domElement: HTMLElement
 ) {

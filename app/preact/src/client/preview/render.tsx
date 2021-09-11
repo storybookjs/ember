@@ -36,7 +36,7 @@ const StoryHarness: preact.FunctionalComponent<{
   return content;
 };
 
-export default function renderMain(
+export function renderToDOM(
   { storyFn, title, name, showMain, showError, forceRemount }: RenderContext<PreactFramework>,
   domElement: HTMLElement
 ) {

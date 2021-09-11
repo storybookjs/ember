@@ -1,8 +1,8 @@
 import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable, StoryFn, Args } from '@storybook/addons';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import { renderMain as renderToDOM } from './render';
+import { renderToDOM, render } from './render';
 import { IStorybookSection, ServerFramework } from './types';
 
 const framework = 'server';
@@ -15,8 +15,6 @@ interface ClientApi extends ClientStoryApi<ServerFramework['storyResult']> {
   forceReRender(): void;
   raw: () => any; // todo add type
 }
-
-const render: StoryFn = (args: Args) => {};
 
 const api = start(renderToDOM, { render });
 
