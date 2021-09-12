@@ -1,6 +1,5 @@
 import { Meta, Story } from '@storybook/vue/types-6-0';
 import Button from './Button.vue';
-import { ButtonSizes } from './types';
 
 export default {
   title: 'Button',
