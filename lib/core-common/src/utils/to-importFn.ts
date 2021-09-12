@@ -1,12 +1,10 @@
-import globBase from 'glob-base';
-import { makeRe } from 'micromatch';
 import dedent from 'ts-dedent';
+import { toRequireContext } from '..';
 
 import type { NormalizedStoriesEntry } from '../types';
 
 export function toImportFnPart(entry: NormalizedStoriesEntry) {
-  const { base } = globBase(entry.glob);
-  const regex = makeRe(entry.glob, { fastpaths: false, noglobstar: false, bash: false });
+  const { path: base, regex } = toRequireContext(entry.glob);
 
   const webpackIncludeRegex = new RegExp(regex.source.substring(1));
 
