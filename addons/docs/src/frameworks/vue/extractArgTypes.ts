@@ -20,11 +20,16 @@ function isEnum(propDef: PropDef, docgenInfo: DocgenInfo): false | PropDef {
   const matched = Array.isArray(values) && values.length && type.name !== 'enum';
 
   if (!matched) return false;
+
+  const enumString = values.join(', ');
+  let { summary } = propDef.type;
+  summary = summary ? `${summary}: ${enumString}` : enumString;
+
   Object.assign(propDef.type, {
     ...propDef.type,
     name: 'enum',
     value: values,
-    summary: `${propDef.type?.summary}: ${values.join(', ')}`,
+    summary,
   });
   return propDef;
 }
