@@ -5,8 +5,10 @@ import { ButtonSizes } from './types';
 export default {
   title: 'Button',
   component: Button,
-  argTypes: {
-    size: { control: { type: 'select', options: ButtonSizes } },
+  parameters: {
+    controls: {
+      expanded: true,
+    },
   },
 } as Meta;
 
