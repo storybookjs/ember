@@ -18,6 +18,7 @@ import { ButtonSize } from './types';
 export default class Button extends Vue {
   /**
    * The size of the button
+   * @values default,small,big
    */
   @Prop({ type: String, default: 'default' }) readonly size!: ButtonSize;
 }
