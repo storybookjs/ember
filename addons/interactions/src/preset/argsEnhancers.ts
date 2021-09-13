@@ -4,6 +4,7 @@ import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { fn } from 'jest-mock';
 import { instrument } from '../instrument';
 
+// Aliasing `fn` to `action` here, so we get a more descriptive label in the UI.
 const { action } = instrument({ action: fn }, { retain: true });
 const channel = addons.getChannel();
 const spies: any[] = [];
