@@ -133,7 +133,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       );
       entries.push(`${configFilename}-generated-config-entry.js`);
     });
-    if (stories) {
+    if (stories.length > 0) {
       const storyTemplate = await readTemplate(
         path.join(__dirname, 'virtualModuleStory.template.js')
       );
