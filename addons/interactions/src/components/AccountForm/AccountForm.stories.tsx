@@ -1,10 +1,10 @@
 import React from 'react';
 import global from 'global';
 import { AccountForm } from './AccountForm';
-import { screen, within, waitFor } from '../src/dom';
-import userEvent from '../src/user-event';
-import { sleep, tick } from '../src/time';
-import { expect } from '../src/expect';
+import { screen, within, waitFor } from '../../dom';
+import userEvent from '../../user-event';
+import { sleep, tick } from '../../time';
+import { expect } from '../../expect';
 
 export default {
   title: 'Addons/Interactions/AccountForm',
