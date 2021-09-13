@@ -1,5 +1,7 @@
 import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
+import deprecate from 'util-deprecate';
+import dedent from 'ts-dedent';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
@@ -57,21 +59,52 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   previousCleanup: () => void;
 
   constructor({
-    getProjectAnnotations,
     importFn,
     fetchStoryIndex,
   }: {
-    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
     importFn: ModuleImportFn;
     fetchStoryIndex: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
+    this.urlStore = new UrlStore();
+    this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
+
+    // Add deprecated APIs for back-compat
+    // @ts-ignore
+    this.storyStore.getSelection = deprecate(
+      () => this.urlStore.selection,
+      dedent`
+      \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
+
+      To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
+    `
+    );
+  }
+
+  initialize({
+    getProjectAnnotations,
+    cacheAllCSFFiles = false,
+    // We have a second "sync" code path through `initialize` for back-compat reasons.
+    // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
+    sync = false,
+  }: {
+    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
+    cacheAllCSFFiles?: boolean;
+    sync?: boolean;
+  }): MaybePromise<void> {
     const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
-    this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
+    if (sync) {
+      this.storyStore.initialize({ projectAnnotations, cacheAllCSFFiles, sync: true });
+      // NOTE: we don't await this, but return the promise so the caller can await it if they want
+      return this.setupListenersAndRenderSelection();
+    }
+
+    return this.storyStore
+      .initialize({ projectAnnotations, cacheAllCSFFiles, sync: false })
+      .then(() => this.setupListenersAndRenderSelection());
   }
 
   getProjectAnnotationsOrRenderError(
@@ -89,23 +122,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.renderPreviewEntryError(err);
       return undefined;
     }
-  }
-
-  // We have a second "sync" code path through `initialize` for back-compat reasons.
-  // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
-  initialize({
-    cacheAllCSFFiles = false,
-    sync = false,
-  }: { cacheAllCSFFiles?: boolean; sync?: boolean } = {}): MaybePromise<void> {
-    if (sync) {
-      this.storyStore.initialize({ cacheAllCSFFiles, sync: true });
-      // NOTE: we don't await this, but return the promise so the caller can await it if they want
-      return this.setupListenersAndRenderSelection();
-    }
-
-    return this.storyStore
-      .initialize({ cacheAllCSFFiles, sync: false })
-      .then(() => this.setupListenersAndRenderSelection());
   }
 
   async setupListenersAndRenderSelection() {

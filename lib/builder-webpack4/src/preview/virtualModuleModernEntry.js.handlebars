@@ -22,14 +22,14 @@ const fetchStoryIndex = async () => {
 const channel = createChannel({ page: 'preview' });
 addons.setChannel(channel);
 
-const preview = new PreviewWeb({ importFn, getProjectAnnotations, fetchStoryIndex });
+const preview = new PreviewWeb({ importFn, fetchStoryIndex });
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
 window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
 window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore });
 
-preview.initialize();
+preview.initialize({ getProjectAnnotations });
 
 if (module.hot) {
   module.hot.accept('./{{storiesFilename}}', () => {

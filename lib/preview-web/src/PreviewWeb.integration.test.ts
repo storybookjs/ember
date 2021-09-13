@@ -61,7 +61,7 @@ describe('PreviewWeb', () => {
         storyFn()
       );
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex }).initialize();
+      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
 
       await waitForRender();
 
@@ -71,7 +71,7 @@ describe('PreviewWeb', () => {
 
     it('renders docs mode through docs page', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex });
+      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
 
       const docsRoot = window.document.createElement('div');
       // @ts-ignore
@@ -80,7 +80,7 @@ describe('PreviewWeb', () => {
         React.createElement('div', {}, 'INSIDE')
       );
 
-      await preview.initialize();
+      await preview.initialize({ getProjectAnnotations });
       await waitForRender();
 
       expect(docsRoot.outerHTML).toMatchInlineSnapshot(`
@@ -106,8 +106,8 @@ describe('PreviewWeb', () => {
 
     it('renders story mode through the updated stack', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex });
-      await preview.initialize();
+      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
+      await preview.initialize({ getProjectAnnotations });
       await waitForRender();
 
       projectAnnotations.renderToDOM.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>

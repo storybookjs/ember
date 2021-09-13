@@ -21,7 +21,7 @@ export class GlobalsStore {
 
   // NOTE: globals are initialized every time the preview entries are loaded
   // This happens both initially when the SB first loads, and also on HMR
-  constructor({ globals, globalTypes }: { globals: Globals; globalTypes: GlobalTypes }) {
+  initialize({ globals, globalTypes }: { globals: Globals; globalTypes: GlobalTypes }) {
     this.setInitialGlobals({ globals, globalTypes });
     this.globals = this.initialGlobals;
   }
