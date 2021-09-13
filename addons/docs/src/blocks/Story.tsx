@@ -133,21 +133,35 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   if (!story) {
     return <div>Loading...</div>;
   }
-
-  if (global?.FEATURES.modernInlineRender) {
-    // We do this so React doesn't complain when we replace the span in a secondary render
-    const htmlContents = `<span data-is-loading-indicator="true">loading story...</span>`;
-    return (
-      <div ref={ref} data-name={story.name} dangerouslySetInnerHTML={{ __html: htmlContents }} />
-    );
-  }
-
   const storyProps = getStoryProps(props, story, context);
   if (!storyProps) {
     return null;
   }
+
+  if (global?.FEATURES.modernInlineRender) {
+    // We do this so React doesn't complain when we replace the span in a secondary render
+    const htmlContents = `<span data-is-loading-indicator="true">loading story...</span>`;
+
+    // FIXME: height/style/etc. lifted from PureStory
+    const { height } = storyProps;
+    return (
+      <div id={storyBlockIdFromId(story.id)}>
+        <MDXProvider components={resetComponents}>
+          {height ? (
+            <style>{`#story--${story.id} { min-height: ${height}; transform: translateZ(0); overflow: auto }`}</style>
+          ) : null}
+          <div
+            ref={ref}
+            data-name={story.name}
+            dangerouslySetInnerHTML={{ __html: htmlContents }}
+          />
+        </MDXProvider>
+      </div>
+    );
+  }
+
   return (
-    <div id={storyBlockIdFromId(storyProps.id)}>
+    <div id={storyBlockIdFromId(story.id)}>
       <MDXProvider components={resetComponents}>
         <PureStory {...storyProps} />
       </MDXProvider>
