@@ -215,22 +215,20 @@ describe('instrument', () => {
     );
   });
 
-  it('tracks the parent call id for async callbacks', () => {
+  it('tracks the parent call id for async callbacks', async () => {
     const fn = (callback: Function) => Promise.resolve(callback && callback());
     const { fn1, fn2, fn3 } = instrument({ fn1: fn, fn2: fn, fn3: fn });
-    return fn1(() => fn2())
-      .then(() => fn3())
-      .then(() => {
-        expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '1-fn1', parentCallId: undefined })
-        );
-        expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '2-fn2', parentCallId: '1-fn1' })
-        );
-        expect(callSpy).toHaveBeenCalledWith(
-          expect.objectContaining({ id: '3-fn3', parentCallId: undefined })
-        );
-      });
+    await fn1(() => fn2());
+    await fn3();
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '1-fn1', parentCallId: undefined })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '2-fn2', parentCallId: '1-fn1' })
+    );
+    expect(callSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: '3-fn3', parentCallId: undefined })
+    );
   });
 
   it('instruments the call result to support chaining', () => {
@@ -391,23 +389,20 @@ describe('instrument', () => {
       /* 4-fn */ expect(fn()).toEqual(expect.any(Promise));
     });
 
-    it('invokes the deferred function on the "next" event', () => {
+    it('invokes the deferred function on the "next" event', async () => {
       const { fn } = instrument({ fn: jest.fn(() => 'bar') }, { intercept: true });
-      const res = fn('foo').then((value: string) => {
-        expect(value).toBe('bar');
-        expect(fn._original).toHaveBeenCalledWith('foo');
-      });
+      const promise = fn('foo');
       addons.getChannel().emit(EVENTS.NEXT);
-      return res;
+      expect(await promise).toBe('bar');
+      expect(fn._original).toHaveBeenCalledWith('foo');
     });
 
-    it('resolves all pending promises on the "next" event', () => {
+    it('resolves all pending promises on the "next" event', async () => {
       const { fn } = instrument({ fn: jest.fn(() => {}) }, { intercept: true });
-      const res = Promise.all([fn(), fn()]).then(() => {
-        expect(fn._original).toHaveBeenCalledTimes(2);
-      });
+      const promise = Promise.all([fn(), fn()]);
       addons.getChannel().emit(EVENTS.NEXT);
-      return res;
+      await promise;
+      expect(fn._original).toHaveBeenCalledTimes(2);
     });
   });
 });
