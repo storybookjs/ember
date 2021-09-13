@@ -1,4 +1,4 @@
-import { checkAddonOrder } from '@storybook/addons';
+import { checkAddonOrder } from '@storybook/core-common';
 import path from 'path';
 
 export const checkDocsLoaded = (configDir: string) => {

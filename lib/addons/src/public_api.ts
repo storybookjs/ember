@@ -5,7 +5,6 @@
 // See index.ts
 import { addons } from './index';
 
-export * from './check-addon-order';
 export * from './make-decorator';
 export * from './index';
 export * from './types';

@@ -1,6 +1,8 @@
-type OptionsEntry = { name: string };
-type AddonEntry = string | OptionsEntry;
-type AddonInfo = { name: string; inEssentials: boolean };
+const { logger } = require('@storybook/node-logger');
+
+export type OptionsEntry = { name: string };
+export type AddonEntry = string | OptionsEntry;
+export type AddonInfo = { name: string; inEssentials: boolean };
 
 interface Options {
   before: AddonInfo;
@@ -24,7 +26,6 @@ const isCorrectOrder = (addons: AddonEntry[], before: AddonInfo, after: AddonInf
 };
 
 export const checkAddonOrder = async ({ before, after, configFile, getConfig }: Options) => {
-  const { logger } = await import('@storybook/node-logger');
   try {
     const config = await getConfig(configFile);
 

@@ -1,5 +1,5 @@
 import { logger } from '@storybook/node-logger';
-import { checkAddonOrder } from './check-addon-order';
+import { checkAddonOrder, AddonEntry, AddonInfo, OptionsEntry } from '../check-addon-order';
 
 const configFile = './main.js';
 const essentialAddons = [
@@ -13,13 +13,17 @@ const essentialAddons = [
   'outline',
 ];
 
-const pkgName = (name) =>
-  typeof name === 'string' && !name.includes('addon') ? `@storybook/addon-${name}` : name;
-const fromName = (name) => ({
+const pkgName = (entry: AddonEntry): string =>
+  typeof entry === 'string' && !entry.includes('addon')
+    ? `@storybook/addon-${entry}`
+    : (entry as OptionsEntry).name;
+
+const fromName = (name: string): AddonInfo => ({
   name: pkgName(name),
   inEssentials: essentialAddons.includes(name),
 });
-const str = (name) => JSON.stringify(name);
+
+const str = (name: unknown) => JSON.stringify(name);
 
 const warn = jest.spyOn(logger, 'warn');
 afterEach(() => warn.mockReset());
