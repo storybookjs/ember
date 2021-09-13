@@ -89,12 +89,14 @@ export const getStoryProps = <TFramework extends AnyFramework>(
       loaded: {},
     });
   return {
-    parameters,
     inline: storyIsInline,
     id: story.id,
-    storyFn: prepareForInline ? () => prepareForInline(boundStoryFn, story) : boundStoryFn,
     height: height || (storyIsInline ? undefined : iframeHeight),
     title: storyName,
+    ...(storyIsInline && {
+      parameters,
+      storyFn: () => prepareForInline(boundStoryFn, story),
+    }),
   };
 };
 
