@@ -1,7 +1,7 @@
 import type { Group, Story, StoriesHash } from '@storybook/api';
 import { isRoot, isStory } from '@storybook/api';
 import { styled } from '@storybook/theming';
-import { Icons } from '@storybook/components';
+import { Button, Icons } from '@storybook/components';
 import { transparentize } from 'polished';
 import React, { MutableRefObject, useCallback, useMemo, useRef } from 'react';
 
@@ -98,6 +98,28 @@ const CollapseButton = styled.button(({ theme }) => ({
   },
 }));
 
+const LeafNodeStyleWrapper = styled.div(({ theme }) => ({
+  position: 'relative',
+}));
+
+const SkipToContentLink = styled(Button)(({ theme }) => ({
+  display: 'none',
+  '@media (min-width: 600px)': {
+    display: 'block',
+    zIndex: -1,
+    position: 'absolute',
+    top: 1,
+    right: 20,
+    height: '20px',
+    fontSize: '10px',
+    padding: '5px 10px',
+    '&:focus': {
+      background: 'white',
+      zIndex: 1,
+    },
+  },
+}));
+
 interface NodeProps {
   item: Item;
   refId: string;
@@ -130,25 +152,32 @@ const Node = React.memo<NodeProps>(
     if (isStory(item)) {
       const LeafNode = item.isComponent ? DocumentNode : StoryNode;
       return (
-        <LeafNode
-          key={id}
-          id={id}
-          className="sidebar-item"
-          data-ref-id={refId}
-          data-item-id={item.id}
-          data-parent-id={item.parent}
-          data-nodetype={item.isComponent ? 'document' : 'story'}
-          data-selected={isSelected}
-          data-highlightable={isDisplayed}
-          depth={isOrphan ? item.depth : item.depth - 1}
-          href={getLink(item.id, refId)}
-          onClick={(event) => {
-            event.preventDefault();
-            onSelectStoryId(item.id);
-          }}
-        >
-          {item.renderLabel?.(item) || item.name}
-        </LeafNode>
+        <LeafNodeStyleWrapper>
+          <LeafNode
+            key={id}
+            id={id}
+            className="sidebar-item"
+            data-ref-id={refId}
+            data-item-id={item.id}
+            data-parent-id={item.parent}
+            data-nodetype={item.isComponent ? 'document' : 'story'}
+            data-selected={isSelected}
+            data-highlightable={isDisplayed}
+            depth={isOrphan ? item.depth : item.depth - 1}
+            href={getLink(item.id, refId)}
+            onClick={(event) => {
+              event.preventDefault();
+              onSelectStoryId(item.id);
+            }}
+          >
+            {item.renderLabel?.(item) || item.name}
+          </LeafNode>
+          {isSelected && (
+            <SkipToContentLink secondary outline isLink href="#storybook-preview-wrapper">
+              Skip to canvas
+            </SkipToContentLink>
+          )}
+        </LeafNodeStyleWrapper>
       );
     }
 

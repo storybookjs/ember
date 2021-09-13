@@ -1,9 +1,12 @@
 /* global window */
 import { render } from 'lit-html';
-import { addons, StoryContext, StoryFn } from '@storybook/addons';
+import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
+import { addons } from '@storybook/addons';
+import { WebComponentsFramework } from '@storybook/web-components';
+
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 
-function skipSourceRender(context: StoryContext) {
+function skipSourceRender(context: StoryContext<WebComponentsFramework>) {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -17,15 +20,21 @@ function skipSourceRender(context: StoryContext) {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 }
 
-function applyTransformSource(source: string, context: StoryContext): string {
+function applyTransformSource(
+  source: string,
+  context: StoryContext<WebComponentsFramework>
+): string {
   const { transformSource } = context.parameters.docs ?? {};
   if (typeof transformSource !== 'function') return source;
   return transformSource(source, context);
 }
 
-export function sourceDecorator(storyFn: StoryFn, context: StoryContext) {
+export function sourceDecorator(
+  storyFn: PartialStoryFn<WebComponentsFramework>,
+  context: StoryContext<WebComponentsFramework>
+) {
   const story = context?.parameters.docs?.source?.excludeDecorators
-    ? context.originalStoryFn(context.args)
+    ? (context.originalStoryFn as ArgsStoryFn<WebComponentsFramework>)(context.args, context)
     : storyFn();
 
   if (!skipSourceRender(context)) {

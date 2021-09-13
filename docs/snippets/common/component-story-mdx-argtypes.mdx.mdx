@@ -1,23 +1,29 @@
 ```md
 <!--- MyComponent.stories.mdx -->
 
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { MyComponent } from './MyComponent';
+
+<!--- Add new argTypes to your component or further adjust them --->
 <Meta
   title="MyComponent"
   component={MyComponent}
   argTypes={{
     label: { 
       name: 'label',
-      <!--- other argtypes required --->
     },
   }}
 />
 
-<Story name="some story" argTypes={{
-  label: { 
-    name: 'different label', 
-    <!--- other required data --->
-  }
+<!--- Add new argTypes to your Story or further adjust them --->
+<Story 
+  name="some story" 
+  argTypes={{
+    label: { 
+      name: 'different label',
+    }
 }}>
-  <!--- story contents --->
+  <!--- Story Contents --->
 </Story>
 ```

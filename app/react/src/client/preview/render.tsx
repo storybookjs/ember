@@ -1,17 +1,35 @@
 import global from 'global';
-import React, { Component, FunctionComponent, ReactElement, StrictMode, Fragment } from 'react';
+import React, {
+  Component as ReactComponent,
+  FunctionComponent,
+  ReactElement,
+  StrictMode,
+  Fragment,
+} from 'react';
 import ReactDOM from 'react-dom';
+import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
 
-import { StoryContext, RenderContext } from './types';
+import { StoryContext } from './types';
+import { ReactFramework } from './types-6-0';
 
-const { document, FRAMEWORK_OPTIONS } = global;
+const { FRAMEWORK_OPTIONS } = global;
 
-const render = (node: ReactElement, el: Element) =>
+export const render: ArgsStoryFn<ReactFramework> = (args, { id, component: Component }) => {
+  if (!Component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
+    );
+  }
+  return <Component {...args} />;
+};
+
+const renderElement = async (node: ReactElement, el: Element) =>
   new Promise((resolve) => {
-    ReactDOM.render(node, el, resolve);
+    ReactDOM.render(node, el, () => resolve(null));
   });
 
-class ErrorBoundary extends Component<{
+class ErrorBoundary extends ReactComponent<{
   showException: (err: Error) => void;
   showMain: () => void;
 }> {
@@ -45,12 +63,17 @@ class ErrorBoundary extends Component<{
 
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
-export default async function renderMain(
-  // @ts-ignore FIXME refactor in progress
-  { storyContext, unboundStoryFn, showMain, showException, forceRemount }: RenderContext,
-  domElement: Element
+export async function renderToDOM(
+  {
+    storyContext,
+    unboundStoryFn,
+    showMain,
+    showException,
+    forceRemount,
+  }: RenderContext<ReactFramework>,
+  domElement: HTMLElement
 ) {
-  const Story = unboundStoryFn as FunctionComponent<StoryContext>;
+  const Story = unboundStoryFn as FunctionComponent<StoryContext<ReactFramework>>;
 
   const content = (
     <ErrorBoundary showMain={showMain} showException={showException}>
@@ -70,5 +93,5 @@ export default async function renderMain(
     ReactDOM.unmountComponentAtNode(domElement);
   }
 
-  await render(element, domElement);
+  await renderElement(element, domElement);
 }

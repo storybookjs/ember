@@ -1,11 +1,11 @@
-import { StoryFn } from '@storybook/addons';
+import { AnyFramework, StoryFn } from '@storybook/csf';
 
 import React from 'react';
 
 // @ts-ignore
 import HOC from './HOC.svelte';
 
-export const prepareForInline = (storyFn: StoryFn) => {
+export const prepareForInline = (storyFn: StoryFn<AnyFramework>) => {
   const el = React.useRef(null);
   React.useEffect(() => {
     const root = new HOC({

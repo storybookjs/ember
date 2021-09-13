@@ -2,6 +2,7 @@
 // Page.stories.js | Page.stories.jsx
 
 import React from 'react';
+
 import Page from './Page';
 
 export default {
@@ -9,7 +10,7 @@ export default {
   title: 'Page',
 };
 
-const Template = (args, { argTypes }) => (
+const Template = (args) => (
   <Page {...args}>
     <footer>{args.footer}</footer>
   </Page>

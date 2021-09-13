@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-storyshots",
-  "version": "6.4.0-alpha.19",
+  "version": "6.4.0-alpha.34",
   "description": "Take a code snapshot of every story automatically with Jest",
   "keywords": [
     "addon",
@@ -26,7 +26,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -45,10 +45,12 @@
   },
   "dependencies": {
     "@jest/transform": "^26.6.2",
-    "@storybook/addons": "6.4.0-alpha.19",
-    "@storybook/client-api": "6.4.0-alpha.19",
-    "@storybook/core": "6.4.0-alpha.19",
-    "@storybook/core-common": "6.4.0-alpha.19",
+    "@storybook/addons": "6.4.0-alpha.34",
+    "@storybook/client-api": "6.4.0-alpha.34",
+    "@storybook/core": "6.4.0-alpha.34",
+    "@storybook/core-client": "6.4.0-alpha.34",
+    "@storybook/core-common": "6.4.0-alpha.34",
+    "@storybook/csf": "0.0.2--canary.062665d.0",
     "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.16",
     "@types/jest-specific-snapshot": "^0.5.3",
@@ -67,12 +69,12 @@
   "devDependencies": {
     "@angular/core": "^11.2.0",
     "@angular/platform-browser-dynamic": "^11.2.0",
-    "@storybook/addon-docs": "6.4.0-alpha.19",
-    "@storybook/angular": "6.4.0-alpha.19",
-    "@storybook/react": "6.4.0-alpha.19",
-    "@storybook/vue": "6.4.0-alpha.19",
-    "@storybook/vue3": "6.4.0-alpha.19",
-    "babel-loader": "^8.2.2",
+    "@storybook/addon-docs": "6.4.0-alpha.34",
+    "@storybook/angular": "6.4.0-alpha.34",
+    "@storybook/react": "6.4.0-alpha.34",
+    "@storybook/vue": "6.4.0-alpha.34",
+    "@storybook/vue3": "6.4.0-alpha.34",
+    "babel-loader": "^8.0.0",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.1",
     "jest-emotion": "^10.0.32",
@@ -149,7 +151,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "e7979d9dc08b35e6fb76d54bd0db302d2d0ec263",
+  "gitHead": "ccd25210cd159e42110b700b0562e951bb9b3a57",
   "storybook": {
     "displayName": "Storyshots",
     "icon": "https://user-images.githubusercontent.com/263385/101991676-48cdf300-3c7c-11eb-8aa1-944dab6ab29b.png",

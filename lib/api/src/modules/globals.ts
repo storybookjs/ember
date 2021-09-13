@@ -1,14 +1,12 @@
 import { SET_GLOBALS, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import deepEqual from 'fast-deep-equal';
+import { Globals, GlobalTypes } from '@storybook/csf';
 
-import { Args, ArgTypes, ModuleFn, useArgs } from '../index';
+import { ModuleFn } from '../index';
 
 import { getEventMetadata } from '../lib/events';
 
-// TODO -- these types
-type Globals = Args;
-type GlobalTypes = ArgTypes;
 interface SetGlobalsPayload {
   globals: Globals;
   globalTypes: GlobalTypes;
@@ -16,7 +14,7 @@ interface SetGlobalsPayload {
 
 export interface SubState {
   globals?: Globals;
-  globalArgs?: GlobalTypes;
+  globalTypes?: GlobalTypes;
 }
 
 export interface SubAPI {
@@ -27,12 +25,11 @@ export interface SubAPI {
 
 export const init: ModuleFn = ({ store, fullAPI }) => {
   const api: SubAPI = {
-    // TODO -- should these be {} before they are set?
     getGlobals() {
-      return store.getState().globals || {};
+      return store.getState().globals;
     },
     getGlobalTypes() {
-      return store.getState().globalTypes || {};
+      return store.getState().globalTypes;
     },
     updateGlobals(newGlobals) {
       // Only emit the message to the local ref
@@ -45,8 +42,10 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
     },
   };
 
-  const state: SubState = {};
-
+  const state: SubState = {
+    globals: {},
+    globalTypes: {},
+  };
   const updateGlobals = (globals: Globals) => {
     const currentGlobals = store.getState()?.globals;
     if (!deepEqual(globals, currentGlobals)) {

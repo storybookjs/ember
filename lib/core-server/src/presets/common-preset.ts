@@ -4,17 +4,20 @@ import {
   getManagerMainTemplate,
   getPreviewMainTemplate,
   loadCustomBabelConfig,
-  babelConfig,
+  getStorybookBabelConfig,
   loadEnvs,
   Options,
 } from '@storybook/core-common';
 
 export const babel = async (_: unknown, options: Options) => {
   const { configDir, presets } = options;
+  if (options.features?.babelModeV7) {
+    return presets.apply('babelDefault', {}, options);
+  }
 
   return loadCustomBabelConfig(
     configDir,
-    () => presets.apply('babelDefault', babelConfig(), options) as any
+    () => presets.apply('babelDefault', getStorybookBabelConfig(), options) as any
   );
 };
 
@@ -62,6 +65,3 @@ export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
 });
-
-// TODO -- this feels like it should live in core-client or client-api
-export const config = (entry: string[] = []) => [...entry, require.resolve('./inferArgTypes')];

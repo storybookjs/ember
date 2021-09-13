@@ -1,56 +1,78 @@
 import { TransformOptions } from '@babel/core';
 
-const plugins = [
-  require.resolve('@babel/plugin-transform-shorthand-properties'),
-  require.resolve('@babel/plugin-transform-block-scoping'),
-  /*
-   * Added for TypeScript experimental decorator support
-   * https://babeljs.io/docs/en/babel-plugin-transform-typescript#typescript-compiler-options
-   */
-  [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-  [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
-  [require.resolve('@babel/plugin-proposal-private-methods'), { loose: true }],
-  require.resolve('@babel/plugin-proposal-export-default-from'),
-  require.resolve('@babel/plugin-syntax-dynamic-import'),
-  [
-    require.resolve('@babel/plugin-proposal-object-rest-spread'),
-    { loose: true, useBuiltIns: true },
-  ],
-  require.resolve('@babel/plugin-transform-classes'),
-  require.resolve('@babel/plugin-transform-arrow-functions'),
-  require.resolve('@babel/plugin-transform-parameters'),
-  require.resolve('@babel/plugin-transform-destructuring'),
-  require.resolve('@babel/plugin-transform-spread'),
-  require.resolve('@babel/plugin-transform-for-of'),
-  require.resolve('babel-plugin-macros'),
-  /*
-   * Optional chaining and nullish coalescing are supported in
-   * @babel/preset-env, but not yet supported in Webpack due to support
-   * missing from acorn. These can be removed once Webpack has support.
-   * See https://github.com/facebook/create-react-app/issues/8445#issuecomment-588512250
-   */
-  require.resolve('@babel/plugin-proposal-optional-chaining'),
-  require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
-  [
-    require.resolve('babel-plugin-polyfill-corejs3'),
-    {
-      method: 'usage-global',
-      absoluteImports: require.resolve('core-js'),
-      // eslint-disable-next-line global-require
-      version: require('core-js/package.json').version,
-    },
-  ],
-];
+const r = (s: string, local: boolean) => {
+  return local ? s : require.resolve(s);
+};
 
-const presets = [
-  [require.resolve('@babel/preset-env'), { shippedProposals: true, loose: true }],
-  require.resolve('@babel/preset-typescript'),
-];
-
-export const babelConfig: () => TransformOptions = () => {
+export const getStorybookBabelConfig = ({ local = false }: { local?: boolean } = {}) => {
   return {
     sourceType: 'unambiguous',
-    presets: [...presets],
-    plugins: [...plugins],
-  };
+    presets: [
+      [r('@babel/preset-env', local), { shippedProposals: true, loose: true }],
+      r('@babel/preset-typescript', local),
+    ],
+    plugins: [
+      r('@babel/plugin-transform-shorthand-properties', local),
+      r('@babel/plugin-transform-block-scoping', local),
+      /*
+       * Added for TypeScript experimental decorator support
+       * https://babeljs.io/docs/en/babel-plugin-transform-typescript#typescript-compiler-options
+       */
+      [r('@babel/plugin-proposal-decorators', local), { legacy: true }],
+      [r('@babel/plugin-proposal-class-properties', local), { loose: true }],
+      [r('@babel/plugin-proposal-private-methods', local), { loose: true }],
+      r('@babel/plugin-proposal-export-default-from', local),
+      r('@babel/plugin-syntax-dynamic-import', local),
+      [r('@babel/plugin-proposal-object-rest-spread', local), { loose: true, useBuiltIns: true }],
+      r('@babel/plugin-transform-classes', local),
+      r('@babel/plugin-transform-arrow-functions', local),
+      r('@babel/plugin-transform-parameters', local),
+      r('@babel/plugin-transform-destructuring', local),
+      r('@babel/plugin-transform-spread', local),
+      r('@babel/plugin-transform-for-of', local),
+      r('babel-plugin-macros', local),
+      /*
+       * Optional chaining and nullish coalescing are supported in
+       * @babel/preset-env, but not yet supported in Webpack due to support
+       * missing from acorn. These can be removed once Webpack has support.
+       * See https://github.com/facebook/create-react-app/issues/8445#issuecomment-588512250
+       */
+      r('@babel/plugin-proposal-optional-chaining', local),
+      r('@babel/plugin-proposal-nullish-coalescing-operator', local),
+      [
+        r('babel-plugin-polyfill-corejs3', local),
+        {
+          method: 'usage-global',
+          absoluteImports: r('core-js', local),
+          // eslint-disable-next-line global-require
+          version: require('core-js/package.json').version,
+        },
+      ],
+    ],
+  } as TransformOptions;
 };
+
+export const getStorybookBabelDependencies = () => [
+  '@babel/preset-env',
+  '@babel/preset-typescript',
+  '@babel/plugin-transform-shorthand-properties',
+  '@babel/plugin-transform-block-scoping',
+  '@babel/plugin-proposal-decorators',
+  '@babel/plugin-proposal-class-properties',
+  '@babel/plugin-proposal-private-methods',
+  '@babel/plugin-proposal-export-default-from',
+  '@babel/plugin-syntax-dynamic-import',
+  '@babel/plugin-proposal-object-rest-spread',
+  '@babel/plugin-transform-classes',
+  '@babel/plugin-transform-arrow-functions',
+  '@babel/plugin-transform-parameters',
+  '@babel/plugin-transform-destructuring',
+  '@babel/plugin-transform-spread',
+  '@babel/plugin-transform-for-of',
+  'babel-plugin-macros',
+  '@babel/plugin-proposal-optional-chaining',
+  '@babel/plugin-proposal-nullish-coalescing-operator',
+  'babel-plugin-polyfill-corejs3',
+  'babel-loader',
+  'core-js',
+];

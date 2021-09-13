@@ -15,7 +15,7 @@ function getRenderedTree(story: any) {
   const moduleMeta = getStorybookModuleMetadata(
     {
       storyFnAngular: currentStory,
-      parameters: story.parameters,
+      component: story.component,
       // TODO : To change with the story Id in v7. Currently keep with static id to avoid changes in snapshots
       targetSelector: 'storybook-wrapper',
     },

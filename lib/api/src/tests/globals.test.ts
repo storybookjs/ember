@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { SET_STORIES, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
+import { SET_STORIES, SET_GLOBALS, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
 
 import { ModuleArgs, API } from '../index';
 import { init as initModule, SubAPI } from '../modules/globals';
@@ -10,7 +10,7 @@ const { getEventMetadata } = require('../lib/events');
 jest.mock('@storybook/client-logger');
 jest.mock('../lib/events');
 beforeEach(() => {
-  getEventMetadata.mockReturnValue({ sourceType: 'local' });
+  getEventMetadata.mockReset().mockReturnValue({ sourceType: 'local' });
 });
 
 function createMockStore() {
@@ -23,28 +23,31 @@ function createMockStore() {
   };
 }
 
-describe('stories API', () => {
+describe('globals API', () => {
   it('sets a sensible initialState', () => {
     const store = createMockStore();
     const { state } = initModule(({ store } as unknown) as ModuleArgs);
 
     expect(state).toEqual({
       globals: {},
+      globalTypes: {},
     });
   });
 
-  it('set global args on SET_STORIES', () => {
+  it('set global args on SET_GLOBALS', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
     const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
     store.setState(state);
     init();
 
-    api.emit(SET_STORIES, { globals: { a: 'b' } });
-    expect(store.getState()).toEqual({ globals: { a: 'b' } });
-
-    expect(state).toEqual({
-      globals: {},
+    api.emit(SET_GLOBALS, {
+      globals: { a: 'b' },
+      globalTypes: { a: { type: { name: 'string' } } },
+    });
+    expect(store.getState()).toEqual({
+      globals: { a: 'b' },
+      globalTypes: { a: { type: { name: 'string' } } },
     });
   });
 
@@ -57,7 +60,22 @@ describe('stories API', () => {
 
     getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } });
     api.emit(SET_STORIES, { globals: { a: 'b' } });
-    expect(store.getState()).toEqual({ globals: {} });
+    expect(store.getState()).toEqual({ globals: {}, globalTypes: {} });
+  });
+
+  it('ignores SET_GLOBALS from other refs', () => {
+    const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
+    const store = createMockStore();
+    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    store.setState(state);
+    init();
+
+    getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } });
+    api.emit(SET_GLOBALS, {
+      globals: { a: 'b' },
+      globalTypes: { a: { type: { name: 'string' } } },
+    });
+    expect(store.getState()).toEqual({ globals: {}, globalTypes: {} });
   });
 
   it('updates the state when the preview emits GLOBALS_UPDATED', () => {
@@ -69,14 +87,14 @@ describe('stories API', () => {
     init();
 
     api.emit(GLOBALS_UPDATED, { globals: { a: 'b' } });
-    expect(store.getState()).toEqual({ globals: { a: 'b' } });
+    expect(store.getState()).toEqual({ globals: { a: 'b' }, globalTypes: {} });
 
     api.emit(GLOBALS_UPDATED, { globals: { a: 'c' } });
-    expect(store.getState()).toEqual({ globals: { a: 'c' } });
+    expect(store.getState()).toEqual({ globals: { a: 'c' }, globalTypes: {} });
 
     // SHOULD NOT merge global args
     api.emit(GLOBALS_UPDATED, { globals: { d: 'e' } });
-    expect(store.getState()).toEqual({ globals: { d: 'e' } });
+    expect(store.getState()).toEqual({ globals: { d: 'e' }, globalTypes: {} });
   });
 
   it('ignores GLOBALS_UPDATED from other refs', () => {
@@ -90,7 +108,7 @@ describe('stories API', () => {
     getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } });
     logger.warn.mockClear();
     api.emit(GLOBALS_UPDATED, { globals: { a: 'b' } });
-    expect(store.getState()).toEqual({ globals: {} });
+    expect(store.getState()).toEqual({ globals: {}, globalTypes: {} });
     expect(logger.warn).toHaveBeenCalled();
   });
 

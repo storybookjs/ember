@@ -1,5 +1,7 @@
 enum events {
   CHANNEL_CREATED = 'channelCreated',
+  // There was an error executing the config, likely an bug in the user's preview.js
+  CONFIG_ERROR = 'configError',
   // When the preview boots, the first story is chosen via a selection specifier
   STORY_SPECIFIED = 'storySpecified',
   // Emitted by the preview whenever the list of stories changes (in batches)
@@ -51,6 +53,7 @@ export default events;
 // This is the preferred method
 export const {
   CHANNEL_CREATED,
+  CONFIG_ERROR,
   STORY_SPECIFIED,
   SET_STORIES,
   SET_CURRENT_STORY,

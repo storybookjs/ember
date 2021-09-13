@@ -50,11 +50,11 @@ export async function babelDefault(config: TransformOptions) {
   return {
     ...config,
     presets: [
-      ...config.presets,
+      ...(config?.presets || []),
       [require.resolve('@babel/preset-react'), presetReactOptions],
       require.resolve('@babel/preset-flow'),
     ],
-    plugins: [...(config.plugins || []), require.resolve('babel-plugin-add-react-displayname')],
+    plugins: [...(config?.plugins || []), require.resolve('babel-plugin-add-react-displayname')],
   };
 }
 

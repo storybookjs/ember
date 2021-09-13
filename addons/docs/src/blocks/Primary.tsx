@@ -1,4 +1,6 @@
 import React, { useContext, FC } from 'react';
+import { Story } from '@storybook/store';
+
 import { DocsContext } from './DocsContext';
 import { DocsStory } from './DocsStory';
 
@@ -11,7 +13,7 @@ export const Primary: FC<PrimaryProps> = ({ name }) => {
   const componentStories = getComponentStories();
   let story;
   if (componentStories) {
-    story = name ? componentStories.find((s) => s.name === name) : componentStories[0];
+    story = name ? componentStories.find((s: Story<any>) => s.name === name) : componentStories[0];
   }
   return story ? <DocsStory {...story} expanded={false} withToolbar /> : null;
 };

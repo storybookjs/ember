@@ -15,6 +15,7 @@ import {
   StorybookConfig,
   cache,
   normalizeStories,
+  logConfig,
 } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
@@ -68,7 +69,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   });
 
   const features = await presets.apply<StorybookConfig['features']>('features');
-  if (features?.buildStoriesJson) {
+  if (features?.buildStoriesJson || features?.storyStoreV7) {
     const stories = normalizeStories(await presets.apply('stories'), {
       configDir: options.configDir,
       workingDir: process.cwd(),
@@ -85,6 +86,11 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     presets,
     features,
   };
+
+  if (options.debugWebpack) {
+    logConfig('Preview webpack config', await previewBuilder.getConfig(fullOptions));
+    logConfig('Manager webpack config', await managerBuilder.getConfig(fullOptions));
+  }
 
   const core = await presets.apply<{ builder?: string }>('core');
 

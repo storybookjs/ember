@@ -9,19 +9,23 @@ import React, {
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
-import { toId, storyNameFromExport } from '@storybook/csf';
-import { Args, BaseAnnotations } from '@storybook/addons';
-import { Story as StoryType } from '@storybook/client-api/dist/ts3.9/new/types';
+import { StoryId, toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
+import { Story as StoryType } from '@storybook/store';
 import global from 'global';
-import { CURRENT_SELECTION } from './types';
 
+import { CURRENT_SELECTION } from './types';
 import { DocsContext, DocsContextProps } from './DocsContext';
+import { useStory } from './useStory';
 
 export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
-type CommonProps = BaseAnnotations<Args, any> & {
+type Annotations = Pick<
+  StoryAnnotations,
+  'decorators' | 'parameters' | 'args' | 'argTypes' | 'loaders'
+>;
+type CommonProps = Annotations & {
   height?: string;
   inline?: boolean;
 };
@@ -44,38 +48,25 @@ export type StoryProps = (StoryDefProps | StoryRefProps | StoryImportProps) & Co
 
 export const lookupStoryId = (
   storyName: string,
-  { mdxStoryNameToKey, mdxComponentMeta }: DocsContextProps<any>
+  { mdxStoryNameToKey, mdxComponentAnnotations }: DocsContextProps
 ) =>
   toId(
-    mdxComponentMeta.id || mdxComponentMeta.title,
+    mdxComponentAnnotations.id || mdxComponentAnnotations.title,
     storyNameFromExport(mdxStoryNameToKey[storyName])
   );
 
-// TODO -- this can be async
-export const getStory = (props: StoryProps, context: DocsContextProps<any>): StoryType<any> => {
+export const getStoryId = (props: StoryProps, context: DocsContextProps): StoryId => {
   const { id } = props as StoryRefProps;
   const { name } = props as StoryDefProps;
   const inputId = id === CURRENT_SELECTION ? context.id : id;
-  const previewId = inputId || lookupStoryId(name, context);
-  return context.storyById(previewId);
+  return inputId || lookupStoryId(name, context);
 };
 
-export const getStoryProps = (
+export const getStoryProps = <TFramework extends AnyFramework>(
   { height, inline }: StoryProps,
-  story: StoryType<any>,
-  context: DocsContextProps<any>
+  story: StoryType<TFramework>,
+  context: DocsContextProps<TFramework>
 ): PureStoryProps => {
-  const defaultIframeHeight = 100;
-
-  if (!story) {
-    return {
-      id: story.id,
-      inline: false,
-      height: height || defaultIframeHeight.toString(),
-      title: undefined,
-    };
-  }
-
   const { name: storyName, parameters } = story;
   const { docs = {} } = parameters;
 
@@ -92,7 +83,11 @@ export const getStoryProps = (
     );
   }
 
-  const boundStoryFn = () => story.storyFn(context.getStoryContext(story));
+  const boundStoryFn = () =>
+    story.unboundStoryFn({
+      ...context.getStoryContext(story),
+      loaded: {},
+    });
   return {
     parameters,
     inline: storyIsInline,
@@ -106,12 +101,18 @@ export const getStoryProps = (
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const ref = useRef();
-  const story = getStory(props, context);
-  const { id, title, name } = story;
+  const story = useStory(getStoryId(props, context), context);
+
+  if (!story) {
+    return <div>Loading...</div>;
+  }
+
+  const { componentId, id, title, name } = story;
   const renderContext = {
-    id,
+    componentId,
     title,
     kind: title,
+    id,
     name,
     story: name,
     // TODO what to do when these fail?

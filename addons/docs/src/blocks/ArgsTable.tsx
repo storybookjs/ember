@@ -1,24 +1,23 @@
-/* eslint-disable no-underscore-dangle */
 import React, { FC, useContext, useEffect, useState, useCallback } from 'react';
 import mapValues from 'lodash/mapValues';
 import {
   ArgsTable as PureArgsTable,
   ArgsTableProps as PureArgsTableProps,
   ArgsTableError,
-  ArgTypes,
   SortType,
   TabbedArgsTable,
 } from '@storybook/components';
-import { addons, Args } from '@storybook/addons';
-import { StoryStore, filterArgTypes } from '@storybook/client-api';
-import type { PropDescriptor } from '@storybook/client-api';
+import { addons } from '@storybook/addons';
+import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
+import { StrictArgTypes, Args, AnyFramework } from '@storybook/csf';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
 import { getComponentName } from './utils';
 import { ArgTypesExtractor } from '../lib/docgen/types';
 import { lookupStoryId } from './Story';
+import { useStory } from './useStory';
 
 interface BaseProps {
   include?: PropDescriptor;
@@ -45,7 +44,7 @@ type ArgsTableProps = BaseProps | OfProps | ComponentsProps | StoryProps;
 
 const useArgs = (
   storyId: string,
-  context: DocsContextProps<any>
+  context: DocsContextProps
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
   const channel = addons.getChannel();
 
@@ -79,10 +78,10 @@ const useArgs = (
 
 export const extractComponentArgTypes = (
   component: Component,
-  { id, storyById }: DocsContextProps<any>,
+  { id, storyById }: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor
-): ArgTypes => {
+): StrictArgTypes => {
   const { parameters } = storyById(id);
   const { extractArgTypes }: { extractArgTypes: ArgTypesExtractor } = parameters.docs || {};
   if (!extractArgTypes) {
@@ -100,7 +99,7 @@ const isShortcut = (value?: string) => {
 
 export const getComponent = (
   props: ArgsTableProps = {},
-  { id, storyById }: DocsContextProps<any>
+  { id, storyById }: DocsContextProps
 ): Component => {
   const { of } = props as OfProps;
   const { story } = props as StoryProps;
@@ -117,7 +116,7 @@ export const getComponent = (
 const addComponentTabs = (
   tabs: Record<string, PureArgsTableProps>,
   components: Record<string, Component>,
-  context: DocsContextProps<any>,
+  context: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor,
   sort?: SortType
@@ -133,7 +132,7 @@ export const StoryTable: FC<
   StoryProps & { component: Component; subcomponents: Record<string, Component> }
 > = (props) => {
   const context = useContext(DocsContext);
-  const { id: currentId, storyById, componentStories } = context;
+  const { id: currentId, componentStories } = context;
   const {
     story: storyName,
     component,
@@ -143,41 +142,40 @@ export const StoryTable: FC<
     exclude,
     sort,
   } = props;
-  const { argTypes, parameters } = storyById(currentId);
-  let storyArgTypes: ArgTypes;
   try {
     let storyId;
     switch (storyName) {
       case CURRENT_SELECTION: {
         storyId = currentId;
-        storyArgTypes = argTypes;
         break;
       }
       case PRIMARY_STORY: {
         const primaryStory = componentStories()[0];
         storyId = primaryStory.id;
-        storyArgTypes = primaryStory.argTypes;
         break;
       }
       default: {
         storyId = lookupStoryId(storyName, context);
-        storyArgTypes = storyById(storyId).argTypes;
       }
     }
-    storyArgTypes = filterArgTypes(storyArgTypes, include, exclude);
+    const story = useStory(storyId, context);
+    if (!story) {
+      return <div>Loading...</div>;
+    }
+
+    const argTypes = filterArgTypes(story.argTypes, include, exclude);
 
     const mainLabel = getComponentName(component) || 'Story';
 
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, context);
-    let tabs = { [mainLabel]: { rows: storyArgTypes, args, updateArgs, resetArgs } } as Record<
+    let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
     >;
 
     // Use the dynamically generated component tabs if there are no controls
-    const storyHasArgsWithControls =
-      storyArgTypes && Object.values(storyArgTypes).find((v) => !!v?.control);
+    const storyHasArgsWithControls = argTypes && Object.values(argTypes).find((v) => !!v?.control);
 
     if (!storyHasArgsWithControls) {
       updateArgs = null;

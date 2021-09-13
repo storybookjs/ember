@@ -49,7 +49,7 @@ describe('StorybookModule', () => {
         const ngModule = getStorybookModuleMetadata(
           {
             storyFnAngular: { props },
-            parameters: { component: FooComponent },
+            component: FooComponent,
             targetSelector: 'my-selector',
           },
           new BehaviorSubject<ICollection>(props)
@@ -85,7 +85,7 @@ describe('StorybookModule', () => {
         const ngModule = getStorybookModuleMetadata(
           {
             storyFnAngular: { props },
-            parameters: { component: FooComponent },
+            component: FooComponent,
             targetSelector: 'my-selector',
           },
           new BehaviorSubject<ICollection>(props)
@@ -110,7 +110,7 @@ describe('StorybookModule', () => {
         const ngModule = getStorybookModuleMetadata(
           {
             storyFnAngular: { props: initialProps },
-            parameters: { component: FooComponent },
+            component: FooComponent,
             targetSelector: 'my-selector',
           },
           storyProps$
@@ -162,7 +162,7 @@ describe('StorybookModule', () => {
         const ngModule = getStorybookModuleMetadata(
           {
             storyFnAngular: { props: initialProps },
-            parameters: { component: FooComponent },
+            component: FooComponent,
             targetSelector: 'my-selector',
           },
           storyProps$
@@ -203,7 +203,7 @@ describe('StorybookModule', () => {
               props: initialProps,
               template: '<p [style.color]="color"><foo [input]="input"></foo></p>',
             },
-            parameters: { component: FooComponent },
+            component: FooComponent,
             targetSelector: 'my-selector',
           },
           storyProps$
@@ -242,7 +242,7 @@ describe('StorybookModule', () => {
               props,
               moduleMetadata: { entryComponents: [WithoutSelectorComponent] },
             },
-            parameters: { component: WithoutSelectorComponent },
+            component: WithoutSelectorComponent,
             targetSelector: 'my-selector',
           },
           new BehaviorSubject<ICollection>(props)
@@ -265,7 +265,7 @@ describe('StorybookModule', () => {
       const ngModule = getStorybookModuleMetadata(
         {
           storyFnAngular: { template: '' },
-          parameters: { component: FooComponent },
+          component: FooComponent,
           targetSelector: 'my-selector',
         },
         new BehaviorSubject({})

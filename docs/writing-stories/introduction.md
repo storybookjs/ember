@@ -12,7 +12,7 @@ A component’s stories are defined in a story file that lives alongside the com
 
 ```
 Button.js | ts | jsx | tsx
-Button.stories.js | ts | jsx | tsx
+Button.stories.js | ts | jsx | tsx | mdx
 ```
 
 ## Component Story Format
@@ -98,10 +98,14 @@ A story is a function that describes how to render a component. You can have mul
   paths={[
     'react/button-story-with-emojis.js.mdx',
     'react/button-story-with-emojis.ts.mdx',
+    'react/button-story-with-emojis.mdx.mdx',
     'vue/button-story-with-emojis.js.mdx',
+    'vue/button-story-with-emojis.mdx.mdx',
     'angular/button-story-with-emojis.ts.mdx',
+    'angular/button-story-with-emojis.mdx.mdx',
     'svelte/button-story-with-emojis.js.mdx',
     'svelte/button-story-with-emojis.native-format.mdx',
+    'svelte/button-story-with-emojis.mdx.mdx',
     'web-components/button-story-with-emojis.js.mdx',
   ]}
 />
@@ -183,10 +187,14 @@ For instance, suppose you wanted to test your Button component against a differe
   paths={[
     'react/button-story-with-blue-args.js.mdx',
     'react/button-story-with-blue-args.ts.mdx',
+    'react/button-story-with-blue-args.mdx.mdx',
     'vue/button-story-with-blue-args.js.mdx',
+    'vue/button-story-with-blue-args.mdx.mdx',
     'angular/button-story-with-blue-args.ts.mdx',
+    'angular/button-story-with-blue-args.mdx.mdx',
     'svelte/button-story-with-blue-args.js.mdx',
     'svelte/button-story-with-blue-args.native-format.mdx',
+    'svelte/button-story-with-blue-args.mdx.mdx',
     'web-components/button-story-with-blue-args.js.mdx',
   ]}
 />
@@ -209,10 +217,14 @@ A simple example is adding padding to a component’s stories. Accomplish this u
   paths={[
     'react/button-story-component-decorator.js.mdx',
     'react/button-story-component-decorator.ts.mdx',
+    'react/button-story-component-decorator.mdx.mdx',
     'vue/button-story-component-decorator.js.mdx',
+    'vue/button-story-component-decorator.mdx.mdx',
     'angular/button-story-component-decorator.ts.mdx',
+    'angular/button-story-component-decorator.mdx.mdx',
     'svelte/button-story-component-decorator.js.mdx',
     'svelte/button-story-component-decorator.native-format.mdx',
+    'svelte/button-story-component-decorator.mdx.mdx',
     'web-components/button-story-component-decorator.js.mdx',
   ]}
 />

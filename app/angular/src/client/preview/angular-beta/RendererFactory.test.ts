@@ -46,7 +46,7 @@ describe('RendererFactory', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
         targetDOMNode: rootTargetDOMNode,
       });
 
@@ -63,9 +63,8 @@ describe('RendererFactory', () => {
           props: {},
         },
         forced: false,
-        parameters: {
-          component: FooComponent,
-        },
+        parameters: {},
+        component: FooComponent,
         targetDOMNode: rootTargetDOMNode,
       });
 
@@ -87,7 +86,7 @@ describe('RendererFactory', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
       });
@@ -111,7 +110,7 @@ describe('RendererFactory', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
         expect(countDestroy).toEqual(0);
@@ -129,7 +128,7 @@ describe('RendererFactory', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
 
@@ -157,7 +156,7 @@ describe('RendererFactory', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
         expect(countDestroy).toEqual(0);
@@ -177,7 +176,7 @@ describe('RendererFactory', () => {
             moduleMetadata: { providers: [{ provide: 'foo', useValue: 42 }] },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
         expect(countDestroy).toEqual(1);
@@ -194,7 +193,7 @@ describe('RendererFactory', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
         targetDOMNode: rootTargetDOMNode,
       });
 
@@ -209,7 +208,7 @@ describe('RendererFactory', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
         targetDOMNode: rootTargetDOMNode,
       });
 
@@ -227,7 +226,7 @@ describe('RendererFactory', () => {
             template: 'Canvas 🖼',
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
           targetDOMNode: rootTargetDOMNode,
         });
       });

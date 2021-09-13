@@ -1,12 +1,21 @@
 ```md
 <!-- Gizmo.stories.mdx -->
 
+import { Meta } from '@storybook/addon-docs';
+
+import Gizmo from './Gizmo';
+
 <Meta
   title="Gizmo"
   component={Gizmo}
   argTypes={{
     width: {
-      control: { type: 'range', min: 400, max: 1200, step: 50 },
+      control: { 
+        type: 'range', 
+        min: 400, 
+        max: 1200, 
+        step: 50,
+      },
     },
   }}
 />

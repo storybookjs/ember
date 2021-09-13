@@ -1,5 +1,4 @@
 import path from 'path';
-import fse from 'fs-extra';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 // @ts-ignore
@@ -13,19 +12,21 @@ import PnpWebpackPlugin from 'pnp-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 // @ts-ignore
 import FilterWarningsPlugin from 'webpack-filter-warnings-plugin';
-import dedent from 'ts-dedent';
 
 import themingPaths from '@storybook/theming/paths';
-
 import {
   toRequireContextString,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   es6Transpiler,
+  handlebars,
   interpolate,
   nodeModulesPaths,
   Options,
   NormalizedStoriesEntry,
   toImportFn,
+  normalizeStories,
+  loadPreviewOrConfigFile,
+  readTemplate,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -43,6 +44,8 @@ const storybookPaths: Record<string, string> = [
   'semver',
   'client-api',
   'client-logger',
+  'preview-web',
+  'store',
 ].reduce(
   (acc, sbPackage) => ({
     ...acc,
@@ -52,24 +55,21 @@ const storybookPaths: Record<string, string> = [
   }),
   {}
 );
-
-export default async ({
-  configDir,
-  babelOptions,
-  entries,
-  configs,
-  stories,
-  outputDir = path.join('.', 'public'),
-  quiet,
-  packageJson,
-  configType,
-  framework,
-  frameworkPath,
-  presets,
-  typescriptOptions,
-  modern,
-  features,
-}: Options & Record<string, any>): Promise<Configuration> => {
+export default async (options: Options & Record<string, any>): Promise<Configuration> => {
+  const {
+    configDir,
+    babelOptions,
+    outputDir = path.join('.', 'public'),
+    quiet,
+    packageJson,
+    configType,
+    framework,
+    frameworkPath,
+    presets,
+    typescriptOptions,
+    modern,
+    features,
+  } = options;
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
 
@@ -80,70 +80,76 @@ export default async ({
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
-  const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
-  const storiesFilename = 'storybook-stories.js';
-  const storiesPath = path.resolve(path.join(configDir, storiesFilename));
 
-  // Allows for custom frameworks that are not published under the @storybook namespace
-  const virtualModuleMapping = {
-    [storiesPath]: toImportFn(stories),
-    [configEntryPath]: dedent`
-    import { composeConfigs } from '@storybook/core-client/dist/esm/preview/new/composeConfigs';
-    import { WebPreview } from '@storybook/core-client/dist/esm/preview/new/WebPreview';
+  const configs = [
+    ...(await presets.apply('config', [], options)),
+    loadPreviewOrConfigFile(options),
+  ].filter(Boolean);
 
-    import { importFn } from './${storiesFilename}';
+  const entries = (await presets.apply('entries', [], options)) as string[];
+  const stories = normalizeStories(await presets.apply('stories', [], options), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
 
-    ${configs
-      .map(
-        (fileName: string, index: number) =>
-          `import * as configModuleExport${index} from "${fileName}";`
-      )
-      .join('\n')}
+  const virtualModuleMapping: Record<string, string> = {};
+  if (features?.storyStoreV7) {
+    const storiesFilename = 'storybook-stories.js';
+    const storiesPath = path.resolve(path.join(configDir, storiesFilename));
 
-    const getGlobalMeta = () =>
-      composeConfigs([
-        ${configs
-          .map((fileName: string, index: number) => `configModuleExport${index}`)
-          .join(',\n')}
-      ]);
+    virtualModuleMapping[storiesPath] = toImportFn(stories);
+    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+    virtualModuleMapping[configEntryPath] = handlebars(
+      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
+      {
+        storiesFilename,
+        configs,
+      }
+    );
+    entries.push(configEntryPath);
+  } else {
+    const frameworkInitEntry = path.resolve(
+      path.join(configDir, 'storybook-init-framework-entry.js')
+    );
+    const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
+    virtualModuleMapping[frameworkInitEntry] = `import '${frameworkImportPath}';`;
+    entries.push(frameworkInitEntry);
 
-    const preview = new WebPreview({ importFn, getGlobalMeta });
-    window.__STORYBOOK_PREVIEW__ = preview;
-    preview.initialize();
-    
-    if (module.hot) {
-      module.hot.accept('./${storiesFilename}', () => {
-        console.log('configEntry HMR accept storybook-stories.js');
-        console.log(arguments);
-        // importFn has changed so we need to patch the new one in
-        preview.onImportFnChanged({ importFn });
-      });
+    const entryTemplate = await readTemplate(
+      path.join(__dirname, 'virtualModuleEntry.template.js')
+    );
 
-      module.hot.accept([${configs.map((fileName: string) => `'${fileName}'`).join(',')}], () => {
-        console.log('configEntry HMR accept config file');
-        console.log(arguments);
-        // getGlobalMeta has changed so we need to patch the new one in
-        preview.onGetGlobalMetaChanged({ getGlobalMeta });
-      });
+    configs.forEach((configFilename: any) => {
+      const clientApi = storybookPaths['@storybook/client-api'];
+      const clientLogger = storybookPaths['@storybook/client-logger'];
+
+      virtualModuleMapping[`${configFilename}-generated-config-entry.js`] = interpolate(
+        entryTemplate,
+        {
+          configFilename,
+          clientApi,
+          clientLogger,
+        }
+      );
+      entries.push(`${configFilename}-generated-config-entry.js`);
+    });
+    if (stories) {
+      const storyTemplate = await readTemplate(
+        path.join(__dirname, 'virtualModuleStory.template.js')
+      );
+      const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
+      virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
+        // Make sure we also replace quotes for this one
+        .replace(
+          "'{{stories}}'",
+          stories
+            .map((s: NormalizedStoriesEntry) => s.glob)
+            .map(toRequireContextString)
+            .join(',')
+        );
+      entries.push(storiesFilename);
     }
-    `,
-  };
-
-  console.log(virtualModuleMapping[storiesPath]);
-  console.log(virtualModuleMapping[configEntryPath]);
-  // if (stories) {
-  //   const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
-  //   // Make sure we also replace quotes for this one
-  //   virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
-  //     frameworkImportPath,
-  //   }).replace(
-  //     "'{{stories}}'",
-  //     stories
-  //       .map((s: NormalizedStoriesEntry) => s.glob)
-  //       .map(toRequireContextString)
-  //       .join(',')
-  //   );
-  // }
+  }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
   const tsCheckOptions = typescriptOptions.checkOptions || {};
@@ -153,7 +159,7 @@ export default async ({
     mode: isProd ? 'production' : 'development',
     bail: isProd,
     devtool: 'cheap-module-source-map',
-    entry: [...entries, configEntryPath],
+    entry: entries,
     // stats: 'errors-only',
     output: {
       path: path.resolve(process.cwd(), outputDir),
@@ -176,10 +182,10 @@ export default async ({
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, options) => ({
+        templateParameters: (compilation, files, templateOptions) => ({
           compilation,
           files,
-          options,
+          options: templateOptions,
           version: packageJson.version,
           globals: {
             LOGLEVEL: logLevel,
@@ -201,7 +207,7 @@ export default async ({
         template,
       }),
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }),
       isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),

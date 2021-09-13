@@ -1,19 +1,45 @@
 ```md
 <!--- YourComponent.stories.mdx -->
 
-<Story name="Array Include" parameters={{ controls: { include: ['foo', 'bar'] } }}>
+import { Story } from '@storybook/addon-docs';
+
+<Story 
+  name="Array Include"
+  parameters={{ 
+    controls: { 
+      include: ['foo', 'bar'] 
+    } 
+  }}>
   {Template.bind({})}
 </Story>
 
-<Story name="Regex Include" parameters={{ controls: { include: /^hello*/ } }}>
+<Story 
+  name="Regex Include"
+  parameters={{ 
+    controls: { include: 
+      /^hello*/ 
+    } 
+  }}>
   {Template.bind({})}
 </Story>
 
-<Story name="Array Exclude" parameters={{ controls: { exclude: ['foo', 'bar'] } }}>
+<Story 
+  name="Array Exclude"
+  parameters={{ 
+    controls: { 
+      exclude: ['foo', 'bar'] 
+    } 
+  }}>
   {Template.bind({})}
 </Story>
 
-<Story name="Regex Exclude" parameters={{ controls: { exclude: /^hello*/ } }}>
+<Story 
+  name="Regex Exclude"
+  parameters={{ 
+    controls: { 
+      exclude: /^hello*/ 
+    } 
+  }}>
   {Template.bind({})}
 </Story>
 ```

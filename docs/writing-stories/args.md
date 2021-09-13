@@ -22,11 +22,16 @@ To define the args of a single story, use the `args` CSF story key:
   paths={[
     'react/button-story-with-args.js.mdx',
     'react/button-story-with-args.ts.mdx',
+    'react/button-story-with-args.mdx.mdx',
     'vue/button-story-with-args.2.js.mdx',
+    'vue/button-story-with-args.mdx-2.mdx.mdx',
     'vue/button-story-with-args.3.js.mdx',
+    'vue/button-story-with-args.mdx-3.mdx.mdx',
     'angular/button-story-with-args.ts.mdx',
+    'angular/button-story-with-args.mdx.mdx',
     'svelte/button-story-with-args.js.mdx',
     'svelte/button-story-with-args.native-format.mdx',
+    'svelte/button-story-with-args.mdx.mdx',
     'web-components/button-story-with-args.js.mdx',
   ]}
 />
@@ -57,10 +62,14 @@ You can also define args at the component level; such args will apply to all sto
   paths={[
     'react/button-story-component-args-primary.js.mdx',
     'react/button-story-component-args-primary.ts.mdx',
+    'react/button-story-component-args-primary.mdx.mdx',
     'vue/button-story-component-args-primary.js.mdx',
+    'vue/button-story-component-args-primary.mdx.mdx',
     'angular/button-story-component-args-primary.ts.mdx',
+    'angular/button-story-component-args-primary.mdx.mdx',
     'svelte/button-story-component-args-primary.js.mdx',
     'svelte/button-story-component-args-primary.native-format.mdx',
+    'svelte/button-story-component-args-primary.mdx.mdx',
     'web-components/button-story-component-args-primary.js.mdx',
   ]}
 />
@@ -114,9 +123,13 @@ Args are used in story templates to configure the component appearance just as y
   paths={[
     'react/page-story-slots.js.mdx',
     'react/page-story-slots.ts.mdx',
+    'react/page-story-slots.mdx.mdx',
     'vue/page-story-slots.2.js.mdx',
+    'vue/page-story-slots.mdx-2.mdx.mdx',
     'vue/page-story-slots.3.js.mdx',
+    'vue/page-story-slots.mdx-3.mdx.mdx',
     'angular/page-story-slots.ts.mdx',
+    'angular/page-story-slots.mdx.mdx',
     'svelte/page-story-slots.native-format.mdx',
   ]}
 />

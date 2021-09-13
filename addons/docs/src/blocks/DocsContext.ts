@@ -1,7 +1,8 @@
 import { Context, createContext } from 'react';
 import { window as globalWindow } from 'global';
 
-import { DocsContextProps } from '@storybook/client-api/dist/ts3.9/new/types';
+import { DocsContextProps } from '@storybook/preview-web';
+import { AnyFramework } from '@storybook/csf';
 
 export type { DocsContextProps };
 
@@ -16,5 +17,4 @@ if (globalWindow.__DOCS_CONTEXT__ === undefined) {
   globalWindow.__DOCS_CONTEXT__.displayName = 'DocsContext';
 }
 
-// TODO -- how to parameterize this by <StoryFnReturnType>
-export const DocsContext: Context<DocsContextProps<any>> = globalWindow.__DOCS_CONTEXT__;
+export const DocsContext: Context<DocsContextProps<AnyFramework>> = globalWindow.__DOCS_CONTEXT__;

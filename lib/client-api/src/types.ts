@@ -4,7 +4,6 @@ import {
   StoryName,
   StoryKind,
   ViewMode,
-  StoryIdentifier,
   StoryFn,
   Parameters,
   Args,
@@ -12,11 +11,24 @@ import {
   StoryApi,
   DecoratorFunction,
   LoaderFunction,
-  DecorateStoryFunction,
   StoryContext,
 } from '@storybook/addons';
-import StoryStore from './story_store';
-import { HooksContext } from './hooks';
+import { AnyFramework, StoryIdentifier, ProjectAnnotations } from '@storybook/csf';
+import { StoryStore, HooksContext } from '@storybook/store';
+
+export type {
+  SBType,
+  SBScalarType,
+  SBArrayType,
+  SBObjectType,
+  SBEnumType,
+  SBIntersectionType,
+  SBUnionType,
+  SBOtherType,
+} from '@storybook/csf';
+
+// NOTE: these types are really just here for back-compat. Many of them don't have much meaning
+// Remove in 7.0
 
 export interface ErrorLike {
   message: string;
@@ -29,16 +41,8 @@ export interface StoryMetadata {
   decorators?: DecoratorFunction[];
   loaders?: LoaderFunction[];
 }
-export type ArgTypesEnhancer = (
-  context: StoryContext
-) => ArgTypes & {
-  secondPass?: boolean;
-};
-export type ArgsEnhancer = (
-  context: StoryContext
-) => Args & {
-  secondPass?: boolean;
-};
+export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
+export type ArgsEnhancer = (context: StoryContext) => Args;
 
 export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 
@@ -70,7 +74,7 @@ export type StoreItem = StoryIdentifier & {
   runPlayFunction: () => Promise<any>;
   storyFn: StoryFn<any>;
   unboundStoryFn: StoryFn<any>;
-  hooks: HooksContext;
+  hooks: HooksContext<AnyFramework>;
   args: Args;
   initialArgs: Args;
   argTypes: ArgTypes;
@@ -85,8 +89,8 @@ export interface StoreData {
 }
 
 export interface ClientApiParams {
-  storyStore: StoryStore;
-  decorateStory?: DecorateStoryFunction;
+  storyStore: StoryStore<AnyFramework>;
+  decorateStory?: ProjectAnnotations<AnyFramework>['applyDecorators'];
   noStoryModuleAddMethodHotDispose?: boolean;
 }
 
@@ -126,46 +130,3 @@ export type RenderContextWithoutStoryContext = StoreItem & {
 export type RenderContext = RenderContextWithoutStoryContext & {
   storyContext: StoryContext;
 };
-
-interface SBBaseType {
-  required?: boolean;
-  raw?: string;
-}
-
-export type SBScalarType = SBBaseType & {
-  name: 'boolean' | 'string' | 'number' | 'function';
-};
-
-export type SBArrayType = SBBaseType & {
-  name: 'array';
-  value: SBType;
-};
-export type SBObjectType = SBBaseType & {
-  name: 'object';
-  value: Record<string, SBType>;
-};
-export type SBEnumType = SBBaseType & {
-  name: 'enum';
-  value: (string | number)[];
-};
-export type SBIntersectionType = SBBaseType & {
-  name: 'intersection';
-  value: SBType[];
-};
-export type SBUnionType = SBBaseType & {
-  name: 'union';
-  value: SBType[];
-};
-export type SBOtherType = SBBaseType & {
-  name: 'other';
-  value: string;
-};
-
-export type SBType =
-  | SBScalarType
-  | SBEnumType
-  | SBArrayType
-  | SBObjectType
-  | SBIntersectionType
-  | SBUnionType
-  | SBOtherType;

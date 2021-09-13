@@ -5,8 +5,4 @@ function managerEntries(entry = [], options) {
   return [...entry, require.resolve('./dist/esm/register')];
 }
 
-function config(entry = []) {
-  return [...entry, require.resolve('./dist/esm/inferControls')];
-}
-
-module.exports = { managerEntries, config };
+module.exports = { managerEntries };

@@ -1,9 +1,9 @@
-import chalk from 'chalk';
-import path from 'path';
+import { stringifyStream } from '@discoveryjs/json-ext';
 import { logger } from '@storybook/node-logger';
-import { Stats } from 'webpack';
-
+import chalk from 'chalk';
 import fs from 'fs-extra';
+import path from 'path';
+import { Stats } from 'webpack';
 
 export async function outputStats(directory: string, previewStats?: any, managerStats?: any) {
   if (previewStats) {
@@ -18,6 +18,13 @@ export async function outputStats(directory: string, previewStats?: any, manager
 
 export const writeStats = async (directory: string, name: string, stats: Stats) => {
   const filePath = path.join(directory, `${name}-stats.json`);
-  await fs.outputFile(filePath, JSON.stringify(stats.toJson(), null, 2), 'utf8');
+  const { chunks, ...data } = stats.toJson(); // omit chunks, which is about half of the total data
+  await new Promise((resolve, reject) => {
+    stringifyStream(data, null, 2)
+      .on('error', reject)
+      .pipe(fs.createWriteStream(filePath))
+      .on('error', reject)
+      .on('finish', resolve);
+  });
   return filePath;
 };

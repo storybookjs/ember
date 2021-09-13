@@ -36,7 +36,7 @@ describe('RendererService', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
       });
 
       expect(document.body.getElementsByTagName('storybook-wrapper')[0].innerHTML).toBe('🦊');
@@ -51,9 +51,8 @@ describe('RendererService', () => {
           props: {},
         },
         forced: false,
-        parameters: {
-          component: FooComponent,
-        },
+        component: FooComponent,
+        parameters: {},
       });
 
       expect(document.body.getElementsByTagName('storybook-wrapper')[0].innerHTML).toBe(
@@ -78,7 +77,7 @@ describe('RendererService', () => {
           moduleMetadata: { providers: [{ provide: 'foo', useValue: token }] },
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
       });
 
       expect(document.body.getElementsByTagName('storybook-wrapper')[0].innerHTML).toBe('🦊');
@@ -96,7 +95,7 @@ describe('RendererService', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
         });
       });
 
@@ -120,7 +119,7 @@ describe('RendererService', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
         });
         expect(countDestroy).toEqual(0);
 
@@ -138,7 +137,7 @@ describe('RendererService', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
         });
 
         expect(document.body.getElementsByTagName('storybook-wrapper')[0].innerHTML).toBe('🍺');
@@ -161,7 +160,7 @@ describe('RendererService', () => {
             },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
         });
         expect(countDestroy).toEqual(0);
 
@@ -176,7 +175,7 @@ describe('RendererService', () => {
             moduleMetadata: { providers: [{ provide: 'foo', useValue: 42 }] },
           },
           forced: true,
-          parameters: {} as any,
+          parameters: {},
         });
         expect(countDestroy).toEqual(1);
       });
@@ -191,7 +190,7 @@ describe('RendererService', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
       });
 
       rendererService.platform.onDestroy(() => {
@@ -204,7 +203,7 @@ describe('RendererService', () => {
           props: {},
         },
         forced: false,
-        parameters: {} as any,
+        parameters: {},
       });
 
       expect(countDestroy).toEqual(1);

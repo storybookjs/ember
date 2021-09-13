@@ -37,7 +37,7 @@ export async function storybookDevServer(options: Options) {
   await useStatics(router, options);
 
   const features = await options.presets.apply<StorybookConfig['features']>('features');
-  if (features?.buildStoriesJson) {
+  if (features?.buildStoriesJson || features?.storyStoreV7) {
     await useStoriesJson(router, options);
   }
 
@@ -90,7 +90,9 @@ export async function storybookDevServer(options: Options) {
   ]);
 
   // TODO #13083 Remove this when compiling the preview is fast enough
-  if (!options.ci && !options.smokeTest) openInBrowser(host ? networkAddress : address);
+  if (!options.ci && !options.smokeTest && options.open) {
+    openInBrowser(host ? networkAddress : address);
+  }
 
   return { previewResult, managerResult, address, networkAddress };
 }

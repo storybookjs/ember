@@ -11,6 +11,7 @@ import {
   STORY_SPECIFIED,
 } from '@storybook/core-events';
 import deprecate from 'util-deprecate';
+import { logger } from '@storybook/client-logger';
 
 import { getEventMetadata } from '../lib/events';
 import {
@@ -18,7 +19,7 @@ import {
   transformStoriesRawToStoriesHash,
   isStory,
   isRoot,
-  transformStoriesListToStoriesHash,
+  transformStoryIndexToStoriesHash,
 } from '../lib/stories';
 import type {
   StoriesHash,
@@ -28,7 +29,7 @@ import type {
   Root,
   StoriesRaw,
   SetStoriesPayload,
-  StoriesListJson,
+  StoryIndex,
 } from '../lib/stories';
 
 import { Args, ModuleFn } from '../index';
@@ -64,6 +65,7 @@ export interface SubAPI {
   jumpToComponent: (direction: Direction) => void;
   jumpToStory: (direction: Direction) => void;
   getData: (storyId: StoryId, refId?: string) => Story | Group;
+  isPrepared: (storyId: StoryId, refId?: string) => boolean;
   getParameters: (
     storyId: StoryId | { storyId: StoryId; refId: string },
     parameterName?: ParameterName
@@ -73,7 +75,7 @@ export interface SubAPI {
   resetStoryArgs: (story: Story, argNames?: string[]) => void;
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
   fetchStoryList: () => Promise<void>;
-  setStoryList: (storyList: StoriesListJson) => Promise<void>;
+  setStoryList: (storyList: StoryIndex) => Promise<void>;
   updateStory: (storyId: StoryId, update: StoryUpdate, ref?: ComposedRef) => Promise<void>;
 }
 
@@ -126,6 +128,14 @@ export const init: ModuleFn = ({
 
       return isRoot(result) ? undefined : result;
     },
+    isPrepared: (storyId, refId) => {
+      const data = api.getData(storyId, refId);
+      if (data.isLeaf) {
+        return data.prepared;
+      }
+      // Groups are always prepared :shrug:
+      return true;
+    },
     resolveStory: (storyId, refId) => {
       const { refs, storiesHash } = store.getState();
       if (refId) {
@@ -152,8 +162,7 @@ export const init: ModuleFn = ({
           return parameterName ? parameters[parameterName] : parameters;
         }
 
-        // TODO -- is this right?
-        return null;
+        return {};
       }
 
       return null;
@@ -341,15 +350,20 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      // TODO where to get endpoint from?
+      // This needs some fleshing out as part of the stories list server project
       const result = await global.fetch('/stories.json');
-      // TODO deal with errors
-      const storyList = (await result.json()) as StoriesListJson;
+      const storyIndex = (await result.json()) as StoryIndex;
 
-      await fullAPI.setStoryList(storyList);
+      // We can only do this if the stories.json is a proper storyIndex
+      if (storyIndex.v !== 3) {
+        logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
+        return;
+      }
+
+      await fullAPI.setStoryList(storyIndex);
     },
-    setStoryList: async (storyList: StoriesListJson) => {
-      const hash = transformStoriesListToStoriesHash(storyList, {
+    setStoryList: async (storyIndex: StoryIndex) => {
+      const hash = transformStoryIndexToStoriesHash(storyIndex, {
         provider,
       });
 
@@ -382,9 +396,7 @@ export const init: ModuleFn = ({
     },
   };
 
-  const initModule = () => {
-    fullAPI.fetchStoryList();
-
+  const initModule = async () => {
     // On initial load, the local iframe will select the first story (or other "selection specifier")
     // and emit STORY_SPECIFIED with the id. We need to ensure we respond to this change.
     fullAPI.on(
@@ -430,8 +442,14 @@ export const init: ModuleFn = ({
       const stories = data.v ? denormalizeStoryParameters(data) : data.stories;
 
       if (!ref) {
-        // Or silently drop it.
-        throw new Error('Cannot SET_STORIES from a local source');
+        if (!data.v) {
+          throw new Error('Unexpected legacy SET_STORIES event from local source');
+        }
+
+        fullAPI.setStories(stories);
+        const options = fullAPI.getCurrentParameter('options');
+        checkDeprecatedOptionParameters(options);
+        fullAPI.setOptions(options);
       } else {
         fullAPI.setRef(ref.id, { ...ref, ...data, stories }, true);
       }
@@ -460,7 +478,14 @@ export const init: ModuleFn = ({
 
     fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
       const { ref } = getEventMetadata(this, fullAPI);
-      fullAPI.updateStory(id, update, ref);
+      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
+
+      if (!store.getState().hasCalledSetOptions) {
+        const { options } = update.parameters;
+        checkDeprecatedOptionParameters(options);
+        fullAPI.setOptions(options);
+        store.setState({ hasCalledSetOptions: true });
+      }
     });
 
     fullAPI.on(
@@ -470,6 +495,8 @@ export const init: ModuleFn = ({
         fullAPI.updateStory(storyId, { args }, ref);
       }
     );
+
+    await fullAPI.fetchStoryList();
   };
 
   return {
@@ -479,6 +506,7 @@ export const init: ModuleFn = ({
       storyId: initialStoryId,
       viewMode: initialViewMode,
       storiesConfigured: false,
+      hasCalledSetOptions: false,
     },
     init: initModule,
   };

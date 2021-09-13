@@ -354,6 +354,11 @@ export const useChannel = (eventMap: EventMap, deps: any[] = []) => {
   return api.emit;
 };
 
+export function useStoryPrepared(storyId?: StoryId) {
+  const api = useStorybookApi();
+  return api.isPrepared(storyId);
+}
+
 export function useParameter<S>(parameterKey: string, defaultValue?: S) {
   const api = useStorybookApi();
 

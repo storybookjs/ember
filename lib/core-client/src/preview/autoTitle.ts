@@ -1,6 +1,8 @@
-import global from 'global';
-import path from 'path';
 import type { NormalizedStoriesEntry } from '@storybook/core-common';
+import global from 'global';
+import startCase from 'lodash/startCase';
+import path from 'path';
+import slash from 'slash';
 
 const { FEATURES = {}, STORIES = [] } = global;
 
@@ -25,11 +27,21 @@ const stripExtension = (titleWithExtension: string) => {
   return parts.join('/');
 };
 
+const startCaseTitle = (title: string) => {
+  return title.split('/').map(startCase).join('/');
+};
+
 export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEntry) => {
   const { directory, titlePrefix = '' } = entry.specifier || {};
-  if (fileName.startsWith(directory)) {
-    const suffix = fileName.replace(directory, '');
-    return stripExtension(path.join(titlePrefix, suffix));
+  // On Windows, backslashes are used in paths, which can cause problems here
+  // slash makes sure we always handle paths with unix-style forward slash
+  const normalizedDirectory = directory && slash(directory);
+  const normalizedFileName = slash(fileName);
+
+  if (normalizedFileName.startsWith(normalizedDirectory)) {
+    const suffix = normalizedFileName.replace(normalizedDirectory, '');
+    const titleAndSuffix = slash(path.join(titlePrefix, suffix));
+    return startCaseTitle(stripExtension(titleAndSuffix));
   }
   return undefined;
 };

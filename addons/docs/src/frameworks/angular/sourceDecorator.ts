@@ -1,5 +1,6 @@
-import { addons, StoryContext, StoryFn } from '@storybook/addons';
-import { IStory } from '@storybook/angular';
+import { addons } from '@storybook/addons';
+import { PartialStoryFn } from '@storybook/csf';
+import { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
 import prettierHtml from 'prettier/parser-html';
 import prettier from 'prettier/standalone';
@@ -30,19 +31,20 @@ const prettyUp = (source: string) => {
  * @param storyFn Fn
  * @param context  StoryContext
  */
-export const sourceDecorator = (storyFn: StoryFn<IStory>, context: StoryContext) => {
+export const sourceDecorator = (
+  storyFn: PartialStoryFn<AngularFramework>,
+  context: StoryContext
+) => {
   const story = storyFn();
   if (skipSourceRender(context)) {
     return story;
   }
   const channel = addons.getChannel();
-  const { props, template } = story;
+  const { props, template, userDefinedTemplate } = story;
 
-  const {
-    parameters: { component, argTypes },
-  } = context;
+  const { component, argTypes } = context;
 
-  if (component) {
+  if (component && !userDefinedTemplate) {
     const source = computesTemplateSourceFromComponent(component, props, argTypes);
 
     // We might have a story with a Directive or Service defined as the component

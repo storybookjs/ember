@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
 import { Observable, ReplaySubject, Subscriber } from 'rxjs';
-import { StoryFn } from '@storybook/addons';
+import { PartialStoryFn } from '@storybook/csf';
 import { AppComponent } from './components/app.component';
 import { STORY } from './app.token';
 import { NgModuleMetadata, StoryFnAngularReturnType } from '../types';
+import { AngularFramework } from '../types-6-0';
 
 const { document } = global;
 
@@ -132,7 +133,7 @@ const getExistenceOfComponentInModules = (
   });
 };
 
-const initModule = (storyFn: StoryFn<StoryFnAngularReturnType>) => {
+const initModule = (storyFn: PartialStoryFn<AngularFramework>) => {
   const storyObj = storyFn();
   const { component, template, props, styles, moduleMetadata = {} } = storyObj;
 
@@ -200,7 +201,7 @@ const draw = (newModule: DynamicComponentType): void => {
   }
 };
 
-export const renderNgApp = (storyFn: StoryFn<StoryFnAngularReturnType>, forced: boolean) => {
+export const renderNgApp = (storyFn: PartialStoryFn<AngularFramework>, forced: boolean) => {
   if (!forced) {
     draw(initModule(storyFn));
   } else {

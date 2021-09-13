@@ -33,6 +33,8 @@ Support for [Create React App](https://create-react-app.dev/) is handled by [`@s
 
 This preset enables support for all Create React App features, including Sass/SCSS and TypeScript.
 
+If you're working on an app that was initialized manually (i.e., without the use of Create React App), ensure that your app has [react-dom](https://www.npmjs.com/package/react-dom) included as a dependency. Failing to do so can lead to unforeseen issues with Storybook and your project.
+
 ## Typescript
 
 `@storybook/react` is now exporting its own types to use with Typescript.

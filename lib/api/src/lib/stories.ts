@@ -1,10 +1,19 @@
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { sanitize } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
+import {
+  StoryId,
+  ComponentTitle,
+  StoryKind,
+  StoryName,
+  Args,
+  ArgTypes,
+  Parameters,
+  sanitize,
+} from '@storybook/csf';
 
-import { StoryId, StoryKind, Args, ArgTypes, Parameters, combineParameters } from '../index';
+import { combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
@@ -54,6 +63,7 @@ export interface Story {
   isRoot: false;
   isLeaf: true;
   renderLabel?: (item: Story) => React.ReactNode;
+  prepared: boolean;
   parameters?: {
     fileName: string;
     options: {
@@ -98,18 +108,15 @@ export interface StoriesRaw {
   [id: string]: StoryInput;
 }
 
-// TODO reconcile these types with the same ones in the frontend
-type StoryName = string;
-type ComponentTitle = StoryKind;
 type Path = string;
-export interface StoriesListStory {
+export interface StoryIndexStory {
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
 }
-export interface StoriesListJson {
+export interface StoryIndex {
   v: number;
-  stories: Record<StoryId, StoriesListStory>;
+  stories: Record<StoryId, StoryIndexStory>;
 }
 
 export type SetStoriesPayload =
@@ -162,28 +169,26 @@ export const denormalizeStoryParameters = ({
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 
-export const transformStoriesListToStoriesHash = (
-  list: StoriesListJson,
+export const transformStoryIndexToStoriesHash = (
+  index: StoryIndex,
   { provider }: { provider: Provider }
 ): StoriesHash => {
-  const input = Object.entries(list.stories).reduce((acc, [id, { title, name, importPath }]) => {
+  const input = Object.entries(index.stories).reduce((acc, [id, { title, name, importPath }]) => {
     acc[id] = {
       id,
       kind: title,
       name,
-      // TODO -- does the manager use this? Should we wait for this to come over with parameters
-      // and store `importPath` unchanged or not at all (given it is a preview "concern")
       parameters: { fileName: importPath, options: {} },
     };
     return acc;
   }, {} as StoriesRaw);
 
-  return transformStoriesRawToStoriesHash(input, { provider });
+  return transformStoriesRawToStoriesHash(input, { provider, prepared: false });
 };
 
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,
-  { provider }: { provider: Provider }
+  { provider, prepared = true }: { provider: Provider; prepared?: Story['prepared'] }
 ): StoriesHash => {
   const values = Object.values(input).filter(Boolean);
   const usesOldHierarchySeparator = values.some(({ kind }) => kind.match(/\.|\|/)); // dot or pipe
@@ -272,6 +277,7 @@ export const transformStoriesRawToStoriesHash = (
       isComponent: false,
       isRoot: false,
       renderLabel,
+      prepared,
     };
 
     return acc;

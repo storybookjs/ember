@@ -52,7 +52,7 @@ const asyncNoop: () => Promise<undefined> = async () => undefined;
 
 export const defaultCommonConfig: CommonConfig = {
   storybookUrl: 'http://localhost:6006',
-  chromeExecutablePath: undefined,
+  chromeExecutablePath: process.env.SB_CHROMIUM_PATH,
   getGotoOptions: noop,
   customizePage: asyncNoop,
   getCustomBrowser: undefined,

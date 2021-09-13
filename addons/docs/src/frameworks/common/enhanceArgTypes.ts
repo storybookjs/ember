@@ -1,8 +1,9 @@
-import mapValues from 'lodash/mapValues';
-import { ArgTypesEnhancer, combineParameters } from '@storybook/client-api';
-import { normalizeArgTypes } from './normalizeArgTypes';
+import { AnyFramework, StoryContextForEnhancers } from '@storybook/csf';
+import { combineParameters } from '@storybook/store';
 
-export const enhanceArgTypes: ArgTypesEnhancer = (context) => {
+export const enhanceArgTypes = <TFramework extends AnyFramework>(
+  context: StoryContextForEnhancers<TFramework>
+) => {
   const {
     component,
     argTypes: userArgTypes,
@@ -10,12 +11,10 @@ export const enhanceArgTypes: ArgTypesEnhancer = (context) => {
   } = context;
   const { extractArgTypes } = docs;
 
-  const normalizedArgTypes = normalizeArgTypes(userArgTypes);
-  const namedArgTypes = mapValues(normalizedArgTypes, (val, key) => ({ name: key, ...val }));
   const extractedArgTypes = extractArgTypes && component ? extractArgTypes(component) : {};
   const withExtractedTypes = extractedArgTypes
-    ? combineParameters(extractedArgTypes, namedArgTypes)
-    : namedArgTypes;
+    ? combineParameters(extractedArgTypes, userArgTypes)
+    : userArgTypes;
 
   return withExtractedTypes;
 };

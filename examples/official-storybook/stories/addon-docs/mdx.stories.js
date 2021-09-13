@@ -5,7 +5,11 @@ import markdown from './markdown.stories.mdx';
 
 export default {
   title: 'Addons/Docs/mdx-in-story',
-  decorators: [(storyFn) => <DocsContainer context={{}}>{storyFn()}</DocsContainer>],
+  decorators: [
+    (storyFn) => (
+      <DocsContainer context={{ storyById: () => ({ parameters: {} }) }}>{storyFn()}</DocsContainer>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -24,7 +28,9 @@ export const DarkModeDocs = () => {
 
 DarkModeDocs.decorators = [
   (storyFn) => (
-    <DocsContainer context={{ parameters: { docs: { theme: themes.dark } } }}>
+    <DocsContainer
+      context={{ storyById: () => ({ parameters: { docs: { theme: themes.dark } } }) }}
+    >
       {storyFn()}
     </DocsContainer>
   ),
