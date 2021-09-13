@@ -30,6 +30,7 @@ export function start<TFramework extends AnyFramework>(
     importFn: (path: Path) => clientApi.importFn(path),
     fetchStoryIndex: () => clientApi.fetchStoryIndex(),
   });
+  let initialized = false;
   // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
   // direct reference to `PreviewWeb`, so we need to patch in bits
   clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
@@ -75,8 +76,9 @@ export function start<TFramework extends AnyFramework>(
         };
       };
 
-      if (!preview) {
+      if (!initialized) {
         preview.initialize({ getProjectAnnotations, cacheAllCSFFiles: true, sync: true });
+        initialized = true;
       } else {
         getProjectAnnotations();
         preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });
