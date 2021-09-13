@@ -180,7 +180,7 @@ export class CsfFile {
               if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
                 const { name: exportName } = decl.id;
                 self._storyExports[exportName] = decl;
-                let name = exportName;
+                let name = storyNameFromExport(exportName);
                 if (self._storyAnnotations[exportName]) {
                   logger.warn(
                     `Unexpected annotations for "${exportName}" before story declaration`
