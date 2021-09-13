@@ -179,6 +179,10 @@ describe('StoryStore', () => {
 
       const { hooks } = store.getStoryContext(story);
       expect(store.getStoryContext(story).hooks).toBe(hooks);
+
+      // Now double check it doesn't get changed when you call `loadStory` again
+      const story2 = await store.loadStory({ storyId: 'component-one--a' });
+      expect(store.getStoryContext(story2).hooks).toBe(hooks);
     });
   });
 

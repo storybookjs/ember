@@ -267,7 +267,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       this.projectAnnotations
     );
     this.args.setInitial(story.id, story.initialArgs);
-    this.hooks[story.id] = new HooksContext();
+    this.hooks[story.id] = this.hooks[story.id] || new HooksContext();
     return story;
   }
 
