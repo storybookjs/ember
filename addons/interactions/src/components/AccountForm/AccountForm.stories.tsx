@@ -1,5 +1,4 @@
 import React from 'react';
-import global from 'global';
 import { AccountForm } from './AccountForm';
 import { screen, within, waitFor } from '../../dom';
 import userEvent from '../../user-event';
@@ -99,7 +98,7 @@ export const StandardFailHover = {
   play: async (context: any) => {
     const canvas = within(context.canvasElement);
     await StandardPasswordFailed.play(context);
-    await sleep(1000);
+    await sleep(2000);
     await userEvent.hover(canvas.getByTestId('password-error-info'));
   },
 };
