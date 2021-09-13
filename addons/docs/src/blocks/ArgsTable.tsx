@@ -10,7 +10,7 @@ import {
 import { addons } from '@storybook/addons';
 import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
-import { StrictArgTypes, Args, AnyFramework } from '@storybook/csf';
+import { StrictArgTypes, Args } from '@storybook/csf';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
@@ -158,7 +158,11 @@ export const StoryTable: FC<
         storyId = lookupStoryId(storyName, context);
       }
     }
+
     const story = useStory(storyId, context);
+    // eslint-disable-next-line prefer-const
+    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
+
     if (!story) {
       return <div>Loading...</div>;
     }
@@ -167,8 +171,6 @@ export const StoryTable: FC<
 
     const mainLabel = getComponentName(component) || 'Story';
 
-    // eslint-disable-next-line prefer-const
-    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
