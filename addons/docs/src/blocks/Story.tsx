@@ -89,12 +89,14 @@ export const getStoryProps = <TFramework extends AnyFramework>(
       loaded: {},
     });
   return {
-    parameters,
     inline: storyIsInline,
     id: story.id,
-    storyFn: prepareForInline ? () => prepareForInline(boundStoryFn, story) : boundStoryFn,
     height: height || (storyIsInline ? undefined : iframeHeight),
     title: storyName,
+    ...(storyIsInline && {
+      parameters,
+      storyFn: () => prepareForInline(boundStoryFn, story),
+    }),
   };
 };
 
@@ -103,26 +105,22 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   const ref = useRef();
   const story = useStory(getStoryId(props, context), context);
 
-  if (!story) {
-    return <div>Loading...</div>;
-  }
-
-  const { componentId, id, title, name } = story;
-  const renderContext = {
-    componentId,
-    title,
-    kind: title,
-    id,
-    name,
-    story: name,
-    // TODO what to do when these fail?
-    showMain: () => {},
-    showError: () => {},
-    showException: () => {},
-  };
   useEffect(() => {
     let cleanup: () => void;
     if (story && ref.current) {
+      const { componentId, id, title, name } = story;
+      const renderContext = {
+        componentId,
+        title,
+        kind: title,
+        id,
+        name,
+        story: name,
+        // TODO what to do when these fail?
+        showMain: () => {},
+        showError: () => {},
+        showException: () => {},
+      };
       cleanup = context.renderStoryToElement({
         story,
         renderContext,
@@ -131,6 +129,10 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     }
     return () => cleanup && cleanup();
   }, [story]);
+
+  if (!story) {
+    return <div>Loading...</div>;
+  }
 
   if (global?.FEATURES.modernInlineRender) {
     // We do this so React doesn't complain when we replace the span in a secondary render
