@@ -1,5 +1,7 @@
 import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
+import deprecate from 'util-deprecate';
+import dedent from 'ts-dedent';
 import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
@@ -68,13 +70,24 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     this.urlStore = new UrlStore();
     this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
+
+    // Add deprecated APIs for back-compat
+    // @ts-ignore
+    this.storyStore.getSelection = deprecate(
+      () => this.urlStore.selection,
+      dedent`
+      \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
+
+      To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
+    `
+    );
   }
 
-  // We have a second "sync" code path through `initialize` for back-compat reasons.
-  // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
   initialize({
     getProjectAnnotations,
     cacheAllCSFFiles = false,
+    // We have a second "sync" code path through `initialize` for back-compat reasons.
+    // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
     sync = false,
   }: {
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;

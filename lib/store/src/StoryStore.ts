@@ -370,9 +370,11 @@ export class StoryStore<TFramework extends AnyFramework> {
       throw new Error('Cannot call fromId/raw() unless you call cacheAllCSFFiles() first.');
     }
 
-    const { importPath } = this.storyIndex.storyIdToEntry(storyId);
-    if (!importPath) {
-      throw new Error(`Unknown storyId ${storyId}`);
+    let importPath;
+    try {
+      ({ importPath } = this.storyIndex.storyIdToEntry(storyId));
+    } catch (err) {
+      return null;
     }
     const csfFile = this.cachedCSFFiles[importPath];
     const story = this.storyFromCSFFile({ storyId, csfFile });
