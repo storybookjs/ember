@@ -80,19 +80,15 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   constructor({
     importFn,
-    projectAnnotations,
     fetchStoryIndex,
   }: {
     importFn: ModuleImportFn;
-    projectAnnotations: ProjectAnnotations<TFramework>;
     fetchStoryIndex: ConstructorParameters<typeof StoryIndexStore>[0]['fetchStoryIndex'];
   }) {
     this.storyIndex = new StoryIndexStore({ fetchStoryIndex });
     this.importFn = importFn;
-    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
 
-    const { globals, globalTypes } = projectAnnotations;
-    this.globals = new GlobalsStore({ globals, globalTypes });
+    this.globals = new GlobalsStore();
     this.args = new ArgsStore();
     this.hooks = {};
 
@@ -104,17 +100,31 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   // See note in PreviewWeb about the 'sync' init path.
-  initialize(options: { sync: false; cacheAllCSFFiles?: boolean }): Promise<void>;
+  initialize(options: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
+    sync: false;
+    cacheAllCSFFiles?: boolean;
+  }): Promise<void>;
 
-  initialize(options: { sync: true; cacheAllCSFFiles?: boolean }): void;
+  initialize(options: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
+    sync: true;
+    cacheAllCSFFiles?: boolean;
+  }): void;
 
   initialize({
+    projectAnnotations,
     sync = false,
     cacheAllCSFFiles = false,
   }: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
     sync?: boolean;
     cacheAllCSFFiles?: boolean;
-  } = {}): MaybePromise<void> {
+  }): MaybePromise<void> {
+    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+    const { globals, globalTypes } = this.projectAnnotations;
+    this.globals.initialize({ globals, globalTypes });
+
     if (sync) {
       this.storyIndex.initialize({ sync: true });
       if (cacheAllCSFFiles) {
