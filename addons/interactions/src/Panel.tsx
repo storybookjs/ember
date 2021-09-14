@@ -261,6 +261,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
           onPrevious={prev}
           onNext={next}
           onReplay={replay}
+          goToStart={start}
           goToEnd={stop}
           hasPrevious={hasPrevious}
           hasNext={hasNext}

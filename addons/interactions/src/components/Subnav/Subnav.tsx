@@ -24,6 +24,7 @@ export interface SubnavProps {
   onPrevious: () => void;
   onNext: () => void;
   onReplay: () => void;
+  goToStart: () => void;
   goToEnd: () => void;
   storyFileName?: string;
   hasPrevious: boolean;
@@ -75,7 +76,7 @@ const Group = styled.div({
   alignItems: 'center',
 });
 
-const PlaybackButton = styled(StyledIconButton)({
+const RewindButton = styled(StyledIconButton)({
   marginLeft: 9,
 });
 
@@ -89,6 +90,7 @@ export const Subnav: React.FC<SubnavProps> = ({
   onPrevious,
   onNext,
   onReplay,
+  goToStart,
   goToEnd,
   storyFileName,
   hasNext,
@@ -112,14 +114,17 @@ export const Subnav: React.FC<SubnavProps> = ({
 
         <StyledSeparator />
 
-        <PlaybackButton
+        <RewindButton containsIcon title="Rewind" onClick={goToStart} disabled={!hasPrevious}>
+          <Icons icon="rewind" />
+        </RewindButton>
+        <StyledIconButton
           containsIcon
           title="Previous step"
           onClick={onPrevious}
           disabled={!hasPrevious}
         >
           <Icons icon="playback" />
-        </PlaybackButton>
+        </StyledIconButton>
         <StyledIconButton containsIcon title="Next step" onClick={onNext} disabled={!hasNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
