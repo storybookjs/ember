@@ -1,5 +1,5 @@
 /* global window */
-import { addons } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
 import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import { HtmlFramework } from '@storybook/html';
@@ -40,11 +40,13 @@ export function sourceDecorator(
     ? (context.originalStoryFn as ArgsStoryFn<HtmlFramework>)(context.args, context)
     : storyFn();
 
+  let source: string;
   if (typeof story === 'string' && !skipSourceRender(context)) {
-    const source = applyTransformSource(story, context);
-
-    addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+    source = applyTransformSource(story, context);
   }
+  useEffect(() => {
+    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+  });
 
   return story;
 }

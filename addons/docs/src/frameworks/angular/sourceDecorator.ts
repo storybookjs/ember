@@ -1,4 +1,4 @@
-import { addons } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
 import { PartialStoryFn } from '@storybook/csf';
 import { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
@@ -44,20 +44,21 @@ export const sourceDecorator = (
 
   const { component, argTypes } = context;
 
+  let toEmit: string;
+  useEffect(() => {
+    if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
+  });
+
   if (component && !userDefinedTemplate) {
     const source = computesTemplateSourceFromComponent(component, props, argTypes);
 
     // We might have a story with a Directive or Service defined as the component
     // In these cases there might exist a template, even if we aren't able to create source from component
     if (source || template) {
-      channel.emit(SNIPPET_RENDERED, context.id, prettyUp(source || template));
+      toEmit = prettyUp(source || template);
     }
-    return story;
-  }
-
-  if (template) {
-    channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
-    return story;
+  } else if (template) {
+    toEmit = prettyUp(template);
   }
 
   return story;
