@@ -159,6 +159,8 @@ export const StoryTable: FC<
       }
     }
     const story = useStory(storyId, context);
+    // eslint-disable-next-line prefer-const
+    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     if (!story) {
       return <div>Loading...</div>;
     }
@@ -167,8 +169,6 @@ export const StoryTable: FC<
 
     const mainLabel = getComponentName(component) || 'Story';
 
-    // eslint-disable-next-line prefer-const
-    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
