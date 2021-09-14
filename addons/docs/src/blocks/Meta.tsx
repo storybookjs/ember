@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import global from 'global';
-import { AnyFramework, BaseAnnotations } from '@storybook/csf';
+import { BaseAnnotations } from '@storybook/csf';
 import { Anchor } from './Anchor';
 import { DocsContext, DocsContextProps } from './DocsContext';
 

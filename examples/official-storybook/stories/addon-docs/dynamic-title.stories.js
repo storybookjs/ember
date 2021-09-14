@@ -1,4 +1,4 @@
-const getTitle = () => `Addons/Docs/${['dynamic title'][0]}`;
+// const getTitle = () => `Addons/Docs/${['dynamic title'][0]}`;
 
 export default {
   // FIXME dynamic title
