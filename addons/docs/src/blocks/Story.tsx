@@ -6,6 +6,7 @@ import React, {
   useContext,
   useRef,
   useEffect,
+  useMemo,
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { resetComponents, Story as PureStory } from '@storybook/components';
@@ -104,6 +105,15 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const ref = useRef();
   const story = useStory(getStoryId(props, context), context);
+
+  // Ensure we wait until this story is properly rendered in the docs context.
+  // The purpose of this is to ensure that that the `DOCS_RENDERED` event isn't emitted
+  // until all stories on the page have rendered.
+  const { id: storyId, registerRenderingStory } = context;
+  const storyRendered = useMemo(registerRenderingStory, [storyId]);
+  useEffect(() => {
+    if (story) storyRendered();
+  }, [story]);
 
   useEffect(() => {
     let cleanup: () => void;

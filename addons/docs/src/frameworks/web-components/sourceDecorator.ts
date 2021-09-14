@@ -1,7 +1,7 @@
 /* global window */
 import { render } from 'lit-html';
 import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
-import { addons } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
 import { WebComponentsFramework } from '@storybook/web-components';
 
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
@@ -37,11 +37,14 @@ export function sourceDecorator(
     ? (context.originalStoryFn as ArgsStoryFn<WebComponentsFramework>)(context.args, context)
     : storyFn();
 
+  let source: string;
+  useEffect(() => {
+    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+  });
   if (!skipSourceRender(context)) {
     const container = window.document.createElement('div');
     render(story, container);
-    const source = applyTransformSource(container.innerHTML.replace(/<!---->/g, ''), context);
-    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+    source = applyTransformSource(container.innerHTML.replace(/<!---->/g, ''), context);
   }
 
   return story;
