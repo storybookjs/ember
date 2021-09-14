@@ -43,10 +43,6 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
-const getStory = (storyId: StoryId, docsContext: DocsContextProps): Story | null => {
-  return docsContext.storyById(storyId);
-};
-
 const getSourceState = (stories: Story[]) => {
   const states = stories.map((story) => story.parameters.docs?.source?.state).filter(Boolean);
   if (states.length === 0) return SourceState.CLOSED;
