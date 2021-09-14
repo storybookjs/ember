@@ -7,7 +7,11 @@ export default {
   title: 'Addons/Docs/mdx-in-story',
   decorators: [
     (storyFn) => (
-      <DocsContainer context={{ storyById: () => ({ parameters: {} }) }}>{storyFn()}</DocsContainer>
+      <DocsContainer
+        context={{ componentStories: () => [], storyById: () => ({ parameters: {} }) }}
+      >
+        {storyFn()}
+      </DocsContainer>
     ),
   ],
   parameters: {
@@ -29,7 +33,10 @@ export const DarkModeDocs = () => {
 DarkModeDocs.decorators = [
   (storyFn) => (
     <DocsContainer
-      context={{ storyById: () => ({ parameters: { docs: { theme: themes.dark } } }) }}
+      context={{
+        componentStories: () => [],
+        storyById: () => ({ parameters: { docs: { theme: themes.dark } } }),
+      }}
     >
       {storyFn()}
     </DocsContainer>
