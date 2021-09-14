@@ -1,5 +1,4 @@
 import path from 'path';
-import fse from 'fs-extra';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
 import Dotenv from 'dotenv-webpack';
 // @ts-ignore
@@ -15,15 +14,19 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import FilterWarningsPlugin from 'webpack-filter-warnings-plugin';
 
 import themingPaths from '@storybook/theming/paths';
-
 import {
   toRequireContextString,
   stringifyProcessEnvs,
   es6Transpiler,
+  handlebars,
   interpolate,
   nodeModulesPaths,
   Options,
   NormalizedStoriesEntry,
+  toImportFn,
+  normalizeStories,
+  loadPreviewOrConfigFile,
+  readTemplate,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -41,6 +44,8 @@ const storybookPaths: Record<string, string> = [
   'semver',
   'client-api',
   'client-logger',
+  'preview-web',
+  'store',
 ].reduce(
   (acc, sbPackage) => ({
     ...acc,
@@ -50,23 +55,21 @@ const storybookPaths: Record<string, string> = [
   }),
   {}
 );
-
-export default async ({
-  configDir,
-  babelOptions,
-  entries,
-  stories,
-  outputDir = path.join('.', 'public'),
-  quiet,
-  packageJson,
-  configType,
-  framework,
-  frameworkPath,
-  presets,
-  typescriptOptions,
-  modern,
-  features,
-}: Options & Record<string, any>): Promise<Configuration> => {
+export default async (options: Options & Record<string, any>): Promise<Configuration> => {
+  const {
+    configDir,
+    babelOptions,
+    outputDir = path.join('.', 'public'),
+    quiet,
+    packageJson,
+    configType,
+    framework,
+    frameworkPath,
+    presets,
+    typescriptOptions,
+    modern,
+    features,
+  } = options;
   const logLevel = await presets.apply('logLevel', undefined);
   const frameworkOptions = await presets.apply(`${framework}Options`, {});
 
@@ -77,49 +80,75 @@ export default async ({
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
-  // TODO FIX ME - does this need to be ESM?
-  const entryTemplate = await fse.readFile(path.join(__dirname, 'virtualModuleEntry.template.js'), {
-    encoding: 'utf8',
+
+  const configs = [
+    ...(await presets.apply('config', [], options)),
+    loadPreviewOrConfigFile(options),
+  ].filter(Boolean);
+
+  const entries = (await presets.apply('entries', [], options)) as string[];
+  const stories = normalizeStories(await presets.apply('stories', [], options), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
   });
-  const storyTemplate = await fse.readFile(path.join(__dirname, 'virtualModuleStory.template.js'), {
-    encoding: 'utf8',
-  });
-  const frameworkInitEntry = path.resolve(
-    path.join(configDir, 'storybook-init-framework-entry.js')
-  );
-  // Allows for custom frameworks that are not published under the @storybook namespace
-  const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
-  const virtualModuleMapping = {
-    // Ensure that the client API is initialized by the framework before any other iframe code
-    // is loaded. That way our client-apis can assume the existence of the API+store
-    [frameworkInitEntry]: `import '${frameworkImportPath}';`,
-  };
-  entries.forEach((entryFilename: any) => {
-    const match = entryFilename.match(/(.*)-generated-(config|other)-entry.js$/);
-    if (match) {
-      const configFilename = match[1];
+
+  const virtualModuleMapping: Record<string, string> = {};
+  if (features?.storyStoreV7) {
+    const storiesFilename = 'storybook-stories.js';
+    const storiesPath = path.resolve(path.join(configDir, storiesFilename));
+
+    virtualModuleMapping[storiesPath] = toImportFn(stories);
+    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+    virtualModuleMapping[configEntryPath] = handlebars(
+      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
+      {
+        storiesFilename,
+        configs,
+      }
+    );
+    entries.push(configEntryPath);
+  } else {
+    const frameworkInitEntry = path.resolve(
+      path.join(configDir, 'storybook-init-framework-entry.js')
+    );
+    const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
+    virtualModuleMapping[frameworkInitEntry] = `import '${frameworkImportPath}';`;
+    entries.push(frameworkInitEntry);
+
+    const entryTemplate = await readTemplate(
+      path.join(__dirname, 'virtualModuleEntry.template.js')
+    );
+
+    configs.forEach((configFilename: any) => {
       const clientApi = storybookPaths['@storybook/client-api'];
       const clientLogger = storybookPaths['@storybook/client-logger'];
 
-      virtualModuleMapping[entryFilename] = interpolate(entryTemplate, {
-        configFilename,
-        clientApi,
-        clientLogger,
-      });
+      virtualModuleMapping[`${configFilename}-generated-config-entry.js`] = interpolate(
+        entryTemplate,
+        {
+          configFilename,
+          clientApi,
+          clientLogger,
+        }
+      );
+      entries.push(`${configFilename}-generated-config-entry.js`);
+    });
+    if (stories.length > 0) {
+      const storyTemplate = await readTemplate(
+        path.join(__dirname, 'virtualModuleStory.template.js')
+      );
+      const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
+      virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
+        // Make sure we also replace quotes for this one
+        .replace(
+          "'{{stories}}'",
+          stories
+            .map((s: NormalizedStoriesEntry) => s.glob)
+            .map(toRequireContextString)
+            .join(',')
+        );
+      entries.push(storiesFilename);
     }
-  });
-  if (stories) {
-    const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
-    // Make sure we also replace quotes for this one
-    virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, {
-      frameworkImportPath,
-    }).replace(
-      "'{{stories}}'",
-      stories
-        .map((s: NormalizedStoriesEntry) => s.glob)
-        .map(toRequireContextString)
-        .join(',')
-    );
   }
 
   const shouldCheckTs = useBaseTsSupport(framework) && typescriptOptions.check;
@@ -153,10 +182,10 @@ export default async ({
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, options) => ({
+        templateParameters: (compilation, files, templateOptions) => ({
           compilation,
           files,
-          options,
+          options: templateOptions,
           version: packageJson.version,
           globals: {
             LOGLEVEL: logLevel,

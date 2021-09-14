@@ -43,7 +43,7 @@
   "dependencies": {
     "@storybook/addons": "6.4.0-alpha.34",
     "@storybook/client-logger": "6.4.0-alpha.34",
-    "@storybook/csf": "0.0.1",
+    "@storybook/csf": "0.0.2--canary.68887a1.0",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "global": "^4.4.0",

@@ -1,39 +1,38 @@
 import {
-  Args as DefaultArgs,
-  Annotations,
-  BaseMeta,
-  BaseStory,
+  Args,
   Parameters as DefaultParameters,
   StoryContext as DefaultStoryContext,
-} from '@storybook/addons';
+  ComponentAnnotations,
+  StoryAnnotationsOrFn,
+} from '@storybook/csf';
+
 import { StoryFnAngularReturnType } from './types';
 
-export type { Args, ArgTypes } from '@storybook/addons';
+export type { Args, ArgTypes } from '@storybook/csf';
 
-type AngularComponent = any;
-type AngularReturnType = StoryFnAngularReturnType;
+export type AngularFramework = {
+  component: any;
+  storyResult: StoryFnAngularReturnType;
+};
 
 /**
  * Metadata to configure the stories for a component.
  *
  * @see [Default export](https://storybook.js.org/docs/formats/component-story-format/#default-export)
  */
-export type Meta<Args = DefaultArgs> = BaseMeta<AngularComponent> &
-  Annotations<Args, AngularReturnType>;
+export type Meta<TArgs = Args> = ComponentAnnotations<AngularFramework, TArgs>;
 
 /**
  * Story function that represents a component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type Story<Args = DefaultArgs> = BaseStory<Args, AngularReturnType> &
-  Annotations<Args, AngularReturnType>;
+export type Story<TArgs = Args> = StoryAnnotationsOrFn<AngularFramework, TArgs>;
 
 export type Parameters = DefaultParameters & {
   /** Uses legacy angular rendering engine that use dynamic component */
   angularLegacyRendering?: boolean;
-  component: unknown;
   bootstrapModuleOptions?: unknown;
 };
 
-export type StoryContext = DefaultStoryContext & { parameters: Parameters };
+export type StoryContext = DefaultStoryContext<AngularFramework> & { parameters: Parameters };

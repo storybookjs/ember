@@ -1,4 +1,4 @@
-import { ArgTypes } from '@storybook/api';
+import { SBScalarType, StrictArgTypes } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import type {
   SvelteComponentDoc,
@@ -31,7 +31,7 @@ export const extractArgTypes: ArgTypesExtractor = (component: ComponentWithDocge
 };
 
 export const createArgTypes = (docgen: SvelteComponentDoc) => {
-  const results: ArgTypes = {};
+  const results: StrictArgTypes = {};
   docgen.data.forEach((item) => {
     results[item.name] = {
       control: parseTypeToControl(item.type),
@@ -39,7 +39,7 @@ export const createArgTypes = (docgen: SvelteComponentDoc) => {
       description: item.description,
       type: {
         required: hasKeyword('required', item.keywords),
-        name: item.type?.text,
+        name: item.type?.text as SBScalarType['name'],
       },
       table: {
         type: {
@@ -57,7 +57,7 @@ export const createArgTypes = (docgen: SvelteComponentDoc) => {
     results[`event_${item.name}`] = {
       name: item.name,
       description: item.description,
-      type: { name: 'void' },
+      type: { name: 'other', value: 'void' },
       table: {
         category: 'events',
       },
@@ -70,7 +70,7 @@ export const createArgTypes = (docgen: SvelteComponentDoc) => {
       description: [item.description, item.params?.map((p) => `\`${p.name}\``).join(' ')]
         .filter((p) => p)
         .join('\n\n'),
-      type: { name: 'void' },
+      type: { name: 'other', value: 'void' },
       table: {
         category: 'slots',
       },

@@ -1,5 +1,6 @@
-import { addons, StoryContext, StoryFn } from '@storybook/addons';
-import { IStory } from '@storybook/angular';
+import { addons, useEffect } from '@storybook/addons';
+import { PartialStoryFn } from '@storybook/csf';
+import { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
 import prettierHtml from 'prettier/parser-html';
 import prettier from 'prettier/standalone';
@@ -30,7 +31,10 @@ const prettyUp = (source: string) => {
  * @param storyFn Fn
  * @param context  StoryContext
  */
-export const sourceDecorator = (storyFn: StoryFn<IStory>, context: StoryContext) => {
+export const sourceDecorator = (
+  storyFn: PartialStoryFn<AngularFramework>,
+  context: StoryContext
+) => {
   const story = storyFn();
   if (skipSourceRender(context)) {
     return story;
@@ -38,9 +42,12 @@ export const sourceDecorator = (storyFn: StoryFn<IStory>, context: StoryContext)
   const channel = addons.getChannel();
   const { props, template, userDefinedTemplate } = story;
 
-  const {
-    parameters: { component, argTypes },
-  } = context;
+  const { component, argTypes } = context;
+
+  let toEmit: string;
+  useEffect(() => {
+    if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
+  });
 
   if (component && !userDefinedTemplate) {
     const source = computesTemplateSourceFromComponent(component, props, argTypes);
@@ -48,14 +55,10 @@ export const sourceDecorator = (storyFn: StoryFn<IStory>, context: StoryContext)
     // We might have a story with a Directive or Service defined as the component
     // In these cases there might exist a template, even if we aren't able to create source from component
     if (source || template) {
-      channel.emit(SNIPPET_RENDERED, context.id, prettyUp(source || template));
+      toEmit = prettyUp(source || template);
     }
-    return story;
-  }
-
-  if (template) {
-    channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
-    return story;
+  } else if (template) {
+    toEmit = prettyUp(template);
   }
 
   return story;

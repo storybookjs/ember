@@ -1,4 +1,4 @@
-import { StorySortObjectParameter, StorySortComparator } from '@storybook/addons';
+import { StorySortComparator, StorySortObjectParameter } from '@storybook/addons';
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 

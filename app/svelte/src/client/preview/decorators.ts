@@ -1,15 +1,7 @@
-import { StoryFn, DecoratorFunction, StoryContext } from '@storybook/addons';
+import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
+import { sanitizeStoryContextUpdate } from '@storybook/store';
 import SlotDecorator from './SlotDecorator.svelte';
-
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
+import { SvelteFramework } from './types';
 
 /**
  * Check if an object is a svelte component.
@@ -31,7 +23,7 @@ function unWrap(obj: any) {
  * Transform a story to be compatible with the PreviewRender component.
  *
  * - `() => MyComponent` is translated to `() => ({ Component: MyComponent })`
- * - `() => ({})` is translated to `() => ({ Component: <from parameters.component> })`
+ * - `() => ({})` is translated to `() => ({ Component: <from context.component> })`
  * - A decorator component is wrapped with SlotDecorator. The decorated component is inject through
  * a <slot/>
  *
@@ -39,7 +31,7 @@ function unWrap(obj: any) {
  * @param story  the current story
  * @param originalStory the story decorated by the current story
  */
-function prepareStory(context: StoryContext, story: any, originalStory?: any) {
+function prepareStory(context: StoryContext<SvelteFramework>, story: any, originalStory?: any) {
   let result = unWrap(story);
   if (isSvelteComponent(result)) {
     // wrap the component
@@ -63,8 +55,8 @@ function prepareStory(context: StoryContext, story: any, originalStory?: any) {
   } else {
     let cpn = result.Component;
     if (!cpn) {
-      // if the component is not defined, get it from parameters
-      cpn = context.parameters.component;
+      // if the component is not defined, get it the context
+      cpn = context.component;
     }
     result.Component = unWrap(cpn);
   }
@@ -73,17 +65,18 @@ function prepareStory(context: StoryContext, story: any, originalStory?: any) {
 
 export function decorateStory(storyFn: any, decorators: any[]) {
   return decorators.reduce(
-    (previousStoryFn: StoryFn, decorator: DecoratorFunction) => (
-      context: StoryContext = defaultContext
-    ) => {
+    (
+      previousStoryFn: LegacyStoryFn<SvelteFramework>,
+      decorator: DecoratorFunction<SvelteFramework>
+    ) => (context: StoryContext<SvelteFramework>) => {
       let story;
-      const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          story = previousStoryFn({ ...context, ...innerContext });
-          return story;
-        },
-        context
-      );
+      const decoratedStory = decorator((update) => {
+        story = previousStoryFn({
+          ...context,
+          ...sanitizeStoryContextUpdate(update),
+        });
+        return story;
+      }, context);
 
       if (!story) {
         story = previousStoryFn(context);
@@ -95,6 +88,6 @@ export function decorateStory(storyFn: any, decorators: any[]) {
 
       return prepareStory(context, decoratedStory, story);
     },
-    (context: StoryContext) => prepareStory(context, storyFn(context))
+    (context: StoryContext<SvelteFramework>) => prepareStory(context, storyFn(context))
   );
 }

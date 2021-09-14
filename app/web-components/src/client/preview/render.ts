@@ -1,48 +1,45 @@
+/* eslint-disable no-param-reassign */
 import global from 'global';
 import dedent from 'ts-dedent';
 import { render } from 'lit-html';
 // Keep `.js` extension to avoid issue with Webpack (related to export map?)
 // eslint-disable-next-line import/extensions
 import { isTemplateResult } from 'lit-html/directive-helpers.js';
-import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
-import { RenderContext } from './types';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
+import { RenderContext } from '@storybook/store';
+import { WebComponentsFramework } from './types-6-0';
 
-const { document, Node } = global;
-const rootElement = document.getElementById('root');
+const { Node } = global;
 
-export default function renderMain({
-  storyFn,
-  kind,
-  name,
-  showMain,
-  showError,
-  forceRender,
-}: RenderContext) {
+export function renderToDOM(
+  { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<WebComponentsFramework>,
+  domElement: HTMLElement
+) {
   const element = storyFn();
 
   showMain();
   if (isTemplateResult(element)) {
     // `render` stores the TemplateInstance in the Node and tries to update based on that.
-    // Since we reuse `rootElement` for all stories, remove the stored instance first.
-    // But forceRender means that it's the same story, so we want too keep the state in that case.
-    if (!forceRender || !rootElement.querySelector('[id="root-inner"]')) {
-      rootElement.innerHTML = '<div id="root-inner"></div>';
+    // Since we reuse `domElement` for all stories, remove the stored instance first.
+    // But forceRemount means that it's the same story, so we want too keep the state in that case.
+    if (forceRemount || !domElement.querySelector('[id="root-inner"]')) {
+      domElement.innerHTML = '<div id="root-inner"></div>';
     }
-    const renderTo = rootElement.querySelector('[id="root-inner"]');
+    const renderTo = domElement.querySelector('[id="root-inner"]');
 
-    render(element, renderTo);
-    simulatePageLoad(rootElement);
+    render(element, renderTo as HTMLElement);
+    simulatePageLoad(domElement);
   } else if (typeof element === 'string') {
-    rootElement.innerHTML = element;
-    simulatePageLoad(rootElement);
+    domElement.innerHTML = element;
+    simulatePageLoad(domElement);
   } else if (element instanceof Node) {
     // Don't re-mount the element if it didn't change and neither did the story
-    if (rootElement.firstChild === element && forceRender === true) {
+    if (domElement.firstChild === element && !forceRemount) {
       return;
     }
 
-    rootElement.innerHTML = '';
-    rootElement.appendChild(element);
+    domElement.innerHTML = '';
+    domElement.appendChild(element);
     simulateDOMContentLoaded();
   } else {
     showError({
