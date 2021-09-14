@@ -6,6 +6,6 @@ describe('addon-action', () => {
   it('should have docs tab', () => {
     cy.navigateToStory('example-button', 'primary');
     cy.viewAddonTab('Docs');
-    cy.getDocsElement().get('.sbdocs-title').contains('Button');
+    cy.getDocsElement().find('h1').should('contain.text', 'Button');
   });
 });
