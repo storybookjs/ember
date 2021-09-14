@@ -8,11 +8,23 @@ export function useStory<TFramework extends AnyFramework>(
   storyId: StoryId,
   context: DocsContextProps<TFramework>
 ): Story<TFramework> | void {
-  const [story, setStory] = useState(null);
+  const stories = useStories([storyId], context);
+  return stories && stories[0];
+}
+
+export function useStories<TFramework extends AnyFramework>(
+  storyIds: StoryId[],
+  context: DocsContextProps<TFramework>
+): Story<TFramework>[] | void {
+  const [stories, setStories] = useState(null);
 
   useEffect(() => {
-    context.loadStory(storyId).then((s) => setStory(s));
+    Promise.all(storyIds.map((storyId) => context.loadStory(storyId))).then((loadedStories) => {
+      if (!stories) {
+        setStories(loadedStories);
+      }
+    });
   });
 
-  return story;
+  return stories;
 }

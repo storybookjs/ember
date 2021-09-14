@@ -34,8 +34,8 @@ import { inferControls } from './inferControls';
 type MaybePromise<T> = Promise<T> | T;
 
 // TODO -- what are reasonable values for these?
-const CSF_CACHE_SIZE = 100;
-const STORY_CACHE_SIZE = 1000;
+const CSF_CACHE_SIZE = 1000;
+const STORY_CACHE_SIZE = 10000;
 
 function normalizeProjectAnnotations<TFramework extends AnyFramework>({
   argTypes,
@@ -80,19 +80,15 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   constructor({
     importFn,
-    projectAnnotations,
     fetchStoryIndex,
   }: {
     importFn: ModuleImportFn;
-    projectAnnotations: ProjectAnnotations<TFramework>;
     fetchStoryIndex: ConstructorParameters<typeof StoryIndexStore>[0]['fetchStoryIndex'];
   }) {
     this.storyIndex = new StoryIndexStore({ fetchStoryIndex });
     this.importFn = importFn;
-    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
 
-    const { globals, globalTypes } = projectAnnotations;
-    this.globals = new GlobalsStore({ globals, globalTypes });
+    this.globals = new GlobalsStore();
     this.args = new ArgsStore();
     this.hooks = {};
 
@@ -104,17 +100,31 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   // See note in PreviewWeb about the 'sync' init path.
-  initialize(options: { sync: false; cacheAllCSFFiles?: boolean }): Promise<void>;
+  initialize(options: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
+    sync: false;
+    cacheAllCSFFiles?: boolean;
+  }): Promise<void>;
 
-  initialize(options: { sync: true; cacheAllCSFFiles?: boolean }): void;
+  initialize(options: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
+    sync: true;
+    cacheAllCSFFiles?: boolean;
+  }): void;
 
   initialize({
+    projectAnnotations,
     sync = false,
     cacheAllCSFFiles = false,
   }: {
+    projectAnnotations: ProjectAnnotations<TFramework>;
     sync?: boolean;
     cacheAllCSFFiles?: boolean;
-  } = {}): MaybePromise<void> {
+  }): MaybePromise<void> {
+    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+    const { globals, globalTypes } = this.projectAnnotations;
+    this.globals.initialize({ globals, globalTypes });
+
     if (sync) {
       this.storyIndex.initialize({ sync: true });
       if (cacheAllCSFFiles) {
@@ -166,7 +176,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
     if (sync) {
       throw new Error(
-        `importFn() returned a promise, did you pass an async version then call initializeSync()?`
+        `importFn() returned a promise, did you pass an async version then call initialize({sync: true})?`
       );
     }
 
@@ -257,7 +267,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       this.projectAnnotations
     );
     this.args.setInitial(story.id, story.initialArgs);
-    this.hooks[story.id] = new HooksContext();
+    this.hooks[story.id] = this.hooks[story.id] || new HooksContext();
     return story;
   }
 
@@ -360,9 +370,11 @@ export class StoryStore<TFramework extends AnyFramework> {
       throw new Error('Cannot call fromId/raw() unless you call cacheAllCSFFiles() first.');
     }
 
-    const { importPath } = this.storyIndex.storyIdToEntry(storyId);
-    if (!importPath) {
-      throw new Error(`Unknown storyId ${storyId}`);
+    let importPath;
+    try {
+      ({ importPath } = this.storyIndex.storyIdToEntry(storyId));
+    } catch (err) {
+      return null;
     }
     const csfFile = this.cachedCSFFiles[importPath];
     const story = this.storyFromCSFFile({ storyId, csfFile });

@@ -15,7 +15,7 @@ import { scrollToElement } from './utils';
 
 const { document, window: globalWindow } = global;
 
-export interface DocsContainerProps<TFramework extends AnyFramework> {
+export interface DocsContainerProps<TFramework extends AnyFramework = AnyFramework> {
   context: DocsContextProps<TFramework>;
 }
 
@@ -35,10 +35,7 @@ const warnOptionsTheme = deprecate(
 `
 );
 
-export const DocsContainer: FunctionComponent<DocsContainerProps<any>> = ({
-  context,
-  children,
-}) => {
+export const DocsContainer: FunctionComponent<DocsContainerProps> = ({ context, children }) => {
   const { id: storyId, storyById } = context;
   const {
     parameters: { options = {}, docs = {} },

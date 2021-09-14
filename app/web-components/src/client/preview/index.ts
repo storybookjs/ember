@@ -3,7 +3,7 @@ import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import render from './render';
+import { renderToDOM } from './render';
 import { IStorybookSection } from './types';
 import { WebComponentsFramework } from './types-6-0';
 
@@ -18,7 +18,7 @@ interface ClientApi extends ClientStoryApi<WebComponentsFramework['storyResult']
   raw: () => any; // todo add type
 }
 
-const api = start(render);
+const api = start(renderToDOM);
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

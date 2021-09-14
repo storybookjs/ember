@@ -16,6 +16,7 @@ const config: StorybookConfig = {
     strictMode: true,
   },
   addons: [
+    '@storybook/react',
     {
       name: '@storybook/addon-docs',
       options: { transcludeMarkdown: true },
@@ -24,7 +25,6 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-storysource',
     '@storybook/addon-links',
-    '@storybook/addon-a11y',
     '@storybook/addon-jest',
   ],
   core: {
@@ -33,6 +33,8 @@ const config: StorybookConfig = {
   logLevel: 'debug',
   features: {
     previewCsfV3: true,
+    buildStoriesJson: true,
+    modernInlineRender: true,
   },
 };
 

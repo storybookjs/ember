@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import Events from '@storybook/core-events';
-import { StoriesList } from '@storybook/store';
+import { StoryIndex } from '@storybook/store';
 
 export const componentOneExports = {
   default: {
@@ -33,7 +33,7 @@ export const projectAnnotations = {
 };
 export const getProjectAnnotations = () => projectAnnotations;
 
-export const storyIndex: StoriesList = {
+export const storyIndex: StoryIndex = {
   v: 3,
   stories: {
     'component-one--a': {

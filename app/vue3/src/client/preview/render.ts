@@ -23,7 +23,7 @@ export const storybookApp = createApp({
   },
 });
 
-export default function render(
+export function renderToDOM(
   { title, name, storyFn, showMain, showError, showException }: RenderContext<VueFramework>,
   domElement: HTMLElement
 ) {

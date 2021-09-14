@@ -75,7 +75,7 @@ describe('UrlStore', () => {
         viewMode: 'story',
       });
     });
-    it('should redirect legacy queries', () => {
+    it('should parse legacy queries', () => {
       document.location.search = '?selectedKind=kind&selectedStory=story';
       expect(getSelectionSpecifierFromPath()).toEqual({
         storySpecifier: { title: 'kind', name: 'story' },

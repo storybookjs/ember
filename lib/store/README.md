@@ -22,8 +22,8 @@ The first set of fields on a `Story` are the identifying fields for a story:
 The main fields on a `Story` are the various annotations. Annotations can be set:
 
 - At the project level in `preview.js` (or via addons)
-- At the component level via `export default = { ... }` in a CSF file
-- At the story level via `export Story = {...}` in a CSF file.
+- At the component level via `export default { ... }` in a CSF file
+- At the story level via `export const Story = {...}` in a CSF file.
 
 Not all annotations can be set at every level but most can.
 
@@ -97,7 +97,7 @@ Arg types add type information and metadata about args that are used to control 
 
 ### ArgTypes enhancement
 
-To add a argTypes enhancer, `export addArgTypesEnhancers = []` from `preview.js` or and addon
+To add a argTypes enhancer, `export const argTypesEnhancers = []` from `preview.js` or and addon
 
 There is a default enhancer that ensures that each `arg` in a story has a baseline `argType`. This value can be improved by subsequent enhancers, e.g. those provided by `@storybook/addon-docs`.
 
@@ -105,11 +105,11 @@ There is a default enhancer that ensures that each `arg` in a story has a baseli
 
 Globals are rendering information that is global across stories. They are used for things like themes and internationalization (i18n) in stories, where you want Storybook to "remember" your setting as you browse between stories.
 
-They can be access in stories and decorators in the `context.globals` key.
+They can be accessed in stories and decorators in the `context.globals` key.
 
 ### Initial values of globals
 
-To set initial values of globals, `export globals = {...}` from `preview.js`
+To set initial values of globals, `export const globals = {...}` from `preview.js`
 
 ### Using globals in an addon
 

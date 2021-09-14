@@ -11,7 +11,7 @@ import { WebComponentsFramework } from './types-6-0';
 
 const { Node } = global;
 
-export default function renderMain(
+export function renderToDOM(
   { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<WebComponentsFramework>,
   domElement: HTMLElement
 ) {

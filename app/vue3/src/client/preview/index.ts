@@ -9,7 +9,7 @@ import './globals';
 import { IStorybookSection } from './types';
 import { VueFramework } from './types-6-0';
 
-import render, { storybookApp } from './render';
+import { renderToDOM, storybookApp } from './render';
 
 /*
   This normalizes a functional component into a render method in ComponentOptions.
@@ -87,7 +87,7 @@ interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   app: App;
 }
 
-const api = start(render, { decorateStory });
+const api = start(renderToDOM, { decorateStory });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

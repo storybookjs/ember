@@ -52,6 +52,27 @@ describe('CsfFile', () => {
       `);
     });
 
+    it('underscores', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const __Basic__ = () => {};
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--basic
+            name: Basic
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--basic
+      `);
+    });
+
     it('exclude stories', async () => {
       expect(
         await parse(
@@ -89,7 +110,7 @@ describe('CsfFile', () => {
           includeStories: !<tag:yaml.org,2002:js/regexp> /^Include.*/
         stories:
           - id: foo-bar--include-a
-            name: IncludeA
+            name: Include A
       `);
     });
 
@@ -207,7 +228,7 @@ describe('CsfFile', () => {
           title: foo/bar
         stories:
           - id: foo-bar--page
-            name: __page
+            name: Page
             parameters:
               __isArgsStory: false
               __id: foo-bar--page

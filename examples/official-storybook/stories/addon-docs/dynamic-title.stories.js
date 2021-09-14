@@ -1,7 +1,9 @@
-const getTitle = () => `Addons/Docs/${['dynamic title'][0]}`;
+// const getTitle = () => `Addons/Docs/${['dynamic title'][0]}`;
 
 export default {
-  title: getTitle(),
+  // FIXME dynamic title
+  // title: getTitle(),
+  title: 'Addons/Docs/dynamic title',
 };
 
 export const basic = () => 'Story with title that is evaluated in runtime';

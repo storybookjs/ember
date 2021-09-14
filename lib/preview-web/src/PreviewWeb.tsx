@@ -1,5 +1,7 @@
 import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
+import deprecate from 'util-deprecate';
+import dedent from 'ts-dedent';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import global from 'global';
@@ -57,21 +59,52 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   previousCleanup: () => void;
 
   constructor({
-    getProjectAnnotations,
     importFn,
     fetchStoryIndex,
   }: {
-    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
     importFn: ModuleImportFn;
     fetchStoryIndex: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
+    this.urlStore = new UrlStore();
+    this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
+
+    // Add deprecated APIs for back-compat
+    // @ts-ignore
+    this.storyStore.getSelection = deprecate(
+      () => this.urlStore.selection,
+      dedent`
+      \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
+
+      To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
+    `
+    );
+  }
+
+  initialize({
+    getProjectAnnotations,
+    cacheAllCSFFiles = false,
+    // We have a second "sync" code path through `initialize` for back-compat reasons.
+    // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
+    sync = false,
+  }: {
+    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
+    cacheAllCSFFiles?: boolean;
+    sync?: boolean;
+  }): MaybePromise<void> {
     const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
-    this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, projectAnnotations, fetchStoryIndex });
+    if (sync) {
+      this.storyStore.initialize({ projectAnnotations, cacheAllCSFFiles, sync: true });
+      // NOTE: we don't await this, but return the promise so the caller can await it if they want
+      return this.setupListenersAndRenderSelection();
+    }
+
+    return this.storyStore
+      .initialize({ projectAnnotations, cacheAllCSFFiles, sync: false })
+      .then(() => this.setupListenersAndRenderSelection());
   }
 
   getProjectAnnotationsOrRenderError(
@@ -89,23 +122,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.renderPreviewEntryError(err);
       return undefined;
     }
-  }
-
-  // We have a second "sync" code path through `initialize` for back-compat reasons.
-  // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
-  initialize({
-    cacheAllCSFFiles = false,
-    sync = false,
-  }: { cacheAllCSFFiles?: boolean; sync?: boolean } = {}): MaybePromise<void> {
-    if (sync) {
-      this.storyStore.initialize({ cacheAllCSFFiles, sync: true });
-      // NOTE: we don't await this, but return the promise so the caller can await it if they want
-      return this.setupListenersAndRenderSelection();
-    }
-
-    return this.storyStore
-      .initialize({ cacheAllCSFFiles, sync: false })
-      .then(() => this.setupListenersAndRenderSelection());
   }
 
   async setupListenersAndRenderSelection() {
@@ -304,6 +320,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
     });
+    const renderingStoryPromises: Promise<void>[] = [];
     const docsContext = {
       id,
       title,
@@ -313,6 +330,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       loadStory: (storyId: StoryId) => this.storyStore.loadStory({ storyId }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
+      // Keep track of the stories that are rendered by the <Story/> component and don't emit
+      // the DOCS_RENDERED event(below) until they have all marked themselves as rendered.
+      registerRenderingStory: () => {
+        let rendered: (v: void) => void;
+        renderingStoryPromises.push(
+          new Promise((resolve) => {
+            rendered = resolve;
+          })
+        );
+        return rendered;
+      },
       getStoryContext: (renderedStory: Story<TFramework>) =>
         ({
           ...this.storyStore.getStoryContext(renderedStory),
@@ -334,7 +362,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         <Page />
       </DocsContainer>
     );
-    ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
+    ReactDOM.render(docsElement, element, async () => {
+      await Promise.all(renderingStoryPromises);
+      this.channel.emit(Events.DOCS_RENDERED, id);
+    });
   }
 
   renderStory({ story }: { story: Story<TFramework> }) {

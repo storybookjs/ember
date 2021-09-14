@@ -9,7 +9,7 @@ import './globals';
 import { IStorybookSection, StoryFnVueReturnType } from './types';
 import { VueFramework } from './types-6-0';
 
-import render, { VALUES } from './render';
+import { renderToDOM, VALUES } from './render';
 import { extractProps } from './util';
 
 export const WRAPS = 'STORYBOOK_WRAPS';
@@ -100,7 +100,7 @@ interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   load: (...args: any[]) => void;
 }
 
-const api = start(render, { decorateStory });
+const api = start(renderToDOM, { decorateStory });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

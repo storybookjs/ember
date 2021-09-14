@@ -3,7 +3,7 @@ import reactElementToJSXString, { Options } from 'react-element-to-jsx-string';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
-import { addons } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
 import { StoryContext, ArgsStoryFn, PartialStoryFn } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 import { ReactFramework } from '@storybook/react';
@@ -175,15 +175,21 @@ export const jsxDecorator = (
   storyFn: PartialStoryFn<ReactFramework>,
   context: StoryContext<ReactFramework>
 ) => {
+  const channel = addons.getChannel();
+  const skip = skipJsxRender(context);
   const story = storyFn();
+
+  let jsx = '';
+
+  useEffect(() => {
+    if (!skip) channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
+  });
 
   // We only need to render JSX if the source block is actually going to
   // consume it. Otherwise it's just slowing us down.
-  if (skipJsxRender(context)) {
+  if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const options = {
     ...defaultOpts,
@@ -197,13 +203,10 @@ export const jsxDecorator = (
 
   const sourceJsx = mdxToJsx(storyJsx);
 
-  let jsx = '';
   const rendered = renderJsx(sourceJsx, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }
-
-  channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
 
   return story;
 };

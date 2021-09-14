@@ -8,7 +8,7 @@ export type WebProjectAnnotations<
   renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
 };
 
-export interface DocsContextProps<TFramework extends AnyFramework> {
+export interface DocsContextProps<TFramework extends AnyFramework = AnyFramework> {
   id: string;
   title: string;
   name: string;
@@ -17,6 +17,7 @@ export interface DocsContextProps<TFramework extends AnyFramework> {
   loadStory: (id: StoryId) => Promise<Story<TFramework>>;
   renderStoryToElement: PreviewWeb<TFramework>['renderStoryToElement'];
   getStoryContext: (story: Story<TFramework>) => StoryContextForLoaders<TFramework>;
+  registerRenderingStory: () => (v: void) => void;
 
   /**
    * mdxStoryNameToKey is an MDX-compiler-generated mapping of an MDX story's

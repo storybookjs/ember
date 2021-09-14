@@ -44,7 +44,7 @@ type ArgsTableProps = BaseProps | OfProps | ComponentsProps | StoryProps;
 
 const useArgs = (
   storyId: string,
-  context: DocsContextProps<any>
+  context: DocsContextProps
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
   const channel = addons.getChannel();
 
@@ -78,7 +78,7 @@ const useArgs = (
 
 export const extractComponentArgTypes = (
   component: Component,
-  { id, storyById }: DocsContextProps<any>,
+  { id, storyById }: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor
 ): StrictArgTypes => {
@@ -99,7 +99,7 @@ const isShortcut = (value?: string) => {
 
 export const getComponent = (
   props: ArgsTableProps = {},
-  { id, storyById }: DocsContextProps<any>
+  { id, storyById }: DocsContextProps
 ): Component => {
   const { of } = props as OfProps;
   const { story } = props as StoryProps;
@@ -116,7 +116,7 @@ export const getComponent = (
 const addComponentTabs = (
   tabs: Record<string, PureArgsTableProps>,
   components: Record<string, Component>,
-  context: DocsContextProps<any>,
+  context: DocsContextProps,
   include?: PropDescriptor,
   exclude?: PropDescriptor,
   sort?: SortType
@@ -158,7 +158,10 @@ export const StoryTable: FC<
         storyId = lookupStoryId(storyName, context);
       }
     }
+
     const story = useStory(storyId, context);
+    // eslint-disable-next-line prefer-const
+    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     if (!story) {
       return <div>Loading...</div>;
     }
@@ -167,8 +170,6 @@ export const StoryTable: FC<
 
     const mainLabel = getComponentName(component) || 'Story';
 
-    // eslint-disable-next-line prefer-const
-    let [args, updateArgs, resetArgs] = useArgs(storyId, context);
     let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps

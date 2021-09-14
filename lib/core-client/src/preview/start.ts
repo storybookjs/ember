@@ -25,12 +25,23 @@ export function start<TFramework extends AnyFramework>(
   const channel = createChannel({ page: 'preview' });
   addons.setChannel(channel);
 
-  let preview: PreviewWeb<TFramework>;
   const clientApi = new ClientApi<TFramework>();
+  const preview = new PreviewWeb<TFramework>({
+    importFn: (path: Path) => clientApi.importFn(path),
+    fetchStoryIndex: () => clientApi.fetchStoryIndex(),
+  });
+  let initialized = false;
+  // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
+  // direct reference to `PreviewWeb`, so we need to patch in bits
+  clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
+  clientApi.storyStore = preview.storyStore;
 
   if (globalWindow) {
     globalWindow.__STORYBOOK_CLIENT_API__ = clientApi;
     globalWindow.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+    // eslint-disable-next-line no-underscore-dangle
+    globalWindow.__STORYBOOK_PREVIEW__ = preview;
+    globalWindow.__STORYBOOK_STORY_STORE__ = preview.storyStore;
   }
 
   return {
@@ -65,24 +76,9 @@ export function start<TFramework extends AnyFramework>(
         };
       };
 
-      if (!preview) {
-        preview = new PreviewWeb({
-          importFn: (path: Path) => clientApi.importFn(path),
-          getProjectAnnotations,
-          fetchStoryIndex: () => clientApi.fetchStoryIndex(),
-        });
-        if (globalWindow) {
-          // eslint-disable-next-line no-underscore-dangle
-          globalWindow.__STORYBOOK_PREVIEW__ = preview;
-          globalWindow.__STORYBOOK_STORY_STORE__ = preview.storyStore;
-        }
-
-        // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
-        // direct reference to `PreviewWeb`, so we need to patch in bits
-        clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
-        clientApi.storyStore = preview.storyStore;
-
-        preview.initialize({ cacheAllCSFFiles: true, sync: true });
+      if (!initialized) {
+        preview.initialize({ getProjectAnnotations, cacheAllCSFFiles: true, sync: true });
+        initialized = true;
       } else {
         getProjectAnnotations();
         preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });

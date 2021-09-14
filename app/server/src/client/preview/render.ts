@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import global from 'global';
 import dedent from 'ts-dedent';
-import { Args, ArgTypes } from '@storybook/api';
 import { RenderContext } from '@storybook/store';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
+import { StoryFn, Args, ArgTypes } from '@storybook/csf';
 import { FetchStoryHtmlType, ServerFramework } from './types';
 
 const { fetch, Node } = global;
@@ -40,7 +40,9 @@ const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
   return storyArgs;
 };
 
-export async function renderMain(
+export const render: StoryFn<ServerFramework> = (args: Args) => {};
+
+export async function renderToDOM(
   {
     id,
     title,
