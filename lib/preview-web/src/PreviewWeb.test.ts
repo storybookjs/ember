@@ -484,6 +484,28 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
       });
+
+      it('emits DOCS_RENDERED after all stories are rendered', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+        const [reactDomGate, openReactDomGate] = createGate();
+
+        let rendered;
+        ReactDOM.render.mockImplementationOnce((docsElement, element, cb) => {
+          rendered = docsElement.props.context.registerRenderingStory();
+          openReactDomGate();
+          cb();
+        });
+
+        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+
+        // Wait for `ReactDOM.render()` to be called. We should still be waiting for the story
+        await reactDomGate;
+        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
+
+        rendered();
+        await waitForRender();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
+      });
     });
   });
 

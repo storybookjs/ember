@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addons, StoryContext } from '@storybook/addons';
+import { addons, StoryContext, useEffect } from '@storybook/addons';
 import { renderJsx, jsxDecorator } from './jsxDecorator';
 import { SNIPPET_RENDERED } from '../../shared';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;
+const mockedUseEffect = useEffect as jest.Mocked<typeof useEffect>;
 
 expect.addSnapshotSerializer({
   print: (val: any) => val,
@@ -168,15 +169,17 @@ describe('jsxDecorator', () => {
   let mockChannel: { on: jest.Mock; emit?: jest.Mock };
   beforeEach(() => {
     mockedAddons.getChannel.mockReset();
+    mockedUseEffect.mockImplementation((cb) => setTimeout(cb, 0));
 
     mockChannel = { on: jest.fn(), emit: jest.fn() };
     mockedAddons.getChannel.mockReturnValue(mockChannel as any);
   });
 
-  it('should render dynamically for args stories', () => {
+  it('should render dynamically for args stories', async () => {
     const storyFn = (args: any) => <div>args story</div>;
     const context = makeContext('args', { __isArgsStory: true }, {});
     jsxDecorator(storyFn, context);
+    await new Promise((r) => setTimeout(r, 0));
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
@@ -184,7 +187,7 @@ describe('jsxDecorator', () => {
     );
   });
 
-  it('should not render decorators when provided excludeDecorators parameter', () => {
+  it('should not render decorators when provided excludeDecorators parameter', async () => {
     const storyFn = (args: any) => <div>args story</div>;
     const decoratedStoryFn = (args: any) => (
       <div style={{ padding: 25, border: '3px solid red' }}>{storyFn(args)}</div>
@@ -203,6 +206,8 @@ describe('jsxDecorator', () => {
       { originalStoryFn: storyFn }
     );
     jsxDecorator(decoratedStoryFn, context);
+    await new Promise((r) => setTimeout(r, 0));
+
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
@@ -210,20 +215,24 @@ describe('jsxDecorator', () => {
     );
   });
 
-  it('should skip dynamic rendering for no-args stories', () => {
+  it('should skip dynamic rendering for no-args stories', async () => {
     const storyFn = () => <div>classic story</div>;
     const context = makeContext('classic', {}, {});
     jsxDecorator(storyFn, context);
+    await new Promise((r) => setTimeout(r, 0));
+
     expect(mockChannel.emit).not.toHaveBeenCalled();
   });
 
   // This is deprecated, but still test it
-  it('allows the snippet output to be modified by onBeforeRender', () => {
+  it('allows the snippet output to be modified by onBeforeRender', async () => {
     const storyFn = (args: any) => <div>args story</div>;
     const onBeforeRender = (dom: string) => `<p>${dom}</p>`;
     const jsx = { onBeforeRender };
     const context = makeContext('args', { __isArgsStory: true, jsx }, {});
     jsxDecorator(storyFn, context);
+    await new Promise((r) => setTimeout(r, 0));
+
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
@@ -231,12 +240,14 @@ describe('jsxDecorator', () => {
     );
   });
 
-  it('allows the snippet output to be modified by transformSource', () => {
+  it('allows the snippet output to be modified by transformSource', async () => {
     const storyFn = (args: any) => <div>args story</div>;
     const transformSource = (dom: string) => `<p>${dom}</p>`;
     const jsx = { transformSource };
     const context = makeContext('args', { __isArgsStory: true, jsx }, {});
     jsxDecorator(storyFn, context);
+    await new Promise((r) => setTimeout(r, 0));
+
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'jsx-test--args',
@@ -253,7 +264,7 @@ describe('jsxDecorator', () => {
     expect(transformSource).toHaveBeenCalledWith('<div>\n  args story\n</div>', context);
   });
 
-  it('renders MDX properly', () => {
+  it('renders MDX properly', async () => {
     // FIXME: generate this from actual MDX
     const mdxElement = {
       type: { displayName: 'MDXCreateElement' },
@@ -265,6 +276,7 @@ describe('jsxDecorator', () => {
     };
 
     jsxDecorator(() => mdxElement, makeContext('mdx-args', { __isArgsStory: true }, {}));
+    await new Promise((r) => setTimeout(r, 0));
 
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
