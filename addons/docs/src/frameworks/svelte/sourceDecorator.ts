@@ -1,5 +1,5 @@
-import { addons, StoryContext } from '@storybook/addons';
-import { ArgTypes, Args } from '@storybook/api';
+import { addons, useEffect } from '@storybook/addons';
+import { ArgTypes, Args, StoryContext, AnyFramework } from '@storybook/csf';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 
@@ -8,7 +8,7 @@ import { SourceType, SNIPPET_RENDERED } from '../../shared';
  *
  * @param context StoryContext
  */
-const skipSourceRender = (context: StoryContext) => {
+const skipSourceRender = (context: StoryContext<AnyFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -144,14 +144,21 @@ function getWrapperProperties(component: any) {
  * @param storyFn Fn
  * @param context  StoryContext
  */
-export const sourceDecorator = (storyFn: any, context: StoryContext) => {
+export const sourceDecorator = (storyFn: any, context: StoryContext<AnyFramework>) => {
+  const channel = addons.getChannel();
+  const skip = skipSourceRender(context);
   const story = storyFn();
 
-  if (skipSourceRender(context)) {
+  let source: string;
+  useEffect(() => {
+    if (!skip && source) {
+      channel.emit(SNIPPET_RENDERED, (context || {}).id, source);
+    }
+  });
+
+  if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const { parameters = {}, args = {} } = context || {};
   let { Component: component = {} } = story;
@@ -161,11 +168,7 @@ export const sourceDecorator = (storyFn: any, context: StoryContext) => {
     component = parameters.component;
   }
 
-  const source = generateSvelteSource(component, args, context?.argTypes, slotProperty);
-
-  if (source) {
-    channel.emit(SNIPPET_RENDERED, (context || {}).id, source);
-  }
+  source = generateSvelteSource(component, args, context?.argTypes, slotProperty);
 
   return story;
 };

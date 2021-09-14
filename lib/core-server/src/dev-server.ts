@@ -37,7 +37,7 @@ export async function storybookDevServer(options: Options) {
   await useStatics(router, options);
 
   const features = await options.presets.apply<StorybookConfig['features']>('features');
-  if (features?.buildStoriesJson) {
+  if (features?.buildStoriesJson || features?.storyStoreV7) {
     await useStoriesJson(router, options);
   }
 

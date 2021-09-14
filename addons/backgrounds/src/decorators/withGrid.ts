@@ -1,6 +1,7 @@
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
-import { StoryFn as StoryFunction, StoryContext, useMemo, useEffect } from '@storybook/addons';
+import { useMemo, useEffect } from '@storybook/addons';
+import { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 
 import { clearStyles, addGridStyle } from '../helpers';
 import { PARAM_KEY as BACKGROUNDS_PARAM_KEY } from '../constants';
@@ -15,7 +16,10 @@ const deprecatedCellSizeWarning = deprecate(
   `
 );
 
-export const withGrid = (StoryFn: StoryFunction, context: StoryContext) => {
+export const withGrid = (
+  StoryFn: StoryFunction<AnyFramework>,
+  context: StoryContext<AnyFramework>
+) => {
   const { globals, parameters } = context;
   const gridParameters = parameters[BACKGROUNDS_PARAM_KEY].grid;
   const isActive = globals[BACKGROUNDS_PARAM_KEY]?.grid === true && gridParameters.disable !== true;

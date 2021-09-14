@@ -1,19 +1,21 @@
+import { AnyFramework } from '@storybook/csf';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
-import { ClientApi as ClientApiThing } from '@storybook/client-api';
+import { ClientApi as ClientApiClass } from '@storybook/client-api';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
 import { SupportedFramework } from './SupportedFramework';
 
 export type RenderTree = (story: any, context?: any, options?: any) => any;
 
-export interface ClientApi extends ClientStoryApi<unknown> {
+export interface ClientApi<TFramework extends AnyFramework>
+  extends ClientStoryApi<TFramework['storyResult']> {
   configure(loader: Loadable, module: NodeModule | false, showDeprecationWarning?: boolean): void;
   forceReRender(): void;
-  clearDecorators: ClientApiThing['clearDecorators'];
-  getStorybook: ClientApiThing['getStorybook'];
-  setAddon: ClientApiThing['setAddon'];
-  raw: ClientApiThing['raw'];
-  addArgsEnhancer: ClientApiThing['addArgsEnhancer'];
-  addArgTypesEnhancer: ClientApiThing['addArgTypesEnhancer'];
+  clearDecorators: ClientApiClass<TFramework>['clearDecorators'];
+  getStorybook: ClientApiClass<TFramework>['getStorybook'];
+  setAddon: ClientApiClass<TFramework>['setAddon'];
+  addArgsEnhancer: ClientApiClass<TFramework>['addArgsEnhancer'];
+  addArgTypesEnhancer: ClientApiClass<TFramework>['addArgTypesEnhancer'];
+  raw: ClientApiClass<TFramework>['raw'];
 }
 
 export interface Loader {
@@ -23,7 +25,7 @@ export interface Loader {
     framework: SupportedFramework;
     renderTree: RenderTree;
     renderShallowTree: any;
-    storybook: ClientApi;
+    storybook: ClientApi<AnyFramework>;
   };
   test: (options: StoryshotsOptions) => boolean;
 }

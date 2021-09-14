@@ -50,7 +50,7 @@ export const toRequireContext = (input: any) => {
         const match = ['^\\.', glob.startsWith('**') ? '' : '\\/', source.substring(1)].join('');
         const recursive = glob.includes('**') || glob.split('/').length > 1;
 
-        return { path: base, recursive, match };
+        return { path: base, recursive, match, regex };
       }
 
       throw new Error(`Invalid glob: >> ${input} >> ${regex}`);

@@ -1,7 +1,9 @@
 <h1>Migration</h1>
 
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [Story Store v7](#story-store-v7)
   - [Babel mode v7](#babel-mode-v7)
+  - [Loader behavior with args changes](#loader-behaviour-with-args-changes)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -166,6 +168,42 @@
 
 ## From version 6.3.x to 6.4.0
 
+### Story Store v7
+
+SB6.4 introduces an opt-in feature flag, `features.storyStoreV7`, which loads stories in an "on demand" way (that is when rendered), rather than up front when the Storybook is booted. This way of operating will become the default in 7.0 and will likely be switched to opt-out in that version.
+
+The key benefit of the on demand store is that stories are code-split automatically (in `builder-webpack4` and `builder-webpack5`), which allows for much smaller bundle sizes, faster rendering, and improved general performance via various opt-in Webpack features.
+
+The on-demand store relies on the "story index" data structure which is generated in the server (node) via static code analysis. As such, it has the following limitations:
+
+- Does not work with `storiesOf()`
+- Does not work if you used dynamic story names or component titles.
+
+However, the `autoTitle` feature is supported.
+
+#### Behavioral differences
+
+The key behavioral differences of the v7 store are:
+
+- `SET_STORIES` is not emitted on boot up. Instead the manager loads the story index independenly.
+- A new event `STORY_PREPARED` is emitted when a story is rendered for the first time, which contains metadata about the story, such as `parameters`.
+- All "entire" store APIs such as `extract()` need to be proceeded by an async call to `loadAllCSFFiles()` which fetches all CSF files and processes them.
+
+#### Using the v7 store
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    storyStoreV7: true,
+  },
+};
+```
+
+NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
+
 ### Babel mode v7
 
 SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
@@ -196,6 +234,10 @@ npx sb@next babelrc
 ```
 
 This will create a `.babelrc.json` file. This file includes a bunch of babel plugins, so you may need to add new package devDependencies accordingly.
+
+### Loader behavior with args changes
+
+In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
 
 ## From version 6.2.x to 6.3.0
 

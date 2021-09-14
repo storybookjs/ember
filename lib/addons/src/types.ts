@@ -1,80 +1,45 @@
-import { HooksContext } from './hooks';
+import {
+  AnyFramework,
+  InputType,
+  StoryContext as StoryContextForFramework,
+  LegacyStoryFn as LegacyStoryFnForFramework,
+  PartialStoryFn as PartialStoryFnForFramework,
+  ArgsStoryFn as ArgsStoryFnForFramework,
+  StoryFn as StoryFnForFramework,
+  DecoratorFunction as DecoratorFunctionForFramework,
+  LoaderFunction as LoaderFunctionForFramework,
+  StoryId,
+  StoryKind,
+  StoryName,
+  Args,
+} from '@storybook/csf';
+
 import { Addon } from './index';
 
-export enum types {
-  TAB = 'tab',
-  PANEL = 'panel',
-  TOOL = 'tool',
-  TOOLEXTRA = 'toolextra',
-  PREVIEW = 'preview',
-  NOTES_ELEMENT = 'notes-element',
+// NOTE: The types exported from this file are simplified versions of the types exported
+// by @storybook/csf, with the simpler form retained for backwards compatibility.
+// We will likely start exporting the more complex <StoryFnReturnType> based types in 7.0
+
+export type {
+  StoryId,
+  StoryKind,
+  StoryName,
+  StoryIdentifier,
+  ViewMode,
+  Args,
+} from '@storybook/csf';
+
+export interface ArgType<TArg = unknown> extends InputType {
+  defaultValue?: TArg;
 }
 
-export type Types = types | string;
-
-export function isSupportedType(type: Types): boolean {
-  return !!Object.values(types).find((typeVal) => typeVal === type);
-}
-
-export type StoryId = string;
-export type StoryKind = string;
-export type StoryName = string;
-export type ViewMode = 'story' | 'docs';
-
-export interface Parameters {
-  fileName?: string;
-  options?: OptionsParameter;
-  /** The layout property defines basic styles added to the preview body where the story is rendered. If you pass 'none', no styles are applied. */
-  layout?: 'centered' | 'fullscreen' | 'padded' | 'none';
-  docsOnly?: boolean;
-  [key: string]: any;
-}
-
-// This is duplicated in @storybook/api because there is no common place to put types (manager/preview)
-// We cannot import from @storybook/api here because it will lead to manager code (i.e. emotion) imported in the preview
-export interface Args {
-  [key: string]: any;
-}
-
-export interface ArgType<Arg = unknown> {
-  name?: string;
-  description?: string;
-  defaultValue?: Arg;
-  [key: string]: any;
-}
-
-export type ArgTypes<GenericArgs = Args> = {
-  [key in keyof Partial<GenericArgs>]: ArgType<GenericArgs[key]>;
+export type ArgTypes<TArgs = Args> = {
+  [key in keyof Partial<TArgs>]: ArgType<TArgs[key]>;
 } &
   {
     // for custom defined args
     [key in string]: ArgType<unknown>;
   };
-
-export interface StoryIdentifier {
-  id: StoryId;
-  kind: StoryKind;
-  name: StoryName;
-}
-
-export type StoryContextUpdate = Partial<StoryContext>;
-export type StoryContext = StoryIdentifier & {
-  [key: string]: any;
-  parameters: Parameters;
-  args: Args;
-  argTypes: ArgTypes;
-  globals: Args;
-  hooks?: HooksContext;
-  viewMode?: ViewMode;
-  originalStoryFn?: ArgsStoryFn;
-};
-
-export interface WrapperSettings {
-  options: OptionsParameter;
-  parameters: {
-    [key: string]: any;
-  };
-}
 
 export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
 export type StorySortMethod = 'configure' | 'alphabetical';
@@ -98,19 +63,59 @@ export interface OptionsParameter extends Object {
   [key: string]: any;
 }
 
-export type StoryGetter = (context: StoryContext) => any;
+export interface Parameters {
+  fileName?: string;
+  options?: OptionsParameter;
+  /** The layout property defines basic styles added to the preview body where the story is rendered. If you pass 'none', no styles are applied. */
+  layout?: 'centered' | 'fullscreen' | 'padded' | 'none';
+  docsOnly?: boolean;
+  [key: string]: any;
+}
 
-// This is the type of story function passed to a decorator -- does not rely on being passed any context
-export type PartialStoryFn<ReturnType = unknown> = (p?: StoryContextUpdate) => ReturnType;
-// This is a passArgsFirst: false user story function
-export type LegacyStoryFn<ReturnType = unknown> = (p?: StoryContext) => ReturnType;
-// This is a passArgsFirst: true user story function
-export type ArgsStoryFn<ReturnType = unknown> = (a?: Args, p?: StoryContext) => ReturnType;
-// This is either type of user story function
-export type StoryFn<ReturnType = unknown> = LegacyStoryFn<ReturnType> | ArgsStoryFn<ReturnType>;
+export type StoryContext = StoryContextForFramework<AnyFramework>;
+export type StoryContextUpdate = Partial<StoryContext>;
+
+type ReturnTypeFramework<ReturnType> = { component: any; storyResult: ReturnType };
+export type PartialStoryFn<ReturnType = unknown> = PartialStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type LegacyStoryFn<ReturnType = unknown> = LegacyStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type ArgsStoryFn<ReturnType = unknown> = ArgsStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type StoryFn<ReturnType = unknown> = StoryFnForFramework<ReturnTypeFramework<ReturnType>>;
+
+export type DecoratorFunction<StoryFnReturnType = unknown> = DecoratorFunctionForFramework<
+  ReturnTypeFramework<StoryFnReturnType>
+>;
+export type LoaderFunction = LoaderFunctionForFramework<ReturnTypeFramework<unknown>>;
+
+export enum types {
+  TAB = 'tab',
+  PANEL = 'panel',
+  TOOL = 'tool',
+  TOOLEXTRA = 'toolextra',
+  PREVIEW = 'preview',
+  NOTES_ELEMENT = 'notes-element',
+}
+
+export type Types = types | string;
+
+export function isSupportedType(type: Types): boolean {
+  return !!Object.values(types).find((typeVal) => typeVal === type);
+}
+
+export interface WrapperSettings {
+  options: object;
+  parameters: {
+    [key: string]: any;
+  };
+}
 
 export type StoryWrapper = (
-  getStory: StoryGetter,
+  storyFn: LegacyStoryFn,
   context: StoryContext,
   settings: WrapperSettings
 ) => any;
@@ -132,7 +137,20 @@ export interface ClientApiAddons<StoryFnReturnType> {
   [key: string]: ClientApiAddon<StoryFnReturnType>;
 }
 
-export type ClientApiReturnFn<StoryFnReturnType> = (...args: any[]) => StoryApi<StoryFnReturnType>;
+// Old types for getStorybook()
+export interface IStorybookStory {
+  name: string;
+  render: (context: any) => any;
+}
+
+export interface IStorybookSection {
+  kind: string;
+  stories: IStorybookStory[];
+}
+
+export type ClientApiReturnFn<StoryFnReturnType = unknown> = (
+  ...args: any[]
+) => StoryApi<StoryFnReturnType>;
 
 export interface StoryApi<StoryFnReturnType = unknown> {
   kind: StoryKind;
@@ -146,18 +164,6 @@ export interface StoryApi<StoryFnReturnType = unknown> {
   addParameters: (parameters: Parameters) => StoryApi<StoryFnReturnType>;
   [k: string]: string | ClientApiReturnFn<StoryFnReturnType>;
 }
-
-export type DecoratorFunction<StoryFnReturnType = unknown> = (
-  fn: PartialStoryFn<StoryFnReturnType>,
-  c: StoryContext
-) => ReturnType<LegacyStoryFn<StoryFnReturnType>>;
-
-export type LoaderFunction = (c: StoryContext) => Promise<Record<string, any>>;
-
-export type DecorateStoryFunction<StoryFnReturnType = unknown> = (
-  storyFn: LegacyStoryFn<StoryFnReturnType>,
-  decorators: DecoratorFunction<StoryFnReturnType>[]
-) => LegacyStoryFn<StoryFnReturnType>;
 
 export interface ClientStoryApi<StoryFnReturnType = unknown> {
   storiesOf(kind: StoryKind, module: NodeModule): StoryApi<StoryFnReturnType>;

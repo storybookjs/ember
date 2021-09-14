@@ -55,20 +55,22 @@ export class RendererService {
    * @param forced {boolean} If :
    * - true render will only use the StoryFn `props' in storyProps observable that will update sotry's component/template properties. Improves performance without reloading the whole module&component if props changes
    * - false fully recharges or initializes angular module & component
-   * @param parameters {Parameters}
+   * @param component {Parameters}
    */
   public async render({
     storyFnAngular,
     forced,
+    component,
     parameters,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
+    component?: any;
     parameters: Parameters;
   }) {
     const storyProps$ = new BehaviorSubject<ICollection>(storyFnAngular.props);
     const moduleMetadata = getStorybookModuleMetadata(
-      { storyFnAngular, parameters, targetSelector: RendererService.SELECTOR_STORYBOOK_WRAPPER },
+      { storyFnAngular, component, targetSelector: RendererService.SELECTOR_STORYBOOK_WRAPPER },
       storyProps$
     );
 

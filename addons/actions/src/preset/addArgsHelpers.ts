@@ -1,5 +1,5 @@
 import { Args } from '@storybook/addons';
-import { ArgsEnhancer } from '@storybook/client-api';
+import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { action } from '../index';
 
 // interface ActionsParameter {
@@ -12,9 +12,9 @@ import { action } from '../index';
  * matches a regex, such as `^on.*` for react-style `onClick` etc.
  */
 
-export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
+export const inferActionsFromArgTypesRegex: ArgsEnhancer<AnyFramework> = (context) => {
   const {
-    args,
+    initialArgs,
     argTypes,
     parameters: { actions },
   } = context;
@@ -28,7 +28,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
   );
 
   return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
-    if (typeof args[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined') {
       acc[name] = action(name);
     }
     return acc;
@@ -38,9 +38,9 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer = (context) => {
 /**
  * Add action args for list of strings.
  */
-export const addActionsFromArgTypes: ArgsEnhancer = (context) => {
+export const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = (context) => {
   const {
-    args,
+    initialArgs,
     argTypes,
     parameters: { actions },
   } = context;
@@ -51,7 +51,7 @@ export const addActionsFromArgTypes: ArgsEnhancer = (context) => {
   const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType.action);
 
   return argTypesWithAction.reduce((acc, [name, argType]) => {
-    if (typeof args[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined') {
       acc[name] = action(typeof argType.action === 'string' ? argType.action : name);
     }
     return acc;

@@ -1,6 +1,6 @@
 {
   "name": "web-components-kitchen-sink",
-  "version": "6.4.0-alpha.34",
+  "version": "6.4.0-alpha.35",
   "private": true,
   "description": "",
   "keywords": [],
@@ -42,8 +42,10 @@
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",
+    "@storybook/preview-web": "portal:../../lib/preview-web",
     "@storybook/router": "portal:../../lib/router",
     "@storybook/source-loader": "portal:../../lib/source-loader",
+    "@storybook/store": "portal:../../lib/store",
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
     "@storybook/web-components": "portal:../../app/web-components",
