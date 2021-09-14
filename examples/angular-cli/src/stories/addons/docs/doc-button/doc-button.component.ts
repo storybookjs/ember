@@ -47,6 +47,37 @@ export enum ButtonAccent {
 export class DocButtonComponent<T> {
   @ViewChild('buttonRef', { static: false }) buttonRef: ElementRef;
 
+  /** Test default value. */
+  @Input()
+  public theDefaultValue = 'Default value in component';
+
+  /**
+   * Setting default value here because compodoc won't get the default value for accessors
+   * @default Another default value
+   * */
+  @Input()
+  get anotherDefaultValue() {
+    return this._anotherDefaultValue;
+  }
+
+  set anotherDefaultValue(v: string) {
+    this._anotherDefaultValue = v;
+  }
+
+  _anotherDefaultValue = 'Another default value';
+
+  /** Test null default value. */
+  @Input()
+  public aNullValue = null;
+
+  /** Test null default value. */
+  @Input()
+  public anUndefinedValue;
+
+  /** Test numeric default value. */
+  @Input()
+  public aNumericValue = 123;
+
   /** Appearance style of the button. */
   @Input()
   public appearance: 'primary' | 'secondary' = 'secondary';

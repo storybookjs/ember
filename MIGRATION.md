@@ -1,5 +1,7 @@
 <h1>Migration</h1>
 
+- [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [Babel mode v7](#babel-mode-v7)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -161,6 +163,39 @@
   - [Webpack upgrade](#webpack-upgrade)
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
+
+## From version 6.3.x to 6.4.0
+
+### Babel mode v7
+
+SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
+
+> NOTE: CRA apps using `@storybook/preset-create-react-app` use CRA's handling, so the new flag has no effect on CRA apps.
+
+In SB6.x and earlier, Storybook provided its own default configuration and inconsistently handled configurations from the user's babelrc file. This resulted in a final configuration that differs from your application's configuration AND is difficult to debug.
+
+In `babelModeV7`, Storybook no longer provides its own default configuration and is primarily configured via babelrc file, with small, incremental updates from Storybook addons.
+
+In 6.x, Storybook supported a `.storybook/babelrc` configuration option. This is no longer supported and it's up to you to reconcile this with your project babelrc.
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    babelModeV7: true,
+  },
+};
+```
+
+In the new mode, Storybook expects you to provide a configuration file. If you want a configuration file that's equivalent to the 6.x default, you can run the following command in your project directory:
+
+```sh
+npx sb@next babelrc
+```
+
+This will create a `.babelrc.json` file. This file includes a bunch of babel plugins, so you may need to add new package devDependencies accordingly.
 
 ## From version 6.2.x to 6.3.0
 

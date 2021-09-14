@@ -55,7 +55,7 @@ describe('Start Storybook Builder', () => {
     jest.clearAllMocks();
   });
 
-  it('should work', async () => {
+  it('should start storybook with angularBrowserTarget', async () => {
     const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
       browserTarget: 'angular-cli:build-2',
       port: 4400,
@@ -70,7 +70,6 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -85,6 +84,40 @@ describe('Start Storybook Builder', () => {
       staticDir: [],
       compodoc: false,
       compodocArgs: ['-e', 'json'],
+      tsConfig: 'src/tsconfig.app.json',
+    });
+  });
+
+  it('should start storybook with tsConfig', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      port: 4400,
+      compodoc: false,
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      ci: false,
+      configDir: '.storybook',
+      docsMode: false,
+      host: 'localhost',
+      https: false,
+      port: 4400,
+      quiet: false,
+      smokeTest: false,
+      sslCa: undefined,
+      sslCert: undefined,
+      sslKey: undefined,
+      staticDir: [],
+      compodoc: false,
+      compodocArgs: ['-e', 'json'],
+      tsConfig: 'path/to/tsConfig.json',
     });
   });
 
@@ -108,7 +141,6 @@ describe('Start Storybook Builder', () => {
     ]);
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -123,6 +155,7 @@ describe('Start Storybook Builder', () => {
       staticDir: [],
       compodoc: true,
       compodocArgs: ['-e', 'json'],
+      tsConfig: 'src/tsconfig.app.json',
     });
   });
 });
