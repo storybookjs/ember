@@ -35,7 +35,7 @@ NOTE for contributors: This is a curated list. Here's what qualifies:
 Learn how leading teams build design systems.
 
 - [Airbnb Dates](https://airbnb.io/react-dates/?path=/story/daterangepicker-drp--default)
-- [AnyVision UI](https://storybook.anyvision.co/)
+- [AnyVision UI](http://storybook.anyvision.co/)
 - [AppNexus Lucid](https://appnexus.github.io/lucid/?path=/docs/documentation-introduction--introduction)
 - [Audi](https://react.ui.audi/)
 - [Chakra UI](https://chakra-ui.netlify.app/?path=/story/*)
