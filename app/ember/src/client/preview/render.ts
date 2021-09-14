@@ -1,6 +1,7 @@
 import global from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext, ElementArgs, OptionsArgs } from './types';
+import { RenderContext } from '@storybook/store';
+import { OptionsArgs, EmberFramework } from './types';
 
 const { window: globalWindow, document } = global;
 
@@ -19,7 +20,7 @@ let lastPromise = app.boot();
 let hasRendered = false;
 let isRendering = false;
 
-function render(options: OptionsArgs, el: ElementArgs) {
+function render(options: OptionsArgs, el: HTMLElement) {
   if (isRendering) return;
   isRendering = true;
 
@@ -59,7 +60,10 @@ function render(options: OptionsArgs, el: ElementArgs) {
     });
 }
 
-export default function renderMain({ storyFn, kind, name, showMain, showError }: RenderContext) {
+export function renderToDOM(
+  { storyFn, kind, name, showMain, showError }: RenderContext<EmberFramework>,
+  domElement: HTMLElement
+) {
   const element = storyFn();
 
   if (!element) {
@@ -76,5 +80,5 @@ export default function renderMain({ storyFn, kind, name, showMain, showError }:
   }
 
   showMain();
-  render(element, rootEl);
+  render(element, domElement);
 }

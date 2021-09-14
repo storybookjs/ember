@@ -22,7 +22,7 @@ import { outputStats } from './utils/output-stats';
 // this only applies to this file
 jest.setTimeout(10000);
 
-const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false } }];
+const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false, storyStoreV7: false } }];
 
 jest.mock('@storybook/builder-webpack4', () => {
   const value = jest.fn();

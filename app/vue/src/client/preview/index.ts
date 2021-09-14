@@ -1,18 +1,15 @@
 /* eslint-disable prefer-destructuring */
 import Vue, { VueConstructor, ComponentOptions } from 'vue';
 import { start } from '@storybook/core/client';
-import {
-  ClientStoryApi,
-  StoryFn,
-  DecoratorFunction,
-  StoryContext,
-  Loadable,
-} from '@storybook/addons';
+import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { sanitizeStoryContextUpdate } from '@storybook/store';
 
 import './globals';
 import { IStorybookSection, StoryFnVueReturnType } from './types';
+import { VueFramework } from './types-6-0';
 
-import render, { VALUES } from './render';
+import { renderToDOM, VALUES } from './render';
 import { extractProps } from './util';
 
 export const WRAPS = 'STORYBOOK_WRAPS';
@@ -63,31 +60,20 @@ function prepare(
   });
 }
 
-const defaultContext: StoryContext = {
-  id: 'unspecified',
-  name: 'unspecified',
-  kind: 'unspecified',
-  parameters: {},
-  args: {},
-  argTypes: {},
-  globals: {},
-};
-
 function decorateStory(
-  storyFn: StoryFn<StoryFnVueReturnType>,
-  decorators: DecoratorFunction<VueConstructor>[]
-): StoryFn<VueConstructor> {
+  storyFn: LegacyStoryFn<VueFramework>,
+  decorators: DecoratorFunction<VueFramework>[]
+): LegacyStoryFn<VueFramework> {
   return decorators.reduce(
-    (decorated: StoryFn<VueConstructor>, decorator) => (context: StoryContext = defaultContext) => {
+    (decorated: LegacyStoryFn<VueFramework>, decorator) => (
+      context: StoryContext<VueFramework>
+    ) => {
       let story;
 
-      const decoratedStory = decorator(
-        ({ parameters, ...innerContext }: StoryContext = {} as StoryContext) => {
-          story = decorated({ ...context, ...innerContext });
-          return story;
-        },
-        context
-      );
+      const decoratedStory = decorator((update) => {
+        story = decorated({ ...context, ...sanitizeStoryContextUpdate(update) });
+        return story;
+      }, context);
 
       if (!story) {
         story = decorated(context);
@@ -97,14 +83,14 @@ function decorateStory(
         return story;
       }
 
-      return prepare(decoratedStory, story);
+      return prepare(decoratedStory, story as any);
     },
     (context) => prepare(storyFn(context))
   );
 }
 const framework = 'vue';
 
-interface ClientApi extends ClientStoryApi<StoryFnVueReturnType> {
+interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
@@ -114,7 +100,7 @@ interface ClientApi extends ClientStoryApi<StoryFnVueReturnType> {
   load: (...args: any[]) => void;
 }
 
-const api = start(render, { decorateStory });
+const api = start(renderToDOM, { decorateStory });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

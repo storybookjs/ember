@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addons",
-  "version": "6.4.0-alpha.34",
+  "version": "6.4.0-alpha.35",
   "description": "Storybook addons store",
   "keywords": [
     "storybook"
@@ -40,12 +40,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/api": "6.4.0-alpha.34",
-    "@storybook/channels": "6.4.0-alpha.34",
-    "@storybook/client-logger": "6.4.0-alpha.34",
-    "@storybook/core-events": "6.4.0-alpha.34",
-    "@storybook/router": "6.4.0-alpha.34",
-    "@storybook/theming": "6.4.0-alpha.34",
+    "@storybook/api": "6.4.0-alpha.35",
+    "@storybook/channels": "6.4.0-alpha.35",
+    "@storybook/client-logger": "6.4.0-alpha.35",
+    "@storybook/core-events": "6.4.0-alpha.35",
+    "@storybook/csf": "0.0.2--canary.68887a1.0",
+    "@storybook/router": "6.4.0-alpha.35",
+    "@storybook/theming": "6.4.0-alpha.35",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "regenerator-runtime": "^0.13.7"
@@ -57,6 +58,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ccd25210cd159e42110b700b0562e951bb9b3a57",
+  "gitHead": "8f65635eb105c8ef3e6ffea3c9cf6668ad34705e",
   "sbmodern": "dist/modern/public_api.js"
 }

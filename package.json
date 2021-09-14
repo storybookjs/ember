@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.4.0-alpha.34",
+  "version": "6.4.0-alpha.35",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -163,12 +163,14 @@
     "@storybook/node-logger": "workspace:*",
     "@storybook/postinstall": "workspace:*",
     "@storybook/preact": "workspace:*",
+    "@storybook/preview-web": "workspace:*",
     "@storybook/react": "workspace:*",
     "@storybook/root": "workspace:*",
     "@storybook/router": "workspace:*",
     "@storybook/semver": "^7.3.2",
     "@storybook/server": "workspace:*",
     "@storybook/source-loader": "workspace:*",
+    "@storybook/store": "workspace:*",
     "@storybook/svelte": "workspace:*",
     "@storybook/theming": "workspace:*",
     "@storybook/ui": "workspace:*",

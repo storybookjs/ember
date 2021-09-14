@@ -73,7 +73,8 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "event_click": Object {
@@ -83,7 +84,8 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "rounded": Object {
@@ -115,7 +117,8 @@ describe('Extracting Arguments', () => {
             "category": "slots",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "text": Object {

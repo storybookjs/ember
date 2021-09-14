@@ -1,19 +1,24 @@
-import { StoryContext } from '@storybook/addons';
+import { StoryContext } from '@storybook/csf';
 
 export type { RenderContext } from '@storybook/core';
 
 export type StoryFnServerReturnType = any;
 
+export type ServerFramework = {
+  component: string;
+  storyResult: StoryFnServerReturnType;
+};
+
 export type FetchStoryHtmlType = (
   url: string,
   id: string,
   params: any,
-  context: StoryContext
+  context: StoryContext<ServerFramework>
 ) => Promise<string | Node>;
 
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {
