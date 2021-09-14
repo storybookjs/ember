@@ -1,3 +1,13 @@
+## 6.4.0-alpha.35 (September 14, 2021)
+
+### Features
+
+- Core: On demand store ([#15871](https://github.com/storybookjs/storybook/pull/15871))
+
+### Bug Fixes
+
+- UI: Fix ActionButton out of position in Safari ([#15981](https://github.com/storybookjs/storybook/pull/15981))
+
 ## 6.4.0-alpha.34 (September 7, 2021)
 
 ### Features
