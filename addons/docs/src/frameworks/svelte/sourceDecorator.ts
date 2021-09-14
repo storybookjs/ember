@@ -145,6 +145,7 @@ function getWrapperProperties(component: any) {
  * @param context  StoryContext
  */
 export const sourceDecorator = (storyFn: any, context: StoryContext<AnyFramework>) => {
+  const channel = addons.getChannel();
   const skip = skipSourceRender(context);
   const story = storyFn();
 
@@ -158,8 +159,6 @@ export const sourceDecorator = (storyFn: any, context: StoryContext<AnyFramework
   if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const { parameters = {}, args = {} } = context || {};
   let { Component: component = {} } = story;

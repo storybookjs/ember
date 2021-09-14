@@ -175,10 +175,12 @@ export const jsxDecorator = (
   storyFn: PartialStoryFn<ReactFramework>,
   context: StoryContext<ReactFramework>
 ) => {
+  const channel = addons.getChannel();
   const skip = skipJsxRender(context);
   const story = storyFn();
 
   let jsx = '';
+
   useEffect(() => {
     if (!skip) channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
   });
@@ -188,8 +190,6 @@ export const jsxDecorator = (
   if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const options = {
     ...defaultOpts,
