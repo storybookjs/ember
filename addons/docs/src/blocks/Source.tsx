@@ -13,6 +13,7 @@ import { CURRENT_SELECTION } from './types';
 import { SourceType } from '../shared';
 
 import { enhanceSource } from './enhanceSource';
+import { useStories } from './useStory';
 
 export enum SourceState {
   OPEN = 'open',
@@ -42,18 +43,8 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
-const getStory = (storyId: StoryId, docsContext: DocsContextProps): Story | null => {
-  return docsContext.storyById(storyId);
-};
-
-const getSourceState = (storyIds: string[], docsContext: DocsContextProps) => {
-  const states = storyIds
-    .map((storyId) => {
-      const story = getStory(storyId, docsContext);
-      return story?.parameters.docs?.source?.state;
-    })
-    .filter(Boolean);
-
+const getSourceState = (stories: Story[]) => {
+  const states = stories.map((story) => story.parameters.docs?.source?.state).filter(Boolean);
   if (states.length === 0) return SourceState.CLOSED;
   // FIXME: handling multiple stories is a pain
   return states[0];
@@ -117,17 +108,22 @@ export const getSourceProps = (
     singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
   const targetIds = multiProps.ids || [targetId];
 
+  const stories = useStories(targetIds, docsContext);
+  if (!stories) {
+    return { error: SourceError.SOURCE_UNAVAILABLE, state: SourceState.NONE };
+  }
+
   if (!source) {
     source = targetIds
-      .map((storyId) => {
+      .map((storyId, idx) => {
         const storySource = getStorySource(storyId, sourceContext);
-        const story = getStory(storyId, docsContext);
-        return getSnippet(storySource, story);
+        const storyObj = stories[idx];
+        return getSnippet(storySource, storyObj);
       })
       .join('\n\n');
   }
 
-  const state = getSourceState(targetIds, docsContext);
+  const state = getSourceState(stories);
 
   const { docs: docsParameters = {} } = parameters;
   const { source: sourceParameters = {} } = docsParameters;

@@ -3714,12 +3714,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.4.5, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.3.4, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.4.5, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.13.6
   resolution: "@babel/runtime@npm:7.13.6"
   dependencies:
     regenerator-runtime: ^0.13.4
   checksum: 3c5c10a7beb8c501b5542b1a96629e219d67ca8eeb16f84290f3a42889805d1bb34bac32c9ce1ef312f62f5591752d986f6d933d81f17b6755f38ea9d39b02fe
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.1.2":
+  version: 7.15.4
+  resolution: "@babel/runtime@npm:7.15.4"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 2e366347254c9d3e738641d88a086cdfb1de516111e50ebbe9e6b5d8ed78d41819cf991fc0804fa50e04ae7a2157cc28ef3b4180781af5fecfe65310d7ebf301
   languageName: node
   linkType: hard
 
@@ -8151,14 +8160,15 @@ __metadata:
   linkType: hard
 
 "@storybook/design-system@npm:^5.4.7":
-  version: 5.4.8
-  resolution: "@storybook/design-system@npm:5.4.8"
+  version: 5.6.8
+  resolution: "@storybook/design-system@npm:5.6.8"
   dependencies:
     "@types/pluralize": ^0.0.29
+    "@types/prismjs": ^1.16.6
     copy-to-clipboard: ^3.3.1
     pluralize: ^8.0.0
     polished: ^3.6.4
-    prismjs: 1.20.0
+    prismjs: 1.23.0
     prop-types: ^15.5.4
     react-github-button: ^0.1.11
     react-modal: ^3.11.2
@@ -8168,7 +8178,7 @@ __metadata:
   peerDependencies:
     react: ^15.0.0 || ^16.0.0
     react-dom: ^15.0.0 || ^16.0.0
-  checksum: 57300b917ad8fed9fb6d0b39b9632bc6b3d322fb553e93f879f88bf249e6a9873b8a0793eb4858e12980d91f8dacbe15be11a818921b277ed39c3d38c9495273
+  checksum: 45d61b7fd5e8de1e8532f7372a24a0a285d33e09dfe98e6611811680deb7de1d0b608f9c64690b52d807b48ab4f88b55640cd194bca51230d9706ff08743ade8
   languageName: node
   linkType: hard
 
@@ -10343,6 +10353,13 @@ __metadata:
   version: 1.0.0
   resolution: "@types/pretty-hrtime@npm:1.0.0"
   checksum: 08a9955c33f75a865717d48543b04c0a13b54ebe7d31ffb160bc87ef018fe80e824471b0495d1970cea499ab2bb731ab2edf9d40de3ae052924aa132f0a6322c
+  languageName: node
+  linkType: hard
+
+"@types/prismjs@npm:^1.16.6":
+  version: 1.16.6
+  resolution: "@types/prismjs@npm:1.16.6"
+  checksum: c1c2d917680bbca005aa6bd9a3082e6dedb1cb667170ee3b400bcfa82924bbec87fcb41084da2ef427c31c02b4bb108708a0675539365a8ac763fb38b3bc2ac1
   languageName: node
   linkType: hard
 
@@ -19147,7 +19164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-equal@npm:^1.0.0, deep-equal@npm:^1.0.1":
+"deep-equal@npm:^1.0.0, deep-equal@npm:^1.0.1, deep-equal@npm:^1.1.1":
   version: 1.1.1
   resolution: "deep-equal@npm:1.1.1"
   dependencies:
@@ -31304,9 +31321,9 @@ fsevents@^1.2.7:
   linkType: hard
 
 "memoize-one@npm:^5.0.0":
-  version: 5.1.1
-  resolution: "memoize-one@npm:5.1.1"
-  checksum: df6b4319d402a069ef7f274729dc2390a623f444abb15f5324b558afff253b7d407015a02f69d24f133fd413c029652a9ed2645d0387c90b7419d61b32f9fb4f
+  version: 5.2.1
+  resolution: "memoize-one@npm:5.2.1"
+  checksum: fd22dbe9a978a2b4f30d6a491fc02fb90792432ad0dab840dc96c1734d2bd7c9cdeb6a26130ec60507eb43230559523615873168bcbe8fafab221c30b11d54c1
   languageName: node
   linkType: hard
 
@@ -34620,11 +34637,11 @@ fsevents@^1.2.7:
   linkType: hard
 
 "polished@npm:^3.6.4":
-  version: 3.7.1
-  resolution: "polished@npm:3.7.1"
+  version: 3.7.2
+  resolution: "polished@npm:3.7.2"
   dependencies:
     "@babel/runtime": ^7.12.5
-  checksum: e103b299070610dc67407494224e532f28508acc4b5d81dc5e1eec5a47e7216b8680b406697ff253aa109c6f59ea78f66bff6dacd38d4099cf608c12569d12c7
+  checksum: c36439946b5bfbac16c06dd7b00a89f45e07410427344e909c540ce3ddeb9b44d2ae9cc035a9d77f4551e07b9803419ae77767aec85958a0978158a95c0115d8
   languageName: node
   linkType: hard
 
@@ -36360,19 +36377,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:1.20.0":
-  version: 1.20.0
-  resolution: "prismjs@npm:1.20.0"
-  dependencies:
-    clipboard: ^2.0.0
-  dependenciesMeta:
-    clipboard:
-      optional: true
-  checksum: 5704eb49a36f10de777929bb8aedb775ae424d47b00bdac71e255d3a4c36498f7e98d9133e87a709741fc568322b31deeb43e35789e9070b4b1b1dd315e09c3f
-  languageName: node
-  linkType: hard
-
-"prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
+"prismjs@npm:1.23.0, prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
   version: 1.23.0
   resolution: "prismjs@npm:1.23.0"
   dependencies:
@@ -37549,17 +37554,17 @@ fsevents@^1.2.7:
   linkType: hard
 
 "react-modal@npm:^3.11.2":
-  version: 3.12.1
-  resolution: "react-modal@npm:3.12.1"
+  version: 3.14.3
+  resolution: "react-modal@npm:3.14.3"
   dependencies:
     exenv: ^1.2.0
-    prop-types: ^15.5.10
+    prop-types: ^15.7.2
     react-lifecycles-compat: ^3.0.0
     warning: ^4.0.3
   peerDependencies:
     react: ^0.14.0 || ^15.0.0 || ^16 || ^17
     react-dom: ^0.14.0 || ^15.0.0 || ^16 || ^17
-  checksum: 62502c9068f4b8a10f775634c41cb16ba6aa110402b08731c9bccf9785ee6452ab031a3f90d2ad8a567112707c4b8e5a80c39c7d9bdb7da094a50987a8c00f12
+  checksum: d44b3e93b8919d57d3cb1bd00baac474ed7aa92970984ca1733d67bafe1b4438c23af7ee1bbec9bf2772fc000d8a458b3ac1d7a34cff490637ce7dd3cf8e0c46
   languageName: node
   linkType: hard
 
@@ -37602,18 +37607,19 @@ fsevents@^1.2.7:
   linkType: hard
 
 "react-popper@npm:^1.3.7":
-  version: 1.3.10
-  resolution: "react-popper@npm:1.3.10"
+  version: 1.3.11
+  resolution: "react-popper@npm:1.3.11"
   dependencies:
     "@babel/runtime": ^7.1.2
     "@hypnosphi/create-react-context": ^0.3.1
+    deep-equal: ^1.1.1
     popper.js: ^1.14.4
     prop-types: ^15.6.1
     typed-styles: ^0.0.7
     warning: ^4.0.2
   peerDependencies:
     react: 0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: b9f8c3f028a04861c5427e76d86ac9d0fa052fb9d825e7378dc77fb576a70ea5689dfb9f16312ee2b77812b07c0a21951b8b0fb0ab2f29eb05b464a30850040f
+  checksum: d5dd1d0d4b5a3407134681b42a079fce525c94bce892ad177515d54a8cf64203eecbc30231476367e916aaff91221f5b6abd5afc207a86c698f35b7254178488
   languageName: node
   linkType: hard
 

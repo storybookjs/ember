@@ -4,7 +4,7 @@ import { Story, Meta } from '@storybook/web-components';
 import mdxNotes from './notes/notes.mdx';
 
 export default {
-  title: `Addons / Docs / Stories`,
+  title: 'Addons / Docs / Stories',
 } as Meta;
 
 export const Basic: Story = () => html`<div>Click docs tab to see basic docs</div>`;

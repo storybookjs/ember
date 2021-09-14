@@ -123,7 +123,7 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Cus
 };
 
 const getMetaData = (tagName: string, manifest: any) => {
-  if (manifest.version === 'experimental') {
+  if (manifest?.version === 'experimental') {
     return getMetaDataExperimental(tagName, manifest);
   }
   return getMetaDataV1(tagName, manifest);
