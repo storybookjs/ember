@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
-import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
 import { CallState, CallStates } from '../../types';
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
@@ -48,17 +47,6 @@ const StyledIconButton = styled(StyledButton)(({ theme }) => ({
   },
 }));
 
-interface AnimatedButtonProps extends ButtonProps {
-  animating?: boolean;
-}
-const StyledAnimatedIconButton = styled(StyledIconButton)<AnimatedButtonProps>(
-  ({ theme, animating }) => ({
-    svg: {
-      animation: animating && `${theme.animation.rotate360} 1000ms ease-out`,
-    },
-  })
-);
-
 const StyledSeparator = styled(Separator)({
   marginTop: 0,
 });
@@ -89,19 +77,13 @@ export const Subnav: React.FC<SubnavProps> = ({
   status,
   onPrevious,
   onNext,
-  onReplay,
   goToStart,
   goToEnd,
   storyFileName,
   hasNext,
   hasPrevious,
 }) => {
-  const buttonText = status === CallStates.ERROR ? 'Jump to error' : 'Jump to end';
-  const [isAnimating, setIsAnimating] = useState(false);
-  const animateAndReplay = () => {
-    setIsAnimating(true);
-    onReplay();
-  };
+  const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
     <StyledSubnav>
@@ -128,16 +110,9 @@ export const Subnav: React.FC<SubnavProps> = ({
         <StyledIconButton containsIcon title="Next step" onClick={onNext} disabled={!hasNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
-        <StyledAnimatedIconButton
-          containsIcon
-          title="Replay interactions"
-          onClick={animateAndReplay}
-          onAnimationEnd={() => setIsAnimating(false)}
-          animating={isAnimating}
-          data-test-id="button--replay"
-        >
-          <Icons icon="sync" />
-        </StyledAnimatedIconButton>
+        <StyledIconButton containsIcon title="Last step" onClick={goToEnd} disabled={!hasNext}>
+          <Icons icon="fastforward" />
+        </StyledIconButton>
       </Group>
       {storyFileName && (
         <Group>
