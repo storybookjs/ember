@@ -7,31 +7,46 @@ import ListItem from './ListItem.vue';
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-const ListTemplate = (args) => ({
-  components: { List, ListItem },
-  setup() {
-    return { args };
-  },
-  template: `
-    <List v-bind="args">
-      <div v-for="item in items" :key="item.title">
-        <ListItem :item="item"/>
-      </div>
-    </List>
-    `,
-});
+export default {
+  component: List,
+};
 
+//👇 The ListTemplate construct will be spread to the existing stories.
+export const ListTemplate = {
+  render: (args) => ({
+    components: { List, ListItem },
+    setup() {
+      return { ...args };
+    },
+    template: `
+      <List v-bind="args">
+        <div v-for="item in items" :key="item.title">
+          <ListItem :item="item"/>
+        </div>
+      </List>
+    `,
+  }),
+};
+
+export const Empty = {
+  ...ListTemplate,
+  args: {
+    items: [],
+  },
+};
 export const Empty = ListTemplate.bind({});
 Empty.args = {
   items: [],
 };
 
-export const OneItem = ListTemplate.bind({});
-OneItem.args = {
-  items: [
-    {
-      ...Unchecked.args,
-    },
-  ],
+export const OneItem = {
+  ...ListTemplate,
+  args: {
+    items: [
+      {
+        ...Unchecked.args,
+      },
+    ],
+  },
 };
 ```

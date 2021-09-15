@@ -5,30 +5,35 @@ import Button from './Button.svelte';
 
 export default {
   component: Button,
-  title:'Components/Button'
-}
+};
 
-export const Primary = () => ({
-  Component: Button,
-  props: {
-    background: '#ff0',
-    label: 'Button',
-  },
-});
+export const Primary = {
+  render: () => ({
+    Component: Button,
+    props: {
+      backgroundColor: '#ff0',
+      label: 'Button',
+    },
+  }),
+};
 
-export const Secondary = () => ({
-  Component: Button,
-  props: {
-    background: '#ff0',
-    label: '😄👍😍💯',
-  },
-});
+export const Secondary = {
+  render: () => ({
+    Component: Button,
+    props: {
+      backgroundColor: '#ff0',
+      label: '😄👍😍💯',
+    },
+  }),
+};
 
-export const Tertiary = () => ({
-  Component: Button,
-  props: {
-    background: '#ff0',
-    label: '📚📕📈🤓',
-  },
-});
+export const Tertiary = {
+  render: () => ({
+    Component: Button,
+    props: {
+      backgroundColor: '#ff0',
+      label: '📚📕📈🤓',
+    },
+  }),
+};
 ```

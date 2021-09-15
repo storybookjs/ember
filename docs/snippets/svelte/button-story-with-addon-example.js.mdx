@@ -4,7 +4,6 @@
 import Button from './Button.svelte';
 
 export default {
-  title: 'Button',
   //👇 Creates specific parameters for the story
   parameters: {
     myAddon: {
@@ -13,8 +12,10 @@ export default {
   },
 };
 
-export const Basic = (args) => ({
-  Component: Button,
-  props: args,
-});
+export const Basic = {
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
+};
 ```

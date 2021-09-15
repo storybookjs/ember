@@ -3,17 +3,20 @@
 
 import Page from './Page.svelte';
 
+//👇 Imports all Header stories
 import * as HeaderStories from './Header.stories';
 
 export default {
-  title: 'Page',
   component: Page,
 };
 
-const Template = (args) => ({ props: args });
-
-export const LoggedIn = Template.bind({});
-LoggedIn.args = {
-  ...HeaderStories.LoggedIn.args,
+export const LoggedIn = {
+  args: {
+    ...HeaderStories.LoggedIn.args,
+  },
+  render: (args) => ({
+    component: Page,
+    props: args,
+  }),
 };
 ```

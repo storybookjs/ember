@@ -5,12 +5,13 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'my-button',
-  template: ` <button type="button" [disabled]="isDisabled">
-    {{ content }}
-  </button>`,
+  template: `
+    <button type="button" [disabled]="isDisabled">
+      {{ content }}
+    </button>`,
   styleUrls: ['./button.css'],
 })
-export default class ButtonComponent {
+export class ButtonComponent {
   /**
    * Checks if the button should be disabled
    */

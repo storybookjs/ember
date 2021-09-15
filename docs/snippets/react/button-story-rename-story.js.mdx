@@ -5,7 +5,12 @@ import React from 'react';
 
 import { Button } from './Button';
 
-export const Primary = () => <Button primary label="Button"/>;
+export default {
+  component: Button,
+};
 
-Primary.storyName = 'I am the primary';
+export const Primary = {
+  name: 'I am the primary',
+  render: () => <Button primary label="Button" />,
+};
 ```

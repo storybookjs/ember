@@ -1,10 +1,16 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-export const PrimaryLongName = Template.bind({});
+import { Button } from './Button';
 
-PrimaryLongName.args = {
-  ...Primary.args,
-  label: 'Primary with a really long name',
-}
+export default {
+  component: Button,
+};
+
+export const PrimaryLongName = {
+  args: {
+    ...Primary.args,
+    label: 'Primary with a really long name',
+  },
+};
 ```

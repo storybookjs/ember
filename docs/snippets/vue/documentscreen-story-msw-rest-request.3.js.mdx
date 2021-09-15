@@ -3,11 +3,10 @@
 
 import { rest } from 'msw';
 
-import DocumentScreen from './DocumentScreen.vue';
+import DocumentScreen from './YourPage.vue';
 
 export default {
   component: DocumentScreen,
-  title: 'Mock Rest request with Storybook and MSW',
 };
 
 //👇The mocked data that will be used in the story
@@ -59,29 +58,37 @@ const TestData = {
   ],
 };
 
-const PageTemplate = (args) => ({
-  components: { DocumentScreen },
-  setup() {
-    return { args };
+export const MockedSuccess = {
+  parameters: {
+    msw: [
+      rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
+        return res(ctx.json(TestData));
+      }),
+    ],
   },
-  template: '<DocumentScreen v-bind="args" />',
-});
-
-export const MockedSuccess = PageTemplate.bind({});
-MockedSuccess.parameters = {
-  msw: [
-    rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
-      return res(ctx.json(TestData));
-    }),
-  ],
+  render: (args) => ({
+    components: { DocumentScreen },
+    setup() {
+      return { args };
+    },
+    template: '<DocumentScreen v-bind="args" />',
+  }),
 };
 
-export const MockedError = PageTemplate.bind({});
-MockedError.parameters = {
-  msw: [
-    rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
-      return res(ctx.delay(800), ctx.status(403));
-    }),
-  ],
+export const MockedError = {
+  parameters: {
+    msw: [
+      rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
+        return res(ctx.delay(800), ctx.status(403));
+      }),
+    ],
+  },
+  render: (args) => ({
+    components: { DocumentScreen },
+    setup() {
+      return { args };
+    },
+    template: '<DocumentScreen v-bind="args" />',
+  }),
 };
 ```

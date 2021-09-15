@@ -1,0 +1,20 @@
+```ts
+// Button.stories.ts
+
+import { Button } from './button.component';
+
+import { action } from '@storybook/addon-actions';
+
+export default {
+  component: Button,
+};
+
+export const Text = {
+  render: () => ({
+    props: {
+      label: 'Button',
+      onClick: action('clicked'),
+    },
+  }),
+};
+```

@@ -3,23 +3,40 @@
 
 import React from 'react';
 
-import List from './List';
-import ListItem from './ListItem';
+import { List } from './List';
+import { ListItem } from './ListItem';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-const ListTemplate = ({ items, ...args }) => (
-  <List>
-    {items.map((item) => (
-      <ListItem {...item} />
-    ))}
-  </List>
-);
+export default {
+  component: List,
+};
 
-export const Empty = ListTemplate.bind({});
-Empty.args = { items: [] };
+//👇 The ListTemplate construct will be spread to the existing stories.
+const ListTemplate = {
+  render: ({ items, ...args }) => {
+    return (
+      <List>
+        {items.map((item) => (
+          <ListItem {...item} />
+        ))}
+      </List>
+    );
+  },
+};
 
-export const OneItem = ListTemplate.bind({});
-OneItem.args = { items: [Unchecked.args] };
+export const Empty = {
+  ...ListTemplate,
+  args: {
+    items: [],
+  },
+};
+
+export const OneItem = {
+  ...ListTemplate,
+  args: {
+    items: [Unchecked.args],
+  },
+};
 ```

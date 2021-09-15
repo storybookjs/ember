@@ -1,12 +1,11 @@
 ```js
 // MyComponent.stories.js
 
-import MyComponent from './MyComponent.svelte';
-
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
+import MyComponent from './MyComponent.svelte';
+
 export default {
-  title: 'Stories',
   component: MyComponent,
   parameters: {
     //👇 The viewports object from the Essentials addon
@@ -19,14 +18,14 @@ export default {
   },
 };
 
-export const MyStory = (args) => ({
-  Component: MyComponent,
-  props: args,
-});
-
-MyStory.parameters = {
-  viewport: {
-    defaultViewport: 'iphonex',
+export const MyStory = {
+  render: () => ({
+    Component: MyComponent,
+  }),
+  parameters: {
+    viewport: {
+      defaultViewport: 'iphonex',
+    },
   },
 };
 ```

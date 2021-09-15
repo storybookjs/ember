@@ -1,18 +1,36 @@
 ```js
 // Table.stories.js | Table.stories.jsx
 
-const TableStory = ({ data, ...args }) => (
-  <Table {...args} >
-    {data.map(row => (<TR>{row.map(item => <TD>{item}</TD>}</TR>))}
-  </Table>
-)
+import React from 'react';
 
-export const Numeric = TableStory.bind({});
+import { Table } from './Table';
+import { TD } from './TableDataCell';
+import { TR } from './TableRow';
 
-Numeric.args = {
-  //👇 This arg is for the story component
-  data: [[1, 2, 3], [4, 5, 6]],
-  //👇 The remaining args get passed to the `Table` component
-  size: 'large',
-}
+export default {
+  component: Table,
+};
+
+export const TableStory = {
+  args: {
+    //👇 This arg is for the story component
+    data: [
+      [1, 2, 3],
+      [4, 5, 6],
+    ],
+    //👇 The remaining args get passed to the `Table` component
+    size: 'large',
+  },
+  render: ({ data, ...args }) => (
+    <Table {...args}>
+      {data.map((row) => (
+        <TR>
+          {row.map((item) => (
+            <TD>{item}</TD>
+          ))}
+        </TR>
+      ))}
+    </Table>
+  ),
+};
 ```

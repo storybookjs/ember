@@ -4,16 +4,17 @@
 import Button from './Button.svelte';
 
 export default {
-  title: 'Components/Button',
   component: Button,
-}
+};
 
-const Template = (args) => ({ Component: Button, props: args });
-
-export const Primary = Template.bind({});
-
-Primary.args = {
-  primary: true,
-  label: 'Button',
+export const Primary = {
+  args: {
+    primary: true,
+    label: 'Button',
+  },
+  render: (args) => ({
+    Component: Button,
+    props: args,
+  }),
 };
 ```

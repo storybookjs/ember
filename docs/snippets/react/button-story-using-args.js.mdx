@@ -1,16 +1,30 @@
 ```js
 // Button.stories.js | Button.stories.jsx
 
-//👇 We create a “template” of how args map to rendering
-const Template = (args) => <Button {...args} />;
+import { Button } from './Button';
 
-//👇 Each story then reuses that template
-export const Primary = Template.bind({});
-Primary.args = { background: '#ff0', label: 'Button' };
+export default {
+  component: Button,
+};
 
-export const Secondary = Template.bind({});
-Secondary.args = { ...Primary.args, label: '😄👍😍💯' };
+export const Primary = {
+  args: {
+    backgroundColor: '#ff0',
+    label: 'Button',
+  },
+};
 
-export const Tertiary = Template.bind({});
-Tertiary.args = { ...Primary.args, label: '📚📕📈🤓' };
+export const Secondary = {
+  args: {
+    ...Primary.args,
+    label: '😄👍😍💯',
+  },
+};
+
+export const Tertiary = {
+  args: {
+    ...Primary.args,
+    label: '📚📕📈🤓',
+  },
+};
 ```

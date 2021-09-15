@@ -3,10 +3,14 @@
 
 import React from 'react';
 
-import List from './List';
+import { List } from './List';
 
 //👇 Instead of importing ListItem, we import the stories
 import { Unchecked } from './ListItem.stories';
+
+export default {
+  component: List,
+};
 
 export const OneItem = (args) => (
   <List {...args}>

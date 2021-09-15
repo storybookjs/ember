@@ -5,12 +5,13 @@ import Button from './Button.vue';
 
 export default {
   component: Button,
-  title: 'Components/Button',
 };
 
-export const Primary = () => ({
-  components: { Button },
-  template: '<Button primary label="Hello World" />',
-});
-Primary.decorators = [() => ({ template: '<div style="margin: 3em;"><story /></div>' })];
+export const Primary = {
+  render: () => ({
+    components: { Button },
+    template: '<Button primary label="Hello World" />',
+  }),
+  decorators: [() => ({ template: '<div style="margin: 3em;"><story /></div>' })],
+};
 ```

@@ -9,13 +9,16 @@ import { TodoItem } from './TodoItem';
 
 export default {
   component: TodoItem,
-  title: 'Examples/Loader',
 };
 
-export const Primary = (args, { loaded: { todo } }) => <TodoItem {...args} {...todo} />;
-Primary.loaders = [
-  async () => ({
-    todo: (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
-  }),
-];
+export const Primary = {
+  render: (args, { loaded: { todo } }) => {
+    return <TodoItem {...args} {...todo} />;
+  },
+  loaders: [
+    async () => ({
+      todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+    }),
+  ],
+};
 ```

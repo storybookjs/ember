@@ -7,12 +7,18 @@ import ListItem from './ListItem.vue';
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-export const OneItem = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { List, ListItem },
-  template: '<List v-bind="$props"><ListItem v-bind="$props"/></List>',
-});
-OneItem.args = {
-  ...Unchecked.args,
+export default {
+  component: List,
+};
+
+export const OneItem = {
+  args: {
+    ...Unchecked.args,
+  },
+  render: (args, { argTypes }) => ({
+    props: Object.keys(argTypes),
+    components: { List, ListItem },
+    template: '<List v-bind="$props"><ListItem v-bind="$props"/></List>',
+  }),
 };
 ```

@@ -7,22 +7,20 @@ import fetch from 'node-fetch';
 
 export default {
   component: TodoItem,
-  title: 'Examples/Loader',
 };
 
-export const Primary = (args, { loaded: { todo } }) => {
-  return {
+export const Primary = {
+  render: (args, { loaded: { todo } }) => ({
     components: { TodoItem },
     setup() {
       return { args, todo: todo };
     },
-    template: `<TodoItem :todo="todo"/>`,
-  };
-};
-
-Primary.loaders = [
-  async () => ({
-    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+    template: '<TodoItem :todo="todo" />',
   }),
-];
+  loaders: [
+    async () => ({
+      todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+    }),
+  ],
+};
 ```

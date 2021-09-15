@@ -14,5 +14,7 @@ const image = {
   alt: 'my image',
 };
 
-export const withAnImage = () => <img src={image.src} alt={image.alt} />;
+export const WithAnImage = {
+  render: () => <img src={image.src} alt={image.alt} />,
+};
 ```

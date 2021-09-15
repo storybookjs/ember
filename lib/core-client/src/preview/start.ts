@@ -1,4 +1,5 @@
 import global from 'global';
+import deprecate from 'util-deprecate';
 import { ClientApi } from '@storybook/client-api';
 import { WebProjectAnnotations, PreviewWeb } from '@storybook/preview-web';
 import { AnyFramework, ArgsStoryFn } from '@storybook/csf';
@@ -11,6 +12,13 @@ import { Loadable } from './types';
 import { executeLoadableForChanges } from './executeLoadable';
 
 const { window: globalWindow } = global;
+
+const configureDeprecationWarning = deprecate(
+  () => {},
+  `\`configure()\` is deprecated and will be removed in Storybook 7.0. 
+Please use the \`stories\` field of \`main.js\` to load stories.
+Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-configure`
+);
 
 export function start<TFramework extends AnyFramework>(
   renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'],
@@ -52,7 +60,16 @@ export function start<TFramework extends AnyFramework>(
     clientApi,
     // This gets called each time the user calls configure (i.e. once per HMR)
     // The first time, it constructs the preview, subsequently it updates it
-    configure(framework: string, loadable: Loadable, m?: NodeModule) {
+    configure(
+      framework: string,
+      loadable: Loadable,
+      m?: NodeModule,
+      showDeprecationWarning = true
+    ) {
+      if (showDeprecationWarning) {
+        configureDeprecationWarning();
+      }
+
       clientApi.addParameters({ framework });
 
       // We need to run the `executeLoadableForChanges` function *inside* the `getProjectAnnotations

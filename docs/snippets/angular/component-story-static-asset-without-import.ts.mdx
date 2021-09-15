@@ -1,13 +1,18 @@
 ```ts
 // MyComponent.stories.ts
 
-import { Meta } from '@storybook/angular/types-6-0';
+import { MyComponent } from './MyComponent.component';
 
 export default {
-  title: 'img',
-} as Meta;
+  component: MyComponent,
+};
 
-export const withAnImage = () => ({
-  template: `<img src="/image.png" alt="my image"/>`
-});
+export const WithAnImage = {
+  render: () => ({
+    props: {
+      src: '/image.png',
+      alt: 'my image',
+    },
+  }),
+};
 ```

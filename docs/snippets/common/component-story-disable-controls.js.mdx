@@ -1,18 +1,17 @@
 ```js
 // YourComponent.stories.js | YourComponent.stories.jsx | YourComponent.stories.ts | YourComponent.stories.tsx
 
-import { YourComponent } from './your-component'
+import { YourComponent } from './YourComponent';
 
 export default {
   component: YourComponent,
-  title:'My Story',
-  argTypes:{
+  argTypes: {
     // foo is the property we want to remove from the UI
-    foo:{
-      table:{
-        disable:true
-      }
-    }
-  }
+    foo: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 };
 ```

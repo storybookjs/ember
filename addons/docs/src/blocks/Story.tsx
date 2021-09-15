@@ -148,7 +148,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     return null;
   }
 
-  if (global?.FEATURES.modernInlineRender) {
+  if (global?.FEATURES?.modernInlineRender) {
     // We do this so React doesn't complain when we replace the span in a secondary render
     const htmlContents = `<span data-is-loading-indicator="true">loading story...</span>`;
 

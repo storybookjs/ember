@@ -1,14 +1,13 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
-import { Button } from './button';
+import { Button } from './Button';
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from './icons';
 
 const arrows = { ArrowUp, ArrowDown, ArrowLeft, ArrowRight };
 
 export default {
   component: Button,
-  title: 'Button',
   argTypes: {
     arrow: {
       options: Object.keys(arrows), // An array of serializable values
@@ -21,8 +20,8 @@ export default {
           ArrowDown: 'Down',
           ArrowLeft: 'Left',
           ArrowRight: 'Right',
-        }
-      }
+        },
+      },
     },
   },
 };

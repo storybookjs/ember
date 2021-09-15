@@ -7,21 +7,26 @@ import ListItem from './ListItem.vue';
 //👇 We're importing the necessary stories from ListItem
 import { Selected, Unselected } from './ListItem.stories';
 
-export const ManyItems = (args) => ({
-  components: { List, ListItem },
-  setup() {
-    return { args };
+export default {
+  component: List,
+};
+
+export const ManyItems = {
+  args: {
+    Selected: Selected.args.isSelected,
+    Unselected: Unselected.args.isSelected,
   },
-  template: `
-    <list v-bind="args">
-      <list-item :itemProperty="Selected"/>
-      <list-item :itemProperty="Unselected"/>
-      <list-item :itemProperty="Unselected"/>
-    </list>
-    `,
-});
-ManyItems.args = {
-  Selected: Selected.args.itemProperty,
-  Unselected: Unselected.args.itemProperty,
+  render: (args) => ({
+    components: { List, ListItem },
+    setup() {
+      return { ...args };
+    },
+    template: `
+      <List v-bind="args">
+        <list-item :isSelected="Selected"/>
+        <list-item :isSelected="Unselected"/>
+        <list-item :isSelected="Unselected"/>
+      </List>`,
+  }),
 };
 ```

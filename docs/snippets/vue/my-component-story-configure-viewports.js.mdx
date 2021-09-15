@@ -3,8 +3,10 @@
 
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
+import MyComponent from './MyComponent.vue';
+
 export default {
-  title: 'Stories',
+  component: MyComponent,
   parameters: {
     //👇 The viewports object from the Essentials addon
     viewport: {
@@ -17,12 +19,15 @@ export default {
   },
 };
 
-export const myStory = () => ({
-  template: '<div />',
-});
-myStory.parameters = {
-  viewport: {
-    defaultViewport: 'iphonex',
+export const MyStory = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'iphonex',
+    },
   },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
 };
 ```

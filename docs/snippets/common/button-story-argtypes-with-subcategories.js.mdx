@@ -1,8 +1,9 @@
 ```js
 // Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
 
+import { Button } from './Button';
+
 export default {
-  title: 'Button',
   component: Button,
   argTypes: {
     // Assigns the argTypes to the Colors category
@@ -11,34 +12,34 @@ export default {
       table: {
         category: 'Colors',
         // Assigns the argTypes to a specific subcategory
-        subcategory: 'Button colors'
-      }
+        subcategory: 'Button colors',
+      },
     },
     primary: {
       table: {
         category: 'Colors',
-        subcategory: 'Button style'
-      }
+        subcategory: 'Button style',
+      },
     },
     label: {
       table: {
         category: 'Text',
-        subcategory: 'Button contents'
-      }
+        subcategory: 'Button contents',
+      },
     },
     // Assigns the argType to the Events category
     onClick: {
       table: {
         category: 'Events',
-        subcategory: 'Button Events'
-      }
+        subcategory: 'Button Events',
+      },
     },
     // Assigns the argType to the Sizes category
     size: {
       table: {
-        category: 'Sizes'
-      }
-    }
-  }
+        category: 'Sizes',
+      },
+    },
+  },
 };
 ```
