@@ -109,7 +109,7 @@ export const getSourceProps = (
   const targetIds = multiProps.ids || [targetId];
 
   const stories = useStories(targetIds, docsContext);
-  if (!stories) {
+  if (!stories.every(Boolean)) {
     return { error: SourceError.SOURCE_UNAVAILABLE, state: SourceState.NONE };
   }
 
@@ -117,13 +117,13 @@ export const getSourceProps = (
     source = targetIds
       .map((storyId, idx) => {
         const storySource = getStorySource(storyId, sourceContext);
-        const storyObj = stories[idx];
+        const storyObj = stories[idx] as Story;
         return getSnippet(storySource, storyObj);
       })
       .join('\n\n');
   }
 
-  const state = getSourceState(stories);
+  const state = getSourceState(stories as Story[]);
 
   const { docs: docsParameters = {} } = parameters;
   const { source: sourceParameters = {} } = docsParameters;
