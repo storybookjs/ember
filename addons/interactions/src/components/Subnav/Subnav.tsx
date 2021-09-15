@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
-import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
 import { CallState, CallStates } from '../../types';
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
@@ -24,6 +23,7 @@ export interface SubnavProps {
   onPrevious: () => void;
   onNext: () => void;
   onReplay: () => void;
+  goToStart: () => void;
   goToEnd: () => void;
   storyFileName?: string;
   hasPrevious: boolean;
@@ -34,29 +34,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 4,
   padding: 6,
   color: theme.color.dark,
-  '&:hover,&:focus-visible': {
-    color: theme.color.secondary,
+  '&:not(:disabled)': {
+    '&:hover,&:focus-visible': {
+      color: theme.color.secondary,
+    },
   },
 }));
 
-const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
-  '&:hover,&:focus-visible': {
-    background: transparentize(0.9, theme.color.secondary),
+  '&:not(:disabled)': {
+    '&:hover,&:focus-visible': {
+      background: transparentize(0.9, theme.color.secondary),
+    },
   },
 }));
-
-interface AnimatedButtonProps extends ButtonProps {
-  animating?: boolean;
-}
-const StyledAnimatedIconButton = styled(StyledIconButton)<AnimatedButtonProps>(
-  ({ theme, animating }) => ({
-    svg: {
-      animation: animating && `${theme.animation.rotate360} 1000ms ease-out`,
-    },
-  })
-);
 
 const StyledSeparator = styled(Separator)({
   marginTop: 0,
@@ -75,7 +68,7 @@ const Group = styled.div({
   alignItems: 'center',
 });
 
-const PlaybackButton = styled(StyledIconButton)({
+const RewindButton = styled(StyledIconButton)({
   marginLeft: 9,
 });
 
@@ -88,18 +81,13 @@ export const Subnav: React.FC<SubnavProps> = ({
   status,
   onPrevious,
   onNext,
-  onReplay,
+  goToStart,
   goToEnd,
   storyFileName,
   hasNext,
   hasPrevious,
 }) => {
-  const buttonText = status === CallStates.ERROR ? 'Jump to error' : 'Jump to end';
-  const [isAnimating, setIsAnimating] = useState(false);
-  const animateAndReplay = () => {
-    setIsAnimating(true);
-    onReplay();
-  };
+  const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
     <StyledSubnav>
@@ -112,27 +100,23 @@ export const Subnav: React.FC<SubnavProps> = ({
 
         <StyledSeparator />
 
-        <PlaybackButton
+        <RewindButton containsIcon title="Rewind" onClick={goToStart} disabled={!hasPrevious}>
+          <Icons icon="rewind" />
+        </RewindButton>
+        <StyledIconButton
           containsIcon
           title="Previous step"
           onClick={onPrevious}
           disabled={!hasPrevious}
         >
           <Icons icon="playback" />
-        </PlaybackButton>
+        </StyledIconButton>
         <StyledIconButton containsIcon title="Next step" onClick={onNext} disabled={!hasNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
-        <StyledAnimatedIconButton
-          containsIcon
-          title="Replay interactions"
-          onClick={animateAndReplay}
-          onAnimationEnd={() => setIsAnimating(false)}
-          animating={isAnimating}
-          data-test-id="button--replay"
-        >
-          <Icons icon="sync" />
-        </StyledAnimatedIconButton>
+        <StyledIconButton containsIcon title="Last step" onClick={goToEnd} disabled={!hasNext}>
+          <Icons icon="fastforward" />
+        </StyledIconButton>
       </Group>
       {storyFileName && (
         <Group>

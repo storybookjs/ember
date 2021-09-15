@@ -8,6 +8,7 @@ export default {
     onPrevious: () => {},
     onNext: () => {},
     onReplay: () => {},
+    goToStart: () => {},
     goToEnd: () => {},
     storyFileName: 'Subnav.stories.tsx',
     hasNext: true,
