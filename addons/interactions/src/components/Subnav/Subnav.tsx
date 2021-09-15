@@ -34,16 +34,20 @@ const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 4,
   padding: 6,
   color: theme.color.dark,
-  '&:hover,&:focus-visible': {
-    color: theme.color.secondary,
+  '&:not(:disabled)': {
+    '&:hover,&:focus-visible': {
+      color: theme.color.secondary,
+    },
   },
 }));
 
-const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
-  '&:hover,&:focus-visible': {
-    background: transparentize(0.9, theme.color.secondary),
+  '&:not(:disabled)': {
+    '&:hover,&:focus-visible': {
+      background: transparentize(0.9, theme.color.secondary),
+    },
   },
 }));
 
