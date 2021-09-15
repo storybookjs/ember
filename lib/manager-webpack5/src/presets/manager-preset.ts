@@ -141,8 +141,8 @@ export async function managerWebpack(
           loader: require.resolve('file-loader'),
           options: {
             name: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
         {
@@ -151,8 +151,8 @@ export async function managerWebpack(
           options: {
             limit: 10000,
             name: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
       ],

@@ -56,8 +56,8 @@ export async function createDefaultWebpackConfig(
           type: 'asset/resource',
           generator: {
             filename: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
         {
@@ -70,8 +70,8 @@ export async function createDefaultWebpackConfig(
           },
           generator: {
             filename: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
       ],
