@@ -1,6 +1,6 @@
 {
   "name": "@storybook/html",
-  "version": "6.4.0-alpha.35",
+  "version": "6.4.0-alpha.36",
   "description": "Storybook for HTML: View HTML snippets in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,13 +45,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.35",
-    "@storybook/client-api": "6.4.0-alpha.35",
-    "@storybook/core": "6.4.0-alpha.35",
-    "@storybook/core-common": "6.4.0-alpha.35",
+    "@storybook/addons": "6.4.0-alpha.36",
+    "@storybook/client-api": "6.4.0-alpha.36",
+    "@storybook/core": "6.4.0-alpha.36",
+    "@storybook/core-common": "6.4.0-alpha.36",
     "@storybook/csf": "0.0.2--canary.68887a1.0",
-    "@storybook/preview-web": "6.4.0-alpha.35",
-    "@storybook/store": "6.4.0-alpha.35",
+    "@storybook/preview-web": "6.4.0-alpha.36",
+    "@storybook/store": "6.4.0-alpha.36",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
