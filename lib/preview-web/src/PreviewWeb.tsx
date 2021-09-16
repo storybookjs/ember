@@ -494,7 +494,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // render via awaiting result of the call to `initialRender`. (We would also need to track
     // if a subsequent *re-render* is in progress, but that is less likely)
     // See also the note about cancelling below.
-    const rerenderStory = async () => {
+    const rerenderStory = async (forceRemount = false) => {
       // The story has not finished rendered the first time. The loaders are still running
       // and we will pick up the new args/globals values when renderToDOM is called.
       if (initialRenderPhase === 'init') {
@@ -513,13 +513,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       };
       const rerenderRenderContext: RenderContext<TFramework> = {
         ...renderContext,
-        forceRemount: false,
+        forceRemount,
         storyContext: rerenderStoryContext,
         storyFn: () => unboundStoryFn(rerenderStoryContext),
       };
 
       try {
         await this.renderToDOM(rerenderRenderContext, element);
+        if (forceRemount && playFunction) {
+          await playFunction(renderContext.storyContext);
+        }
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);
@@ -532,18 +535,20 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // it without having to first wait for it to finish.
     initialRender().catch((err) => renderContextWithoutStoryContext.showException(err));
 
-    // Listen to events and re-render story
-    this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
-    this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
-    this.channel.on(Events.FORCE_CLEAN_RENDER, () => {
-      this.renderSelection({ forceCleanRender: true });
-    });
+    const remountStory = () => rerenderStory(true);
     const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) rerenderStory();
     };
+
+    // Listen to events and re-render story
+    // Don't forget to unsubscribe on tear down
+    this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
+    this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
+    this.channel.on(Events.FORCE_CLEAN_RENDER, remountStory);
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
 
+    // Tear down callback
     return () => {
       // If the story is torn down (either a new story is rendered or the docs page removes it)
       // we need to consider the fact that the initial render may not be finished
@@ -556,6 +561,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
       this.channel.off(Events.FORCE_RE_RENDER, rerenderStory);
+      this.channel.off(Events.FORCE_CLEAN_RENDER, remountStory);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
     };
