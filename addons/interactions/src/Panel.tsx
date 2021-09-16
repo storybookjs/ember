@@ -4,7 +4,7 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter } from '@storybook/api';
-import { FORCE_CLEAN_RENDER } from '@storybook/core-events';
+import { FORCE_CLEAN_RENDER, SET_CURRENT_STORY, STORY_RENDERED } from '@storybook/core-events';
 import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
@@ -192,13 +192,13 @@ export const Panel: React.FC<PanelProps> = (props) => {
     [EVENTS.CALL]: (call: Call) => {
       dispatch({ type: 'call', payload: { call } });
     },
-    setCurrentStory: () => {
+    [SET_CURRENT_STORY]: () => {
       dispatch({ type: 'reset' });
     },
-    forceCleanRender: () => {
-      // dispatch({ type: 'reset' });
+    [FORCE_CLEAN_RENDER]: (type: any) => {
+      if (type !== 'debug') dispatch({ type: 'reset' });
     },
-    storyRendered: () => {
+    [STORY_RENDERED]: () => {
       dispatch({ type: 'stop' });
     },
   });
