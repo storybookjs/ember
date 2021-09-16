@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccountForm } from './AccountForm';
-import { screen, within, waitFor } from '../../dom';
+import { within, waitFor, fireEvent } from '../../dom';
 import userEvent from '../../user-event';
 import { sleep, tick } from '../../time';
 import { expect } from '../../expect';
@@ -22,8 +22,8 @@ export const Demo = (args: any) => (
 Demo.argTypes = {
   onSubmit: { action: true },
 };
-Demo.play = async ({ args }: any) => {
-  await userEvent.click(screen.getByText('Click'));
+Demo.play = async ({ args, canvasElement }: any) => {
+  await userEvent.click(within(canvasElement).getByText('Click'));
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
 };
 
@@ -35,8 +35,8 @@ export const WaitFor = (args: any) => (
 WaitFor.argTypes = {
   onSubmit: { action: true },
 };
-WaitFor.play = async ({ args }: any) => {
-  await userEvent.click(await screen.findByText('Click'));
+WaitFor.play = async ({ args, canvasElement }: any) => {
+  await userEvent.click(await within(canvasElement).findByText('Click'));
   await waitFor(() =>
     expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi))
   );
@@ -50,7 +50,9 @@ export const StandardEmailFilled = {
   ...Standard,
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
+    await fireEvent.change(canvas.getByTestId('email'), {
+      target: { value: 'michael@chromatic.com' },
+    });
     await expect({ hello: 1 }).not.toBe(new Error('cool'));
   },
 };
