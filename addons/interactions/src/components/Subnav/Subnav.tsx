@@ -100,21 +100,16 @@ export const Subnav: React.FC<SubnavProps> = ({
 
         <StyledSeparator />
 
-        <RewindButton containsIcon title="Rewind" onClick={goToStart} disabled={!hasPrevious}>
+        <RewindButton containsIcon title="Go to start" onClick={goToStart} disabled={!hasPrevious}>
           <Icons icon="rewind" />
         </RewindButton>
-        <StyledIconButton
-          containsIcon
-          title="Previous step"
-          onClick={onPrevious}
-          disabled={!hasPrevious}
-        >
+        <StyledIconButton containsIcon title="Go back" onClick={onPrevious} disabled={!hasPrevious}>
           <Icons icon="playback" />
         </StyledIconButton>
-        <StyledIconButton containsIcon title="Next step" onClick={onNext} disabled={!hasNext}>
+        <StyledIconButton containsIcon title="Go forward" onClick={onNext} disabled={!hasNext}>
           <Icons icon="playnext" />
         </StyledIconButton>
-        <StyledIconButton containsIcon title="Last step" onClick={goToEnd} disabled={!hasNext}>
+        <StyledIconButton containsIcon title="Go to end" onClick={goToEnd} disabled={!hasNext}>
           <Icons icon="fastforward" />
         </StyledIconButton>
       </Group>
