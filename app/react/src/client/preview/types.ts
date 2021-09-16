@@ -1,8 +1,7 @@
 import { ReactElement } from 'react';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-export type { RenderContext } from '@storybook/client-api';
-export type { StoryContext } from '@storybook/addons';
+export type { RenderContext } from '@storybook/store';
+export type { StoryContext } from '@storybook/csf';
 
 export interface ShowErrorArgs {
   title: string;
@@ -13,7 +12,7 @@ export type StoryFnReactReturnType = ReactElement<unknown>;
 
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {

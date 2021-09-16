@@ -74,12 +74,11 @@ class SbEmojiComponent {
   emoji = '👾';
 }
 
-export const WithComponent: Story = () => ({});
-WithComponent.parameters = {
+export const WithComponent: Story = () => ({
   // Override the default component
   // It is therefore necessary to manually declare the parent component with moduleMetadata
   component: SbEmojiComponent,
-};
+});
 WithComponent.decorators = [
   moduleMetadata({
     declarations: [SbButtonComponent],
@@ -89,10 +88,8 @@ WithComponent.decorators = [
 export const WithComponentAndArgs: Story = (args) => {
   return {
     props: args,
+    component: SbEmojiComponent,
   };
-};
-WithComponentAndArgs.parameters = {
-  component: SbEmojiComponent,
 };
 WithComponentAndArgs.decorators = [
   moduleMetadata({

@@ -1,134 +1,1118 @@
-import global from 'global';
+import Events from '@storybook/core-events';
 
-import start from './start';
+import {
+  waitForRender,
+  waitForEvents,
+  emitter,
+  mockChannel,
+} from '@storybook/preview-web/dist/cjs/PreviewWeb.mockdata';
 
-const { document, window: globalWindow } = global;
+import { start } from './start';
 
-jest.mock('@storybook/client-logger');
+jest.mock('@storybook/preview-web/dist/cjs/WebView');
+
 jest.mock('global', () => ({
+  // @ts-ignore
+  ...jest.requireActual('global'),
   history: { replaceState: jest.fn() },
-  location: { search: '' },
-  navigator: { userAgent: 'browser', platform: '' },
-  window: {
-    __STORYBOOK_CLIENT_API__: undefined,
-    addEventListener: jest.fn(),
-    postMessage: jest.fn(),
-    location: { search: '' },
-    history: { replaceState: jest.fn() },
-    matchMedia: jest.fn().mockReturnValue({ matches: false }),
-  },
   document: {
-    addEventListener: jest.fn(),
-    getElementById: jest.fn().mockReturnValue({}),
-    body: { classList: { add: jest.fn(), remove: jest.fn() }, style: {} },
-    documentElement: {},
-    location: { search: '?id=kind--story&args=a:2;b:two;c:true' },
+    location: {
+      pathname: 'pathname',
+      search: '?id=*',
+    },
+  },
+  FEATURES: {
+    breakingChangesV7: true,
   },
 }));
 
-afterEach(() => {
-  globalWindow.__STORYBOOK_CLIENT_API__ = undefined;
+jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
+jest.mock('react-dom');
+
+beforeEach(() => {
+  mockChannel.emit.mockClear();
+  // Preview doesn't clean itself up as it isn't designed to ever be stopped :shrug:
+  emitter.removeAllListeners();
 });
 
-it('returns apis', () => {
-  const render = jest.fn();
+describe('start', () => {
+  describe('when configure is called with storiesOf only', () => {
+    it('loads and renders the first story correctly', async () => {
+      const render = jest.fn();
 
-  const result = start(render);
+      const { configure, clientApi } = start(render);
 
-  expect(result).toEqual(
-    expect.objectContaining({
-      configure: expect.any(Function),
-      channel: expect.any(Object),
-      clientApi: expect.any(Object),
-      configApi: expect.any(Object),
-      forceReRender: expect.any(Function),
-    })
-  );
-});
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('Story One', jest.fn())
+          .add('Story Two', jest.fn());
 
-it('reuses the current client api when the lib is reloaded', () => {
-  const render = jest.fn();
+        clientApi
+          .storiesOf('Component B', { id: 'file2' } as NodeModule)
+          .add('Story Three', jest.fn());
+      });
 
-  const { clientApi } = start(render);
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+            "Component B": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-one",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-two",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-b",
+              "id": "component-b--story-three",
+              "initialArgs": Object {},
+              "kind": "Component B",
+              "name": "Story Three",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file2",
+                "framework": "test",
+              },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component B",
+            },
+          ],
+          "v": 2,
+        }
+      `);
 
-  const valueOfClientApi = globalWindow.__STORYBOOK_CLIENT_API__;
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-a--story-one'
+      );
 
-  const { clientApi: newClientApi } = start(render);
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'component-a--story-one',
+        }),
+        undefined
+      );
+    });
 
-  expect(clientApi).toEqual(newClientApi);
-  expect(clientApi).toEqual(valueOfClientApi);
-});
+    it('sends over docs only stories', async () => {
+      const render = jest.fn();
 
-// With async rendering we need to wait for various promises to resolve.
-// Sleeping for 0 ms allows all the async (but instantaneous) calls to run
-// through the event loop.
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const { configure, clientApi } = start(render);
 
-it('calls render when you add a story', async () => {
-  const render = jest.fn();
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('Story One', jest.fn(), { docsOnly: true, docs: {} });
+      });
 
-  const { clientApi, configApi } = start(render);
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-one",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "docs": Object {},
+                "docsOnly": true,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+    });
 
-  configApi.configure(() => {
-    clientApi.storiesOf('kind', {} as NodeModule).add('story', () => {});
-  }, {} as NodeModule);
+    it('deals with stories with "default" name', async () => {
+      const render = jest.fn();
 
-  await sleep(0);
-  expect(render).toHaveBeenCalledWith(expect.objectContaining({ kind: 'kind', name: 'story' }));
-});
+      const { configure, clientApi } = start(render);
 
-it('uses args from URL param when rendering story', async () => {
-  const render = jest.fn();
-  const argTypes = {
-    a: { type: { name: 'number' }, defaultValue: 1 },
-    b: { type: { name: 'number' }, defaultValue: 1 },
-    c: { type: { name: 'boolean' } },
-  };
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
 
-  const { clientApi, configApi } = start(render);
+      await waitForRender();
 
-  configApi.configure(() => {
-    clientApi.storiesOf('kind', {} as NodeModule).add('story', () => {}, { argTypes });
-  }, {} as NodeModule);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+    });
 
-  await sleep(0);
-  expect(render).toHaveBeenCalledWith(
-    expect.objectContaining({ kind: 'kind', name: 'story', args: { a: 2, b: NaN, c: true } })
-  );
-});
+    it('deals with storiesOf from the same file twice', async () => {
+      const render = jest.fn();
 
-it('emits an exception and shows error when your story throws', async () => {
-  const render = jest.fn().mockImplementation(() => {
-    throw new Error('Some exception');
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+        clientApi.storiesOf('Component B', { id: 'file1' } as NodeModule).add('default', jest.fn());
+        clientApi.storiesOf('Component C', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+
+      const storiesOfData = mockChannel.emit.mock.calls.find(
+        (call: [string, any]) => call[0] === Events.SET_STORIES
+      )[1];
+      expect(Object.values(storiesOfData.stories).map((s: any) => s.parameters.fileName)).toEqual([
+        'file1',
+        'file1-2',
+        'file1-3',
+      ]);
+    });
+
+    it('allows global metadata via client-api', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi } = start(render);
+
+      const loader = jest.fn(async () => ({ val: 'loaded' }));
+      const decorator = jest.fn();
+      configure('test', () => {
+        clientApi.addLoader(loader);
+        clientApi.addDecorator(decorator);
+        clientApi.addParameters({ param: 'global' });
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForRender();
+
+      expect(loader).toHaveBeenCalled();
+      expect(decorator).toHaveBeenCalled();
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          storyContext: expect.objectContaining({
+            parameters: expect.objectContaining({
+              framework: 'test',
+              param: 'global',
+            }),
+          }),
+        }),
+        undefined
+      );
+    });
+
+    it('supports forceRerender()', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
+      });
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+
+      mockChannel.emit.mockClear();
+      forceReRender();
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+    });
+
+    it('supports HMR when a story file changes', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const firstImplementation = jest.fn();
+      configure('test', () => {
+        clientApi.storiesOf('Component A', module as any).add('default', firstImplementation);
+      });
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+      expect(firstImplementation).toHaveBeenCalled();
+      expect(module.hot.accept).toHaveBeenCalled();
+      expect(disposeCallback).toBeDefined();
+
+      mockChannel.emit.mockClear();
+      disposeCallback();
+      const secondImplementation = jest.fn();
+      clientApi.storiesOf('Component A', module as any).add('default', secondImplementation);
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+      expect(secondImplementation).toHaveBeenCalled();
+    });
+
+    it('re-emits SET_STORIES when a story is added', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      configure('test', () => {
+        clientApi.storiesOf('Component A', module as any).add('default', jest.fn());
+      });
+
+      await waitForRender();
+
+      mockChannel.emit.mockClear();
+      disposeCallback();
+      clientApi
+        .storiesOf('Component A', module as any)
+        .add('default', jest.fn())
+        .add('new', jest.fn());
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--default",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--new",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "new",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "new",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+    });
+
+    it('re-emits SET_STORIES when a story file is removed', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi, forceReRender } = start(render);
+
+      let disposeCallback: () => void;
+      const moduleB = {
+        id: 'file2',
+        hot: {
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as any).add('default', jest.fn());
+        clientApi.storiesOf('Component B', moduleB as any).add('default', jest.fn());
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+            "Component B": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--default",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-b",
+              "id": "component-b--default",
+              "initialArgs": Object {},
+              "kind": "Component B",
+              "name": "default",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file2",
+                "framework": "test",
+              },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component B",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+      mockChannel.emit.mockClear();
+      disposeCallback();
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--default",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "default",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "default",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+    });
   });
 
-  const { clientApi, configApi } = start(render);
-
-  configApi.configure(() => {
-    clientApi.storiesOf('kind', {} as NodeModule).add('story1', () => {});
-  }, {} as NodeModule);
-
-  await sleep(0);
-  expect(render).toHaveBeenCalled();
-  expect(document.body.classList.add).toHaveBeenCalledWith('sb-show-errordisplay');
-});
-
-it('emits an error and shows error when your framework calls showError', async () => {
-  const error = {
-    title: 'Some error',
-    description: 'description',
+  const componentCExports = {
+    default: {
+      title: 'Component C',
+    },
+    StoryOne: jest.fn(),
+    StoryTwo: jest.fn(),
   };
-  const render = jest.fn().mockImplementation(({ showError }) => {
-    showError(error);
+
+  describe('when configure is called with CSF only', () => {
+    it('loads and renders the first story correctly', async () => {
+      const render = jest.fn();
+
+      const { configure } = start(render);
+      configure('test', () => [componentCExports]);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-one",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-c--story-one'
+      );
+
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'component-c--story-one',
+        }),
+        undefined
+      );
+    });
+
+    it('supports HMR when a story file changes', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+
+      const { configure } = start(render);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-c--story-one'
+      );
+      expect(componentCExports.StoryOne).toHaveBeenCalled();
+      expect(module.hot.accept).toHaveBeenCalled();
+      expect(disposeCallback).toBeDefined();
+
+      mockChannel.emit.mockClear();
+      disposeCallback(module.hot.data);
+      const secondImplementation = jest.fn();
+      configure(
+        'test',
+        () => [{ ...componentCExports, StoryOne: secondImplementation }],
+        module as any
+      );
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-c--story-one'
+      );
+      expect(secondImplementation).toHaveBeenCalled();
+    });
+
+    it('re-emits SET_STORIES when a story is added', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const { configure } = start(render);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForRender();
+
+      mockChannel.emit.mockClear();
+      disposeCallback(module.hot.data);
+      configure('test', () => [{ ...componentCExports, StoryThree: jest.fn() }], module as any);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-one",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-three",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Three",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+    });
+
+    it('re-emits SET_STORIES when a story file is removed', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      let disposeCallback: (data: object) => void;
+      const module = {
+        id: 'file1',
+        hot: {
+          data: {},
+          accept: jest.fn(),
+          dispose(cb: () => void) {
+            disposeCallback = cb;
+          },
+        },
+      };
+      const { configure } = start(render);
+      configure(
+        'test',
+        () => [componentCExports, { default: { title: 'Component D' }, StoryFour: jest.fn() }],
+        module as any
+      );
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+            "Component D": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-one",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-d",
+              "id": "component-d--story-four",
+              "initialArgs": Object {},
+              "kind": "Component D",
+              "name": "Story Four",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-1",
+                "framework": "test",
+              },
+              "story": "Story Four",
+              "subcomponents": undefined,
+              "title": "Component D",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+
+      mockChannel.emit.mockClear();
+      disposeCallback(module.hot.data);
+      configure('test', () => [componentCExports], module as any);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component C": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-one",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+    });
   });
 
-  const { clientApi, configApi } = start(render);
+  describe('when configure is called with a combination', () => {
+    it('loads and renders the first story correctly', async () => {
+      const render = jest.fn();
 
-  configApi.configure(() => {
-    clientApi.storiesOf('kind', {} as NodeModule).add('story', () => {});
-  }, {} as NodeModule);
+      const { configure, clientApi } = start(render);
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('Story One', jest.fn())
+          .add('Story Two', jest.fn());
 
-  await sleep(0);
-  expect(render).toHaveBeenCalled();
-  expect(document.body.classList.add).toHaveBeenCalledWith('sb-show-errordisplay');
+        clientApi
+          .storiesOf('Component B', { id: 'file2' } as NodeModule)
+          .add('Story Three', jest.fn());
+
+        return [componentCExports];
+      });
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "Component A": Object {},
+            "Component B": Object {},
+            "Component C": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-one",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-a",
+              "id": "component-a--story-two",
+              "initialArgs": Object {},
+              "kind": "Component A",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file1",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component A",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-b",
+              "id": "component-b--story-three",
+              "initialArgs": Object {},
+              "kind": "Component B",
+              "name": "Story Three",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "file2",
+                "framework": "test",
+              },
+              "story": "Story Three",
+              "subcomponents": undefined,
+              "title": "Component B",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-one",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+          ],
+          "v": 2,
+        }
+      `);
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-a--story-one'
+      );
+
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'component-a--story-one',
+        }),
+        undefined
+      );
+    });
+  });
+
+  // These tests need to be in here, as they require a convoluted hookup between
+  // a ClientApi and a StoryStore
+  describe('ClientApi.getStorybook', () => {
+    it('should transform the storybook to an array with filenames, empty', () => {
+      const { configure, clientApi } = start(jest.fn());
+
+      configure('test', () => {});
+      expect(clientApi.getStorybook()).toEqual([]);
+    });
+
+    it('should transform the storybook to an array with filenames, full', () => {
+      const { configure, clientApi } = start(jest.fn());
+
+      configure('test', () => {
+        clientApi
+          .storiesOf('kind 1', { id: 'file1' } as any)
+          .add('name 1', () => '1')
+          .add('name 2', () => '2');
+
+        clientApi
+          .storiesOf('kind 2', { id: 'file2' } as any)
+          .add('name 1', () => '1')
+          .add('name 2', () => '2');
+      });
+
+      expect(clientApi.getStorybook()).toEqual([
+        expect.objectContaining({
+          fileName: expect.any(String),
+          kind: 'kind 1',
+          stories: [
+            {
+              name: 'name 1',
+              render: expect.any(Function),
+            },
+            {
+              name: 'name 2',
+              render: expect.any(Function),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          fileName: expect.any(String),
+          kind: 'kind 2',
+          stories: [
+            {
+              name: 'name 1',
+              render: expect.any(Function),
+            },
+            {
+              name: 'name 2',
+              render: expect.any(Function),
+            },
+          ],
+        }),
+      ]);
+    });
+
+    it('reads filename from module', async () => {
+      const { configure, clientApi } = start(jest.fn());
+
+      const fn = jest.fn();
+      configure('test', () => {
+        clientApi.storiesOf('kind', { id: 'foo.js' } as NodeModule).add('name', fn);
+      });
+
+      const storybook = clientApi.getStorybook();
+
+      expect(storybook).toEqual([
+        {
+          kind: 'kind',
+          fileName: 'foo.js',
+          stories: [
+            {
+              name: 'name',
+              render: expect.any(Function),
+            },
+          ],
+        },
+      ]);
+    });
+
+    it('should stringify ids from module', async () => {
+      const { configure, clientApi } = start(jest.fn());
+
+      const fn = jest.fn();
+      configure('test', () => {
+        clientApi.storiesOf('kind', { id: 1211 } as any).add('name', fn);
+      });
+
+      const storybook = clientApi.getStorybook();
+
+      expect(storybook).toEqual([
+        {
+          kind: 'kind',
+          fileName: '1211',
+          stories: [
+            {
+              name: 'name',
+              render: expect.any(Function),
+            },
+          ],
+        },
+      ]);
+    });
+  });
 });

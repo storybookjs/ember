@@ -14,7 +14,7 @@ import readPackage from 'read-pkg-up';
 import {
   loadManagerOrAddonsFile,
   resolvePathInStorybookCache,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   es6Transpiler,
   getManagerHeadTemplate,
   getManagerMainTemplate,
@@ -113,7 +113,7 @@ export async function managerWebpack(
       hasDotenv() ? new Dotenv({ silent: true }) : null,
       // graphql sources check process variable
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }) as WebpackPluginInstance,
       // isProd &&

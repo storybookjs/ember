@@ -3,13 +3,13 @@
 exports[`Storyshots Core / Parameters / All parameters All parameters passed to story 1`] = `
 <storybook-wrapper>
   <storybook-button-component
-    _nghost-a-c43=""
+    _nghost-a-c47=""
     ng-reflect-text="Parameters are {
     \\"docs\\": {
    "
   >
     <button
-      _ngcontent-a-c43=""
+      _ngcontent-a-c47=""
     >
       Parameters are {
     "docs": {
@@ -25,6 +25,12 @@ exports[`Storyshots Core / Parameters / All parameters All parameters passed to 
         ]
       }
     },
+    "framework": "angular",
+    "globalParameter": "globalParameter",
+    "chapterParameter": "chapterParameter",
+    "storyParameter": "storyParameter",
+    "__isArgsStory": true,
+    "__id": "core-parameters-all-parameters--passed-to-story",
     "globalTypes": {
       "theme": {
         "name": "Theme",
@@ -75,14 +81,8 @@ exports[`Storyshots Core / Parameters / All parameters All parameters passed to 
         }
       }
     },
-    "globalParameter": "globalParameter",
-    "framework": "angular",
-    "chapterParameter": "chapterParameter",
     "args": {},
-    "argTypes": {},
-    "storyParameter": "storyParameter",
-    "__id": "core-parameters-all-parameters--passed-to-story",
-    "__isArgsStory": true
+    "argTypes": {}
   }
     </button>
   </storybook-button-component>

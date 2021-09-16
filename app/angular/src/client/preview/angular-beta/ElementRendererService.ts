@@ -27,12 +27,14 @@ export class ElementRendererService {
   public async renderAngularElement({
     storyFnAngular,
     parameters,
+    component,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
     parameters: Parameters;
+    component: any;
   }): Promise<CustomElementConstructor> {
     const ngModule = getStorybookModuleMetadata(
-      { storyFnAngular, parameters, targetSelector: RendererService.SELECTOR_STORYBOOK_WRAPPER },
+      { storyFnAngular, component, targetSelector: RendererService.SELECTOR_STORYBOOK_WRAPPER },
       new BehaviorSubject<ICollection>(storyFnAngular.props)
     );
 

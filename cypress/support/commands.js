@@ -117,3 +117,7 @@ Cypress.Commands.add('navigateToStory', (kind, name) => {
 Cypress.Commands.add('viewAddonPanel', (name) => {
   cy.get(`[role=tablist] button[role=tab]`).contains(name).click();
 });
+
+Cypress.Commands.add('viewAddonTab', (name) => {
+  cy.get(`[role=main] button[type=button]`).contains(name).click();
+});

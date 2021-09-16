@@ -267,6 +267,21 @@ export interface StorybookConfig {
     previewCsfV3?: boolean;
 
     /**
+     * Activate modern inline rendering
+     */
+    modernInlineRender?: boolean;
+
+    /**
+     * Activate on demand story store
+     */
+    storyStoreV7?: boolean;
+
+    /**
+     * Enable a set of planned breaking changes for SB7.0
+     */
+    breakingChangesV7?: boolean;
+
+    /**
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;

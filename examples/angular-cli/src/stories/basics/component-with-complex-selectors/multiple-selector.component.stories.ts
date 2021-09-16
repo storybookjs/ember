@@ -9,26 +9,22 @@ export default {
   title: 'Basics / Component / With Complex Selectors',
 };
 
-export const MultipleSelectors = () => ({});
-MultipleSelectors.storyName = 'multiple selectors';
-MultipleSelectors.parameters = {
+export const MultipleSelectors = () => ({
   component: MultipleSelectorComponent,
-};
+});
+MultipleSelectors.storyName = 'multiple selectors';
 
-export const AttributeSelectors = () => ({});
-AttributeSelectors.storyName = 'attribute selectors';
-AttributeSelectors.parameters = {
+export const AttributeSelectors = () => ({
   component: AttributeSelectorComponent,
-};
+});
+AttributeSelectors.storyName = 'attribute selectors';
 
-export const ClassSelectors = () => ({});
-ClassSelectors.storyName = 'class selectors';
-ClassSelectors.parameters = {
+export const ClassSelectors = () => ({
   component: ClassSelectorComponent,
-};
+});
+ClassSelectors.storyName = 'class selectors';
 
-export const MultipleClassSelectors = () => ({});
-MultipleClassSelectors.storyName = 'multiple class selectors';
-MultipleClassSelectors.parameters = {
+export const MultipleClassSelectors = () => ({
   component: MultipleClassSelectorComponent,
-};
+});
+MultipleClassSelectors.storyName = 'multiple class selectors';

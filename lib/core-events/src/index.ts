@@ -1,5 +1,7 @@
 enum events {
   CHANNEL_CREATED = 'channelCreated',
+  // There was an error executing the config, likely an bug in the user's preview.js
+  CONFIG_ERROR = 'configError',
   // When the preview boots, the first story is chosen via a selection specifier
   STORY_SPECIFIED = 'storySpecified',
   // Emitted by the preview whenever the list of stories changes (in batches)
@@ -10,6 +12,8 @@ enum events {
   CURRENT_STORY_WAS_SET = 'currentStoryWasSet',
   // Force the current story to re-render
   FORCE_RE_RENDER = 'forceReRender',
+  // The story has been loaded into the store, we have parameters/args/etc
+  STORY_PREPARED = 'storyPrepared',
   // The next 6 events are emitted by the StoryRenderer when rendering the current story
   STORY_CHANGED = 'storyChanged',
   STORY_UNCHANGED = 'storyUnchanged',
@@ -23,8 +27,11 @@ enum events {
   STORY_ARGS_UPDATED = 'storyArgsUpdated',
   // Reset either a single arg of a story all args of a story
   RESET_STORY_ARGS = 'resetStoryArgs',
-  // As above
+  // Emitted by the preview at startup once it knows the initial set of globals+globalTypes
+  SET_GLOBALS = 'setGlobals',
+  // Tell the preview to update the value of a global
   UPDATE_GLOBALS = 'updateGlobals',
+  // A global was just updated
   GLOBALS_UPDATED = 'globalsUpdated',
   REGISTER_SUBSCRIPTION = 'registerSubscription',
   // Tell the manager that the user pressed a key in the preview
@@ -46,11 +53,13 @@ export default events;
 // This is the preferred method
 export const {
   CHANNEL_CREATED,
+  CONFIG_ERROR,
   STORY_SPECIFIED,
   SET_STORIES,
   SET_CURRENT_STORY,
   CURRENT_STORY_WAS_SET,
   FORCE_RE_RENDER,
+  STORY_PREPARED,
   STORY_CHANGED,
   STORY_UNCHANGED,
   STORY_RENDERED,
@@ -60,6 +69,7 @@ export const {
   UPDATE_STORY_ARGS,
   STORY_ARGS_UPDATED,
   RESET_STORY_ARGS,
+  SET_GLOBALS,
   UPDATE_GLOBALS,
   GLOBALS_UPDATED,
   REGISTER_SUBSCRIPTION,
