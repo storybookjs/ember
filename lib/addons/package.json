@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addons",
-  "version": "6.4.0-alpha.37",
+  "version": "6.4.0-alpha.38",
   "description": "Storybook addons store",
   "keywords": [
     "storybook"
@@ -40,13 +40,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/api": "6.4.0-alpha.37",
-    "@storybook/channels": "6.4.0-alpha.37",
-    "@storybook/client-logger": "6.4.0-alpha.37",
-    "@storybook/core-events": "6.4.0-alpha.37",
+    "@storybook/api": "6.4.0-alpha.38",
+    "@storybook/channels": "6.4.0-alpha.38",
+    "@storybook/client-logger": "6.4.0-alpha.38",
+    "@storybook/core-events": "6.4.0-alpha.38",
     "@storybook/csf": "0.0.2--canary.68887a1.0",
-    "@storybook/router": "6.4.0-alpha.37",
-    "@storybook/theming": "6.4.0-alpha.37",
+    "@storybook/router": "6.4.0-alpha.38",
+    "@storybook/theming": "6.4.0-alpha.38",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "regenerator-runtime": "^0.13.7"
