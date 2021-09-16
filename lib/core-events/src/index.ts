@@ -10,8 +10,10 @@ enum events {
   SET_CURRENT_STORY = 'setCurrentStory',
   // The current story changed due to the above
   CURRENT_STORY_WAS_SET = 'currentStoryWasSet',
-  // Force the current story to re-render
+  // Force the current story to re-render, without changing args
   FORCE_RE_RENDER = 'forceReRender',
+  // Force the current story to re-render from scratch, with its initial args
+  FORCE_CLEAN_RENDER = 'forceCleanRender',
   // The story has been loaded into the store, we have parameters/args/etc
   STORY_PREPARED = 'storyPrepared',
   // The next 6 events are emitted by the StoryRenderer when rendering the current story
@@ -59,6 +61,7 @@ export const {
   SET_CURRENT_STORY,
   CURRENT_STORY_WAS_SET,
   FORCE_RE_RENDER,
+  FORCE_CLEAN_RENDER,
   STORY_PREPARED,
   STORY_CHANGED,
   STORY_UNCHANGED,

@@ -4,6 +4,7 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter } from '@storybook/api';
+import { FORCE_CLEAN_RENDER } from '@storybook/core-events';
 import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
@@ -194,6 +195,9 @@ export const Panel: React.FC<PanelProps> = (props) => {
     setCurrentStory: () => {
       dispatch({ type: 'reset' });
     },
+    forceCleanRender: () => {
+      // dispatch({ type: 'reset' });
+    },
     storyRendered: () => {
       dispatch({ type: 'stop' });
     },
@@ -237,8 +241,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
     emit(EVENTS.NEXT);
   };
   const replay = () => {
-    dispatch({ type: 'stop' });
-    emit(EVENTS.RELOAD);
+    emit(FORCE_CLEAN_RENDER);
   };
 
   const tabButton = global.document.getElementById('tabbutton-interactions');

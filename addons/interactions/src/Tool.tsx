@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useChannel } from '@storybook/api';
 import { Icons, IconButton } from '@storybook/components';
-import { styled } from '@storybook/theming';
 import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
-import { EVENTS, TOOL_ID } from './constants';
+import { FORCE_CLEAN_RENDER } from '@storybook/core-events';
+import { styled } from '@storybook/theming';
+import { TOOL_ID } from './constants';
 
 interface AnimatedButtonProps extends ButtonProps {
   animating?: boolean;
@@ -21,7 +22,7 @@ export const Tool = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const animateAndReplay = () => {
     setIsAnimating(true);
-    emit(EVENTS.RELOAD);
+    emit(FORCE_CLEAN_RENDER);
   };
 
   return (

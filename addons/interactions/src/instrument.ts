@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { addons, Channel } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
-import { IGNORED_EXCEPTION, SET_CURRENT_STORY } from '@storybook/core-events';
+import { FORCE_CLEAN_RENDER, IGNORED_EXCEPTION, SET_CURRENT_STORY } from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS } from './constants';
@@ -178,9 +178,7 @@ function initialize() {
     iframeState = global.window.__STORYBOOK_ADDON_TEST_PREVIEW__;
     sharedState = global.window.parent.__STORYBOOK_ADDON_TEST_MANAGER__;
 
-    channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
-    channel.on(EVENTS.RELOAD, () => global.window.location.reload());
-    channel.on(SET_CURRENT_STORY, () => {
+    const resetState = () => {
       iframeState.callRefsByResult = new Map(
         Array.from(iframeState.callRefsByResult.entries()).filter(([, val]) => val.retain)
       );
@@ -188,7 +186,11 @@ function initialize() {
       iframeState.next = {};
       iframeState.parentCallId = undefined;
       iframeState.forwardedException = undefined;
-    });
+    };
+
+    channel.on(FORCE_CLEAN_RENDER, resetState);
+    channel.on(SET_CURRENT_STORY, resetState);
+    channel.on(EVENTS.NEXT, () => Object.values(iframeState.next).forEach((resolve) => resolve()));
 
     initialized = true;
   } catch (e) {

@@ -262,7 +262,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   //     in which case we render it to the root element, OR
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
-  async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
+  async renderSelection({
+    persistedArgs,
+    forceCleanRender = false,
+  }: { persistedArgs?: Args; forceCleanRender?: boolean } = {}) {
     if (!this.urlStore.selection) {
       throw new Error('Cannot render story as no selection was made');
     }
@@ -291,7 +294,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (!storyChanged && !implementationChanged && !viewModeChanged) {
+    if (!storyChanged && !implementationChanged && !viewModeChanged && !forceCleanRender) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -517,11 +520,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
       try {
         await this.renderToDOM(rerenderRenderContext, element);
+        this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);
-        return;
       }
-      this.channel.emit(Events.STORY_RENDERED, id);
     };
 
     // Start the first render
@@ -533,6 +535,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // Listen to events and re-render story
     this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
     this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
+    this.channel.on(Events.FORCE_CLEAN_RENDER, () => {
+      this.renderSelection({ forceCleanRender: true });
+    });
     const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) rerenderStory();
     };

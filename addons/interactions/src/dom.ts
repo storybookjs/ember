@@ -5,17 +5,20 @@ import { instrument } from './instrument';
 
 const instrumented = instrument(dom);
 
-const { screen: _screen } = instrumented;
-Object.defineProperty(instrumented, 'screen', {
-  get() {
-    once.warn(dedent`
-      You are using Testing Library's \`screen\` object. Use \`within(canvasElement)\` instead.
+instrumented.screen = Object.entries(instrumented.screen).reduce(
+  (acc, [key, val]) =>
+    Object.defineProperty(acc, key, {
+      get() {
+        once.warn(dedent`
+          You are using Testing Library's \`screen\` object. Use \`within(canvasElement)\` instead.
 
-      More info: https://storybook.js.org/docs/react/essentials/interactions
-    `);
-    return _screen;
-  },
-});
+          More info: https://storybook.js.org/docs/react/essentials/interactions
+        `);
+        return val;
+      },
+    }),
+  instrumented.screen
+);
 
 // console.log(Object.keys(dom).join(',\n'))
 export const {
