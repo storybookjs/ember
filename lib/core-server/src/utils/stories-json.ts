@@ -41,7 +41,7 @@ async function extractStories(storiesGlobs: string[], configDir: string) {
           stories[id] = {
             title: csf.meta.title,
             name,
-            importPath: relativePath,
+            importPath: relativePath[0] === '.' ? relativePath : `./${relativePath}`,
           };
         });
       } catch (err) {

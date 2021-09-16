@@ -8,18 +8,20 @@ export function toImportFnPart(entry: NormalizedStoriesEntry) {
 
   const webpackIncludeRegex = new RegExp(regex.source.substring(1));
 
-  // NOTE: `base` looks like './src' but `path`, (and what micromatch expects)
-  // is something that starts with `src/`. So to strip off base from path, we
-  // need to drop `base.length - 1` chars.
   return dedent`
       async (path) => {
-        if (!${regex}.exec(path)) {
+        const pathBase = path.substring(0, ${base.length + 1});
+        if (pathBase !== '${base}/') {
           return;
         }
-        const remainder = path.substring(${base.length - 1});
+
+        const pathRemainder = path.substring(${base.length + 1});
+        if (!${regex}.exec(pathRemainder)) {
+          return;
+        }
         return import(
           /* webpackInclude: ${webpackIncludeRegex} */
-          '${base}/' + remainder
+          '${base}/' + pathRemainder
         );
       }
 
