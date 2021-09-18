@@ -1,9 +1,12 @@
 <h1>Migration</h1>
 
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [CSF3 enabled](#csf3-enabled)
   - [Story Store v7](#story-store-v7)
+    - [Behavioral differences](#behavioral-differences)
+    - [Using the v7 store](#using-the-v7-store)
   - [Babel mode v7](#babel-mode-v7)
-  - [Loader behavior with args changes](#loader-behaviour-with-args-changes)
+  - [Loader behavior with args changes](#loader-behavior-with-args-changes)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -167,6 +170,10 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.3.x to 6.4.0
+
+### CSF3 enabled
+
+SB6.3 introduced a feature flag, `features.previewCsfV3`, to opt-in to experimental [CSF3 syntax support](https://storybook.js.org/blog/component-story-format-3-0/). In SB6.4, CSF3 is supported regardless of `previewCsfV3`'s value. This should be a fully backwards-compatible change. The `previewCsfV3` flag has been deprecated and will be removed in SB7.0.
 
 ### Story Store v7
 

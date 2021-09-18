@@ -263,6 +263,8 @@ export interface StorybookConfig {
 
     /**
      * Activate preview of CSF v3.0
+     *
+     * @deprecated This is always on now from 6.4 regardless of the setting
      */
     previewCsfV3?: boolean;
 
