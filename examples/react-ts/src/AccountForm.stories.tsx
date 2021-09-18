@@ -2,10 +2,11 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { AccountForm, AccountFormProps } from './AccountForm';
+import { AccountForm } from './AccountForm';
 
 export default {
-  title: 'Demo/AccountForm',
+  // Title not needed due to CSF3 auto-title
+  // title: 'Demo/AccountForm',
   component: AccountForm,
   parameters: {
     layout: 'centered',
