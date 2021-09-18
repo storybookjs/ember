@@ -1,13 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import global from 'global';
 import fs from 'fs-extra';
 import { parse } from '@babel/parser';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
-
-const { FEATURES = {} } = global;
 
 const logger = console;
 interface Meta {
@@ -102,8 +99,14 @@ const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
   }
   return false;
 };
+
+export interface CsfOptions {
+  defaultTitle: string;
+}
 export class CsfFile {
   _ast: t.File;
+
+  _defaultTitle: string;
 
   _meta?: Meta;
 
@@ -117,8 +120,9 @@ export class CsfFile {
 
   _templates: Record<string, t.Expression> = {};
 
-  constructor(ast: t.File) {
+  constructor(ast: t.File, { defaultTitle }: CsfOptions) {
     this._ast = ast;
+    this._defaultTitle = defaultTitle;
   }
 
   _parseMeta(declaration: t.ObjectExpression) {
@@ -189,7 +193,7 @@ export class CsfFile {
                   self._storyAnnotations[exportName] = {};
                 }
                 let parameters;
-                if (FEATURES.previewCsfV3 && t.isObjectExpression(decl.init)) {
+                if (t.isObjectExpression(decl.init)) {
                   let __isArgsStory = true; // assume default render is an args story
                   // CSF3 object export
                   decl.init.properties.forEach((p: t.ObjectProperty) => {
@@ -248,8 +252,6 @@ export class CsfFile {
               } else {
                 self._storyAnnotations[exportName][annotationKey] = annotationValue;
               }
-            } else {
-              logger.debug(`skipping "${exportName}.${annotationKey}"`);
             }
 
             if (annotationKey === 'storyName' && t.isStringLiteral(annotationValue)) {
@@ -266,6 +268,7 @@ export class CsfFile {
     // default export can come at any point in the file, so we do this post processing last
     if (self._meta?.title || self._meta?.component) {
       const entries = Object.entries(self._stories);
+      self._meta.title = self._meta.title || this._defaultTitle;
       self._stories = entries.reduce((acc, [key, story]) => {
         if (isExportStory(key, self._meta)) {
           const id = toId(self._meta.title, storyNameFromExport(key));
@@ -303,7 +306,7 @@ export class CsfFile {
   }
 }
 
-export const loadCsf = (code: string) => {
+export const loadCsf = (code: string, options: CsfOptions) => {
   const ast = parse(code, {
     sourceType: 'module',
     // FIXME: we should get this from the project config somehow?
@@ -314,7 +317,7 @@ export const loadCsf = (code: string) => {
       'classProperties',
     ],
   });
-  return new CsfFile(ast);
+  return new CsfFile(ast, options);
 };
 
 export const formatCsf = (csf: CsfFile) => {
@@ -322,9 +325,9 @@ export const formatCsf = (csf: CsfFile) => {
   return code;
 };
 
-export const readCsf = async (fileName: string) => {
+export const readCsf = async (fileName: string, options: CsfOptions) => {
   const code = (await fs.readFile(fileName, 'utf-8')).toString();
-  return loadCsf(code);
+  return loadCsf(code, options);
 };
 
 export const writeCsf = async (fileName: string, csf: CsfFile) => {

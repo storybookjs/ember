@@ -1,4 +1,5 @@
 import stable from 'stable';
+import global from 'global';
 import {
   StoryId,
   AnyFramework,
@@ -15,10 +16,13 @@ import {
   ModuleExports,
   StoryStore,
   Story,
+  autoTitle,
 } from '@storybook/store';
 import { Comparator } from '@storybook/addons';
 
 import { storySort } from './storySort';
+
+const { STORIES = [] } = global;
 
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
@@ -129,7 +133,10 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     this.clearFilenameExports(fileName);
 
     const { default: defaultExport, __namedExportsOrder, ...namedExports } = fileExports;
-    const { id: componentId, title } = defaultExport || {};
+    // eslint-disable-next-line prefer-const
+    let { id: componentId, title } = defaultExport || {};
+
+    title = title || autoTitle(fileName, STORIES);
     if (!title) {
       throw new Error(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
@@ -142,6 +149,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       ...fileExports,
       default: {
         ...defaultExport,
+        title,
         parameters: {
           fileName,
           ...defaultExport.parameters,

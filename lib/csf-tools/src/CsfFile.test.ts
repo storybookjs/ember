@@ -3,12 +3,6 @@ import dedent from 'ts-dedent';
 import yaml from 'js-yaml';
 import { loadCsf } from './CsfFile';
 
-jest.mock('global', () => ({
-  // @ts-ignore
-  ...global,
-  FEATURES: { previewCsfV3: true },
-}));
-
 // @ts-ignore
 expect.addSnapshotSerializer({
   print: (val: any) => yaml.dump(val).trimEnd(),
@@ -16,7 +10,7 @@ expect.addSnapshotSerializer({
 });
 
 const parse = async (code: string, includeParameters?: boolean) => {
-  const { stories, meta } = loadCsf(code).parse();
+  const { stories, meta } = loadCsf(code, { defaultTitle: 'Default Title' }).parse();
   const filtered = includeParameters
     ? stories
     : stories.map(({ id, name, parameters, ...rest }) => ({ id, name, ...rest }));
@@ -146,6 +140,27 @@ describe('CsfFile', () => {
       `);
     });
 
+    it('no title', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { component: 'foo' }
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          component: foo
+          title: Default Title
+        stories:
+          - id: default-title--a
+            name: A
+          - id: default-title--b
+            name: B
+      `);
+    });
+
     it('typescript', async () => {
       expect(
         await parse(
@@ -243,7 +258,7 @@ describe('CsfFile', () => {
       const input = dedent`
         export default { title: 'foo/bar', x: 1, y: 2 };
       `;
-      const csf = loadCsf(input).parse();
+      const csf = loadCsf(input, { defaultTitle: 'Default Title' }).parse();
       expect(Object.keys(csf._metaAnnotations)).toEqual(['title', 'x', 'y']);
     });
 
@@ -256,7 +271,7 @@ describe('CsfFile', () => {
         export const B = () => {};
         B.z = 3;
     `;
-      const csf = loadCsf(input).parse();
+      const csf = loadCsf(input, { defaultTitle: 'Default Title' }).parse();
       expect(Object.keys(csf._storyAnnotations.A)).toEqual(['x', 'y']);
       expect(Object.keys(csf._storyAnnotations.B)).toEqual(['z']);
     });
@@ -274,7 +289,7 @@ describe('CsfFile', () => {
           z: 3,
         }
     `;
-      const csf = loadCsf(input).parse();
+      const csf = loadCsf(input, { defaultTitle: 'Default Title' }).parse();
       expect(Object.keys(csf._storyAnnotations.A)).toEqual(['x', 'y']);
       expect(Object.keys(csf._storyAnnotations.B)).toEqual(['z']);
     });

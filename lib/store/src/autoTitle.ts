@@ -1,18 +1,19 @@
-import type { NormalizedStoriesEntry } from '@storybook/core-common';
-import global from 'global';
 import startCase from 'lodash/startCase';
 import path from 'path';
 import slash from 'slash';
 
-const { FEATURES = {}, STORIES = [] } = global;
-
-interface Meta {
-  title?: string;
+// FIXME: types duplicated type from `core-common', to be
+// removed when we remove v6 back-compat.
+interface StoriesSpecifier {
+  directory: string;
+  files?: string;
+  titlePrefix?: string;
 }
 
-const autoTitleV2 = (meta: Meta, fileName: string) => {
-  return meta.title;
-};
+interface NormalizedStoriesSpecifier {
+  glob: string;
+  specifier?: StoriesSpecifier;
+}
 
 const stripExtension = (titleWithExtension: string) => {
   let parts = titleWithExtension.split('/');
@@ -31,7 +32,7 @@ const startCaseTitle = (title: string) => {
   return title.split('/').map(startCase).join('/');
 };
 
-export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEntry) => {
+export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesSpecifier) => {
   const { directory, titlePrefix = '' } = entry.specifier || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
@@ -46,13 +47,10 @@ export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesEnt
   return undefined;
 };
 
-const autoTitleV3 = (meta: Meta, fileName: string) => {
-  if (meta.title) return meta.title;
-  for (let i = 0; i < STORIES.length; i += 1) {
-    const title = autoTitleFromEntry(fileName, STORIES[i]);
+export const autoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpecifier[]) => {
+  for (let i = 0; i < storiesEntries.length; i += 1) {
+    const title = autoTitleFromEntry(fileName, storiesEntries[i]);
     if (title) return title;
   }
   return undefined;
 };
-
-export const autoTitle = FEATURES.previewCsfV3 ? autoTitleV3 : autoTitleV2;

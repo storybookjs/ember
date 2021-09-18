@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import type { StoriesEntry, NormalizedStoriesEntry } from '../types';
+import type { StoriesEntry, NormalizedStoriesSpecifier } from '../types';
 
 const DEFAULT_FILES = '*.stories.@(mdx|tsx|ts|jsx|js)';
 const DEFAULT_TITLE_PREFIX = '';
@@ -19,7 +19,7 @@ const isDirectory = (configDir: string, entry: string) => {
 export const normalizeStoriesEntry = (
   entry: StoriesEntry,
   configDir: string
-): NormalizedStoriesEntry => {
+): NormalizedStoriesSpecifier => {
   let glob;
   let directory;
   let files;
@@ -61,7 +61,7 @@ interface NormalizeOptions {
  * directory.
  */
 export const normalizeDirectory = (
-  entry: NormalizedStoriesEntry,
+  entry: NormalizedStoriesSpecifier,
   { configDir, workingDir }: NormalizeOptions
 ) => {
   if (!entry.specifier) return entry;

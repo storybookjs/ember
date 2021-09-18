@@ -7960,7 +7960,6 @@ __metadata:
     lodash: ^4.17.20
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
-    slash: ^3.0.0
     ts-dedent: ^2.0.0
     unfetch: ^4.2.0
     util-deprecate: ^1.0.2
@@ -8060,6 +8059,7 @@ __metadata:
     "@storybook/manager-webpack4": 6.4.0-alpha.38
     "@storybook/node-logger": 6.4.0-alpha.38
     "@storybook/semver": ^7.3.2
+    "@storybook/store": 6.4.0-alpha.38
     "@types/compression": ^1.7.0
     "@types/ip": ^1.1.0
     "@types/node": ^14.0.10
@@ -8961,6 +8961,7 @@ __metadata:
     lodash: ^4.17.20
     memoizerific: ^1.11.3
     regenerator-runtime: ^0.13.7
+    slash: ^3.0.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   languageName: unknown

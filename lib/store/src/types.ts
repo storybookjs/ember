@@ -111,13 +111,13 @@ export type DecoratorApplicator<TFramework extends AnyFramework = AnyFramework> 
   decorators: DecoratorFunction<TFramework>[]
 ) => LegacyStoryFn<TFramework>;
 
-export interface NormalizedStoriesEntrySpecifier {
+export interface StoriesSpecifier {
   directory: string;
   titlePrefix?: string;
 }
-export interface NormalizedStoriesEntry {
+export interface NormalizedStoriesSpecifier {
   glob?: string;
-  specifier?: NormalizedStoriesEntrySpecifier;
+  specifier?: StoriesSpecifier;
 }
 
 export type ExtractOptions = {

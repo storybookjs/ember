@@ -31,7 +31,6 @@ const config: StorybookConfig = {
   },
   logLevel: 'debug',
   features: {
-    previewCsfV3: true,
     buildStoriesJson: true,
     modernInlineRender: true,
   },

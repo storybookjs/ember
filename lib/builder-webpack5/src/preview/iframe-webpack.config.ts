@@ -19,7 +19,7 @@ import {
   interpolate,
   Options,
   hasDotenv,
-  NormalizedStoriesEntry,
+  NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
   readTemplate,
@@ -138,7 +138,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         .replace(
           "'{{stories}}'",
           stories
-            .map((s: NormalizedStoriesEntry) => s.glob)
+            .map((s: NormalizedStoriesSpecifier) => s.glob)
             .map(toRequireContextString)
             .join(',')
         );

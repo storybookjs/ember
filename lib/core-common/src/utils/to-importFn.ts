@@ -1,9 +1,9 @@
 import dedent from 'ts-dedent';
 import { toRequireContext } from '..';
 
-import type { NormalizedStoriesEntry } from '../types';
+import type { NormalizedStoriesSpecifier } from '../types';
 
-export function toImportFnPart(entry: NormalizedStoriesEntry) {
+export function toImportFnPart(entry: NormalizedStoriesSpecifier) {
   const { path: base, regex } = toRequireContext(entry.glob);
 
   const webpackIncludeRegex = new RegExp(regex.source.substring(1));
@@ -28,7 +28,7 @@ export function toImportFnPart(entry: NormalizedStoriesEntry) {
   `;
 }
 
-export function toImportFn(stories: NormalizedStoriesEntry[]) {
+export function toImportFn(stories: NormalizedStoriesSpecifier[]) {
   return dedent`
     const importers = [
       ${stories.map(toImportFnPart).join(',\n')}
