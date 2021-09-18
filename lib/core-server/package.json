@@ -48,6 +48,7 @@
     "@storybook/manager-webpack4": "6.4.0-alpha.38",
     "@storybook/node-logger": "6.4.0-alpha.38",
     "@storybook/semver": "^7.3.2",
+    "@storybook/store": "6.4.0-alpha.38",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
