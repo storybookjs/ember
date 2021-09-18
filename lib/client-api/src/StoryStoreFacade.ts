@@ -22,7 +22,7 @@ import { Comparator } from '@storybook/addons';
 
 import { storySort } from './storySort';
 
-const { STORIES } = global;
+const { STORIES = [] } = global;
 
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
