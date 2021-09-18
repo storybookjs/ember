@@ -41,6 +41,16 @@ jest.mock('@storybook/manager-webpack4', () => {
   return actualBuilder;
 });
 
+// we're not in the right directory for auto-title to work, so just
+// stub it out
+jest.mock('@storybook/store', () => {
+  const actualStore = jest.requireActual('@storybook/store');
+  return {
+    ...actualStore,
+    autoTitle: () => 'auto-title',
+  };
+});
+
 jest.mock('cpy', () => () => Promise.resolve());
 jest.mock('http', () => ({
   ...jest.requireActual('http'),
