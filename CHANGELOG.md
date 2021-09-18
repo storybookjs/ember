@@ -1,3 +1,9 @@
+## 6.4.0-alpha.39 (September 18, 2021)
+
+### Features
+
+- CSF3: Add auto-title support to on-demand V7/V6 refactor ([#16098](https://github.com/storybookjs/storybook/pull/16098))
+
 ## 6.4.0-alpha.38 (September 16, 2021)
 
 ### Bug Fixes
