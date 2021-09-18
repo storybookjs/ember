@@ -1,13 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import global from 'global';
 import fs from 'fs-extra';
 import { parse } from '@babel/parser';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 import traverse, { Node } from '@babel/traverse';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
-
-const { FEATURES = {} } = global;
 
 const logger = console;
 interface Meta {

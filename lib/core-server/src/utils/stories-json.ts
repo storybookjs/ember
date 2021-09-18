@@ -16,9 +16,6 @@ type ExtractedStories = Record<string, ExtractedStory>;
 
 async function extractStories(normalizedStories: NormalizedStoriesEntry[], configDir: string) {
   const storiesGlobs = normalizedStories.map((s) => s.glob);
-  if (!storiesGlobs) {
-    throw new Error('No stories glob');
-  }
   const storyFiles: string[] = [];
   await Promise.all(
     storiesGlobs.map(async (storiesGlob) => {
