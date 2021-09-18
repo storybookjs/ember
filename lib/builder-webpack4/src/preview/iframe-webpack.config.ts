@@ -22,7 +22,7 @@ import {
   interpolate,
   nodeModulesPaths,
   Options,
-  NormalizedStoriesEntry,
+  NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
   loadPreviewOrConfigFile,
@@ -143,7 +143,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         .replace(
           "'{{stories}}'",
           stories
-            .map((s: NormalizedStoriesEntry) => s.glob)
+            .map((s: NormalizedStoriesSpecifier) => s.glob)
             .map(toRequireContextString)
             .join(',')
         );

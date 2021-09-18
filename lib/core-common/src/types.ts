@@ -227,7 +227,7 @@ interface StoriesSpecifier {
 
 export type StoriesEntry = string | StoriesSpecifier;
 
-export interface NormalizedStoriesEntry {
+export interface NormalizedStoriesSpecifier {
   glob: string;
   specifier?: StoriesSpecifier;
 }

@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
-import { Options, normalizeStories, NormalizedStoriesEntry } from '@storybook/core-common';
+import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { autoTitle } from '@storybook/store';
 import { readCsfOrMdx } from '@storybook/csf-tools';
 
@@ -14,7 +14,7 @@ interface ExtractedStory {
 
 type ExtractedStories = Record<string, ExtractedStory>;
 
-async function extractStories(normalizedStories: NormalizedStoriesEntry[], configDir: string) {
+async function extractStories(normalizedStories: NormalizedStoriesSpecifier[], configDir: string) {
   const storiesGlobs = normalizedStories.map((s) => s.glob);
   const storyFiles: string[] = [];
   await Promise.all(
@@ -57,7 +57,7 @@ async function extractStories(normalizedStories: NormalizedStoriesEntry[], confi
 
 export async function extractStoriesJson(
   outputFile: string,
-  normalizedStories: NormalizedStoriesEntry[],
+  normalizedStories: NormalizedStoriesSpecifier[],
   configDir: string
 ) {
   const stories = await extractStories(normalizedStories, configDir);
