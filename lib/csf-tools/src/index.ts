@@ -13,3 +13,4 @@ export const readCsfOrMdx = async (fileName: string, options: CsfOptions) => {
 };
 
 export * from './CsfFile';
+export * from './getStorySortParameter';
