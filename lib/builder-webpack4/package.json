@@ -86,7 +86,6 @@
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "core-js": "^3.8.2",
     "css-loader": "^3.6.0",
-    "dotenv-webpack": "^1.8.0",
     "file-loader": "^6.2.0",
     "find-up": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
@@ -114,7 +113,6 @@
   },
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
-    "@types/dotenv-webpack": "^3.0.0",
     "@types/react-dev-utils": "^9.0.4",
     "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webpack-dev-middleware": "^3.7.3",

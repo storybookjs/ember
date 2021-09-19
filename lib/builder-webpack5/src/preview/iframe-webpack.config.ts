@@ -1,6 +1,5 @@
 import path from 'path';
 import { Configuration, DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
-import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
@@ -18,7 +17,6 @@ import {
   handlebars,
   interpolate,
   Options,
-  hasDotenv,
   NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
@@ -214,7 +212,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
-      hasDotenv() ? new Dotenv({ silent: true }) : null,
       shouldCheckTs ? new ForkTsCheckerWebpackPlugin(tsCheckOptions) : null,
     ].filter(Boolean),
     module: {
