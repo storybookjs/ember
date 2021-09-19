@@ -3,8 +3,9 @@ import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
 import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
-import { autoTitle } from '@storybook/store';
-import { readCsfOrMdx } from '@storybook/csf-tools';
+import { autoTitle, sortStories } from '@storybook/store';
+import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
+import { title } from 'process';
 
 interface ExtractedStory {
   title: string;
@@ -13,6 +14,24 @@ interface ExtractedStory {
 }
 
 type ExtractedStories = Record<string, ExtractedStory>;
+
+function sortExtractedStories(
+  stories: ExtractedStories,
+  storySortParameter: any,
+  fileNameOrder: string[]
+) {
+  const sortableStories = Object.entries(stories).map(([id, story]) => [
+    id,
+    { id, kind: story.title, story: story.name, ...story },
+    { fileName: story.importPath },
+  ]);
+  sortStories(sortableStories, storySortParameter, fileNameOrder);
+  return sortableStories.reduce((acc, item) => {
+    const storyId = item[0] as string;
+    acc[storyId] = stories[storyId];
+    return acc;
+  }, {} as ExtractedStories);
+}
 
 async function extractStories(normalizedStories: NormalizedStoriesSpecifier[], configDir: string) {
   const storiesGlobs = normalizedStories.map((s) => s.glob);
@@ -52,7 +71,20 @@ async function extractStories(normalizedStories: NormalizedStoriesSpecifier[], c
       }
     })
   );
-  return stories;
+
+  const previewFile = ['js', 'jsx', 'ts', 'tsx']
+    .map((ext) => path.join(configDir, `preview.${ext}`))
+    .find((fname) => fs.existsSync(fname));
+
+  let storySortParameter;
+  if (previewFile) {
+    const previewCode = (await fs.readFile(previewFile, 'utf-8')).toString();
+    storySortParameter = await getStorySortParameter(previewCode);
+  }
+
+  const sorted = sortExtractedStories(stories, storySortParameter, storyFiles);
+
+  return sorted;
 }
 
 export async function extractStoriesJson(
