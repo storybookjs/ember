@@ -1,4 +1,3 @@
-import stable from 'stable';
 import global from 'global';
 import {
   StoryId,
@@ -17,10 +16,8 @@ import {
   StoryStore,
   Story,
   autoTitle,
+  sortStories,
 } from '@storybook/store';
-import { Comparator } from '@storybook/addons';
-
-import { storySort } from './storySort';
 
 const { STORIES = [] } = global;
 
@@ -81,22 +78,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       }
     );
 
-    if (storySortParameter) {
-      let sortFn: Comparator<any>;
-      if (typeof storySortParameter === 'function') {
-        sortFn = storySortParameter;
-      } else {
-        sortFn = storySort(storySortParameter);
-      }
-      stable.inplace(stories, sortFn);
-    } else {
-      stable.inplace(
-        stories,
-        (s1, s2) =>
-          fileNameOrder.indexOf(s1[1].parameters.fileName) -
-          fileNameOrder.indexOf(s2[1].parameters.fileName)
-      );
-    }
+    sortStories(stories, storySortParameter, fileNameOrder);
 
     return {
       v: 3,
