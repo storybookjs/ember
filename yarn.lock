@@ -7863,7 +7863,6 @@ __metadata:
     memoizerific: ^1.11.3
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
-    stable: ^0.1.8
     store2: ^2.12.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
@@ -8962,6 +8961,7 @@ __metadata:
     memoizerific: ^1.11.3
     regenerator-runtime: ^0.13.7
     slash: ^3.0.0
+    stable: ^0.1.8
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   languageName: unknown
