@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { AccountForm } from './AccountForm';
@@ -16,7 +16,7 @@ export default {
 // export const Standard = (args: AccountFormProps) => <AccountForm {...args} />;
 // Standard.args = { passwordVerification: false };
 
-export const Standard: ComponentStory<typeof AccountForm> = {
+export const Standard: ComponentStoryObj<typeof AccountForm> = {
   // render: (args: AccountFormProps) => <AccountForm {...args} />,
   args: { passwordVerification: false },
 };
@@ -53,7 +53,7 @@ export const StandardFailHover = {
   },
 };
 
-export const Verification: ComponentStory<typeof AccountForm> = {
+export const Verification: ComponentStoryObj<typeof AccountForm> = {
   args: { passwordVerification: true },
 };
 
