@@ -9,7 +9,7 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   // If the two stories have the same story kind, then use the default
   // ordering, which is the order they are defined in the story file.
   // only when includeNames is falsy
-  if (a[1].kind === b[1].kind && !options.includeNames) {
+  if (a[1].title === b[1].title && !options.includeNames) {
     return 0;
   }
 
@@ -17,9 +17,9 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   const method = options.method || 'configure';
   let order = options.order || [];
 
-  // Examine each part of the story kind in turn.
-  const storyKindA = a[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
-  const storyKindB = b[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
+  // Examine each part of the story title in turn.
+  const storyKindA = a[1].title.trim().split(STORY_KIND_PATH_SEPARATOR);
+  const storyKindB = b[1].title.trim().split(STORY_KIND_PATH_SEPARATOR);
   if (options.includeNames) {
     storyKindA.push(a[1].name);
     storyKindB.push(b[1].name);
@@ -35,7 +35,7 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
       return 1;
     }
 
-    // Compare the next part of the story kind.
+    // Compare the next part of the story title.
     const nameA = storyKindA[depth];
     const nameB = storyKindB[depth];
     if (nameA !== nameB) {
@@ -86,7 +86,7 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
     depth += 1;
   }
 
-  // Identical story kinds. The shortcut at the start of this function prevents
+  // Identical story titles. The shortcut at the start of this function prevents
   // this from ever being used.
   /* istanbul ignore next */
   return 0;
