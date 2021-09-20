@@ -452,6 +452,19 @@ describe('PreviewWeb', () => {
         expect(preview.view.prepareForDocs).toHaveBeenCalled();
       });
 
+      it('emits STORY_PREPARED', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
+          id: 'component-one--a',
+          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          initialArgs: { foo: 'a' },
+          argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
+          args: { foo: 'a' },
+        });
+      });
+
       it('render the docs container with the correct context', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
