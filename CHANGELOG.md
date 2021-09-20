@@ -1,3 +1,11 @@
+## 6.4.0-alpha.40 (September 20, 2021)
+
+### Bug Fixes
+
+* Webpack5: Fix output paths ([#16074](https://github.com/storybookjs/storybook/pull/16074))
+* Core: Infer docs only stories ([#16101](https://github.com/storybookjs/storybook/pull/16101))
+* CSF3: Fix story type back-compat ([#16107](https://github.com/storybookjs/storybook/pull/16107))
+
 ## 6.4.0-alpha.39 (September 18, 2021)
 
 ### Features
