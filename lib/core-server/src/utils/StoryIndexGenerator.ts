@@ -2,15 +2,36 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 
-import { autoTitle, sortStories, Path, StoryIndex, StoryIndexEntry } from '@storybook/store';
+import { autoTitleFromSpecifier, sortStories, Path, StoryIndex } from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
 
+function sortExtractedStories(
+  stories: StoryIndex['stories'],
+  storySortParameter: any,
+  fileNameOrder: string[]
+) {
+  const sortableStories = Object.entries(stories).map(([id, story]) => [
+    id,
+    { id, kind: story.title, story: story.name, ...story },
+    { fileName: story.importPath },
+  ]);
+  sortStories(sortableStories, storySortParameter, fileNameOrder);
+  return sortableStories.reduce((acc, item) => {
+    const storyId = item[0] as string;
+    acc[storyId] = stories[storyId];
+    return acc;
+  }, {} as StoryIndex['stories']);
+}
+
 export class StoryIndexGenerator {
   // An internal cache mapping specifiers to a set of path=><set of stories>
   // Later, we'll combine each of these subsets together to form the full index
-  private storyIndexEntries: Map<NormalizedStoriesSpecifier, Record<Path, StoryIndex['stories']>>;
+  private storyIndexEntries: Map<
+    NormalizedStoriesSpecifier,
+    Record<Path, StoryIndex['stories'] | false>
+  >;
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
@@ -23,11 +44,11 @@ export class StoryIndexGenerator {
     // Find all matching paths for each specifier
     await Promise.all(
       this.specifiers.map(async (specifier) => {
-        const pathToSubIndex = {} as Record<Path, StoryIndex['stories']>;
+        const pathToSubIndex = {} as Record<Path, StoryIndex['stories'] | false>;
 
         const files = await glob(path.join(this.configDir, specifier.glob));
         files.forEach((fileName: Path) => {
-          pathToSubIndex[fileName] = {};
+          pathToSubIndex[fileName] = false;
         });
 
         this.storyIndexEntries.set(specifier, pathToSubIndex);
@@ -44,7 +65,7 @@ export class StoryIndexGenerator {
         const entry = this.storyIndexEntries.get(specifier);
         await Promise.all(
           Object.keys(entry).map(async (fileName) => {
-            if (!entry[fileName]) this.extractStories(specifier, fileName);
+            if (!entry[fileName]) await this.extractStories(specifier, fileName);
           })
         );
       })
@@ -59,18 +80,21 @@ export class StoryIndexGenerator {
       return;
     }
     try {
-      const stories = this.storyIndexEntries.get(specifier)[absolutePath];
+      const entry = this.storyIndexEntries.get(specifier);
+      const fileStories = {} as StoryIndex['stories'];
 
       const importPath = relativePath[0] === '.' ? relativePath : `./${relativePath}`;
-      const defaultTitle = autoTitle(importPath, [specifier]);
+      const defaultTitle = autoTitleFromSpecifier(importPath, specifier);
       const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
       csf.stories.forEach(({ id, name }) => {
-        stories[id] = {
+        fileStories[id] = {
           title: csf.meta.title,
           name,
           importPath,
         };
       });
+
+      entry[absolutePath] = fileStories;
     } catch (err) {
       logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
       logger.warn(`🚨 ${err.stack}`);
@@ -92,11 +116,11 @@ export class StoryIndexGenerator {
     });
 
     const storySortParameter = await this.getStorySortParameter();
-    // TODO: Sort the stories
+    const sorted = sortExtractedStories(stories, storySortParameter, this.storyFileNames());
 
     return {
       v: 3,
-      stories,
+      stories: sorted,
     };
   }
 
@@ -111,5 +135,10 @@ export class StoryIndexGenerator {
     }
 
     return storySortParameter;
+  }
+
+  // Get the story file names in "imported order"
+  storyFileNames() {
+    return Array.from(this.storyIndexEntries.values()).flatMap((r) => Object.keys(r));
   }
 }
