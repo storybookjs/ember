@@ -138,21 +138,25 @@ export async function managerWebpack(
         },
         {
           test: /\.(svg|ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/,
-          loader: require.resolve('file-loader'),
-          options: {
-            name: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+          type: 'asset/resource',
+          generator: {
+            filename: isProd
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
         {
           test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
-          loader: require.resolve('url-loader'),
-          options: {
-            limit: 10000,
-            name: isProd
-              ? 'static/media/[name].[contenthash:8].[ext]'
-              : 'static/media/[path][name].[ext]',
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 10000,
+            },
+          },
+          generator: {
+            filename: isProd
+              ? 'static/media/[name].[contenthash:8][ext]'
+              : 'static/media/[path][name][ext]',
           },
         },
       ],
