@@ -1,4 +1,4 @@
-import { autoTitleFromEntry as auto } from './autoTitle';
+import { autoTitleFromSpecifier as auto } from './autoTitle';
 
 expect.addSnapshotSerializer({
   print: (val: any) => val,
