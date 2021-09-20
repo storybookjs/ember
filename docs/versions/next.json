@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.39","info":{"plain":"### Features\n\n- CSF3: Add auto-title support to on-demand V7/V6 refactor ([#16098](https://github.com/storybookjs/storybook/pull/16098))"}}
+{"version":"6.4.0-alpha.40","info":{"plain":"### Bug Fixes\n\n* Webpack5: Fix output paths ([#16074](https://github.com/storybookjs/storybook/pull/16074))\n* Core: Infer docs only stories ([#16101](https://github.com/storybookjs/storybook/pull/16101))\n* CSF3: Fix story type back-compat ([#16107](https://github.com/storybookjs/storybook/pull/16107))"}}
