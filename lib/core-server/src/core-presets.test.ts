@@ -48,6 +48,7 @@ jest.mock('@storybook/store', () => {
   return {
     ...actualStore,
     autoTitle: () => 'auto-title',
+    autoTitleFromSpecifier: () => 'auto-title-from-specifier',
   };
 });
 
