@@ -32,7 +32,7 @@ const startCaseTitle = (title: string) => {
   return title.split('/').map(startCase).join('/');
 };
 
-export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesSpecifier) => {
+export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier) => {
   const { directory, titlePrefix = '' } = entry.specifier || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
@@ -49,7 +49,7 @@ export const autoTitleFromEntry = (fileName: string, entry: NormalizedStoriesSpe
 
 export const autoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpecifier[]) => {
   for (let i = 0; i < storiesEntries.length; i += 1) {
-    const title = autoTitleFromEntry(fileName, storiesEntries[i]);
+    const title = autoTitleFromSpecifier(fileName, storiesEntries[i]);
     if (title) return title;
   }
   return undefined;
