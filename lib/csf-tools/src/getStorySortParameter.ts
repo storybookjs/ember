@@ -1,7 +1,10 @@
 import * as t from '@babel/types';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
+import dedent from 'ts-dedent';
 import { babelParse } from './babelParse';
+
+const logger = console;
 
 const getValue = (obj: t.ObjectExpression, key: string) => {
   let value: t.Expression;
@@ -34,6 +37,23 @@ const parseValue = (expr: t.Expression): any => {
   throw new Error(`Unknown node type ${expr}`);
 };
 
+const unsupported = (unexpectedVar: string, isError: boolean) => {
+  const message = dedent`
+    Unexpected '${unexpectedVar}'. Parameter 'options.storySort' should be defined inline e.g.:
+
+    export const parameters = {
+      options: {
+        storySort: <array | object | function>
+      }
+    }
+  `;
+  if (isError) {
+    throw new Error(message);
+  } else {
+    logger.info(message);
+  }
+};
+
 export const getStorySortParameter = (previewCode: string) => {
   let storySort: t.Expression;
   const ast = babelParse(previewCode);
@@ -50,11 +70,23 @@ export const getStorySortParameter = (previewCode: string) => {
                   : decl.init;
                 if (t.isObjectExpression(paramsObject)) {
                   const options = getValue(paramsObject, 'options');
-                  if (options && t.isObjectExpression(options)) {
-                    storySort = getValue(options, 'storySort');
+                  if (options) {
+                    if (t.isObjectExpression(options)) {
+                      storySort = getValue(options, 'storySort');
+                    } else {
+                      unsupported('options', true);
+                    }
                   }
+                } else {
+                  unsupported('parameters', true);
                 }
               }
+            }
+          });
+        } else {
+          node.specifiers.forEach((spec) => {
+            if (t.isIdentifier(spec.exported) && spec.exported.name === 'parameters') {
+              unsupported('parameters', false);
             }
           });
         }
@@ -82,5 +114,9 @@ export const getStorySortParameter = (previewCode: string) => {
     return eval(wrapper);
   }
 
-  return parseValue(storySort);
+  if (t.isLiteral(storySort) || t.isArrayExpression(storySort) || t.isObjectExpression(storySort)) {
+    return parseValue(storySort);
+  }
+
+  return unsupported('storySort', true);
 };
