@@ -42,7 +42,7 @@
   "dependencies": {
     "@popperjs/core": "^2.6.0",
     "@storybook/client-logger": "6.4.0-alpha.39",
-    "@storybook/csf": "0.0.2--canary.68887a1.0",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
     "@storybook/theming": "6.4.0-alpha.39",
     "@types/color-convert": "^2.0.0",
     "@types/overlayscrollbars": "^1.12.0",
