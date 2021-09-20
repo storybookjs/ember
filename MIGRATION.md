@@ -7,6 +7,7 @@
     - [Using the v7 store](#using-the-v7-store)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
+  - [Angular component parameter removed](#angular-component-parameter-removed)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -245,6 +246,25 @@ This will create a `.babelrc.json` file. This file includes a bunch of babel plu
 ### Loader behavior with args changes
 
 In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
+
+### Angular component parameter removed
+
+In SB6.3 and earlier, the `default.component` metadata was implemented as a parameter, meaning that stories could set `parameters.component` to override the default export. This was an internal implementation that was never documented, but it was mistakenly used in some Angular examples.
+
+If you have Angular stories of the form:
+
+```js
+export const MyStory = () => ({ ... })
+SomeStory.parameters = { component: MyComponent };
+```
+
+You should rewrite them as:
+
+```js
+export const MyStory = () => ({ component: MyComponent, ... })
+```
+
+[More discussion here.](https://github.com/storybookjs/storybook/pull/16010#issuecomment-917378595)
 
 ## From version 6.2.x to 6.3.0
 
