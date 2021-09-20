@@ -48,7 +48,7 @@
     "@storybook/addons": "6.4.0-alpha.39",
     "@storybook/core": "6.4.0-alpha.39",
     "@storybook/core-common": "6.4.0-alpha.39",
-    "@storybook/csf": "0.0.2--canary.68887a1.0",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
     "@storybook/store": "6.4.0-alpha.39",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
