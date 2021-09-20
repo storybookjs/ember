@@ -91,7 +91,8 @@ export enum CoreBuilder {
   Webpack5 = 'webpack5',
 }
 
-export type Builder = CoreBuilder | string;
+// The `& {}` bit allows for auto-complete, see: https://github.com/microsoft/TypeScript/issues/29729
+export type Builder = CoreBuilder | (string & {});
 
 export enum SupportedLanguage {
   JAVASCRIPT = 'javascript',
@@ -277,7 +278,7 @@ export const supportedTemplates: TemplateConfiguration[] = [
 ];
 
 // A TemplateConfiguration that matches unsupported frameworks
-// Framework matchers can be added to this object to give
+// AnyFramework matchers can be added to this object to give
 // users an "Unsupported framework" message
 export const unsupportedTemplate: TemplateConfiguration = {
   preset: ProjectType.UNSUPPORTED,

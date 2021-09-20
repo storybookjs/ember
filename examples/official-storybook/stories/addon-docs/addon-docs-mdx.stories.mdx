@@ -21,9 +21,7 @@ import MdxNotes from '../notes/notes.mdx';
   title="Addons/Docs/mdx"
   component={TsButton}
   id="addons-docs-mdx-id"
-  decorators={[
-    (storyFn) => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>,
-  ]}
+  decorators={[(storyFn) => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>]}
   parameters={{ notes: 'component notes' }}
 />
 
@@ -38,10 +36,6 @@ import MdxNotes from '../notes/notes.mdx';
 </Canvas>
 
 <ArgsTable of="." />
-
-<Canvas>
-  <Story id="nonexistent-story" />
-</Canvas>
 
 ## Transclusion
 

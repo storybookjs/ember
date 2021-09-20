@@ -2,26 +2,20 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 import { logger } from '@storybook/node-logger';
-import { resolvePathInStorybookCache, Options, normalizeStories } from '@storybook/core-common';
+import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
+import { autoTitle } from '@storybook/store';
 import { readCsfOrMdx } from '@storybook/csf-tools';
 
 interface ExtractedStory {
-  id: string;
-  kind: string;
+  title: string;
   name: string;
-  parameters: Record<string, any>;
+  importPath: string;
 }
 
 type ExtractedStories = Record<string, ExtractedStory>;
 
-export async function extractStoriesJson(
-  outputFile: string,
-  storiesGlobs: string[],
-  configDir: string
-) {
-  if (!storiesGlobs) {
-    throw new Error('No stories glob');
-  }
+async function extractStories(normalizedStories: NormalizedStoriesSpecifier[], configDir: string) {
+  const storiesGlobs = normalizedStories.map((s) => s.glob);
   const storyFiles: string[] = [];
   await Promise.all(
     storiesGlobs.map(async (storiesGlob) => {
@@ -41,46 +35,53 @@ export async function extractStoriesJson(
         return;
       }
       try {
-        const csf = (await readCsfOrMdx(absolutePath)).parse();
-        csf.stories.forEach((story) => {
-          stories[story.id] = {
-            ...story,
-            kind: csf.meta.title,
-            parameters: { ...story.parameters, fileName: relativePath },
+        const importPath = relativePath[0] === '.' ? relativePath : `./${relativePath}`;
+        const defaultTitle = autoTitle(importPath, normalizedStories);
+        const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
+        csf.stories.forEach(({ id, name }) => {
+          stories[id] = {
+            title: csf.meta.title,
+            name,
+            importPath,
           };
         });
       } catch (err) {
-        logger.error(`🚨 Extraction error on ${relativePath}`);
+        logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
+        logger.warn(`🚨 ${err.stack}`);
         throw err;
       }
     })
   );
+  return stories;
+}
+
+export async function extractStoriesJson(
+  outputFile: string,
+  normalizedStories: NormalizedStoriesSpecifier[],
+  configDir: string
+) {
+  const stories = await extractStories(normalizedStories, configDir);
   await fs.writeJson(outputFile, { v: 3, stories });
 }
 
-const timeout = 30000; // 30s
-const step = 100; // .1s
-
 export async function useStoriesJson(router: any, options: Options) {
-  const storiesJson = resolvePathInStorybookCache('stories.json');
-  await fs.remove(storiesJson);
-  const stories = normalizeStories(await options.presets.apply('stories'), {
+  const normalized = normalizeStories(await options.presets.apply('stories'), {
     configDir: options.configDir,
     workingDir: process.cwd(),
   });
-  const globs = stories.map((s) => s.glob);
-  extractStoriesJson(storiesJson, globs, options.configDir);
   router.use('/stories.json', async (_req: any, res: any) => {
-    for (let i = 0; i < timeout / step; i += 1) {
-      if (fs.existsSync(storiesJson)) {
-        // eslint-disable-next-line no-await-in-loop
-        const json = await fs.readFile(storiesJson, 'utf-8');
+    extractStories(normalized, options.configDir)
+      .then((stories: ExtractedStories) => {
         res.header('Content-Type', 'application/json');
-        return res.send(json);
-      }
-      // eslint-disable-next-line no-await-in-loop
-      await new Promise((r: any) => setTimeout(r, step));
-    }
-    return res.status(408).send('stories.json timeout');
+        return res.send(
+          JSON.stringify({
+            v: 3,
+            stories,
+          })
+        );
+      })
+      .catch((err: Error) => {
+        res.status(500).send(err.message);
+      });
   });
 }

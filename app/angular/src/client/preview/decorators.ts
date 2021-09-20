@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { Type } from '@angular/core';
-import { DecoratorFunction, StoryContext } from '@storybook/addons';
+import { DecoratorFunction, StoryContext } from '@storybook/csf';
 import { computesTemplateFromComponent } from './angular-beta/ComputesTemplateFromComponent';
 import { isComponent } from './angular-beta/utils/NgComponentAnalyzer';
-import { ICollection, NgModuleMetadata, StoryFnAngularReturnType } from './types';
+import { ICollection, NgModuleMetadata } from './types';
+import { AngularFramework } from './types-6-0';
 
 export const moduleMetadata = (
   metadata: Partial<NgModuleMetadata>
-): DecoratorFunction<StoryFnAngularReturnType> => (storyFn) => {
+): DecoratorFunction<AngularFramework> => (storyFn) => {
   const story = storyFn();
   const storyMetadata = story.moduleMetadata || {};
   metadata = metadata || {};
@@ -29,8 +30,8 @@ export const moduleMetadata = (
 
 export const componentWrapperDecorator = (
   element: Type<unknown> | ((story: string) => string),
-  props?: ICollection | ((storyContext: StoryContext) => ICollection)
-): DecoratorFunction<StoryFnAngularReturnType> => (storyFn, storyContext) => {
+  props?: ICollection | ((storyContext: StoryContext<AngularFramework>) => ICollection)
+): DecoratorFunction<AngularFramework> => (storyFn, storyContext) => {
   const story = storyFn();
   const currentProps = typeof props === 'function' ? (props(storyContext) as ICollection) : props;
 

@@ -217,6 +217,9 @@
     "@storybook/postinstall": {
       "implicitDependencies": []
     },
+    "@storybook/store": {
+      "implicitDependencies": []
+    },
     "@storybook/router": {
       "implicitDependencies": []
     },
@@ -230,6 +233,9 @@
       "implicitDependencies": []
     },
     "@storybook/ui": {
+      "implicitDependencies": []
+    },
+    "@storybook/preview-web": {
       "implicitDependencies": []
     }
   },

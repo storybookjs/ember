@@ -16,6 +16,7 @@ export const mockDataset: MockDataSet = {
     '2-21': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '2-21',
       depth: 1,
@@ -28,6 +29,7 @@ export const mockDataset: MockDataSet = {
     '2-22': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '2-22',
       depth: 1,
@@ -69,6 +71,7 @@ export const mockDataset: MockDataSet = {
     '1-12-121': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '1-12-121',
       parent: '1-12',
@@ -81,6 +84,7 @@ export const mockDataset: MockDataSet = {
     '1-12-122': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '1-12-122',
       parent: '1-12',
@@ -102,6 +106,7 @@ export const mockDataset: MockDataSet = {
     '3-31': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '3-31',
       depth: 1,
@@ -124,6 +129,7 @@ export const mockDataset: MockDataSet = {
     '3-32-321': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '3-32-321',
       depth: 2,
@@ -136,6 +142,7 @@ export const mockDataset: MockDataSet = {
     '3-32-322': {
       isRoot: false,
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       id: '3-32-322',
       depth: 2,
@@ -170,6 +177,7 @@ export const mockDataset: MockDataSet = {
       depth: 1,
       name: 'Child A1',
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       isRoot: false,
       parent: '1',
@@ -182,6 +190,7 @@ export const mockDataset: MockDataSet = {
       depth: 2,
       name: 'GrandChild A1.1',
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       isRoot: false,
       parent: '1-12',
@@ -194,6 +203,7 @@ export const mockDataset: MockDataSet = {
       depth: 2,
       name: 'GrandChild A1.2',
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       isRoot: false,
       parent: '1-12',
@@ -216,6 +226,7 @@ export const mockDataset: MockDataSet = {
       depth: 1,
       name: 'Child B1',
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       isRoot: false,
       parent: '2',
@@ -228,6 +239,7 @@ export const mockDataset: MockDataSet = {
       depth: 1,
       name: 'Child B2',
       isLeaf: true,
+      prepared: true,
       isComponent: false,
       isRoot: false,
       parent: '2',

@@ -227,7 +227,7 @@ interface StoriesSpecifier {
 
 export type StoriesEntry = string | StoriesSpecifier;
 
-export interface NormalizedStoriesEntry {
+export interface NormalizedStoriesSpecifier {
   glob: string;
   specifier?: StoriesSpecifier;
 }
@@ -263,8 +263,30 @@ export interface StorybookConfig {
 
     /**
      * Activate preview of CSF v3.0
+     *
+     * @deprecated This is always on now from 6.4 regardless of the setting
      */
     previewCsfV3?: boolean;
+
+    /**
+     * Activate modern inline rendering
+     */
+    modernInlineRender?: boolean;
+
+    /**
+     * Activate on demand story store
+     */
+    storyStoreV7?: boolean;
+
+    /**
+     * Enable a set of planned breaking changes for SB7.0
+     */
+    breakingChangesV7?: boolean;
+
+    /**
+     * Use Storybook 7.0 babel config scheme
+     */
+    babelModeV7?: boolean;
   };
   /**
    * Tells Storybook where to find stories.

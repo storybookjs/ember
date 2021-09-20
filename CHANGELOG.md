@@ -1,3 +1,94 @@
+## 6.4.0-alpha.40 (September 20, 2021)
+
+### Bug Fixes
+
+* Webpack5: Fix output paths ([#16074](https://github.com/storybookjs/storybook/pull/16074))
+* Core: Infer docs only stories ([#16101](https://github.com/storybookjs/storybook/pull/16101))
+* CSF3: Fix story type back-compat ([#16107](https://github.com/storybookjs/storybook/pull/16107))
+
+## 6.4.0-alpha.39 (September 18, 2021)
+
+### Features
+
+- CSF3: Add auto-title support to on-demand V7/V6 refactor ([#16098](https://github.com/storybookjs/storybook/pull/16098))
+
+## 6.4.0-alpha.38 (September 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix ng selector issue and dynamically show templates in stories ([#15976](https://github.com/storybookjs/storybook/pull/15976))
+- Core: Fix issue with more complex `stories` paths. ([#16078](https://github.com/storybookjs/storybook/pull/16078))
+
+### Maintenance
+
+- Main.js config: Fix Builder type ([#16013](https://github.com/storybookjs/storybook/pull/16013))
+
+## 6.4.0-alpha.37 (September 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix error handling for angular builder standalone builds ([#15978](https://github.com/storybookjs/storybook/pull/15978))
+- Addon-docs: Fix `useStories` to correctly respond to change in `storyId` ([#16046](https://github.com/storybookjs/storybook/pull/16046))
+
+## 6.4.0-alpha.36 (September 15, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Ensure we don't clobber multiple source container state updates ([#16039](https://github.com/storybookjs/storybook/pull/16039))
+- Core: Restore deprecation warning for configure ([#16041](https://github.com/storybookjs/storybook/pull/16041))
+- Core: Be careful in `FEATURES` check ([#16044](https://github.com/storybookjs/storybook/pull/16044))
+
+## 6.4.0-alpha.35 (September 14, 2021)
+
+### Features
+
+- Core: On demand store ([#15871](https://github.com/storybookjs/storybook/pull/15871))
+
+### Bug Fixes
+
+- UI: Fix ActionButton out of position in Safari ([#15981](https://github.com/storybookjs/storybook/pull/15981))
+
+## 6.4.0-alpha.34 (September 7, 2021)
+
+### Features
+
+- Angular: Support storybook configuration for projects with only angular Library ([#15744](https://github.com/storybookjs/storybook/pull/15744))
+- CLI: Show framework name in startup banner ([#15966](https://github.com/storybookjs/storybook/pull/15966))
+
+### Bug Fixes
+
+- CLI: Fix sb link to yarn3 repos ([#15989](https://github.com/storybookjs/storybook/pull/15989))
+- Core: Pass proper stack of an error ([#15864](https://github.com/storybookjs/storybook/pull/15864))
+- Addon-docs/Angular: Fix default values in ArgsTable ([#15881](https://github.com/storybookjs/storybook/pull/15881))
+
+### Maintenance
+
+- Core: Replaced `process.env` override in `DefinePlugin` config ([#15925](https://github.com/storybookjs/storybook/pull/15925))
+- CSF: Infer defaultValue of argtype based on arg ([#15798](https://github.com/storybookjs/storybook/pull/15798))
+
+## 6.3.8 (September 3, 2021)
+
+### Maintenance
+
+- Core: Write JSON stats file in streaming fashion and omit `chunks` for brevity ([#15889](https://github.com/storybookjs/storybook/pull/15889))
+
+## 6.4.0-alpha.33 (September 1, 2021)
+
+### Bug Fixes
+
+- TypeScript: Fix glob pattern used in package `typesVersions` config ([#15918](https://github.com/storybookjs/storybook/pull/15918))
+
+### Maintenance
+
+- Core: Add Babel mode v7 ([#15928](https://github.com/storybookjs/storybook/pull/15928))
+- Core: Write JSON stats file in streaming fashion and omit `chunks` for brevity ([#15889](https://github.com/storybookjs/storybook/pull/15889))
+- UI: Add playback icons ([#15909](https://github.com/storybookjs/storybook/pull/15909))
+- Misc: Generate and push repros to a GitHub repo every night ([#15877](https://github.com/storybookjs/storybook/pull/15877))
+
+### Dependency Upgrades
+
+- Bump cpy to 8.1.2 for security ([#15953](https://github.com/storybookjs/storybook/pull/15953))
+
 ## 6.4.0-alpha.32 (August 24, 2021)
 
 ### Features

@@ -87,7 +87,7 @@ const isSimpleCSFStory = (init: t.Expression, annotations: t.ObjectProperty[]) =
   annotations.length === 0 && t.isArrowFunctionExpression(init) && init.params.length === 0;
 
 function transform({ source }: { source: string }, api: any, options: { parser?: string }) {
-  const csf = loadCsf(source).parse();
+  const csf = loadCsf(source, { defaultTitle: 'FIXME' }).parse();
 
   const objectExports: Record<string, t.Statement> = {};
   Object.entries(csf._storyExports).forEach(([key, decl]) => {

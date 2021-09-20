@@ -1,22 +1,36 @@
-import { SET_STORIES, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
+import { SET_GLOBALS, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import deepEqual from 'fast-deep-equal';
+import { Globals, GlobalTypes } from '@storybook/csf';
 
-import { Args, ModuleFn } from '../index';
+import { ModuleFn } from '../index';
 
-import { SetStoriesPayload } from '../lib/stories';
 import { getEventMetadata } from '../lib/events';
 
+interface SetGlobalsPayload {
+  globals: Globals;
+  globalTypes: GlobalTypes;
+}
+
 export interface SubState {
-  globals: Args;
+  globals?: Globals;
+  globalTypes?: GlobalTypes;
 }
 
 export interface SubAPI {
-  updateGlobals: (newGlobals: Args) => void;
+  getGlobals: () => Globals;
+  getGlobalTypes: () => GlobalTypes;
+  updateGlobals: (newGlobals: Globals) => void;
 }
 
 export const init: ModuleFn = ({ store, fullAPI }) => {
   const api: SubAPI = {
+    getGlobals() {
+      return store.getState().globals;
+    },
+    getGlobalTypes() {
+      return store.getState().globalTypes;
+    },
     updateGlobals(newGlobals) {
       // Only emit the message to the local ref
       fullAPI.emit(UPDATE_GLOBALS, {
@@ -29,11 +43,10 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
   };
 
   const state: SubState = {
-    // Currently global args always start empty. TODO -- should this be set on the channel at init time?
     globals: {},
+    globalTypes: {},
   };
-
-  const updateGlobals = (globals: Args) => {
+  const updateGlobals = (globals: Globals) => {
     const currentGlobals = store.getState()?.globals;
     if (!deepEqual(globals, currentGlobals)) {
       store.setState({ globals });
@@ -41,7 +54,7 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
   };
 
   const initModule = () => {
-    fullAPI.on(GLOBALS_UPDATED, function handleGlobalsUpdated({ globals }: { globals: Args }) {
+    fullAPI.on(GLOBALS_UPDATED, function handleGlobalsUpdated({ globals }: { globals: Globals }) {
       const { ref } = getEventMetadata(this, fullAPI);
 
       if (!ref) {
@@ -52,11 +65,11 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
         );
       }
     });
-    fullAPI.on(SET_STORIES, function handleSetStories({ globals }: SetStoriesPayload) {
+    fullAPI.on(SET_GLOBALS, function handleSetStories({ globals, globalTypes }: SetGlobalsPayload) {
       const { ref } = getEventMetadata(this, fullAPI);
 
       if (!ref) {
-        updateGlobals(globals);
+        store.setState({ globals, globalTypes });
       } else if (Object.keys(globals).length > 0) {
         logger.warn('received globals from a non-local ref. This is not currently supported.');
       }

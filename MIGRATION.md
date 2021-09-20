@@ -1,5 +1,12 @@
 <h1>Migration</h1>
 
+- [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [CSF3 enabled](#csf3-enabled)
+  - [Story Store v7](#story-store-v7)
+    - [Behavioral differences](#behavioral-differences)
+    - [Using the v7 store](#using-the-v7-store)
+  - [Babel mode v7](#babel-mode-v7)
+  - [Loader behavior with args changes](#loader-behavior-with-args-changes)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -161,6 +168,83 @@
   - [Webpack upgrade](#webpack-upgrade)
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
+
+## From version 6.3.x to 6.4.0
+
+### CSF3 enabled
+
+SB6.3 introduced a feature flag, `features.previewCsfV3`, to opt-in to experimental [CSF3 syntax support](https://storybook.js.org/blog/component-story-format-3-0/). In SB6.4, CSF3 is supported regardless of `previewCsfV3`'s value. This should be a fully backwards-compatible change. The `previewCsfV3` flag has been deprecated and will be removed in SB7.0.
+
+### Story Store v7
+
+SB6.4 introduces an opt-in feature flag, `features.storyStoreV7`, which loads stories in an "on demand" way (that is when rendered), rather than up front when the Storybook is booted. This way of operating will become the default in 7.0 and will likely be switched to opt-out in that version.
+
+The key benefit of the on demand store is that stories are code-split automatically (in `builder-webpack4` and `builder-webpack5`), which allows for much smaller bundle sizes, faster rendering, and improved general performance via various opt-in Webpack features.
+
+The on-demand store relies on the "story index" data structure which is generated in the server (node) via static code analysis. As such, it has the following limitations:
+
+- Does not work with `storiesOf()`
+- Does not work if you used dynamic story names or component titles.
+
+However, the `autoTitle` feature is supported.
+
+#### Behavioral differences
+
+The key behavioral differences of the v7 store are:
+
+- `SET_STORIES` is not emitted on boot up. Instead the manager loads the story index independenly.
+- A new event `STORY_PREPARED` is emitted when a story is rendered for the first time, which contains metadata about the story, such as `parameters`.
+- All "entire" store APIs such as `extract()` need to be proceeded by an async call to `loadAllCSFFiles()` which fetches all CSF files and processes them.
+
+#### Using the v7 store
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    storyStoreV7: true,
+  },
+};
+```
+
+NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
+
+### Babel mode v7
+
+SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
+
+> NOTE: CRA apps using `@storybook/preset-create-react-app` use CRA's handling, so the new flag has no effect on CRA apps.
+
+In SB6.x and earlier, Storybook provided its own default configuration and inconsistently handled configurations from the user's babelrc file. This resulted in a final configuration that differs from your application's configuration AND is difficult to debug.
+
+In `babelModeV7`, Storybook no longer provides its own default configuration and is primarily configured via babelrc file, with small, incremental updates from Storybook addons.
+
+In 6.x, Storybook supported a `.storybook/babelrc` configuration option. This is no longer supported and it's up to you to reconcile this with your project babelrc.
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    babelModeV7: true,
+  },
+};
+```
+
+In the new mode, Storybook expects you to provide a configuration file. If you want a configuration file that's equivalent to the 6.x default, you can run the following command in your project directory:
+
+```sh
+npx sb@next babelrc
+```
+
+This will create a `.babelrc.json` file. This file includes a bunch of babel plugins, so you may need to add new package devDependencies accordingly.
+
+### Loader behavior with args changes
+
+In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
 
 ## From version 6.2.x to 6.3.0
 

@@ -1,5 +1,6 @@
 import { combineParameters } from '@storybook/client-api';
-import { StoryContext, Parameters } from '@storybook/addons';
+import { Parameters } from '@storybook/addons';
+import { Story } from '@storybook/store';
 
 // ============================================================
 // START @storybook/source-loader/extract-source
@@ -76,8 +77,8 @@ const extract = (targetId: string, { source, locationsMap }: StorySource) => {
   return extractSource(location, lines);
 };
 
-export const enhanceSource = (context: StoryContext): Parameters => {
-  const { id, parameters } = context;
+export const enhanceSource = (story: Story<any>): Parameters => {
+  const { id, parameters } = story;
   const { storySource, docs = {} } = parameters;
   const { transformSource } = docs;
 
@@ -87,7 +88,7 @@ export const enhanceSource = (context: StoryContext): Parameters => {
   }
 
   const input = extract(id, storySource);
-  const code = transformSource ? transformSource(input, context) : input;
+  const code = transformSource ? transformSource(input, story) : input;
 
   return { docs: combineParameters(docs, { source: { code } }) };
 };
