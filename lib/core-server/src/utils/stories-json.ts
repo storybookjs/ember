@@ -5,7 +5,6 @@ import { logger } from '@storybook/node-logger';
 import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { autoTitle, sortStories } from '@storybook/store';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
-import { title } from 'process';
 
 interface ExtractedStory {
   title: string;
