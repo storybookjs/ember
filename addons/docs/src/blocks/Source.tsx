@@ -104,17 +104,18 @@ export const getSourceProps = (
 
   let source = codeProps.code; // prefer user-specified code
 
-  const targetId =
-    singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
-  const targetIds = multiProps.ids || [targetId];
+  const targetIds = multiProps.ids || [singleProps.id || currentId];
+  const storyIds = targetIds.map((targetId) =>
+    targetId === CURRENT_SELECTION ? currentId : targetId
+  );
 
-  const stories = useStories(targetIds, docsContext);
+  const stories = useStories(storyIds, docsContext);
   if (!stories.every(Boolean)) {
     return { error: SourceError.SOURCE_UNAVAILABLE, state: SourceState.NONE };
   }
 
   if (!source) {
-    source = targetIds
+    source = storyIds
       .map((storyId, idx) => {
         const storySource = getStorySource(storyId, sourceContext);
         const storyObj = stories[idx] as Story;
