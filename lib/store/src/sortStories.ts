@@ -1,10 +1,5 @@
 import stable from 'stable';
-import {
-  Comparator,
-  StorySortParameter,
-  StorySortParameterV7,
-  StorySortObjectParameter,
-} from '@storybook/addons';
+import { Comparator, StorySortParameter, StorySortParameterV7 } from '@storybook/addons';
 import { storySort } from './storySort';
 import { Story, StoryIndexEntry, Path, Parameters } from './types';
 
