@@ -111,6 +111,7 @@ export interface StoriesRaw {
 
 type Path = string;
 export interface StoryIndexStory {
+  id: StoryId;
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;

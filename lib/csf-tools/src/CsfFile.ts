@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import fs from 'fs-extra';
-import { parse } from '@babel/parser';
-import generate from '@babel/generator';
 import * as t from '@babel/types';
-import traverse, { Node } from '@babel/traverse';
+import generate from '@babel/generator';
+import traverse from '@babel/traverse';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
+import { babelParse } from './babelParse';
 
 const logger = console;
 interface Meta {
@@ -20,7 +20,7 @@ interface Story {
   parameters: Record<string, any>;
 }
 
-function parseIncludeExclude(prop: Node) {
+function parseIncludeExclude(prop: t.Node) {
   if (t.isArrayExpression(prop)) {
     return prop.elements.map((e) => {
       if (t.isStringLiteral(e)) return e.value;
@@ -112,11 +112,11 @@ export class CsfFile {
 
   _stories: Record<string, Story> = {};
 
-  _metaAnnotations: Record<string, Node> = {};
+  _metaAnnotations: Record<string, t.Node> = {};
 
   _storyExports: Record<string, t.VariableDeclarator> = {};
 
-  _storyAnnotations: Record<string, Record<string, Node>> = {};
+  _storyAnnotations: Record<string, Record<string, t.Node>> = {};
 
   _templates: Record<string, t.Expression> = {};
 
@@ -307,16 +307,7 @@ export class CsfFile {
 }
 
 export const loadCsf = (code: string, options: CsfOptions) => {
-  const ast = parse(code, {
-    sourceType: 'module',
-    // FIXME: we should get this from the project config somehow?
-    plugins: [
-      'jsx',
-      'typescript',
-      ['decorators', { decoratorsBeforeExport: true }],
-      'classProperties',
-    ],
-  });
+  const ast = babelParse(code);
   return new CsfFile(ast, options);
 };
 
