@@ -220,8 +220,8 @@ SB6.x supports a global story function specified in `.storybook/preview.js`. It 
 
 - The story ID
 - A story object that contains the name, title, etc.
-- The story's parameters
-- The global parameters
+- The component's parameters
+- The project-level parameters
 
 SB 7.0 streamlines the story function. It now accepts a `StoryIndexEntry` which is
 an object that contains only the story's `id`, `title`, `name`, and `importPath`.
