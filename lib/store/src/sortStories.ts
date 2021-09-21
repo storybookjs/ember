@@ -23,6 +23,7 @@ export const sortStoriesV7 = (
       (s1, s2) => fileNameOrder.indexOf(s1.importPath) - fileNameOrder.indexOf(s2.importPath)
     );
   }
+  return stories;
 };
 
 const toIndexEntry = (story: any): StoryIndexEntry => {

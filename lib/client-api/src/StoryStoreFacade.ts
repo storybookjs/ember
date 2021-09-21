@@ -67,7 +67,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
 
     const storyEntries = Object.entries(this.stories);
     // Add the kind parameters and global parameters to each entry
-    const stories: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
+    const sortableV6: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
       ([storyId, { importPath }]) => {
         const exports = this.csfExports[importPath];
         const csfFile = store.processCSFFileWithCache<TFramework>(exports, exports.default.title);
@@ -80,11 +80,14 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       }
     );
 
-    return {
-      v: 3,
-      // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
-      stories: sortStoriesV6(stories, storySortParameter, fileNameOrder),
-    };
+    // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
+    const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    const stories = sortedV7.reduce((acc, s) => {
+      acc[s.id] = s;
+      return acc;
+    }, {} as StoryIndex['stories']);
+
+    return { v: 3, stories };
   }
 
   clearFilenameExports(fileName: Path) {
