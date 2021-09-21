@@ -83,7 +83,9 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
     const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
     const stories = sortedV7.reduce((acc, s) => {
-      acc[s.id] = s;
+      // FIXME: we should be able to return `s` but for some reason
+      // storyshots needs the full story object
+      acc[s.id] = this.stories[s.id];
       return acc;
     }, {} as StoryIndex['stories']);
 
