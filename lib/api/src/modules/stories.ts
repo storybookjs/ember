@@ -351,7 +351,7 @@ export const init: ModuleFn = ({
     },
     fetchStoryList: async () => {
       // This needs some fleshing out as part of the stories list server project
-      const result = await global.fetch('/stories.json');
+      const result = await global.fetch('./stories.json');
       const storyIndex = (await result.json()) as StoryIndex;
 
       // We can only do this if the stories.json is a proper storyIndex
