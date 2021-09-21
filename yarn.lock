@@ -7636,7 +7636,6 @@ __metadata:
     "@storybook/theming": 6.4.0-alpha.40
     "@storybook/ui": 6.4.0-alpha.40
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/dotenv-webpack": ^3.0.0
     "@types/node": ^14.0.10
     "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
@@ -7651,7 +7650,6 @@ __metadata:
     case-sensitive-paths-webpack-plugin: ^2.3.0
     core-js: ^3.8.2
     css-loader: ^3.6.0
-    dotenv-webpack: ^1.8.0
     file-loader: ^6.2.0
     find-up: ^5.0.0
     fork-ts-checker-webpack-plugin: ^4.1.6
@@ -7725,7 +7723,6 @@ __metadata:
     "@storybook/store": 6.4.0-alpha.40
     "@storybook/theming": 6.4.0-alpha.40
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/dotenv-webpack": ^5.0.0
     "@types/node": ^14.0.10
     "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
@@ -7738,7 +7735,6 @@ __metadata:
     case-sensitive-paths-webpack-plugin: ^2.3.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
-    dotenv-webpack: ^7.0.0
     fork-ts-checker-webpack-plugin: ^6.0.4
     glob: ^7.1.6
     glob-promise: ^3.4.0
@@ -8347,7 +8343,6 @@ __metadata:
     "@storybook/theming": 6.4.0-alpha.40
     "@storybook/ui": 6.4.0-alpha.40
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/dotenv-webpack": ^3.0.0
     "@types/node": ^14.0.10
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack": ^4.41.26
@@ -8358,7 +8353,6 @@ __metadata:
     chalk: ^4.1.0
     core-js: ^3.8.2
     css-loader: ^3.6.0
-    dotenv-webpack: ^1.8.0
     express: ^4.17.1
     file-loader: ^6.2.0
     file-system-cache: ^1.0.5
@@ -8402,7 +8396,6 @@ __metadata:
     "@storybook/theming": 6.4.0-alpha.40
     "@storybook/ui": 6.4.0-alpha.40
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/dotenv-webpack": ^5.0.0
     "@types/node": ^14.0.10
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack-dev-middleware": ^4.1.0
@@ -8412,7 +8405,6 @@ __metadata:
     chalk: ^4.1.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
-    dotenv-webpack: ^7.0.0
     express: ^4.17.1
     file-system-cache: ^1.0.5
     find-up: ^5.0.0
@@ -9788,24 +9780,6 @@ __metadata:
   version: 0.0.3
   resolution: "@types/doctrine@npm:0.0.3"
   checksum: 566dcdc988c97ff01d14493ceb2223643347f07cf0a88c86cd7cb7c2821cfc837fd39295e6809a29614fdfdc6c4e981408155ca909b2e5da5d947af939b6c966
-  languageName: node
-  linkType: hard
-
-"@types/dotenv-webpack@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@types/dotenv-webpack@npm:3.0.0"
-  dependencies:
-    "@types/webpack": "*"
-  checksum: cac2e822b2c018ad3e15931110a5d7d36d1beb4fd77f3aac7c3ee3c1cf6e0cb43a1269b23e16a3b90175b1d3a22001592b0897fc69517d36a7b695b0d9393691
-  languageName: node
-  linkType: hard
-
-"@types/dotenv-webpack@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@types/dotenv-webpack@npm:5.0.0"
-  dependencies:
-    "@types/webpack": "*"
-  checksum: 0ab43f947eb5bc087ccb7adb3ee2573508af8c17ae376e3df8973b084934c7f15b10971dca9d288b2bbe493c45d6d29227cbc353493b0f05f2f2ae29d22f28ad
   languageName: node
   linkType: hard
 
@@ -19878,50 +19852,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-defaults@npm:^1.0.2":
-  version: 1.1.1
-  resolution: "dotenv-defaults@npm:1.1.1"
-  dependencies:
-    dotenv: ^6.2.0
-  checksum: c1304b7c83cbc310b0fa2a9256cf60caa0221d8b240b9e520f59bcdf3dfcfcf6a6d322250e787b6b770e21a17e7fdf56b6371e0b9a515d58d1159e7042a7caef
-  languageName: node
-  linkType: hard
-
-"dotenv-defaults@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "dotenv-defaults@npm:2.0.2"
-  dependencies:
-    dotenv: ^8.2.0
-  checksum: 14b7b8f6c21a30404106384398728746e63405bfeabe47ef7aadd0e81de49986d5896a612e5b1acddf655af6472a24947b7b113aa3ef3270a2877afa9c5bd287
-  languageName: node
-  linkType: hard
-
 "dotenv-expand@npm:5.1.0, dotenv-expand@npm:^5.1.0":
   version: 5.1.0
   resolution: "dotenv-expand@npm:5.1.0"
   checksum: 24ac633de853ef474d0421cc639328b7134109c8dc2baaa5e3afb7495af5e9237136d7e6971e55668e4dce915487eb140967cdd2b3e99aa439e0f6bf8b56faeb
-  languageName: node
-  linkType: hard
-
-"dotenv-webpack@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "dotenv-webpack@npm:1.8.0"
-  dependencies:
-    dotenv-defaults: ^1.0.2
-  peerDependencies:
-    webpack: ^1 || ^2 || ^3 || ^4
-  checksum: 64ec3b4c2fcb6cc65195c2a44778d47d5b38478ec3663b95a465b3cb392a6436def96393eff92780dc53f4b35bef67589d0fc19812503acbc9ec015a6bf45b3b
-  languageName: node
-  linkType: hard
-
-"dotenv-webpack@npm:^7.0.0":
-  version: 7.0.3
-  resolution: "dotenv-webpack@npm:7.0.3"
-  dependencies:
-    dotenv-defaults: ^2.0.2
-  peerDependencies:
-    webpack: ^4 || ^5
-  checksum: 1209f72c980989a4de550e6be7fab9efe7c34f56496760e8b91cd577ddba461b36acbb7de3a56416e60af9ef67c9b7d224bdf6a61e4dca60e23dc8e1673a16eb
   languageName: node
   linkType: hard
 
@@ -19936,13 +19870,6 @@ __metadata:
   version: 5.0.1
   resolution: "dotenv@npm:5.0.1"
   checksum: 3f111d39bc21d4088bd84183eeb8d6340292669909e41063bbe5ab0726618e9a4879e546e873a0e3193cda9d16bb99ff195a5bf97472cd9bc08368af9bdaa246
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "dotenv@npm:6.2.0"
-  checksum: 56886938622c34255c89ec24d584460668a5ca035afe37da7b16bfbac36f8b352d20a6dde51000b30db04fa5cac7b03caf165919fe5e9bd8c91a2735fd61c649
   languageName: node
   linkType: hard
 

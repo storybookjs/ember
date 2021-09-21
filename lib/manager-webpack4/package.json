@@ -58,7 +58,6 @@
     "chalk": "^4.1.0",
     "core-js": "^3.8.2",
     "css-loader": "^3.6.0",
-    "dotenv-webpack": "^1.8.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "file-system-cache": "^1.0.5",
@@ -82,7 +81,6 @@
   },
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
-    "@types/dotenv-webpack": "^3.0.0",
     "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webpack-dev-middleware": "^3.7.3",
     "@types/webpack-virtual-modules": "^0.1.0"

@@ -1,7 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
 import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
-import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
@@ -20,7 +19,6 @@ import {
   getManagerMainTemplate,
   Options,
   ManagerWebpackOptions,
-  hasDotenv,
 } from '@storybook/core-common';
 
 import { babelLoader } from './babel-loader-manager';
@@ -110,7 +108,6 @@ export async function managerWebpack(
         template,
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
-      hasDotenv() ? new Dotenv({ silent: true }) : null,
       // graphql sources check process variable
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),

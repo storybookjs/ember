@@ -1,7 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
 import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
-import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import PnpWebpackPlugin from 'pnp-webpack-plugin';
@@ -110,7 +109,6 @@ export async function managerWebpack(
         template,
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
-      (new Dotenv({ silent: true }) as any) as WebpackPluginInstance,
       // graphql sources check process variable
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),
