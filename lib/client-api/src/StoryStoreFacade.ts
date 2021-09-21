@@ -16,7 +16,7 @@ import {
   StoryStore,
   Story,
   autoTitle,
-  sortStories,
+  sortStoriesV6,
 } from '@storybook/store';
 
 const { STORIES = [] } = global;
@@ -56,7 +56,9 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    return this.csfExports[path];
+    const moduleExports = this.csfExports[path];
+    if (!moduleExports) throw new Error(`Unknown path: ${path}`);
+    return moduleExports;
   }
 
   fetchStoryIndex(store: StoryStore<TFramework>) {
@@ -78,14 +80,10 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       }
     );
 
-    sortStories(stories, storySortParameter, fileNameOrder);
-
     return {
       v: 3,
-      stories: stories.reduce((acc, [id]) => {
-        acc[id] = this.stories[id];
-        return acc;
-      }, {} as StoryIndex['stories']),
+      // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
+      stories: sortStoriesV6(stories, storySortParameter, fileNameOrder),
     };
   }
 
@@ -151,6 +149,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
           exportName;
 
         this.stories[id] = {
+          id,
           name,
           title,
           importPath: fileName,

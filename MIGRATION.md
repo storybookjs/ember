@@ -5,6 +5,7 @@
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
     - [Using the v7 store](#using-the-v7-store)
+    - [V7-style story sort](#v7-style-story-sort)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
@@ -210,6 +211,42 @@ module.exports = {
 ```
 
 NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
+
+#### V7-style story sort
+
+If you've written a custom `storySort` function, you'll need to rewrite it for V7.
+
+SB6.x supports a global story function specified in `.storybook/preview.js`. It accepts two arrays which each contain:
+
+- The story ID
+- A story object that contains the name, title, etc.
+- The story's parameters
+- The global parameters
+
+SB 7.0 streamlines the story function. It now accepts a `StoryIndexEntry` which is
+an object that contains only the story's `id`, `title`, `name`, and `importPath`.
+
+Consider the following example, before and after:
+
+```js
+// v6-style sort
+function storySort(a, b) {
+  return a[1].kind === b[1].kind
+    ? 0
+    : a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
+},
+```
+
+And the after version using `title` instead of `kind` and not receiving the full parameters:
+
+```js
+// v7-style sort
+function storySort(a, b) {
+  return a.title === b.title
+    ? 0
+    : a.id.localeCompare(b.id, undefined, { numeric: true });
+},
+```
 
 ### Babel mode v7
 

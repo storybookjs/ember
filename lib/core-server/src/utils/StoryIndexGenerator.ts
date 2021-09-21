@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 
-import { autoTitleFromSpecifier, sortStories, Path, StoryIndex } from '@storybook/store';
+import { autoTitleFromSpecifier, sortStoriesV7, Path, StoryIndex } from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
@@ -12,15 +12,10 @@ function sortExtractedStories(
   storySortParameter: any,
   fileNameOrder: string[]
 ) {
-  const sortableStories = Object.entries(stories).map(([id, story]) => [
-    id,
-    { id, kind: story.title, story: story.name, ...story },
-    { fileName: story.importPath },
-  ]);
-  sortStories(sortableStories, storySortParameter, fileNameOrder);
+  const sortableStories = Object.values(stories);
+  sortStoriesV7(sortableStories, storySortParameter, fileNameOrder);
   return sortableStories.reduce((acc, item) => {
-    const storyId = item[0] as string;
-    acc[storyId] = stories[storyId];
+    acc[item.id] = item;
     return acc;
   }, {} as StoryIndex['stories']);
 }
@@ -88,6 +83,7 @@ export class StoryIndexGenerator {
       const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
       csf.stories.forEach(({ id, name }) => {
         fileStories[id] = {
+          id,
           title: csf.meta.title,
           name,
           importPath,

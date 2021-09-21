@@ -3,10 +3,15 @@ import { ThemeProvider, convert, themes } from '@storybook/theming';
 
 export const parameters = {
   options: {
-    // storySort: (a, b) => (
-    //   a[1].title === b[1].title
+    // storySortV6: (a, b) => (
+    //   a[1].kind === b[1].kind
     //     ? 0
     //     : a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
+    // ),
+    // storySortV7: (a, b) => (
+    //   a.title === b.title
+    //     ? 0
+    //     : a.id.localeCompare(b.id, undefined, { numeric: true });
     // ),
     storySort: ['Examples', 'Docs', 'Demo'],
   },

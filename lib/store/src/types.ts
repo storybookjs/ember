@@ -82,6 +82,7 @@ export declare type RenderContext<
 };
 
 export interface StoryIndexEntry {
+  id: StoryId;
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
