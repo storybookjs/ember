@@ -19,8 +19,10 @@ import {
   StrictGlobalTypes,
   ComponentId,
   PartialStoryFn,
+  Parameters,
 } from '@storybook/csf';
 
+export type { StoryId, Parameters };
 export type Path = string;
 export type ModuleExports = Record<string, any>;
 export type ModuleImportFn = (path: Path) => Promise<ModuleExports> | ModuleExports;

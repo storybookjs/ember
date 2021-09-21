@@ -1,20 +1,24 @@
 import stable from 'stable';
-import { Comparator } from '@storybook/addons';
-import { Parameters } from '@storybook/csf';
+import {
+  Comparator,
+  StorySortParameter,
+  StorySortParameterV7,
+  StorySortObjectParameter,
+} from '@storybook/addons';
 import { storySort } from './storySort';
-import { StoryIndexEntry } from './types';
+import { Story, StoryIndexEntry, Path, Parameters } from './types';
 
 export const sortStoriesV7 = (
   stories: StoryIndexEntry[],
-  storySortParameter: any,
-  fileNameOrder: string[]
+  storySortParameter: StorySortParameterV7,
+  fileNameOrder: Path[]
 ) => {
   if (storySortParameter) {
     let sortFn: Comparator<any>;
     if (typeof storySortParameter === 'function') {
       sortFn = storySortParameter;
     } else {
-      sortFn = storySort({ order: storySortParameter });
+      sortFn = storySort({ order: storySortParameter } as StorySortObjectParameter);
     }
     stable.inplace(stories, sortFn);
   } else {
@@ -32,9 +36,9 @@ const toIndexEntry = (story: any): StoryIndexEntry => {
 };
 
 export const sortStoriesV6 = (
-  stories: [string, any, Parameters, Parameters][],
-  storySortParameter: any,
-  fileNameOrder: string[]
+  stories: [string, Story, Parameters, Parameters][],
+  storySortParameter: StorySortParameter,
+  fileNameOrder: Path[]
 ) => {
   if (storySortParameter && typeof storySortParameter === 'function') {
     stable.inplace(stories, storySortParameter);
@@ -42,5 +46,5 @@ export const sortStoriesV6 = (
   }
 
   const storiesV7 = stories.map((s) => toIndexEntry(s[1]));
-  return sortStoriesV7(storiesV7, storySortParameter, fileNameOrder);
+  return sortStoriesV7(storiesV7, storySortParameter as StorySortParameterV7, fileNameOrder);
 };
