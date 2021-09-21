@@ -35,21 +35,11 @@ export const sortStoriesV6 = (
   storySortParameter: any,
   fileNameOrder: string[]
 ) => {
-  if (storySortParameter && typeof storySortParameter !== 'function') {
-    const storiesV7 = stories.map((s) => toIndexEntry(s[1]));
-    stable.inplace(storiesV7, storySort({ order: storySortParameter }));
-    return storiesV7;
+  if (storySortParameter && typeof storySortParameter === 'function') {
+    stable.inplace(stories, storySortParameter);
+    return stories.map((s) => toIndexEntry(s[1]));
   }
 
-  if (storySortParameter) {
-    stable.inplace(stories, storySortParameter);
-  } else {
-    stable.inplace(
-      stories,
-      (s1, s2) =>
-        fileNameOrder.indexOf(s1[1].parameters.fileName) -
-        fileNameOrder.indexOf(s2[1].parameters.fileName)
-    );
-  }
-  return stories.map((s) => toIndexEntry(s[1]));
+  const storiesV7 = stories.map((s) => toIndexEntry(s[1]));
+  return sortStoriesV7(storiesV7, storySortParameter, fileNameOrder);
 };
