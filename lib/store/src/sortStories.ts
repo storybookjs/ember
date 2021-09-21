@@ -18,7 +18,7 @@ export const sortStoriesV7 = (
     if (typeof storySortParameter === 'function') {
       sortFn = storySortParameter;
     } else {
-      sortFn = storySort({ order: storySortParameter } as StorySortObjectParameter);
+      sortFn = storySort(storySortParameter);
     }
     stable.inplace(stories, sortFn);
   } else {

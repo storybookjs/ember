@@ -13,7 +13,9 @@ export const parameters = {
     //     ? 0
     //     : a.id.localeCompare(b.id, undefined, { numeric: true });
     // ),
-    storySort: ['Examples', 'Docs', 'Demo'],
+    storySort: {
+      order: ['Examples', 'Docs', 'Demo'],
+    },
   },
 };
 
