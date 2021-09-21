@@ -102,6 +102,7 @@ describe('ClientApi', () => {
       const store = {
         processCSFFileWithCache: jest.fn(() => ({ meta: { title: 'title' } })),
         storyFromCSFFile: jest.fn(({ storyId }) => ({
+          id: storyId,
           parameters: { fileName: storyId.split('-')[0].replace('kind', 'file') },
         })),
       };
