@@ -110,8 +110,9 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const isDebugging = log.some((item) => pendingStates.includes(item.state));
   const hasPrevious = log.some((item) => completedStates.includes(item.state));
   const hasNext = log.some((item) => item.state === CallStates.WAITING);
+  const hasActive = log.some((item) => item.state === CallStates.ACTIVE);
   const hasException = log.some((item) => item.state === CallStates.ERROR);
-  const isDisabled = !isDebugging && !isRendered;
+  const isDisabled = hasActive || (!isDebugging && !isRendered);
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;

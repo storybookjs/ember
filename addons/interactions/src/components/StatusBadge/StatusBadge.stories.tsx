@@ -12,7 +12,7 @@ export const Pass = {
 };
 
 export const Runs = {
-  args: { status: CallStates.PENDING },
+  args: { status: CallStates.WAITING },
 };
 
 export const Fail = {

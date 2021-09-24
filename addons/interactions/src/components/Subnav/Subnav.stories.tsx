@@ -30,7 +30,7 @@ export const Fail = {
 
 export const Runs = {
   args: {
-    status: CallStates.PENDING,
+    status: CallStates.WAITING,
   },
 };
 

@@ -4,11 +4,10 @@ import { StatusIcon } from './StatusIcon';
 export default {
   title: 'Addons/Interactions/StatusIcon',
   component: StatusIcon,
-  args: { status: CallStates.PENDING },
 };
 
 export const Pending = {
-  args: { status: CallStates.PENDING },
+  args: { status: CallStates.WAITING },
 };
 
 export const Error = {

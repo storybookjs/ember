@@ -10,7 +10,8 @@ const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
   const backgroundColor = {
     [CallStates.DONE]: theme.color.positive,
     [CallStates.ERROR]: theme.color.negative,
-    [CallStates.PENDING]: theme.color.warning,
+    [CallStates.ACTIVE]: theme.color.secondary,
+    [CallStates.WAITING]: theme.color.warning,
   }[status];
   return {
     padding: '4px 6px 4px 8px;',
@@ -31,7 +32,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const badgeText = {
     [CallStates.DONE]: 'Pass',
     [CallStates.ERROR]: 'Fail',
-    [CallStates.PENDING]: 'Runs',
+    [CallStates.ACTIVE]: 'Runs',
+    [CallStates.WAITING]: 'Runs',
   }[status];
   return <StyledBadge status={status}>{badgeText}</StyledBadge>;
 };
