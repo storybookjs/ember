@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
@@ -19,15 +19,15 @@ const StyledSubnav = styled.nav(({ theme }) => ({
 }));
 
 export interface SubnavProps {
-  status: CallState;
-  onPrevious: () => void;
-  onNext: () => void;
-  onReplay: () => void;
-  goToStart: () => void;
-  goToEnd: () => void;
-  storyFileName?: string;
+  isDisabled: boolean;
   hasPrevious: boolean;
   hasNext: boolean;
+  storyFileName?: string;
+  status: CallState;
+  onStart: () => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  onEnd: () => void;
 }
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -78,14 +78,15 @@ const JumpToEndButton = styled(StyledButton)({
 });
 
 export const Subnav: React.FC<SubnavProps> = ({
-  status,
-  onPrevious,
-  onNext,
-  goToStart,
-  goToEnd,
-  storyFileName,
+  isDisabled,
   hasNext,
   hasPrevious,
+  storyFileName,
+  status,
+  onStart,
+  onPrevious,
+  onNext,
+  onEnd,
 }) => {
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
@@ -94,22 +95,42 @@ export const Subnav: React.FC<SubnavProps> = ({
       <Group>
         <StatusBadge status={status} />
 
-        <JumpToEndButton onClick={goToEnd} disabled={!hasNext}>
+        <JumpToEndButton onClick={onEnd} disabled={!hasNext}>
           {buttonText}
         </JumpToEndButton>
 
         <StyledSeparator />
 
-        <RewindButton containsIcon title="Go to start" onClick={goToStart} disabled={!hasPrevious}>
+        <RewindButton
+          containsIcon
+          title="Go to start"
+          onClick={onStart}
+          disabled={isDisabled || !hasPrevious}
+        >
           <Icons icon="rewind" />
         </RewindButton>
-        <StyledIconButton containsIcon title="Go back" onClick={onPrevious} disabled={!hasPrevious}>
+        <StyledIconButton
+          containsIcon
+          title="Go back"
+          onClick={onPrevious}
+          disabled={isDisabled || !hasPrevious}
+        >
           <Icons icon="playback" />
         </StyledIconButton>
-        <StyledIconButton containsIcon title="Go forward" onClick={onNext} disabled={!hasNext}>
+        <StyledIconButton
+          containsIcon
+          title="Go forward"
+          onClick={onNext}
+          disabled={isDisabled || !hasNext}
+        >
           <Icons icon="playnext" />
         </StyledIconButton>
-        <StyledIconButton containsIcon title="Go to end" onClick={goToEnd} disabled={!hasNext}>
+        <StyledIconButton
+          containsIcon
+          title="Go to end"
+          onClick={onEnd}
+          disabled={isDisabled || !hasNext}
+        >
           <Icons icon="fastforward" />
         </StyledIconButton>
       </Group>

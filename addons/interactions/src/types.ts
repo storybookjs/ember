@@ -12,7 +12,6 @@ export interface Call {
 
 export interface CallRef {
   __callId__: Call['id'];
-  retain?: boolean;
 }
 
 export enum CallStates {
@@ -37,4 +36,9 @@ export interface ElementRef {
     classNames?: string[];
     innerText?: string;
   };
+}
+
+export interface LogItem {
+  callId: Call['id'];
+  state: Call['state'];
 }

@@ -14,6 +14,7 @@ import {
   Globals,
   ViewMode,
   StoryContextForLoaders,
+  StoryContext,
 } from '@storybook/csf';
 import {
   ModuleImportFn,
@@ -38,7 +39,18 @@ function focusInInput(event: Event) {
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
 
-type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
+function createController() {
+  if (AbortController) return new AbortController();
+  // Polyfill for IE11
+  return {
+    signal: { aborted: false },
+    abort() {
+      this.signal.aborted = true;
+    },
+  };
+}
+
+type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
 type MaybePromise<T> = Promise<T> | T;
 
 export class PreviewWeb<TFramework extends AnyFramework> {
@@ -404,147 +416,129 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     element: Element;
   }) {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
+    let controller = createController();
 
-    // IE11 doesn't support AbortController, so we either need to polyfill or just not support it
-    const controller = AbortController
-      ? new AbortController()
-      : {
-          signal: { aborted: false },
-          abort() {
-            this.signal.aborted = true;
-          },
-        };
-    let initialRenderPhase: InitialRenderPhase = 'init';
-    let renderContext: RenderContext<TFramework>;
-    const initialRender = async () => {
-      const storyContext = this.storyStore.getStoryContext(story);
-
-      const { parameters, initialArgs, argTypes, args } = storyContext;
-      if (FEATURES?.storyStoreV7) {
-        this.channel.emit(Events.STORY_PREPARED, {
-          id,
-          parameters,
-          initialArgs,
-          argTypes,
-          args,
+    const runPhase = async (phaseName: RenderPhase, asyncFn: () => MaybePromise<void>) => {
+      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
+        newPhase: phaseName,
+        storyId: id,
+      });
+      await asyncFn();
+      if (controller.signal.aborted) {
+        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
+          newPhase: 'aborted',
+          storyId: id,
         });
       }
+    };
 
-      const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
-      const loadedContext = await applyLoaders({
-        ...storyContext,
-        viewMode,
-      } as StoryContextForLoaders<TFramework>);
+    let loadedContext: StoryContext<TFramework>;
+    const renderStory = async ({ initial = false, forceRemount = false } = {}) => {
+      if (forceRemount) controller.abort();
       if (controller.signal.aborted) {
+        controller = createController();
+      }
+
+      if (initial) {
+        // NOTE: loaders are not getting run again. So we are just patching
+        // the updated story context over the previous value (that included loader output).
+        // Loaders aren't allowed to touch anything but the `loaded` key but
+        // this means loaders never run again with new values of args/globals
+        const storyContext = this.storyStore.getStoryContext(story);
+        const { parameters, initialArgs, argTypes, args } = storyContext;
+        if (FEATURES?.storyStoreV7) {
+          this.channel.emit(Events.STORY_PREPARED, {
+            id,
+            parameters,
+            initialArgs,
+            argTypes,
+            args,
+          });
+        }
+
+        try {
+          await runPhase('loading', async () => {
+            loadedContext = await applyLoaders({
+              ...storyContext,
+              viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
+            } as StoryContextForLoaders<TFramework>);
+          });
+          if (controller.signal.aborted) return;
+        } catch (err) {
+          renderContextWithoutStoryContext.showException(err);
+          return;
+        }
+      } else if (!loadedContext) {
+        // The story has not finished rendered the first time. The loaders are still running
+        // and we will pick up the new args/globals values when renderToDOM is called.
         return;
       }
-      initialRenderPhase = 'loaded';
 
       // By this stage, it is possible that new args/globals have been received for this story
       // and we need to ensure we render it with the new values
-      const updatedStoryContext = {
+      const renderStoryContext: StoryContext<TFramework> = {
         ...loadedContext,
         ...this.storyStore.getStoryContext(story),
         abortSignal: controller.signal,
         canvasElement: element,
       };
-      renderContext = {
+      const renderContext: RenderContext<TFramework> = {
         ...renderContextWithoutStoryContext,
-        // Whenever the selection changes we want to force the component to be remounted.
-        forceRemount: true,
-        storyContext: updatedStoryContext,
-        storyFn: () => unboundStoryFn(updatedStoryContext),
-        unboundStoryFn,
-      };
-      await this.renderToDOM(renderContext, element);
-
-      if (controller.signal.aborted) {
-        return;
-      }
-      initialRenderPhase = 'rendered';
-
-      // NOTE: if the story is torn down during the play function, there could be negative
-      // side-effects (as the play function tries to modify something that is no longer visible).
-      // In the future we will likely pass the AbortController signal into play(), and also
-      // attempt to scope the play function by passing the element.
-      //
-      // NOTE: it is possible that args/globals have changed in between us starting to render
-      // the story and executing the play function (it is also possible that they change mid-way
-      // through executing the play function). We explicitly allow such changes to re-render the
-      // story by setting `initialRenderDone=true` immediate after `renderToDOM` completes.
-      if (playFunction) {
-        await playFunction(renderContext.storyContext);
-      }
-
-      if (controller.signal.aborted) {
-        return;
-      }
-      initialRenderPhase = 'done';
-
-      this.channel.emit(Events.STORY_RENDERED, id);
-    };
-
-    // Setup a callback to run when the story needs to be re-rendered due to args or globals changes
-    // We need to be careful for race conditions if the initial rendering of the story (which
-    // can take some time due to loaders + the play function) hasn't completed yet.
-    // Our current approach is to either stop, or rerender immediately depending on which phase
-    // the initial render is in (see comments below).
-    // An alternative approach would be to *wait* until the initial render is done, before
-    // re-rendering with the new args. This would be relatively easy if we tracked the initial
-    // render via awaiting result of the call to `initialRender`. (We would also need to track
-    // if a subsequent *re-render* is in progress, but that is less likely)
-    // See also the note about cancelling below.
-    const rerenderStory = async (forceRemount = false) => {
-      // The story has not finished rendered the first time. The loaders are still running
-      // and we will pick up the new args/globals values when renderToDOM is called.
-      if (initialRenderPhase === 'init') {
-        return;
-      }
-
-      // This story context will have the updated values of args and globals
-
-      const rerenderStoryContext = {
-        // NOTE: loaders are not getting run again. So we are just patching
-        // the updated story context over the previous value (that included loader output).
-        // Loaders aren't allowed to touch anything but the `loaded` key but
-        // this means loaders never run again with new values of args/globals
-        ...renderContext.storyContext,
-        ...this.storyStore.getStoryContext(story),
-      };
-      const rerenderRenderContext: RenderContext<TFramework> = {
-        ...renderContext,
         forceRemount,
-        storyContext: rerenderStoryContext,
-        storyFn: () => unboundStoryFn(rerenderStoryContext),
+        storyContext: renderStoryContext,
+        storyFn: () => unboundStoryFn(renderStoryContext),
+        unboundStoryFn,
       };
 
       try {
-        await this.renderToDOM(rerenderRenderContext, element);
+        await runPhase('rendering', () => this.renderToDOM(renderContext, element));
+        if (controller.signal.aborted) return;
+
+        // NOTE: if the story is torn down during the play function, there could be negative
+        // side-effects (as the play function tries to modify something that is no longer visible).
+        // In the future we will likely pass the AbortController signal into play(), and also
+        // attempt to scope the play function by passing the element.
+        //
+        // NOTE: it is possible that args/globals have changed in between us starting to render
+        // the story and executing the play function (it is also possible that they change mid-way
+        // through executing the play function). We explicitly allow such changes to re-render the
+        // story by setting `initialRenderDone=true` immediate after `renderToDOM` completes.
         if (forceRemount && playFunction) {
-          await playFunction(renderContext.storyContext);
+          await runPhase('playing', () => playFunction(renderContext.storyContext));
+          if (controller.signal.aborted) return;
         }
+
+        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
+          newPhase: 'completed',
+          storyId: id,
+        });
         this.channel.emit(Events.STORY_RENDERED, id);
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);
       }
     };
 
-    // Start the first render
-    // NOTE: we don't await here because we need to return the "cleanup" function below
-    // right away, so if the user changes story during the first render we can cancel
+    // Start the first (initial) render. We don't await here because we need to return the "cleanup"
+    // function below right away, so if the user changes story during the first render we can cancel
     // it without having to first wait for it to finish.
-    initialRender().catch((err) => renderContextWithoutStoryContext.showException(err));
+    // Whenever the selection changes we want to force the component to be remounted.
+    renderStory({ initial: true, forceRemount: true });
 
-    const remountStory = () => rerenderStory(true);
-    const rerenderStoryIfMatches = async ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) rerenderStory();
+    const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
+      if (storyId === story.id) {
+        controller.abort();
+        renderStory({ forceRemount: true });
+      }
+    };
+    const rerenderStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
+      if (storyId === story.id) renderStory();
     };
 
     // Listen to events and re-render story
     // Don't forget to unsubscribe on tear down
-    this.channel.on(Events.UPDATE_GLOBALS, rerenderStory);
-    this.channel.on(Events.FORCE_RE_RENDER, rerenderStory);
-    this.channel.on(Events.FORCE_CLEAN_RENDER, remountStory);
+    this.channel.on(Events.UPDATE_GLOBALS, renderStory);
+    this.channel.on(Events.FORCE_RE_RENDER, renderStory);
+    this.channel.on(Events.FORCE_REMOUNT, remountStoryIfMatches);
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
 
@@ -559,9 +553,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // the new story. This might be a bit complicated for docs however.
       controller.abort();
       this.storyStore.cleanupStory(story);
-      this.channel.off(Events.UPDATE_GLOBALS, rerenderStory);
-      this.channel.off(Events.FORCE_RE_RENDER, rerenderStory);
-      this.channel.off(Events.FORCE_CLEAN_RENDER, remountStory);
+      this.channel.off(Events.UPDATE_GLOBALS, renderStory);
+      this.channel.off(Events.FORCE_RE_RENDER, renderStory);
+      this.channel.off(Events.FORCE_REMOUNT, remountStoryIfMatches);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
     };

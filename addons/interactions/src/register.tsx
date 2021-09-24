@@ -7,8 +7,8 @@ import { Panel } from './Panel';
 addons.register(ADDON_ID, () => {
   addons.add(TOOL_ID, {
     type: types.TOOL,
-    title: 'Interactions',
-    match: ({ viewMode }) => !!(viewMode && viewMode.match(/^(story|docs)$/)),
+    title: 'Restart',
+    match: ({ viewMode }) => viewMode === 'story',
     render: Tool,
   });
 

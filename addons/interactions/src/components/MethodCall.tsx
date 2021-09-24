@@ -92,7 +92,7 @@ export const Node = ({
 }: {
   value: any;
   nested?: boolean;
-  callsById?: Record<Call['id'], Call>;
+  callsById?: Map<Call['id'], Call>;
   [props: string]: any;
 }) => {
   switch (true) {
@@ -121,7 +121,7 @@ export const Node = ({
       return <ElementNode value={value.__element__} {...props} />;
     case Object.prototype.hasOwnProperty.call(value, '__callId__'):
       // eslint-disable-next-line no-underscore-dangle
-      return <MethodCall call={callsById[value.__callId__]} callsById={callsById} />;
+      return <MethodCall call={callsById.get(value.__callId__)} callsById={callsById} />;
     case typeof value === 'object' &&
       value.constructor?.name &&
       value.constructor?.name !== 'Object':
@@ -310,7 +310,7 @@ export const MethodCall = ({
   callsById,
 }: {
   call: Call;
-  callsById: Record<Call['id'], Call>;
+  callsById: Map<Call['id'], Call>;
 }) => {
   // Call might be undefined during initial render, can be safely ignored.
   if (!call) return null;
@@ -320,7 +320,7 @@ export const MethodCall = ({
     const callId = (elem as CallRef).__callId__;
     return [
       callId ? (
-        <MethodCall key={`elem${index}`} call={callsById[callId]} callsById={callsById} />
+        <MethodCall key={`elem${index}`} call={callsById.get(callId)} callsById={callsById} />
       ) : (
         <span key={`elem${index}`}>{elem}</span>
       ),

@@ -1,48 +1,32 @@
-/* eslint-disable no-underscore-dangle */
-
 import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useChannel, useParameter } from '@storybook/api';
-import { FORCE_CLEAN_RENDER, SET_CURRENT_STORY, STORY_RENDERED } from '@storybook/core-events';
+import { useChannel, useParameter, useStorybookState } from '@storybook/api';
+import { FORCE_REMOUNT, SET_CURRENT_STORY, STORY_RENDERED } from '@storybook/core-events';
 import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
-import { EVENTS } from './constants';
-import { Call, CallRef, CallStates } from './types';
+import { Call, CallStates, LogItem } from './types';
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import { Subnav } from './components/Subnav/Subnav';
+import { EVENTS } from './lib/instrumenter';
 
 interface PanelProps {
   active: boolean;
 }
 
-interface SharedState {
-  isDebugging: boolean;
-  chainedCallIds: Set<Call['id']>;
-  playUntil: Call['id'];
-}
-
-if (!global.window.__STORYBOOK_ADDON_TEST_MANAGER__) {
-  global.window.__STORYBOOK_ADDON_TEST_MANAGER__ = {
-    isDebugging: false,
-    chainedCallIds: new Set<Call['id']>(),
-    playUntil: undefined,
-  };
-}
-
-const sharedState: SharedState = global.window.__STORYBOOK_ADDON_TEST_MANAGER__;
-
 const Interaction = ({
   call,
   callsById,
   onClick,
+  isDisabled,
 }: {
   call: Call;
-  callsById: Record<Call['id'], Call>;
+  callsById: Map<Call['id'], Call>;
   onClick: React.MouseEventHandler<HTMLElement>;
+  isDisabled: boolean;
 }) => {
   const RowContainer = styled.div(({ theme }) => ({
     display: 'flex',
@@ -53,25 +37,38 @@ const Interaction = ({
     fontSize: 12,
   }));
 
-  const RowLabel = styled.div({
+  const RowLabel = styled.button(({ theme, disabled }) => ({
     display: 'grid',
+    background: 'none',
+    border: 0,
     gridTemplateColumns: '15px 1fr',
     alignItems: 'center',
     minHeight: 40,
+    margin: 0,
     padding: '8px 15px',
-    cursor: call.state === CallStates.ERROR ? 'default' : 'pointer',
-    opacity: call.state === CallStates.PENDING ? 0.4 : 1,
+    textAlign: 'start',
+    cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
     '&:hover': {
       background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
     },
-  });
+    '&:focus-visible': {
+      outline: 0,
+      boxShadow: `inset 3px 0 0 0 ${
+        call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
+      }`,
+      background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
+    },
+    '& > div': {
+      opacity: call.state === CallStates.PENDING ? 0.4 : 1,
+    },
+  }));
   const detailStyle = {
     margin: 0,
     padding: '8px 10px 8px 30px',
   };
   return (
     <RowContainer>
-      <RowLabel onClick={onClick}>
+      <RowLabel onClick={onClick} disabled={isDisabled}>
         <StatusIcon status={call.state} />
         <div style={{ marginLeft: 5 }}>
           <MethodCall call={call} callsById={callsById} />
@@ -87,162 +84,33 @@ const Interaction = ({
   );
 };
 
-interface PanelState {
-  log: Call[];
-  shadowLog: Call[];
-  interactions: Call[];
-  isDebugging: boolean;
-  callsById: Record<Call['id'], Call>;
-}
-
-const initialState: PanelState = {
-  log: [],
-  shadowLog: [],
-  interactions: [],
-  isDebugging: false,
-  callsById: {},
-};
-
-const fold = (log: Call[]) => {
-  const seen = new Set();
-  return log.reduceRight<Call[]>((acc, call) => {
-    call.args.forEach((arg) => {
-      if (arg?.__callId__) {
-        seen.add(arg.__callId__);
-      }
-    });
-    call.path.forEach((node) => {
-      if ((node as CallRef).__callId__) {
-        seen.add((node as CallRef).__callId__);
-      }
-    });
-    if (call.interceptable && !seen.has(call.id) && !seen.has(call.parentId)) {
-      acc.unshift(call);
-      seen.add(call.id);
-      if (call.parentId) {
-        seen.add(call.parentId);
-      }
-    }
-    return acc;
-  }, []);
-};
-
-const reducer = (
-  state: PanelState,
-  action: { type: string; payload?: { call?: Call; playUntil?: Call['id'] } }
-) => {
-  switch (action.type) {
-    case 'call': {
-      const { call } = action.payload;
-      const log = state.log.concat(call);
-      const interactions = fold(
-        log.reduce<Call[]>(
-          (acc, item, index) => {
-            acc[index] = item;
-            return acc;
-          },
-          state.shadowLog.map((c) => ({ ...c, state: CallStates.PENDING }))
-        )
-      );
-      return {
-        ...state,
-        log,
-        interactions,
-        callsById: { ...state.callsById, [call.id]: call },
-      };
-    }
-    case 'start': {
-      sharedState.isDebugging = true;
-      sharedState.playUntil = action.payload?.playUntil;
-      return {
-        ...state,
-        log: [] as Call[],
-        shadowLog: state.isDebugging ? state.shadowLog : [...state.log],
-        isDebugging: true,
-      };
-    }
-    case 'stop': {
-      sharedState.isDebugging = false;
-      sharedState.playUntil = undefined;
-      return { ...state, isDebugging: false };
-    }
-    case 'reset': {
-      sharedState.isDebugging = false;
-      sharedState.playUntil = undefined;
-      sharedState.chainedCallIds.clear();
-      const { log, callsById } = state;
-      return {
-        ...initialState,
-        log: log.filter((call) => call.retain),
-        callsById: Object.entries(callsById).reduce<typeof callsById>((acc, [id, call]) => {
-          if (call.retain) acc[id] = call;
-          return acc;
-        }, {}),
-      };
-    }
-    default:
-      throw new Error('Invalid action');
-  }
-};
-
 export const Panel: React.FC<PanelProps> = (props) => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [isRendered, setRendered] = React.useState(false);
+  const [isLocked, setLocked] = React.useState(false);
+
+  const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
+  const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
+
+  const [log, setLog] = React.useState<LogItem[]>([]);
+  const interactions = log.map(({ callId, state }) => ({ ...calls.current.get(callId), state }));
 
   const emit = useChannel({
-    [EVENTS.CALL]: (call: Call) => {
-      dispatch({ type: 'call', payload: { call } });
-    },
-    [SET_CURRENT_STORY]: () => {
-      dispatch({ type: 'reset' });
-    },
-    [FORCE_CLEAN_RENDER]: (type: any) => {
-      if (type !== 'debug') dispatch({ type: 'reset' });
-    },
-    [STORY_RENDERED]: () => {
-      dispatch({ type: 'stop' });
-    },
+    [EVENTS.CALL]: setCall,
+    [EVENTS.SYNC]: setLog,
+    [EVENTS.LOCK]: setLocked,
+    [SET_CURRENT_STORY]: () => setRendered(false),
+    [FORCE_REMOUNT]: () => setRendered(false),
+    [STORY_RENDERED]: () => setRendered(true),
   });
 
+  const { storyId } = useStorybookState();
   const [fileName] = useParameter('fileName', '').split('/').slice(-1);
 
-  const { log, interactions, callsById, isDebugging } = state;
+  const isDebugging = interactions.some((call) => call.state === CallStates.PENDING);
   const hasException = interactions.some((call) => call.state === CallStates.ERROR);
   const hasPrevious = interactions.some((call) => call.state !== CallStates.PENDING);
   const hasNext = interactions.some((call) => call.state === CallStates.PENDING);
-  const nextIndex = interactions.findIndex((call) => call.state === CallStates.PENDING);
-  const nextCall = interactions[nextIndex];
-  const prevCall =
-    interactions[nextIndex - 2] || (isDebugging ? undefined : interactions.slice(-2)[0]);
-
-  const start = () => {
-    const playUntil = log
-      .slice(
-        0,
-        log.findIndex((call) => call.id === interactions[0].id)
-      )
-      .filter((call) => call.interceptable)
-      .slice(-1)[0];
-    dispatch({ type: 'start', payload: { playUntil: playUntil?.id } });
-    emit(EVENTS.RELOAD);
-  };
-  const goto = (call: Call) => {
-    if (call.state === CallStates.PENDING) {
-      if (call !== nextCall) sharedState.playUntil = call.id;
-      emit(EVENTS.NEXT);
-    } else {
-      dispatch({ type: 'start', payload: { playUntil: call.id } });
-      emit(EVENTS.RELOAD);
-    }
-  };
-  const next = () => goto(nextCall);
-  const prev = () => (prevCall ? goto(prevCall) : start());
-  const stop = () => {
-    dispatch({ type: 'stop' });
-    emit(EVENTS.NEXT);
-  };
-  const replay = () => {
-    emit(FORCE_CLEAN_RENDER);
-  };
+  const isDisabled = isLocked || (!isDebugging && !isRendered);
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;
@@ -259,21 +127,27 @@ export const Panel: React.FC<PanelProps> = (props) => {
       {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
       {interactions.length > 0 && (
         <Subnav
-          status={hasException ? CallStates.ERROR : CallStates.DONE}
-          storyFileName={fileName}
-          onPrevious={prev}
-          onNext={next}
-          onReplay={replay}
-          goToStart={start}
-          goToEnd={stop}
+          isDisabled={isDisabled}
           hasPrevious={hasPrevious}
           hasNext={hasNext}
+          storyFileName={fileName}
+          status={hasException ? CallStates.ERROR : CallStates.DONE}
+          onStart={() => emit(EVENTS.START, { storyId })}
+          onPrevious={() => emit(EVENTS.BACK, { storyId })}
+          onNext={() => emit(EVENTS.NEXT, { storyId })}
+          onEnd={() => emit(EVENTS.END, { storyId })}
         />
       )}
       {interactions.map((call) => (
-        <Interaction call={call} callsById={callsById} key={call.id} onClick={() => goto(call)} />
+        <Interaction
+          key={call.id}
+          call={call}
+          callsById={calls.current}
+          onClick={() => emit(EVENTS.GOTO, { storyId, callId: call.id })}
+          isDisabled={isDisabled}
+        />
       ))}
-      {interactions.length === 0 && (
+      {isRendered && interactions.length === 0 && (
         <Placeholder>
           No interactions found
           <Link

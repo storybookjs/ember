@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useChannel } from '@storybook/api';
+import { useChannel, useStorybookApi } from '@storybook/api';
 import { Icons, IconButton } from '@storybook/components';
 import { ButtonProps } from '@storybook/components/dist/ts3.9/Button/Button';
-import { FORCE_CLEAN_RENDER } from '@storybook/core-events';
+import { FORCE_REMOUNT } from '@storybook/core-events';
 import { styled } from '@storybook/theming';
 import { TOOL_ID } from './constants';
 
@@ -10,7 +10,8 @@ interface AnimatedButtonProps extends ButtonProps {
   animating?: boolean;
 }
 const StyledAnimatedIconButton = styled(IconButton)<AnimatedButtonProps>(
-  ({ theme, animating }) => ({
+  ({ theme, animating, disabled }) => ({
+    opacity: disabled ? 0.5 : 1,
     svg: {
       animation: animating && `${theme.animation.rotate360} 1000ms ease-out`,
     },
@@ -18,11 +19,13 @@ const StyledAnimatedIconButton = styled(IconButton)<AnimatedButtonProps>(
 );
 
 export const Tool = () => {
+  const { id: storyId } = useStorybookApi().getCurrentStoryData() || {};
   const emit = useChannel({});
   const [isAnimating, setIsAnimating] = useState(false);
   const animateAndReplay = () => {
+    if (!storyId) return;
     setIsAnimating(true);
-    emit(FORCE_CLEAN_RENDER);
+    emit(FORCE_REMOUNT, { storyId });
   };
 
   return (
@@ -32,6 +35,7 @@ export const Tool = () => {
       onClick={animateAndReplay}
       onAnimationEnd={() => setIsAnimating(false)}
       animating={isAnimating}
+      disabled={!storyId}
     >
       <Icons icon="sync" />
     </StyledAnimatedIconButton>

@@ -1,11 +1,14 @@
 import { once } from '@storybook/client-logger';
-import * as dom from '@testing-library/dom';
+import * as domTestingLibrary from '@testing-library/dom';
+import _userEvent from '@testing-library/user-event';
 import dedent from 'ts-dedent';
-import { instrument } from './instrument';
+import { instrument } from './instrumenter';
 
-const instrumented = instrument(dom);
+const testingLibrary = instrument(domTestingLibrary);
 
-instrumented.screen = Object.entries(instrumented.screen).reduce(
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+testingLibrary.screen = Object.entries(testingLibrary.screen).reduce(
   (acc, [key, val]) =>
     Object.defineProperty(acc, key, {
       get() {
@@ -17,7 +20,7 @@ instrumented.screen = Object.entries(instrumented.screen).reduce(
         return val;
       },
     }),
-  instrumented.screen
+  testingLibrary.screen
 );
 
 // console.log(Object.keys(dom).join(',\n'))
@@ -41,7 +44,6 @@ export const {
   findByTestId,
   findByText,
   findByTitle,
-  fireEvent,
   getAllByAltText,
   getAllByDisplayValue,
   getAllByLabelText,
@@ -61,7 +63,6 @@ export const {
   getConfig,
   getDefaultNormalizer,
   getElementError,
-  getMultipleElementsFoundError,
   getNodeText,
   getQueriesForElement,
   getRoles,
@@ -69,9 +70,6 @@ export const {
   isInaccessible,
   logDOM,
   logRoles,
-  makeFindQuery,
-  makeGetAllQuery,
-  makeSingleQuery,
   prettyDOM,
   queries,
   queryAllByAltText,
@@ -97,7 +95,11 @@ export const {
   waitFor,
   waitForElementToBeRemoved,
   within,
-  wrapAllByQueryWithSuggestion,
-  wrapSingleQueryWithSuggestion,
   prettyFormat,
-} = instrumented;
+} = testingLibrary;
+
+export const { userEvent } = instrument({ userEvent: _userEvent }, { intercept: true });
+export const { fireEvent } = instrument(
+  { fireEvent: domTestingLibrary.fireEvent },
+  { intercept: true }
+);
