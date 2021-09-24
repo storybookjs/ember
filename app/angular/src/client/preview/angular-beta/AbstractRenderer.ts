@@ -104,7 +104,7 @@ export abstract class AbstractRenderer {
   }: {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
-    component: any;
+    component?: any;
     parameters: Parameters;
     targetDOMNode: HTMLElement;
   }) {
