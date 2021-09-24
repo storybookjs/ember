@@ -4,10 +4,11 @@ import _userEvent from '@testing-library/user-event';
 import dedent from 'ts-dedent';
 import { instrument } from './instrumenter';
 
-const testingLibrary = instrument(domTestingLibrary);
+const testingLibrary = instrument(
+  { ...domTestingLibrary },
+  { intercept: (method) => method === 'fireEvent' || method.startsWith('findBy') }
+);
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 testingLibrary.screen = Object.entries(testingLibrary.screen).reduce(
   (acc, [key, val]) =>
     Object.defineProperty(acc, key, {
@@ -23,7 +24,7 @@ testingLibrary.screen = Object.entries(testingLibrary.screen).reduce(
   testingLibrary.screen
 );
 
-// console.log(Object.keys(dom).join(',\n'))
+// console.log(Object.keys(domTestingLibrary).join(',\n'));
 export const {
   buildQueries,
   configure,
@@ -44,6 +45,7 @@ export const {
   findByTestId,
   findByText,
   findByTitle,
+  fireEvent,
   getAllByAltText,
   getAllByDisplayValue,
   getAllByLabelText,
@@ -99,7 +101,3 @@ export const {
 } = testingLibrary;
 
 export const { userEvent } = instrument({ userEvent: _userEvent }, { intercept: true });
-export const { fireEvent } = instrument(
-  { fireEvent: domTestingLibrary.fireEvent },
-  { intercept: true }
-);

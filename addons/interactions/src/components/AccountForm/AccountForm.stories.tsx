@@ -48,7 +48,6 @@ export const StandardEmailFilled = {
         value: 'michael@chromatic.com',
       },
     });
-    await expect({ hello: 1 }).not.toBe(new Error('cool'));
   },
 };
 
@@ -58,9 +57,11 @@ export const StandardEmailFailed = {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('email'), 'me');
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou');
-    await userEvent.click(canvas.getByTestId('submit'));
+    await userEvent.click(canvas.getByRole('button', { name: /create account/i }));
+
     await tick();
     await expect(args.onSubmit).not.toHaveBeenCalled();
+    await canvas.findByText('Please enter aa correctly formatted email address');
   },
 };
 

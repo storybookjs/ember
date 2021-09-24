@@ -21,7 +21,7 @@ export const EVENTS = {
 };
 
 export interface Options {
-  intercept?: boolean;
+  intercept?: boolean | ((method: string, path: Array<string | CallRef>) => boolean);
   retain?: boolean;
   mutate?: boolean;
   path?: Array<string | CallRef>;
@@ -282,9 +282,10 @@ export class Instrumenter {
     const index = this.state.cursor;
     this.setState({ cursor: this.state.cursor + 1 });
     const id = `${index}-${method}`;
-    const { intercept: interceptable = false, retain = false } = options;
+    const { intercept = false, retain = false } = options;
+    const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
     const call: Call = { id, path, method, args, interceptable, retain };
-    const result = (options.intercept ? this.intercept : this.invoke).call(this, fn, call);
+    const result = (interceptable ? this.intercept : this.invoke).call(this, fn, call);
     return this.instrument(result, { ...options, mutate: true, path: [{ __callId__: call.id }] });
   }
 
@@ -337,6 +338,34 @@ export class Instrumenter {
       }
     });
 
+    const handleException = (e: unknown) => {
+      if (e instanceof Error) {
+        const { name, message, stack } = e;
+        const exception = { name, message, stack, callId: call.id };
+        this.sync({ ...info, state: CallStates.ERROR, exception });
+
+        // Always track errors to their originating call.
+        this.setState(({ callRefsByResult }) => ({
+          callRefsByResult: new Map([
+            ...Array.from(callRefsByResult.entries()),
+            [e, { __callId__: call.id }],
+          ]),
+        }));
+
+        // We need to throw to break out of the play function, but we don't want to trigger a redbox
+        // so we throw an ignoredException, which is caught and silently ignored by Storybook.
+        if (call.interceptable) {
+          throw IGNORED_EXCEPTION;
+        }
+
+        // Non-interceptable calls need their exceptions forwarded to the next interceptable call.
+        // TODO what if there is no next interceptable call?
+        this.setState({ forwardedException: e });
+        return e;
+      }
+      throw e;
+    };
+
     try {
       // An earlier, non-interceptable call might have forwarded an exception.
       if (this.state.forwardedException) {
@@ -369,38 +398,16 @@ export class Instrumenter {
         }));
       }
 
-      // Lock the debugger UI while we're waiting for the action to be performed.
       if (result instanceof Promise) {
+        // Lock the debugger UI while we're waiting for the action to be performed.
         this.channel.emit(EVENTS.LOCK, true);
-        result.then(() => this.channel.emit(EVENTS.LOCK, false));
+        // Rejected promises are handled like any other exception.
+        return result.then(() => this.channel.emit(EVENTS.LOCK, false)).catch(handleException);
       }
 
       return result;
-    } catch (err) {
-      if (err instanceof Error) {
-        const { name, message, stack } = err;
-        const exception = { name, message, stack, callId: call.id };
-        this.sync({ ...info, state: CallStates.ERROR, exception });
-
-        // Always track errors to their originating call.
-        this.setState(({ callRefsByResult }) => ({
-          callRefsByResult: new Map([
-            ...Array.from(callRefsByResult.entries()),
-            [err, { __callId__: call.id }],
-          ]),
-        }));
-
-        // We need to throw to break out of the play function, but we don't want to trigger a redbox
-        // so we throw an ignoredException, which is caught and silently ignored by Storybook.
-        if (call.interceptable) {
-          throw IGNORED_EXCEPTION;
-        }
-
-        // Non-interceptable calls need their exceptions forwarded to the next interceptable call.
-        this.state.forwardedException = err;
-        return err;
-      }
-      throw err;
+    } catch (e) {
+      return handleException(e);
     }
   }
 
