@@ -17,9 +17,10 @@ const {
 
 const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
   const color = {
-    [CallStates.PENDING]: gray[500],
     [CallStates.DONE]: theme.color.positive,
     [CallStates.ERROR]: theme.color.negative,
+    [CallStates.ACTIVE]: theme.color.secondary,
+    [CallStates.PENDING]: gray[500],
   }[status];
   return {
     width: status === CallStates.PENDING ? 6 : 12,
@@ -32,8 +33,9 @@ const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   const icon = {
     [CallStates.DONE]: 'check',
-    [CallStates.PENDING]: 'circle',
     [CallStates.ERROR]: 'stopalt',
+    [CallStates.ACTIVE]: 'play',
+    [CallStates.PENDING]: 'circle',
   }[status] as IconsProps['icon'];
   return <StyledStatusIcon status={status} icon={icon} />;
 };

@@ -17,6 +17,9 @@ interface PanelProps {
   active: boolean;
 }
 
+const pendingStates = [CallStates.ACTIVE, CallStates.WAITING];
+const completedStates = [CallStates.DONE, CallStates.ERROR];
+
 const Interaction = ({
   call,
   callsById,
@@ -59,7 +62,7 @@ const Interaction = ({
       background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
     },
     '& > div': {
-      opacity: call.state === CallStates.PENDING ? 0.4 : 1,
+      opacity: call.state === CallStates.WAITING ? 0.4 : 1,
     },
   }));
   const detailStyle = {
@@ -86,7 +89,6 @@ const Interaction = ({
 
 export const Panel: React.FC<PanelProps> = (props) => {
   const [isRendered, setRendered] = React.useState(false);
-  const [isLocked, setLocked] = React.useState(false);
 
   const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
   const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
@@ -97,7 +99,6 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: setCall,
     [EVENTS.SYNC]: setLog,
-    [EVENTS.LOCK]: setLocked,
     [SET_CURRENT_STORY]: () => setRendered(false),
     [FORCE_REMOUNT]: () => setRendered(false),
     [STORY_RENDERED]: () => setRendered(true),
@@ -106,11 +107,11 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const { storyId } = useStorybookState();
   const [fileName] = useParameter('fileName', '').split('/').slice(-1);
 
-  const isDebugging = interactions.some((call) => call.state === CallStates.PENDING);
-  const hasException = interactions.some((call) => call.state === CallStates.ERROR);
-  const hasPrevious = interactions.some((call) => call.state !== CallStates.PENDING);
-  const hasNext = interactions.some((call) => call.state === CallStates.PENDING);
-  const isDisabled = isLocked || (!isDebugging && !isRendered);
+  const isDebugging = log.some((item) => pendingStates.includes(item.state));
+  const hasPrevious = log.some((item) => completedStates.includes(item.state));
+  const hasNext = log.some((item) => item.state === CallStates.WAITING);
+  const hasException = log.some((item) => item.state === CallStates.ERROR);
+  const isDisabled = !isDebugging && !isRendered;
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
   const showStatus = hasException || isDebugging;

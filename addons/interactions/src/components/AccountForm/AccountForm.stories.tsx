@@ -30,9 +30,9 @@ export const WaitFor = (args: any) => (
 );
 WaitFor.play = async ({ args, canvasElement }: any) => {
   await userEvent.click(await within(canvasElement).findByText('Click'));
-  await waitFor(() =>
-    expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi))
-  );
+  await waitFor(() => {
+    expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
+  });
 };
 
 export const Standard = {
@@ -61,7 +61,7 @@ export const StandardEmailFailed = {
 
     await tick();
     await expect(args.onSubmit).not.toHaveBeenCalled();
-    await canvas.findByText('Please enter aa correctly formatted email address');
+    await canvas.findByText('Please enter a correctly formatted email address');
   },
 };
 

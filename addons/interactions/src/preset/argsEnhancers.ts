@@ -1,5 +1,5 @@
 import { Args, addons } from '@storybook/addons';
-import { FORCE_REMOUNT, SET_CURRENT_STORY } from '@storybook/core-events';
+import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { fn } from 'jest-mock';
 import { instrument } from '../lib/instrumenter';
@@ -9,8 +9,10 @@ const { action } = instrument({ action: fn }, { retain: true });
 const channel = addons.getChannel();
 const spies: any[] = [];
 
-channel.on(SET_CURRENT_STORY, () => spies.forEach((mock) => mock.mockReset()));
-channel.on(FORCE_REMOUNT, () => spies.forEach((mock) => mock.mockReset()));
+channel.on(FORCE_REMOUNT, () => spies.forEach((mock) => mock?.mockReset?.()));
+channel.on(STORY_RENDER_PHASE_CHANGED, ({ newPhase }) => {
+  if (newPhase === 'loading') spies.forEach((mock) => mock?.mockReset?.());
+});
 
 const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ initialArgs }) => {
   return Object.entries(initialArgs).reduce((acc, [key, val]) => {

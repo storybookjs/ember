@@ -17,10 +17,11 @@ export interface CallRef {
 export enum CallStates {
   DONE = 'done',
   ERROR = 'error',
-  PENDING = 'pending',
+  ACTIVE = 'active',
+  WAITING = 'waiting',
 }
 
-export type CallState = CallStates.DONE | CallStates.ERROR | CallStates.PENDING;
+export type CallState = CallStates.DONE | CallStates.ERROR | CallStates.ACTIVE | CallStates.WAITING;
 
 interface CaughtException {
   callId: Call['id'];

@@ -12,7 +12,6 @@ import { Call, CallRef, CallStates, LogItem } from '../types';
 export const EVENTS = {
   CALL: 'instrumenter/call',
   SYNC: 'instrumenter/sync',
-  LOCK: 'instrumenter/lock',
   START: 'instrumenter/start',
   BACK: 'instrumenter/back',
   GOTO: 'instrumenter/goto',
@@ -88,43 +87,16 @@ export class Instrumenter {
     this.channel = addons.getChannel();
     this.state = getInitialState();
 
-    // When called from `start`, isDebugging will be true
-    const resetState = ({ isDebugging = false } = {}) => {
-      const { calls, shadowCalls, callRefsByResult, chainedCallIds, playUntil } = this.state;
-      const retainedCalls = (isDebugging ? shadowCalls : calls).filter((call) => call.retain);
-      const retainedCallRefs = new Map(
-        Array.from(callRefsByResult.entries()).filter(([, ref]) => {
-          return retainedCalls.some((call) => call.id === ref.__callId__);
-        })
-      );
-
-      this.setState({
-        ...getInitialState(),
-        cursor: retainedCalls.length,
-        calls: retainedCalls,
-        callRefsByResult: retainedCallRefs,
-        shadowCalls: isDebugging ? shadowCalls : [],
-        chainedCallIds: isDebugging ? chainedCallIds : new Set<Call['id']>(),
-        playUntil: isDebugging ? playUntil : undefined,
-        isDebugging,
-      });
-
-      // Don't sync while debugging, as it'll cause flicker.
-      if (!isDebugging) this.channel.emit(EVENTS.SYNC, this.getLog());
-    };
-
     // A forceRemount might be triggered for debugging (on `start`), or elsewhere in Storybook.
-    this.channel.on(FORCE_REMOUNT, resetState);
+    this.channel.on(FORCE_REMOUNT, this.resetState);
 
     // Start with a clean slate before playing, but also clean up when switching to a story that
     // doesn't have a play function (in which case there is no 'playing' phase).
     // Invocation of the play function is guaranteed to always be preceded by the 'rendering' phase.
     this.channel.on(STORY_RENDER_PHASE_CHANGED, ({ storyId, newPhase }) => {
       // TODO keep state per story
-      if (newPhase === 'loading') resetState({ isDebugging: this.state.isDebugging });
-      if (newPhase === 'completed') {
-        this.setState({ isDebugging: false });
-      }
+      if (newPhase === 'loading') this.resetState({ isDebugging: this.state.isDebugging });
+      if (newPhase === 'completed') this.setState({ isDebugging: false });
     });
 
     const start = ({ storyId, playUntil }: { storyId: string; playUntil?: Call['id'] }) => {
@@ -194,6 +166,31 @@ export class Instrumenter {
       ...this.state,
       ...(typeof update === 'function' ? update(this.state) : update),
     };
+  }
+
+  // When called from `start`, isDebugging will be true
+  resetState({ isDebugging = false } = {}) {
+    const { calls, shadowCalls, callRefsByResult, chainedCallIds, playUntil } = this.state;
+    const retainedCalls = (isDebugging ? shadowCalls : calls).filter((call) => call.retain);
+    const retainedCallRefs = new Map(
+      Array.from(callRefsByResult.entries()).filter(([, ref]) => {
+        return retainedCalls.some((call) => call.id === ref.__callId__);
+      })
+    );
+
+    this.setState({
+      ...getInitialState(),
+      cursor: retainedCalls.length,
+      calls: retainedCalls,
+      callRefsByResult: retainedCallRefs,
+      shadowCalls: isDebugging ? shadowCalls : [],
+      chainedCallIds: isDebugging ? chainedCallIds : new Set<Call['id']>(),
+      playUntil: isDebugging ? playUntil : undefined,
+      isDebugging,
+    });
+
+    // Don't sync while debugging, as it'll cause flicker.
+    if (!isDebugging) this.channel.emit(EVENTS.SYNC, this.getLog());
   }
 
   getLog(): LogItem[] {
@@ -385,7 +382,6 @@ export class Instrumenter {
           };
         })
       );
-      this.sync({ ...info, state: CallStates.DONE });
 
       // Track the result so we can trace later uses of it back to the originating call.
       // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
@@ -398,11 +394,16 @@ export class Instrumenter {
         }));
       }
 
+      this.sync({
+        ...info,
+        state: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
+      });
+
       if (result instanceof Promise) {
-        // Lock the debugger UI while we're waiting for the action to be performed.
-        this.channel.emit(EVENTS.LOCK, true);
-        // Rejected promises are handled like any other exception.
-        return result.then(() => this.channel.emit(EVENTS.LOCK, false)).catch(handleException);
+        return result.then((value) => {
+          this.sync({ ...info, state: CallStates.DONE });
+          return value;
+        }, handleException);
       }
 
       return result;
