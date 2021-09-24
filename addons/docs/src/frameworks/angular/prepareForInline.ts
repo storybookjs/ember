@@ -13,7 +13,7 @@ const limit = pLimit(1);
  */
 export const prepareForInline = (
   storyFn: PartialStoryFn<AngularFramework>,
-  { id, parameters }: StoryContext
+  { id, parameters, component }: StoryContext
 ) => {
   return React.createElement('div', {
     ref: async (node?: HTMLDivElement): Promise<void> => {
@@ -25,6 +25,7 @@ export const prepareForInline = (
         const renderer = await rendererFactory.getRendererInstance(`${id}-${nanoid(10)}`, node);
         await renderer.render({
           forced: false,
+          component,
           parameters,
           storyFnAngular: storyFn(),
           targetDOMNode: node,
