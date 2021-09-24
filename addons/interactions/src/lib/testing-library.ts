@@ -6,7 +6,7 @@ import { instrument } from './instrumenter';
 
 const testingLibrary = instrument(
   { ...domTestingLibrary },
-  { intercept: (method) => method === 'fireEvent' || method.startsWith('findBy') }
+  { intercept: (method, path) => path[0] === 'fireEvent' || method.startsWith('findBy') }
 );
 
 testingLibrary.screen = Object.entries(testingLibrary.screen).reduce(
