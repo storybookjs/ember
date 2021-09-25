@@ -1,6 +1,6 @@
 {
   "name": "@storybook/server",
-  "version": "6.4.0-beta.0",
+  "version": "6.4.0-beta.1",
   "description": "Storybook for Server: View HTML snippets from a server in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,15 +45,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-beta.0",
-    "@storybook/api": "6.4.0-beta.0",
-    "@storybook/client-api": "6.4.0-beta.0",
-    "@storybook/core": "6.4.0-beta.0",
-    "@storybook/core-common": "6.4.0-beta.0",
+    "@storybook/addons": "6.4.0-beta.1",
+    "@storybook/api": "6.4.0-beta.1",
+    "@storybook/client-api": "6.4.0-beta.1",
+    "@storybook/core": "6.4.0-beta.1",
+    "@storybook/core-common": "6.4.0-beta.1",
     "@storybook/csf": "0.0.2--canary.6aca495.0",
-    "@storybook/node-logger": "6.4.0-beta.0",
-    "@storybook/preview-web": "6.4.0-beta.0",
-    "@storybook/store": "6.4.0-beta.0",
+    "@storybook/node-logger": "6.4.0-beta.1",
+    "@storybook/preview-web": "6.4.0-beta.1",
+    "@storybook/store": "6.4.0-beta.1",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -75,6 +75,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "44a855043cb0f43a03025df37cb105f4ce07d46f",
+  "gitHead": "000a73948b4b91aa6bf84828b42ccdb7064f72bd",
   "sbmodern": "dist/modern/client/index.js"
 }
