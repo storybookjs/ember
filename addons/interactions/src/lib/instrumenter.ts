@@ -120,8 +120,14 @@ export class Instrumenter {
     // Invocation of the play function is guaranteed to always be preceded by the 'rendering' phase.
     this.channel.on(STORY_RENDER_PHASE_CHANGED, ({ storyId, newPhase }) => {
       // TODO keep state per story
-      if (newPhase === 'loading') resetState({ isDebugging: this.state.isDebugging });
-      if (newPhase === 'completed') this.setState({ isDebugging: false });
+      if (newPhase === 'loading') {
+        resetState({ isDebugging: this.state.isDebugging });
+      }
+      if (newPhase === 'completed') {
+        this.setState({ isDebugging: false });
+        // Rethrow any unhandled forwarded exception so it doesn't go unnoticed.
+        if (this.state.forwardedException) throw this.state.forwardedException;
+      }
     });
 
     const start = ({ storyId, playUntil }: { storyId: string; playUntil?: Call['id'] }) => {
@@ -308,14 +314,16 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call) {
+    const { parentCallId, callRefsByResult, forwardedException } = this.state;
+
     const info: Call = {
       ...call,
-      parentId: this.state.parentCallId,
+      parentId: parentCallId,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
       args: call.args.map((arg) => {
-        if (this.state.callRefsByResult.has(arg)) {
-          return this.state.callRefsByResult.get(arg);
+        if (callRefsByResult.has(arg)) {
+          return callRefsByResult.get(arg);
         }
         if (arg instanceof global.window.HTMLElement) {
           const { prefix, localName, id, classList, innerText } = arg;
@@ -342,9 +350,9 @@ export class Instrumenter {
         this.sync({ ...info, state: CallStates.ERROR, exception });
 
         // Always track errors to their originating call.
-        this.setState(({ callRefsByResult }) => ({
+        this.setState((state) => ({
           callRefsByResult: new Map([
-            ...Array.from(callRefsByResult.entries()),
+            ...Array.from(state.callRefsByResult.entries()),
             [e, { __callId__: call.id }],
           ]),
         }));
@@ -356,7 +364,7 @@ export class Instrumenter {
         }
 
         // Non-interceptable calls need their exceptions forwarded to the next interceptable call.
-        // TODO what if there is no next interceptable call?
+        // In case no interceptable call picks it up, it'll get rethrown in the "completed" phase.
         this.setState({ forwardedException: e });
         return e;
       }
@@ -365,8 +373,9 @@ export class Instrumenter {
 
     try {
       // An earlier, non-interceptable call might have forwarded an exception.
-      if (this.state.forwardedException) {
-        throw this.state.forwardedException;
+      if (forwardedException) {
+        this.setState({ forwardedException: undefined });
+        throw forwardedException;
       }
 
       const result = fn(
@@ -386,9 +395,9 @@ export class Instrumenter {
       // Track the result so we can trace later uses of it back to the originating call.
       // Primitive results (undefined, null, boolean, string, number, BigInt) are ignored.
       if (result && ['object', 'function', 'symbol'].includes(typeof result)) {
-        this.setState(({ callRefsByResult }) => ({
+        this.setState((state) => ({
           callRefsByResult: new Map([
-            ...Array.from(callRefsByResult.entries()),
+            ...Array.from(state.callRefsByResult.entries()),
             [result, { __callId__: call.id }],
           ]),
         }));
