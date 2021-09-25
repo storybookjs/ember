@@ -108,7 +108,7 @@
     "webpack": "4",
     "webpack-dev-middleware": "^3.7.3",
     "webpack-filter-warnings-plugin": "^1.2.1",
-    "webpack-hot-middleware": "^2.25.0",
+    "webpack-hot-middleware": "^2.25.1",
     "webpack-virtual-modules": "^0.2.2"
   },
   "devDependencies": {

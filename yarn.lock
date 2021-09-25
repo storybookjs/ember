@@ -6608,13 +6608,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.0-rc.2":
-  version: 0.5.0-rc.2
-  resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.0-rc.2"
+"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.1"
   dependencies:
-    ansi-html: ^0.0.7
+    ansi-html-community: ^0.0.8
+    common-path-prefix: ^3.0.0
     core-js-pure: ^3.8.1
     error-stack-parser: ^2.0.6
+    find-up: ^5.0.0
     html-entities: ^2.1.0
     loader-utils: ^2.0.0
     schema-utils: ^3.0.0
@@ -6623,9 +6625,9 @@ __metadata:
     "@types/webpack": 4.x || 5.x
     react-refresh: ^0.10.0
     sockjs-client: ^1.4.0
-    type-fest: 1.x
+    type-fest: ">=0.17.0 <3.0.0"
     webpack: ">=4.43.0 <6.0.0"
-    webpack-dev-server: 3.x || >=4.0.0-beta.0
+    webpack-dev-server: 3.x || 4.x
     webpack-hot-middleware: 2.x
     webpack-plugin-serve: 0.x || 1.x
   peerDependenciesMeta:
@@ -6641,7 +6643,7 @@ __metadata:
       optional: true
     webpack-plugin-serve:
       optional: true
-  checksum: ea66a047e04540367c944f8e82421e42a26801fec3be04e91f060ce4362230f7fc67234b924a8eb113688eace92f5f895c3e34363cc446ed11429f99c3ebee19
+  checksum: 553da170e479a855475efd1c7200be4ac29727d272143861827866278353916e39921647c3b2df39c6cf86ce5740f735c6ff26f876484d909b69365e8c77976d
   languageName: node
   linkType: hard
 
@@ -7672,7 +7674,7 @@ __metadata:
     webpack: 4
     webpack-dev-middleware: ^3.7.3
     webpack-filter-warnings-plugin: ^1.2.1
-    webpack-hot-middleware: ^2.25.0
+    webpack-hot-middleware: ^2.25.1
     webpack-virtual-modules: ^0.2.2
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -7747,7 +7749,7 @@ __metadata:
     util-deprecate: ^1.0.2
     webpack: ^5.9.0
     webpack-dev-middleware: ^4.1.0
-    webpack-hot-middleware: ^2.25.0
+    webpack-hot-middleware: ^2.25.1
     webpack-virtual-modules: ^0.4.1
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -8589,7 +8591,7 @@ __metadata:
   dependencies:
     "@babel/preset-flow": ^7.12.1
     "@babel/preset-react": ^7.12.10
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.0-rc.2
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.1
     "@storybook/addons": 6.4.0-beta.1
     "@storybook/client-api": 6.4.0-beta.1
     "@storybook/core": 6.4.0-beta.1
@@ -12879,6 +12881,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-html-community@npm:0.0.8, ansi-html-community@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "ansi-html-community@npm:0.0.8"
+  bin:
+    ansi-html: bin/ansi-html
+  checksum: 45d3a6f0b4f10b04fdd44bef62972e2470bfd917bf00439471fa7473d92d7cbe31369c73db863cc45dda115cb42527f39e232e9256115534b8ee5806b0caeed4
+  languageName: node
+  linkType: hard
+
 "ansi-html@npm:0.0.7, ansi-html@npm:^0.0.7":
   version: 0.0.7
   resolution: "ansi-html@npm:0.0.7"
@@ -17150,6 +17161,13 @@ __metadata:
   version: 2.19.0
   resolution: "commander@npm:2.19.0"
   checksum: 4cec19989ea492a8b7ebd26e854111b5921641ad737abab64b740d094d7f332f5e210423ca8a31ec6ef988f1e8e6ae1379640160f2a68e9b4ee89c912ac8bd3f
+  languageName: node
+  linkType: hard
+
+"common-path-prefix@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "common-path-prefix@npm:3.0.0"
+  checksum: c4a74294e1b1570f4a8ab435285d185a03976c323caa16359053e749db4fde44e3e6586c29cd051100335e11895767cbbd27ea389108e327d62f38daf4548fdb
   languageName: node
   linkType: hard
 
@@ -25189,7 +25207,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"html-entities@npm:^1.2.0, html-entities@npm:^1.2.1, html-entities@npm:^1.3.1":
+"html-entities@npm:^1.2.1, html-entities@npm:^1.3.1":
   version: 1.4.0
   resolution: "html-entities@npm:1.4.0"
   checksum: eb2de616fb5948e681157805687672ea90e67c8a4f21a3215888ab422a984cab61fec96860708dca3bde0ae52577515683c8e28157ac8637220bb6a57a031b85
@@ -45553,15 +45571,15 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"webpack-hot-middleware@npm:^2.25.0":
-  version: 2.25.0
-  resolution: "webpack-hot-middleware@npm:2.25.0"
+"webpack-hot-middleware@npm:^2.25.1":
+  version: 2.25.1
+  resolution: "webpack-hot-middleware@npm:2.25.1"
   dependencies:
-    ansi-html: 0.0.7
-    html-entities: ^1.2.0
+    ansi-html-community: 0.0.8
+    html-entities: ^2.1.0
     querystring: ^0.2.0
-    strip-ansi: ^3.0.0
-  checksum: 6d959ed4cd83897fc35849c3a275bf70747cd271d6d8a8343bc7831451ecaa0cdd808e4f34cdc6fc1067283cbbc80002c67b6ece1f56e97f9374c9eb4eeeaa15
+    strip-ansi: ^6.0.0
+  checksum: 2b8cc2841d6168c5e9f0edd116289fb441039e8de784baf375b1156883a860ee0917a3498b8198f47ad056dd90cdd8eb053253127a0f923c76b18fa7987d0c05
   languageName: node
   linkType: hard
 
