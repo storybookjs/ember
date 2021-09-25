@@ -124,6 +124,17 @@ export class StoryIndexGenerator {
     };
   }
 
+  invalidate(specifier: NormalizedStoriesSpecifier, filePath: Path, removed: boolean) {
+    const pathToEntries = this.storyIndexEntries.get(specifier);
+
+    console.log('onInvalidated', path, removed);
+    if (removed) {
+      delete pathToEntries[filePath];
+    } else {
+      pathToEntries[filePath] = false;
+    }
+  }
+
   async getStorySortParameter() {
     const previewFile = ['js', 'jsx', 'ts', 'tsx']
       .map((ext) => path.join(this.configDir, `preview.${ext}`))

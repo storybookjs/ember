@@ -31,6 +31,7 @@ export const useProgressReporting = async (
     reportProgress = (progress: any) => {
       if (closed || response.writableEnded) return;
       response.write(`data: ${JSON.stringify(progress)}\n\n`);
+      response.flush();
       if (progress.value === 1) close();
     };
   });

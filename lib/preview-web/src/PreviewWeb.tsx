@@ -30,6 +30,7 @@ import { WebProjectAnnotations, DocsContextProps } from './types';
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { NoDocs } from './NoDocs';
+import { StoryIndexClient } from './StoryIndexClient';
 
 const { window: globalWindow, AbortController, FEATURES } = global;
 
@@ -63,13 +64,23 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     fetchStoryIndex,
   }: {
     importFn: ModuleImportFn;
-    fetchStoryIndex: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
+    fetchStoryIndex?: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
   }) {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
+
+    if (FEATURES?.storyStoreV7) {
+      const indexClient = new StoryIndexClient();
+      this.storyStore = new StoryStore({ importFn, fetchStoryIndex: () => indexClient.fetch() });
+      indexClient.addEventListener('INVALIDATE', () => this.storyStore.onStoryIndexChanged());
+    } else {
+      if (!fetchStoryIndex) {
+        throw new Error('No `fetchStoryIndex` function defined in v6 mode');
+      }
+      this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
+    }
 
     // Add deprecated APIs for back-compat
     // @ts-ignore

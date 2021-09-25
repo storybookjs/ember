@@ -156,6 +156,16 @@ export class StoryStore<TFramework extends AnyFramework> {
     }
   }
 
+  // TODO -- call this when calling `onImportFnChanged` rather than calling directly
+  async onStoryIndexChanged() {
+    // We need to refetch the stories list as it may have changed too
+    await this.storyIndex.cache(false);
+
+    if (this.cachedCSFFiles) {
+      await this.cacheAllCSFFiles(false);
+    }
+  }
+
   // To load a single CSF file to service a story we need to look up the importPath in the index
   loadCSFFileByStoryId(storyId: StoryId, options: { sync: false }): Promise<CSFFile<TFramework>>;
 

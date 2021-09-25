@@ -8088,6 +8088,7 @@ __metadata:
     serve-favicon: ^2.5.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
+    watchpack: ^2.2.0
     webpack: 4
   peerDependencies:
     "@storybook/builder-webpack5": 6.4.0-alpha.39
@@ -45264,6 +45265,16 @@ resolve@1.19.0:
     glob-to-regexp: ^0.4.1
     graceful-fs: ^4.1.2
   checksum: ed5e17afeeebfab450214cb0ea7396212d2cfbc40415a5041f5bca5328234f13c0c0654832417b42d391f1837588ef284d7459ebc7740b519c0abbb0faf570d4
+  languageName: node
+  linkType: hard
+
+"watchpack@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "watchpack@npm:2.2.0"
+  dependencies:
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.1.2
+  checksum: 4ea76d262f5f3110fdcb71a26c2ca0be39e7e7b566d30215f6a8f5a59501e2143a35bb075526848177aac29d04952f27272724e9342adbd4751e609ad4768124
   languageName: node
   linkType: hard
 

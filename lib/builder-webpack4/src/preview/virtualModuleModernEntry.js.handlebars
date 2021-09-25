@@ -14,15 +14,10 @@ const getProjectAnnotations = () =>
     {{/each}}
   ]);
 
-const fetchStoryIndex = async () => {
-  const result = await fetch('./stories.json');
-  return result.json();
-}
-
 const channel = createChannel({ page: 'preview' });
 addons.setChannel(channel);
 
-const preview = new PreviewWeb({ importFn, fetchStoryIndex });
+const preview = new PreviewWeb({ importFn });
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
