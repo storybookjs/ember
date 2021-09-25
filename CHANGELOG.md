@@ -1,3 +1,19 @@
+## 6.4.0-beta.1 (September 26, 2021)
+
+### Features
+
+- MDX: Support CSF3 play/render functions ([#16159](https://github.com/storybookjs/storybook/pull/16159))
+- Addon-a11y: Export parameter types ([#16128](https://github.com/storybookjs/storybook/pull/16128))
+
+### Bug Fixes
+
+- Addon-docs: Fix loading behavior for Canvas doc block ([#16161](https://github.com/storybookjs/storybook/pull/16161))
+- Added index.d.ts for addon-docs/angular ([#16123](https://github.com/storybookjs/storybook/pull/16123))
+
+### Maintenance
+
+- Angular: Remove dead code in client ([#16137](https://github.com/storybookjs/storybook/pull/16137))
+
 ## 6.4.0-beta.0 (September 22, 2021)
 
 Storybook 6.4 is in beta! 🎊
