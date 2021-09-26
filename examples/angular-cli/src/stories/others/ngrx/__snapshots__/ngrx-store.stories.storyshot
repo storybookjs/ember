@@ -10,7 +10,7 @@ exports[`Storyshots Others / NgRx / Store With Component 1`] = `
 </storybook-wrapper>
 `;
 
-exports[`Storyshots Others / NgRx / Store With Temaplte 1`] = `
+exports[`Storyshots Others / NgRx / Store With Template 1`] = `
 <storybook-wrapper>
   <storybook-comp-with-store>
     <div>
