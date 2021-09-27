@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
+
 import { CallState, CallStates } from '../../types';
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
@@ -28,6 +29,7 @@ export interface SubnavProps {
   onPrevious: () => void;
   onNext: () => void;
   onEnd: () => void;
+  onScrollToEnd?: () => void;
 }
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -87,6 +89,7 @@ export const Subnav: React.FC<SubnavProps> = ({
   onPrevious,
   onNext,
   onEnd,
+  onScrollToEnd,
 }) => {
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
@@ -95,7 +98,7 @@ export const Subnav: React.FC<SubnavProps> = ({
       <Group>
         <StatusBadge status={status} />
 
-        <JumpToEndButton onClick={onEnd} disabled={!hasNext}>
+        <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
           {buttonText}
         </JumpToEndButton>
 

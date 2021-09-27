@@ -89,12 +89,23 @@ const Interaction = ({
 
 export const Panel: React.FC<PanelProps> = (props) => {
   const [isRendered, setRendered] = React.useState(false);
+  const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
   const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
   const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
 
   const [log, setLog] = React.useState<LogItem[]>([]);
   const interactions = log.map(({ callId, state }) => ({ ...calls.current.get(callId), state }));
+
+  const endRef = React.useRef();
+  React.useEffect(() => {
+    const observer = new global.window.IntersectionObserver(
+      ([end]: any) => setScrollTarget(end.isIntersecting ? undefined : end.target),
+      { root: global.window.document.querySelector('#panel-tab-content') }
+    );
+    if (endRef.current) observer.observe(endRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const emit = useChannel({
     [EVENTS.CALL]: setCall,
@@ -106,6 +117,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
 
   const { storyId } = useStorybookState();
   const [fileName] = useParameter('fileName', '').split('/').slice(-1);
+  const scrollToTarget = () => scrollTarget?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
   const isDebugging = log.some((item) => pendingStates.includes(item.state));
   const hasPrevious = log.some((item) => completedStates.includes(item.state));
@@ -138,6 +150,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
           onPrevious={() => emit(EVENTS.BACK, { storyId })}
           onNext={() => emit(EVENTS.NEXT, { storyId })}
           onEnd={() => emit(EVENTS.END, { storyId })}
+          onScrollToEnd={scrollTarget && scrollToTarget}
         />
       )}
       {interactions.map((call) => (
@@ -149,6 +162,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
           isDisabled={isDisabled}
         />
       ))}
+      <div ref={endRef} />
       {isRendered && interactions.length === 0 && (
         <Placeholder>
           No interactions found
