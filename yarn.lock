@@ -7171,17 +7171,14 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.4.0-alpha.35
     "@storybook/api": 6.4.0-alpha.35
-    "@storybook/client-api": 6.4.0-alpha.35
-    "@storybook/client-logger": 6.4.0-alpha.35
     "@storybook/components": 6.4.0-alpha.35
     "@storybook/core-common": 6.4.0-alpha.35
     "@storybook/core-events": 6.4.0-alpha.35
     "@storybook/csf": 0.0.2--canary.68887a1.0
-    "@storybook/expect": ^1.0.0-rc.1
-    "@storybook/node-logger": 6.4.0-alpha.35
+    "@storybook/instrumenter": 6.4.0-alpha.35
+    "@storybook/jest": 6.4.0-alpha.35
+    "@storybook/testing-library": 6.4.0-alpha.35
     "@storybook/theming": 6.4.0-alpha.35
-    "@testing-library/dom": ^8.3.0
-    "@testing-library/user-event": ^13.2.1
     formik: ^2.2.9
     global: ^4.4.0
     jest-mock: ^27.0.6
@@ -8359,6 +8356,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@storybook/instrumenter@6.4.0-alpha.35, @storybook/instrumenter@workspace:*, @storybook/instrumenter@workspace:lib/instrumenter":
+  version: 0.0.0-use.local
+  resolution: "@storybook/instrumenter@workspace:lib/instrumenter"
+  dependencies:
+    "@storybook/addons": 6.4.0-alpha.35
+    "@storybook/core-events": 6.4.0-alpha.35
+    global: ^4.4.0
+  languageName: unknown
+  linkType: soft
+
+"@storybook/jest@6.4.0-alpha.35, @storybook/jest@workspace:*, @storybook/jest@workspace:lib/jest":
+  version: 0.0.0-use.local
+  resolution: "@storybook/jest@workspace:lib/jest"
+  dependencies:
+    "@storybook/expect": ^1.0.0-rc.1
+    "@storybook/instrumenter": 6.4.0-alpha.35
+    jest-mock: ^27.0.6
+  languageName: unknown
+  linkType: soft
+
 "@storybook/linter-config@npm:^2.5.0":
   version: 2.5.0
   resolution: "@storybook/linter-config@npm:2.5.0"
@@ -8758,6 +8775,8 @@ __metadata:
     "@storybook/ember": "workspace:*"
     "@storybook/eslint-config-storybook": ^2.4.0
     "@storybook/html": "workspace:*"
+    "@storybook/instrumenter": "workspace:*"
+    "@storybook/jest": "workspace:*"
     "@storybook/linter-config": ^2.5.0
     "@storybook/node-logger": "workspace:*"
     "@storybook/postinstall": "workspace:*"
@@ -8771,6 +8790,7 @@ __metadata:
     "@storybook/source-loader": "workspace:*"
     "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
+    "@storybook/testing-library": "workspace:*"
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
     "@storybook/vue": "workspace:*"
@@ -9049,6 +9069,18 @@ __metadata:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
     storybook-server: ./bin/index.js
+  languageName: unknown
+  linkType: soft
+
+"@storybook/testing-library@6.4.0-alpha.35, @storybook/testing-library@workspace:*, @storybook/testing-library@workspace:lib/testing-library":
+  version: 0.0.0-use.local
+  resolution: "@storybook/testing-library@workspace:lib/testing-library"
+  dependencies:
+    "@storybook/client-logger": 6.4.0-alpha.35
+    "@storybook/instrumenter": 6.4.0-alpha.35
+    "@testing-library/dom": ^8.3.0
+    "@testing-library/user-event": ^13.2.1
+    ts-dedent: ^2.2.0
   languageName: unknown
   linkType: soft
 

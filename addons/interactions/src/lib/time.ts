@@ -1,4 +1,4 @@
-import { instrument } from './instrumenter';
+import { instrument } from '@storybook/instrumenter';
 
 export const { sleep } = instrument(
   { sleep: (ms: number) => new Promise((r) => setTimeout(r, ms)) },

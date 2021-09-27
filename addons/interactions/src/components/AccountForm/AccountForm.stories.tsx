@@ -1,7 +1,7 @@
 import React from 'react';
+import { expect } from '@storybook/jest';
+import { within, waitFor, fireEvent, userEvent } from '@storybook/testing-library';
 import { AccountForm } from './AccountForm';
-import { expect } from '../../lib/jest';
-import { within, waitFor, fireEvent, userEvent } from '../../lib/testing-library';
 import { sleep, tick } from '../../lib/time';
 
 export default {

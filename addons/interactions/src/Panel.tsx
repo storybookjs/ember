@@ -4,14 +4,13 @@ import ReactDOM from 'react-dom';
 import { useChannel, useParameter, useStorybookState } from '@storybook/api';
 import { FORCE_REMOUNT, SET_CURRENT_STORY, STORY_RENDERED } from '@storybook/core-events';
 import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
+import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
-import { Call, CallStates, LogItem } from './types';
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import { Subnav } from './components/Subnav/Subnav';
-import { EVENTS } from './lib/instrumenter';
 
 interface PanelProps {
   active: boolean;

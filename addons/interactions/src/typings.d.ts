@@ -1,2 +1,2 @@
 declare module 'global';
-declare module '@storybook/expect';
+declare module '@storybook/testing-library';

@@ -1,8 +1,8 @@
 import { once } from '@storybook/client-logger';
+import { instrument } from '@storybook/instrumenter';
 import * as domTestingLibrary from '@testing-library/dom';
 import _userEvent from '@testing-library/user-event';
 import dedent from 'ts-dedent';
-import { instrument } from './instrumenter';
 
 const testingLibrary = instrument(
   { ...domTestingLibrary },

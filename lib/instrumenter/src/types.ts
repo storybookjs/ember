@@ -5,13 +5,13 @@ export interface Call {
   args: any[];
   interceptable: boolean;
   retain: boolean;
-  state?: CallState;
-  exception?: CaughtException;
+  state?: CallStates.DONE | CallStates.ERROR | CallStates.ACTIVE | CallStates.WAITING;
+  exception?: {
+    callId: Call['id'];
+    message: Error['message'];
+    stack: Error['stack'];
+  };
   parentId?: Call['id'];
-}
-
-export interface CallRef {
-  __callId__: Call['id'];
 }
 
 export enum CallStates {
@@ -21,12 +21,8 @@ export enum CallStates {
   WAITING = 'waiting',
 }
 
-export type CallState = CallStates.DONE | CallStates.ERROR | CallStates.ACTIVE | CallStates.WAITING;
-
-interface CaughtException {
-  callId: Call['id'];
-  message: Error['message'];
-  stack: Error['stack'];
+export interface CallRef {
+  __callId__: Call['id'];
 }
 
 export interface ElementRef {

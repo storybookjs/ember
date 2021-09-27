@@ -261,6 +261,14 @@
       "root": "lib/core-server",
       "type": "library"
     },
+    "@storybook/instrumenter": {
+      "root": "lib/instrumenter",
+      "type": "library"
+    },
+    "@storybook/jest": {
+      "root": "lib/jest",
+      "type": "library"
+    },
     "@storybook/node-logger": {
       "root": "lib/node-logger",
       "type": "library"
@@ -279,6 +287,10 @@
     },
     "@storybook/store": {
       "root": "lib/store",
+      "type": "library"
+    },
+    "@storybook/testing-library": {
+      "root": "lib/testing-library",
       "type": "library"
     },
     "@storybook/theming": {

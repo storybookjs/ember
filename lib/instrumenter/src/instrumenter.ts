@@ -7,7 +7,7 @@ import {
 } from '@storybook/core-events';
 import global from 'global';
 
-import { Call, CallRef, CallStates, LogItem } from '../types';
+import { Call, CallRef, CallStates, LogItem } from './types';
 
 export const EVENTS = {
   CALL: 'instrumenter/call',
