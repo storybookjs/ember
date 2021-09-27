@@ -137,11 +137,8 @@ export class CsfFile {
           // @ts-ignore
           meta[p.key.name] = parseIncludeExclude(p.value);
         } else if (p.key.name === 'component') {
-          if (t.isIdentifier(p.value)) {
-            meta.component = p.value.name;
-          } else if (t.isStringLiteral(p.value)) {
-            meta.component = p.value.value;
-          }
+          const { code } = generate(p.value, {});
+          meta.component = code;
         }
       }
     });

@@ -151,7 +151,7 @@ describe('CsfFile', () => {
         )
       ).toMatchInlineSnapshot(`
         meta:
-          component: foo
+          component: '''foo'''
           title: Default Title
         stories:
           - id: default-title--a
@@ -179,6 +179,27 @@ describe('CsfFile', () => {
           - id: foo-bar-baz--a
             name: A
           - id: foo-bar-baz--b
+            name: B
+      `);
+    });
+
+    it('component object', async () => {
+      expect(
+        await parse(
+          dedent`
+          export default { component: {} }
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          component: '{}'
+          title: Default Title
+        stories:
+          - id: default-title--a
+            name: A
+          - id: default-title--b
             name: B
       `);
     });
