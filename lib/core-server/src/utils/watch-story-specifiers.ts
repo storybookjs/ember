@@ -37,8 +37,15 @@ export function watchStorySpecifiers(
   }
 
   wp.on('change', (path: Path, mtime: Date, explanation: string) => {
-    console.log('change', explanation);
-    onChangeOrRemove(path, false);
+    // When a file is renamed (including being moved out of the watched dir)
+    // we see first an event with explanation=rename and no mtime for the old name.
+    // then an event with explanation=rename with an mtime for the new name.
+    // In theory we could try and track both events together and move the exports
+    // but that seems dangerous (what if the contents changed?) and frankly not worth it
+    // (at this stage at least)
+    const removed = !mtime;
+    console.log('change', removed, explanation);
+    onChangeOrRemove(path, removed);
   });
   wp.on('remove', (path: Path, explanation: string) => {
     console.log('remove', explanation);

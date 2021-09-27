@@ -15,8 +15,8 @@ export const sortStories = (stories: any[], storySortParameter: any, fileNameOrd
     stable.inplace(
       stories,
       (s1, s2) =>
-        fileNameOrder.indexOf(s1[1].parameters.fileName) -
-        fileNameOrder.indexOf(s2[1].parameters.fileName)
+        fileNameOrder.indexOf(s1[1].importPath || s1[1].parameters.fileName) -
+        fileNameOrder.indexOf(s2[1].importPath || s2[1].parameters.fileName)
     );
   }
 };

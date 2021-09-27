@@ -33,6 +33,11 @@ export class StoryIndexGenerator {
     Record<Path, StoryIndex['stories'] | false>
   >;
 
+  // Cache the last value of `getStoryIndex`. We invalidate (by unsetting) when:
+  //  - any file changes, including deletions
+  //  - the preview changes [not yet implemented]
+  private lastIndex?: StoryIndex;
+
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
     public readonly configDir: Path
@@ -102,37 +107,45 @@ export class StoryIndexGenerator {
     }
   }
 
-  async getIndex() {
-    // Extract any entries that are currently missing
-    await this.ensureExtracted();
-
+  async sortStories(storiesList: StoryIndex['stories'][]) {
     const stories: StoryIndex['stories'] = {};
 
-    // Check each entry and compose into stories, extracting if needed
-    this.specifiers.map(async (specifier) => {
-      Object.values(this.storyIndexEntries.get(specifier)).map((subStories) =>
-        Object.assign(stories, subStories)
-      );
+    storiesList.forEach((subStories) => {
+      Object.assign(stories, subStories);
     });
 
     const storySortParameter = await this.getStorySortParameter();
-    const sorted = sortExtractedStories(stories, storySortParameter, this.storyFileNames());
+    return sortExtractedStories(stories, storySortParameter, this.storyFileNames());
+  }
 
-    return {
+  async getIndex() {
+    if (this.lastIndex) return this.lastIndex;
+
+    // Extract any entries that are currently missing
+    await this.ensureExtracted();
+
+    // Pull out each file's stories into a list of stories, to be composed and sorted
+    const storiesList = this.specifiers.flatMap((specifier) =>
+      Object.values(this.storyIndexEntries.get(specifier))
+    );
+
+    this.lastIndex = {
       v: 3,
-      stories: sorted,
+      stories: await this.sortStories(storiesList),
     };
+
+    return this.lastIndex;
   }
 
   invalidate(specifier: NormalizedStoriesSpecifier, filePath: Path, removed: boolean) {
     const pathToEntries = this.storyIndexEntries.get(specifier);
 
-    console.log('onInvalidated', path, removed);
     if (removed) {
       delete pathToEntries[filePath];
     } else {
       pathToEntries[filePath] = false;
     }
+    this.lastIndex = null;
   }
 
   async getStorySortParameter() {

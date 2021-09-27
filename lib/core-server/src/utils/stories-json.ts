@@ -1,10 +1,12 @@
+import { Router, Request, Response } from 'express';
 import fs from 'fs-extra';
 import EventEmitter from 'events';
 import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { StoryIndexGenerator } from './StoryIndexGenerator';
-import { watchStorySpecifiers } from './watch-story-specifier';
+import { watchStorySpecifiers } from './watch-story-specifiers';
+import { useEventsAsSSE } from './use-events-as-sse';
 
-const eventName = 'INVALIDATE';
+const INVALIDATE = 'INVALIDATE';
 
 export async function extractStoriesJson(
   outputFile: string,
@@ -18,7 +20,7 @@ export async function extractStoriesJson(
   await fs.writeJson(outputFile, index);
 }
 
-export async function useStoriesJson(router: any, options: Options) {
+export async function useStoriesJson(router: Router, options: Options) {
   const normalizedStories = normalizeStories(await options.presets.apply('stories'), {
     configDir: options.configDir,
     workingDir: process.cwd(),
@@ -30,33 +32,13 @@ export async function useStoriesJson(router: any, options: Options) {
   watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
     generator.invalidate(specifier, path, removed);
     console.log('emitting');
-    invalidationEmitter.emit(eventName);
+    invalidationEmitter.emit(INVALIDATE);
   });
 
-  router.use('/stories.json', async (req: any, res: any) => {
-    if (req.headers.accept === 'text/event-stream') {
-      let closed = false;
-      const watcher = () => {
-        if (closed || res.writableEnded) return;
-        res.write(`event:INVALIDATE\ndata:DATA\n\n`);
-        res.flush();
-      };
-      const close = () => {
-        invalidationEmitter.off(eventName, watcher);
-        closed = true;
-        res.end();
-      };
-      res.on('close', close);
+  const eventsAsSSE = useEventsAsSSE(invalidationEmitter, [INVALIDATE]);
 
-      if (closed || res.writableEnded) return;
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Connection', 'keep-alive');
-      res.flushHeaders();
-
-      invalidationEmitter.on(eventName, watcher);
-      return;
-    }
+  router.use('/stories.json', async (req: Request, res: Response) => {
+    if (eventsAsSSE(req, res)) return;
 
     try {
       const index = await generator.getIndex();
