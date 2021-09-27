@@ -94,7 +94,7 @@ Tip: clearly explain in a comment why a rule was overridden, it’ll help you an
 ```js
 MyStory.parameters = {
   a11y: {
-    options: {
+    config: {
       rules: [
         {
           // Allow `autocomplete="nope"` on form elements,
