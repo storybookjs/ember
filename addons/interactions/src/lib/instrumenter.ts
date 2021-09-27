@@ -31,7 +31,7 @@ export interface State {
   cursor: number;
   calls: Call[];
   shadowCalls: Call[];
-  callRefsByResult: Map<any, CallRef>;
+  callRefsByResult: Map<any, CallRef & { retain: boolean }>;
   chainedCallIds: Set<Call['id']>;
   parentCallId?: Call['id'];
   playUntil?: Call['id'];
@@ -43,21 +43,6 @@ export interface State {
 export type PatchedObj<TObj> = {
   [Property in keyof TObj]: TObj[Property] & { _original: PatchedObj<TObj> };
 };
-
-const getInitialState = (): State =>
-  Object.freeze({
-    isDebugging: false,
-    cursor: 0,
-    calls: [],
-    shadowCalls: [],
-    callRefsByResult: new Map(),
-    chainedCallIds: new Set<Call['id']>(),
-    parentCallId: undefined,
-    playUntil: undefined,
-    resolvers: {},
-    syncTimeout: undefined,
-    forwardedException: undefined,
-  });
 
 const isObject = (o: unknown) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown) => Object.prototype.toString.call(o) === '[object Module]';
@@ -78,6 +63,20 @@ const construct = (obj: any) => {
   }
 };
 
+const getInitialState = (): State => ({
+  isDebugging: false,
+  cursor: 0,
+  calls: [],
+  shadowCalls: [],
+  callRefsByResult: new Map(),
+  chainedCallIds: new Set<Call['id']>(),
+  parentCallId: undefined,
+  playUntil: undefined,
+  resolvers: {},
+  syncTimeout: undefined,
+  forwardedException: undefined,
+});
+
 export class Instrumenter {
   channel: Channel;
 
@@ -85,16 +84,16 @@ export class Instrumenter {
 
   constructor() {
     this.channel = addons.getChannel();
-    this.state = getInitialState();
+    this.state =
+      // Restore state from the parent window in case the iframe was reloaded.
+      global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || getInitialState();
 
     // When called from `start`, isDebugging will be true
     const resetState = ({ isDebugging = false } = {}) => {
       const { calls, shadowCalls, callRefsByResult, chainedCallIds, playUntil } = this.state;
       const retainedCalls = (isDebugging ? shadowCalls : calls).filter((call) => call.retain);
       const retainedCallRefs = new Map(
-        Array.from(callRefsByResult.entries()).filter(([, ref]) => {
-          return retainedCalls.some((call) => call.id === ref.__callId__);
-        })
+        Array.from(callRefsByResult.entries()).filter(([, ref]) => ref.retain)
       );
 
       this.setState({
@@ -150,9 +149,9 @@ export class Instrumenter {
             .slice(-1)[0]?.id,
       }));
 
-      this.channel.emit(FORCE_REMOUNT, { storyId, isDebugging: true });
-      // TODO deal with full page reload
+      // Force remount may trigger a page reload if the play function can't be aborted.
       // global.window.location.reload();
+      this.channel.emit(FORCE_REMOUNT, { storyId, isDebugging: true });
     };
 
     const back = ({ storyId }: { storyId: string }) => {
@@ -197,6 +196,8 @@ export class Instrumenter {
       ...this.state,
       ...(typeof update === 'function' ? update(this.state) : update),
     };
+    // Track state on the parent window so we can reload the iframe without losing state.
+    global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
   }
 
   getLog(): LogItem[] {
@@ -353,7 +354,7 @@ export class Instrumenter {
         this.setState((state) => ({
           callRefsByResult: new Map([
             ...Array.from(state.callRefsByResult.entries()),
-            [e, { __callId__: call.id }],
+            [e, { __callId__: call.id, retain: call.retain }],
           ]),
         }));
 
@@ -398,7 +399,7 @@ export class Instrumenter {
         this.setState((state) => ({
           callRefsByResult: new Map([
             ...Array.from(state.callRefsByResult.entries()),
-            [result, { __callId__: call.id }],
+            [result, { __callId__: call.id, retain: call.retain }],
           ]),
         }));
       }
@@ -431,10 +432,13 @@ export class Instrumenter {
   }
 }
 
-export const instrument = <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) => {
-  if (!global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__) {
-    global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
-  }
-  const instrumenter: Instrumenter = global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
-  return instrumenter.instrument(obj, options);
-};
+export const instrument =
+  global.window.parent === global.window
+    ? (obj: any) => obj // Don't do anything if not loaded in an iframe.
+    : <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) => {
+        if (!global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__)
+          global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
+        const instrumenter: Instrumenter =
+          global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
+        return instrumenter.instrument(obj, options);
+      };
