@@ -77,6 +77,7 @@ const RewindButton = styled(StyledIconButton)({
 const JumpToEndButton = styled(StyledButton)({
   marginLeft: 9,
   marginRight: 9,
+  lineHeight: '12px',
 });
 
 export const Subnav: React.FC<SubnavProps> = ({
