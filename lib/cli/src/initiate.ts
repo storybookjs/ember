@@ -206,7 +206,10 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
           .then(end);
 
       case ProjectType.WEB_COMPONENTS:
-        return webComponentsGenerator(packageManager, npmOptions, generatorOptions)
+        return webComponentsGenerator(packageManager, npmOptions, {
+          ...generatorOptions,
+          commonJs: true,
+        })
           .then(commandLog('Adding Storybook support to your "web components" app'))
           .then(end);
 
