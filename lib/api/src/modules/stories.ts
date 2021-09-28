@@ -37,6 +37,7 @@ import { ComposedRef } from './refs';
 import { StoryIndexClient } from '../lib/StoryIndexClient';
 
 const { DOCS_MODE } = global;
+const INVALIDATE = 'INVALIDATE';
 
 type Direction = -1 | 1;
 type ParameterName = string;
@@ -353,7 +354,6 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      console.log('fetchStoryList');
       const storyIndex = await indexClient.fetch();
 
       // We can only do this if the stories.json is a proper storyIndex
@@ -362,7 +362,6 @@ export const init: ModuleFn = ({
         return;
       }
 
-      console.log('got index');
       await fullAPI.setStoryList(storyIndex);
     },
     setStoryList: async (storyIndex: StoryIndex) => {
@@ -370,7 +369,6 @@ export const init: ModuleFn = ({
         provider,
       });
 
-      console.log(hash);
       await store.setState({
         storiesHash: hash,
         storiesConfigured: true,
@@ -501,7 +499,7 @@ export const init: ModuleFn = ({
     );
 
     indexClient = new StoryIndexClient();
-    indexClient.addEventListener('INVALIDATE', () => fullAPI.fetchStoryList());
+    indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
     await fullAPI.fetchStoryList();
   };
 
