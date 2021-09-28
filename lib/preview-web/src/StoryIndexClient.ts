@@ -2,10 +2,11 @@ import global from 'global';
 
 import { StoryIndex } from '@storybook/store';
 
-const { fetch, EventSource } = global;
+const { fetch } = global;
 
 const PATH = './stories.json';
 
+// eslint-disable-next-line no-undef
 export class StoryIndexClient extends EventSource {
   constructor() {
     super(PATH);

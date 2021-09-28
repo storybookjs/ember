@@ -25,13 +25,12 @@ function sortExtractedStories(
   }, {} as StoryIndex['stories']);
 }
 
+type SpecifierStoriesCache = Record<Path, StoryIndex['stories'] | false>;
+
 export class StoryIndexGenerator {
   // An internal cache mapping specifiers to a set of path=><set of stories>
   // Later, we'll combine each of these subsets together to form the full index
-  private storyIndexEntries: Map<
-    NormalizedStoriesSpecifier,
-    Record<Path, StoryIndex['stories'] | false>
-  >;
+  private storyIndexEntries: Map<NormalizedStoriesSpecifier, SpecifierStoriesCache>;
 
   // Cache the last value of `getStoryIndex`. We invalidate (by unsetting) when:
   //  - any file changes, including deletions
@@ -49,10 +48,17 @@ export class StoryIndexGenerator {
     // Find all matching paths for each specifier
     await Promise.all(
       this.specifiers.map(async (specifier) => {
-        const pathToSubIndex = {} as Record<Path, StoryIndex['stories'] | false>;
+        const pathToSubIndex = {} as SpecifierStoriesCache;
 
         const files = await glob(path.join(this.configDir, specifier.glob));
         files.forEach((fileName: Path) => {
+          const ext = path.extname(fileName);
+          const relativePath = path.relative(this.configDir, fileName);
+          if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
+            logger.info(`Skipping ${ext} file ${relativePath}`);
+            return;
+          }
+
           pathToSubIndex[fileName] = false;
         });
 
@@ -64,26 +70,23 @@ export class StoryIndexGenerator {
     await this.ensureExtracted();
   }
 
-  async ensureExtracted() {
-    await Promise.all(
-      this.specifiers.map(async (specifier) => {
-        const entry = this.storyIndexEntries.get(specifier);
-        await Promise.all(
-          Object.keys(entry).map(async (fileName) => {
-            if (!entry[fileName]) await this.extractStories(specifier, fileName);
-          })
-        );
-      })
-    );
+  async ensureExtracted(): Promise<StoryIndex['stories'][]> {
+    return (
+      await Promise.all(
+        this.specifiers.map(async (specifier) => {
+          const entry = this.storyIndexEntries.get(specifier);
+          return Promise.all(
+            Object.keys(entry).map(
+              async (fileName) => entry[fileName] || this.extractStories(specifier, fileName)
+            )
+          );
+        })
+      )
+    ).flat();
   }
 
   async extractStories(specifier: NormalizedStoriesSpecifier, absolutePath: Path) {
-    const ext = path.extname(absolutePath);
     const relativePath = path.relative(this.configDir, absolutePath);
-    if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
-      logger.info(`Skipping ${ext} file ${relativePath}`);
-      return;
-    }
     try {
       const entry = this.storyIndexEntries.get(specifier);
       const fileStories = {} as StoryIndex['stories'];
@@ -99,7 +102,8 @@ export class StoryIndexGenerator {
         };
       });
 
-      entry[absolutePath] = fileStories;
+      entry[importPath] = fileStories;
+      return fileStories;
     } catch (err) {
       logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
       logger.warn(`🚨 ${err.stack}`);
@@ -122,12 +126,8 @@ export class StoryIndexGenerator {
     if (this.lastIndex) return this.lastIndex;
 
     // Extract any entries that are currently missing
-    await this.ensureExtracted();
-
     // Pull out each file's stories into a list of stories, to be composed and sorted
-    const storiesList = this.specifiers.flatMap((specifier) =>
-      Object.values(this.storyIndexEntries.get(specifier))
-    );
+    const storiesList = await this.ensureExtracted();
 
     this.lastIndex = {
       v: 3,

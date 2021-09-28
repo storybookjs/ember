@@ -8000,6 +8000,7 @@ __metadata:
     "@storybook/node-logger": 6.4.0-alpha.39
     "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.253f8c1.0
     "@storybook/semver": ^7.3.2
+    "@types/compression": ^1.7.0
     "@types/interpret": ^1.1.1
     "@types/micromatch": ^4.0.1
     "@types/mock-fs": ^4.13.0
