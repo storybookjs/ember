@@ -69,10 +69,8 @@ There are some noteworthy items here:
 - A second set of links for you to expand your Storybook knowledge and get involved with the ever growing Storybook community.
 - A few example stories to get you started.
 
-Now that you installed Storybook successfully, let’s take a look at a story that was written for us.
-
 <details>
-<summary><h4>Troubleshooting</h4></summary>
+<summary><h4 id="troubleshooting">Troubleshooting</h4></summary>
 
 Below is a curated list to get you unblocked while adding Storybook to your project.
 
@@ -100,3 +98,5 @@ Below is a curated list to get you unblocked while adding Storybook to your proj
 If all else fails, try asking for [help](https://storybook.js.org/support)
 
 </details>
+
+Now that you installed Storybook successfully, let’s take a look at a story that was written for us.
