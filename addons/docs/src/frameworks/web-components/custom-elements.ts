@@ -59,8 +59,9 @@ function mapData(data: TagItem[], category: string) {
 
         switch (category) {
           case 'events':
-            // eslint-disable-next-line no-return-assign
-            mapEvent(item).forEach((argType) => (acc[argType.name] = argType));
+            mapEvent(item).forEach((argType) => {
+              acc[argType.name] = argType;
+            });
             break;
           default:
             acc[item.name] = mapItem({ ...item, type }, category);
