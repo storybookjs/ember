@@ -59,7 +59,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     return this.csfExports[path];
   }
 
-  fetchStoryIndex(store: StoryStore<TFramework>) {
+  getStoryIndex(store: StoryStore<TFramework>) {
     const fileNameOrder = Object.keys(this.csfExports);
     const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
 

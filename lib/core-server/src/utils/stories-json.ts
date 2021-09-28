@@ -31,7 +31,6 @@ export async function useStoriesJson(router: Router, options: Options) {
   const invalidationEmitter = new EventEmitter();
   watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
     generator.invalidate(specifier, path, removed);
-    console.log('emitting');
     invalidationEmitter.emit(INVALIDATE);
   });
 

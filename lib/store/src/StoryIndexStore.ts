@@ -3,51 +3,12 @@ import { StoryId } from '@storybook/csf';
 
 import { StorySpecifier, StoryIndex, StoryIndexEntry } from './types';
 
-type MaybePromise<T> = Promise<T> | T;
-
 export class StoryIndexStore {
-  fetchStoryIndex: () => MaybePromise<StoryIndex>;
-
   channel: Channel;
 
-  stories: Record<StoryId, StoryIndexEntry>;
+  stories: StoryIndex['stories'];
 
-  constructor({ fetchStoryIndex }: { fetchStoryIndex: StoryIndexStore['fetchStoryIndex'] }) {
-    this.fetchStoryIndex = fetchStoryIndex;
-  }
-
-  initialize(options: { sync: false }): Promise<void>;
-
-  initialize(options: { sync: true }): void;
-
-  initialize({ sync = false } = {}) {
-    return sync ? this.cache(true) : this.cache(false);
-  }
-
-  cache(sync: false): Promise<void>;
-
-  cache(sync: true): void;
-
-  cache(sync = false): Promise<void> | void {
-    const fetchResult = this.fetchStoryIndex();
-
-    if (sync) {
-      if (!(fetchResult as StoryIndex).v) {
-        throw new Error(
-          `fetchStoryIndex() didn't return an index, did you pass an async version then call initialize({ sync: true })?`
-        );
-      }
-      this.stories = (fetchResult as StoryIndex).stories;
-      return null;
-    }
-
-    return Promise.resolve(fetchResult).then(({ stories }) => {
-      this.stories = stories;
-    });
-  }
-
-  async onStoriesChanged() {
-    const { stories } = await this.fetchStoryIndex();
+  constructor({ stories }: StoryIndex) {
     this.stories = stories;
   }
 

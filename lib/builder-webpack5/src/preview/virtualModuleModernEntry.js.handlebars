@@ -17,19 +17,19 @@ const getProjectAnnotations = () =>
 const channel = createChannel({ page: 'preview' });
 addons.setChannel(channel);
 
-const preview = new PreviewWeb({ importFn });
+const preview = new PreviewWeb();
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
 window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
 window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore });
 
-preview.initialize({ getProjectAnnotations });
+preview.initialize({ importFn, getProjectAnnotations });
 
 if (module.hot) {
   module.hot.accept('./{{storiesFilename}}', () => {
     // importFn has changed so we need to patch the new one in
-    preview.onImportFnChanged({ importFn });
+    preview.onStoriesChanged({ importFn });
   });
 
   module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {

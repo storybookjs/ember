@@ -153,11 +153,11 @@ export class ClientApi<TFramework extends AnyFramework> {
     return this.facade.importFn(path);
   }
 
-  fetchStoryIndex() {
+  getStoryIndex() {
     if (!this.storyStore) {
-      throw new Error('Cannot fetch story index before setting storyStore');
+      throw new Error('Cannot get story index before setting storyStore');
     }
-    return this.facade.fetchStoryIndex(this.storyStore);
+    return this.facade.getStoryIndex(this.storyStore);
   }
 
   setAddon = deprecate(

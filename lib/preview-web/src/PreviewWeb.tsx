@@ -23,6 +23,7 @@ import {
   CSFFile,
   StoryStore,
   StorySpecifier,
+  StoryIndex,
 } from '@storybook/store';
 
 import { WebProjectAnnotations, DocsContextProps } from './types';
@@ -42,10 +43,14 @@ function focusInInput(event: Event) {
 type InitialRenderPhase = 'init' | 'loaded' | 'rendered' | 'done';
 type MaybePromise<T> = Promise<T> | T;
 
+const INVALIDATE = 'INVALIDATE';
+
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
 
   urlStore: UrlStore;
+
+  indexClient?: StoryIndexClient;
 
   storyStore: StoryStore<TFramework>;
 
@@ -59,63 +64,60 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   previousCleanup: () => void;
 
-  constructor({
-    importFn,
-    fetchStoryIndex,
-  }: {
-    importFn: ModuleImportFn;
-    fetchStoryIndex?: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
-  }) {
+  constructor() {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
     this.urlStore = new UrlStore();
-
-    if (FEATURES?.storyStoreV7) {
-      const indexClient = new StoryIndexClient();
-      this.storyStore = new StoryStore({ importFn, fetchStoryIndex: () => indexClient.fetch() });
-      indexClient.addEventListener('INVALIDATE', () => this.storyStore.onStoryIndexChanged());
-    } else {
-      if (!fetchStoryIndex) {
-        throw new Error('No `fetchStoryIndex` function defined in v6 mode');
-      }
-      this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
-    }
-
+    this.storyStore = new StoryStore();
     // Add deprecated APIs for back-compat
     // @ts-ignore
     this.storyStore.getSelection = deprecate(
       () => this.urlStore.selection,
       dedent`
-      \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
-
-      To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
-    `
+        \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
+  
+        To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
+      `
     );
   }
 
   initialize({
+    getStoryIndex,
+    importFn,
     getProjectAnnotations,
-    cacheAllCSFFiles = false,
-    // We have a second "sync" code path through `initialize` for back-compat reasons.
-    // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
-    sync = false,
   }: {
+    // In the case of the v6 store, we can only get the index from the facade *after*
+    // getProjectAnnotations has been run, thus this slightly awkward approach
+    getStoryIndex?: () => StoryIndex;
+    importFn: ModuleImportFn;
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
-    cacheAllCSFFiles?: boolean;
-    sync?: boolean;
   }): MaybePromise<void> {
     const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
-    if (sync) {
-      this.storyStore.initialize({ projectAnnotations, cacheAllCSFFiles, sync: true });
-      // NOTE: we don't await this, but return the promise so the caller can await it if they want
-      return this.setupListenersAndRenderSelection();
+    if (FEATURES?.storyStoreV7) {
+      this.indexClient = new StoryIndexClient();
+      return this.indexClient.fetch().then((fetchedStoryIndex: StoryIndex) => {
+        this.storyStore.initialize({
+          getStoryIndex: () => fetchedStoryIndex,
+          importFn,
+          projectAnnotations,
+          cache: false,
+        });
+        this.setupListenersAndRenderSelection();
+      });
     }
 
-    return this.storyStore
-      .initialize({ projectAnnotations, cacheAllCSFFiles, sync: false })
-      .then(() => this.setupListenersAndRenderSelection());
+    if (!getStoryIndex) {
+      throw new Error('No `getStoryIndex` passed defined in v6 mode');
+    }
+    this.storyStore.initialize({
+      getStoryIndex,
+      importFn,
+      projectAnnotations,
+      cache: true,
+    });
+    return this.setupListenersAndRenderSelection();
   }
 
   getProjectAnnotationsOrRenderError(
@@ -156,6 +158,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   setupListeners() {
     globalWindow.onkeydown = this.onKeydown.bind(this);
+
+    if (this.indexClient)
+      this.indexClient.addEventListener(INVALIDATE, this.onStoryIndexChanged.bind(this));
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
     this.channel.on(Events.UPDATE_GLOBALS, this.onUpdateGlobals.bind(this));
@@ -238,9 +243,20 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.onUpdateArgs({ storyId, updatedArgs });
   }
 
+  async onStoryIndexChanged() {
+    const storyIndex = await this.indexClient.fetch();
+    return this.onStoriesChanged({ storyIndex });
+  }
+
   // This happens when a glob gets HMR-ed
-  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
-    await this.storyStore.onImportFnChanged({ importFn });
+  async onStoriesChanged({
+    importFn,
+    storyIndex,
+  }: {
+    importFn?: ModuleImportFn;
+    storyIndex?: StoryIndex;
+  }) {
+    await this.storyStore.onStoriesChanged({ importFn, storyIndex });
 
     if (this.urlStore.selection) {
       this.renderSelection();
