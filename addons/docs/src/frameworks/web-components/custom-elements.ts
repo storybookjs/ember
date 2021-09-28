@@ -54,9 +54,6 @@ function mapData(data: TagItem[], category: string) {
       .reduce((acc, item) => {
         if (item.kind === 'method') return acc;
 
-        const type =
-          category === 'properties' ? { name: item.type?.text || item.type } : { name: 'void' };
-
         switch (category) {
           case 'events':
             mapEvent(item).forEach((argType) => {
@@ -64,7 +61,7 @@ function mapData(data: TagItem[], category: string) {
             });
             break;
           default:
-            acc[item.name] = mapItem({ ...item, type }, category);
+            acc[item.name] = mapItem(item, category);
             break;
         }
 
@@ -74,12 +71,15 @@ function mapData(data: TagItem[], category: string) {
 }
 
 function mapItem(item: TagItem, category: string): ArgType {
+  const type =
+    category === 'properties' ? { name: item.type?.text || item.type } : { name: 'void' };
+
   return {
     name: item.name,
     action: { name: item.name },
     required: false,
     description: item.description,
-    type: item.type,
+    type,
     table: {
       category,
       type: { summary: item.type?.text || item.type },
