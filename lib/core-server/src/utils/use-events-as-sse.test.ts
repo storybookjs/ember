@@ -34,7 +34,7 @@ describe('useEventsAsSSE', () => {
 
     jest.runOnlyPendingTimers();
 
-    expect(res.write).toHaveBeenCalledWith('event:PING\n\n');
+    expect(res.write).toHaveBeenCalledWith('event:PING\ndata:\n\n');
     expect(res.flush).toHaveBeenCalled();
   });
 
@@ -62,7 +62,7 @@ describe('useEventsAsSSE', () => {
     expect(res.flush).toHaveBeenCalledTimes(1);
 
     emitter.emit('event-2');
-    expect(res.write).toHaveBeenCalledWith('event:event-2\n\n');
+    expect(res.write).toHaveBeenCalledWith('event:event-2\ndata:\n\n');
     expect(res.flush).toHaveBeenCalledTimes(2);
 
     (res.write as jest.Mock).mockClear();

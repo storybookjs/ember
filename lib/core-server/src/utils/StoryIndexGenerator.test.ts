@@ -142,7 +142,7 @@ describe('StoryIndexGenerator', () => {
         await generator.getIndex();
         expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-        generator.invalidate(specifier, path.resolve(configDir, './src/B.stories.ts'), false);
+        generator.invalidate(specifier, 'src/B.stories.ts', false);
 
         readCsfOrMdxMock.mockClear();
         await generator.getIndex();
@@ -162,7 +162,7 @@ describe('StoryIndexGenerator', () => {
         await generator.getIndex();
         expect(sortFn).toHaveBeenCalled();
 
-        generator.invalidate(specifier, path.resolve(configDir, './src/B.stories.ts'), false);
+        generator.invalidate(specifier, 'src/B.stories.ts', false);
 
         sortFn.mockClear();
         await generator.getIndex();
@@ -182,7 +182,7 @@ describe('StoryIndexGenerator', () => {
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-          generator.invalidate(specifier, path.resolve(configDir, './src/B.stories.ts'), true);
+          generator.invalidate(specifier, 'src/B.stories.ts', true);
 
           readCsfOrMdxMock.mockClear();
           await generator.getIndex();
@@ -202,7 +202,7 @@ describe('StoryIndexGenerator', () => {
           await generator.getIndex();
           expect(sortFn).toHaveBeenCalled();
 
-          generator.invalidate(specifier, path.resolve(configDir, './src/B.stories.ts'), true);
+          generator.invalidate(specifier, 'src/B.stories.ts', true);
 
           sortFn.mockClear();
           await generator.getIndex();
@@ -221,7 +221,7 @@ describe('StoryIndexGenerator', () => {
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-          generator.invalidate(specifier, path.resolve(configDir, './src/B.stories.ts'), true);
+          generator.invalidate(specifier, 'src/B.stories.ts', true);
 
           expect(Object.keys((await generator.getIndex()).stories)).not.toContain('b--story-one');
         });

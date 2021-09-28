@@ -14,7 +14,6 @@ export function watchStorySpecifiers(
     followSymlinks: false,
     ignored: ['**/.git', 'node_modules'],
   });
-  console.log(specifiers.map((ns) => ns.specifier.directory));
   wp.watch({
     directories: specifiers.map((ns) => ns.specifier.directory),
   });
@@ -44,11 +43,11 @@ export function watchStorySpecifiers(
     // but that seems dangerous (what if the contents changed?) and frankly not worth it
     // (at this stage at least)
     const removed = !mtime;
-    console.log('change', removed, explanation);
+    console.log('change', path, removed, explanation);
     onChangeOrRemove(path, removed);
   });
   wp.on('remove', (path: Path, explanation: string) => {
-    console.log('remove', explanation);
+    console.log('remove', path, explanation);
     onChangeOrRemove(path, true);
   });
 }

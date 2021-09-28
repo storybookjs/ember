@@ -51,6 +51,8 @@ export class StoryIndexGenerator {
         const pathToSubIndex = {} as SpecifierStoriesCache;
 
         const files = await glob(path.join(this.configDir, specifier.glob));
+        console.log('specifiers');
+        console.log(path.join(this.configDir, specifier.glob), files);
         files.forEach((fileName: Path) => {
           const ext = path.extname(fileName);
           const relativePath = path.relative(this.configDir, fileName);
@@ -75,6 +77,8 @@ export class StoryIndexGenerator {
       await Promise.all(
         this.specifiers.map(async (specifier) => {
           const entry = this.storyIndexEntries.get(specifier);
+          console.log('entries');
+          console.log(specifier.glob, Object.keys(entry));
           return Promise.all(
             Object.keys(entry).map(
               async (fileName) => entry[fileName] || this.extractStories(specifier, fileName)
@@ -102,7 +106,7 @@ export class StoryIndexGenerator {
         };
       });
 
-      entry[importPath] = fileStories;
+      entry[absolutePath] = fileStories;
       return fileStories;
     } catch (err) {
       logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
@@ -128,6 +132,8 @@ export class StoryIndexGenerator {
     // Extract any entries that are currently missing
     // Pull out each file's stories into a list of stories, to be composed and sorted
     const storiesList = await this.ensureExtracted();
+    console.log('storiesList');
+    console.log(storiesList.map((stories) => Object.keys(stories)));
 
     this.lastIndex = {
       v: 3,
@@ -138,12 +144,17 @@ export class StoryIndexGenerator {
   }
 
   invalidate(specifier: NormalizedStoriesSpecifier, filePath: Path, removed: boolean) {
+    const absolutePath = path.join(this.configDir, filePath);
+    console.log('invalidate', absolutePath, removed);
     const pathToEntries = this.storyIndexEntries.get(specifier);
+    console.log(this.storyIndexEntries.keys());
+    console.log('pathToEntries');
+    console.log(Object.keys(pathToEntries));
 
     if (removed) {
-      delete pathToEntries[filePath];
+      delete pathToEntries[absolutePath];
     } else {
-      pathToEntries[filePath] = false;
+      pathToEntries[absolutePath] = false;
     }
     this.lastIndex = null;
   }
