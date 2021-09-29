@@ -318,14 +318,13 @@ export class Instrumenter {
 
   invoke(fn: Function, call: Call, options: Options) {
     const { parentCall, callRefsByResult, forwardedException } = this.state;
-
     const callWithParent = { ...call, parentId: parentCall?.id };
-    const mappedArgs = options.getArgs ? options.getArgs(callWithParent, this.state) : call.args;
-    const mappedCall: Call = {
+
+    const info: Call = {
       ...callWithParent,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
-      args: mappedArgs.map((arg) => {
+      args: call.args.map((arg) => {
         if (callRefsByResult.has(arg)) {
           return callRefsByResult.get(arg);
         }
@@ -351,7 +350,7 @@ export class Instrumenter {
       if (e instanceof Error) {
         const { name, message, stack } = e;
         const exception = { name, message, stack, callId: call.id };
-        this.sync({ ...mappedCall, state: CallStates.ERROR, exception });
+        this.sync({ ...info, state: CallStates.ERROR, exception });
 
         // Always track errors to their originating call.
         this.setState((state) => ({
@@ -382,9 +381,10 @@ export class Instrumenter {
         throw forwardedException;
       }
 
+      const finalArgs = options.getArgs ? options.getArgs(callWithParent, this.state) : call.args;
       const result = fn(
         // Wrap any callback functions to provide a way to access their "parent" call.
-        ...mappedArgs.map((arg: any) => {
+        ...finalArgs.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
             const prev = this.state.parentCall;
@@ -408,13 +408,13 @@ export class Instrumenter {
       }
 
       this.sync({
-        ...mappedCall,
+        ...info,
         state: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
       });
 
       if (result instanceof Promise) {
         return result.then((value) => {
-          this.sync({ ...mappedCall, state: CallStates.DONE });
+          this.sync({ ...info, state: CallStates.DONE });
           return value;
         }, handleException);
       }
@@ -437,6 +437,7 @@ export class Instrumenter {
   }
 }
 
+// TODO try/catch parent access
 export const instrument =
   global.window.parent === global.window
     ? (obj: any) => obj // Don't do anything if not loaded in an iframe.
