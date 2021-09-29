@@ -31,8 +31,8 @@ export const WaitFor = (args: any) => (
 );
 WaitFor.play = async ({ args, canvasElement }: any) => {
   await userEvent.click(await within(canvasElement).findByText('Click'));
-  await waitFor(() => {
-    expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
+  await waitFor(async () => {
+    await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
   });
 };
 
