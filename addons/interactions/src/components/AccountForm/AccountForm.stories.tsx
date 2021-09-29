@@ -1,6 +1,7 @@
-import React from 'react';
 import { expect } from '@storybook/jest';
 import { within, waitFor, fireEvent, userEvent } from '@storybook/testing-library';
+import React from 'react';
+
 import { AccountForm } from './AccountForm';
 import { sleep, tick } from '../../lib/time';
 

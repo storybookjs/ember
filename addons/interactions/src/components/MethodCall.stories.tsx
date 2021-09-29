@@ -1,5 +1,5 @@
+import { Call } from '@storybook/instrumenter';
 import React from 'react';
-import { Call } from '../types';
 import { Node, MethodCall } from './MethodCall';
 
 export default {

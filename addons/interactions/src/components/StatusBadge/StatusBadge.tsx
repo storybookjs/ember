@@ -1,9 +1,9 @@
 import React from 'react';
+import { Call, CallStates } from '@storybook/instrumenter';
 import { styled, typography } from '@storybook/theming';
-import { CallStates } from '@storybook/instrumenter';
 
 export interface StatusBadgeProps {
-  status: CallStates;
+  status: Call['state'];
 }
 
 const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {

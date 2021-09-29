@@ -1,5 +1,5 @@
+import { Call, CallRef, ElementRef } from '@storybook/instrumenter';
 import React, { Fragment, ReactElement } from 'react';
-import { Call, CallRef, ElementRef } from '../types';
 
 // Light theme
 const colors = {

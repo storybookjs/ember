@@ -1,3 +1,4 @@
+import { Icons, WithTooltip } from '@storybook/components';
 import { keyframes, styled } from '@storybook/theming';
 import {
   ErrorMessage,
@@ -7,7 +8,6 @@ import {
   FormikProps,
 } from 'formik';
 import React, { FC, HTMLAttributes, useCallback, useState } from 'react';
-import { Icons, WithTooltip } from '@storybook/components';
 
 const errorMap = {
   email: {

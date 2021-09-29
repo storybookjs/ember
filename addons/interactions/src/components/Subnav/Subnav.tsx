@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
+import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
-import { CallStates } from '@storybook/instrumenter';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
@@ -24,7 +24,7 @@ export interface SubnavProps {
   hasPrevious: boolean;
   hasNext: boolean;
   storyFileName?: string;
-  status: CallStates;
+  status: Call['state'];
   onStart: () => void;
   onPrevious: () => void;
   onNext: () => void;
