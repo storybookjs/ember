@@ -24,6 +24,7 @@ export interface Options {
   retain?: boolean;
   mutate?: boolean;
   path?: Array<string | CallRef>;
+  getArgs?: (call: Call, state: State) => Call['args'];
 }
 
 export interface State {
@@ -283,18 +284,18 @@ export class Instrumenter {
   // Monkey patch an object method to record calls.
   // Returns a function that invokes the original function, records the invocation ("call") and
   // returns the original result.
-  track(method: string, fn: Function, args: any[], { path = [], ...options }: Options) {
+  track(method: string, fn: Function, args: any[], options: Options) {
     const index = this.state.cursor;
     this.setState({ cursor: this.state.cursor + 1 });
     const id = `${index}-${method}`;
-    const { intercept = false, retain = false } = options;
+    const { path = [], intercept = false, retain = false } = options;
     const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
     const call: Call = { id, path, method, args, interceptable, retain };
-    const result = (interceptable ? this.intercept : this.invoke).call(this, fn, call);
+    const result = (interceptable ? this.intercept : this.invoke).call(this, fn, call, options);
     return this.instrument(result, { ...options, mutate: true, path: [{ __callId__: call.id }] });
   }
 
-  intercept(fn: Function, call: Call) {
+  intercept(fn: Function, call: Call, options: Options) {
     // For a "jump to step" action, continue playing until we hit a call by that ID.
     // For chained calls, we can only return a Promise for the last call in the chain.
     const isChainedUpon = this.state.chainedCallIds.has(call.id);
@@ -302,7 +303,7 @@ export class Instrumenter {
       if (this.state.playUntil === call.id) {
         this.setState({ playUntil: undefined });
       }
-      return this.invoke(fn, call);
+      return this.invoke(fn, call, options);
     }
 
     // Instead of invoking the function, defer the function call until we continue playing.
@@ -311,19 +312,20 @@ export class Instrumenter {
     }).then(() => {
       const { [call.id]: _, ...resolvers } = this.state.resolvers;
       this.setState({ resolvers });
-      return this.invoke(fn, call);
+      return this.invoke(fn, call, options);
     });
   }
 
-  invoke(fn: Function, call: Call) {
+  invoke(fn: Function, call: Call, options: Options) {
     const { parentCall, callRefsByResult, forwardedException } = this.state;
 
-    const info: Call = {
-      ...call,
-      parentId: parentCall?.id,
+    const callWithParent = { ...call, parentId: parentCall?.id };
+    const mappedArgs = options.getArgs ? options.getArgs(callWithParent, this.state) : call.args;
+    const mappedCall: Call = {
+      ...callWithParent,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
-      args: call.args.map((arg) => {
+      args: mappedArgs.map((arg) => {
         if (callRefsByResult.has(arg)) {
           return callRefsByResult.get(arg);
         }
@@ -349,7 +351,7 @@ export class Instrumenter {
       if (e instanceof Error) {
         const { name, message, stack } = e;
         const exception = { name, message, stack, callId: call.id };
-        this.sync({ ...info, state: CallStates.ERROR, exception });
+        this.sync({ ...mappedCall, state: CallStates.ERROR, exception });
 
         // Always track errors to their originating call.
         this.setState((state) => ({
@@ -382,7 +384,7 @@ export class Instrumenter {
 
       const result = fn(
         // Wrap any callback functions to provide a way to access their "parent" call.
-        ...call.args.map((arg: any) => {
+        ...mappedArgs.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
             const prev = this.state.parentCall;
@@ -406,13 +408,13 @@ export class Instrumenter {
       }
 
       this.sync({
-        ...info,
+        ...mappedCall,
         state: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
       });
 
       if (result instanceof Promise) {
         return result.then((value) => {
-          this.sync({ ...info, state: CallStates.DONE });
+          this.sync({ ...mappedCall, state: CallStates.DONE });
           return value;
         }, handleException);
       }
