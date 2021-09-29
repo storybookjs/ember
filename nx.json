@@ -217,9 +217,6 @@
     "@storybook/instrumenter": {
       "implicitDependencies": []
     },
-    "@storybook/jest": {
-      "implicitDependencies": []
-    },
     "@storybook/node-logger": {
       "implicitDependencies": []
     },
@@ -233,9 +230,6 @@
       "implicitDependencies": []
     },
     "@storybook/source-loader": {
-      "implicitDependencies": []
-    },
-    "@storybook/testing-library": {
       "implicitDependencies": []
     },
     "@storybook/theming": {
