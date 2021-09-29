@@ -157,9 +157,10 @@ export class Instrumenter {
     const back = ({ storyId }: { storyId: string }) => {
       const { isDebugging } = this.state;
       const log = this.getLog();
-      const next = log.findIndex(({ state }) => state === CallStates.WAITING);
-      const playUntil = log[next - 2]?.callId || (isDebugging ? null : log.slice(-2)[0]?.callId);
-      start({ storyId, playUntil });
+      const next = isDebugging
+        ? log.findIndex(({ state }) => state === CallStates.WAITING)
+        : log.length;
+      start({ storyId, playUntil: log[next - 2]?.callId });
     };
 
     const goto = ({ storyId, callId }: { storyId: string; callId: Call['id'] }) => {
