@@ -422,6 +422,8 @@ export class Instrumenter {
     }
   }
 
+  // Sends the call info and log to the manager.
+  // Uses a 0ms debounce because this might get called many times in one tick.
   sync(call: Call) {
     clearTimeout(this.state.syncTimeout);
     this.channel.emit(EVENTS.CALL, call);
