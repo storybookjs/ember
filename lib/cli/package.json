@@ -50,6 +50,7 @@
     "@babel/preset-env": "^7.12.11",
     "@storybook/codemod": "6.4.0-beta.1",
     "@storybook/core-common": "6.4.0-beta.1",
+    "@storybook/csf-tools": "6.4.0-beta.1",
     "@storybook/node-logger": "6.4.0-beta.1",
     "@storybook/semver": "^7.3.2",
     "boxen": "^4.2.0",
