@@ -12,7 +12,7 @@ import {
   importFn,
   projectAnnotations,
   getProjectAnnotations,
-  storyIndex as mockStoryIndex,
+  storyIndex,
   emitter,
   mockChannel,
   waitForEvents,
@@ -22,6 +22,9 @@ import {
 
 jest.mock('./WebView');
 const { history, document } = global;
+
+const mockStoryIndex = jest.fn(() => storyIndex);
+
 jest.mock('global', () => ({
   ...(jest.requireActual('global') as any),
   history: { replaceState: jest.fn() },
@@ -35,7 +38,7 @@ jest.mock('global', () => ({
     storyStoreV7: true,
     breakingChangesV7: true,
   },
-  fetch: async () => ({ json: async () => mockStoryIndex }),
+  fetch: async () => ({ json: mockStoryIndex }),
 }));
 
 jest.mock('@storybook/client-logger');
@@ -63,6 +66,7 @@ beforeEach(() => {
   ReactDOM.render.mockReset().mockImplementation((_: any, _2: any, cb: () => any) => cb());
   // @ts-ignore
   logger.warn.mockClear();
+  mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
   addons.setChannel(mockChannel as any);
 });
@@ -186,8 +190,7 @@ describe('PreviewWeb', () => {
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
       });
 
-      // TODO we need tests for story list changes
-      it.skip('tries again with a specifier if CSF file changes', async () => {
+      it('tries again with a specifier if CSF file changes', async () => {
         document.location.search = '?id=component-one--d';
 
         const preview = new PreviewWeb();
@@ -205,7 +208,20 @@ describe('PreviewWeb', () => {
             ? newComponentOneExports
             : componentTwoExports;
         });
-        preview.onStoriesChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({
+          importFn: newImportFn,
+          storyIndex: {
+            v: 3,
+            stories: {
+              ...storyIndex.stories,
+              'component-one--d': {
+                title: 'Component One',
+                name: 'D',
+                importPath: './src/ComponentOne.stories.js',
+              },
+            },
+          },
+        });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
@@ -214,7 +230,7 @@ describe('PreviewWeb', () => {
         });
       });
 
-      it.skip('DOES NOT try again if CSF file changes if selection changed', async () => {
+      it('DOES NOT try again if CSF file changes if selection changed', async () => {
         document.location.search = '?id=component-one--d';
 
         const preview = new PreviewWeb();
@@ -237,25 +253,22 @@ describe('PreviewWeb', () => {
             : componentTwoExports;
         });
 
-        preview.onStoriesChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({
+          importFn: newImportFn,
+          storyIndex: {
+            v: 3,
+            stories: {
+              ...storyIndex.stories,
+              'component-one--d': {
+                title: 'Component One',
+                name: 'D',
+                importPath: './src/ComponentOne.stories.js',
+              },
+            },
+          },
+        });
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
           storyId: 'component-one--d',
-          viewMode: 'story',
-        });
-      });
-
-      it.skip('tries again with a specifier if stories list changes', async () => {
-        document.location.search = '?id=component-three--d';
-
-        const preview = new PreviewWeb();
-        await preview.initialize({ importFn, getProjectAnnotations });
-
-        expect(preview.view.showNoPreview).toHaveBeenCalled();
-        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-three--d');
-
-        // Somehow update story list
-        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
-          storyId: 'component-three--d',
           viewMode: 'story',
         });
       });
