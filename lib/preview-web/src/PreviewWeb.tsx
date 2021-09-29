@@ -104,7 +104,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           projectAnnotations,
           cache: false,
         });
-        this.setupListenersAndRenderSelection();
+        return this.setupListenersAndRenderSelection();
       });
     }
 

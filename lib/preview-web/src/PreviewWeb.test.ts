@@ -12,7 +12,7 @@ import {
   importFn,
   projectAnnotations,
   getProjectAnnotations,
-  fetchStoryIndex,
+  storyIndex as mockStoryIndex,
   emitter,
   mockChannel,
   waitForEvents,
@@ -35,6 +35,7 @@ jest.mock('global', () => ({
     storyStoreV7: true,
     breakingChangesV7: true,
   },
+  fetch: async () => ({ json: async () => mockStoryIndex }),
 }));
 
 jest.mock('@storybook/client-logger');
@@ -70,11 +71,9 @@ describe('PreviewWeb', () => {
   describe('constructor', () => {
     it('shows an error if getProjectAnnotations throws', async () => {
       const err = new Error('meta error');
-      const preview = new PreviewWeb({
-        importFn,
-        fetchStoryIndex,
-      });
+      const preview = new PreviewWeb();
       preview.initialize({
+        importFn,
         getProjectAnnotations: () => {
           throw err;
         },
@@ -89,14 +88,14 @@ describe('PreviewWeb', () => {
     it('sets globals from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       expect(preview.storyStore.globals.get()).toEqual({ a: 'c' });
     });
 
     it('emits the SET_GLOBALS event', async () => {
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: { a: 'b' },
@@ -105,10 +104,7 @@ describe('PreviewWeb', () => {
     });
 
     it('SET_GLOBALS sets globals and types even when undefined', async () => {
-      await new PreviewWeb({
-        importFn,
-        fetchStoryIndex,
-      }).initialize({ getProjectAnnotations: () => ({}) });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations: () => ({}) });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: {},
@@ -119,7 +115,7 @@ describe('PreviewWeb', () => {
     it('emits the SET_GLOBALS event from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: { a: 'c' },
@@ -130,8 +126,8 @@ describe('PreviewWeb', () => {
     it('sets args from the URL', async () => {
       document.location.search = '?id=component-one--a&args=foo:url';
 
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
         foo: 'url',
@@ -143,8 +139,8 @@ describe('PreviewWeb', () => {
     it('selects the story specified in the URL', async () => {
       document.location.search = '?id=component-one--a';
 
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       expect(preview.urlStore.selection).toEqual({
         storyId: 'component-one--a',
@@ -160,7 +156,7 @@ describe('PreviewWeb', () => {
     it('emits the STORY_SPECIFIED event', async () => {
       document.location.search = '?id=component-one--a';
 
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
         storyId: 'component-one--a',
@@ -171,7 +167,7 @@ describe('PreviewWeb', () => {
     it('emits the CURRENT_STORY_WAS_SET event', async () => {
       document.location.search = '?id=component-one--a';
 
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CURRENT_STORY_WAS_SET, {
         storyId: 'component-one--a',
@@ -183,8 +179,8 @@ describe('PreviewWeb', () => {
       it('renders missing', async () => {
         document.location.search = '?id=random';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
@@ -194,8 +190,8 @@ describe('PreviewWeb', () => {
       it.skip('tries again with a specifier if CSF file changes', async () => {
         document.location.search = '?id=component-one--d';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
@@ -209,7 +205,7 @@ describe('PreviewWeb', () => {
             ? newComponentOneExports
             : componentTwoExports;
         });
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
@@ -221,8 +217,8 @@ describe('PreviewWeb', () => {
       it.skip('DOES NOT try again if CSF file changes if selection changed', async () => {
         document.location.search = '?id=component-one--d';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
@@ -241,7 +237,7 @@ describe('PreviewWeb', () => {
             : componentTwoExports;
         });
 
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_SPECIFIED, {
           storyId: 'component-one--d',
           viewMode: 'story',
@@ -251,8 +247,8 @@ describe('PreviewWeb', () => {
       it.skip('tries again with a specifier if stories list changes', async () => {
         document.location.search = '?id=component-three--d';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-three--d');
@@ -266,8 +262,8 @@ describe('PreviewWeb', () => {
     });
 
     it('renders missing if no selection', async () => {
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       expect(preview.view.showNoPreview).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, undefined);
@@ -277,8 +273,8 @@ describe('PreviewWeb', () => {
       it('calls view.prepareForStory', async () => {
         document.location.search = '?id=component-one--a';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.prepareForStory).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -289,7 +285,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
@@ -302,7 +298,7 @@ describe('PreviewWeb', () => {
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -319,7 +315,7 @@ describe('PreviewWeb', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -347,8 +343,8 @@ describe('PreviewWeb', () => {
         });
 
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -363,8 +359,8 @@ describe('PreviewWeb', () => {
         });
 
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -379,8 +375,8 @@ describe('PreviewWeb', () => {
         });
 
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -395,8 +391,8 @@ describe('PreviewWeb', () => {
         );
 
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -414,8 +410,8 @@ describe('PreviewWeb', () => {
         );
 
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -425,7 +421,7 @@ describe('PreviewWeb', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -434,7 +430,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -446,8 +442,8 @@ describe('PreviewWeb', () => {
       it('calls view.prepareForDocs', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         expect(preview.view.prepareForDocs).toHaveBeenCalled();
       });
@@ -455,7 +451,7 @@ describe('PreviewWeb', () => {
       it('render the docs container with the correct context', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -478,7 +474,7 @@ describe('PreviewWeb', () => {
       it('emits DOCS_RENDERED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -490,13 +486,13 @@ describe('PreviewWeb', () => {
         const [reactDomGate, openReactDomGate] = createGate();
 
         let rendered;
-        ReactDOM.render.mockImplementationOnce((docsElement, element, cb) => {
+        (ReactDOM.render as jest.Mock).mockImplementationOnce((docsElement, element, cb) => {
           rendered = docsElement.props.context.registerRenderingStory();
           openReactDomGate();
           cb();
         });
 
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         // Wait for `ReactDOM.render()` to be called. We should still be waiting for the story
         await reactDomGate;
@@ -512,7 +508,7 @@ describe('PreviewWeb', () => {
   describe('onUpdateGlobals', () => {
     it('emits GLOBALS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
@@ -524,8 +520,8 @@ describe('PreviewWeb', () => {
 
     it('sets new globals on the store', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
@@ -534,8 +530,8 @@ describe('PreviewWeb', () => {
 
     it('passes new globals in context to renderToDOM', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -556,7 +552,7 @@ describe('PreviewWeb', () => {
 
     it('emits STORY_RENDERED', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -570,7 +566,7 @@ describe('PreviewWeb', () => {
   describe('onUpdateArgs', () => {
     it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -585,8 +581,8 @@ describe('PreviewWeb', () => {
 
     it('sets new args on the store', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -601,8 +597,8 @@ describe('PreviewWeb', () => {
 
     it('passes new args in context to renderToDOM', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -627,7 +623,7 @@ describe('PreviewWeb', () => {
 
     it('emits STORY_RENDERED', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -646,7 +642,7 @@ describe('PreviewWeb', () => {
 
         document.location.search = '?id=component-one--a';
         componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -676,7 +672,7 @@ describe('PreviewWeb', () => {
 
         document.location.search = '?id=component-one--a';
         projectAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -718,7 +714,7 @@ describe('PreviewWeb', () => {
             updatedArgs: { new: 'arg' },
           });
         });
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await waitForRender();
 
@@ -756,7 +752,7 @@ describe('PreviewWeb', () => {
         });
 
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         await renderToDOMCalled;
         // Story gets rendered with original args
@@ -800,7 +796,7 @@ describe('PreviewWeb', () => {
   describe('onResetArgs', () => {
     it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
       mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -828,7 +824,7 @@ describe('PreviewWeb', () => {
 
     it('resets a single arg', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
       mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -862,7 +858,7 @@ describe('PreviewWeb', () => {
 
     it('resets all args', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
@@ -895,8 +891,8 @@ describe('PreviewWeb', () => {
   describe('on FORCE_RE_RENDER', () => {
     it('rerenders the story with the same args', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -914,7 +910,7 @@ describe('PreviewWeb', () => {
   describe('onSetCurrentStory', () => {
     it('updates URL', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.SET_CURRENT_STORY, {
         storyId: 'component-one--b',
@@ -930,7 +926,7 @@ describe('PreviewWeb', () => {
 
     it('emits CURRENT_STORY_WAS_SET', async () => {
       document.location.search = '?id=component-one--a';
-      await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.SET_CURRENT_STORY, {
         storyId: 'component-one--b',
@@ -945,8 +941,8 @@ describe('PreviewWeb', () => {
 
     it('renders missing if the story specified does not exist', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       emitter.emit(Events.SET_CURRENT_STORY, {
         storyId: 'random',
@@ -961,8 +957,8 @@ describe('PreviewWeb', () => {
     describe('if the selection is unchanged', () => {
       it('emits STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -975,8 +971,8 @@ describe('PreviewWeb', () => {
 
       it('does NOT call renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
 
         projectAnnotations.renderToDOM.mockClear();
 
@@ -994,7 +990,7 @@ describe('PreviewWeb', () => {
     describe('when changing story in story viewMode', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--b',
@@ -1010,7 +1006,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1025,7 +1021,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1046,7 +1042,7 @@ describe('PreviewWeb', () => {
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1069,7 +1065,7 @@ describe('PreviewWeb', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1098,8 +1094,8 @@ describe('PreviewWeb', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = new Error('error');
@@ -1120,8 +1116,8 @@ describe('PreviewWeb', () => {
 
       it('renders error if the story calls showError', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = { title: 'title', description: 'description' };
@@ -1145,8 +1141,8 @@ describe('PreviewWeb', () => {
 
       it('renders exception if the story calls showException', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = new Error('error');
@@ -1167,7 +1163,7 @@ describe('PreviewWeb', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1182,7 +1178,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1197,8 +1193,8 @@ describe('PreviewWeb', () => {
 
       it('retains any arg changes', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1238,7 +1234,7 @@ describe('PreviewWeb', () => {
           componentOneExports.default.loaders[0].mockImplementationOnce(async () => gate);
 
           document.location.search = '?id=component-one--a';
-          await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+          await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
@@ -1269,7 +1265,7 @@ describe('PreviewWeb', () => {
 
           document.location.search = '?id=component-one--a';
           projectAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
-          await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+          await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
@@ -1302,7 +1298,7 @@ describe('PreviewWeb', () => {
           });
 
           document.location.search = '?id=component-one--a';
-          await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+          await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
           await renderToDOMCalled;
           // Story gets rendered with original args
@@ -1351,7 +1347,7 @@ describe('PreviewWeb', () => {
     describe('when changing from story viewMode to docs', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -1367,7 +1363,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1382,8 +1378,8 @@ describe('PreviewWeb', () => {
 
       it('calls view.prepareForDocs', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1398,7 +1394,7 @@ describe('PreviewWeb', () => {
 
       it('render the docs container with the correct context', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1426,7 +1422,7 @@ describe('PreviewWeb', () => {
 
       it('emits DOCS_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1443,7 +1439,7 @@ describe('PreviewWeb', () => {
     describe('when changing from docs viewMode to story', () => {
       it('updates URL', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
 
         emitter.emit(Events.SET_CURRENT_STORY, {
           storyId: 'component-one--a',
@@ -1459,7 +1455,7 @@ describe('PreviewWeb', () => {
 
       it('unmounts docs', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1475,7 +1471,7 @@ describe('PreviewWeb', () => {
       // NOTE: I am not sure this entirely makes sense but this is the behaviour from 6.3
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1490,8 +1486,8 @@ describe('PreviewWeb', () => {
 
       it('calls view.prepareForStory', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1510,7 +1506,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_PREPARED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1531,7 +1527,7 @@ describe('PreviewWeb', () => {
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1554,7 +1550,7 @@ describe('PreviewWeb', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1583,8 +1579,8 @@ describe('PreviewWeb', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = new Error('error');
@@ -1610,8 +1606,8 @@ describe('PreviewWeb', () => {
         );
 
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1635,8 +1631,8 @@ describe('PreviewWeb', () => {
         );
 
         document.location.search = '?id=component-one--a&viewMode=docs';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1652,7 +1648,7 @@ describe('PreviewWeb', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1667,7 +1663,7 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -1682,7 +1678,7 @@ describe('PreviewWeb', () => {
     });
   });
 
-  describe('onImportFnChanged', () => {
+  describe('onStoriesChanged', () => {
     describe('when the current story changes', () => {
       const newComponentOneExports = merge({}, componentOneExports, {
         a: { args: { foo: 'edited' } },
@@ -1695,12 +1691,12 @@ describe('PreviewWeb', () => {
 
       it('does not emit STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
         mockChannel.emit.mockClear();
 
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).not.toHaveBeenCalledWith(
@@ -1711,12 +1707,12 @@ describe('PreviewWeb', () => {
 
       it('does not emit STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
         mockChannel.emit.mockClear();
 
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
@@ -1724,12 +1720,12 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_PREPARED with new annotations', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
         mockChannel.emit.mockClear();
 
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
@@ -1743,13 +1739,13 @@ describe('PreviewWeb', () => {
 
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
         componentOneExports.default.loaders[0].mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
@@ -1765,13 +1761,13 @@ describe('PreviewWeb', () => {
 
       it('passes loaded context to renderToDOM', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
         projectAnnotations.renderToDOM.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
@@ -1793,8 +1789,8 @@ describe('PreviewWeb', () => {
 
       it('retains the same delta to the args', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -1805,7 +1801,7 @@ describe('PreviewWeb', () => {
 
         mockChannel.emit.mockClear();
         projectAnnotations.renderToDOM.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
@@ -1822,8 +1818,8 @@ describe('PreviewWeb', () => {
 
       it('renders exception if renderToDOM throws', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = new Error('error');
@@ -1832,7 +1828,7 @@ describe('PreviewWeb', () => {
         });
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
@@ -1841,8 +1837,8 @@ describe('PreviewWeb', () => {
 
       it('renders error if the story calls showError', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = { title: 'title', description: 'description' };
@@ -1851,7 +1847,7 @@ describe('PreviewWeb', () => {
         );
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ERRORED, error);
@@ -1863,8 +1859,8 @@ describe('PreviewWeb', () => {
 
       it('renders exception if the story calls showException', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         const error = new Error('error');
@@ -1873,7 +1869,7 @@ describe('PreviewWeb', () => {
         );
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_THREW_EXCEPTION, error);
@@ -1882,13 +1878,13 @@ describe('PreviewWeb', () => {
 
       it('executes runPlayFunction', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
         componentOneExports.a.play.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(componentOneExports.a.play).toHaveBeenCalled();
@@ -1896,12 +1892,12 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_RENDERED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
@@ -1918,12 +1914,12 @@ describe('PreviewWeb', () => {
 
       it('emits STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForEvents([Events.STORY_UNCHANGED]);
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_UNCHANGED, 'component-one--a');
@@ -1932,13 +1928,13 @@ describe('PreviewWeb', () => {
 
       it('does not re-render the story', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
         projectAnnotations.renderToDOM.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForQuiescence();
 
         expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
@@ -1959,12 +1955,12 @@ describe('PreviewWeb', () => {
 
       it('renders story missing', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForEvents([Events.STORY_MISSING]);
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -1973,13 +1969,13 @@ describe('PreviewWeb', () => {
 
       it('does not re-render the story', async () => {
         document.location.search = '?id=component-one--a';
-        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-        await preview.initialize({ getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
         projectAnnotations.renderToDOM.mockClear();
-        preview.onImportFnChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn });
         await waitForQuiescence();
 
         expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
@@ -1994,8 +1990,8 @@ describe('PreviewWeb', () => {
   describe('onGetProjectAnnotationsChanged', () => {
     it('shows an error the new value throws', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -2022,8 +2018,8 @@ describe('PreviewWeb', () => {
 
     it('updates globals to their new values', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -2035,8 +2031,8 @@ describe('PreviewWeb', () => {
 
     it('updates args to their new values', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       mockChannel.emit.mockClear();
@@ -2052,8 +2048,8 @@ describe('PreviewWeb', () => {
 
     it('rerenders the current story with new global meta-generated context', async () => {
       document.location.search = '?id=component-one--a';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
       await waitForRender();
 
       projectAnnotations.renderToDOM.mockClear();
@@ -2076,8 +2072,8 @@ describe('PreviewWeb', () => {
   describe('onKeydown', () => {
     it('emits PREVIEW_KEYDOWN for regular elements', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       preview.onKeydown({
         target: { tagName: 'div', getAttribute: jest.fn().mockReturnValue(null) },
@@ -2091,8 +2087,8 @@ describe('PreviewWeb', () => {
 
     it('does not emit PREVIEW_KEYDOWN for input elements', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const preview = new PreviewWeb({ importFn, fetchStoryIndex });
-      await preview.initialize({ getProjectAnnotations });
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
 
       preview.onKeydown({
         target: { tagName: 'input', getAttribute: jest.fn().mockReturnValue(null) },
