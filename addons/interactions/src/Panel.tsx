@@ -2,8 +2,13 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter, useStorybookState } from '@storybook/api';
-import { FORCE_REMOUNT, SET_CURRENT_STORY, STORY_RENDERED } from '@storybook/core-events';
-import { AddonPanel, Icons, Link, Placeholder } from '@storybook/components';
+import {
+  FORCE_REMOUNT,
+  SET_CURRENT_STORY,
+  STORY_RENDERED,
+  STORY_THREW_EXCEPTION,
+} from '@storybook/core-events';
+import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
@@ -18,6 +23,10 @@ interface PanelProps {
 
 const pendingStates = [CallStates.ACTIVE, CallStates.WAITING];
 const completedStates = [CallStates.DONE, CallStates.ERROR];
+
+const TabIcon = styled(StatusIcon)({
+  marginLeft: 5,
+});
 
 const Interaction = ({
   call,
@@ -87,7 +96,7 @@ const Interaction = ({
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
-  const [isRendered, setRendered] = React.useState(false);
+  const [isPlaying, setPlaying] = React.useState(true);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
   const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
@@ -109,9 +118,10 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: setCall,
     [EVENTS.SYNC]: setLog,
-    [SET_CURRENT_STORY]: () => setRendered(false),
-    [FORCE_REMOUNT]: () => setRendered(false),
-    [STORY_RENDERED]: () => setRendered(true),
+    [SET_CURRENT_STORY]: () => setPlaying(true),
+    [FORCE_REMOUNT]: () => setPlaying(true),
+    [STORY_RENDERED]: () => setPlaying(false),
+    [STORY_THREW_EXCEPTION]: () => setPlaying(false),
   });
 
   const { storyId } = useStorybookState();
@@ -123,28 +133,23 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const hasNext = log.some((item) => item.state === CallStates.WAITING);
   const hasActive = log.some((item) => item.state === CallStates.ACTIVE);
   const hasException = log.some((item) => item.state === CallStates.ERROR);
-  const isDisabled = hasActive || (!isDebugging && !isRendered);
+  const isDisabled = hasActive || (isPlaying && !isDebugging);
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
-  const showStatus = hasException || isDebugging;
-  const statusIcon = hasException ? (
-    <span
-      style={{ width: 8, height: 8, margin: 2, marginLeft: 7, background: '#F40', borderRadius: 1 }}
-    />
-  ) : (
-    <Icons icon="play" style={{ width: 12, height: 12, marginLeft: 5, color: 'currentcolor' }} />
-  );
+  const tabStatus = hasException ? CallStates.ERROR : CallStates.ACTIVE;
+  const showTabIcon = isDebugging || (!isPlaying && hasException);
 
   return (
     <AddonPanel {...props}>
-      {tabButton && showStatus && ReactDOM.createPortal(statusIcon, tabButton)}
+      {tabButton && showTabIcon && ReactDOM.createPortal(<TabIcon status={tabStatus} />, tabButton)}
       {interactions.length > 0 && (
         <Subnav
           isDisabled={isDisabled}
           hasPrevious={hasPrevious}
           hasNext={hasNext}
           storyFileName={fileName}
-          status={hasException ? CallStates.ERROR : CallStates.DONE}
+          // eslint-disable-next-line no-nested-ternary
+          status={isPlaying ? CallStates.ACTIVE : hasException ? CallStates.ERROR : CallStates.DONE}
           onStart={() => emit(EVENTS.START, { storyId })}
           onPrevious={() => emit(EVENTS.BACK, { storyId })}
           onNext={() => emit(EVENTS.NEXT, { storyId })}
@@ -162,7 +167,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
         />
       ))}
       <div ref={endRef} />
-      {isRendered && interactions.length === 0 && (
+      {!isPlaying && interactions.length === 0 && (
         <Placeholder>
           No interactions found
           <Link
