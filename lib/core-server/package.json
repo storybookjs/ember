@@ -54,7 +54,7 @@
     "@types/pretty-hrtime": "^1.0.0",
     "@types/webpack": "^4.41.26",
     "better-opn": "^2.1.1",
-    "boxen": "^4.2.0",
+    "boxen": "^5.1.2",
     "chalk": "^4.1.0",
     "cli-table3": "0.6.0",
     "commander": "^6.2.1",
