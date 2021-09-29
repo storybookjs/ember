@@ -300,6 +300,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       story = await this.storyStore.loadStory({ storyId: selection.storyId });
     } catch (err) {
+      this.previousStory = null;
       logger.warn(err);
       this.renderMissingStory(selection.storyId);
       return;
@@ -318,7 +319,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (!storyChanged && !implementationChanged && !viewModeChanged) {
+    if (this.previousStory && !storyChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }

@@ -1917,6 +1917,63 @@ describe('PreviewWeb', () => {
       });
     });
 
+    describe('when the current story changes importPath', () => {
+      const newImportFn = jest.fn(async (path) => ({ ...componentOneExports }));
+
+      const newStoryIndex = {
+        v: 3,
+        stories: {
+          ...storyIndex.stories,
+          'component-one--a': {
+            ...storyIndex.stories['component-one--a'],
+            importPath: './src/ComponentOne-new.stories.js',
+          },
+        },
+      };
+      beforeEach(() => {
+        newImportFn.mockClear();
+      });
+
+      it('re-imports the component', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
+        await waitForRender();
+
+        expect(newImportFn).toHaveBeenCalledWith('./src/ComponentOne-new.stories.js');
+      });
+
+      describe('if it was previously rendered', () => {
+        it('is reloaded when it is re-selected', async () => {
+          document.location.search = '?id=component-one--a';
+          const preview = new PreviewWeb();
+          await preview.initialize({ importFn, getProjectAnnotations });
+          await waitForRender();
+
+          mockChannel.emit.mockClear();
+          emitter.emit(Events.SET_CURRENT_STORY, {
+            storyId: 'component-one--b',
+            viewMode: 'story',
+          });
+          await waitForRender();
+
+          preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
+
+          mockChannel.emit.mockClear();
+          emitter.emit(Events.SET_CURRENT_STORY, {
+            storyId: 'component-one--a',
+            viewMode: 'story',
+          });
+          await waitForRender();
+          expect(newImportFn).toHaveBeenCalledWith('./src/ComponentOne-new.stories.js');
+        });
+      });
+    });
+
     describe('when the current story has not changed', () => {
       const newComponentTwoExports = { ...componentTwoExports };
       const newImportFn = jest.fn(async (path) => {
@@ -1966,6 +2023,13 @@ describe('PreviewWeb', () => {
           : componentTwoExports;
       });
 
+      const newStoryIndex = {
+        v: 3,
+        stories: {
+          'component-one--b': storyIndex.stories['component-one--b'],
+        },
+      };
+
       it('renders story missing', async () => {
         document.location.search = '?id=component-one--a';
         const preview = new PreviewWeb();
@@ -1973,7 +2037,7 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         mockChannel.emit.mockClear();
-        preview.onStoriesChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
         await waitForEvents([Events.STORY_MISSING]);
 
         expect(preview.view.showNoPreview).toHaveBeenCalled();
@@ -1988,7 +2052,7 @@ describe('PreviewWeb', () => {
 
         mockChannel.emit.mockClear();
         projectAnnotations.renderToDOM.mockClear();
-        preview.onStoriesChanged({ importFn: newImportFn });
+        preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
         await waitForQuiescence();
 
         expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
@@ -1996,6 +2060,22 @@ describe('PreviewWeb', () => {
           Events.STORY_RENDERED,
           'component-one--a'
         );
+      });
+
+      it('re-renders the story if it is readded', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
+        await waitForEvents([Events.STORY_MISSING]);
+
+        mockChannel.emit.mockClear();
+        preview.onStoriesChanged({ importFn, storyIndex });
+        await waitForRender();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
       });
     });
   });
