@@ -11,6 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
+import { fix } from './fix';
 import { generateStorybookBabelConfigInCWD } from './babel-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
@@ -121,6 +122,17 @@ program
   .option('--local', 'Link a local directory already in your file system')
   .action((target, { local }) =>
     link({ target, local }).catch((e) => {
+      logger.error(e);
+      process.exit(1);
+    })
+  );
+
+program
+  .command('fix [fixId]')
+  .description('Check storybook for known problems or migrations and apply fixes')
+  .option('-y --yes', 'Skip prompting the user')
+  .action((fixId, options) =>
+    fix({ fixId, ...options }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })
