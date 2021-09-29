@@ -33,7 +33,7 @@ export interface State {
   shadowCalls: Call[];
   callRefsByResult: Map<any, CallRef & { retain: boolean }>;
   chainedCallIds: Set<Call['id']>;
-  parentCallId?: Call['id'];
+  parentCall?: Call;
   playUntil?: Call['id'];
   resolvers: Record<Call['id'], Function>;
   syncTimeout: ReturnType<typeof setTimeout>;
@@ -70,7 +70,7 @@ const getInitialState = (): State => ({
   shadowCalls: [],
   callRefsByResult: new Map(),
   chainedCallIds: new Set<Call['id']>(),
-  parentCallId: undefined,
+  parentCall: undefined,
   playUntil: undefined,
   resolvers: {},
   syncTimeout: undefined,
@@ -315,11 +315,11 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call) {
-    const { parentCallId, callRefsByResult, forwardedException } = this.state;
+    const { parentCall, callRefsByResult, forwardedException } = this.state;
 
     const info: Call = {
       ...call,
-      parentId: parentCallId,
+      parentId: parentCall?.id,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
       args: call.args.map((arg) => {
@@ -384,10 +384,10 @@ export class Instrumenter {
         ...call.args.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
-            const prev = this.state.parentCallId;
-            this.setState({ parentCallId: call.id });
+            const prev = this.state.parentCall;
+            this.setState({ parentCall: call });
             const res = arg(...args);
-            this.setState({ parentCallId: prev });
+            this.setState({ parentCall: prev });
             return res;
           };
         })
