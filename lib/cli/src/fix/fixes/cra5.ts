@@ -45,6 +45,10 @@ export const cra5: Fix<CRA5RunOptions> = {
       In order to work with your version of CRA, we need to install Storybook's ${chalk.cyan(
         'webpack5 builder'
       )}.
+
+      See also ${chalk.yellow(
+        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#cra5-upgrade'
+      )}
     `;
   },
 

@@ -97,6 +97,10 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
       To run Storybook in webpack5-mode, we can install Storybook's ${chalk.cyan(
         'webpack5 builder'
       )} for you.
+
+      See also ${chalk.yellow(
+        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#webpack-5-manager-build'
+      )}
     `;
   },
 

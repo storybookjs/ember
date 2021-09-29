@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [CRA5 upgrade](#cra5-upgrade)
   - [CSF3 enabled](#csf3-enabled)
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
@@ -173,6 +174,33 @@
 
 ## From version 6.3.x to 6.4.0
 
+### CRA5 upgrade
+
+Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to
+upgrade the configuration. You can do this automatically by running:
+
+```
+npx sb@next fix
+```
+
+Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
+
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
 ### CSF3 enabled
 
 SB6.3 introduced a feature flag, `features.previewCsfV3`, to opt-in to experimental [CSF3 syntax support](https://storybook.js.org/blog/component-story-format-3-0/). In SB6.4, CSF3 is supported regardless of `previewCsfV3`'s value. This should be a fully backwards-compatible change. The `previewCsfV3` flag has been deprecated and will be removed in SB7.0.
@@ -330,9 +358,9 @@ npm install webpack@5 --save-dev
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
 
 ```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5@next --dev
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5@next --save-dev
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:

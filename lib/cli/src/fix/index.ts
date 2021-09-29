@@ -42,6 +42,7 @@ export const fix = async ({ fixId, dryRun, yes }: FixOptions) => {
 
       if (runAnswer.fix) {
         await f.run({ result, packageManager, dryRun });
+        logger.info(`✅ fixed ${chalk.cyan(f.id)}`);
       } else {
         logger.info(`Skipping the ${chalk.cyan(f.id)} fix.`);
         logger.info();
