@@ -65,7 +65,7 @@
     "global": "^4.4.0",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "react-dev-utils": "^11.0.3",
+    "react-dev-utils": "^11.0.4",
     "react-refresh": "^0.10.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
