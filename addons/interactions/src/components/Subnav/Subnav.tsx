@@ -61,6 +61,8 @@ const StyledLocation = styled(P)(({ theme }) => ({
   color: theme.color.dark,
   justifyContent: 'flex-end',
   textAlign: 'right',
+  marginTop: 'auto',
+  marginBottom: 1,
   paddingRight: 15,
   fontSize: 13,
 }));
@@ -77,6 +79,7 @@ const RewindButton = styled(StyledIconButton)({
 const JumpToEndButton = styled(StyledButton)({
   marginLeft: 9,
   marginRight: 9,
+  marginBottom: 1,
   lineHeight: '12px',
 });
 
