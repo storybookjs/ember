@@ -25,10 +25,10 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   const craVersion = semver.coerce(
     packageManager.retrievePackageJson().dependencies['react-scripts']
   )?.version;
-  const isWebpack5 = semver.gte(craVersion, '5.0.0');
-  const updatedOptions = isWebpack5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
+  const isCra5 = semver.gte(craVersion, '5.0.0');
+  const updatedOptions = isCra5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
   const extraPackages = ['@storybook/node-logger'];
-  if (isWebpack5) extraPackages.push('webpack');
+  if (isCra5) extraPackages.push('webpack');
 
   await baseGenerator(packageManager, npmOptions, updatedOptions, 'react', {
     extraAddons: ['@storybook/preset-create-react-app'],
