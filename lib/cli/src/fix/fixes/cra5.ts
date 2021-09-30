@@ -5,12 +5,6 @@ import { ConfigFile } from '@storybook/csf-tools';
 import { Fix } from '../types';
 import { webpack5 } from './webpack5';
 
-/**
- * Is the user upgrading from CRA4 to CRA5?
- *
- * If so:
- * - Run webpack5 fix
- */
 interface CRA5RunOptions {
   craVersion: string;
   // FIXME craPresetVersion: string;
@@ -18,6 +12,12 @@ interface CRA5RunOptions {
   main: ConfigFile;
 }
 
+/**
+ * Is the user upgrading from CRA4 to CRA5?
+ *
+ * If so:
+ * - Run webpack5 fix
+ */
 export const cra5: Fix<CRA5RunOptions> = {
   id: 'cra5',
 

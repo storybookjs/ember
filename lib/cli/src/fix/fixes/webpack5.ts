@@ -8,17 +8,6 @@ import { PackageJsonWithDepsAndDevDeps } from '../../js-package-manager';
 
 const logger = console;
 
-/**
- * Is the user using webpack5 in their project?
- *
- * If the user is using a version of SB >= 6.3,
- * prompt them to upgrade to webpack5.
- *
- * - Add manager-webpack5 builder-webpack5 as dev dependencies
- * - Add core.builder = 'webpack5' to main.js
- * - Add 'webpack5' as a project dependency
- */
-
 interface Webpack5RunOptions {
   webpackVersion: string;
   storybookVersion: string;
@@ -31,6 +20,16 @@ interface CheckBuilder {
   ) => Promise<{ storybookVersion: string; main: ConfigFile }>;
 }
 
+/**
+ * Is the user using webpack5 in their project?
+ *
+ * If the user is using a version of SB >= 6.3,
+ * prompt them to upgrade to webpack5.
+ *
+ * - Add manager-webpack5 builder-webpack5 as dev dependencies
+ * - Add core.builder = 'webpack5' to main.js
+ * - Add 'webpack5' as a project dependency
+ */
 export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
   id: 'webpack5',
 

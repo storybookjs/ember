@@ -36,7 +36,7 @@ export const fix = async ({ fixId, dryRun, yes }: FixOptions) => {
               {
                 type: 'confirm',
                 name: 'fix',
-                message: `Do you want to run fix '${chalk.cyan(f.id)}' on your project?`,
+                message: `Do you want to run the '${chalk.cyan(f.id)}' fix on your project?`,
               },
             ]);
 
@@ -46,7 +46,7 @@ export const fix = async ({ fixId, dryRun, yes }: FixOptions) => {
       } else {
         logger.info(`Skipping the ${chalk.cyan(f.id)} fix.`);
         logger.info();
-        logger.info(`If you change your mind, just run '${chalk.cyan('npx sb@next fix')}'`);
+        logger.info(`If you change your mind, run '${chalk.cyan('npx sb@next fix')}'`);
       }
     }
   }
