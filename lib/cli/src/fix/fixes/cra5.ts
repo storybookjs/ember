@@ -9,7 +9,7 @@ import { webpack5 } from './webpack5';
  * Is the user upgrading from CRA4 to CRA5?
  *
  * If so:
- * - Run upgrades/webpack5
+ * - Run webpack5 fix
  */
 interface CRA5RunOptions {
   craVersion: string;
@@ -46,7 +46,7 @@ export const cra5: Fix<CRA5RunOptions> = {
         'webpack5 builder'
       )}.
 
-      See also ${chalk.yellow(
+      More info: ${chalk.yellow(
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#cra5-upgrade'
       )}
     `;

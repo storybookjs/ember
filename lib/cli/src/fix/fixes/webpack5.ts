@@ -45,7 +45,15 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
 
     if (semver.lt(storybookCoerced, '6.3.0')) {
       logger.warn(
-        'Detected SB 6.3 or below, please upgrade storybook if you want to use webpack5.'
+        dedent`
+          Detected SB 6.3 or below, please upgrade storybook to use webpack5.
+
+          To upgrade to the latest stable release, run this from your project directory:
+
+          ${chalk.cyan('npx sb upgrade')}
+
+          Add the ${chalk.cyan('--prerelease')} flag to get the latest prerelease.
+        `.trim()
       );
       return null;
     }
@@ -98,7 +106,7 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
         'webpack5 builder'
       )} for you.
 
-      See also ${chalk.yellow(
+      More info: ${chalk.yellow(
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#webpack-5-manager-build'
       )}
     `;
