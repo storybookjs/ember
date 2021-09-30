@@ -27,7 +27,7 @@ export const cra5: Fix<CRA5RunOptions> = {
     const craVersion = dependencies['react-scripts'] || devDependencies['react-scripts'];
     const craCoerced = semver.coerce(craVersion)?.version;
 
-    if (semver.lt(craCoerced, '5.0.0')) {
+    if (!craCoerced || semver.lt(craCoerced, '5.0.0')) {
       return null;
     }
 
