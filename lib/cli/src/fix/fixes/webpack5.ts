@@ -36,13 +36,14 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
 
   async checkWebpack5Builder(packageJson: PackageJsonWithDepsAndDevDeps) {
     const { mainConfig, version: storybookVersion } = getStorybookInfo(packageJson);
+
     const storybookCoerced = semver.coerce(storybookVersion).version;
     if (!storybookCoerced) {
       logger.warn(`Unable to determine storybook version, skipping webpack5 fix.`);
       return null;
     }
 
-    if (semver.lte(storybookCoerced, '6.3.0')) {
+    if (semver.lt(storybookCoerced, '6.3.0')) {
       logger.warn(
         'Detected SB 6.3 or below, please upgrade storybook if you want to use webpack5.'
       );
@@ -57,7 +58,6 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
       logger.warn('Unable to find storybook main.js config');
       return null;
     }
-
     const main = await readConfig(mainConfig);
     const builder = main.getFieldValue(['core', 'builder']);
     if (builder && builder !== 'webpack4') {
@@ -77,8 +77,8 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
 
     if (
       !webpackCoerced ||
-      semver.gte(webpackCoerced, '5.0.0') ||
-      semver.lt(webpackCoerced, '6.0.0')
+      semver.lt(webpackCoerced, '5.0.0') ||
+      semver.gte(webpackCoerced, '6.0.0')
     )
       return null;
 

@@ -7,15 +7,19 @@ import { babelParse } from './babelParse';
 
 const logger = console;
 
+const propKey = (p: t.ObjectProperty) => {
+  if (t.isIdentifier(p.key)) return p.key.name;
+  if (t.isStringLiteral(p.key)) return p.key.value;
+  return null;
+};
+
 const _getPath = (path: string[], node: t.Node): t.Node | undefined => {
   if (path.length === 0) {
     return node;
   }
   if (t.isObjectExpression(node)) {
     const [first, ...rest] = path;
-    const field = node.properties.find((p: t.ObjectProperty) => {
-      return t.isIdentifier(p.key) && p.key.name === first;
-    });
+    const field = node.properties.find((p: t.ObjectProperty) => propKey(p) === first);
     if (field) {
       return _getPath(rest, (field as t.ObjectProperty).value);
     }
@@ -60,9 +64,9 @@ const _makeObjectExpression = (path: string[], value: t.Expression): t.Expressio
 
 const _updateExportNode = (path: string[], expr: t.Expression, existing: t.ObjectExpression) => {
   const [first, ...rest] = path;
-  const existingField = existing.properties.find((p: t.ObjectProperty) => {
-    return t.isIdentifier(p.key) && p.key.name === first;
-  }) as t.ObjectProperty;
+  const existingField = existing.properties.find(
+    (p: t.ObjectProperty) => propKey(p) === first
+  ) as t.ObjectProperty;
   if (!existingField) {
     existing.properties.push(
       t.objectProperty(t.identifier(first), _makeObjectExpression(rest, expr))
@@ -125,12 +129,13 @@ export class ConfigFile {
               if (t.isObjectExpression(right)) {
                 self._exportsObject = right;
                 right.properties.forEach((p: t.ObjectProperty) => {
-                  if (t.isIdentifier(p.key)) {
+                  const exportName = propKey(p);
+                  if (exportName) {
                     let exportVal = p.value;
                     if (t.isIdentifier(exportVal)) {
                       exportVal = _findVarInitialization(exportVal.name, parent as t.Program);
                     }
-                    self._exports[p.key.name] = exportVal as t.Expression;
+                    self._exports[exportName] = exportVal as t.Expression;
                   }
                 });
               } else {
