@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Icons, Separator, P } from '@storybook/components';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
+import { CallStates } from '@storybook/instrumenter';
 
-import { CallState, CallStates } from '../../types';
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
 const StyledSubnav = styled.nav(({ theme }) => ({
@@ -24,7 +24,7 @@ export interface SubnavProps {
   hasPrevious: boolean;
   hasNext: boolean;
   storyFileName?: string;
-  status: CallState;
+  status: CallStates;
   onStart: () => void;
   onPrevious: () => void;
   onNext: () => void;

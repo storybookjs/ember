@@ -2,11 +2,11 @@ import React from 'react';
 import { Icons, IconsProps } from '@storybook/components';
 import { styled } from '@storybook/theming';
 
-import { CallState, CallStates } from '../../types';
+import { CallStates } from '@storybook/instrumenter';
 import localTheme from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
-  status: CallState;
+  status: CallStates;
 }
 
 const {

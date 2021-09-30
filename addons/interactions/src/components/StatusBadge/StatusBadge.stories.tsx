@@ -1,5 +1,5 @@
+import { CallStates } from '@storybook/instrumenter';
 import { StatusBadge } from './StatusBadge';
-import { CallStates } from '../../types';
 
 export default {
   title: 'Addons/Interactions/StatusBadge',
