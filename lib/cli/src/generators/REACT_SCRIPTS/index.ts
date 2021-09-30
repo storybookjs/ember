@@ -32,7 +32,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   if (isCra5) extraPackages.push('webpack');
 
   // preset v3 is compat with older versions of CRA, otherwise let version float
-  const extraAddons = [`@storybook/preset-create-react-app${isCra5 ? '' : '@3'}`];
+  const extraAddons = [`@storybook/preset-create-react-app${isCra5 ? '' : ''}`];
 
   await baseGenerator(packageManager, npmOptions, updatedOptions, 'react', {
     extraAddons,
