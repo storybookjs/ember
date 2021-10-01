@@ -519,11 +519,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           if (controller.signal.aborted) return;
         }
 
-        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
-          newPhase: 'completed',
-          storyId: id,
-        });
-        this.channel.emit(Events.STORY_RENDERED, id);
+        await runPhase('completed', () => this.channel.emit(Events.STORY_RENDERED, id));
       } catch (err) {
         renderContextWithoutStoryContext.showException(err);
       }

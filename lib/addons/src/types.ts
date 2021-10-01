@@ -224,7 +224,7 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
   /**
    * Function that is executed after the story is rendered.
    */
-  play?: Function;
+  play?: (context: StoryContext) => Promise<void> | void;
 }
 
 export interface Annotations<Args, StoryFnReturnType>

@@ -178,9 +178,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       : (render as LegacyStoryFn<TFramework>)(mappedContext);
   };
   const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
-
-  // TODO play function on csf needs proper signature
-  const playFunction = storyAnnotations.play as Story<TFramework>['playFunction'];
+  const playFunction = storyAnnotations.play;
 
   return Object.freeze({
     ...contextForEnhancers,
