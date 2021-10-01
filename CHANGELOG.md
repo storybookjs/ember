@@ -1,3 +1,31 @@
+## 6.3.9 (October 1, 2021)
+
+### Maintenance
+
+- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))
+
+## 6.4.0-beta.3 (October 1, 2021)
+
+### Maintenance
+
+- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))
+
+## 6.4.0-beta.2 (October 1, 2021)
+
+### Bug Fixes
+
+- Controls: Hide color control format toggle when no value ([#16186](https://github.com/storybookjs/storybook/pull/16186))
+
+### Dependency Upgrades
+
+- Upgrade boxen to 5.x ([#16190](https://github.com/storybookjs/storybook/pull/16190))
+- Upgrade react-dev-utils to 11.0.4 ([#16196](https://github.com/storybookjs/storybook/pull/16196))
+- Dependencies: Fix ansi-html vulnerability ([#16155](https://github.com/storybookjs/storybook/pull/16155))
+
+### Maintenance
+
+- CLI: Better scope sample page component styles ([#16185](https://github.com/storybookjs/storybook/pull/16185))
+
 ## 6.4.0-beta.1 (September 26, 2021)
 
 ### Features

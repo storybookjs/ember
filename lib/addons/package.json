@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addons",
-  "version": "6.4.0-beta.1",
+  "version": "6.4.0-beta.3",
   "description": "Storybook addons store",
   "keywords": [
     "storybook"
@@ -40,13 +40,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/api": "6.4.0-beta.1",
-    "@storybook/channels": "6.4.0-beta.1",
-    "@storybook/client-logger": "6.4.0-beta.1",
-    "@storybook/core-events": "6.4.0-beta.1",
+    "@storybook/api": "6.4.0-beta.3",
+    "@storybook/channels": "6.4.0-beta.3",
+    "@storybook/client-logger": "6.4.0-beta.3",
+    "@storybook/core-events": "6.4.0-beta.3",
     "@storybook/csf": "0.0.2--canary.6aca495.0",
-    "@storybook/router": "6.4.0-beta.1",
-    "@storybook/theming": "6.4.0-beta.1",
+    "@storybook/router": "6.4.0-beta.3",
+    "@storybook/theming": "6.4.0-beta.3",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "regenerator-runtime": "^0.13.7"
@@ -58,6 +58,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "000a73948b4b91aa6bf84828b42ccdb7064f72bd",
+  "gitHead": "0fc9200599c97a5797c5af886792200cd29e2046",
   "sbmodern": "dist/modern/public_api.js"
 }
