@@ -83,10 +83,10 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
     const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
     const stories = sortedV7.reduce((acc, s) => {
-  // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
-  // exports a `parameters.fileName` which can be different and mess up our `importFn`.
-  // In fact, in Storyshots there is a Jest transformer that does exactly that.
-  // NOTE: this doesn't actually change the story object, just the index.
+      // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
+      // exports a `parameters.fileName` which can be different and mess up our `importFn`.
+      // In fact, in Storyshots there is a Jest transformer that does exactly that.
+      // NOTE: this doesn't actually change the story object, just the index.
       acc[s.id] = this.stories[s.id];
       return acc;
     }, {} as StoryIndex['stories']);
