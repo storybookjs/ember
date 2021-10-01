@@ -21,17 +21,17 @@ const parseValue = (value: string): any => {
 
 export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
   parsed ? (
-    <Node value={value} style={{ color: 'crimson' }} />
+    <Node value={value} style={{ color: '#D43900' }} />
   ) : (
-    <span style={{ color: 'crimson' }}>{value}</span>
+    <span style={{ color: '#D43900' }}>{value}</span>
   );
 
 export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
   if (parsed) {
     if (typeof value === 'string' && value.startsWith('called with')) return <>{value}</>;
-    return <Node value={value} style={{ color: 'green' }} />;
+    return <Node value={value} style={{ color: '#16B242' }} />;
   }
-  return <span style={{ color: 'green' }}>{value}</span>;
+  return <span style={{ color: '#16B242' }}>{value}</span>;
 };
 
 export const MatcherResult = ({ message }: { message: string }) => {

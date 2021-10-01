@@ -17,7 +17,7 @@ const PrefixIcon = styled(Icons)(({ theme }) => ({
 }));
 
 addons.setConfig({
-  theme: themes.light, // { base: 'dark', brandTitle: 'Storybook!' },
+  theme: themes.dark, // { base: 'dark', brandTitle: 'Storybook!' },
   previewTabs: {
     canvas: null,
     'storybook/docs/panel': null,

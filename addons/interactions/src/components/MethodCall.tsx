@@ -1,61 +1,65 @@
 import { Call, CallRef, ElementRef } from '@storybook/instrumenter';
+import { useTheme } from '@storybook/theming';
 import React, { Fragment, ReactElement } from 'react';
 
-// Light theme
-const colors = {
-  base: 'black',
-  nullish: 'slategray',
-  string: 'forestgreen',
-  number: 'mediumblue',
-  boolean: 'crimson',
-  objectkey: 'slategray',
-  instance: 'orangered',
-  function: 'orange',
-  muted: 'darkgray',
+const colorsLight = {
+  base: '#444',
+  nullish: '#7D99AA',
+  string: '#16B242',
+  number: '#5D40D0',
+  boolean: '#f41840',
+  objectkey: '#698394',
+  instance: '#A15C20',
+  function: '#EA7509',
+  muted: '#7D99AA',
   tag: {
-    name: 'purple',
-    suffix: 'darkblue',
+    name: '#6F2CAC',
+    suffix: '#1F99E5',
   },
-  date: 'blueviolet',
+  date: '#459D9C',
   error: {
-    name: 'orangered',
-    message: 'orange',
+    name: '#D43900',
+    message: '#444',
   },
   regex: {
-    source: 'orangered',
-    flags: 'orange',
+    source: '#A15C20',
+    flags: '#EA7509',
   },
-  meta: 'orange',
-  method: 'royalblue',
+  meta: '#EA7509',
+  method: '#0271B6',
 };
 
-// Dark theme
-// const colors = {
-//   base: 'gainsboro',
-//   nullish: 'gray',
-//   string: 'yellowgreen',
-//   number: 'dodgerblue',
-//   boolean: 'hotpink',
-//   objectkey: 'darkgray',
-//   instance: 'tomato',
-//   function: 'gold',
-//   muted: 'darkgray',
-//   tag: {
-//     name: 'cornflowerblue',
-//     suffix: 'skyblue',
-//   },
-//   date: 'mediumslateblue',
-//   error: {
-//     name: 'orangered',
-//     message: 'orange',
-//   },
-//   regex: {
-//     source: 'springgreen',
-//     flags: 'seagreen',
-//   },
-//   meta: 'orange',
-//   method: 'cornflowerblue',
-// };
+const colorsDark = {
+  base: '#eee',
+  nullish: '#aaa',
+  string: '#5FE584',
+  number: '#A0AAFF',
+  boolean: '#EE5A8C',
+  objectkey: '#9CABB5',
+  instance: '#E3B551',
+  function: '#E3B551',
+  muted: '#aaa',
+  tag: {
+    name: '#C691F5',
+    suffix: '#8EB5FF',
+  },
+  date: '#70D4D3',
+  error: {
+    name: '#FF7455',
+    message: '#eee',
+  },
+  regex: {
+    source: '#FAD483',
+    flags: '#E3B551',
+  },
+  meta: '#FAD483',
+  method: '#5EC1FF',
+};
+
+const useThemeColors = () => {
+  const { base } = useTheme();
+  return base === 'dark' ? colorsDark : colorsLight;
+};
 
 const special = /[^A-Z0-9]/i;
 const trimEnd = /[\s.,…]+$/gm;
@@ -133,37 +137,53 @@ export const Node = ({
   }
 };
 
-export const NullNode = (props: object) => (
-  <span style={{ color: colors.nullish }} {...props}>
-    null
-  </span>
-);
+export const NullNode = (props: object) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.nullish }} {...props}>
+      null
+    </span>
+  );
+};
 
-export const UndefinedNode = (props: object) => (
-  <span style={{ color: colors.nullish }} {...props}>
-    undefined
-  </span>
-);
+export const UndefinedNode = (props: object) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.nullish }} {...props}>
+      undefined
+    </span>
+  );
+};
 
-export const StringNode = ({ value, ...props }: { value: string }) => (
-  <span style={{ color: colors.string }} {...props}>
-    {JSON.stringify(ellipsize(value, 50))}
-  </span>
-);
+export const StringNode = ({ value, ...props }: { value: string }) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.string }} {...props}>
+      {JSON.stringify(ellipsize(value, 50))}
+    </span>
+  );
+};
 
-export const NumberNode = ({ value, ...props }: { value: number }) => (
-  <span style={{ color: colors.number }} {...props}>
-    {value}
-  </span>
-);
+export const NumberNode = ({ value, ...props }: { value: number }) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.number }} {...props}>
+      {value}
+    </span>
+  );
+};
 
-export const BooleanNode = ({ value, ...props }: { value: boolean }) => (
-  <span style={{ color: colors.boolean }} {...props}>
-    {String(value)}
-  </span>
-);
+export const BooleanNode = ({ value, ...props }: { value: boolean }) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.boolean }} {...props}>
+      {String(value)}
+    </span>
+  );
+};
 
 export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: boolean }) => {
+  const colors = useThemeColors();
   if (nested) {
     return <span style={{ color: colors.base }}>[…]</span>;
   }
@@ -180,6 +200,7 @@ export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: bo
 };
 
 export const ObjectNode = ({ value, nested = false }: { value: object; nested?: boolean }) => {
+  const colors = useThemeColors();
   if (nested) {
     return <span style={{ color: colors.base }}>{'{…}'}</span>;
   }
@@ -212,17 +233,20 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
   );
 };
 
-export const ClassNode = ({ value }: { value: Record<string, any> }) => (
-  <span style={{ color: colors.instance }}>{value.constructor.name}</span>
-);
+export const ClassNode = ({ value }: { value: Record<string, any> }) => {
+  const colors = useThemeColors();
+  return <span style={{ color: colors.instance }}>{value.constructor.name}</span>;
+};
 
-export const FunctionNode = ({ value }: { value: Function }) => (
-  <span style={{ color: colors.function }}>{value.name || 'anonymous'}</span>
-);
+export const FunctionNode = ({ value }: { value: Function }) => {
+  const colors = useThemeColors();
+  return <span style={{ color: colors.function }}>{value.name || 'anonymous'}</span>;
+};
 
 export const ElementNode = ({ value }: { value: ElementRef['__element__'] }) => {
   const { prefix, localName, id, classNames = [], innerText } = value;
   const name = prefix ? `${prefix}:${localName}` : localName;
+  const colors = useThemeColors();
   return (
     <span style={{ wordBreak: 'keep-all' }}>
       <span key={`${name}_lt`} style={{ color: colors.muted }}>
@@ -257,39 +281,47 @@ export const ElementNode = ({ value }: { value: ElementRef['__element__'] }) => 
 
 export const DateNode = ({ value }: { value: Date }) => {
   const [date, time, ms] = value.toISOString().split(/[T.Z]/);
+  const colors = useThemeColors();
   return (
     <span style={{ whiteSpace: 'nowrap', color: colors.date }}>
       {date}
-      <span style={{ opacity: 0.3 }}>T</span>
-      {time === '00:00:00' ? <span style={{ opacity: 0.3 }}>{time}</span> : time}
-      {ms === '000' ? <span style={{ opacity: 0.3 }}>.{ms}</span> : `.${ms}`}
-      <span style={{ opacity: 0.3 }}>Z</span>
+      <span style={{ opacity: 0.7 }}>T</span>
+      {time === '00:00:00' ? <span style={{ opacity: 0.7 }}>{time}</span> : time}
+      {ms === '000' ? <span style={{ opacity: 0.7 }}>.{ms}</span> : `.${ms}`}
+      <span style={{ opacity: 0.7 }}>Z</span>
     </span>
   );
 };
 
-export const ErrorNode = ({ value }: { value: Error }) => (
-  <span style={{ color: colors.error.name }}>
-    {value.name}
-    {value.message && ': '}
-    {value.message && (
-      <span
-        style={{ color: colors.error.message }}
-        title={value.message.length > 50 ? value.message : ''}
-      >
-        {ellipsize(value.message, 50)}
-      </span>
-    )}
-  </span>
-);
+export const ErrorNode = ({ value }: { value: Error }) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ color: colors.error.name }}>
+      {value.name}
+      {value.message && ': '}
+      {value.message && (
+        <span
+          style={{ color: colors.error.message }}
+          title={value.message.length > 50 ? value.message : ''}
+        >
+          {ellipsize(value.message, 50)}
+        </span>
+      )}
+    </span>
+  );
+};
 
-export const RegExpNode = ({ value }: { value: RegExp }) => (
-  <span style={{ whiteSpace: 'nowrap', color: colors.regex.flags }}>
-    /<span style={{ color: colors.regex.source }}>{value.source}</span>/{value.flags}
-  </span>
-);
+export const RegExpNode = ({ value }: { value: RegExp }) => {
+  const colors = useThemeColors();
+  return (
+    <span style={{ whiteSpace: 'nowrap', color: colors.regex.flags }}>
+      /<span style={{ color: colors.regex.source }}>{value.source}</span>/{value.flags}
+    </span>
+  );
+};
 
 export const SymbolNode = ({ value }: { value: symbol }) => {
+  const colors = useThemeColors();
   return (
     <span style={{ whiteSpace: 'nowrap', color: colors.instance }}>
       Symbol(
@@ -302,6 +334,7 @@ export const SymbolNode = ({ value }: { value: symbol }) => {
 };
 
 export const OtherNode = ({ value }: { value: any }) => {
+  const colors = useThemeColors();
   return <span style={{ color: colors.meta }}>{stringify(value)}</span>;
 };
 
@@ -314,6 +347,8 @@ export const MethodCall = ({
 }) => {
   // Call might be undefined during initial render, can be safely ignored.
   if (!call) return null;
+
+  const colors = useThemeColors();
 
   const path = call.path.flatMap((elem, index) => {
     // eslint-disable-next-line no-underscore-dangle
