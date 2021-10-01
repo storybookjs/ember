@@ -1,5 +1,5 @@
 import global from 'global';
-import Events from '@storybook/core-events';
+import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import * as ReactDOM from 'react-dom';
 import { logger } from '@storybook/client-logger';
 import merge from 'lodash/merge';
@@ -423,7 +423,7 @@ describe('PreviewWeb', () => {
         expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
       });
 
-      it('executes runPlayFunction', async () => {
+      it('executes playFunction', async () => {
         document.location.search = '?id=component-one--a';
         await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
 
@@ -439,6 +439,23 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
+      it('does not show error display if the render function throws IGNORED_EXCEPTION', async () => {
+        document.location.search = '?id=component-one--a';
+        projectAnnotations.renderToDOM.mockImplementationOnce(() => {
+          throw IGNORED_EXCEPTION;
+        });
+
+        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
+        await preview.initialize({ getProjectAnnotations });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(
+          Events.STORY_THREW_EXCEPTION,
+          IGNORED_EXCEPTION
+        );
+        expect(preview.view.showErrorDisplay).not.toHaveBeenCalled();
       });
     });
 
@@ -503,6 +520,7 @@ describe('PreviewWeb', () => {
         const [reactDomGate, openReactDomGate] = createGate();
 
         let rendered;
+        // @ts-ignore
         ReactDOM.render.mockImplementationOnce((docsElement, element, cb) => {
           rendered = docsElement.props.context.registerRenderingStory();
           openReactDomGate();
@@ -804,7 +822,7 @@ describe('PreviewWeb', () => {
           undefined // this is coming from view.prepareForStory, not super important
         );
 
-        // Now let the runPlayFunction call resolve
+        // Now let the playFunction call resolve
         openGate();
       });
     });
@@ -1178,7 +1196,7 @@ describe('PreviewWeb', () => {
         expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
       });
 
-      it('executes runPlayFunction', async () => {
+      it('executes playFunction', async () => {
         document.location.search = '?id=component-one--a';
         await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
         await waitForRender();
@@ -1304,7 +1322,7 @@ describe('PreviewWeb', () => {
           expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
         });
 
-        it('stops initial story after runPlayFunction if running', async () => {
+        it('stops initial story after playFunction if running', async () => {
           const [gate, openGate] = createGate();
           componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
@@ -1348,7 +1366,7 @@ describe('PreviewWeb', () => {
             undefined // this is coming from view.prepareForStory, not super important
           );
 
-          // Now let the runPlayFunction call resolve
+          // Now let the playFunction call resolve
           openGate();
 
           // Final story rendered is not emitted for the first story
@@ -1663,7 +1681,7 @@ describe('PreviewWeb', () => {
         expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
       });
 
-      it('executes runPlayFunction', async () => {
+      it('executes playFunction', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
         await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
         await waitForRender();
@@ -1893,7 +1911,7 @@ describe('PreviewWeb', () => {
         expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
       });
 
-      it('executes runPlayFunction', async () => {
+      it('executes playFunction', async () => {
         document.location.search = '?id=component-one--a';
         const preview = new PreviewWeb({ importFn, fetchStoryIndex });
         await preview.initialize({ getProjectAnnotations });

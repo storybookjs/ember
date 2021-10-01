@@ -442,16 +442,16 @@ describe('prepareStory', () => {
     });
   });
 
-  describe('runPlayFunction', () => {
+  describe('playFunction', () => {
     it('awaits play if defined', async () => {
       const inner = jest.fn();
       const play = jest.fn(async () => {
         await new Promise((r) => setTimeout(r, 0)); // Ensure this puts an async boundary in
         inner();
       });
-      const { runPlayFunction } = prepareStory({ id, name, play }, { id, title }, { render });
+      const { playFunction } = prepareStory({ id, name, play }, { id, title }, { render });
 
-      await runPlayFunction();
+      await playFunction({} as StoryContext<AnyFramework>);
       expect(play).toHaveBeenCalled();
       expect(inner).toHaveBeenCalled();
     });
