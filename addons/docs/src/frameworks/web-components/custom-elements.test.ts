@@ -36,7 +36,6 @@ describe('extractArgTypes', () => {
 
       expect(item).toEqual({
         name: 'sb-header:createAccount',
-        action: { name: 'sb-header:createAccount' },
         required: false,
         description: 'Event send when user clicks on create account button',
         type: { name: 'void' },

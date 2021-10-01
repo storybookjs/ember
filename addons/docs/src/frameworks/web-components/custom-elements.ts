@@ -76,7 +76,6 @@ function mapItem(item: TagItem, category: string): ArgType {
 
   return {
     name: item.name,
-    action: { name: item.name },
     required: false,
     description: item.description,
     type,

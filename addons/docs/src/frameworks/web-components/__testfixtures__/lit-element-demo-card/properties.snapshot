@@ -3,9 +3,6 @@
 exports[`web-components component properties lit-element-demo-card 1`] = `
 Object {
   "--demo-wc-card-back-color": Object {
-    "action": Object {
-      "name": "--demo-wc-card-back-color",
-    },
     "description": "Font color for back",
     "name": "--demo-wc-card-back-color",
     "required": false,
@@ -23,9 +20,6 @@ Object {
     },
   },
   "--demo-wc-card-front-color": Object {
-    "action": Object {
-      "name": "--demo-wc-card-front-color",
-    },
     "description": "Font color for front",
     "name": "--demo-wc-card-front-color",
     "required": false,
@@ -43,9 +37,6 @@ Object {
     },
   },
   "--demo-wc-card-header-font-size": Object {
-    "action": Object {
-      "name": "--demo-wc-card-header-font-size",
-    },
     "description": "Header font size",
     "name": "--demo-wc-card-header-font-size",
     "required": false,
@@ -63,9 +54,6 @@ Object {
     },
   },
   "back": Object {
-    "action": Object {
-      "name": "back",
-    },
     "description": "Back of the card",
     "name": "back",
     "required": false,
@@ -83,9 +71,6 @@ Object {
     },
   },
   "back-side": Object {
-    "action": Object {
-      "name": "back-side",
-    },
     "description": "Indicates that the back of the card is shown",
     "name": "back-side",
     "required": false,
@@ -103,9 +88,6 @@ Object {
     },
   },
   "backSide": Object {
-    "action": Object {
-      "name": "backSide",
-    },
     "description": "Indicates that the back of the card is shown",
     "name": "backSide",
     "required": false,
@@ -123,9 +105,6 @@ Object {
     },
   },
   "front": Object {
-    "action": Object {
-      "name": "front",
-    },
     "description": "Front of the card",
     "name": "front",
     "required": false,
@@ -143,9 +122,6 @@ Object {
     },
   },
   "header": Object {
-    "action": Object {
-      "name": "header",
-    },
     "description": "Header message",
     "name": "header",
     "required": false,
@@ -172,9 +148,6 @@ Object {
     },
   },
   "rows": Object {
-    "action": Object {
-      "name": "rows",
-    },
     "description": "Data rows",
     "name": "rows",
     "required": false,
@@ -192,9 +165,6 @@ Object {
     },
   },
   "side-changed": Object {
-    "action": Object {
-      "name": "side-changed",
-    },
     "description": "Fires whenever it switches between front/back",
     "name": "side-changed",
     "required": false,
