@@ -447,8 +447,8 @@ describe('PreviewWeb', () => {
           throw IGNORED_EXCEPTION;
         });
 
-        const preview = new PreviewWeb({ getProjectAnnotations, importFn, fetchStoryIndex });
-        await preview.initialize();
+        const preview = new PreviewWeb({ importFn, fetchStoryIndex });
+        await preview.initialize({ getProjectAnnotations });
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(
@@ -520,6 +520,7 @@ describe('PreviewWeb', () => {
         const [reactDomGate, openReactDomGate] = createGate();
 
         let rendered;
+        // @ts-ignore
         ReactDOM.render.mockImplementationOnce((docsElement, element, cb) => {
           rendered = docsElement.props.context.registerRenderingStory();
           openReactDomGate();
