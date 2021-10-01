@@ -9,9 +9,9 @@ const { action } = instrument({ action: fn }, { retain: true });
 const channel = addons.getChannel();
 const spies: any[] = [];
 
-channel.on(FORCE_REMOUNT, () => spies.forEach((mock) => mock?.mockReset?.()));
+channel.on(FORCE_REMOUNT, () => spies.forEach((mock) => mock?.mockClear?.()));
 channel.on(STORY_RENDER_PHASE_CHANGED, ({ newPhase }) => {
-  if (newPhase === 'loading') spies.forEach((mock) => mock?.mockReset?.());
+  if (newPhase === 'loading') spies.forEach((mock) => mock?.mockClear?.());
 });
 
 const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ initialArgs }) => {
