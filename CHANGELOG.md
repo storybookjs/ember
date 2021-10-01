@@ -1,3 +1,9 @@
+## 6.3.9 (October 1, 2021)
+
+### Maintenance
+
+- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))
+
 ## 6.4.0-beta.3 (October 1, 2021)
 
 ### Maintenance
