@@ -1500,7 +1500,7 @@ Solution:
 ```javascript
 getStorybookUI({
   ...
-  asyncStorage: require('@react-native-community/async-storage').default || require('react-native').AsyncStorage || null
+  asyncStorage: require('@react-native-async-storage/async-storage').default || require('react-native').AsyncStorage || null
 });
 ```
 
