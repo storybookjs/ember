@@ -1,4 +1,5 @@
 import React from 'react';
+import { typography } from '@storybook/theming';
 import { Node } from './MethodCall';
 
 const getParams = (line: string, fromIndex = 0): string => {
@@ -36,7 +37,7 @@ export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) =>
 export const MatcherResult = ({ message }: { message: string }) => {
   const lines = message.split('\n');
   return (
-    <pre style={{ margin: 0, padding: '8px 10px 8px 30px' }}>
+    <pre style={{ margin: 0, padding: '8px 10px 8px 30px', fontFamily: typography.fonts.base }}>
       {lines.flatMap((line: string, index: number) => {
         if (line.startsWith('expect(')) {
           const received = getParams(line, 7);

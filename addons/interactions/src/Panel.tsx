@@ -10,7 +10,7 @@ import {
 } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
-import { styled } from '@storybook/theming';
+import { styled, typography } from '@storybook/theming';
 
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
@@ -44,8 +44,8 @@ const Interaction = ({
     flexDirection: 'column',
     background: call.state === CallStates.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
     borderBottom: `1px solid ${theme.color.mediumlight}`,
-    fontFamily: 'Monaco, monospace',
-    fontSize: 12,
+    fontFamily: typography.fonts.base,
+    fontSize: 13,
   }));
 
   const RowLabel = styled.button(({ theme, disabled }) => ({
@@ -81,7 +81,7 @@ const Interaction = ({
     <RowContainer>
       <RowLabel onClick={onClick} disabled={isDisabled}>
         <StatusIcon status={call.state} />
-        <div style={{ marginLeft: 5 }}>
+        <div style={{ marginLeft: 6, marginBottom: 1 }}>
           <MethodCall call={call} callsById={callsById} />
         </div>
       </RowLabel>

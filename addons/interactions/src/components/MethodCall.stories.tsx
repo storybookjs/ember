@@ -7,7 +7,7 @@ export default {
   component: MethodCall,
   decorators: [
     (Story: any) => (
-      <span style={{ fontFamily: 'Monaco, monospace', fontSize: 12 }}>
+      <span style={{ fontSize: 13 }}>
         <Story />
       </span>
     ),
