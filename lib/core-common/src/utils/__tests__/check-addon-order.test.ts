@@ -13,10 +13,13 @@ const essentialAddons = [
   'outline',
 ];
 
-const pkgName = (entry: AddonEntry): string =>
-  typeof entry === 'string' && !entry.includes('addon')
-    ? `@storybook/addon-${entry}`
-    : (entry as OptionsEntry).name;
+const pkgName = (entry: AddonEntry): string => {
+  if (typeof entry === 'string') {
+    if (entry.includes('node_modules')) return entry;
+    return `@storybook/addon-${entry}`;
+  }
+  return (entry as OptionsEntry).name;
+};
 
 const fromName = (name: string): AddonInfo => ({
   name: pkgName(name),
