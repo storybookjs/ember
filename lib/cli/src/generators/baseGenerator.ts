@@ -63,6 +63,8 @@ const builderDependencies = (builder: Builder) => {
   }
 };
 
+const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
+
 export async function baseGenerator(
   packageManager: JsPackageManager,
   npmOptions: NpmOptions,
@@ -127,7 +129,7 @@ export async function baseGenerator(
         }
       : extraMain;
   configure(framework, {
-    addons: [...addons, ...extraAddons],
+    addons: [...addons, ...stripVersions(extraAddons)],
     extensions,
     commonJs: options.commonJs,
     ...mainOptions,
