@@ -131,9 +131,10 @@ export class Instrumenter {
         resetState({ isDebugging: this.state.isDebugging });
       }
       if (newPhase === 'completed') {
-        this.setState({ isDebugging: false });
+        const { forwardedException } = this.state;
+        this.setState({ isDebugging: false, forwardedException: undefined });
         // Rethrow any unhandled forwarded exception so it doesn't go unnoticed.
-        if (this.state.forwardedException) throw this.state.forwardedException;
+        if (forwardedException) throw forwardedException;
       }
     });
 

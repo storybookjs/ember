@@ -4,7 +4,7 @@ import { addons, mockChannel } from '@storybook/addons';
 import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import global from 'global';
 
-import { EVENTS, instrument, Instrumenter } from './instrumenter';
+import { EVENTS, Instrumenter, Options } from './instrumenter';
 
 const callSpy = jest.fn();
 const syncSpy = jest.fn();
@@ -24,12 +24,16 @@ delete global.window.location;
 global.window.location = { reload: jest.fn() };
 global.window.HTMLElement = HTMLElement;
 
+let instrumenter: Instrumenter;
+const instrument = <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) =>
+  instrumenter.instrument(obj, options);
+
 beforeEach(() => {
   jest.useRealTimers();
   callSpy.mockClear();
   syncSpy.mockClear();
   forceRemountSpy.mockClear();
-  global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
+  instrumenter = new Instrumenter();
   addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'loading' });
 });
 
@@ -134,7 +138,7 @@ describe('Instrumenter', () => {
     expect(callSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
         method: 'fn2',
-        args: [{ __callId__: callSpy.mock.calls[0][0].id }],
+        args: [{ __callId__: callSpy.mock.calls[0][0].id, retain: false }],
       })
     );
   });
@@ -167,11 +171,11 @@ describe('Instrumenter', () => {
           /* call 3 */ 'foo',
           /* call 4 */ 1,
           /* call 5 */ BigInt(1), // eslint-disable-line no-undef
-          { __callId__: callSpy.mock.calls[6][0].id },
-          { __callId__: callSpy.mock.calls[7][0].id },
-          { __callId__: callSpy.mock.calls[8][0].id },
-          { __callId__: callSpy.mock.calls[9][0].id },
-          { __callId__: callSpy.mock.calls[10][0].id },
+          { __callId__: callSpy.mock.calls[6][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[7][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[8][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[9][0].id, retain: false },
+          { __callId__: callSpy.mock.calls[10][0].id, retain: false },
         ],
       })
     );
@@ -273,6 +277,9 @@ describe('Instrumenter', () => {
     });
     expect(fn).not.toThrow();
     expect(fn()).toEqual(new Error('Boom!'));
+    expect(() =>
+      addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'completed' })
+    ).toThrow(new Error('Boom!'));
   });
 
   it('forwards nested exceptions', () => {
@@ -283,6 +290,9 @@ describe('Instrumenter', () => {
       },
     });
     expect(fn1(fn2())).toEqual(new Error('Boom!'));
+    expect(() =>
+      addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'completed' })
+    ).toThrow(new Error('Boom!'));
   });
 
   it("re-throws anything that isn't an error", () => {
@@ -302,7 +312,6 @@ describe('Instrumenter', () => {
   });
 
   it('resets preview state when (re)loading story', () => {
-    const instrumenter = global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
     const initialState = instrumenter.state;
     instrumenter.state = {
       isDebugging: false,
@@ -311,12 +320,12 @@ describe('Instrumenter', () => {
       shadowCalls: [{ id: '0-foo' }, { id: '1-foo' }],
       callRefsByResult: new Map([[{}, 'ref']]),
       chainedCallIds: new Set(['0-foo']),
-      parentCallId: '0-foo',
+      parentCall: { id: '0-foo' },
       playUntil: '1-foo',
       resolvers: { ref: () => {} },
       syncTimeout: 123,
       forwardedException: new Error('Oops'),
-    };
+    } as any;
     addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'loading' });
     expect(instrumenter.state).toStrictEqual(initialState);
   });
