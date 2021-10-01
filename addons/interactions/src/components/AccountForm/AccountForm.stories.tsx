@@ -20,7 +20,7 @@ export const Demo = (args: any) => (
   </button>
 );
 Demo.play = async ({ args, canvasElement }: any) => {
-  await userEvent.click(within(canvasElement).getByText('Click'));
+  await userEvent.click(within(canvasElement).getByRole('button'));
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
 };
 
