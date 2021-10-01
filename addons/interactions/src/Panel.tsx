@@ -86,6 +86,7 @@ const Interaction = ({
         </div>
       </RowLabel>
       {call.state === CallStates.ERROR &&
+        call.exception &&
         (call.exception.message.startsWith('expect(') ? (
           <MatcherResult {...call.exception} />
         ) : (

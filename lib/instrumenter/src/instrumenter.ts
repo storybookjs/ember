@@ -28,6 +28,7 @@ export interface Options {
 }
 
 export interface State {
+  renderPhase: 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
   isDebugging: boolean;
   cursor: number;
   calls: Call[];
@@ -44,6 +45,10 @@ export interface State {
 export type PatchedObj<TObj> = {
   [Property in keyof TObj]: TObj[Property] & { _original: PatchedObj<TObj> };
 };
+
+const alreadyCompletedException = new Error(
+  `This function ran after the play function completed. Did you forget to \`await\` it?`
+);
 
 const isObject = (o: unknown) => Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown) => Object.prototype.toString.call(o) === '[object Module]';
@@ -65,6 +70,7 @@ const construct = (obj: any) => {
 };
 
 const getInitialState = (): State => ({
+  renderPhase: undefined,
   isDebugging: false,
   cursor: 0,
   calls: [],
@@ -120,6 +126,7 @@ export class Instrumenter {
     // Invocation of the play function is guaranteed to always be preceded by the 'rendering' phase.
     this.channel.on(STORY_RENDER_PHASE_CHANGED, ({ storyId, newPhase }) => {
       // TODO keep state per story
+      this.setState({ renderPhase: newPhase });
       if (newPhase === 'loading') {
         resetState({ isDebugging: this.state.isDebugging });
       }
@@ -317,7 +324,7 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call, options: Options) {
-    const { parentCall, callRefsByResult, forwardedException } = this.state;
+    const { parentCall, callRefsByResult, forwardedException, renderPhase } = this.state;
     const callWithParent = { ...call, parentId: parentCall?.id };
 
     const info: Call = {
@@ -362,7 +369,7 @@ export class Instrumenter {
 
         // We need to throw to break out of the play function, but we don't want to trigger a redbox
         // so we throw an ignoredException, which is caught and silently ignored by Storybook.
-        if (call.interceptable) {
+        if (call.interceptable && e !== alreadyCompletedException) {
           throw IGNORED_EXCEPTION;
         }
 
@@ -379,6 +386,10 @@ export class Instrumenter {
       if (forwardedException) {
         this.setState({ forwardedException: undefined });
         throw forwardedException;
+      }
+
+      if (renderPhase === 'completed' && !call.retain) {
+        throw alreadyCompletedException;
       }
 
       const finalArgs = options.getArgs ? options.getArgs(callWithParent, this.state) : call.args;
