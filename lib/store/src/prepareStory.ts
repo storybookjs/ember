@@ -140,7 +140,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        initialArgs: initialArgsBeforeEnhancers,
+        initialArgs: accumulatedArgs,
       }),
     }),
     initialArgsBeforeEnhancers
