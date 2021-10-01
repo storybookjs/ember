@@ -1,114 +1,58 @@
-# Storybook Addon Kit
+# Storybook Addon Interactions
 
-Simplify the creation of Storybook addons
+Storybook Addon Interactions enables visual debugging of interactions and tests in [Storybook](https://storybook.js.org).
 
-- 📝 Live-editing in development
-- ⚛️ React/JSX support
-- 📦 Transpiling and bundling with Babel
-- 🏷 Plugin metadata
-- 🚢 Release management with [Auto](https://github.com/intuit/auto)
-- 🧺 Boilerplate and sample code
-- 🛄 ESM support
-- 🛂 TypeScript by default with option to eject to JS
+![Screenshot](https://user-images.githubusercontent.com/321738/135628189-3d101cba-50bc-49dc-bba0-776586fedaf3.png)
 
-## Getting Started
+## Installation
 
-Click the **Use this template** button to get started.
-
-![](https://user-images.githubusercontent.com/321738/125058439-8d9ef880-e0aa-11eb-9211-e6d7be812959.gif)
-
-Clone your repository and install dependencies.
+Install this addon by adding the `@storybook/addon-interactions` dependency:
 
 ```sh
-yarn
+yarn add -D @storybook/addon-interactions @storybook/jest @storybook/testing-library
 ```
 
-### Development scripts
+within `.storybook/main.js`:
 
-- `yarn start` runs babel in watch mode and starts Storybook
-- `yarn build` build and package your addon code
-
-### Switch from TypeScript to JavaScript
-
-Don't want to use TypeScript? We offer a handy eject command: `yarn eject-ts`
-
-This will convert all code to JS. It is a destructive process, so we recommended running this before you start writing any code.
-
-## What's included?
-
-![Demo](https://user-images.githubusercontent.com/42671/107857205-e7044380-6dfa-11eb-8718-ad02e3ba1a3f.gif)
-
-The addon code lives in `src`. It demonstrates all core addon related concepts. The three [UI paradigms](https://storybook.js.org/docs/react/addons/addon-types#ui-based-addons)
-
-- `src/Tool.js`
-- `src/Panel.js`
-- `src/Tab.js`
-
-Which, along with the addon itself, are registered in `src/preset/manager.js`.
-
-Managing State and interacting with a story:
-
-- `src/withGlobals.js` & `src/Tool.js` demonstrates how to use `useGlobals` to manage global state and modify the contents of a Story.
-- `src/withRoundTrip.js` & `src/Panel.js` demonstrates two-way communication using channels.
-- `src/Tab.js` demonstrates how to use `useParameter` to access the current story's parameters.
-
-Your addon might use one or more of these patterns. Feel free to delete unused code. Update `src/preset/manager.js` and `src/preset/preview.js` accordingly.
-
-Lastly, configure you addon name in `src/constants.js`.
-
-### Metadata
-
-Storybook addons are listed in the [catalog](https://storybook.js.org/addons) and distributed via npm. The catalog is populated by querying npm's registry for Storybook-specific metadata in `package.json`. This project has been configured with sample data. Learn more about available options in the [Addon metadata docs](https://storybook.js.org/docs/react/addons/addon-catalog#addon-metadata).
-
-## Release Management
-
-### Setup
-
-This project is configured to use [auto](https://github.com/intuit/auto) for release management. It generates a changelog and pushes it to both GitHub and npm. Therefore, you need to configure access to both:
-
-- [`NPM_TOKEN`](https://docs.npmjs.com/creating-and-viewing-access-tokens#creating-access-tokens) Create a token with both _Read and Publish_ permissions.
-- [`GH_TOKEN`](https://github.com/settings/tokens) Create a token with the `repo` scope.
-
-Then open your `package.json` and edit the following fields:
-
-- `name`
-- `author`
-- `repository`
-
-#### Local
-
-To use `auto` locally create a `.env` file at the root of your project and add your tokens to it:
-
-```bash
-GH_TOKEN=<value you just got from GitHub>
-NPM_TOKEN=<value you just got from npm>
+```js
+module.exports = {
+  addons: ['@storybook/addon-interactions'],
+};
 ```
 
-Lastly, **create labels on GitHub**. You’ll use these labels in the future when making changes to the package.
+Note that `@storybook/addon-interactions` must be listed **after** `@storybook/addon-actions` or `@storybook/addon-essentials`.
 
-```bash
-npx auto create-labels
+## Usage
+
+Interactions relies on "instrumented" versions of Jest and Testing Library, that you import from `@storybook/jest` and
+`@storybook/testing-library` instead of their original package. You can then use these libraries in your `play` function.
+
+```js
+import { expect } from '@storybook/jest';
+import { within, userEvent } from '@storybook/testing-library';
+
+export default {
+  title: 'Button',
+  argTypes: {
+    onClick: { action: true },
+  },
+};
+
+export const Demo = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).toHaveBeenCalled();
+  }
+}
 ```
 
-If you check on GitHub, you’ll now see a set of labels that `auto` would like you to use. Use these to tag future pull requests.
+In order to enable step-through debugging, calls to `userEvent.*`, `fireEvent`, `findBy*`, `waitFor*` and `expect` have to
+be `await`-ed. While debugging, these functions return a Promise that won't resolve until you continue to the next step.
 
-#### GitHub Actions
+While you can technically use `screen`, it's recommended to use `within(canvasElement)`. Besides giving you a better error
+message when a DOM element can't be found, it will also ensure your play function is compatible with Storybook Docs.
 
-This template comes with GitHub actions already set up to publish your addon anytime someone pushes to your repository.
-
-Go to `Settings > Secrets`, click `New repository secret`, and add your `NPM_TOKEN`.
-
-### Creating a releasing
-
-To create a release locally you can run the following command, otherwise the GitHub action will make the release for you.
-
-```sh
-yarn release
-```
-
-That will:
-
-- Build and package the addon code
-- Bump the version
-- Push a release to GitHub and npm
-- Push a changelog to GitHub
+Any `args` that are marked as an `action` (typically via `argTypes` or `argTypesRegex`) will be automatically wrapped in
+a [Jest mock function](https://jestjs.io/docs/jest-object#jestfnimplementation) so you can assert invocations. See
+[addon-actions](https://storybook.js.org/docs/react/essentials/actions) for how to setup actions.
