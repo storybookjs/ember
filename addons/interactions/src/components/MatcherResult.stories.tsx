@@ -20,7 +20,7 @@ export const Expected = {
       expect(jest.fn()).lastCalledWith(...expected)
 
       Expected: {"email": "michael@chromatic.com", "password": "testpasswordthatwontfail"}
-      
+
       Number of calls: 0
     `,
   },
@@ -34,7 +34,7 @@ export const ExpectedReceived = {
       Expected: called with 0 arguments
       Received: {"email": "michael@chromatic.com", "password": "testpasswordthatwontfail"}
 
-      Number of calls: 1 
+      Number of calls: 1
     `,
   },
 };
@@ -57,13 +57,13 @@ export const Diff = {
 
       - Expected
       + Received
-      
+
         Object {
       -   "email": "michael@chromatic.com",
       +   "email": "michael@chromaui.com",
           "password": "testpasswordthatwontfail",
         },
-      
+
       Number of calls: 1
     `,
   },
