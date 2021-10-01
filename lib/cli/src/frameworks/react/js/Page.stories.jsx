@@ -12,6 +12,7 @@ const Template = (args) => <Page {...args} />;
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {
+  // More on composing args: https://storybook.js.org/docs/react/writing-stories/args#args-composition
   ...HeaderStories.LoggedIn.args,
 };
 

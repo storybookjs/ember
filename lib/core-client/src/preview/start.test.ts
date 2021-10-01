@@ -29,6 +29,15 @@ jest.mock('global', () => ({
 jest.mock('@storybook/channel-postmessage', () => () => mockChannel);
 jest.mock('react-dom');
 
+// for the auto-title test
+jest.mock('@storybook/store', () => {
+  const actualStore = jest.requireActual('@storybook/store');
+  return {
+    ...actualStore,
+    autoTitle: () => 'auto-title',
+  };
+});
+
 beforeEach(() => {
   mockChannel.emit.mockClear();
   // Preview doesn't clean itself up as it isn't designed to ever be stopped :shrug:
@@ -1113,6 +1122,55 @@ describe('start', () => {
           ],
         },
       ]);
+    });
+  });
+
+  describe('auto-title', () => {
+    const componentDExports = {
+      default: {
+        component: 'Component D',
+      },
+      StoryOne: jest.fn(),
+    };
+    it('loads and renders the first story correctly', async () => {
+      const render = jest.fn();
+
+      const { configure } = start(render);
+      configure('test', () => [componentDExports]);
+
+      await waitForEvents([Events.SET_STORIES]);
+      expect(
+        mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
+      ).toMatchInlineSnapshot(`
+        Object {
+          "globalParameters": Object {},
+          "globals": Object {},
+          "kindParameters": Object {
+            "auto-title": Object {},
+          },
+          "stories": Array [
+            Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": "Component D",
+              "componentId": "auto-title",
+              "id": "auto-title--story-one",
+              "initialArgs": Object {},
+              "kind": "auto-title",
+              "name": "Story One",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "story": "Story One",
+              "subcomponents": undefined,
+              "title": "auto-title",
+            },
+          ],
+          "v": 2,
+        }
+      `);
     });
   });
 });

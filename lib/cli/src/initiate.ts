@@ -50,6 +50,7 @@ type CommandOptions = {
   yes?: boolean;
   builder?: Builder;
   linkable?: boolean;
+  commonJs?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -72,6 +73,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
     language,
     builder: options.builder || CoreBuilder.Webpack4,
     linkable: !!options.linkable,
+    commonJs: options.commonJs,
   };
 
   const end = () => {
@@ -315,10 +317,13 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
     : 'Detecting project type';
   const done = commandLog(infoText);
 
+  const packageJson = readPackageJson();
+  const isEsm = packageJson && packageJson.type === 'module';
+
   try {
     if (projectTypeProvided) {
       if (installableProjectTypes.includes(options.type)) {
-        const storybookInstalled = isStorybookInstalled(readPackageJson(), options.force);
+        const storybookInstalled = isStorybookInstalled(packageJson, options.force);
         projectType = storybookInstalled
           ? ProjectType.ALREADY_HAS_STORYBOOK
           : options.type.toUpperCase();
@@ -346,5 +351,8 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
     cleanOptions.storyFormat = undefined;
   }
 
-  return installStorybook(projectType, cleanOptions);
+  return installStorybook(projectType, {
+    ...cleanOptions,
+    ...(isEsm ? { commonJs: true } : undefined),
+  });
 }

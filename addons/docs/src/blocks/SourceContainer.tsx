@@ -21,11 +21,14 @@ export const SourceContainer: FC<{}> = ({ children }) => {
   useEffect(() => {
     const handleSnippetRendered = (id: StoryId, newItem: SourceItem) => {
       if (newItem !== sources[id]) {
-        const newSources = { ...sources, [id]: newItem };
+        setSources((current) => {
+          const newSources = { ...current, [id]: newItem };
 
-        if (!deepEqual(sources, newSources)) {
-          setSources(newSources);
-        }
+          if (!deepEqual(current, newSources)) {
+            return newSources;
+          }
+          return current;
+        });
       }
     };
 

@@ -322,6 +322,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousSelection = selection;
     this.previousStory = story;
 
+    const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
+    if (FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.STORY_PREPARED, {
+        id: story.id,
+        parameters,
+        initialArgs,
+        argTypes,
+        args,
+      });
+    }
+
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
       await this.renderDocs({ story });
     } else {

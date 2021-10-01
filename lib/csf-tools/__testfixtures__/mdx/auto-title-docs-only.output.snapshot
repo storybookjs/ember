@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`docs-mdx-compiler-plugin csf3 auto-title-docs-only.mdx 1`] = `
+"/* @jsxRuntime classic */
+/* @jsx mdx */
+import { assertIsFn, AddContext } from '@storybook/addon-docs';
+
+const layoutProps = {};
+const MDXLayout = 'wrapper';
+function MDXContent({ components, ...props }) {
+  return (
+    <MDXLayout {...layoutProps} {...props} components={components} mdxType=\\"MDXLayout\\">
+      <pre>
+        <code parentName=\\"pre\\" {...{}}>{\`    import { Meta } from '@storybook/addon-docs';
+
+    <Meta />
+
+    # Auto-title Docs Only
+
+    Spme **markdown** here!
+\`}</code>
+      </pre>
+    </MDXLayout>
+  );
+}
+
+MDXContent.isMDXComponent = true;
+
+const componentMeta = { includeStories: [] };
+
+const mdxStoryNameToKey = {};
+
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: () => (
+    <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}>
+      <MDXContent />
+    </AddContext>
+  ),
+};
+
+export default componentMeta;
+"
+`;
