@@ -10,8 +10,9 @@ import {
 } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
-import { styled, typography } from '@storybook/theming';
+import { darken, styled, typography } from '@storybook/theming';
 
+import { transparentize } from 'polished';
 import { MatcherResult } from './components/MatcherResult';
 import { MethodCall } from './components/MethodCall';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
@@ -43,7 +44,7 @@ const Interaction = ({
     display: 'flex',
     flexDirection: 'column',
     background: call.state === CallStates.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
-    borderBottom: `1px solid ${theme.color.mediumlight}`,
+    borderBottom: `1px solid ${theme.appBorderColor}`,
     fontFamily: typography.fonts.base,
     fontSize: 13,
   }));
@@ -60,7 +61,7 @@ const Interaction = ({
     textAlign: 'start',
     cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
     '&:hover': {
-      background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
+      background: theme.base === 'dark' ? transparentize(0.8, theme.color.secondary) : '#F3FAFF',
     },
     '&:focus-visible': {
       outline: 0,

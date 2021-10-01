@@ -8,7 +8,7 @@ import { StatusBadge } from '../StatusBadge/StatusBadge';
 
 const StyledSubnav = styled.nav(({ theme }) => ({
   background: theme.background.app,
-  borderBottom: `1px solid ${theme.color.border}`,
+  borderBottom: `1px solid ${theme.appBorderColor}`,
   height: 40,
   display: 'flex',
   alignItems: 'center',
