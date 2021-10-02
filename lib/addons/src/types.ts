@@ -267,6 +267,13 @@ export interface BaseMeta<ComponentType> {
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
   title?: string;
+  
+  /**
+   * Manually set the id of a story, which in particular is useful if you want to rename stories without breaking permalinks.
+   *
+   * Storybook will prioritize the id over the title for ID generation, if provided, and will prioritize the story.name over the export key for display.
+   */
+  id?: string;
 
   /**
    * The primary component for your story.
