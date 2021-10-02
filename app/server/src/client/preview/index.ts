@@ -2,12 +2,12 @@ import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import { renderMain as render } from './render';
-import { StoryFnServerReturnType, IStorybookSection } from './types';
+import { renderToDOM, render } from './render';
+import { IStorybookSection, ServerFramework } from './types';
 
 const framework = 'server';
 
-interface ClientApi extends ClientStoryApi<StoryFnServerReturnType> {
+interface ClientApi extends ClientStoryApi<ServerFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
@@ -16,7 +16,7 @@ interface ClientApi extends ClientStoryApi<StoryFnServerReturnType> {
   raw: () => any; // todo add type
 }
 
-const api = start(render);
+const api = start(renderToDOM, { render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

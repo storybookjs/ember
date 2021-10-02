@@ -54,7 +54,7 @@ If you want to organize your documentation differently for component groups, we 
 Replace the DocsPage template with your own to customize its contents.
 
 ### With null to remove docs
- 
+
 Override the `docs.page` [parameter](../writing-stories/parameters.md) with `null` to remove its contents.
 
 <!-- prettier-ignore-start -->
@@ -69,7 +69,7 @@ Override the `docs.page` [parameter](../writing-stories/parameters.md) with `nul
 
 ### With MDX documentation
 
-Write your documentation in MDX and update the `docs.page` [parameter](../writing-stories/parameters.md) to display it.
+Write your documentation in MDX and update the `docs.page` [parameter](../writing-stories/parameters.md) to display it. The `id` of reference follows the pattern: `group-subgroup-...--name`, where the `groups` and `subgroups` are defined as according to the [Grouping Documentation](https://storybook.js.org/docs/react/writing-stories/naming-components-and-hierarchy#grouping).
 
 <!-- prettier-ignore-start -->
 

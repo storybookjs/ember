@@ -1,6 +1,6 @@
 {
   "name": "web-components-kitchen-sink",
-  "version": "6.4.0-alpha.0",
+  "version": "6.4.0-beta.3",
   "private": true,
   "description": "",
   "keywords": [],
@@ -9,7 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build-storybook": "build-storybook",
-    "storybook": "start-storybook -p 9006"
+    "storybook": "start-storybook -p 9006 --no-manager-cache",
+    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\""
   },
   "resolutions": {
     "@storybook/addon-a11y": "portal:../../addons/a11y",
@@ -25,7 +26,6 @@
     "@storybook/addons": "portal:../../lib/addons",
     "@storybook/api": "portal:../../lib/api",
     "@storybook/builder-webpack4": "portal:../../lib/builder-webpack4",
-    "@storybook/builder-webpack5": "portal:../../lib/builder-webpack5",
     "@storybook/channel-postmessage": "portal:../../lib/channel-postmessage",
     "@storybook/channel-websocket": "portal:../../lib/channel-websocket",
     "@storybook/channels": "portal:../../lib/channels",
@@ -40,33 +40,40 @@
     "@storybook/core-server": "portal:../../lib/core-server",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
-    "@storybook/manager-webpack5": "portal:../../lib/manager-webpack5",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",
+    "@storybook/preview-web": "portal:../../lib/preview-web",
     "@storybook/router": "portal:../../lib/router",
     "@storybook/source-loader": "portal:../../lib/source-loader",
+    "@storybook/store": "portal:../../lib/store",
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
-    "@storybook/web-components": "portal:../../app/web-components"
+    "@storybook/web-components": "portal:../../app/web-components",
+    "babel-plugin-macros": "3.1.0",
+    "fork-ts-checker-webpack-plugin": "6.2.13",
+    "typescript": "4.2.4"
   },
   "dependencies": {
     "lit": "^2.0.0-rc.2"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "6.4.0-alpha.0",
-    "@storybook/addon-actions": "6.4.0-alpha.0",
-    "@storybook/addon-backgrounds": "6.4.0-alpha.0",
-    "@storybook/addon-controls": "6.4.0-alpha.0",
-    "@storybook/addon-docs": "6.4.0-alpha.0",
-    "@storybook/addon-jest": "6.4.0-alpha.0",
-    "@storybook/addon-links": "6.4.0-alpha.0",
-    "@storybook/addon-storyshots": "6.4.0-alpha.0",
-    "@storybook/addon-storysource": "6.4.0-alpha.0",
-    "@storybook/addon-viewport": "6.4.0-alpha.0",
-    "@storybook/web-components": "6.4.0-alpha.0",
+    "@custom-elements-manifest/analyzer": "^0.3.11",
+    "@storybook/addon-a11y": "*",
+    "@storybook/addon-actions": "*",
+    "@storybook/addon-backgrounds": "*",
+    "@storybook/addon-controls": "*",
+    "@storybook/addon-docs": "*",
+    "@storybook/addon-jest": "*",
+    "@storybook/addon-links": "*",
+    "@storybook/addon-storyshots": "*",
+    "@storybook/addon-storysource": "*",
+    "@storybook/addon-viewport": "*",
+    "@storybook/web-components": "*",
     "global": "^4.4.0",
-    "jest": "^27.0.1"
+    "jest": "^27.0.1",
+    "typescript": "4.2.4"
   },
+  "customElements": "custom-elements.json",
   "storybook": {
     "chromatic": {
       "projectToken": "npm5gsofwkf"

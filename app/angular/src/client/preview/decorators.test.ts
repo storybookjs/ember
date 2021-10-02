@@ -2,16 +2,24 @@ import { addons, mockChannel, StoryContext } from '@storybook/addons';
 
 import { Component } from '@angular/core';
 import { moduleMetadata } from './decorators';
-import { addDecorator, storiesOf, clearDecorators, getStorybook } from '.';
+import { addDecorator, storiesOf, clearDecorators, getStorybook, configure } from '.';
 
 const defaultContext: StoryContext = {
+  componentId: 'unspecified',
+  kind: 'unspecified',
+  title: 'unspecified',
   id: 'unspecified',
   name: 'unspecified',
-  kind: 'unspecified',
+  story: 'unspecified',
   parameters: {},
+  initialArgs: {},
   args: {},
   argTypes: {},
   globals: {},
+  hooks: {},
+  loaded: {},
+  originalStoryFn: jest.fn(),
+  viewMode: 'story',
 };
 
 class MockModule {}
@@ -102,15 +110,17 @@ describe('moduleMetadata', () => {
     };
 
     addons.setChannel(mockChannel());
-    addDecorator(moduleMetadata(metadata));
 
-    storiesOf('Test', module).add('Default', () => ({
-      component: MockComponent,
-    }));
+    configure(() => {
+      addDecorator(moduleMetadata(metadata));
+      storiesOf('Test', module).add('Default', () => ({
+        component: MockComponent,
+      }));
+    }, {} as NodeModule);
 
     const [storybook] = getStorybook();
 
-    expect(storybook.stories[0].render().moduleMetadata).toEqual({
+    expect(storybook.stories[0].render({}).moduleMetadata).toEqual({
       declarations: [MockComponent],
       providers: [MockService],
       entryComponents: [MockComponent],

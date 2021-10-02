@@ -2,7 +2,6 @@ import React, { useContext, FunctionComponent } from 'react';
 import { DocsContext } from './DocsContext';
 import { DocsStory } from './DocsStory';
 import { Heading } from './Heading';
-import { getDocsStories } from './utils';
 import { DocsStoryProps } from './types';
 
 interface StoriesProps {
@@ -11,10 +10,9 @@ interface StoriesProps {
 }
 
 export const Stories: FunctionComponent<StoriesProps> = ({ title, includePrimary = false }) => {
-  const context = useContext(DocsContext);
-  const componentStories = getDocsStories(context);
+  const { componentStories } = useContext(DocsContext);
 
-  let stories: DocsStoryProps[] = componentStories;
+  let stories: DocsStoryProps[] = componentStories();
   if (!includePrimary) stories = stories.slice(1);
 
   if (!stories || stories.length === 0) {

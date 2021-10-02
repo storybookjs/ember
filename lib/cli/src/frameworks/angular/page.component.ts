@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { User } from './User';
 
 @Component({
   selector: 'storybook-page',
@@ -61,7 +62,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export default class PageComponent {
   @Input()
-  user: unknown = null;
+  user: User | null = null;
 
   @Output()
   onLogin = new EventEmitter<Event>();

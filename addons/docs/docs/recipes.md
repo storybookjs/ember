@@ -17,6 +17,7 @@
 - [Reordering Docs tab first](#reordering-docs-tab-first)
 - [Customizing source snippets](#customizing-source-snippets)
 - [Overwriting docs container](#overwriting-docs-container)
+- [Add description to individual stories](#add-description-to-individual-stories)
 - [More resources](#more-resources)
 
 ## Component Story Format (CSF) with DocsPage
@@ -31,7 +32,7 @@ If you want to intersperse longform documentation in your Storybook, for example
 
 ## Mixed CSF / MDX Stories
 
-Can't decide between CSF and MDX? In transition? Or have did you find that each format has its own use? There's nothing stopping you from keeping some of your stories in CSF and some in MDX. And if you want to migrate one way or another, the [csf-to-mdx and mdx-to-csf codemod migrations](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md) can help.
+Can't decide between CSF and MDX? In transition? Or have you found that each format has its own use? There's nothing stopping you from keeping some of your stories in CSF and some in MDX. And if you want to migrate one way or another, the [csf-to-mdx and mdx-to-csf codemod migrations](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md) can help.
 
 The only limitation is that your exported titles (CSF: `default.title`, MDX `Meta.title`) should be unique across files. Loading will fail if there are duplicate titles.
 
@@ -335,6 +336,24 @@ import { theme } from '../path/to/theme'
 
 Rest of your file...
 ```
+
+## Add description to individual stories
+
+Add `story` to `docs.description` parameter
+
+```js
+const Example = () => <Button />;
+
+Example.parameters = {
+  docs: {
+    description: {
+      story: "Individual story description, may contain `markdown` markup"
+    },
+  },
+};
+```
+
+There is also an webpack loader package that extracts descriptions from jsdoc comments [story-description-loader](https://www.npmjs.com/package/story-description-loader)
 
 ## More resources
 

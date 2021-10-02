@@ -43,6 +43,12 @@
     "@storybook/addon-links": {
       "implicitDependencies": []
     },
+    "@storybook/addon-measure": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-outline": {
+      "implicitDependencies": []
+    },
     "@storybook/addon-storyshots": {
       "implicitDependencies": []
     },
@@ -211,6 +217,9 @@
     "@storybook/postinstall": {
       "implicitDependencies": []
     },
+    "@storybook/store": {
+      "implicitDependencies": []
+    },
     "@storybook/router": {
       "implicitDependencies": []
     },
@@ -224,6 +233,9 @@
       "implicitDependencies": []
     },
     "@storybook/ui": {
+      "implicitDependencies": []
+    },
+    "@storybook/preview-web": {
       "implicitDependencies": []
     }
   },

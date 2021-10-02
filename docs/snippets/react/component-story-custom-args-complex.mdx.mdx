@@ -5,7 +5,7 @@ import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
 import { YourComponent } from './your-component';
 
-<Meta title='Example of how to use argTypes and functions' />
+<Meta title="Example of how to use argTypes and functions" />
 
 <!---👇 A function to apply some computations -->
 
@@ -20,7 +20,7 @@ export const Template = ({propertyA,propertyB,...rest})=>{
   <!---👇 Assigns the function result to a variable -->
 
 const someFunctionResult = someFunction(propertyA, propertyB);
-return <YourComponent someProperty={someFunctionResult} {...rest} />;
+  return <YourComponent someProperty={someFunctionResult} {...rest} />;
 }
 
 <Canvas>

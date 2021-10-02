@@ -3,19 +3,22 @@ import {
   BuilderOutput,
   createBuilder,
   targetFromTargetString,
+  Target,
 } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
 import { BrowserBuilderOptions } from '@angular-devkit/build-angular';
 import { from, Observable, of } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, mapTo } from 'rxjs/operators';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import { runCompodoc } from '../utils/run-compodoc';
+import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 
 export type StorybookBuilderOptions = JsonObject & {
-  browserTarget: string;
+  browserTarget?: string | null;
+  tsConfig?: string;
   compodoc: boolean;
   compodocArgs: string[];
 } & Pick<
@@ -44,18 +47,24 @@ function commandBuilder(
   context: BuilderContext
 ): Observable<StorybookBuilderOutput> {
   return from(setup(options, context)).pipe(
-    switchMap(({ browserOptions }) =>
-      options.compodoc
-        ? runCompodoc(
-            { compodocArgs: options.compodocArgs, tsconfig: browserOptions.tsConfig },
-            context
+    switchMap(({ tsConfig }) => {
+      const runCompodoc$ = options.compodoc
+        ? runCompodoc({ compodocArgs: options.compodocArgs, tsconfig: tsConfig }, context).pipe(
+            mapTo({ tsConfig })
           )
-        : of({})
-    ),
-    map(() => ({
-      ...options,
-      angularBrowserTarget: options.browserTarget,
-    })),
+        : of({});
+
+      return runCompodoc$.pipe(mapTo({ tsConfig }));
+    }),
+    map(({ tsConfig }) => {
+      const { browserTarget, ...otherOptions } = options;
+
+      return {
+        ...otherOptions,
+        angularBrowserTarget: browserTarget,
+        tsConfig,
+      };
+    }),
     switchMap((standaloneOptions) => runInstance(standaloneOptions)),
     map(() => {
       return { success: true };
@@ -64,15 +73,19 @@ function commandBuilder(
 }
 
 async function setup(options: StorybookBuilderOptions, context: BuilderContext) {
-  const browserTarget = targetFromTargetString(options.browserTarget);
-  const browserOptions = await context.validateOptions<JsonObject & BrowserBuilderOptions>(
-    await context.getTargetOptions(browserTarget),
-    await context.getBuilderNameForTarget(browserTarget)
-  );
+  let browserOptions: (JsonObject & BrowserBuilderOptions) | undefined;
+  let browserTarget: Target | undefined;
+
+  if (options.browserTarget) {
+    browserTarget = targetFromTargetString(options.browserTarget);
+    browserOptions = await context.validateOptions<JsonObject & BrowserBuilderOptions>(
+      await context.getTargetOptions(browserTarget),
+      await context.getBuilderNameForTarget(browserTarget)
+    );
+  }
 
   return {
-    browserOptions,
-    browserTarget,
+    tsConfig: options.tsConfig ?? browserOptions.tsConfig ?? undefined,
   };
 }
 
@@ -81,7 +94,7 @@ function runInstance(options: StandaloneOptions) {
     // This Observable intentionally never complete, leaving the process running ;)
     buildStandalone(options).then(
       () => observer.next(),
-      (error) => observer.error(error)
+      (error) => observer.error(buildStandaloneErrorHandler(error))
     );
   });
 }

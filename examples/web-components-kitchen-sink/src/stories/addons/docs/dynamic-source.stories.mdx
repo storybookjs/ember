@@ -1,0 +1,42 @@
+import { ArgsTable, Canvas, Meta, Story } from '@storybook/addon-docs';
+import { html } from 'lit-html';
+
+<Meta
+  title="Addons / Docs / Dynamic Source"
+  component="sb-button"
+  argTypes={{
+    size: { type: 'select', options: ['large', 'small'] },
+    label: { type: 'string' },
+    primary: { type: 'boolean' },
+    backgroundColor: { type: 'color', presetColors: ['white', 'transparent', 'blue'] },
+  }}
+/>
+
+# Dynamic Source
+
+Stories can use Dynamic Source to display the result of changes to controls.
+
+<Canvas withSource="open">
+  <Story
+    name="Button"
+    component="sb-button"
+    args={{
+      size: 'large',
+      label: 'Button',
+      primary: false,
+      backgroundColor: undefined,
+    }}
+  >
+    {(args) => html`
+      <sb-button
+        ?primary="${args.primary}"
+        .size="${args.size}"
+        .label="${args.label}"
+        .backgroundColor="${args.backgroundColor}"
+      >
+      </sb-button>
+    `}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Button" />

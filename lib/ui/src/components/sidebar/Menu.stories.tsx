@@ -2,7 +2,7 @@ import React, { Fragment, FunctionComponent } from 'react';
 
 import { WithTooltip, TooltipLinkList, Icons } from '@storybook/components';
 import { styled } from '@storybook/theming';
-import { MenuItemIcon, SidebarMenu, MenuButton, SidebarMenuList } from './Menu';
+import { MenuItemIcon, SidebarMenu, ToolbarMenu, MenuButton, SidebarMenuList } from './Menu';
 import { useMenu } from '../../containers/menu';
 
 export default {
@@ -31,6 +31,8 @@ export const Items = () => <TooltipLinkList links={fakemenu} />;
 
 export const Real = () => <SidebarMenu menu={fakemenu} isHighlighted />;
 
+export const Toolbar = () => <ToolbarMenu menu={fakemenu} />;
+
 const DoubleThemeRenderingHack = styled.div({
   '#root > [data-side="left"] > &': {
     textAlign: 'right',
@@ -40,7 +42,7 @@ const DoubleThemeRenderingHack = styled.div({
 const ExpandedMenu: FunctionComponent<{ menu: any }> = ({ menu }) => (
   <DoubleThemeRenderingHack>
     <WithTooltip
-      placement="top"
+      placement="bottom"
       trigger="click"
       closeOnClick
       startOpen
@@ -65,6 +67,7 @@ export const Expanded = () => {
     false,
     false,
     false,
+    false,
     false
   );
   return <ExpandedMenu menu={menu} />;
@@ -79,6 +82,7 @@ export const ExpandedWithoutReleaseNotes = () => {
       versionUpdateAvailable: () => false,
       releaseNotesVersion: () => undefined,
     },
+    false,
     false,
     false,
     false,

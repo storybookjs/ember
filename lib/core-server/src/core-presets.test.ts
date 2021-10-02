@@ -22,7 +22,7 @@ import { outputStats } from './utils/output-stats';
 // this only applies to this file
 jest.setTimeout(10000);
 
-const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false } }];
+const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false, storyStoreV7: false } }];
 
 jest.mock('@storybook/builder-webpack4', () => {
   const value = jest.fn();
@@ -39,6 +39,17 @@ jest.mock('@storybook/manager-webpack4', () => {
   // MUTATION!
   actualBuilder.executor.get = () => value;
   return actualBuilder;
+});
+
+// we're not in the right directory for auto-title to work, so just
+// stub it out
+jest.mock('@storybook/store', () => {
+  const actualStore = jest.requireActual('@storybook/store');
+  return {
+    ...actualStore,
+    autoTitle: () => 'auto-title',
+    autoTitleFromSpecifier: () => 'auto-title-from-specifier',
+  };
 });
 
 jest.mock('cpy', () => () => Promise.resolve());

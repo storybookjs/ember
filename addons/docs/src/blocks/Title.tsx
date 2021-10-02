@@ -8,9 +8,9 @@ interface TitleProps {
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 
-export const extractTitle = ({ kind }: DocsContextProps) => {
-  const groups = kind.trim().split(STORY_KIND_PATH_SEPARATOR);
-  return (groups && groups[groups.length - 1]) || kind;
+export const extractTitle = ({ title }: DocsContextProps) => {
+  const groups = title.trim().split(STORY_KIND_PATH_SEPARATOR);
+  return (groups && groups[groups.length - 1]) || title;
 };
 
 export const Title: FunctionComponent<TitleProps> = ({ children }) => {

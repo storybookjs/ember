@@ -1,11 +1,11 @@
 {
   "name": "@storybook/react",
-  "version": "6.4.0-alpha.0",
+  "version": "6.4.0-beta.3",
   "description": "Storybook for React: Develop React Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/react",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/react",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -24,7 +24,7 @@
   "types": "dist/ts3.9/client/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -48,13 +48,15 @@
   "dependencies": {
     "@babel/preset-flow": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@storybook/addons": "6.4.0-alpha.0",
-    "@storybook/core": "6.4.0-alpha.0",
-    "@storybook/core-common": "6.4.0-alpha.0",
-    "@storybook/node-logger": "6.4.0-alpha.0",
-    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.3c70e01.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@storybook/addons": "6.4.0-beta.3",
+    "@storybook/core": "6.4.0-beta.3",
+    "@storybook/core-common": "6.4.0-beta.3",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/node-logger": "6.4.0-beta.3",
+    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.253f8c1.0",
     "@storybook/semver": "^7.3.2",
+    "@storybook/store": "6.4.0-beta.3",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "babel-plugin-named-asset-import": "^0.3.1",
@@ -63,15 +65,15 @@
     "global": "^4.4.0",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "react-dev-utils": "^11.0.3",
-    "react-refresh": "^0.8.3",
+    "react-dev-utils": "^11.0.4",
+    "react-refresh": "^0.10.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0",
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/client-api": "6.4.0-alpha.0",
+    "@storybook/client-api": "6.4.0-beta.3",
     "@types/node": "^14.14.20",
     "@types/prompts": "^2.0.9"
   },
@@ -94,6 +96,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "32441319e4b2550b1887ebf38bf228123ab1dfcd",
+  "gitHead": "0fc9200599c97a5797c5af886792200cd29e2046",
   "sbmodern": "dist/modern/client/index.js"
 }

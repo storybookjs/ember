@@ -11,7 +11,7 @@ export interface ICollection {
 
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {
@@ -28,4 +28,5 @@ export interface StoryFnAngularReturnType {
   moduleMetadata?: NgModuleMetadata;
   template?: string;
   styles?: string[];
+  userDefinedTemplate?: boolean;
 }

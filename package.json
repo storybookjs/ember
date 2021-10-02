@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.4.0-alpha.0",
+  "version": "6.4.0-beta.3",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -66,6 +66,7 @@
     "dev:check-types": "tsc --noEmit",
     "dev:tsc": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell node \\$LERNA_ROOT_PATH/scripts/utils/watch-tsc.js",
     "github-release": "github-release-from-changelog",
+    "generate-repros": "zx scripts/repros-generator/index.mjs",
     "lint": "yarn lint:js . && yarn lint:md .",
     "lint:js": "cross-env NODE_ENV=production eslint --cache --cache-location=.cache/eslint --ext .js,.jsx,.json,.html,.ts,.tsx,.mjs --report-unused-disable-directives",
     "lint:md": "remark -q",
@@ -119,7 +120,7 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/runtime": "^7.12.5",
-    "@compodoc/compodoc": "^1.1.11",
+    "@compodoc/compodoc": "^1.1.14",
     "@emotion/snapshot-serializer": "^0.8.2",
     "@nicolo-ribaudo/chokidar-2": "^2.1.8",
     "@nrwl/cli": "12.3.4",
@@ -134,6 +135,8 @@
     "@storybook/addon-essentials": "workspace:*",
     "@storybook/addon-jest": "workspace:*",
     "@storybook/addon-links": "workspace:*",
+    "@storybook/addon-measure": "workspace:*",
+    "@storybook/addon-outline": "workspace:*",
     "@storybook/addon-storyshots": "workspace:*",
     "@storybook/addon-storyshots-puppeteer": "workspace:*",
     "@storybook/addon-storysource": "workspace:*",
@@ -160,12 +163,14 @@
     "@storybook/node-logger": "workspace:*",
     "@storybook/postinstall": "workspace:*",
     "@storybook/preact": "workspace:*",
+    "@storybook/preview-web": "workspace:*",
     "@storybook/react": "workspace:*",
     "@storybook/root": "workspace:*",
     "@storybook/router": "workspace:*",
     "@storybook/semver": "^7.3.2",
     "@storybook/server": "workspace:*",
     "@storybook/source-loader": "workspace:*",
+    "@storybook/store": "workspace:*",
     "@storybook/svelte": "workspace:*",
     "@storybook/theming": "workspace:*",
     "@storybook/ui": "workspace:*",
@@ -195,7 +200,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.0.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-plugin-emotion": "^10.0.33",
@@ -246,7 +251,7 @@
     "npmlog": "^4.1.2",
     "p-limit": "^3.1.0",
     "postcss-loader": "^4.2.0",
-    "prettier": "~2.2.1",
+    "prettier": "^2.2.1",
     "prompts": "^2.4.0",
     "raf": "^3.4.1",
     "regenerator-runtime": "^0.13.7",
@@ -268,7 +273,44 @@
     "web-component-analyzer": "^1.1.6",
     "webpack": "4",
     "webpack-dev-middleware": "^3.7.3",
-    "window-size": "^1.1.1"
+    "window-size": "^1.1.1",
+    "zx": "^3.0.0"
+  },
+  "dependenciesMeta": {
+    "@compodoc/compodoc": {
+      "built": false
+    },
+    "core-js": {
+      "built": false
+    },
+    "core-js-pure": {
+      "built": false
+    },
+    "ejs": {
+      "built": false
+    },
+    "level": {
+      "built": false
+    },
+    "node-uuid": {
+      "built": false,
+      "unplugged": false
+    },
+    "nodemon": {
+      "built": false
+    },
+    "parcel": {
+      "built": false
+    },
+    "preact": {
+      "built": false
+    },
+    "styled-components": {
+      "built": false
+    },
+    "yorkie": {
+      "built": false
+    }
   },
   "optionalDependencies": {
     "@cypress/webpack-preprocessor": "^5.7.0",
@@ -323,41 +365,5 @@
         "Other"
       ]
     ]
-  },
-  "dependenciesMeta": {
-    "@compodoc/compodoc": {
-      "built": false
-    },
-    "core-js": {
-      "built": false
-    },
-    "core-js-pure": {
-      "built": false
-    },
-    "ejs": {
-      "built": false
-    },
-    "level": {
-      "built": false
-    },
-    "node-uuid": {
-      "built": false,
-      "unplugged": false
-    },
-    "nodemon": {
-      "built": false
-    },
-    "parcel": {
-      "built": false
-    },
-    "preact": {
-      "built": false
-    },
-    "styled-components": {
-      "built": false
-    },
-    "yorkie": {
-      "built": false
-    }
   }
 }

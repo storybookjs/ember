@@ -17,7 +17,7 @@ Usage: start-storybook [options]
 | --help                             | Output usage information                                                                                                                       | `start-storybook --help`                                  |
 | -V, --version                      | Output the version number                                                                                                                      | `start-storybook -V`                                      |
 | -p, --port [number]                | Port to run Storybook                                                                                                                          | `start-storybook -p 9009`                                 |
-| -h, --host [string]                | Host to run Storybook                                                                                                                          | `start-storybook -h http://my-host.com`                   |
+| -h, --host [string]                | Host to run Storybook                                                                                                                          | `start-storybook -h my-host.com`                          |
 | -s, --static-dir `<dir-names>`     | Directory where to load static files from, comma-separated list                                                                                | `start-storybook -s public`                               |
 | -c, --config-dir [dir-name]        | Directory where to load Storybook configurations from                                                                                          | `start-storybook -c .storybook`                           |
 | --https                            | Serve Storybook over HTTPS. Note: You must provide your own certificate information.                                                           | `start-storybook --https`                                 |
@@ -26,6 +26,7 @@ Usage: start-storybook [options]
 | --ssl-key `<key>`                  | Provide an SSL key. (Required with --https)                                                                                                    | `start-storybook --ssl-key my-ssl-key`                    |
 | --smoke-test                       | Exit after successful start                                                                                                                    | `start-storybook --smoke-test`                            |
 | --ci                               | CI mode (skip interactive prompts, don't open browser)                                                                                         | `start-storybook --ci`                                    |
+| --no-open                          | Do not open Storybook automatically in the browser                                                                                            | `start-storybook --no-open`                               |
 | --quiet                            | Suppress verbose build output                                                                                                                  | `start-storybook --quiet`                                 |
 | --no-dll                           | Do not use dll reference (no-op)                                                                                                               | `start-storybook --no-dll`                                |
 | --debug-webpack                    | Display final webpack configurations for debugging purposes                                                                                    | `start-storybook --debug-webpack`                         |
@@ -34,7 +35,7 @@ Usage: start-storybook [options]
 | --no-manager-cache                 | Disables Storybook's manager caching mechanism. See note below.                                                                                | `start-storybook --no-manager-cache`                      |
 
 <div class="aside">
-💡 <strong>NOTE</strong>: The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can serverely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
+💡 <strong>NOTE</strong>: The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
 </div>
 
 ## build-storybook

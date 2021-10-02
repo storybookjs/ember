@@ -8,6 +8,7 @@ export class DocsRenderer extends AbstractRenderer {
   public async render(options: {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
+    component: any;
     parameters: Parameters;
     targetDOMNode: HTMLElement;
   }) {

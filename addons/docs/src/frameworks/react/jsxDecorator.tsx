@@ -3,8 +3,10 @@ import reactElementToJSXString, { Options } from 'react-element-to-jsx-string';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
-import { addons, StoryContext } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
+import { StoryContext, ArgsStoryFn, PartialStoryFn } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
+import { ReactFramework } from '@storybook/react';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 import { getDocgenSection } from '../../lib/docgen';
@@ -22,7 +24,7 @@ type JSXOptions = Options & {
   /** Deprecated: A function ran after the story is rendered */
   onBeforeRender?(dom: string): string;
   /** A function ran after a story is rendered (prefer this over `onBeforeRender`) */
-  transformSource?(dom: string, context?: StoryContext): string;
+  transformSource?(dom: string, context?: StoryContext<ReactFramework>): string;
 };
 
 /** Run the user supplied onBeforeRender function if it exists */
@@ -44,7 +46,11 @@ const applyBeforeRender = (domString: string, options: JSXOptions) => {
 };
 
 /** Run the user supplied transformSource function if it exists */
-const applyTransformSource = (domString: string, options: JSXOptions, context?: StoryContext) => {
+const applyTransformSource = (
+  domString: string,
+  options: JSXOptions,
+  context?: StoryContext<ReactFramework>
+) => {
   if (typeof options.transformSource !== 'function') {
     return domString;
   }
@@ -115,12 +121,14 @@ export const renderJsx = (code: React.ReactElement, options: JSXOptions) => {
     // @ts-ignore FIXME: workaround react-element-to-jsx-string
     const child = typeof c === 'number' ? c.toString() : c;
     let string = applyBeforeRender(reactElementToJSXString(child, opts as Options), options);
-    const matches = string.match(/\S+=\\"([^"]*)\\"/g);
 
-    if (matches) {
-      matches.forEach((match) => {
-        string = string.replace(match, match.replace(/&quot;/g, "'"));
-      });
+    if (string.indexOf('&quot;') > -1) {
+      const matches = string.match(/\S+=\\"([^"]*)\\"/g);
+      if (matches) {
+        matches.forEach((match) => {
+          string = string.replace(match, match.replace(/&quot;/g, "'"));
+        });
+      }
     }
 
     return string;
@@ -136,7 +144,7 @@ const defaultOpts = {
   showDefaultProps: false,
 };
 
-export const skipJsxRender = (context: StoryContext) => {
+export const skipJsxRender = (context: StoryContext<ReactFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -163,16 +171,25 @@ const mdxToJsx = (node: any) => {
   return createElement(originalType, rest, ...jsxChildren);
 };
 
-export const jsxDecorator = (storyFn: any, context: StoryContext) => {
+export const jsxDecorator = (
+  storyFn: PartialStoryFn<ReactFramework>,
+  context: StoryContext<ReactFramework>
+) => {
+  const channel = addons.getChannel();
+  const skip = skipJsxRender(context);
   const story = storyFn();
+
+  let jsx = '';
+
+  useEffect(() => {
+    if (!skip) channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
+  });
 
   // We only need to render JSX if the source block is actually going to
   // consume it. Otherwise it's just slowing us down.
-  if (skipJsxRender(context)) {
+  if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const options = {
     ...defaultOpts,
@@ -181,18 +198,15 @@ export const jsxDecorator = (storyFn: any, context: StoryContext) => {
 
   // Exclude decorators from source code snippet by default
   const storyJsx = context?.parameters.docs?.source?.excludeDecorators
-    ? context.originalStoryFn(context.args)
+    ? (context.originalStoryFn as ArgsStoryFn<ReactFramework>)(context.args, context)
     : story;
 
   const sourceJsx = mdxToJsx(storyJsx);
 
-  let jsx = '';
   const rendered = renderJsx(sourceJsx, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }
-
-  channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
 
   return story;
 };

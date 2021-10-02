@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import fs from 'fs-extra';
-import { parse } from '@babel/parser';
-import generate from '@babel/generator';
 import * as t from '@babel/types';
-import traverse, { Node } from '@babel/traverse';
+import generate from '@babel/generator';
+import traverse from '@babel/traverse';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
+import { babelParse } from './babelParse';
 
 const logger = console;
 interface Meta {
@@ -20,7 +20,7 @@ interface Story {
   parameters: Record<string, any>;
 }
 
-function parseIncludeExclude(prop: Node) {
+function parseIncludeExclude(prop: t.Node) {
   if (t.isArrayExpression(prop)) {
     return prop.elements.map((e) => {
       if (t.isStringLiteral(e)) return e.value;
@@ -69,7 +69,7 @@ const findVarInitialization = (identifier: string, program: t.Program) => {
   return init;
 };
 
-const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node, csf: CsfFile) => {
+const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
   let storyFn: t.Node = init;
   // export const Foo = Bar.bind({})
   if (t.isCallExpression(init)) {
@@ -99,23 +99,30 @@ const isArgsStory = ({ init }: t.VariableDeclarator, parent: t.Node, csf: CsfFil
   }
   return false;
 };
+
+export interface CsfOptions {
+  defaultTitle: string;
+}
 export class CsfFile {
   _ast: t.File;
+
+  _defaultTitle: string;
 
   _meta?: Meta;
 
   _stories: Record<string, Story> = {};
 
-  _metaAnnotations: Record<string, Node> = {};
+  _metaAnnotations: Record<string, t.Node> = {};
 
   _storyExports: Record<string, t.VariableDeclarator> = {};
 
-  _storyAnnotations: Record<string, Record<string, Node>> = {};
+  _storyAnnotations: Record<string, Record<string, t.Node>> = {};
 
   _templates: Record<string, t.Expression> = {};
 
-  constructor(ast: t.File) {
+  constructor(ast: t.File, { defaultTitle }: CsfOptions) {
     this._ast = ast;
+    this._defaultTitle = defaultTitle;
   }
 
   _parseMeta(declaration: t.ObjectExpression) {
@@ -175,23 +182,43 @@ export class CsfFile {
             // export const X = ...;
             node.declaration.declarations.forEach((decl) => {
               if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
-                const { name } = decl.id;
-                const parameters = {
-                  // __id: toId(self._meta.title, name),
-                  // FIXME: Template.bind({});
-                  __isArgsStory: isArgsStory(decl, parent, self),
-                };
-                self._stories[name] = {
+                const { name: exportName } = decl.id;
+                self._storyExports[exportName] = decl;
+                let name = storyNameFromExport(exportName);
+                if (self._storyAnnotations[exportName]) {
+                  logger.warn(
+                    `Unexpected annotations for "${exportName}" before story declaration`
+                  );
+                } else {
+                  self._storyAnnotations[exportName] = {};
+                }
+                let parameters;
+                if (t.isObjectExpression(decl.init)) {
+                  let __isArgsStory = true; // assume default render is an args story
+                  // CSF3 object export
+                  decl.init.properties.forEach((p: t.ObjectProperty) => {
+                    if (t.isIdentifier(p.key)) {
+                      if (p.key.name === 'render') {
+                        __isArgsStory = isArgsStory(p.value as t.Expression, parent, self);
+                      } else if (p.key.name === 'name' && t.isStringLiteral(p.value)) {
+                        name = p.value.value;
+                      }
+                      self._storyAnnotations[exportName][p.key.name] = p.value;
+                    }
+                  });
+                  parameters = { __isArgsStory };
+                } else {
+                  parameters = {
+                    // __id: toId(self._meta.title, name),
+                    // FIXME: Template.bind({});
+                    __isArgsStory: isArgsStory(decl.init, parent, self),
+                  };
+                }
+                self._stories[exportName] = {
                   id: 'FIXME',
                   name,
                   parameters,
                 };
-                self._storyExports[name] = decl;
-                if (self._storyAnnotations[name]) {
-                  logger.warn(`Unexpected annotations for "${name}" before story declaration`);
-                } else {
-                  self._storyAnnotations[name] = {};
-                }
               }
             });
           }
@@ -225,8 +252,6 @@ export class CsfFile {
               } else {
                 self._storyAnnotations[exportName][annotationKey] = annotationValue;
               }
-            } else {
-              logger.debug(`skipping "${exportName}.${annotationKey}"`);
             }
 
             if (annotationKey === 'storyName' && t.isStringLiteral(annotationValue)) {
@@ -242,10 +267,16 @@ export class CsfFile {
 
     // default export can come at any point in the file, so we do this post processing last
     if (self._meta?.title || self._meta?.component) {
-      self._stories = Object.entries(self._stories).reduce((acc, [key, story]) => {
+      const entries = Object.entries(self._stories);
+      self._meta.title = self._meta.title || this._defaultTitle;
+      self._stories = entries.reduce((acc, [key, story]) => {
         if (isExportStory(key, self._meta)) {
           const id = toId(self._meta.title, storyNameFromExport(key));
-          acc[key] = { ...story, id, parameters: { ...story.parameters, __id: id } };
+          const parameters: Record<string, any> = { ...story.parameters, __id: id };
+          if (entries.length === 1 && key === '__page') {
+            parameters.docsOnly = true;
+          }
+          acc[key] = { ...story, id, parameters };
         }
         return acc;
       }, {} as Record<string, Story>);
@@ -275,18 +306,9 @@ export class CsfFile {
   }
 }
 
-export const loadCsf = (code: string) => {
-  const ast = parse(code, {
-    sourceType: 'module',
-    // FIXME: we should get this from the project config somehow?
-    plugins: [
-      'jsx',
-      'typescript',
-      ['decorators', { decoratorsBeforeExport: true }],
-      'classProperties',
-    ],
-  });
-  return new CsfFile(ast);
+export const loadCsf = (code: string, options: CsfOptions) => {
+  const ast = babelParse(code);
+  return new CsfFile(ast, options);
 };
 
 export const formatCsf = (csf: CsfFile) => {
@@ -294,9 +316,9 @@ export const formatCsf = (csf: CsfFile) => {
   return code;
 };
 
-export const readCsf = async (fileName: string) => {
+export const readCsf = async (fileName: string, options: CsfOptions) => {
   const code = (await fs.readFile(fileName, 'utf-8')).toString();
-  return loadCsf(code);
+  return loadCsf(code, options);
 };
 
 export const writeCsf = async (fileName: string, csf: CsfFile) => {

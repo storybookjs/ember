@@ -3,7 +3,7 @@ import React, { FC, useCallback } from 'react';
 import { opacify, transparentize } from 'polished';
 import { styled } from '@storybook/theming';
 
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import { Form } from '../form';
 import { ControlProps, BooleanValue, BooleanConfig } from './types';
 
@@ -71,7 +71,7 @@ const Label = styled.label(({ theme }) => ({
   },
 
   'input:checked ~ span:last-of-type, input:not(:checked) ~ span:first-of-type': {
-    background: theme.background.bar,
+    background: theme.background.app,
     boxShadow: `${opacify(0.1, theme.appBorderColor)} 0 0 2px`,
     color: theme.color.defaultText,
     padding: '7px 15px',
@@ -85,7 +85,11 @@ export type BooleanProps = ControlProps<BooleanValue> & BooleanConfig;
 export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => {
   const onSetFalse = useCallback(() => onChange(false), [onChange]);
   if (value === undefined) {
-    return <Form.Button onClick={onSetFalse}>Set boolean</Form.Button>;
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onSetFalse}>
+        Set boolean
+      </Form.Button>
+    );
   }
 
   return (

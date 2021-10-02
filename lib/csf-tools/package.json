@@ -1,11 +1,11 @@
 {
   "name": "@storybook/csf-tools",
-  "version": "6.4.0-alpha.0",
+  "version": "6.4.0-beta.3",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/csf-tools",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/csf-tools",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -25,7 +25,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -40,6 +40,7 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
+    "@babel/core": "^7.12.10",
     "@babel/generator": "^7.12.11",
     "@babel/parser": "^7.12.11",
     "@babel/plugin-transform-react-jsx": "^7.12.12",
@@ -47,22 +48,23 @@
     "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
-    "@storybook/csf": "^0.0.1",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
+    "global": "^4.4.0",
     "js-string-escape": "^1.0.1",
     "lodash": "^4.17.20",
-    "prettier": "~2.2.1",
-    "regenerator-runtime": "^0.13.7"
+    "prettier": "^2.2.1",
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.6",
-    "js-yaml": "^3.14.1",
-    "ts-dedent": "^2.0.0"
+    "js-yaml": "^3.14.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "32441319e4b2550b1887ebf38bf228123ab1dfcd",
+  "gitHead": "0fc9200599c97a5797c5af886792200cd29e2046",
   "sbmodern": "dist/modern/index.js"
 }

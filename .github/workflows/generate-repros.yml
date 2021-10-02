@@ -1,0 +1,28 @@
+name: Generate And Push Repros
+
+on:
+  schedule:
+    - cron: '2 2 */1 * *'
+  workflow_dispatch:
+# To remove when the branch will be merged
+  push:
+    branches:
+      - generate-repros
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup git user
+        run: |
+          git config --global user.name "Storybook Bot"
+          git config --global user.email "bot@storybook.js.org"
+      - name: Install dependencies
+        run: yarn install
+      - name: Generate repros with Latest Storybook CLI
+        run: yarn generate-repros --remote=https://storybook-bot:${{ secrets.PAT_STORYBOOK_BOT}}@github.com/storybookjs/repro-templates.git --push --force-push
+      - name: Generate repros with Next Storybook CLI
+        run: yarn generate-repros --next --remote=https://storybook-bot:${{ secrets.PAT_STORYBOOK_BOT}}@github.com/storybookjs/repro-templates.git --push --force-push

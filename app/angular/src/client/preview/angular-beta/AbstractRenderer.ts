@@ -3,6 +3,7 @@ import { enableProdMode, NgModule, PlatformRef } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { BehaviorSubject, Subject } from 'rxjs';
+import { stringify } from 'telejson';
 import { ICollection, StoryFnAngularReturnType } from '../types';
 import { Parameters } from '../types-6-0';
 import { createStorybookModule, getStorybookModuleMetadata } from './StorybookModule';
@@ -91,16 +92,19 @@ export abstract class AbstractRenderer {
    * @param forced {boolean} If :
    * - true render will only use the StoryFn `props' in storyProps observable that will update sotry's component/template properties. Improves performance without reloading the whole module&component if props changes
    * - false fully recharges or initializes angular module & component
+   * @param component {Component}
    * @param parameters {Parameters}
    */
   public async render({
     storyFnAngular,
     forced,
     parameters,
+    component,
     targetDOMNode,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
+    component?: any;
     parameters: Parameters;
     targetDOMNode: HTMLElement;
   }) {
@@ -108,7 +112,7 @@ export abstract class AbstractRenderer {
 
     const newStoryProps$ = new BehaviorSubject<ICollection>(storyFnAngular.props);
     const moduleMetadata = getStorybookModuleMetadata(
-      { storyFnAngular, parameters, targetSelector },
+      { storyFnAngular, component, targetSelector },
       newStoryProps$
     );
 
@@ -160,7 +164,7 @@ export abstract class AbstractRenderer {
 
     const currentStoryRender = {
       storyFnAngular,
-      moduleMetadataSnapshot: JSON.stringify(moduleMetadata),
+      moduleMetadataSnapshot: stringify(moduleMetadata),
     };
 
     this.previousStoryRenderInfo = currentStoryRender;

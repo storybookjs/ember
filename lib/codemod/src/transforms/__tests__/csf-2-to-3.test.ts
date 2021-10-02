@@ -38,7 +38,7 @@ describe('csf-2-to-3', () => {
           export const A = () => <Cat />;
           A.storyName = 'foo';
           A.parameters = { bar: 2 };
-          A.setup = () => {};
+          A.play = () => {};
         `)
       ).toMatchInlineSnapshot(`
         export default {
@@ -50,7 +50,7 @@ describe('csf-2-to-3', () => {
           parameters: {
             bar: 2,
           },
-          setup: () => {},
+          play: () => {},
         };
       `);
     });
