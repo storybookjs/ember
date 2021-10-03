@@ -39,7 +39,10 @@ export class StoryIndexGenerator {
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
-    public readonly configDir: Path
+    public readonly options: {
+      workingDir: Path;
+      configDir: Path;
+    }
   ) {
     this.storyIndexEntries = new Map();
   }
@@ -50,12 +53,12 @@ export class StoryIndexGenerator {
       this.specifiers.map(async (specifier) => {
         const pathToSubIndex = {} as SpecifierStoriesCache;
 
-        const files = await glob(path.join(this.configDir, specifier.glob));
-        console.log('specifiers');
-        console.log(path.join(this.configDir, specifier.glob), files);
+        const fullGlob = path.join(this.options.workingDir, specifier.directory, specifier.files);
+        const files = await glob(fullGlob);
+        console.log(fullGlob, files);
         files.forEach((fileName: Path) => {
           const ext = path.extname(fileName);
-          const relativePath = path.relative(this.configDir, fileName);
+          const relativePath = path.relative(this.options.workingDir, fileName);
           if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
             logger.info(`Skipping ${ext} file ${relativePath}`);
             return;
@@ -78,7 +81,7 @@ export class StoryIndexGenerator {
         this.specifiers.map(async (specifier) => {
           const entry = this.storyIndexEntries.get(specifier);
           console.log('entries');
-          console.log(specifier.glob, Object.keys(entry));
+          console.log(specifier, Object.keys(entry));
           return Promise.all(
             Object.keys(entry).map(
               async (fileName) => entry[fileName] || this.extractStories(specifier, fileName)
@@ -90,7 +93,7 @@ export class StoryIndexGenerator {
   }
 
   async extractStories(specifier: NormalizedStoriesSpecifier, absolutePath: Path) {
-    const relativePath = path.relative(this.configDir, absolutePath);
+    const relativePath = path.relative(this.options.workingDir, absolutePath);
     try {
       const entry = this.storyIndexEntries.get(specifier);
       const fileStories = {} as StoryIndex['stories'];
@@ -143,9 +146,9 @@ export class StoryIndexGenerator {
     return this.lastIndex;
   }
 
-  invalidate(specifier: NormalizedStoriesSpecifier, filePath: Path, removed: boolean) {
-    const absolutePath = path.join(this.configDir, filePath);
-    console.log('invalidate', absolutePath, removed);
+  invalidate(specifier: NormalizedStoriesSpecifier, importPath: Path, removed: boolean) {
+    const absolutePath = path.relative(this.options.workingDir, importPath);
+    console.log('invalidate', importPath, absolutePath, removed);
     const pathToEntries = this.storyIndexEntries.get(specifier);
     console.log(this.storyIndexEntries.keys());
     console.log('pathToEntries');
@@ -161,7 +164,7 @@ export class StoryIndexGenerator {
 
   async getStorySortParameter() {
     const previewFile = ['js', 'jsx', 'ts', 'tsx']
-      .map((ext) => path.join(this.configDir, `preview.${ext}`))
+      .map((ext) => path.join(this.options.configDir, `preview.${ext}`))
       .find((fname) => fs.existsSync(fname));
     let storySortParameter;
     if (previewFile) {

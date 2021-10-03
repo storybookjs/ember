@@ -140,13 +140,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
-        .replace(
-          "'{{stories}}'",
-          stories
-            .map((s: NormalizedStoriesSpecifier) => s.glob)
-            .map(toRequireContextString)
-            .join(',')
-        );
+        .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
       entries.push(storiesFilename);
     }
   }
@@ -191,7 +185,10 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
             FEATURES: features,
-            STORIES: stories,
+            STORIES: stories.map((specifier) => ({
+              ...specifier,
+              importPathMatcher: specifier.importPathMatcher.source,
+            })),
           },
           headHtmlSnippet,
           bodyHtmlSnippet,

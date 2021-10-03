@@ -1,27 +1,27 @@
 import dedent from 'ts-dedent';
-import { toRequireContext } from '..';
 
 import type { NormalizedStoriesSpecifier } from '../types';
 
-export function toImportFnPart(entry: NormalizedStoriesSpecifier) {
-  const { path: base, regex } = toRequireContext(entry.glob);
+export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
+  const { directory, importPathMatcher } = specifier;
 
-  const webpackIncludeRegex = new RegExp(regex.source.substring(1));
+  // It appears webpack passes *something* similar to the absolute path to the file
+  // on disk (prefixed with something unknown) to the matcher.
+  // We don't want to include the absolute path in our bundle, so we will just pull the
+  // '^' and any leading '.' off the regexp and match on that.
+  // It's imperfect as it could match extra things in extremely unusual cases, but it'll do for now.
+  const webpackIncludeRegex = new RegExp(importPathMatcher.source.replace(/^\^\\\.*/, ''));
 
   return dedent`
       async (path) => {
-        const pathBase = path.substring(0, ${base.length + 1});
-        if (pathBase !== '${base}/') {
+        if (!${importPathMatcher}.exec(path)) {
           return;
         }
 
-        const pathRemainder = path.substring(${base.length + 1});
-        if (!${regex}.exec(pathRemainder)) {
-          return;
-        }
+        const pathRemainder = path.substring(${directory.length + 1});
         return import(
           /* webpackInclude: ${webpackIncludeRegex} */
-          '${base}/' + pathRemainder
+          '${directory}/' + pathRemainder
         );
       }
 

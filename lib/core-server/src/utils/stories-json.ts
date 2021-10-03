@@ -11,9 +11,9 @@ const INVALIDATE = 'INVALIDATE';
 export async function extractStoriesJson(
   outputFile: string,
   normalizedStories: NormalizedStoriesSpecifier[],
-  configDir: string
+  options: { configDir: string; workingDir: string }
 ) {
-  const generator = new StoryIndexGenerator(normalizedStories, configDir);
+  const generator = new StoryIndexGenerator(normalizedStories, options);
   await generator.initialize();
 
   const index = await generator.getIndex();
@@ -21,11 +21,15 @@ export async function extractStoriesJson(
 }
 
 export async function useStoriesJson(router: Router, options: Options) {
+  const workingDir = process.cwd();
   const normalizedStories = normalizeStories(await options.presets.apply('stories'), {
     configDir: options.configDir,
-    workingDir: process.cwd(),
+    workingDir,
   });
-  const generator = new StoryIndexGenerator(normalizedStories, options.configDir);
+  const generator = new StoryIndexGenerator(normalizedStories, {
+    configDir: options.configDir,
+    workingDir,
+  });
   await generator.initialize();
 
   const invalidationEmitter = new EventEmitter();
