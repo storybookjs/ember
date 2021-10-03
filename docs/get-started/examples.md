@@ -54,6 +54,8 @@ Learn how leading teams build design systems.
 - [Audi](https://react.ui.audi/)
 - [Telefónica Mística UI](https://mistica-web.vercel.app/?path=/story/welcome-welcome--mistica)
 - [Codecademy Gamut](https://gamut.codecademy.com)
+- [Talend Coral](https://design.talend.com)
+
 
 <!--
 

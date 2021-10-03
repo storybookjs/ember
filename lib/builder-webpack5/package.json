@@ -1,6 +1,6 @@
 {
   "name": "@storybook/builder-webpack5",
-  "version": "6.4.0-beta.0",
+  "version": "6.4.0-beta.3",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -60,21 +60,21 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.4.0-beta.0",
-    "@storybook/api": "6.4.0-beta.0",
-    "@storybook/channel-postmessage": "6.4.0-beta.0",
-    "@storybook/channels": "6.4.0-beta.0",
-    "@storybook/client-api": "6.4.0-beta.0",
-    "@storybook/client-logger": "6.4.0-beta.0",
-    "@storybook/components": "6.4.0-beta.0",
-    "@storybook/core-common": "6.4.0-beta.0",
-    "@storybook/core-events": "6.4.0-beta.0",
-    "@storybook/node-logger": "6.4.0-beta.0",
-    "@storybook/preview-web": "6.4.0-beta.0",
-    "@storybook/router": "6.4.0-beta.0",
+    "@storybook/addons": "6.4.0-beta.3",
+    "@storybook/api": "6.4.0-beta.3",
+    "@storybook/channel-postmessage": "6.4.0-beta.3",
+    "@storybook/channels": "6.4.0-beta.3",
+    "@storybook/client-api": "6.4.0-beta.3",
+    "@storybook/client-logger": "6.4.0-beta.3",
+    "@storybook/components": "6.4.0-beta.3",
+    "@storybook/core-common": "6.4.0-beta.3",
+    "@storybook/core-events": "6.4.0-beta.3",
+    "@storybook/node-logger": "6.4.0-beta.3",
+    "@storybook/preview-web": "6.4.0-beta.3",
+    "@storybook/router": "6.4.0-beta.3",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-beta.0",
-    "@storybook/theming": "6.4.0-beta.0",
+    "@storybook/store": "6.4.0-beta.3",
+    "@storybook/theming": "6.4.0-beta.3",
     "@types/node": "^14.0.10",
     "babel-loader": "^8.0.0",
     "babel-plugin-macros": "^3.0.1",
@@ -86,7 +86,7 @@
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^5.0.0",
-    "react-dev-utils": "^11.0.3",
+    "react-dev-utils": "^11.0.4",
     "stable": "^0.1.8",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
@@ -94,7 +94,7 @@
     "util-deprecate": "^1.0.2",
     "webpack": "^5.9.0",
     "webpack-dev-middleware": "^4.1.0",
-    "webpack-hot-middleware": "^2.25.0",
+    "webpack-hot-middleware": "^2.25.1",
     "webpack-virtual-modules": "^0.4.1"
   },
   "devDependencies": {
@@ -117,6 +117,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "44a855043cb0f43a03025df37cb105f4ce07d46f",
+  "gitHead": "0fc9200599c97a5797c5af886792200cd29e2046",
   "sbmodern": "dist/modern/index.js"
 }

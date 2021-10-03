@@ -1,1 +1,1 @@
-{"version":"6.4.0-beta.0","info":{"plain":"Storybook 6.4 is in beta! 🎊\n\nSB6.4 adds interaction testing and performance re-architecture in preparation for a huge 7.0 release.\n\nTrack the release in the Github: [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355)"}}
+{"version":"6.4.0-beta.3","info":{"plain":"### Maintenance\n\n- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))"}}

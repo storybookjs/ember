@@ -9,12 +9,30 @@ export default {
   component: 'sb-header',
 } as Meta;
 
-const Template: Story<SbHeader> = ({ user }) => html`<sb-header .user="${user}"></sb-header>`;
+interface SbHeaderProps extends SbHeader {
+  onSbHeaderCreateAccount: (event: Event) => void;
+  onSbHeaderLogin: (event: Event) => void;
+  onSbHeaderLogout: (event: Event) => void;
+}
 
-export const LoggedIn: Story<SbHeader> = Template.bind({});
+const Template: Story<SbHeaderProps> = ({
+  user,
+  onSbHeaderCreateAccount,
+  onSbHeaderLogin,
+  onSbHeaderLogout,
+}) => {
+  return html`<sb-header
+    @sb-header:createAccount=${onSbHeaderCreateAccount}
+    @sb-header:login=${onSbHeaderLogin}
+    @sb-header:logout=${onSbHeaderLogout}
+    .user=${user}
+  ></sb-header>`;
+};
+
+export const LoggedIn: Story<SbHeaderProps> = Template.bind({});
 LoggedIn.args = {
   user: {},
 };
 
-export const LoggedOut: Story<SbHeader> = Template.bind({});
+export const LoggedOut: Story<SbHeaderProps> = Template.bind({});
 LoggedOut.args = {};

@@ -104,10 +104,16 @@ export class SbHeader extends LitElement {
 
   private logInOutButton() {
     return this.user
-      ? html`<sb-button size="small" @sb-button:click="${() => this.dispatchCustomEvent('logout')} "
-        label = "Log out" </sb-button>`
-      : html`<sb-button size="small" @sb-button:click="${() => this.dispatchCustomEvent('login')}"
-                        label="Log in" </sb-button>`;
+      ? html`<sb-button
+          size="small"
+          @sb-button:click="${() => this.dispatchCustomEvent('logout')}"
+          label="Log out"
+        ></sb-button>`
+      : html`<sb-button
+          size="small"
+          @sb-button:click="${() => this.dispatchCustomEvent('login')}"
+          label="Log in"
+        ></sb-button>`;
   }
 }
 
