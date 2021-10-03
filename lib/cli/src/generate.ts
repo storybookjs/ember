@@ -25,7 +25,6 @@ program
   .option('-N --use-npm', 'Use npm to install deps')
   .option('-p --parser <babel | babylon | flow | ts | tsx>', 'jscodeshift parser')
   .option('-t --type <type>', 'Add Storybook for a specific project type')
-  .option('--story-format <csf | csf-ts | mdx >', 'Generate stories in a specified format')
   .option('-y --yes', 'Answer yes to all prompts')
   .option('-b --builder <builder>', 'Builder library')
   .option('-l --linkable', 'Prepare installation for link (contributor helper)')
