@@ -24,7 +24,28 @@ describe('Helpers', () => {
     jest.clearAllMocks();
   });
 
-  describe('copyTemplate', () => {});
+  describe('copyTemplate', () => {
+    it(`should copy template files when directory is present`, () => {
+      const csfDirectory = `template-csf/`;
+      (fs.existsSync as jest.Mock).mockImplementation((filePath) => {
+        return true;
+      });
+      helpers.copyTemplate('');
+
+      const copySyncSpy = jest.spyOn(fse, 'copySync');
+      expect(copySyncSpy).toHaveBeenCalledWith(csfDirectory, expect.anything(), expect.anything());
+    });
+
+    it(`should throw an error if template directory cannot be found`, () => {
+      (fs.existsSync as jest.Mock).mockImplementation((filePath) => {
+        return false;
+      });
+
+      expect(() => {
+        helpers.copyTemplate('');
+      }).toThrowError("Couldn't find template dir");
+    });
+  });
 
   it.each`
     language        | exists          | expected
