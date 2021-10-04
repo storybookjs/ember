@@ -2,15 +2,10 @@ import global from 'global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter, useStorybookState } from '@storybook/api';
-import {
-  FORCE_REMOUNT,
-  SET_CURRENT_STORY,
-  STORY_RENDERED,
-  STORY_THREW_EXCEPTION,
-} from '@storybook/core-events';
+import { STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
-import { darken, styled, typography } from '@storybook/theming';
+import { styled, typography } from '@storybook/theming';
 
 import { transparentize } from 'polished';
 import { MatcherResult } from './components/MatcherResult';
@@ -121,10 +116,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: setCall,
     [EVENTS.SYNC]: setLog,
-    [SET_CURRENT_STORY]: () => setPlaying(true),
-    [FORCE_REMOUNT]: () => setPlaying(true),
-    [STORY_RENDERED]: () => setPlaying(false),
-    [STORY_THREW_EXCEPTION]: () => setPlaying(false),
+    [STORY_RENDER_PHASE_CHANGED]: ({ newPhase }) => setPlaying(newPhase === 'playing'),
   });
 
   const { storyId } = useStorybookState();

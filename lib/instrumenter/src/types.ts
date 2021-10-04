@@ -1,7 +1,10 @@
+import { StoryId } from '@storybook/addons';
+
 export interface Call {
   id: string;
   path: Array<string | CallRef>;
   method: string;
+  storyId: StoryId;
   args: any[];
   interceptable: boolean;
   retain: boolean;
