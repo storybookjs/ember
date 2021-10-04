@@ -53,7 +53,7 @@ module.exports = {
     const nextConfig = require('/path/to/next.config.js');
 
     // merge whatever from nextConfig into the webpack config storybook will use
-    return { ...baseConfig };
+    return { ...baseConfig, ...nextConfig };
   },
 };
 ```

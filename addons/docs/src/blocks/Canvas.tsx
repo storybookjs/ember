@@ -9,6 +9,7 @@ import {
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
 import { getSourceProps, SourceState } from './Source';
+import { useStories } from './useStory';
 
 export { SourceState };
 
@@ -21,23 +22,27 @@ const getPreviewProps = (
   { withSource, mdxSource, children, ...props }: CanvasProps & { children?: ReactNode },
   docsContext: DocsContextProps<AnyFramework>,
   sourceContext: SourceContextProps
-): PurePreviewProps => {
+) => {
   const { mdxComponentAnnotations, mdxStoryNameToKey } = docsContext;
   let sourceState = withSource;
+  let isLoading = false;
   if (sourceState === SourceState.NONE) {
-    return props;
+    return { isLoading, previewProps: props };
   }
   if (mdxSource) {
     return {
-      ...props,
-      withSource: getSourceProps({ code: decodeURI(mdxSource) }, docsContext, sourceContext),
+      isLoading,
+      previewProps: {
+        ...props,
+        withSource: getSourceProps({ code: decodeURI(mdxSource) }, docsContext, sourceContext),
+      },
     };
   }
   const childArray: ReactNodeArray = Array.isArray(children) ? children : [children];
-  const stories = childArray.filter(
+  const storyChildren = childArray.filter(
     (c: ReactElement) => c.props && (c.props.id || c.props.name)
   ) as ReactElement[];
-  const targetIds = stories.map(
+  const targetIds = storyChildren.map(
     (s) =>
       s.props.id ||
       toId(
@@ -47,20 +52,25 @@ const getPreviewProps = (
   );
   const sourceProps = getSourceProps({ ids: targetIds }, docsContext, sourceContext);
   if (!sourceState) sourceState = sourceProps.state;
+  const stories = useStories(targetIds, docsContext);
+  isLoading = stories.some((s) => !s);
 
   return {
-    ...props, // pass through columns etc.
-    withSource: sourceProps,
-    isExpanded: sourceState === SourceState.OPEN,
+    isLoading,
+    previewProps: {
+      ...props, // pass through columns etc.
+      withSource: sourceProps,
+      isExpanded: sourceState === SourceState.OPEN,
+    },
   };
 };
 
 export const Canvas: FC<CanvasProps> = (props) => {
   const docsContext = useContext(DocsContext);
   const sourceContext = useContext(SourceContext);
-  const previewProps = getPreviewProps(props, docsContext, sourceContext);
+  const { isLoading, previewProps } = getPreviewProps(props, docsContext, sourceContext);
   const { children } = props;
-  return (
+  return isLoading ? null : (
     <MDXProvider components={resetComponents}>
       <PurePreview {...previewProps}>{children}</PurePreview>
     </MDXProvider>

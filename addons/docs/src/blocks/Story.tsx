@@ -22,11 +22,7 @@ export const storyBlockIdFromId = (storyId: string) => `story--${storyId}`;
 
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
-type Annotations = Pick<
-  StoryAnnotations,
-  'decorators' | 'parameters' | 'args' | 'argTypes' | 'loaders'
->;
-type CommonProps = Annotations & {
+type CommonProps = StoryAnnotations & {
   height?: string;
   inline?: boolean;
 };

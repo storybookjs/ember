@@ -1,9 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'storybook-attribute-value-selector.foo',
+  selector: 'storybook-class-selector.foo, storybook-class-selector.bar',
   template: `<h3>Class selector</h3>
-    Selector: "storybook-class-selector.foo" <br />
-    Generated template: "&lt;storybook-class-selector class="bar">&lt;/storybook-class-selector>" `,
+    Selector: {{ selectors }} <br />
+    Generated template: {{ generatedTemplate }}`,
 })
-export class ClassSelectorComponent {}
+export class ClassSelectorComponent {
+  generatedTemplate = '';
+
+  selectors = '';
+
+  constructor(public el: ElementRef, private resolver: ComponentFactoryResolver) {
+    const factory = this.resolver.resolveComponentFactory(ClassSelectorComponent);
+    this.selectors = factory.selector;
+    this.generatedTemplate = el.nativeElement.outerHTML;
+  }
+}

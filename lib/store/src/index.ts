@@ -10,3 +10,5 @@ export * from './types';
 export * from './hooks';
 export * from './decorators';
 export * from './args';
+export * from './autoTitle';
+export * from './sortStories';

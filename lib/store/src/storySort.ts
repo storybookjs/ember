@@ -1,15 +1,16 @@
-import { StorySortComparator, StorySortObjectParameter } from '@storybook/addons';
+import { StorySortComparatorV7, StorySortObjectParameter } from '@storybook/addons';
+import { StoryIndexEntry } from './types';
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 
-export const storySort = (options: StorySortObjectParameter = {}): StorySortComparator => (
-  a: any,
-  b: any
+export const storySort = (options: StorySortObjectParameter = {}): StorySortComparatorV7 => (
+  a: StoryIndexEntry,
+  b: StoryIndexEntry
 ): number => {
   // If the two stories have the same story kind, then use the default
   // ordering, which is the order they are defined in the story file.
   // only when includeNames is falsy
-  if (a[1].kind === b[1].kind && !options.includeNames) {
+  if (a.title === b.title && !options.includeNames) {
     return 0;
   }
 
@@ -17,27 +18,27 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
   const method = options.method || 'configure';
   let order = options.order || [];
 
-  // Examine each part of the story kind in turn.
-  const storyKindA = a[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
-  const storyKindB = b[1].kind.trim().split(STORY_KIND_PATH_SEPARATOR);
+  // Examine each part of the story title in turn.
+  const storyTitleA = a.title.trim().split(STORY_KIND_PATH_SEPARATOR);
+  const storyTitleB = b.title.trim().split(STORY_KIND_PATH_SEPARATOR);
   if (options.includeNames) {
-    storyKindA.push(a[1].name);
-    storyKindB.push(b[1].name);
+    storyTitleA.push(a.name);
+    storyTitleB.push(b.name);
   }
 
   let depth = 0;
-  while (storyKindA[depth] || storyKindB[depth]) {
+  while (storyTitleA[depth] || storyTitleB[depth]) {
     // Stories with a shorter depth should go first.
-    if (!storyKindA[depth]) {
+    if (!storyTitleA[depth]) {
       return -1;
     }
-    if (!storyKindB[depth]) {
+    if (!storyTitleB[depth]) {
       return 1;
     }
 
-    // Compare the next part of the story kind.
-    const nameA = storyKindA[depth];
-    const nameB = storyKindB[depth];
+    // Compare the next part of the story title.
+    const nameA = storyTitleA[depth];
+    const nameB = storyTitleB[depth];
     if (nameA !== nameB) {
       // Look for the names in the given `order` array.
       let indexA = order.indexOf(nameA);
@@ -86,7 +87,7 @@ export const storySort = (options: StorySortObjectParameter = {}): StorySortComp
     depth += 1;
   }
 
-  // Identical story kinds. The shortcut at the start of this function prevents
+  // Identical story titles. The shortcut at the start of this function prevents
   // this from ever being used.
   /* istanbul ignore next */
   return 0;

@@ -307,6 +307,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousSelection = selection;
     this.previousStory = story;
 
+    const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
+    if (FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.STORY_PREPARED, {
+        id: story.id,
+        parameters,
+        initialArgs,
+        argTypes,
+        args,
+      });
+    }
+
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
       await this.renderDocs({ story });
     } else {
@@ -415,17 +426,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     let renderContext: RenderContext<TFramework>;
     const initialRender = async () => {
       const storyContext = this.storyStore.getStoryContext(story);
-
-      const { parameters, initialArgs, argTypes, args } = storyContext;
-      if (FEATURES?.storyStoreV7) {
-        this.channel.emit(Events.STORY_PREPARED, {
-          id,
-          parameters,
-          initialArgs,
-          argTypes,
-          args,
-        });
-      }
 
       const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
       const loadedContext = await applyLoaders({
