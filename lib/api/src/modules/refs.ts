@@ -224,11 +224,11 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
           storiesHash = transformStoriesRawToStoriesHash(map(stories, ref, { storyMapper }), {
             provider,
           });
-        } else if (v === 3) {
+        } else if (!v) {
+          throw new Error('Composition: Missing stories.json version');
+        } else {
           const index = (stories as unknown) as Record<StoryId, StoryIndexStory>;
           storiesHash = transformStoryIndexToStoriesHash({ v, stories: index }, { provider });
-        } else {
-          throw new Error(`Composition: Unknown stories.json version: ${v}`);
         }
         storiesHash = addRefIds(storiesHash, ref);
       }
