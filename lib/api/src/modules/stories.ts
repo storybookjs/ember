@@ -480,11 +480,15 @@ export const init: ModuleFn = ({
       const { ref } = getEventMetadata(this, fullAPI);
       fullAPI.updateStory(id, { ...update, prepared: true }, ref);
 
-      if (!store.getState().hasCalledSetOptions) {
-        const { options } = update.parameters;
-        checkDeprecatedOptionParameters(options);
-        fullAPI.setOptions(options);
-        store.setState({ hasCalledSetOptions: true });
+      if (!ref) {
+        if (!store.getState().hasCalledSetOptions) {
+          const { options } = update.parameters;
+          checkDeprecatedOptionParameters(options);
+          fullAPI.setOptions(options);
+          store.setState({ hasCalledSetOptions: true });
+        }
+      } else {
+        fullAPI.updateRef(ref.id, { ready: true });
       }
     });
 
