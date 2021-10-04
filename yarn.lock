@@ -7178,8 +7178,8 @@ __metadata:
     "@storybook/core-events": 6.4.0-beta.2
     "@storybook/csf": 0.0.2--canary.6aca495.0
     "@storybook/instrumenter": 6.4.0-beta.2
-    "@storybook/jest": ^0.0.0-alpha.1
-    "@storybook/testing-library": ^0.0.0-alpha.1
+    "@storybook/jest": 0.0.0-alpha.1
+    "@storybook/testing-library": 0.0.0-alpha.1
     "@storybook/theming": 6.4.0-beta.2
     formik: ^2.2.9
     global: ^4.4.0
@@ -8465,7 +8465,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/jest@npm:^0.0.0-alpha.1":
+"@storybook/jest@npm:0.0.0-alpha.1, @storybook/jest@npm:^0.0.0-alpha.1":
   version: 0.0.0-alpha.1
   resolution: "@storybook/jest@npm:0.0.0-alpha.1"
   dependencies:
@@ -8884,7 +8884,7 @@ __metadata:
     "@storybook/source-loader": "workspace:*"
     "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
-    "@storybook/testing-library": ^0.0.0-alpha.1
+    "@storybook/testing-library": 0.0.0-alpha.1
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
     "@storybook/vue": "workspace:*"
@@ -9189,7 +9189,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/testing-library@npm:^0.0.0-alpha.1":
+"@storybook/testing-library@npm:0.0.0-alpha.1":
   version: 0.0.0-alpha.1
   resolution: "@storybook/testing-library@npm:0.0.0-alpha.1"
   dependencies:
@@ -33476,9 +33476,11 @@ fsevents@^1.2.7:
     "@storybook/components": 6.4.0-beta.2
     "@storybook/core-events": 6.4.0-beta.2
     "@storybook/design-system": ^5.4.7
+    "@storybook/jest": 0.0.0-alpha.1
     "@storybook/node-logger": 6.4.0-beta.2
     "@storybook/react": 6.4.0-beta.2
     "@storybook/source-loader": 6.4.0-beta.2
+    "@storybook/testing-library": 0.0.0-alpha.1
     "@storybook/theming": 6.4.0-beta.2
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
