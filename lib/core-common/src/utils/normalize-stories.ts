@@ -45,12 +45,20 @@ export const normalizeStoriesEntry = (
   let specifierWithoutMatcher: Omit<NormalizedStoriesSpecifier, 'importPathMatcher'>;
 
   if (typeof entry === 'string') {
-    if (!entry.includes('*') && isDirectory(workingDir, entry)) {
-      specifierWithoutMatcher = {
-        titlePrefix: DEFAULT_TITLE_PREFIX,
-        directory: entry,
-        files: DEFAULT_FILES,
-      };
+    if (!entry.includes('*')) {
+      if (isDirectory(workingDir, entry)) {
+        specifierWithoutMatcher = {
+          titlePrefix: DEFAULT_TITLE_PREFIX,
+          directory: entry,
+          files: DEFAULT_FILES,
+        };
+      } else {
+        specifierWithoutMatcher = {
+          titlePrefix: DEFAULT_TITLE_PREFIX,
+          directory: path.dirname(entry),
+          files: path.basename(entry),
+        };
+      }
     } else {
       const fixedEntry = detectBadGlob(entry);
       const globResult = scan(fixedEntry);
