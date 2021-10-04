@@ -1,3 +1,21 @@
+## 6.4.0-beta.4 (October 5, 2021)
+
+### Features
+
+- Core: Support v2 compatibility mode in story index ([#16226](https://github.com/storybookjs/storybook/pull/16226))
+- Core: Support composing stories in both v6 and v7 modes ([#16224](https://github.com/storybookjs/storybook/pull/16224))
+- Web-components: Autogenerate action argTypes for event. ([#16178](https://github.com/storybookjs/storybook/pull/16178))
+
+### Bug Fixes
+
+- Addon-a11y: Fix type of context passed to `axe.run` ([#16129](https://github.com/storybookjs/storybook/pull/16129))
+- Addon-docs/Angular: Fix inline story rendering ([#16149](https://github.com/storybookjs/storybook/pull/16149))
+- Components: Fix Code component to render children as array ([#15492](https://github.com/storybookjs/storybook/pull/15492))
+
+### Maintenance
+
+- CLI: Remove watch mode from the build-storybook documentation ([#16165](https://github.com/storybookjs/storybook/pull/16165))
+
 ## 6.3.9 (October 1, 2021)
 
 ### Maintenance
