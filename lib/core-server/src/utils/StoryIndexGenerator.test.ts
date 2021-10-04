@@ -11,24 +11,79 @@ const getStorySortParameterMock = getStorySortParameter as jest.Mock<
   ReturnType<typeof getStorySortParameter>
 >;
 
-const configDir = path.join(__dirname, '__mockdata__');
+const options = {
+  configDir: path.join(__dirname, '__mockdata__'),
+  workingDir: path.join(__dirname, '__mockdata__'),
+};
+
 describe('StoryIndexGenerator', () => {
   beforeEach(() => {
     const actual = jest.requireActual('@storybook/csf-tools');
     readCsfOrMdxMock.mockImplementation(actual.readCsfOrMdx);
   });
   describe('extraction', () => {
-    describe('single file specifier', () => {});
-    describe('non-recursive specifier', () => {});
+    describe('single file specifier', () => {
+      it('extracts stories from the right files', async () => {
+        const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
+          './src/A.stories.js',
+          options
+        );
+
+        const generator = new StoryIndexGenerator([specifier], options);
+        await generator.initialize();
+
+        expect(await generator.getIndex()).toMatchInlineSnapshot(`
+          Object {
+            "stories": Object {
+              "a--story-one": Object {
+                "importPath": "./src/A.stories.js",
+                "name": "Story One",
+                "title": "A",
+              },
+            },
+            "v": 3,
+          }
+        `);
+      });
+    });
+    describe('non-recursive specifier', () => {
+      it('extracts stories from the right files', async () => {
+        const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
+          './src/*/*.stories.(ts|js|jsx)',
+          options
+        );
+
+        const generator = new StoryIndexGenerator([specifier], options);
+        await generator.initialize();
+
+        expect(await generator.getIndex()).toMatchInlineSnapshot(`
+          Object {
+            "stories": Object {
+              "nested-button--story-one": Object {
+                "importPath": "./src/nested/Button.stories.ts",
+                "name": "Story One",
+                "title": "Nested/Button",
+              },
+              "second-nested-f--story-one": Object {
+                "importPath": "./src/second-nested/F.stories.ts",
+                "name": "Story One",
+                "title": "Second Nested/F",
+              },
+            },
+            "v": 3,
+          }
+        `);
+      });
+    });
 
     describe('recursive specifier', () => {
       it('extracts stories from the right files', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|jsx)',
-          configDir
+          options
         );
 
-        const generator = new StoryIndexGenerator([specifier], configDir);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
 
         expect(await generator.getIndex()).toMatchInlineSnapshot(`
@@ -71,10 +126,10 @@ describe('StoryIndexGenerator', () => {
     it('runs a user-defined sort function', async () => {
       const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
         './src/**/*.stories.(ts|js|jsx)',
-        configDir
+        options
       );
 
-      const generator = new StoryIndexGenerator([specifier], configDir);
+      const generator = new StoryIndexGenerator([specifier], options);
       await generator.initialize();
 
       (getStorySortParameter as jest.Mock).mockReturnValueOnce({
@@ -96,11 +151,11 @@ describe('StoryIndexGenerator', () => {
       it('does not extract csf files a second time', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|jsx)',
-          configDir
+          options
         );
 
         readCsfOrMdxMock.mockClear();
-        const generator = new StoryIndexGenerator([specifier], configDir);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
@@ -113,12 +168,12 @@ describe('StoryIndexGenerator', () => {
       it('does not call the sort function a second time', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|jsx)',
-          configDir
+          options
         );
 
         const sortFn = jest.fn();
         getStorySortParameterMock.mockReturnValue(sortFn);
-        const generator = new StoryIndexGenerator([specifier], configDir);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(sortFn).toHaveBeenCalled();
@@ -133,16 +188,16 @@ describe('StoryIndexGenerator', () => {
       it('calls extract csf file for just the one file', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|jsx)',
-          configDir
+          options
         );
 
         readCsfOrMdxMock.mockClear();
-        const generator = new StoryIndexGenerator([specifier], configDir);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-        generator.invalidate(specifier, 'src/B.stories.ts', false);
+        generator.invalidate(specifier, './src/B.stories.ts', false);
 
         readCsfOrMdxMock.mockClear();
         await generator.getIndex();
@@ -152,17 +207,17 @@ describe('StoryIndexGenerator', () => {
       it('does call the sort function a second time', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|jsx)',
-          configDir
+          options
         );
 
         const sortFn = jest.fn();
         getStorySortParameterMock.mockReturnValue(sortFn);
-        const generator = new StoryIndexGenerator([specifier], configDir);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(sortFn).toHaveBeenCalled();
 
-        generator.invalidate(specifier, 'src/B.stories.ts', false);
+        generator.invalidate(specifier, './src/B.stories.ts', false);
 
         sortFn.mockClear();
         await generator.getIndex();
@@ -173,16 +228,16 @@ describe('StoryIndexGenerator', () => {
         it('does not extract csf files a second time', async () => {
           const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
             './src/**/*.stories.(ts|js|jsx)',
-            configDir
+            options
           );
 
           readCsfOrMdxMock.mockClear();
-          const generator = new StoryIndexGenerator([specifier], configDir);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-          generator.invalidate(specifier, 'src/B.stories.ts', true);
+          generator.invalidate(specifier, './src/B.stories.ts', true);
 
           readCsfOrMdxMock.mockClear();
           await generator.getIndex();
@@ -192,17 +247,17 @@ describe('StoryIndexGenerator', () => {
         it('does call the sort function a second time', async () => {
           const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
             './src/**/*.stories.(ts|js|jsx)',
-            configDir
+            options
           );
 
           const sortFn = jest.fn();
           getStorySortParameterMock.mockReturnValue(sortFn);
-          const generator = new StoryIndexGenerator([specifier], configDir);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(sortFn).toHaveBeenCalled();
 
-          generator.invalidate(specifier, 'src/B.stories.ts', true);
+          generator.invalidate(specifier, './src/B.stories.ts', true);
 
           sortFn.mockClear();
           await generator.getIndex();
@@ -212,16 +267,16 @@ describe('StoryIndexGenerator', () => {
         it('does not include the deleted stories in results', async () => {
           const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
             './src/**/*.stories.(ts|js|jsx)',
-            configDir
+            options
           );
 
           readCsfOrMdxMock.mockClear();
-          const generator = new StoryIndexGenerator([specifier], configDir);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
 
-          generator.invalidate(specifier, 'src/B.stories.ts', true);
+          generator.invalidate(specifier, './src/B.stories.ts', true);
 
           expect(Object.keys((await generator.getIndex()).stories)).not.toContain('b--story-one');
         });

@@ -55,16 +55,15 @@ export class StoryIndexGenerator {
 
         const fullGlob = path.join(this.options.workingDir, specifier.directory, specifier.files);
         const files = await glob(fullGlob);
-        console.log(fullGlob, files);
-        files.forEach((fileName: Path) => {
-          const ext = path.extname(fileName);
-          const relativePath = path.relative(this.options.workingDir, fileName);
+        files.forEach((absolutePath: Path) => {
+          const ext = path.extname(absolutePath);
+          const relativePath = path.relative(this.options.workingDir, absolutePath);
           if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
             logger.info(`Skipping ${ext} file ${relativePath}`);
             return;
           }
 
-          pathToSubIndex[fileName] = false;
+          pathToSubIndex[absolutePath] = false;
         });
 
         this.storyIndexEntries.set(specifier, pathToSubIndex);
@@ -80,11 +79,10 @@ export class StoryIndexGenerator {
       await Promise.all(
         this.specifiers.map(async (specifier) => {
           const entry = this.storyIndexEntries.get(specifier);
-          console.log('entries');
-          console.log(specifier, Object.keys(entry));
           return Promise.all(
             Object.keys(entry).map(
-              async (fileName) => entry[fileName] || this.extractStories(specifier, fileName)
+              async (absolutePath) =>
+                entry[absolutePath] || this.extractStories(specifier, absolutePath)
             )
           );
         })
@@ -135,8 +133,6 @@ export class StoryIndexGenerator {
     // Extract any entries that are currently missing
     // Pull out each file's stories into a list of stories, to be composed and sorted
     const storiesList = await this.ensureExtracted();
-    console.log('storiesList');
-    console.log(storiesList.map((stories) => Object.keys(stories)));
 
     this.lastIndex = {
       v: 3,
@@ -147,12 +143,8 @@ export class StoryIndexGenerator {
   }
 
   invalidate(specifier: NormalizedStoriesSpecifier, importPath: Path, removed: boolean) {
-    const absolutePath = path.relative(this.options.workingDir, importPath);
-    console.log('invalidate', importPath, absolutePath, removed);
+    const absolutePath = path.resolve(this.options.workingDir, importPath);
     const pathToEntries = this.storyIndexEntries.get(specifier);
-    console.log(this.storyIndexEntries.keys());
-    console.log('pathToEntries');
-    console.log(Object.keys(pathToEntries));
 
     if (removed) {
       delete pathToEntries[absolutePath];
