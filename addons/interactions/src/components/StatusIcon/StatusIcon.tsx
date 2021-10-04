@@ -3,6 +3,7 @@ import { Icons, IconsProps } from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
+import { transparentize } from 'polished';
 import localTheme from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
@@ -21,7 +22,7 @@ const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
     [CallStates.DONE]: theme.color.positive,
     [CallStates.ERROR]: theme.color.negative,
     [CallStates.ACTIVE]: theme.color.secondary,
-    [CallStates.WAITING]: gray[500],
+    [CallStates.WAITING]: transparentize(0.5, gray[500]),
   }[status];
   return {
     width: status === CallStates.WAITING ? 6 : 12,

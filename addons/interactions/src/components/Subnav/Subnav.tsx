@@ -58,7 +58,7 @@ const StyledSeparator = styled(Separator)({
 });
 
 const StyledLocation = styled(P)(({ theme }) => ({
-  color: theme.color.dark,
+  color: theme.textMutedColor,
   justifyContent: 'flex-end',
   textAlign: 'right',
   marginTop: 'auto',

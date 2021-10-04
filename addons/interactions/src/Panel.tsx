@@ -43,7 +43,8 @@ const Interaction = ({
   const RowContainer = styled.div(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    background: call.state === CallStates.ERROR ? '#FFF5CF' : 'transparent', // dark: #222
+    background:
+      call.state === CallStates.ERROR ? transparentize(0.8, theme.color.negative) : 'transparent', // dark: #222
     borderBottom: `1px solid ${theme.appBorderColor}`,
     fontFamily: typography.fonts.base,
     fontSize: 13,
@@ -71,7 +72,7 @@ const Interaction = ({
       background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
     },
     '& > div': {
-      opacity: call.state === CallStates.WAITING ? 0.4 : 1,
+      opacity: call.state === CallStates.WAITING ? 0.5 : 1,
     },
   }));
   const detailStyle = {
