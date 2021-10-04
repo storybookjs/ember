@@ -20,8 +20,11 @@ export async function extractStoriesJson(
   await fs.writeJson(outputFile, index);
 }
 
-export async function useStoriesJson(router: Router, options: Options) {
-  const workingDir = process.cwd();
+export async function useStoriesJson(
+  router: Router,
+  options: Options,
+  workingDir: string = process.cwd()
+) {
   const normalizedStories = normalizeStories(await options.presets.apply('stories'), {
     configDir: options.configDir,
     workingDir,
