@@ -1,5 +1,10 @@
 import fs from 'fs-extra';
-import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
+import {
+  Options,
+  normalizeStories,
+  NormalizedStoriesSpecifier,
+  StorybookConfig,
+} from '@storybook/core-common';
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 
 export async function extractStoriesJson(
@@ -21,13 +26,13 @@ export async function useStoriesJson(router: any, options: Options) {
     workingDir: process.cwd(),
   });
 
-  const features = await options.presets.apply<{ breakingChangesV7?: boolean }>('features');
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
 
   router.use('/stories.json', async (_req: any, res: any) => {
     const generator = new StoryIndexGenerator(
       normalized,
       options.configDir,
-      !features?.breakingChangesV7
+      !features?.breakingChangesV7 && !features?.storyStoreV7
     );
     await generator.initialize();
 

@@ -78,7 +78,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
       path.join(options.outputDir, 'stories.json'),
       stories,
       options.configDir,
-      !features?.breakingChangesV7
+      !features?.breakingChangesV7 && !features?.storyStoreV7
     );
   }
 
