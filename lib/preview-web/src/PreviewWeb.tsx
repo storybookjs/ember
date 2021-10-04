@@ -50,7 +50,7 @@ function createController() {
   };
 }
 
-type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
+type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => Promise<void>;
 
@@ -406,8 +406,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       name,
       story: name,
       showMain: () => this.view.showMain(),
-      showError: (err: { title: string; description: string }) => this.renderError(err),
-      showException: (err: Error) => this.renderException(err),
+      showError: (err: { title: string; description: string }) => this.renderError(id, err),
+      showException: (err: Error) => this.renderException(id, err),
     };
 
     return this.renderStoryToElement({ story, renderContext, element });
@@ -435,16 +435,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     const runPhase = async (phaseName: RenderPhase, asyncFn: () => MaybePromise<void>) => {
       phase = phaseName;
-      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
-        newPhase: phaseName,
-        storyId: id,
-      });
+      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phaseName, storyId: id });
       await asyncFn();
       if (controller.signal.aborted) {
-        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
-          newPhase: 'aborted',
-          storyId: id,
-        });
+        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'aborted', storyId: id });
       }
     };
 
@@ -600,20 +594,22 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   // renderException is used if we fail to render the story and it is uncaught by the app layer
-  renderException(err: Error) {
-    this.channel.emit(Events.STORY_THREW_EXCEPTION, err);
+  renderException(storyId: StoryId, error: Error) {
+    this.channel.emit(Events.STORY_THREW_EXCEPTION, error);
+    this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'errored', storyId });
 
     // Ignored exceptions exist for control flow purposes, and are typically handled elsewhere.
-    if (err !== IGNORED_EXCEPTION) {
-      this.view.showErrorDisplay(err);
-      logger.error(err);
+    if (error !== IGNORED_EXCEPTION) {
+      this.view.showErrorDisplay(error);
+      logger.error(error);
     }
   }
 
   // renderError is used by the various app layers to inform the user they have done something
   // wrong -- for instance returned the wrong thing from a story
-  renderError({ title, description }: { title: string; description: string }) {
+  renderError(storyId: StoryId, { title, description }: { title: string; description: string }) {
     this.channel.emit(Events.STORY_ERRORED, { title, description });
+    this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'errored', storyId });
     this.view.showErrorDisplay({
       message: title,
       stack: description,
