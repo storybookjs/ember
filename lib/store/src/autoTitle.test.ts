@@ -1,3 +1,5 @@
+import { normalizeStoriesEntry } from '@storybook/core-common';
+
 import { autoTitleFromSpecifier as auto } from './autoTitle';
 
 expect.addSnapshotSerializer({
@@ -5,52 +7,59 @@ expect.addSnapshotSerializer({
   test: (val) => true,
 });
 
-describe('autoTitle', () => {
-  it('no directory', () => {
-    expect(auto('/path/to/file', { glob: '' })).toBeFalsy();
-  });
+// Make these two the same so `normalizeStoriesEntry` doesn't change anything
+const options = {
+  configDir: '/path',
+  workingDir: '/path',
+};
 
+describe('autoTitle', () => {
   it('no match', () => {
-    expect(auto('/path/to/file', { glob: '', specifier: { directory: '/other' } })).toBeFalsy();
+    expect(
+      auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './other' }, options))
+    ).toBeFalsy();
   });
 
   describe('no trailing slash', () => {
     it('match with no titlePrefix', () => {
       expect(
-        auto('/path/to/file', { glob: '', specifier: { directory: '/path' } })
+        auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options))
       ).toMatchInlineSnapshot(`To/File`);
     });
 
     it('match with titlePrefix', () => {
       expect(
-        auto('/path/to/file', { glob: '', specifier: { directory: '/path', titlePrefix: 'atoms' } })
-      ).toMatchInlineSnapshot(`Atoms/To/File`);
-    });
-
-    it('match with extension', () => {
-      expect(
-        auto('/path/to/file.stories.tsx', {
-          glob: '',
-          specifier: { directory: '/path', titlePrefix: 'atoms' },
-        })
+        auto(
+          './path/to/file.stories.js',
+          normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options)
+        )
       ).toMatchInlineSnapshot(`Atoms/To/File`);
     });
 
     it('match with hyphen path', () => {
       expect(
-        auto('/path/to-my/file', { glob: '', specifier: { directory: '/path' } })
+        auto(
+          './path/to-my/file.stories.js',
+          normalizeStoriesEntry({ directory: './path' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
 
     it('match with underscore path', () => {
       expect(
-        auto('/path/to_my/file', { glob: '', specifier: { directory: '/path' } })
+        auto(
+          './path/to_my/file.stories.js',
+          normalizeStoriesEntry({ directory: './path' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
 
     it('match with windows path', () => {
       expect(
-        auto('/path/to_my/file', { glob: '', specifier: { directory: '\\path' } })
+        auto(
+          './path/to_my/file.stories.js',
+          normalizeStoriesEntry({ directory: '.\\path' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
   });
@@ -58,43 +67,43 @@ describe('autoTitle', () => {
   describe('trailing slash', () => {
     it('match with no titlePrefix', () => {
       expect(
-        auto('/path/to/file', { glob: '', specifier: { directory: '/path/' } })
+        auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options))
       ).toMatchInlineSnapshot(`To/File`);
     });
 
     it('match with titlePrefix', () => {
       expect(
-        auto('/path/to/file', {
-          glob: '',
-          specifier: { directory: '/path/', titlePrefix: 'atoms' },
-        })
-      ).toMatchInlineSnapshot(`Atoms/To/File`);
-    });
-
-    it('match with extension', () => {
-      expect(
-        auto('/path/to/file.stories.tsx', {
-          glob: '',
-          specifier: { directory: '/path/', titlePrefix: 'atoms' },
-        })
+        auto(
+          './path/to/file.stories.js',
+          normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options)
+        )
       ).toMatchInlineSnapshot(`Atoms/To/File`);
     });
 
     it('match with hyphen path', () => {
       expect(
-        auto('/path/to-my/file', { glob: '', specifier: { directory: '/path/' } })
+        auto(
+          './path/to-my/file.stories.js',
+          normalizeStoriesEntry({ directory: './path/' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
 
     it('match with underscore path', () => {
       expect(
-        auto('/path/to_my/file', { glob: '', specifier: { directory: '/path/' } })
+        auto(
+          './path/to_my/file.stories.js',
+          normalizeStoriesEntry({ directory: './path/' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
 
     it('match with windows path', () => {
       expect(
-        auto('/path/to_my/file', { glob: '', specifier: { directory: '\\path\\' } })
+        auto(
+          './path/to_my/file.stories.js',
+          normalizeStoriesEntry({ directory: '.\\path\\' }, options)
+        )
       ).toMatchInlineSnapshot(`To My/File`);
     });
   });

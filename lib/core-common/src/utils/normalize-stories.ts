@@ -3,6 +3,7 @@ import path from 'path';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import { scan } from 'micromatch';
+import slash from 'slash';
 
 import type { StoriesEntry, NormalizedStoriesSpecifier } from '../types';
 import { globToRegex } from './glob-to-regexp';
@@ -74,16 +75,22 @@ export const normalizeStoriesEntry = (
     };
   }
 
+  // We are going to be doing everything with node importPaths which use
+  // URL format, i.e. `/` as a separator, so let's make sure we've normalized
+  const files = slash(specifierWithoutMatcher.files);
+
   // At this stage `directory` is relative to `main.js` (the config dir)
   // We want to work relative to the working dir, so we transform it here.
-  const { directory: directoryRelativeToConfig, files } = specifierWithoutMatcher;
+  const { directory: directoryRelativeToConfig, files: filesForOS } = specifierWithoutMatcher;
   const absoluteDirectory = path.resolve(configDir, directoryRelativeToConfig);
-  let directory = path.relative(workingDir, absoluteDirectory);
+  let directory = slash(path.relative(workingDir, absoluteDirectory));
+
   // relative('/foo', '/foo/src') => 'src'
   // but we want `./src` to match importPaths
   if (!directory.startsWith('.')) {
-    directory = `.${path.sep}${directory}`;
+    directory = `./${directory}`;
   }
+  directory = directory.replace(/\/$/, '');
 
   // Now make the importFn matcher.
   const importPathMatcher = globToRegex(`${directory}/${files}`);

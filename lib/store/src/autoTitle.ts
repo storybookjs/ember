@@ -34,7 +34,7 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
   // slash makes sure we always handle paths with unix-style forward slash
   const normalizedFileName = slash(fileName);
 
-  if (importPathMatcher.exec(fileName)) {
+  if (importPathMatcher.exec(normalizedFileName)) {
     const suffix = normalizedFileName.replace(directory, '');
     const titleAndSuffix = slash(path.join(titlePrefix, suffix));
     return startCaseTitle(stripExtension(titleAndSuffix));
