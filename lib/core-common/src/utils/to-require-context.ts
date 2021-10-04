@@ -1,7 +1,7 @@
 import { NormalizedStoriesSpecifier } from '../types';
 import { globToRegex } from './glob-to-regexp';
 
-const toRequireContext = (specifier: NormalizedStoriesSpecifier) => {
+export const toRequireContext = (specifier: NormalizedStoriesSpecifier) => {
   const { directory, files } = specifier;
 
   // The importPathMatcher is a `./`-prefixed matcher that includes the directory
@@ -9,7 +9,7 @@ const toRequireContext = (specifier: NormalizedStoriesSpecifier) => {
   const match = globToRegex(`./${files}`);
   return {
     path: directory,
-    recursive: files.startsWith('**'),
+    recursive: !!files.match(/^\*{1,2}\//),
     match,
   };
 };
