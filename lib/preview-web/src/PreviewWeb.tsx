@@ -52,6 +52,7 @@ function createController() {
 
 type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
 type MaybePromise<T> = Promise<T> | T;
+type StoryCleanupFn = () => Promise<void>;
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
@@ -68,7 +69,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   previousStory: Story<TFramework>;
 
-  previousCleanup: () => void;
+  previousCleanup: StoryCleanupFn;
 
   constructor({
     importFn,
@@ -167,7 +168,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // Use the selection specifier to choose a story, then render it
   async selectSpecifiedStory() {
     if (!this.urlStore.selectionSpecifier) {
-      this.renderMissingStory();
+      await this.renderMissingStory();
       return;
     }
 
@@ -175,7 +176,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const storyId = this.storyStore.storyIndex.storyIdFromSpecifier(storySpecifier);
 
     if (!storyId) {
-      this.renderMissingStory(storySpecifier);
+      await this.renderMissingStory(storySpecifier);
       return;
     }
 
@@ -244,9 +245,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     await this.storyStore.onImportFnChanged({ importFn });
 
     if (this.urlStore.selection) {
-      this.renderSelection();
+      await this.renderSelection();
     } else {
-      this.selectSpecifiedStory();
+      await this.selectSpecifiedStory();
     }
 
     if (!FEATURES?.storyStoreV7) {
@@ -289,7 +290,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       story = await this.storyStore.loadStory({ storyId: selection.storyId });
     } catch (err) {
       logger.warn(err);
-      this.renderMissingStory(selection.storyId);
+      await this.renderMissingStory(selection.storyId);
       return;
     }
 
@@ -311,7 +312,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       return;
     }
 
-    this.cleanupPreviousRender({ unmountDocs: viewModeChanged });
+    await this.cleanupPreviousRender({ unmountDocs: viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
     if (this.previousSelection && (storyChanged || viewModeChanged)) {
@@ -425,11 +426,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
     >;
     element: Element;
-  }) {
+  }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
     let controller = createController();
 
+    let phase: RenderPhase;
+    const isPending = () => ['rendering', 'playing'].includes(phase);
+
     const runPhase = async (phaseName: RenderPhase, asyncFn: () => MaybePromise<void>) => {
+      phase = phaseName;
       this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, {
         newPhase: phaseName,
         storyId: id,
@@ -445,16 +450,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     let loadedContext: StoryContext<TFramework>;
     const renderStory = async ({ initial = false, forceRemount = false } = {}) => {
-      if (forceRemount) controller.abort();
-      if (controller.signal.aborted) {
+      if (forceRemount) {
+        // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
+        // play function might continue execution regardless, which we deal with during cleanup.
+        // Note we can't reload the page here because there's a legitimate use case for forceRemount
+        // while in the 'playing' phase: the play function may never resolve during debugging, while
+        // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
+        controller.abort();
         controller = createController();
       }
 
       if (initial) {
-        // NOTE: loaders are not getting run again. So we are just patching
-        // the updated story context over the previous value (that included loader output).
-        // Loaders aren't allowed to touch anything but the `loaded` key but
-        // this means loaders never run again with new values of args/globals
         const storyContext = this.storyStore.getStoryContext(story);
         const { parameters, initialArgs, argTypes, args } = storyContext;
         if (FEATURES?.storyStoreV7) {
@@ -480,7 +486,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           return;
         }
       } else if (!loadedContext) {
-        // The story has not finished rendered the first time. The loaders are still running
+        // The story has not finished rendering the first time. The loaders are still running
         // and we will pick up the new args/globals values when renderToDOM is called.
         return;
       }
@@ -505,15 +511,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
         if (controller.signal.aborted) return;
 
-        // NOTE: if the story is torn down during the play function, there could be negative
-        // side-effects (as the play function tries to modify something that is no longer visible).
-        // In the future we will likely pass the AbortController signal into play(), and also
-        // attempt to scope the play function by passing the element.
-        //
-        // NOTE: it is possible that args/globals have changed in between us starting to render
-        // the story and executing the play function (it is also possible that they change mid-way
-        // through executing the play function). We explicitly allow such changes to re-render the
-        // story by setting `initialRenderDone=true` immediate after `renderToDOM` completes.
         if (forceRemount && playFunction) {
           await runPhase('playing', () => playFunction(renderContext.storyContext));
           if (controller.signal.aborted) return;
@@ -532,43 +529,52 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     renderStory({ initial: true, forceRemount: true });
 
     const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) {
-        controller.abort();
-        renderStory({ forceRemount: true });
-      }
+      if (storyId === story.id) renderStory({ forceRemount: true });
     };
     const rerenderStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) renderStory();
     };
 
     // Listen to events and re-render story
-    // Don't forget to unsubscribe on tear down
+    // Don't forget to unsubscribe on cleanup
     this.channel.on(Events.UPDATE_GLOBALS, renderStory);
     this.channel.on(Events.FORCE_RE_RENDER, renderStory);
     this.channel.on(Events.FORCE_REMOUNT, remountStoryIfMatches);
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
 
-    // Tear down callback
-    return () => {
+    // Cleanup / teardown function invoked on next render (via `cleanupPreviousRender`)
+    return async () => {
       // If the story is torn down (either a new story is rendered or the docs page removes it)
       // we need to consider the fact that the initial render may not be finished
       // (possibly the loaders or the play function are still running). We use the controller
       // as a method to abort them, ASAP, but this is not foolproof as we cannot control what
-      // happens inside the user's code. Still, we do render the new story right away.
-      // Alternatively, we could make this function async and await the teardown before rendering
-      // the new story. This might be a bit complicated for docs however.
+      // happens inside the user's code.
       controller.abort();
+
       this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, renderStory);
       this.channel.off(Events.FORCE_RE_RENDER, renderStory);
       this.channel.off(Events.FORCE_REMOUNT, remountStoryIfMatches);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
+
+      // Check if we're done rendering/playing. If not, we may have to reload the page.
+      if (!isPending()) return;
+
+      // Wait for the next tick to handle the abort, then try again.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      if (!isPending()) return;
+
+      // If we still haven't completed, reload the page (iframe) to ensure we have a clean slate
+      // for the next render. Since the reload can take a brief moment to happen, we want to stop
+      // further rendering by awaiting a never-resolving promise (which is destroyed on reload).
+      global.window.location.reload();
+      await new Promise(() => {});
     };
   }
 
-  cleanupPreviousRender({ unmountDocs = true }: { unmountDocs?: boolean } = {}) {
+  async cleanupPreviousRender({ unmountDocs = true }: { unmountDocs?: boolean } = {}) {
     const previousViewMode = this.previousStory?.parameters?.docsOnly
       ? 'docs'
       : this.previousSelection?.viewMode;
@@ -578,7 +584,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     if (previousViewMode === 'story') {
-      this.previousCleanup();
+      await this.previousCleanup();
     }
   }
 
@@ -587,8 +593,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.emit(Events.CONFIG_ERROR, err);
   }
 
-  renderMissingStory(storySpecifier?: StorySpecifier) {
-    this.cleanupPreviousRender();
+  async renderMissingStory(storySpecifier?: StorySpecifier) {
+    await this.cleanupPreviousRender();
     this.view.showNoPreview();
     this.channel.emit(Events.STORY_MISSING, storySpecifier);
   }
