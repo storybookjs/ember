@@ -326,7 +326,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
-    const { id, title, name } = story;
+    const { id, title, name, componentId } = story;
     const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
@@ -368,11 +368,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 
+    // Use `componentId` as a key so that we force a re-render every time
+    // we switch components
     const docsElement = (
-      <DocsContainer context={docsContext}>
+      <DocsContainer key={componentId} context={docsContext}>
         <Page />
       </DocsContainer>
     );
+
     ReactDOM.render(docsElement, element, async () => {
       await Promise.all(renderingStoryPromises);
       this.channel.emit(Events.DOCS_RENDERED, id);

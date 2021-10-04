@@ -8,7 +8,17 @@ export class RendererFactory {
 
   private rendererMap = new Map<string, AbstractRenderer>();
 
-  public async getRendererInstance(storyId: string, targetDOMNode: HTMLElement) {
+  public async getRendererInstance(
+    storyId: string,
+    targetDOMNode: HTMLElement
+  ): Promise<AbstractRenderer | null> {
+    // do nothing if the target node is null
+    // fix a problem when the docs asks 2 times the same component at the same time
+    // the 1st targetDOMNode of the 1st requested rendering becomes null 🤷‍♂️
+    if (targetDOMNode === null) {
+      return null;
+    }
+
     const renderType = getRenderType(targetDOMNode);
     // keep only instances of the same type
     if (this.lastRenderType && this.lastRenderType !== renderType) {
