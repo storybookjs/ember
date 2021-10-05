@@ -9,7 +9,7 @@ export const readCsfOrMdx = async (fileName: string, options: CsfOptions) => {
   if (fileName.endsWith('.mdx')) {
     code = await mdx(code, { compilers: [createCompiler({})] });
   }
-  return loadCsf(code, options);
+  return loadCsf(code, { ...options, fileName });
 };
 
 export * from './CsfFile';
