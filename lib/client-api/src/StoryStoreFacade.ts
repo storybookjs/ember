@@ -90,10 +90,12 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     } catch (err) {
       if (typeof storySortParameter === 'function') {
         throw new Error(dedent`
-          Error sorting stories with sort parameter ${storySortParameter}.
+          Error sorting stories with sort parameter ${storySortParameter}:
+
+          > ${err.message}
           
           Are you using a V7-style sort function in V6 compatibilty mode?
-
+          
           More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
         `);
       }

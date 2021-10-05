@@ -20,7 +20,9 @@ export const sortStoriesV7 = (
       stable.inplace(stories, sortFn);
     } catch (err) {
       throw new Error(dedent`
-        Error sorting stories with sort parameter ${storySortParameter}.
+        Error sorting stories with sort parameter ${storySortParameter}:
+
+        > ${err.message}
         
         Are you using a V6-style sort function in V7 mode?
 
