@@ -1,4 +1,5 @@
 import global from 'global';
+import dedent from 'ts-dedent';
 import {
   StoryId,
   AnyFramework,
@@ -17,6 +18,7 @@ import {
   Story,
   autoTitle,
   sortStoriesV6,
+  StoryIndexEntry,
 } from '@storybook/store';
 
 const { STORIES = [] } = global;
@@ -81,12 +83,27 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     );
 
     // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
-    const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    let sortedV7: StoryIndexEntry[];
+
+    try {
+      sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    } catch (err) {
+      if (typeof storySortParameter === 'function') {
+        throw new Error(dedent`
+          Error sorting stories with sort parameter ${storySortParameter}.
+          
+          Are you using a V7-style sort function in V6 compatibilty mode?
+
+          More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
+        `);
+      }
+      throw err;
+    }
     const stories = sortedV7.reduce((acc, s) => {
-  // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
-  // exports a `parameters.fileName` which can be different and mess up our `importFn`.
-  // In fact, in Storyshots there is a Jest transformer that does exactly that.
-  // NOTE: this doesn't actually change the story object, just the index.
+      // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
+      // exports a `parameters.fileName` which can be different and mess up our `importFn`.
+      // In fact, in Storyshots there is a Jest transformer that does exactly that.
+      // NOTE: this doesn't actually change the story object, just the index.
       acc[s.id] = this.stories[s.id];
       return acc;
     }, {} as StoryIndex['stories']);
