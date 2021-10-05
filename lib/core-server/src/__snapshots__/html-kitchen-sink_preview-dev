@@ -6,7 +6,7 @@ Object {
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/globals/globals.js",
     "NODE_MODULES/webpack-hot-middleware/client.js?reload=true&quiet=false&noInfo=undefined",
-    "ROOT/examples/html-kitchen-sink/.storybook/storybook-init-framework-entry.js",
+    "ROOT/storybook-init-framework-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/html/config.js-generated-config-entry.js",
     "ROOT/addons/a11y/dist/esm/a11yRunner.js-generated-config-entry.js",
@@ -17,7 +17,7 @@ Object {
     "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
     "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/examples/html-kitchen-sink/.storybook/preview.js-generated-config-entry.js",
-    "ROOT/examples/html-kitchen-sink/.storybook/generated-stories-entry.js",
+    "ROOT/generated-stories-entry.js",
   ],
   "keys": Array [
     "name",
