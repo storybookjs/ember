@@ -22,7 +22,6 @@ import {
   interpolate,
   nodeModulesPaths,
   Options,
-  NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
   loadPreviewOrConfigFile,

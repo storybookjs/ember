@@ -19,7 +19,6 @@ import {
   interpolate,
   Options,
   hasDotenv,
-  NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
   readTemplate,

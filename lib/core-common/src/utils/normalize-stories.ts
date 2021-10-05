@@ -89,7 +89,7 @@ export const normalizeStoriesEntry = (
 
   // At this stage `directory` is relative to `main.js` (the config dir)
   // We want to work relative to the working dir, so we transform it here.
-  const { directory: directoryRelativeToConfig, files: filesForOS } = specifierWithoutMatcher;
+  const { directory: directoryRelativeToConfig } = specifierWithoutMatcher;
   const absoluteDirectory = path.resolve(configDir, directoryRelativeToConfig);
   let directory = slash(path.relative(workingDir, absoluteDirectory));
 
