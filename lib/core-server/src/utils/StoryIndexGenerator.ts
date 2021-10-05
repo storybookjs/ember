@@ -2,10 +2,25 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 
-import { autoTitleFromSpecifier, sortStoriesV7, Path, StoryIndex } from '@storybook/store';
+import {
+  autoTitleFromSpecifier,
+  sortStoriesV7,
+  Path,
+  Parameters,
+  StoryIndex,
+  StoryIndexEntry,
+  StoryId,
+} from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
+import { ComponentTitle } from '@storybook/csf';
+
+interface V2CompatIndexEntry extends StoryIndexEntry {
+  kind: StoryIndexEntry['title'];
+  story: StoryIndexEntry['name'];
+  parameters: Parameters;
+}
 
 function sortExtractedStories(
   stories: StoryIndex['stories'],
@@ -30,7 +45,8 @@ export class StoryIndexGenerator {
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
-    public readonly configDir: Path
+    public readonly configDir: Path,
+    public readonly storiesV2Compatibility: boolean
   ) {
     this.storyIndexEntries = new Map();
   }
@@ -114,9 +130,33 @@ export class StoryIndexGenerator {
     const storySortParameter = await this.getStorySortParameter();
     const sorted = sortExtractedStories(stories, storySortParameter, this.storyFileNames());
 
+    let compat = sorted;
+    if (this.storiesV2Compatibility) {
+      const titleToStoryCount = Object.values(sorted).reduce((acc, story) => {
+        acc[story.title] = (acc[story.title] || 0) + 1;
+        return acc;
+      }, {} as Record<ComponentTitle, number>);
+
+      compat = Object.entries(sorted).reduce((acc, entry) => {
+        const [id, story] = entry;
+        acc[id] = {
+          ...story,
+          id,
+          kind: story.title,
+          story: story.name,
+          parameters: {
+            __id: story.id,
+            docsOnly: titleToStoryCount[story.title] === 1 && story.name === 'Page',
+            fileName: story.importPath,
+          },
+        };
+        return acc;
+      }, {} as Record<StoryId, V2CompatIndexEntry>);
+    }
+
     return {
       v: 3,
-      stories: sorted,
+      stories: compat,
     };
   }
 

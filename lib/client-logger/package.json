@@ -1,6 +1,6 @@
 {
   "name": "@storybook/client-logger",
-  "version": "6.4.0-beta.1",
+  "version": "6.4.0-beta.4",
   "description": "",
   "keywords": [
     "storybook"
@@ -46,6 +46,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "000a73948b4b91aa6bf84828b42ccdb7064f72bd",
+  "gitHead": "294cc94b04cb92813efd12c0a85be443788d0d5b",
   "sbmodern": "dist/modern/index.js"
 }

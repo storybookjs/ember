@@ -103,7 +103,7 @@ The `storySort` can also accept a configuration object.
 | Field           |  Type   |                       Description                        | Required |      Default Value      |          Example          |
 | --------------- | :-----: | :------------------------------------------------------: | :------: | :---------------------: | :-----------------------: |
 | **method**      | String  | Tells Storybook in which order the stories are displayed |    No    | Storybook configuration |     `'alphabetical'`      |
-| **order**       |  Array  |     The stories to be show, ordered by supplied name     |    No    |    Empty Array `[]`     | `['Intro', 'Components']` |
+| **order**       |  Array  |     The stories to be shown, ordered by supplied name     |    No    |    Empty Array `[]`     | `['Intro', 'Components']` |
 | **includeName** | Boolean |          Include story name in sort calculation          |    No    |         `false`         |          `true`           |
 | **locales**     | String  |           The locale required to be displayed            |    No    |      System locale      |          `en-US`          |
 
