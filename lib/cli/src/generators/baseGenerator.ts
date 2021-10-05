@@ -1,13 +1,7 @@
 import fse from 'fs-extra';
 import { getStorybookBabelDependencies } from '@storybook/core-common';
 import { NpmOptions } from '../NpmOptions';
-import {
-  StoryFormat,
-  SupportedLanguage,
-  SupportedFrameworks,
-  Builder,
-  CoreBuilder,
-} from '../project_types';
+import { SupportedLanguage, SupportedFrameworks, Builder, CoreBuilder } from '../project_types';
 import { getBabelDependencies, copyComponents } from '../helpers';
 import { configure } from './configure';
 import { getPackageDetails, JsPackageManager } from '../js-package-manager';
@@ -15,7 +9,6 @@ import { generateStorybookBabelConfigInCWD } from '../babel-config';
 
 export type GeneratorOptions = {
   language: SupportedLanguage;
-  storyFormat: StoryFormat;
   builder: Builder;
   linkable: boolean;
 };
