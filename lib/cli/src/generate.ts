@@ -48,9 +48,10 @@ program
   .command('upgrade')
   .description('Upgrade your Storybook packages to the latest')
   .option('-N --use-npm', 'Use NPM to build the Storybook server')
+  .option('-y --yes', 'Skip prompting the user')
   .option('-n --dry-run', 'Only check for upgrades, do not install')
   .option('-p --prerelease', 'Upgrade to the pre-release packages')
-  .option('-s --skip-check', 'Skip postinstall version consistency checks')
+  .option('-s --skip-check', 'Skip postinstall version and automigration checks')
   .action((options) => upgrade(options));
 
 program
