@@ -53,15 +53,16 @@ function getConfigPathParts(input: string): Output {
       const { stories = [] } = jest.requireActual(main);
 
       output.stories = stories.map((entry: StoriesEntry) => {
+        const workingDir = process.cwd();
         const specifier = normalizeStoriesEntry(entry, {
           configDir,
-          workingDir: process.cwd(),
+          workingDir,
         });
 
         const { path: basePath, recursive, match } = toRequireContext(specifier);
 
         // eslint-disable-next-line no-underscore-dangle
-        return global.__requireContext(configDir, basePath, recursive, match);
+        return global.__requireContext(workingDir, basePath, recursive, match);
       });
     }
 

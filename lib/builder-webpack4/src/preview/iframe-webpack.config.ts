@@ -86,9 +86,10 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   ].filter(Boolean);
 
   const entries = (await presets.apply('entries', [], options)) as string[];
+  const workingDir = process.cwd();
   const stories = normalizeStories(await presets.apply('stories', [], options), {
     configDir: options.configDir,
-    workingDir: process.cwd(),
+    workingDir,
   });
 
   const virtualModuleMapping: Record<string, string> = {};
@@ -108,7 +109,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     entries.push(configEntryPath);
   } else {
     const frameworkInitEntry = path.resolve(
-      path.join(configDir, 'storybook-init-framework-entry.js')
+      path.join(workingDir, 'storybook-init-framework-entry.js')
     );
     const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
     virtualModuleMapping[frameworkInitEntry] = `import '${frameworkImportPath}';`;
@@ -136,7 +137,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const storyTemplate = await readTemplate(
         path.join(__dirname, 'virtualModuleStory.template.js')
       );
-      const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
+      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.js`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
         .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
