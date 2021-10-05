@@ -14,7 +14,7 @@ interface FixOptions {
   dryRun?: boolean;
 }
 
-export const fix = async ({ fixId, dryRun, yes }: FixOptions) => {
+export const automigrate = async ({ fixId, dryRun, yes }: FixOptions) => {
   const packageManager = JsPackageManagerFactory.getPackageManager();
   const filtered = fixId ? fixes.filter((f) => f.id === fixId) : fixes;
 

@@ -11,7 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
-import { fix } from './fix';
+import { automigrate } from './automigrate';
 import { generateStorybookBabelConfigInCWD } from './babel-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
@@ -128,11 +128,12 @@ program
   );
 
 program
-  .command('fix [fixId]')
+  .command('automigrate [fixId]')
   .description('Check storybook for known problems or migrations and apply fixes')
   .option('-y --yes', 'Skip prompting the user')
+  .option('-n --dry-run', 'Only check for fixes, do not actually run them')
   .action((fixId, options) =>
-    fix({ fixId, ...options }).catch((e) => {
+    automigrate({ fixId, ...options }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })

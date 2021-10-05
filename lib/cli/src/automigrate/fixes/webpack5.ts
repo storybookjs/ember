@@ -112,7 +112,6 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
   },
 
   async run({ result: { main, storybookVersion, webpackVersion }, packageManager, dryRun }) {
-    if (dryRun) return;
     const deps = [
       `@storybook/manager-webpack5@${storybookVersion}`,
       `@storybook/builder-webpack5@${storybookVersion}`,
@@ -122,8 +121,13 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
     if (!webpackVersion) {
       deps.push('webpack@5');
     }
-    packageManager.addDependencies({ installAsDevDependencies: true }, deps);
-    main.setFieldValue(['core', 'builder'], 'webpack5');
-    await writeConfig(main);
+    logger.info(`✅ Adding dependencies: ${deps}`);
+    if (!dryRun) packageManager.addDependencies({ installAsDevDependencies: true }, deps);
+
+    logger.info('✅ Setting `core.builder` to `webpack5` in main.js');
+    if (!dryRun) {
+      main.setFieldValue(['core', 'builder'], 'webpack5');
+      await writeConfig(main);
+    }
   },
 };
