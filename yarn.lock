@@ -7179,7 +7179,7 @@ __metadata:
     "@storybook/csf": 0.0.2--canary.6aca495.0
     "@storybook/instrumenter": 6.4.0-beta.2
     "@storybook/jest": 0.0.0-alpha.1
-    "@storybook/testing-library": 0.0.0-alpha.1
+    "@storybook/testing-library": 0.0.0-alpha.2
     "@storybook/theming": 6.4.0-beta.2
     formik: ^2.2.9
     global: ^4.4.0
@@ -8884,7 +8884,7 @@ __metadata:
     "@storybook/source-loader": "workspace:*"
     "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
-    "@storybook/testing-library": 0.0.0-alpha.1
+    "@storybook/testing-library": 0.0.0-alpha.2
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
     "@storybook/vue": "workspace:*"
@@ -9189,16 +9189,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/testing-library@npm:0.0.0-alpha.1":
-  version: 0.0.0-alpha.1
-  resolution: "@storybook/testing-library@npm:0.0.0-alpha.1"
+"@storybook/testing-library@npm:0.0.0-alpha.2":
+  version: 0.0.0-alpha.2
+  resolution: "@storybook/testing-library@npm:0.0.0-alpha.2"
   dependencies:
     "@storybook/client-logger": 6.4.0-alpha.35
     "@storybook/instrumenter": 6.4.0-alpha.35
     "@testing-library/dom": ^8.3.0
     "@testing-library/user-event": ^13.2.1
     ts-dedent: ^2.2.0
-  checksum: afbd2a69fb0894a06f3b1bdf8eb30dbec8766e23e59b1a3f250b4b3704c0ef54573054b63495ee372bc59e101cbed3ea7240123ec4cdcaf5fcfb25105ff879fd
+  checksum: 362e489550b3ae780fa4e52724a65b46c9c5903083ed2a092aeb39bca64aebe302e5a0150c7b46a17c788fc65857b4fe0269720f4c125fcf0b869c3c3855b7e5
   languageName: node
   linkType: hard
 
@@ -33480,7 +33480,7 @@ fsevents@^1.2.7:
     "@storybook/node-logger": 6.4.0-beta.2
     "@storybook/react": 6.4.0-beta.2
     "@storybook/source-loader": 6.4.0-beta.2
-    "@storybook/testing-library": 0.0.0-alpha.1
+    "@storybook/testing-library": 0.0.0-alpha.2
     "@storybook/theming": 6.4.0-beta.2
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
