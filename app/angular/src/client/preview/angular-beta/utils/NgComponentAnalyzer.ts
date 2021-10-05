@@ -41,7 +41,8 @@ export const getComponentInputsOutputs = (component: any): ComponentInputsOutput
 
   // Browses component properties to extract I/O
   // Filters properties that have the same name as the one present in the @Component property
-  return Object.entries(componentPropsMetadata).reduce((previousValue, [propertyName, [value]]) => {
+  return Object.entries(componentPropsMetadata).reduce((previousValue, [propertyName, values]) => {
+    const value = values.find((v) => v instanceof Input || v instanceof Output);
     if (value instanceof Input) {
       const inputToAdd = {
         propName: propertyName,
