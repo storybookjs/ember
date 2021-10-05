@@ -7135,9 +7135,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-ie11@npm:0.0.7--canary.09c8d6b.0":
-  version: 0.0.7--canary.09c8d6b.0
-  resolution: "@storybook/addon-ie11@npm:0.0.7--canary.09c8d6b.0"
+"@storybook/addon-ie11@npm:0.0.7--canary.5c82634.0":
+  version: 0.0.7--canary.5c82634.0
+  resolution: "@storybook/addon-ie11@npm:0.0.7--canary.5c82634.0"
   dependencies:
     "@babel/preset-env": ^7.12.11
     "@storybook/node-logger": "*"
@@ -7148,7 +7148,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: a8ec9ef6175eade9aa1637212b832b534f0a6c913482f2b13a19994538a7e460d20ceac5ecbe38b2383dfc32a70ce8756781fa592d19c4ceebd8d2168dfe2fe2
+  checksum: abb0a4ef45f18233e587b66dd40403bff8562facd138703bcf3b45c8ba3edcf8010813f6d6af392690c8106c4599393fcf077d5a84cfe5292d5a8254ee55bfa5
   languageName: node
   linkType: hard
 
@@ -17898,7 +17898,7 @@ __metadata:
     "@storybook/addon-actions": 6.4.0-alpha.39
     "@storybook/addon-backgrounds": 6.4.0-alpha.39
     "@storybook/addon-docs": 6.4.0-alpha.39
-    "@storybook/addon-ie11": 0.0.7--canary.09c8d6b.0
+    "@storybook/addon-ie11": 0.0.7--canary.5c82634.0
     "@storybook/addon-jest": 6.4.0-alpha.39
     "@storybook/addon-links": 6.4.0-alpha.39
     "@storybook/addon-storyshots": 6.4.0-alpha.39
@@ -17923,7 +17923,7 @@ __metadata:
   resolution: "cra-react15@workspace:examples/cra-react15"
   dependencies:
     "@storybook/addon-actions": 6.4.0-alpha.39
-    "@storybook/addon-ie11": 0.0.7--canary.09c8d6b.0
+    "@storybook/addon-ie11": 0.0.7--canary.5c82634.0
     "@storybook/addon-links": 6.4.0-alpha.39
     "@storybook/addons": 6.4.0-alpha.39
     "@storybook/builder-webpack4": 6.4.0-alpha.39
@@ -17947,7 +17947,7 @@ __metadata:
   resolution: "cra-ts-essentials@workspace:examples/cra-ts-essentials"
   dependencies:
     "@storybook/addon-essentials": 6.4.0-alpha.39
-    "@storybook/addon-ie11": 0.0.7--canary.09c8d6b.0
+    "@storybook/addon-ie11": 0.0.7--canary.5c82634.0
     "@storybook/addons": 6.4.0-alpha.39
     "@storybook/builder-webpack4": 6.4.0-alpha.39
     "@storybook/preset-create-react-app": ^3.1.6
@@ -17972,7 +17972,7 @@ __metadata:
     "@storybook/addon-a11y": 6.4.0-alpha.39
     "@storybook/addon-actions": 6.4.0-alpha.39
     "@storybook/addon-docs": 6.4.0-alpha.39
-    "@storybook/addon-ie11": 0.0.7--canary.09c8d6b.0
+    "@storybook/addon-ie11": 0.0.7--canary.5c82634.0
     "@storybook/addon-links": 6.4.0-alpha.39
     "@storybook/addons": 6.4.0-alpha.39
     "@storybook/builder-webpack4": 6.4.0-alpha.39

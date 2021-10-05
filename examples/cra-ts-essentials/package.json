@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@storybook/addon-essentials": "6.4.0-alpha.39",
-    "@storybook/addon-ie11": "0.0.7--canary.09c8d6b.0",
+    "@storybook/addon-ie11": "0.0.7--canary.5c82634.0",
     "@storybook/addons": "6.4.0-alpha.39",
     "@storybook/builder-webpack4": "6.4.0-alpha.39",
     "@storybook/preset-create-react-app": "^3.1.6",
