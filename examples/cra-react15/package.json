@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "6.4.0-alpha.39",
-    "@storybook/addon-ie11": "0.0.7--canary.5c82634.0",
+    "@storybook/addon-ie11": "0.0.7--canary.5e87b64.0",
     "@storybook/addon-links": "6.4.0-alpha.39",
     "@storybook/addons": "6.4.0-alpha.39",
     "@storybook/builder-webpack4": "6.4.0-alpha.39",
