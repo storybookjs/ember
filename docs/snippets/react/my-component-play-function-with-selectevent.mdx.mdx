@@ -1,0 +1,33 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, fireEvent} from '@testing-library/react';
+
+import { MyComponent } from './MyComponent';
+
+<Meta title="WithSelectEvent" component={MyComponent}/>
+
+<!-- This is a placeholder mocked sleep function to be updated once the addon-interactions is out. -->
+
+export const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+<Story 
+  name="ExampleChangeEvent"
+  play={async () => {
+    fireEvent.change(screen.getByTestId('select'), {
+      target: { value: 'One Item' },
+    });
+    await sleep(2000);
+    fireEvent.change(screen.getByTestId('select'), {
+      target: { value: 'Another Item' },
+    });
+    await sleep(2000);
+      fireEvent.change(screen.getByTestId('select'), {
+    target: { value: 'Yet another item' },
+    });
+  }} />
+```

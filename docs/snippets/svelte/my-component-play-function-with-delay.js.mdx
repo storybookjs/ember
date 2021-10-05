@@ -1,0 +1,29 @@
+```js
+// MyComponent.stories.js
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/svelte';
+
+import MyComponent from './MyComponent.svelte';
+
+export default {
+  component: MyComponent,
+};
+
+export const CombinedStories = {
+  ...FirstStory,
+  play: async () => {
+    // The delay option set the ammount of milliseconds between characters being typed
+    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+      delay: 100,
+    });
+  },
+  render: () => ({
+    Component: MyComponent,
+  }),
+};
+```

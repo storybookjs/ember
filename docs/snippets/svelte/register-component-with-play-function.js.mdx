@@ -1,0 +1,26 @@
+```js
+// RegistrationForm.stories.js
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/svelte';
+
+import RegistrationForm from './RegistrationForm.svelte';
+
+export default {
+  component: RegistrationForm,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const FilledForm = {
+  play: async () => {
+    await userEvent.type(screen.getByTestId('username'), 'username');
+    await userEvent.type(screen.getByTestId('password'), 'password');
+    await userEvent.click(screen.getByTestId('submit'));
+  },
+  render: () => ({
+    Component: MyComponent,
+  }),
+};
+```

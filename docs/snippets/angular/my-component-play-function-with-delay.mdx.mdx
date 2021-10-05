@@ -1,0 +1,27 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!-- These are placeholders until the addon-interaction is out -->
+
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/angular';
+
+import { MyComponent } from './MyComponent.component';
+
+<Meta title="WithDelay" component={MyComponent} />
+
+<!-- The delay option set the ammount of milliseconds between characters being typed-->
+
+<Story 
+  name="DelayedStory" 
+  play={async () => {
+    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+      delay: 100,
+    });
+  }} />
+```

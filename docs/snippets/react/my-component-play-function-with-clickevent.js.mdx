@@ -1,0 +1,29 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+// These are placeholders until the addon-interaction is out
+
+import { screen, fireEvent } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
+
+import { MyComponent } from './MyComponent.js';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onButtonClick with this configuration will log the event in the Actions panel
+  argTypes: { onButtonClick: { action: true } },
+};
+
+export const ClickExample = {
+  play: async () => {
+    await userEvent.click(screen.getByTestId('data-testid'));
+  },
+};
+
+export const FireEventExample = {
+  play: async () => {
+    await fireEvent.click(screen.getByTestId('data-testid'));
+  },
+};
+```

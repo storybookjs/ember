@@ -1,0 +1,25 @@
+```ts
+// MyComponent.stories.ts
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/angular';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  component: MyComponent,
+};
+
+export const DelayedStory = {
+  play: async () => {
+    // The delay option set the ammount of milliseconds between characters being typed
+    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+      delay: 100,
+    });
+  },
+};
+```

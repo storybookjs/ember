@@ -1,0 +1,23 @@
+```md
+import { Meta, Story} from '@storybook/addon-docs'
+
+<!-- These are placeholders until the addon-interaction is out -->
+
+import { screen, within } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
+
+import { MyComponent } from './MyComponent.js';
+
+<Meta title="WithCanvasElement" component={MyComponent}/>
+
+<!--Assigns canvas to the component root element and queries the element based on it-->
+
+<Story
+  name="ExampleStory"
+  play={async ({canvasElement}) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
+  }} />
+```

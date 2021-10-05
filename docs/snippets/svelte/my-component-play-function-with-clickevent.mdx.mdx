@@ -1,0 +1,32 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!--These are placeholders until the addon-interaction is out -->
+
+import userEvent from '@testing-library/user-event';
+import { screen, fireEvent } from '@testing-library/svelte';
+
+import MyComponent from './MyComponent.svelte';
+
+<Meta title="ClickExamples" component={MyComponent} />
+
+<Story 
+  name="ClickExample" 
+  play={async () => {
+    await userEvent.click(screen.getByTestId('data-testid'));
+  }}
+  render={() => ({
+    Component: MyComponent,
+  })} />
+
+<Story 
+  name="FireEventExample" 
+  play={async () => {
+    await fireEvent.click(screen.getByTestId('data-testid'));
+  }}
+  render={() => ({
+    Component: MyComponent,
+  })} />
+```

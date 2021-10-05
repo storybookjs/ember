@@ -1,0 +1,47 @@
+```js
+// MyComponent.stories.js
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/vue';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  component: MyComponent,
+};
+
+export const FirstStory = {
+  play: async () => {
+    userEvent.type(screen.getByTestId('an-element'), 'example-value');
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+
+export const SecondStory = {
+  play: async () => {
+    await userEvent.type(screen.getByTestId('other-element'), 'another value');
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+
+export const CombinedStories = {
+  ...FirstStory,
+  play: async () => {
+    // Runs the FirstStory and Second story play function before running this story's play function
+    await FirstStory.play();
+    await SecondStory.play();
+    await userEvent.type(screen.getByTestId('another-element'), 'random value');
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+```

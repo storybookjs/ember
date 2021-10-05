@@ -7,17 +7,16 @@ import Button from './Button.svelte';
 
 <Meta title="Components/Button" component={Button} />
 
-export const Template = (args) => ({
-  Component: Button,
-  props: args,
-});
+<!-- The render function is a framework specific construct to tell how the story should render -->
 
 <Story
   name="Primary"
   args={{
     primary: true,
     label: 'Button',
-  }}>
-  {Template.bind({})}
-</Story>
+  }}
+  render={(args) => ({
+    Component: Button,
+    props:args,
+  })} />
 ```

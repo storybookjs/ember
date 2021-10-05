@@ -1,0 +1,28 @@
+```md
+<!-- RegistrationForm.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!--These are placeholders until the addon-interaction is out -->
+
+import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/svelte';
+
+import MyComponent from './MyComponent.svelte';
+
+<Meta title="WithDelay" component={MyComponent} />
+
+<Story 
+  name="DelayedStory" 
+  play={async () => {
+    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+      delay: 100,
+    });
+  }}
+  render={() => ({
+    Component: MyComponent,
+  })} />
+```

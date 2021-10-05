@@ -1,0 +1,24 @@
+```ts
+// MyComponent.stories.ts
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen, within } from '@testing-library/angular';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  component: MyComponent,
+};
+
+export const ExampleStory = {
+  play: async ({ canvasElement }) => {
+    // Assigns canvas to the component root element
+    const canvas = within(canvasElement);
+
+    // Starts querying from the component's root element
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
+  },
+};
+```

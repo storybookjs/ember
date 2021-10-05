@@ -1,0 +1,34 @@
+```js
+// MyComponent.stories.js
+
+// These are placeholders until the addon-interaction is out
+
+import userEvent from '@testing-library/user-event';
+import { screen, fireEvent } from '@testing-library/vue';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  component: MyComponent,
+};
+
+export const ExampleChangeEvent = {
+  play: async () => {
+    fireEvent.change(screen.getByTestId('select'), {
+      target: { value: 'One Item' },
+    });
+    await sleep(2000);
+    fireEvent.change(screen.getByTestId('select'), {
+      target: { value: 'Another Item' },
+    });
+    await sleep(2000);
+    fireEvent.change(screen.getByTestId('select'), {
+      target: { value: 'Yet another item' },
+    });
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent/>',
+  }),
+};
+```

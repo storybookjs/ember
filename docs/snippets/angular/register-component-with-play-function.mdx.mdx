@@ -1,0 +1,25 @@
+```md
+<!-- RegistrationForm.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!-- These are placeholders until the addon-interaction is out -->
+
+import { screen } from '@testing-library/angular';
+import userEvent from '@testing-library/user-event';
+
+import { RegistrationForm } from './RegistrationForm.component';
+
+<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel -->
+
+<Meta title="RegistrationForm" component={RegistrationForm} argTypes={{ onSubmit: { action: true }} />
+
+<Story
+  name="FilledForm"
+  play={async () => {
+    await userEvent.type(screen.getByTestId('username'));
+    await userEvent.type(screen.getByTestId('password'));
+    await userEvent.click(screen.getByTestId('submit'));
+  }}
+/>
+```

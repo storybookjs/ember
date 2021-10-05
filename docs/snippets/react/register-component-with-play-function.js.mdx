@@ -1,0 +1,24 @@
+```js
+// RegistrationForm.stories.js | RegistrationForm.stories.jsx | RegistrationForm.stories.ts | RegistrationForm.stories.tsx
+
+// These are placeholders until the addon-interaction is out
+
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import { RegistrationForm } from './RegistrationForm.js';
+
+export default {
+  component: RegistrationForm,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const FilledForm = {
+  play: async () => {
+    await userEvent.type(screen.getByTestId('username'));
+    await userEvent.type(screen.getByTestId('password'));
+    await userEvent.click(screen.getByTestId('submit'));
+  },
+};
+```
