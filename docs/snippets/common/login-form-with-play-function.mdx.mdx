@@ -1,0 +1,27 @@
+```md
+<!-- LoginForm.stories.mdx -->
+
+import { Meta, Story} from '@storybook/addon-docs';
+
+<!-- These are placeholders and will be updated once the addon-interactions is out-->
+
+import userEvent, { screen } from '@storybook/addon-interactions';
+
+import { LoginForm } from './LoginForm';
+
+<!-- 👇 Marking the onButtonClick with this configuration will log the event in the Actions panel -->
+
+<Meta title="Form" component={LoginForm} argTypes={{ onSubmit: { action: true }}/>
+
+<Story 
+  name="Example"
+  play={async () => {
+    await userEvent.type(screen.getByTestId('email'), 'emailaddress@provider.com', {
+      delay: 100,
+  });
+  await userEvent.type(screen.getByTestId('password'), 'a-random-password', {
+    delay: 100,
+  });
+  await userEvent.click(screen.getByTestId('submit'));
+}} />
+```
