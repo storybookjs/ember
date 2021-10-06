@@ -3,7 +3,6 @@ import { within, waitFor, fireEvent, userEvent } from '@storybook/testing-librar
 import React from 'react';
 
 import { AccountForm } from './AccountForm';
-import { sleep, tick } from '../../lib/time';
 
 export default {
   title: 'Addons/Interactions/AccountForm',
@@ -60,9 +59,10 @@ export const StandardEmailFailed = {
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou');
     await userEvent.click(canvas.getByRole('button', { name: /create account/i }));
 
-    await tick();
-    await expect(args.onSubmit).not.toHaveBeenCalled();
-    await canvas.findByText('Please enter a correctly formatted email address');
+    await waitFor(async () => {
+      await expect(args.onSubmit).not.toHaveBeenCalled();
+      await canvas.findByText('Please enter a correctly formatted email address');
+    });
   },
 };
 
@@ -73,11 +73,13 @@ export const StandardEmailSuccess = {
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
     await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
     await userEvent.click(canvas.getByTestId('submit'));
-    await tick();
-    await expect(args.onSubmit).toHaveBeenCalledTimes(1);
-    await expect(args.onSubmit).toHaveBeenCalledWith({
-      email: 'michael@chromatic.com',
-      password: 'testpasswordthatwontfail',
+
+    await waitFor(async () => {
+      await expect(args.onSubmit).toHaveBeenCalledTimes(1);
+      await expect(args.onSubmit).toHaveBeenCalledWith({
+        email: 'michael@chromatic.com',
+        password: 'testpasswordthatwontfail',
+      });
     });
   },
 };
@@ -97,8 +99,9 @@ export const StandardFailHover = {
   play: async (context: any) => {
     const canvas = within(context.canvasElement);
     await StandardPasswordFailed.play(context);
-    await sleep(2000);
-    await userEvent.hover(canvas.getByTestId('password-error-info'));
+    await waitFor(async () => {
+      await userEvent.hover(canvas.getByTestId('password-error-info'));
+    });
   },
 };
 
@@ -133,11 +136,11 @@ export const VerificationSuccess = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     await StandardEmailFilled.play({ canvasElement });
-    await sleep(1000);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou', { delay: 50 });
-    await sleep(1000);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await userEvent.type(canvas.getByTestId('password2'), 'helloyou', { delay: 50 });
-    await sleep(1000);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await userEvent.click(canvas.getByTestId('submit'));
   },
 };
