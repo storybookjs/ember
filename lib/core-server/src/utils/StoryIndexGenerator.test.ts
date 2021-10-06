@@ -36,6 +36,7 @@ describe('StoryIndexGenerator', () => {
           Object {
             "stories": Object {
               "a--story-one": Object {
+                "id": "a--story-one",
                 "importPath": "./src/A.stories.js",
                 "name": "Story One",
                 "title": "A",
@@ -60,11 +61,13 @@ describe('StoryIndexGenerator', () => {
           Object {
             "stories": Object {
               "nested-button--story-one": Object {
+                "id": "nested-button--story-one",
                 "importPath": "./src/nested/Button.stories.ts",
                 "name": "Story One",
                 "title": "Nested/Button",
               },
               "second-nested-f--story-one": Object {
+                "id": "second-nested-f--story-one",
                 "importPath": "./src/second-nested/F.stories.ts",
                 "name": "Story One",
                 "title": "Second Nested/F",
@@ -90,26 +93,31 @@ describe('StoryIndexGenerator', () => {
           Object {
             "stories": Object {
               "a--story-one": Object {
+                "id": "a--story-one",
                 "importPath": "./src/A.stories.js",
                 "name": "Story One",
                 "title": "A",
               },
               "b--story-one": Object {
+                "id": "b--story-one",
                 "importPath": "./src/B.stories.ts",
                 "name": "Story One",
                 "title": "B",
               },
               "d--story-one": Object {
+                "id": "d--story-one",
                 "importPath": "./src/D.stories.jsx",
                 "name": "Story One",
                 "title": "D",
               },
               "nested-button--story-one": Object {
+                "id": "nested-button--story-one",
                 "importPath": "./src/nested/Button.stories.ts",
                 "name": "Story One",
                 "title": "Nested/Button",
               },
               "second-nested-f--story-one": Object {
+                "id": "second-nested-f--story-one",
                 "importPath": "./src/second-nested/F.stories.ts",
                 "name": "Story One",
                 "title": "Second Nested/F",

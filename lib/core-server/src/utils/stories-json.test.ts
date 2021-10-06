@@ -57,28 +57,68 @@ describe('useStoriesJson', () => {
         Object {
           "stories": Object {
             "a--story-one": Object {
+              "id": "a--story-one",
               "importPath": "./src/A.stories.js",
+              "kind": "A",
               "name": "Story One",
+              "parameters": Object {
+                "__id": "a--story-one",
+                "docsOnly": false,
+                "fileName": "./src/A.stories.js",
+              },
+              "story": "Story One",
               "title": "A",
             },
             "b--story-one": Object {
+              "id": "b--story-one",
               "importPath": "./src/B.stories.ts",
+              "kind": "B",
               "name": "Story One",
+              "parameters": Object {
+                "__id": "b--story-one",
+                "docsOnly": false,
+                "fileName": "./src/B.stories.ts",
+              },
+              "story": "Story One",
               "title": "B",
             },
             "d--story-one": Object {
+              "id": "d--story-one",
               "importPath": "./src/D.stories.jsx",
+              "kind": "D",
               "name": "Story One",
+              "parameters": Object {
+                "__id": "d--story-one",
+                "docsOnly": false,
+                "fileName": "./src/D.stories.jsx",
+              },
+              "story": "Story One",
               "title": "D",
             },
             "nested-button--story-one": Object {
+              "id": "nested-button--story-one",
               "importPath": "./src/nested/Button.stories.ts",
+              "kind": "Nested/Button",
               "name": "Story One",
+              "parameters": Object {
+                "__id": "nested-button--story-one",
+                "docsOnly": false,
+                "fileName": "./src/nested/Button.stories.ts",
+              },
+              "story": "Story One",
               "title": "Nested/Button",
             },
             "second-nested-f--story-one": Object {
+              "id": "second-nested-f--story-one",
               "importPath": "./src/second-nested/F.stories.ts",
+              "kind": "Second Nested/F",
               "name": "Story One",
+              "parameters": Object {
+                "__id": "second-nested-f--story-one",
+                "docsOnly": false,
+                "fileName": "./src/second-nested/F.stories.ts",
+              },
+              "story": "Story One",
               "title": "Second Nested/F",
             },
           },
