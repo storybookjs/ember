@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icons, Separator, P } from '@storybook/components';
+import { Button, Icons, Separator, P, TooltipNote, WithTooltip } from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
@@ -41,6 +41,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
       color: theme.color.secondary,
     },
   },
+}));
+
+const Note = styled(TooltipNote)(({ theme }) => ({
+  fontFamily: theme.typography.fonts.base,
 }));
 
 export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
@@ -108,38 +112,29 @@ export const Subnav: React.FC<SubnavProps> = ({
 
         <StyledSeparator />
 
-        <RewindButton
-          containsIcon
-          title="Go to start"
-          onClick={onStart}
-          disabled={isDisabled || !hasPrevious}
-        >
-          <Icons icon="rewind" />
-        </RewindButton>
-        <StyledIconButton
-          containsIcon
-          title="Go back"
-          onClick={onPrevious}
-          disabled={isDisabled || !hasPrevious}
-        >
-          <Icons icon="playback" />
-        </StyledIconButton>
-        <StyledIconButton
-          containsIcon
-          title="Go forward"
-          onClick={onNext}
-          disabled={isDisabled || !hasNext}
-        >
-          <Icons icon="playnext" />
-        </StyledIconButton>
-        <StyledIconButton
-          containsIcon
-          title="Go to end"
-          onClick={onEnd}
-          disabled={isDisabled || !hasNext}
-        >
-          <Icons icon="fastforward" />
-        </StyledIconButton>
+        <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
+          <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+            <Icons icon="rewind" />
+          </RewindButton>
+        </WithTooltip>
+
+        <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
+          <StyledIconButton containsIcon onClick={onPrevious} disabled={isDisabled || !hasPrevious}>
+            <Icons icon="playback" />
+          </StyledIconButton>
+        </WithTooltip>
+
+        <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
+          <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+            <Icons icon="playnext" />
+          </StyledIconButton>
+        </WithTooltip>
+
+        <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
+          <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+            <Icons icon="fastforward" />
+          </StyledIconButton>
+        </WithTooltip>
       </Group>
       {storyFileName && (
         <Group>
