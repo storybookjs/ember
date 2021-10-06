@@ -105,6 +105,11 @@ Cypress.Commands.add('navigateToStory', (kind, name) => {
   }
   cy.get(storyLinkId).click();
 
+  // FIXME: Find a way to not wait like this but check for an element in the UI
+  // A pause is good when switching stories
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(300);
+
   // assert url changes
   cy.url().should('include', `path=/story/${kindId}--${storyId}`);
   cy.get(storyLinkId).should('have.attr', 'data-selected', 'true');

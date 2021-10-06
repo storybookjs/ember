@@ -6,7 +6,9 @@ describe('Navigation', () => {
   });
 
   it('should search navigation item', () => {
-    cy.get('#storybook-explorer-searchfield').click().clear().type('syntax');
+    cy.get('#storybook-explorer-searchfield').click();
+    cy.get('#storybook-explorer-searchfield').clear();
+    cy.get('#storybook-explorer-searchfield').type('syntax');
 
     cy.get('#storybook-explorer-menu button')
       .should('contain', 'SyntaxHighlighter')
@@ -14,7 +16,9 @@ describe('Navigation', () => {
   });
 
   it('should display no results after searching a non-existing navigation item', () => {
-    cy.get('#storybook-explorer-searchfield').click().clear().type('zzzzzzzzzz');
+    cy.get('#storybook-explorer-searchfield').click();
+    cy.get('#storybook-explorer-searchfield').clear();
+    cy.get('#storybook-explorer-searchfield').type('zzzzzzzzzz');
 
     cy.get('#storybook-explorer-menu button').should('be.hidden');
   });
