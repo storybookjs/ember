@@ -41,17 +41,24 @@ export async function useStoriesJson(
     { configDir: options.configDir, workingDir },
     !features?.breakingChangesV7 && !features?.storyStoreV7
   );
-  await generator.initialize();
 
+  // Wait until someone actually requests `stories.json` before we start generating/watching.
+  // This is mainly for testing purposes.
   const invalidationEmitter = new EventEmitter();
-  watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
-    generator.invalidate(specifier, path, removed);
-    invalidationEmitter.emit(INVALIDATE);
-  });
+  async function start() {
+    watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
+      generator.invalidate(specifier, path, removed);
+      invalidationEmitter.emit(INVALIDATE);
+    });
+
+    await generator.initialize();
+  }
 
   const eventsAsSSE = useEventsAsSSE(invalidationEmitter, [INVALIDATE]);
 
   router.use('/stories.json', async (req: Request, res: Response) => {
+    await start();
+
     if (eventsAsSSE(req, res)) return;
 
     try {
@@ -59,7 +66,8 @@ export async function useStoriesJson(
       res.header('Content-Type', 'application/json');
       res.send(JSON.stringify(index));
     } catch (err) {
-      res.status(500).send(err.message);
+      res.status(500);
+      res.send(err.message);
     }
   });
 }
