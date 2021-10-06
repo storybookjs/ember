@@ -46,7 +46,7 @@ export const normalizeStoriesEntry = (
 
   if (typeof entry === 'string') {
     if (!entry.includes('*')) {
-      if (isDirectory(workingDir, entry)) {
+      if (isDirectory(configDir, entry)) {
         specifierWithoutMatcher = {
           titlePrefix: DEFAULT_TITLE_PREFIX,
           directory: entry,
