@@ -496,7 +496,6 @@ Object {
     "DefinePlugin",
     "CaseSensitivePathsPlugin",
     "ProgressPlugin",
-    "DefinePlugin",
     "VueLoaderPlugin",
     "DefinePlugin",
   ],

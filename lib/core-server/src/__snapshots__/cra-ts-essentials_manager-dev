@@ -241,7 +241,6 @@ Object {
     "HtmlWebpackPlugin",
     "CaseSensitivePathsPlugin",
     "DefinePlugin",
-    "DefinePlugin",
   ],
 }
 `;

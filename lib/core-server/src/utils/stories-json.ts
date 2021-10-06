@@ -1,7 +1,12 @@
 import { Router, Request, Response } from 'express';
 import fs from 'fs-extra';
 import EventEmitter from 'events';
-import { Options, normalizeStories, NormalizedStoriesSpecifier } from '@storybook/core-common';
+import {
+  Options,
+  normalizeStories,
+  NormalizedStoriesSpecifier,
+  StorybookConfig,
+} from '@storybook/core-common';
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 import { watchStorySpecifiers } from './watch-story-specifiers';
 import { useEventsAsSSE } from './use-events-as-sse';
@@ -11,9 +16,10 @@ const INVALIDATE = 'INVALIDATE';
 export async function extractStoriesJson(
   outputFile: string,
   normalizedStories: NormalizedStoriesSpecifier[],
-  options: { configDir: string; workingDir: string }
+  options: { configDir: string; workingDir: string },
+  v2compatibility: boolean
 ) {
-  const generator = new StoryIndexGenerator(normalizedStories, options);
+  const generator = new StoryIndexGenerator(normalizedStories, options, v2compatibility);
   await generator.initialize();
 
   const index = await generator.getIndex();
@@ -29,10 +35,12 @@ export async function useStoriesJson(
     configDir: options.configDir,
     workingDir,
   });
-  const generator = new StoryIndexGenerator(normalizedStories, {
-    configDir: options.configDir,
-    workingDir,
-  });
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
+  const generator = new StoryIndexGenerator(
+    normalizedStories,
+    { configDir: options.configDir, workingDir },
+    !features?.breakingChangesV7 && !features?.storyStoreV7
+  );
   await generator.initialize();
 
   const invalidationEmitter = new EventEmitter();

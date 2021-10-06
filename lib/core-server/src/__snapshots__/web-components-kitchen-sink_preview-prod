@@ -495,7 +495,6 @@ Object {
     "DefinePlugin",
     "CaseSensitivePathsPlugin",
     "ProgressPlugin",
-    "DefinePlugin",
   ],
 }
 `;

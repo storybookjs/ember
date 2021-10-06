@@ -17,7 +17,7 @@ import {
   StoryStore,
   Story,
   autoTitle,
-  sortStories,
+  sortStoriesV6,
 } from '@storybook/store';
 
 const { STORIES = [] } = global;
@@ -57,7 +57,9 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    return this.csfExports[path];
+    const moduleExports = this.csfExports[path];
+    if (!moduleExports) throw new Error(`Unknown path: ${path}`);
+    return moduleExports;
   }
 
   getStoryIndex(store: StoryStore<TFramework>) {
@@ -66,7 +68,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
 
     const storyEntries = Object.entries(this.stories);
     // Add the kind parameters and global parameters to each entry
-    const stories: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
+    const sortableV6: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
       ([storyId, { importPath }]) => {
         const exports = this.csfExports[importPath];
         const csfFile = store.processCSFFileWithCache<TFramework>(exports, exports.default.title);
@@ -79,15 +81,18 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       }
     );
 
-    sortStories(stories, storySortParameter, fileNameOrder);
+    // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
+    const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    const stories = sortedV7.reduce((acc, s) => {
+      // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
+      // exports a `parameters.fileName` which can be different and mess up our `importFn`.
+      // In fact, in Storyshots there is a Jest transformer that does exactly that.
+      // NOTE: this doesn't actually change the story object, just the index.
+      acc[s.id] = this.stories[s.id];
+      return acc;
+    }, {} as StoryIndex['stories']);
 
-    return {
-      v: 3,
-      stories: stories.reduce((acc, [id]) => {
-        acc[id] = this.stories[id];
-        return acc;
-      }, {} as StoryIndex['stories']),
-    };
+    return { v: 3, stories };
   }
 
   clearFilenameExports(fileName: Path) {
@@ -160,6 +165,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
           exportName;
 
         this.stories[id] = {
+          id,
           name,
           title,
           importPath: fileName,

@@ -2,6 +2,7 @@ import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import mapValues from 'lodash/mapValues';
+import countBy from 'lodash/countBy';
 import {
   StoryId,
   ComponentTitle,
@@ -110,6 +111,7 @@ export interface StoriesRaw {
 
 type Path = string;
 export interface StoryIndexStory {
+  id: StoryId;
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
@@ -173,12 +175,14 @@ export const transformStoryIndexToStoriesHash = (
   index: StoryIndex,
   { provider }: { provider: Provider }
 ): StoriesHash => {
+  const countByTitle = countBy(Object.values(index.stories), 'title');
   const input = Object.entries(index.stories).reduce((acc, [id, { title, name, importPath }]) => {
+    const docsOnly = name === 'Page' && countByTitle[title] === 1;
     acc[id] = {
       id,
       kind: title,
       name,
-      parameters: { fileName: importPath, options: {} },
+      parameters: { fileName: importPath, options: {}, docsOnly },
     };
     return acc;
   }, {} as StoriesRaw);
