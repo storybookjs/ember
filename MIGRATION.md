@@ -223,9 +223,9 @@ export default {
   title: foo('bar'),
 };
 
-// ❌ template literals 6.3 OK / 7.0 OK
+// ❌ template literals 6.3 OK / 7.0 KO
 export default {
-  title: foo('bar'),
+  title: `${bar}`,
 };
 ```
 
