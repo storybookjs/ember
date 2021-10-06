@@ -50,7 +50,7 @@ function createController() {
   };
 }
 
-type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
+export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => Promise<void>;
 

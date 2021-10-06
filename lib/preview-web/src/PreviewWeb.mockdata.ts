@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import Events from '@storybook/core-events';
 import { StoryIndex } from '@storybook/store';
+import { RenderPhase } from './PreviewWeb';
 
 export const componentOneExports = {
   default: {
@@ -64,15 +65,23 @@ export const mockChannel = {
   // emit: emitter.emit.bind(emitter),
 };
 
-export const waitForEvents = (events: string[]) => {
+export const waitForEvents = (
+  events: string[],
+  predicate: (...args: any[]) => boolean = () => true
+) => {
   // We've already emitted a render event. NOTE if you want to test a second call,
   // ensure you call `mockChannel.emit.mockClear()` before `waitForRender`
-  if (mockChannel.emit.mock.calls.find((call) => events.includes(call[0]))) {
+  if (
+    mockChannel.emit.mock.calls.find(
+      (call) => events.includes(call[0]) && predicate(...call.slice(1))
+    )
+  ) {
     return Promise.resolve(null);
   }
 
   return new Promise((resolve, reject) => {
-    const listener = () => {
+    const listener = (...args: any[]) => {
+      if (!predicate(...args)) return;
       events.forEach((event) => mockChannel.off(event, listener));
       resolve(null);
     };
@@ -93,5 +102,8 @@ export const waitForRender = () =>
     Events.STORY_ERRORED,
     Events.STORY_MISSING,
   ]);
+
+export const waitForRenderPhase = (phase: RenderPhase) =>
+  waitForEvents([Events.STORY_RENDER_PHASE_CHANGED], ({ newPhase }) => newPhase === phase);
 
 export const waitForQuiescence = async () => new Promise((r) => setTimeout(r, 100));
