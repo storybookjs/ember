@@ -220,13 +220,8 @@ export class Instrumenter {
 
   setState(storyId: StoryId, update: Partial<State> | ((state: State) => Partial<State>)) {
     const state = this.getState(storyId);
-    this.state = {
-      ...this.state,
-      [storyId]: {
-        ...state,
-        ...(typeof update === 'function' ? update(state) : update),
-      },
-    };
+    const patch = typeof update === 'function' ? update(state) : update;
+    this.state = { ...this.state, [storyId]: { ...state, ...patch } };
     // Track state on the parent window so we can reload the iframe without losing state.
     global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
   }
@@ -318,7 +313,7 @@ export class Instrumenter {
     const storyId: StoryId = global.window.__STORYBOOK_PREVIEW__?.urlStore?.selection?.storyId;
     const index = this.getState(storyId).cursor;
     this.setState(storyId, { cursor: index + 1 });
-    const id = `${index}-${method}-${storyId}`;
+    const id = `${index}_${method}_${storyId}`;
     const { path = [], intercept = false, retain = false } = options;
     const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
     const call: Call = { id, path, method, storyId, args, interceptable, retain };

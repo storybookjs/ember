@@ -1,7 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 
 import { addons, mockChannel } from '@storybook/addons';
-import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
+import {
+  FORCE_REMOUNT,
+  SET_CURRENT_STORY,
+  STORY_RENDER_PHASE_CHANGED,
+} from '@storybook/core-events';
 import global from 'global';
 
 import { EVENTS, Instrumenter, Options } from './instrumenter';
@@ -24,6 +28,12 @@ delete global.window.location;
 global.window.location = { reload: jest.fn() };
 global.window.HTMLElement = HTMLElement;
 
+const storyId = 'kind--story';
+global.window.__STORYBOOK_PREVIEW__ = { urlStore: { selection: { storyId } } };
+
+const setRenderPhase = (newPhase: string) =>
+  addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase, storyId });
+
 let instrumenter: Instrumenter;
 const instrument = <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) =>
   instrumenter.instrument(obj, options);
@@ -34,11 +44,11 @@ beforeEach(() => {
   syncSpy.mockClear();
   forceRemountSpy.mockClear();
   instrumenter = new Instrumenter();
-  addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'loading' });
+  setRenderPhase('loading');
 });
 
 afterEach(() => {
-  addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'completed' });
+  addons.getChannel().emit(SET_CURRENT_STORY); // trigger a cleanup
 });
 
 describe('Instrumenter', () => {
@@ -103,13 +113,13 @@ describe('Instrumenter', () => {
     fn('baz');
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '0-fn',
+        id: '0_fn_kind--story',
         args: ['foo', 'bar'],
       })
     );
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '1-fn',
+        id: '1_fn_kind--story',
         args: ['baz'],
       })
     );
@@ -200,19 +210,19 @@ describe('Instrumenter', () => {
     });
     fn5();
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '0-fn1', parentId: undefined })
+      expect.objectContaining({ id: '0_fn1_kind--story', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '1-fn2', parentId: '0-fn1' })
+      expect.objectContaining({ id: '1_fn2_kind--story', parentId: '0_fn1_kind--story' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '2-fn3', parentId: '1-fn2' })
+      expect.objectContaining({ id: '2_fn3_kind--story', parentId: '1_fn2_kind--story' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '3-fn4', parentId: '0-fn1' })
+      expect.objectContaining({ id: '3_fn4_kind--story', parentId: '0_fn1_kind--story' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '4-fn5', parentId: undefined })
+      expect.objectContaining({ id: '4_fn5_kind--story', parentId: undefined })
     );
   });
 
@@ -222,13 +232,13 @@ describe('Instrumenter', () => {
     await fn1(() => fn2());
     await fn3();
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '0-fn1', parentId: undefined })
+      expect.objectContaining({ id: '0_fn1_kind--story', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '1-fn2', parentId: '0-fn1' })
+      expect.objectContaining({ id: '1_fn2_kind--story', parentId: '0_fn1_kind--story' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '2-fn3', parentId: undefined })
+      expect.objectContaining({ id: '2_fn3_kind--story', parentId: undefined })
     );
   });
 
@@ -264,8 +274,8 @@ describe('Instrumenter', () => {
     fn('baz');
     jest.runAllTimers();
     expect(syncSpy).toHaveBeenCalledWith([
-      { callId: '2-fn2', state: 'done' },
-      { callId: '3-fn', state: 'done' },
+      { callId: '2_fn2_kind--story', state: 'done' },
+      { callId: '3_fn_kind--story', state: 'done' },
     ]);
   });
 
@@ -275,11 +285,8 @@ describe('Instrumenter', () => {
         throw new Error('Boom!');
       },
     });
-    expect(fn).not.toThrow();
     expect(fn()).toEqual(new Error('Boom!'));
-    expect(() =>
-      addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'completed' })
-    ).toThrow(new Error('Boom!'));
+    expect(() => setRenderPhase('completed')).toThrow(new Error('Boom!'));
   });
 
   it('forwards nested exceptions', () => {
@@ -290,9 +297,7 @@ describe('Instrumenter', () => {
       },
     });
     expect(fn1(fn2())).toEqual(new Error('Boom!'));
-    expect(() =>
-      addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'completed' })
-    ).toThrow(new Error('Boom!'));
+    expect(() => setRenderPhase('completed')).toThrow(new Error('Boom!'));
   });
 
   it("re-throws anything that isn't an error", () => {
@@ -311,23 +316,24 @@ describe('Instrumenter', () => {
     expect(fn._original).toHaveBeenCalledWith('foo');
   });
 
-  it('resets preview state when (re)loading story', () => {
-    const initialState = instrumenter.state;
+  it('clears state when switching stories', () => {
     instrumenter.state = {
-      isDebugging: false,
-      cursor: 123,
-      calls: [{ id: '0-foo' }],
-      shadowCalls: [{ id: '0-foo' }, { id: '1-foo' }],
-      callRefsByResult: new Map([[{}, 'ref']]),
-      chainedCallIds: new Set(['0-foo']),
-      parentCall: { id: '0-foo' },
-      playUntil: '1-foo',
-      resolvers: { ref: () => {} },
-      syncTimeout: 123,
-      forwardedException: new Error('Oops'),
+      'kind--story': {
+        isDebugging: false,
+        cursor: 123,
+        calls: [{ id: '0_fn_kind--story' }],
+        shadowCalls: [{ id: '0_fn_kind--story' }, { id: '1_fn_kind--story' }],
+        callRefsByResult: new Map([[{}, 'ref']]),
+        chainedCallIds: new Set(['0_fn_kind--story']),
+        parentCall: { id: '0_fn_kind--story' },
+        playUntil: '1_fn_kind--story',
+        resolvers: { ref: () => {} },
+        syncTimeout: 123,
+        forwardedException: new Error('Oops'),
+      },
     } as any;
-    addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'loading' });
-    expect(instrumenter.state).toStrictEqual(initialState);
+    addons.getChannel().emit(SET_CURRENT_STORY);
+    expect(instrumenter.state).toStrictEqual({});
   });
 
   describe('with intercept: true', () => {
@@ -345,12 +351,12 @@ describe('Instrumenter', () => {
       expect(fn).toThrow();
       expect(callSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: '0-fn',
+          id: '0_fn_kind--story',
           exception: {
             name: 'Error',
             message: 'Boom!',
             stack: expect.stringContaining('Error: Boom!'),
-            callId: '0-fn',
+            callId: '0_fn_kind--story',
           },
         })
       );
@@ -384,24 +390,24 @@ describe('Instrumenter', () => {
 
   describe('while debugging', () => {
     afterEach(() => {
-      addons.getChannel().emit(EVENTS.END, {});
+      addons.getChannel().emit(EVENTS.END, { storyId });
     });
 
     it('remounts on the "start" event', async () => {
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
       expect(forceRemountSpy).toHaveBeenCalled();
     });
 
     it('defers calls to intercepted functions', () => {
       const { fn } = instrument({ fn: jest.fn() }, { intercept: true });
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
       expect(fn()).toEqual(expect.any(Promise));
       expect(fn._original).not.toHaveBeenCalled();
     });
 
     it('does not defer calls to non-intercepted functions', () => {
       const { fn } = instrument({ fn: jest.fn(() => 'ok') });
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
       expect(fn()).toBe('ok');
       expect(fn._original).toHaveBeenCalled();
     });
@@ -412,7 +418,7 @@ describe('Instrumenter', () => {
         { intercept: true }
       );
       fn1().fn2();
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
       const res1 = fn1();
       expect(res1.fn2()).toEqual(expect.any(Promise));
       expect(fn1._original).toHaveBeenCalledTimes(2);
@@ -422,7 +428,7 @@ describe('Instrumenter', () => {
     it.skip('starts debugging at the first non-nested interceptable call', () => {
       const { fn } = instrument({ fn: jest.fn((...args: any) => args) }, { intercept: true });
       fn(fn(), fn()); // setup the dependencies
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
       const a = fn('a');
       const b = fn('b');
       const c = fn(a, b);
@@ -446,19 +452,19 @@ describe('Instrumenter', () => {
       fn.mockClear();
       mockedInstrumentedFn.mockClear();
 
-      addons.getChannel().emit(EVENTS.START, {});
+      addons.getChannel().emit(EVENTS.START, { storyId });
 
       const p = play();
       expect(mockedInstrumentedFn).toHaveBeenCalledTimes(1);
       expect(fn).toHaveBeenCalledTimes(0);
 
-      addons.getChannel().emit(EVENTS.NEXT, {});
+      addons.getChannel().emit(EVENTS.NEXT, { storyId });
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(mockedInstrumentedFn).toHaveBeenCalledTimes(2);
       expect(fn).toHaveBeenCalledTimes(1);
 
-      addons.getChannel().emit(EVENTS.END, {});
+      addons.getChannel().emit(EVENTS.END, { storyId });
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(mockedInstrumentedFn).toHaveBeenCalledTimes(3);
