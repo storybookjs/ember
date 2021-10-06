@@ -109,7 +109,6 @@ export class StoryIndexGenerator {
       entry[absolutePath] = fileStories;
     } catch (err) {
       logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
-      logger.warn(`🚨 ${err.stack}`);
       throw err;
     }
   }
