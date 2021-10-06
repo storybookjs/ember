@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { addons, Channel, StoryId } from '@storybook/addons';
+import { once } from '@storybook/client-logger';
 import {
   FORCE_REMOUNT,
   IGNORED_EXCEPTION,
@@ -85,6 +86,9 @@ const getInitialState = (): State => ({
   forwardedException: undefined,
 });
 
+/**
+ * This class is not supposed to be used directly. Use the `instrument` function below instead.
+ */
 export class Instrumenter {
   channel: Channel;
 
@@ -477,14 +481,30 @@ export class Instrumenter {
   }
 }
 
-// TODO try/catch parent access
-export const instrument =
-  global.window.parent === global.window
-    ? (obj: any) => obj // Don't do anything if not loaded in an iframe.
-    : <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) => {
-        if (!global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__)
-          global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
-        const instrumenter: Instrumenter =
-          global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
-        return instrumenter.instrument(obj, options);
-      };
+/**
+ * Instruments an object or module by traversing its properties, patching any functions (methods) to
+ * enable debugging. Patched functions will emit a `call` event when invoked.
+ * When intercept = true, patched functions will return a Promise when the debugger stops before
+ * this function. As such, "interceptable" functions will have to be `await`-ed.
+ */
+export const instrument = <TObj extends Record<string, any>>(
+  obj: TObj,
+  options: Options = {}
+): TObj => {
+  try {
+    // Don't do any instrumentation if not loaded in an iframe.
+    if (global.window.parent === global.window) return obj;
+
+    // Only create an instance if we don't have one (singleton) yet.
+    if (!global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__) {
+      global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
+    }
+
+    const instrumenter: Instrumenter = global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
+    return instrumenter.instrument(obj, options);
+  } catch (e) {
+    // Access to the parent window might fail due to CORS restrictions.
+    once.warn(e);
+    return obj;
+  }
+};
