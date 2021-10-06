@@ -335,6 +335,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousSelection = selection;
     this.previousStory = story;
 
+    const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
+    if (FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.STORY_PREPARED, {
+        id: story.id,
+        parameters,
+        initialArgs,
+        argTypes,
+        args,
+      });
+    }
+
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
       await this.renderDocs({ story });
     } else {
@@ -343,7 +354,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
-    const { id, title, name } = story;
+    const { id, title, name, componentId } = story;
     const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
@@ -385,11 +396,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 
+    // Use `componentId` as a key so that we force a re-render every time
+    // we switch components
     const docsElement = (
-      <DocsContainer context={docsContext}>
+      <DocsContainer key={componentId} context={docsContext}>
         <Page />
       </DocsContainer>
     );
+
     ReactDOM.render(docsElement, element, async () => {
       await Promise.all(renderingStoryPromises);
       this.channel.emit(Events.DOCS_RENDERED, id);
@@ -443,17 +457,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     let renderContext: RenderContext<TFramework>;
     const initialRender = async () => {
       const storyContext = this.storyStore.getStoryContext(story);
-
-      const { parameters, initialArgs, argTypes, args } = storyContext;
-      if (FEATURES?.storyStoreV7) {
-        this.channel.emit(Events.STORY_PREPARED, {
-          id,
-          parameters,
-          initialArgs,
-          argTypes,
-          args,
-        });
-      }
 
       const viewMode = element === this.view.storyRoot() ? 'story' : 'docs';
       const loadedContext = await applyLoaders({

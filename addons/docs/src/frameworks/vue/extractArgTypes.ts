@@ -1,8 +1,62 @@
 import { StrictArgTypes } from '@storybook/csf';
-import { ArgTypesExtractor, hasDocgen, extractComponentProps } from '../../lib/docgen';
+import {
+  ArgTypesExtractor,
+  hasDocgen,
+  extractComponentProps,
+  DocgenInfo,
+  PropDef,
+} from '../../lib/docgen';
 import { convert } from '../../lib/convert';
 
 const SECTIONS = ['props', 'events', 'slots'];
+
+/**
+ * Check if "@values" tag is defined within docgenInfo.
+ * If true, then propDef is mutated.
+ */
+function isEnum(propDef: PropDef, docgenInfo: DocgenInfo): false | PropDef {
+  // cast as any, since "values" doesn't exist in DocgenInfo type
+  const { type, values } = docgenInfo as any;
+  const matched = Array.isArray(values) && values.length && type.name !== 'enum';
+
+  if (!matched) return false;
+
+  const enumString = values.join(', ');
+  let { summary } = propDef.type;
+  summary = summary ? `${summary}: ${enumString}` : enumString;
+
+  Object.assign(propDef.type, {
+    ...propDef.type,
+    name: 'enum',
+    value: values,
+    summary,
+  });
+  return propDef;
+}
+
+/**
+ * @returns {Array} result
+ * @returns {PropDef} result.def - propDef
+ * @returns {boolean} result.isChanged - flag whether propDef is mutated or not.
+ *  this is needed to prevent sbType from performing convert(docgenInfo).
+ */
+function verifyPropDef(propDef: PropDef, docgenInfo: DocgenInfo): [PropDef, boolean] {
+  let def = propDef;
+  let isChanged = false;
+
+  // another callback can be added here.
+  // callback is mutually exclusive from each other.
+  const callbacks = [isEnum];
+  for (let i = 0, len = callbacks.length; i < len; i += 1) {
+    const matched = callbacks[i](propDef, docgenInfo);
+    if (matched) {
+      def = matched;
+      isChanged = true;
+    }
+  }
+
+  return [def, isChanged];
+}
 
 export const extractArgTypes: ArgTypesExtractor = (component) => {
   if (!hasDocgen(component)) {
@@ -12,8 +66,15 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
   SECTIONS.forEach((section) => {
     const props = extractComponentProps(component, section);
     props.forEach(({ propDef, docgenInfo, jsDocTags }) => {
-      const { name, type, description, defaultValue: defaultSummary, required } = propDef;
-      const sbType = section === 'props' ? convert(docgenInfo) : { name: 'void' };
+      const [result, isPropDefChanged] = verifyPropDef(propDef, docgenInfo);
+      const { name, type, description, defaultValue: defaultSummary, required } = result;
+
+      let sbType;
+      if (isPropDefChanged) {
+        sbType = type;
+      } else {
+        sbType = section === 'props' ? convert(docgenInfo) : { name: 'void' };
+      }
       results[name] = {
         name,
         description,

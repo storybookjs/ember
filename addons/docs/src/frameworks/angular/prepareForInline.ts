@@ -13,23 +13,31 @@ const limit = pLimit(1);
  */
 export const prepareForInline = (
   storyFn: PartialStoryFn<AngularFramework>,
-  { id, parameters }: StoryContext
+  { id, parameters, component }: StoryContext
 ) => {
-  return React.createElement('div', {
-    ref: async (node?: HTMLDivElement): Promise<void> => {
-      if (!node) {
-        return null;
-      }
+  const el = React.useRef();
 
-      return limit(async () => {
-        const renderer = await rendererFactory.getRendererInstance(`${id}-${nanoid(10)}`, node);
-        await renderer.render({
-          forced: false,
-          parameters,
-          storyFnAngular: storyFn(),
-          targetDOMNode: node,
-        });
+  React.useEffect(() => {
+    (async () => {
+      limit(async () => {
+        const renderer = await rendererFactory.getRendererInstance(
+          `${id}-${nanoid(10)}`.toLowerCase(),
+          el.current
+        );
+        if (renderer) {
+          await renderer.render({
+            forced: false,
+            component,
+            parameters,
+            storyFnAngular: storyFn(),
+            targetDOMNode: el.current,
+          });
+        }
       });
-    },
+    })();
+  });
+
+  return React.createElement('div', {
+    ref: el,
   });
 };

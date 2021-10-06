@@ -1,6 +1,5 @@
 import path from 'path';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
-import Dotenv from 'dotenv-webpack';
 // @ts-ignore
 import { Configuration, RuleSetRule } from '@types/webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -214,7 +213,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
-      new Dotenv({ silent: true }),
       shouldCheckTs ? new ForkTsCheckerWebpackPlugin(tsCheckOptions) : null,
     ].filter(Boolean),
     module: {

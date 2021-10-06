@@ -152,13 +152,18 @@ function genStoryExport(ast: t.JSXElement, context: Context) {
   let sourceCode = null;
   let storyVal = null;
   if (!bodyNodes.length) {
-    // plain text node
-    const { code } = generate(ast.children[0], {});
-    storyCode = `'${code}'`;
-    sourceCode = storyCode;
-    storyVal = `() => (
-      ${storyCode}
-    )`;
+    if (ast.children.length > 0) {
+      // plain text node
+      const { code } = generate(ast.children[0], {});
+      storyCode = `'${code}'`;
+      sourceCode = storyCode;
+      storyVal = `() => (
+        ${storyCode}
+      )`;
+    } else {
+      sourceCode = '{}';
+      storyVal = '{}';
+    }
   } else {
     const bodyParts = bodyNodes.map((bodyNode) => getBodyPart(bodyNode, context));
     // if we have more than two children
@@ -222,6 +227,18 @@ function genStoryExport(ast: t.JSXElement, context: Context) {
     statements.push(`${storyKey}.loaders = ${loaderCode};`);
   }
 
+  const play = expressionOrNull(getAttr(ast.openingElement, 'play'));
+  if (play) {
+    const { code: playCode } = generate(play, {});
+    statements.push(`${storyKey}.play = ${playCode};`);
+  }
+
+  const render = expressionOrNull(getAttr(ast.openingElement, 'render'));
+  if (render) {
+    const { code: renderCode } = generate(render, {});
+    statements.push(`${storyKey}.render = ${renderCode};`);
+  }
+
   context.storyNameToKey[storyName] = storyKey;
 
   return {
@@ -282,6 +299,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
   const subcomponents = genAttribute('subcomponents', ast.openingElement);
   const args = genAttribute('args', ast.openingElement);
   const argTypes = genAttribute('argTypes', ast.openingElement);
+  const render = genAttribute('render', ast.openingElement);
 
   return {
     title,
@@ -293,6 +311,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     subcomponents,
     args,
     argTypes,
+    render,
   };
 }
 

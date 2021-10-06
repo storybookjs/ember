@@ -2,25 +2,35 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 
-import { autoTitleFromSpecifier, sortStories, Path, StoryIndex } from '@storybook/store';
+import {
+  autoTitleFromSpecifier,
+  sortStoriesV7,
+  Path,
+  Parameters,
+  StoryIndex,
+  StoryIndexEntry,
+  StoryId,
+} from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
+import { ComponentTitle } from '@storybook/csf';
+
+interface V2CompatIndexEntry extends StoryIndexEntry {
+  kind: StoryIndexEntry['title'];
+  story: StoryIndexEntry['name'];
+  parameters: Parameters;
+}
 
 function sortExtractedStories(
   stories: StoryIndex['stories'],
   storySortParameter: any,
   fileNameOrder: string[]
 ) {
-  const sortableStories = Object.entries(stories).map(([id, story]) => [
-    id,
-    { id, kind: story.title, story: story.name, ...story },
-    { fileName: story.importPath },
-  ]);
-  sortStories(sortableStories, storySortParameter, fileNameOrder);
+  const sortableStories = Object.values(stories);
+  sortStoriesV7(sortableStories, storySortParameter, fileNameOrder);
   return sortableStories.reduce((acc, item) => {
-    const storyId = item[0] as string;
-    acc[storyId] = stories[storyId];
+    acc[item.id] = item;
     return acc;
   }, {} as StoryIndex['stories']);
 }
@@ -39,7 +49,8 @@ export class StoryIndexGenerator {
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
-    public readonly configDir: Path
+    public readonly configDir: Path,
+    public readonly storiesV2Compatibility: boolean
   ) {
     this.storyIndexEntries = new Map();
   }
@@ -100,6 +111,7 @@ export class StoryIndexGenerator {
       const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
       csf.stories.forEach(({ id, name }) => {
         fileStories[id] = {
+          id,
           title: csf.meta.title,
           name,
           importPath,
@@ -135,9 +147,34 @@ export class StoryIndexGenerator {
     console.log('storiesList');
     console.log(storiesList.map((stories) => Object.keys(stories)));
 
+    const sorted = await this.sortStories(storiesList);
+    let compat = sorted;
+    if (this.storiesV2Compatibility) {
+      const titleToStoryCount = Object.values(sorted).reduce((acc, story) => {
+        acc[story.title] = (acc[story.title] || 0) + 1;
+        return acc;
+      }, {} as Record<ComponentTitle, number>);
+
+      compat = Object.entries(sorted).reduce((acc, entry) => {
+        const [id, story] = entry;
+        acc[id] = {
+          ...story,
+          id,
+          kind: story.title,
+          story: story.name,
+          parameters: {
+            __id: story.id,
+            docsOnly: titleToStoryCount[story.title] === 1 && story.name === 'Page',
+            fileName: story.importPath,
+          },
+        };
+        return acc;
+      }, {} as Record<StoryId, V2CompatIndexEntry>);
+    }
+
     this.lastIndex = {
       v: 3,
-      stories: await this.sortStories(storiesList),
+      stories: compat,
     };
 
     return this.lastIndex;

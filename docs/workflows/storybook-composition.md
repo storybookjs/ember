@@ -10,7 +10,7 @@ You can compose any Storybook [published online](./publish-storybook.md) or runn
 
 ## Compose published Storybooks
 
-In your [`storybook/main.js`](../configure/overview.md#configure-story-rendering) file add a `refs` field with information about the reference Storybook. Pass in a URL to a statically built Storybook.
+In your [`.storybook/main.js`](../configure/overview.md#configure-story-rendering) file add a `refs` field with information about the reference Storybook. Pass in a URL to a statically built Storybook.
 
 <!-- prettier-ignore-start -->
 

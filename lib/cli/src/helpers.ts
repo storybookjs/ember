@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { satisfies } from '@storybook/semver';
 import stripJsonComments from 'strip-json-comments';
 
-import { StoryFormat, SupportedFrameworks, SupportedLanguage } from './project_types';
+import { SupportedFrameworks, SupportedLanguage } from './project_types';
 import { JsPackageManager, PackageJson, PackageJsonWithDepsAndDevDeps } from './js-package-manager';
 
 const logger = console;
@@ -169,17 +169,11 @@ export function addToDevDependenciesIfNotPresent(
   }
 }
 
-export function copyTemplate(templateRoot: string, storyFormat: StoryFormat) {
-  const templateDir = path.resolve(templateRoot, `template-${storyFormat}/`);
+export function copyTemplate(templateRoot: string) {
+  const templateDir = path.resolve(templateRoot, `template-csf/`);
 
   if (!fs.existsSync(templateDir)) {
-    // Fallback to CSF plain first, in case format is typescript but template is not available.
-    if (storyFormat === StoryFormat.CSF_TYPESCRIPT) {
-      copyTemplate(templateRoot, StoryFormat.CSF);
-      return;
-    }
-
-    throw new Error(`Unsupported story format: ${storyFormat}`);
+    throw new Error(`Couldn't find template dir`);
   }
 
   fse.copySync(templateDir, '.', { overwrite: true });

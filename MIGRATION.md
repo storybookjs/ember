@@ -5,8 +5,10 @@
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
     - [Using the v7 store](#using-the-v7-store)
+    - [V7-style story sort](#v7-style-story-sort)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
+  - [Angular component parameter removed](#angular-component-parameter-removed)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5 manager build](#webpack-5-manager-build)
   - [Angular 12 upgrade](#angular-12-upgrade)
@@ -211,6 +213,42 @@ module.exports = {
 
 NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
 
+#### V7-style story sort
+
+If you've written a custom `storySort` function, you'll need to rewrite it for V7.
+
+SB6.x supports a global story function specified in `.storybook/preview.js`. It accepts two arrays which each contain:
+
+- The story ID
+- A story object that contains the name, title, etc.
+- The component's parameters
+- The project-level parameters
+
+SB 7.0 streamlines the story function. It now accepts a `StoryIndexEntry` which is
+an object that contains only the story's `id`, `title`, `name`, and `importPath`.
+
+Consider the following example, before and after:
+
+```js
+// v6-style sort
+function storySort(a, b) {
+  return a[1].kind === b[1].kind
+    ? 0
+    : a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
+},
+```
+
+And the after version using `title` instead of `kind` and not receiving the full parameters:
+
+```js
+// v7-style sort
+function storySort(a, b) {
+  return a.title === b.title
+    ? 0
+    : a.id.localeCompare(b.id, undefined, { numeric: true });
+},
+```
+
 ### Babel mode v7
 
 SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
@@ -245,6 +283,25 @@ This will create a `.babelrc.json` file. This file includes a bunch of babel plu
 ### Loader behavior with args changes
 
 In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
+
+### Angular component parameter removed
+
+In SB6.3 and earlier, the `default.component` metadata was implemented as a parameter, meaning that stories could set `parameters.component` to override the default export. This was an internal implementation that was never documented, but it was mistakenly used in some Angular examples.
+
+If you have Angular stories of the form:
+
+```js
+export const MyStory = () => ({ ... })
+SomeStory.parameters = { component: MyComponent };
+```
+
+You should rewrite them as:
+
+```js
+export const MyStory = () => ({ component: MyComponent, ... })
+```
+
+[More discussion here.](https://github.com/storybookjs/storybook/pull/16010#issuecomment-917378595)
 
 ## From version 6.2.x to 6.3.0
 
@@ -1463,7 +1520,7 @@ Addon-docs configuration gets simpler in 5.3. In 5.2, each framework had its own
 
 We've deprecated the ability to specify the hierarchy separators (how you control the grouping of story kinds in the sidebar). From Storybook 6.0 we will have a single separator `/`, which cannot be configured.
 
-If you are currently using using custom separators, we encourage you to migrate to using `/` as the sole separator. If you are using `|` or `.` as a separator currently, we provide a codemod, [`upgrade-hierarchy-separators`](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md#upgrade-hierarchy-separators), that can be used to rename all your components.
+If you are currently using custom separators, we encourage you to migrate to using `/` as the sole separator. If you are using `|` or `.` as a separator currently, we provide a codemod, [`upgrade-hierarchy-separators`](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md#upgrade-hierarchy-separators), that can be used to rename all your components.
 
 ```
 yarn sb migrate upgrade-hierarchy-separators --glob="*.stories.js"

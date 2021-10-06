@@ -498,7 +498,6 @@ Object {
     "HotModuleReplacementPlugin",
     "CaseSensitivePathsPlugin",
     "ProgressPlugin",
-    "DefinePlugin",
   ],
 }
 `;
