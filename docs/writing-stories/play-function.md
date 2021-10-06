@@ -147,7 +147,7 @@ Asides from click events, you can also script additional events with the `play` 
 
 ## Querying elements
 
-If you need, you can also adjust your `play` function to interact with your component based on different parameters (e.g., role, text content). For example:
+If you need, you can also adjust your `play` function to find elements based on queries (e.g., role, text content). For example:
 
 <!-- prettier-ignore-start -->
 
