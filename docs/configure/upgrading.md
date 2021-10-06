@@ -11,7 +11,7 @@ The most common upgrade is Storybook itself. [Storybook releases](/releases) fol
 To help ease the pain of keeping Storybook up-to-date, we provide a command-line script:
 
 ```sh
-npx sb@next upgrade
+npx sb upgrade
 ```
 
 This upgrades all of the Storybook packages in your project to the latest stable version, performs confidence checks of your package versions, and checks for opportunities to run [automigrations](#automigrate) to automatically update your configuration.
