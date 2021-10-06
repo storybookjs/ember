@@ -7,6 +7,7 @@ import {
   PackageJsonWithDepsAndDevDeps,
 } from './js-package-manager';
 import { commandLog } from './helpers';
+import { automigrate } from './automigrate';
 
 type Package = {
   package: string;
@@ -121,8 +122,15 @@ export const addExtraFlags = (
   );
 };
 
-type Options = { prerelease: boolean; skipCheck: boolean; useNpm: boolean; dryRun: boolean };
-export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun }: Options) => {
+interface UpgradeOptions {
+  prerelease: boolean;
+  skipCheck: boolean;
+  useNpm: boolean;
+  dryRun: boolean;
+  yes: boolean;
+}
+
+export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun, yes }: UpgradeOptions) => {
   const packageManager = JsPackageManagerFactory.getPackageManager(useNpm);
 
   commandLog(`Checking for latest versions of '@storybook/*' packages`);
@@ -142,5 +150,8 @@ export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun }: Options
     packageManager.installDependencies();
   }
 
-  if (!skipCheck) checkVersionConsistency();
+  if (!skipCheck) {
+    checkVersionConsistency();
+    await automigrate({ dryRun, yes });
+  }
 };

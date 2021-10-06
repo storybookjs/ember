@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [CRA5 upgrade](#cra5-upgrade)
   - [CSF3 enabled](#csf3-enabled)
     - [Optional titles](#optional-titles)
     - [String literal titles](#string-literal-titles)
@@ -12,7 +13,10 @@
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
-  - [Webpack 5 manager build](#webpack-5-manager-build)
+  - [Webpack 5](#webpack-5-manager-build)
+    - [Fixing hoisting issues](#fixing-hoisting-issues)
+      - [Webpack 5 manager build](#webpack-5-manager-build)
+      - [Wrong webpack version](#wrong-webpack-version)
   - [Angular 12 upgrade](#angular-12-upgrade)
   - [Lit support](#lit-support)
   - [No longer inferring default values of args](#no-longer-inferring-default-values-of-args)
@@ -174,6 +178,33 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.3.x to 6.4.0
+
+### CRA5 upgrade
+
+Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to
+upgrade the configuration. You can do this automatically by running:
+
+```
+npx sb@next fix
+```
+
+Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
+
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
 
 ### CSF3 enabled
 
@@ -357,34 +388,14 @@ export const MyStory = () => ({ component: MyComponent, ... })
 
 ## From version 6.2.x to 6.3.0
 
-### Webpack 5 manager build
+### Webpack 5
 
-Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
-
-If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+Storybook 6.3 brings opt-in support for building both your project and the manager UI with webpack 5. To do so:
 
 ```shell
-yarn add @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/manager-webpack5 --save-dev
-```
-
-Because Storybook uses `webpack@4` as the default, it's possible for the wrong version of webpack to get hoisted by your package manager. If you receive an error that looks like you might be using the wrong version of webpack, install `webpack@5` explicitly as a dev dependency to force it to be hoisted:
-
-```shell
-yarn add webpack@5 --dev
-# Or
-npm install webpack@5 --save-dev
-```
-
-### Angular 12 upgrade
-
-Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to do the following steps to force Storybook to use webpack 5 for building your project:
-
-```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5@next --dev
-# Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5@next --save-dev
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
@@ -396,6 +407,34 @@ module.exports = {
   },
 };
 ```
+
+#### Fixing hoisting issues
+
+##### Webpack 5 manager build
+
+Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
+
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+
+```shell
+yarn add @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/manager-webpack5 --save-dev
+```
+
+##### Wrong webpack version
+
+Because Storybook uses `webpack@4` as the default, it's possible for the wrong version of webpack to get hoisted by your package manager. If you receive an error that looks like you might be using the wrong version of webpack, install `webpack@5` explicitly as a dev dependency to force it to be hoisted:
+
+```shell
+yarn add webpack@5 --dev
+# Or
+npm install webpack@5 --save-dev
+```
+
+### Angular 12 upgrade
+
+Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to [follow the steps for opting-in to webpack 5](#webpack-5).
 
 ### Lit support
 
