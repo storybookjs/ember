@@ -76,7 +76,7 @@ Thanks to the [Component Story Format](../api/csf.md), an ES6 module based file 
 
 <!-- prettier-ignore-end -->
 
-By combining the stories, you're recreating the entire component workflow and spot potential issues while reducing the boilerplate code you need to write.
+By combining the stories, you're recreating the entire component workflow and can spot potential issues while reducing the boilerplate code you need to write.
 
 ## Delaying interactions
 
