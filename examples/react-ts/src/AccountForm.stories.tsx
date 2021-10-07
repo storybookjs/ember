@@ -13,8 +13,9 @@ export default {
   },
 } as ComponentMeta<typeof AccountForm>;
 
-// export const Standard = (args: AccountFormProps) => <AccountForm {...args} />;
+// export const Standard = (args: any) => <AccountForm {...args} />;
 // Standard.args = { passwordVerification: false };
+// Standard.play = () => userEvent.type(screen.getByTestId('email'), 'michael@chromatic.com');
 
 export const Standard: ComponentStoryObj<typeof AccountForm> = {
   // render: (args: AccountFormProps) => <AccountForm {...args} />,
