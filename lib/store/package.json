@@ -1,6 +1,6 @@
 {
   "name": "@storybook/store",
-  "version": "6.4.0-beta.4",
+  "version": "6.4.0-beta.5",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,9 +40,9 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-beta.4",
-    "@storybook/client-logger": "6.4.0-beta.4",
-    "@storybook/core-events": "6.4.0-beta.4",
+    "@storybook/addons": "6.4.0-beta.5",
+    "@storybook/client-logger": "6.4.0-beta.5",
+    "@storybook/core-events": "6.4.0-beta.5",
     "@storybook/csf": "0.0.2--canary.6aca495.0",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",
@@ -58,6 +58,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "294cc94b04cb92813efd12c0a85be443788d0d5b",
+  "gitHead": "c1e5c8344c29e7e06236f088faeb380257fd3dea",
   "sbmodern": "dist/modern/index.js"
 }

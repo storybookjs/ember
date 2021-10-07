@@ -347,7 +347,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
-      await this.renderDocs({ story });
+      this.previousCleanup = await this.renderDocs({ story });
     } else {
       this.previousCleanup = this.renderStory({ story });
     }
@@ -396,18 +396,43 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 
-    // Use `componentId` as a key so that we force a re-render every time
-    // we switch components
-    const docsElement = (
-      <DocsContainer key={componentId} context={docsContext}>
-        <Page />
-      </DocsContainer>
-    );
+    const render = () => {
+      // Use `componentId` as a key so that we force a re-render every time
+      // we switch components
+      const docsElement = (
+        <DocsContainer key={componentId} context={docsContext}>
+          <Page />
+        </DocsContainer>
+      );
 
-    ReactDOM.render(docsElement, element, async () => {
-      await Promise.all(renderingStoryPromises);
-      this.channel.emit(Events.DOCS_RENDERED, id);
-    });
+      ReactDOM.render(docsElement, element, async () => {
+        await Promise.all(renderingStoryPromises);
+        this.channel.emit(Events.DOCS_RENDERED, id);
+      });
+    };
+
+    // Initially render right away
+    render();
+
+    // Listen to events and re-render
+    // NOTE: we aren't checking to see the story args are targetted at the "right" story.
+    // This is because we may render >1 story on the page and there is no easy way to keep track
+    // of which ones were rendered by the docs page.
+    // However, in `modernInlineRender`, the individual stories track their own events as they
+    // each call `renderStoryToElement` below.
+    if (!global?.FEATURES?.modernInlineRender) {
+      this.channel.on(Events.UPDATE_GLOBALS, render);
+      this.channel.on(Events.UPDATE_STORY_ARGS, render);
+      this.channel.on(Events.RESET_STORY_ARGS, render);
+    }
+
+    return () => {
+      if (!global?.FEATURES?.modernInlineRender) {
+        this.channel.off(Events.UPDATE_GLOBALS, render);
+        this.channel.off(Events.UPDATE_STORY_ARGS, render);
+        this.channel.off(Events.RESET_STORY_ARGS, render);
+      }
+    };
   }
 
   renderStory({ story }: { story: Story<TFramework> }) {
@@ -591,7 +616,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    if (previousViewMode === 'story') {
+    if (previousViewMode) {
       this.previousCleanup();
     }
   }

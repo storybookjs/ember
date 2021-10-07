@@ -170,6 +170,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'upgrading',
+          title: 'Upgrading',
+          type: 'link',
+        },
+        {
           pathSegment: '',
           title: 'Integration',
           type: 'menu',

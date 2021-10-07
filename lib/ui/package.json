@@ -1,6 +1,6 @@
 {
   "name": "@storybook/ui",
-  "version": "6.4.0-beta.4",
+  "version": "6.4.0-beta.5",
   "description": "Core Storybook UI",
   "keywords": [
     "storybook"
@@ -41,15 +41,15 @@
   },
   "dependencies": {
     "@emotion/core": "^10.1.1",
-    "@storybook/addons": "6.4.0-beta.4",
-    "@storybook/api": "6.4.0-beta.4",
-    "@storybook/channels": "6.4.0-beta.4",
-    "@storybook/client-logger": "6.4.0-beta.4",
-    "@storybook/components": "6.4.0-beta.4",
-    "@storybook/core-events": "6.4.0-beta.4",
-    "@storybook/router": "6.4.0-beta.4",
+    "@storybook/addons": "6.4.0-beta.5",
+    "@storybook/api": "6.4.0-beta.5",
+    "@storybook/channels": "6.4.0-beta.5",
+    "@storybook/client-logger": "6.4.0-beta.5",
+    "@storybook/components": "6.4.0-beta.5",
+    "@storybook/core-events": "6.4.0-beta.5",
+    "@storybook/router": "6.4.0-beta.5",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.4.0-beta.4",
+    "@storybook/theming": "6.4.0-beta.5",
     "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.2",
     "core-js-pure": "^3.8.2",
@@ -86,6 +86,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "294cc94b04cb92813efd12c0a85be443788d0d5b",
+  "gitHead": "c1e5c8344c29e7e06236f088faeb380257fd3dea",
   "sbmodern": "dist/modern/index.js"
 }

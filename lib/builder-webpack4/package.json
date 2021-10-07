@@ -1,6 +1,6 @@
 {
   "name": "@storybook/builder-webpack4",
-  "version": "6.4.0-beta.4",
+  "version": "6.4.0-beta.5",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -61,22 +61,22 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.4.0-beta.4",
-    "@storybook/api": "6.4.0-beta.4",
-    "@storybook/channel-postmessage": "6.4.0-beta.4",
-    "@storybook/channels": "6.4.0-beta.4",
-    "@storybook/client-api": "6.4.0-beta.4",
-    "@storybook/client-logger": "6.4.0-beta.4",
-    "@storybook/components": "6.4.0-beta.4",
-    "@storybook/core-common": "6.4.0-beta.4",
-    "@storybook/core-events": "6.4.0-beta.4",
-    "@storybook/node-logger": "6.4.0-beta.4",
-    "@storybook/preview-web": "6.4.0-beta.4",
-    "@storybook/router": "6.4.0-beta.4",
+    "@storybook/addons": "6.4.0-beta.5",
+    "@storybook/api": "6.4.0-beta.5",
+    "@storybook/channel-postmessage": "6.4.0-beta.5",
+    "@storybook/channels": "6.4.0-beta.5",
+    "@storybook/client-api": "6.4.0-beta.5",
+    "@storybook/client-logger": "6.4.0-beta.5",
+    "@storybook/components": "6.4.0-beta.5",
+    "@storybook/core-common": "6.4.0-beta.5",
+    "@storybook/core-events": "6.4.0-beta.5",
+    "@storybook/node-logger": "6.4.0-beta.5",
+    "@storybook/preview-web": "6.4.0-beta.5",
+    "@storybook/router": "6.4.0-beta.5",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-beta.4",
-    "@storybook/theming": "6.4.0-beta.4",
-    "@storybook/ui": "6.4.0-beta.4",
+    "@storybook/store": "6.4.0-beta.5",
+    "@storybook/theming": "6.4.0-beta.5",
+    "@storybook/ui": "6.4.0-beta.5",
     "@types/node": "^14.0.10",
     "@types/webpack": "^4.41.26",
     "autoprefixer": "^9.8.6",
@@ -131,6 +131,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "294cc94b04cb92813efd12c0a85be443788d0d5b",
+  "gitHead": "c1e5c8344c29e7e06236f088faeb380257fd3dea",
   "sbmodern": "dist/modern/index.js"
 }

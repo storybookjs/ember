@@ -1,3 +1,27 @@
+## 6.3.10 (October 6, 2021)
+
+### Bug Fixes
+
+- CLI: Don't upgrade preset-create-react-app if react-scripts < 5 ([#16255](https://github.com/storybookjs/storybook/pull/16255))
+
+## 6.4.0-beta.5 (October 6, 2021)
+
+### Features
+
+- CLI: Add "automigrate" command for configuration issues and migrations ([#16193](https://github.com/storybookjs/storybook/pull/16193))
+- Vue: support @values in args table ([#16019](https://github.com/storybookjs/storybook/pull/16019))
+
+### Bug Fixes
+
+- CLI: Don't upgrade preset-create-react-app if react-scripts < 5 ([#16255](https://github.com/storybookjs/storybook/pull/16255))
+- Angular: Fix getComponentInputsOutputs for multiple decorators ([#16217](https://github.com/storybookjs/storybook/pull/16217))
+
+### Maintenance
+
+- CSF: Add error handling for CSF story index generation ([#16241](https://github.com/storybookjs/storybook/pull/16241))
+- Official-storybook: Fix show source in no-args stories ([#16259](https://github.com/storybookjs/storybook/pull/16259))
+- CLI: Remove story format parameter ([#16233](https://github.com/storybookjs/storybook/pull/16233))
+
 ## 6.4.0-beta.4 (October 5, 2021)
 
 ### Features

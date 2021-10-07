@@ -18,9 +18,14 @@ const config: StorybookConfig = {
     '@storybook/react',
     {
       name: '@storybook/addon-docs',
-      options: { transcludeMarkdown: true },
+      options: {
+        transcludeMarkdown: true,
+        // needed if you use addon-docs in conjunction
+        // with addon-storysource
+        sourceLoaderOptions: null,
+      },
     },
-    { name: '@storybook/addon-essentials' },
+    '@storybook/addon-essentials',
     '@storybook/addon-storysource',
     '@storybook/addon-links',
     '@storybook/addon-jest',

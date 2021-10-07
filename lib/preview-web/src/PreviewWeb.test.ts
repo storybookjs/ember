@@ -587,6 +587,21 @@ describe('PreviewWeb', () => {
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
     });
+
+    describe('in docs mode', () => {
+      it('re-renders the docs container', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+
+        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
+        await waitForRender();
+
+        expect(ReactDOM.render).toHaveBeenCalledTimes(2);
+      });
+    });
   });
 
   describe('onUpdateArgs', () => {
@@ -815,6 +830,24 @@ describe('PreviewWeb', () => {
 
         // Now let the runPlayFunction call resolve
         openGate();
+      });
+    });
+
+    describe('in docs mode', () => {
+      it('re-renders the docs container', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+
+        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await waitForRender();
+
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { new: 'arg' },
+        });
+        await waitForRender();
+
+        expect(ReactDOM.render).toHaveBeenCalledTimes(2);
       });
     });
   });
