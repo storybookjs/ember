@@ -62,13 +62,13 @@ const storyIndex: StoryIndex = {
     },
   },
 };
-const fetchStoryIndex = async () => storyIndex;
+const getStoryIndex = () => storyIndex;
 
 describe('StoryStore', () => {
   describe('projectAnnotations', () => {
     it('normalizes on initialization', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       expect(store.projectAnnotations.globalTypes).toEqual({
         a: { name: 'a', type: { name: 'string' } },
@@ -79,8 +79,8 @@ describe('StoryStore', () => {
     });
 
     it('normalizes on updateGlobalAnnotations', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       store.updateProjectAnnotations(projectAnnotations);
       expect(store.projectAnnotations.globalTypes).toEqual({
@@ -94,8 +94,8 @@ describe('StoryStore', () => {
 
   describe('loadStory', () => {
     it('pulls the story via the importFn', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       importFn.mockClear();
       expect(await store.loadStory({ storyId: 'component-one--a' })).toMatchObject({
@@ -108,8 +108,8 @@ describe('StoryStore', () => {
     });
 
     it('uses a cache', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
       expect(processCSFFile).toHaveBeenCalledTimes(1);
@@ -130,10 +130,188 @@ describe('StoryStore', () => {
     });
   });
 
+  describe('updateProjectAnnotations', () => {
+    it('busts the loadStory cache', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+      const story = await store.loadStory({ storyId: 'component-one--a' });
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+
+      store.updateProjectAnnotations({ ...projectAnnotations, decorators: [jest.fn()] });
+
+      // We are intentionally checking exact equality here, we need the object to be identical
+      expect(await store.loadStory({ storyId: 'component-one--a' })).not.toBe(story);
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('onStoriesChanged', () => {
+    it('busts the loadStory cache if the importFn returns a new module', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+      const story = await store.loadStory({ storyId: 'component-one--a' });
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+
+      await store.onStoriesChanged({
+        importFn: () => ({
+          ...componentOneExports,
+          c: { args: { foo: 'c' } },
+        }),
+      });
+
+      // The object is not identical which will cause it to be treated as a new story
+      expect(await store.loadStory({ storyId: 'component-one--a' })).not.toBe(story);
+      expect(processCSFFile).toHaveBeenCalledTimes(2);
+      expect(prepareStory).toHaveBeenCalledTimes(2);
+    });
+
+    it('busts the loadStory cache if the csf file no longer appears in the index', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+      const story = await store.loadStory({ storyId: 'component-one--a' });
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+
+      // The stories are no longer in the index
+      await store.onStoriesChanged({ storyIndex: { v: 3, stories: {} } });
+
+      await expect(store.loadStory({ storyId: 'component-one--a' })).rejects.toThrow();
+
+      // We don't load or process any CSF
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+    });
+
+    it('reuses the cache if a story importPath has not changed', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+      const story = await store.loadStory({ storyId: 'component-one--a' });
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+
+      // Add a new story to the index that isn't different
+      await store.onStoriesChanged({
+        storyIndex: {
+          v: 3,
+          stories: {
+            ...storyIndex.stories,
+            'new-component--story': {
+              title: 'New Component',
+              name: 'Story',
+              importPath: './new-component.stories.js',
+            },
+          },
+        },
+      });
+
+      // We are intentionally checking exact equality here, we need the object to be identical
+      expect(await store.loadStory({ storyId: 'component-one--a' })).toEqual(story);
+      expect(processCSFFile).toHaveBeenCalledTimes(1);
+      expect(prepareStory).toHaveBeenCalledTimes(1);
+    });
+
+    it('imports with a new path for a story id if provided', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+      await store.loadStory({ storyId: 'component-one--a' });
+      expect(importFn).toHaveBeenCalledWith(storyIndex.stories['component-one--a'].importPath);
+
+      const newImportPath = './src/ComponentOne-new.stories.js';
+      const newImportFn = jest.fn(() => componentOneExports);
+      await store.onStoriesChanged({
+        importFn: newImportFn,
+        storyIndex: {
+          v: 3,
+          stories: {
+            'component-one--a': {
+              title: 'Component One',
+              name: 'A',
+              importPath: newImportPath,
+            },
+          },
+        },
+      });
+
+      await store.loadStory({ storyId: 'component-one--a' });
+      expect(newImportFn).toHaveBeenCalledWith(newImportPath);
+    });
+
+    it('re-caches stories if the were cached already', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+      await store.cacheAllCSFFiles(false);
+
+      await store.loadStory({ storyId: 'component-one--a' });
+      expect(importFn).toHaveBeenCalledWith(storyIndex.stories['component-one--a'].importPath);
+
+      const newImportPath = './src/ComponentOne-new.stories.js';
+      const newImportFn = jest.fn(() => componentOneExports);
+      await store.onStoriesChanged({
+        importFn: newImportFn,
+        storyIndex: {
+          v: 3,
+          stories: {
+            'component-one--a': {
+              title: 'Component One',
+              name: 'A',
+              importPath: newImportPath,
+            },
+          },
+        },
+      });
+
+      expect(store.extract()).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "a",
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--a",
+            "initialArgs": Object {
+              "foo": "a",
+            },
+            "kind": "Component One",
+            "name": "A",
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "story": "A",
+            "subcomponents": undefined,
+            "title": "Component One",
+          },
+        ]
+      `);
+    });
+  });
+
   describe('componentStoriesFromCSFFile', () => {
     it('returns all the stories in the file', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const csfFile = await store.loadCSFFileByStoryId('component-one--a', { sync: false });
       const stories = store.componentStoriesFromCSFFile({ csfFile });
@@ -145,8 +323,8 @@ describe('StoryStore', () => {
 
   describe('getStoryContext', () => {
     it('returns the args and globals correctly', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -157,8 +335,8 @@ describe('StoryStore', () => {
     });
 
     it('returns the args and globals correctly when they change', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -172,8 +350,8 @@ describe('StoryStore', () => {
     });
 
     it('returns the same hooks each time', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -188,8 +366,8 @@ describe('StoryStore', () => {
 
   describe('cleanupStory', () => {
     it('cleans the hooks from the context', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       const story = await store.loadStory({ storyId: 'component-one--a' });
 
@@ -202,8 +380,8 @@ describe('StoryStore', () => {
 
   describe('loadAllCSFFiles', () => {
     it('imports *all* csf files', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       importFn.mockClear();
       const csfFiles = await store.loadAllCSFFiles(false);
@@ -217,15 +395,15 @@ describe('StoryStore', () => {
 
   describe('extract', () => {
     it('throws if you have not called cacheAllCSFFiles', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
 
       expect(() => store.extract()).toThrow(/Cannot call extract/);
     });
 
     it('produces objects with functions and hooks stripped', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
       await store.cacheAllCSFFiles(false);
 
       expect(store.extract()).toMatchInlineSnapshot(`
@@ -342,11 +520,13 @@ describe('StoryStore', () => {
             }
           : componentTwoExports;
       });
-      const store = new StoryStore({
+      const store = new StoryStore();
+      store.initialize({
+        getStoryIndex,
         importFn: docsOnlyImportFn,
-        fetchStoryIndex,
+        projectAnnotations,
+        cache: false,
       });
-      await store.initialize({ projectAnnotations, sync: false });
       await store.cacheAllCSFFiles(false);
 
       expect((store.extract() as { id: StoryId }[]).map((s) => s.id)).toEqual([
@@ -362,8 +542,8 @@ describe('StoryStore', () => {
 
   describe('getSetStoriesPayload', () => {
     it('maps stories list to payload correctly', async () => {
-      const store = new StoryStore({ importFn, fetchStoryIndex });
-      await store.initialize({ projectAnnotations, sync: false });
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
       await store.cacheAllCSFFiles(false);
 
       expect(store.getSetStoriesPayload()).toMatchInlineSnapshot(`

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { printDuration } from './print-duration';
 
 export const useProgressReporting = async (
@@ -14,7 +14,7 @@ export const useProgressReporting = async (
     modules?: any;
   }) => void = () => {};
 
-  router.get('/progress', (request, response) => {
+  router.get('/progress', (request: Request, response: Response) => {
     let closed = false;
     const close = () => {
       closed = true;
@@ -31,6 +31,7 @@ export const useProgressReporting = async (
     reportProgress = (progress: any) => {
       if (closed || response.writableEnded) return;
       response.write(`data: ${JSON.stringify(progress)}\n\n`);
+      response.flush();
       if (progress.value === 1) close();
     };
   });

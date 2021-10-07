@@ -30,6 +30,7 @@ import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
+import { StoryIndex } from '.';
 
 type MaybePromise<T> = Promise<T> | T;
 
@@ -78,16 +79,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   prepareStoryWithCache: typeof prepareStory;
 
-  constructor({
-    importFn,
-    fetchStoryIndex,
-  }: {
-    importFn: ModuleImportFn;
-    fetchStoryIndex: ConstructorParameters<typeof StoryIndexStore>[0]['fetchStoryIndex'];
-  }) {
-    this.storyIndex = new StoryIndexStore({ fetchStoryIndex });
-    this.importFn = importFn;
-
+  constructor() {
     this.globals = new GlobalsStore();
     this.args = new ArgsStore();
     this.hooks = {};
@@ -99,57 +91,51 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
   }
 
-  // See note in PreviewWeb about the 'sync' init path.
-  initialize(options: {
-    projectAnnotations: ProjectAnnotations<TFramework>;
-    sync: false;
-    cacheAllCSFFiles?: boolean;
-  }): Promise<void>;
-
-  initialize(options: {
-    projectAnnotations: ProjectAnnotations<TFramework>;
-    sync: true;
-    cacheAllCSFFiles?: boolean;
-  }): void;
-
   initialize({
+    getStoryIndex,
+    importFn,
     projectAnnotations,
-    sync = false,
-    cacheAllCSFFiles = false,
+    cache = false,
   }: {
+    getStoryIndex: () => StoryIndex;
+    importFn: ModuleImportFn;
     projectAnnotations: ProjectAnnotations<TFramework>;
-    sync?: boolean;
-    cacheAllCSFFiles?: boolean;
-  }): MaybePromise<void> {
+    cache?: boolean;
+  }): void {
     this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+
+    // Frustratingly we need to pass getStoryIndex (rather than just storyIndex), as
+    // we cannot call getStoryIndex on the v6 StoryStoreFacade until the project annotations are set above.
+    this.storyIndex = new StoryIndexStore(getStoryIndex());
+    this.importFn = importFn;
+
     const { globals, globalTypes } = this.projectAnnotations;
     this.globals.initialize({ globals, globalTypes });
 
-    if (sync) {
-      this.storyIndex.initialize({ sync: true });
-      if (cacheAllCSFFiles) {
-        this.cacheAllCSFFiles(true);
-      }
-      return null;
-    }
-
-    return this.storyIndex
-      .initialize({ sync: false })
-      .then(() => (cacheAllCSFFiles ? this.cacheAllCSFFiles(false) : null));
+    if (cache) this.cacheAllCSFFiles(true);
   }
 
+  // This means the preview.[tj]s file has changed.
+  // By changing `this.projectAnnotations, we implicitly invalidate the `prepareStoryWithCache`
   updateProjectAnnotations(projectAnnotations: ProjectAnnotations<TFramework>) {
     this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
     const { globals, globalTypes } = projectAnnotations;
     this.globals.resetOnProjectAnnotationsChange({ globals, globalTypes });
   }
 
-  // This means that one of the CSF functions has changed.
-  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
-    this.importFn = importFn;
-
-    // We need to refetch the stories list as it may have changed too
-    await this.storyIndex.cache(false);
+  // This means that one of the CSF files has changed.
+  // If the `importFn` has changed, we will invalidate both caches.
+  // If the `storyIndex` data has changed, we may or may not invalidate the caches, depending
+  // on whether we've loaded the relevant files yet.
+  async onStoriesChanged({
+    importFn,
+    storyIndex,
+  }: {
+    importFn?: ModuleImportFn;
+    storyIndex?: StoryIndex;
+  }) {
+    if (importFn) this.importFn = importFn;
+    if (storyIndex) this.storyIndex.stories = storyIndex.stories;
 
     if (this.cachedCSFFiles) {
       await this.cacheAllCSFFiles(false);
