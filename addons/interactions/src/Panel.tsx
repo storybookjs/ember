@@ -39,7 +39,7 @@ const Interaction = ({
     display: 'flex',
     flexDirection: 'column',
     background:
-      call.state === CallStates.ERROR ? transparentize(0.8, theme.color.negative) : 'transparent', // dark: #222
+      call.state === CallStates.ERROR ? transparentize(0.93, theme.color.negative) : 'transparent', // dark: #222
     borderBottom: `1px solid ${theme.appBorderColor}`,
     fontFamily: typography.fonts.base,
     fontSize: 13,
@@ -57,7 +57,7 @@ const Interaction = ({
     textAlign: 'start',
     cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
     '&:hover': {
-      background: theme.base === 'dark' ? transparentize(0.8, theme.color.secondary) : '#F3FAFF',
+      background: theme.base === 'dark' ? transparentize(0.9, theme.color.secondary) : '#F3FAFF',
     },
     '&:focus-visible': {
       outline: 0,
