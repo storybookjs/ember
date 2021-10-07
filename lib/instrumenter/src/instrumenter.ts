@@ -14,6 +14,7 @@ import { Call, CallRef, CallStates, LogItem } from './types';
 export const EVENTS = {
   CALL: 'instrumenter/call',
   SYNC: 'instrumenter/sync',
+  LOCK: 'instrumenter/lock',
   START: 'instrumenter/start',
   BACK: 'instrumenter/back',
   GOTO: 'instrumenter/goto',
@@ -341,10 +342,12 @@ export class Instrumenter {
 
     // Instead of invoking the function, defer the function call until we continue playing.
     return new Promise((resolve) => {
+      this.channel.emit(EVENTS.LOCK, false);
       this.setState(call.storyId, ({ resolvers }) => ({
         resolvers: { ...resolvers, [call.id]: resolve },
       }));
     }).then(() => {
+      this.channel.emit(EVENTS.LOCK, true);
       this.setState(call.storyId, (state) => {
         const { [call.id]: _, ...resolvers } = state.resolvers;
         return { resolvers };

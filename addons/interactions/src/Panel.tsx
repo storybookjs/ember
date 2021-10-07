@@ -94,6 +94,7 @@ const Interaction = ({
 };
 
 export const Panel: React.FC<PanelProps> = (props) => {
+  const [isLocked, setLock] = React.useState(false);
   const [isPlaying, setPlaying] = React.useState(true);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
@@ -116,7 +117,11 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const emit = useChannel({
     [EVENTS.CALL]: setCall,
     [EVENTS.SYNC]: setLog,
-    [STORY_RENDER_PHASE_CHANGED]: ({ newPhase }) => setPlaying(newPhase === 'playing'),
+    [EVENTS.LOCK]: setLock,
+    [STORY_RENDER_PHASE_CHANGED]: ({ newPhase }) => {
+      setLock(false);
+      setPlaying(newPhase === 'playing');
+    },
   });
 
   const { storyId } = useStorybookState();
@@ -128,7 +133,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const hasNext = log.some((item) => item.state === CallStates.WAITING);
   const hasActive = log.some((item) => item.state === CallStates.ACTIVE);
   const hasException = log.some((item) => item.state === CallStates.ERROR);
-  const isDisabled = hasActive || (isPlaying && !isDebugging);
+  const isDisabled = hasActive || isLocked || (isPlaying && !isDebugging);
 
   const tabButton = global.document.getElementById('tabbutton-interactions');
   const tabStatus = hasException ? CallStates.ERROR : CallStates.ACTIVE;
