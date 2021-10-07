@@ -631,7 +631,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     if (previousViewMode) {
-      this.previousCleanup();
+      await this.previousCleanup();
     }
   }
 

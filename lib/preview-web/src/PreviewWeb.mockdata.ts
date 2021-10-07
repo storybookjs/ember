@@ -106,4 +106,6 @@ export const waitForRender = () =>
 export const waitForRenderPhase = (phase: RenderPhase) =>
   waitForEvents([Events.STORY_RENDER_PHASE_CHANGED], ({ newPhase }) => newPhase === phase);
 
-export const waitForQuiescence = async () => new Promise((r) => setTimeout(r, 100));
+// A little trick to ensure that we always call the real `setTimeout` even when timers are mocked
+const realSetTimeout = setTimeout;
+export const waitForQuiescence = async () => new Promise((r) => realSetTimeout(r, 100));
