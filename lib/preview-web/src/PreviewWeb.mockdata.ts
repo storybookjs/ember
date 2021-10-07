@@ -54,7 +54,7 @@ export const storyIndex: StoryIndex = {
     },
   },
 };
-export const fetchStoryIndex = async () => storyIndex;
+export const getStoryIndex = () => storyIndex;
 
 export const emitter = new EventEmitter();
 export const mockChannel = {

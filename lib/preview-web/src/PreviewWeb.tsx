@@ -24,6 +24,7 @@ import {
   CSFFile,
   StoryStore,
   StorySpecifier,
+  StoryIndex,
 } from '@storybook/store';
 
 import { WebProjectAnnotations, DocsContextProps } from './types';
@@ -31,6 +32,7 @@ import { WebProjectAnnotations, DocsContextProps } from './types';
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 import { NoDocs } from './NoDocs';
+import { StoryIndexClient } from './StoryIndexClient';
 
 const { window: globalWindow, AbortController, FEATURES } = global;
 
@@ -52,12 +54,16 @@ function createController() {
 
 export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
 type MaybePromise<T> = Promise<T> | T;
-type StoryCleanupFn = () => Promise<void>;
+type StoryCleanupFn = () => MaybePromise<void>;
+
+const INVALIDATE = 'INVALIDATE';
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
 
   urlStore: UrlStore;
+
+  indexClient?: StoryIndexClient;
 
   storyStore: StoryStore<TFramework>;
 
@@ -71,53 +77,60 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   previousCleanup: StoryCleanupFn;
 
-  constructor({
-    importFn,
-    fetchStoryIndex,
-  }: {
-    importFn: ModuleImportFn;
-    fetchStoryIndex: ConstructorParameters<typeof StoryStore>[0]['fetchStoryIndex'];
-  }) {
+  constructor() {
     this.channel = addons.getChannel();
     this.view = new WebView();
 
     this.urlStore = new UrlStore();
-    this.storyStore = new StoryStore({ importFn, fetchStoryIndex });
-
+    this.storyStore = new StoryStore();
     // Add deprecated APIs for back-compat
     // @ts-ignore
     this.storyStore.getSelection = deprecate(
       () => this.urlStore.selection,
       dedent`
-      \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
-
-      To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
-    `
+        \`__STORYBOOK_STORY_STORE__.getSelection()\` is deprecated and will be removed in 7.0.
+  
+        To get the current selection, use the \`useStoryContext()\` hook from \`@storybook/addons\`.
+      `
     );
   }
 
   initialize({
+    getStoryIndex,
+    importFn,
     getProjectAnnotations,
-    cacheAllCSFFiles = false,
-    // We have a second "sync" code path through `initialize` for back-compat reasons.
-    // Specifically Storyshots requires the story store to be syncronously loaded completely on bootup
-    sync = false,
   }: {
+    // In the case of the v6 store, we can only get the index from the facade *after*
+    // getProjectAnnotations has been run, thus this slightly awkward approach
+    getStoryIndex?: () => StoryIndex;
+    importFn: ModuleImportFn;
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
-    cacheAllCSFFiles?: boolean;
-    sync?: boolean;
   }): MaybePromise<void> {
     const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
-    if (sync) {
-      this.storyStore.initialize({ projectAnnotations, cacheAllCSFFiles, sync: true });
-      // NOTE: we don't await this, but return the promise so the caller can await it if they want
-      return this.setupListenersAndRenderSelection();
+    if (FEATURES?.storyStoreV7) {
+      this.indexClient = new StoryIndexClient();
+      return this.indexClient.fetch().then((fetchedStoryIndex: StoryIndex) => {
+        this.storyStore.initialize({
+          getStoryIndex: () => fetchedStoryIndex,
+          importFn,
+          projectAnnotations,
+          cache: false,
+        });
+        return this.setupListenersAndRenderSelection();
+      });
     }
 
-    return this.storyStore
-      .initialize({ projectAnnotations, cacheAllCSFFiles, sync: false })
-      .then(() => this.setupListenersAndRenderSelection());
+    if (!getStoryIndex) {
+      throw new Error('No `getStoryIndex` passed defined in v6 mode');
+    }
+    this.storyStore.initialize({
+      getStoryIndex,
+      importFn,
+      projectAnnotations,
+      cache: true,
+    });
+    return this.setupListenersAndRenderSelection();
   }
 
   getProjectAnnotationsOrRenderError(
@@ -158,6 +171,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   setupListeners() {
     globalWindow.onkeydown = this.onKeydown.bind(this);
+
+    if (this.indexClient)
+      this.indexClient.addEventListener(INVALIDATE, this.onStoryIndexChanged.bind(this));
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
     this.channel.on(Events.UPDATE_GLOBALS, this.onUpdateGlobals.bind(this));
@@ -240,9 +256,20 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.onUpdateArgs({ storyId, updatedArgs });
   }
 
+  async onStoryIndexChanged() {
+    const storyIndex = await this.indexClient.fetch();
+    return this.onStoriesChanged({ storyIndex });
+  }
+
   // This happens when a glob gets HMR-ed
-  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
-    await this.storyStore.onImportFnChanged({ importFn });
+  async onStoriesChanged({
+    importFn,
+    storyIndex,
+  }: {
+    importFn?: ModuleImportFn;
+    storyIndex?: StoryIndex;
+  }) {
+    await this.storyStore.onStoriesChanged({ importFn, storyIndex });
 
     if (this.urlStore.selection) {
       await this.renderSelection();
@@ -275,10 +302,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   //     in which case we render it to the root element, OR
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
-  async renderSelection({
-    persistedArgs,
-    forceCleanRender = false,
-  }: { persistedArgs?: Args; forceCleanRender?: boolean } = {}) {
+  async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
     if (!this.urlStore.selection) {
       throw new Error('Cannot render story as no selection was made');
     }
@@ -289,6 +313,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       story = await this.storyStore.loadStory({ storyId: selection.storyId });
     } catch (err) {
+      this.previousStory = null;
       logger.warn(err);
       await this.renderMissingStory(selection.storyId);
       return;
@@ -307,7 +332,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (!storyChanged && !implementationChanged && !viewModeChanged && !forceCleanRender) {
+    if (this.previousStory && !storyChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -335,14 +360,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
-      await this.renderDocs({ story });
+      this.previousCleanup = await this.renderDocs({ story });
     } else {
       this.previousCleanup = this.renderStory({ story });
     }
   }
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
-    const { id, title, name } = story;
+    const { id, title, name, componentId } = story;
     const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
@@ -384,15 +409,43 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       docs.container || (({ children }: { children: Element }) => <>{children}</>);
     const Page: ComponentType = docs.page || NoDocs;
 
-    const docsElement = (
-      <DocsContainer context={docsContext}>
-        <Page />
-      </DocsContainer>
-    );
-    ReactDOM.render(docsElement, element, async () => {
-      await Promise.all(renderingStoryPromises);
-      this.channel.emit(Events.DOCS_RENDERED, id);
-    });
+    const render = () => {
+      // Use `componentId` as a key so that we force a re-render every time
+      // we switch components
+      const docsElement = (
+        <DocsContainer key={componentId} context={docsContext}>
+          <Page />
+        </DocsContainer>
+      );
+
+      ReactDOM.render(docsElement, element, async () => {
+        await Promise.all(renderingStoryPromises);
+        this.channel.emit(Events.DOCS_RENDERED, id);
+      });
+    };
+
+    // Initially render right away
+    render();
+
+    // Listen to events and re-render
+    // NOTE: we aren't checking to see the story args are targetted at the "right" story.
+    // This is because we may render >1 story on the page and there is no easy way to keep track
+    // of which ones were rendered by the docs page.
+    // However, in `modernInlineRender`, the individual stories track their own events as they
+    // each call `renderStoryToElement` below.
+    if (!global?.FEATURES?.modernInlineRender) {
+      this.channel.on(Events.UPDATE_GLOBALS, render);
+      this.channel.on(Events.UPDATE_STORY_ARGS, render);
+      this.channel.on(Events.RESET_STORY_ARGS, render);
+    }
+
+    return () => {
+      if (!global?.FEATURES?.modernInlineRender) {
+        this.channel.off(Events.UPDATE_GLOBALS, render);
+        this.channel.off(Events.UPDATE_STORY_ARGS, render);
+        this.channel.off(Events.RESET_STORY_ARGS, render);
+      }
+    };
   }
 
   renderStory({ story }: { story: Story<TFramework> }) {
@@ -577,8 +630,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    if (previousViewMode === 'story') {
-      await this.previousCleanup();
+    if (previousViewMode) {
+      this.previousCleanup();
     }
   }
 

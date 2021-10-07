@@ -1,3 +1,73 @@
+## 6.4.0-beta.6 (October 7, 2021)
+
+### Features
+
+- Core: HMR for StoryIndex server ([#16160](https://github.com/storybookjs/storybook/pull/16160))
+
+### Bug Fixes
+
+- Angular: Make types generic for angular's built-in decorators ([#16266](https://github.com/storybookjs/storybook/pull/16266))
+- Args: Re-render the whole container when args or globals change ([#16264](https://github.com/storybookjs/storybook/pull/16264))
+
+### Maintenance
+
+- CSF: Add CSF2 play function example ([#16121](https://github.com/storybookjs/storybook/pull/16121))
+- Core: Unified story specifiers ([#16220](https://github.com/storybookjs/storybook/pull/16220))
+
+## 6.3.10 (October 6, 2021)
+
+### Bug Fixes
+
+- CLI: Don't upgrade preset-create-react-app if react-scripts < 5 ([#16255](https://github.com/storybookjs/storybook/pull/16255))
+
+## 6.4.0-beta.5 (October 6, 2021)
+
+### Features
+
+- CLI: Add "automigrate" command for configuration issues and migrations ([#16193](https://github.com/storybookjs/storybook/pull/16193))
+- Vue: support @values in args table ([#16019](https://github.com/storybookjs/storybook/pull/16019))
+
+### Bug Fixes
+
+- CLI: Don't upgrade preset-create-react-app if react-scripts < 5 ([#16255](https://github.com/storybookjs/storybook/pull/16255))
+- Angular: Fix getComponentInputsOutputs for multiple decorators ([#16217](https://github.com/storybookjs/storybook/pull/16217))
+
+### Maintenance
+
+- CSF: Add error handling for CSF story index generation ([#16241](https://github.com/storybookjs/storybook/pull/16241))
+- Official-storybook: Fix show source in no-args stories ([#16259](https://github.com/storybookjs/storybook/pull/16259))
+- CLI: Remove story format parameter ([#16233](https://github.com/storybookjs/storybook/pull/16233))
+
+## 6.4.0-beta.4 (October 5, 2021)
+
+### Features
+
+- Core: Support v2 compatibility mode in story index ([#16226](https://github.com/storybookjs/storybook/pull/16226))
+- Core: Support composing stories in both v6 and v7 modes ([#16224](https://github.com/storybookjs/storybook/pull/16224))
+- Web-components: Autogenerate action argTypes for event. ([#16178](https://github.com/storybookjs/storybook/pull/16178))
+
+### Bug Fixes
+
+- Addon-a11y: Fix type of context passed to `axe.run` ([#16129](https://github.com/storybookjs/storybook/pull/16129))
+- Addon-docs/Angular: Fix inline story rendering ([#16149](https://github.com/storybookjs/storybook/pull/16149))
+- Components: Fix Code component to render children as array ([#15492](https://github.com/storybookjs/storybook/pull/15492))
+
+### Maintenance
+
+- CLI: Remove watch mode from the build-storybook documentation ([#16165](https://github.com/storybookjs/storybook/pull/16165))
+
+## 6.3.9 (October 1, 2021)
+
+### Maintenance
+
+- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))
+
+## 6.4.0-beta.3 (October 1, 2021)
+
+### Maintenance
+
+- CLI: Add webpack5 builder to CRA5 `sb init` ([#16194](https://github.com/storybookjs/storybook/pull/16194))
+
 ## 6.4.0-beta.2 (October 1, 2021)
 
 ### Bug Fixes

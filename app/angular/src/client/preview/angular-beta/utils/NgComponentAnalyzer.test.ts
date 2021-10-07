@@ -4,6 +4,7 @@ import {
   ComponentFactoryResolver,
   Directive,
   EventEmitter,
+  HostBinding,
   Injectable,
   Input,
   Output,
@@ -102,6 +103,36 @@ describe('getComponentInputsOutputs', () => {
     const fooComponentFactory = resolveComponentFactory(FooComponent);
 
     const { inputs, outputs } = getComponentInputsOutputs(FooComponent);
+
+    expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
+    expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));
+  });
+
+  it('should return I/O in the presence of multiple decorators', () => {
+    @Component({
+      template: '',
+    })
+    class FooComponent {
+      @Input()
+      @HostBinding('class.preceeding-first')
+      public inputPreceedingHostBinding: string;
+
+      @HostBinding('class.following-binding')
+      @Input()
+      public inputFollowingHostBinding: string;
+    }
+
+    const fooComponentFactory = resolveComponentFactory(FooComponent);
+
+    const { inputs, outputs } = getComponentInputsOutputs(FooComponent);
+
+    expect({ inputs, outputs }).toEqual({
+      inputs: [
+        { propName: 'inputPreceedingHostBinding', templateName: 'inputPreceedingHostBinding' },
+        { propName: 'inputFollowingHostBinding', templateName: 'inputFollowingHostBinding' },
+      ],
+      outputs: [],
+    });
 
     expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
     expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));

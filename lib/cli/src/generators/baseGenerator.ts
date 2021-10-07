@@ -1,13 +1,7 @@
 import fse from 'fs-extra';
 import { getStorybookBabelDependencies } from '@storybook/core-common';
 import { NpmOptions } from '../NpmOptions';
-import {
-  StoryFormat,
-  SupportedLanguage,
-  SupportedFrameworks,
-  Builder,
-  CoreBuilder,
-} from '../project_types';
+import { SupportedLanguage, SupportedFrameworks, Builder, CoreBuilder } from '../project_types';
 import { getBabelDependencies, copyComponents } from '../helpers';
 import { configure } from './configure';
 import { getPackageDetails, JsPackageManager } from '../js-package-manager';
@@ -15,7 +9,6 @@ import { generateStorybookBabelConfigInCWD } from '../babel-config';
 
 export type GeneratorOptions = {
   language: SupportedLanguage;
-  storyFormat: StoryFormat;
   builder: Builder;
   linkable: boolean;
 };
@@ -62,6 +55,8 @@ const builderDependencies = (builder: Builder) => {
       return [builder];
   }
 };
+
+const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
 
 export async function baseGenerator(
   packageManager: JsPackageManager,
@@ -127,7 +122,7 @@ export async function baseGenerator(
         }
       : extraMain;
   configure(framework, {
-    addons: [...addons, ...extraAddons],
+    addons: [...addons, ...stripVersions(extraAddons)],
     extensions,
     commonJs: options.commonJs,
     ...mainOptions,

@@ -11,6 +11,7 @@ import { extract } from './extract';
 import { upgrade } from './upgrade';
 import { repro } from './repro';
 import { link } from './link';
+import { automigrate } from './automigrate';
 import { generateStorybookBabelConfigInCWD } from './babel-config';
 
 const pkg = sync({ cwd: __dirname }).packageJson;
@@ -25,7 +26,6 @@ program
   .option('-N --use-npm', 'Use npm to install deps')
   .option('-p --parser <babel | babylon | flow | ts | tsx>', 'jscodeshift parser')
   .option('-t --type <type>', 'Add Storybook for a specific project type')
-  .option('--story-format <csf | csf-ts | mdx >', 'Generate stories in a specified format')
   .option('-y --yes', 'Answer yes to all prompts')
   .option('-b --builder <builder>', 'Builder library')
   .option('-l --linkable', 'Prepare installation for link (contributor helper)')
@@ -47,9 +47,10 @@ program
   .command('upgrade')
   .description('Upgrade your Storybook packages to the latest')
   .option('-N --use-npm', 'Use NPM to build the Storybook server')
+  .option('-y --yes', 'Skip prompting the user')
   .option('-n --dry-run', 'Only check for upgrades, do not install')
   .option('-p --prerelease', 'Upgrade to the pre-release packages')
-  .option('-s --skip-check', 'Skip postinstall version consistency checks')
+  .option('-s --skip-check', 'Skip postinstall version and automigration checks')
   .action((options) => upgrade(options));
 
 program
@@ -121,6 +122,18 @@ program
   .option('--local', 'Link a local directory already in your file system')
   .action((target, { local }) =>
     link({ target, local }).catch((e) => {
+      logger.error(e);
+      process.exit(1);
+    })
+  );
+
+program
+  .command('automigrate [fixId]')
+  .description('Check storybook for known problems or migrations and apply fixes')
+  .option('-y --yes', 'Skip prompting the user')
+  .option('-n --dry-run', 'Only check for fixes, do not actually run them')
+  .action((fixId, options) =>
+    automigrate({ fixId, ...options }).catch((e) => {
       logger.error(e);
       process.exit(1);
     })

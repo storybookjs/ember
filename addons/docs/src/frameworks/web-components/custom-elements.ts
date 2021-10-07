@@ -1,10 +1,10 @@
 import { getCustomElements, isValidComponent, isValidMetaData } from '@storybook/web-components';
-import { ArgTypes } from '@storybook/api';
+import { ArgType, ArgTypes } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
 
 interface TagItem {
   name: string;
-  type: { text: string };
+  type: { [key: string]: any };
   description: string;
   default?: any;
   kind?: string;
@@ -50,28 +50,55 @@ function mapData(data: TagItem[], category: string) {
   return (
     data &&
     data
-      .filter((item) => !!item)
+      .filter((item) => item && item.name)
       .reduce((acc, item) => {
         if (item.kind === 'method') return acc;
 
-        const type =
-          category === 'properties' ? { name: item.type?.text || item.type } : { name: 'void' };
-        acc[item.name] = {
-          name: item.name,
-          required: false,
-          description: item.description,
-          type,
-          table: {
-            category,
-            type: { summary: item.type?.text || item.type },
-            defaultValue: {
-              summary: item.default !== undefined ? item.default : item.defaultValue,
-            },
-          },
-        };
+        switch (category) {
+          case 'events':
+            mapEvent(item).forEach((argType) => {
+              acc[argType.name] = argType;
+            });
+            break;
+          default:
+            acc[item.name] = mapItem(item, category);
+            break;
+        }
+
         return acc;
       }, {} as ArgTypes)
   );
+}
+
+function mapItem(item: TagItem, category: string): ArgType {
+  const type =
+    category === 'properties' ? { name: item.type?.text || item.type } : { name: 'void' };
+
+  return {
+    name: item.name,
+    required: false,
+    description: item.description,
+    type,
+    table: {
+      category,
+      type: { summary: item.type?.text || item.type },
+      defaultValue: {
+        summary: item.default !== undefined ? item.default : item.defaultValue,
+      },
+    },
+  };
+}
+
+function mapEvent(item: TagItem): ArgType[] {
+  let name = item.name
+    .replace(/(-|_|:|\.|\s)+(.)?/g, (_match, _separator, chr: string) => {
+      return chr ? chr.toUpperCase() : '';
+    })
+    .replace(/^([A-Z])/, (match) => match.toLowerCase());
+
+  name = `on${name.charAt(0).toUpperCase() + name.substr(1)}`;
+
+  return [{ name, action: { name: item.name }, table: { disable: true } }, mapItem(item, 'events')];
 }
 
 const getMetaDataExperimental = (tagName: string, customElements: CustomElements) => {

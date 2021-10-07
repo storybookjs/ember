@@ -10,6 +10,7 @@ import {
 } from '@storybook/csf';
 import {
   NormalizedProjectAnnotations,
+  NormalizedStoriesSpecifier,
   Path,
   StoryIndex,
   ModuleExports,
@@ -61,7 +62,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     return moduleExports;
   }
 
-  fetchStoryIndex(store: StoryStore<TFramework>) {
+  getStoryIndex(store: StoryStore<TFramework>) {
     const fileNameOrder = Object.keys(this.csfExports);
     const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
 
@@ -123,7 +124,15 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     // eslint-disable-next-line prefer-const
     let { id: componentId, title } = defaultExport || {};
 
-    title = title || autoTitle(fileName, STORIES);
+    title =
+      title ||
+      autoTitle(
+        fileName,
+        STORIES.map((specifier: NormalizedStoriesSpecifier & { importPathMatcher: string }) => ({
+          ...specifier,
+          importPathMatcher: new RegExp(specifier.importPathMatcher),
+        }))
+      );
     if (!title) {
       throw new Error(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(

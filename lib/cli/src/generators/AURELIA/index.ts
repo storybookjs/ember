@@ -22,7 +22,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   baseGenerator(packageManager, npmOptions, options, 'aurelia', {
     extraPackages: ['aurelia'],
   });
-  copyTemplate(__dirname, options.storyFormat);
+  copyTemplate(__dirname);
 };
 
 export default generator;
