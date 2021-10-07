@@ -14,7 +14,7 @@ export function useEventsAsSSE(emitter: EventEmitter, events: string[]) {
       if (closed || res.writableEnded) return;
 
       if (data) {
-        res.write(`event:${event}\ndata:${data && JSON.stringify(data)}\n\n`);
+        res.write(`event:${event}\ndata:${JSON.stringify(data)}\n\n`);
       } else {
         res.write(`event:${event}\ndata:\n\n`);
       }
