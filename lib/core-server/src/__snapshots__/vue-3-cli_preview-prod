@@ -5,7 +5,7 @@ Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/globals/globals.js",
-    "ROOT/examples/vue-3-cli/.storybook/storybook-init-framework-entry.js",
+    "ROOT/storybook-init-framework-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/vue3/config.js-generated-config-entry.js",
     "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-config-entry.js",
@@ -16,7 +16,7 @@ Object {
     "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/examples/vue-3-cli/.storybook/preview.ts-generated-config-entry.js",
-    "ROOT/examples/vue-3-cli/.storybook/generated-stories-entry.js",
+    "ROOT/generated-stories-entry.js",
   ],
   "keys": Array [
     "name",

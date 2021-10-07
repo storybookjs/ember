@@ -1,8 +1,7 @@
 import Watchpack from 'watchpack';
-import { toRequireContext, NormalizedStoriesSpecifier } from '@storybook/core-common';
+import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { Path } from '@storybook/store';
 
-// TODO -- deal with non "specified" specifiers
 export function watchStorySpecifiers(
   specifiers: NormalizedStoriesSpecifier[],
   onInvalidate: (specifier: NormalizedStoriesSpecifier, path: Path, removed: boolean) => void
@@ -15,23 +14,18 @@ export function watchStorySpecifiers(
     ignored: ['**/.git', 'node_modules'],
   });
   wp.watch({
-    directories: specifiers.map((ns) => ns.specifier.directory),
+    directories: specifiers.map((ns) => ns.directory),
   });
 
-  function onChangeOrRemove(path: Path, removed: boolean) {
-    console.log('onChangeOrRemove', path, removed);
-    const specifier = specifiers.find((ns) => {
-      const { path: base, regex } = toRequireContext(ns.glob);
-      console.log(
-        base,
-        regex,
-        !!path.startsWith(base.replace(/^\.\//, '')),
-        !!path.match(new RegExp(regex))
-      );
-      return path.startsWith(base.replace(/^\.\//, '')) && path.match(new RegExp(regex));
-    });
+  function onChangeOrRemove(watchpackPath: Path, removed: boolean) {
+    // Watchpack passes paths either with no leading './' - e.g. `src/Foo.stories.js`,
+    // or with a leading `../` (etc), e.g. `../src/Foo.stories.js`.
+    // We want to deal in importPaths relative to the working dir, or absolute paths.
+    const importPath = watchpackPath.startsWith('.') ? watchpackPath : `./${watchpackPath}`;
+
+    const specifier = specifiers.find((ns) => ns.importPathMatcher.exec(importPath));
     if (specifier) {
-      onInvalidate(specifier, path, removed);
+      onInvalidate(specifier, importPath, removed);
     }
   }
 
@@ -43,11 +37,11 @@ export function watchStorySpecifiers(
     // but that seems dangerous (what if the contents changed?) and frankly not worth it
     // (at this stage at least)
     const removed = !mtime;
-    console.log('change', path, removed, explanation);
     onChangeOrRemove(path, removed);
   });
   wp.on('remove', (path: Path, explanation: string) => {
-    console.log('remove', path, explanation);
     onChangeOrRemove(path, true);
   });
+
+  return () => wp.close();
 }

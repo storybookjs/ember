@@ -70,16 +70,15 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
 
   const features = await presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson || features?.storyStoreV7) {
-    const stories = normalizeStories(await presets.apply('stories'), {
+    const directories = {
       configDir: options.configDir,
       workingDir: process.cwd(),
+    };
+    const stories = normalizeStories(await presets.apply('stories'), directories);
+    await extractStoriesJson(path.join(options.outputDir, 'stories.json'), stories, {
+      ...directories,
+      storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
     });
-    await extractStoriesJson(
-      path.join(options.outputDir, 'stories.json'),
-      stories,
-      options.configDir,
-      !features?.breakingChangesV7 && !features?.storyStoreV7
-    );
   }
 
   const fullOptions: Options = {

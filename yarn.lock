@@ -7137,19 +7137,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/addon-ie11@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "@storybook/addon-ie11@npm:0.0.6"
+"@storybook/addon-ie11@npm:0.0.7--canary.5e87b64.0":
+  version: 0.0.7--canary.5e87b64.0
+  resolution: "@storybook/addon-ie11@npm:0.0.7--canary.5e87b64.0"
   dependencies:
     "@babel/preset-env": ^7.12.11
     "@storybook/node-logger": "*"
     babel-loader: ^8.1.0
+    event-source-polyfill: ^1.0.25
   peerDependenciesMeta:
     react:
       optional: true
     react-dom:
       optional: true
-  checksum: a7b900e102c8064e65b3cbfb87632965c75b830c8a605d8cc03ad9a8b1200ee2800081c31fb632e542a8713b31c8485c6ec71fa4ff1739b8c196f8ea580346e1
+  checksum: a9df754524cf00db8ca1e280868bf80ae3ac170f6455295e00df90f906493e71be71cd6b2bcff29794568f02be2c7d5d5a6ac4d9571dacaebca9f54dd54df7c2
   languageName: node
   linkType: hard
 
@@ -8024,6 +8025,7 @@ __metadata:
     pkg-dir: ^5.0.0
     pretty-hrtime: ^1.0.3
     resolve-from: ^5.0.0
+    slash: ^3.0.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
     webpack: 4
@@ -17910,7 +17912,7 @@ __metadata:
     "@storybook/addon-actions": 6.4.0-beta.4
     "@storybook/addon-backgrounds": 6.4.0-beta.4
     "@storybook/addon-docs": 6.4.0-beta.4
-    "@storybook/addon-ie11": ^0.0.6
+    "@storybook/addon-ie11": 0.0.7--canary.5e87b64.0
     "@storybook/addon-jest": 6.4.0-beta.4
     "@storybook/addon-links": 6.4.0-beta.4
     "@storybook/addon-storyshots": 6.4.0-beta.4
@@ -17935,7 +17937,7 @@ __metadata:
   resolution: "cra-react15@workspace:examples/cra-react15"
   dependencies:
     "@storybook/addon-actions": 6.4.0-beta.4
-    "@storybook/addon-ie11": ^0.0.6
+    "@storybook/addon-ie11": 0.0.7--canary.5e87b64.0
     "@storybook/addon-links": 6.4.0-beta.4
     "@storybook/addons": 6.4.0-beta.4
     "@storybook/builder-webpack4": 6.4.0-beta.4
@@ -17945,6 +17947,7 @@ __metadata:
     babel-core: 6
     babel-loader: ^8.0.0
     babel-runtime: 6
+    event-source-polyfill: ^1.0.25
     global: ^4.4.0
     react: ^15.7.0
     react-dom: ^15.7.0
@@ -17958,7 +17961,7 @@ __metadata:
   resolution: "cra-ts-essentials@workspace:examples/cra-ts-essentials"
   dependencies:
     "@storybook/addon-essentials": 6.4.0-beta.4
-    "@storybook/addon-ie11": ^0.0.6
+    "@storybook/addon-ie11": 0.0.7--canary.5e87b64.0
     "@storybook/addons": 6.4.0-beta.4
     "@storybook/builder-webpack4": 6.4.0-beta.4
     "@storybook/preset-create-react-app": ^3.1.6
@@ -17983,7 +17986,7 @@ __metadata:
     "@storybook/addon-a11y": 6.4.0-beta.4
     "@storybook/addon-actions": 6.4.0-beta.4
     "@storybook/addon-docs": 6.4.0-beta.4
-    "@storybook/addon-ie11": ^0.0.6
+    "@storybook/addon-ie11": 0.0.7--canary.5e87b64.0
     "@storybook/addon-links": 6.4.0-beta.4
     "@storybook/addons": 6.4.0-beta.4
     "@storybook/builder-webpack4": 6.4.0-beta.4
@@ -22193,6 +22196,13 @@ __metadata:
   version: 4.3.0
   resolution: "event-pubsub@npm:4.3.0"
   checksum: 47fa4fb5b55b3ed08b912862cc913e03603fa063cd3ec5cf3dfeb39a19314d3ca327e938a2cf70685254ab3a71af8178969963c705a030c6081d625bec835114
+  languageName: node
+  linkType: hard
+
+"event-source-polyfill@npm:^1.0.25":
+  version: 1.0.25
+  resolution: "event-source-polyfill@npm:1.0.25"
+  checksum: 9c02fa3dba1a0b730122b21daab0dd2e97da4f4e4d35528afdb21aead7504f488be1ee5c51098d189d3695300f2a128554ba25c504eabbad249f26b2c51ce387
   languageName: node
   linkType: hard
 
