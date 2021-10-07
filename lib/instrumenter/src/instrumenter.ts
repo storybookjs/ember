@@ -45,7 +45,7 @@ export interface State {
 }
 
 export type PatchedObj<TObj> = {
-  [Property in keyof TObj]: TObj[Property] & { _original: PatchedObj<TObj> };
+  [Property in keyof TObj]: TObj[Property] & { __originalFn__: PatchedObj<TObj> };
 };
 
 const alreadyCompletedException = new Error(
@@ -284,14 +284,14 @@ export class Instrumenter {
         }
 
         // Already patched, so we pass through unchanged
-        if (typeof value._original === 'function') {
+        if (typeof value.__originalFn__ === 'function') {
           acc[key] = value;
           return acc;
         }
 
         // Patch the function and mark it "patched" by adding a reference to the original function
         acc[key] = (...args: any[]) => this.track(key, value, args, options);
-        acc[key]._original = value;
+        acc[key].__originalFn__ = value;
 
         // Reuse the original name as the patched function's name
         Object.defineProperty(acc[key], 'name', { value: key, writable: false });
@@ -314,7 +314,8 @@ export class Instrumenter {
   // Returns a function that invokes the original function, records the invocation ("call") and
   // returns the original result.
   track(method: string, fn: Function, args: any[], options: Options) {
-    const storyId: StoryId = global.window.__STORYBOOK_PREVIEW__?.urlStore?.selection?.storyId;
+    const storyId: StoryId =
+      args?.[0]?.__storyId__ || global.window.__STORYBOOK_PREVIEW__?.urlStore?.selection?.storyId;
     const index = this.getState(storyId).cursor;
     this.setState(storyId, { cursor: index + 1 });
     const id = `${index}_${method}_${storyId}`;

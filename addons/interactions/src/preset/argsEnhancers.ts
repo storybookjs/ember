@@ -14,10 +14,11 @@ channel.on(STORY_RENDER_PHASE_CHANGED, ({ newPhase }) => {
   if (newPhase === 'loading') spies.forEach((mock) => mock?.mockClear?.());
 });
 
-const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ initialArgs }) => {
+const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = ({ id, initialArgs }) => {
   return Object.entries(initialArgs).reduce((acc, [key, val]) => {
     if (typeof val === 'function' && val.name === 'actionHandler') {
       Object.defineProperty(val, 'name', { value: key, writable: false });
+      Object.defineProperty(val, '__storyId__', { value: id, writable: false });
       acc[key] = action(val);
       spies.push(acc[key]);
       return acc;

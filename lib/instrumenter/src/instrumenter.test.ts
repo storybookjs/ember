@@ -57,7 +57,7 @@ describe('Instrumenter', () => {
     const result = instrument({ fn });
     expect(result).toStrictEqual({ fn: expect.any(Function) });
     expect(result.fn.name).toBe('fn');
-    expect(result.fn._original).toBe(fn);
+    expect(result.fn.__originalFn__).toBe(fn);
   });
 
   it('patches nested methods', () => {
@@ -70,15 +70,15 @@ describe('Instrumenter', () => {
         bar: { fn2: expect.any(Function) },
       },
     });
-    expect(result.foo.fn1._original).toBe(fn1);
-    expect(result.foo.bar.fn2._original).toBe(fn2);
+    expect(result.foo.fn1.__originalFn__).toBe(fn1);
+    expect(result.foo.bar.fn2.__originalFn__).toBe(fn2);
   });
 
   it('does not patch already patched functions', () => {
     const fn: any = () => {};
     const result = instrument(instrument({ fn }));
-    expect(result.fn._original).toBe(fn);
-    expect(result.fn._original._original).not.toBeDefined();
+    expect(result.fn.__originalFn__).toBe(fn);
+    expect(result.fn.__originalFn__.__originalFn__).not.toBeDefined();
   });
 
   it('does not traverse into arrays', () => {
@@ -86,8 +86,8 @@ describe('Instrumenter', () => {
     const fn2: any = () => {};
     const result = instrument({ arr: [fn1, { fn2 }] });
     expect(result).toStrictEqual({ arr: [fn1, { fn2 }] });
-    expect(result.arr[0]._original).not.toBeDefined();
-    expect(result.arr[1].fn2._original).not.toBeDefined();
+    expect(result.arr[0].__originalFn__).not.toBeDefined();
+    expect(result.arr[1].fn2.__originalFn__).not.toBeDefined();
   });
 
   it('patches function properties on functions', () => {
@@ -96,15 +96,15 @@ describe('Instrumenter', () => {
     const result = instrument({ fn1 });
     expect(result.fn1).toEqual(expect.any(Function));
     expect(result.fn1.fn2).toEqual(expect.any(Function));
-    expect(result.fn1._original).toBe(fn1);
-    expect(result.fn1.fn2._original).toBe(fn1.fn2);
+    expect(result.fn1.__originalFn__).toBe(fn1);
+    expect(result.fn1.fn2.__originalFn__).toBe(fn1.fn2);
   });
 
   it('patched functions call the original function when invoked', () => {
     const { fn } = instrument({ fn: jest.fn() });
     const obj = {};
     fn('foo', obj);
-    expect(fn._original).toHaveBeenCalledWith('foo', obj);
+    expect(fn.__originalFn__).toHaveBeenCalledWith('foo', obj);
   });
 
   it('emits a "call" event every time a patched function is invoked', () => {
@@ -313,7 +313,7 @@ describe('Instrumenter', () => {
   it('does not affect intercepted methods', () => {
     const { fn } = instrument({ fn: jest.fn() }, { intercept: true });
     fn('foo');
-    expect(fn._original).toHaveBeenCalledWith('foo');
+    expect(fn.__originalFn__).toHaveBeenCalledWith('foo');
   });
 
   it('clears state when switching stories', () => {
@@ -402,14 +402,14 @@ describe('Instrumenter', () => {
       const { fn } = instrument({ fn: jest.fn() }, { intercept: true });
       addons.getChannel().emit(EVENTS.START, { storyId });
       expect(fn()).toEqual(expect.any(Promise));
-      expect(fn._original).not.toHaveBeenCalled();
+      expect(fn.__originalFn__).not.toHaveBeenCalled();
     });
 
     it('does not defer calls to non-intercepted functions', () => {
       const { fn } = instrument({ fn: jest.fn(() => 'ok') });
       addons.getChannel().emit(EVENTS.START, { storyId });
       expect(fn()).toBe('ok');
-      expect(fn._original).toHaveBeenCalled();
+      expect(fn.__originalFn__).toHaveBeenCalled();
     });
 
     it('does not defer calls to intercepted functions that are chained upon', () => {
@@ -421,8 +421,8 @@ describe('Instrumenter', () => {
       addons.getChannel().emit(EVENTS.START, { storyId });
       const res1 = fn1();
       expect(res1.fn2()).toEqual(expect.any(Promise));
-      expect(fn1._original).toHaveBeenCalledTimes(2);
-      expect(res1.fn2._original).not.toHaveBeenCalled();
+      expect(fn1.__originalFn__).toHaveBeenCalledTimes(2);
+      expect(res1.fn2.__originalFn__).not.toHaveBeenCalled();
     });
 
     it.skip('starts debugging at the first non-nested interceptable call', () => {
