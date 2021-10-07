@@ -1,3 +1,19 @@
+## 6.4.0-beta.6 (October 7, 2021)
+
+### Features
+
+- Core: HMR for StoryIndex server ([#16160](https://github.com/storybookjs/storybook/pull/16160))
+
+### Bug Fixes
+
+- Angular: Make types generic for angular's built-in decorators ([#16266](https://github.com/storybookjs/storybook/pull/16266))
+- Args: Re-render the whole container when args or globals change ([#16264](https://github.com/storybookjs/storybook/pull/16264))
+
+### Maintenance
+
+- CSF: Add CSF2 play function example ([#16121](https://github.com/storybookjs/storybook/pull/16121))
+- Core: Unified story specifiers ([#16220](https://github.com/storybookjs/storybook/pull/16220))
+
 ## 6.3.10 (October 6, 2021)
 
 ### Bug Fixes
