@@ -16,10 +16,9 @@ const INVALIDATE = 'INVALIDATE';
 export async function extractStoriesJson(
   outputFile: string,
   normalizedStories: NormalizedStoriesSpecifier[],
-  options: { configDir: string; workingDir: string },
-  v2compatibility: boolean
+  options: { configDir: string; workingDir: string; storiesV2Compatibility: boolean }
 ) {
-  const generator = new StoryIndexGenerator(normalizedStories, options, v2compatibility);
+  const generator = new StoryIndexGenerator(normalizedStories, options);
   await generator.initialize();
 
   const index = await generator.getIndex();
@@ -36,11 +35,11 @@ export async function useStoriesJson(
     workingDir,
   });
   const features = await options.presets.apply<StorybookConfig['features']>('features');
-  const generator = new StoryIndexGenerator(
-    normalizedStories,
-    { configDir: options.configDir, workingDir },
-    !features?.breakingChangesV7 && !features?.storyStoreV7
-  );
+  const generator = new StoryIndexGenerator(normalizedStories, {
+    configDir: options.configDir,
+    workingDir,
+    storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
+  });
 
   // Wait until someone actually requests `stories.json` before we start generating/watching.
   // This is mainly for testing purposes.

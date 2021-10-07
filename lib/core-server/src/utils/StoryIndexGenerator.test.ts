@@ -14,6 +14,7 @@ const getStorySortParameterMock = getStorySortParameter as jest.Mock<
 const options = {
   configDir: path.join(__dirname, '__mockdata__'),
   workingDir: path.join(__dirname, '__mockdata__'),
+  storiesV2Compatibility: false,
 };
 
 describe('StoryIndexGenerator', () => {
@@ -29,7 +30,7 @@ describe('StoryIndexGenerator', () => {
           options
         );
 
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
 
         expect(await generator.getIndex()).toMatchInlineSnapshot(`
@@ -54,7 +55,7 @@ describe('StoryIndexGenerator', () => {
           options
         );
 
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
 
         expect(await generator.getIndex()).toMatchInlineSnapshot(`
@@ -86,7 +87,7 @@ describe('StoryIndexGenerator', () => {
           options
         );
 
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
 
         expect(await generator.getIndex()).toMatchInlineSnapshot(`
@@ -137,7 +138,7 @@ describe('StoryIndexGenerator', () => {
         options
       );
 
-      const generator = new StoryIndexGenerator([specifier], options, false);
+      const generator = new StoryIndexGenerator([specifier], options);
       await generator.initialize();
 
       (getStorySortParameter as jest.Mock).mockReturnValueOnce({
@@ -163,7 +164,7 @@ describe('StoryIndexGenerator', () => {
         );
 
         readCsfOrMdxMock.mockClear();
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
@@ -181,7 +182,7 @@ describe('StoryIndexGenerator', () => {
 
         const sortFn = jest.fn();
         getStorySortParameterMock.mockReturnValue(sortFn);
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(sortFn).toHaveBeenCalled();
@@ -200,7 +201,7 @@ describe('StoryIndexGenerator', () => {
         );
 
         readCsfOrMdxMock.mockClear();
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
@@ -220,7 +221,7 @@ describe('StoryIndexGenerator', () => {
 
         const sortFn = jest.fn();
         getStorySortParameterMock.mockReturnValue(sortFn);
-        const generator = new StoryIndexGenerator([specifier], options, false);
+        const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
         expect(sortFn).toHaveBeenCalled();
@@ -240,7 +241,7 @@ describe('StoryIndexGenerator', () => {
           );
 
           readCsfOrMdxMock.mockClear();
-          const generator = new StoryIndexGenerator([specifier], options, false);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
@@ -260,7 +261,7 @@ describe('StoryIndexGenerator', () => {
 
           const sortFn = jest.fn();
           getStorySortParameterMock.mockReturnValue(sortFn);
-          const generator = new StoryIndexGenerator([specifier], options, false);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(sortFn).toHaveBeenCalled();
@@ -279,7 +280,7 @@ describe('StoryIndexGenerator', () => {
           );
 
           readCsfOrMdxMock.mockClear();
-          const generator = new StoryIndexGenerator([specifier], options, false);
+          const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
           expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);

@@ -75,12 +75,10 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
       workingDir: process.cwd(),
     };
     const stories = normalizeStories(await presets.apply('stories'), directories);
-    await extractStoriesJson(
-      path.join(options.outputDir, 'stories.json'),
-      stories,
-      directories,
-      !features?.breakingChangesV7 && !features?.storyStoreV7
-    );
+    await extractStoriesJson(path.join(options.outputDir, 'stories.json'), stories, {
+      ...directories,
+      storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
+    });
   }
 
   const fullOptions: Options = {

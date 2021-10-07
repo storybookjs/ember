@@ -52,8 +52,8 @@ export class StoryIndexGenerator {
     public readonly options: {
       workingDir: Path;
       configDir: Path;
-    },
-    public readonly storiesV2Compatibility: boolean
+      storiesV2Compatibility: boolean;
+    }
   ) {
     this.storyIndexEntries = new Map();
   }
@@ -149,7 +149,7 @@ export class StoryIndexGenerator {
     const sorted = await this.sortStories(storiesList);
 
     let compat = sorted;
-    if (this.storiesV2Compatibility) {
+    if (this.options.storiesV2Compatibility) {
       const titleToStoryCount = Object.values(sorted).reduce((acc, story) => {
         acc[story.title] = (acc[story.title] || 0) + 1;
         return acc;
