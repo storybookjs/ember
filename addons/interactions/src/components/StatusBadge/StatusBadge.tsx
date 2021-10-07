@@ -10,7 +10,7 @@ const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
   const backgroundColor = {
     [CallStates.DONE]: theme.color.positive,
     [CallStates.ERROR]: theme.color.negative,
-    [CallStates.ACTIVE]: theme.color.secondary,
+    [CallStates.ACTIVE]: theme.color.warning,
     [CallStates.WAITING]: theme.color.warning,
   }[status];
   return {

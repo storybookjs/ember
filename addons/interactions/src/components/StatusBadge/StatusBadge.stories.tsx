@@ -11,7 +11,11 @@ export const Pass = {
   args: { status: CallStates.DONE },
 };
 
-export const Runs = {
+export const Active = {
+  args: { status: CallStates.ACTIVE },
+};
+
+export const Waiting = {
   args: { status: CallStates.WAITING },
 };
 
