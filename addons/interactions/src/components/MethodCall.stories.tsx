@@ -1,17 +1,29 @@
 import { Call } from '@storybook/instrumenter';
 import React from 'react';
+import { styled } from '@storybook/theming';
 import { Node, MethodCall } from './MethodCall';
+
+const StyledWrapper = styled.div(({ theme }) => ({
+  backgroundColor: theme.background.content,
+  padding: '20px',
+  boxShadow: `0 0 0 1px ${theme.appBorderColor}`,
+  color: theme.color.defaultText,
+  fontSize: 13,
+}));
 
 export default {
   title: 'Addons/Interactions/MethodCall',
   component: MethodCall,
   decorators: [
     (Story: any) => (
-      <span style={{ fontSize: 13 }}>
+      <StyledWrapper>
         <Story />
-      </span>
+      </StyledWrapper>
     ),
   ],
+  parameters: {
+    layout: 'fullscren',
+  },
 };
 
 class FooBar {}

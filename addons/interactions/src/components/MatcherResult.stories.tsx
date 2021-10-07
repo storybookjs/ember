@@ -1,17 +1,29 @@
 import React from 'react';
 import dedent from 'ts-dedent';
+import { styled } from '@storybook/theming';
 import { MatcherResult } from './MatcherResult';
+
+const StyledWrapper = styled.div(({ theme }) => ({
+  backgroundColor: theme.background.content,
+  padding: '12px 0',
+  boxShadow: `0 0 0 1px ${theme.appBorderColor}`,
+  color: theme.color.defaultText,
+  fontSize: 13,
+}));
 
 export default {
   title: 'Addons/Interactions/MatcherResult',
   component: MatcherResult,
   decorators: [
     (Story: any) => (
-      <span style={{ fontSize: 13 }}>
+      <StyledWrapper>
         <Story />
-      </span>
+      </StyledWrapper>
     ),
   ],
+  parameters: {
+    layout: 'fullscren',
+  },
 };
 
 export const Expected = {

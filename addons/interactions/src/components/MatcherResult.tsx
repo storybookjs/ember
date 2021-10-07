@@ -1,5 +1,5 @@
 import React from 'react';
-import { typography } from '@storybook/theming';
+import { styled, typography } from '@storybook/theming';
 import { Node } from './MethodCall';
 
 const getParams = (line: string, fromIndex = 0): string => {
@@ -19,11 +19,19 @@ const parseValue = (value: string): any => {
   }
 };
 
+const StyledExpected = styled.span(({ theme }) => ({
+  color: theme.color.positive,
+}));
+
+const StyledReceived = styled.span(({ theme }) => ({
+  color: theme.color.negative,
+}));
+
 export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
   parsed ? (
     <Node value={value} style={{ color: '#D43900' }} />
   ) : (
-    <span style={{ color: '#D43900' }}>{value}</span>
+    <StyledReceived>{value}</StyledReceived>
   );
 
 export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
@@ -31,7 +39,7 @@ export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) =>
     if (typeof value === 'string' && value.startsWith('called with')) return <>{value}</>;
     return <Node value={value} style={{ color: '#16B242' }} />;
   }
-  return <span style={{ color: '#16B242' }}>{value}</span>;
+  return <StyledExpected>{value}</StyledExpected>;
 };
 
 export const MatcherResult = ({ message }: { message: string }) => {
