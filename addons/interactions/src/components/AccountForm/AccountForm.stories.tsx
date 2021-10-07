@@ -59,10 +59,12 @@ export const StandardEmailFailed = {
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou');
     await userEvent.click(canvas.getByRole('button', { name: /create account/i }));
 
-    await waitFor(async () => {
-      await expect(args.onSubmit).not.toHaveBeenCalled();
-      await canvas.findByText('Please enter a correctly formatted email address');
-    });
+    await canvas.findByText(
+      'Please enter a correctly formatted email address',
+      {},
+      { timeout: 2000 }
+    );
+    expect(args.onSubmit).not.toHaveBeenCalled();
   },
 };
 
