@@ -40,7 +40,7 @@ function testStorySnapshots(options: StoryshotsOptions = {}) {
 
   addons.setChannel(mockChannel());
 
-  // Add a mock EventSource class to be used by
+  // Add a mock EventSource class as it is extended by the `StoryIndexClient` (we don't actually use that in v6 mode)
   if (!global.EventSource) global.EventSource = EventSourceStandin;
 
   const { storybook, framework, renderTree, renderShallowTree } = loadFramework(options);
