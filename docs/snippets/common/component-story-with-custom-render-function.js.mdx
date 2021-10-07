@@ -1,0 +1,15 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+import { MyComponent } from './MyComponent.js';
+
+export default {
+  component: MyComponent,
+};
+
+// This story uses a render function to fully control how the component renders.
+export const ExampleWithRenderFunction = {
+  args: {},
+  render: (args) => <MyComponent {...args} />,
+};
+```

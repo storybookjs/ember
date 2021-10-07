@@ -145,7 +145,7 @@ For more information on setting up [Docs](../writing-docs/introduction.md) and [
 
 ## Play function
 
-Storybook's `play` functions are small snippets of code executed when the story renders in the UI. They are convenient helper methods to help you test use cases that otherwise weren't possible or required manual intervention.
+Storybook's `play` functions are small snippets of code executed when the story renders in the UI. They are convenient helper methods to help you test use cases that otherwise weren't possible or required user intervention.
 
 A good use case for the `play` function is a form component. With previous Storybook versions, you'd write your set of stories and had to interact with the component to validate it. With Storybook's play functions, you could write the following story:
 
@@ -163,7 +163,23 @@ A good use case for the `play` function is a form component. With previous Story
 
 <!-- prettier-ignore-end -->
 
-When the story renders in the UI, Storybook executes each step defined in the `play` function and runs the assertions without the need for human interaction.
+When the story renders in the UI, Storybook executes each step defined in the `play` function and runs the assertions without the need for user interaction.
+
+## Default render functions
+
+Starting in Storybook 6.4, you can write your stories as JavaScript objects, reducing the boilerplate code you need to generate to test your components, thus improving functionality and usability. `Render` functions are helpful methods to give you additional control over how the story renders. For example, if you were writing a story as an object and you wanted to specify how your component should render, you could write the following story:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/component-story-with-custom-render-function.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+When Storybook loads this story, it will detect the existence of a `render` function and adjust the component rendering accordingly based on what's defined.
 
 ## Storybook export vs. name handling
 
@@ -185,7 +201,7 @@ If you specify the `name` option, it will be used as the story display name in t
 
 When you want to change the name of your story, rename the CSF export. It will change the name of the story and also change the story's ID and URL.
 
-You should use the `name` configuration element in the following cases:
+It would be best if you used the `name` configuration element in the following cases:
 
 1. You want the name to show up in the Storybook UI in a way that's not possible with a named export, e.g., reserved keywords like "default", special characters like emoji, spacing/capitalization other than what's provided by `storyNameFromExport`.
 2. You want to preserve the Story ID independently from changing how it's displayed. Having stable Story IDs is helpful for integration with third-party tools.
@@ -223,4 +239,4 @@ For this particular example, you could achieve the same result in different ways
 - `excludeStories: /.*Data$/`
 - `excludeStories: ['simpleData', 'complexData']`
 
-If you follow the best practice of starting story exports with an uppercase letter (i.e., use UpperCamelCase), the first option is the recommended solution.
+The first option is the recommended solution if you follow the best practice of starting story exports with an uppercase letter (i.e., use UpperCamelCase).

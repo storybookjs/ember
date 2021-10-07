@@ -1,21 +1,23 @@
 ```md
 <!--- Checkbox.stories.mdx --->
 
-import { Meta, Story } from '@storybook/addon-docs';
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
-import Checkbox from './checkbox.component';
+import { Checkbox } from './checkbox.component';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
 
-<Story name="MyStory">
-  {{
-    template: `
-      <form>
-        <Checkbox id="Unchecked" label="Unchecked" />
-        <Checkbox id="Checked" label="Checked" checked />
-        <Checkbox appearance="secondary" id="second" label="Secondary" checked />
-      </form>    
-    `,
-  }}
-</Story>
+<Canvas>
+  <Story 
+    name="MyStory"
+    render={() => ({
+      template: `
+        <form>
+          <Checkbox id="Unchecked" label="Unchecked" /> 
+          <Checkbox id="Checked" label="Checked" checked /> 
+          <Checkbox appearance="secondary" id="second" label="Secondary" checked /> 
+        </form>`,
+    })} >
+  </Story>
+</Canvas>
 ```

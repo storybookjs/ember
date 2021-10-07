@@ -11,8 +11,6 @@ export default {
   argTypes: { onSubmit: { action: true } },
 };
 
-export const EmptyForm = {};
-
 export const FilledForm = {
   play: async ({ args }) => {
     await userEvent.type(screen.getByTestId('email'), 'email', {

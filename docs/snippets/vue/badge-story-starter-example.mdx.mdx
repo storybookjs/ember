@@ -12,26 +12,23 @@ import Icon from './Icon.vue';
 
 Let's define a story for our `Badge` component:
 
-<Story name="positive">
-  {() => {
-    return {
-      components: { Badge },
-      template: `<Badge status="positive">Positive</Badge>`,
-    };
-  }}
-</Story>
+<Story
+  name="positive"
+  render={() => ({
+    components: { Badge },
+    template: `<Badge status="positive">Positive</Badge>`,
+  })} />
 
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name="negative">
-    {() => {
-      return {
-        components: { Badge },
-        template: `<Badge status="negative">Negative</Badge>`,
-      };
-    }}
-  </Story>
+  <Story 
+  name="negative"
+  render={() => ({
+    components: { Badge },
+    template: `<Badge status="negative">Negative</Badge>`,
+  })} />
+
 </Canvas>
 
 We can even preview multiple stories in a block. This
@@ -39,44 +36,32 @@ gets rendered as a group, but defines individual stories
 with unique URLs and isolated snapshot tests.
 
 <Canvas>
-  <Story name="warning">
-    {() => {
-      return {
-        components: { Badge },
-        template: `<Badge status="warning">Warning</Badge>`,
-      };
-    }}
-  </Story>
+  <Story 
+    name="warning"
+    render={() => ({
+      components: { Badge },
+      template: `<Badge status="warning">Warning</Badge>`,
+    })} />
 
-  <Story name="neutral">
-    {() => {
-      return {
-        components: { Badge },
-        template: `<Badge status="neutral">Neutral</Badge>`,
-      };
-    }}
-  </Story>
+  <Story 
+    name="neutral"
+    render={() => ({
+      components: { Badge },
+      template: `<Badge status="neutral">Neutral</Badge>`,
+    })} />
 
-  <Story name="error">
-    {() => {
-      return {
-        components: { Badge },
-        template: `<Badge status="error">Error</Badge>`,
-      };
-    }}
-  </Story>
-  
-  <Story name="with icon">
-    {() => {
-      return {
-        components: { Badge, Icon },
-        template: `
-          <Badge status="warning">
-            <Icon icon="check" inline />
-             with icon
-          </Badge>`,
-      };
-    }}
-  </Story>
+  <Story 
+    name="error"
+    render={() => ({
+      components: { Badge },
+      template: `<Badge status="error">Error</Badge>`,
+    })} />
+
+  <Story 
+    name="with icon"
+    render={() => ({
+      components: { Badge, Icon },
+      template: `<Badge status="warning"> <Icon icon="check" inline /> with icon </Badge>`,
+    })} />
 </Canvas>
 ```

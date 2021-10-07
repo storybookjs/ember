@@ -12,12 +12,15 @@ import { Checkbox } from './Checkbox';
 With `MDX`, we can define a story for `Checkbox` right in the middle of our Markdown documentation.
 
 <Canvas>
-  <Story name="all checkboxes">
-    <form>
-      <Checkbox id="Unchecked" label="Unchecked" />
-      <Checkbox id="Checked" label="Checked" checked />
-      <Checkbox appearance="secondary" id="second" label="Secondary" checked />
-    </form>
+  <Story 
+    name="all checkboxes"
+    render={() => (
+      <form>
+        <Checkbox id="Unchecked" label="Unchecked" />
+        <Checkbox id="Checked" label="Checked" checked />
+        <Checkbox appearance="secondary" id="second" label="Secondary" checked />
+      </form>
+    )} >
   </Story>
 </Canvas>
 ```
