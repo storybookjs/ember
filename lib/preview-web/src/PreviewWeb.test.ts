@@ -37,6 +37,7 @@ jest.mock('global', () => ({
   FEATURES: {
     storyStoreV7: true,
     breakingChangesV7: true,
+    // xxx
   },
   fetch: async () => ({ json: mockStoryIndex }),
 }));
@@ -592,7 +593,7 @@ describe('PreviewWeb', () => {
       it('re-renders the docs container', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
@@ -837,7 +838,7 @@ describe('PreviewWeb', () => {
       it('re-renders the docs container', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
-        await new PreviewWeb({ importFn, fetchStoryIndex }).initialize({ getProjectAnnotations });
+        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRender();
 
         mockChannel.emit.mockClear();
