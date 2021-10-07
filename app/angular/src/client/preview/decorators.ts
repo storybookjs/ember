@@ -6,9 +6,11 @@ import { isComponent } from './angular-beta/utils/NgComponentAnalyzer';
 import { ICollection, NgModuleMetadata } from './types';
 import { AngularFramework } from './types-6-0';
 
-export const moduleMetadata = (
+// We use `any` here as the default type rather than `Args` because we need something that is
+// castable to any component-specific args type when the user is being careful.
+export const moduleMetadata = <TArgs = any>(
   metadata: Partial<NgModuleMetadata>
-): DecoratorFunction<AngularFramework> => (storyFn) => {
+): DecoratorFunction<AngularFramework, TArgs> => (storyFn) => {
   const story = storyFn();
   const storyMetadata = story.moduleMetadata || {};
   metadata = metadata || {};
@@ -28,10 +30,10 @@ export const moduleMetadata = (
   };
 };
 
-export const componentWrapperDecorator = (
+export const componentWrapperDecorator = <TArgs = any>(
   element: Type<unknown> | ((story: string) => string),
-  props?: ICollection | ((storyContext: StoryContext<AngularFramework>) => ICollection)
-): DecoratorFunction<AngularFramework> => (storyFn, storyContext) => {
+  props?: ICollection | ((storyContext: StoryContext<AngularFramework, TArgs>) => ICollection)
+): DecoratorFunction<AngularFramework, TArgs> => (storyFn, storyContext) => {
   const story = storyFn();
   const currentProps = typeof props === 'function' ? (props(storyContext) as ICollection) : props;
 
