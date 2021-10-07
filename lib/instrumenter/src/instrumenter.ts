@@ -482,15 +482,15 @@ export class Instrumenter {
 }
 
 /**
- * Instruments an object or module by traversing its properties, patching any functions (methods) to
- * enable debugging. Patched functions will emit a `call` event when invoked.
+ * Instruments an object or module by traversing its properties, patching any functions (methods)
+ * to enable debugging. Patched functions will emit a `call` event when invoked.
  * When intercept = true, patched functions will return a Promise when the debugger stops before
  * this function. As such, "interceptable" functions will have to be `await`-ed.
  */
-export const instrument = <TObj extends Record<string, any>>(
+export function instrument<TObj extends Record<string, any>>(
   obj: TObj,
   options: Options = {}
-): TObj => {
+): TObj {
   try {
     // Don't do any instrumentation if not loaded in an iframe.
     if (global.window.parent === global.window) return obj;
@@ -507,4 +507,4 @@ export const instrument = <TObj extends Record<string, any>>(
     once.warn(e);
     return obj;
   }
-};
+}
