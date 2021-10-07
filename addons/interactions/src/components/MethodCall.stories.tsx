@@ -64,6 +64,7 @@ const calls: Call[] = [
     id: '1',
     path: ['screen'],
     method: 'getByText',
+    storyId: 'kind--story',
     args: ['Click'],
     interceptable: false,
     retain: false,
@@ -72,6 +73,7 @@ const calls: Call[] = [
     id: '2',
     path: ['userEvent'],
     method: 'click',
+    storyId: 'kind--story',
     args: [{ __callId__: '1' }],
     interceptable: true,
     retain: false,
@@ -80,6 +82,7 @@ const calls: Call[] = [
     id: '3',
     path: [],
     method: 'expect',
+    storyId: 'kind--story',
     args: [true],
     interceptable: true,
     retain: false,
@@ -88,6 +91,7 @@ const calls: Call[] = [
     id: '4',
     path: [{ __callId__: '3' }, 'not'],
     method: 'toBe',
+    storyId: 'kind--story',
     args: [false],
     interceptable: true,
     retain: false,
@@ -96,6 +100,7 @@ const calls: Call[] = [
     id: '5',
     path: ['jest'],
     method: 'fn',
+    storyId: 'kind--story',
     args: [function actionHandler() {}],
     interceptable: false,
     retain: false,
@@ -104,6 +109,7 @@ const calls: Call[] = [
     id: '6',
     path: [],
     method: 'expect',
+    storyId: 'kind--story',
     args: [{ __callId__: '5' }],
     interceptable: false,
     retain: false,
@@ -112,6 +118,7 @@ const calls: Call[] = [
     id: '7',
     path: ['expect'],
     method: 'stringMatching',
+    storyId: 'kind--story',
     args: [/hello/i],
     interceptable: false,
     retain: false,
@@ -120,18 +127,19 @@ const calls: Call[] = [
     id: '8',
     path: [{ __callId__: '6' }, 'not'],
     method: 'toHaveBeenCalledWith',
+    storyId: 'kind--story',
     args: [{ __callId__: '7' }, new Error("Cannot read property 'foo' of undefined")],
     interceptable: false,
     retain: false,
   },
 ];
 
-const callsById = calls.reduce(
-  (acc, call) => ({ ...acc, [call.id]: call }),
-  {} as Record<Call['id'], Call>
-);
+const callsById = calls.reduce((acc, call) => {
+  acc.set(call.id, call);
+  return acc;
+}, new Map<Call['id'], Call>());
 
-export const Simple = () => <MethodCall call={callsById['1']} callsById={callsById} />;
-export const Nested = () => <MethodCall call={callsById['2']} callsById={callsById} />;
-export const Chained = () => <MethodCall call={callsById['4']} callsById={callsById} />;
-export const Complex = () => <MethodCall call={callsById['8']} callsById={callsById} />;
+export const Simple = () => <MethodCall call={callsById.get('1')} callsById={callsById} />;
+export const Nested = () => <MethodCall call={callsById.get('2')} callsById={callsById} />;
+export const Chained = () => <MethodCall call={callsById.get('4')} callsById={callsById} />;
+export const Complex = () => <MethodCall call={callsById.get('8')} callsById={callsById} />;
