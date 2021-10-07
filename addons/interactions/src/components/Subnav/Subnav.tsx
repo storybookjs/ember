@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icons, Separator, P, TooltipNote, WithTooltip } from '@storybook/components';
+import { Button, Icons, Separator, P, TooltipNote, WithTooltip, Bar } from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
@@ -102,45 +102,51 @@ export const Subnav: React.FC<SubnavProps> = ({
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
-    <StyledSubnav>
-      <Group>
-        <StatusBadge status={status} />
-
-        <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
-          {buttonText}
-        </JumpToEndButton>
-
-        <StyledSeparator />
-
-        <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
-          <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
-            <Icons icon="rewind" />
-          </RewindButton>
-        </WithTooltip>
-
-        <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
-          <StyledIconButton containsIcon onClick={onPrevious} disabled={isDisabled || !hasPrevious}>
-            <Icons icon="playback" />
-          </StyledIconButton>
-        </WithTooltip>
-
-        <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
-          <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
-            <Icons icon="playnext" />
-          </StyledIconButton>
-        </WithTooltip>
-
-        <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
-          <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
-            <Icons icon="fastforward" />
-          </StyledIconButton>
-        </WithTooltip>
-      </Group>
-      {storyFileName && (
+    <Bar>
+      <StyledSubnav>
         <Group>
-          <StyledLocation>{storyFileName}</StyledLocation>
+          <StatusBadge status={status} />
+
+          <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
+            {buttonText}
+          </JumpToEndButton>
+
+          <StyledSeparator />
+
+          <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
+            <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+              <Icons icon="rewind" />
+            </RewindButton>
+          </WithTooltip>
+
+          <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
+            <StyledIconButton
+              containsIcon
+              onClick={onPrevious}
+              disabled={isDisabled || !hasPrevious}
+            >
+              <Icons icon="playback" />
+            </StyledIconButton>
+          </WithTooltip>
+
+          <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
+            <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+              <Icons icon="playnext" />
+            </StyledIconButton>
+          </WithTooltip>
+
+          <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
+            <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+              <Icons icon="fastforward" />
+            </StyledIconButton>
+          </WithTooltip>
         </Group>
-      )}
-    </StyledSubnav>
+        {storyFileName && (
+          <Group>
+            <StyledLocation>{storyFileName}</StyledLocation>
+          </Group>
+        )}
+      </StyledSubnav>
+    </Bar>
   );
 };
