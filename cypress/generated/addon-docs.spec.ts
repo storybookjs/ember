@@ -20,7 +20,7 @@ describe('addon-action', () => {
       .click();
 
     cy.getDocsElement()
-      .find('code.language-jsx')
+      .find('pre.prismjs')
       .first()
       .should(($div) => {
         const text = $div.text();
