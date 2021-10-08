@@ -12,5 +12,19 @@ describe('addon-action', () => {
 
     // inline story rendering
     cy.getDocsElement().find('button').should('contain.text', 'Button');
+
+    cy.getDocsElement()
+      .find('.docblock-code-toggle')
+      .first()
+      .should('contain.text', 'Show code')
+      .click();
+
+    cy.getDocsElement()
+      .find('pre.prismjs')
+      .first()
+      .should(($div) => {
+        const text = $div.text();
+        expect(text).not.match(/^\(args\) => /);
+      });
   });
 });
