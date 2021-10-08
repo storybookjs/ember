@@ -1,0 +1,39 @@
+```js
+// MyComponent.stories.js
+
+// These are placeholders until the addon-interaction is out
+import userEvent from '@testing-library/user-event';
+import { screen, fireEvent, waitFor } from '@testing-library/vue';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const ExampleAsyncStory = {
+  play: async () => {
+    const exampleElement = screen.getByLabelText('example-element', {
+      selector: 'input',
+    });
+
+    // The delay option set the ammount of milliseconds between characters being typed
+    await userEvent.type(exampleElement, 'WrongInput', {
+      delay: 100,
+    });
+
+    const Button = screen.getByRole('button');
+    await fireEvent.click(Button);
+
+    await waitFor(async () => {
+      await userEvent.hover(screen.getByTestId('error'));
+    });
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+```

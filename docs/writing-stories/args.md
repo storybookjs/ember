@@ -54,7 +54,7 @@ In the above example, we use the [object spread](https://developer.mozilla.org/e
 
 ## Component args
 
-You can also define args at the component level; they will apply to all the component's stories unless you overwrite them. To do so, use the `arg` key on the `default` CSF export:
+You can also define args at the component level; they will apply to all the component's stories unless you overwrite them. To do so, use the `args` key on the `default` CSF export:
 
 <!-- prettier-ignore-start -->
 
@@ -93,9 +93,7 @@ Here's how you can combine args for multiple stories of the same component.
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-
-💡<strong>Note:</strong> If you find yourself applying this pattern often, you should consider using [component-level args](#component-args).
-
+💡<strong>Note:</strong> If you find yourself re-using the same args for most of a component's stories, you should consider using [component-level args](#component-args).
 </div>
 
 Args are useful when writing stories for composite components that are assembled from other components. Composite components often pass their arguments unchanged to their child components, and similarly, their stories can be compositions of their child components stories. With args, you can directly compose the arguments:
@@ -146,7 +144,7 @@ You can also override the set of initial args for the active story by adding an 
 ?path=/story/avatar--default&args=style:rounded;size:100
 ```
 
-As a safety guard against [XSS](https://owasp.org/www-community/attacks/xss/) attacks, the arg's keys and values provided in the URL are limited to alphanumeric characters, spaces, underscores, and dashes. Any other types will be ignored and removed from the URL, but you can still use them with the Controls addon and code.
+As a safeguard against [XSS](https://owasp.org/www-community/attacks/xss/) attacks, the arg's keys and values provided in the URL are limited to alphanumeric characters, spaces, underscores, and dashes. Any other types will be ignored and removed from the URL, but you can still use them with the Controls addon and [within your story](#mapping-to-complex-arg-values).
 
 The `args` param is always a set of `key: value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 

@@ -17,22 +17,24 @@ export const sleep(ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+<!--  Queries the element by it's role and fires the event -->
+
 <Story 
   name="ExampleChangeEvent"
-  play={ async () => {
-    await fireEvent.change(screen.getByTestId('select'), {
-      target: { value: 'One Item' },
-    });
+  play={async () => {
+    const dropdown = screen.getByRole('listbox');
+
+    await fireEvent.change(dropdown, { target: { value: 'One Item'} });
     await sleep(2000);
-    await fireEvent.change(screen.getByTestId('select'), {
-      target: { value: 'Another Item' },
+
+    await fireEvent.change(dropdown, { target: { value: 'Another Item' } });
+    await sleep(2000);
+
+    await fireEvent.change(dropdown, {
+      target: { value: 'Yet another item' },
     });
-   await sleep(2000);
-   await fireEvent.change(screen.getByTestId('select'), {
-     target: { value: 'Yet another item' },
-   });
   }}
-  render={()=>({
+  render={() => ({
     Component: MyComponent,
   })} />
 ```

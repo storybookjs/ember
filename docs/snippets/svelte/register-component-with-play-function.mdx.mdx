@@ -17,9 +17,26 @@ import RegistrationForm from './RegistrationForm.svelte';
 <Story
   name="FilledForm"
   play={async () => {
-    await userEvent.type(screen.getByTestId('username'), 'username');
-    await userEvent.type(screen.getByTestId('password'), 'password');
-    await userEvent.click(screen.getByTestId('submit'));
+    
+    const emailInput = screen.getByLabelText('email', {
+      selector: 'input',
+    });
+   
+    await userEvent.type(emailInput, 'example-email@email.com', {
+      delay: 100,
+    });
+
+    const passwordInput = screen.getByLabelText('password', {
+      selector: 'input',
+    });
+    
+    await userEvent.type(passwordInput, 'ExamplePassword', {
+      delay: 100,
+    });
+
+    const submitButton = screen.getByRole('button');
+
+    await fireEvent.click(submitButton);
   }}
   render={() => ({
     Component: RegistrationForm,

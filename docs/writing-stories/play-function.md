@@ -6,7 +6,7 @@ title: 'Play function'
 
 ## Setup the interactions addon
 
-We recommend installing Storybook's `addon-interactions` before you start writing stories with the `play` function. It's the perfect complement for it, including a handy set of UI controls to allow you command over the execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also providing you with an easy-to-use debugger for potential issues.
+We recommend installing Storybook's [`addon-interactions`](/addons/@storybook/addon-interactions/) before you start writing stories with the `play` function. It's the perfect complement for it, including a handy set of UI controls to allow you command over the execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also providing you with an easy-to-use debugger for potential issues.
 
 Run the following command to install the addon.
 
@@ -78,34 +78,11 @@ Thanks to the [Component Story Format](../api/csf.md), an ES6 module based file 
 
 By combining the stories, you're recreating the entire component workflow and can spot potential issues while reducing the boilerplate code you need to write.
 
-## Delaying interactions
-
-Assuming that you're working with a component with validation logic implemented (e.g., email validation, password strength). In that case, you can introduce delays within your `play` function to emulate user interaction and assert if the values provided are valid or not. For example:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-   'react/my-component-play-function-with-delay.js.mdx',
-   'react/my-component-play-function-with-delay.mdx.mdx',
-   'angular/my-component-play-function-with-delay.ts.mdx',
-   'angular/my-component-play-function-with-delay.mdx.mdx',
-   'vue/my-component-play-function-with-delay.js.mdx',
-   'vue/my-component-play-function-with-delay.mdx.mdx',
-   'svelte/my-component-play-function-with-delay.js.mdx',
-   'svelte/my-component-play-function-with-delay.mdx.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-When Storybook loads the story, it interacts with the component, filling in its inputs and triggering any validation logic defined.
-
 ## Working with events
 
 Most modern UIs are built focusing on interaction (e.g., button clicks, selecting options, ticking checkboxes), providing rich experiences to the end-user. With the `play` function, you can incorporate the same level of interaction into your stories.
 
-The most common scenario for component interaction is a button click. If you need to reproduce it in your story, you can adjust your story's `play` function to the following:
+The most common scenario for component interaction is a button click. If you need to reproduce it in your story, you can define your story's `play` function to the following:
 
 <!-- prettier-ignore-start -->
 
@@ -140,6 +117,46 @@ Asides from click events, you can also script additional events with the `play` 
    'vue/my-component-play-function-with-selectevent.mdx.mdx',
    'svelte/my-component-play-function-with-selectevent.js.mdx',
    'svelte/my-component-play-function-with-selectevent.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+In addition to events, you can also create interactions with the `play` function based on other types of asynchronous methods. For instance, let's assume that you're working with a component with validation logic implemented (e.g., email validation, password strength). In that case, you can introduce delays within your `play` function to emulate user interaction and assert if the values provided are valid or not:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'react/my-component-play-function-with-delay.js.mdx',
+   'react/my-component-play-function-with-delay.mdx.mdx',
+   'angular/my-component-play-function-with-delay.ts.mdx',
+   'angular/my-component-play-function-with-delay.mdx.mdx',
+   'vue/my-component-play-function-with-delay.js.mdx',
+   'vue/my-component-play-function-with-delay.mdx.mdx',
+   'svelte/my-component-play-function-with-delay.js.mdx',
+   'svelte/my-component-play-function-with-delay.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+When Storybook loads the story, it interacts with the component, filling in its inputs and triggering any validation logic defined.
+
+You can also use the `play` function to verify the existence of an element based on a specific interaction. For instance, if you're working on a component and want to check what happens if a user introduces the wrong information. In that case, you could write the following story:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'react/my-component-play-function-waitfor.js.mdx',
+   'react/my-component-play-function-waitfor.mdx.mdx',
+   'angular/my-component-play-function-waitfor.ts.mdx',
+   'angular/my-component-play-function-waitfor.mdx.mdx',
+   'vue/my-component-play-function-waitfor.js.mdx',
+   'vue/my-component-play-function-waitfor.mdx.mdx',
+   'svelte/my-component-play-function-waitfor.js.mdx',
+   'svelte/my-component-play-function-waitfor.mdx.mdx',
   ]}
 />
 
@@ -187,4 +204,4 @@ With each interaction you write inside your `play` function when Storybook execu
 
 <!-- prettier-ignore-end -->
 
-Applying these changes into your stories, you'll get a performance boost and improved error handling with the `addon-interactions`.
+Applying these changes to your stories can provide a performance boost and improved error handling with [`addon-interactions`](/addons/@storybook/addon-interactions/).

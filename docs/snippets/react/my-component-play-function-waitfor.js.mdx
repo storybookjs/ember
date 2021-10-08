@@ -1,0 +1,34 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+// These are placeholders until the addon-interaction is out
+import { screen, waitFor } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
+
+import { MyComponent } from './MyComponent.js';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const ExampleAsyncStory = {
+  play: async () => {
+    const Input = screen.getByLabelText('example-element', {
+      selector: 'input',
+    });
+
+    await userEvent.type(Input, 'WrongInput', {
+      delay: 100,
+    });
+    const Button = screen.getByRole('button');
+    await userEvent.click(Submit);
+
+    await waitFor(async () => {
+      await userEvent.hover(screen.getByTestId('error'));
+    });
+  },
+};
+```

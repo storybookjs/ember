@@ -12,17 +12,20 @@ export default {
   component: MyComponent,
 };
 
+
+// Queries the element by it's role and fires the event
+
 export const ExampleChangeEvent = {
   play: async () => {
-    fireEvent.change(screen.getByTestId('select'), {
-      target: { value: 'One Item' },
-    });
+    const dropdown = screen.getByRole('listbox');
+
+    await fireEvent.change(dropdown, { target: { value: 'One Item'} });
     await sleep(2000);
-    fireEvent.change(screen.getByTestId('select'), {
-      target: { value: 'Another Item' },
-    });
+
+    await fireEvent.change(dropdown, { target: { value: 'Another Item' } });
     await sleep(2000);
-    fireEvent.change(screen.getByTestId('select'), {
+
+    await fireEvent.change(dropdown, {
       target: { value: 'Yet another item' },
     });
   },

@@ -38,9 +38,9 @@ Some components require a “harness” to render in a useful way. For instance,
 
 ## “Context” for mocking
 
-Framework-specific libraries (e.g., React's Styled Components, Vue's Fortawesome) may require additional configuration to render correctly in Storybook.
+Framework-specific libraries (e.g., [Styled Components](https://styled-components.com/), [Fortawesome](https://github.com/FortAwesome/vue-fontawesome) for Vue) may require additional configuration to render correctly in Storybook.
 
-For example, if you're working with React's Styled components and your components use themes, add a single global decorator to [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) to enable them. Or with Vue, extend Storybook's application and register your library:
+For example, if you're working with Styled Components and your components use a theme, add a single global decorator to [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) to provide it. Or with Vue, extend Storybook's application and register your library:
 
 <!-- prettier-ignore-start -->
 
@@ -59,7 +59,7 @@ For example, if you're working with React's Styled components and your component
 
 <!-- prettier-ignore-end -->
 
-In the example above, the values provided are hardcoded. Still, you may want to vary them, either per-story basis (i.e., if the values you're adding are relevant to a specific story) or in a user-controlled way (e.g., provide a theme switcher or a different set of icons).
+In the example above, the values provided are hardcoded. Still, you may want to vary them, either on a per-story basis (i.e., if the values you're providing are relevant to a specific story) or in a user-controlled way (e.g., provide a theme switcher or a different set of icons).
 
 The second argument to a decorator function is the **story context** which in particular contains the keys:
 

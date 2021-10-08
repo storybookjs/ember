@@ -1,0 +1,36 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!-- These are placeholders until the addon-interaction is out -->
+
+import userEvent from '@testing-library/user-event';
+import { screen, fireEvent, waitFor } from '@testing-library/vue';
+
+import MyComponent from './MyComponent.vue';
+
+<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel-->
+
+<Meta title="WithAsync" component={MyComponent} argTypes={{ onSubmit: { action: true }}/>
+
+<Story
+  name="ExampleAsyncStory"
+  play={async () => {
+    const Input = screen.getByLabelText('example-element');
+    await userEvent.type(Input, 'WrongInput', {
+      delay: 100,
+    });
+
+    const Button = screen.getByRole('button');
+
+    await fireEvent.click(Button);
+    await waitFor(async () => {
+      await userEvent.hover(screen.getByTestId('error'));
+    });
+  }}
+  render={() => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  })} />
+```

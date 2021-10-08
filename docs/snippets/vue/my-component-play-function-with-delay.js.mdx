@@ -13,11 +13,16 @@ export default {
 
 export const DelayedStory = {
   play: async () => {
+
+    const exampleElement= screen.getByLabelText('example-element');
+
     // The delay option set the ammount of milliseconds between characters being typed
-    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+    await userEvent.type(exampleElement, 'random string', {
       delay: 100,
     });
-    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+
+    const AnotherExampleElement= screen.getByLabelText('another-example-element');
+    await userEvent.type(AnotherExampleElement, 'another random string', {
       delay: 100,
     });
   },
