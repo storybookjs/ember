@@ -4068,6 +4068,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cypress/skip-test@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "@cypress/skip-test@npm:2.6.1"
+  checksum: 1d0d2cb4b3094c6dee2d2339b75d60f85e5fb17b4e281cbee854e6cd4a124fad61cc65db8335b9a169ccc24b490df5b29c3385f09fa590124dc4d5b57e110019
+  languageName: node
+  linkType: hard
+
 "@cypress/webpack-preprocessor@npm:^5.7.0":
   version: 5.7.0
   resolution: "@cypress/webpack-preprocessor@npm:5.7.0"
@@ -8661,6 +8668,7 @@ __metadata:
     "@babel/preset-typescript": ^7.12.7
     "@babel/runtime": ^7.12.5
     "@compodoc/compodoc": ^1.1.14
+    "@cypress/skip-test": ^2.6.1
     "@cypress/webpack-preprocessor": ^5.7.0
     "@emotion/snapshot-serializer": ^0.8.2
     "@nicolo-ribaudo/chokidar-2": ^2.1.8
@@ -8824,6 +8832,8 @@ __metadata:
   dependenciesMeta:
     "@compodoc/compodoc":
       built: false
+    "@cypress/skip-test":
+      optional: true
     "@cypress/webpack-preprocessor":
       optional: true
     core-js:
