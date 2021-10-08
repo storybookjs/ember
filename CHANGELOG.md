@@ -1,3 +1,10 @@
+## 6.4.0-beta.7 (October 8, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Always render the `children` of the `Canvas` component ([#16280](https://github.com/storybookjs/storybook/pull/16280))
+- Addon-docs: Fix args passing for Vue inline rendering ([#16279](https://github.com/storybookjs/storybook/pull/16279))
+
 ## 6.4.0-beta.6 (October 7, 2021)
 
 ### Features
