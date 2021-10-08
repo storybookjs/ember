@@ -103,7 +103,7 @@ Cypress.Commands.add('navigateToStory', (kind, name) => {
       if ($item.attr('aria-expanded') === 'false') $item.click();
     });
   }
-  cy.get(storyLinkId).click();
+  cy.get(storyLinkId).click({ force: true });
 
   // FIXME: Find a way to not wait like this but check for an element in the UI
   // A pause is good when switching stories
