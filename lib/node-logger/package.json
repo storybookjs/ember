@@ -43,7 +43,7 @@
     "@types/npmlog": "^4.1.2",
     "chalk": "^4.1.0",
     "core-js": "^3.8.2",
-    "npmlog": "^4.1.2",
+    "npmlog": "^5.0.1",
     "pretty-hrtime": "^1.0.3"
   },
   "devDependencies": {

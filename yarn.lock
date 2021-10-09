@@ -8453,7 +8453,7 @@ __metadata:
     "@types/pretty-hrtime": ^1.0.0
     chalk: ^4.1.0
     core-js: ^3.8.2
-    npmlog: ^4.1.2
+    npmlog: ^5.0.1
     pretty-hrtime: ^1.0.3
   languageName: unknown
   linkType: soft
@@ -8798,7 +8798,7 @@ __metadata:
     mocha-list-tests: ^1.0.5
     node-cleanup: ^2.1.2
     node-fetch: ^2.6.1
-    npmlog: ^4.1.2
+    npmlog: ^5.0.1
     p-limit: ^3.1.0
     postcss-loader: ^4.2.0
     prettier: ^2.2.1
@@ -13074,6 +13074,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aproba@npm:^1.0.3 || ^2.0.0, aproba@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "aproba@npm:2.0.0"
+  checksum: d06e26384a8f6245d8c8896e138c0388824e259a329e0c9f196b4fa533c82502a6fd449586e3604950a0c42921832a458bb3aa0aa9f0ba449cfd4f50fd0d09b5
+  languageName: node
+  linkType: hard
+
 "aproba@npm:^1.0.3, aproba@npm:^1.1.1":
   version: 1.2.0
   resolution: "aproba@npm:1.2.0"
@@ -13081,17 +13088,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aproba@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "aproba@npm:2.0.0"
-  checksum: d06e26384a8f6245d8c8896e138c0388824e259a329e0c9f196b4fa533c82502a6fd449586e3604950a0c42921832a458bb3aa0aa9f0ba449cfd4f50fd0d09b5
-  languageName: node
-  linkType: hard
-
 "arch@npm:^2.1.1, arch@npm:^2.1.2":
   version: 2.2.0
   resolution: "arch@npm:2.2.0"
   checksum: 4ceaf8d8207817c216ebc4469742052cb0a097bc45d9b7fcd60b7507220da545a28562ab5bdd4dfe87921bb56371a0805da4e10d704e01f93a15f83240f1284c
+  languageName: node
+  linkType: hard
+
+"are-we-there-yet@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "are-we-there-yet@npm:2.0.0"
+  dependencies:
+    delegates: ^1.0.0
+    readable-stream: ^3.6.0
+  checksum: 375f753c10329153c8d66dc95e8f8b6c7cc2aa66e05cb0960bd69092b10dae22900cacc7d653ad11d26b3ecbdbfe1e8bfb6ccf0265ba8077a7d979970f16b99c
   languageName: node
   linkType: hard
 
@@ -17035,7 +17045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"color-support@npm:^1.1.3":
+"color-support@npm:^1.1.2, color-support@npm:^1.1.3":
   version: 1.1.3
   resolution: "color-support@npm:1.1.3"
   bin:
@@ -17416,7 +17426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"console-control-strings@npm:^1.0.0, console-control-strings@npm:~1.1.0":
+"console-control-strings@npm:^1.0.0, console-control-strings@npm:^1.1.0, console-control-strings@npm:~1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 7ab51d30b52d461412cd467721bb82afe695da78fff8f29fe6f6b9cbaac9a2328e27a22a966014df9532100f6dd85370460be8130b9c677891ba36d96a343f50
@@ -23900,6 +23910,23 @@ fsevents@^1.2.7:
   version: 3.6.1
   resolution: "fuse.js@npm:3.6.1"
   checksum: bd9d5bc4d82781de7bb46057e96775f9efc497eb8b334b61cfea589db730c1fe7789bf5ff61b1146c15e18ffe5b27715807e5d436f333662b47917b530ced5e9
+  languageName: node
+  linkType: hard
+
+"gauge@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "gauge@npm:3.0.1"
+  dependencies:
+    aproba: ^1.0.3 || ^2.0.0
+    color-support: ^1.1.2
+    console-control-strings: ^1.0.0
+    has-unicode: ^2.0.1
+    object-assign: ^4.1.1
+    signal-exit: ^3.0.0
+    string-width: ^1.0.1 || ^2.0.0
+    strip-ansi: ^3.0.1 || ^4.0.0
+    wide-align: ^1.1.2
+  checksum: 8c857554961ddf59cf27fdf7a752314a6054b4069c54e4fdcf4c64024246bbf2ceb5cf23b7fa146925374f082c24669314aa68db6f8966cde54e90e8bc109c27
   languageName: node
   linkType: hard
 
@@ -32974,6 +33001,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"npmlog@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "npmlog@npm:5.0.1"
+  dependencies:
+    are-we-there-yet: ^2.0.0
+    console-control-strings: ^1.1.0
+    gauge: ^3.0.0
+    set-blocking: ^2.0.0
+  checksum: 489ba519031013001135c463406f55491a17fc7da295c18a04937fe3a4d523fd65e88dd418a28b967ab743d913fdeba1e29838ce0ad8c75557057c481f7d49fa
+  languageName: node
+  linkType: hard
+
 "nth-check@npm:^1.0.2":
   version: 1.0.2
   resolution: "nth-check@npm:1.0.2"
@@ -41527,7 +41566,7 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"string-width@npm:^1.0.2 || 2, string-width@npm:^2.0.0, string-width@npm:^2.1.0, string-width@npm:^2.1.1":
+"string-width@npm:^1.0.1 || ^2.0.0, string-width@npm:^1.0.2 || 2, string-width@npm:^2.0.0, string-width@npm:^2.1.0, string-width@npm:^2.1.1":
   version: 2.1.1
   resolution: "string-width@npm:2.1.1"
   dependencies:
@@ -41710,7 +41749,7 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^4.0.0":
+"strip-ansi@npm:^3.0.1 || ^4.0.0, strip-ansi@npm:^4.0.0":
   version: 4.0.0
   resolution: "strip-ansi@npm:4.0.0"
   dependencies:
@@ -46057,7 +46096,7 @@ resolve@1.19.0:
   languageName: node
   linkType: hard
 
-"wide-align@npm:^1.1.0":
+"wide-align@npm:^1.1.0, wide-align@npm:^1.1.2":
   version: 1.1.3
   resolution: "wide-align@npm:1.1.3"
   dependencies:
