@@ -6,7 +6,7 @@ describe('Navigation', () => {
   });
 
   it('should search navigation item', () => {
-    cy.get('#storybook-explorer-searchfield').click();
+    cy.get('#storybook-explorer-searchfield').click({ force: true });
     cy.get('#storybook-explorer-searchfield').clear();
     cy.get('#storybook-explorer-searchfield').type('syntax');
 
@@ -16,7 +16,7 @@ describe('Navigation', () => {
   });
 
   it('should display no results after searching a non-existing navigation item', () => {
-    cy.get('#storybook-explorer-searchfield').click();
+    cy.get('#storybook-explorer-searchfield').click({ force: true });
     cy.get('#storybook-explorer-searchfield').clear();
     cy.get('#storybook-explorer-searchfield').type('zzzzzzzzzz');
 
