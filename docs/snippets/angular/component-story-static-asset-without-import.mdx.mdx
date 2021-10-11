@@ -3,11 +3,15 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-<Meta title="img" />
+import { MyComponent } from './MyComponent.component';
 
-<Story name="withAnImage">
-  {{
+<Meta title="img" component={MyComponent}/>
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="withAnImage"
+  render={() => ({
     template: `<img src="/otherimage.jpg" alt="my image"/>`,
-  }}
-</Story>
+  })} />
 ```

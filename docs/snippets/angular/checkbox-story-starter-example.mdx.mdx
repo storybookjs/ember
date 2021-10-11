@@ -3,12 +3,15 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Checkbox from './checkbox.component';
+import { Checkbox } from './checkbox.component';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
 
-<Story name="MyStory">
-  {{
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="MyStory"
+  render={() => ({
     template: `
       <form>
         <Checkbox id="Unchecked" label="Unchecked" />
@@ -16,6 +19,5 @@ import Checkbox from './checkbox.component';
         <Checkbox appearance="secondary" id="second" label="Secondary" checked />
       </form>    
     `,
-  }}
-</Story>
+  })} />
 ```
