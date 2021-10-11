@@ -43,20 +43,24 @@ export async function useStoriesJson(
 
   // Wait until someone actually requests `stories.json` before we start generating/watching.
   // This is mainly for testing purposes.
+  let started = false;
   const invalidationEmitter = new EventEmitter();
-  async function start() {
+  async function ensureStarted() {
+    if (started) return;
+
     watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
       generator.invalidate(specifier, path, removed);
       invalidationEmitter.emit(INVALIDATE);
     });
 
     await generator.initialize();
+    started = true;
   }
 
   const eventsAsSSE = useEventsAsSSE(invalidationEmitter, [INVALIDATE]);
 
   router.use('/stories.json', async (req: Request, res: Response) => {
-    await start();
+    await ensureStarted();
 
     if (eventsAsSSE(req, res)) return;
 
