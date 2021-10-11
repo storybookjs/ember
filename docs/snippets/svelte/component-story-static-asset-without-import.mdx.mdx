@@ -5,17 +5,17 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import MyComponent from './MyComponent.svelte0;
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent} />
 
-<Story name="withAnImage">
-  {() => {
-    return {
-      Component: MyComponent,
-      props: {
-        src: '/image.png',
-        alt: 'my image',
-      },
-    };
-  }}
-</Story>
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="withAnImage"
+  render={() => ({
+    Component: MyComponent,
+    props: {
+      src: '/image.png',
+      alt: 'my image',
+    },
+  })} />
 ```

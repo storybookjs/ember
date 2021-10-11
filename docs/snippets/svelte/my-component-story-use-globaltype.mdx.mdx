@@ -1,7 +1,11 @@
 ```md
 <!-- MyComponent.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.svelte';
+
+<Meta title="MDX Story with toolbars" component={MyComponent} />
 
 export const getCaptionForLocale = (locale) => {
   switch(locale) {
@@ -14,8 +18,10 @@ export const getCaptionForLocale = (locale) => {
   }
 };
 
-<Story name="StoryWithLocale">
-  {(args, { globals: { locale } }) => {
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story name="StoryWithLocale"
+  render={(args, { globals: { locale } }) => {
     const caption = getCaptionForLocale(locale);
     return {
       component: MyComponent,
@@ -23,6 +29,5 @@ export const getCaptionForLocale = (locale) => {
         locale: caption,
       },
     };
-  }}
-</Story>
+  }} />
 ```

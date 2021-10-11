@@ -9,6 +9,8 @@ import fetch from 'node-fetch';
 
 <Meta title="Examples/Loader" component={TodoItem} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <Story
   name="Primary"
   loaders={[
@@ -18,13 +20,12 @@ import fetch from 'node-fetch';
       ).json(),
     }),
   ]}
->
-  {(args, { loaded: { todo } }) => ({
-    Component: SampleLoaderComponent,
+  render={(args, { loaded: { todo } }) => ({
+    Component: TodoItem,
     props: {
       ...args,
       todo,
     },
   })}
-</Story>
+/>
 ```
