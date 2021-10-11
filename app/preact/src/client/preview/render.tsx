@@ -1,50 +1,50 @@
 import * as preact from 'preact';
-import { document } from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext, StoryFnPreactReturnType } from './types';
-
-const rootElement = document ? document.getElementById('root') : null;
+import { RenderContext } from '@storybook/store';
+import { StoryFnPreactReturnType } from './types';
+import { PreactFramework } from './types-6-0';
 
 let renderedStory: Element;
 
-function preactRender(element: StoryFnPreactReturnType | null): void {
-  if ((preact as any).Fragment) {
+function preactRender(story: StoryFnPreactReturnType, domElement: HTMLElement): void {
+  if (preact.Fragment) {
     // Preact 10 only:
-    preact.render(element, rootElement);
-  } else if (element) {
-    renderedStory = (preact.render(element, rootElement) as unknown) as Element;
+    preact.render(story, domElement);
   } else {
-    preact.render(element, rootElement, renderedStory);
+    renderedStory = (preact.render(story, domElement, renderedStory) as unknown) as Element;
   }
 }
 
-export default function renderMain({
-  storyFn,
-  kind,
-  name,
-  showMain,
-  showError,
-  forceRender,
-}: RenderContext) {
-  const element = storyFn();
-
-  if (!element) {
+const StoryHarness: preact.FunctionalComponent<{
+  name: string;
+  title: string;
+  showError: RenderContext<PreactFramework>['showError'];
+  storyFn: () => any;
+  domElement: HTMLElement;
+}> = ({ showError, name, title, storyFn, domElement }) => {
+  const content = preact.h(storyFn as any, null);
+  if (!content) {
     showError({
-      title: `Expecting a Preact element from the story: "${name}" of "${kind}".`,
+      title: `Expecting a Preact element from the story: "${name}" of "${title}".`,
       description: dedent`
         Did you forget to return the Preact element from the story?
         Use "() => (<MyComp/>)" or "() => { return <MyComp/>; }" when defining the story.
       `,
     });
-    return;
+    return null;
   }
+  return content;
+};
 
-  // But forceRender means that it's the same story, so we want to keep the state in that case.
-  if (!forceRender) {
-    preactRender(null);
+export function renderToDOM(
+  { storyFn, title, name, showMain, showError, forceRemount }: RenderContext<PreactFramework>,
+  domElement: HTMLElement
+) {
+  if (forceRemount) {
+    preactRender(null, domElement);
   }
 
   showMain();
 
-  preactRender(element);
+  preactRender(preact.h(StoryHarness, { name, title, showError, storyFn, domElement }), domElement);
 }

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { createElement, ReactElement } from 'react';
 import reactElementToJSXString, { Options } from 'react-element-to-jsx-string';
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 
-import { addons, StoryContext } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
+import { StoryContext, ArgsStoryFn, PartialStoryFn } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
+import { ReactFramework } from '@storybook/react';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 import { getDocgenSection } from '../../lib/docgen';
@@ -22,7 +24,7 @@ type JSXOptions = Options & {
   /** Deprecated: A function ran after the story is rendered */
   onBeforeRender?(dom: string): string;
   /** A function ran after a story is rendered (prefer this over `onBeforeRender`) */
-  transformSource?(dom: string, context?: StoryContext): string;
+  transformSource?(dom: string, context?: StoryContext<ReactFramework>): string;
 };
 
 /** Run the user supplied onBeforeRender function if it exists */
@@ -44,7 +46,11 @@ const applyBeforeRender = (domString: string, options: JSXOptions) => {
 };
 
 /** Run the user supplied transformSource function if it exists */
-const applyTransformSource = (domString: string, options: JSXOptions, context?: StoryContext) => {
+const applyTransformSource = (
+  domString: string,
+  options: JSXOptions,
+  context?: StoryContext<ReactFramework>
+) => {
   if (typeof options.transformSource !== 'function') {
     return domString;
   }
@@ -115,12 +121,14 @@ export const renderJsx = (code: React.ReactElement, options: JSXOptions) => {
     // @ts-ignore FIXME: workaround react-element-to-jsx-string
     const child = typeof c === 'number' ? c.toString() : c;
     let string = applyBeforeRender(reactElementToJSXString(child, opts as Options), options);
-    const matches = string.match(/\S+=\\"([^"]*)\\"/g);
 
-    if (matches) {
-      matches.forEach((match) => {
-        string = string.replace(match, match.replace(/&quot;/g, "'"));
-      });
+    if (string.indexOf('&quot;') > -1) {
+      const matches = string.match(/\S+=\\"([^"]*)\\"/g);
+      if (matches) {
+        matches.forEach((match) => {
+          string = string.replace(match, match.replace(/&quot;/g, "'"));
+        });
+      }
     }
 
     return string;
@@ -136,7 +144,7 @@ const defaultOpts = {
   showDefaultProps: false,
 };
 
-export const skipJsxRender = (context: StoryContext) => {
+export const skipJsxRender = (context: StoryContext<ReactFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -150,29 +158,55 @@ export const skipJsxRender = (context: StoryContext) => {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
-export const jsxDecorator = (storyFn: any, context: StoryContext) => {
+const isMdx = (node: any) => node.type?.displayName === 'MDXCreateElement' && !!node.props?.mdxType;
+
+const mdxToJsx = (node: any) => {
+  if (!isMdx(node)) return node;
+  const { mdxType, originalType, children, ...rest } = node.props;
+  let jsxChildren = [] as ReactElement[];
+  if (children) {
+    const array = Array.isArray(children) ? children : [children];
+    jsxChildren = array.map(mdxToJsx);
+  }
+  return createElement(originalType, rest, ...jsxChildren);
+};
+
+export const jsxDecorator = (
+  storyFn: PartialStoryFn<ReactFramework>,
+  context: StoryContext<ReactFramework>
+) => {
+  const channel = addons.getChannel();
+  const skip = skipJsxRender(context);
   const story = storyFn();
+
+  let jsx = '';
+
+  useEffect(() => {
+    if (!skip) channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
+  });
 
   // We only need to render JSX if the source block is actually going to
   // consume it. Otherwise it's just slowing us down.
-  if (skipJsxRender(context)) {
+  if (skip) {
     return story;
   }
-
-  const channel = addons.getChannel();
 
   const options = {
     ...defaultOpts,
     ...(context?.parameters.jsx || {}),
   } as Required<JSXOptions>;
 
-  let jsx = '';
-  const rendered = renderJsx(story, options);
+  // Exclude decorators from source code snippet by default
+  const storyJsx = context?.parameters.docs?.source?.excludeDecorators
+    ? (context.originalStoryFn as ArgsStoryFn<ReactFramework>)(context.args, context)
+    : story;
+
+  const sourceJsx = mdxToJsx(storyJsx);
+
+  const rendered = renderJsx(sourceJsx, options);
   if (rendered) {
     jsx = applyTransformSource(rendered, options, context);
   }
-
-  channel.emit(SNIPPET_RENDERED, (context || {}).id, jsx);
 
   return story;
 };

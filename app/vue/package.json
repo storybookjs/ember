@@ -1,11 +1,11 @@
 {
   "name": "@storybook/vue",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-beta.8",
   "description": "Storybook for Vue: Develop Vue Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/vue",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/app/vue",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,13 +14,17 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "app/vue"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/client/index.js",
   "module": "dist/esm/client/index.js",
   "types": "dist/ts3.9/client/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -41,9 +45,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.0-rc.9",
-    "@storybook/core": "6.2.0-rc.9",
-    "@storybook/core-common": "6.2.0-rc.9",
+    "@storybook/addons": "6.4.0-beta.8",
+    "@storybook/core": "6.4.0-beta.8",
+    "@storybook/core-common": "6.4.0-beta.8",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/store": "6.4.0-beta.8",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -53,7 +59,7 @@
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
-    "vue-docgen-api": "^4.34.2",
+    "vue-docgen-api": "^4.38.0",
     "vue-docgen-loader": "^1.5.0",
     "webpack": "4"
   },
@@ -77,5 +83,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d"
+  "gitHead": "7f1ecb08225a3f146f9d6013a89e2a6d4d3dcd11",
+  "sbmodern": "dist/modern/client/index.js"
 }

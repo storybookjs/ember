@@ -1,6 +1,7 @@
 import React from 'react';
 import Vue from 'vue';
-import { StoryFn, StoryContext } from '@storybook/addons';
+import { StoryContext, PartialStoryFn } from '@storybook/csf';
+import { VueFramework } from '@storybook/vue';
 
 // Inspired by https://github.com/egoist/vue-to-react,
 // modified to store args as props in the root store
@@ -9,7 +10,10 @@ import { StoryFn, StoryContext } from '@storybook/addons';
 const COMPONENT = 'STORYBOOK_COMPONENT';
 const VALUES = 'STORYBOOK_VALUES';
 
-export const prepareForInline = (storyFn: StoryFn, { args }: StoryContext) => {
+export const prepareForInline = (
+  storyFn: PartialStoryFn<VueFramework>,
+  { args }: StoryContext<VueFramework>
+) => {
   const component = storyFn();
   const el = React.useRef(null);
 

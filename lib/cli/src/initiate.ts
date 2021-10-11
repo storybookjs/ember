@@ -2,13 +2,7 @@ import { UpdateNotifier, Package } from 'update-notifier';
 import chalk from 'chalk';
 import prompts from 'prompts';
 import { detect, isStorybookInstalled, detectLanguage } from './detect';
-import {
-  installableProjectTypes,
-  ProjectType,
-  StoryFormat,
-  SupportedLanguage,
-  Builder,
-} from './project_types';
+import { installableProjectTypes, ProjectType, Builder, CoreBuilder } from './project_types';
 import { commandLog, codeLog, paddedLog } from './helpers';
 import angularGenerator from './generators/ANGULAR';
 import aureliaGenerator from './generators/AURELIA';
@@ -31,7 +25,7 @@ import riotGenerator from './generators/RIOT';
 import preactGenerator from './generators/PREACT';
 import svelteGenerator from './generators/SVELTE';
 import raxGenerator from './generators/RAX';
-import { warn } from './warn';
+import serverGenerator from './generators/SERVER';
 import { JsPackageManagerFactory, readPackageJson } from './js-package-manager';
 import { NpmOptions } from './NpmOptions';
 
@@ -43,10 +37,11 @@ type CommandOptions = {
   force?: any;
   html?: boolean;
   skipInstall?: boolean;
-  storyFormat?: StoryFormat;
   parser?: string;
   yes?: boolean;
   builder?: Builder;
+  linkable?: boolean;
+  commonJs?: boolean;
 };
 
 const installStorybook = (projectType: ProjectType, options: CommandOptions): Promise<void> => {
@@ -58,16 +53,12 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
   };
 
   const language = detectLanguage();
-  const hasTSDependency = language === SupportedLanguage.TYPESCRIPT;
-
-  warn({ hasTSDependency });
-
-  const defaultStoryFormat = hasTSDependency ? StoryFormat.CSF_TYPESCRIPT : StoryFormat.CSF;
 
   const generatorOptions = {
-    storyFormat: options.storyFormat || defaultStoryFormat,
     language,
-    builder: options.builder || Builder.Webpack4,
+    builder: options.builder || CoreBuilder.Webpack4,
+    linkable: !!options.linkable,
+    commonJs: options.commonJs,
   };
 
   const end = () => {
@@ -126,9 +117,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
               },
             ]) as Promise<{ server: boolean }>)
         )
-          .then(({ server }) =>
-            reactNativeGenerator(packageManager, npmOptions, server, generatorOptions)
-          )
+          .then(({ server }) => reactNativeGenerator(packageManager, npmOptions, server))
           .then(commandLog('Adding Storybook support to your "React Native" app'))
           .then(end)
           .then(() => {
@@ -231,6 +220,11 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
           .then(commandLog('Adding Storybook support to your "Aurelia" app'))
           .then(end);
 
+      case ProjectType.SERVER:
+        return serverGenerator(packageManager, npmOptions, generatorOptions)
+          .then(commandLog('Adding Storybook support to your "Server" app'))
+          .then(end);
+
       case ProjectType.UNSUPPORTED:
         paddedLog(`We detected a project type that we don't support yet.`);
         paddedLog(
@@ -245,7 +239,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
       default:
         paddedLog(`We couldn't detect your project type. (code: ${projectType})`);
         paddedLog(
-          'You can specify a project type explicitly via `sb init --type <type>` or follow some of the slow start guides: https://storybook.js.org/basics/slow-start-guide/'
+          'You can specify a project type explicitly via `sb init --type <type>`, see our docs on how to configure Storybook for your framework: https://storybook.js.org/docs/react/get-started/install'
         );
 
         // Add a new line for the clear visibility.
@@ -289,7 +283,7 @@ const projectTypeInquirer = async (options: { yes?: boolean }) => {
   return Promise.resolve();
 };
 
-export default function (options: CommandOptions, pkg: Package): Promise<void> {
+export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   const welcomeMessage = 'sb init - the simplest way to add a Storybook to your project.';
   logger.log(chalk.inverse(`\n ${welcomeMessage} \n`));
 
@@ -306,10 +300,13 @@ export default function (options: CommandOptions, pkg: Package): Promise<void> {
     : 'Detecting project type';
   const done = commandLog(infoText);
 
+  const packageJson = readPackageJson();
+  const isEsm = packageJson && packageJson.type === 'module';
+
   try {
     if (projectTypeProvided) {
       if (installableProjectTypes.includes(options.type)) {
-        const storybookInstalled = isStorybookInstalled(readPackageJson(), options.force);
+        const storybookInstalled = isStorybookInstalled(packageJson, options.force);
         projectType = storybookInstalled
           ? ProjectType.ALREADY_HAS_STORYBOOK
           : options.type.toUpperCase();
@@ -329,13 +326,8 @@ export default function (options: CommandOptions, pkg: Package): Promise<void> {
   }
   done();
 
-  const cleanOptions = { ...options };
-  if (options.storyFormat === StoryFormat.MDX) {
-    logger.warn(
-      '   The MDX CLI template is deprecated. The JS and TS templates already include MDX examples!'
-    );
-    cleanOptions.storyFormat = undefined;
-  }
-
-  return installStorybook(projectType, cleanOptions);
+  return installStorybook(projectType, {
+    ...options,
+    ...(isEsm ? { commonJs: true } : undefined),
+  });
 }

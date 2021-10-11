@@ -1,0 +1,56 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import MyButton from './Button.vue';
+
+<Meta
+  title="Example/ButtonMdx"
+  component={MyButton}
+  argTypes={{
+    backgroundColor: { control: 'color' },
+    size: { control: { type: 'select', options: ['small', 'medium', 'large'] } },
+    onClick: {},
+  }}
+/>
+
+export const Template = (args) => ({
+  components: { MyButton },
+  setup() {
+    return { args };
+  },
+  template: '<my-button v-bind="args" />',
+});
+
+# Button
+
+Simple button component
+
+## Primary
+
+<Canvas withToolbar>
+  <Story name="Primary" args={{ primary: true, label: 'Button' }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Secondary
+
+<Canvas>
+  <Story name="Secondary" args={{ label: 'Button' }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Large
+
+<Canvas>
+  <Story name="Large" args={{ size: 'large', label: 'Button' }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Small
+
+<Canvas>
+  <Story name="Small" args={{ size: 'large', label: 'Button' }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>

@@ -13,6 +13,7 @@ import {
   Pipe,
   Property,
   Directive,
+  JsDocTag,
 } from './types';
 
 export const isMethod = (methodOrProp: Method | Property): methodOrProp is Method => {
@@ -42,7 +43,7 @@ export const checkValidCompodocJson = (compodocJson: CompodocJson) => {
 const hasDecorator = (item: Property, decoratorName: string) =>
   item.decorators && item.decorators.find((x: any) => x.name === decoratorName);
 
-const mapPropertyToSection = (key: string, item: Property) => {
+const mapPropertyToSection = (item: Property) => {
   if (hasDecorator(item, 'ViewChild')) {
     return 'view child';
   }
@@ -72,7 +73,7 @@ const mapItemToSection = (key: string, item: Method | Property): string => {
       if (isMethod(item)) {
         throw new Error("Cannot be of type Method if key === 'propertiesClass'");
       }
-      return mapPropertyToSection(key, item);
+      return mapPropertyToSection(item);
     default:
       throw new Error(`Unknown key: ${key}`);
   }
@@ -112,7 +113,9 @@ const displaySignature = (item: Method): string => {
 
 const extractTypeFromValue = (defaultValue: any) => {
   const valueType = typeof defaultValue;
-  return defaultValue || valueType === 'boolean' || valueType === 'string' ? valueType : null;
+  return defaultValue || valueType === 'number' || valueType === 'boolean' || valueType === 'string'
+    ? valueType
+    : null;
 };
 
 const extractEnumValues = (compodocType: any) => {
@@ -152,10 +155,59 @@ export const extractType = (property: Property, defaultValue: any) => {
   }
 };
 
+const castDefaultValue = (property: Property, defaultValue: any) => {
+  const compodocType = property.type;
+
+  // All these checks are necessary as compodoc does not always set the type ie. @HostBinding have empty types.
+  // null and undefined also have 'any' type
+  if (['boolean', 'number', 'string', 'EventEmitter'].includes(compodocType)) {
+    switch (compodocType) {
+      case 'boolean':
+        return defaultValue === 'true';
+      case 'number':
+        return Number(defaultValue);
+      case 'EventEmitter':
+        return undefined;
+      default:
+        return defaultValue;
+    }
+  } else {
+    switch (defaultValue) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      case 'null':
+        return null;
+      case 'undefined':
+        return undefined;
+      default:
+        return defaultValue;
+    }
+  }
+};
+
+const extractDefaultValueFromComments = (property: Property, value: any) => {
+  let commentValue = value;
+  property.jsdoctags.forEach((tag: JsDocTag) => {
+    if (['default', 'defaultvalue'].includes(tag.tagName.escapedText)) {
+      // @ts-ignore
+      const dom = new window.DOMParser().parseFromString(tag.comment, 'text/html');
+      commentValue = dom.body.textContent;
+    }
+  });
+  return commentValue;
+};
+
 const extractDefaultValue = (property: Property) => {
   try {
-    // eslint-disable-next-line no-eval
-    const value = eval(property.defaultValue);
+    let value: string | boolean = property.defaultValue?.replace(/^'(.*)'$/, '$1');
+    value = castDefaultValue(property, value);
+
+    if (value == null && property.jsdoctags?.length > 0) {
+      value = extractDefaultValueFromComments(property, value);
+    }
+
     return value;
   } catch (err) {
     logger.debug(`Error extracting ${property.name}: ${property.defaultValue}`);
@@ -187,21 +239,26 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
     data.forEach((item: Method | Property) => {
       const section = mapItemToSection(key, item);
       const defaultValue = isMethod(item) ? undefined : extractDefaultValue(item as Property);
+
       const type =
-        isMethod(item) || section !== 'inputs'
+        isMethod(item) || (section !== 'inputs' && section !== 'properties')
           ? { name: 'void' }
           : extractType(item as Property, defaultValue);
+      const action = section === 'outputs' ? { action: item.name } : {};
+
       const argType = {
         name: item.name,
-        description: item.description,
+        description: item.rawdescription || item.description,
         defaultValue,
         type,
+        ...action,
         table: {
           category: section,
           type: {
             summary: isMethod(item) ? displaySignature(item) : item.type,
             required: isMethod(item) ? false : !item.optional,
           },
+          defaultValue: { summary: defaultValue },
         },
       };
 
@@ -213,9 +270,9 @@ export const extractArgTypesFromData = (componentData: Class | Directive | Injec
   });
 
   const SECTIONS = [
+    'properties',
     'inputs',
     'outputs',
-    'properties',
     'methods',
     'view child',
     'view children',

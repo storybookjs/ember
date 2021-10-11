@@ -10,7 +10,7 @@ You can compose any Storybook [published online](./publish-storybook.md) or runn
 
 ## Compose published Storybooks
 
-In your [`storybook/main.js`](../configure/overview.md#configure-story-rendering) file add a `refs` field with information about the reference Storybook. Pass in a URL to a statically built Storybook. Optionally pass `expanded` field with value `false` to show external storybook on load only as a title with a hidden components tree.
+In your [`.storybook/main.js`](../configure/overview.md#configure-story-rendering) file add a `refs` field with information about the reference Storybook. Pass in a URL to a statically built Storybook.
 
 <!-- prettier-ignore-start -->
 
@@ -23,7 +23,7 @@ In your [`storybook/main.js`](../configure/overview.md#configure-story-rendering
 <!-- prettier-ignore-end -->
 
 <div class="aside">
- We would like to point out that there's some limitations to composition. For now addons in composed Storybooks will not work as they do in non composed Storybooks. 
+ We would like to point out that there's some limitations to composition. For now addons in composed Storybooks will not work as they do in non composed Storybooks.
 </div>
 
 ## Compose local Storybooks
@@ -69,6 +69,12 @@ So far we've covered how we can use composition with local or published Storyboo
 ```shell
 npx sb extract
 ```
+
+<div class="aside">
+
+`sb extract` uses [Puppeteer](https://www.npmjs.com/package/puppeteer), which downloads and installs Chromium. Specify your own locally-installed Chromium executable by setting the environment variable `SB_CHROMIUM_PATH`.
+
+</div>
 
 Using this command will generate a `stories.json` file in the default build directory (`storybook-static`) with information regarding your Storybook. Here's how it might look:
 

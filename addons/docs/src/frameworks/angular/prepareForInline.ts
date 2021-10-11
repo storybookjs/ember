@@ -1,47 +1,43 @@
 import React from 'react';
-import { IStory, StoryContext } from '@storybook/angular';
-import { ElementRendererService } from '@storybook/angular/element-renderer';
-import { StoryFn } from '@storybook/addons';
+import pLimit from 'p-limit';
+import { nanoid } from 'nanoid';
 
-const customElementsVersions: Record<string, number> = {};
+import { AngularFramework, StoryContext } from '@storybook/angular';
+import { rendererFactory } from '@storybook/angular/renderer';
+import { PartialStoryFn } from '@storybook/csf';
+
+const limit = pLimit(1);
 
 /**
- * Uses angular element to generate on-the-fly web components and reference it with `customElements`
- * then it is added into react
+ * Uses the angular renderer to generate a story. Uses p-limit to run synchronously
  */
-export const prepareForInline = (storyFn: StoryFn<IStory>, { id, parameters }: StoryContext) => {
-  // Upgrade story version in order that the next defined component has a unique key
-  customElementsVersions[id] =
-    customElementsVersions[id] !== undefined ? customElementsVersions[id] + 1 : 0;
+export const prepareForInline = (
+  storyFn: PartialStoryFn<AngularFramework>,
+  { id, parameters, component }: StoryContext
+) => {
+  const el = React.useRef();
 
-  const customElementsName = `${id}_${customElementsVersions[id]}`;
-
-  const Story = class Story extends React.Component {
-    wrapperRef: React.RefObject<unknown>;
-
-    elementName: string;
-
-    constructor(props: any) {
-      super(props);
-      this.wrapperRef = React.createRef();
-    }
-
-    async componentDidMount() {
-      // eslint-disable-next-line no-undef
-      customElements.define(
-        customElementsName,
-        await new ElementRendererService().renderAngularElement({
-          storyFnAngular: storyFn(),
-          parameters,
-        })
-      );
-    }
-
-    render() {
-      return React.createElement(customElementsName, {
-        ref: this.wrapperRef,
+  React.useEffect(() => {
+    (async () => {
+      limit(async () => {
+        const renderer = await rendererFactory.getRendererInstance(
+          `${id}-${nanoid(10)}`.toLowerCase(),
+          el.current
+        );
+        if (renderer) {
+          await renderer.render({
+            forced: false,
+            component,
+            parameters,
+            storyFnAngular: storyFn(),
+            targetDOMNode: el.current,
+          });
+        }
       });
-    }
-  };
-  return React.createElement(Story);
+    })();
+  });
+
+  return React.createElement('div', {
+    ref: el,
+  });
 };

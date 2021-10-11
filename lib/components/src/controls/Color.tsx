@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  ChangeEvent,
+  FocusEvent,
+} from 'react';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
 import convert from 'color-convert';
 import throttle from 'lodash/throttle';
@@ -9,6 +17,7 @@ import { TooltipNote } from '../tooltip/TooltipNote';
 import { WithTooltip } from '../tooltip/lazy-WithTooltip';
 import { Form } from '../form';
 import { Icons } from '../icon/icon';
+import { getControlId } from './helpers';
 
 const Wrapper = styled.div({
   position: 'relative',
@@ -23,6 +32,7 @@ const PickerTooltip = styled(WithTooltip)({
 });
 
 const TooltipContent = styled.div({
+  width: 200,
   margin: 5,
 
   '.react-colorful__saturation': {
@@ -35,6 +45,10 @@ const TooltipContent = styled.div({
     borderRadius: '0 0 4px 4px',
   },
 });
+
+const Note = styled(TooltipNote)(({ theme }) => ({
+  fontFamily: theme.typography.fonts.base,
+}));
 
 const Swatches = styled.div({
   display: 'grid',
@@ -62,11 +76,13 @@ const Swatch = ({ value, active, onClick, style, ...props }: SwatchProps) => {
   return <SwatchColor {...props} {...{ active, onClick }} style={{ ...style, backgroundImage }} />;
 };
 
-const Input = styled(Form.Input)({
+const Input = styled(Form.Input)(({ theme }) => ({
   width: '100%',
   paddingLeft: 30,
   paddingRight: 30,
-});
+  boxSizing: 'border-box',
+  fontFamily: theme.typography.fonts.base,
+}));
 
 const ToggleIcon = styled(Icons)(({ theme }) => ({
   position: 'absolute',
@@ -76,6 +92,7 @@ const ToggleIcon = styled(Icons)(({ theme }) => ({
   width: 20,
   height: 20,
   padding: 4,
+  boxSizing: 'border-box',
   cursor: 'pointer',
   color: theme.input.color,
 }));
@@ -94,6 +111,7 @@ const HEX_REGEXP = /^\s*#?([0-9a-f]{3}|[0-9a-f]{6})\s*$/i;
 const SHORTHEX_REGEXP = /^\s*#?([0-9a-f]{3})\s*$/i;
 
 type ParsedColor = {
+  valid: boolean;
   value: string;
   keyword: string;
   colorSpace: ColorSpace;
@@ -121,13 +139,15 @@ const stringToArgs = (value: string) => {
   return [x, y, z, a].map(Number);
 };
 
-const parseValue = (value: string): ParsedColor => {
+const parseValue = (value: string): ParsedColor | undefined => {
   if (!value) return undefined;
+  let valid = true;
 
   if (RGB_REGEXP.test(value)) {
     const [r, g, b, a] = stringToArgs(value);
     const [h, s, l] = convert.rgb.hsl([r, g, b]) || [0, 0, 0];
     return {
+      valid,
       value,
       keyword: convert.rgb.keyword([r, g, b]),
       colorSpace: ColorSpace.RGB,
@@ -141,6 +161,7 @@ const parseValue = (value: string): ParsedColor => {
     const [h, s, l, a] = stringToArgs(value);
     const [r, g, b] = convert.hsl.rgb([h, s, l]) || [0, 0, 0];
     return {
+      valid,
       value,
       keyword: convert.hsl.keyword([h, s, l]),
       colorSpace: ColorSpace.HSL,
@@ -158,7 +179,18 @@ const parseValue = (value: string): ParsedColor => {
   if (/[^#a-f0-9]/i.test(value)) mapped = plain;
   else if (HEX_REGEXP.test(value)) mapped = `#${plain}`;
 
+  if (mapped.startsWith('#')) {
+    valid = HEX_REGEXP.test(mapped);
+  } else {
+    try {
+      convert.keyword.hex(mapped as any);
+    } catch (e) {
+      valid = false;
+    }
+  }
+
   return {
+    valid,
     value: mapped,
     keyword: convert.rgb.keyword(rgb),
     colorSpace: ColorSpace.HEX,
@@ -169,7 +201,7 @@ const parseValue = (value: string): ParsedColor => {
 };
 
 const getRealValue = (value: string, color: ParsedColor, colorSpace: ColorSpace) => {
-  if (!value) return fallbackColor[colorSpace];
+  if (!value || !color?.valid) return fallbackColor[colorSpace];
   if (colorSpace !== ColorSpace.HEX) return color?.[colorSpace] || fallbackColor[colorSpace];
   if (!color.hex.startsWith('#')) {
     try {
@@ -184,10 +216,21 @@ const getRealValue = (value: string, color: ParsedColor, colorSpace: ColorSpace)
   return `#${r}${r}${g}${g}${b}${b}`;
 };
 
-const useColorInput = (initialValue: string, onChange: (value: string) => string | void) => {
+const useColorInput = (
+  initialValue: string | undefined,
+  onChange: (value: string) => string | void
+) => {
   const [value, setValue] = useState(initialValue || '');
   const [color, setColor] = useState(() => parseValue(value));
   const [colorSpace, setColorSpace] = useState(color?.colorSpace || ColorSpace.HEX);
+
+  // Reset state when initialValue becomes undefined (when resetting controls)
+  useEffect(() => {
+    if (initialValue !== undefined) return;
+    setValue('');
+    setColor(undefined);
+    setColorSpace(ColorSpace.HEX);
+  }, [initialValue]);
 
   const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
     value,
@@ -195,14 +238,17 @@ const useColorInput = (initialValue: string, onChange: (value: string) => string
     colorSpace,
   ]);
 
-  const updateValue = useCallback((update: string) => {
-    const parsed = parseValue(update);
-    setValue(parsed?.value || update || '');
-    if (!parsed) return;
-    setColor(parsed);
-    setColorSpace(parsed.colorSpace);
-    onChange(parsed.value);
-  }, []);
+  const updateValue = useCallback(
+    (update: string) => {
+      const parsed = parseValue(update);
+      setValue(parsed?.value || update || '');
+      if (!parsed) return;
+      setColor(parsed);
+      setColorSpace(parsed.colorSpace);
+      onChange(parsed.value);
+    },
+    [onChange]
+  );
 
   const cycleColorSpace = useCallback(() => {
     let next = COLOR_SPACES.indexOf(colorSpace) + 1;
@@ -211,7 +257,7 @@ const useColorInput = (initialValue: string, onChange: (value: string) => string
     const update = color?.[COLOR_SPACES[next]] || '';
     setValue(update);
     onChange(update);
-  }, [color, colorSpace]);
+  }, [color, colorSpace, onChange]);
 
   return { value, realValue, updateValue, color, colorSpace, cycleColorSpace };
 };
@@ -220,10 +266,16 @@ const id = (value: string) => value.replace(/\s*/, '').toLowerCase();
 
 const usePresets = (
   presetColors: PresetColor[],
-  currentColor: ParsedColor,
+  currentColor: ParsedColor | undefined,
   colorSpace: ColorSpace
 ) => {
-  const [selectedColors, setSelectedColors] = useState(currentColor ? [currentColor] : []);
+  const [selectedColors, setSelectedColors] = useState(currentColor?.valid ? [currentColor] : []);
+
+  // Reset state when currentColor becomes undefined (when resetting controls)
+  useEffect(() => {
+    if (currentColor !== undefined) return;
+    setSelectedColors([]);
+  }, [currentColor]);
 
   const presets = useMemo(() => {
     const initialPresets = (presetColors || []).map((preset) => {
@@ -236,7 +288,7 @@ const usePresets = (
 
   const addPreset = useCallback(
     (color) => {
-      if (!color?.[colorSpace]) return;
+      if (!color?.valid) return;
       if (presets.some((preset) => id(preset[colorSpace]) === id(color[colorSpace]))) return;
       setSelectedColors((arr) => arr.concat(color));
     },
@@ -248,6 +300,7 @@ const usePresets = (
 
 export type ColorProps = ControlProps<ColorValue> & ColorConfig;
 export const ColorControl: FC<ColorProps> = ({
+  name,
   value: initialValue,
   onChange,
   onFocus,
@@ -271,14 +324,18 @@ export const ColorControl: FC<ColorProps> = ({
         onVisibilityChange={() => addPreset(color)}
         tooltip={
           <TooltipContent>
-            <Picker {...{ color: realValue, onChange: updateValue, onFocus, onBlur }} />
+            <Picker
+              color={realValue === 'transparent' ? '#000000' : realValue}
+              {...{ onChange: updateValue, onFocus, onBlur }}
+            />
             {presets.length > 0 && (
               <Swatches>
-                {presets.map((preset) => (
+                {presets.map((preset, index: number) => (
                   <WithTooltip
-                    key={preset.value}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${preset.value}-${index}`}
                     hasChrome={false}
-                    tooltip={<TooltipNote note={preset.keyword || preset.value} />}
+                    tooltip={<Note note={preset.keyword || preset.value} />}
                   >
                     <Swatch
                       value={preset[colorSpace]}
@@ -295,12 +352,13 @@ export const ColorControl: FC<ColorProps> = ({
         <Swatch value={realValue} style={{ margin: 4 }} />
       </PickerTooltip>
       <Input
+        id={getControlId(name)}
         value={value}
-        onChange={(e: any) => updateValue(e.target.value)}
-        onFocus={(e) => e.target.select()}
-        placeholder="Choose color"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => updateValue(e.target.value)}
+        onFocus={(e: FocusEvent<HTMLInputElement>) => e.target.select()}
+        placeholder="Choose color..."
       />
-      <ToggleIcon icon="markup" onClick={cycleColorSpace} />
+      {value ? <ToggleIcon icon="markup" onClick={cycleColorSpace} /> : null}
     </Wrapper>
   );
 };

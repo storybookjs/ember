@@ -1,5 +1,14 @@
 ```md
 <!-- Button.stories.mdx -->
 
-<Meta title='Button' component={Button} parameters={{ actions: { argTypesRegex: '^on.\*' } }} />
+import { Meta } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta 
+  title="Button"
+  component={Button} 
+  parameters={{ 
+    actions: { argTypesRegex: '^on.\*' } 
+  }}/>
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-toolbars",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-beta.8",
   "description": "Create your own toolbar items that control story rendering",
   "keywords": [
     "addon",
@@ -20,13 +20,17 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/toolbars"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/register.js",
   "module": "dist/esm/register.js",
   "types": "dist/ts3.9/register.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -41,11 +45,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.0-rc.9",
-    "@storybook/api": "6.2.0-rc.9",
-    "@storybook/client-api": "6.2.0-rc.9",
-    "@storybook/components": "6.2.0-rc.9",
-    "core-js": "^3.8.2"
+    "@storybook/addons": "6.4.0-beta.8",
+    "@storybook/api": "6.4.0-beta.8",
+    "@storybook/components": "6.4.0-beta.8",
+    "@storybook/theming": "6.4.0-beta.8",
+    "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0",
@@ -62,7 +67,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d",
+  "gitHead": "7f1ecb08225a3f146f9d6013a89e2a6d4d3dcd11",
+  "sbmodern": "dist/modern/register.js",
   "storybook": {
     "displayName": "Toolbars",
     "icon": "https://user-images.githubusercontent.com/263385/101991677-48cdf300-3c7c-11eb-93b4-19b0e3366959.png",

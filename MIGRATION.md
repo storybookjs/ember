@@ -1,16 +1,43 @@
 <h1>Migration</h1>
 
+- [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [CRA5 upgrade](#cra5-upgrade)
+  - [CSF3 enabled](#csf3-enabled)
+    - [Optional titles](#optional-titles)
+    - [String literal titles](#string-literal-titles)
+  - [Story Store v7](#story-store-v7)
+    - [Behavioral differences](#behavioral-differences)
+    - [Using the v7 store](#using-the-v7-store)
+    - [V7-style story sort](#v7-style-story-sort)
+  - [Babel mode v7](#babel-mode-v7)
+  - [Loader behavior with args changes](#loader-behavior-with-args-changes)
+  - [Angular component parameter removed](#angular-component-parameter-removed)
+- [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
+  - [Webpack 5](#webpack-5-manager-build)
+    - [Fixing hoisting issues](#fixing-hoisting-issues)
+      - [Webpack 5 manager build](#webpack-5-manager-build)
+      - [Wrong webpack version](#wrong-webpack-version)
+  - [Angular 12 upgrade](#angular-12-upgrade)
+  - [Lit support](#lit-support)
+  - [No longer inferring default values of args](#no-longer-inferring-default-values-of-args)
+  - [6.3 deprecations](#63-deprecations)
+    - [Deprecated addon-knobs](#deprecated-addon-knobs)
+    - [Deprecated scoped blocks imports](#deprecated-scoped-blocks-imports)
+    - [Deprecated layout URL params](#deprecated-layout-url-params)
 - [From version 6.1.x to 6.2.0](#from-version-61x-to-620)
   - [MDX pattern tweaked](#mdx-pattern-tweaked)
   - [6.2 Angular overhaul](#62-angular-overhaul)
     - [New Angular storyshots format](#new-angular-storyshots-format)
     - [Deprecated Angular story component](#deprecated-angular-story-component)
     - [New Angular renderer](#new-angular-renderer)
+    - [Components without selectors](#components-without-selectors)
+  - [Packages now available as ESModules](#packages-now-available-as-esmodules)
   - [6.2 Deprecations](#62-deprecations)
     - [Deprecated implicit PostCSS loader](#deprecated-implicit-postcss-loader)
     - [Deprecated default PostCSS plugins](#deprecated-default-postcss-plugins)
     - [Deprecated showRoots config option](#deprecated-showroots-config-option)
     - [Deprecated control.options](#deprecated-controloptions)
+    - [Deprecated storybook components html entry point](#deprecated-storybook-components-html-entry-point)
 - [From version 6.0.x to 6.1.0](#from-version-60x-to-610)
   - [Addon-backgrounds preset](#addon-backgrounds-preset)
   - [Single story hoisting](#single-story-hoisting)
@@ -150,6 +177,336 @@
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
+## From version 6.3.x to 6.4.0
+
+### CRA5 upgrade
+
+Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to
+upgrade the configuration. You can do this automatically by running:
+
+```
+npx sb@next fix
+```
+
+Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
+
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
+### CSF3 enabled
+
+SB6.3 introduced a feature flag, `features.previewCsfV3`, to opt-in to experimental [CSF3 syntax support](https://storybook.js.org/blog/component-story-format-3-0/). In SB6.4, CSF3 is supported regardless of `previewCsfV3`'s value. This should be a fully backwards-compatible change. The `previewCsfV3` flag has been deprecated and will be removed in SB7.0.
+
+#### Optional titles
+
+In SB6.3 and earlier, component titles were required in CSF default exports. Starting in 6.4, they are optional.
+If you don't specify a component file, it will be inferred from the file's location on disk.
+
+Consider a project configuration `/path/to/project/.storybook/main.js` containing:
+
+```js
+module.exports = { stories: ['../src/**/*.stories.*'] };
+```
+
+And te file `/path/to/project/src/components/Button.stories.tsx` containing the default export:
+
+```js
+import { Button } from './Button';
+export default { component: Button };
+// named exports...
+```
+
+The inferred title of this file will be `components/Button` based on the stories glob in the configuration file.
+We will provide more documentation soon on how to configure this.
+
+#### String literal titles
+
+Starting in 6.4 CSF component [titles are optional](#optional-titles). However, if you do specify titles, title handing is becoming more strict in V7 and are limited to string literals.
+
+Earlier versions of Storybook supported story titles that are dynamic Javascript expressions
+
+```js
+// ✅ string literals 6.3 OK / 7.0 OK
+export default {
+  title: 'Components/Atoms/Button',
+};
+
+// ✅ undefined 6.3 KO / 7.0 OK
+export default {
+  component: Button,
+};
+
+// ❌ expressions: 6.3 OK / 7.0 KO
+export default {
+  title: foo('bar'),
+};
+
+// ❌ template literals 6.3 OK / 7.0 KO
+export default {
+  title: `${bar}`,
+};
+```
+
+### Story Store v7
+
+SB6.4 introduces an opt-in feature flag, `features.storyStoreV7`, which loads stories in an "on demand" way (that is when rendered), rather than up front when the Storybook is booted. This way of operating will become the default in 7.0 and will likely be switched to opt-out in that version.
+
+The key benefit of the on demand store is that stories are code-split automatically (in `builder-webpack4` and `builder-webpack5`), which allows for much smaller bundle sizes, faster rendering, and improved general performance via various opt-in Webpack features.
+
+The on-demand store relies on the "story index" data structure which is generated in the server (node) via static code analysis. As such, it has the following limitations:
+
+- Does not work with `storiesOf()`
+- Does not work if you used dynamic story names or component titles.
+
+However, the `autoTitle` feature is supported.
+
+#### Behavioral differences
+
+The key behavioral differences of the v7 store are:
+
+- `SET_STORIES` is not emitted on boot up. Instead the manager loads the story index independently.
+- A new event `STORY_PREPARED` is emitted when a story is rendered for the first time, which contains metadata about the story, such as `parameters`.
+- All "entire" store APIs such as `extract()` need to be proceeded by an async call to `loadAllCSFFiles()` which fetches all CSF files and processes them.
+
+#### Using the v7 store
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    storyStoreV7: true,
+  },
+};
+```
+
+NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
+
+#### V7-style story sort
+
+If you've written a custom `storySort` function, you'll need to rewrite it for V7.
+
+SB6.x supports a global story function specified in `.storybook/preview.js`. It accepts two arrays which each contain:
+
+- The story ID
+- A story object that contains the name, title, etc.
+- The component's parameters
+- The project-level parameters
+
+SB 7.0 streamlines the story function. It now accepts a `StoryIndexEntry` which is
+an object that contains only the story's `id`, `title`, `name`, and `importPath`.
+
+Consider the following example, before and after:
+
+```js
+// v6-style sort
+function storySort(a, b) {
+  return a[1].kind === b[1].kind
+    ? 0
+    : a[1].id.localeCompare(b[1].id, undefined, { numeric: true });
+},
+```
+
+And the after version using `title` instead of `kind` and not receiving the full parameters:
+
+```js
+// v7-style sort
+function storySort(a, b) {
+  return a.title === b.title
+    ? 0
+    : a.id.localeCompare(b.id, undefined, { numeric: true });
+},
+```
+
+### Babel mode v7
+
+SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
+
+> NOTE: CRA apps using `@storybook/preset-create-react-app` use CRA's handling, so the new flag has no effect on CRA apps.
+
+In SB6.x and earlier, Storybook provided its own default configuration and inconsistently handled configurations from the user's babelrc file. This resulted in a final configuration that differs from your application's configuration AND is difficult to debug.
+
+In `babelModeV7`, Storybook no longer provides its own default configuration and is primarily configured via babelrc file, with small, incremental updates from Storybook addons.
+
+In 6.x, Storybook supported a `.storybook/babelrc` configuration option. This is no longer supported and it's up to you to reconcile this with your project babelrc.
+
+To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  // ... your existing config
+  features: {
+    babelModeV7: true,
+  },
+};
+```
+
+In the new mode, Storybook expects you to provide a configuration file. If you want a configuration file that's equivalent to the 6.x default, you can run the following command in your project directory:
+
+```sh
+npx sb@next babelrc
+```
+
+This will create a `.babelrc.json` file. This file includes a bunch of babel plugins, so you may need to add new package devDependencies accordingly.
+
+### Loader behavior with args changes
+
+In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
+
+### Angular component parameter removed
+
+In SB6.3 and earlier, the `default.component` metadata was implemented as a parameter, meaning that stories could set `parameters.component` to override the default export. This was an internal implementation that was never documented, but it was mistakenly used in some Angular examples.
+
+If you have Angular stories of the form:
+
+```js
+export const MyStory = () => ({ ... })
+SomeStory.parameters = { component: MyComponent };
+```
+
+You should rewrite them as:
+
+```js
+export const MyStory = () => ({ component: MyComponent, ... })
+```
+
+[More discussion here.](https://github.com/storybookjs/storybook/pull/16010#issuecomment-917378595)
+
+## From version 6.2.x to 6.3.0
+
+### Webpack 5
+
+Storybook 6.3 brings opt-in support for building both your project and the manager UI with webpack 5. To do so:
+
+```shell
+yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+```
+
+Then edit your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
+#### Fixing hoisting issues
+
+##### Webpack 5 manager build
+
+Storybook 6.2 introduced **experimental** webpack5 support for building user components. Storybook 6.3 also supports building the manager UI in webpack 5 to avoid strange hoisting issues.
+
+If you're upgrading from 6.2 and already using the experimental webpack5 feature, this might be a breaking change (hence the 'experimental' label) and you should try adding the manager builder:
+
+```shell
+yarn add @storybook/manager-webpack5 --dev
+# Or
+npm install @storybook/manager-webpack5 --save-dev
+```
+
+##### Wrong webpack version
+
+Because Storybook uses `webpack@4` as the default, it's possible for the wrong version of webpack to get hoisted by your package manager. If you receive an error that looks like you might be using the wrong version of webpack, install `webpack@5` explicitly as a dev dependency to force it to be hoisted:
+
+```shell
+yarn add webpack@5 --dev
+# Or
+npm install webpack@5 --save-dev
+```
+
+### Angular 12 upgrade
+
+Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to [follow the steps for opting-in to webpack 5](#webpack-5).
+
+### Lit support
+
+Storybook 6.3 introduces Lit 2 support in a non-breaking way to ease migration from `lit-html`/`lit-element` to `lit`.
+
+To do so, it relies on helpers added in the latest minor versions of `lit-html`/`lit-element`. So when upgrading to Storybook 6.3, please ensure your project is using `lit-html` 1.4.x or `lit-element` 2.5.x.
+
+According to the package manager you are using, it can be handled automatically when updating Storybook or can require to manually update the versions and regenerate the lockfile.
+
+### No longer inferring default values of args
+
+Previously, unset `args` were set to the `argType.defaultValue` if set or inferred from the component's prop types (etc.). In 6.3 we no longer infer default values and instead set arg values to `undefined` when unset, allowing the framework to supply the default value.
+
+If you were using `argType.defaultValue` to fix issues with the above inference, it should no longer be necessary, you can remove that code.
+
+If you were using `argType.defaultValue` or relying on inference to set a default value for an arg, you should now set a value for the arg at the component level:
+
+```js
+export default {
+  component: MyComponent,
+  args: {
+    argName: 'default-value',
+  },
+};
+```
+
+To manually configure the value that is shown in the ArgsTable doc block, you can configure the `table.defaultValue` setting:
+
+```js
+export default {
+  component: MyComponent,
+  argTypes: {
+    argName: {
+      table: { defaultValue: { summary: 'SomeType<T>' } },
+    },
+  },
+};
+```
+
+### 6.3 deprecations
+
+#### Deprecated addon-knobs
+
+We are replacing `@storybook/addon-knobs` with `@storybook/addon-controls`.
+
+- [Rationale & discussion](https://github.com/storybookjs/storybook/discussions/15060)
+- [Migration notes](https://github.com/storybookjs/storybook/blob/next/addons/controls/README.md#how-do-i-migrate-from-addon-knobs)
+
+#### Deprecated scoped blocks imports
+
+In 6.3, we changed doc block imports from `@storybook/addon-docs/blocks` to `@storybook/addon-docs`. This makes it possible for bundlers to automatically choose the ESM or CJS version of the library depending on the context.
+
+To update your code, you should be able to global replace `@storybook/addon-docs/blocks` with `@storybook/addon-docs`. Example:
+
+```js
+// before
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+// after
+import { Meta, Story } from '@storybook/addon-docs';
+```
+
+#### Deprecated layout URL params
+
+Several URL params to control the manager layout have been deprecated and will be removed in 7.0:
+
+- `addons=0`: use `panel=false` instead
+- `panelRight=1`: use `panel=right` instead
+- `stories=0`: use `nav=false` instead
+
+Additionally, support for legacy URLs using `selectedKind` and `selectedStory` will be removed in 7.0. Use `path` instead.
+
 ## From version 6.1.x to 6.2.0
 
 ### MDX pattern tweaked
@@ -201,17 +558,40 @@ export const parameters = {
 
 Please also file an issue if you need to opt out. We plan to remove the legacy renderer in 7.0.
 
+#### Components without selectors
+
+When the new Angular renderer is used, all Angular Story components must either have a selector, or be added to the `entryComponents` array of the story's `moduleMetadata`. If the component has any `Input`s or `Output`s to be controlled with `args`, a selector should be added.
+
+### Packages now available as ESModules
+
+Many Storybook packages are now available as ESModules in addition to CommonJS. If your jest tests stop working, this is likely why. One common culprit is doc blocks, which [is fixed in 6.3](#deprecated-scoped-blocks-imports). In 6.2, you can configure jest to transform the packages like so ([more info](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring)):
+
+```json
+// In your jest config
+transformIgnorePatterns: ['/node_modules/(?!@storybook)']
+```
+
 ### 6.2 Deprecations
 
 #### Deprecated implicit PostCSS loader
 
-Previously, `@storybook/core` would automatically add the `postcss-loader` to your preview. This caused issues for consumers when PostCSS upgraded to v8 and tools, like Autoprefixer and Tailwind, starting requiring the new version. Implictly adding `postcss-loader` will be removed in Storybook 7.0.
+Previously, `@storybook/core` would automatically add the `postcss-loader` to your preview. This caused issues for consumers when PostCSS upgraded to v8 and tools, like Autoprefixer and Tailwind, starting requiring the new version. Implicitly adding `postcss-loader` will be removed in Storybook 7.0.
 
 Instead of continuing to include PostCSS inside the core library, it has been moved to [`@storybook/addon-postcss`](https://github.com/storybookjs/addon-postcss). This addon provides more fine-grained customization and will be upgraded more flexibly to track PostCSS upgrades.
 
 If you require PostCSS support, please install `@storybook/addon-postcss` in your project, add it to your list of addons inside `.storybook/main.js`, and configure a `postcss.config.js` file.
 
 Further information is available at https://github.com/storybookjs/storybook/issues/12668 and https://github.com/storybookjs/storybook/pull/13669.
+
+If you're not using Postcss and you don't want to see the warning, you can disable it by adding the following to your `.storybook/main.js`:
+
+```js
+module.exports = {
+  features: {
+    postcss: false,
+  },
+};
+```
 
 #### Deprecated default PostCSS plugins
 
@@ -273,6 +653,18 @@ argTypes: {
 Keys in `control.labels` as well as in `mapping` should match the values in `options`. Neither object has to be exhaustive, in case of a missing property, the option value will be used directly.
 
 If you are currently using an object as value for `control.options`, be aware that the key and value are reversed in `control.labels`.
+
+#### Deprecated storybook components html entry point
+
+Storybook HTML components are now exported directly from '@storybook/components' for better ESM and Typescript compatibility. The old entry point will be removed in SB 7.0.
+
+```js
+// before
+import { components } from '@storybook/components/html';
+
+// after
+import { components } from '@storybook/components';
+```
 
 ## From version 6.0.x to 6.1.0
 
@@ -359,7 +751,7 @@ console.log(unboundStoryFn(context));
 
 If you're not using loaders, `storyFn` will work as before. If you are, you'll need to use the new approach.
 
-> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in 6.2. You can track the issue at https://github.com/storybookjs/storybook/issues/13074.
+> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in a future release. You can track the issue at https://github.com/storybookjs/storybook/issues/13074.
 
 #### Deprecated onBeforeRender
 
@@ -737,7 +1129,7 @@ npx sb@next migrate upgrade-hierarchy-separators --glob="*/**/*.stories.@(tsx|js
 We also now default to showing "roots", which are non-expandable groupings in the sidebar for the top-level groups. If you'd like to disable this, set the `showRoots` option in `.storybook/manager.js`:
 
 ```js
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 
 addons.setConfig({
   showRoots: false,
@@ -1024,7 +1416,7 @@ You should use `addon.setConfig` to set them:
 
 ```js
 // in .storybook/manager.js
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 
 addons.setConfig({
   showRoots: false,
@@ -1186,13 +1578,13 @@ The description doc block on DocsPage has also been updated. To see how to confi
 
 ### React Native Async Storage
 
-Starting from version React Native 0.59, Async Storage is deprecated in React Native itself. The new @react-native-community/async-storage module requires native installation, and we don't want to have it as a dependency for React Native Storybook.
+Starting from version React Native 0.59, Async Storage is deprecated in React Native itself. The new @react-native-async-storage/async-storage module requires native installation, and we don't want to have it as a dependency for React Native Storybook.
 
 To avoid that now you have to manually pass asyncStorage to React Native Storybook with asyncStorage prop. To notify users we are displaying a warning about it.
 
 Solution:
 
-- Use `require('@react-native-community/async-storage').default` for React Native v0.59 and above.
+- Use `require('@react-native-async-storage/async-storage').default` for React Native v0.59 and above.
 - Use `require('react-native').AsyncStorage` for React Native v0.58 or below.
 - Use `null` to disable Async Storage completely.
 
@@ -1219,7 +1611,7 @@ Addon-docs configuration gets simpler in 5.3. In 5.2, each framework had its own
 
 We've deprecated the ability to specify the hierarchy separators (how you control the grouping of story kinds in the sidebar). From Storybook 6.0 we will have a single separator `/`, which cannot be configured.
 
-If you are currently using using custom separators, we encourage you to migrate to using `/` as the sole separator. If you are using `|` or `.` as a separator currently, we provide a codemod, [`upgrade-hierarchy-separators`](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md#upgrade-hierarchy-separators), that can be used to rename all your components.
+If you are currently using custom separators, we encourage you to migrate to using `/` as the sole separator. If you are using `|` or `.` as a separator currently, we provide a codemod, [`upgrade-hierarchy-separators`](https://github.com/storybookjs/storybook/blob/next/lib/codemod/README.md#upgrade-hierarchy-separators), that can be used to rename all your components.
 
 ```
 yarn sb migrate upgrade-hierarchy-separators --glob="*.stories.js"

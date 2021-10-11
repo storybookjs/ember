@@ -32,7 +32,7 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
 
 This appends `vue-docgen-loader` to the existing configuration, which at this point will also include modifications made by the common preset.
 
-For props tables and descriptions, both of which are described in more detail below, it defines a file [config.tsx](https://github.com/storybookjs/storybook/blob/next/addons/docs/src/frameworks/vue/config.tsx).
+For props tables and descriptions, both of which are described in more detail below, it defines a file [config.jsx](https://github.com/storybookjs/storybook/blob/next/addons/docs/src/frameworks/vue/config.jsx).
 
 ## Arg tables
 

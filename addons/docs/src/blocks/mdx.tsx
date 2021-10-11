@@ -1,10 +1,12 @@
 import React, { FC, SyntheticEvent } from 'react';
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { NAVIGATE_URL } from '@storybook/core-events';
 import { Source, Code, components } from '@storybook/components';
-import { document } from 'global';
+import global from 'global';
 import { styled } from '@storybook/theming';
 import { DocsContext, DocsContextProps } from './DocsContext';
+
+const { document } = global;
 
 // Hacky utility for asserting identifiers in MDX Story elements
 export const assertIsFn = (val: any) => {
@@ -95,7 +97,9 @@ export const AnchorMdx: FC<AnchorMdxProps> = (props) => {
           href={href}
           onClick={(event: SyntheticEvent) => {
             event.preventDefault();
-            navigate(href);
+            // use the A element's href, which has been modified for
+            // local paths without a `?path=` query param prefix
+            navigate(event.currentTarget.getAttribute('href'));
           }}
           target={target}
           {...rest}

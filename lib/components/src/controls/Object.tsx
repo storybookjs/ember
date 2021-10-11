@@ -1,14 +1,25 @@
-import { window } from 'global';
+import global from 'global';
 import cloneDeep from 'lodash/cloneDeep';
-import React, { ComponentProps, SyntheticEvent, useCallback, useMemo, useState } from 'react';
+import React, {
+  ComponentProps,
+  SyntheticEvent,
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
 import { styled, useTheme, Theme } from '@storybook/theming';
 
 // @ts-ignore
-import { JsonTree } from './react-editable-json-tree';
+import { JsonTree, getObjectType } from './react-editable-json-tree';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, ObjectValue, ObjectConfig } from './types';
 import { Form } from '../form';
 import { Icons, IconsProps } from '../icon/icon';
 import { IconButton } from '../bar/button';
+
+const { window: globalWindow } = global;
 
 type JsonTreeProps = ComponentProps<typeof JsonTree>;
 
@@ -201,7 +212,7 @@ const RawInput = styled(Form.Textarea)(({ theme }) => ({
 
 const ENTER_EVENT = { bubbles: true, cancelable: true, key: 'Enter', code: 'Enter', keyCode: 13 };
 const dispatchEnterKey = (event: SyntheticEvent<HTMLInputElement>) => {
-  event.currentTarget.dispatchEvent(new window.KeyboardEvent('keydown', ENTER_EVENT));
+  event.currentTarget.dispatchEvent(new globalWindow.KeyboardEvent('keydown', ENTER_EVENT));
 };
 const selectValue = (event: SyntheticEvent<HTMLInputElement>) => {
   event.currentTarget.select();
@@ -235,7 +246,7 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
   const hasData = data !== null && data !== undefined;
 
   const [showRaw, setShowRaw] = useState(!hasData);
-  const [parseError, setParseError] = useState();
+  const [parseError, setParseError] = useState<Error>(null);
   const updateRaw = useCallback(
     (raw) => {
       try {
@@ -247,26 +258,48 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
     },
     [onChange]
   );
+
+  const [forceVisible, setForceVisible] = useState(false);
+  const onForceVisible = useCallback(() => {
+    onChange({});
+    setForceVisible(true);
+  }, [setForceVisible]);
+
+  const htmlElRef = useRef(null);
+  useEffect(() => {
+    if (forceVisible && htmlElRef.current) htmlElRef.current.select();
+  }, [forceVisible]);
+
+  if (!hasData) {
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onForceVisible}>
+        Set object
+      </Form.Button>
+    );
+  }
+
   const rawJSONForm = (
     <RawInput
-      id={name}
+      ref={htmlElRef}
+      id={getControlId(name)}
       name={name}
       defaultValue={value === null ? '' : JSON.stringify(value, null, 2)}
       onBlur={(event) => updateRaw(event.target.value)}
-      placeholder="Enter JSON string"
+      placeholder="Edit JSON string..."
+      autoFocus={forceVisible}
       valid={parseError ? 'error' : null}
     />
   );
 
   return (
     <Wrapper>
-      {hasData && (
+      {['Object', 'Array'].includes(getObjectType(data)) && (
         <RawButton onClick={() => setShowRaw((v) => !v)}>
           <Icons icon={showRaw ? 'eyeclose' : 'eye'} />
           <span>RAW</span>
         </RawButton>
       )}
-      {hasData && !showRaw ? (
+      {!showRaw ? (
         <JsonTree
           data={data}
           rootName={name}

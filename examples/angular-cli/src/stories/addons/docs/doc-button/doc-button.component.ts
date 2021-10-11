@@ -47,6 +47,37 @@ export enum ButtonAccent {
 export class DocButtonComponent<T> {
   @ViewChild('buttonRef', { static: false }) buttonRef: ElementRef;
 
+  /** Test default value. */
+  @Input()
+  public theDefaultValue = 'Default value in component';
+
+  /**
+   * Setting default value here because compodoc won't get the default value for accessors
+   * @default Another default value
+   * */
+  @Input()
+  get anotherDefaultValue() {
+    return this._anotherDefaultValue;
+  }
+
+  set anotherDefaultValue(v: string) {
+    this._anotherDefaultValue = v;
+  }
+
+  _anotherDefaultValue = 'Another default value';
+
+  /** Test null default value. */
+  @Input()
+  public aNullValue = null;
+
+  /** Test null default value. */
+  @Input()
+  public anUndefinedValue;
+
+  /** Test numeric default value. */
+  @Input()
+  public aNumericValue = 123;
+
   /** Appearance style of the button. */
   @Input()
   public appearance: 'primary' | 'secondary' = 'secondary';
@@ -59,7 +90,7 @@ export class DocButtonComponent<T> {
   @Input()
   public accent: ButtonAccent = ButtonAccent.Normal;
 
-  /** Specifies some arbitrary object */
+  /** Specifies some arbitrary object. This comment is to test certain chars like apostrophes - it's working */
   @Input() public someDataObject: ISomeInterface;
 
   /**
@@ -116,9 +147,10 @@ export class DocButtonComponent<T> {
     return this._inputValue;
   }
 
-  @HostListener('click', ['$event.target'])
-  onClickListener(btn) {
-    console.log('button', btn);
+  @HostListener('click', ['$event'])
+  onClickListener(event) {
+    console.log('button', event.target);
+    this.handleClick(event);
   }
 
   @HostBinding('class.focused') focus = false;

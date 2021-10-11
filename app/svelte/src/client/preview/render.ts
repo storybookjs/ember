@@ -1,10 +1,11 @@
-import { document } from 'global';
-import { RenderContext } from './types';
+import global from 'global';
+import { RenderContext } from '@storybook/store';
+import { SvelteFramework } from './types';
 import PreviewRender from './PreviewRender.svelte';
 
-type Component = any;
+const { document } = global;
 
-let previousComponent: Component = null;
+let previousComponent: SvelteFramework['component'] = null;
 
 function cleanUpPreviousStory() {
   if (!previousComponent) {
@@ -14,7 +15,10 @@ function cleanUpPreviousStory() {
   previousComponent = null;
 }
 
-export default function render({ storyFn, kind, name, showMain, showError }: RenderContext) {
+export function renderToDOM(
+  { storyFn, kind, name, showMain, showError }: RenderContext<SvelteFramework>,
+  domElement: HTMLElement
+) {
   cleanUpPreviousStory();
 
   const target = document.getElementById('root');

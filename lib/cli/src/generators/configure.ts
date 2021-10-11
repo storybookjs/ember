@@ -1,9 +1,11 @@
 import fse from 'fs-extra';
+import dedent from 'ts-dedent';
 import { SupportedFrameworks } from '../project_types';
 
 interface ConfigureMainOptions {
   addons: string[];
   extensions?: string[];
+  commonJs?: boolean;
   /**
    * Extra values for main.js
    *
@@ -19,6 +21,7 @@ interface ConfigureMainOptions {
 function configureMain({
   addons,
   extensions = ['js', 'jsx', 'ts', 'tsx'],
+  commonJs = false,
   ...custom
 }: ConfigureMainOptions) {
   const prefix = fse.existsSync('./src') ? '../src' : '../stories';
@@ -33,38 +36,56 @@ function configureMain({
   const stringified = `module.exports = ${JSON.stringify(config, null, 2)
     .replace(/\\"/g, '"')
     .replace(/['"]%%/g, '')
-    .replace(/%%['"]/, '')}`;
+    .replace(/%%['"]/, '')
+    .replace(/\\n/g, '\r\n')}`;
   fse.ensureDirSync('./.storybook');
-  fse.writeFileSync('./.storybook/main.js', stringified, { encoding: 'utf8' });
+  fse.writeFileSync(`./.storybook/main.${commonJs ? 'cjs' : 'js'}`, stringified, {
+    encoding: 'utf8',
+  });
 }
 
-function configurePreview(framework: SupportedFrameworks) {
-  const parameters = `
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
+const frameworkToPreviewParts: Partial<Record<SupportedFrameworks, any>> = {
+  angular: {
+    prefix: dedent`
+      import { setCompodocJson } from "@storybook/addon-docs/angular";
+      import docJson from "../documentation.json";
+      setCompodocJson(docJson);
+      
+      `.trimStart(),
+    extraParameters: 'docs: { inlineStories: true },',
   },
-}`;
+};
 
-  const preview =
-    framework === 'angular'
-      ? `
-import { setCompodocJson } from "@storybook/addon-docs/angular";
-import docJson from "../documentation.json";
-setCompodocJson(docJson);
+function configurePreview(framework: SupportedFrameworks, commonJs: boolean) {
+  const { prefix = '', extraParameters = '' } = frameworkToPreviewParts[framework] || {};
+  const previewPath = `./.storybook/preview.${commonJs ? 'cjs' : 'js'}`;
 
-${parameters}`
-      : parameters;
+  // If the framework template included a preview then we have nothing to do
+  if (fse.existsSync(previewPath)) {
+    return;
+  }
 
-  fse.writeFileSync('./.storybook/preview.js', preview, { encoding: 'utf8' });
+  const preview = dedent`
+    ${prefix}
+    export const parameters = {
+      actions: { argTypesRegex: "^on[A-Z].*" },
+      controls: {
+        matchers: {
+          color: /(background|color)$/i,
+          date: /Date$/,
+        },
+      },
+      ${extraParameters}
+    }`
+    .replace('  \n', '')
+    .trim();
+
+  fse.writeFileSync(previewPath, preview, { encoding: 'utf8' });
 }
 
 export function configure(framework: SupportedFrameworks, mainOptions: ConfigureMainOptions) {
   fse.ensureDirSync('./.storybook');
+
   configureMain(mainOptions);
-  configurePreview(framework);
+  configurePreview(framework, mainOptions.commonJs);
 }

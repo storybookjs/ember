@@ -1,11 +1,12 @@
-import global, { describe } from 'global';
-import addons, { mockChannel } from '@storybook/addons';
+import global from 'global';
+import { addons, mockChannel } from '@storybook/addons';
 import ensureOptionsDefaults from './ensureOptionsDefaults';
 import snapshotsTests from './snapshotsTestsTemplate';
 import integrityTest from './integrityTestTemplate';
 import loadFramework from '../frameworks/frameworkLoader';
 import { StoryshotsOptions } from './StoryshotsOptions';
 
+const { describe } = global;
 global.STORYBOOK_REACT_CLASSES = global.STORYBOOK_REACT_CLASSES || {};
 
 type TestMethod = 'beforeAll' | 'beforeEach' | 'afterEach' | 'afterAll';
@@ -24,12 +25,23 @@ function callTestMethodGlobals(
 const isDisabled = (parameter: any) =>
   parameter === false || (parameter && parameter.disable === true);
 
+// This is just here so that an error isn't thrown when we subclass `EventSource` in `StoryIndexClient`
+// Currently the v7 store (that uses the client) does not work with Storyshots.
+class EventSourceStandin {
+  constructor() {
+    throw new Error('EventSourceStandin is not intended to be used');
+  }
+}
+
 function testStorySnapshots(options: StoryshotsOptions = {}) {
   if (typeof describe !== 'function') {
     throw new Error('testStorySnapshots is intended only to be used inside jest');
   }
 
   addons.setChannel(mockChannel());
+
+  // Add a mock EventSource class as it is extended by the `StoryIndexClient` (we don't actually use that in v6 mode)
+  if (!global.EventSource) global.EventSource = EventSourceStandin;
 
   const { storybook, framework, renderTree, renderShallowTree } = loadFramework(options);
   const {

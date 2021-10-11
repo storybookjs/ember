@@ -1,5 +1,7 @@
-import { document } from 'global';
+import global from 'global';
 import React from 'react';
+
+const { document } = global;
 
 export default {
   title: 'Addons/QueryParams',

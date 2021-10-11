@@ -1,4 +1,4 @@
-import ReactDocgenTypescriptPlugin from 'react-docgen-typescript-plugin';
+import ReactDocgenTypescriptPlugin from '@storybook/react-docgen-typescript-plugin';
 import type { TypescriptConfig } from '@storybook/core-common';
 import * as preset from './framework-preset-react-docgen';
 

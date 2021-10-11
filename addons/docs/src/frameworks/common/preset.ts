@@ -3,7 +3,7 @@ import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
 
 // @ts-ignore
-import createCompiler from '../../mdx/mdx-compiler-plugin';
+import { createCompiler } from '@storybook/csf-tools/mdx';
 
 const resolvedBabelLoader = require.resolve('babel-loader', {
   paths: [require.resolve('@storybook/builder-webpack4')], // FIXME!!!

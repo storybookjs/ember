@@ -7,8 +7,7 @@ import {
   ColorPalette,
   ColorItem,
   Meta,
-} from '@storybook/addon-docs/blocks';
-import { withKnobs, text } from '@storybook/addon-knobs';
+} from '@storybook/addon-docs';
 import { action } from '@storybook/addon-actions';
 import { Button } from '@storybook/react/demo';
 import styled from 'styled-components';
@@ -22,10 +21,7 @@ import MdxNotes from '../notes/notes.mdx';
   title="Addons/Docs/mdx"
   component={TsButton}
   id="addons-docs-mdx-id"
-  decorators={[
-    (storyFn) => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>,
-    withKnobs,
-  ]}
+  decorators={[(storyFn) => <div style={{ backgroundColor: 'yellow' }}>{storyFn()}</div>]}
   parameters={{ notes: 'component notes' }}
 />
 
@@ -35,11 +31,11 @@ import MdxNotes from '../notes/notes.mdx';
 
 <Source id="." />
 
-<ArgsTable of="." />
-
 <Canvas>
-  <Story id="nonexistent-story" />
+  <Story id="." />
 </Canvas>
+
+<ArgsTable of="." />
 
 ## Transclusion
 
@@ -83,7 +79,7 @@ export const nonStory2 = () => <Button>Not a story</Button>; // another one
 
 <Canvas>
   <Story name="hello story">
-    <Button onClick={action('clicked')}>{text('caption', 'hello world')}</Button>
+    <Button onClick={action('clicked')}>hello world</Button>
   </Story>
   <Story name="goodbye">
     <Button onClick={action('clicked')}>goodbye world</Button>

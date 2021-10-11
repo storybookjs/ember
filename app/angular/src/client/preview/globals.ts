@@ -1,5 +1,7 @@
-import { window } from 'global';
+import global from 'global';
 
 import './angular-polyfills';
 
-window.STORYBOOK_ENV = 'angular';
+const { window: globalWindow } = global;
+
+globalWindow.STORYBOOK_ENV = 'angular';

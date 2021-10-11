@@ -7,5 +7,6 @@ export default {
   frameworkPresets: [
     require.resolve('./framework-preset-angular'),
     require.resolve('./framework-preset-angular-cli'),
+    require.resolve('./framework-preset-angular-ivy'),
   ],
 } as LoadOptions;

@@ -18,6 +18,12 @@ exports[`Storyshots Addons/Docs heading 1`] = `
 </h1>
 `;
 
+exports[`Storyshots Addons/Docs standard source 1`] = `
+<h1>
+  Standard source
+</h1>
+`;
+
 exports[`Storyshots Addons/Docs transformed source 1`] = `
 <h1>
   Some source

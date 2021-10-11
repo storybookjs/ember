@@ -1,5 +1,6 @@
 import path from 'path';
 import { toRequireContext } from '../to-require-context';
+import { normalizeStoriesEntry } from '../normalize-stories';
 
 const testCases = [
   {
@@ -12,6 +13,41 @@ const testCases = [
       './src/components/Icon.stories/Icon.stories.tsx',
     ],
     invalidPaths: [
+      './stories.tsx',
+      './Icon.stories.ts',
+      './Icon.stories.js',
+      './src/components/stories.tsx',
+      './src/components/Icon.stories/stories.tsx',
+      './src/components/Icon.stories.ts',
+      './src/components/Icon.stories.js',
+    ],
+  },
+  {
+    glob: 'src',
+    recursive: false,
+    validPaths: [],
+    invalidPaths: [
+      './Icon.stories.tsx',
+      './src/Icon.stories.tsx',
+      './src/components/Icon.stories.tsx',
+      './src/components/Icon.stories/Icon.stories.tsx',
+      './stories.tsx',
+      './Icon.stories.ts',
+      './Icon.stories.js',
+      './src/components/stories.tsx',
+      './src/components/Icon.stories/stories.tsx',
+      './src/components/Icon.stories.ts',
+      './src/components/Icon.stories.js',
+    ],
+  },
+  {
+    glob: 'src/*',
+    recursive: false,
+    validPaths: ['./src/Icon.stories.tsx'],
+    invalidPaths: [
+      './Icon.stories.tsx',
+      './src/components/Icon.stories.tsx',
+      './src/components/Icon.stories/Icon.stories.tsx',
       './stories.tsx',
       './Icon.stories.ts',
       './Icon.stories.js',
@@ -107,6 +143,23 @@ const testCases = [
       '../src/stories/components/Icon/Icon.mdx',
     ],
   },
+  {
+    glob: '../src/stories/components/Icon.stories.js',
+    recursive: false,
+    validPaths: ['../src/stories/components/Icon.stories.js'],
+    invalidPaths: [
+      '../src/Icon.stories.mdx',
+      '../src/stories/components/Icon.stories/Icon.stories.mdx',
+      '../src/stories/components/Icon/Icon.mdx',
+      '../src/stories/components/Icon/Icon.stories.js',
+      '../src/stories/components/Icon/Icon.stories.ts',
+      '../src/stories/Icon.stories.js',
+      '../src/stories/Icon.stories.mdx',
+      './Icon.stories.js',
+      './src/stories/Icon.stories.js',
+      './stories.js',
+    ],
+  },
   // DUMB GLOB
   {
     glob: '../src/stories/**/*.stories.[tj]sx',
@@ -156,6 +209,22 @@ const testCases = [
     ],
   },
   {
+    glob: '../components/*/*/*.stories.js',
+    recursive: true,
+    validPaths: ['../components/basics/icon/Icon.stories.js'],
+    invalidPaths: [
+      '../components/icon/node_modules/icon/Icon.stories.js',
+      './stories.js',
+      './src/stories/Icon.stories.js',
+      './Icon.stories.js',
+      '../src/Icon.stories.mdx',
+      '../components/icon/Icon.stories.js',
+      '../components/basics/simple/icon/Icon.stories.js',
+      '../src/stories/components/Icon/Icon.stories.ts',
+      '../src/stories/components/Icon/Icon.mdx',
+    ],
+  },
+  {
     glob: '../components/*/stories/*.js',
     recursive: true,
     validPaths: ['../components/icon/stories/Icon.js'],
@@ -174,7 +243,9 @@ const testCases = [
 describe('toRequireContext', () => {
   testCases.forEach(({ glob, recursive, validPaths, invalidPaths }) => {
     it(`matches only suitable paths - ${glob}`, () => {
-      const { path: base, recursive: willRecurse, match } = toRequireContext(glob);
+      const { path: base, recursive: willRecurse, match } = toRequireContext(
+        normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
+      );
 
       const regex = new RegExp(match);
 
@@ -183,6 +254,8 @@ describe('toRequireContext', () => {
 
         const baseIncluded = filePath.includes(base);
         const matched = regex.test(relativePath);
+
+        // console.log(filePath, relativePath, regex, matched);
 
         return baseIncluded && matched;
       }

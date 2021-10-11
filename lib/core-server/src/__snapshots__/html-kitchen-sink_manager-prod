@@ -3,20 +3,17 @@
 exports[`html-kitchen-sink manager production mode 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-server/src/globals/polyfills.ts",
+    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
     "ROOT/addons/docs/dist/esm/register.js",
     "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
     "ROOT/addons/controls/dist/esm/register.js",
-    "ROOT/addons/events/register.js",
     "ROOT/addons/jest/register.js",
-    "ROOT/addons/knobs/dist/esm/register.js",
     "ROOT/addons/links/dist/esm/register.js",
     "ROOT/addons/storysource/dist/esm/register.js",
     "ROOT/addons/viewport/dist/esm/register.js",
-    "ROOT/examples/html-kitchen-sink/.storybook/generated-refs.js",
   ],
   "keys": Array [
     "name",
@@ -49,6 +46,8 @@ Object {
           Object {
             "loader": "NODE_MODULES/babel-loader/lib/index.js",
             "options": Object {
+              "babelrc": false,
+              "configFile": false,
               "plugins": Array [
                 "NODE_MODULES/@babel/plugin-transform-shorthand-properties/lib/index.js",
                 "NODE_MODULES/@babel/plugin-transform-block-scoping/lib/index.js",
@@ -102,6 +101,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -172,6 +172,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "modules": false,
                     "shippedProposals": true,
                     "targets": "defaults",
@@ -217,7 +218,6 @@ Object {
     "VirtualModulesPlugin",
     "HtmlWebpackPlugin",
     "CaseSensitivePathsPlugin",
-    "DefinePlugin",
     "DefinePlugin",
   ],
 }

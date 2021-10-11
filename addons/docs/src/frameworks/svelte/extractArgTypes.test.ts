@@ -73,7 +73,8 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "event_click": Object {
@@ -83,14 +84,14 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "rounded": Object {
           "control": Object {
             "type": "boolean",
           },
-          "defaultValue": true,
           "description": null,
           "name": "rounded",
           "table": Object {
@@ -103,8 +104,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
+            "name": "boolean",
             "required": false,
-            "summary": "boolean",
           },
         },
         "slot_default": Object {
@@ -116,14 +117,14 @@ describe('Extracting Arguments', () => {
             "category": "slots",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "text": Object {
           "control": Object {
             "type": "text",
           },
-          "defaultValue": "",
           "description": null,
           "name": "text",
           "table": Object {
@@ -136,8 +137,8 @@ describe('Extracting Arguments', () => {
             },
           },
           "type": Object {
+            "name": "string",
             "required": false,
-            "summary": "string",
           },
         },
       }

@@ -4,7 +4,7 @@ Storybook Addon Backgrounds can be used to change background colors inside the p
 
 [Framework Support](https://storybook.js.org/docs/react/api/frameworks-feature-support)
 
-![React Storybook Screenshot](https://raw.githubusercontent.com/storybookjs/storybook/master/docs/static/img/addon-backgrounds.gif)
+![React Storybook Screenshot](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/backgrounds/docs/addon-backgrounds.gif)
 
 ## Installation
 

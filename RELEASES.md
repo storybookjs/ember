@@ -2,11 +2,11 @@
 
 A Storybook release process based on [Semver](http://semver.org/). In short:
 
-1.  Merge all PRs into `next`, which is the default branch. Cherry-pick bugfix PRs into `master`, which is the stable release.
+1.  Merge all PRs into `next`, which is the default branch. Cherry-pick bugfix PRs into `main`, which is the stable release.
 
-2.  Every week: release patch releases off `master` to the NPM tag `latest`, and alpha releases off `next` to the NPM tag `next` (as e.g. `4.1.0-alpha.0`).
+2.  Every week: release patch releases off `main` to the NPM tag `latest`, and alpha releases off `next` to the NPM tag `next` (as e.g. `4.1.0-alpha.0`).
 
-3.  Every month or two, merge `next` into `master` and release a minor/major version according to `semver`. We set minor release dates as soon as we have feature clarity and manage to those dates:
+3.  Every month or two, merge `next` into `main` and release a minor/major version according to `semver`. We set minor release dates as soon as we have feature clarity and manage to those dates:
     - Date should be a Monday so if we slip we don't get pushed into the weekend
     - T-3wk:
       - Draft announcement and socialize
@@ -48,7 +48,7 @@ releases. We'll try our best to restrict breaking changes to MAJOR releases.
 Every bugfix should go out as soon as we've verified the fix, and based on the
 current rate of contribution, we should be issuing PATCH releases weekly.
 Eventually, we'll automate the process so that a release will go out every time a PR is
-merged into `master`, and we've already laid most of the groundwork for this.
+merged into `main`, and we've already laid most of the groundwork for this.
 
 ## MINOR releases
 

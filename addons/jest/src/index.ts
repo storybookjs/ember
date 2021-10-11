@@ -1,4 +1,4 @@
-import addons from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { normalize, sep } from 'upath';
 import { ADD_TESTS, defineJestParameter } from './shared';
 

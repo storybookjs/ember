@@ -1,21 +1,12 @@
 import type { StorybookConfig } from '@storybook/react/types';
 
-module.exports = {
-  stories: ['./src/*.stories.*'],
+const config: StorybookConfig = {
+  stories: [{ directory: './src', titlePrefix: 'Demo' }],
   logLevel: 'debug',
   addons: [
+    '@storybook/react',
     '@storybook/addon-essentials',
-    '@storybook/addon-controls',
     '@storybook/addon-storysource',
-    {
-      name: '@storybook/addon-docs',
-      options: {
-        sourceLoaderOptions: {
-          parser: 'typescript',
-          injectStoryParameters: false,
-        },
-      },
-    },
     '@storybook/addon-storyshots',
   ],
   typescript: {
@@ -28,4 +19,13 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
-} as StorybookConfig;
+  features: {
+    postcss: false,
+    // modernInlineRender: true,
+    storyStoreV7: true,
+    buildStoriesJson: true,
+    babelModeV7: true,
+  },
+};
+
+module.exports = config;

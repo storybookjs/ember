@@ -1,15 +1,16 @@
-import { ArgTypes } from '@storybook/api';
+import { StrictArgTypes } from '@storybook/csf';
 import { PropDef } from './PropDef';
 import { Component } from '../../blocks/types';
 
 export type PropsExtractor = (component: Component) => { rows?: PropDef[] } | null;
 
-export type ArgTypesExtractor = (component: Component) => ArgTypes | null;
+export type ArgTypesExtractor = (component: Component) => StrictArgTypes | null;
 
 export interface DocgenType {
   name: string;
   description?: string;
   required?: boolean;
+  value?: any; // Seems like this can be many things
 }
 
 export interface DocgenPropType extends DocgenType {
@@ -52,4 +53,4 @@ export enum TypeSystem {
   UNKNOWN = 'Unknown',
 }
 
-export { PropDef };
+export type { PropDef };

@@ -1,8 +1,14 @@
 ```js
-// YourComponent.stories.js
+// YourComponent.stories.js | YourComponent.stories.jsx
 
 export default {
   component: YourComponent,
-  decorators: [(Story) => <div style={{ margin: '3em' }}><Story/></div>]
+  decorators: [
+    (Story) => (
+      <div style={{ margin: '3em' }}>
+        <Story/>
+      </div>
+    ),
+  ],
 }
 ```

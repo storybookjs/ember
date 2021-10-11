@@ -2,22 +2,22 @@ import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import { logger } from '@storybook/node-logger';
-import { Builder, useProgressReporting, checkWebpackVersion } from '@storybook/core-common';
+import {
+  Builder,
+  useProgressReporting,
+  checkWebpackVersion,
+  Options,
+} from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
 let reject: (reason?: any) => void;
 
 type WebpackBuilder = Builder<Configuration, Stats>;
 
-const checkWebpackVersion5 = (webpackInstance: { version?: string }) =>
-  checkWebpackVersion(webpackInstance, '5.x', 'builder-webpack5');
-
 export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
-  const entries = await presets.apply('entries', [], options);
-  const stories = await presets.apply('stories', [], options);
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
   return presets.apply(
@@ -26,8 +26,6 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
     {
       ...options,
       babelOptions,
-      entries,
-      stories,
       typescriptOptions,
       [`${options.framework}Options`]: frameworkOptions,
     }
@@ -35,14 +33,21 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
 };
 
 export const executor = {
-  get: webpack,
+  get: async (options: Options) => {
+    const version = ((await options.presets.apply('webpackVersion')) || '5') as string;
+    const webpackInstance =
+      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
+      webpack;
+    checkWebpackVersion({ version }, '5', 'builder-webpack5');
+    return webpackInstance;
+  },
 };
 
 export const start: WebpackBuilder['start'] = async ({ startTime, options, router }) => {
-  checkWebpackVersion5(executor.get);
+  const webpackInstance = await executor.get(options);
 
   const config = await getConfig(options);
-  const compiler = executor.get(config);
+  const compiler = webpackInstance(config);
   if (!compiler) {
     const err = `${config.name}: missing webpack compiler at runtime!`;
     logger.error(err);
@@ -51,7 +56,7 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
       totalTime: process.hrtime(startTime),
       stats: ({
         hasErrors: () => true,
-        hasWarngins: () => false,
+        hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
       } as any) as Stats,
     };
@@ -106,20 +111,25 @@ export const bail: WebpackBuilder['bail'] = (e: Error) => {
 };
 
 export const build: WebpackBuilder['build'] = async ({ options, startTime }) => {
-  checkWebpackVersion5(executor.get);
+  const webpackInstance = await executor.get(options);
 
   logger.info('=> Compiling preview..');
   const config = await getConfig(options);
 
   return new Promise((succeed, fail) => {
-    webpack(config).run((error, stats) => {
+    const compiler = webpackInstance(config);
+
+    compiler.run((error, stats) => {
       if (error || !stats || stats.hasErrors()) {
         logger.error('=> Failed to build the preview');
         process.exitCode = 1;
 
         if (error) {
           logger.error(error.message);
-          return fail(error);
+
+          compiler.close(() => fail(error));
+
+          return;
         }
 
         if (stats && (stats.hasErrors() || stats.hasWarnings())) {
@@ -128,7 +138,9 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
           errors.forEach((e) => logger.error(e.message));
           warnings.forEach((e) => logger.error(e.message));
 
-          return fail(stats);
+          compiler.close(() => fail(stats));
+
+          return;
         }
       }
 
@@ -137,7 +149,15 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
         stats.toJson({ warnings: true }).warnings.forEach((e) => logger.warn(e.message));
       }
 
-      return succeed(stats);
+      // https://webpack.js.org/api/node/#run
+      // #15227
+      compiler.close((closeErr) => {
+        if (closeErr) {
+          return fail(closeErr);
+        }
+
+        return succeed(stats);
+      });
     });
   });
 };

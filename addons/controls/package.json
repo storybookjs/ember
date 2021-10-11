@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-controls",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-beta.8",
   "description": "Interact with component inputs dynamically in the Storybook UI",
   "keywords": [
     "addon",
@@ -20,13 +20,17 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/controls"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/register.js",
   "module": "dist/esm/register.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -41,13 +45,16 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.0-rc.9",
-    "@storybook/api": "6.2.0-rc.9",
-    "@storybook/client-api": "6.2.0-rc.9",
-    "@storybook/components": "6.2.0-rc.9",
-    "@storybook/node-logger": "6.2.0-rc.9",
-    "@storybook/theming": "6.2.0-rc.9",
+    "@storybook/addons": "6.4.0-beta.8",
+    "@storybook/api": "6.4.0-beta.8",
+    "@storybook/client-logger": "6.4.0-beta.8",
+    "@storybook/components": "6.4.0-beta.8",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/node-logger": "6.4.0-beta.8",
+    "@storybook/store": "6.4.0-beta.8",
+    "@storybook/theming": "6.4.0-beta.8",
     "core-js": "^3.8.2",
+    "lodash": "^4.17.20",
     "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {
@@ -65,7 +72,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d",
+  "gitHead": "7f1ecb08225a3f146f9d6013a89e2a6d4d3dcd11",
+  "sbmodern": "dist/modern/register.js",
   "storybook": {
     "displayName": "Controls",
     "icon": "https://user-images.githubusercontent.com/263385/101991669-479cc600-3c7c-11eb-93d9-38b67e8371f2.png",

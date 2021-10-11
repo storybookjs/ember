@@ -1,11 +1,11 @@
 {
   "name": "@storybook/core-client",
-  "version": "6.2.0-rc.9",
+  "version": "6.4.0-beta.8",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/lib/core",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/core",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -14,13 +14,17 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "lib/core"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -36,13 +40,16 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.2.0-rc.9",
-    "@storybook/channel-postmessage": "6.2.0-rc.9",
-    "@storybook/client-api": "6.2.0-rc.9",
-    "@storybook/client-logger": "6.2.0-rc.9",
-    "@storybook/core-events": "6.2.0-rc.9",
-    "@storybook/csf": "0.0.1",
-    "@storybook/ui": "6.2.0-rc.9",
+    "@storybook/addons": "6.4.0-beta.8",
+    "@storybook/channel-postmessage": "6.4.0-beta.8",
+    "@storybook/client-api": "6.4.0-beta.8",
+    "@storybook/client-logger": "6.4.0-beta.8",
+    "@storybook/core-events": "6.4.0-beta.8",
+    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/preview-web": "6.4.0-beta.8",
+    "@storybook/store": "6.4.0-beta.8",
+    "@storybook/ui": "6.4.0-beta.8",
+    "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
@@ -66,5 +73,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b100a45b69db3c2b9c4cd06e68d9035a769f592d"
+  "gitHead": "7f1ecb08225a3f146f9d6013a89e2a6d4d3dcd11",
+  "sbmodern": "dist/modern/index.js"
 }

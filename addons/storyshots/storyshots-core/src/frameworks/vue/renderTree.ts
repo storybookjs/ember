@@ -14,7 +14,7 @@ function getRenderedTree(story: any) {
   });
 
   // @ts-ignore
-  vm[VALUES] = story.args;
+  vm[VALUES] = story.initialArgs;
 
   return vm.$mount().$el;
 }

@@ -1,10 +1,13 @@
 import memoize from 'memoizerific';
-import { document, window, DOCS_MODE } from 'global';
+import global from 'global';
 import { SyntheticEvent } from 'react';
-import { StoriesHash, isRoot } from '@storybook/api';
+import type { StoriesHash } from '@storybook/api';
+import { isRoot } from '@storybook/api';
 
 import { DEFAULT_REF_ID } from './data';
 import { Item, RefType, Dataset, SearchItem } from './types';
+
+const { document, window: globalWindow, DOCS_MODE } = global;
 
 export const createId = (itemId: string, refId?: string) =>
   !refId || refId === DEFAULT_REF_ID ? itemId : `${refId}_${itemId}`;
@@ -35,7 +38,7 @@ export const getDescendantIds = memoize(1000)(
   (data: StoriesHash, id: string, skipLeafs: boolean): string[] => {
     const { children = [] } = data[id] || {};
     return children.reduce((acc, childId) => {
-      if (skipLeafs && data[childId].isLeaf) return acc;
+      if (!data[childId] || (skipLeafs && data[childId].isLeaf)) return acc;
       acc.push(childId, ...getDescendantIds(data, childId, skipLeafs));
       return acc;
     }, []);
@@ -63,7 +66,7 @@ export const scrollIntoView = (element: Element, center = false) => {
   if (!element) return;
   const { top, bottom } = element.getBoundingClientRect();
   const isInView =
-    top >= 0 && bottom <= (window.innerHeight || document.documentElement.clientHeight);
+    top >= 0 && bottom <= (globalWindow.innerHeight || document.documentElement.clientHeight);
   if (!isInView) element.scrollIntoView({ block: center ? 'center' : 'nearest' });
 };
 

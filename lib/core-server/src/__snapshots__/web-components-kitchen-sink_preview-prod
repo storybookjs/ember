@@ -3,20 +3,20 @@
 exports[`web-components-kitchen-sink preview production mode 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-server/src/globals/polyfills.ts",
-    "ROOT/lib/core-server/src/globals/globals.ts",
-    "ROOT/examples/web-components-kitchen-sink/.storybook/storybook-init-framework-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-other-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/web-components/config.js-generated-other-entry.js",
-    "ROOT/addons/a11y/dist/esm/a11yRunner.js-generated-other-entry.js",
-    "ROOT/addons/a11y/dist/esm/a11yHighlight.js-generated-other-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-other-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-other-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-other-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-other-entry.js",
-    "ROOT/addons/knobs/dist/esm/preset/addDecorator.js-generated-other-entry.js",
-    "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-other-entry.js",
+    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
+    "ROOT/lib/core-client/dist/esm/globals/globals.js",
+    "ROOT/storybook-init-framework-entry.js",
+    "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
+    "ROOT/addons/docs/dist/esm/frameworks/web-components/config.js-generated-config-entry.js",
+    "ROOT/addons/a11y/dist/esm/a11yRunner.js-generated-config-entry.js",
+    "ROOT/addons/a11y/dist/esm/a11yHighlight.js-generated-config-entry.js",
+    "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-config-entry.js",
+    "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-config-entry.js",
+    "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-config-entry.js",
+    "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
+    "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/examples/web-components-kitchen-sink/.storybook/preview.js-generated-config-entry.js",
+    "ROOT/generated-stories-entry.js",
   ],
   "keys": Array [
     "name",
@@ -98,6 +98,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -167,6 +168,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "modules": false,
                     "shippedProposals": true,
                     "targets": "defaults",
@@ -310,6 +312,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -401,6 +404,7 @@ Object {
                 Array [
                   "NODE_MODULES/@babel/preset-env/lib/index.js",
                   Object {
+                    "loose": true,
                     "shippedProposals": true,
                   },
                 ],
@@ -455,7 +459,13 @@ Object {
           Object {
             "loader": "NODE_MODULES/postcss-loader/dist/cjs.js",
             "options": Object {
-              "postcssOptions": [Function],
+              "postcssOptions": Object {
+                "config": false,
+                "plugins": Array [
+                  [Function],
+                  [Function],
+                ],
+              },
             },
           },
         ],
@@ -463,6 +473,7 @@ Object {
       Object {
         "loader": "NODE_MODULES/file-loader/dist/cjs.js",
         "options": Object {
+          "esModule": false,
           "name": "static/media/[name].[contenthash:8].[ext]",
         },
         "test": "/\\\\.(svg|ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\\\\?.*)?$/",
@@ -484,7 +495,6 @@ Object {
     "DefinePlugin",
     "CaseSensitivePathsPlugin",
     "ProgressPlugin",
-    "DefinePlugin",
   ],
 }
 `;

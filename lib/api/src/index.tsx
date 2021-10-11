@@ -158,6 +158,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       path,
       refId,
       viewMode = props.docsMode ? 'docs' : 'story',
+      singleStory,
       storyId,
       docsMode,
       navigate,
@@ -168,7 +169,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       setState: (stateChange: Partial<State>, callback) => this.setState(stateChange, callback),
     });
 
-    const routeData = { location, path, viewMode, storyId, refId };
+    const routeData = { location, path, viewMode, singleStory, storyId, refId };
 
     // Initialize the state to be the initial (persisted) state of the store.
     // This gives the modules the chance to read the persisted state, apply their defaults
@@ -353,6 +354,11 @@ export const useChannel = (eventMap: EventMap, deps: any[] = []) => {
   return api.emit;
 };
 
+export function useStoryPrepared(storyId?: StoryId) {
+  const api = useStorybookApi();
+  return api.isPrepared(storyId);
+}
+
 export function useParameter<S>(parameterKey: string, defaultValue?: S) {
   const api = useStorybookApi();
 
@@ -451,18 +457,20 @@ export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: string[])
 }
 
 export function useGlobals(): [Args, (newGlobals: Args) => void] {
-  const {
-    state: { globals: oldGlobals },
-    api: { updateGlobals },
-  } = useContext(ManagerContext);
-
-  return [oldGlobals, updateGlobals];
-}
-
-export function useArgTypes(): ArgTypes {
-  return useParameter<ArgTypes>('argTypes', {});
+  const api = useStorybookApi();
+  return [api.getGlobals(), api.updateGlobals];
 }
 
 export function useGlobalTypes(): ArgTypes {
-  return useParameter<ArgTypes>('globalTypes', {});
+  return useStorybookApi().getGlobalTypes();
+}
+
+function useCurrentStory(): Story {
+  const { getCurrentStoryData } = useStorybookApi();
+
+  return getCurrentStoryData() as Story;
+}
+
+export function useArgTypes(): ArgTypes {
+  return useCurrentStory()?.argTypes || {};
 }

@@ -1,12 +1,15 @@
-import { StoriesHash, useStorybookApi } from '@storybook/api';
+import type { StoriesHash } from '@storybook/api';
+import { useStorybookApi } from '@storybook/api';
 import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from '@storybook/core-events';
-import { document } from 'global';
+import global from 'global';
 import throttle from 'lodash/throttle';
 import React, { Dispatch, MutableRefObject, useCallback, useEffect, useReducer } from 'react';
 import { matchesKeyCode, matchesModifiers } from '../../keybinding';
 import { Highlight } from './types';
 
 import { isAncestor, getAncestorIds, getDescendantIds, scrollIntoView } from './utils';
+
+const { document } = global;
 
 export type ExpandedState = Record<string, boolean>;
 
@@ -163,8 +166,6 @@ export const useExpanded = ({
         if (isEnter || isSpace) return;
         (target as HTMLButtonElement).blur();
       }
-
-      event.preventDefault();
 
       const type = highlightedElement.getAttribute('data-nodetype');
       if ((isEnter || isSpace) && ['component', 'story', 'document'].includes(type)) {

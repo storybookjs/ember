@@ -5,7 +5,6 @@ import dedent from 'ts-dedent';
 import { Subject } from 'rxjs';
 import deprecate from 'util-deprecate';
 import { ICollection, StoryFnAngularReturnType } from '../types';
-import { Parameters } from '../types-6-0';
 import { storyPropsProvider } from './StorybookProvider';
 import { isComponentAlreadyDeclaredInModules } from './utils/NgModulesAnalyzer';
 import { isDeclarable } from './utils/NgComponentAnalyzer';
@@ -30,10 +29,12 @@ const deprecatedStoryComponentWarning = deprecate(
 export const getStorybookModuleMetadata = (
   {
     storyFnAngular,
-    parameters,
+    component: annotatedComponent,
+    targetSelector,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
-    parameters: Parameters;
+    component?: any;
+    targetSelector: string;
   },
   storyProps$: Subject<ICollection>
 ): NgModule => {
@@ -43,7 +44,7 @@ export const getStorybookModuleMetadata = (
   if (storyComponent) {
     deprecatedStoryComponentWarning();
   }
-  const component = storyComponent ?? parameters.component;
+  const component = storyComponent ?? annotatedComponent;
 
   if (hasNoTemplate(template) && component) {
     template = computesTemplateFromComponent(component, props, '');
@@ -52,7 +53,13 @@ export const getStorybookModuleMetadata = (
   /**
    * Create a component that wraps generated template and gives it props
    */
-  const ComponentToInject = createStorybookWrapperComponent(template, component, styles, props);
+  const ComponentToInject = createStorybookWrapperComponent(
+    targetSelector,
+    template,
+    component,
+    styles,
+    props
+  );
 
   // Look recursively (deep) if the component is not already declared by an import module
   const requiresComponentDeclaration =

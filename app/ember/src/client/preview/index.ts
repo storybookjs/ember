@@ -1,9 +1,9 @@
 import { start } from '@storybook/core/client';
 
 import './globals';
-import render from './render';
+import { renderToDOM } from './render';
 
-const { configure: coreConfigure, clientApi, forceReRender } = start(render);
+const { configure: coreConfigure, clientApi, forceReRender } = start(renderToDOM);
 
 export const {
   setAddon,

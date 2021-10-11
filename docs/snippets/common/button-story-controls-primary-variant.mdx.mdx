@@ -1,7 +1,13 @@
 ```md
 <!-- Button.stories.mdx -->
 
-<Story name="Primary" args={{ variant: 'primary' }}>
+import { Story } from '@storybook/addon-docs';
+
+<Story 
+  name="Primary"
+  args={{ 
+    variant: 'primary',
+  }}>
   {Template.bind({})}
 </Story>
 ```

@@ -41,7 +41,8 @@ export const getComponentInputsOutputs = (component: any): ComponentInputsOutput
 
   // Browses component properties to extract I/O
   // Filters properties that have the same name as the one present in the @Component property
-  return Object.entries(componentPropsMetadata).reduce((previousValue, [propertyName, [value]]) => {
+  return Object.entries(componentPropsMetadata).reduce((previousValue, [propertyName, values]) => {
+    const value = values.find((v) => v instanceof Input || v instanceof Output);
     if (value instanceof Input) {
       const inputToAdd = {
         propName: propertyName,
@@ -107,12 +108,19 @@ export const isComponent = (component: any): component is Type<unknown> => {
  */
 export const getComponentPropsDecoratorMetadata = (component: any) => {
   const decoratorKey = '__prop__metadata__';
-  const propsDecorators: Record<string, (Input | Output)[]> =
+  let propsDecorators: Record<string, (Input | Output)[]> =
     Reflect &&
     Reflect.getOwnPropertyDescriptor &&
     Reflect.getOwnPropertyDescriptor(component, decoratorKey)
       ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
       : component[decoratorKey];
+
+  const parent = Reflect && Reflect.getPrototypeOf && Reflect.getPrototypeOf(component);
+
+  if (parent) {
+    const parentPropsDecorators = getComponentPropsDecoratorMetadata(parent);
+    propsDecorators = { ...parentPropsDecorators, ...propsDecorators };
+  }
 
   return propsDecorators;
 };
@@ -129,5 +137,14 @@ export const getComponentDecoratorMetadata = (component: any): Component | undef
       ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
       : component[decoratorKey];
 
-  return (decorators || []).find((d) => d instanceof Component);
+  if (!decorators) {
+    return (
+      component.decorators &&
+      component.decorators[0] &&
+      component.decorators[0].args &&
+      component.decorators[0].args[0]
+    );
+  }
+
+  return decorators.find((d) => d instanceof Component);
 };

@@ -1,0 +1,37 @@
+```ts
+// TodoItem.stories.ts
+
+import { moduleMetadata, Story, Meta } from '@storybook/angular';
+
+import fetch from 'node-fetch';
+
+import { CommonModule } from '@angular/common';
+
+import TodoItem from './TodoItem';
+
+export default {
+  component: TodoItem,
+  decorators: [
+    moduleMetadata({
+      declarations: [TodoItem],
+      imports: [CommonModule],
+    }),
+  ],
+  title: 'Examples/Loader',
+} as Meta;
+
+export const Primary = (args, { loaded: { todo } }) => {
+  return {
+    props: {
+      args,
+      todo,
+    },
+  };
+};
+
+Primary.loaders = [
+  async () => ({
+    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+  }),
+];
+```
