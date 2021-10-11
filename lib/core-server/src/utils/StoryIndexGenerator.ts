@@ -2,10 +2,25 @@ import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
 
-import { autoTitleFromSpecifier, sortStoriesV7, Path, StoryIndex } from '@storybook/store';
+import {
+  autoTitleFromSpecifier,
+  sortStoriesV7,
+  Path,
+  Parameters,
+  StoryIndex,
+  StoryIndexEntry,
+  StoryId,
+} from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
+import { ComponentTitle } from '@storybook/csf';
+
+interface V2CompatIndexEntry extends StoryIndexEntry {
+  kind: StoryIndexEntry['title'];
+  story: StoryIndexEntry['name'];
+  parameters: Parameters;
+}
 
 function sortExtractedStories(
   stories: StoryIndex['stories'],
@@ -20,17 +35,25 @@ function sortExtractedStories(
   }, {} as StoryIndex['stories']);
 }
 
+type SpecifierStoriesCache = Record<Path, StoryIndex['stories'] | false>;
+
 export class StoryIndexGenerator {
   // An internal cache mapping specifiers to a set of path=><set of stories>
   // Later, we'll combine each of these subsets together to form the full index
-  private storyIndexEntries: Map<
-    NormalizedStoriesSpecifier,
-    Record<Path, StoryIndex['stories'] | false>
-  >;
+  private storyIndexEntries: Map<NormalizedStoriesSpecifier, SpecifierStoriesCache>;
+
+  // Cache the last value of `getStoryIndex`. We invalidate (by unsetting) when:
+  //  - any file changes, including deletions
+  //  - the preview changes [not yet implemented]
+  private lastIndex?: StoryIndex;
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
-    public readonly configDir: Path
+    public readonly options: {
+      workingDir: Path;
+      configDir: Path;
+      storiesV2Compatibility: boolean;
+    }
   ) {
     this.storyIndexEntries = new Map();
   }
@@ -39,11 +62,19 @@ export class StoryIndexGenerator {
     // Find all matching paths for each specifier
     await Promise.all(
       this.specifiers.map(async (specifier) => {
-        const pathToSubIndex = {} as Record<Path, StoryIndex['stories'] | false>;
+        const pathToSubIndex = {} as SpecifierStoriesCache;
 
-        const files = await glob(path.join(this.configDir, specifier.glob));
-        files.forEach((fileName: Path) => {
-          pathToSubIndex[fileName] = false;
+        const fullGlob = path.join(this.options.workingDir, specifier.directory, specifier.files);
+        const files = await glob(fullGlob);
+        files.forEach((absolutePath: Path) => {
+          const ext = path.extname(absolutePath);
+          const relativePath = path.relative(this.options.workingDir, absolutePath);
+          if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
+            logger.info(`Skipping ${ext} file ${relativePath}`);
+            return;
+          }
+
+          pathToSubIndex[absolutePath] = false;
         });
 
         this.storyIndexEntries.set(specifier, pathToSubIndex);
@@ -54,26 +85,24 @@ export class StoryIndexGenerator {
     await this.ensureExtracted();
   }
 
-  async ensureExtracted() {
-    await Promise.all(
-      this.specifiers.map(async (specifier) => {
-        const entry = this.storyIndexEntries.get(specifier);
-        await Promise.all(
-          Object.keys(entry).map(async (fileName) => {
-            if (!entry[fileName]) await this.extractStories(specifier, fileName);
-          })
-        );
-      })
-    );
+  async ensureExtracted(): Promise<StoryIndex['stories'][]> {
+    return (
+      await Promise.all(
+        this.specifiers.map(async (specifier) => {
+          const entry = this.storyIndexEntries.get(specifier);
+          return Promise.all(
+            Object.keys(entry).map(
+              async (absolutePath) =>
+                entry[absolutePath] || this.extractStories(specifier, absolutePath)
+            )
+          );
+        })
+      )
+    ).flat();
   }
 
   async extractStories(specifier: NormalizedStoriesSpecifier, absolutePath: Path) {
-    const ext = path.extname(absolutePath);
-    const relativePath = path.relative(this.configDir, absolutePath);
-    if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {
-      logger.info(`Skipping ${ext} file ${relativePath}`);
-      return;
-    }
+    const relativePath = path.relative(this.options.workingDir, absolutePath);
     try {
       const entry = this.storyIndexEntries.get(specifier);
       const fileStories = {} as StoryIndex['stories'];
@@ -91,38 +120,80 @@ export class StoryIndexGenerator {
       });
 
       entry[absolutePath] = fileStories;
+      return fileStories;
     } catch (err) {
       logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
-      logger.warn(`🚨 ${err.stack}`);
       throw err;
     }
   }
 
-  async getIndex() {
-    // Extract any entries that are currently missing
-    await this.ensureExtracted();
-
+  async sortStories(storiesList: StoryIndex['stories'][]) {
     const stories: StoryIndex['stories'] = {};
 
-    // Check each entry and compose into stories, extracting if needed
-    this.specifiers.map(async (specifier) => {
-      Object.values(this.storyIndexEntries.get(specifier)).map((subStories) =>
-        Object.assign(stories, subStories)
-      );
+    storiesList.forEach((subStories) => {
+      Object.assign(stories, subStories);
     });
 
     const storySortParameter = await this.getStorySortParameter();
-    const sorted = sortExtractedStories(stories, storySortParameter, this.storyFileNames());
+    return sortExtractedStories(stories, storySortParameter, this.storyFileNames());
+  }
 
-    return {
+  async getIndex() {
+    if (this.lastIndex) return this.lastIndex;
+
+    // Extract any entries that are currently missing
+    // Pull out each file's stories into a list of stories, to be composed and sorted
+    const storiesList = await this.ensureExtracted();
+
+    const sorted = await this.sortStories(storiesList);
+
+    let compat = sorted;
+    if (this.options.storiesV2Compatibility) {
+      const titleToStoryCount = Object.values(sorted).reduce((acc, story) => {
+        acc[story.title] = (acc[story.title] || 0) + 1;
+        return acc;
+      }, {} as Record<ComponentTitle, number>);
+
+      compat = Object.entries(sorted).reduce((acc, entry) => {
+        const [id, story] = entry;
+        acc[id] = {
+          ...story,
+          id,
+          kind: story.title,
+          story: story.name,
+          parameters: {
+            __id: story.id,
+            docsOnly: titleToStoryCount[story.title] === 1 && story.name === 'Page',
+            fileName: story.importPath,
+          },
+        };
+        return acc;
+      }, {} as Record<StoryId, V2CompatIndexEntry>);
+    }
+
+    this.lastIndex = {
       v: 3,
-      stories: sorted,
+      stories: compat,
     };
+
+    return this.lastIndex;
+  }
+
+  invalidate(specifier: NormalizedStoriesSpecifier, importPath: Path, removed: boolean) {
+    const absolutePath = path.resolve(this.options.workingDir, importPath);
+    const pathToEntries = this.storyIndexEntries.get(specifier);
+
+    if (removed) {
+      delete pathToEntries[absolutePath];
+    } else {
+      pathToEntries[absolutePath] = false;
+    }
+    this.lastIndex = null;
   }
 
   async getStorySortParameter() {
     const previewFile = ['js', 'jsx', 'ts', 'tsx']
-      .map((ext) => path.join(this.configDir, `preview.${ext}`))
+      .map((ext) => path.join(this.options.configDir, `preview.${ext}`))
       .find((fname) => fs.existsSync(fname));
     let storySortParameter;
     if (previewFile) {

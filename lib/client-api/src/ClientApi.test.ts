@@ -96,7 +96,7 @@ describe('ClientApi', () => {
     });
   });
 
-  describe('fetchStoryIndex', () => {
+  describe('getStoryIndex', () => {
     it('should remember the order that files were added in', async () => {
       const clientApi = new ClientApi();
       const store = {
@@ -125,14 +125,14 @@ describe('ClientApi', () => {
       clientApi.storiesOf('kind1', (module1 as unknown) as NodeModule).add('story1', jest.fn());
       clientApi.storiesOf('kind2', (module2 as unknown) as NodeModule).add('story2', jest.fn());
 
-      expect(Object.keys(clientApi.fetchStoryIndex().stories)).toEqual([
+      expect(Object.keys(clientApi.getStoryIndex().stories)).toEqual([
         'kind1--story1',
         'kind2--story2',
       ]);
 
       disposeCallback();
       clientApi.storiesOf('kind1', (module1 as unknown) as NodeModule).add('story1', jest.fn());
-      expect(Object.keys(clientApi.fetchStoryIndex().stories)).toEqual([
+      expect(Object.keys(clientApi.getStoryIndex().stories)).toEqual([
         'kind1--story1',
         'kind2--story2',
       ]);

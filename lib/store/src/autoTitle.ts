@@ -4,15 +4,11 @@ import slash from 'slash';
 
 // FIXME: types duplicated type from `core-common', to be
 // removed when we remove v6 back-compat.
-interface StoriesSpecifier {
+interface NormalizedStoriesSpecifier {
+  titlePrefix?: string;
   directory: string;
   files?: string;
-  titlePrefix?: string;
-}
-
-interface NormalizedStoriesSpecifier {
-  glob: string;
-  specifier?: StoriesSpecifier;
+  importPathMatcher: RegExp;
 }
 
 const stripExtension = (titleWithExtension: string) => {
@@ -33,14 +29,13 @@ const startCaseTitle = (title: string) => {
 };
 
 export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier) => {
-  const { directory, titlePrefix = '' } = entry.specifier || {};
+  const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
-  const normalizedDirectory = directory && slash(directory);
   const normalizedFileName = slash(fileName);
 
-  if (normalizedFileName.startsWith(normalizedDirectory)) {
-    const suffix = normalizedFileName.replace(normalizedDirectory, '');
+  if (importPathMatcher.exec(normalizedFileName)) {
+    const suffix = normalizedFileName.replace(directory, '');
     const titleAndSuffix = slash(path.join(titlePrefix, suffix));
     return startCaseTitle(stripExtension(titleAndSuffix));
   }

@@ -217,10 +217,12 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
    * @see [Decorators](https://storybook.js.org/docs/addons/introduction/#1-decorators)
    */
   decorators?: BaseDecorators<StoryFnReturnType>;
+
   /**
    * Define a custom render function for the story(ies). If not passed, a default render function by the framework will be used.
    */
   render?: (args: Args, context: StoryContext) => StoryFnReturnType;
+
   /**
    * Function that is executed after the story is rendered.
    */

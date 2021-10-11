@@ -85,6 +85,7 @@ export const getStoryProps = <TFramework extends AnyFramework>(
       ...context.getStoryContext(story),
       loaded: {},
     });
+
   return {
     inline: storyIsInline,
     id: story.id,
@@ -92,7 +93,7 @@ export const getStoryProps = <TFramework extends AnyFramework>(
     title: storyName,
     ...(storyIsInline && {
       parameters,
-      storyFn: () => prepareForInline(boundStoryFn, story),
+      storyFn: () => prepareForInline(boundStoryFn, context.getStoryContext(story)),
     }),
   };
 };
