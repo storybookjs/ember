@@ -161,7 +161,7 @@ describe('normalizeStory', () => {
           args: { storyArg: 'val' },
           argTypes: { storyArgType: { type: 'string' } },
           story: {
-            parameters: { storyParam: 'legacy' },
+            parameters: { storyParam2: 'legacy' },
             decorators: [() => {}],
             loaders: [async () => ({})],
             args: { storyArg2: 'legacy' },
@@ -202,6 +202,7 @@ describe('normalizeStory', () => {
             "name": "story name",
             "parameters": Object {
               "storyParam": "val",
+              "storyParam2": "legacy",
             },
           }
         `);
