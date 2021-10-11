@@ -347,7 +347,7 @@ export class StoryStore<TFramework extends AnyFramework> {
   };
 
   raw(): BoundStory<TFramework>[] {
-    return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
+    return Object.values(this.extract()).map(({ id }: { id: StoryId }) => this.fromId(id));
   }
 
   fromId(storyId: StoryId): BoundStory<TFramework> {

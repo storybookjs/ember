@@ -1,4 +1,3 @@
-import { StoryId } from '@storybook/api';
 import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
 import { HooksContext } from '../../addons/dist/ts3.9/hooks';
 
@@ -542,6 +541,127 @@ describe('StoryStore', () => {
         'component-one--b',
         'component-two--c',
       ]);
+    });
+  });
+
+  describe('raw', () => {
+    it('produces an array of stories', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+      await store.cacheAllCSFFiles(false);
+
+      expect(store.raw()).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--a",
+            "initialArgs": Object {
+              "foo": "a",
+            },
+            "kind": "Component One",
+            "name": "A",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "runPlayFunction": [Function],
+            "story": "A",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component One",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--b",
+            "initialArgs": Object {
+              "foo": "b",
+            },
+            "kind": "Component One",
+            "name": "B",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "runPlayFunction": [Function],
+            "story": "B",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component One",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-two",
+            "id": "component-two--c",
+            "initialArgs": Object {
+              "foo": "c",
+            },
+            "kind": "Component Two",
+            "name": "C",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "runPlayFunction": [Function],
+            "story": "C",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component Two",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+        ]
+      `);
     });
   });
 
