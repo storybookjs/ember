@@ -13,7 +13,6 @@ import { logger } from '@storybook/client-logger';
 import deprecate from 'util-deprecate';
 import { NormalizedStoryAnnotations } from './types';
 import { normalizeInputTypes } from './normalizeInputTypes';
-import { combineParameters } from '.';
 
 const deprecatedStoryAnnotation = dedent`
 CSF .story annotations deprecated; annotate story functions directly:
