@@ -166,8 +166,11 @@ describe('useStoriesJson', () => {
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
 
-      await route(request, response);
-      await route(request, { ...response, write: jest.fn() });
+      // Don't wait for the first request here before starting the second
+      await Promise.all([
+        route(request, response),
+        route(request, { ...response, write: jest.fn() }),
+      ]);
 
       expect(write).not.toHaveBeenCalled();
 

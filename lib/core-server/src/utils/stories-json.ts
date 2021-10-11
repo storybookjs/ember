@@ -47,6 +47,7 @@ export async function useStoriesJson(
   const invalidationEmitter = new EventEmitter();
   async function ensureStarted() {
     if (started) return;
+    started = true;
 
     watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
       generator.invalidate(specifier, path, removed);
@@ -54,7 +55,6 @@ export async function useStoriesJson(
     });
 
     await generator.initialize();
-    started = true;
   }
 
   const eventsAsSSE = useEventsAsSSE(invalidationEmitter, [INVALIDATE]);
