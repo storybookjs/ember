@@ -1,6 +1,6 @@
 {
   "name": "@storybook/node-logger",
-  "version": "6.4.0-beta.6",
+  "version": "6.4.0-beta.7",
   "description": "",
   "keywords": [
     "storybook"
@@ -43,7 +43,7 @@
     "@types/npmlog": "^4.1.2",
     "chalk": "^4.1.0",
     "core-js": "^3.8.2",
-    "npmlog": "^4.1.2",
+    "npmlog": "^5.0.1",
     "pretty-hrtime": "^1.0.3"
   },
   "devDependencies": {
@@ -52,6 +52,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "c1e5c8344c29e7e06236f088faeb380257fd3dea",
+  "gitHead": "5c16acd21a956f16a7b24900a9bf38b674646217",
   "sbmodern": "dist/modern/index.js"
 }

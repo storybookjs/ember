@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-measure",
-  "version": "6.4.0-beta.6",
+  "version": "6.4.0-beta.7",
   "description": "Inspect layouts by visualizing the box model",
   "keywords": [
     "storybook-addons",
@@ -44,11 +44,11 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-beta.6",
-    "@storybook/api": "6.4.0-beta.6",
-    "@storybook/client-logger": "6.4.0-beta.6",
-    "@storybook/components": "6.4.0-beta.6",
-    "@storybook/core-events": "6.4.0-beta.6",
+    "@storybook/addons": "6.4.0-beta.7",
+    "@storybook/api": "6.4.0-beta.7",
+    "@storybook/client-logger": "6.4.0-beta.7",
+    "@storybook/components": "6.4.0-beta.7",
+    "@storybook/core-events": "6.4.0-beta.7",
     "@storybook/csf": "0.0.2--canary.6aca495.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0"
@@ -71,7 +71,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "c1e5c8344c29e7e06236f088faeb380257fd3dea",
+  "gitHead": "5c16acd21a956f16a7b24900a9bf38b674646217",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Measure",
