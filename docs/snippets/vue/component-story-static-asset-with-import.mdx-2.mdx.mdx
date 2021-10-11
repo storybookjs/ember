@@ -5,26 +5,26 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import imageFile from './static/image.png'
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent}/>
 
 export const image = {
   src: imageFile,
   alt: "my image",
 };
 
-<Story name="withAnImage">
-  {() => {
-    return {
-      template: `<img :src="src" :alt="alt"/>`,
-      props: {
-        src: {
-          default: () => image.src,
-        },
-        alt: {
-          default: () => image.alt,
-        },
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="withAnImage"
+  render={() => ({
+    props: {
+      src: {
+        default: () => image.src,
       },
-    };
-  }}
-</Story>
+      alt: {
+        default: () => image.alt,
+      },
+    },
+    template: `<img :src="src" :alt="alt"/>`,
+  })} />
 ```

@@ -5,25 +5,21 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Page from './Page.vue';
 
-<Meta
-  title="Page"
-  component={Page}
-/>
+<Meta title="Page" component={Page} />
 
-export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { Page },
-  template: `
-    <page v-bind="$props">
-      <footer v-if="footer" v-slot=footer v-html="footer"/>
-    </page>`,
-});
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="CustomFooter"
   args={{
    footer: `<a href="https://storybook.js.org/">Built with Storybook</a>`,
-  }}>
-  {Template.bind({})}
-</Story>
+  }}
+  render={(args, { argTypes }) => ({
+    props: Object.keys(argTypes),
+    components: { Page },
+    template: `
+      <page v-bind="$props">
+        <footer v-if="footer" v-slot=footer v-html="footer"/>
+      </page>`,
+  })} />
 ```
