@@ -34,8 +34,10 @@ import type {
 
 import { Args, ModuleFn } from '../index';
 import { ComposedRef } from './refs';
+import { StoryIndexClient } from '../lib/StoryIndexClient';
 
 const { DOCS_MODE } = global;
+const INVALIDATE = 'INVALIDATE';
 
 type Direction = -1 | 1;
 type ParameterName = string;
@@ -121,6 +123,8 @@ export const init: ModuleFn = ({
   storyId: initialStoryId,
   viewMode: initialViewMode,
 }) => {
+  let indexClient: StoryIndexClient;
+
   const api: SubAPI = {
     storyId: toId,
     getData: (storyId, refId) => {
@@ -350,9 +354,7 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      // This needs some fleshing out as part of the stories list server project
-      const result = await global.fetch('./stories.json');
-      const storyIndex = (await result.json()) as StoryIndex;
+      const storyIndex = await indexClient.fetch();
 
       // We can only do this if the stories.json is a proper storyIndex
       if (storyIndex.v !== 3) {
@@ -500,6 +502,8 @@ export const init: ModuleFn = ({
       }
     );
 
+    indexClient = new StoryIndexClient();
+    indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
     await fullAPI.fetchStoryList();
   };
 

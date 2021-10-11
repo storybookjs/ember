@@ -4,6 +4,8 @@ import * as t from '@babel/types';
 import { CsfFile, formatCsf, loadCsf } from '@storybook/csf-tools';
 import { jscodeshiftToPrettierParser } from '../lib/utils';
 
+const logger = console;
+
 const _rename = (annotation: string) => {
   return annotation === 'storyName' ? 'name' : annotation;
 };
@@ -87,7 +89,14 @@ const isSimpleCSFStory = (init: t.Expression, annotations: t.ObjectProperty[]) =
   annotations.length === 0 && t.isArrowFunctionExpression(init) && init.params.length === 0;
 
 function transform({ source }: { source: string }, api: any, options: { parser?: string }) {
-  const csf = loadCsf(source, { defaultTitle: 'FIXME' }).parse();
+  const csf = loadCsf(source, { defaultTitle: 'FIXME' });
+
+  try {
+    csf.parse();
+  } catch (err) {
+    logger.log(`Error ${err}, skipping`);
+    return source;
+  }
 
   const objectExports: Record<string, t.Statement> = {};
   Object.entries(csf._storyExports).forEach(([key, decl]) => {
