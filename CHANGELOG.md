@@ -1,3 +1,18 @@
+## 6.4.0-beta.8 (October 11, 2021)
+
+### Bug Fixes
+
+- Core: Fix multiple invalidations ([#16294](https://github.com/storybookjs/storybook/pull/16294))
+
+### Maintenance
+
+- Add ability to skip cypress tests based on framework ([#16285](https://github.com/storybookjs/storybook/pull/16285))
+
+### Dependency Upgrades
+
+- Addons: Add webpack-env as dependency ([#16302](https://github.com/storybookjs/storybook/pull/16302))
+- Upgrade npmlog dependency ([#16289](https://github.com/storybookjs/storybook/pull/16289))
+
 ## 6.4.0-beta.7 (October 8, 2021)
 
 ### Bug Fixes
