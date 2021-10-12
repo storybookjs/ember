@@ -138,7 +138,11 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
           errors.forEach((e) => logger.error(e.message));
           warnings.forEach((e) => logger.error(e.message));
 
-          compiler.close(() => fail(stats));
+          compiler.close(() =>
+            options.debugWebpack
+              ? fail(stats)
+              : fail(new Error('=> Webpack failed, learn more with --debug-webpack'))
+          );
 
           return;
         }

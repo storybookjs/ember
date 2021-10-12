@@ -9,11 +9,10 @@ Object {
     "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
-    "ROOT/addons/controls/dist/esm/register.js",
-    "ROOT/addons/jest/register.js",
     "ROOT/addons/links/dist/esm/register.js",
     "ROOT/addons/storysource/dist/esm/register.js",
     "ROOT/addons/viewport/dist/esm/register.js",
+    "ROOT/addons/toolbars/dist/esm/register.js",
   ],
   "keys": Array [
     "name",
@@ -200,7 +199,7 @@ Object {
       Object {
         "loader": "NODE_MODULES/file-loader/dist/cjs.js",
         "options": Object {
-          "name": "static/media/[path][name].[ext]",
+          "name": "static/media/[name].[contenthash:8].[ext]",
         },
         "test": "/\\\\.(svg|ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\\\\?.*)?$/",
       },
@@ -208,7 +207,7 @@ Object {
         "loader": "NODE_MODULES/url-loader/dist/cjs.js",
         "options": Object {
           "limit": 10000,
-          "name": "static/media/[path][name].[ext]",
+          "name": "static/media/[name].[contenthash:8].[ext]",
         },
         "test": "/\\\\.(mp4|webm|wav|mp3|m4a|aac|oga)(\\\\?.*)?$/",
       },

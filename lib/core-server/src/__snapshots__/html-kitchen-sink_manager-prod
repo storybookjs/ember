@@ -9,7 +9,6 @@ Object {
     "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
-    "ROOT/addons/controls/dist/esm/register.js",
     "ROOT/addons/jest/register.js",
     "ROOT/addons/links/dist/esm/register.js",
     "ROOT/addons/storysource/dist/esm/register.js",
