@@ -70,14 +70,10 @@ export const Canvas: FC<CanvasProps> = (props) => {
   const sourceContext = useContext(SourceContext);
   const { isLoading, previewProps } = getPreviewProps(props, docsContext, sourceContext);
   const { children } = props;
-  return (
+
+  return isLoading ? null : (
     <MDXProvider components={resetComponents}>
-      {/* We use `isLoading` as a key here to make a new instance of the PurePreview when we have
-          the proper set of props for the Preview. Otherwise, the preview will store an incorrect
-          value for the sourceState into its internal state. */}
-      <PurePreview key={isLoading.toString()} {...previewProps}>
-        {children}
-      </PurePreview>
+      <PurePreview {...previewProps}>{children}</PurePreview>
     </MDXProvider>
   );
 };
