@@ -1,6 +1,6 @@
 import { Call } from '@storybook/instrumenter';
 import React from 'react';
-import { styled } from '@storybook/theming';
+import { styled, typography } from '@storybook/theming';
 import { Node, MethodCall } from './MethodCall';
 
 const StyledWrapper = styled.div(({ theme }) => ({
@@ -8,7 +8,8 @@ const StyledWrapper = styled.div(({ theme }) => ({
   padding: '20px',
   boxShadow: `0 0 0 1px ${theme.appBorderColor}`,
   color: theme.color.defaultText,
-  fontSize: 13,
+  fontFamily: typography.fonts.mono,
+  fontSize: typography.size.s1,
 }));
 
 export default {

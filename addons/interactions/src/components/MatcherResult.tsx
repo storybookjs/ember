@@ -45,7 +45,13 @@ export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) =>
 export const MatcherResult = ({ message }: { message: string }) => {
   const lines = message.split('\n');
   return (
-    <pre style={{ margin: 0, padding: '8px 10px 8px 30px', fontFamily: typography.fonts.base }}>
+    <pre
+      style={{
+        margin: 0,
+        padding: '8px 10px 8px 30px',
+        fontSize: typography.size.s1,
+      }}
+    >
       {lines.flatMap((line: string, index: number) => {
         if (line.startsWith('expect(')) {
           const received = getParams(line, 7);
