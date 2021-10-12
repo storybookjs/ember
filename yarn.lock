@@ -6878,7 +6878,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/theming": 6.4.0-beta.9
     "@testing-library/react": ^11.2.2
     "@types/webpack-env": ^1.16.0
@@ -6909,7 +6909,7 @@ __metadata:
     "@storybook/api": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/theming": 6.4.0-beta.9
     "@types/lodash": ^4.14.167
     "@types/webpack-env": ^1.16.0
@@ -6944,7 +6944,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/theming": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
@@ -6972,7 +6972,7 @@ __metadata:
     "@storybook/api": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/node-logger": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
     "@storybook/theming": 6.4.0-beta.9
@@ -7015,7 +7015,7 @@ __metadata:
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/csf-tools": 6.4.0-beta.9
     "@storybook/html": 6.4.0-beta.9
     "@storybook/node-logger": 6.4.0-beta.9
@@ -7196,7 +7196,7 @@ __metadata:
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/instrumenter": 6.4.0-beta.9
     "@storybook/jest": 0.0.0-alpha.3
     "@storybook/testing-library": 0.0.0-alpha.3
@@ -7250,7 +7250,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/router": 6.4.0-beta.9
     "@types/qs": ^6.9.5
     "@types/webpack-env": ^1.16.0
@@ -7280,7 +7280,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -7304,7 +7304,7 @@ __metadata:
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/components": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -7339,7 +7339,7 @@ __metadata:
   resolution: "@storybook/addon-storyshots-puppeteer@workspace:addons/storyshots/storyshots-puppeteer"
   dependencies:
     "@axe-core/puppeteer": ^4.2.0
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/node-logger": 6.4.0-beta.9
     "@types/jest-image-snapshot": ^4.1.3
     "@types/puppeteer": ^5.4.0
@@ -7369,7 +7369,7 @@ __metadata:
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-client": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/react": 6.4.0-beta.9
     "@storybook/vue": 6.4.0-beta.9
     "@storybook/vue3": 6.4.0-beta.9
@@ -7532,7 +7532,7 @@ __metadata:
     "@storybook/channels": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/router": 6.4.0-beta.9
     "@storybook/theming": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0
@@ -7566,7 +7566,7 @@ __metadata:
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/node-logger": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
     "@types/autoprefixer": ^9.7.2
@@ -7635,7 +7635,7 @@ __metadata:
     "@storybook/channels": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/router": 6.4.0-beta.9
     "@storybook/semver": ^7.3.2
     "@storybook/theming": 6.4.0-beta.9
@@ -7916,7 +7916,7 @@ __metadata:
     "@storybook/channels": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     "@types/qs": ^6.9.5
     "@types/webpack-env": ^1.16.0
@@ -7951,7 +7951,7 @@ __metadata:
   dependencies:
     "@babel/types": ^7.12.11
     "@mdx-js/mdx": ^1.6.22
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/csf-tools": 6.4.0-beta.9
     "@storybook/node-logger": 6.4.0-beta.9
     core-js: ^3.8.2
@@ -7973,7 +7973,7 @@ __metadata:
   dependencies:
     "@popperjs/core": ^2.6.0
     "@storybook/client-logger": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/theming": 6.4.0-beta.9
     "@types/color-convert": ^2.0.0
     "@types/overlayscrollbars": ^1.12.0
@@ -8012,7 +8012,7 @@ __metadata:
     "@storybook/client-api": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/preview-web": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
     "@storybook/ui": 6.4.0-beta.9
@@ -8120,7 +8120,7 @@ __metadata:
     "@storybook/builder-webpack5": 6.4.0-beta.9
     "@storybook/core-client": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/csf-tools": 6.4.0-beta.9
     "@storybook/manager-webpack4": 6.4.0-beta.9
     "@storybook/node-logger": 6.4.0-beta.9
@@ -8203,7 +8203,7 @@ __metadata:
     "@babel/traverse": ^7.12.11
     "@babel/types": ^7.12.11
     "@mdx-js/mdx": ^1.6.22
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@types/fs-extra": ^9.0.6
     core-js: ^3.8.2
     fs-extra: ^9.0.1
@@ -8217,12 +8217,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/csf@npm:0.0.2--canary.6aca495.0":
-  version: 0.0.2--canary.6aca495.0
-  resolution: "@storybook/csf@npm:0.0.2--canary.6aca495.0"
+"@storybook/csf@npm:0.0.2--canary.87bc651.0":
+  version: 0.0.2--canary.87bc651.0
+  resolution: "@storybook/csf@npm:0.0.2--canary.87bc651.0"
   dependencies:
     lodash: ^4.17.15
-  checksum: e3762b9c31f84ef96932502dabb0fba42b9a07993a79ef92ae4ec7897ca0086cba4f63e1bc479eac99628ed9383c39df0741e75471af3bd97ea6d62aca851f58
+  checksum: 0e7c378b358666ddae637ffba4c4345bed0a2603138528cbc5049f416a62a74cd8ab917856d444bf0b7b3dc0ba52186456c24b21ccb1f028dc5cd43e7f2509dc
   languageName: node
   linkType: hard
 
@@ -8358,7 +8358,7 @@ __metadata:
     "@storybook/client-api": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/preview-web": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0
@@ -8590,7 +8590,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
@@ -8650,7 +8650,7 @@ __metadata:
     "@storybook/channel-postmessage": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     ansi-to-html: ^0.6.11
     core-js: ^3.8.2
@@ -8696,7 +8696,7 @@ __metadata:
     "@storybook/client-api": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/node-logger": 6.4.0-beta.9
     "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.253f8c1.0
     "@storybook/semver": ^7.3.2
@@ -9002,7 +9002,7 @@ __metadata:
     "@storybook/client-api": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/node-logger": 6.4.0-beta.9
     "@storybook/preview-web": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
@@ -9031,7 +9031,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     core-js: ^3.8.2
     estraverse: ^5.2.0
     global: ^4.4.0
@@ -9052,7 +9052,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/client-logger": 6.4.0-beta.9
     "@storybook/core-events": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     core-js: ^3.8.2
     fast-deep-equal: ^3.1.3
     global: ^4.4.0
@@ -9073,7 +9073,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
@@ -9185,7 +9185,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     "@types/node": ^14.14.20
     "@types/webpack-env": ^1.16.0
@@ -9222,7 +9222,7 @@ __metadata:
     "@storybook/addons": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.4.0-beta.9
     "@types/node": ^14.14.20
     "@types/webpack-env": ^1.16.0
@@ -9265,7 +9265,7 @@ __metadata:
     "@storybook/client-api": 6.4.0-beta.9
     "@storybook/core": 6.4.0-beta.9
     "@storybook/core-common": 6.4.0-beta.9
-    "@storybook/csf": 0.0.2--canary.6aca495.0
+    "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/preview-web": 6.4.0-beta.9
     "@storybook/store": 6.4.0-beta.9
     "@types/webpack-env": ^1.16.0

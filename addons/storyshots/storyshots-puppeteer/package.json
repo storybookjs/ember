@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@axe-core/puppeteer": "^4.2.0",
-    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
     "@storybook/node-logger": "6.4.0-beta.9",
     "@types/jest-image-snapshot": "^4.1.3",
     "core-js": "^3.8.2",
@@ -49,7 +49,7 @@
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
-    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
     "@types/puppeteer": "^5.4.0"
   },
   "peerDependencies": {
