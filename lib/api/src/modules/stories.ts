@@ -36,7 +36,7 @@ import { Args, ModuleFn } from '../index';
 import { ComposedRef } from './refs';
 import { StoryIndexClient } from '../lib/StoryIndexClient';
 
-const { DOCS_MODE } = global;
+const { DOCS_MODE, FEATURES } = global;
 const INVALIDATE = 'INVALIDATE';
 
 type Direction = -1 | 1;
@@ -502,9 +502,11 @@ export const init: ModuleFn = ({
       }
     );
 
-    indexClient = new StoryIndexClient();
-    indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
-    await fullAPI.fetchStoryList();
+    if (FEATURES.storyStoreV7) {
+      indexClient = new StoryIndexClient();
+      indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
+      await fullAPI.fetchStoryList();
+    }
   };
 
   return {
