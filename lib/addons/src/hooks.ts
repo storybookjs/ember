@@ -5,13 +5,13 @@ import {
   DecoratorFunction,
   DecoratorApplicator,
   StoryContext,
+  StoryId,
   Args,
   LegacyStoryFn,
 } from '@storybook/csf';
 import {
   FORCE_RE_RENDER,
   STORY_RENDERED,
-  DOCS_RENDERED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
   UPDATE_GLOBALS,
@@ -32,8 +32,6 @@ interface Effect {
 }
 
 type AbstractFunction = (...args: any[]) => any;
-
-const RenderEvents = [STORY_RENDERED, DOCS_RENDERED];
 
 export class HooksContext<TFramework extends AnyFramework> {
   hookListsMap: WeakMap<AbstractFunction, Hook[]>;
@@ -58,7 +56,8 @@ export class HooksContext<TFramework extends AnyFramework> {
 
   currentContext: StoryContext<TFramework> | null;
 
-  renderListener = () => {
+  renderListener = (storyId: StoryId) => {
+    if (storyId !== this.currentContext.id) return;
     this.triggerEffects();
     this.currentContext = null;
     this.removeRenderListeners();
@@ -119,12 +118,12 @@ export class HooksContext<TFramework extends AnyFramework> {
   addRenderListeners() {
     this.removeRenderListeners();
     const channel = addons.getChannel();
-    RenderEvents.forEach((e) => channel.on(e, this.renderListener));
+    channel.on(STORY_RENDERED, this.renderListener);
   }
 
   removeRenderListeners() {
     const channel = addons.getChannel();
-    RenderEvents.forEach((e) => channel.removeListener(e, this.renderListener));
+    channel.removeListener(STORY_RENDERED, this.renderListener);
   }
 }
 
