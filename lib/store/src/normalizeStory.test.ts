@@ -12,6 +12,16 @@ describe('normalizeStory', () => {
         'component-id--name'
       );
     });
+
+    it('respects parameters.__id', () => {
+      expect(
+        normalizeStory(
+          'name',
+          { parameters: { __id: 'story-id' } },
+          { title: 'title', id: 'component-id' }
+        ).id
+      ).toEqual('story-id');
+    });
   });
 
   describe('name', () => {
