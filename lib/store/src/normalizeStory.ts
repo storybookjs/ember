@@ -44,7 +44,6 @@ export function normalizeStory<TFramework extends AnyFramework>(
   }
 
   const exportName = storyNameFromExport(key);
-  const id = toId(meta.id || meta.title, exportName);
   const name =
     (typeof storyObject !== 'function' && storyObject.name) ||
     storyObject.storyName ||
@@ -57,6 +56,8 @@ export function normalizeStory<TFramework extends AnyFramework>(
   const loaders = [...(storyObject.loaders || []), ...(story?.loaders || [])];
   const { render, play } = storyObject;
 
+  // eslint-disable-next-line no-underscore-dangle
+  const id = parameters.__id || toId(meta.id || meta.title, exportName);
   return {
     id,
     name,

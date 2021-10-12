@@ -84,6 +84,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "Story One",
               "parameters": Object {
+                "__id": "component-a--story-one",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -102,6 +103,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "Story Two",
               "parameters": Object {
+                "__id": "component-a--story-two",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -120,6 +122,7 @@ describe('start', () => {
               "kind": "Component B",
               "name": "Story Three",
               "parameters": Object {
+                "__id": "component-b--story-three",
                 "__isArgsStory": false,
                 "fileName": "file2",
                 "framework": "test",
@@ -178,6 +181,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "Story One",
               "parameters": Object {
+                "__id": "component-a--story-one",
                 "__isArgsStory": false,
                 "docs": Object {},
                 "docsOnly": true,
@@ -206,6 +210,56 @@ describe('start', () => {
       await waitForRender();
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
+    });
+
+    it('deals with stories with camel-cased names', async () => {
+      const render = jest.fn();
+
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('storyOne', jest.fn());
+      });
+
+      await waitForRender();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--storyone');
+    });
+
+    it('deals with stories with spaces in the name', async () => {
+      const render = jest.fn();
+
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .add('Story One', jest.fn());
+      });
+
+      await waitForRender();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-a--story-one'
+      );
+    });
+
+    // https://github.com/storybookjs/storybook/issues/16303
+    it('deals with stories with numeric names', async () => {
+      const render = jest.fn();
+
+      const { configure, clientApi } = start(render);
+
+      configure('test', () => {
+        clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('story0', jest.fn());
+      });
+
+      await waitForRender();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--story0');
     });
 
     it('deals with storiesOf from the same file twice', async () => {
@@ -368,6 +422,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__id": "component-a--default",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -386,6 +441,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "new",
               "parameters": Object {
+                "__id": "component-a--new",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -442,6 +498,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__id": "component-a--default",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -460,6 +517,7 @@ describe('start', () => {
               "kind": "Component B",
               "name": "default",
               "parameters": Object {
+                "__id": "component-b--default",
                 "__isArgsStory": false,
                 "fileName": "file2",
                 "framework": "test",
@@ -496,6 +554,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "default",
               "parameters": Object {
+                "__id": "component-a--default",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -920,6 +979,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "Story One",
               "parameters": Object {
+                "__id": "component-a--story-one",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -938,6 +998,7 @@ describe('start', () => {
               "kind": "Component A",
               "name": "Story Two",
               "parameters": Object {
+                "__id": "component-a--story-two",
                 "__isArgsStory": false,
                 "fileName": "file1",
                 "framework": "test",
@@ -956,6 +1017,7 @@ describe('start', () => {
               "kind": "Component B",
               "name": "Story Three",
               "parameters": Object {
+                "__id": "component-b--story-three",
                 "__isArgsStory": false,
                 "fileName": "file2",
                 "framework": "test",
