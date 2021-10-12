@@ -220,17 +220,31 @@ export interface TypescriptOptions {
 }
 
 interface StoriesSpecifier {
-  directory: string;
-  files?: string;
+  /**
+   * When auto-titling, what to prefix all generated titles with (default: '')
+   */
   titlePrefix?: string;
+  /**
+   * Where to start looking for story files
+   */
+  directory: string;
+  /**
+   * What does the filename of a story file look like?
+   * (a glob, relative to directory, no leading `./`)
+   * If unset, we use `** / *.stories.@(mdx|tsx|ts|jsx|js)` (no spaces)
+   */
+  files?: string;
 }
 
 export type StoriesEntry = string | StoriesSpecifier;
 
-export interface NormalizedStoriesSpecifier {
-  glob: string;
-  specifier?: StoriesSpecifier;
-}
+export type NormalizedStoriesSpecifier = Required<StoriesSpecifier> & {
+  /*
+   * Match the "importPath" of a file (e.g. `./src/button/Button.stories.js')
+   * relative to the current working directory.
+   */
+  importPathMatcher: RegExp;
+};
 
 /**
  * The interface for Storybook configuration in `main.ts` files.

@@ -12,5 +12,6 @@
     "src/**/*.stories.*",
     "src/**/*.mockdata.*",
     "src/**/__testfixtures__/**"
-  ]
+  ],
+  "lib": ["es2017", "dom"]
 }

@@ -56,7 +56,7 @@ const serveStorybook = async ({ cwd }: Options, port: string) => {
 const runCypress = async (location: string, name: string) => {
   const cypressCommand = openCypressInUIMode ? 'open' : 'run';
   await exec(
-    `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,defaultCommandTimeout=4000,integrationFolder="cypress/generated",videosFolder="/tmp/cypress-record/${name}" --env location="${location}"`,
+    `CYPRESS_ENVIRONMENT=${name} yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,defaultCommandTimeout=4000,integrationFolder="cypress/generated",videosFolder="/tmp/cypress-record/${name}" --env location="${location}"`,
     { cwd: rootDir },
     {
       startMessage: `🤖 Running Cypress tests`,

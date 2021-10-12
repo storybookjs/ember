@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { toRequireContext } from '@storybook/core-common';
+import { toRequireContext, StoriesEntry, normalizeStoriesEntry } from '@storybook/core-common';
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import global from 'global';
 import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
@@ -52,15 +52,18 @@ function getConfigPathParts(input: string): Output {
     if (main) {
       const { stories = [] } = jest.requireActual(main);
 
-      output.stories = stories.map(
-        (pattern: string | { path: string; recursive: boolean; match: string }) => {
-          const { path: basePath, recursive, match } = toRequireContext(pattern);
-          const regex = new RegExp(match);
+      output.stories = stories.map((entry: StoriesEntry) => {
+        const workingDir = process.cwd();
+        const specifier = normalizeStoriesEntry(entry, {
+          configDir,
+          workingDir,
+        });
 
-          // eslint-disable-next-line no-underscore-dangle
-          return global.__requireContext(configDir, basePath, recursive, regex);
-        }
-      );
+        const { path: basePath, recursive, match } = toRequireContext(specifier);
+
+        // eslint-disable-next-line no-underscore-dangle
+        return global.__requireContext(workingDir, basePath, recursive, match);
+      });
     }
 
     return output;
