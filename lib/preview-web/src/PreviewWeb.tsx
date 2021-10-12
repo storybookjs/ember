@@ -424,7 +424,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.channel.on(Events.RESET_STORY_ARGS, render);
     }
 
-    return () => {
+    return async () => {
       if (!global?.FEATURES?.modernInlineRender) {
         this.channel.off(Events.UPDATE_GLOBALS, render);
         this.channel.off(Events.UPDATE_STORY_ARGS, render);

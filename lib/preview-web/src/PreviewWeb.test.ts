@@ -472,7 +472,10 @@ describe('PreviewWeb', () => {
           throw IGNORED_EXCEPTION;
         });
 
-        const preview = await createAndRenderPreview();
+        const preview = new PreviewWeb();
+        await preview.initialize({ importFn, getProjectAnnotations });
+
+        await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(
           Events.STORY_THREW_EXCEPTION,
