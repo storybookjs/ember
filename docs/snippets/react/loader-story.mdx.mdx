@@ -9,6 +9,8 @@ import { TodoItem } from './TodoItem';
 
 <Meta title="Examples/Loader" component={TodoItem} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <Story
   name="Primary"
   loaders={[
@@ -18,9 +20,5 @@ import { TodoItem } from './TodoItem';
       ).json(),
     }),
   ]}
->
-  {(args, { loaded: { todo } }) => (
-    <TodoItem {...args} todo={todo} />
-  )}
-</Story>
+  render={(args, { loaded: { todo } }) => <TodoItem {...args} todo={todo} />} />
 ```

@@ -1,13 +1,18 @@
 ```md
 <!-- Button.stories.mdx --->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
 import { Button } from './Button';
 
-export const Template = (args) => <Button {...args} />;
+<Meta title="Button" component={Button} />
 
-<Story name="Basic" args={{ label: 'hello' }}>
-  {Template.bind({})}
-</Story>
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="Basic" 
+  args={{ 
+    label: 'hello' 
+  }}
+  render={(args) => <Button {...args} />} />
 ```

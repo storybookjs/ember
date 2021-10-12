@@ -7,17 +7,16 @@ import Page from './Page';
 
 <Meta title="Page" component={Page} />
 
-export const Template = (args) => (
-  <Page {...args}>
-    <footer>{args.footer}</footer>
-  </Page>
-);
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
   name="CustomFooter" 
   args={{ 
     footer: 'Built with Storybook',
-  }}>
-  {Template.bind({})}
-</Story>
+  }}
+  render={(args) => (
+    <Page {...args}>
+      <footer>{args.footer}</footer>
+    </Page>
+  )}/>
 ```

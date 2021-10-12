@@ -9,13 +9,14 @@ import MyComponent from './MyComponent';
 
 export const Template = (args) => <MyOtherComponent {...args} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <Canvas>
   <Story
     name="A MDX story using environment variables inside a .env file"
     args={{
       propertyA: process.env.STORYBOOK_DATA_KEY,
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args) => <MyOtherComponent {...args} />} />
 </Canvas>
 ```
