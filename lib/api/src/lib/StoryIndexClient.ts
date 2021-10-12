@@ -20,7 +20,7 @@ export class StoryIndexClient {
     }
   }
 
-  // Silently never emit events in bult storybook modes
+  // Silently never emit events in built storybook modes
   addEventListener(event: string, cb: (...args: any[]) => void) {
     if (this.source) this.source.addEventListener(event, cb);
   }
