@@ -38,7 +38,7 @@ jest.mock('global', () => ({
   FEATURES: {
     storyStoreV7: true,
   },
-  fetch: async () => ({ status: 200, json: async () => mockStoryIndex, text: () => 'error text' }),
+  fetch: async () => ({ status: 200, json: async () => mockStoryIndex }),
 }));
 
 beforeEach(() => {
