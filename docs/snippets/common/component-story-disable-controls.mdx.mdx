@@ -16,13 +16,14 @@ import { YourComponent } from './YourComponent'
     }
   }} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <Canvas>
   <Story 
     name="My Story"
     args={{ 
       foo: 'bar',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args) => <YourComponent {...args} />} />
 </Canvas>
 ```
