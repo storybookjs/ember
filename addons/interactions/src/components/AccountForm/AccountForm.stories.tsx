@@ -1,3 +1,4 @@
+import { Story as CSF2Story, Meta, ComponentStoryObj } from '@storybook/react';
 import { expect } from '@storybook/jest';
 import { within, waitFor, fireEvent, userEvent } from '@storybook/testing-library';
 import React from 'react';
@@ -11,37 +12,39 @@ export default {
   argTypes: {
     onSubmit: { action: true },
   },
-};
+} as Meta;
 
-export const Demo = (args: any) => (
+type CSF3Story = ComponentStoryObj<typeof AccountForm>;
+
+export const Demo: CSF2Story = (args) => (
   <button type="button" onClick={() => args.onSubmit('clicked')}>
     Click
   </button>
 );
-Demo.play = async ({ args, canvasElement }: any) => {
+Demo.play = async ({ args, canvasElement }) => {
   await userEvent.click(within(canvasElement).getByRole('button'));
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
 };
 
-export const WaitFor = (args: any) => (
+export const WaitFor: CSF2Story = (args) => (
   <button type="button" onClick={() => setTimeout(() => args.onSubmit('clicked'), 100)}>
     Click
   </button>
 );
-WaitFor.play = async ({ args, canvasElement }: any) => {
+WaitFor.play = async ({ args, canvasElement }) => {
   await userEvent.click(await within(canvasElement).findByText('Click'));
   await waitFor(async () => {
     await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
   });
 };
 
-export const Standard = {
+export const Standard: CSF3Story = {
   args: { passwordVerification: false },
 };
 
-export const StandardEmailFilled = {
+export const StandardEmailFilled: CSF3Story = {
   ...Standard,
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await fireEvent.change(canvas.getByTestId('email'), {
       target: {
@@ -51,9 +54,9 @@ export const StandardEmailFilled = {
   },
 };
 
-export const StandardEmailFailed = {
+export const StandardEmailFailed: CSF3Story = {
   ...Standard,
-  play: async ({ args, canvasElement }: any) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('email'), 'me');
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou');
@@ -68,9 +71,9 @@ export const StandardEmailFailed = {
   },
 };
 
-export const StandardEmailSuccess = {
+export const StandardEmailSuccess: CSF3Story = {
   ...Standard,
-  play: async ({ args, canvasElement }: any) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByTestId('email'), 'michael@chromatic.com');
     await userEvent.type(canvas.getByTestId('password1'), 'testpasswordthatwontfail');
@@ -86,9 +89,9 @@ export const StandardEmailSuccess = {
   },
 };
 
-export const StandardPasswordFailed = {
+export const StandardPasswordFailed: CSF3Story = {
   ...Standard,
-  play: async (context: any) => {
+  play: async (context) => {
     const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdf');
@@ -96,9 +99,9 @@ export const StandardPasswordFailed = {
   },
 };
 
-export const StandardFailHover = {
+export const StandardFailHover: CSF3Story = {
   ...StandardPasswordFailed,
-  play: async (context: any) => {
+  play: async (context) => {
     const canvas = within(context.canvasElement);
     await StandardPasswordFailed.play(context);
     await waitFor(async () => {
@@ -107,14 +110,14 @@ export const StandardFailHover = {
   },
 };
 
-export const Verification = {
+export const Verification: CSF3Story = {
   args: { passwordVerification: true },
   argTypes: { onSubmit: { action: 'clicked' } },
 };
 
-export const VerificationPasssword1 = {
+export const VerificationPasssword1: CSF3Story = {
   ...Verification,
-  play: async (context: any) => {
+  play: async (context) => {
     const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
@@ -122,9 +125,9 @@ export const VerificationPasssword1 = {
   },
 };
 
-export const VerificationPasswordMismatch = {
+export const VerificationPasswordMismatch: CSF3Story = {
   ...Verification,
-  play: async (context: any) => {
+  play: async (context) => {
     const canvas = within(context.canvasElement);
     await StandardEmailFilled.play(context);
     await userEvent.type(canvas.getByTestId('password1'), 'asdfasdf');
@@ -133,11 +136,11 @@ export const VerificationPasswordMismatch = {
   },
 };
 
-export const VerificationSuccess = {
+export const VerificationSuccess: CSF3Story = {
   ...Verification,
-  play: async ({ canvasElement }: any) => {
-    const canvas = within(canvasElement);
-    await StandardEmailFilled.play({ canvasElement });
+  play: async (context) => {
+    const canvas = within(context.canvasElement);
+    await StandardEmailFilled.play(context);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await userEvent.type(canvas.getByTestId('password1'), 'helloyou', { delay: 50 });
     await new Promise((resolve) => setTimeout(resolve, 1000));
