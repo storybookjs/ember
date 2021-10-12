@@ -156,6 +156,33 @@ describe('useStoriesJson', () => {
       const onChange = watcher.on.mock.calls[0][1];
 
       onChange('src/nested/Button.stories.ts');
+      expect(write).toHaveBeenCalledTimes(1);
+      expect(write).toHaveBeenCalledWith('event:INVALIDATE\ndata:\n\n');
+    });
+
+    it('only sends one invalidation when multiple event listeners are listening', async () => {
+      await useStoriesJson(router, options, options.configDir);
+
+      expect(use).toHaveBeenCalledTimes(1);
+      const route = use.mock.calls[0][1];
+
+      // Don't wait for the first request here before starting the second
+      await Promise.all([
+        route(request, response),
+        route(request, { ...response, write: jest.fn() }),
+      ]);
+
+      expect(write).not.toHaveBeenCalled();
+
+      expect(Watchpack).toHaveBeenCalledTimes(1);
+      const watcher = Watchpack.mock.instances[0];
+      expect(watcher.watch).toHaveBeenCalledWith({ directories: ['./src'] });
+
+      expect(watcher.on).toHaveBeenCalledTimes(2);
+      const onChange = watcher.on.mock.calls[0][1];
+
+      onChange('src/nested/Button.stories.ts');
+      expect(write).toHaveBeenCalledTimes(1);
       expect(write).toHaveBeenCalledWith('event:INVALIDATE\ndata:\n\n');
     });
   });

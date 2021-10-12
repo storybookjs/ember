@@ -12,6 +12,16 @@ describe('normalizeStory', () => {
         'component-id--name'
       );
     });
+
+    it('respects parameters.__id', () => {
+      expect(
+        normalizeStory(
+          'name',
+          { parameters: { __id: 'story-id' } },
+          { title: 'title', id: 'component-id' }
+        ).id
+      ).toEqual('story-id');
+    });
   });
 
   describe('name', () => {
@@ -35,8 +45,13 @@ describe('normalizeStory', () => {
       const meta = { title: 'title' };
       expect(normalizeStory('storyExport', storyFn, meta)).toMatchInlineSnapshot(`
         Object {
+          "argTypes": Object {},
+          "args": Object {},
+          "decorators": Array [],
           "id": "title--story-export",
+          "loaders": Array [],
           "name": "Story Export",
+          "parameters": Object {},
           "userStoryFn": [Function],
         }
       `);
@@ -96,11 +111,16 @@ describe('normalizeStory', () => {
         const meta = { title: 'title' };
         const normalized = normalizeStory('storyExport', storyObj, meta);
         expect(normalized).toMatchInlineSnapshot(`
-            Object {
-              "id": "title--story-export",
-              "name": "Story Export",
-            }
-          `);
+          Object {
+            "argTypes": Object {},
+            "args": Object {},
+            "decorators": Array [],
+            "id": "title--story-export",
+            "loaders": Array [],
+            "name": "Story Export",
+            "parameters": Object {},
+          }
+        `);
       });
 
       it('full annotations', () => {
@@ -137,6 +157,62 @@ describe('normalizeStory', () => {
             "name": "story name",
             "parameters": Object {
               "storyParam": "val",
+            },
+          }
+        `);
+      });
+
+      it('prefers new annotations to legacy, but combines', () => {
+        const storyObj: StoryAnnotationsOrFn<AnyFramework> = {
+          name: 'story name',
+          parameters: { storyParam: 'val' },
+          decorators: [() => {}],
+          loaders: [async () => ({})],
+          args: { storyArg: 'val' },
+          argTypes: { storyArgType: { type: 'string' } },
+          story: {
+            parameters: { storyParam2: 'legacy' },
+            decorators: [() => {}],
+            loaders: [async () => ({})],
+            args: { storyArg2: 'legacy' },
+            argTypes: { storyArgType2: { type: 'string' } },
+          },
+        };
+        const meta = { title: 'title' };
+        const normalized = normalizeStory('storyExport', storyObj, meta);
+        expect(normalized).toMatchInlineSnapshot(`
+          Object {
+            "argTypes": Object {
+              "storyArgType": Object {
+                "name": "storyArgType",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "storyArgType2": Object {
+                "name": "storyArgType2",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "storyArg": "val",
+              "storyArg2": "legacy",
+            },
+            "decorators": Array [
+              [Function],
+              [Function],
+            ],
+            "id": "title--story-export",
+            "loaders": Array [
+              [Function],
+              [Function],
+            ],
+            "name": "story name",
+            "parameters": Object {
+              "storyParam": "val",
+              "storyParam2": "legacy",
             },
           }
         `);

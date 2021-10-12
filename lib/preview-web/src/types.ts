@@ -17,7 +17,6 @@ export interface DocsContextProps<TFramework extends AnyFramework = AnyFramework
   loadStory: (id: StoryId) => Promise<Story<TFramework>>;
   renderStoryToElement: PreviewWeb<TFramework>['renderStoryToElement'];
   getStoryContext: (story: Story<TFramework>) => StoryContextForLoaders<TFramework>;
-  registerRenderingStory: () => (v: void) => void;
 
   /**
    * mdxStoryNameToKey is an MDX-compiler-generated mapping of an MDX story's

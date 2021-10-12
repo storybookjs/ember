@@ -44,27 +44,28 @@ export function normalizeStory<TFramework extends AnyFramework>(
   }
 
   const exportName = storyNameFromExport(key);
-  const id = toId(meta.id || meta.title, exportName);
   const name =
     (typeof storyObject !== 'function' && storyObject.name) ||
     storyObject.storyName ||
     story?.name ||
     exportName;
-  const decorators = storyObject.decorators || story?.decorators;
-  const parameters = storyObject.parameters || story?.parameters;
-  const args = storyObject.args || story?.args;
-  const argTypes = storyObject.argTypes || story?.argTypes;
-  const loaders = storyObject.loaders || story?.loaders;
+  const decorators = [...(storyObject.decorators || []), ...(story?.decorators || [])];
+  const parameters = { ...story?.parameters, ...storyObject.parameters };
+  const args = { ...story?.args, ...storyObject.args };
+  const argTypes = { ...story?.argTypes, ...storyObject.argTypes };
+  const loaders = [...(storyObject.loaders || []), ...(story?.loaders || [])];
   const { render, play } = storyObject;
 
+  // eslint-disable-next-line no-underscore-dangle
+  const id = parameters.__id || toId(meta.id || meta.title, exportName);
   return {
     id,
     name,
-    ...(decorators && { decorators }),
-    ...(parameters && { parameters }),
-    ...(args && { args }),
-    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    ...(loaders && { loaders }),
+    decorators,
+    parameters,
+    args,
+    argTypes: normalizeInputTypes(argTypes),
+    loaders,
     ...(render && { render }),
     ...(userStoryFn && { userStoryFn }),
     ...(play && { play }),

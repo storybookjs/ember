@@ -1,3 +1,40 @@
+## 6.4.0-beta.9 (October 12, 2021)
+
+### Features
+
+* Webpack5: Don't emit stats unless debugWebpack is set ([#16132](https://github.com/storybookjs/storybook/pull/16132))
+
+### Bug Fixes
+
+* CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
+* Core: Better story id generation, cope with unusual stories ([#16309](https://github.com/storybookjs/storybook/pull/16309))
+* Core: Simplify `DOCS_RENDERED` and only use `STORY_RENDERED` for hooks ([#16310](https://github.com/storybookjs/storybook/pull/16310))
+* Core: Fix `extract`, `SET_STORIES` and `getStoriesJsonData` ([#16299](https://github.com/storybookjs/storybook/pull/16299))
+* TypeScript: Add `id` to BaseMeta type ([#16216](https://github.com/storybookjs/storybook/pull/16216))
+* CSF: Fix support for `X.story` annotations ([#16297](https://github.com/storybookjs/storybook/pull/16297))
+
+## 6.4.0-beta.8 (October 11, 2021)
+
+### Bug Fixes
+
+- Core: Fix multiple invalidations ([#16294](https://github.com/storybookjs/storybook/pull/16294))
+
+### Maintenance
+
+- Add ability to skip cypress tests based on framework ([#16285](https://github.com/storybookjs/storybook/pull/16285))
+
+### Dependency Upgrades
+
+- Addons: Add webpack-env as dependency ([#16302](https://github.com/storybookjs/storybook/pull/16302))
+- Upgrade npmlog dependency ([#16289](https://github.com/storybookjs/storybook/pull/16289))
+
+## 6.4.0-beta.7 (October 8, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Always render the `children` of the `Canvas` component ([#16280](https://github.com/storybookjs/storybook/pull/16280))
+- Addon-docs: Fix args passing for Vue inline rendering ([#16279](https://github.com/storybookjs/storybook/pull/16279))
+
 ## 6.4.0-beta.6 (October 7, 2021)
 
 ### Features

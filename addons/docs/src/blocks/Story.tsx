@@ -6,13 +6,14 @@ import React, {
   useContext,
   useRef,
   useEffect,
-  useMemo,
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
+import global from 'global';
 import { resetComponents, Story as PureStory } from '@storybook/components';
 import { StoryId, toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
-import global from 'global';
+import { addons } from '@storybook/addons';
+import Events from '@storybook/core-events';
 
 import { CURRENT_SELECTION } from './types';
 import { DocsContext, DocsContextProps } from './DocsContext';
@@ -62,7 +63,8 @@ export const getStoryId = (props: StoryProps, context: DocsContextProps): StoryI
 export const getStoryProps = <TFramework extends AnyFramework>(
   { height, inline }: StoryProps,
   story: StoryType<TFramework>,
-  context: DocsContextProps<TFramework>
+  context: DocsContextProps<TFramework>,
+  onStoryFnCalled: () => void
 ): PureStoryProps => {
   const { name: storyName, parameters } = story;
   const { docs = {} } = parameters;
@@ -80,11 +82,20 @@ export const getStoryProps = <TFramework extends AnyFramework>(
     );
   }
 
-  const boundStoryFn = () =>
-    story.unboundStoryFn({
+  const boundStoryFn = () => {
+    const storyResult = story.unboundStoryFn({
       ...context.getStoryContext(story),
       loaded: {},
     });
+
+    // We need to wait until the bound story function has actually been called before we
+    // consider the story rendered. Certain frameworks (i.e. angular) don't actually render
+    // the component in the very first react render cycle, and so we can't just wait until the
+    // `PureStory` component has been rendered to consider the underlying story "rendered".
+    onStoryFnCalled();
+    return storyResult;
+  };
+
   return {
     inline: storyIsInline,
     id: story.id,
@@ -92,24 +103,17 @@ export const getStoryProps = <TFramework extends AnyFramework>(
     title: storyName,
     ...(storyIsInline && {
       parameters,
-      storyFn: () => prepareForInline(boundStoryFn, story),
+      storyFn: () => prepareForInline(boundStoryFn, context.getStoryContext(story)),
     }),
   };
 };
 
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
+  const channel = addons.getChannel();
   const ref = useRef();
-  const story = useStory(getStoryId(props, context), context);
-
-  // Ensure we wait until this story is properly rendered in the docs context.
-  // The purpose of this is to ensure that that the `DOCS_RENDERED` event isn't emitted
-  // until all stories on the page have rendered.
-  const { id: storyId, registerRenderingStory } = context;
-  const storyRendered = useMemo(registerRenderingStory, [storyId]);
-  useEffect(() => {
-    if (story) storyRendered();
-  }, [story]);
+  const storyId = getStoryId(props, context);
+  const story = useStory(storyId, context);
 
   useEffect(() => {
     let cleanup: () => void;
@@ -139,7 +143,13 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   if (!story) {
     return <div>Loading...</div>;
   }
-  const storyProps = getStoryProps(props, story, context);
+
+  // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
+  // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
+  // `Preview.renderStoryToDom()` which itself emits the event.
+  const storyProps = getStoryProps(props, story, context, () =>
+    channel.emit(Events.STORY_RENDERED, storyId)
+  );
   if (!storyProps) {
     return null;
   }
