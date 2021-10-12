@@ -90,6 +90,12 @@ export interface StoryIndexEntry {
   importPath: Path;
 }
 
+export interface V2CompatIndexEntry extends StoryIndexEntry {
+  kind: StoryIndexEntry['title'];
+  story: StoryIndexEntry['name'];
+  parameters: Parameters;
+}
+
 export interface StoryIndex {
   v: number;
   stories: Record<StoryId, StoryIndexEntry>;
