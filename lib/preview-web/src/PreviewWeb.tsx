@@ -359,7 +359,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
     });
-    const renderingStoryPromises: Promise<void>[] = [];
     const docsContext = {
       id,
       title,
