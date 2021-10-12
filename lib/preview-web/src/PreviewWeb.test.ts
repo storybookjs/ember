@@ -71,7 +71,7 @@ beforeEach(() => {
   mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
   addons.setChannel(mockChannel as any);
-  mockFetchResult = { status: 200, json: mockStoryIndex };
+  mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
 });
 
 describe('PreviewWeb', () => {
