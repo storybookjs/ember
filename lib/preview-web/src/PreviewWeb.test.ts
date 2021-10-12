@@ -216,6 +216,7 @@ describe('PreviewWeb', () => {
             stories: {
               ...storyIndex.stories,
               'component-one--d': {
+                id: 'component-one--d',
                 title: 'Component One',
                 name: 'D',
                 importPath: './src/ComponentOne.stories.js',
@@ -261,6 +262,7 @@ describe('PreviewWeb', () => {
             stories: {
               ...storyIndex.stories,
               'component-one--d': {
+                id: 'component-one--d',
                 title: 'Component One',
                 name: 'D',
                 importPath: './src/ComponentOne.stories.js',
@@ -459,6 +461,7 @@ describe('PreviewWeb', () => {
 
         const preview = new PreviewWeb();
         await preview.initialize({ importFn, getProjectAnnotations });
+
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(
@@ -522,28 +525,6 @@ describe('PreviewWeb', () => {
 
         await waitForRender();
 
-        expect(mockChannel.emit).toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
-      });
-
-      it('emits DOCS_RENDERED after all stories are rendered', async () => {
-        document.location.search = '?id=component-one--a&viewMode=docs';
-        const [reactDomGate, openReactDomGate] = createGate();
-
-        let rendered;
-        (ReactDOM.render as jest.Mock).mockImplementationOnce((docsElement, element, cb) => {
-          rendered = docsElement.props.context.registerRenderingStory();
-          openReactDomGate();
-          cb();
-        });
-
-        await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
-
-        // Wait for `ReactDOM.render()` to be called. We should still be waiting for the story
-        await reactDomGate;
-        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
-
-        rendered();
-        await waitForRender();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.DOCS_RENDERED, 'component-one--a');
       });
     });

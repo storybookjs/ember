@@ -302,10 +302,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   //     in which case we render it to the root element, OR
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
-  async renderSelection({
-    persistedArgs,
-    forceCleanRender = false,
-  }: { persistedArgs?: Args; forceCleanRender?: boolean } = {}) {
+  async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
     if (!this.urlStore.selection) {
       throw new Error('Cannot render story as no selection was made');
     }
@@ -335,7 +332,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (!storyChanged && !implementationChanged && !viewModeChanged && !forceCleanRender) {
+    if (this.previousStory && !storyChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -375,7 +372,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
     });
-    const renderingStoryPromises: Promise<void>[] = [];
     const docsContext = {
       id,
       title,
@@ -385,17 +381,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       loadStory: (storyId: StoryId) => this.storyStore.loadStory({ storyId }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
-      // Keep track of the stories that are rendered by the <Story/> component and don't emit
-      // the DOCS_RENDERED event(below) until they have all marked themselves as rendered.
-      registerRenderingStory: () => {
-        let rendered: (v: void) => void;
-        renderingStoryPromises.push(
-          new Promise((resolve) => {
-            rendered = resolve;
-          })
-        );
-        return rendered;
-      },
       getStoryContext: (renderedStory: Story<TFramework>) =>
         ({
           ...this.storyStore.getStoryContext(renderedStory),
@@ -421,10 +406,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         </DocsContainer>
       );
 
-      ReactDOM.render(docsElement, element, async () => {
-        await Promise.all(renderingStoryPromises);
-        this.channel.emit(Events.DOCS_RENDERED, id);
-      });
+      ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
     };
 
     // Initially render right away
@@ -442,7 +424,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.channel.on(Events.RESET_STORY_ARGS, render);
     }
 
-    return () => {
+    return async () => {
       if (!global?.FEATURES?.modernInlineRender) {
         this.channel.off(Events.UPDATE_GLOBALS, render);
         this.channel.off(Events.UPDATE_STORY_ARGS, render);
@@ -633,7 +615,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    if (previousViewMode === 'story') {
+    if (previousViewMode) {
       await this.previousCleanup();
     }
   }
