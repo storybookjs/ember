@@ -50,21 +50,21 @@ export function normalizeStory<TFramework extends AnyFramework>(
     storyObject.storyName ||
     story?.name ||
     exportName;
-  const decorators = storyObject.decorators || story?.decorators;
-  const parameters = storyObject.parameters || story?.parameters;
-  const args = storyObject.args || story?.args;
-  const argTypes = storyObject.argTypes || story?.argTypes;
-  const loaders = storyObject.loaders || story?.loaders;
+  const decorators = [...(storyObject.decorators || []), ...(story?.decorators || [])];
+  const parameters = { ...story?.parameters, ...storyObject.parameters };
+  const args = { ...story?.args, ...storyObject.args };
+  const argTypes = { ...story?.argTypes, ...storyObject.argTypes };
+  const loaders = [...(storyObject.loaders || []), ...(story?.loaders || [])];
   const { render, play } = storyObject;
 
   return {
     id,
     name,
-    ...(decorators && { decorators }),
-    ...(parameters && { parameters }),
-    ...(args && { args }),
-    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    ...(loaders && { loaders }),
+    decorators,
+    parameters,
+    args,
+    argTypes: normalizeInputTypes(argTypes),
+    loaders,
     ...(render && { render }),
     ...(userStoryFn && { userStoryFn }),
     ...(play && { play }),

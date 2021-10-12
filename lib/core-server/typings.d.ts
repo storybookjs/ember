@@ -8,6 +8,7 @@ declare module '@storybook/ui/paths';
 declare module 'better-opn';
 declare module '@storybook/ui';
 declare module '@discoveryjs/json-ext';
+declare module 'watchpack';
 
 declare module 'file-system-cache' {
   export interface Options {

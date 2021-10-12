@@ -5,9 +5,11 @@ import {
   StoriesRaw,
   StoryInput,
   StoriesHash,
+  transformStoryIndexToStoriesHash,
+  StoryIndexStory,
 } from '../lib/stories';
 
-import { ModuleFn } from '../index';
+import { ModuleFn, StoryId } from '../index';
 
 const { location, fetch } = global;
 
@@ -19,6 +21,7 @@ type Versions = Record<string, string>;
 
 export type SetRefData = Partial<
   Omit<ComposedRef, 'stories'> & {
+    v: number;
     stories?: StoriesRaw;
   }
 >;
@@ -148,7 +151,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
       //
       // then we fetch metadata if the above fetch succeeded
 
-      const loadedData: { error?: Error; stories?: StoriesRaw; loginUrl?: string } = {};
+      const loadedData: { error?: Error; v?: number; stories?: StoriesRaw; loginUrl?: string } = {};
       const query = version ? `?version=${version}` : '';
       const credentials = isPublic ? 'omit' : 'include';
 
@@ -209,18 +212,28 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
       return refs;
     },
 
-    setRef: (id, { stories, ...rest }, ready = false) => {
+    setRef: (id, { stories, v, ...rest }, ready = false) => {
       if (singleStory) return;
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
-      const after = stories
-        ? addRefIds(
-            transformStoriesRawToStoriesHash(map(stories, ref, { storyMapper }), { provider }),
-            ref
-          )
-        : undefined;
 
-      api.updateRef(id, { stories: after, ...rest, ready });
+      let storiesHash: StoriesHash;
+
+      if (stories) {
+        if (v === 2) {
+          storiesHash = transformStoriesRawToStoriesHash(map(stories, ref, { storyMapper }), {
+            provider,
+          });
+        } else if (!v) {
+          throw new Error('Composition: Missing stories.json version');
+        } else {
+          const index = (stories as unknown) as Record<StoryId, StoryIndexStory>;
+          storiesHash = transformStoryIndexToStoriesHash({ v, stories: index }, { provider });
+        }
+        storiesHash = addRefIds(storiesHash, ref);
+      }
+
+      api.updateRef(id, { stories: storiesHash, ...rest, ready });
     },
 
     updateRef: (id, data) => {

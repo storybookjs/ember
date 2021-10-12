@@ -30,6 +30,7 @@ import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
+import { StoryIndex } from '.';
 
 type MaybePromise<T> = Promise<T> | T;
 
@@ -78,16 +79,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   prepareStoryWithCache: typeof prepareStory;
 
-  constructor({
-    importFn,
-    fetchStoryIndex,
-  }: {
-    importFn: ModuleImportFn;
-    fetchStoryIndex: ConstructorParameters<typeof StoryIndexStore>[0]['fetchStoryIndex'];
-  }) {
-    this.storyIndex = new StoryIndexStore({ fetchStoryIndex });
-    this.importFn = importFn;
-
+  constructor() {
     this.globals = new GlobalsStore();
     this.args = new ArgsStore();
     this.hooks = {};
@@ -99,57 +91,51 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
   }
 
-  // See note in PreviewWeb about the 'sync' init path.
-  initialize(options: {
-    projectAnnotations: ProjectAnnotations<TFramework>;
-    sync: false;
-    cacheAllCSFFiles?: boolean;
-  }): Promise<void>;
-
-  initialize(options: {
-    projectAnnotations: ProjectAnnotations<TFramework>;
-    sync: true;
-    cacheAllCSFFiles?: boolean;
-  }): void;
-
   initialize({
+    getStoryIndex,
+    importFn,
     projectAnnotations,
-    sync = false,
-    cacheAllCSFFiles = false,
+    cache = false,
   }: {
+    getStoryIndex: () => StoryIndex;
+    importFn: ModuleImportFn;
     projectAnnotations: ProjectAnnotations<TFramework>;
-    sync?: boolean;
-    cacheAllCSFFiles?: boolean;
-  }): MaybePromise<void> {
+    cache?: boolean;
+  }): void {
     this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+
+    // Frustratingly we need to pass getStoryIndex (rather than just storyIndex), as
+    // we cannot call getStoryIndex on the v6 StoryStoreFacade until the project annotations are set above.
+    this.storyIndex = new StoryIndexStore(getStoryIndex());
+    this.importFn = importFn;
+
     const { globals, globalTypes } = this.projectAnnotations;
     this.globals.initialize({ globals, globalTypes });
 
-    if (sync) {
-      this.storyIndex.initialize({ sync: true });
-      if (cacheAllCSFFiles) {
-        this.cacheAllCSFFiles(true);
-      }
-      return null;
-    }
-
-    return this.storyIndex
-      .initialize({ sync: false })
-      .then(() => (cacheAllCSFFiles ? this.cacheAllCSFFiles(false) : null));
+    if (cache) this.cacheAllCSFFiles(true);
   }
 
+  // This means the preview.[tj]s file has changed.
+  // By changing `this.projectAnnotations, we implicitly invalidate the `prepareStoryWithCache`
   updateProjectAnnotations(projectAnnotations: ProjectAnnotations<TFramework>) {
     this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
     const { globals, globalTypes } = projectAnnotations;
     this.globals.resetOnProjectAnnotationsChange({ globals, globalTypes });
   }
 
-  // This means that one of the CSF functions has changed.
-  async onImportFnChanged({ importFn }: { importFn: ModuleImportFn }) {
-    this.importFn = importFn;
-
-    // We need to refetch the stories list as it may have changed too
-    await this.storyIndex.cache(false);
+  // This means that one of the CSF files has changed.
+  // If the `importFn` has changed, we will invalidate both caches.
+  // If the `storyIndex` data has changed, we may or may not invalidate the caches, depending
+  // on whether we've loaded the relevant files yet.
+  async onStoriesChanged({
+    importFn,
+    storyIndex,
+  }: {
+    importFn?: ModuleImportFn;
+    storyIndex?: StoryIndex;
+  }) {
+    if (importFn) this.importFn = importFn;
+    if (storyIndex) this.storyIndex.stories = storyIndex.stories;
 
     if (this.cachedCSFFiles) {
       await this.cacheAllCSFFiles(false);
@@ -298,38 +284,37 @@ export class StoryStore<TFramework extends AnyFramework> {
       throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
     }
 
-    return Object.entries(this.storyIndex.stories)
-      .map(([storyId, { importPath }]) => {
-        const csfFile = this.cachedCSFFiles[importPath];
-        const story = this.storyFromCSFFile({ storyId, csfFile });
+    return Object.entries(this.storyIndex.stories).reduce((acc, [storyId, { importPath }]) => {
+      const csfFile = this.cachedCSFFiles[importPath];
+      const story = this.storyFromCSFFile({ storyId, csfFile });
 
-        if (!options.includeDocsOnly && story.parameters.docsOnly) {
-          return false;
-        }
+      if (!options.includeDocsOnly && story.parameters.docsOnly) {
+        return acc;
+      }
 
-        return Object.entries(story).reduce(
-          (acc, [key, value]) => {
-            if (typeof value === 'function') {
-              return acc;
-            }
-            if (['hooks'].includes(key)) {
-              return acc;
-            }
-            if (Array.isArray(value)) {
-              return Object.assign(acc, { [key]: value.slice().sort() });
-            }
-            return Object.assign(acc, { [key]: value });
-          },
-          { args: story.initialArgs }
-        );
-      })
-      .filter(Boolean);
+      acc[storyId] = Object.entries(story).reduce(
+        (storyAcc, [key, value]) => {
+          if (typeof value === 'function') {
+            return storyAcc;
+          }
+          if (['hooks'].includes(key)) {
+            return storyAcc;
+          }
+          if (Array.isArray(value)) {
+            return Object.assign(storyAcc, { [key]: value.slice().sort() });
+          }
+          return Object.assign(storyAcc, { [key]: value });
+        },
+        { args: story.initialArgs }
+      );
+      return acc;
+    }, {} as Record<string, any>);
   }
 
   getSetStoriesPayload() {
     const stories = this.extract({ includeDocsOnly: true });
 
-    const kindParameters: Parameters = stories.reduce(
+    const kindParameters: Parameters = Object.values(stories).reduce(
       (acc: Parameters, { title }: { title: ComponentTitle }) => {
         acc[title] = {};
         return acc;
@@ -362,7 +347,7 @@ export class StoryStore<TFramework extends AnyFramework> {
   };
 
   raw(): BoundStory<TFramework>[] {
-    return this.extract().map(({ id }: { id: StoryId }) => this.fromId(id));
+    return Object.values(this.extract()).map(({ id }: { id: StoryId }) => this.fromId(id));
   }
 
   fromId(storyId: StoryId): BoundStory<TFramework> {

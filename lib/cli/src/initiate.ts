@@ -2,14 +2,7 @@ import { UpdateNotifier, Package } from 'update-notifier';
 import chalk from 'chalk';
 import prompts from 'prompts';
 import { detect, isStorybookInstalled, detectLanguage } from './detect';
-import {
-  installableProjectTypes,
-  ProjectType,
-  StoryFormat,
-  SupportedLanguage,
-  Builder,
-  CoreBuilder,
-} from './project_types';
+import { installableProjectTypes, ProjectType, Builder, CoreBuilder } from './project_types';
 import { commandLog, codeLog, paddedLog } from './helpers';
 import angularGenerator from './generators/ANGULAR';
 import aureliaGenerator from './generators/AURELIA';
@@ -33,7 +26,6 @@ import preactGenerator from './generators/PREACT';
 import svelteGenerator from './generators/SVELTE';
 import raxGenerator from './generators/RAX';
 import serverGenerator from './generators/SERVER';
-import { warn } from './warn';
 import { JsPackageManagerFactory, readPackageJson } from './js-package-manager';
 import { NpmOptions } from './NpmOptions';
 
@@ -45,7 +37,6 @@ type CommandOptions = {
   force?: any;
   html?: boolean;
   skipInstall?: boolean;
-  storyFormat?: StoryFormat;
   parser?: string;
   yes?: boolean;
   builder?: Builder;
@@ -62,14 +53,8 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
   };
 
   const language = detectLanguage();
-  const hasTSDependency = language === SupportedLanguage.TYPESCRIPT;
-
-  warn({ hasTSDependency });
-
-  const defaultStoryFormat = hasTSDependency ? StoryFormat.CSF_TYPESCRIPT : StoryFormat.CSF;
 
   const generatorOptions = {
-    storyFormat: options.storyFormat || defaultStoryFormat,
     language,
     builder: options.builder || CoreBuilder.Webpack4,
     linkable: !!options.linkable,
@@ -132,9 +117,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
               },
             ]) as Promise<{ server: boolean }>)
         )
-          .then(({ server }) =>
-            reactNativeGenerator(packageManager, npmOptions, server, generatorOptions)
-          )
+          .then(({ server }) => reactNativeGenerator(packageManager, npmOptions, server))
           .then(commandLog('Adding Storybook support to your "React Native" app'))
           .then(end)
           .then(() => {
@@ -343,16 +326,8 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   }
   done();
 
-  const cleanOptions = { ...options };
-  if (options.storyFormat === StoryFormat.MDX) {
-    logger.warn(
-      '   The MDX CLI template is deprecated. The JS and TS templates already include MDX examples!'
-    );
-    cleanOptions.storyFormat = undefined;
-  }
-
   return installStorybook(projectType, {
-    ...cleanOptions,
+    ...options,
     ...(isEsm ? { commonJs: true } : undefined),
   });
 }

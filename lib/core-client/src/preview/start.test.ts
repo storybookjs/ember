@@ -73,8 +73,8 @@ describe('start', () => {
             "Component A": Object {},
             "Component B": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -93,7 +93,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-a--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -112,7 +112,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-b--story-three": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -131,7 +131,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component B",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -170,8 +170,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component A": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -192,7 +192,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -361,8 +361,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component A": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--default": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -381,7 +381,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-a--new": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -400,7 +400,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -437,8 +437,8 @@ describe('start', () => {
             "Component A": Object {},
             "Component B": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--default": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -457,7 +457,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-b--default": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -476,7 +476,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component B",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -493,8 +493,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component A": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--default": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -513,7 +513,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -545,8 +545,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-c--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -565,7 +565,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
+            "component-c--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -584,7 +584,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -679,8 +679,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-c--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -699,26 +699,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
-              "argTypes": Object {},
-              "args": Object {},
-              "component": undefined,
-              "componentId": "component-c",
-              "id": "component-c--story-two",
-              "initialArgs": Object {},
-              "kind": "Component C",
-              "name": "Story Two",
-              "parameters": Object {
-                "__isArgsStory": false,
-                "fileName": "exports-map-0",
-                "framework": "test",
-              },
-              "playFunction": undefined,
-              "story": "Story Two",
-              "subcomponents": undefined,
-              "title": "Component C",
-            },
-            Object {
+            "component-c--story-three": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -733,11 +714,30 @@ describe('start', () => {
                 "framework": "test",
               },
               "playFunction": undefined,
+              "story": "Story Two",
+              "subcomponents": undefined,
+              "title": "Component C",
+            },
+            "component-c--story-two": Object {
+              "argTypes": Object {},
+              "args": Object {},
+              "component": undefined,
+              "componentId": "component-c",
+              "id": "component-c--story-two",
+              "initialArgs": Object {},
+              "kind": "Component C",
+              "name": "Story Two",
+              "parameters": Object {
+                "__isArgsStory": false,
+                "fileName": "exports-map-0",
+                "framework": "test",
+              },
+              "playFunction": undefined,
               "story": "Story Three",
               "subcomponents": undefined,
               "title": "Component C",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -775,8 +775,8 @@ describe('start', () => {
             "Component C": Object {},
             "Component D": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-c--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -795,7 +795,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
+            "component-c--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -814,7 +814,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
+            "component-d--story-four": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -833,7 +833,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component D",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -852,8 +852,8 @@ describe('start', () => {
           "kindParameters": Object {
             "Component C": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-c--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -872,7 +872,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
+            "component-c--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -891,7 +891,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -928,8 +928,8 @@ describe('start', () => {
             "Component B": Object {},
             "Component C": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-a--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -948,7 +948,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-a--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -967,7 +967,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component A",
             },
-            Object {
+            "component-b--story-three": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -986,7 +986,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component B",
             },
-            Object {
+            "component-c--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -1005,7 +1005,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-            Object {
+            "component-c--story-two": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": undefined,
@@ -1024,7 +1024,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "Component C",
             },
-          ],
+          },
           "v": 2,
         }
       `);
@@ -1172,8 +1172,8 @@ describe('start', () => {
           "kindParameters": Object {
             "auto-title": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "auto-title--story-one": Object {
               "argTypes": Object {},
               "args": Object {},
               "component": "Component D",
@@ -1192,7 +1192,7 @@ describe('start', () => {
               "subcomponents": undefined,
               "title": "auto-title",
             },
-          ],
+          },
           "v": 2,
         }
       `);

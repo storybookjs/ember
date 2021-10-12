@@ -78,14 +78,6 @@ export const SUPPORTED_FRAMEWORKS: SupportedFrameworks[] = [
   'aurelia',
 ];
 
-export enum StoryFormat {
-  CSF = 'csf',
-  /** @deprecated only template-csf left for some frameworks */
-  CSF_TYPESCRIPT = 'csf-ts',
-  /** @deprecated only template-csf left for some frameworks */
-  MDX = 'mdx',
-}
-
 export enum CoreBuilder {
   Webpack4 = 'webpack4',
   Webpack5 = 'webpack5',
