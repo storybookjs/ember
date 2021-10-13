@@ -1,4 +1,5 @@
-import { RenderContext } from '@storybook/store';
+import global from 'global';
+import { RenderContext, noTargetArgs } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
 
 import { renderNgApp } from './angular/helpers';
@@ -6,9 +7,15 @@ import { AngularFramework } from './types-6-0';
 
 import { RendererFactory } from './angular-beta/RendererFactory';
 
+const { FEATURES } = global;
+
 export const rendererFactory = new RendererFactory();
 
-export const render: ArgsStoryFn<AngularFramework> = (props) => ({ props });
+export const render: ArgsStoryFn<AngularFramework> = (args, context) => {
+  const renderedArgs = FEATURES.argTypeTarget ? noTargetArgs(context) : args;
+
+  return { props: renderedArgs };
+};
 
 export async function renderToDOM(
   {

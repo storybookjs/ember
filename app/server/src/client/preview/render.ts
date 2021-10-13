@@ -1,12 +1,12 @@
 /* eslint-disable no-param-reassign */
 import global from 'global';
 import dedent from 'ts-dedent';
-import { RenderContext } from '@storybook/store';
+import { RenderContext, noTargetArgs } from '@storybook/store';
 import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
-import { StoryFn, Args, ArgTypes } from '@storybook/csf';
+import { StoryFn, Args, ArgTypes, StoryContext } from '@storybook/csf';
 import { FetchStoryHtmlType, ServerFramework } from './types';
 
-const { fetch, Node } = global;
+const { fetch, Node, FEATURES } = global;
 
 const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, storyContext) => {
   const fetchUrl = new URL(`${url}/${path}`);
@@ -16,11 +16,13 @@ const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, stor
   return response.text();
 };
 
-const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
-  const storyArgs = { ...args };
+const buildStoryArgs = (context: StoryContext<ServerFramework>) => {
+  const renderedArgs = FEATURES.argTypeTarget ? noTargetArgs(context) : context.args;
 
-  Object.keys(argTypes).forEach((key: string) => {
-    const argType = argTypes[key];
+  const storyArgs = { ...renderedArgs };
+
+  Object.keys(context.argTypes).forEach((key: string) => {
+    const argType = context.argTypes[key];
     const { control } = argType;
     const controlType = control && control.type.toLowerCase();
     const argValue = storyArgs[key];
@@ -52,17 +54,16 @@ export async function renderToDOM(
     forceRemount,
     storyFn,
     storyContext,
-    storyContext: { parameters, args, argTypes },
   }: RenderContext<ServerFramework>,
   domElement: HTMLElement
 ) {
   // Some addons wrap the storyFn so we need to call it even though Server doesn't need the answer
   storyFn();
-  const storyArgs = buildStoryArgs(args, argTypes);
+  const storyArgs = buildStoryArgs(storyContext);
 
   const {
     server: { url, id: storyId, fetchStoryHtml = defaultFetchStoryHtml, params },
-  } = parameters;
+  } = storyContext.parameters;
 
   const fetchId = storyId || id;
   const storyParams = { ...params, ...storyArgs };
