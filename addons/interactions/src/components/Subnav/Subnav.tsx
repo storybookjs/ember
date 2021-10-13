@@ -35,7 +35,7 @@ export interface SubnavProps {
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: 4,
   padding: 6,
-  color: theme.color.dark,
+  color: theme.textMutedColor,
   '&:not(:disabled)': {
     '&:hover,&:focus-visible': {
       color: theme.color.secondary,
