@@ -52,9 +52,9 @@ function createController() {
   };
 }
 
-type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
+export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
 type MaybePromise<T> = Promise<T> | T;
-type StoryCleanupFn = () => Promise<void>;
+type StoryCleanupFn = () => MaybePromise<void>;
 
 const INVALIDATE = 'INVALIDATE';
 
@@ -471,17 +471,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     let phase: RenderPhase;
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
-    const runPhase = async (phaseName: RenderPhase, asyncFn: () => MaybePromise<void>) => {
+    const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
       phase = phaseName;
-      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phaseName, storyId: id });
-      await asyncFn();
+      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
+      await phaseFn();
       if (controller.signal.aborted) {
-        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'aborted', storyId: id });
+        phase = 'aborted';
+        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
       }
     };
 
     let loadedContext: StoryContext<TFramework>;
-    const renderStory = async ({ initial = false, forceRemount = false } = {}) => {
+    const render = async ({ initial = false, forceRemount = false } = {}) => {
       if (forceRemount) {
         // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
         // play function might continue execution regardless, which we deal with during cleanup.
@@ -558,19 +559,19 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // function below right away, so if the user changes story during the first render we can cancel
     // it without having to first wait for it to finish.
     // Whenever the selection changes we want to force the component to be remounted.
-    renderStory({ initial: true, forceRemount: true });
+    render({ initial: true, forceRemount: true });
 
     const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) renderStory({ forceRemount: true });
+      if (storyId === story.id) render({ forceRemount: true });
     };
     const rerenderStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
-      if (storyId === story.id) renderStory();
+      if (storyId === story.id) render();
     };
 
     // Listen to events and re-render story
     // Don't forget to unsubscribe on cleanup
-    this.channel.on(Events.UPDATE_GLOBALS, renderStory);
-    this.channel.on(Events.FORCE_RE_RENDER, renderStory);
+    this.channel.on(Events.UPDATE_GLOBALS, render);
+    this.channel.on(Events.FORCE_RE_RENDER, render);
     this.channel.on(Events.FORCE_REMOUNT, remountStoryIfMatches);
     this.channel.on(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
     this.channel.on(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
@@ -585,8 +586,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       controller.abort();
 
       this.storyStore.cleanupStory(story);
-      this.channel.off(Events.UPDATE_GLOBALS, renderStory);
-      this.channel.off(Events.FORCE_RE_RENDER, renderStory);
+      this.channel.off(Events.UPDATE_GLOBALS, render);
+      this.channel.off(Events.FORCE_RE_RENDER, render);
       this.channel.off(Events.FORCE_REMOUNT, remountStoryIfMatches);
       this.channel.off(Events.UPDATE_STORY_ARGS, rerenderStoryIfMatches);
       this.channel.off(Events.RESET_STORY_ARGS, rerenderStoryIfMatches);
@@ -594,7 +595,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // Check if we're done rendering/playing. If not, we may have to reload the page.
       if (!isPending()) return;
 
-      // Wait for the next tick to handle the abort, then try again.
+      // Wait several ticks that may be needed to handle the abort, then try again.
+      // Note that there's a max of 5 nested timeouts before they're no longer "instant".
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      if (!isPending()) return;
+
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      if (!isPending()) return;
+
       await new Promise((resolve) => setTimeout(resolve, 0));
       if (!isPending()) return;
 
@@ -615,7 +623,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       ReactDOM.unmountComponentAtNode(this.view.docsRoot());
     }
 
-    if (previousViewMode) {
+    if (this.previousCleanup) {
       await this.previousCleanup();
     }
   }
