@@ -966,6 +966,70 @@ describe('PreviewWeb', () => {
     });
   });
 
+  describe('on FORCE_REMOUNT', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('remounts the story with the same args', async () => {
+      document.location.search = '?id=component-one--a';
+      await createAndRenderPreview();
+
+      mockChannel.emit.mockClear();
+      projectAnnotations.renderToDOM.mockClear();
+      emitter.emit(Events.FORCE_REMOUNT, { storyId: 'component-one--a' });
+      await waitForRender();
+
+      expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({ forceRemount: true }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
+    });
+
+    it('aborts render function for initial story', async () => {
+      const [gate, openGate] = createGate();
+
+      document.location.search = '?id=component-one--a';
+      projectAnnotations.renderToDOM.mockImplementationOnce(async () => gate);
+      await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
+      await waitForRenderPhase('rendering');
+
+      expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({
+          forceRemount: true,
+          storyContext: expect.objectContaining({
+            id: 'component-one--a',
+            loaded: { l: 7 },
+          }),
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.FORCE_REMOUNT, { storyId: 'component-one--a' });
+      await waitForSetCurrentStory();
+
+      // Now let the renderToDOM call resolve
+      openGate();
+      await waitForRenderPhase('aborted');
+      await waitForSetCurrentStory();
+
+      await waitForRenderPhase('rendering');
+      expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(2);
+
+      await waitForRenderPhase('playing');
+      expect(componentOneExports.a.play).toHaveBeenCalledTimes(1);
+
+      await waitForRenderPhase('completed');
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+
+      await waitForQuiescence();
+    });
+  });
+
   describe('onSetCurrentStory', () => {
     beforeEach(() => {
       jest.useFakeTimers();

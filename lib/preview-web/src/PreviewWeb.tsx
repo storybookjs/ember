@@ -466,32 +466,35 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     element: Element;
   }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
-    let controller = createController();
 
     let phase: RenderPhase;
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
-    const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
-      phase = phaseName;
-      this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
-      await phaseFn();
-      if (controller.signal.aborted) {
-        phase = 'aborted';
-        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
-      }
-    };
-
+    let controller: AbortController;
     let loadedContext: StoryContext<TFramework>;
     const render = async ({ initial = false, forceRemount = false } = {}) => {
-      if (forceRemount) {
+      let ctrl = controller; // we also need a stable reference within this closure
+
+      if (initial || forceRemount) {
         // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
         // play function might continue execution regardless, which we deal with during cleanup.
         // Note we can't reload the page here because there's a legitimate use case for forceRemount
         // while in the 'playing' phase: the play function may never resolve during debugging, while
         // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
-        controller.abort();
-        controller = createController();
+        if (ctrl) ctrl.abort();
+        ctrl = createController();
+        controller = ctrl;
       }
+
+      const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
+        phase = phaseName;
+        this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
+        await phaseFn();
+        if (ctrl.signal.aborted) {
+          phase = 'aborted';
+          this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
+        }
+      };
 
       if (initial) {
         const storyContext = this.storyStore.getStoryContext(story);
@@ -513,7 +516,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
               viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
             } as StoryContextForLoaders<TFramework>);
           });
-          if (controller.signal.aborted) return;
+          if (ctrl.signal.aborted) return;
         } catch (err) {
           renderContextWithoutStoryContext.showException(err);
           return;
@@ -529,7 +532,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const renderStoryContext: StoryContext<TFramework> = {
         ...loadedContext,
         ...this.storyStore.getStoryContext(story),
-        abortSignal: controller.signal,
+        abortSignal: ctrl.signal,
         canvasElement: element,
       };
       const renderContext: RenderContext<TFramework> = {
@@ -542,11 +545,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
       try {
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
-        if (controller.signal.aborted) return;
+        if (ctrl.signal.aborted) return;
 
         if (forceRemount && playFunction) {
           await runPhase('playing', () => playFunction(renderContext.storyContext));
-          if (controller.signal.aborted) return;
+          if (ctrl.signal.aborted) return;
         }
 
         await runPhase('completed', () => this.channel.emit(Events.STORY_RENDERED, id));
