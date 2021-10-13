@@ -34,14 +34,18 @@ export function start<TFramework extends AnyFramework>(
   addons.setChannel(channel);
 
   const clientApi = new ClientApi<TFramework>();
-  const preview = new PreviewWeb<TFramework>({
-    importFn: (path: Path) => clientApi.importFn(path),
-    fetchStoryIndex: () => clientApi.fetchStoryIndex(),
-  });
+  const preview = new PreviewWeb<TFramework>();
   let initialized = false;
+
+  const importFn = (path: Path) => clientApi.importFn(path);
+  function onStoriesChanged() {
+    const storyIndex = clientApi.getStoryIndex();
+    preview.onStoriesChanged({ storyIndex, importFn });
+  }
+
   // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
   // direct reference to `PreviewWeb`, so we need to patch in bits
-  clientApi.onImportFnChanged = preview.onImportFnChanged.bind(preview);
+  clientApi.onImportFnChanged = onStoriesChanged;
   clientApi.storyStore = preview.storyStore;
 
   if (globalWindow) {
@@ -94,11 +98,16 @@ export function start<TFramework extends AnyFramework>(
       };
 
       if (!initialized) {
-        preview.initialize({ getProjectAnnotations, cacheAllCSFFiles: true, sync: true });
+        preview.initialize({
+          getStoryIndex: () => clientApi.getStoryIndex(),
+          importFn,
+          getProjectAnnotations,
+        });
         initialized = true;
       } else {
+        // TODO -- why don't we care about the new annotations?
         getProjectAnnotations();
-        preview.onImportFnChanged({ importFn: (path: Path) => clientApi.importFn(path) });
+        onStoriesChanged();
       }
     },
   };

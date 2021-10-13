@@ -24,7 +24,6 @@ function callTestMethodGlobals(
 
 const isDisabled = (parameter: any) =>
   parameter === false || (parameter && parameter.disable === true);
-
 function testStorySnapshots(options: StoryshotsOptions = {}) {
   if (typeof describe !== 'function') {
     throw new Error('testStorySnapshots is intended only to be used inside jest');

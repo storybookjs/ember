@@ -25,7 +25,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   const craVersion = semver.coerce(
     packageManager.retrievePackageJson().dependencies['react-scripts']
   )?.version;
-  const isCra5 = semver.gte(craVersion, '5.0.0');
+  const isCra5 = craVersion && semver.gte(craVersion, '5.0.0');
   const updatedOptions = isCra5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
   // `@storybook/preset-create-react-app` has `@storybook/node-logger` as peerDep
   const extraPackages = ['@storybook/node-logger'];

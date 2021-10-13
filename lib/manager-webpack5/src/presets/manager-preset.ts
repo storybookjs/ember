@@ -37,6 +37,7 @@ export async function managerWebpack(
     releaseNotesData,
     presets,
     modern,
+    features,
   }: Options & ManagerWebpackOptions
 ): Promise<Configuration> {
   const envs = await presets.apply<Record<string, string>>('env');
@@ -98,6 +99,7 @@ export async function managerWebpack(
           globals: {
             CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
+            FEATURES: features,
             VERSIONCHECK: JSON.stringify(versionCheck),
             RELEASE_NOTES_DATA: JSON.stringify(releaseNotesData),
             DOCS_MODE: docsMode, // global docs mode

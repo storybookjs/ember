@@ -103,11 +103,11 @@ For additional help, join us in the [Storybook Discord](https://discord.gg/story
 | [Ember](app/ember)                                             | [v6.3.x](https://storybookjs.netlify.com/ember-cli/)                                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                            |
 | [Svelte](app/svelte)                                           | [v6.3.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)                              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                         |
 | [Preact](app/preact)                                           | [v6.3.x](https://storybookjs.netlify.com/preact-kitchen-sink/)                              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                         |
-| [Marionette.js](app/marionette)                                | -                                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)          |
-| [Mithril](app/mithril)                                         | [v6.3.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)                             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                      |
-| [Marko](app/marko)                                             | [v6.3.x](https://storybookjs.netlify.com/marko-cli/)                                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                            |
-| [Riot](app/riot)                                               | [v6.3.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                               |
-| [Rax](app/rax)                                                 | [v6.3.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                                  |
+| [Marionette.js](https://github.com/storybookjs/marionette)                                | -                                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)          |
+| [Mithril](https://github.com/storybookjs/mithril)                                         | [v6.3.x](https://storybookjs.netlify.com/mithril-kitchen-sink/)                             | [![Mithril](https://img.shields.io/npm/dm/@storybook/mithril.svg)](app/mithril)                      |
+| [Marko](https://github.com/storybookjs/marko)                                             | [v6.3.x](https://storybookjs.netlify.com/marko-cli/)                                        | [![Marko](https://img.shields.io/npm/dm/@storybook/marko.svg)](app/marko)                            |
+| [Riot](https://github.com/storybookjs/riot)                                               | [v6.3.x](https://storybookjs.netlify.com/riot-kitchen-sink/)                                | [![Riot](https://img.shields.io/npm/dm/@storybook/riot.svg)](app/riot)                               |
+| [Rax](https://github.com/storybookjs/rax)                                                 | [v6.3.x](https://storybookjs.netlify.com/rax-kitchen-sink/)                                 | [![Rax](https://img.shields.io/npm/dm/@storybook/rax.svg)](app/rax)                                  |
 | [Android, iOS, Flutter](https://github.com/storybookjs/native) | [v6.3.x](https://storybookjs.github.io/native/@storybook/native-flutter-example/index.html) | [![Rax](https://img.shields.io/npm/dm/@storybook/native.svg)](https://github.com/storybookjs/native) |
 
 ### Sub Projects
@@ -143,8 +143,8 @@ See [Addon / Framework Support Table](https://storybook.js.org/docs/react/api/fr
 
 | Addons                                                                           |                                                            |
 | -------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| [info](https://github.com/storybookjs/deprecated-addons/tree/main/addons/info)   | Annotate stories with extra component usage information    |
-| [notes](https://github.com/storybookjs/deprecated-addons/tree/main/addons/notes) | Annotate Storybook stories with notes                      |
+| [info](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info)   | Annotate stories with extra component usage information    |
+| [notes](https://github.com/storybookjs/deprecated-addons/tree/master/addons/notes) | Annotate Storybook stories with notes                      |
 | [contexts](https://storybook.js.org/addons/@storybook/addon-contexts/)           | Addon for driving your components under dynamic contexts   |
 | [options](https://www.npmjs.com/package/@storybook/addon-options)                | Customize the Storybook UI in code                         |
 | [knobs](https://github.com/storybookjs/addon-knobs)                              | Interactively edit component prop data in the Storybook UI |
