@@ -21,6 +21,8 @@ export class StoryIndexClient extends EventSource {
 
   async fetch() {
     const result = await fetch(PATH);
-    return result.json() as StoryIndex;
+    if (result.status === 200) return result.json() as StoryIndex;
+
+    throw new Error(await result.text());
   }
 }
