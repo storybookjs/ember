@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import { Story, Meta } from '@storybook/web-components';
-import { expect } from '@storybook/jest';
+// import { expect } from '@storybook/jest';
 import { within, userEvent } from '@storybook/testing-library';
 
 import '../../../components/sb-counter';
@@ -20,6 +20,6 @@ Default.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(await canvas.findByText('Increment'));
 
-  const count = await canvas.findByTestId('count');
+  // const count = await canvas.findByTestId('count');
   // await expect(count.textContent).toEqual('1');
 };
