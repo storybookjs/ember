@@ -6,10 +6,12 @@ import {
   AnyFramework,
   ProjectAnnotations,
   ComponentTitle,
+  StoryContextForEnhancers,
   StoryContext,
 } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
 import pick from 'lodash/pick';
+import global from 'global';
 
 import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
@@ -30,7 +32,9 @@ import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
-import { StoryIndex } from '.';
+import { StoryIndex, StoryIndexEntry, V2CompatIndexEntry } from '.';
+
+const { FEATURES } = global;
 
 type MaybePromise<T> = Promise<T> | T;
 
@@ -279,7 +283,9 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.hooks[story.id].clean();
   }
 
-  extract(options: ExtractOptions = { includeDocsOnly: false }): Record<string, any> {
+  extract(
+    options: ExtractOptions = { includeDocsOnly: false }
+  ): Record<StoryId, StoryContextForEnhancers<TFramework>> {
     if (!this.cachedCSFFiles) {
       throw new Error('Cannot call extract() unless you call cacheAllCSFFiles() first.');
     }
@@ -295,9 +301,6 @@ export class StoryStore<TFramework extends AnyFramework> {
       acc[storyId] = Object.entries(story).reduce(
         (storyAcc, [key, value]) => {
           if (typeof value === 'function') {
-            return storyAcc;
-          }
-          if (['hooks'].includes(key)) {
             return storyAcc;
           }
           if (Array.isArray(value)) {
@@ -335,14 +338,25 @@ export class StoryStore<TFramework extends AnyFramework> {
     const value = this.getSetStoriesPayload();
     const allowedParameters = ['fileName', 'docsOnly', 'framework', '__id', '__isArgsStory'];
 
+    const stories: Record<StoryId, StoryIndexEntry | V2CompatIndexEntry> = mapValues(
+      value.stories,
+      (story) => ({
+        ...pick(story, ['id', 'name', 'title']),
+        importPath: this.storyIndex.stories[story.id].importPath,
+        ...(!FEATURES.breakingChangesV7 && {
+          kind: story.title,
+          story: story.name,
+          parameters: {
+            ...pick(story.parameters, allowedParameters),
+            fileName: this.storyIndex.stories[story.id].importPath,
+          },
+        }),
+      })
+    );
+
     return {
-      v: 2,
-      globalParameters: pick(value.globalParameters, allowedParameters),
-      kindParameters: mapValues(value.kindParameters, (v) => pick(v, allowedParameters)),
-      stories: mapValues(value.stories, (v: any) => ({
-        ...pick(v, ['id', 'name', 'kind', 'story']),
-        parameters: pick(v.parameters, allowedParameters),
-      })),
+      v: 3,
+      stories,
     };
   };
 
