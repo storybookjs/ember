@@ -12,6 +12,33 @@
         }
       }
     },
+    "no-confs-project": {
+      "root": "",
+      "architect": {
+        "target-build": {
+          "options": {
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": []
+          }
+        }
+      }
+    },
+    "no-target-conf-project": {
+      "root": "",
+      "architect": {
+        "target-build": {
+          "options": {
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": []
+          },
+          "configurations": {
+            "other-conf": {
+              "styles": ["src/styles.css"]
+            }
+          }
+        }
+      }
+    },
     "target-project": {
       "root": "",
       "architect": {
@@ -19,6 +46,11 @@
           "options": {
             "tsConfig": "src/tsconfig.app.json",
             "assets": []
+          },
+          "configurations": {
+            "target-conf": {
+              "styles": ["src/styles.css"]
+            }
           }
         }
       }
