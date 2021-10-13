@@ -138,7 +138,7 @@ export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun, yes }: Up
   let flags = [];
   if (!dryRun) flags.push('--upgrade');
   flags.push('--target');
-  flags.push(prerelease ? 'greatest' : 'latest');
+  flags.push(prerelease ? '--greatest' : '--latest');
   flags = addExtraFlags(EXTRA_FLAGS, flags, packageManager.retrievePackageJson());
   const check = spawnSync('npx', ['npm-check-updates', '/storybook/', ...flags], {
     stdio: 'pipe',
