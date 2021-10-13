@@ -7,7 +7,7 @@ import React, {
   Fragment,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { RenderContext } from '@storybook/store';
+import { RenderContext, noTargetArgs } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
 
 import { StoryContext } from './types';
@@ -15,13 +15,14 @@ import { ReactFramework } from './types-6-0';
 
 const { FRAMEWORK_OPTIONS } = global;
 
-export const render: ArgsStoryFn<ReactFramework> = (args, { id, component: Component }) => {
+export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
+  const { id, component: Component } = context;
   if (!Component) {
     throw new Error(
       `Unable to render story ${id} as the component annotation is missing from the default export`
     );
   }
-  return <Component {...args} />;
+  return <Component {...noTargetArgs(context)} />;
 };
 
 const renderElement = async (node: ReactElement, el: Element) =>
