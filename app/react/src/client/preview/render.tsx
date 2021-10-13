@@ -13,7 +13,7 @@ import { ArgsStoryFn } from '@storybook/csf';
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
 
-const { FRAMEWORK_OPTIONS } = global;
+const { FRAMEWORK_OPTIONS, FEATURES } = global;
 
 export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   const { id, component: Component } = context;
@@ -22,7 +22,10 @@ export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
       `Unable to render story ${id} as the component annotation is missing from the default export`
     );
   }
-  return <Component {...noTargetArgs(context)} />;
+
+  const renderedArgs = FEATURES.argTypeTarget ? noTargetArgs(context) : args;
+
+  return <Component {...renderedArgs} />;
 };
 
 const renderElement = async (node: ReactElement, el: Element) =>

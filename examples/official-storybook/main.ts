@@ -37,6 +37,7 @@ const config: StorybookConfig = {
   logLevel: 'debug',
   features: {
     modernInlineRender: true,
+    argTypeTarget: true,
   },
 };
 
