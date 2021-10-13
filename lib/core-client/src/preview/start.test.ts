@@ -89,6 +89,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component A",
@@ -108,6 +109,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component A",
@@ -127,6 +129,7 @@ describe('start', () => {
                 "fileName": "file2",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Three",
               "subcomponents": undefined,
               "title": "Component B",
@@ -136,6 +139,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-a--story-one'
@@ -188,6 +192,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component A",
@@ -273,8 +278,7 @@ describe('start', () => {
         clientApi.storiesOf('Component C', { id: 'file1' } as NodeModule).add('default', jest.fn());
       });
 
-      await waitForEvents([Events.SET_STORIES]);
-
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
 
       const storiesOfData = mockChannel.emit.mock.calls.find(
@@ -427,6 +431,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "default",
               "subcomponents": undefined,
               "title": "Component A",
@@ -446,6 +451,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "new",
               "subcomponents": undefined,
               "title": "Component A",
@@ -503,6 +509,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "default",
               "subcomponents": undefined,
               "title": "Component A",
@@ -522,6 +529,7 @@ describe('start', () => {
                 "fileName": "file2",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "default",
               "subcomponents": undefined,
               "title": "Component B",
@@ -559,6 +567,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "default",
               "subcomponents": undefined,
               "title": "Component A",
@@ -610,6 +619,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component C",
@@ -628,6 +638,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component C",
@@ -637,6 +648,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-c--story-one'
@@ -742,6 +754,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component C",
@@ -760,6 +773,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Three",
               "subcomponents": undefined,
               "title": "Component C",
@@ -778,6 +792,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component C",
@@ -835,6 +850,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component C",
@@ -853,6 +869,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component C",
@@ -871,6 +888,7 @@ describe('start', () => {
                 "fileName": "exports-map-1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Four",
               "subcomponents": undefined,
               "title": "Component D",
@@ -909,6 +927,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component C",
@@ -927,6 +946,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component C",
@@ -984,6 +1004,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component A",
@@ -1003,6 +1024,7 @@ describe('start', () => {
                 "fileName": "file1",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component A",
@@ -1022,6 +1044,7 @@ describe('start', () => {
                 "fileName": "file2",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Three",
               "subcomponents": undefined,
               "title": "Component B",
@@ -1040,6 +1063,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "Component C",
@@ -1058,6 +1082,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story Two",
               "subcomponents": undefined,
               "title": "Component C",
@@ -1067,6 +1092,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-a--story-one'
@@ -1225,6 +1251,7 @@ describe('start', () => {
                 "fileName": "exports-map-0",
                 "framework": "test",
               },
+              "playFunction": undefined,
               "story": "Story One",
               "subcomponents": undefined,
               "title": "auto-title",

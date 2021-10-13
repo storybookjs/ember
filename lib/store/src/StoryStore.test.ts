@@ -304,6 +304,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "A",
             "subcomponents": undefined,
             "title": "Component One",
@@ -442,6 +443,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "A",
             "subcomponents": undefined,
             "title": "Component One",
@@ -475,6 +477,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "B",
             "subcomponents": undefined,
             "title": "Component One",
@@ -508,6 +511,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "C",
             "subcomponents": undefined,
             "title": "Component Two",
@@ -580,7 +584,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
-            "runPlayFunction": [Function],
+            "playFunction": undefined,
             "story": "A",
             "storyFn": [Function],
             "subcomponents": undefined,
@@ -616,7 +620,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
-            "runPlayFunction": [Function],
+            "playFunction": undefined,
             "story": "B",
             "storyFn": [Function],
             "subcomponents": undefined,
@@ -652,7 +656,7 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
-            "runPlayFunction": [Function],
+            "playFunction": undefined,
             "story": "C",
             "storyFn": [Function],
             "subcomponents": undefined,
@@ -711,6 +715,7 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "A",
               "subcomponents": undefined,
               "title": "Component One",
@@ -744,6 +749,7 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "B",
               "subcomponents": undefined,
               "title": "Component One",
@@ -777,6 +783,7 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "C",
               "subcomponents": undefined,
               "title": "Component Two",

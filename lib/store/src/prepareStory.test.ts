@@ -1,5 +1,11 @@
 import addons, { HooksContext } from '@storybook/addons';
-import { AnyFramework, ArgsEnhancer, SBObjectType, SBScalarType } from '@storybook/csf';
+import {
+  AnyFramework,
+  ArgsEnhancer,
+  SBObjectType,
+  SBScalarType,
+  StoryContext,
+} from '@storybook/csf';
 import { prepareStory } from './prepareStory';
 
 jest.mock('global', () => ({
@@ -198,23 +204,36 @@ describe('prepareStory', () => {
         expect(initialArgs).toEqual({ a: 'b', c: 'd' });
       });
 
-      it('does not pass result of earlier enhancers into subsequent ones, but composes their output', () => {
-        const enhancerOne = jest.fn(() => ({ c: 'd' }));
-        const enhancerTwo = jest.fn(() => ({ e: 'f' }));
+      it('passes result of earlier enhancers into subsequent ones, and composes their output', () => {
+        const enhancerOne = jest.fn(() => ({ b: 'B' }));
+        const enhancerTwo = jest.fn(({ initialArgs }) =>
+          Object.entries(initialArgs).reduce(
+            (acc, [key, val]) => ({ ...acc, [key]: `enhanced ${val}` }),
+            {}
+          )
+        );
+        const enhancerThree = jest.fn(() => ({ c: 'C' }));
 
         const { initialArgs } = prepareStory(
-          { id, name, args: { a: 'b' } },
+          { id, name, args: { a: 'A' } },
           { id, title },
-          { render, argsEnhancers: [enhancerOne, enhancerTwo] }
+          { render, argsEnhancers: [enhancerOne, enhancerTwo, enhancerThree] }
         );
 
         expect(enhancerOne).toHaveBeenCalledWith(
-          expect.objectContaining({ initialArgs: { a: 'b' } })
+          expect.objectContaining({ initialArgs: { a: 'A' } })
         );
         expect(enhancerTwo).toHaveBeenCalledWith(
-          expect.objectContaining({ initialArgs: { a: 'b' } })
+          expect.objectContaining({ initialArgs: { a: 'A', b: 'B' } })
         );
-        expect(initialArgs).toEqual({ a: 'b', c: 'd', e: 'f' });
+        expect(enhancerThree).toHaveBeenCalledWith(
+          expect.objectContaining({ initialArgs: { a: 'enhanced A', b: 'enhanced B' } })
+        );
+        expect(initialArgs).toEqual({
+          a: 'enhanced A',
+          b: 'enhanced B',
+          c: 'C',
+        });
       });
     });
   });
@@ -442,16 +461,16 @@ describe('prepareStory', () => {
     });
   });
 
-  describe('runPlayFunction', () => {
+  describe('playFunction', () => {
     it('awaits play if defined', async () => {
       const inner = jest.fn();
       const play = jest.fn(async () => {
         await new Promise((r) => setTimeout(r, 0)); // Ensure this puts an async boundary in
         inner();
       });
-      const { runPlayFunction } = prepareStory({ id, name, play }, { id, title }, { render });
+      const { playFunction } = prepareStory({ id, name, play }, { id, title }, { render });
 
-      await runPlayFunction();
+      await playFunction({} as StoryContext<AnyFramework>);
       expect(play).toHaveBeenCalled();
       expect(inner).toHaveBeenCalled();
     });
