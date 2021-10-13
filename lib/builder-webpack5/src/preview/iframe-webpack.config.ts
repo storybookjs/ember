@@ -180,6 +180,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           options: templateOptions,
           version: packageJson.version,
           globals: {
+            CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
             FEATURES: features,

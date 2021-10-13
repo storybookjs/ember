@@ -13,7 +13,7 @@
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
-  - [Webpack 5](#webpack-5-manager-build)
+  - [Webpack 5](#webpack-5)
     - [Fixing hoisting issues](#fixing-hoisting-issues)
       - [Webpack 5 manager build](#webpack-5-manager-build)
       - [Wrong webpack version](#wrong-webpack-version)
@@ -393,9 +393,9 @@ export const MyStory = () => ({ component: MyComponent, ... })
 Storybook 6.3 brings opt-in support for building both your project and the manager UI with webpack 5. To do so:
 
 ```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+npm install @storybook/builder-webpack5 @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
