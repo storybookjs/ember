@@ -38,16 +38,19 @@ export const storyIndex: StoryIndex = {
   v: 3,
   stories: {
     'component-one--a': {
+      id: 'component-one--a',
       title: 'Component One',
       name: 'A',
       importPath: './src/ComponentOne.stories.js',
     },
     'component-one--b': {
+      id: 'component-one--b',
       title: 'Component One',
       name: 'B',
       importPath: './src/ComponentOne.stories.js',
     },
     'component-two--c': {
+      id: 'component-two--c',
       title: 'Component Two',
       name: 'C',
       importPath: './src/ComponentTwo.stories.js',
@@ -70,7 +73,7 @@ export const waitForEvents = (
   predicate: (...args: any[]) => boolean = () => true
 ) => {
   // We've already emitted a render event. NOTE if you want to test a second call,
-  // ensure you call `mockChannel.emit.mockClear()` before `waitForRender`
+  // ensure you call `mockChannel.emit.mockClear()` before `waitFor...`
   if (
     mockChannel.emit.mock.calls.find(
       (call) => events.includes(call[0]) && predicate(...call.slice(1))

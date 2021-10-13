@@ -1327,7 +1327,7 @@ describe('PreviewWeb', () => {
           );
         });
 
-        it('stops initial story after renderToDOM if running', async () => {
+        it('aborts render for initial story', async () => {
           const [gate, openGate] = createGate();
 
           document.location.search = '?id=component-one--a';
@@ -1335,20 +1335,26 @@ describe('PreviewWeb', () => {
           await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
           await waitForRenderPhase('rendering');
 
+          mockChannel.emit.mockClear();
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
             viewMode: 'story',
           });
           await waitForSetCurrentStory();
-          await waitForRender();
 
           // Now let the renderToDOM call resolve
           openGate();
+          await waitForRenderPhase('aborted');
+          await waitForSetCurrentStory();
 
+          await waitForRenderPhase('rendering');
           expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(2);
+
+          await waitForRenderPhase('playing');
           expect(componentOneExports.a.play).not.toHaveBeenCalled();
           expect(componentOneExports.b.play).toHaveBeenCalled();
 
+          await waitForRenderPhase('completed');
           expect(mockChannel.emit).not.toHaveBeenCalledWith(
             Events.STORY_RENDERED,
             'component-one--a'
@@ -1358,7 +1364,7 @@ describe('PreviewWeb', () => {
           await waitForQuiescence();
         });
 
-        it('stops initial story after playFunction if running', async () => {
+        it('aborts play function for initial story', async () => {
           const [gate, openGate] = createGate();
           componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
@@ -1366,7 +1372,6 @@ describe('PreviewWeb', () => {
           await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
           await waitForRenderPhase('playing');
 
-          // Story gets rendered with original args
           expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
@@ -1378,15 +1383,20 @@ describe('PreviewWeb', () => {
             undefined // this is coming from view.prepareForStory, not super important
           );
 
+          mockChannel.emit.mockClear();
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
             viewMode: 'story',
           });
-          await new Promise((r) => setImmediate(r));
           await waitForSetCurrentStory();
-          await waitForRender();
 
-          // New story gets rendered, (play function is still running)
+          // Now let the playFunction call resolve
+          openGate();
+          await waitForRenderPhase('aborted');
+          await waitForSetCurrentStory();
+
+          await waitForRenderPhase('rendering');
+          expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--b');
           expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
@@ -1398,8 +1408,9 @@ describe('PreviewWeb', () => {
             undefined // this is coming from view.prepareForStory, not super important
           );
 
-          // Now let the playFunction call resolve
-          openGate();
+          await waitForRenderPhase('playing');
+          await waitForRenderPhase('completed');
+          expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
 
           // Final story rendered is not emitted for the first story
           await waitForQuiescence();
@@ -1410,14 +1421,13 @@ describe('PreviewWeb', () => {
         });
 
         it('reloads page if playFunction fails to abort in time', async () => {
-          const [gate, openGate] = createGate();
+          const [gate] = createGate();
           componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
           document.location.search = '?id=component-one--a';
           await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
           await waitForRenderPhase('playing');
 
-          // Story gets rendered with original args
           expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
             expect.objectContaining({
               forceRemount: true,
@@ -1429,34 +1439,27 @@ describe('PreviewWeb', () => {
             undefined // this is coming from view.prepareForStory, not super important
           );
 
+          mockChannel.emit.mockClear();
           emitter.emit(Events.SET_CURRENT_STORY, {
             storyId: 'component-one--b',
             viewMode: 'story',
           });
-          await new Promise((r) => setImmediate(r));
+
+          // Wait three ticks without resolving the play function
           await waitForSetCurrentStory();
-          await waitForRender();
+          await waitForSetCurrentStory();
+          await waitForSetCurrentStory();
 
-          // New story gets rendered, (play function is still running)
-          expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
-            expect.objectContaining({
-              forceRemount: true,
-              storyContext: expect.objectContaining({
-                id: 'component-one--b',
-                loaded: { l: 7 },
-              }),
-            }),
-            undefined // this is coming from view.prepareForStory, not super important
-          );
-
-          // Now let the playFunction call resolve
-          openGate();
-
-          // Final story rendered is not emitted for the first story
-          await waitForQuiescence();
+          expect(global.window.location.reload).toHaveBeenCalled();
           expect(mockChannel.emit).not.toHaveBeenCalledWith(
-            Events.STORY_RENDERED,
-            'component-one--a'
+            Events.STORY_CHANGED,
+            'component-one--b'
+          );
+          expect(projectAnnotations.renderToDOM).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+              storyContext: expect.objectContaining({ id: 'component-one--b' }),
+            }),
+            undefined
           );
         });
       });
