@@ -25,12 +25,12 @@ import {
   ExtractOptions,
   ModuleExports,
   BoundStory,
+  StoryIndex,
 } from './types';
 import { HooksContext } from './hooks';
 import { normalizeInputTypes } from './normalizeInputTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
-import { StoryIndex } from '.';
 
 type MaybePromise<T> = Promise<T> | T;
 
@@ -79,6 +79,10 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   prepareStoryWithCache: typeof prepareStory;
 
+  initializationPromise: Promise<void>;
+
+  resolveInitializationPromise: () => void;
+
   constructor() {
     this.globals = new GlobalsStore();
     this.args = new ArgsStore();
@@ -89,6 +93,11 @@ export class StoryStore<TFramework extends AnyFramework> {
     //  2. To ensure that when the same story is prepared with the same inputs you get the same output
     this.processCSFFileWithCache = memoize(CSF_CACHE_SIZE)(processCSFFile) as typeof processCSFFile;
     this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
+
+    // We cannot call `loadStory()` until we've been initialized properly. But we can wait for it.
+    this.initializationPromise = new Promise((resolve) => {
+      this.resolveInitializationPromise = resolve;
+    });
   }
 
   initialize({
@@ -111,6 +120,9 @@ export class StoryStore<TFramework extends AnyFramework> {
 
     const { globals, globalTypes } = this.projectAnnotations;
     this.globals.initialize({ globals, globalTypes });
+
+    // We don't need the cache to be loaded to call `loadStory`, we just need the index ready
+    this.resolveInitializationPromise();
 
     if (cache) this.cacheAllCSFFiles(true);
   }
@@ -228,6 +240,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   // Load the CSF file for a story and prepare the story from it and the project annotations.
   async loadStory({ storyId }: { storyId: StoryId }): Promise<Story<TFramework>> {
+    await this.initializationPromise;
     const csfFile = await this.loadCSFFileByStoryId(storyId, { sync: false });
     return this.storyFromCSFFile({ storyId, csfFile });
   }
