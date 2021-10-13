@@ -304,6 +304,7 @@ export class ClientApi<TFramework extends AnyFramework> {
     // We map these back to a simple default export, even though we have type guarantees at this point
     this.facade.csfExports[fileName] = { default: meta };
 
+    let counter = 0;
     api.add = (storyName: string, storyFn: StoryFn<TFramework>, parameters: Parameters = {}) => {
       hasAdded = true;
 
@@ -319,18 +320,20 @@ export class ClientApi<TFramework extends AnyFramework> {
 
       const { decorators, loaders, ...storyParameters } = parameters;
 
+      // eslint-disable-next-line no-underscore-dangle
+      const storyId = parameters.__id || toId(kind, storyName);
+
       const csfExports = this.facade.csfExports[fileName];
       // Whack a _ on the front incase it is "default"
-      csfExports[`_${sanitize(storyName)}`] = {
+      csfExports[`story${counter}`] = {
         name: storyName,
-        parameters: { fileName, ...storyParameters },
+        parameters: { fileName, __id: storyId, ...storyParameters },
         decorators,
         loaders,
         render: storyFn,
       };
+      counter += 1;
 
-      // eslint-disable-next-line no-underscore-dangle
-      const storyId = parameters.__id || toId(kind, storyName);
       this.facade.stories[storyId] = {
         id: storyId,
         title: csfExports.default.title,

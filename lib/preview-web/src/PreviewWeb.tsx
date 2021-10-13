@@ -359,7 +359,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
     });
-    const renderingStoryPromises: Promise<void>[] = [];
     const docsContext = {
       id,
       title,
@@ -369,17 +368,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       componentStories: () => this.storyStore.componentStoriesFromCSFFile({ csfFile }),
       loadStory: (storyId: StoryId) => this.storyStore.loadStory({ storyId }),
       renderStoryToElement: this.renderStoryToElement.bind(this),
-      // Keep track of the stories that are rendered by the <Story/> component and don't emit
-      // the DOCS_RENDERED event(below) until they have all marked themselves as rendered.
-      registerRenderingStory: () => {
-        let rendered: (v: void) => void;
-        renderingStoryPromises.push(
-          new Promise((resolve) => {
-            rendered = resolve;
-          })
-        );
-        return rendered;
-      },
       getStoryContext: (renderedStory: Story<TFramework>) =>
         ({
           ...this.storyStore.getStoryContext(renderedStory),
@@ -405,10 +393,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         </DocsContainer>
       );
 
-      ReactDOM.render(docsElement, element, async () => {
-        await Promise.all(renderingStoryPromises);
-        this.channel.emit(Events.DOCS_RENDERED, id);
-      });
+      ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
     };
 
     // Initially render right away

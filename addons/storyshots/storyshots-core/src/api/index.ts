@@ -24,24 +24,12 @@ function callTestMethodGlobals(
 
 const isDisabled = (parameter: any) =>
   parameter === false || (parameter && parameter.disable === true);
-
-// This is just here so that an error isn't thrown when we subclass `EventSource` in `StoryIndexClient`
-// Currently the v7 store (that uses the client) does not work with Storyshots.
-class EventSourceStandin {
-  constructor() {
-    throw new Error('EventSourceStandin is not intended to be used');
-  }
-}
-
 function testStorySnapshots(options: StoryshotsOptions = {}) {
   if (typeof describe !== 'function') {
     throw new Error('testStorySnapshots is intended only to be used inside jest');
   }
 
   addons.setChannel(mockChannel());
-
-  // Add a mock EventSource class as it is extended by the `StoryIndexClient` (we don't actually use that in v6 mode)
-  if (!global.EventSource) global.EventSource = EventSourceStandin;
 
   const { storybook, framework, renderTree, renderShallowTree } = loadFramework(options);
   const {

@@ -1,3 +1,24 @@
+## 6.3.11 (October 12, 2021)
+
+### Bug Fixes
+
+- CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
+
+## 6.4.0-beta.9 (October 12, 2021)
+
+### Features
+
+- Webpack5: Don't emit stats unless debugWebpack is set ([#16132](https://github.com/storybookjs/storybook/pull/16132))
+
+### Bug Fixes
+
+- CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
+- Core: Better story id generation, cope with unusual stories ([#16309](https://github.com/storybookjs/storybook/pull/16309))
+- Core: Simplify `DOCS_RENDERED` and only use `STORY_RENDERED` for hooks ([#16310](https://github.com/storybookjs/storybook/pull/16310))
+- Core: Fix `extract`, `SET_STORIES` and `getStoriesJsonData` ([#16299](https://github.com/storybookjs/storybook/pull/16299))
+- TypeScript: Add `id` to BaseMeta type ([#16216](https://github.com/storybookjs/storybook/pull/16216))
+- CSF: Fix support for `X.story` annotations ([#16297](https://github.com/storybookjs/storybook/pull/16297))
+
 ## 6.4.0-beta.8 (October 11, 2021)
 
 ### Bug Fixes
