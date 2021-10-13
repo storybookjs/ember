@@ -55,7 +55,6 @@ const storybookPaths: Record<string, string> = [
 );
 export default async (options: Options & Record<string, any>): Promise<Configuration> => {
   const {
-    configDir,
     babelOptions,
     outputDir = path.join('.', 'public'),
     quiet,
