@@ -469,7 +469,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       RenderContext<TFramework>,
       'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
     >;
-    element: Element;
+    element: HTMLElement;
   }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
 
