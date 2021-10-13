@@ -24,6 +24,11 @@ const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
 });
 
+const MethodCallWrapper = styled.div(({ theme }) => ({
+  fontFamily: typography.fonts.mono,
+  fontSize: typography.size.s1,
+}));
+
 const Interaction = ({
   call,
   callsById,
@@ -73,14 +78,15 @@ const Interaction = ({
   const detailStyle = {
     margin: 0,
     padding: '8px 10px 8px 30px',
+    fontSize: typography.size.s1,
   };
   return (
     <RowContainer>
       <RowLabel onClick={onClick} disabled={isDisabled}>
         <StatusIcon status={call.state} />
-        <div style={{ marginLeft: 6, marginBottom: 1 }}>
+        <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
           <MethodCall call={call} callsById={callsById} />
-        </div>
+        </MethodCallWrapper>
       </RowLabel>
       {call.state === CallStates.ERROR &&
         call.exception &&
