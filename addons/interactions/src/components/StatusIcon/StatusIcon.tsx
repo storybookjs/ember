@@ -8,7 +8,6 @@ import localTheme from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
   status: Call['state'];
-  [x: string]: any;
 }
 
 const {
@@ -32,12 +31,12 @@ const StyledStatusIcon = styled(Icons)<StatusIconProps>(({ theme, status }) => {
   };
 });
 
-export const StatusIcon: React.FC<StatusIconProps> = ({ status, ref, ...props }) => {
+export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   const icon = {
     [CallStates.DONE]: 'check',
     [CallStates.ERROR]: 'stopalt',
     [CallStates.ACTIVE]: 'play',
     [CallStates.WAITING]: 'circle',
   }[status] as IconsProps['icon'];
-  return <StyledStatusIcon status={status} icon={icon} {...props} />;
+  return <StyledStatusIcon status={status} icon={icon} />;
 };
