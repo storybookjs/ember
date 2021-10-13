@@ -1,3 +1,20 @@
+## 6.4.0-beta.10 (October 13, 2021)
+
+### Features
+
+- Composition: Add expanded option to Refs ([#14345](https://github.com/storybookjs/storybook/pull/14345))
+- Core: Add Story Index error handling ([#16319](https://github.com/storybookjs/storybook/pull/16319))
+
+### Bug Fixes
+
+- Core: Fix paths to be relative to working dir in v7 mode ([#16328](https://github.com/storybookjs/storybook/pull/16328))
+- Core: Don't fetch `stories.json`, JSON or SSE, if we don't need it ([#16318](https://github.com/storybookjs/storybook/pull/16318))
+
+### Maintenance
+
+- CLI: Add js extension to lit-html imports ([#16244](https://github.com/storybookjs/storybook/pull/16244))
+- Story-sort: Catch errors and direct user towards migration docs ([#16242](https://github.com/storybookjs/storybook/pull/16242))
+
 ## 6.3.11 (October 12, 2021)
 
 ### Bug Fixes
