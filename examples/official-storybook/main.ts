@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     '../../lib/components/src/**/*.stories.@(js|tsx|mdx)',
     './stories/**/*.stories.@(js|ts|tsx|mdx)',
     './../../addons/docs/**/*.stories.tsx',
-    './../../addons/interactions/**/*.stories.tsx',
+    './../../addons/interactions/**/*.stories.(tsx|mdx)',
   ],
   reactOptions: {
     fastRefresh: true,
