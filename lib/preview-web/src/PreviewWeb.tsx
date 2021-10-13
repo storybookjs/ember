@@ -97,15 +97,21 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     if (FEATURES?.storyStoreV7) {
       this.indexClient = new StoryIndexClient();
-      return this.indexClient.fetch().then((fetchedStoryIndex: StoryIndex) => {
-        this.storyStore.initialize({
-          getStoryIndex: () => fetchedStoryIndex,
-          importFn,
-          projectAnnotations,
-          cache: false,
+      return this.indexClient
+        .fetch()
+        .then((fetchedStoryIndex: StoryIndex) => {
+          this.storyStore.initialize({
+            getStoryIndex: () => fetchedStoryIndex,
+            importFn,
+            projectAnnotations,
+            cache: false,
+          });
+          return this.setupListenersAndRenderSelection();
+        })
+        .catch((err) => {
+          logger.warn(err);
+          this.renderPreviewEntryError(err);
         });
-        return this.setupListenersAndRenderSelection();
-      });
     }
 
     if (!getStoryIndex) {

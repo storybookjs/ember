@@ -25,6 +25,7 @@ const { history, document } = global;
 
 const mockStoryIndex = jest.fn(() => storyIndex);
 
+let mockFetchResult;
 jest.mock('global', () => ({
   ...(jest.requireActual('global') as any),
   history: { replaceState: jest.fn() },
@@ -39,7 +40,7 @@ jest.mock('global', () => ({
     breakingChangesV7: true,
     // xxx
   },
-  fetch: async () => ({ json: mockStoryIndex }),
+  fetch: async () => mockFetchResult,
 }));
 
 jest.mock('@storybook/client-logger');
@@ -70,10 +71,11 @@ beforeEach(() => {
   mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
   addons.setChannel(mockChannel as any);
+  mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
 });
 
 describe('PreviewWeb', () => {
-  describe('constructor', () => {
+  describe('initialize', () => {
     it('shows an error if getProjectAnnotations throws', async () => {
       const err = new Error('meta error');
       const preview = new PreviewWeb();
@@ -87,9 +89,18 @@ describe('PreviewWeb', () => {
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
     });
-  });
 
-  describe('initialize', () => {
+    it('shows an error if the stories.json endpoint 500s', async () => {
+      const err = new Error('sort error');
+      mockFetchResult = { status: 500, text: async () => err.toString() };
+
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
+
+      expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+    });
+
     it('sets globals from the URL', async () => {
       document.location.search = '?id=*&globals=a:c';
 
