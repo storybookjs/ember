@@ -42,6 +42,7 @@ export interface ComposedRef {
   title?: string;
   url: string;
   type?: 'auto-inject' | 'unknown' | 'lazy' | 'server-checked';
+  expanded?: boolean;
   stories: StoriesHash;
   versions?: Versions;
   loginUrl?: string;
@@ -53,7 +54,15 @@ export interface ComposedRef {
 export type ComposedRefUpdate = Partial<
   Pick<
     ComposedRef,
-    'title' | 'type' | 'stories' | 'versions' | 'loginUrl' | 'version' | 'ready' | 'error'
+    | 'title'
+    | 'type'
+    | 'expanded'
+    | 'stories'
+    | 'versions'
+    | 'loginUrl'
+    | 'version'
+    | 'ready'
+    | 'error'
   >
 >;
 
