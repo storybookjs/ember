@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import { styleMap } from 'lit-html/directives/style-map';
+import { styleMap } from 'lit-html/directives/style-map.js';
 import './button.css';
 
 export interface ButtonProps {

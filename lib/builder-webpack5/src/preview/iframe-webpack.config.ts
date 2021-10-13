@@ -50,7 +50,6 @@ const storybookPaths: Record<string, string> = [
 
 export default async (options: Options & Record<string, any>): Promise<Configuration> => {
   const {
-    configDir,
     babelOptions,
     outputDir = path.join('.', 'public'),
     quiet,
@@ -88,10 +87,10 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const virtualModuleMapping: Record<string, string> = {};
   if (features?.storyStoreV7) {
     const storiesFilename = 'storybook-stories.js';
-    const storiesPath = path.resolve(path.join(configDir, storiesFilename));
+    const storiesPath = path.resolve(path.join(workingDir, storiesFilename));
 
     virtualModuleMapping[storiesPath] = toImportFn(stories);
-    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+    const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
       await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
       {
@@ -180,6 +179,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           options: templateOptions,
           version: packageJson.version,
           globals: {
+            CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
             FEATURES: features,

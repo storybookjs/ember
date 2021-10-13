@@ -1,17 +1,40 @@
+## 6.4.0-beta.10 (October 13, 2021)
+
+### Features
+
+- Composition: Add expanded option to Refs ([#14345](https://github.com/storybookjs/storybook/pull/14345))
+- Core: Add Story Index error handling ([#16319](https://github.com/storybookjs/storybook/pull/16319))
+
+### Bug Fixes
+
+- Core: Fix paths to be relative to working dir in v7 mode ([#16328](https://github.com/storybookjs/storybook/pull/16328))
+- Core: Don't fetch `stories.json`, JSON or SSE, if we don't need it ([#16318](https://github.com/storybookjs/storybook/pull/16318))
+
+### Maintenance
+
+- CLI: Add js extension to lit-html imports ([#16244](https://github.com/storybookjs/storybook/pull/16244))
+- Story-sort: Catch errors and direct user towards migration docs ([#16242](https://github.com/storybookjs/storybook/pull/16242))
+
+## 6.3.11 (October 12, 2021)
+
+### Bug Fixes
+
+- CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
+
 ## 6.4.0-beta.9 (October 12, 2021)
 
 ### Features
 
-* Webpack5: Don't emit stats unless debugWebpack is set ([#16132](https://github.com/storybookjs/storybook/pull/16132))
+- Webpack5: Don't emit stats unless debugWebpack is set ([#16132](https://github.com/storybookjs/storybook/pull/16132))
 
 ### Bug Fixes
 
-* CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
-* Core: Better story id generation, cope with unusual stories ([#16309](https://github.com/storybookjs/storybook/pull/16309))
-* Core: Simplify `DOCS_RENDERED` and only use `STORY_RENDERED` for hooks ([#16310](https://github.com/storybookjs/storybook/pull/16310))
-* Core: Fix `extract`, `SET_STORIES` and `getStoriesJsonData` ([#16299](https://github.com/storybookjs/storybook/pull/16299))
-* TypeScript: Add `id` to BaseMeta type ([#16216](https://github.com/storybookjs/storybook/pull/16216))
-* CSF: Fix support for `X.story` annotations ([#16297](https://github.com/storybookjs/storybook/pull/16297))
+- CLI: Fix CRA version detection crash ([#16308](https://github.com/storybookjs/storybook/pull/16308))
+- Core: Better story id generation, cope with unusual stories ([#16309](https://github.com/storybookjs/storybook/pull/16309))
+- Core: Simplify `DOCS_RENDERED` and only use `STORY_RENDERED` for hooks ([#16310](https://github.com/storybookjs/storybook/pull/16310))
+- Core: Fix `extract`, `SET_STORIES` and `getStoriesJsonData` ([#16299](https://github.com/storybookjs/storybook/pull/16299))
+- TypeScript: Add `id` to BaseMeta type ([#16216](https://github.com/storybookjs/storybook/pull/16216))
+- CSF: Fix support for `X.story` annotations ([#16297](https://github.com/storybookjs/storybook/pull/16297))
 
 ## 6.4.0-beta.8 (October 11, 2021)
 

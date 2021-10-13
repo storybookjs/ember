@@ -83,7 +83,7 @@ const baseOptions = {
   managerOnly, // production
   docsMode: false,
   cache,
-  configDir: path.resolve(`${__dirname}/../../../examples/react-ts`),
+  configDir: path.resolve(`${__dirname}/../../../examples/react-ts/.storybook`),
   outputDir: `${__dirname}/storybook-static`, // production
   ci: true,
   managerCache: false,

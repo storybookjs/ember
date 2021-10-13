@@ -1,4 +1,5 @@
 import stable from 'stable';
+import dedent from 'ts-dedent';
 import { Comparator, StorySortParameter, StorySortParameterV7 } from '@storybook/addons';
 import { storySort } from './storySort';
 import { Story, StoryIndexEntry, Path, Parameters } from './types';
@@ -15,7 +16,19 @@ export const sortStoriesV7 = (
     } else {
       sortFn = storySort(storySortParameter);
     }
-    stable.inplace(stories, sortFn);
+    try {
+      stable.inplace(stories, sortFn);
+    } catch (err) {
+      throw new Error(dedent`
+        Error sorting stories with sort parameter ${storySortParameter}:
+
+        > ${err.message}
+        
+        Are you using a V6-style sort function in V7 mode?
+
+        More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
+      `);
+    }
   } else {
     stable.inplace(
       stories,

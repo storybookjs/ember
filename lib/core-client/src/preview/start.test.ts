@@ -139,6 +139,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-a--story-one'
@@ -277,8 +278,7 @@ describe('start', () => {
         clientApi.storiesOf('Component C', { id: 'file1' } as NodeModule).add('default', jest.fn());
       });
 
-      await waitForEvents([Events.SET_STORIES]);
-
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-a--default');
 
       const storiesOfData = mockChannel.emit.mock.calls.find(
@@ -648,6 +648,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-c--story-one'
@@ -1091,6 +1092,7 @@ describe('start', () => {
         }
       `);
 
+      await waitForRender();
       expect(mockChannel.emit).toHaveBeenCalledWith(
         Events.STORY_RENDERED,
         'component-a--story-one'
