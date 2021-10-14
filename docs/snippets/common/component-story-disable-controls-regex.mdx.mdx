@@ -16,7 +16,7 @@ import { YourComponent } from './YourComponent';
       include: ['foo', 'bar'] 
     } 
   }}
-  render={(args) => <YourComponent {...args} />}
+  render={() => ({ })}/>
 
 <Story 
   name="Regex Include"
@@ -25,7 +25,7 @@ import { YourComponent } from './YourComponent';
       /^hello*/ 
     } 
   }}
-  render={(args) => <YourComponent {...args} />} />
+  render={() => ({ })}/>
 
 <Story 
   name="Array Exclude"
@@ -34,7 +34,7 @@ import { YourComponent } from './YourComponent';
       exclude: ['foo', 'bar'] 
     } 
   }}
-  render={(args) => <YourComponent {...args} />} />
+  render={() => ({ })}/>
 
 <Story 
   name="Regex Exclude"
@@ -43,5 +43,5 @@ import { YourComponent } from './YourComponent';
       exclude: /^hello*/ 
     } 
   }}
-  render={(args) => <YourComponent {...args} />} />
+  render={() => ({ })}/>
 ```
