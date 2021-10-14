@@ -1,9 +1,7 @@
 ```ts
 // MyComponent.stories.ts
 
-// These are placeholders until the addon-interaction is out
-import userEvent from '@testing-library/user-event';
-import { screen, fireEvent } from '@testing-library/angular';
+import { fireEvent, screen } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
@@ -11,7 +9,7 @@ export default {
   component: MyComponent,
 };
 
-// This is a placeholder mocked sleep function to be updated once the addon-interactions is out.
+// Custom function to emulate a pause
 function sleep(ms: any) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

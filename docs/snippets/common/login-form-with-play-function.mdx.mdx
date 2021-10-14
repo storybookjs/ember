@@ -3,9 +3,7 @@
 
 import { Meta, Story} from '@storybook/addon-docs';
 
-<!-- These are placeholders and will be updated once the addon-interactions is out-->
-
-import userEvent, { screen } from '@storybook/addon-interactions';
+import { userEvent, within } from '@storybook/testing-library';
 
 import { LoginForm } from './LoginForm';
 
@@ -15,13 +13,16 @@ import { LoginForm } from './LoginForm';
 
 <Story 
   name="Example"
-  play={async () => {
+  play={async ({ canvasElement }) => {
+    // Queries the DOM and looks for the root element of the component and assigns it for a performance boost
+    const canvas = within(canvasElement);
+    
     await userEvent.type(screen.getByTestId('email'), 'emailaddress@provider.com', {
       delay: 100,
   });
   await userEvent.type(screen.getByTestId('password'), 'a-random-password', {
     delay: 100,
   });
-  await userEvent.click(screen.getByTestId('submit'));
+  await userEvent.click(canvas.getByRole('button'));
 }} />
 ```

@@ -1,9 +1,7 @@
 ```ts
 // MyComponent.stories.ts
 
-// These are placeholders until the addon-interaction is out
-import userEvent from '@testing-library/user-event';
-import { screen, within } from '@testing-library/angular';
+import { fireEvent, getByRole, userEvent, within } from '@storybook/testing-library'
 
 import { MyComponent } from './MyComponent.component';
 
@@ -18,7 +16,7 @@ export const ExampleStory = {
 
     // Starts querying from the component's root element
     await userEvent.type(canvas.getByTestId('example-element'), 'something');
-    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
+    await fireEvent.click(canvas.getByRole('another-element'));
   },
 };
 ```

@@ -3,15 +3,13 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-<!--These are placeholders until the addon-interaction is out -->
-
-import { screen } from '@testing-library/svelte';
+import { fireEvent, screen } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
 <Meta title="WithSelectEvent" component={MyComponent} />
 
-<!--This is a placeholder mocked sleep function to be updated once the addon-interactions is out. -->
+<!-- Custom function to emulate a pause -->
 
 export const sleep(ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));

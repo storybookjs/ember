@@ -1,11 +1,7 @@
 ```md
 import { Meta, Story} from '@storybook/addon-docs'
 
-<!-- These are placeholders until the addon-interaction is out -->
-
-import { screen, within } from '@testing-library/react';
-
-import userEvent from '@testing-library/user-event';
+import { getByRole, userEvent, within } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.js';
 
@@ -17,7 +13,8 @@ import { MyComponent } from './MyComponent.js';
   name="ExampleStory"
   play={async ({canvasElement}) => {
     const canvas = within(canvasElement);
+    
     await userEvent.type(canvas.getByTestId('example-element'), 'something');
-    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
+    await userEvent.click(canvas.getByRole('another-element'));
   }} />
 ```

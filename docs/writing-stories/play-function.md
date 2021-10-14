@@ -185,7 +185,7 @@ If you need, you can also adjust your `play` function to find elements based on 
 
 ## Working with the Canvas
 
-By default, each interaction you write inside your `play` function will be executed starting from the top-level element of the Canvas. This is acceptable for smaller components (e.g., buttons, checkboxes, text inputs), but can be inefficient for complex components (e.g., forms, pages). To accommodate this, you can adjust your interactions to start execution from the component's root. For example:
+By default, each interaction you write inside your `play` function will be executed starting from the top-level element of the Canvas. This is acceptable for smaller components (e.g., buttons, checkboxes, text inputs), but can be inefficient for complex components (e.g., forms, pages), or for multiple stories. To accommodate this, you can adjust your interactions to start execution from the component's root. For example:
 
 <!-- prettier-ignore-start -->
 
