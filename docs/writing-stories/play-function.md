@@ -103,7 +103,7 @@ The most common scenario for component interaction is a button click. If you nee
 
 When Storybook loads the story and the function executes, it interacts with the component and triggers the button click, similar to what a user would do.
 
-Asides from click events, you can also script additional events with the `play` function. For example, if your component includes a dropdown with various options, you can write the following story and test each scenario:
+Asides from click events, you can also script additional events with the `play` function. For example, if your component includes a select with various options, you can write the following story and test each scenario:
 
 <!-- prettier-ignore-start -->
 
