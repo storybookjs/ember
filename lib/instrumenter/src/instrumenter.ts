@@ -87,6 +87,15 @@ const getInitialState = (): State => ({
   forwardedException: undefined,
 });
 
+const getRetainedState = (state: State, isDebugging = false) => {
+  const calls = (isDebugging ? state.shadowCalls : state.calls).filter((call) => call.retain);
+  if (!calls.length) return undefined;
+  const callRefsByResult = new Map(
+    Array.from(state.callRefsByResult.entries()).filter(([, ref]) => ref.retain)
+  );
+  return { cursor: calls.length, calls, callRefsByResult };
+};
+
 /**
  * This class is not supposed to be used directly. Use the `instrument` function below instead.
  */
@@ -103,29 +112,14 @@ export class Instrumenter {
     this.state = global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || {};
 
     // When called from `start`, isDebugging will be true
-    const resetState = ({
-      storyId,
-      isDebugging = false,
-    }: {
-      storyId?: StoryId;
-      isDebugging?: boolean;
-    }) => {
-      const { calls, shadowCalls, callRefsByResult, chainedCallIds, playUntil } = this.getState(
-        storyId
-      );
-      const retainedCalls = (isDebugging ? shadowCalls : calls).filter((call) => call.retain);
-      const retainedCallRefs = new Map(
-        Array.from(callRefsByResult.entries()).filter(([, ref]) => ref.retain)
-      );
-
+    const resetState = ({ storyId, isDebugging }: { storyId?: StoryId; isDebugging?: boolean }) => {
+      const state = this.getState(storyId);
       this.setState(storyId, {
         ...getInitialState(),
-        cursor: retainedCalls.length,
-        calls: retainedCalls,
-        callRefsByResult: retainedCallRefs,
-        shadowCalls: isDebugging ? shadowCalls : [],
-        chainedCallIds: isDebugging ? chainedCallIds : new Set<Call['id']>(),
-        playUntil: isDebugging ? playUntil : undefined,
+        ...getRetainedState(state, isDebugging),
+        shadowCalls: isDebugging ? state.shadowCalls : [],
+        chainedCallIds: isDebugging ? state.chainedCallIds : new Set<Call['id']>(),
+        playUntil: isDebugging ? state.playUntil : undefined,
         isDebugging,
       });
 
@@ -150,7 +144,7 @@ export class Instrumenter {
       }
     });
 
-    // Trash the whole state and clear the log when switching stories.
+    // Trash non-retained state and clear the log when switching stories.
     this.channel.on(SET_CURRENT_STORY, this.cleanup.bind(this));
 
     const start = ({ storyId, playUntil }: { storyId: string; playUntil?: Call['id'] }) => {
@@ -232,7 +226,13 @@ export class Instrumenter {
   }
 
   cleanup() {
-    this.state = {};
+    // Reset stories with retained state to their initial state, and drop the rest.
+    this.state = Object.entries(this.state).reduce((acc, [storyId, state]) => {
+      const retainedState = getRetainedState(state);
+      if (!retainedState) return acc;
+      acc[storyId] = Object.assign(getInitialState(), retainedState);
+      return acc;
+    }, {} as Record<StoryId, State>);
     this.channel.emit(EVENTS.SYNC, []);
     global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
   }
@@ -319,7 +319,7 @@ export class Instrumenter {
       args?.[0]?.__storyId__ || global.window.__STORYBOOK_PREVIEW__?.urlStore?.selection?.storyId;
     const index = this.getState(storyId).cursor;
     this.setState(storyId, { cursor: index + 1 });
-    const id = `${index}_${method}_${storyId}`;
+    const id = `${storyId} [${index}] ${method}`;
     const { path = [], intercept = false, retain = false } = options;
     const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
     const call: Call = { id, path, method, storyId, args, interceptable, retain };
