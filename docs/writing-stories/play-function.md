@@ -82,7 +82,7 @@ By combining the stories, you're recreating the entire component workflow and ca
 
 Most modern UIs are built focusing on interaction (e.g., clicking a button, selecting options, ticking checkboxes), providing rich experiences to the end-user. With the `play` function, you can incorporate the same level of interaction into your stories.
 
-The most common scenario for component interaction is a button click. If you need to reproduce it in your story, you can define your story's `play` function to the following:
+A common type of component interaction is a button click. If you need to reproduce it in your story, you can define your story's `play` function as the following:
 
 <!-- prettier-ignore-start -->
 
