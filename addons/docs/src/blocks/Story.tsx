@@ -134,7 +134,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
       cleanup = context.renderStoryToElement({
         story,
         renderContext,
-        element: ref.current as Element,
+        element: ref.current as HTMLElement,
       });
     }
     return () => cleanup && cleanup();
