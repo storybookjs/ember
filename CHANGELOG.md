@@ -1,3 +1,9 @@
+## 6.3.12 (October 14, 2021)
+
+### Bug Fixes
+
+- CLI: Force `sb upgrade` to use latest version of `npm-check-updates` ([#16336](https://github.com/storybookjs/storybook/pull/16336))
+
 ## 6.4.0-beta.11 (October 14, 2021)
 
 ### Features
