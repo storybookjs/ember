@@ -1,4 +1,4 @@
-// import { expect } from '@storybook/jest';
+import { expect } from '@storybook/jest';
 import { within, userEvent } from '@storybook/testing-library';
 
 import Counter from '../components/Counter.svelte';
@@ -18,6 +18,6 @@ Default.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.click(await canvas.findByText('Increment'));
 
-  // const count = await canvas.findByTestId('count');
-  // await expect(count.textContent).toEqual('1');
+  const count = await canvas.findByTestId('count');
+  await expect(count.textContent).toEqual('You have clicked 1 times');
 };
