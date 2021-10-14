@@ -226,7 +226,7 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
   /**
    * Function that is executed after the story is rendered.
    */
-  play?: Function;
+  play?: (context: StoryContext) => Promise<void> | void;
 }
 
 export interface Annotations<Args, StoryFnReturnType>
@@ -269,7 +269,7 @@ export interface BaseMeta<ComponentType> {
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
   title?: string;
-  
+
   /**
    * Manually set the id of a story, which in particular is useful if you want to rename stories without breaking permalinks.
    *

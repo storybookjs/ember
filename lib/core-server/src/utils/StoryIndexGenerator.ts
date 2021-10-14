@@ -6,21 +6,14 @@ import {
   autoTitleFromSpecifier,
   sortStoriesV7,
   Path,
-  Parameters,
   StoryIndex,
-  StoryIndexEntry,
+  V2CompatIndexEntry,
   StoryId,
 } from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
 import { ComponentTitle } from '@storybook/csf';
-
-interface V2CompatIndexEntry extends StoryIndexEntry {
-  kind: StoryIndexEntry['title'];
-  story: StoryIndexEntry['name'];
-  parameters: Parameters;
-}
 
 function sortExtractedStories(
   stories: StoryIndex['stories'],

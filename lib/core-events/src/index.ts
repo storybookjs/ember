@@ -10,8 +10,10 @@ enum events {
   SET_CURRENT_STORY = 'setCurrentStory',
   // The current story changed due to the above
   CURRENT_STORY_WAS_SET = 'currentStoryWasSet',
-  // Force the current story to re-render
+  // Force the current story to re-render, without changing args
   FORCE_RE_RENDER = 'forceReRender',
+  // Force the current story to re-render from scratch, with its initial args
+  FORCE_REMOUNT = 'forceRemount',
   // The story has been loaded into the store, we have parameters/args/etc
   STORY_PREPARED = 'storyPrepared',
   // The next 6 events are emitted by the StoryRenderer when rendering the current story
@@ -21,6 +23,8 @@ enum events {
   STORY_MISSING = 'storyMissing',
   STORY_ERRORED = 'storyErrored',
   STORY_THREW_EXCEPTION = 'storyThrewException',
+  // Emitted at various times during rendering
+  STORY_RENDER_PHASE_CHANGED = 'storyRenderPhaseChanged',
   // Tell the story store to update (a subset of) a stories arg values
   UPDATE_STORY_ARGS = 'updateStoryArgs',
   // The values of a stories args just changed
@@ -59,6 +63,7 @@ export const {
   SET_CURRENT_STORY,
   CURRENT_STORY_WAS_SET,
   FORCE_RE_RENDER,
+  FORCE_REMOUNT,
   STORY_PREPARED,
   STORY_CHANGED,
   STORY_UNCHANGED,
@@ -66,6 +71,7 @@ export const {
   STORY_MISSING,
   STORY_ERRORED,
   STORY_THREW_EXCEPTION,
+  STORY_RENDER_PHASE_CHANGED,
   UPDATE_STORY_ARGS,
   STORY_ARGS_UPDATED,
   RESET_STORY_ARGS,
@@ -82,3 +88,6 @@ export const {
   SHARED_STATE_SET,
   NAVIGATE_URL,
 } = events;
+
+// Used to break out of the current render without showing a redbox
+export const IGNORED_EXCEPTION = new Error('ignoredException');

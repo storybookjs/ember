@@ -613,6 +613,71 @@ describe('framework-preset-angular-cli', () => {
     });
   });
 
+  describe('with angularBrowserTarget option with configuration', () => {
+    beforeEach(() => {
+      initMockWorkspace('with-angularBrowserTarget');
+    });
+    describe('when angular.json have the target without "configurations" section', () => {
+      beforeEach(() => {
+        options = { angularBrowserTarget: 'no-confs-project:target-build:target-conf' } as Options;
+      });
+      it('throws error', async () => {
+        await expect(() => webpackFinal(newWebpackConfiguration(), options)).rejects.toThrowError(
+          'Missing "configurations" section in project target'
+        );
+        expect(logger.error).toHaveBeenCalledWith(`=> Could not get angular cli webpack config`);
+      });
+    });
+    describe('when angular.json have the target without required configuration', () => {
+      beforeEach(() => {
+        options = {
+          angularBrowserTarget: 'no-target-conf-project:target-build:target-conf',
+        } as Options;
+      });
+      it('throws error', async () => {
+        await expect(() => webpackFinal(newWebpackConfiguration(), options)).rejects.toThrowError(
+          'Missing required configuration in project target. Check "target-conf"'
+        );
+        expect(logger.error).toHaveBeenCalledWith(`=> Could not get angular cli webpack config`);
+      });
+    });
+    describe('when angular.json have the target with required configuration', () => {
+      beforeEach(() => {
+        options = { angularBrowserTarget: 'target-project:target-build:target-conf' } as Options;
+      });
+      it('should log', async () => {
+        const baseWebpackConfig = newWebpackConfiguration();
+        await webpackFinal(baseWebpackConfig, options);
+
+        expect(logger.info).toHaveBeenCalledTimes(3);
+        expect(logger.info).toHaveBeenNthCalledWith(1, '=> Loading angular-cli config');
+        expect(logger.info).toHaveBeenNthCalledWith(
+          2,
+          '=> Using angular project "target-project:target-build:target-conf" for configuring Storybook'
+        );
+        expect(logger.info).toHaveBeenNthCalledWith(3, '=> Using angular-cli webpack config');
+      });
+      it('should extends webpack base config', async () => {
+        const baseWebpackConfig = newWebpackConfiguration();
+        const webpackFinalConfig = await webpackFinal(baseWebpackConfig, options);
+
+        expect(webpackFinalConfig).toEqual({
+          ...baseWebpackConfig,
+          entry: [...(baseWebpackConfig.entry as any[]), `${workspaceRoot}/src/styles.css`],
+          module: { ...baseWebpackConfig.module, rules: expect.anything() },
+          plugins: expect.anything(),
+          resolve: {
+            ...baseWebpackConfig.resolve,
+            modules: expect.arrayContaining(baseWebpackConfig.resolve.modules),
+            // the base resolve.plugins are not kept 🤷‍♂️
+            plugins: expect.not.arrayContaining(baseWebpackConfig.resolve.plugins),
+          },
+          resolveLoader: expect.anything(),
+        });
+      });
+    });
+  });
+
   describe('with only tsConfig option', () => {
     beforeEach(() => {
       initMockWorkspace('without-projects-entry');

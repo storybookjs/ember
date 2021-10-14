@@ -140,7 +140,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        initialArgs: initialArgsBeforeEnhancers,
+        initialArgs: accumulatedArgs,
       }),
     }),
     initialArgsBeforeEnhancers
@@ -178,14 +178,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       : (render as LegacyStoryFn<TFramework>)(mappedContext);
   };
   const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
-
-  const { play } = storyAnnotations;
-  const runPlayFunction = async () => {
-    if (play) {
-      return play();
-    }
-    return undefined;
-  };
+  const playFunction = storyAnnotations.play;
 
   return Object.freeze({
     ...contextForEnhancers,
@@ -193,6 +186,6 @@ export function prepareStory<TFramework extends AnyFramework>(
     undecoratedStoryFn,
     unboundStoryFn,
     applyLoaders,
-    runPlayFunction,
+    playFunction,
   });
 }
