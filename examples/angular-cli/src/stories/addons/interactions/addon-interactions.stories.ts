@@ -20,5 +20,5 @@ Default.play = async ({ canvasElement }) => {
   await userEvent.click(await canvas.findByText('Increment'));
 
   const count = await canvas.findByTestId('count');
-  await expect(count.textContent).toEqual('You have clicked 1 times');
+  await expect(count.textContent).toEqual('You clicked 1 times');
 };
