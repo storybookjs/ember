@@ -1,7 +1,7 @@
 ```js
 // MyComponent.stories.js
 
-import { fireEvent, screen, userEvent, waitFor } from '@storybook/testing-library';
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
@@ -22,8 +22,8 @@ export const ExampleAsyncStory = {
       delay: 100,
     });
 
-    const Button = screen.getByRole('button');
-    await fireEvent.click(Button);
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
 
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));

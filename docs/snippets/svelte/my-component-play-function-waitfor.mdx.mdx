@@ -3,7 +3,7 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { fireEvent, screen, userEvent, waitFor } from '@storybook/testing-library';
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
@@ -14,14 +14,14 @@ import MyComponent from './MyComponent.svelte';
 <Story
   name="ExampleAsyncStory"
   play={async () => {
-    const Input = screen.getByLabelText('example-element');
+    const Input = screen.getByLabelText('Username');
     await userEvent.type(Input, 'WrongInput', {
       delay: 100,
     });
 
-    const Button = screen.getByRole('button');
-
-    await fireEvent.click(Button);
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
+    
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));
     });

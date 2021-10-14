@@ -7,12 +7,14 @@ import { fireEvent, screen, userEvent } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
-<Meta title="ClickExamples" component={MyComponent} />
+<!-- 👇 Marking the onClick with this configuration will log the event in the Actions panel -->
+
+<Meta title="ClickExamples" component={MyComponent} argTypes={{ onClick: { action: true }}/>
 
 <Story 
   name="ClickExample" 
   play={async () => {
-    await userEvent.click(screen.getByTestId('data-testid'));
+    await userEvent.click(screen.getByRole('button'));
   }}
   render={() => ({
     Component: MyComponent,

@@ -1,7 +1,7 @@
 ```ts
 // MyComponent.stories.ts
 
-import { screen, fireEvent, userEvent, waitFor } from '@storybook/testing-library';
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
@@ -13,7 +13,7 @@ export default {
 
 export const ExampleAsyncStory = {
   play: async () => {
-    const emailInput = screen.getByLabelText('example-element', {
+    const emailInput = screen.getByLabelText('Username', {
       selector: 'input',
     });
 
@@ -21,9 +21,9 @@ export const ExampleAsyncStory = {
       delay: 100,
     });
 
-    const Button = screen.getByRole('button');
+    const Submit = screen.getByRole('button');
 
-    await fireEvent.click(Button);
+    await userEvent.click(Submit);
 
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));

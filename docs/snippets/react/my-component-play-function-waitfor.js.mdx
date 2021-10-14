@@ -13,14 +13,15 @@ export default {
 
 export const ExampleAsyncStory = {
   play: async () => {
-    const Input = screen.getByLabelText('example-element', {
+    const Input = screen.getByLabelText('Username', {
       selector: 'input',
     });
 
     await userEvent.type(Input, 'WrongInput', {
       delay: 100,
     });
-    const Button = screen.getByRole('button');
+    
+    const Submit = screen.getByRole('button');
     await userEvent.click(Submit);
 
     await waitFor(async () => {
