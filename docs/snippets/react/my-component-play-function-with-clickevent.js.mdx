@@ -13,7 +13,7 @@ export default {
 
 export const ClickExample = {
   play: async () => {
-    await userEvent.click(screen.getByTestId('data-testid'));
+    await userEvent.click(screen.getByRole('button'));
   },
 };
 
