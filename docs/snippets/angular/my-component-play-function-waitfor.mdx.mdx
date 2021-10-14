@@ -16,7 +16,8 @@ import { MyComponent } from './MyComponent.component';
 <Story
   name="ExampleAsyncStory"
   play={async () => {
-    const emailInput = screen.getByLabelText('example-element', {
+
+    const emailInput = screen.getByLabelText('Username', {
       selector: 'input',
     });
 
@@ -24,9 +25,8 @@ import { MyComponent } from './MyComponent.component';
       delay: 100,
     });
 
-    const Button = screen.getByRole('button');
-
-    await fireEvent.click(Button);
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
 
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));

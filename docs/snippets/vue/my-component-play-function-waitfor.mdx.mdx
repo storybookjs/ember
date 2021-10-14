@@ -3,7 +3,7 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { fireEvent, screen, userEvent, waitFor } from '@storybook/testing-library';
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
@@ -19,9 +19,9 @@ import MyComponent from './MyComponent.vue';
       delay: 100,
     });
 
-    const Button = screen.getByRole('button');
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
 
-    await fireEvent.click(Button);
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));
     });

@@ -1,7 +1,7 @@
 ```ts
 // MyComponent.stories.ts
 
-import { fireEvent, screen } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
@@ -17,17 +17,15 @@ function sleep(ms: any) {
 // Queries the element by it's role and fires the event
 export const ExampleChangeEvent = {
   play: async () => {
-    const dropdown = screen.getByRole('listbox');
+    const select = screen.getByRole('listbox');
 
-    await fireEvent.change(dropdown, { target: { value: 'One Item'} });
+    await userEvent.selectOptions(select, ['One Item']);
     await sleep(2000);
 
-    await fireEvent.change(dropdown, { target: { value: 'Another Item' } });
+    await userEvent.selectOptions(select, ['Another Item']);
     await sleep(2000);
-
-    await fireEvent.change(dropdown, {
-      target: { value: 'Yet another item' },
-    });
+    
+    await userEvent.selectOptions(select, ['Yet another item']);
   },
 };
 ```
