@@ -40,7 +40,7 @@
     "@storybook/core-events": "portal:../../lib/core-events",
     "@storybook/core-server": "portal:../../lib/core-server",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
-    "@storybook/jest": "0.0.0-alpha.3",
+    "@storybook/jest": "0.0.0-alpha.5",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",

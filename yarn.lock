@@ -7199,7 +7199,7 @@ __metadata:
     "@storybook/core-events": 6.4.0-beta.11
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/instrumenter": 6.4.0-beta.11
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/testing-library": 0.0.0-alpha.3
     "@storybook/theming": 6.4.0-beta.11
     formik: ^2.2.9
@@ -8443,6 +8443,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/expect@npm:latest":
+  version: 27.0.6-2
+  resolution: "@storybook/expect@npm:27.0.6-2"
+  checksum: 0469a20c166f69441a7ddfc386b0d90421e3825eaf5d73677a943455f49d964ed6ce3c2e9de2bf891d85d178a59d49c40df948c08fa72423d6ffacfd86986c6e
+  languageName: node
+  linkType: hard
+
 "@storybook/html@6.4.0-beta.11, @storybook/html@workspace:*, @storybook/html@workspace:app/html":
   version: 0.0.0-use.local
   resolution: "@storybook/html@workspace:app/html"
@@ -8495,7 +8502,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/jest@npm:0.0.0-alpha.3, @storybook/jest@npm:^0.0.0-alpha.3":
+"@storybook/jest@npm:0.0.0-alpha.5":
+  version: 0.0.0-alpha.5
+  resolution: "@storybook/jest@npm:0.0.0-alpha.5"
+  dependencies:
+    "@storybook/expect": latest
+    "@storybook/instrumenter": 6.4.0-beta.9
+    expect: ^27.2.4
+    jest-mock: ^27.0.6
+  checksum: d04ee55d39dd50344d8aa86ba96d1d8abc721397c8c1aa14e2211aed161165b079ce0ad471a550eb83ebb294a725d952250d603ef6ed346ef916ba2a5de8d4a3
+  languageName: node
+  linkType: hard
+
+"@storybook/jest@npm:^0.0.0-alpha.3":
   version: 0.0.0-alpha.3
   resolution: "@storybook/jest@npm:0.0.0-alpha.3"
   dependencies:
@@ -13114,7 +13133,7 @@ __metadata:
     "@storybook/addon-storysource": 6.4.0-beta.11
     "@storybook/addons": 6.4.0-beta.11
     "@storybook/angular": 6.4.0-beta.11
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/source-loader": 6.4.0-beta.11
     "@storybook/testing-library": 0.0.0-alpha.3
     "@types/core-js": ^2.5.4
@@ -33636,7 +33655,7 @@ fsevents@^1.2.7:
     "@storybook/components": 6.4.0-beta.11
     "@storybook/core-events": 6.4.0-beta.11
     "@storybook/design-system": ^5.4.7
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/node-logger": 6.4.0-beta.11
     "@storybook/react": 6.4.0-beta.11
     "@storybook/source-loader": 6.4.0-beta.11
@@ -42568,7 +42587,7 @@ resolve@1.19.0:
     "@storybook/addon-storysource": 6.4.0-beta.11
     "@storybook/addon-viewport": 6.4.0-beta.11
     "@storybook/addons": 6.4.0-beta.11
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/source-loader": 6.4.0-beta.11
     "@storybook/svelte": 6.4.0-beta.11
     "@storybook/testing-library": 0.0.0-alpha.3
@@ -45378,7 +45397,7 @@ resolve@1.19.0:
     "@storybook/addon-interactions": 6.4.0-beta.11
     "@storybook/addon-links": 6.4.0-beta.11
     "@storybook/addon-storyshots": 6.4.0-beta.11
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/testing-library": 0.0.0-alpha.3
     "@storybook/vue3": 6.4.0-beta.11
     "@vue/cli-plugin-babel": ~4.5.0
@@ -45474,7 +45493,7 @@ resolve@1.19.0:
     "@storybook/addon-storysource": 6.4.0-beta.11
     "@storybook/addon-viewport": 6.4.0-beta.11
     "@storybook/addons": 6.4.0-beta.11
-    "@storybook/jest": 0.0.0-alpha.3
+    "@storybook/jest": 0.0.0-alpha.5
     "@storybook/source-loader": 6.4.0-beta.11
     "@storybook/testing-library": 0.0.0-alpha.3
     "@storybook/vue": 6.4.0-beta.11

@@ -48,14 +48,16 @@
     "@storybook/core-events": "6.4.0-beta.11",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
     "@storybook/instrumenter": "6.4.0-beta.11",
-    "@storybook/jest": "0.0.0-alpha.3",
-    "@storybook/testing-library": "0.0.0-alpha.3",
     "@storybook/theming": "6.4.0-beta.11",
-    "formik": "^2.2.9",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
     "polished": "^4.0.5",
     "ts-dedent": "^2.2.0"
+  },
+  "devDependencies": {
+    "@storybook/jest": "0.0.0-alpha.5",
+    "@storybook/testing-library": "0.0.0-alpha.3",
+    "formik": "^2.2.9"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0",
