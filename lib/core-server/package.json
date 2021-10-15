@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-beta.11",
+  "version": "6.4.0-beta.12",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,15 +41,15 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.4.0-beta.11",
-    "@storybook/core-client": "6.4.0-beta.11",
-    "@storybook/core-common": "6.4.0-beta.11",
-    "@storybook/csf": "0.0.2--canary.6aca495.0",
-    "@storybook/csf-tools": "6.4.0-beta.11",
-    "@storybook/manager-webpack4": "6.4.0-beta.11",
-    "@storybook/node-logger": "6.4.0-beta.11",
+    "@storybook/builder-webpack4": "6.4.0-beta.12",
+    "@storybook/core-client": "6.4.0-beta.12",
+    "@storybook/core-common": "6.4.0-beta.12",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/csf-tools": "6.4.0-beta.12",
+    "@storybook/manager-webpack4": "6.4.0-beta.12",
+    "@storybook/node-logger": "6.4.0-beta.12",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-beta.11",
+    "@storybook/store": "6.4.0-beta.12",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -79,15 +79,15 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.11",
+    "@storybook/builder-webpack5": "6.4.0-beta.12",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.11",
-    "@storybook/manager-webpack5": "6.4.0-beta.11",
+    "@storybook/builder-webpack5": "6.4.0-beta.12",
+    "@storybook/manager-webpack5": "6.4.0-beta.12",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -105,6 +105,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5ea24555a458269f3ca0f399ff7f6f0218cc7fea",
+  "gitHead": "603dac34374f54aa080a52957a9d2fd0c7f6044b",
   "sbmodern": "dist/modern/index.js"
 }
