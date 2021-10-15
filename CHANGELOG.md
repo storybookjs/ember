@@ -1,3 +1,10 @@
+## 6.4.0-beta.12 (October 15, 2021)
+
+### Features
+
+- Addon-interactions: New addon for step debugging play functions ([#16002](https://github.com/storybookjs/storybook/pull/16002))
+- Addon-interactions: Add rewind button to interactions subnav ([#16042](https://github.com/storybookjs/storybook/pull/16042))
+
 ## 6.3.12 (October 14, 2021)
 
 ### Bug Fixes
