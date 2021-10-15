@@ -141,12 +141,12 @@
     "zone.js": "^0.11.3"
   },
   "peerDependencies": {
-    "@storybook/angular": "6.4.0-beta.11",
-    "@storybook/html": "6.4.0-beta.11",
-    "@storybook/react": "6.4.0-beta.11",
-    "@storybook/vue": "6.4.0-beta.11",
-    "@storybook/vue3": "6.4.0-beta.11",
-    "@storybook/web-components": "6.4.0-beta.11",
+    "@storybook/angular": "6.4.0-beta.12",
+    "@storybook/html": "6.4.0-beta.12",
+    "@storybook/react": "6.4.0-beta.12",
+    "@storybook/vue": "6.4.0-beta.12",
+    "@storybook/vue3": "6.4.0-beta.12",
+    "@storybook/web-components": "6.4.0-beta.12",
     "lit": "^2.0.0-rc.1",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
