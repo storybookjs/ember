@@ -113,13 +113,13 @@ describe('Instrumenter', () => {
     fn('baz');
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '0_fn_kind--story',
+        id: 'kind--story [0] fn',
         args: ['foo', 'bar'],
       })
     );
     expect(callSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        id: '1_fn_kind--story',
+        id: 'kind--story [1] fn',
         args: ['baz'],
       })
     );
@@ -210,19 +210,19 @@ describe('Instrumenter', () => {
     });
     fn5();
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '0_fn1_kind--story', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '1_fn2_kind--story', parentId: '0_fn1_kind--story' })
+      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '2_fn3_kind--story', parentId: '1_fn2_kind--story' })
+      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: 'kind--story [1] fn2' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '3_fn4_kind--story', parentId: '0_fn1_kind--story' })
+      expect.objectContaining({ id: 'kind--story [3] fn4', parentId: 'kind--story [0] fn1' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '4_fn5_kind--story', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [4] fn5', parentId: undefined })
     );
   });
 
@@ -232,13 +232,13 @@ describe('Instrumenter', () => {
     await fn1(() => fn2());
     await fn3();
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '0_fn1_kind--story', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '1_fn2_kind--story', parentId: '0_fn1_kind--story' })
+      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: '2_fn3_kind--story', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: undefined })
     );
   });
 
@@ -274,8 +274,8 @@ describe('Instrumenter', () => {
     fn('baz');
     jest.runAllTimers();
     expect(syncSpy).toHaveBeenCalledWith([
-      { callId: '2_fn2_kind--story', state: 'done' },
-      { callId: '3_fn_kind--story', state: 'done' },
+      { callId: 'kind--story [2] fn2', state: 'done' },
+      { callId: 'kind--story [3] fn', state: 'done' },
     ]);
   });
 
@@ -321,12 +321,12 @@ describe('Instrumenter', () => {
       'kind--story': {
         isDebugging: false,
         cursor: 123,
-        calls: [{ id: '0_fn_kind--story' }],
-        shadowCalls: [{ id: '0_fn_kind--story' }, { id: '1_fn_kind--story' }],
+        calls: [{ id: 'kind--story [0] fn' }],
+        shadowCalls: [{ id: 'kind--story [0] fn' }, { id: 'kind--story [1] fn' }],
         callRefsByResult: new Map([[{}, 'ref']]),
-        chainedCallIds: new Set(['0_fn_kind--story']),
-        parentCall: { id: '0_fn_kind--story' },
-        playUntil: '1_fn_kind--story',
+        chainedCallIds: new Set(['kind--story [0] fn']),
+        parentCall: { id: 'kind--story [0] fn' },
+        playUntil: 'kind--story [1] fn',
         resolvers: { ref: () => {} },
         syncTimeout: 123,
         forwardedException: new Error('Oops'),
@@ -351,12 +351,12 @@ describe('Instrumenter', () => {
       expect(fn).toThrow();
       expect(callSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: '0_fn_kind--story',
+          id: 'kind--story [0] fn',
           exception: {
             name: 'Error',
             message: 'Boom!',
             stack: expect.stringContaining('Error: Boom!'),
-            callId: '0_fn_kind--story',
+            callId: 'kind--story [0] fn',
           },
         })
       );
