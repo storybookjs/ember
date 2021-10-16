@@ -22,7 +22,11 @@ export const normalizeInputType = (inputType: InputType, key: string): StrictInp
     ...rest,
   };
   if (type) normalized.type = normalizeType(type);
-  if (control) normalized.control = normalizeControl(control);
+  if (control) {
+    normalized.control = normalizeControl(control);
+  } else if (control === false) {
+    normalized.control = { disable: true };
+  }
   return normalized;
 };
 
