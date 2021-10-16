@@ -1,0 +1,53 @@
+{
+  "name": "@storybook/instrumenter",
+  "version": "6.4.0-beta.12",
+  "description": "",
+  "keywords": [
+    "storybook"
+  ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/instrumenter",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "lib/instrumenter"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "prepare": "node ../../scripts/prepare.js"
+  },
+  "dependencies": {
+    "@storybook/addons": "6.4.0-beta.12",
+    "@storybook/client-logger": "6.4.0-beta.12",
+    "@storybook/core-events": "6.4.0-beta.12",
+    "global": "^4.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "603dac34374f54aa080a52957a9d2fd0c7f6044b",
+  "sbmodern": "dist/modern/index.js"
+}

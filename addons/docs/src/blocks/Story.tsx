@@ -86,6 +86,8 @@ export const getStoryProps = <TFramework extends AnyFramework>(
     const storyResult = story.unboundStoryFn({
       ...context.getStoryContext(story),
       loaded: {},
+      abortSignal: undefined,
+      canvasElement: undefined,
     });
 
     // We need to wait until the bound story function has actually been called before we
@@ -134,7 +136,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
       cleanup = context.renderStoryToElement({
         story,
         renderContext,
-        element: ref.current as Element,
+        element: ref.current as HTMLElement,
       });
     }
     return () => cleanup && cleanup();
