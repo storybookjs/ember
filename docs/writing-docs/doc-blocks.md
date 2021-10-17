@@ -311,7 +311,7 @@ The pattern described will be applied to all the stories for the component. If y
 
 ### MDX
 
-You can also use the `Source` block in MDX. It accepts either a story ID or `code` snippet. Use the `language` for syntax highlighting. It supports the following languages: `javascript`, `jsx`, `json`, `yml`, ,`md`, `bash`, `css`, `html`, `tsx`, `typescript`, `graphql`.
+You can also use the `Source` block in MDX. It accepts either a story ID or `code` snippet. Use the `language` for syntax highlighting. It supports the following languages: `javascript`, `jsx`, `json`, `yml`, `md`, `bash`, `css`, `html`, `tsx`, `typescript`, `graphql`.
 
 <!-- prettier-ignore-start -->
 
@@ -403,7 +403,7 @@ In Storybook’s Canvas, all stories are rendered in the Preview iframe for isol
 
 ## Canvas
 
-Storybook Docs’ `Canvas` block is a wrapper that provides a toolbar for interacting with its contents, and also also provides [Source](#source) snippets automatically.
+Storybook Docs’ `Canvas` block is a wrapper that provides a toolbar for interacting with its contents, and also provides [Source](#source) snippets automatically.
 
 ![Docs block with a story preview](./docblock-preview.png)
 
