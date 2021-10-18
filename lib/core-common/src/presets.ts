@@ -26,13 +26,15 @@ export function filterPresetsConfig(presetsConfig: PresetConfig[]): PresetConfig
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
   presetOptions: any,
+  framework: T,
   storybookOptions: InterPresetOptions
 ): T[] {
+  const prepend = [(framework as unknown) as T].filter(Boolean);
   if (isFunction(input)) {
-    return input({ ...storybookOptions, ...presetOptions });
+    return [...prepend, ...input({ ...storybookOptions, ...presetOptions })];
   }
   if (Array.isArray(input)) {
-    return input;
+    return [...prepend, ...input];
   }
 
   return [];
@@ -163,10 +165,20 @@ export function loadPreset(
     }
 
     if (isObject(contents)) {
-      const { addons: addonsInput, presets: presetsInput, ...rest } = contents;
+      const { addons: addonsInput, presets: presetsInput, framework, ...rest } = contents;
 
-      const subPresets = resolvePresetFunction(presetsInput, presetOptions, storybookOptions);
-      const subAddons = resolvePresetFunction(addonsInput, presetOptions, storybookOptions);
+      const subPresets = resolvePresetFunction(
+        presetsInput,
+        presetOptions,
+        framework,
+        storybookOptions
+      );
+      const subAddons = resolvePresetFunction(
+        addonsInput,
+        presetOptions,
+        framework,
+        storybookOptions
+      );
 
       return [
         ...loadPresets([...subPresets], level + 1, storybookOptions),
@@ -292,6 +304,8 @@ export function loadAllPresets(
     }
 ) {
   const { corePresets = [], frameworkPresets = [], overridePresets = [], ...restOptions } = options;
+  // const main = serverRequire(resolve(options.configDir, 'main'));
+  // const framework = main?.framework ? [require.resolve(main.framework)] : frameworkPresets;
 
   const presetsConfig: PresetConfig[] = [
     ...corePresets,

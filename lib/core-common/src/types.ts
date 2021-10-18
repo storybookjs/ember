@@ -246,6 +246,13 @@ export type NormalizedStoriesSpecifier = Required<StoriesSpecifier> & {
   importPathMatcher: RegExp;
 };
 
+export type Preset =
+  | string
+  | {
+      name: string;
+      options?: any;
+    };
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -255,13 +262,7 @@ export interface StorybookConfig {
    *
    * @example `['@storybook/addon-essentials']` or `[{ name: '@storybook/addon-essentials', options: { backgrounds: false } }]`
    */
-  addons?: Array<
-    | string
-    | {
-        name: string;
-        options?: any;
-      }
-  >;
+  addons?: Preset[];
   core?: CoreConfig;
   logLevel?: string;
   features?: {
@@ -302,16 +303,24 @@ export interface StorybookConfig {
      */
     babelModeV7?: boolean;
   };
+
   /**
    * Tells Storybook where to find stories.
    *
    * @example `['./src/*.stories.@(j|t)sx?']`
    */
   stories: StoriesEntry[];
+
+  /**
+   * Framework, e.g. '@storybook/react', required in v7
+   */
+  framework?: Preset;
+
   /**
    * Controls how Storybook handles TypeScript files.
    */
   typescript?: Partial<TypescriptOptions>;
+
   /**
    * Modify or return a custom Webpack config.
    */
