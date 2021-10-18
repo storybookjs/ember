@@ -4,7 +4,7 @@ import { RenderContext } from '@storybook/store';
 import { StoryFnVueReturnType } from './types';
 import { VueFramework } from './types-6-0';
 
-const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
+export const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
 
 let root: ComponentPublicInstance | null = null;
 
