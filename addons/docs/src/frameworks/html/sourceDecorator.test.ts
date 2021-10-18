@@ -1,14 +1,17 @@
-import { addons, StoryContext } from '@storybook/addons';
+import { addons, StoryContext, useEffect } from '@storybook/addons';
 import { sourceDecorator } from './sourceDecorator';
 import { SNIPPET_RENDERED } from '../../shared';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;
+const mockedUseEffect = useEffect as jest.Mocked<typeof useEffect>;
 
 expect.addSnapshotSerializer({
   print: (val: any) => val,
   test: (val) => typeof val === 'string',
 });
+
+const tick = () => new Promise((r) => setTimeout(r, 0));
 
 const makeContext = (name: string, parameters: any, args: any, extra?: object): StoryContext => ({
   id: `html-test--${name}`,
@@ -25,15 +28,17 @@ describe('sourceDecorator', () => {
   let mockChannel: { on: jest.Mock; emit?: jest.Mock };
   beforeEach(() => {
     mockedAddons.getChannel.mockReset();
+    mockedUseEffect.mockImplementation((cb) => setTimeout(cb, 0));
 
     mockChannel = { on: jest.fn(), emit: jest.fn() };
     mockedAddons.getChannel.mockReturnValue(mockChannel as any);
   });
 
-  it('should render dynamically for args stories', () => {
+  it('should render dynamically for args stories', async () => {
     const storyFn = (args: any) => `<div>args story</div>`;
     const context = makeContext('args', { __isArgsStory: true }, {});
     sourceDecorator(storyFn, context);
+    await tick();
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'html-test--args',
@@ -41,7 +46,7 @@ describe('sourceDecorator', () => {
     );
   });
 
-  it('should dedent source by default', () => {
+  it('should dedent source by default', async () => {
     const storyFn = (args: any) => `
       <div>
         args story
@@ -49,6 +54,7 @@ describe('sourceDecorator', () => {
     `;
     const context = makeContext('args', { __isArgsStory: true }, {});
     sourceDecorator(storyFn, context);
+    await tick();
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'html-test--args',
@@ -56,14 +62,15 @@ describe('sourceDecorator', () => {
     );
   });
 
-  it('should skip dynamic rendering for no-args stories', () => {
+  it('should skip dynamic rendering for no-args stories', async () => {
     const storyFn = () => `<div>classic story</div>`;
     const context = makeContext('classic', {}, {});
     sourceDecorator(storyFn, context);
+    await tick();
     expect(mockChannel.emit).not.toHaveBeenCalled();
   });
 
-  it('should use the originalStoryFn if excludeDecorators is set', () => {
+  it('should use the originalStoryFn if excludeDecorators is set', async () => {
     const storyFn = (args: any) => `<div>args story</div>`;
     const decoratedStoryFn = (args: any) => `
       <div style="padding: 25px; border: 3px solid red;">${storyFn(args)}</div>
@@ -82,6 +89,7 @@ describe('sourceDecorator', () => {
       { originalStoryFn: storyFn }
     );
     sourceDecorator(decoratedStoryFn, context);
+    await tick();
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'html-test--args',
@@ -89,12 +97,13 @@ describe('sourceDecorator', () => {
     );
   });
 
-  it('allows the snippet output to be modified by transformSource', () => {
+  it('allows the snippet output to be modified by transformSource', async () => {
     const storyFn = (args: any) => `<div>args story</div>`;
     const transformSource = (dom: string) => `<p>${dom}</p>`;
     const docs = { transformSource };
     const context = makeContext('args', { __isArgsStory: true, docs }, {});
     sourceDecorator(storyFn, context);
+    await tick();
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
       'html-test--args',

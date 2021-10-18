@@ -220,17 +220,31 @@ export interface TypescriptOptions {
 }
 
 interface StoriesSpecifier {
-  directory: string;
-  files?: string;
+  /**
+   * When auto-titling, what to prefix all generated titles with (default: '')
+   */
   titlePrefix?: string;
+  /**
+   * Where to start looking for story files
+   */
+  directory: string;
+  /**
+   * What does the filename of a story file look like?
+   * (a glob, relative to directory, no leading `./`)
+   * If unset, we use `** / *.stories.@(mdx|tsx|ts|jsx|js)` (no spaces)
+   */
+  files?: string;
 }
 
 export type StoriesEntry = string | StoriesSpecifier;
 
-export interface NormalizedStoriesEntry {
-  glob: string;
-  specifier?: StoriesSpecifier;
-}
+export type NormalizedStoriesSpecifier = Required<StoriesSpecifier> & {
+  /*
+   * Match the "importPath" of a file (e.g. `./src/button/Button.stories.js')
+   * relative to the current working directory.
+   */
+  importPathMatcher: RegExp;
+};
 
 /**
  * The interface for Storybook configuration in `main.ts` files.
@@ -263,8 +277,25 @@ export interface StorybookConfig {
 
     /**
      * Activate preview of CSF v3.0
+     *
+     * @deprecated This is always on now from 6.4 regardless of the setting
      */
     previewCsfV3?: boolean;
+
+    /**
+     * Activate modern inline rendering
+     */
+    modernInlineRender?: boolean;
+
+    /**
+     * Activate on demand story store
+     */
+    storyStoreV7?: boolean;
+
+    /**
+     * Enable a set of planned breaking changes for SB7.0
+     */
+    breakingChangesV7?: boolean;
 
     /**
      * Use Storybook 7.0 babel config scheme

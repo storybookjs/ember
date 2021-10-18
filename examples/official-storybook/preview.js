@@ -87,7 +87,9 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  (StoryFn, { globals: { theme = 'light' } }) => {
+  (StoryFn, { globals, parameters }) => {
+    const theme = globals.theme || parameters.theme || (isChromatic() ? 'stacked' : 'light');
+
     switch (theme) {
       case 'side-by-side': {
         return (
@@ -198,7 +200,6 @@ export const globalTypes = {
   theme: {
     name: 'Theme',
     description: 'Global theme for components',
-    defaultValue: isChromatic() ? 'stacked' : 'light',
     toolbar: {
       icon: 'circlehollow',
       title: 'Theme',

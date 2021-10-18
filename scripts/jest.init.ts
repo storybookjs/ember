@@ -9,6 +9,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import regeneratorRuntime from 'regenerator-runtime';
 // @ts-ignore
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
+import EventEmitter from 'events';
 
 registerRequireContextHook();
 
@@ -70,3 +71,27 @@ global.window.matchMedia = jest.fn().mockImplementation((query) => {
     dispatchEvent: jest.fn(),
   };
 });
+class EventSourceMock {
+  static sources: EventSourceMock[] = [];
+
+  static reset() {
+    this.sources = [];
+  }
+
+  emitter: EventEmitter;
+
+  constructor() {
+    this.emitter = new EventEmitter();
+    EventSourceMock.sources.push(this);
+  }
+
+  addEventListener(event: string, cb: (data: any) => void) {
+    this.emitter.on(event, cb);
+  }
+
+  emit(event: string, data: any) {
+    this.emitter.emit(event, data);
+  }
+}
+
+global.window.EventSource = EventSourceMock as any;

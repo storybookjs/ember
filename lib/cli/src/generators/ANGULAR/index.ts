@@ -43,7 +43,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
     extraPackages: ['@compodoc/compodoc', '@angular/elements', '@webcomponents/custom-elements'],
     addScripts: false,
   });
-  copyTemplate(__dirname, options.storyFormat);
+  copyTemplate(__dirname);
 
   editAngularAppTsConfig();
   editStorybookTsConfig(path.resolve('./.storybook/tsconfig.json'));

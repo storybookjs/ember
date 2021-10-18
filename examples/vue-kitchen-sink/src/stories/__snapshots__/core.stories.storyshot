@@ -8,14 +8,14 @@ exports[`Storyshots Core/Parameters passed to story 1`] = `
   "docs": {
     "iframeHeight": "60px"
   },
-  "globalParameter": "globalParameter",
   "framework": "vue",
+  "globalParameter": "globalParameter",
   "chapterParameter": "chapterParameter",
-  "args": {},
-  "argTypes": {},
   "storyParameter": "storyParameter",
+  "__isArgsStory": true,
   "__id": "core-parameters--passed-to-story",
-  "__isArgsStory": true
+  "args": {},
+  "argTypes": {}
 }
   </pre>
 </div>

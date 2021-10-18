@@ -1,14 +1,15 @@
 /* eslint-disable prefer-destructuring */
 import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { HtmlFramework } from './types-6-0';
 
 import './globals';
-import render from './render';
-import { StoryFnHtmlReturnType, IStorybookSection } from './types';
+import { renderToDOM } from './render';
+import { IStorybookSection } from './types';
 
 const framework = 'html';
 
-interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
+interface ClientApi extends ClientStoryApi<HtmlFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
@@ -17,7 +18,7 @@ interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
   raw: () => any; // todo add type
 }
 
-const api = start(render);
+const api = start(renderToDOM);
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

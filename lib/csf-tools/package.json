@@ -1,6 +1,6 @@
 {
   "name": "@storybook/csf-tools",
-  "version": "6.4.0-alpha.33",
+  "version": "6.4.0-beta.13",
   "description": "",
   "keywords": [
     "storybook"
@@ -48,23 +48,23 @@
     "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
-    "@storybook/csf": "^0.0.1",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
     "global": "^4.4.0",
     "js-string-escape": "^1.0.1",
     "lodash": "^4.17.20",
     "prettier": "^2.2.1",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.6",
-    "js-yaml": "^3.14.1",
-    "ts-dedent": "^2.0.0"
+    "js-yaml": "^3.14.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "269aa6d39991bd4002754fda53f45d3b3d34ba98",
+  "gitHead": "c9b8b07f1b6e8ec9a87d47a0dbf9d5756feb408f",
   "sbmodern": "dist/modern/index.js"
 }

@@ -7,6 +7,7 @@ export class CanvasRenderer extends AbstractRenderer {
     storyFnAngular: StoryFnAngularReturnType;
     forced: boolean;
     parameters: Parameters;
+    component: any;
     targetDOMNode: HTMLElement;
   }) {
     await super.render(options);

@@ -3,13 +3,11 @@ import shell from 'shelljs';
 import { getBabelDependencies, paddedLog, copyTemplate } from '../../helpers';
 import { JsPackageManager } from '../../js-package-manager';
 import { NpmOptions } from '../../NpmOptions';
-import { GeneratorOptions } from '../baseGenerator';
 
 const generator = async (
   packageManager: JsPackageManager,
   npmOptions: NpmOptions,
-  installServer: boolean,
-  options: GeneratorOptions
+  installServer: boolean
 ): Promise<void> => {
   // set correct project name on entry files if possible
   const dirname = shell.ls('-d', 'ios/*.xcodeproj').stdout;
@@ -69,7 +67,7 @@ const generator = async (
     });
   }
 
-  copyTemplate(__dirname, options.storyFormat);
+  copyTemplate(__dirname);
 };
 
 export default generator;

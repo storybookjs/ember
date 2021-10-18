@@ -173,6 +173,22 @@ describe('angular source decorator', () => {
     });
   });
 
+  describe('with component with multiple selectors including 2 attributes and a class', () => {
+    @Component({
+      selector: 'doc-button, button[foo], .button[foo], button[baz]',
+      template: '<button></button>',
+    })
+    class WithMultipleSelectorsComponent {}
+
+    it('should use the first selector', async () => {
+      const component = WithMultipleSelectorsComponent;
+      const props = {};
+      const argTypes: ArgTypes = {};
+      const source = computesTemplateSourceFromComponent(component, props, argTypes);
+      expect(source).toEqual(`<doc-button></doc-button>`);
+    });
+  });
+
   describe('with component with multiple selectors with line breaks', () => {
     @Component({
       selector: `doc-button, 

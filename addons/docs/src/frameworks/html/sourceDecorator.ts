@@ -1,9 +1,12 @@
 /* global window */
-import { addons, StoryContext, StoryFn } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
+import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import dedent from 'ts-dedent';
+import { HtmlFramework } from '@storybook/html';
+
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 
-function skipSourceRender(context: StoryContext) {
+function skipSourceRender(context: StoryContext<HtmlFramework>) {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -23,22 +26,27 @@ function defaultTransformSource(source: string) {
   return dedent(source);
 }
 
-function applyTransformSource(source: string, context: StoryContext): string {
+function applyTransformSource(source: string, context: StoryContext<HtmlFramework>): string {
   const docs = context.parameters.docs ?? {};
   const transformSource = docs.transformSource ?? defaultTransformSource;
   return transformSource(source, context);
 }
 
-export function sourceDecorator(storyFn: StoryFn, context: StoryContext) {
+export function sourceDecorator(
+  storyFn: PartialStoryFn<HtmlFramework>,
+  context: StoryContext<HtmlFramework>
+) {
   const story = context?.parameters.docs?.source?.excludeDecorators
-    ? context.originalStoryFn(context.args)
+    ? (context.originalStoryFn as ArgsStoryFn<HtmlFramework>)(context.args, context)
     : storyFn();
 
+  let source: string;
   if (typeof story === 'string' && !skipSourceRender(context)) {
-    const source = applyTransformSource(story, context);
-
-    addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+    source = applyTransformSource(story, context);
   }
+  useEffect(() => {
+    if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
+  });
 
   return story;
 }

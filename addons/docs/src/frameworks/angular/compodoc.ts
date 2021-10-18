@@ -43,7 +43,7 @@ export const checkValidCompodocJson = (compodocJson: CompodocJson) => {
 const hasDecorator = (item: Property, decoratorName: string) =>
   item.decorators && item.decorators.find((x: any) => x.name === decoratorName);
 
-const mapPropertyToSection = (key: string, item: Property) => {
+const mapPropertyToSection = (item: Property) => {
   if (hasDecorator(item, 'ViewChild')) {
     return 'view child';
   }
@@ -73,7 +73,7 @@ const mapItemToSection = (key: string, item: Method | Property): string => {
       if (isMethod(item)) {
         throw new Error("Cannot be of type Method if key === 'propertiesClass'");
       }
-      return mapPropertyToSection(key, item);
+      return mapPropertyToSection(item);
     default:
       throw new Error(`Unknown key: ${key}`);
   }

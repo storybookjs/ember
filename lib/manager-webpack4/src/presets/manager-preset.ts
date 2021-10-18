@@ -1,7 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
 import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
-import Dotenv from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import PnpWebpackPlugin from 'pnp-webpack-plugin';
@@ -15,7 +14,7 @@ import readPackage from 'read-pkg-up';
 import {
   loadManagerOrAddonsFile,
   resolvePathInStorybookCache,
-  stringifyEnvs,
+  stringifyProcessEnvs,
   es6Transpiler,
   getManagerHeadTemplate,
   getManagerMainTemplate,
@@ -39,6 +38,7 @@ export async function managerWebpack(
     releaseNotesData,
     presets,
     modern,
+    features,
   }: Options & ManagerWebpackOptions
 ): Promise<Configuration> {
   const envs = await presets.apply<Record<string, string>>('env');
@@ -100,6 +100,7 @@ export async function managerWebpack(
           globals: {
             CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
+            FEATURES: features,
             VERSIONCHECK: JSON.stringify(versionCheck),
             RELEASE_NOTES_DATA: JSON.stringify(releaseNotesData),
             DOCS_MODE: docsMode, // global docs mode
@@ -110,10 +111,9 @@ export async function managerWebpack(
         template,
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
-      (new Dotenv({ silent: true }) as any) as WebpackPluginInstance,
       // graphql sources check process variable
       new DefinePlugin({
-        'process.env': stringifyEnvs(envs),
+        ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }) as WebpackPluginInstance,
       // isProd &&

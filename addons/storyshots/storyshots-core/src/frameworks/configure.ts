@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import { toRequireContext } from '@storybook/core-common';
+import { toRequireContext, StoriesEntry, normalizeStoriesEntry } from '@storybook/core-common';
 import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import global from 'global';
-import { ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/client-api';
+import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
 
 import { ClientApi } from './Loader';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
@@ -52,15 +52,18 @@ function getConfigPathParts(input: string): Output {
     if (main) {
       const { stories = [] } = jest.requireActual(main);
 
-      output.stories = stories.map(
-        (pattern: string | { path: string; recursive: boolean; match: string }) => {
-          const { path: basePath, recursive, match } = toRequireContext(pattern);
-          const regex = new RegExp(match);
+      output.stories = stories.map((entry: StoriesEntry) => {
+        const workingDir = process.cwd();
+        const specifier = normalizeStoriesEntry(entry, {
+          configDir,
+          workingDir,
+        });
 
-          // eslint-disable-next-line no-underscore-dangle
-          return global.__requireContext(configDir, basePath, recursive, regex);
-        }
-      );
+        const { path: basePath, recursive, match } = toRequireContext(specifier);
+
+        // eslint-disable-next-line no-underscore-dangle
+        return global.__requireContext(workingDir, basePath, recursive, match);
+      });
     }
 
     return output;
@@ -69,9 +72,9 @@ function getConfigPathParts(input: string): Output {
   return { preview: configDir };
 }
 
-function configure(
+function configure<TFramework extends AnyFramework>(
   options: {
-    storybook: ClientApi;
+    storybook: ClientApi<TFramework>;
   } & StoryshotsOptions
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
@@ -95,17 +98,21 @@ function configure(
     } = jest.requireActual(preview);
 
     if (decorators) {
-      decorators.forEach((decorator: DecoratorFunction) => storybook.addDecorator(decorator));
+      decorators.forEach((decorator: DecoratorFunction<TFramework>) =>
+        storybook.addDecorator(decorator)
+      );
     }
     if (parameters || globals || globalTypes) {
       storybook.addParameters({ ...parameters, globals, globalTypes });
     }
     if (argsEnhancers) {
-      argsEnhancers.forEach((enhancer: ArgsEnhancer) => storybook.addArgsEnhancer(enhancer));
+      argsEnhancers.forEach((enhancer: ArgsEnhancer<TFramework>) =>
+        storybook.addArgsEnhancer(enhancer as any)
+      );
     }
     if (argTypesEnhancers) {
-      argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer) =>
-        storybook.addArgTypesEnhancer(enhancer)
+      argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer<TFramework>) =>
+        storybook.addArgTypesEnhancer(enhancer as any)
       );
     }
   }

@@ -45,6 +45,6 @@ export const WithComponent: Story = () => ({
   component: WithStoreComponent,
 });
 
-export const WithTemaplte: Story = () => ({
+export const WithTemplate: Story = () => ({
   template: `<storybook-comp-with-store></storybook-comp-with-store>`,
 });

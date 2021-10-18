@@ -27,7 +27,7 @@ title: 'Install Storybook'
 
 <summary><code>sb init</code> is not made for empty projects</summary>
 
-Storybook needs to be installed into a project that is already setup with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework including:
+Storybook needs to be installed into a project that is already set up with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework including:
 
 - 📦 [Create an Angular Workspace](https://angular.io/cli/new)
 - 📦 [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
@@ -42,7 +42,7 @@ During its install process, Storybook will look into your project's dependencies
 The command above will make the following changes to your local environment:
 
 - 📦 Install the required dependencies.
-- 🛠 Setup the necessary scripts to run and build Storybook.
+- 🛠 Set up the necessary scripts to run and build Storybook.
 - 🛠 Add the default Storybook configuration.
 - 📝 Add some boilerplate stories to get you started.
 
@@ -69,10 +69,8 @@ There are some noteworthy items here:
 - A second set of links for you to expand your Storybook knowledge and get involved with the ever growing Storybook community.
 - A few example stories to get you started.
 
-Now that you installed Storybook successfully, let’s take a look at a story that was written for us.
-
 <details>
-<summary><h4>Troubleshooting</h4></summary>
+<summary><h4 id="troubleshooting">Troubleshooting</h4></summary>
 
 Below is a curated list to get you unblocked while adding Storybook to your project.
 
@@ -100,3 +98,5 @@ Below is a curated list to get you unblocked while adding Storybook to your proj
 If all else fails, try asking for [help](https://storybook.js.org/support)
 
 </details>
+
+Now that you installed Storybook successfully, let’s take a look at a story that was written for us.

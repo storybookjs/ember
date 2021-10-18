@@ -14,6 +14,7 @@ const Container = styled.div<{}>(({ theme }) => ({
 
 export const ActionButton = styled.button<{ disabled: boolean }>(
   ({ theme }) => ({
+    margin: 0,
     border: '0 none',
     padding: '4px 10px',
     cursor: 'pointer',
