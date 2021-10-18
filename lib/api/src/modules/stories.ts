@@ -509,7 +509,7 @@ export const init: ModuleFn = ({
       }
     );
 
-    if (FEATURES.storyStoreV7) {
+    if (FEATURES?.storyStoreV7) {
       indexClient = new StoryIndexClient();
       indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
       await fullAPI.fetchStoryList();
