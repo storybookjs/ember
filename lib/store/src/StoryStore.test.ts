@@ -131,6 +131,25 @@ describe('StoryStore', () => {
       expect(processCSFFile).toHaveBeenCalledTimes(2);
       expect(prepareStory).toHaveBeenCalledTimes(3);
     });
+
+    describe('if the store is not yet initialized', () => {
+      it('waits for initialization', async () => {
+        const store = new StoryStore();
+
+        importFn.mockClear();
+        const loadPromise = store.loadStory({ storyId: 'component-one--a' });
+
+        store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+        expect(await loadPromise).toMatchObject({
+          id: 'component-one--a',
+          name: 'A',
+          title: 'Component One',
+          initialArgs: { foo: 'a' },
+        });
+        expect(importFn).toHaveBeenCalledWith('./src/ComponentOne.stories.js');
+      });
+    });
   });
 
   describe('updateProjectAnnotations', () => {

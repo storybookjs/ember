@@ -62,7 +62,7 @@ describe('start', () => {
           .add('Story Three', jest.fn());
       });
 
-      await waitForEvents([Events.SET_STORIES]);
+      await waitForRender();
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`
@@ -594,7 +594,7 @@ describe('start', () => {
       const { configure } = start(render);
       configure('test', () => [componentCExports]);
 
-      await waitForEvents([Events.SET_STORIES]);
+      await waitForRender();
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`
@@ -976,7 +976,7 @@ describe('start', () => {
         return [componentCExports];
       });
 
-      await waitForEvents([Events.SET_STORIES]);
+      await waitForRender();
       expect(
         mockChannel.emit.mock.calls.find((call: [string, any]) => call[0] === Events.SET_STORIES)[1]
       ).toMatchInlineSnapshot(`

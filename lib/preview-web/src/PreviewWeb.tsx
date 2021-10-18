@@ -108,6 +108,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }): MaybePromise<void> {
     const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
 
+    this.setupListeners();
+
     if (FEATURES?.storyStoreV7) {
       this.indexClient = new StoryIndexClient();
       return this.indexClient
@@ -119,7 +121,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
             projectAnnotations,
             cache: false,
           });
-          return this.setupListenersAndRenderSelection();
+          return this.setGlobalsAndRenderSelection();
         })
         .catch((err) => {
           logger.warn(err);
@@ -136,7 +138,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       projectAnnotations,
       cache: true,
     });
-    return this.setupListenersAndRenderSelection();
+    this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+
+    return this.setGlobalsAndRenderSelection();
   }
 
   getProjectAnnotationsOrRenderError(
@@ -156,25 +160,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
   }
 
-  async setupListenersAndRenderSelection() {
-    this.setupListeners();
-
-    const { globals } = this.urlStore.selectionSpecifier || {};
-    if (globals) {
-      this.storyStore.globals.updateFromPersisted(globals);
-    }
-    this.channel.emit(Events.SET_GLOBALS, {
-      globals: this.storyStore.globals.get() || {},
-      globalTypes: this.storyStore.projectAnnotations.globalTypes || {},
-    });
-
-    await this.selectSpecifiedStory();
-
-    if (!FEATURES?.storyStoreV7) {
-      this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
-    }
-  }
-
   setupListeners() {
     globalWindow.onkeydown = this.onKeydown.bind(this);
 
@@ -185,6 +170,19 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.on(Events.UPDATE_GLOBALS, this.onUpdateGlobals.bind(this));
     this.channel.on(Events.UPDATE_STORY_ARGS, this.onUpdateArgs.bind(this));
     this.channel.on(Events.RESET_STORY_ARGS, this.onResetArgs.bind(this));
+  }
+
+  async setGlobalsAndRenderSelection() {
+    const { globals } = this.urlStore.selectionSpecifier || {};
+    if (globals) {
+      this.storyStore.globals.updateFromPersisted(globals);
+    }
+    this.channel.emit(Events.SET_GLOBALS, {
+      globals: this.storyStore.globals.get() || {},
+      globalTypes: this.storyStore.projectAnnotations.globalTypes || {},
+    });
+
+    return this.selectSpecifiedStory();
   }
 
   // Use the selection specifier to choose a story, then render it

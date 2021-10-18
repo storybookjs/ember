@@ -1097,6 +1097,32 @@ describe('PreviewWeb', () => {
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
     });
 
+    describe('if called before the preview is initialized', () => {
+      it('still renders the selected story, once ready', async () => {
+        document.location.search = '';
+        // We intentionally are *not* awaiting here
+        new PreviewWeb().initialize({ importFn, getProjectAnnotations });
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+
+        await waitForEvents([Events.STORY_RENDERED]);
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.CURRENT_STORY_WAS_SET, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        expect(history.replaceState).toHaveBeenCalledWith(
+          {},
+          '',
+          'pathname?id=component-one--b&viewMode=story'
+        );
+        expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--b');
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--b');
+      });
+    });
+
     describe('if the selection is unchanged', () => {
       it('emits STORY_UNCHANGED', async () => {
         document.location.search = '?id=component-one--a';
