@@ -1,3 +1,17 @@
+## 6.4.0-beta.14 (October 19, 2021)
+
+### Bug Fixes
+
+- Core: Fix bad deprecation link for argType.defaultValue ([#16391](https://github.com/storybookjs/storybook/pull/16391))
+- Storyshots/vue3: Fix story render with singleton vue3 app ([#15983](https://github.com/storybookjs/storybook/pull/15983))
+- Angular: Fix preset for storyStoreV7 ([#16380](https://github.com/storybookjs/storybook/pull/16380))
+- Core: Fix Args combination to allow `undefined` overrides ([#16385](https://github.com/storybookjs/storybook/pull/16385))
+- Core: Fix missing FEATURES global ([#16389](https://github.com/storybookjs/storybook/pull/16389))
+
+### Dependency Upgrades
+
+- Upgrade chromatic CLI ([#16320](https://github.com/storybookjs/storybook/pull/16320))
+
 ## 6.4.0-beta.13 (October 18, 2021)
 
 ### Features
