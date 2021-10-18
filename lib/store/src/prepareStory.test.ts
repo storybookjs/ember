@@ -123,8 +123,17 @@ describe('prepareStory', () => {
         a: 'story',
         b: 'component',
         c: 'global',
-        nested: { z: 'story', y: 'component', x: 'global' },
+        nested: { z: 'story' },
       });
+    });
+
+    it('can be overriden by `undefined`', () => {
+      const { initialArgs } = prepareStory(
+        { id, name, args: { a: undefined } },
+        { id, title, args: { a: 'component' } },
+        { render }
+      );
+      expect(initialArgs).toEqual({ a: undefined });
     });
 
     it('sets a value even if metas do not have args', () => {
