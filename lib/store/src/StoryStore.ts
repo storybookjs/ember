@@ -358,7 +358,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       (story) => ({
         ...pick(story, ['id', 'name', 'title']),
         importPath: this.storyIndex.stories[story.id].importPath,
-        ...(!FEATURES.breakingChangesV7 && {
+        ...(!FEATURES?.breakingChangesV7 && {
           kind: story.title,
           story: story.name,
           parameters: {
