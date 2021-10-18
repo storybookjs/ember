@@ -366,7 +366,7 @@ This works because Babel replaces `process.env.STORYBOOK` with the value of the
 the following will **NOT** work:
 
 ```javascript
-export function isRunningInStorybook(): boolean {
+export function isRunningInStorybook() {
   return typeof process?.env?.STORYBOOK !== 'undefined';
   // ReferenceError: process is not defined
 }
