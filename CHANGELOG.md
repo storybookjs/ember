@@ -1,3 +1,15 @@
+## 6.4.0-beta.13 (October 18, 2021)
+
+### Features
+
+- Core: Listen to story change events as soon as the preview is created ([#16331](https://github.com/storybookjs/storybook/pull/16331))
+
+### Bug Fixes
+
+- Addon-controls: Fix `{control: false}` handling ([#16366](https://github.com/storybookjs/storybook/pull/16366))
+- CLI: Fix broken link in react native template ([#16372](https://github.com/storybookjs/storybook/pull/16372))
+- UI: Fix scrollbar color to be visible in dark theme ([#16345](https://github.com/storybookjs/storybook/pull/16345))
+
 ## 6.4.0-beta.12 (October 15, 2021)
 
 ### Features
