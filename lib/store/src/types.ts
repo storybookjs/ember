@@ -64,7 +64,7 @@ export type Story<
   undecoratedStoryFn: LegacyStoryFn<TFramework>;
   unboundStoryFn: LegacyStoryFn<TFramework>;
   applyLoaders: (context: StoryContextForLoaders<TFramework>) => Promise<StoryContext<TFramework>>;
-  runPlayFunction: () => Promise<void>;
+  playFunction: (context: StoryContext<TFramework>) => Promise<void> | void;
 };
 
 export type BoundStory<TFramework extends AnyFramework = AnyFramework> = Story<TFramework> & {
@@ -88,6 +88,12 @@ export interface StoryIndexEntry {
   name: StoryName;
   title: ComponentTitle;
   importPath: Path;
+}
+
+export interface V2CompatIndexEntry extends StoryIndexEntry {
+  kind: StoryIndexEntry['title'];
+  story: StoryIndexEntry['name'];
+  parameters: Parameters;
 }
 
 export interface StoryIndex {

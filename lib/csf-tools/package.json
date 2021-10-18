@@ -1,6 +1,6 @@
 {
   "name": "@storybook/csf-tools",
-  "version": "6.4.0-beta.8",
+  "version": "6.4.0-beta.13",
   "description": "",
   "keywords": [
     "storybook"
@@ -48,7 +48,7 @@
     "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
-    "@storybook/csf": "0.0.2--canary.6aca495.0",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
     "global": "^4.4.0",
@@ -65,6 +65,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "7f1ecb08225a3f146f9d6013a89e2a6d4d3dcd11",
+  "gitHead": "c9b8b07f1b6e8ec9a87d47a0dbf9d5756feb408f",
   "sbmodern": "dist/modern/index.js"
 }

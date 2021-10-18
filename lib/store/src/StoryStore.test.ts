@@ -1,11 +1,11 @@
-import { StoryId } from '@storybook/api';
 import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
-import { HooksContext } from '../../addons/dist/ts3.9/hooks';
+import global from 'global';
 
 import { prepareStory } from './prepareStory';
 import { processCSFFile } from './processCSFFile';
 import { StoryStore } from './StoryStore';
 import { StoryIndex } from './types';
+import { HooksContext } from './hooks';
 
 // Spy on prepareStory/processCSFFile
 jest.mock('./prepareStory', () => ({
@@ -46,16 +46,19 @@ const storyIndex: StoryIndex = {
   v: 3,
   stories: {
     'component-one--a': {
+      id: 'component-one--a',
       title: 'Component One',
       name: 'A',
       importPath: './src/ComponentOne.stories.js',
     },
     'component-one--b': {
+      id: 'component-one--b',
       title: 'Component One',
       name: 'B',
       importPath: './src/ComponentOne.stories.js',
     },
     'component-two--c': {
+      id: 'component-two--c',
       title: 'Component Two',
       name: 'C',
       importPath: './src/ComponentTwo.stories.js',
@@ -127,6 +130,25 @@ describe('StoryStore', () => {
       await store.loadStory({ storyId: 'component-two--c' });
       expect(processCSFFile).toHaveBeenCalledTimes(2);
       expect(prepareStory).toHaveBeenCalledTimes(3);
+    });
+
+    describe('if the store is not yet initialized', () => {
+      it('waits for initialization', async () => {
+        const store = new StoryStore();
+
+        importFn.mockClear();
+        const loadPromise = store.loadStory({ storyId: 'component-one--a' });
+
+        store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+
+        expect(await loadPromise).toMatchObject({
+          id: 'component-one--a',
+          name: 'A',
+          title: 'Component One',
+          initialArgs: { foo: 'a' },
+        });
+        expect(importFn).toHaveBeenCalledWith('./src/ComponentOne.stories.js');
+      });
     });
   });
 
@@ -203,6 +225,7 @@ describe('StoryStore', () => {
           stories: {
             ...storyIndex.stories,
             'new-component--story': {
+              id: 'new-component--story',
               title: 'New Component',
               name: 'Story',
               importPath: './new-component.stories.js',
@@ -232,6 +255,7 @@ describe('StoryStore', () => {
           v: 3,
           stories: {
             'component-one--a': {
+              id: 'component-one--a',
               title: 'Component One',
               name: 'A',
               importPath: newImportPath,
@@ -260,6 +284,7 @@ describe('StoryStore', () => {
           v: 3,
           stories: {
             'component-one--a': {
+              id: 'component-one--a',
               title: 'Component One',
               name: 'A',
               importPath: newImportPath,
@@ -269,8 +294,8 @@ describe('StoryStore', () => {
       });
 
       expect(store.extract()).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        Object {
+          "component-one--a": Object {
             "argTypes": Object {
               "a": Object {
                 "name": "a",
@@ -299,11 +324,12 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "A",
             "subcomponents": undefined,
             "title": "Component One",
           },
-        ]
+        }
       `);
     });
   });
@@ -407,8 +433,8 @@ describe('StoryStore', () => {
       await store.cacheAllCSFFiles(false);
 
       expect(store.extract()).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        Object {
+          "component-one--a": Object {
             "argTypes": Object {
               "a": Object {
                 "name": "a",
@@ -437,11 +463,12 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "A",
             "subcomponents": undefined,
             "title": "Component One",
           },
-          Object {
+          "component-one--b": Object {
             "argTypes": Object {
               "a": Object {
                 "name": "a",
@@ -470,11 +497,12 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "B",
             "subcomponents": undefined,
             "title": "Component One",
           },
-          Object {
+          "component-two--c": Object {
             "argTypes": Object {
               "a": Object {
                 "name": "a",
@@ -503,11 +531,12 @@ describe('StoryStore', () => {
             "parameters": Object {
               "__isArgsStory": false,
             },
+            "playFunction": undefined,
             "story": "C",
             "subcomponents": undefined,
             "title": "Component Two",
           },
-        ]
+        }
       `);
     });
 
@@ -529,14 +558,134 @@ describe('StoryStore', () => {
       });
       await store.cacheAllCSFFiles(false);
 
-      expect((store.extract() as { id: StoryId }[]).map((s) => s.id)).toEqual([
+      expect(Object.keys(store.extract())).toEqual(['component-one--b', 'component-two--c']);
+
+      expect(Object.keys(store.extract({ includeDocsOnly: true }))).toEqual([
+        'component-one--a',
         'component-one--b',
         'component-two--c',
       ]);
+    });
+  });
 
-      expect(
-        (store.extract({ includeDocsOnly: true }) as { id: StoryId }[]).map((s) => s.id)
-      ).toEqual(['component-one--a', 'component-one--b', 'component-two--c']);
+  describe('raw', () => {
+    it('produces an array of stories', async () => {
+      const store = new StoryStore();
+      store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+      await store.cacheAllCSFFiles(false);
+
+      expect(store.raw()).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--a",
+            "initialArgs": Object {
+              "foo": "a",
+            },
+            "kind": "Component One",
+            "name": "A",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "playFunction": undefined,
+            "story": "A",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component One",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--b",
+            "initialArgs": Object {
+              "foo": "b",
+            },
+            "kind": "Component One",
+            "name": "B",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "playFunction": undefined,
+            "story": "B",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component One",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+          Object {
+            "applyLoaders": [Function],
+            "argTypes": Object {
+              "a": Object {
+                "name": "a",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "component": undefined,
+            "componentId": "component-two",
+            "id": "component-two--c",
+            "initialArgs": Object {
+              "foo": "c",
+            },
+            "kind": "Component Two",
+            "name": "C",
+            "originalStoryFn": [MockFunction],
+            "parameters": Object {
+              "__isArgsStory": false,
+            },
+            "playFunction": undefined,
+            "story": "C",
+            "storyFn": [Function],
+            "subcomponents": undefined,
+            "title": "Component Two",
+            "unboundStoryFn": [Function],
+            "undecoratedStoryFn": [Function],
+          },
+        ]
+      `);
     });
   });
 
@@ -556,8 +705,8 @@ describe('StoryStore', () => {
             "Component One": Object {},
             "Component Two": Object {},
           },
-          "stories": Array [
-            Object {
+          "stories": Object {
+            "component-one--a": Object {
               "argTypes": Object {
                 "a": Object {
                   "name": "a",
@@ -586,11 +735,12 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "A",
               "subcomponents": undefined,
               "title": "Component One",
             },
-            Object {
+            "component-one--b": Object {
               "argTypes": Object {
                 "a": Object {
                   "name": "a",
@@ -619,11 +769,12 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "B",
               "subcomponents": undefined,
               "title": "Component One",
             },
-            Object {
+            "component-two--c": Object {
               "argTypes": Object {
                 "a": Object {
                   "name": "a",
@@ -652,14 +803,112 @@ describe('StoryStore', () => {
               "parameters": Object {
                 "__isArgsStory": false,
               },
+              "playFunction": undefined,
               "story": "C",
               "subcomponents": undefined,
               "title": "Component Two",
             },
-          ],
+          },
           "v": 2,
         }
       `);
+    });
+  });
+
+  describe('getStoriesJsonData', () => {
+    describe('in back-compat mode', () => {
+      beforeEach(() => {
+        global.FEATURES.breakingChangesV7 = false;
+      });
+      afterEach(() => {
+        global.FEATURES.breakingChangesV7 = true;
+      });
+      it('maps stories list to payload correctly', async () => {
+        const store = new StoryStore();
+        store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+        await store.cacheAllCSFFiles(false);
+
+        expect(store.getStoriesJsonData()).toMatchInlineSnapshot(`
+          Object {
+            "stories": Object {
+              "component-one--a": Object {
+                "id": "component-one--a",
+                "importPath": "./src/ComponentOne.stories.js",
+                "kind": "Component One",
+                "name": "A",
+                "parameters": Object {
+                  "__id": "component-one--a",
+                  "__isArgsStory": false,
+                  "fileName": "./src/ComponentOne.stories.js",
+                },
+                "story": "A",
+                "title": "Component One",
+              },
+              "component-one--b": Object {
+                "id": "component-one--b",
+                "importPath": "./src/ComponentOne.stories.js",
+                "kind": "Component One",
+                "name": "B",
+                "parameters": Object {
+                  "__id": "component-one--b",
+                  "__isArgsStory": false,
+                  "fileName": "./src/ComponentOne.stories.js",
+                },
+                "story": "B",
+                "title": "Component One",
+              },
+              "component-two--c": Object {
+                "id": "component-two--c",
+                "importPath": "./src/ComponentTwo.stories.js",
+                "kind": "Component Two",
+                "name": "C",
+                "parameters": Object {
+                  "__id": "component-two--c",
+                  "__isArgsStory": false,
+                  "fileName": "./src/ComponentTwo.stories.js",
+                },
+                "story": "C",
+                "title": "Component Two",
+              },
+            },
+            "v": 3,
+          }
+        `);
+      });
+    });
+
+    describe('in non-back-compat mode', () => {
+      it('maps stories list to payload correctly', async () => {
+        const store = new StoryStore();
+        store.initialize({ getStoryIndex, importFn, projectAnnotations, cache: false });
+        await store.cacheAllCSFFiles(false);
+
+        expect(store.getStoriesJsonData()).toMatchInlineSnapshot(`
+          Object {
+            "stories": Object {
+              "component-one--a": Object {
+                "id": "component-one--a",
+                "importPath": "./src/ComponentOne.stories.js",
+                "name": "A",
+                "title": "Component One",
+              },
+              "component-one--b": Object {
+                "id": "component-one--b",
+                "importPath": "./src/ComponentOne.stories.js",
+                "name": "B",
+                "title": "Component One",
+              },
+              "component-two--c": Object {
+                "id": "component-two--c",
+                "importPath": "./src/ComponentTwo.stories.js",
+                "name": "C",
+                "title": "Component Two",
+              },
+            },
+            "v": 3,
+          }
+        `);
+      });
     });
   });
 });

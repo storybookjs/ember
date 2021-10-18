@@ -15,6 +15,7 @@ Object {
     "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
     "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-config-entry.js",
+    "ROOT/addons/interactions/dist/esm/preset/argsEnhancers.js-generated-config-entry.js",
     "ROOT/examples/vue-3-cli/.storybook/preview.ts-generated-config-entry.js",
     "ROOT/generated-stories-entry.js",
   ],

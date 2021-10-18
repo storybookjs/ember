@@ -36,7 +36,7 @@ import { Args, ModuleFn } from '../index';
 import { ComposedRef } from './refs';
 import { StoryIndexClient } from '../lib/StoryIndexClient';
 
-const { DOCS_MODE } = global;
+const { DOCS_MODE, FEATURES } = global;
 const INVALIDATE = 'INVALIDATE';
 
 type Direction = -1 | 1;
@@ -354,15 +354,22 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      const storyIndex = await indexClient.fetch();
+      try {
+        const storyIndex = await indexClient.fetch();
 
-      // We can only do this if the stories.json is a proper storyIndex
-      if (storyIndex.v !== 3) {
-        logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
-        return;
+        // We can only do this if the stories.json is a proper storyIndex
+        if (storyIndex.v !== 3) {
+          logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
+          return;
+        }
+
+        await fullAPI.setStoryList(storyIndex);
+      } catch (err) {
+        store.setState({
+          storiesConfigured: true,
+          storiesFailed: err,
+        });
       }
-
-      await fullAPI.setStoryList(storyIndex);
     },
     setStoryList: async (storyIndex: StoryIndex) => {
       const hash = transformStoryIndexToStoriesHash(storyIndex, {
@@ -502,9 +509,11 @@ export const init: ModuleFn = ({
       }
     );
 
-    indexClient = new StoryIndexClient();
-    indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
-    await fullAPI.fetchStoryList();
+    if (FEATURES.storyStoreV7) {
+      indexClient = new StoryIndexClient();
+      indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
+      await fullAPI.fetchStoryList();
+    }
   };
 
   return {
