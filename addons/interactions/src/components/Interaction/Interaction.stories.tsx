@@ -1,6 +1,11 @@
-import { CallStates } from '@storybook/instrumenter';
+import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
+import { Call, CallStates } from '@storybook/instrumenter';
+import { userEvent } from '@storybook/testing-library';
+import { within } from '@testing-library/dom';
 
 import { Interaction } from './Interaction';
+
+type Story = ComponentStoryObj<typeof Interaction>;
 
 export default {
   title: 'Addons/Interactions/Interaction',
@@ -9,9 +14,9 @@ export default {
     callsById: new Map(),
     isDisabled: false,
   },
-};
+} as ComponentMeta<typeof Interaction>;
 
-const getCallMock = (state: CallStates) => {
+const getCallMock = (state: CallStates): Call => {
   const defaultData = {
     id: 'addons-interactions-accountform--standard-email-filled [3] change',
     path: ['fireEvent'],
@@ -33,35 +38,44 @@ const getCallMock = (state: CallStates) => {
     state,
   };
 
-  const overrides = CallStates.ERROR ? { exception: { message: "Things didn't work!" } } : {};
+  const overrides = CallStates.ERROR
+    ? { exception: { callId: '', stack: '', message: "Things didn't work!" } }
+    : {};
 
   return { ...defaultData, ...overrides };
 };
 
-export const Active = {
+export const Active: Story = {
   args: {
     call: getCallMock(CallStates.ACTIVE),
   },
 };
 
-export const Waiting = {
+export const Waiting: Story = {
   args: {
     call: getCallMock(CallStates.WAITING),
   },
 };
 
-export const Failed = {
+export const Failed: Story = {
   args: {
     call: getCallMock(CallStates.ERROR),
   },
 };
 
-export const Done = {
+export const Done: Story = {
   args: {
     call: getCallMock(CallStates.DONE),
   },
 };
 
-export const Disabled = {
+export const Disabled: Story = {
   args: { ...Done.args, isDisabled: true },
+};
+
+export const Hovered: Story = {
+  ...Done,
+  play: async ({ canvasElement }) => {
+    await userEvent.hover(await within(canvasElement).getByRole('button'));
+  },
 };
