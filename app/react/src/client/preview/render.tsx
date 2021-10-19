@@ -7,13 +7,13 @@ import React, {
   Fragment,
 } from 'react';
 import ReactDOM from 'react-dom';
-import { RenderContext, noTargetArgs } from '@storybook/store';
+import { RenderContext } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
 
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
 
-const { FRAMEWORK_OPTIONS, FEATURES } = global;
+const { FRAMEWORK_OPTIONS } = global;
 
 export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   const { id, component: Component } = context;
@@ -23,9 +23,7 @@ export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
     );
   }
 
-  const renderedArgs = FEATURES.argTypeTarget ? noTargetArgs(context) : args;
-
-  return <Component {...renderedArgs} />;
+  return <Component {...args} />;
 };
 
 const renderElement = async (node: ReactElement, el: Element) =>
