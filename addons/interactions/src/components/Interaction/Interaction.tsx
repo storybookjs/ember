@@ -40,14 +40,14 @@ const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].inclu
   textAlign: 'start',
   cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
   '&:hover': {
-    background: theme.base === 'dark' ? transparentize(0.9, theme.color.secondary) : '#F3FAFF',
+    background: theme.background.hoverable,
   },
   '&:focus-visible': {
     outline: 0,
     boxShadow: `inset 3px 0 0 0 ${
       call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
     }`,
-    background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
+    background: call.state === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
   },
   '& > div': {
     opacity: call.state === CallStates.WAITING ? 0.5 : 1,
