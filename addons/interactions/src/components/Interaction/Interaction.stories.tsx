@@ -1,7 +1,7 @@
 import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
+import { expect } from '@storybook/jest';
 import { Call, CallStates } from '@storybook/instrumenter';
-import { userEvent } from '@storybook/testing-library';
-import { within } from '@testing-library/dom';
+import { userEvent, within } from '@storybook/testing-library';
 
 import { Interaction } from './Interaction';
 
@@ -80,6 +80,8 @@ export const Hovered: Story = {
     theme: 'light',
   },
   play: async ({ canvasElement }) => {
-    await userEvent.hover(await within(canvasElement).getByRole('button'));
+    const canvas = within(canvasElement);
+    await userEvent.hover(canvas.getByRole('button'));
+    await expect(canvas.getByTestId('icon-active')).not.toBeNull();
   },
 };
