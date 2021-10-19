@@ -5,13 +5,10 @@ import { useChannel, useParameter, useStorybookState } from '@storybook/api';
 import { STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
-import { styled, typography } from '@storybook/theming';
-
-import { transparentize } from 'polished';
-import { MatcherResult } from './components/MatcherResult';
-import { MethodCall } from './components/MethodCall';
+import { styled } from '@storybook/theming';
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import { Subnav } from './components/Subnav/Subnav';
+import { Interaction } from './components/Interaction/Interaction';
 
 interface PanelProps {
   active: boolean;
@@ -23,89 +20,6 @@ const completedStates = [CallStates.DONE, CallStates.ERROR];
 const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
 });
-
-const MethodCallWrapper = styled.div(({ theme }) => ({
-  fontFamily: typography.fonts.mono,
-  fontSize: typography.size.s1,
-}));
-
-const RowContainer = styled('div', { shouldForwardProp: (prop) => !['call'].includes(prop) })<{
-  call: Call;
-}>(({ theme, call }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  borderBottom: `1px solid ${theme.appBorderColor}`,
-  fontFamily: typography.fonts.base,
-  fontSize: 13,
-  ...(call.state === CallStates.ERROR && {
-    backgroundColor:
-      theme.base === 'dark' ? transparentize(0.93, theme.color.negative) : theme.background.warning,
-  }),
-}));
-
-const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].includes(prop) })<
-  React.ButtonHTMLAttributes<HTMLButtonElement> & { call: Call }
->(({ theme, disabled, call }) => ({
-  display: 'grid',
-  background: 'none',
-  border: 0,
-  gridTemplateColumns: '15px 1fr',
-  alignItems: 'center',
-  minHeight: 40,
-  margin: 0,
-  padding: '8px 15px',
-  textAlign: 'start',
-  cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
-  '&:hover': {
-    background: theme.base === 'dark' ? transparentize(0.9, theme.color.secondary) : '#F3FAFF',
-  },
-  '&:focus-visible': {
-    outline: 0,
-    boxShadow: `inset 3px 0 0 0 ${
-      call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
-    }`,
-    background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
-  },
-  '& > div': {
-    opacity: call.state === CallStates.WAITING ? 0.5 : 1,
-  },
-}));
-
-const RowMessage = styled('pre')({
-  margin: 0,
-  padding: '8px 10px 8px 30px',
-  fontSize: typography.size.s1,
-});
-
-const Interaction = ({
-  call,
-  callsById,
-  onClick,
-  isDisabled,
-}: {
-  call: Call;
-  callsById: Map<Call['id'], Call>;
-  onClick: React.MouseEventHandler<HTMLElement>;
-  isDisabled: boolean;
-}) => {
-  return (
-    <RowContainer call={call}>
-      <RowLabel call={call} onClick={onClick} disabled={isDisabled}>
-        <StatusIcon status={call.state} />
-        <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
-          <MethodCall call={call} callsById={callsById} />
-        </MethodCallWrapper>
-      </RowLabel>
-      {call.state === CallStates.ERROR &&
-        call.exception &&
-        (call.exception.message.startsWith('expect(') ? (
-          <MatcherResult {...call.exception} />
-        ) : (
-          <RowMessage>{call.exception.message}</RowMessage>
-        ))}
-    </RowContainer>
-  );
-};
 
 export const Panel: React.FC<PanelProps> = (props) => {
   const [isLocked, setLock] = React.useState(false);
