@@ -1,5 +1,5 @@
 import dedent from 'ts-dedent';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { logger } from '@storybook/node-logger';
 import resolveFrom from 'resolve-from';
 import {
@@ -11,6 +11,7 @@ import {
   BuilderOptions,
 } from './types';
 import { loadCustomPresets } from './utils/load-custom-presets';
+import { serverRequire } from './utils/interpret-require';
 
 const isObject = (val: unknown): val is Record<string, any> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
@@ -237,7 +238,7 @@ function applyPresets(
   args: any,
   storybookOptions: InterPresetOptions
 ): Promise<any> {
-  const presetResult = new Promise((resolve) => resolve(config));
+  const presetResult = new Promise((res) => res(config));
 
   if (!presets.length) {
     return presetResult;
@@ -294,6 +295,42 @@ export function getPresets(presets: PresetConfig[], storybookOptions: InterPrese
   };
 }
 
+/**
+ * Get the `framework` provided in main.js and also do error checking up front
+ */
+const getFrameworkPackage = (configDir: string) => {
+  const main = serverRequire(resolve(configDir, 'main'));
+  if (!main) return null;
+  const { framework: frameworkPackage, features = {} } = main;
+  const frameworkErrors = [];
+  if (!(features.storyStoreV7 || features.breakingChangesV7) && !frameworkPackage) {
+    frameworkErrors.push(`Expected 'framework' in your main.js, didn't find one.`);
+  }
+  if (frameworkPackage) {
+    const framework = serverRequire(require.resolve(frameworkPackage));
+    if (!framework) {
+      frameworkErrors.push(`Unable to import '${frameworkPackage}' specified in main.js`);
+    } else {
+      if (!framework.renderToDOM) {
+        frameworkErrors.push(`Framework '${frameworkPackage}' does not provide 'renderToDOM'`);
+      }
+      if (!framework.parameters?.framework) {
+        frameworkErrors.push(
+          `Framework '${frameworkPackage}' does not provide 'parameters.framework'`
+        );
+      }
+    }
+  }
+  if (frameworkErrors.length) {
+    throw new Error(dedent`
+      ${frameworkErrors.join('\n')}
+    
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
+    `);
+  }
+  return frameworkPackage;
+};
+
 export function loadAllPresets(
   options: CLIOptions &
     LoadOptions &
@@ -305,9 +342,10 @@ export function loadAllPresets(
 ) {
   const { corePresets = [], frameworkPresets = [], overridePresets = [], ...restOptions } = options;
 
+  const frameworkPackage = getFrameworkPackage(options.configDir);
   const presetsConfig: PresetConfig[] = [
     ...corePresets,
-    ...frameworkPresets,
+    ...(frameworkPackage ? [] : frameworkPresets),
     ...loadCustomPresets(options),
     ...overridePresets,
   ];

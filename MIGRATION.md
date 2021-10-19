@@ -7,6 +7,7 @@
     - [String literal titles](#string-literal-titles)
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
+    - [Main.js framework field](#mainjs-framework-field)
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
   - [Babel mode v7](#babel-mode-v7)
@@ -281,6 +282,21 @@ The key behavioral differences of the v7 store are:
 - A new event `STORY_PREPARED` is emitted when a story is rendered for the first time, which contains metadata about the story, such as `parameters`.
 - All "entire" store APIs such as `extract()` need to be proceeded by an async call to `loadAllCSFFiles()` which fetches all CSF files and processes them.
 
+#### Main.js framework field
+
+In earlier versions of Storybook, each framework package (e.g. `@storybook/react`) provided its own `start-storybook` and `build-storybook` binaries, which automatically filled in various settings.
+
+In 7.0, we're moving towards a model where the user specifies their framework in `main.js`.
+
+```js
+module.exports = {
+  // ... your existing config
+  framework: '@storybook/react', // OR whatever framework you're using
+};
+```
+
+Each framework must export a `renderToDOM` function and `parameters.framework`. We'll be adding more documentation for framework authors in a future release.
+
 #### Using the v7 store
 
 To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
@@ -288,6 +304,7 @@ To activate the v7 mode set the feature flag in your `.storybook/main.js` config
 ```js
 module.exports = {
   // ... your existing config
+  framework: '@storybook/react', // OR whatever framework you're using
   features: {
     storyStoreV7: true,
   },
