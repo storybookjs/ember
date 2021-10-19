@@ -1,5 +1,6 @@
 import addons, { HooksContext } from '@storybook/addons';
 import { AnyFramework, ArgsEnhancer, SBObjectType, SBScalarType } from '@storybook/csf';
+import { NO_TARGET_NAME } from './args';
 import { prepareStory } from './prepareStory';
 
 jest.mock('global', () => ({
@@ -410,6 +411,50 @@ describe('prepareStory', () => {
 
       secondStory.undecoratedStoryFn({ args: secondStory.initialArgs, ...secondStory } as any);
       expect(renderMock).toHaveBeenCalledWith(expect.objectContaining({ args: { a: 1 } }));
+    });
+
+    describe('with `parameters.argTypeTarget`', () => {
+      it('filters out targetted args', () => {
+        const renderMock = jest.fn();
+        const firstStory = prepareStory(
+          {
+            id,
+            name,
+            args: { a: 1, b: 2 },
+            argTypes: { b: { name: 'b', target: 'foo' } },
+            parameters: { argTypeTarget: true },
+          },
+          { id, title },
+          { render: renderMock }
+        );
+
+        firstStory.undecoratedStoryFn({ args: firstStory.initialArgs, ...firstStory } as any);
+        expect(renderMock).toHaveBeenCalledWith(
+          { a: 1 },
+          expect.objectContaining({ args: { a: 1 }, fullArgs: { a: 1, b: 2 } })
+        );
+      });
+
+      it('adds argsByTarget to context', () => {
+        const renderMock = jest.fn();
+        const firstStory = prepareStory(
+          {
+            id,
+            name,
+            args: { a: 1, b: 2 },
+            argTypes: { b: { name: 'b', target: 'foo' } },
+            parameters: { argTypeTarget: true },
+          },
+          { id, title },
+          { render: renderMock }
+        );
+
+        firstStory.undecoratedStoryFn({ args: firstStory.initialArgs, ...firstStory } as any);
+        expect(renderMock).toHaveBeenCalledWith(
+          { a: 1 },
+          expect.objectContaining({ argsByTarget: { [NO_TARGET_NAME]: { a: 1 }, foo: { b: 2 } } })
+        );
+      });
     });
   });
 

@@ -7,6 +7,9 @@ export default {
   argTypes: {
     a: { target: 'somewhere' },
   },
+  parameters: {
+    argTypeTarget: true,
+  },
 };
 
 export const StoryOne = {

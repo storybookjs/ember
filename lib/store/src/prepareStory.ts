@@ -22,6 +22,7 @@ import {
 import { combineParameters } from './parameters';
 import { applyHooks } from './hooks';
 import { defaultDecorateStory } from './decorators';
+import { groupArgsByTarget, NO_TARGET_NAME } from './args';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},
@@ -170,12 +171,23 @@ export function prepareStory<TFramework extends AnyFramework>(
       acc[key] = mapping && val in mapping ? mapping[val] : val;
       return acc;
     }, {} as Args);
-
     const mappedContext = { ...context, args: mappedArgs };
+
+    let finalContext: StoryContext<TFramework> = mappedContext;
+    if (context.parameters.argTypeTarget) {
+      const argsByTarget = groupArgsByTarget({ args: mappedArgs, ...context });
+      finalContext = {
+        ...mappedContext,
+        fullArgs: mappedArgs,
+        argsByTarget,
+        args: argsByTarget[NO_TARGET_NAME],
+      };
+    }
+
     const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
     return renderTimePassArgsFirst
-      ? (render as ArgsStoryFn<TFramework>)(mappedArgs, mappedContext)
-      : (render as LegacyStoryFn<TFramework>)(mappedContext);
+      ? (render as ArgsStoryFn<TFramework>)(finalContext.args, finalContext)
+      : (render as LegacyStoryFn<TFramework>)(finalContext);
   };
   const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
 
