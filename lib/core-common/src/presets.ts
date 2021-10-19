@@ -304,8 +304,6 @@ export function loadAllPresets(
     }
 ) {
   const { corePresets = [], frameworkPresets = [], overridePresets = [], ...restOptions } = options;
-  // const main = serverRequire(resolve(options.configDir, 'main'));
-  // const framework = main?.framework ? [require.resolve(main.framework)] : frameworkPresets;
 
   const presetsConfig: PresetConfig[] = [
     ...corePresets,
