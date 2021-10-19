@@ -548,6 +548,13 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       };
 
       try {
+        if (!this.renderToDOM) {
+          throw new Error(dedent`
+            Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+        
+            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
+          `);
+        }
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
         if (ctrl.signal.aborted) return;
 

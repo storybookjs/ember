@@ -302,28 +302,9 @@ const getFrameworkPackage = (configDir: string) => {
   const main = serverRequire(resolve(configDir, 'main'));
   if (!main) return null;
   const { framework: frameworkPackage, features = {} } = main;
-  const frameworkErrors = [];
-  if (!(features.storyStoreV7 || features.breakingChangesV7) && !frameworkPackage) {
-    frameworkErrors.push(`Expected 'framework' in your main.js, didn't find one.`);
-  }
-  if (frameworkPackage) {
-    const framework = serverRequire(require.resolve(frameworkPackage));
-    if (!framework) {
-      frameworkErrors.push(`Unable to import '${frameworkPackage}' specified in main.js`);
-    } else {
-      if (!framework.renderToDOM) {
-        frameworkErrors.push(`Framework '${frameworkPackage}' does not provide 'renderToDOM'`);
-      }
-      if (!framework.parameters?.framework) {
-        frameworkErrors.push(
-          `Framework '${frameworkPackage}' does not provide 'parameters.framework'`
-        );
-      }
-    }
-  }
-  if (frameworkErrors.length) {
+  if ((features.storyStoreV7 || features.breakingChangesV7) && !frameworkPackage) {
     throw new Error(dedent`
-      ${frameworkErrors.join('\n')}
+      Expected 'framework' in your main.js, didn't find one.
     
       More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
     `);
