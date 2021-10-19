@@ -7,7 +7,7 @@ import { userEvent, within } from '@storybook/testing-library';
 
 import { LoginForm } from './LoginForm';
 
-<!-- 👇 Marking the onButtonClick with this configuration will log the event in the Actions panel -->
+<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel -->
 
 <Meta title="Form" component={LoginForm} argTypes={{ onSubmit: { action: true }}/>
 

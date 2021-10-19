@@ -7,7 +7,7 @@ import { LoginForm } from './LoginForm';
 
 export default {
   component: LoginForm,
-   //👇 Marking the onButtonClick with this configuration will log the event in the Actions panel
+   //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
   argTypes: { onSubmit: { action: true } },
 };
 
@@ -16,7 +16,7 @@ export const Example = {
     // Queries the DOM and looks for the root element of the component and assigns it for a performance boost
     const canvas = within(canvasElement);
     
-    await userEvent.type(canvas.getByTestId('email'), 'emailaddress@provider.com', {
+    await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
       delay: 100,
     });
     await userEvent.type(canvas.getByTestId('password'), 'a-random-password'{
