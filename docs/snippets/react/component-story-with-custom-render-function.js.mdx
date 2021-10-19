@@ -1,7 +1,7 @@
 ```js
 // MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
 
-import { MyComponent } from './MyComponent.js';
+import { MyComponent } from './MyComponent';
 
 export default {
   component: MyComponent,
@@ -9,7 +9,11 @@ export default {
 
 // This story uses a render function to fully control how the component renders.
 export const ExampleWithRenderFunction = {
-  args: {},
-  render: (args) => <MyComponent {...args} />,
+  render: () => (
+    <div>
+      <h1>I'm a component with a custom render function</h1>
+      <MyComponent />
+    </div>
+  ),
 };
 ```

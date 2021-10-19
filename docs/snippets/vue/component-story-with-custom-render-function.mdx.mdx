@@ -1,0 +1,23 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from 'storybook/addon-docs';
+
+import MyComponent from './MyComponent.vue';
+
+<Meta title="CustomRenderFunction" component= {MyComponent} />
+
+<!-- This story uses a render function to fully control how the component renders. -->
+
+<Story 
+  name="ExampleWithRenderFunction"
+  render={() => ({
+    components: { MyComponent },
+    template: `
+      <div>
+        <h1>I'm a component with a custom render function</h1>
+        <MyComponent />
+      </div>
+    `,
+  })} />
+```

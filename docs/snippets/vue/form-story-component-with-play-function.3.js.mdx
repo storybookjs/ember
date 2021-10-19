@@ -1,7 +1,7 @@
 ```js
-// Form.stories.js | Form.stories.jsx | Form.stories.ts | Form.stories.tsx
+// Form.stories.js
 
-import userEvent, { expect, screen } from '@storybook/addon-interactions';
+import { userEvent, within } from '@storybook/addon-interactions';
 
 import LoginForm from './LoginForm.vue';
 
@@ -12,15 +12,13 @@ export default {
 };
 
 export const FilledForm = {
-  play: async ({ args }) => {
-    await userEvent.type(screen.getByTestId('email'), 'email', {
-      delay: 100,
-    });
-    await userEvent.type(screen.getByTestId('password'), 'password', {
-      delay: 100,
-    });
-    await userEvent.click(screen.getByTestId('submit'));
-    await expect(args.onSubmit).toHaveBeenCalled();
+  play: async ({ args, canvasElement }) => {
+    // Starts querying the component from it's root element
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByTestId('email'), 'email');
+    await userEvent.type(canvas.getByTestId('password'), 'password');
+    await userEvent.click(canvas.getByRole('button'));
   },
   render: (args) => ({
     components: { LoginForm },

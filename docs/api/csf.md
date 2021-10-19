@@ -173,7 +173,9 @@ Starting in Storybook 6.4, you can write your stories as JavaScript objects, red
 
 <CodeSnippets
   paths={[
-   'common/component-story-with-custom-render-function.js.mdx',
+   'react/component-story-with-custom-render-function.js.mdx',
+   'angular/component-story-with-custom-render-function.ts.mdx',
+   'vue/component-story-with-custom-render-function.js.mdx',
   ]}
 />
 
