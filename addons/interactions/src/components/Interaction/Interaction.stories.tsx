@@ -75,6 +75,10 @@ export const Disabled: Story = {
 
 export const Hovered: Story = {
   ...Done,
+  parameters: {
+    // Set light theme to avoid stacked theme in chromatic
+    theme: 'light',
+  },
   play: async ({ canvasElement }) => {
     await userEvent.hover(await within(canvasElement).getByRole('button'));
   },
