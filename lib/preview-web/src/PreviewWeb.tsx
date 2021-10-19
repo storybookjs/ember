@@ -402,10 +402,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const Page: ComponentType = docs.page || NoDocs;
 
     const render = () => {
+      const fullDocsContext = {
+        ...docsContext,
+        // Put all the storyContext fields onto the docs context for back-compat
+        ...(!FEATURES.breakingChangesV7 && this.storyStore.getStoryContext(story)),
+      };
+
       // Use `componentId` as a key so that we force a re-render every time
       // we switch components
       const docsElement = (
-        <DocsContainer key={componentId} context={docsContext}>
+        <DocsContainer key={componentId} context={fullDocsContext}>
           <Page />
         </DocsContainer>
       );
