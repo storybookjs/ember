@@ -25,17 +25,17 @@ const getElement = () => {
  * Handle A11yContext events.
  * Because the event are sent without manual check, we split calls
  */
-const handleRequest = async (storyId: string) => {
-  const { manual } = await getParams(storyId);
+const handleRequest = (storyId: string) => {
+  const { manual } = getParams(storyId);
   if (!manual) {
-    await run(storyId);
+    run(storyId);
   }
 };
 
 const run = async (storyId: string) => {
   activeStoryId = storyId;
   try {
-    const input = await getParams(storyId);
+    const input = getParams(storyId);
 
     if (!active) {
       active = true;
@@ -67,8 +67,8 @@ const run = async (storyId: string) => {
 };
 
 /** Returns story parameters or default ones. */
-const getParams = async (storyId: string): Promise<A11yParameters> => {
-  const { parameters } = (await globalWindow.__STORYBOOK_STORY_STORE__.loadStory({})) || {};
+const getParams = (storyId: string): A11yParameters => {
+  const { parameters } = globalWindow.__STORYBOOK_STORY_STORE__.fromId(storyId) || {};
   return (
     parameters.a11y || {
       config: {},

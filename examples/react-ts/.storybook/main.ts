@@ -8,7 +8,6 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-storysource',
     '@storybook/addon-storyshots',
-    '@storybook/addon-a11y',
   ],
   typescript: {
     check: true,
