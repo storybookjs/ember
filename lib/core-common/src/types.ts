@@ -301,11 +301,6 @@ export interface StorybookConfig {
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
-
-    /**
-     * Allow the `argTypes.X.target` annotation
-     */
-    argTypeTarget?: boolean;
   };
   /**
    * Tells Storybook where to find stories.
