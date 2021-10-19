@@ -106,7 +106,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     importFn: ModuleImportFn;
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
   }): MaybePromise<void> {
-    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {};
+    this.storyStore.setProjectAnnotations(
+      this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {}
+    );
 
     this.setupListeners();
 
@@ -114,11 +116,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.indexClient = new StoryIndexClient();
       return this.indexClient
         .fetch()
-        .then((fetchedStoryIndex: StoryIndex) => {
+        .then((storyIndex: StoryIndex) => {
           this.storyStore.initialize({
-            getStoryIndex: () => fetchedStoryIndex,
+            storyIndex,
             importFn,
-            projectAnnotations,
             cache: false,
           });
           return this.setGlobalsAndRenderSelection();
@@ -133,9 +134,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       throw new Error('No `getStoryIndex` passed defined in v6 mode');
     }
     this.storyStore.initialize({
-      getStoryIndex,
+      storyIndex: getStoryIndex(),
       importFn,
-      projectAnnotations,
       cache: true,
     });
     this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
@@ -297,7 +297,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       return;
     }
 
-    this.storyStore.updateProjectAnnotations(projectAnnotations);
+    this.storyStore.setProjectAnnotations(projectAnnotations);
     this.renderSelection();
   }
 
