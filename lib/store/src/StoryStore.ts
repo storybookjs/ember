@@ -106,39 +106,30 @@ export class StoryStore<TFramework extends AnyFramework> {
     });
   }
 
+  setProjectAnnotations(projectAnnotations: ProjectAnnotations<TFramework>) {
+    // By changing `this.projectAnnotations, we implicitly invalidate the `prepareStoryWithCache`
+    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+    const { globals, globalTypes } = projectAnnotations;
+
+    this.globals.set({ globals, globalTypes });
+  }
+
   initialize({
-    getStoryIndex,
+    storyIndex,
     importFn,
-    projectAnnotations,
     cache = false,
   }: {
-    getStoryIndex: () => StoryIndex;
+    storyIndex: StoryIndex;
     importFn: ModuleImportFn;
-    projectAnnotations: ProjectAnnotations<TFramework>;
     cache?: boolean;
   }): void {
-    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
-
-    // Frustratingly we need to pass getStoryIndex (rather than just storyIndex), as
-    // we cannot call getStoryIndex on the v6 StoryStoreFacade until the project annotations are set above.
-    this.storyIndex = new StoryIndexStore(getStoryIndex());
+    this.storyIndex = new StoryIndexStore(storyIndex);
     this.importFn = importFn;
-
-    const { globals, globalTypes } = this.projectAnnotations;
-    this.globals.initialize({ globals, globalTypes });
 
     // We don't need the cache to be loaded to call `loadStory`, we just need the index ready
     this.resolveInitializationPromise();
 
     if (cache) this.cacheAllCSFFiles(true);
-  }
-
-  // This means the preview.[tj]s file has changed.
-  // By changing `this.projectAnnotations, we implicitly invalidate the `prepareStoryWithCache`
-  updateProjectAnnotations(projectAnnotations: ProjectAnnotations<TFramework>) {
-    this.projectAnnotations = normalizeProjectAnnotations(projectAnnotations);
-    const { globals, globalTypes } = projectAnnotations;
-    this.globals.resetOnProjectAnnotationsChange({ globals, globalTypes });
   }
 
   // This means that one of the CSF files has changed.
