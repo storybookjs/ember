@@ -305,6 +305,10 @@ const getFrameworkPackage = (configDir: string) => {
   if (features.breakingChangesV7 && !frameworkPackage) {
     throw new Error(dedent`
       Expected 'framework' in your main.js, didn't find one.
+
+      You can fix this automatically by running:
+
+      npx sb@next automigrate
     
       More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
     `);

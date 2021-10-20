@@ -557,6 +557,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         if (!this.renderToDOM) {
           throw new Error(dedent`
             Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+
+            You can fix this automatically by running:
+
+            npx sb@next automigrate
         
             More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
           `);
