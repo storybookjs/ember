@@ -63,12 +63,12 @@ export class PostmsgTransport {
 
       // telejson options
       allowRegExp,
-      allowFunction,
+      allowFunction = true,
       allowSymbol,
       allowDate,
       allowUndefined,
       allowClass,
-      maxDepth,
+      maxDepth = 25,
       space,
       lazyEval,
     } = options || {};
