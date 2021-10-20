@@ -1,5 +1,6 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
+import { transparentize } from 'polished';
 
 interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -79,10 +80,13 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    background: 'none',
+    height: 24,
+    marginTop: 8,
+    padding: '6px 5px',
+    background: 'transparent',
+    border: 'none',
+    borderRadius: 4,
     color: 'inherit',
-    padding: 0,
     cursor: 'pointer',
 
     // Icon Buttons may have text depending on user preferences.
@@ -90,25 +94,29 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     fontWeight: 'bold',
     fontSize: 13,
 
-    border: '0 solid transparent',
-    borderTop: '3px solid transparent',
-    borderBottom: '3px solid transparent',
-
-    transition: 'color 0.2s linear, border-bottom-color 0.2s linear',
+    // I am unsure we need this transition, but if you want a smooth animation, this works nicely
+    // transition: 'all 0.15s ease-in-out',
 
     '&:hover, &:focus': {
       outline: '0 none',
+      background: theme.background.hoverable,
       color: theme.color.secondary,
     },
     '& > svg': {
-      width: 15,
+      width: 14,
     },
   }),
   ({ active, theme }) =>
     active
       ? {
           outline: '0 none',
-          borderBottomColor: theme.color.secondary,
+          backgroundColor: theme.color.secondary,
+          color: theme.color.inverseText,
+
+          '&:hover, &:focus': {
+            backgroundColor: transparentize(0.1, theme.color.secondary),
+            color: theme.color.inverseText,
+          },
         }
       : {}
 );
