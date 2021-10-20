@@ -1,5 +1,6 @@
 import { TransformOptions } from '@babel/core';
 import { precompile } from 'ember-source/dist/ember-template-compiler';
+import type { StorybookConfig } from '@storybook/core-common';
 
 let emberOptions: any;
 
@@ -45,3 +46,7 @@ export function babel(config: TransformOptions, options: any) {
     plugins: [].concat(babelConfigPlugins, extraPlugins),
   };
 }
+
+export const config: StorybookConfig['config'] = (entry = []) => {
+  return [...entry, require.resolve('../../esm/client/preview/config')];
+};
