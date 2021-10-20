@@ -24,7 +24,7 @@ export interface TypescriptConfig {
 export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
   disableWebpackDefaults?: boolean;
-  channelOptions?: TelejsonOptions;
+  channelOptions?: Partial<TelejsonOptions>;
 }
 
 export interface Presets {
