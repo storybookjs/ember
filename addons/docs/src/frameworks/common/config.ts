@@ -3,8 +3,8 @@ import { enhanceArgTypes } from './enhanceArgTypes';
 export const parameters = {
   docs: {
     inlineStories: false,
-    container: 'DocsContainer',
-    page: 'DocsPage',
+    getContainer: async () => (await import('../../blocks')).DocsContainer,
+    getPage: async () => (await import('../../blocks')).DocsPage,
     iframeHeight: 100,
   },
 };
