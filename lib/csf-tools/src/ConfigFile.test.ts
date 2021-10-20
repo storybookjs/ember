@@ -126,6 +126,21 @@ describe('ConfigFile', () => {
           )
         ).toEqual('webpack5');
       });
+      it('variable exports', () => {
+        expect(
+          getField(
+            ['stories'],
+            dedent`
+              import type { StorybookConfig } from '@storybook/react/types';
+
+              const config: StorybookConfig = {
+                stories: [{ directory: '../src', titlePrefix: 'Demo' }],
+              }
+              module.exports = config;
+            `
+          )
+        ).toEqual([{ directory: '../src', titlePrefix: 'Demo' }]);
+      });
     });
   });
 

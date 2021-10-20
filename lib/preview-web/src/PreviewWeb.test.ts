@@ -433,6 +433,10 @@ describe('PreviewWeb', () => {
           expect(preview.view.showErrorDisplay.mock.calls[0][0]).toMatchInlineSnapshot(`
             [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
 
+                You can fix this automatically by running:
+
+                npx sb@next automigrate
+
                 More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
           `);
         } finally {

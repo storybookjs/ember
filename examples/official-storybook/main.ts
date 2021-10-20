@@ -16,7 +16,6 @@ const config: StorybookConfig = {
     strictMode: true,
   },
   addons: [
-    '@storybook/react',
     {
       name: '@storybook/addon-docs',
       options: {
