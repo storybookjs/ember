@@ -2,6 +2,7 @@ import React, { ComponentType } from 'react';
 import ReactDOM from 'react-dom';
 import { AnyFramework } from '@storybook/csf';
 import { Story } from '@storybook/store';
+import { DocsContainer, DocsPage } from '@storybook/addon-docs';
 
 import { DocsContextProps } from './types';
 import { NoDocs } from './NoDocs';
@@ -17,9 +18,18 @@ export class DocsRenderer<TFramework extends AnyFramework> {
       throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
     }
 
-    this.DocsContainer =
-      docs.container || (({ children }: { children: Element }) => <>{children}</>);
-    this.Page = docs.page || NoDocs;
+    if (docs.container === 'DocsContainer') {
+      this.DocsContainer = DocsContainer;
+    } else {
+      this.DocsContainer =
+        docs.container || (({ children }: { children: Element }) => <>{children}</>);
+    }
+
+    if (docs.page === 'DocsPage') {
+      this.Page = DocsPage;
+    } else {
+      this.Page = docs.page || NoDocs;
+    }
   }
 
   render(docsContext: DocsContextProps<TFramework>, element: HTMLElement, callback: () => void) {
