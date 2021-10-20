@@ -9,6 +9,7 @@
     - [Behavioral differences](#behavioral-differences)
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
+    - [Store API changes for addon authors](#store-api-changes-for-addon-authors)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
@@ -331,6 +332,14 @@ function storySort(a, b) {
     : a.id.localeCompare(b.id, undefined, { numeric: true });
 },
 ```
+
+#### Store API changes for addon authors
+
+The Story Store in v7 mode is async, so syncronous story loading APIs no longer work. In particular:
+
+ - `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
+ - `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
+
 
 ### Babel mode v7
 
