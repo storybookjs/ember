@@ -7,32 +7,26 @@ import Button from './Button.vue';
 
 <Meta title="Components/Button" component={Button}/>
 
-<Story name="Primary">
-  {() => {
-    return {
-      components: { Button },
-      template: `<Button background="#ff0" label="Button"  />`,
-    };
-  }}
-</Story>
+<!-- The render function is a framework specific construct to define how the story should render -->
+
+<Story 
+  name="Primary"
+  render={() => ({
+    components: {Button},
+    template: `<Button backgroundColor="#ff0" label="Button" />`,
+  })} />
 
 <Story
-  name="Secondary">
-  {() => {
-    return {
-      components: { Button },
-      template: `<Button background="#ff0" label="😄👍😍💯" />`,
-    };
-  }}
-</Story>
+  name="Secondary"
+  render={() => ({
+    components: { Button },
+    template: `<Button backgroundColor="#ff0" label="😄👍😍💯" />`,
+  })} />
 
 <Story
-  name="Tertiary">
-  {() => {
-    return {
-      components: { Button },
-      template: `<Button background="#ff0" label="📚📕📈🤓" />`,
-    };
-  }}
-</Story>
+  name="Tertiary"
+  render={() => ({
+    components: { Button },
+    template: `<Button backgroundColor="#ff0" label="📚📕📈🤓" />`,
+  })} />
 ```

@@ -1,0 +1,22 @@
+```ts
+// MyComponent.stories.ts
+
+import { fireEvent, getByRole, userEvent, within } from '@storybook/testing-library'
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  component: MyComponent,
+};
+
+export const ExampleStory = {
+  play: async ({ canvasElement }) => {
+    // Assigns canvas to the component root element
+    const canvas = within(canvasElement);
+
+    // Starts querying from the component's root element
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await fireEvent.click(canvas.getByRole('another-element'));
+  },
+};
+```

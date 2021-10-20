@@ -1,0 +1,31 @@
+```js
+// MyComponent.stories.js
+
+import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.svelte';
+
+export default {
+  component: MyComponent,
+   //👇 Marking the onClick with this configuration will log the event in the Actions panel
+  argTypes: { onClick: { action: true } },
+};
+
+export const ClickExample = {
+  play: async () => {
+    await userEvent.click(screen.getByRole('button'));
+  },
+  render: () => ({
+    Component: MyComponent,
+  }),
+};
+
+export const FireEventExample = {
+  play: async () => {
+    await fireEvent.click(screen.getByTestId('data-testid'));
+  },
+  render: () => ({
+    Component: MyComponent,
+  }),
+};
+```

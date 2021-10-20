@@ -3,34 +3,36 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Button from './button.component';
+import { Button } from './button.component';
 
 <Meta title="Components/Button" component={Button}/>
 
-<Story name="Primary">
-  {{
+<!-- The render function is a framework specific construct to define how the story should render -->
+
+<Story 
+  name="Primary"
+  render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: 'Button',
     },
-  }}
-</Story>
+  })} />
 
-<Story name="Secondary">
-  {{
+<Story 
+  name="Secondary"
+  render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: '😄👍😍💯',
     },
-  }}
-</Story>
+  })} />
 
-<Story name="Tertiary">
-  {{
+<Story 
+  name="Tertiary" 
+  render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: '📚📕📈🤓',
     },
-  }}
-</Story>
+})} />
 ```
