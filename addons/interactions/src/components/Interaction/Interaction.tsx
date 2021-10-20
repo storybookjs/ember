@@ -11,7 +11,7 @@ const MethodCallWrapper = styled.div(() => ({
   fontFamily: typography.fonts.mono,
   fontSize: typography.size.s1,
   overflowWrap: 'break-word',
-  inlineSize: 'calc( 100% - 26px )',
+  inlineSize: 'calc( 100% - 40px )',
 }));
 
 const RowContainer = styled('div', { shouldForwardProp: (prop) => !['call'].includes(prop) })<{
