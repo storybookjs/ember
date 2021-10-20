@@ -6,17 +6,20 @@ import { transparentize } from 'polished';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
-const StyledSubnav = styled.nav(({ theme }) => ({
+const SubNavWrapper = styled.div(({ theme }) => ({
   background: theme.background.app,
   borderBottom: `1px solid ${theme.appBorderColor}`,
+  position: 'sticky',
+  top: 0,
+  zIndex: 1,
+}));
+
+const StyledSubnav = styled.nav(({ theme }) => ({
   height: 40,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   paddingLeft: 15,
-  position: 'sticky',
-  top: 0,
-  zIndex: 1,
 }));
 
 export interface SubnavProps {
@@ -65,6 +68,7 @@ const StyledLocation = styled(P)(({ theme }) => ({
   color: theme.textMutedColor,
   justifyContent: 'flex-end',
   textAlign: 'right',
+  whiteSpace: 'nowrap',
   marginTop: 'auto',
   marginBottom: 1,
   paddingRight: 15,
@@ -102,51 +106,53 @@ export const Subnav: React.FC<SubnavProps> = ({
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
-    <Bar>
-      <StyledSubnav>
-        <Group>
-          <StatusBadge status={status} />
-
-          <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
-            {buttonText}
-          </JumpToEndButton>
-
-          <StyledSeparator />
-
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
-            <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
-              <Icons icon="rewind" />
-            </RewindButton>
-          </WithTooltip>
-
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
-            <StyledIconButton
-              containsIcon
-              onClick={onPrevious}
-              disabled={isDisabled || !hasPrevious}
-            >
-              <Icons icon="playback" />
-            </StyledIconButton>
-          </WithTooltip>
-
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
-            <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
-              <Icons icon="playnext" />
-            </StyledIconButton>
-          </WithTooltip>
-
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
-            <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
-              <Icons icon="fastforward" />
-            </StyledIconButton>
-          </WithTooltip>
-        </Group>
-        {storyFileName && (
+    <SubNavWrapper>
+      <Bar>
+        <StyledSubnav>
           <Group>
-            <StyledLocation>{storyFileName}</StyledLocation>
+            <StatusBadge status={status} />
+
+            <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
+              {buttonText}
+            </JumpToEndButton>
+
+            <StyledSeparator />
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
+              <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+                <Icons icon="rewind" />
+              </RewindButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
+              <StyledIconButton
+                containsIcon
+                onClick={onPrevious}
+                disabled={isDisabled || !hasPrevious}
+              >
+                <Icons icon="playback" />
+              </StyledIconButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
+              <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+                <Icons icon="playnext" />
+              </StyledIconButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
+              <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+                <Icons icon="fastforward" />
+              </StyledIconButton>
+            </WithTooltip>
           </Group>
-        )}
-      </StyledSubnav>
-    </Bar>
+          {storyFileName && (
+            <Group>
+              <StyledLocation>{storyFileName}</StyledLocation>
+            </Group>
+          )}
+        </StyledSubnav>
+      </Bar>
+    </SubNavWrapper>
   );
 };
