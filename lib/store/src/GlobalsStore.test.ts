@@ -3,7 +3,7 @@ import { GlobalsStore } from './GlobalsStore';
 describe('GlobalsStore', () => {
   it('is initialized to the value in globals', () => {
     const store = new GlobalsStore();
-    store.initialize({
+    store.set({
       globals: {
         arg1: 'arg1',
         arg2: 2,
@@ -21,7 +21,7 @@ describe('GlobalsStore', () => {
 
   it('is initialized to the default values from globalTypes if global is unset', () => {
     const store = new GlobalsStore();
-    store.initialize({
+    store.set({
       globals: {
         arg1: 'arg1',
         arg2: 2,
@@ -43,7 +43,7 @@ describe('GlobalsStore', () => {
   describe('update', () => {
     it('changes the global args', () => {
       const store = new GlobalsStore();
-      store.initialize({ globals: { foo: 'old' }, globalTypes: { baz: {} } });
+      store.set({ globals: { foo: 'old' }, globalTypes: { baz: {} } });
 
       store.update({ foo: 'bar' });
       expect(store.get()).toEqual({ foo: 'bar' });
@@ -58,7 +58,7 @@ describe('GlobalsStore', () => {
 
     it('does not merge objects', () => {
       const store = new GlobalsStore();
-      store.initialize({ globals: {}, globalTypes: {} });
+      store.set({ globals: {}, globalTypes: {} });
 
       store.update({ obj: { foo: 'bar' } });
       expect(store.get()).toEqual({ obj: { foo: 'bar' } });
@@ -71,7 +71,7 @@ describe('GlobalsStore', () => {
   describe('updateFromPersisted', () => {
     it('only sets values for which globals or globalArgs exist', () => {
       const store = new GlobalsStore();
-      store.initialize({
+      store.set({
         globals: {
           arg1: 'arg1',
         },
@@ -90,14 +90,14 @@ describe('GlobalsStore', () => {
     });
   });
 
-  describe('resetOnProjectAnnotationsChange', () => {
+  describe('second call to set', () => {
     it('is initialized to the (new) default values from globalTypes if the (new) global is unset', () => {
       const store = new GlobalsStore();
-      store.initialize({ globals: {}, globalTypes: {} });
+      store.set({ globals: {}, globalTypes: {} });
 
       expect(store.get()).toEqual({});
 
-      store.resetOnProjectAnnotationsChange({
+      store.set({
         globals: {
           arg1: 'arg1',
           arg2: 2,
@@ -119,7 +119,7 @@ describe('GlobalsStore', () => {
     describe('when underlying globals have not changed', () => {
       it('retains updated values, but not if they are undeclared', () => {
         const store = new GlobalsStore();
-        store.initialize({
+        store.set({
           globals: {
             arg1: 'arg1',
           },
@@ -137,7 +137,7 @@ describe('GlobalsStore', () => {
         // You can set undeclared values (currently, deprecated)
         expect(store.get()).toEqual({ arg1: 'new-arg1', arg2: 'new-arg2', arg3: 'new-arg3' });
 
-        store.resetOnProjectAnnotationsChange({
+        store.set({
           globals: {
             arg1: 'arg1',
           },
@@ -153,7 +153,7 @@ describe('GlobalsStore', () => {
     describe('when underlying globals have changed', () => {
       it('retains a the same delta', () => {
         const store = new GlobalsStore();
-        store.initialize({
+        store.set({
           globals: {
             arg1: 'arg1',
             arg4: 'arg4',
@@ -177,7 +177,7 @@ describe('GlobalsStore', () => {
           arg4: 'arg4',
         });
 
-        store.resetOnProjectAnnotationsChange({
+        store.set({
           globals: {
             arg1: 'edited-arg1',
             arg4: 'edited-arg4',

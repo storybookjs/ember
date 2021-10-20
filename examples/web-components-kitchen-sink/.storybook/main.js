@@ -7,6 +7,7 @@ module.exports = {
     '@storybook/addon-a11y',
     '@storybook/addon-actions',
     '@storybook/addon-backgrounds',
+    '@storybook/addon-interactions',
     '@storybook/addon-links',
     '@storybook/addon-storysource',
     '@storybook/addon-viewport',

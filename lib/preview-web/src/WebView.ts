@@ -38,7 +38,7 @@ export class WebView {
     return this.storyRoot();
   }
 
-  storyRoot(): Element {
+  storyRoot(): HTMLElement {
     return document.getElementById('root');
   }
 
@@ -49,7 +49,7 @@ export class WebView {
     return this.docsRoot();
   }
 
-  docsRoot(): Element {
+  docsRoot(): HTMLElement {
     return document.getElementById('docs-root');
   }
 

@@ -41,6 +41,26 @@ describe('normalizeInputType', () => {
       defaultValue: 'defaultValue',
     });
   });
+
+  it('preserves disabled control via shortcut', () => {
+    expect(
+      normalizeInputType(
+        {
+          type: 'string',
+          control: false,
+          description: 'description',
+          defaultValue: 'defaultValue',
+        },
+        'arg'
+      )
+    ).toEqual({
+      name: 'arg',
+      type: { name: 'string' },
+      control: { disable: true },
+      description: 'description',
+      defaultValue: 'defaultValue',
+    });
+  });
 });
 
 describe('normalizeInputTypes', () => {

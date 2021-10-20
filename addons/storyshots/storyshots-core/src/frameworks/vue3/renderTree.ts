@@ -1,12 +1,14 @@
 import * as Vue from 'vue';
 import global from 'global';
 import dedent from 'ts-dedent';
+import { app, activeStoryComponent } from '@storybook/vue3';
 
 const { document } = global;
 
 // This is cast as `any` to workaround type errors caused by Vue 2 types
-const { render, h } = Vue as any;
+const { h } = Vue as any;
 
+let vm: any;
 function getRenderedTree(story: any) {
   const component = story.render();
 
@@ -14,20 +16,12 @@ function getRenderedTree(story: any) {
 
   // Vue 3's Jest renderer throws if all of the required props aren't specified
   // So we try/catch and warn the user if they forgot to specify one in their args
-  try {
-    render(vnode, document.createElement('div'));
-  } catch (err) {
-    // Jest throws an error when you call `console.error`
-    // eslint-disable-next-line no-console
-    console.error(
-      dedent`
-        Storyshots encountered an error while rendering Vue 3 story: ${story.id}
-        Did you remember to define every prop you are using in the story?
-      `
-    );
+  activeStoryComponent.value = vnode;
+  if (!vm) {
+    vm = app.mount(document.createElement('div'));
   }
-
-  return vnode.el;
+  vm.$forceUpdate();
+  return vm.$el;
 }
 
 export default getRenderedTree;

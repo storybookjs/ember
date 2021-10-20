@@ -46,6 +46,7 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
   // Find angular project target
   let project: workspaces.ProjectDefinition;
   let target: workspaces.TargetDefinition;
+  let confName: string;
   try {
     // Default behavior when `angularBrowserTarget` are not explicitly defined to null
     if (options.angularBrowserTarget !== null) {
@@ -64,9 +65,12 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
       );
       project = fondProject.project;
       target = fondProject.target;
+      confName = browserTarget.configuration;
 
       logger.info(
-        `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
+        `=> Using angular project "${browserTarget.project}:${browserTarget.target}${
+          confName ? `:${confName}` : ''
+        }" for configuring Storybook`
       );
     }
     // Start storybook when only tsConfig is provided.
@@ -85,7 +89,12 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: O
   // Use angular-cli to get some webpack config
   let angularCliWebpackConfig: AngularCliWebpackConfig;
   try {
-    angularCliWebpackConfig = await extractAngularCliWebpackConfig(dirToSearch, project, target);
+    angularCliWebpackConfig = await extractAngularCliWebpackConfig(
+      dirToSearch,
+      project,
+      target,
+      confName
+    );
     logger.info(`=> Using angular-cli webpack config`);
   } catch (error) {
     logger.error(`=> Could not get angular cli webpack config`);

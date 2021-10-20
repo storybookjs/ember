@@ -96,9 +96,10 @@ export async function baseGenerator(
 
   const packageJson = packageManager.retrievePackageJson();
   const installedDependencies = new Set(Object.keys(packageJson.dependencies));
+  const frameworkPackage = `@storybook/${framework}`;
 
   const packages = [
-    `@storybook/${framework}`,
+    frameworkPackage,
     ...addonPackages,
     ...extraPackages,
     ...extraAddons,
@@ -122,6 +123,7 @@ export async function baseGenerator(
         }
       : extraMain;
   configure(framework, {
+    framework: frameworkPackage,
     addons: [...addons, ...stripVersions(extraAddons)],
     extensions,
     commonJs: options.commonJs,

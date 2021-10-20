@@ -104,3 +104,4 @@ export const { forceReRender } = api;
 export const { getStorybook } = api.clientApi;
 export const { raw } = api.clientApi;
 export const app: ClientApi['app'] = storybookApp;
+export { activeStoryComponent } from './render';

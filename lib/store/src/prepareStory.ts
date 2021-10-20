@@ -29,7 +29,7 @@ const argTypeDefaultValueWarning = deprecate(
   dedent`
   \`argType.defaultValue\` is deprecated and will be removed in Storybook 7.0.
 
-  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-argtype-defaultValue`
+  https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#no-longer-inferring-default-values-of-args`
 );
 
 // Combine all the metadata about a story (both direct and inherited from the component/global scope)
@@ -93,11 +93,11 @@ export function prepareStory<TFramework extends AnyFramework>(
   parameters.__isArgsStory = passArgsFirst && render.length > 0;
 
   // Pull out args[X] into initialArgs for argTypes enhancers
-  const passedArgs: Args = combineParameters(
-    projectAnnotations.args,
-    componentAnnotations.args,
-    storyAnnotations.args
-  ) as Args;
+  const passedArgs: Args = {
+    ...projectAnnotations.args,
+    ...componentAnnotations.args,
+    ...storyAnnotations.args,
+  } as Args;
 
   const contextForEnhancers: StoryContextForEnhancers<TFramework> = {
     componentId: componentAnnotations.id,
@@ -141,7 +141,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       ...accumulatedArgs,
       ...enhancer({
         ...contextForEnhancers,
-        initialArgs: initialArgsBeforeEnhancers,
+        initialArgs: accumulatedArgs,
       }),
     }),
     initialArgsBeforeEnhancers
@@ -190,14 +190,7 @@ export function prepareStory<TFramework extends AnyFramework>(
       : (render as LegacyStoryFn<TFramework>)(finalContext);
   };
   const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
-
-  const { play } = storyAnnotations;
-  const runPlayFunction = async () => {
-    if (play) {
-      return play();
-    }
-    return undefined;
-  };
+  const playFunction = storyAnnotations.play;
 
   return Object.freeze({
     ...contextForEnhancers,
@@ -205,6 +198,6 @@ export function prepareStory<TFramework extends AnyFramework>(
     undecoratedStoryFn,
     unboundStoryFn,
     applyLoaders,
-    runPlayFunction,
+    playFunction,
   });
 }

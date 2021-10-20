@@ -1,5 +1,5 @@
 import dedent from 'ts-dedent';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { logger } from '@storybook/node-logger';
 import resolveFrom from 'resolve-from';
 import {
@@ -11,6 +11,7 @@ import {
   BuilderOptions,
 } from './types';
 import { loadCustomPresets } from './utils/load-custom-presets';
+import { serverRequire } from './utils/interpret-require';
 
 const isObject = (val: unknown): val is Record<string, any> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
@@ -26,13 +27,15 @@ export function filterPresetsConfig(presetsConfig: PresetConfig[]): PresetConfig
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
   presetOptions: any,
+  framework: T,
   storybookOptions: InterPresetOptions
 ): T[] {
+  const prepend = [(framework as unknown) as T].filter(Boolean);
   if (isFunction(input)) {
-    return input({ ...storybookOptions, ...presetOptions });
+    return [...prepend, ...input({ ...storybookOptions, ...presetOptions })];
   }
   if (Array.isArray(input)) {
-    return input;
+    return [...prepend, ...input];
   }
 
   return [];
@@ -163,10 +166,20 @@ export function loadPreset(
     }
 
     if (isObject(contents)) {
-      const { addons: addonsInput, presets: presetsInput, ...rest } = contents;
+      const { addons: addonsInput, presets: presetsInput, framework, ...rest } = contents;
 
-      const subPresets = resolvePresetFunction(presetsInput, presetOptions, storybookOptions);
-      const subAddons = resolvePresetFunction(addonsInput, presetOptions, storybookOptions);
+      const subPresets = resolvePresetFunction(
+        presetsInput,
+        presetOptions,
+        framework,
+        storybookOptions
+      );
+      const subAddons = resolvePresetFunction(
+        addonsInput,
+        presetOptions,
+        framework,
+        storybookOptions
+      );
 
       return [
         ...loadPresets([...subPresets], level + 1, storybookOptions),
@@ -225,7 +238,7 @@ function applyPresets(
   args: any,
   storybookOptions: InterPresetOptions
 ): Promise<any> {
-  const presetResult = new Promise((resolve) => resolve(config));
+  const presetResult = new Promise((res) => res(config));
 
   if (!presets.length) {
     return presetResult;
@@ -282,6 +295,23 @@ export function getPresets(presets: PresetConfig[], storybookOptions: InterPrese
   };
 }
 
+/**
+ * Get the `framework` provided in main.js and also do error checking up front
+ */
+const getFrameworkPackage = (configDir: string) => {
+  const main = serverRequire(resolve(configDir, 'main'));
+  if (!main) return null;
+  const { framework: frameworkPackage, features = {} } = main;
+  if ((features.storyStoreV7 || features.breakingChangesV7) && !frameworkPackage) {
+    throw new Error(dedent`
+      Expected 'framework' in your main.js, didn't find one.
+    
+      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
+    `);
+  }
+  return frameworkPackage;
+};
+
 export function loadAllPresets(
   options: CLIOptions &
     LoadOptions &
@@ -293,9 +323,10 @@ export function loadAllPresets(
 ) {
   const { corePresets = [], frameworkPresets = [], overridePresets = [], ...restOptions } = options;
 
+  const frameworkPackage = getFrameworkPackage(options.configDir);
   const presetsConfig: PresetConfig[] = [
     ...corePresets,
-    ...frameworkPresets,
+    ...(frameworkPackage ? [] : frameworkPresets),
     ...loadCustomPresets(options),
     ...overridePresets,
   ];
