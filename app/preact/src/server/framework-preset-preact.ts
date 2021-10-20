@@ -1,7 +1,7 @@
 import path from 'path';
 import { TransformOptions } from '@babel/core';
 import { Configuration } from 'webpack';
-import { StorybookConfig } from '@storybook/core-common';
+import { findDistEsm, StorybookConfig } from '@storybook/core-common';
 
 export function babelDefault(config: TransformOptions) {
   return {
@@ -29,5 +29,5 @@ export function webpackFinal(config: Configuration) {
 }
 
 export const config: StorybookConfig['config'] = (entry = []) => {
-  return [...entry, require.resolve('../../esm/client/preview/config')];
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
 };

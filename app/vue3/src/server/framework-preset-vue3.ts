@@ -1,6 +1,6 @@
 import { VueLoaderPlugin } from 'vue-loader';
 import { Configuration, DefinePlugin } from 'webpack';
-import type { StorybookConfig } from '@storybook/core-common';
+import { findDistEsm, StorybookConfig } from '@storybook/core-common';
 
 export function webpack(config: Configuration): Configuration {
   return {
@@ -48,5 +48,5 @@ export function webpack(config: Configuration): Configuration {
 }
 
 export const config: StorybookConfig['config'] = (entry = []) => {
-  return [...entry, require.resolve('../../esm/client/preview/config')];
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
 };

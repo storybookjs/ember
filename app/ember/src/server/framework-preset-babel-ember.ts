@@ -1,6 +1,6 @@
 import { TransformOptions } from '@babel/core';
 import { precompile } from 'ember-source/dist/ember-template-compiler';
-import type { StorybookConfig } from '@storybook/core-common';
+import { findDistEsm, StorybookConfig } from '@storybook/core-common';
 
 let emberOptions: any;
 
@@ -48,5 +48,5 @@ export function babel(config: TransformOptions, options: any) {
 }
 
 export const config: StorybookConfig['config'] = (entry = []) => {
-  return [...entry, require.resolve('../../esm/client/preview/config')];
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
 };

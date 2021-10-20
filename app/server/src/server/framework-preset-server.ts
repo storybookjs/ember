@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Configuration } from 'webpack';
 import path from 'path';
-import type { StorybookConfig } from '@storybook/core-common';
+import { findDistEsm, StorybookConfig } from '@storybook/core-common';
 
 export function webpack(config: Configuration) {
   config.module.rules.push({
@@ -20,5 +20,5 @@ export function webpack(config: Configuration) {
 }
 
 export const config: StorybookConfig['config'] = (entry = []) => {
-  return [...entry, require.resolve('../../esm/client/preview/config')];
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
 };

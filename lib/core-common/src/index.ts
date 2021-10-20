@@ -26,5 +26,6 @@ export * from './utils/to-require-context';
 export * from './utils/normalize-stories';
 export * from './utils/to-importFn';
 export * from './utils/readTemplate';
+export * from './utils/findDistEsm';
 
 export * from './types';

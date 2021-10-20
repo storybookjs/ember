@@ -1,8 +1,8 @@
-import type { StorybookConfig } from '@storybook/core-common';
+import { findDistEsm, StorybookConfig } from '@storybook/core-common';
 
 export const config: StorybookConfig['config'] = (entries = []) => [
   ...entries,
-  require.resolve('../../esm/client/preview/config'),
+  findDistEsm(__dirname, 'client/preview/config'),
 ];
 
 export const addons: StorybookConfig['addons'] = [

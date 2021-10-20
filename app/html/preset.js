@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-babel-html');
+module.exports = require('./dist/cjs/server/framework-preset-html');
