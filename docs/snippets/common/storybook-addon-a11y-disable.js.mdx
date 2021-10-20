@@ -1,0 +1,19 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+import { MyComponent } from './YourComponent';
+
+export default {
+  component: MyComponent,
+};
+
+export const NonA11yStory = {
+  args: {},
+  parameters: {
+    a11y: {
+      // This option disables all a11y checks on this story
+      disable: true,
+    },
+  },
+};
+```

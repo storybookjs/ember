@@ -1,0 +1,37 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+import { expect } from '@storybook/jest';
+
+import { within, waitFor, userEvent } from '@storybook/testing-library';
+
+import { YourForm } from './YourForm';
+
+export default {
+  component: YourForm,
+
+  //👇 Marking onSubmit as action will also output the result to the Actions panel
+  argTypes: {
+    onSubmit: { action: true },
+  },
+};
+
+export const ExampleStory = {
+  play: async ({ args, canvasElement }) => {
+    // Starts querying the component from it's root element
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByTestId('email'), 'email@email-provider.com');
+    await userEvent.type(canvas.getByTestId('password'), 'randompassword');
+    await userEvent.click(canvas.getByTestId('submit'));
+
+    await waitFor(async () => {
+      await expect(args.onSubmit).toHaveBeenCalledTimes(1);
+      await expect(args.onSubmit).toHaveBeenCalledWith({
+        email: 'email@email-provider.com',
+        password: 'password',
+      });
+    });
+  },
+};
+```

@@ -165,6 +165,43 @@ module.exports = {
       ],
     },
     {
+      title: '🔬 Writing tests',
+      pathSegment: 'writing-tests',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'introduction',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'visual-testing',
+          title: 'Visual tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'accessibility-testing',
+          title: 'Accessibility tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'interaction-testing',
+          title: 'Interaction tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'snapshot-testing',
+          title: 'Snapshot tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'importing-stories-in-tests',
+          title: 'Import stories in tests',
+          type: 'link',
+        },
+      ],
+    },
+    {
       title: '⚙️ Configure',
       pathSegment: 'configure',
       type: 'menu',
@@ -269,39 +306,6 @@ module.exports = {
           pathSegment: 'stories-for-multiple-components',
           title: 'Stories for multiple components',
           type: 'link',
-        },
-        {
-          title: 'Testing with Storybook',
-          // Despite having a child menu, this does not currently affect the path
-          pathSegment: '',
-          type: 'menu',
-          children: [
-            {
-              pathSegment: 'testing-with-storybook',
-              title: 'Introduction',
-              type: 'link',
-            },
-            {
-              pathSegment: 'unit-testing',
-              title: 'Unit testing',
-              type: 'link',
-            },
-            {
-              pathSegment: 'visual-testing',
-              title: 'Visual testing',
-              type: 'link',
-            },
-            {
-              pathSegment: 'interaction-testing',
-              title: 'Interaction testing',
-              type: 'link',
-            },
-            {
-              pathSegment: 'snapshot-testing',
-              title: 'Snapshot testing',
-              type: 'link',
-            },
-          ],
         },
         {
           pathSegment: 'storybook-composition',
