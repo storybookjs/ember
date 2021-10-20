@@ -111,7 +111,7 @@ export class ConfigFile {
               }
             });
           } else {
-            logger.warn(`Unexpected ${node}`);
+            logger.warn(`Unexpected ${JSON.stringify(node)}`);
           }
         },
       },
@@ -126,9 +126,13 @@ export class ConfigFile {
               t.isIdentifier(left.property) &&
               left.property.name === 'exports'
             ) {
-              if (t.isObjectExpression(right)) {
-                self._exportsObject = right;
-                right.properties.forEach((p: t.ObjectProperty) => {
+              let exportObject = right;
+              if (t.isIdentifier(right)) {
+                exportObject = _findVarInitialization(right.name, parent as t.Program);
+              }
+              if (t.isObjectExpression(exportObject)) {
+                self._exportsObject = exportObject;
+                exportObject.properties.forEach((p: t.ObjectProperty) => {
                   const exportName = propKey(p);
                   if (exportName) {
                     let exportVal = p.value;
@@ -139,7 +143,7 @@ export class ConfigFile {
                   }
                 });
               } else {
-                logger.warn(`Unexpected ${node}`);
+                logger.warn(`Unexpected ${JSON.stringify(node)}`);
               }
             }
           }
@@ -205,7 +209,7 @@ export class ConfigFile {
       },
     });
     if (!valueNode) {
-      throw new Error(`Unexpected value ${value}`);
+      throw new Error(`Unexpected value ${JSON.stringify(value)}`);
     }
     this.setFieldNode(path, valueNode);
   }
