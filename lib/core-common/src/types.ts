@@ -1,4 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import type { Options as TelejsonOptions } from 'telejson';
 import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
@@ -23,6 +24,7 @@ export interface TypescriptConfig {
 export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
   disableWebpackDefaults?: boolean;
+  channelOptions?: Partial<TelejsonOptions>;
 }
 
 export interface Presets {
