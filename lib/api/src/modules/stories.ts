@@ -470,18 +470,20 @@ export const init: ModuleFn = ({
       function handler({
         kind,
         story,
+        storyId,
         ...rest
       }: {
         kind: string;
         story: string;
+        storyId: string;
         viewMode: ViewMode;
       }) {
         const { ref } = getEventMetadata(this, fullAPI);
 
         if (!ref) {
-          fullAPI.selectStory(kind, story, rest);
+          fullAPI.selectStory(storyId || kind, story, rest);
         } else {
-          fullAPI.selectStory(kind, story, { ...rest, ref: ref.id });
+          fullAPI.selectStory(storyId || kind, story, { ...rest, ref: ref.id });
         }
       }
     );
