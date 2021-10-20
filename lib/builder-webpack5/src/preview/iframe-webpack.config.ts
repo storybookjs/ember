@@ -184,7 +184,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
-            CHANNEL_OPTIONS: coreOptions.channelOptions,
+            CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
             STORIES: stories.map((specifier) => ({
               ...specifier,
