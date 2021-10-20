@@ -6943,7 +6943,6 @@ __metadata:
     "@storybook/angular": 6.4.0-beta.15
     "@storybook/api": 6.4.0-beta.15
     "@storybook/builder-webpack4": 6.4.0-beta.15
-    "@storybook/client-api": 6.4.0-beta.15
     "@storybook/client-logger": 6.4.0-beta.15
     "@storybook/components": 6.4.0-beta.15
     "@storybook/core": 6.4.0-beta.15
