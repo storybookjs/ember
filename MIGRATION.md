@@ -223,7 +223,7 @@ Consider a project configuration `/path/to/project/.storybook/main.js` containin
 module.exports = { stories: ['../src/**/*.stories.*'] };
 ```
 
-And te file `/path/to/project/src/components/Button.stories.tsx` containing the default export:
+And the file `/path/to/project/src/components/Button.stories.tsx` containing the default export:
 
 ```js
 import { Button } from './Button';
@@ -236,7 +236,7 @@ We will provide more documentation soon on how to configure this.
 
 #### String literal titles
 
-Starting in 6.4 CSF component [titles are optional](#optional-titles). However, if you do specify titles, title handing is becoming more strict in V7 and are limited to string literals.
+Starting in 6.4 CSF component [titles are optional](#optional-titles). However, if you do specify titles, title handing is becoming more strict in V7 and is limited to string literals.
 
 Earlier versions of Storybook supported story titles that are dynamic Javascript expressions
 
@@ -271,7 +271,7 @@ The key benefit of the on demand store is that stories are code-split automatica
 The on-demand store relies on the "story index" data structure which is generated in the server (node) via static code analysis. As such, it has the following limitations:
 
 - Does not work with `storiesOf()`
-- Does not work if you used dynamic story names or component titles.
+- Does not work if you use dynamic story names or component titles.
 
 However, the `autoTitle` feature is supported.
 
@@ -352,7 +352,7 @@ function storySort(a, b) {
 
 #### V7 Store API changes for addon authors
 
-The Story Store in v7 mode is async, so syncronous story loading APIs no longer work. In particular:
+The Story Store in v7 mode is async, so synchronous story loading APIs no longer work. In particular:
 
 - `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
 - `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
@@ -390,7 +390,7 @@ This will create a `.babelrc.json` file. This file includes a bunch of babel plu
 
 ### Loader behavior with args changes
 
-In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
+In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader is passed to the story, irrespective of the new args.
 
 ### Angular component parameter removed
 
