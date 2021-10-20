@@ -302,7 +302,7 @@ const getFrameworkPackage = (configDir: string) => {
   const main = serverRequire(resolve(configDir, 'main'));
   if (!main) return null;
   const { framework: frameworkPackage, features = {} } = main;
-  if ((features.storyStoreV7 || features.breakingChangesV7) && !frameworkPackage) {
+  if (features.breakingChangesV7 && !frameworkPackage) {
     throw new Error(dedent`
       Expected 'framework' in your main.js, didn't find one.
     
