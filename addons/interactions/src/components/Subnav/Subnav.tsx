@@ -6,7 +6,7 @@ import { transparentize } from 'polished';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
-const SubNavWrapper = styled.div(({ theme }) => ({
+const SubnavWrapper = styled.div(({ theme }) => ({
   background: theme.background.app,
   borderBottom: `1px solid ${theme.appBorderColor}`,
   position: 'sticky',
@@ -106,7 +106,7 @@ export const Subnav: React.FC<SubnavProps> = ({
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
-    <SubNavWrapper>
+    <SubnavWrapper>
       <Bar>
         <StyledSubnav>
           <Group>
@@ -153,6 +153,6 @@ export const Subnav: React.FC<SubnavProps> = ({
           )}
         </StyledSubnav>
       </Bar>
-    </SubNavWrapper>
+    </SubnavWrapper>
   );
 };
