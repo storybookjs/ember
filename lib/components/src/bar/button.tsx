@@ -97,9 +97,10 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     // I am unsure we need this transition, but if you want a smooth animation, this works nicely
     // transition: 'all 0.15s ease-in-out',
 
-    '&:hover, &:focus': {
+    '&:hover': {
       outline: '0 none',
-      background: theme.background.hoverable,
+      // background: theme.background.hoverable,
+      background: transparentize(0.88, theme.color.secondary),
       color: theme.color.secondary,
     },
     '& > svg': {
@@ -110,13 +111,8 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     active
       ? {
           outline: '0 none',
-          backgroundColor: theme.color.secondary,
-          color: theme.color.inverseText,
-
-          '&:hover, &:focus': {
-            backgroundColor: transparentize(0.1, theme.color.secondary),
-            color: theme.color.inverseText,
-          },
+          backgroundColor: theme.background.hoverable,
+          color: theme.color.secondary,
         }
       : {}
 );
