@@ -51,7 +51,7 @@ export const mainjsFramework: Fix<MainjsFrameworkRunOptions> = {
       ${frameworkFormatted}
 
       More info: ${chalk.yellow(
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#webpack-5-manager-build'
+        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field'
       )}
     `;
   },
