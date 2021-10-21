@@ -133,7 +133,7 @@ This should enable auto-fix for all source files, and give linting warnings and 
 
 First make sure the repo is bootstrapped.
 
-Then run `yarn build-storybooks`, this creates a static website from all examples.
+Then run `yarn build-storybooks --all`, this creates a static website from all examples.
 
 Then run `yarn serve-storybooks`, this will run the static site on the port cypress expects.
 
