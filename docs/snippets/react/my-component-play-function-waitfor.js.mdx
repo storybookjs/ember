@@ -1,0 +1,32 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.js';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const ExampleAsyncStory = {
+  play: async () => {
+    const Input = screen.getByLabelText('Username', {
+      selector: 'input',
+    });
+
+    await userEvent.type(Input, 'WrongInput', {
+      delay: 100,
+    });
+    
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
+
+    await waitFor(async () => {
+      await userEvent.hover(screen.getByTestId('error'));
+    });
+  },
+};
+```

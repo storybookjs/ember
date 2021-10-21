@@ -74,6 +74,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'play-function',
+          title: 'Play function',
+          type: 'link',
+        },
+        {
           pathSegment: 'loaders',
           title: 'Loaders',
           type: 'link',

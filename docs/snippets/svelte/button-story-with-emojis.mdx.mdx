@@ -7,6 +7,7 @@ import Button from './Button.svelte';
 
 <Meta title="Button" component={Button} />
 
+
 <!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
@@ -18,22 +19,22 @@ import Button from './Button.svelte';
       label: 'Button',
     },
   })} />
- 
+
 <Story 
   name="Secondary" 
   render={() => ({
     Component: Button,
     props: {
       background: '#ff0',
-      label: '😄👍😍💯',
+      label: 'Button',
     },
   })} />
-  
+
 <Story 
-  name="Tertiary"
+  name="Tertiary" 
   render={() => ({
     Component: Button,
-     props: {
+    props: {
       background: '#ff0',
       label: '📚📕📈🤓',
     },

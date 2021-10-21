@@ -7,13 +7,14 @@ import { Button } from './button.component';
 
 <Meta title="Button" component={Button}/>
 
+
 <!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
   name="Primary"
   render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: 'Button',
     },
   })} />
@@ -22,7 +23,7 @@ import { Button } from './button.component';
   name="Secondary"
   render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: '😄👍😍💯',
     },
   })} />
@@ -31,7 +32,7 @@ import { Button } from './button.component';
   name="Tertiary"
   render={() => ({
     props: {
-      background: '#ff0',
+      backgroundColor: '#ff0',
       label: '📚📕📈🤓',
     },
   })} />

@@ -3,15 +3,16 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Page from './Page';
+import { Page } from './Page';
 
 <Meta title="Page" component={Page} />
 
+
 <!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
-<Story 
-  name="CustomFooter" 
-  args={{ 
+<Story
+  name="CustomFooter"
+  args={{
     footer: 'Built with Storybook',
   }}
   render={(args) => (
