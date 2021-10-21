@@ -98,13 +98,15 @@ export default async (options: Options & Record<string, any>): Promise<Configura
 
     virtualModuleMapping[storiesPath] = toImportFn(stories);
     const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+
     virtualModuleMapping[configEntryPath] = handlebars(
       await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
       {
         storiesFilename,
         configs,
       }
-    );
+      // We need to double escape `\` for webpack. We may have some in windows paths
+    ).replace(/\\/g, '\\\\');
     entries.push(configEntryPath);
   } else {
     const frameworkInitEntry = path.resolve(

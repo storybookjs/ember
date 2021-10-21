@@ -22,6 +22,6 @@ export function globToRegex(glob: string) {
   // Globs starting `**` require special treatment due to the regex they
   // produce, specifically a negative look-ahead
   return new RegExp(
-    ['^\\.', glob.startsWith('./**') ? '' : '\\/', regex.source.substring(1)].join('')
+    ['^\\.', glob.startsWith('./**') ? '' : '[\\\\/]', regex.source.substring(1)].join('')
   );
 }
