@@ -61,7 +61,14 @@ export function watchStorySpecifiers(
           .map(async (specifier) => {
             // If `./path/to/dir` was added, check all files matching `./path/to/dir/**/*.stories.*`
             // (where the last bit depends on `files`).
-            const dirGlob = path.join(options.workingDir, importPath, '**', specifier.files);
+            const dirGlob = path.join(
+              options.workingDir,
+              importPath,
+              '**',
+              // files can be e.g. '**/foo/*/*.js' so we just want the last bit,
+              // because the directoru could already be within the files part (e.g. './x/foo/bar')
+              path.basename(specifier.files)
+            );
             const files = await glob(dirGlob);
             files.forEach((filePath) => {
               const fileImportPath = toImportPath(path.relative(options.workingDir, filePath));
