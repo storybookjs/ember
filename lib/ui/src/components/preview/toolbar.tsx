@@ -7,7 +7,7 @@ import { Consumer, Combo, API, Story, Group, State, merge } from '@storybook/api
 import { shortcutToHumanString } from '@storybook/api/shortcut';
 import { addons, Addon, types } from '@storybook/addons';
 
-import { Location, RenderData } from '@storybook/router';
+import { Location, RenderData, useNavigate } from '@storybook/router';
 import { zoomTool } from './tools/zoom';
 
 import * as S from './utils/components';
