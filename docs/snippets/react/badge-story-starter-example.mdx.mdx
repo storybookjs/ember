@@ -8,6 +8,8 @@ import { Icon } from './Icon';
 
 <Meta title="MDX/Badge" component={Badge} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 # Badge
 
 Let's define a story for our `Badge` component:
@@ -19,7 +21,9 @@ Let's define a story for our `Badge` component:
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name="negative" render={() => <Badge status="negative">Negative</Badge>} />
+  <Story 
+    name="negative"
+    render={() => <Badge status="negative">Negative</Badge>} />
 </Canvas>
 
 We can even preview multiple stories in a block. This
@@ -27,13 +31,19 @@ gets rendered as a group, but defines individual stories
 with unique URLs and isolated snapshot tests.
 
 <Canvas>
-  <Story name="warning" render={() => <Badge status="warning">Warning</Badge>} />
+  <Story 
+   name="warning"
+   render={() => <Badge status="warning">Warning</Badge> } />
 
-  <Story name="neutral" render={() => <Badge status="neutral">Neutral</Badge>} />
+  <Story 
+    name="neutral"
+    render={() => <Badge status="neutral">Neutral</Badge>} />
 
-  <Story name="error" render={() => <Badge status="error">Error</Badge>} />
+  <Story 
+    name="error"
+    render={() => <Badge status="error">Error</Badge>} />
 
-  <Story
+  <Story 
     name="with icon"
     render={() => (
       <Badge status="warning">

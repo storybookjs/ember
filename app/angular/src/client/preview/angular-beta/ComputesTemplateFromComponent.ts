@@ -141,10 +141,12 @@ const buildTemplate = (
   inputs: string,
   outputs: string
 ) => {
+  const firstSelector = selector.split(',')[0];
   const templateReplacers: [
     string | RegExp,
     string | ((substring: string, ...args: any[]) => string)
   ][] = [
+    [/(^.*?)(?=[,])/, '$1'],
     [/(^\..+)/, 'div$1'],
     [/(^\[.+?])/, 'div$1'],
     [/([\w[\]]+)(\s*,[\w\s-[\],]+)+/, `$1`],
@@ -156,6 +158,6 @@ const buildTemplate = (
 
   return templateReplacers.reduce(
     (prevSelector, [searchValue, replacer]) => prevSelector.replace(searchValue, replacer as any),
-    selector
+    firstSelector
   );
 };

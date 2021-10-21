@@ -1,0 +1,25 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { fireEvent, userEvent, within } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.svelte';
+
+<Meta title="WithCanvasElement" component={MyComponent} />
+
+<!-- Assigns canvas to the component root element and queries the element based on it-->
+
+<Story
+  name="ExampleStory"
+  play={async ({canvasElement}) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await fireEvent.click(canvas.getByRole('another-element'));
+  }}
+  render={() => ({
+    Component: MyComponent
+  })} />
+```

@@ -1,0 +1,29 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+<!-- 👇 Marking the onButtonClick with this configuration will log the event in the Actions panel -->
+
+<Meta title="QueryMethods" component={MyComponent} argTypes={{ onButtonClick: { action: true }}/>
+
+<!-- The play function interacts with the component and looks for the button. -->
+
+<Story
+  name="ExampleWithRole"
+  play={async () => {
+    await userEvent.click(screen.getByRole('button', { name: / button label/i }));
+  }} />
+
+<!--  The play function interacts with the component and looks for the text-->
+
+<Story
+  name="ExampleWithText"
+  play={async () => {
+    await screen.findByText('example string');
+  }} />
+```

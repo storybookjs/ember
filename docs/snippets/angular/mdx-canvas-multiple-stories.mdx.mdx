@@ -1,9 +1,13 @@
 ```md
 <!-- Badge.stories.mdx --->
 
-import { Canvas, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
-export const Template = (args) => ({ props: args });
+import { Badge } from './badge.component';
+
+<Meta title="Badge" component={Badge} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Canvas>
   <Story 
@@ -11,26 +15,29 @@ export const Template = (args) => ({ props: args });
     args={{ 
       status: 'warning', 
       label: 'Warning',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args) => ({
+      props: args,
+    })} />
 
   <Story 
     name="neutral"
     args={{ 
       status: 'neutral', 
       label: 'Neutral',
-     }}>
-    {Template.bind({})}
-  </Story>
-  
+    }}
+    render={(args) => ({
+       props: args,
+    })} />
+
   <Story 
     name="error"
     args={{ 
       status: 'error', 
       label: 'Error',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args) => ({
+      props: args,
+    })} />
 </Canvas>
 ```

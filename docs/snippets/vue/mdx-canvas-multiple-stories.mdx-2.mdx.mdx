@@ -1,15 +1,13 @@
 ```md
 <!-- Badge.stories.mdx --->
 
-import { Canvas, Story } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import Badge from './Badge.vue';
 
-export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { Badge },
-  template: '<Badge v-bind="$props" />',
-});
+<Meta title="MDX/Badge" component={Badge} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Canvas>
   <Story 
@@ -17,26 +15,35 @@ export const Template = (args, { argTypes }) => ({
     args={{
       status: 'warning', 
       label: 'Warning',
-    }}>
-    {Template.bind({})}
-  </Story>
-  
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
+    
   <Story 
     name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral',
-    }}>
-    {Template.bind({})}
-  </Story>
-  
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
+
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
 </Canvas>
 ```

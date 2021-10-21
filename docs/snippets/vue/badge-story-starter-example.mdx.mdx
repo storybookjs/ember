@@ -8,11 +8,14 @@ import Icon from './Icon.vue';
 
 <Meta title="MDX/Badge" component={Badge} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 # Badge
 
 Let's define a story for our `Badge` component:
 
-<Story
+
+<Story 
   name="positive"
   render={() => ({
     components: { Badge },
@@ -22,13 +25,12 @@ Let's define a story for our `Badge` component:
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story 
-  name="negative"
-  render={() => ({
-    components: { Badge },
-    template: `<Badge status="negative">Negative</Badge>`,
-  })} />
-
+  <Story
+    name="negative"
+    render={() => ({
+      components: { Badge },
+      template: `<Badge status="negative">Negative</Badge>`,
+    })} />
 </Canvas>
 
 We can even preview multiple stories in a block. This
@@ -42,26 +44,30 @@ with unique URLs and isolated snapshot tests.
       components: { Badge },
       template: `<Badge status="warning">Warning</Badge>`,
     })} />
-
+    
   <Story 
     name="neutral"
     render={() => ({
       components: { Badge },
       template: `<Badge status="neutral">Neutral</Badge>`,
     })} />
-
+    
   <Story 
     name="error"
     render={() => ({
       components: { Badge },
       template: `<Badge status="error">Error</Badge>`,
     })} />
-
+   
   <Story 
     name="with icon"
     render={() => ({
       components: { Badge, Icon },
-      template: `<Badge status="warning"> <Icon icon="check" inline /> with icon </Badge>`,
+      template: `
+        <Badge status="warning">
+          <Icon icon="check" inline />
+          with icon
+        </Badge>`,
     })} />
 </Canvas>
 ```

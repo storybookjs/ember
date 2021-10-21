@@ -8,19 +8,17 @@ import YourComponent from './YourComponent.vue';
 <!--👇 The title prop determines where your story goes in the story list -->
 <Meta title="YourComponent" component={YourComponent} />
 
-<!--👇 We create a “template” of how args map to rendering -->
-export const Template = (args) => ({
-  components: { YourComponent },
-  setup() {
-    return { args };
-  },
-  template: `<YourComponent v-bind="args" />`,
-});
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <!-- 👇 The args you need here will depend on your component -->
 <Story
   name="FirstStory"
-  args={{}}>
-  {Template.bind({})}
-</Story>
+  args={{}}
+  render={(args) => ({
+    components: { YourComponent },
+    setup() {
+      return { args };
+    },
+    template: `<YourComponent v-bind="args" />`,
+  })} />
 ```

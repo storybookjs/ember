@@ -15,7 +15,9 @@ import MyComponent from './MyComponent.svelte';
       defaultViewport: 'iphone6',
     },
   }}
-/>
+  component={MyComponent} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="MyStory"
@@ -23,11 +25,8 @@ import MyComponent from './MyComponent.svelte';
     viewport: {
       defaultViewport: 'iphonex',
     }
-  }}>
-   {() => {
-    return {
-      Component: MyComponent,
-    };
   }}
-</Story>
+  render={() => ({
+    Component: MyComponent,
+  })} />
 ```

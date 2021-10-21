@@ -91,7 +91,8 @@ export enum CoreBuilder {
   Webpack5 = 'webpack5',
 }
 
-export type Builder = CoreBuilder | string;
+// The `& {}` bit allows for auto-complete, see: https://github.com/microsoft/TypeScript/issues/29729
+export type Builder = CoreBuilder | (string & {});
 
 export enum SupportedLanguage {
   JAVASCRIPT = 'javascript',

@@ -1,0 +1,28 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+<!-- These are placeholders until the addon-interaction is out -->
+
+import userEvent from '@testing-library/user-event';
+import { screen, within } from '@testing-library/vue';
+
+import MyComponent from './MyComponent.vue';
+
+<Meta title="WithCanvasElement" component={MyComponent} />
+
+<!-- Assigns canvas to the component root element and queries the element based on it-->
+
+<Story 
+  name="ExampleStory"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
+  }}
+  render={() => ({
+    components: { MyComponent },
+    template: '<MyComponent/>',
+  })} />
+```

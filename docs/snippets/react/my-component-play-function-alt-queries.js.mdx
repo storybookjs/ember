@@ -1,0 +1,29 @@
+```js
+// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.js';
+
+export default {
+  component: MyComponent,
+  // 👇 Marking the onButtonClick with this configuration will log the event in the Actions panel
+  argTypes: {
+    onButtonClick: { action: true },
+  },
+};
+
+export const ExampleWithRole = {
+  play: async () => {
+    // The play function interacts with the component and looks for the button.
+    await userEvent.click(screen.getByRole('button', { name: / button label/i }));
+  },
+};
+
+export const ExampleWithText = {
+  play: async () => {
+    // The play function interacts with the component and looks for the text
+    await screen.findByText('example string');
+  },
+};
+```

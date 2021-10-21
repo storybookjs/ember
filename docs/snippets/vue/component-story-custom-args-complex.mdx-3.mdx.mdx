@@ -15,22 +15,7 @@ export const someFunction = (valuePropertyA, valuePropertyB) => {
 
 };
 
-export const Template = (args)=>{
-  <!---👇 Assigns the function result to a variable -->
-  const functionResult = someFunction(args.propertyA, args.propertyB);
-  return {
-    components: { YourComponent },
-    setup() {
-      return {
-        args: {
-          ...args,
-          someProperty: functionResult,
-        },
-      };
-    },
-    template: '<YourComponent v-bind="args" />',
-  };
-}
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Canvas>
   <Story
@@ -54,8 +39,22 @@ export const Template = (args)=>{
     args={{
       propertyA: 'Item One',
       propertyB: 'Another Item One',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args) => {
+      const { propertyA, propertyB } = args;
+      const functionResult = someFunction(propertyA, propertyB);
+      return {
+        components: { YourComponent },
+        setup() {
+          return {
+            args: {
+              ...args,
+              someProperty: functionResult,
+            },
+          };
+        },
+        template: '<YourComponent v-bind="args" />',
+      };
+    }} />
 </Canvas>
 ```

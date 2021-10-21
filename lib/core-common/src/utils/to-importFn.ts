@@ -1,32 +1,34 @@
 import dedent from 'ts-dedent';
 import { toRequireContext } from '..';
 
-import type { NormalizedStoriesEntry } from '../types';
+import type { NormalizedStoriesSpecifier } from '../types';
 
-export function toImportFnPart(entry: NormalizedStoriesEntry) {
+export function toImportFnPart(entry: NormalizedStoriesSpecifier) {
   const { path: base, regex } = toRequireContext(entry.glob);
 
   const webpackIncludeRegex = new RegExp(regex.source.substring(1));
 
-  // NOTE: `base` looks like './src' but `path`, (and what micromatch expects)
-  // is something that starts with `src/`. So to strip off base from path, we
-  // need to drop `base.length - 1` chars.
   return dedent`
       async (path) => {
-        if (!${regex}.exec(path)) {
+        const pathBase = path.substring(0, ${base.length + 1});
+        if (pathBase !== '${base}/') {
           return;
         }
-        const remainder = path.substring(${base.length - 1});
+
+        const pathRemainder = path.substring(${base.length + 1});
+        if (!${regex}.exec(pathRemainder)) {
+          return;
+        }
         return import(
           /* webpackInclude: ${webpackIncludeRegex} */
-          '${base}/' + remainder
+          '${base}/' + pathRemainder
         );
       }
 
   `;
 }
 
-export function toImportFn(stories: NormalizedStoriesEntry[]) {
+export function toImportFn(stories: NormalizedStoriesSpecifier[]) {
   return dedent`
     const importers = [
       ${stories.map(toImportFnPart).join(',\n')}

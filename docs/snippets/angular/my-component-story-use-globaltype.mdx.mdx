@@ -1,7 +1,13 @@
 ```md
 <!-- MyComponent.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { MyComponent } from './MyComponent.component';
+
+<Meta title="MDX Story with toolbars" component={MyComponent} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 export const getCaptionForLocale = (locale) => {
   switch(locale) {
@@ -14,12 +20,12 @@ export const getCaptionForLocale = (locale) => {
   }
 };
 
-<Story name="StoryWithLocale">
-  {(args, { globals: { locale } }) => {
+<Story 
+  name="StoryWithLocale" 
+  render={(args, { globals: { locale } }) => {
     const caption = getCaptionForLocale(locale);
     return {
       template: `<p>${caption}</p>`,
     };
-  }}
-</Story>
+  }} />
 ```

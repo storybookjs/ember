@@ -3,7 +3,7 @@
 
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
-import YourComponent from './your-component.component';
+import { YourComponent } from './your-component.component';
 
 <Meta title="Example of how to use argTypes and functions" component={YourComponent}/>
 
@@ -15,19 +15,10 @@ export const someFunction = (valuePropertyA, valuePropertyB) => {
 
 };
 
-export const Template = (args)=>{
-  const { propertyA, propertyB } = args;
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
-  <!---👇 Assigns the function result to a variable -->
-  const someFunctionResult = someFunction(propertyA, propertyB);
-  return {
-    props: {
-      ...args,
-      someProperty: someFunctionResult,
-    },
-  };
-}
 
+ <!---👇 Assigns the function result to a variable -->
 <Canvas>
   <Story
     name="A complex case with a function"
@@ -50,8 +41,16 @@ export const Template = (args)=>{
     args={{
       propertyA: 'Item One',
       propertyB: 'Another Item One',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }} 
+    render={(args) => {
+      const { propertyA, propertyB } = args;
+      const someFunctionResult = someFunction(propertyA, propertyB);
+      return {
+        props: {
+          ...args,
+          someProperty: someFunctionResult,
+        },
+      };
+    }} />
 </Canvas>
 ```

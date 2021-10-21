@@ -9,7 +9,4 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-controls',
   ],
-  features: {
-    previewCsfV3: true,
-  },
 };

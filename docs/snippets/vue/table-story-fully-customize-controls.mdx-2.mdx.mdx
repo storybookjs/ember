@@ -1,22 +1,13 @@
 ```md
 <!-- Table.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
 import Table from './Table.vue';
 
-export const TableStory = (args, { argTypes }) => ({
-  components: { Table },
-  props: Object.keys(argTypes),
-  template: `
-    <Table v-bind="$props">
-      <tr v-for="(row, idx1) in data">
-        <td v-for="(col, idx2) in row">
-          {{ data[idx1][idx2] }}
-        </td>
-      </tr>
-    </Table>`,
-});
+<Meta title="Custom Table" component={Table} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="Numeric"
@@ -26,7 +17,17 @@ export const TableStory = (args, { argTypes }) => ({
       [4, 5, 6],
     ],
     size: 'large',
-  }}>
-  {TableStory.bind({})}
-</Story>
+  }}
+  render={(args, { argTypes }) =>({
+    components: { Table },
+    props: Object.keys(argTypes),
+    template: `
+      <Table v-bind="$props">
+        <tr v-for="(row, idx1) in data">
+          <td v-for="(col, idx2) in row">
+            {{ data[idx1][idx2] }}
+          </td>
+        </tr>
+      </Table>`,
+  })} />
 ```

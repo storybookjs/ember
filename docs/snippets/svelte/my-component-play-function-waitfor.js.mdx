@@ -1,0 +1,36 @@
+```js
+// MyComponent.stories.js
+
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.svelte';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
+  argTypes: { onSubmit: { action: true } },
+};
+
+export const ExampleAsyncStory = {
+  play: async () => {
+    const exampleElement = screen.getByLabelText('Username', {
+      selector: 'input',
+    });
+
+    // The delay option set the ammount of milliseconds between characters being typed
+    await userEvent.type(exampleElement, 'WrongInput', {
+      delay: 100,
+    });
+
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
+
+    await waitFor(async () => {
+      await userEvent.hover(screen.getByTestId('error'));
+    });
+  },
+  render: () => ({
+    component: MyComponent,
+  }),
+};
+```

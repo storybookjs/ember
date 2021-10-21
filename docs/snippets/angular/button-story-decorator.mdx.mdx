@@ -5,32 +5,37 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { componentWrapperDecorator,moduleMetadata } from '@storybook/angular';
 
-import Button from './button.component';
+import { Button } from './button.component';
 import { ParentComponent } from './parent.component';
 
-<Meta title="Components/Button" component={Button}/>
+<Meta title="Button" component={Button}/>
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <!-- With a template -->
+
 <Story 
   name="Primary"
   decorators={[
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)
-  ]}>
-  {{
+  ]}
+  render={() => ({
     template: `<app-button label="Submit"></app-button>`,
-  }}
+  })} />
 </Story>
 
 <!-- With a component -->
+
 <Story 
   name="InsideParent"
   decorators={[
     moduleMetadata({
       declarations: [ParentComponent],
     }),
-    componentWrapperDecorator(ParentComponent)]}>
-  {{
+    componentWrapperDecorator(ParentComponent)
+  ]}
+  render={() => ({
     template: `<app-button label="Submit"></app-button>`,
-  }}
+  })} />
 </Story>
 ```

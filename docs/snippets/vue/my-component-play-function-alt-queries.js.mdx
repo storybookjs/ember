@@ -1,0 +1,35 @@
+```js
+// MyComponent.stories.js
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  component: MyComponent,
+  //👇 Marking the onButtonClick with this configuration will log the event in the Actions panel
+  argTypes: { onButtonClick: { action: true } },
+};
+
+export const ExampleWithRole = {
+  play: async () => {
+    // The play function interacts with the component and looks for the button.
+    await userEvent.click(screen.getByRole('button'));
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+
+export const ExampleWithText = {
+  play: async () => {
+    // The play function interacts with the component and looks for the text
+    await screen.findByText('example string');
+  },
+  render: () => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  }),
+};
+```

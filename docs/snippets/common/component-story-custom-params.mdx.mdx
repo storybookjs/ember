@@ -1,7 +1,15 @@
 ```md
 <!-- Button.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+import { Button } from './Button';
 
 <Story
   name="Primary"
@@ -17,7 +25,8 @@ import { Story } from '@storybook/addon-docs';
   args={{
     primary: true,
     label: 'Button',
-  }}>
-  {Template.bind({})}
-</Story>
+
+  }}
+  render={() => ({ // Your implementation here })} />
+
 ```

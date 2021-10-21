@@ -3,35 +3,41 @@
 
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
-import { Badge } from './Badge.svelte';
+import Badge from './Badge.svelte';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-export const Template = (args) => ({
-  Component: Badge,
-  props: args,
-});
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 # Badge
 
 Let's define a story for our `Badge` component:
 
-<Story name="positive" args={{
-  status: 'positive',
-  label: 'Positive'
-}}>
-  {Template.bind({})}
-</Story>
+<Story 
+  name="positive" 
+  args={{
+    status: 'positive',
+    label: 'Positive'
+  }} 
+  render={(args) => ({
+    Component: Badge,
+    props: args,
+  })} />
+ 
 
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
-  <Story name="negative" args={{
-    status: 'negative', 
-    label: 'Negative'
-  }}>
-    {Template.bind({})}
-  </Story>
+  <Story 
+    name="negative" 
+    args={{
+      status: 'negative', 
+      label: 'Negative'
+    }} 
+    render={(args) => ({
+      Component: Badge,
+      props: args,
+    })} />
 </Canvas>
 
 We can even preview multiple Stories in a block. This
@@ -39,23 +45,37 @@ gets rendered as a group but defines individual stories
 with unique URLs, which is great for review and testing.
 
 <Canvas>
-  <Story name="warning" args={{
-    status: 'warning',
-    label: 'Warning' 
-  }}>
-    {Template.bind({})}
-  </Story>
-  <Story name="neutral" args={{
-    status: 'neutral', 
-    label: 'Neutral' 
-  }}>
-    {Template.bind({})}
-  </Story>
-  <Story name="error" args={{
-    status: 'error', 
-    label: 'Error' 
-  }}>
-    {Template.bind({})}
-  </Story>
+  <Story 
+    name="warning" 
+    args={{
+      status: 'warning',
+      label: 'Warning' 
+    }}
+    render={(args) => ({
+      Component: Badge,
+      props: args,
+    })} />
+  
+  <Story 
+    name="neutral" 
+    args={{
+      status: 'neutral', 
+      label: 'Neutral' 
+    }}
+    render={(args) => ({
+      Component: Badge,
+      props: args,
+    })} />
+
+  <Story 
+    name="error" 
+    args={{
+      status: 'error', 
+      label: 'Error' 
+    }}
+    render={(args) => ({
+      Component: Badge,
+      props: args,
+    })} />
 </Canvas>
 ```

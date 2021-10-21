@@ -42,15 +42,14 @@ export function loadEnvs(
   };
 }
 
-/** @deprecated use `stringifyProcessEnvs` */
 export const stringifyEnvs = (raw: Record<string, string>): Record<string, string> =>
   Object.entries(raw).reduce<Record<string, string>>((acc, [key, value]) => {
     acc[key] = JSON.stringify(value);
     return acc;
   }, {});
 
-export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string, string> =>
-  Object.entries(raw).reduce<Record<string, string>>(
+export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string, string> => {
+  const envs = Object.entries(raw).reduce<Record<string, string>>(
     (acc, [key, value]) => {
       acc[`process.env.${key}`] = JSON.stringify(value);
       return acc;
@@ -60,3 +59,8 @@ export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string
       'process.env.XSTORYBOOK_EXAMPLE_APP': '""',
     }
   );
+  // support destructuring like
+  // const { foo } = process.env;
+  envs['process.env'] = JSON.stringify(stringifyEnvs(raw));
+  return envs;
+};

@@ -1,3 +1,80 @@
+## 6.4.0-beta.1 (September 26, 2021)
+
+### Features
+
+- MDX: Support CSF3 play/render functions ([#16159](https://github.com/storybookjs/storybook/pull/16159))
+- Addon-a11y: Export parameter types ([#16128](https://github.com/storybookjs/storybook/pull/16128))
+
+### Bug Fixes
+
+- Addon-docs: Fix loading behavior for Canvas doc block ([#16161](https://github.com/storybookjs/storybook/pull/16161))
+- Added index.d.ts for addon-docs/angular ([#16123](https://github.com/storybookjs/storybook/pull/16123))
+
+### Maintenance
+
+- Angular: Remove dead code in client ([#16137](https://github.com/storybookjs/storybook/pull/16137))
+
+## 6.4.0-beta.0 (September 22, 2021)
+
+Storybook 6.4 is in beta! 🎊
+
+SB6.4 adds interaction testing and performance re-architecture in preparation for a huge 7.0 release.
+
+Track the release in the Github: [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355)
+
+## 6.4.0-alpha.41 (September 22, 2021)
+
+### Bug Fixes
+
+- Core: Fix `./stories.json` requests in manager for relative paths ([#16114](https://github.com/storybookjs/storybook/pull/16114))
+- Core: Fix dotenv handling ([#16105](https://github.com/storybookjs/storybook/pull/16105))
+- Addon-docs: Fix embedding selected story in canvas block ([#15915](https://github.com/storybookjs/storybook/pull/15915))
+
+### Maintenance
+
+- Story index server: Add story sorting ([#16102](https://github.com/storybookjs/storybook/pull/16102))
+- Refactor `stories-json` to use a caching class ([#16106](https://github.com/storybookjs/storybook/pull/16106))
+
+## 6.4.0-alpha.40 (September 20, 2021)
+
+### Bug Fixes
+
+- Webpack5: Fix output paths ([#16074](https://github.com/storybookjs/storybook/pull/16074))
+- Core: Infer docs only stories ([#16101](https://github.com/storybookjs/storybook/pull/16101))
+- CSF3: Fix story type back-compat ([#16107](https://github.com/storybookjs/storybook/pull/16107))
+
+## 6.4.0-alpha.39 (September 18, 2021)
+
+### Features
+
+- CSF3: Add auto-title support to on-demand V7/V6 refactor ([#16098](https://github.com/storybookjs/storybook/pull/16098))
+
+## 6.4.0-alpha.38 (September 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix ng selector issue and dynamically show templates in stories ([#15976](https://github.com/storybookjs/storybook/pull/15976))
+- Core: Fix issue with more complex `stories` paths. ([#16078](https://github.com/storybookjs/storybook/pull/16078))
+
+### Maintenance
+
+- Main.js config: Fix Builder type ([#16013](https://github.com/storybookjs/storybook/pull/16013))
+
+## 6.4.0-alpha.37 (September 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix error handling for angular builder standalone builds ([#15978](https://github.com/storybookjs/storybook/pull/15978))
+- Addon-docs: Fix `useStories` to correctly respond to change in `storyId` ([#16046](https://github.com/storybookjs/storybook/pull/16046))
+
+## 6.4.0-alpha.36 (September 15, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Ensure we don't clobber multiple source container state updates ([#16039](https://github.com/storybookjs/storybook/pull/16039))
+- Core: Restore deprecation warning for configure ([#16041](https://github.com/storybookjs/storybook/pull/16041))
+- Core: Be careful in `FEATURES` check ([#16044](https://github.com/storybookjs/storybook/pull/16044))
+
 ## 6.4.0-alpha.35 (September 14, 2021)
 
 ### Features

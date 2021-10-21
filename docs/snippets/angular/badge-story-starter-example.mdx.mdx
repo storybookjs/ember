@@ -2,6 +2,7 @@
 <!--- Badge.stories.mdx --->
 
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
+
 import { moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
@@ -10,6 +11,8 @@ import { Badge } from './badge.component';
 import { Icon } from './icon.component';
 
 <Meta title="MDX/Badge" component={Badge} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 # Badge
 
@@ -28,8 +31,7 @@ We can drop it in a `Canvas` to get a code snippet:
     name="negative"
     render={() => ({
       template: `<Badge status="negative">Negative</Badge>`,
-  })} />
-
+    })} />
 </Canvas>
 
 We can even preview multiple stories in a block. This
@@ -41,7 +43,7 @@ with unique URLs and isolated snapshot tests.
     name="warning"
     render={() => ({
       template: `<Badge status="warning">Warning</Badge>`,
-  })} />
+    })} />
 
   <Story 
     name="neutral"
@@ -53,7 +55,7 @@ with unique URLs and isolated snapshot tests.
     name="error"
     render={() => ({
       template: `<Badge status="error">Error</Badge>`,
-  })} />
+    })} />
 
   <Story
     name="with icon"
@@ -62,9 +64,14 @@ with unique URLs and isolated snapshot tests.
        declarations: [Badge, Icon],
        imports: [CommonModule],
       })
-    ]}
+    ]} 
     render={() => ({
-      template: `<Badge status="warning"> <Icon icon="check" inline></Icon> with icon </Badge>`,
+      template: `
+        <Badge status="warning">
+          <Icon icon="check" inline></Icon>
+          with icon
+        </Badge>
+      `,
     })} />
 </Canvas>
 ```

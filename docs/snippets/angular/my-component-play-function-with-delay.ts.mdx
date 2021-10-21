@@ -1,0 +1,23 @@
+```ts
+// MyComponent.stories.ts
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  component: MyComponent,
+};
+
+export const DelayedStory = {
+  play: async () => {
+    // The delay option set the ammount of milliseconds between characters being typed
+    await userEvent.type(screen.getByTestId('example-element'), 'random string', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('another-example-element'), 'another random string', {
+      delay: 100,
+    });
+  },
+};
+```
