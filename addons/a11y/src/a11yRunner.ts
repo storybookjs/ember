@@ -68,7 +68,8 @@ const run = async (storyId: string) => {
 
 /** Returns story parameters or default ones. */
 const getParams = async (storyId: string): Promise<A11yParameters> => {
-  const { parameters } = (await globalWindow.__STORYBOOK_STORY_STORE__.loadStory({ storyId })) || {};
+  const { parameters } =
+    (await globalWindow.__STORYBOOK_STORY_STORE__.loadStory({ storyId })) || {};
   return (
     parameters.a11y || {
       config: {},
