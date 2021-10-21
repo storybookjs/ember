@@ -1,3 +1,5 @@
+import { transparentize } from 'polished';
+
 export const color = {
   // Official color palette
   primary: '#FF4785', // coral
@@ -42,7 +44,7 @@ export const background = {
   bar: '#FFFFFF',
   content: color.lightest,
   gridCellSize: 10,
-  hoverable: 'rgba(0,0,0,.05)', // hover state for items in a list
+  hoverable: transparentize(0.93, color.secondary), // hover state for items in a list
 
   // Notification, error, and warning backgrounds
   positive: '#E1FFD4',
