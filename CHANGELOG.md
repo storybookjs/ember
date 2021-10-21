@@ -1,3 +1,15 @@
+## 6.4.0-beta.17 (October 21, 2021)
+
+### Features
+
+- Core: Add `core.channelOptions` main.js config ([#16415](https://github.com/storybookjs/storybook/pull/16415))
+
+### Maintenance
+
+- Addon-docs: Lazy load docs to reduce bundle size ([#16412](https://github.com/storybookjs/storybook/pull/16412))
+- UI: Update mono font stack ([#16409](https://github.com/storybookjs/storybook/pull/16409))
+- UI: Update sidebar hover color to be a refreshing transparent blue ([#16408](https://github.com/storybookjs/storybook/pull/16408))
+
 ## 6.4.0-beta.16 (October 20, 2021)
 
 ### Bug Fixes
