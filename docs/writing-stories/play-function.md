@@ -32,10 +32,6 @@ Update your Storybook configuration (in `.storybook/main.js`) to include the int
 
 ![Storybook's addon-interaction controls](./storybook-addon-interaction-controls.gif)
 
-<div class="aside">
-TODO: Placeholder video. It needs a new one once the addon is released.
-</div>
-
 ## Writing stories with the play function
 
 Storybook's `play` functions are small code snippets that run once the story finishes rendering. Aided by the `addon-interactions`, it allows you to build component interactions and test scenarios that were impossible without user intervention. For example, if you were working on a registration form and wanted to validate it, you could write the following story with the `play` function:
