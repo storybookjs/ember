@@ -21,11 +21,11 @@ export class DocsRenderer<TFramework extends AnyFramework> {
     }
 
     const DocsContainer: ComponentType<{ context: DocsContextProps<TFramework> }> =
-      (docs.getContainer && (await docs.getContainer())) ||
       docs.container ||
+      (await docs.getContainer?.()) ||
       (({ children }: { children: Element }) => <>{children}</>);
 
-    const Page: ComponentType = (docs.getPage && (await docs.getPage())) || docs.page || NoDocs;
+    const Page: ComponentType = docs.page || (await docs.getPage?.()) || NoDocs;
 
     // Use `componentId` as a key so that we force a re-render every time
     // we switch components
