@@ -7,8 +7,6 @@ import { RegistrationForm } from './RegistrationForm.component';
 
 export default {
   component: RegistrationForm,
-  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
-  argTypes: { onSubmit: { action: true } },
 };
 
 export const FilledForm = {
@@ -29,7 +27,7 @@ export const FilledForm = {
     await userEvent.type(passwordInput, 'ExamplePassword', {
       delay: 100,
     });
-
+    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const submitButton = screen.getByRole('button');
 
     await fireEvent.click(submitButton);

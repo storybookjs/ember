@@ -7,9 +7,8 @@ import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
-<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel-->
 
-<Meta title="WithAsync" component={MyComponent} argTypes={{ onSubmit: { action: true }}/>
+<Meta title="WithAsync" component={MyComponent}/>
 
 <Story
   name="ExampleAsyncStory"
@@ -18,7 +17,8 @@ import MyComponent from './MyComponent.svelte';
     await userEvent.type(Input, 'WrongInput', {
       delay: 100,
     });
-
+    
+    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const Submit = screen.getByRole('button');
     await userEvent.click(Submit);
     
