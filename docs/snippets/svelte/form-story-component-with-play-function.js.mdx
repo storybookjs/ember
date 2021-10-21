@@ -7,8 +7,6 @@ import LoginForm from './LoginForm.svelte';
 
 export default {
   component: LoginForm,
-  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
-  argTypes: { onSubmit: { action: true } },
 };
 
 export const FilledForm = {
@@ -18,6 +16,7 @@ export const FilledForm = {
 
     await userEvent.type(canvas.getByTestId('email'), 'email');
     await userEvent.type(canvas.getByTestId('password'), 'password');
+    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await userEvent.click(canvas.getByRole('button'));
   },
   render: (args) => {
