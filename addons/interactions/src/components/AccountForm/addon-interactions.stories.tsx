@@ -1,6 +1,12 @@
 import { Story as CSF2Story, Meta, ComponentStoryObj } from '@storybook/react';
 import { expect } from '@storybook/jest';
-import { within, waitFor, fireEvent, userEvent } from '@storybook/testing-library';
+import {
+  within,
+  waitFor,
+  fireEvent,
+  userEvent,
+  waitForElementToBeRemoved,
+} from '@storybook/testing-library';
 import React from 'react';
 
 import { AccountForm } from './AccountForm';
@@ -21,6 +27,7 @@ export const Demo: CSF2Story = (args) => (
     Click
   </button>
 );
+
 Demo.play = async ({ args, canvasElement }) => {
   await userEvent.click(within(canvasElement).getByRole('button'));
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
@@ -36,6 +43,25 @@ WaitFor.play = async ({ args, canvasElement }) => {
   await waitFor(async () => {
     await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
   });
+};
+
+export const WaitForElementToBeRemoved: CSF2Story = () => {
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => setIsLoading(false), 1500);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <button type="button">Loaded!</button>;
+};
+WaitForElementToBeRemoved.play = async ({ canvasElement }) => {
+  const canvas = await within(canvasElement);
+  await waitForElementToBeRemoved(await canvas.findByText('Loading...'), { timeout: 2000 });
+  const button = await canvas.findByText('Loaded!');
+  await expect(button).not.toBeNull();
 };
 
 export const Standard: CSF3Story = {
