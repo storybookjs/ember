@@ -49,7 +49,7 @@ export async function useStoriesJson(
     if (started) return;
     started = true;
 
-    watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
+    watchStorySpecifiers(normalizedStories, { workingDir }, (specifier, path, removed) => {
       generator.invalidate(specifier, path, removed);
       invalidationEmitter.emit(INVALIDATE);
     });
