@@ -16,7 +16,6 @@ const config: StorybookConfig = {
     strictMode: true,
   },
   addons: [
-    '@storybook/react',
     {
       name: '@storybook/addon-docs',
       options: {
@@ -31,6 +30,7 @@ const config: StorybookConfig = {
     '@storybook/addon-storysource',
     '@storybook/addon-links',
     '@storybook/addon-jest',
+    '@storybook/addon-a11y',
   ],
   core: {
     builder: 'webpack4',

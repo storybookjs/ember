@@ -320,11 +320,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       return;
     }
 
-    const storyChanged = this.previousSelection?.storyId !== selection.storyId;
+    const storyIdChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
-      !storyChanged && this.previousStory && story !== this.previousStory;
+      !storyIdChanged && this.previousStory && story !== this.previousStory;
 
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
@@ -333,7 +333,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (this.previousStory && !storyChanged && !implementationChanged && !viewModeChanged) {
+    if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -341,7 +341,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     await this.cleanupPreviousRender({ unmountDocs: viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
-    if (this.previousSelection && (storyChanged || viewModeChanged)) {
+    if (this.previousSelection && (storyIdChanged || viewModeChanged)) {
       this.channel.emit(Events.STORY_CHANGED, selection.storyId);
     }
 
@@ -490,17 +490,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
       if (initial) {
         const storyContext = this.storyStore.getStoryContext(story);
-        const { parameters, initialArgs, argTypes, args } = storyContext;
-        if (FEATURES?.storyStoreV7) {
-          this.channel.emit(Events.STORY_PREPARED, {
-            id,
-            parameters,
-            initialArgs,
-            argTypes,
-            args,
-          });
-        }
-
         try {
           await runPhase('loading', async () => {
             loadedContext = await applyLoaders({
@@ -539,6 +528,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         if (!this.renderToDOM) {
           throw new Error(dedent`
             Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+
+            You can fix this automatically by running:
+
+            npx sb@next automigrate
         
             More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
           `);
