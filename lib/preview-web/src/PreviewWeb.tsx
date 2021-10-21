@@ -1,5 +1,3 @@
-import React, { ComponentType } from 'react';
-import ReactDOM from 'react-dom';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
@@ -27,11 +25,10 @@ import {
   StoryIndex,
 } from '@storybook/store';
 
-import { WebProjectAnnotations, DocsContextProps } from './types';
+import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { NoDocs } from './NoDocs';
 import { StoryIndexClient } from './StoryIndexClient';
 
 const { window: globalWindow, AbortController, FEATURES } = global;
@@ -323,11 +320,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       return;
     }
 
-    const storyChanged = this.previousSelection?.storyId !== selection.storyId;
+    const storyIdChanged = this.previousSelection?.storyId !== selection.storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
-      !storyChanged && this.previousStory && story !== this.previousStory;
+      !storyIdChanged && this.previousStory && story !== this.previousStory;
 
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
@@ -336,7 +333,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
 
     // Don't re-render the story if nothing has changed to justify it
-    if (this.previousStory && !storyChanged && !implementationChanged && !viewModeChanged) {
+    if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
       return;
     }
@@ -344,7 +341,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     await this.cleanupPreviousRender({ unmountDocs: viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
-    if (this.previousSelection && (storyChanged || viewModeChanged)) {
+    if (this.previousSelection && (storyIdChanged || viewModeChanged)) {
       this.channel.emit(Events.STORY_CHANGED, selection.storyId);
     }
 
@@ -371,7 +368,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
-    const { id, title, name, componentId } = story;
+    const { id, title, name } = story;
     const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
       sync: false,
@@ -392,31 +389,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         } as StoryContextForLoaders<TFramework>),
     };
 
-    const { docs } = story.parameters;
-    if (docs?.page && !docs?.container) {
-      throw new Error('No `docs.container` set, did you run `addon-docs/preset`?');
-    }
-
-    const DocsContainer: ComponentType<{ context: DocsContextProps<TFramework> }> =
-      docs.container || (({ children }: { children: Element }) => <>{children}</>);
-    const Page: ComponentType = docs.page || NoDocs;
-
-    const render = () => {
+    const render = async () => {
       const fullDocsContext = {
         ...docsContext,
         // Put all the storyContext fields onto the docs context for back-compat
         ...(!FEATURES.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
-      // Use `componentId` as a key so that we force a re-render every time
-      // we switch components
-      const docsElement = (
-        <DocsContainer key={componentId} context={fullDocsContext}>
-          <Page />
-        </DocsContainer>
+      (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
+        this.channel.emit(Events.DOCS_RENDERED, id)
       );
-
-      ReactDOM.render(docsElement, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
     };
 
     // Initially render right away
@@ -508,17 +490,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
       if (initial) {
         const storyContext = this.storyStore.getStoryContext(story);
-        const { parameters, initialArgs, argTypes, args } = storyContext;
-        if (FEATURES?.storyStoreV7) {
-          this.channel.emit(Events.STORY_PREPARED, {
-            id,
-            parameters,
-            initialArgs,
-            argTypes,
-            args,
-          });
-        }
-
         try {
           await runPhase('loading', async () => {
             loadedContext = await applyLoaders({
@@ -557,6 +528,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         if (!this.renderToDOM) {
           throw new Error(dedent`
             Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+
+            You can fix this automatically by running:
+
+            npx sb@next automigrate
         
             More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
           `);
@@ -640,7 +615,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       : this.previousSelection?.viewMode;
 
     if (unmountDocs && previousViewMode === 'docs') {
-      ReactDOM.unmountComponentAtNode(this.view.docsRoot());
+      (await import('./renderDocs')).unmountDocs(this.view.docsRoot());
     }
 
     if (this.previousCleanup) {

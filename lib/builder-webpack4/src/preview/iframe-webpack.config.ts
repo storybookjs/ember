@@ -25,6 +25,7 @@ import {
   normalizeStories,
   loadPreviewOrConfigFile,
   readTemplate,
+  CoreConfig,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -74,6 +75,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
   const envs = await presets.apply<Record<string, string>>('env');
+  const coreOptions = await presets.apply<CoreConfig>('core');
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
@@ -183,6 +185,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
             STORIES: stories.map((specifier) => ({
               ...specifier,

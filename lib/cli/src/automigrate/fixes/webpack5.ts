@@ -36,9 +36,12 @@ export const webpack5: Fix<Webpack5RunOptions> & CheckBuilder = {
   async checkWebpack5Builder(packageJson: PackageJsonWithDepsAndDevDeps) {
     const { mainConfig, version: storybookVersion } = getStorybookInfo(packageJson);
 
-    const storybookCoerced = semver.coerce(storybookVersion).version;
+    const storybookCoerced = storybookVersion && semver.coerce(storybookVersion)?.version;
     if (!storybookCoerced) {
-      logger.warn(`Unable to determine storybook version, skipping webpack5 fix.`);
+      logger.warn(dedent`
+        ❌ Unable to determine storybook version, skipping ${chalk.cyan('webpack5')} fix.
+        🤔 Are you running automigrate from your project directory?
+      `);
       return null;
     }
 

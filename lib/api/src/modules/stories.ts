@@ -273,7 +273,7 @@ export const init: ModuleFn = ({
 
       navigate('/');
     },
-    selectStory: (kindOrId, story = undefined, options = {}) => {
+    selectStory: (kindOrId = undefined, story = undefined, options = {}) => {
       const { ref, viewMode: viewModeFromArgs } = options;
       const {
         viewMode: viewModeFromState = 'story',
@@ -284,8 +284,10 @@ export const init: ModuleFn = ({
 
       const hash = ref ? refs[ref].stories : storiesHash;
 
+      const kindSlug = storyId?.split('--', 2)[0];
+
       if (!story) {
-        const s = hash[kindOrId] || hash[sanitize(kindOrId)];
+        const s = kindOrId ? hash[kindOrId] || hash[sanitize(kindOrId)] : hash[kindSlug];
         // eslint-disable-next-line no-nested-ternary
         const id = s ? (s.children ? s.children[0] : s.id) : kindOrId;
         let viewMode =
@@ -305,8 +307,7 @@ export const init: ModuleFn = ({
         navigate(p);
       } else if (!kindOrId) {
         // This is a slugified version of the kind, but that's OK, our toId function is idempotent
-        const kind = storyId.split('--', 2)[0];
-        const id = toId(kind, story);
+        const id = toId(kindSlug, story);
 
         api.selectStory(id, undefined, options);
       } else {
@@ -469,18 +470,20 @@ export const init: ModuleFn = ({
       function handler({
         kind,
         story,
+        storyId,
         ...rest
       }: {
         kind: string;
         story: string;
+        storyId: string;
         viewMode: ViewMode;
       }) {
         const { ref } = getEventMetadata(this, fullAPI);
 
         if (!ref) {
-          fullAPI.selectStory(kind, story, rest);
+          fullAPI.selectStory(storyId || kind, story, rest);
         } else {
-          fullAPI.selectStory(kind, story, { ...rest, ref: ref.id });
+          fullAPI.selectStory(storyId || kind, story, { ...rest, ref: ref.id });
         }
       }
     );

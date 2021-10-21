@@ -1,6 +1,5 @@
-import { combineParameters } from '@storybook/client-api';
 import { Parameters } from '@storybook/addons';
-import { Story } from '@storybook/store';
+import { Story, combineParameters } from '@storybook/store';
 
 // ============================================================
 // START @storybook/source-loader/extract-source

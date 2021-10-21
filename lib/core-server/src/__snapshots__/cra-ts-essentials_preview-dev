@@ -10,6 +10,7 @@ Object {
     "ROOT/storybook-init-framework-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
     "ROOT/addons/docs/dist/esm/frameworks/react/config.js-generated-config-entry.js",
+    "ROOT/app/react/dist/esm/client/preview/config-generated-config-entry.js",
     "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-config-entry.js",
     "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-config-entry.js",
