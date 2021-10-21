@@ -4,6 +4,7 @@ import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync, existsS
 import { join } from 'path';
 import program from 'commander';
 import prompts from 'prompts';
+import chalk from 'chalk';
 
 import { getDeployables } from './utils/list-examples';
 import { filterDataForCurrentCircleCINode } from './utils/concurrency';
@@ -163,6 +164,7 @@ const run = async () => {
       : allExamples.filter((example) => !example.includes('README'));
 
   if (examplesToSkip.length > 0) {
+    logger.log(`⏭  Will skip the following examples: ${chalk.yellow(examplesToSkip.join(', '))}`);
     examplesToBuild = examplesToBuild.filter((example) => !examplesToSkip.includes(example));
   }
 
@@ -191,7 +193,7 @@ const run = async () => {
   const deployables = filterDataForCurrentCircleCINode(list);
 
   if (deployables.length) {
-    logger.log(`🏗 Will build Storybook for: ${deployables.join(', ')}`);
+    logger.log(`🏗  Will build Storybook for: ${chalk.cyan(deployables.join(', '))}`);
     await handleExamples(deployables);
   }
 
