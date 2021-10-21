@@ -16,6 +16,8 @@ import Button from './Button.vue';
   }}
 />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <!-- 👇 Some function to demonstrate the behavior -->
 export const someFunction = (someValue) => {
   return `i am a ${someValue}`;
@@ -28,9 +30,10 @@ export const someFunction = (someValue) => {
     primary: true,
     size: 'small',
     label: 'button',
-  }} >
-  {(args) => {
-    const functionResult = someFunction(args.label);
+  }}
+  render={(args) => {
+    const { label } = args;
+    const functionResult = someFunction(label);
     return {
       components: { Button },
       setup() {
@@ -42,7 +45,6 @@ export const someFunction = (someValue) => {
         };
       },
       template: '<Button v-bind="args" />',
-    };
-  }}
-</Story>
+    }; 
+  }} />
 ```

@@ -5,28 +5,29 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
 
-<Meta title="Components/Button" component={Button}/>
+<Meta title="Button" component={Button}/>
 
-<!-- The render function is a framework specific construct to define how the story should render -->
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
   name="Primary"
   render={() => ({
-    components: {Button},
-    template: `<Button backgroundColor="#ff0" label="Button" />`,
+    components: { Button },
+    template: `<Button background="#ff0" label="Button"  />`,
   })} />
 
 <Story
   name="Secondary"
   render={() => ({
     components: { Button },
-    template: `<Button backgroundColor="#ff0" label="😄👍😍💯" />`,
+    template: `<Button background="#ff0" label="😄👍😍💯" />`,
   })} />
 
 <Story
   name="Tertiary"
   render={() => ({
     components: { Button },
-    template: `<Button backgroundColor="#ff0" label="📚📕📈🤓" />`,
+    template: `<Button background="#ff0" label="📚📕📈🤓" />`,
   })} />
 ```

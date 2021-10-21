@@ -3,11 +3,16 @@
 
 import { Story } from '@storybook/addon-docs';
 
-import Button from './button.component';
+import { Button } from './button.component';
 
-export const Template = (args) => ({ props: args });
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
-<Story name="Basic" args={{ label: 'hello' }}>
-  {Template.bind({})}
-</Story>
+<Story 
+  name="Basic" 
+  args={{ 
+    label: 'hello' 
+  }}
+  render={(args) => ({
+    props: args,
+  })} />
 ```

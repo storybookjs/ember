@@ -3,16 +3,11 @@
 
 import { Meta, Story, Canvas } from '@storybook/addon-docs';
 
-import { Badge } from './Badge.vue';
+import Badge from './Badge.vue';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
-  components: { Badge },
-  template: '<Badge v-bind="$props" />',
-});
-
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 # Badge
 
@@ -23,10 +18,13 @@ Let's define a story for our `Badge` component:
   args={{
     status: 'positive',
     label: 'Positive',
-  }}>
-  {Template.bind({})}
-</Story>
-
+  }}
+  render={(args, { argTypes }) => ({
+    props: Object.keys(argTypes),
+    components: { Badge },
+    template: '<Badge v-bind="$props" />',
+  })} />
+  
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
@@ -35,9 +33,12 @@ We can drop it in a `Canvas` to get a code snippet:
     args={{
       status: 'negative', 
      label: 'Negative',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
 </Canvas>
 
 We can even preview multiple Stories in a block. This
@@ -50,26 +51,35 @@ with unique URLs, which is great for review and testing.
     args={{
       status: 'warning',
       label: 'Warning',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
   
   <Story 
     name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral',
-    }}>
-    {Template.bind({})}
-  </Story>
-  
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
+
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error',
-    }}>
-    {Template.bind({})}
-  </Story>
+    }}
+    render={(args, { argTypes }) => ({
+      props: Object.keys(argTypes),
+      components: { Badge },
+      template: '<Badge v-bind="$props" />',
+    })} />
 </Canvas>
 ```

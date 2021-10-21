@@ -3,18 +3,20 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Button from './button.component.ts';
+import { Button } from './button.component.ts';
 
 <Meta title="Components/Button" component={Button} />
 
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 # Button
 
-<Story name="Primary">
-  {{
+<Story 
+  name="Primary"
+  render={() => ({
     props: {
       primary: true,
       label: 'Button',
     },
-  }}
-</Story>
+  })} />
 ```

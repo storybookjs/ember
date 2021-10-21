@@ -7,17 +7,17 @@ import { Button } from './Button';
 
 <Meta title="Components/Button" component={Button}/>
 
-<!-- The render function is a framework specific construct to define how the story should render -->
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="Primary"
-  render={()=><Button backgroundColor="#ff0" label="Button" />} />
+  render={() => <Button background="#ff0" label="Button" />} />
 
 <Story
   name="Secondary"
-  render={()=><Button backgroundColor="#ff0" label="😄👍😍💯" />} />
-
+  render={() => <Button background="#ff0" label="😄👍😍💯" />} />
+  
 <Story
   name="Tertiary"
-  render={()=><Button backgroundColor="#ff0" label="📚📕📈🤓" />} />
+  render={() => <Button background="#ff0" label="📚📕📈🤓" />} />
 ```

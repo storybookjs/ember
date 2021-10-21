@@ -1,7 +1,13 @@
 ```md
 <!-- Button.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="Large"
@@ -9,7 +15,7 @@ import { Story } from '@storybook/addon-docs';
     backgrounds: {
       default: 'facebook',
     },
-  }}>
-  {Template.bind({})}
+  }}
+  render={() => ({ })}>
 </Story>
 ```

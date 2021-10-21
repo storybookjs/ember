@@ -1,16 +1,19 @@
 ```md
 <!--- MyComponent.stories.mdx -->
 
-import { ArgsTable, Story } from '@storybook/addon-docs';
+import { ArgsTable, Meta, Story } from '@storybook/addon-docs';
 
 import { MyComponent } from './MyComponent';
 
+<Meta title="MyComponent" component={MyComponent} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 # My Component!
 
-<Story name="My Story">
-  <!-- my story for MyComponent -->
-  {(args) => <MyComponent {...args} />}
-</Story>
+<Story 
+  name="My Story"
+  render={() => ({ })}/>
 
 <ArgsTable story="My Story" />
 ```

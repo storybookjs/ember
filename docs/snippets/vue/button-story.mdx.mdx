@@ -5,16 +5,16 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
 
-<Meta title="Components/Button" component={Button} />
+<Meta title="Button" component={Button} />
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 # Button
 
-<Story name="Primary">
-  {() => {
-    return {
-      components: { Button },
-      template: `<Button primary label="Button" />`,
-    };
-  }}
-</Story>
+<Story 
+  name="Primary"
+  render={() => ({
+    components: { Button },
+    template: `<Button primary label="Button" />`,
+  })} />
 ```

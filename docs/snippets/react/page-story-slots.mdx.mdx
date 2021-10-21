@@ -7,17 +7,17 @@ import { Page } from './Page';
 
 <Meta title="Page" component={Page} />
 
-<!-- The render function is a framework specific construct to tell how the story should render -->
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story
   name="CustomFooter"
   args={{
     footer: 'Built with Storybook',
   }}
-  render={(args)=>(
+  render={(args) => (
     <Page {...args}>
       <footer>{args.footer}</footer>
-   </Page>
-  )} 
-/>
+    </Page>
+  )}/>
 ```

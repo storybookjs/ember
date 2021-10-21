@@ -7,21 +7,21 @@ import MyComponent from './MyComponent.svelte';
 
 import imageFile from './static/image.png';
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent} />
 
 export const image = {
   src: imageFile,
   alt: 'my image',
 };
 
-<Story name="withAnImage">
-  {() => {
-    return {
-      Component: MyComponent,
-      props: {
-        image: image,
-      },
-    };
-  }}
-</Story>
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+<Story 
+  name="withAnImage"
+  render={() => ({
+    Component: MyComponent,
+    props: {
+      image: image,
+    },
+  })} />
 ```

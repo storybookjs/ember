@@ -5,6 +5,10 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
+import MyComponent from './MyComponent.vue';
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
 <Meta
   title="Stories"
   parameters={{
@@ -13,6 +17,7 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
       defaultViewport: 'iphone6',
     },
   }}
+  component={MyComponent}
 />
 
 <Story
@@ -21,11 +26,9 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
     viewport: {
       defaultViewport: 'iphonex',
     }
-  }}>
-  {() => {
-    return {
-      template: `<div/>`,
-    };
   }}
-</Story>
+  render={() => ({
+    components: { MyComponent },
+    template: '<MyComponent />',
+  })} />
 ```

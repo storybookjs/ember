@@ -5,9 +5,10 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { Button } from './button.component';
 
-<Meta title="Components/Button" component={Button}/>
+<Meta title="Button" component={Button}/>
 
-<!-- The render function is a framework specific construct to define how the story should render -->
+
+<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
   name="Primary"
@@ -28,11 +29,11 @@ import { Button } from './button.component';
   })} />
 
 <Story 
-  name="Tertiary" 
+  name="Tertiary"
   render={() => ({
     props: {
       backgroundColor: '#ff0',
       label: '📚📕📈🤓',
     },
-})} />
+  })} />
 ```
