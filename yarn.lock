@@ -8166,6 +8166,7 @@ __metadata:
     globby: ^11.0.2
     ip: ^1.1.5
     jest-specific-snapshot: ^4.0.0
+    lodash: ^4.17.20
     node-fetch: ^2.6.1
     pretty-hrtime: ^1.0.3
     prompts: ^2.4.0
