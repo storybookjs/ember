@@ -389,16 +389,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         } as StoryContextForLoaders<TFramework>),
     };
 
-    const renderer = new (await import('./DocsRenderer')).DocsRenderer(story);
-
-    const render = () => {
+    const render = async () => {
       const fullDocsContext = {
         ...docsContext,
         // Put all the storyContext fields onto the docs context for back-compat
         ...(!FEATURES.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
-      renderer.render(fullDocsContext, element, () => this.channel.emit(Events.DOCS_RENDERED, id));
+      (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
+        this.channel.emit(Events.DOCS_RENDERED, id)
+      );
     };
 
     // Initially render right away
@@ -622,8 +622,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       : this.previousSelection?.viewMode;
 
     if (unmountDocs && previousViewMode === 'docs') {
-      // FIXME
-      // ReactDOM.unmountComponentAtNode(this.view.docsRoot());
+      (await import('./renderDocs')).unmountDocs(this.view.docsRoot());
     }
 
     if (this.previousCleanup) {
