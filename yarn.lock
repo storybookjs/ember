@@ -8171,6 +8171,7 @@ __metadata:
     prompts: ^2.4.0
     regenerator-runtime: ^0.13.7
     serve-favicon: ^2.5.0
+    slash: ^3.0.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
     watchpack: ^2.2.0
