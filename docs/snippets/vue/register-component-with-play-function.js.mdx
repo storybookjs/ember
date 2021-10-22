@@ -1,7 +1,7 @@
 ```js
 // RegistrationForm.stories.js
 
-import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 
 import RegistrationForm from './RegistrationForm.vue';
 
@@ -30,7 +30,7 @@ export const FilledForm = {
     // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const submitButton = screen.getByRole('button');
 
-    await fireEvent.click(submitButton);
+    await userEvent.click(submitButton);
     
   },
   render: () => ({

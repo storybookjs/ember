@@ -1,7 +1,7 @@
 ```js
 // RegistrationForm.stories.js
 
-import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 
 import RegistrationForm from './RegistrationForm.svelte';
 
@@ -32,7 +32,7 @@ export const FilledForm = {
 
     const submitButton = screen.getByRole('button');
 
-    await fireEvent.click(submitButton);
+    await userEvent.click(submitButton);
   },
   render: () => ({
     Component: MyComponent,
