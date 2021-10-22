@@ -38,7 +38,7 @@ export function watchStorySpecifiers(
     directories: specifiers.map((ns) => ns.directory),
   });
 
-  function onChangeOrRemove(watchpackPath: Path, removed: boolean) {
+  async function onChangeOrRemove(watchpackPath: Path, removed: boolean) {
     // Watchpack passes paths either with no leading './' - e.g. `src/Foo.stories.js`,
     // or with a leading `../` (etc), e.g. `../src/Foo.stories.js`.
     // We want to deal in importPaths relative to the working dir, or absolute paths.
