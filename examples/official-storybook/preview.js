@@ -11,7 +11,6 @@ import {
   useTheme,
 } from '@storybook/theming';
 import { Symbols } from '@storybook/components';
-import { LocationProvider } from '@storybook/router';
 
 import addHeadWarning from './head-warning';
 
@@ -88,11 +87,6 @@ const ThemedSetRoot = () => {
 };
 
 export const decorators = [
-  (StoryFn) => (
-    <LocationProvider>
-      <StoryFn />
-    </LocationProvider>
-  ),
   (StoryFn, { globals, parameters }) => {
     const theme = globals.theme || parameters.theme || (isChromatic() ? 'stacked' : 'light');
 
