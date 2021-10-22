@@ -33487,6 +33487,7 @@ fsevents@^1.2.7:
     "@storybook/jest": 0.0.0-alpha.5
     "@storybook/node-logger": 6.4.0-beta.19
     "@storybook/react": 6.4.0-beta.19
+    "@storybook/router": 6.4.0-beta.19
     "@storybook/source-loader": 6.4.0-beta.19
     "@storybook/testing-library": 0.0.0-alpha.3
     "@storybook/theming": 6.4.0-beta.19
