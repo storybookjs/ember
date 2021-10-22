@@ -337,7 +337,7 @@ export interface StorybookConfig {
   /**
    * References external Storybooks
    */
-  refs: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs)
+  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs)
 
   /**
    * Modify or return a custom Webpack config.
