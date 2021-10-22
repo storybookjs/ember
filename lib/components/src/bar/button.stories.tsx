@@ -8,7 +8,7 @@ export default {
   title: 'Basics/IconButton',
 };
 
-export const Resting = () => (
+export const _IconButton = () => (
   <IconButton>
     <Icons icon="bookmark" />
   </IconButton>
@@ -22,6 +22,13 @@ export const Active = () => (
 
 export const WithText = () => (
   <IconButton>
+    <Icons icon="circlehollow" />
+    &nbsp;Howdy!
+  </IconButton>
+);
+
+export const WithTextActive = () => (
+  <IconButton active>
     <Icons icon="circlehollow" />
     &nbsp;Howdy!
   </IconButton>
