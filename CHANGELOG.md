@@ -1,3 +1,13 @@
+## 6.4.0-beta.19 (October 22, 2021)
+
+### Bug Fixes
+
+- Core: Fix some slashes for windows ([#16445](https://github.com/storybookjs/storybook/pull/16445))
+
+### Maintenance
+
+- Core: Add typing for StorybookConfig.refs ([#16443](https://github.com/storybookjs/storybook/pull/16443))
+
 ## 6.4.0-beta.18 (October 21, 2021)
 
 ### Features

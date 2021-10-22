@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-beta.18",
+  "version": "6.4.0-beta.19",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,15 +41,15 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.4.0-beta.18",
-    "@storybook/core-client": "6.4.0-beta.18",
-    "@storybook/core-common": "6.4.0-beta.18",
+    "@storybook/builder-webpack4": "6.4.0-beta.19",
+    "@storybook/core-client": "6.4.0-beta.19",
+    "@storybook/core-common": "6.4.0-beta.19",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-tools": "6.4.0-beta.18",
-    "@storybook/manager-webpack4": "6.4.0-beta.18",
-    "@storybook/node-logger": "6.4.0-beta.18",
+    "@storybook/csf-tools": "6.4.0-beta.19",
+    "@storybook/manager-webpack4": "6.4.0-beta.19",
+    "@storybook/node-logger": "6.4.0-beta.19",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-beta.18",
+    "@storybook/store": "6.4.0-beta.19",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -74,21 +74,22 @@
     "prompts": "^2.4.0",
     "regenerator-runtime": "^0.13.7",
     "serve-favicon": "^2.5.0",
+    "slash": "^3.0.0",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.18",
+    "@storybook/builder-webpack5": "6.4.0-beta.19",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.18",
-    "@storybook/manager-webpack5": "6.4.0-beta.18",
+    "@storybook/builder-webpack5": "6.4.0-beta.19",
+    "@storybook/manager-webpack5": "6.4.0-beta.19",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -106,6 +107,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "c84597e8763c4ca4d49069b83c72de97ba0079f5",
+  "gitHead": "60b9bd1e5123938a66ad1ae25a8a63d03324a14d",
   "sbmodern": "dist/modern/index.js"
 }
