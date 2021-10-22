@@ -261,6 +261,11 @@ export type Preset =
  */
 export type Entry = string;
 
+type StorybookRefs = Record<string, {
+  title: string;
+  url: string;
+}>;
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -328,6 +333,11 @@ export interface StorybookConfig {
    * Controls how Storybook handles TypeScript files.
    */
   typescript?: Partial<TypescriptOptions>;
+
+  /**
+   * References external Storybooks
+   */
+  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs)
 
   /**
    * Modify or return a custom Webpack config.
