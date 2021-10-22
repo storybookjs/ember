@@ -20,6 +20,8 @@ const runScriptTypes = [
   'text/livescript',
   'text/x-ecmascript',
   'text/x-javascript',
+  // Support modern javascript
+  'module',
 ];
 
 const SCRIPT = 'script';
@@ -34,7 +36,7 @@ export function simulateDOMContentLoaded() {
 
 function insertScript($script: any, callback: any, $scriptRoot: any) {
   const scriptEl = document.createElement('script');
-  scriptEl.type = 'text/javascript';
+  scriptEl.type = $script.type === 'module' ? 'module' : 'text/javascript';
   if ($script.src) {
     scriptEl.onload = callback;
     scriptEl.onerror = callback;

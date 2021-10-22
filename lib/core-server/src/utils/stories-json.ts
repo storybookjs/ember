@@ -7,11 +7,14 @@ import {
   NormalizedStoriesSpecifier,
   StorybookConfig,
 } from '@storybook/core-common';
+import debounce from 'lodash/debounce';
+
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 import { watchStorySpecifiers } from './watch-story-specifiers';
 import { useEventsAsSSE } from './use-events-as-sse';
 
 const INVALIDATE = 'INVALIDATE';
+export const DEBOUNCE = 50;
 
 export async function extractStoriesJson(
   outputFile: string,
@@ -45,13 +48,16 @@ export async function useStoriesJson(
   // This is mainly for testing purposes.
   let started = false;
   const invalidationEmitter = new EventEmitter();
+  const maybeInvalidate = debounce(() => invalidationEmitter.emit(INVALIDATE), DEBOUNCE, {
+    leading: true,
+  });
   async function ensureStarted() {
     if (started) return;
     started = true;
 
-    watchStorySpecifiers(normalizedStories, (specifier, path, removed) => {
+    watchStorySpecifiers(normalizedStories, { workingDir }, (specifier, path, removed) => {
       generator.invalidate(specifier, path, removed);
-      invalidationEmitter.emit(INVALIDATE);
+      maybeInvalidate();
     });
 
     await generator.initialize();

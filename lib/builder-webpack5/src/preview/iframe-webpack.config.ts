@@ -99,7 +99,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         storiesFilename,
         configs,
       }
-    );
+      // We need to double escape `\` for webpack. We may have some in windows paths
+    ).replace(/\\/g, '\\\\');
     entries.push(configEntryPath);
   } else {
     const frameworkInitEntry = path.resolve(

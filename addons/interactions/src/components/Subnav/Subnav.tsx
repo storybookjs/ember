@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Icons, Separator, P, TooltipNote, WithTooltip, Bar } from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
-import { transparentize } from 'polished';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 
@@ -52,7 +51,7 @@ export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
   margin: '0 3px',
   '&:not(:disabled)': {
     '&:hover,&:focus-visible': {
-      background: transparentize(0.9, theme.color.secondary),
+      background: theme.background.hoverable,
     },
   },
 }));
