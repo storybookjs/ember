@@ -14,6 +14,7 @@ Object {
     "ROOT/addons/toolbars/dist/esm/register.js",
     "ROOT/addons/measure/dist/esm/register.js",
     "ROOT/addons/outline/dist/esm/register.js",
+    "ROOT/addons/interactions/dist/esm/register.js",
   ],
   "keys": Array [
     "name",

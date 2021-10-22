@@ -145,7 +145,7 @@ jobs:
       - run:
           name: examples
           command: |
-            yarn build-storybooks
+            yarn build-storybooks --all
       - persist_to_workspace:
           root: .
           paths:

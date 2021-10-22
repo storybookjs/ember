@@ -13,8 +13,16 @@ describe('processCSFFile', () => {
 
     expect(meta).toEqual({ id: 'component', title: 'Component' });
     expect(stories).toEqual({
-      'component--story-one': { id: 'component--story-one', name: 'Story One', args: { a: 1 } },
-      'component--story-two': { id: 'component--story-two', name: 'Story Two', args: { a: 2 } },
+      'component--story-one': expect.objectContaining({
+        id: 'component--story-one',
+        name: 'Story One',
+        args: { a: 1 },
+      }),
+      'component--story-two': expect.objectContaining({
+        id: 'component--story-two',
+        name: 'Story Two',
+        args: { a: 2 },
+      }),
     });
   });
 

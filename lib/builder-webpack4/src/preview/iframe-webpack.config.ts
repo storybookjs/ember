@@ -25,6 +25,7 @@ import {
   normalizeStories,
   loadPreviewOrConfigFile,
   readTemplate,
+  CoreConfig,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -55,7 +56,6 @@ const storybookPaths: Record<string, string> = [
 );
 export default async (options: Options & Record<string, any>): Promise<Configuration> => {
   const {
-    configDir,
     babelOptions,
     outputDir = path.join('.', 'public'),
     quiet,
@@ -75,6 +75,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
   const envs = await presets.apply<Record<string, string>>('env');
+  const coreOptions = await presets.apply<CoreConfig>('core');
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
@@ -94,11 +95,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const virtualModuleMapping: Record<string, string> = {};
   if (features?.storyStoreV7) {
     const storiesFilename = 'storybook-stories.js';
-    const storiesPath = path.resolve(path.join(configDir, storiesFilename));
+    const storiesPath = path.resolve(path.join(workingDir, storiesFilename));
 
     virtualModuleMapping[storiesPath] = toImportFn(stories);
-    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
 
+    const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
       await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
       {
@@ -183,8 +184,10 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           options: templateOptions,
           version: packageJson.version,
           globals: {
+            CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
             STORIES: stories.map((specifier) => ({
               ...specifier,

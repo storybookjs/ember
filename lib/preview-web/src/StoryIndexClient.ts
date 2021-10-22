@@ -5,21 +5,31 @@ import global from 'global';
 
 import { StoryIndex } from '@storybook/store';
 
-const { fetch } = global;
+const { window, fetch, CONFIG_TYPE } = global;
 
 const PATH = './stories.json';
+
 // The stories.json endpoint both serves the basic data on a `GET` request and a stream of
 // invalidation events when called as a `event-stream` (i.e. via SSE).
-// So the `StoryIndexClient` is a EventSource that can also do a fetch
+export class StoryIndexClient {
+  source: EventSource;
 
-// eslint-disable-next-line no-undef
-export class StoryIndexClient extends EventSource {
   constructor() {
-    super(PATH);
+    if (CONFIG_TYPE === 'DEVELOPMENT') {
+      this.source = new window.EventSource(PATH);
+    }
+  }
+
+  // Silently never emit events in bult storybook modes
+  addEventListener(event: string, cb: (...args: any[]) => void) {
+    if (this.source) this.source.addEventListener(event, cb);
   }
 
   async fetch() {
     const result = await fetch(PATH);
-    return result.json() as StoryIndex;
+
+    if (result.status === 200) return result.json() as StoryIndex;
+
+    throw new Error(await result.text());
   }
 }

@@ -8,6 +8,7 @@ export {
   forceReRender,
   raw,
   app,
+  activeStoryComponent,
 } from './preview';
 
 export * from './preview/types-6-0';

@@ -120,3 +120,17 @@ import { useGlobals } from '@storybook/addons'; // or '@storybook/api'
 
 const [globals, updateGlobals] = useGlobals();
 ```
+
+## Technical details
+
+### Initialization
+
+- The store is created "uninitialized".
+- It is assumed at some later time it will be initialized with the Story Index, the set of stories (this may be loaded async).
+- You _can_ call `loadStory` prior to that time, in which case it will wait for initialization.
+
+### Caching
+
+- "All story" APIs like `extract()` require all stories to be loaded.
+- For backwards-compatibility, these APIs are _not_ async, so it is required that `store.cacheAllCSFFiles()` is called first
+- In v6 mode, this will be called on initialization but `start.ts`.

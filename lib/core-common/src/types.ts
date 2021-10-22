@@ -1,4 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import type { Options as TelejsonOptions } from 'telejson';
 import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
@@ -23,6 +24,7 @@ export interface TypescriptConfig {
 export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
   disableWebpackDefaults?: boolean;
+  channelOptions?: Partial<TelejsonOptions>;
 }
 
 export interface Presets {
@@ -246,6 +248,19 @@ export type NormalizedStoriesSpecifier = Required<StoriesSpecifier> & {
   importPathMatcher: RegExp;
 };
 
+export type Preset =
+  | string
+  | {
+      name: string;
+      options?: any;
+    };
+
+/**
+ * An additional script that gets injected into the
+ * preview or the manager,
+ */
+export type Entry = string;
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -255,13 +270,7 @@ export interface StorybookConfig {
    *
    * @example `['@storybook/addon-essentials']` or `[{ name: '@storybook/addon-essentials', options: { backgrounds: false } }]`
    */
-  addons?: Array<
-    | string
-    | {
-        name: string;
-        options?: any;
-      }
-  >;
+  addons?: Preset[];
   core?: CoreConfig;
   logLevel?: string;
   features?: {
@@ -302,16 +311,24 @@ export interface StorybookConfig {
      */
     babelModeV7?: boolean;
   };
+
   /**
    * Tells Storybook where to find stories.
    *
    * @example `['./src/*.stories.@(j|t)sx?']`
    */
   stories: StoriesEntry[];
+
+  /**
+   * Framework, e.g. '@storybook/react', required in v7
+   */
+  framework?: Preset;
+
   /**
    * Controls how Storybook handles TypeScript files.
    */
   typescript?: Partial<TypescriptOptions>;
+
   /**
    * Modify or return a custom Webpack config.
    */
@@ -319,4 +336,9 @@ export interface StorybookConfig {
     config: Configuration,
     options: Options
   ) => Configuration | Promise<Configuration>;
+
+  /**
+   * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   */
+  config?: (entries: Entry[], options: Options) => Entry[];
 }
