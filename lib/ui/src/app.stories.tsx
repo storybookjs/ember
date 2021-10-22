@@ -44,7 +44,7 @@ export const Default = () => (
         showNav: true,
         showPanel: true,
       }}
-      panelCount={1}
+      panelCount={0}
       docsOnly={false}
     />
   </ManagerProvider>
@@ -71,7 +71,7 @@ export const LoadingState = () => (
         showNav: true,
         showPanel: true,
       }}
-      panelCount={1}
+      panelCount={0}
       docsOnly={false}
     />
   </ManagerProvider>
