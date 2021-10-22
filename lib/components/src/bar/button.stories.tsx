@@ -19,3 +19,10 @@ export const Active = () => (
     <Icons icon="beaker" />
   </IconButton>
 );
+
+export const WithText = () => (
+  <IconButton>
+    <Icons icon="circlehollow" />
+    &nbsp;Howdy!
+  </IconButton>
+);
