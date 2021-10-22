@@ -27,6 +27,7 @@ export default {
               {...locationData}
               docsMode={false}
               path="/story/story--id"
+              storyId="story--id"
               navigate={() => {}}
             >
               <ThemeProvider key="theme.provider" theme={ensureTheme(themes.light)}>
