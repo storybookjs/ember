@@ -51,17 +51,42 @@ export const WaitForElementToBeRemoved: CSF2Story = () => {
     setTimeout(() => setIsLoading(false), 1500);
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return <button type="button">Loaded!</button>;
+  return isLoading ? <div>Loading...</div> : <button type="button">Loaded!</button>;
 };
 WaitForElementToBeRemoved.play = async ({ canvasElement }) => {
-  const canvas = await within(canvasElement);
+  const canvas = within(canvasElement);
   await waitForElementToBeRemoved(await canvas.findByText('Loading...'), { timeout: 2000 });
   const button = await canvas.findByText('Loaded!');
   await expect(button).not.toBeNull();
+};
+
+export const WithLoaders: CSF2Story = (args, { loaded: { todo } }) => {
+  return (
+    <button type="button" onClick={args.onSubmit(todo.title)}>
+      Todo: {todo.title}
+    </button>
+  );
+};
+WithLoaders.loaders = [
+  async () => {
+    // long fake timeout
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    return {
+      todo: {
+        userId: 1,
+        id: 1,
+        title: 'delectus aut autem',
+        completed: false,
+      },
+    };
+  },
+];
+WithLoaders.play = async ({ args, canvasElement }) => {
+  const canvas = within(canvasElement);
+  const todoItem = await canvas.findByText('Todo: delectus aut autem');
+  await userEvent.click(todoItem);
+  await expect(args.onSubmit).toHaveBeenCalledWith('delectus aut autem');
 };
 
 export const Standard: CSF3Story = {
