@@ -38,7 +38,7 @@ export interface State {
   shadowCalls: Call[];
   callRefsByResult: Map<any, CallRef & { retain: boolean }>;
   chainedCallIds: Set<Call['id']>;
-  parentCall?: Call;
+  parentId?: Call['id'];
   playUntil?: Call['id'];
   resolvers: Record<Call['id'], Function>;
   syncTimeout: ReturnType<typeof setTimeout>;
@@ -80,7 +80,7 @@ const getInitialState = (): State => ({
   shadowCalls: [],
   callRefsByResult: new Map(),
   chainedCallIds: new Set<Call['id']>(),
-  parentCall: undefined,
+  parentId: undefined,
   playUntil: undefined,
   resolvers: {},
   syncTimeout: undefined,
@@ -317,12 +317,12 @@ export class Instrumenter {
   track(method: string, fn: Function, args: any[], options: Options) {
     const storyId: StoryId =
       args?.[0]?.__storyId__ || global.window.__STORYBOOK_PREVIEW__?.urlStore?.selection?.storyId;
-    const index = this.getState(storyId).cursor;
-    this.setState(storyId, { cursor: index + 1 });
-    const id = `${storyId} [${index}] ${method}`;
+    const { cursor, parentId } = this.getState(storyId);
+    this.setState(storyId, { cursor: cursor + 1 });
+    const id = `${parentId || storyId} [${cursor}] ${method}`;
     const { path = [], intercept = false, retain = false } = options;
     const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
-    const call: Call = { id, path, method, storyId, args, interceptable, retain };
+    const call: Call = { id, path, method, parentId, storyId, args, interceptable, retain };
     const result = (interceptable ? this.intercept : this.invoke).call(this, fn, call, options);
     return this.instrument(result, { ...options, mutate: true, path: [{ __callId__: call.id }] });
   }
@@ -357,13 +357,10 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call, options: Options) {
-    const { parentCall, callRefsByResult, forwardedException, renderPhase } = this.getState(
-      call.storyId
-    );
-    const callWithParent = { ...call, parentId: parentCall?.id };
+    const { callRefsByResult, forwardedException, renderPhase } = this.getState(call.storyId);
 
     const info: Call = {
-      ...callWithParent,
+      ...call,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
       args: call.args.map((arg) => {
@@ -428,17 +425,18 @@ export class Instrumenter {
       }
 
       const finalArgs = options.getArgs
-        ? options.getArgs(callWithParent, this.getState(call.storyId))
+        ? options.getArgs(call, this.getState(call.storyId))
         : call.args;
       const result = fn(
         // Wrap any callback functions to provide a way to access their "parent" call.
+        // This is picked up in the `track` function and used for call metadata.
         ...finalArgs.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
-            const prev = this.getState(call.storyId).parentCall;
-            this.setState(call.storyId, { parentCall: call });
+            const { cursor: prevCursor, parentId: prevParentId } = this.getState(call.storyId);
+            this.setState(call.storyId, { cursor: 0, parentId: call.id });
             const res = arg(...args);
-            this.setState(call.storyId, { parentCall: prev });
+            this.setState(call.storyId, { cursor: prevCursor, parentId: prevParentId });
             return res;
           };
         })
