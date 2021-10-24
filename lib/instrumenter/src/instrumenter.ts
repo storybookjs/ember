@@ -476,10 +476,18 @@ export class Instrumenter {
   sync(call: Call) {
     clearTimeout(this.getState(call.storyId).syncTimeout);
     this.channel.emit(EVENTS.CALL, call);
-    this.setState(call.storyId, ({ calls }) => ({
-      calls: calls.concat(call),
-      syncTimeout: setTimeout(() => this.channel.emit(EVENTS.SYNC, this.getLog(call.storyId)), 0),
-    }));
+    this.setState(call.storyId, ({ calls }) => {
+      // Omit earlier calls for the same ID, which may have been superceded by a later invocation.
+      // This typically happens when calls are part of a callback which runs multiple times.
+      const callsById = calls
+        .concat(call)
+        .reduce<Record<Call['id'], Call>>((a, c) => Object.assign(a, { [c.id]: c }), {});
+      return {
+        // Calls are sorted to ensure parent calls always come before calls in their callback.
+        calls: Object.values(callsById).sort((a, b) => a.id.localeCompare(b.id)),
+        syncTimeout: setTimeout(() => this.channel.emit(EVENTS.SYNC, this.getLog(call.storyId)), 0),
+      };
+    });
   }
 }
 
