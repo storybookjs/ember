@@ -27,7 +27,7 @@
     "@storybook/addons": "6.4.0-beta.19",
     "@storybook/jest": "^0.0.2",
     "@storybook/source-loader": "6.4.0-beta.19",
-    "@storybook/testing-library": "^0.0.2",
+    "@storybook/testing-library": "^0.0.3",
     "@storybook/vue": "6.4.0-beta.19",
     "@vue/babel-preset-jsx": "^1.2.4",
     "babel-loader": "^8.0.0",

@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@storybook/jest": "^0.0.2",
-    "@storybook/testing-library": "^0.0.2",
+    "@storybook/testing-library": "^0.0.3",
     "formik": "^2.2.9"
   },
   "peerDependencies": {
