@@ -213,16 +213,25 @@ describe('Instrumenter', () => {
       expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: 'kind--story [1] fn2' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2 [0] fn3',
+        parentId: 'kind--story [0] fn1 [0] fn2',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [3] fn4', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [1] fn4',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [4] fn5', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [1] fn5', parentId: undefined })
     );
   });
 
@@ -235,10 +244,13 @@ describe('Instrumenter', () => {
       expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [1] fn3', parentId: undefined })
     );
   });
 
