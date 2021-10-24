@@ -26,6 +26,7 @@ export const Panel: React.FC<PanelProps> = (props) => {
   const [isPlaying, setPlaying] = React.useState(true);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
+  // Calls are tracked in a ref so we don't needlessly rerender.
   const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
   const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
 
