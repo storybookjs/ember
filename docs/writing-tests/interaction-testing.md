@@ -43,17 +43,17 @@ Under the hood, Storybook’s interaction addon mirrors Testing Library’s `use
 
 Below is an abridged API for user-event. For more, check out the [official user-event docs](https://testing-library.com/docs/ecosystem-user-event/).
 
-| User events     | Description                                                                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| clear           | Selects the text inside inputs, or textareas and deletes it <br>`userEvent.clear(await within(canvasElement).getByRole('myinput'));`                    |
-| click           | Clicks the element, calling a click() function <br>`userEvent.click(await within(canvasElement).getByText('mycheckbox'));`                              |
-| dblClick        | Clicks the element twice <br>`userEvent.dblClick(await within(canvasElement).getByText('mycheckbox'));`                                                 |
-| deselectOptions | Removes the selection from a specific option of a select element <br>`userEvent.deselectOptions(await within(canvasElement).getByRole('listbox','1'));` |
-| hover           | Hovers an element <br>`userEvent.hover(await within(canvasElement).getByTestId('example-test'));`                                                       |
-| keyboard        | Simulates the keyboard events <br>`userEvent.keyboard(‘foo’);`                                                                                          |
-| selectOptions   | Selects the specified option, or options of a select element <br>`userEvent.selectOptions(await within(canvasElement).getByRole('listbox'),['1','2']);` |
-| type            | Writes text inside inputs, or textareas <br>`userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
-| unhover         | Unhovers out of element <br>`userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
+| User events     | Description                                                                                                                                               |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clear           | Selects the text inside inputs, or textareas and deletes it <br/> `userEvent.clear(await within(canvasElement).getByRole('myinput'));`                    |
+| click           | Clicks the element, calling a click() function <br/> `userEvent.click(await within(canvasElement).getByText('mycheckbox'));`                              |
+| dblClick        | Clicks the element twice <br/> `userEvent.dblClick(await within(canvasElement).getByText('mycheckbox'));`                                                 |
+| deselectOptions | Removes the selection from a specific option of a select element <br/> `userEvent.deselectOptions(await within(canvasElement).getByRole('listbox','1'));` |
+| hover           | Hovers an element <br/> `userEvent.hover(await within(canvasElement).getByTestId('example-test'));`                                                       |
+| keyboard        | Simulates the keyboard events <br/> `userEvent.keyboard(‘foo’);`                                                                                          |
+| selectOptions   | Selects the specified option, or options of a select element <br/> `userEvent.selectOptions(await within(canvasElement).getByRole('listbox'),['1','2']);` |
+| type            | Writes text inside inputs, or textareas <br/> `userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
+| unhover         | Unhovers out of element <br/> `userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
 
 ## Running tests
 
