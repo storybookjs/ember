@@ -1,7 +1,14 @@
 import global from 'global';
 import React, { ReactNode, useCallback } from 'react';
 
-import { Link, BrowserRouter, useNavigate, useLocation, NavigateOptions } from 'react-router-dom';
+import {
+  Link,
+  BrowserRouter,
+  useNavigate,
+  useLocation,
+  NavigateOptions,
+  Router,
+} from 'react-router-dom';
 import { ToggleVisibility } from './visibility';
 import { queryFromString, parsePath, getMatch, StoryData } from './utils';
 
@@ -130,6 +137,7 @@ export { QueryLocation as Location };
 export { Route };
 export { useQueryNavigate as useNavigate };
 export { BrowserRouter as LocationProvider };
+export { Router as BaseLocationProvider };
 export { useNavigate as usePlainNavigate };
 
 // eslint-disable-next-line no-undef
