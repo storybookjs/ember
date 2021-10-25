@@ -88,8 +88,8 @@
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.19",
-    "@storybook/manager-webpack5": "6.4.0-beta.19",
+    "@storybook/builder-webpack5": "6.4.0-beta.20",
+    "@storybook/manager-webpack5": "6.4.0-beta.20",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
