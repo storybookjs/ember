@@ -17,7 +17,7 @@ Storybook has test addons for core frameworks React, Vue (2,3), and Angular. Thi
 - [@storybook/testing-vue3](https://storybook.js.org/addons/@storybook/testing-vue3)
 - [@storybook/testing-angular](https://storybook.js.org/addons/@storybook/testing-angular)
 
-## Install the addon
+### Install the addon
 
 Run the following command to add Storybook's testing addon into your environment:
 

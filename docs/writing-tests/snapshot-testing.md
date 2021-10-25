@@ -1,5 +1,5 @@
 ---
-title: 'Snapshot testing with Storybook'
+title: 'Snapshot tests'
 ---
 
 Snapshot tests compare the rendered markup of every story against known baselines. It’s a way to identify markup changes that trigger rendering errors and warnings.
@@ -8,7 +8,7 @@ Storybook is a helpful tool for snapshot testing because every story is essentia
 
 ![Example Snapshot test](./snapshot-test.png)
 
-## Setup
+## Setup Storyshots
 
 [Storyshots](https://storybook.js.org/addons/@storybook/addon-storyshots/) is the official Storybook addon that enables snapshot testing, powered by [Jest](https://jestjs.io/docs/getting-started).
 
@@ -98,7 +98,7 @@ By default, Storyshots detects your project's framework. If you run into a situa
 
 These are the frameworks currently supported by Storyshots: `angular`, `html`, `preact`, `rax`, `react`, `react-native`, `riot`, `svelte`, `vue`, `vue3`, and `web-components`.
 
-## Additional customization
+### Additional customization
 
 Storyshots is highly customizable and includes options for various advanced use cases. You can read more in the [addon’s documentation](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#options).
 
