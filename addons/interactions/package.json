@@ -55,8 +55,8 @@
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {
-    "@storybook/jest": "0.0.0-alpha.5",
-    "@storybook/testing-library": "0.0.0-alpha.3",
+    "@storybook/jest": "^0.0.2",
+    "@storybook/testing-library": "^0.0.3",
     "formik": "^2.2.9"
   },
   "peerDependencies": {
