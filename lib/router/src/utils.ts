@@ -139,7 +139,7 @@ interface Query {
 export const queryFromString = memoize(1000)(
   (s: string): Query => qs.parse(s, { ignoreQueryPrefix: true })
 );
-export const queryFromLocation = (location: { search: string }) => queryFromString(location.search);
+export const queryFromLocation = (location: Partial<Location>) => queryFromString(location.search);
 export const stringifyQuery = (query: Query) =>
   qs.stringify(query, { addQueryPrefix: true, encode: false });
 

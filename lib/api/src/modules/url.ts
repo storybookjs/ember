@@ -1,4 +1,3 @@
-import { navigate as navigateRouter, NavigateOptions } from '@reach/router';
 import { once } from '@storybook/client-logger';
 import {
   NAVIGATE_URL,
@@ -6,7 +5,7 @@ import {
   SET_CURRENT_STORY,
   GLOBALS_UPDATED,
 } from '@storybook/core-events';
-import { queryFromLocation, navigate as queryNavigate, buildArgsParam } from '@storybook/router';
+import { queryFromLocation, buildArgsParam, NavigateOptions } from '@storybook/router';
 import { toId, sanitize } from '@storybook/csf';
 import deepEqual from 'fast-deep-equal';
 import global from 'global';
@@ -26,15 +25,6 @@ const parseBoolean = (value: string) => {
   if (value === 'true' || value === '1') return true;
   if (value === 'false' || value === '0') return false;
   return undefined;
-};
-
-const navigateTo = (path: string, queryParams: Record<string, string> = {}, options = {}) => {
-  const params = Object.entries(queryParams)
-    .filter(([, v]) => v)
-    .sort(([a], [b]) => (a < b ? -1 : 1))
-    .map(([k, v]) => `${k}=${v}`);
-  const to = [path, ...params].join('&');
-  return queryNavigate(to, options);
 };
 
 // Initialize the state based on the URL.
@@ -130,7 +120,7 @@ export interface QueryParams {
 }
 
 export interface SubAPI {
-  navigateUrl: (url: string, options: NavigateOptions<{}>) => void;
+  navigateUrl: (url: string, options: NavigateOptions) => void;
   getQueryParam: (key: string) => string | undefined;
   getUrlState: () => {
     queryParams: QueryParams;
@@ -143,6 +133,15 @@ export interface SubAPI {
 }
 
 export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...rest }) => {
+  const navigateTo = (path: string, queryParams: Record<string, string> = {}, options = {}) => {
+    const params = Object.entries(queryParams)
+      .filter(([, v]) => v)
+      .sort(([a], [b]) => (a < b ? -1 : 1))
+      .map(([k, v]) => `${k}=${v}`);
+    const to = [path, ...params].join('&');
+    return navigate(to, options);
+  };
+
   const api: SubAPI = {
     getQueryParam(key) {
       const { customQueryParams } = store.getState();
@@ -167,8 +166,8 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
       const equal = deepEqual(customQueryParams, update);
       if (!equal) store.setState({ customQueryParams: update });
     },
-    navigateUrl(url: string, options: NavigateOptions<{}>) {
-      navigateRouter(url, options);
+    navigateUrl(url, options) {
+      navigate(url, { ...options, plain: true });
     },
   };
 
