@@ -175,7 +175,7 @@
     "@storybook/source-loader": "workspace:*",
     "@storybook/store": "workspace:*",
     "@storybook/svelte": "workspace:*",
-    "@storybook/testing-library": "^0.0.2",
+    "@storybook/testing-library": "^0.0.3",
     "@storybook/theming": "workspace:*",
     "@storybook/ui": "workspace:*",
     "@storybook/vue": "workspace:*",

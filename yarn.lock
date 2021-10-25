@@ -7132,7 +7132,7 @@ __metadata:
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/instrumenter": 6.4.0-beta.19
     "@storybook/jest": ^0.0.2
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@storybook/theming": 6.4.0-beta.19
     formik: ^2.2.9
     global: ^4.4.0
@@ -8842,7 +8842,7 @@ __metadata:
     "@storybook/source-loader": "workspace:*"
     "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
     "@storybook/vue": "workspace:*"
@@ -9149,16 +9149,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/testing-library@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "@storybook/testing-library@npm:0.0.2"
+"@storybook/testing-library@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@storybook/testing-library@npm:0.0.3"
   dependencies:
     "@storybook/client-logger": 6.4.0-beta.12
     "@storybook/instrumenter": 6.4.0-beta.12
     "@testing-library/dom": ^8.3.0
     "@testing-library/user-event": ^13.2.1
     ts-dedent: ^2.2.0
-  checksum: a2a6442d4e9f2b1f2f4aa96237d770dd2ce78051b45424d13778218d03297624aa81d5e9d67f32ebfc4ee53cb538ffa41a0ddfa8915f98d52c5c6e99122282b5
+  checksum: 18eb7896d5dba8b4b23ff87a1b6694e5f984f357f41d1b9af88311843e5e0c4b5804e6de7e27c2a73d694decbbb5d20cd23a97bb7c9d5b93cd20ae7f93b3a538
   languageName: node
   linkType: hard
 
@@ -13042,7 +13042,7 @@ __metadata:
     "@storybook/angular": 6.4.0-beta.19
     "@storybook/jest": ^0.0.2
     "@storybook/source-loader": 6.4.0-beta.19
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@types/core-js": ^2.5.4
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20
@@ -33463,7 +33463,7 @@ fsevents@^1.2.7:
     "@storybook/node-logger": 6.4.0-beta.19
     "@storybook/react": 6.4.0-beta.19
     "@storybook/source-loader": 6.4.0-beta.19
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@storybook/theming": 6.4.0-beta.19
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
@@ -42378,7 +42378,7 @@ resolve@1.19.0:
     "@storybook/jest": ^0.0.2
     "@storybook/source-loader": 6.4.0-beta.19
     "@storybook/svelte": 6.4.0-beta.19
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     global: ^4.4.0
     svelte-jester: 1.3.0
     svelte-preprocess: 4.6.8
@@ -45163,7 +45163,7 @@ resolve@1.19.0:
     "@storybook/addon-links": 6.4.0-beta.19
     "@storybook/addon-storyshots": 6.4.0-beta.19
     "@storybook/jest": ^0.0.2
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@storybook/vue3": 6.4.0-beta.19
     "@vue/cli-plugin-babel": ~4.5.0
     "@vue/cli-plugin-typescript": ~4.5.0
@@ -45260,7 +45260,7 @@ resolve@1.19.0:
     "@storybook/addons": 6.4.0-beta.19
     "@storybook/jest": ^0.0.2
     "@storybook/source-loader": 6.4.0-beta.19
-    "@storybook/testing-library": ^0.0.2
+    "@storybook/testing-library": ^0.0.3
     "@storybook/vue": 6.4.0-beta.19
     "@vue/babel-preset-jsx": ^1.2.4
     babel-loader: ^8.0.0
