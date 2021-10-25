@@ -3,7 +3,7 @@ import mapValues from 'lodash/mapValues';
 import { storiesOf, StoryContext } from '@storybook/react';
 import { ArgsTable } from '@storybook/components';
 import { Args } from '@storybook/api';
-import { inferControls } from '@storybook/client-api';
+import { inferControls } from '@storybook/store';
 
 import { extractArgTypes } from './extractArgTypes';
 import { Component } from '../../blocks';

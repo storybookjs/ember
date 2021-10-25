@@ -421,6 +421,29 @@ describe('PreviewWeb', () => {
         expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
       });
 
+      it('renders helpful message if renderToDOM is undefined', async () => {
+        const originalRenderToDOM = projectAnnotations.renderToDOM;
+        try {
+          projectAnnotations.renderToDOM = undefined;
+
+          document.location.search = '?id=component-one--a';
+          const preview = await createAndRenderPreview();
+
+          expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+          expect(preview.view.showErrorDisplay.mock.calls[0][0]).toMatchInlineSnapshot(`
+            [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+
+                You can fix this automatically by running:
+
+                npx sb@next automigrate
+
+                More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
+          `);
+        } finally {
+          projectAnnotations.renderToDOM = originalRenderToDOM;
+        }
+      });
+
       it('renders exception if the play function throws', async () => {
         const error = new Error('error');
         componentOneExports.a.play.mockImplementationOnce(() => {

@@ -1,3 +1,86 @@
+## 6.4.0-beta.19 (October 22, 2021)
+
+### Bug Fixes
+
+- Core: Fix some slashes for windows ([#16445](https://github.com/storybookjs/storybook/pull/16445))
+
+### Maintenance
+
+- Core: Add typing for StorybookConfig.refs ([#16443](https://github.com/storybookjs/storybook/pull/16443))
+
+## 6.4.0-beta.18 (October 21, 2021)
+
+### Features
+
+- StoryIndex: Detect added/moved directories and batch invalidations ([#16432](https://github.com/storybookjs/storybook/pull/16432))
+
+### Bug Fixes
+
+- Core: Fix module loading support ([#16404](https://github.com/storybookjs/storybook/pull/16404))
+- Addon-links: Modernize to be compatible with v7 store ([#16420](https://github.com/storybookjs/storybook/pull/16420))
+
+### Maintenance
+
+- CLI: Improve build-storybooks script in the monorepo ([#16433](https://github.com/storybookjs/storybook/pull/16433))
+
+## 6.4.0-beta.17 (October 21, 2021)
+
+### Features
+
+- Core: Add `core.channelOptions` main.js config ([#16415](https://github.com/storybookjs/storybook/pull/16415))
+
+### Maintenance
+
+- Addon-docs: Lazy load docs to reduce bundle size ([#16412](https://github.com/storybookjs/storybook/pull/16412))
+- UI: Update mono font stack ([#16409](https://github.com/storybookjs/storybook/pull/16409))
+- UI: Update sidebar hover color to be a refreshing transparent blue ([#16408](https://github.com/storybookjs/storybook/pull/16408))
+
+## 6.4.0-beta.16 (October 20, 2021)
+
+### Bug Fixes
+
+- Core: Consolidate framework presets ([#16417](https://github.com/storybookjs/storybook/pull/16417))
+- Addon-a11y: Fix to use `loadStory` over deprecated `fromId` ([#16398](https://github.com/storybookjs/storybook/pull/16398))
+- Core: Restore `queryparams` exports in `client-api` ([#16414](https://github.com/storybookjs/storybook/pull/16414))
+
+### Maintenance
+
+- Core: Minor cleanup of `PreviewWeb` ([#16418](https://github.com/storybookjs/storybook/pull/16418))
+
+### Dependency Upgrades
+
+- Update `react-element-to-jsx-string` package ([#16407](https://github.com/storybookjs/storybook/pull/16407))
+
+## 6.4.0-beta.15 (October 19, 2021)
+
+### Features
+
+- Core: Add `framework` field support to main.js ([#16393](https://github.com/storybookjs/storybook/pull/16393))
+
+### Bug Fixes
+
+- Addon-docs: Spread all the old docs context fields ([#16399](https://github.com/storybookjs/storybook/pull/16399))
+- Core: Reverse checking of promise so it's OK if we get it wrong ([#16396](https://github.com/storybookjs/storybook/pull/16396))
+
+### Maintenance
+
+- Addon-interactions: Update interaction hover icon ([#16388](https://github.com/storybookjs/storybook/pull/16388))
+- Core: Refactor story store to be simpler when getting the index ([#16397](https://github.com/storybookjs/storybook/pull/16397))
+
+## 6.4.0-beta.14 (October 19, 2021)
+
+### Bug Fixes
+
+- Core: Fix bad deprecation link for argType.defaultValue ([#16391](https://github.com/storybookjs/storybook/pull/16391))
+- Storyshots/vue3: Fix story render with singleton vue3 app ([#15983](https://github.com/storybookjs/storybook/pull/15983))
+- Angular: Fix preset for storyStoreV7 ([#16380](https://github.com/storybookjs/storybook/pull/16380))
+- Core: Fix Args combination to allow `undefined` overrides ([#16385](https://github.com/storybookjs/storybook/pull/16385))
+- Core: Fix missing FEATURES global ([#16389](https://github.com/storybookjs/storybook/pull/16389))
+
+### Dependency Upgrades
+
+- Upgrade chromatic CLI ([#16320](https://github.com/storybookjs/storybook/pull/16320))
+
 ## 6.4.0-beta.13 (October 18, 2021)
 
 ### Features

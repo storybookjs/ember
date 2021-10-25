@@ -1,6 +1,6 @@
 import { skipOn } from '@cypress/skip-test';
 
-describe('addon-action', () => {
+describe('addon-docs', () => {
   beforeEach(() => {
     cy.visitStorybook();
     cy.navigateToStory('example-button', 'primary');

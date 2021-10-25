@@ -38,5 +38,5 @@ export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
     [CallStates.ACTIVE]: 'play',
     [CallStates.WAITING]: 'circle',
   }[status] as IconsProps['icon'];
-  return <StyledStatusIcon status={status} icon={icon} />;
+  return <StyledStatusIcon data-testid={`icon-${status}`} status={status} icon={icon} />;
 };

@@ -7,8 +7,10 @@
     - [String literal titles](#string-literal-titles)
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
+    - [Main.js framework field](#mainjs-framework-field)
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
+    - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
@@ -221,7 +223,7 @@ Consider a project configuration `/path/to/project/.storybook/main.js` containin
 module.exports = { stories: ['../src/**/*.stories.*'] };
 ```
 
-And te file `/path/to/project/src/components/Button.stories.tsx` containing the default export:
+And the file `/path/to/project/src/components/Button.stories.tsx` containing the default export:
 
 ```js
 import { Button } from './Button';
@@ -234,7 +236,7 @@ We will provide more documentation soon on how to configure this.
 
 #### String literal titles
 
-Starting in 6.4 CSF component [titles are optional](#optional-titles). However, if you do specify titles, title handing is becoming more strict in V7 and are limited to string literals.
+Starting in 6.4 CSF component [titles are optional](#optional-titles). However, if you do specify titles, title handing is becoming more strict in V7 and is limited to string literals.
 
 Earlier versions of Storybook supported story titles that are dynamic Javascript expressions
 
@@ -269,7 +271,7 @@ The key benefit of the on demand store is that stories are code-split automatica
 The on-demand store relies on the "story index" data structure which is generated in the server (node) via static code analysis. As such, it has the following limitations:
 
 - Does not work with `storiesOf()`
-- Does not work if you used dynamic story names or component titles.
+- Does not work if you use dynamic story names or component titles.
 
 However, the `autoTitle` feature is supported.
 
@@ -281,6 +283,21 @@ The key behavioral differences of the v7 store are:
 - A new event `STORY_PREPARED` is emitted when a story is rendered for the first time, which contains metadata about the story, such as `parameters`.
 - All "entire" store APIs such as `extract()` need to be proceeded by an async call to `loadAllCSFFiles()` which fetches all CSF files and processes them.
 
+#### Main.js framework field
+
+In earlier versions of Storybook, each framework package (e.g. `@storybook/react`) provided its own `start-storybook` and `build-storybook` binaries, which automatically filled in various settings.
+
+In 7.0, we're moving towards a model where the user specifies their framework in `main.js`.
+
+```js
+module.exports = {
+  // ... your existing config
+  framework: '@storybook/react', // OR whatever framework you're using
+};
+```
+
+Each framework must export a `renderToDOM` function and `parameters.framework`. We'll be adding more documentation for framework authors in a future release.
+
 #### Using the v7 store
 
 To activate the v7 mode set the feature flag in your `.storybook/main.js` config:
@@ -288,6 +305,7 @@ To activate the v7 mode set the feature flag in your `.storybook/main.js` config
 ```js
 module.exports = {
   // ... your existing config
+  framework: '@storybook/react', // OR whatever framework you're using
   features: {
     storyStoreV7: true,
   },
@@ -332,6 +350,13 @@ function storySort(a, b) {
 },
 ```
 
+#### V7 Store API changes for addon authors
+
+The Story Store in v7 mode is async, so synchronous story loading APIs no longer work. In particular:
+
+- `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
+- `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
+
 ### Babel mode v7
 
 SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
@@ -365,7 +390,7 @@ This will create a `.babelrc.json` file. This file includes a bunch of babel plu
 
 ### Loader behavior with args changes
 
-In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader in passed to the story, irrespective of the new args.
+In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader is passed to the story, irrespective of the new args.
 
 ### Angular component parameter removed
 

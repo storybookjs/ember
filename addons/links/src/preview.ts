@@ -2,86 +2,53 @@ import global from 'global';
 import qs from 'qs';
 import { addons, makeDecorator } from '@storybook/addons';
 import { STORY_CHANGED, SELECT_STORY } from '@storybook/core-events';
-import { toId } from '@storybook/csf';
-import { logger } from '@storybook/client-logger';
+import { toId, StoryId, StoryName, ComponentTitle } from '@storybook/csf';
 import { PARAM_KEY } from './constants';
 
-const {
-  document,
-  HTMLElement,
-  __STORYBOOK_STORY_STORE__: storyStore,
-  __STORYBOOK_CLIENT_API__: clientApi,
-} = global;
+const { document, HTMLElement } = global;
 
 interface ParamsId {
-  storyId: string;
+  storyId: StoryId;
 }
 interface ParamsCombo {
-  kind: string;
-  story: string;
+  kind?: ComponentTitle;
+  story?: StoryName;
 }
 
 export const navigate = (params: ParamsId | ParamsCombo) =>
   addons.getChannel().emit(SELECT_STORY, params);
 
-const generateUrl = (id: string) => {
-  const { location } = document;
-  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-  return `${location.origin + location.pathname}?${qs.stringify(
-    { ...query, id },
-    { encode: false }
-  )}`;
+export const hrefTo = (title: ComponentTitle, name: StoryName): Promise<string> => {
+  return new Promise((resolve) => {
+    const { location } = document;
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    const existingId = [].concat(query.id)[0];
+    const titleToLink = title || existingId.split('--', 2)[0];
+    const id = toId(titleToLink, name);
+    const url = `${location.origin + location.pathname}?${qs.stringify(
+      { ...query, id },
+      { encode: false }
+    )}`;
+
+    resolve(url);
+  });
 };
 
 const valueOrCall = (args: string[]) => (value: string | ((...args: string[]) => string)) =>
   typeof value === 'function' ? value(...args) : value;
 
-export const linkTo = (
-  idOrKindInput: string,
-  storyInput?: string | ((...args: any[]) => string)
-) => (...args: any[]) => {
+export const linkTo = (idOrTitle: string, nameInput?: string | ((...args: any[]) => string)) => (
+  ...args: any[]
+) => {
   const resolver = valueOrCall(args);
-  const { storyId } = storyStore.getSelection();
-  const current = storyStore.fromId(storyId) || {};
-  const kindVal = resolver(idOrKindInput);
-  const storyVal = resolver(storyInput);
+  const title = resolver(idOrTitle);
+  const name = resolver(nameInput);
 
-  const fromid = storyStore.fromId(kindVal);
-
-  const item =
-    fromid ||
-    clientApi.raw().find((i: any) => {
-      if (kindVal && storyVal) {
-        return i.kind === kindVal && i.story === storyVal;
-      }
-      if (!kindVal && storyVal) {
-        return i.kind === current.kind && i.story === storyVal;
-      }
-      if (kindVal && !storyVal) {
-        return i.kind === kindVal;
-      }
-      if (!kindVal && !storyVal) {
-        return i.kind === current.kind;
-      }
-      return false;
-    });
-
-  if (item) {
-    navigate({
-      kind: item.kind,
-      story: item.story,
-    });
+  if (title?.match(/--/) && !name) {
+    navigate({ storyId: title });
   } else {
-    logger.error('could not navigate to provided story');
+    navigate({ kind: title, story: name });
   }
-};
-
-export const hrefTo = (kind: string, name: string): Promise<string> => {
-  return new Promise((resolve) => {
-    const { storyId } = storyStore.getSelection();
-    const current = storyStore.fromId(storyId);
-    resolve(generateUrl(toId(kind || current.kind, name)));
-  });
 };
 
 const linksListener = (e: Event) => {
@@ -115,7 +82,7 @@ const off = () => {
 export const withLinks = makeDecorator({
   name: 'withLinks',
   parameterName: PARAM_KEY,
-  wrapper: (getStory, context, { parameters }) => {
+  wrapper: (getStory, context) => {
     on();
     addons.getChannel().once(STORY_CHANGED, off);
     return getStory(context);
