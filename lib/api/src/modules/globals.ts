@@ -54,14 +54,11 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
   };
 
   const initModule = () => {
-    let storedGlobals: Globals;
-
     fullAPI.on(GLOBALS_UPDATED, function handleGlobalsUpdated({ globals }: { globals: Globals }) {
       const { ref } = getEventMetadata(this, fullAPI);
 
       if (!ref) {
         updateGlobals(globals);
-        storedGlobals = globals;
       } else {
         logger.warn(
           'received a GLOBALS_UPDATED from a non-local ref. This is not currently supported.'
@@ -72,6 +69,7 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
     // Emitted by the preview on initialization
     fullAPI.on(SET_GLOBALS, function handleSetStories({ globals, globalTypes }: SetGlobalsPayload) {
       const { ref } = getEventMetadata(this, fullAPI);
+      const currentGlobals = store.getState()?.globals;
 
       if (!ref) {
         store.setState({ globals, globalTypes });
@@ -79,8 +77,8 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
         logger.warn('received globals from a non-local ref. This is not currently supported.');
       }
 
-      if (storedGlobals) {
-        api.updateGlobals(storedGlobals);
+      if (currentGlobals) {
+        api.updateGlobals(currentGlobals);
       }
     });
   };
