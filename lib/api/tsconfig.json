@@ -4,5 +4,13 @@
     "rootDir": "./src"
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": [
+    "src/**/*.test.*",
+    "src/**/tests/**/*",
+    "src/**/__tests__/**/*",
+    "src/**/*.stories.*",
+    "src/**/*.mockdata.*",
+    "src/**/__testfixtures__/**"
+  ],
+  "lib": ["es2017", "dom"]
 }

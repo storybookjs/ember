@@ -1,24 +1,20 @@
-import mapValues from 'lodash/mapValues';
-import { ArgTypesEnhancer, combineParameters } from '@storybook/client-api';
-import { inferControls } from './inferControls';
-import { normalizeArgTypes } from './normalizeArgTypes';
+import { AnyFramework, StoryContextForEnhancers } from '@storybook/csf';
+import { combineParameters } from '@storybook/store';
 
-export const enhanceArgTypes: ArgTypesEnhancer = (context) => {
-  const { __isArgsStory, component, argTypes: userArgTypes = {}, docs = {} } = context.parameters;
+export const enhanceArgTypes = <TFramework extends AnyFramework>(
+  context: StoryContextForEnhancers<TFramework>
+) => {
+  const {
+    component,
+    argTypes: userArgTypes,
+    parameters: { docs = {} },
+  } = context;
   const { extractArgTypes } = docs;
 
-  const normalizedArgTypes = normalizeArgTypes(userArgTypes);
-  const namedArgTypes = mapValues(normalizedArgTypes, (val, key) => ({ name: key, ...val }));
   const extractedArgTypes = extractArgTypes && component ? extractArgTypes(component) : {};
-  const withArgTypes = extractedArgTypes
-    ? combineParameters(extractedArgTypes, namedArgTypes)
-    : namedArgTypes;
+  const withExtractedTypes = extractedArgTypes
+    ? combineParameters(extractedArgTypes, userArgTypes)
+    : userArgTypes;
 
-  if (!__isArgsStory) {
-    return withArgTypes;
-  }
-
-  const withControls = inferControls(withArgTypes);
-  const result = combineParameters(withControls, withArgTypes);
-  return result;
+  return withExtractedTypes;
 };

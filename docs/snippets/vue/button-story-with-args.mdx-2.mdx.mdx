@@ -1,0 +1,24 @@
+```md
+<!-- Button.stories.mdx-->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Button from './Button.vue';
+
+<Meta title="Components/Button" component={Button} />
+
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Button },
+  template: `<Button v-bind="$props" v-on="$props" />`,
+});
+
+<Story
+  name="Primary"
+  args={{
+    primary: true,
+    label: 'Button',
+  }}>
+  {Template.bind({})}
+</Story>
+```

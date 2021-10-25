@@ -1,13 +1,17 @@
-import { location, fetch } from 'global';
+import global from 'global';
 import dedent from 'ts-dedent';
 import {
   transformStoriesRawToStoriesHash,
   StoriesRaw,
   StoryInput,
   StoriesHash,
+  transformStoryIndexToStoriesHash,
+  StoryIndexStory,
 } from '../lib/stories';
 
-import { ModuleFn } from '../index';
+import { ModuleFn, StoryId } from '../index';
+
+const { location, fetch } = global;
 
 export interface SubState {
   refs: Refs;
@@ -17,6 +21,7 @@ type Versions = Record<string, string>;
 
 export type SetRefData = Partial<
   Omit<ComposedRef, 'stories'> & {
+    v: number;
     stories?: StoriesRaw;
   }
 >;
@@ -37,6 +42,7 @@ export interface ComposedRef {
   title?: string;
   url: string;
   type?: 'auto-inject' | 'unknown' | 'lazy' | 'server-checked';
+  expanded?: boolean;
   stories: StoriesHash;
   versions?: Versions;
   loginUrl?: string;
@@ -48,7 +54,15 @@ export interface ComposedRef {
 export type ComposedRefUpdate = Partial<
   Pick<
     ComposedRef,
-    'title' | 'type' | 'stories' | 'versions' | 'loginUrl' | 'version' | 'ready' | 'error'
+    | 'title'
+    | 'type'
+    | 'expanded'
+    | 'stories'
+    | 'versions'
+    | 'loginUrl'
+    | 'version'
+    | 'ready'
+    | 'error'
   >
 >;
 
@@ -108,7 +122,7 @@ const map = (
   return input;
 };
 
-export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true } = {}) => {
+export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = true } = {}) => {
   const api: SubAPI = {
     findRef: (source) => {
       const refs = api.getRefs();
@@ -146,7 +160,7 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
       //
       // then we fetch metadata if the above fetch succeeded
 
-      const loadedData: { error?: Error; stories?: StoriesRaw; loginUrl?: string } = {};
+      const loadedData: { error?: Error; v?: number; stories?: StoriesRaw; loginUrl?: string } = {};
       const query = version ? `?version=${version}` : '';
       const credentials = isPublic ? 'omit' : 'include';
 
@@ -166,12 +180,12 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
           message: dedent`
             Error: Loading of ref failed
               at fetch (lib/api/src/modules/refs.ts)
-            
+
             URL: ${url}
-            
+
             We weren't able to load the above URL,
             it's possible a CORS error happened.
-            
+
             Please check your dev-tools network tab.
           `,
         } as Error;
@@ -207,17 +221,28 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
       return refs;
     },
 
-    setRef: (id, { stories, ...rest }, ready = false) => {
+    setRef: (id, { stories, v, ...rest }, ready = false) => {
+      if (singleStory) return;
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
-      const after = stories
-        ? addRefIds(
-            transformStoriesRawToStoriesHash(map(stories, ref, { storyMapper }), { provider }),
-            ref
-          )
-        : undefined;
 
-      api.updateRef(id, { stories: after, ...rest, ready });
+      let storiesHash: StoriesHash;
+
+      if (stories) {
+        if (v === 2) {
+          storiesHash = transformStoriesRawToStoriesHash(map(stories, ref, { storyMapper }), {
+            provider,
+          });
+        } else if (!v) {
+          throw new Error('Composition: Missing stories.json version');
+        } else {
+          const index = (stories as unknown) as Record<StoryId, StoryIndexStory>;
+          storiesHash = transformStoryIndexToStoriesHash({ v, stories: index }, { provider });
+        }
+        storiesHash = addRefIds(storiesHash, ref);
+      }
+
+      api.updateRef(id, { stories: storiesHash, ...rest, ready });
     },
 
     updateRef: (id, data) => {
@@ -225,13 +250,20 @@ export const init: ModuleFn = ({ store, provider, fullAPI }, { runCheck = true }
 
       updated[id] = { ...ref, ...data };
 
+      /* eslint-disable no-param-reassign */
+      const ordered = Object.keys(initialState).reduce((obj: any, key) => {
+        obj[key] = updated[key];
+        return obj;
+      }, {});
+      /* eslint-enable no-param-reassign */
+
       store.setState({
-        refs: updated,
+        refs: ordered,
       });
     },
   };
 
-  const refs = provider.getConfig().refs || {};
+  const refs = (!singleStory && provider.getConfig().refs) || {};
 
   const initialState: SubState['refs'] = refs;
 

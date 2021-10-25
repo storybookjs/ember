@@ -1,9 +1,3 @@
-import { StoryFn } from '@storybook/addons';
-
-export declare const moduleMetadata: (
-  metadata: Partial<NgModuleMetadata>
-) => (storyFn: StoryFn<StoryFnAngularReturnType>) => any;
-
 export interface NgModuleMetadata {
   declarations?: any[];
   entryComponents?: any[];
@@ -17,7 +11,7 @@ export interface ICollection {
 
 export interface IStorybookStory {
   name: string;
-  render: () => any;
+  render: (context: any) => any;
 }
 
 export interface IStorybookSection {
@@ -26,10 +20,13 @@ export interface IStorybookSection {
 }
 
 export interface StoryFnAngularReturnType {
+  /** @deprecated `component` story input is deprecated, and will be removed in Storybook 7.0. */
   component?: any;
   props?: ICollection;
+  /** @deprecated `propsMeta` story input is deprecated, and will be removed in Storybook 7.0. */
   propsMeta?: ICollection;
   moduleMetadata?: NgModuleMetadata;
   template?: string;
   styles?: string[];
+  userDefinedTemplate?: boolean;
 }

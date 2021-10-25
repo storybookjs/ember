@@ -1,26 +1,27 @@
-import ClientApi, { addDecorator, addParameters, addArgTypesEnhancer } from './client_api';
-import { defaultDecorateStory } from './decorators';
-import { combineParameters } from './parameters';
-import StoryStore from './story_store';
-import ConfigApi from './config_api';
-import pathToId from './pathToId';
-
-import { getQueryParams, getQueryParam } from './queryparams';
-
-export * from './hooks';
-export * from './types';
-export * from './parameters';
-
-export {
+import {
   ClientApi,
   addDecorator,
   addParameters,
+  addLoader,
+  addArgsEnhancer,
   addArgTypesEnhancer,
-  combineParameters,
-  StoryStore,
-  ConfigApi,
-  defaultDecorateStory,
-  pathToId,
-  getQueryParams,
-  getQueryParam,
+  setGlobalRender,
+} from './ClientApi';
+
+export * from './types';
+
+export * from './queryparams';
+
+// Typescript isn't happy that we are overwriting some types from store here
+// @ts-ignore
+export * from '@storybook/store';
+
+export {
+  addArgsEnhancer,
+  addArgTypesEnhancer,
+  addDecorator,
+  addLoader,
+  addParameters,
+  setGlobalRender,
+  ClientApi,
 };

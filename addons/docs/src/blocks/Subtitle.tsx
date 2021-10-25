@@ -7,8 +7,8 @@ interface SubtitleProps {
 }
 
 export const Subtitle: FunctionComponent<SubtitleProps> = ({ children }) => {
-  const context = useContext(DocsContext);
-  const { parameters } = context;
+  const { id, storyById } = useContext(DocsContext);
+  const { parameters } = storyById(id);
   let text: JSX.Element | string = children;
   if (!text) {
     text = parameters?.componentSubtitle;

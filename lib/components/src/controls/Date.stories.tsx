@@ -6,22 +6,16 @@ export default {
   component: DateControl,
 };
 
-export const Basic = () => {
-  const [value, setValue] = useState(new Date(2020, 4, 20));
+const Template = (initialValue) => {
+  const [value, setValue] = useState(initialValue);
   return (
     <>
       <DateControl name="date" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value && new Date(value).toISOString()}</p>
+      <pre>{JSON.stringify(value) || 'undefined'}</pre>
     </>
   );
 };
 
-export const Undefined = () => {
-  const [value, setValue] = useState(undefined);
-  return (
-    <>
-      <DateControl name="date" value={value} onChange={(newVal) => setValue(newVal)} />
-      <p>{value && new Date(value).toISOString()}</p>
-    </>
-  );
-};
+export const Basic = () => Template(new Date(2020, 4, 20));
+
+export const Undefined = () => Template(undefined);

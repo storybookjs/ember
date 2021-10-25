@@ -38,12 +38,8 @@ const useLocation: (input: string) => Promise<[string, () => void]> = async (inp
 
   const port = await getPort();
 
-  return new Promise((resolve, reject) => {
-    const server = app.listen(port, (e) => {
-      if (e) {
-        reject(e);
-      }
-
+  return new Promise((resolve) => {
+    const server = app.listen(port, () => {
       const result = `http://localhost:${port}/iframe.html`;
 
       logger.info(`connecting to: ${result}`);
@@ -56,7 +52,7 @@ const useLocation: (input: string) => Promise<[string, () => void]> = async (inp
 const usePuppeteerBrowser: () => Promise<puppeteerCore.Browser> = async () => {
   const args = ['--no-sandbox ', '--disable-setuid-sandbox'];
   try {
-    return await puppeteerCore.launch({ args });
+    return await puppeteerCore.launch({ args, executablePath: process.env.SB_CHROMIUM_PATH });
   } catch (e) {
     // it's not installed
     logger.info('installing puppeteer...');

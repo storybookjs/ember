@@ -1,9 +1,25 @@
 import { spawn } from 'child_process';
 import { promisify } from 'util';
-import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync } from 'fs';
+import { readdir as readdirRaw, writeFile as writeFileRaw, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import program from 'commander';
+import prompts from 'prompts';
+import chalk from 'chalk';
 
 import { getDeployables } from './utils/list-examples';
+import { filterDataForCurrentCircleCINode } from './utils/concurrency';
+
+program
+  .option(
+    '--skip <value>',
+    'Skip an example, accepts multiple values like "--skip vue-kitchen-sink official-storybook"',
+    (value, previous) => previous.concat([value]),
+    []
+  )
+  .option('--all', `run e2e tests for every example`, false);
+program.parse(process.argv);
+
+const { all: shouldRunAllExamples, args: exampleArgs, skip: examplesToSkip } = program;
 
 const readdir = promisify(readdirRaw);
 const writeFile = promisify(writeFileRaw);
@@ -121,8 +137,16 @@ const handleExamples = async (deployables) => {
     const out = p(['built-storybooks', d]);
     const cwd = p(['examples', d]);
 
+    if (existsSync(join(cwd, 'yarn.lock'))) {
+      await exec(`yarn`, [`install`], { cwd });
+    }
+
     await exec(`yarn`, [`build-storybook`, `--output-dir=${out}`, '--quiet'], { cwd });
-    await exec(`npx`, [`sb`, 'extract', out, `${out}/stories.json`], { cwd });
+
+    // If the example uses `storyStoreV7` or `buildStoriesJson`, stories.json already exists
+    if (!existsSync(`${out}/stories.json`)) {
+      await exec(`npx`, [`sb`, 'extract', out, `${out}/stories.json`], { cwd });
+    }
 
     logger.log('-------');
     logger.log(`✅ ${d} built`);
@@ -131,21 +155,45 @@ const handleExamples = async (deployables) => {
 };
 
 const run = async () => {
-  const list = getDeployables(await readdir(p(['examples'])), hasBuildScript);
+  const allExamples = await readdir(p(['examples']));
 
-  const { length } = list;
-  const [a, b] = [process.env.CIRCLE_NODE_INDEX || 0, process.env.CIRCLE_NODE_TOTAL || 1];
-  const step = Math.ceil(length / b);
-  const offset = step * a;
+  // if a specific example is passed, use it. Else use all
+  let examplesToBuild =
+    exampleArgs.length > 0
+      ? exampleArgs
+      : allExamples.filter((example) => !example.includes('README'));
 
-  const deployables = list.slice().splice(offset, step);
+  if (examplesToSkip.length > 0) {
+    logger.log(`⏭  Will skip the following examples: ${chalk.yellow(examplesToSkip.join(', '))}`);
+    examplesToBuild = examplesToBuild.filter((example) => !examplesToSkip.includes(example));
+  }
+
+  if (!shouldRunAllExamples && exampleArgs.length === 0) {
+    const { selectedExamples } = await prompts([
+      {
+        type: 'autocompleteMultiselect',
+        message: 'Select the examples to build',
+        name: 'selectedExamples',
+        min: 1,
+        hint:
+          'You can also run directly with example name like `yarn build-storybooks official-example`, or `yarn build-storybooks --all` for all examples!',
+        choices: examplesToBuild.map((exampleName) => {
+          return {
+            value: exampleName,
+            title: exampleName,
+            selected: false,
+          };
+        }),
+      },
+    ]);
+    examplesToBuild = selectedExamples;
+  }
+
+  const list = getDeployables(examplesToBuild, hasBuildScript);
+  const deployables = filterDataForCurrentCircleCINode(list);
 
   if (deployables.length) {
-    logger.log(
-      `will build: ${deployables.join(', ')} (${
-        deployables.length
-      } total - offset: ${offset} | step: ${step} | length: ${length} | node_index: ${a} | total: ${b} |)`
-    );
+    logger.log(`🏗  Will build Storybook for: ${chalk.cyan(deployables.join(', '))}`);
     await handleExamples(deployables);
   }
 

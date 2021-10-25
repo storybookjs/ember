@@ -1,12 +1,13 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.0.15",
-  "description": "Stories addon for storybook",
+  "version": "6.4.0-beta.19",
+  "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
-    "storybook"
+    "storybook",
+    "code"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/master/addons/storysource",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/addons/storysource",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
@@ -15,47 +16,72 @@
     "url": "https://github.com/storybookjs/storybook.git",
     "directory": "addons/storysource"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/ts3.9/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "dist/ts3.9/*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
   "files": [
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "ts3.5/**/*"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.0.15",
-    "@storybook/api": "6.0.15",
-    "@storybook/client-logger": "6.0.15",
-    "@storybook/components": "6.0.15",
-    "@storybook/router": "6.0.15",
-    "@storybook/source-loader": "6.0.15",
-    "@storybook/theming": "6.0.15",
-    "core-js": "^3.0.1",
-    "estraverse": "^4.2.0",
+    "@storybook/addons": "6.4.0-beta.19",
+    "@storybook/api": "6.4.0-beta.19",
+    "@storybook/client-logger": "6.4.0-beta.19",
+    "@storybook/components": "6.4.0-beta.19",
+    "@storybook/router": "6.4.0-beta.19",
+    "@storybook/source-loader": "6.4.0-beta.19",
+    "@storybook/theming": "6.4.0-beta.19",
+    "core-js": "^3.8.2",
+    "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
-    "prettier": "^2.0.5",
+    "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
-    "react": "^16.9.17",
-    "react-syntax-highlighter": "^12.2.1",
-    "regenerator-runtime": "^0.13.3"
+    "react-syntax-highlighter": "^13.5.3",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
-    "@types/react": "^16.9.27",
-    "@types/react-syntax-highlighter": "^11.0.4"
+    "@types/react": "^16.14.2",
+    "@types/react-syntax-highlighter": "^11.0.5"
   },
   "peerDependencies": {
-    "@storybook/source-loader": "*",
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ab2a9cc10ce49d8e534124881bb2264bf0893b9a"
+  "gitHead": "60b9bd1e5123938a66ad1ae25a8a63d03324a14d",
+  "sbmodern": "dist/modern/index.js",
+  "storybook": {
+    "displayName": "Storysource",
+    "icon": "https://user-images.githubusercontent.com/263385/101991675-48cdf300-3c7c-11eb-9400-58de5ac6daa7.png",
+    "unsupportedFrameworks": [
+      "react-native"
+    ]
+  }
 }

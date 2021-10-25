@@ -1,9 +1,11 @@
-import { window, document, location } from 'global';
+import global from 'global';
 import * as EVENTS from '@storybook/core-events';
 import Channel, { ChannelEvent, ChannelHandler } from '@storybook/channels';
 import { logger, pretty } from '@storybook/client-logger';
 import { isJSON, parse, stringify } from 'telejson';
 import qs from 'qs';
+
+const { window: globalWindow, document, location } = global;
 
 interface Config {
   page: 'manager' | 'preview';
@@ -31,7 +33,7 @@ export class PostmsgTransport {
   constructor(private readonly config: Config) {
     this.buffer = [];
     this.handler = null;
-    window.addEventListener('message', this.handleEvent.bind(this), false);
+    globalWindow.addEventListener('message', this.handleEvent.bind(this), false);
 
     // Check whether the config.page parameter has a valid value
     if (config.page !== 'manager' && config.page !== 'preview') {
@@ -56,18 +58,40 @@ export class PostmsgTransport {
    * @param event
    */
   send(event: ChannelEvent, options?: any): Promise<any> {
-    let depth = 25;
-    let allowFunction = true;
-    let target;
+    const {
+      target,
 
-    if (options && typeof options.allowFunction === 'boolean') {
-      allowFunction = options.allowFunction;
-    }
+      // telejson options
+      allowRegExp,
+      allowFunction = true,
+      allowSymbol,
+      allowDate,
+      allowUndefined,
+      allowClass,
+      maxDepth = 25,
+      space,
+      lazyEval,
+    } = options || {};
+
+    const c = Object.fromEntries(
+      Object.entries({
+        allowRegExp,
+        allowFunction,
+        allowSymbol,
+        allowDate,
+        allowUndefined,
+        allowClass,
+        maxDepth,
+        space,
+        lazyEval,
+      }).filter(([k, v]) => typeof v !== 'undefined')
+    );
+
+    const stringifyOptions = { ...(global.CHANNEL_OPTIONS || {}), ...c };
+
+    // backwards compat: convert depth to maxDepth
     if (options && Number.isInteger(options.depth)) {
-      depth = options.depth;
-    }
-    if (options && typeof options.target === 'string') {
-      target = options.target;
+      stringifyOptions.maxDepth = options.depth;
     }
 
     const frames = this.getFrames(target);
@@ -80,7 +104,7 @@ export class PostmsgTransport {
         event,
         refId: query.refId,
       },
-      { maxDepth: depth, allowFunction }
+      stringifyOptions
     );
 
     if (!frames.length) {
@@ -129,8 +153,8 @@ export class PostmsgTransport {
 
       return list.length ? list : this.getCurrentFrames();
     }
-    if (window && window.parent && window.parent !== window) {
-      return [window.parent];
+    if (globalWindow && globalWindow.parent && globalWindow.parent !== globalWindow) {
+      return [globalWindow.parent];
     }
 
     return [];
@@ -143,8 +167,8 @@ export class PostmsgTransport {
       ];
       return list.map((e) => e.contentWindow);
     }
-    if (window && window.parent) {
-      return [window.parent];
+    if (globalWindow && globalWindow.parent) {
+      return [globalWindow.parent];
     }
 
     return [];
@@ -155,8 +179,8 @@ export class PostmsgTransport {
       const list: HTMLIFrameElement[] = [...document.querySelectorAll('#storybook-preview-iframe')];
       return list.map((e) => e.contentWindow);
     }
-    if (window && window.parent) {
-      return [window.parent];
+    if (globalWindow && globalWindow.parent) {
+      return [globalWindow.parent];
     }
 
     return [];
@@ -231,8 +255,8 @@ const getEventSourceUrl = (event: MessageEvent) => {
 
   if (frame && remainder.length === 0) {
     const src = frame.getAttribute('src');
-    const { origin, pathname } = new URL(src, document.location);
-    return origin + pathname;
+    const { protocol, host, pathname } = new URL(src, document.location);
+    return `${protocol}//${host}${pathname}`;
   }
 
   if (remainder.length > 0) {

@@ -52,5 +52,8 @@ storiesOf('Basics/Button', module).add('all buttons', () => (
       <Icons icon="link" />
       Link
     </Button>
+    <Button primary small isLink href="#">
+      <Icons icon="link" /> Link
+    </Button>
   </div>
 ));

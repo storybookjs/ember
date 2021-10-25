@@ -3,8 +3,12 @@ const path = require('path');
 module.exports = {
   stories: ['../src/stories/**/*.stories.@(js|mdx)'],
   logLevel: 'debug',
+  reactOptions: {
+    fastRefresh: true,
+  },
   addons: [
     '@storybook/preset-create-react-app',
+    '@storybook/addon-ie11',
     {
       name: '@storybook/addon-docs/preset',
       options: {
@@ -13,8 +17,6 @@ module.exports = {
     },
     '@storybook/addon-actions',
     '@storybook/addon-links',
-    '@storybook/addon-events',
-    '@storybook/addon-knobs',
     '@storybook/addon-backgrounds',
     '@storybook/addon-a11y',
     '@storybook/addon-jest',
@@ -27,5 +29,8 @@ module.exports = {
       }
     });
     return config;
+  },
+  core: {
+    builder: 'webpack4',
   },
 };

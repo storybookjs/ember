@@ -1,0 +1,82 @@
+```md
+<!--- Badge.stories.mdx --->
+
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+
+import Badge from './Badge.vue';
+import Icon from './Icon.vue';
+
+<Meta title="MDX/Badge" component={Badge} />
+
+# Badge
+
+Let's define a story for our `Badge` component:
+
+<Story name="positive">
+  {() => {
+    return {
+      components: { Badge },
+      template: `<Badge status="positive">Positive</Badge>`,
+    };
+  }}
+</Story>
+
+We can drop it in a `Canvas` to get a code snippet:
+
+<Canvas>
+  <Story name="negative">
+    {() => {
+      return {
+        components: { Badge },
+        template: `<Badge status="negative">Negative</Badge>`,
+      };
+    }}
+  </Story>
+</Canvas>
+
+We can even preview multiple stories in a block. This
+gets rendered as a group, but defines individual stories
+with unique URLs and isolated snapshot tests.
+
+<Canvas>
+  <Story name="warning">
+    {() => {
+      return {
+        components: { Badge },
+        template: `<Badge status="warning">Warning</Badge>`,
+      };
+    }}
+  </Story>
+
+  <Story name="neutral">
+    {() => {
+      return {
+        components: { Badge },
+        template: `<Badge status="neutral">Neutral</Badge>`,
+      };
+    }}
+  </Story>
+
+  <Story name="error">
+    {() => {
+      return {
+        components: { Badge },
+        template: `<Badge status="error">Error</Badge>`,
+      };
+    }}
+  </Story>
+  
+  <Story name="with icon">
+    {() => {
+      return {
+        components: { Badge, Icon },
+        template: `
+          <Badge status="warning">
+            <Icon icon="check" inline />
+             with icon
+          </Badge>`,
+      };
+    }}
+  </Story>
+</Canvas>
+```

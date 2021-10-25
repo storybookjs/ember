@@ -1,12 +1,15 @@
 ```js
-// Button.js
+// Button.js | Button.jsx
 
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
-export default function Button({isDisabled,content}) {
+export default function Button({ isDisabled, content }) {
   return (
-    <button type="button" disabled={isDisabled}>{content}</button>
+    <button type="button" disabled={isDisabled}>
+      {content}
+    </button>
   );
 }
 

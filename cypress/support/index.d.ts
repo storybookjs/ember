@@ -13,10 +13,21 @@ declare namespace Cypress {
      * Custom command to select the DOM element of a story in the canvas tab.
      */
     getStoryElement(): Chainable<Element>;
+
     /**
      * Custom command to select the DOM element of a docs story in the canvas tab.
      */
     getDocsElement(): Chainable<Element>;
+
+    /**
+     * Custom command to select the DOM element of the preview iframe in the canvas tab.
+     */
+    getCanvasElement(): Chainable<Element>;
+
+    /**
+     * Custom command to select the DOM element of the body from the preview iframe in the canvas tab.
+     */
+    getCanvasBodyElement(): Chainable<Element>;
 
     /**
      * Navigate to a story.
@@ -33,6 +44,12 @@ declare namespace Cypress {
      * @param name of the addon
      */
     viewAddonPanel(name: string): Chainable<Element>;
+
+    /**
+     * Display main tab
+     * @param name of the addon
+     */
+    viewAddonTab(name: string): Chainable<Element>;
 
     /**
      * Returns the element while logging it.

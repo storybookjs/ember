@@ -2,29 +2,12 @@
 
 exports[`web-components component properties lit-element-demo-card 1`] = `
 Object {
-  "": Object {
-    "description": "This is an unnamed slot (the default slot)",
-    "name": "",
-    "required": false,
-    "table": Object {
-      "category": "slots",
-      "defaultValue": Object {
-        "summary": undefined,
-      },
-      "type": Object {
-        "summary": undefined,
-      },
-    },
-    "type": Object {
-      "name": "void",
-    },
-  },
   "--demo-wc-card-back-color": Object {
     "description": "Font color for back",
     "name": "--demo-wc-card-back-color",
     "required": false,
     "table": Object {
-      "category": "css",
+      "category": "css custom properties",
       "defaultValue": Object {
         "summary": undefined,
       },
@@ -41,7 +24,7 @@ Object {
     "name": "--demo-wc-card-front-color",
     "required": false,
     "table": Object {
-      "category": "css",
+      "category": "css custom properties",
       "defaultValue": Object {
         "summary": undefined,
       },
@@ -58,7 +41,24 @@ Object {
     "name": "--demo-wc-card-header-font-size",
     "required": false,
     "table": Object {
-      "category": "css",
+      "category": "css custom properties",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
+      "type": Object {
+        "summary": undefined,
+      },
+    },
+    "type": Object {
+      "name": "void",
+    },
+  },
+  "back": Object {
+    "description": "Back of the card",
+    "name": "back",
+    "required": false,
+    "table": Object {
+      "category": "css shadow parts",
       "defaultValue": Object {
         "summary": undefined,
       },
@@ -104,6 +104,23 @@ Object {
       "name": "boolean",
     },
   },
+  "front": Object {
+    "description": "Front of the card",
+    "name": "front",
+    "required": false,
+    "table": Object {
+      "category": "css shadow parts",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
+      "type": Object {
+        "summary": undefined,
+      },
+    },
+    "type": Object {
+      "name": "void",
+    },
+  },
   "header": Object {
     "description": "Header message",
     "name": "header",
@@ -119,6 +136,15 @@ Object {
     },
     "type": Object {
       "name": "string",
+    },
+  },
+  "onSideChanged": Object {
+    "action": Object {
+      "name": "side-changed",
+    },
+    "name": "onSideChanged",
+    "table": Object {
+      "disable": true,
     },
   },
   "rows": Object {

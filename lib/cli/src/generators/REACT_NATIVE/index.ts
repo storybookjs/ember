@@ -1,15 +1,13 @@
-import shell from 'shelljs';
 import chalk from 'chalk';
-import { paddedLog, copyTemplate } from '../../helpers';
-import { NpmOptions } from '../../NpmOptions';
-import { baseGenerator, GeneratorOptions } from '../baseGenerator';
+import shell from 'shelljs';
+import { getBabelDependencies, paddedLog, copyTemplate } from '../../helpers';
 import { JsPackageManager } from '../../js-package-manager';
+import { NpmOptions } from '../../NpmOptions';
 
 const generator = async (
   packageManager: JsPackageManager,
   npmOptions: NpmOptions,
-  installServer: boolean,
-  options: GeneratorOptions
+  installServer: boolean
 ): Promise<void> => {
   // set correct project name on entry files if possible
   const dirname = shell.ls('-d', 'ios/*.xcodeproj').stdout;
@@ -19,7 +17,7 @@ const generator = async (
     const projectName = dirname.slice('ios/'.length, dirname.length - '.xcodeproj'.length - 1);
 
     if (projectName) {
-      shell.sed('-i', '%APP_NAME%', projectName, 'storybook/storybook.js');
+      shell.sed('-i', '%APP_NAME%', projectName, 'storybook/index.js');
     } else {
       paddedLog(
         chalk.red(
@@ -35,15 +33,41 @@ const generator = async (
     !packageJson.dependencies['react-dom'] && !packageJson.devDependencies['react-dom'];
   const reactVersion = packageJson.dependencies.react;
 
-  await baseGenerator(packageManager, npmOptions, options, 'react-native', {
-    extraPackages: [
-      missingReactDom && reactVersion && `react-dom@${reactVersion}`,
-      installServer && '@storybook/react-native-server',
-    ].filter(Boolean),
-    addScripts: installServer,
-    addComponents: false, // We copy template-csf as it's wrapped in a storybook folder
-  });
-  copyTemplate(__dirname, options.storyFormat);
+  // should resolve to latest 5.3 version, this is required until react-native storybook supports v6
+  const webAddonsV5 = [
+    '@storybook/addon-links@^5.3',
+    '@storybook/addon-knobs@^5.3',
+    '@storybook/addon-actions@^5.3',
+  ];
+
+  const nativeAddons = ['@storybook/addon-ondevice-knobs', '@storybook/addon-ondevice-actions'];
+
+  const packagesToResolve = [
+    ...nativeAddons,
+    '@storybook/react-native',
+    installServer && '@storybook/react-native-server',
+  ].filter(Boolean);
+
+  const resolvedPackages = await packageManager.getVersionedPackages(...packagesToResolve);
+
+  const babelDependencies = await getBabelDependencies(packageManager, packageJson);
+
+  const packages = [
+    ...babelDependencies,
+    ...resolvedPackages,
+    ...webAddonsV5,
+    missingReactDom && reactVersion && `react-dom@${reactVersion}`,
+  ].filter(Boolean);
+
+  packageManager.addDependencies({ ...npmOptions, packageJson }, packages);
+
+  if (installServer) {
+    packageManager.addStorybookCommandInScripts({
+      port: 7007,
+    });
+  }
+
+  copyTemplate(__dirname);
 };
 
 export default generator;

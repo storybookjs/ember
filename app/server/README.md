@@ -5,7 +5,7 @@
 Storybook for Server is a UI development environment for your plain HTML snippets rendered by your server backend.
 With it, you can visualize different states of your UI components and develop them interactively.
 
-![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/master/media/storybook-intro.gif)
+![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/main/media/storybook-intro.gif)
 
 Storybook runs outside of your app.
 So you can develop UI components in isolation without worrying about app specific dependencies and requirements.
@@ -14,7 +14,7 @@ So you can develop UI components in isolation without worrying about app specifi
 
 ```sh
 cd my-app
-npx -p @storybook/cli sb init -t server
+npx sb init -t server
 ```
 
 To configure the server that Storybook will connect to, export a global parameter `parameters.server.url` in `.storybook/preview.js`:
@@ -33,7 +33,7 @@ For more information visit: [storybook.js.org](https://storybook.js.org)
 
 ## Writing Stories
 
-To write a story, use whatever API is natural for your server-side rendering framework to generate set of JSON files of stories analogous to CSF files (see the [`server-kitchen-sink`](../../examples/server-kitchen-sink/stories) example for ideas).
+To write a story, use whatever API is natural for your server-side rendering framework to generate set of JSON or YAML files of stories analogous to CSF files (see the [`server-kitchen-sink`](../../examples/server-kitchen-sink/stories) example for ideas).
 
 ```json
 {
@@ -62,7 +62,7 @@ module.exports = {
 
 Notice that the JSON does not specify a rendering function -- `@storybook/server` will instead call your `parameters.server.url` with the story's server id appended.
 
-For example the JSON story above is requivalent to the CSF definition:
+For example the JSON story above is requivalent to the CSF3 definition:
 
 ```javascript
 export default {
@@ -70,16 +70,17 @@ export default {
   parameters: {
     options: {
       component: 'my_widget',
-    }
-  }
+    },
+  },
 };
 
-export const Default = (args) => {};
-Default.storyName = 'Default';
-Default.parameters = {
-  server: {
-    id: 'path/of/your/story"'
-  }
+export const Default = {
+  name: 'Default',
+  parameters: {
+    server: {
+      id: 'path/of/your/story"',
+    },
+  },
 };
 ```
 
@@ -97,7 +98,7 @@ You need to ensure the route in your server app renders the appropriate HTML whe
 
 ### Passing parameters to the server
 
-Many components are likely to be dynamic - responding to parameters that change their content or appearance. `@storybook\server` has two mechanisms for passing those parameters to the server - `params` and `args`. Parameters defined in this way are appended to the fetch url as query string parameters. The server endpoing is responsible for interpreting those parameters and vary the returned html appropriately
+Many components are likely to be dynamic - responding to parameters that change their content or appearance. `@storybook\server` has two mechanisms for passing those parameters to the server - `params` and `args`. Parameters defined in this way are appended to the fetch url as query string parameters. The server endpoint is responsible for interpreting those parameters and vary the returned html appropriately
 
 #### Constant parameters with `params`
 
@@ -110,7 +111,7 @@ Static parameters can be defined using the `params` story parameter. For example
     {
       "name": "Red",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button",
           "params": { "color": "red", "label": "Stop" }
         }
@@ -119,7 +120,7 @@ Static parameters can be defined using the `params` story parameter. For example
     {
       "name": "Green",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button",
           "params": { "color": "green", "label": "OK" }
         }
@@ -131,13 +132,13 @@ Static parameters can be defined using the `params` story parameter. For example
 
 The Red and Green story HTML will be fetched from the urls `server.url/controls/button?color=red&label=Stopr` and `server.url/controls/button?color=green&label=OK`
 
-Like all story parameters server params can be defined in the default export and overriden in stories.
+Like all story parameters server params can be defined in the default export and overridden in stories.
 
 ```json
 {
   "title": "Buttons",
   "parameters": {
-    "server": { 
+    "server": {
       "params": { "color": "red" }
     }
   },
@@ -145,7 +146,7 @@ Like all story parameters server params can be defined in the default export and
     {
       "name": "Default",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button",
           "params": { "label": "Stop" }
         }
@@ -154,7 +155,7 @@ Like all story parameters server params can be defined in the default export and
     {
       "name": "Green",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button",
           "params": { "color": "green", "label": "OK" }
         }
@@ -175,7 +176,7 @@ Dynamic parameters can be defined using args and the Controls addon
     {
       "name": "Red",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button"
         }
       },
@@ -184,7 +185,7 @@ Dynamic parameters can be defined using args and the Controls addon
     {
       "name": "Green",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button"
         }
       },
@@ -201,14 +202,14 @@ Just like CSF stories we can define `argTypes` to specify the controls used in t
 ```json
 {
   "title": "Buttons",
-  "argTypess": {
+  "argTypes": {
     "color": { "control": { "type": "color" } }
   },
   "stories": [
     {
       "name": "Red",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button"
         }
       },
@@ -217,7 +218,7 @@ Just like CSF stories we can define `argTypes` to specify the controls used in t
     {
       "name": "Green",
       "parameters": {
-        "server": { 
+        "server": {
           "id": "button"
         }
       },
@@ -247,8 +248,8 @@ To configure controls, simple add `args` and `argTypes` keys to the story JSON m
         "server": { "id": "controls/button" }
       },
       "args": { "button_text": "Push Me", "color": "red" },
-      "argsTypes": { "button_text": { "control": { "type": "color" } } }
-    },
+      "argTypes": { "button_text": { "control": { "type": "color" } } }
+    }
   ]
 }
 ```
@@ -276,18 +277,17 @@ To use actions, use the `parameters.actions.handles` parameter:
 }
 ```
 
-## Advanced Configuraiton
+## Advanced Configuration
 
 ### fetchStoryHtml
 
-For control over how `@storybook/server` fetches Html from the server you can provide a `fetchStoryHtml` function as a parameter. You would typically set this in `.storybook/preview.js` but it's just a regular Storybook parameter so could be overriden at the stories or story level.
-
+For control over how `@storybook/server` fetches Html from the server you can provide a `fetchStoryHtml` function as a parameter. You would typically set this in `.storybook/preview.js` but it's just a regular Storybook parameter so could be overridden at the stories or story level.
 
 ```javascript
 // .storybook/preview.js
 
-const fetchStoryHtml = async (url, path, params) => {
-  // Custom fetch impelentation
+const fetchStoryHtml = async (url, path, params, context) => {
+  // Custom fetch implementation
   // ....
   return html;
 };
@@ -295,7 +295,7 @@ const fetchStoryHtml = async (url, path, params) => {
 export const parameters = {
   server: {
     url: `http://localhost:${port}/storybook_preview`,
-    fetchStoryHtml
+    fetchStoryHtml,
   },
 };
 ```
@@ -303,9 +303,15 @@ export const parameters = {
 `fetchStoryHtml` should be an async function with the following signature
 
 ```javascript
-type FetchStoryHtmlType = (url: string, id: string, params: any) => Promise<string | Node>;
+type FetchStoryHtmlType = (
+  url: string,
+  id: string,
+  params: any,
+  context: StoryContext
+) => Promise<string | Node>;
 ```
 
- * url: Server url configured by the `parameters.server.url`
- * id: Id of the story being rendered given by `parameters.server.id`
- * params: Mereged story params `parameters.server.params`and story args
+- url: Server url configured by the `parameters.server.url`
+- id: Id of the story being rendered given by `parameters.server.id`
+- params: Merged story params `parameters.server.params`and story args
+- context: The context of the story

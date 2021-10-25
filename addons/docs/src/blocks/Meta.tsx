@@ -1,29 +1,21 @@
 import React, { FC, useContext } from 'react';
-import { document } from 'global';
+import global from 'global';
+import { BaseAnnotations } from '@storybook/csf';
 import { Anchor } from './Anchor';
 import { DocsContext, DocsContextProps } from './DocsContext';
-import { getDocsStories } from './utils';
-import { Component } from './types';
 
-type Decorator = (...args: any) => any;
+const { document } = global;
 
-interface MetaProps {
-  title: string;
-  component?: Component;
-  subcomponents?: Record<string, Component>;
-  decorators?: [Decorator];
-  parameters?: any;
-}
+type MetaProps = BaseAnnotations;
 
 function getFirstStoryId(docsContext: DocsContextProps): string {
-  const stories = getDocsStories(docsContext);
+  const stories = docsContext.componentStories();
 
   return stories.length > 0 ? stories[0].id : null;
 }
 
 function renderAnchor() {
   const context = useContext(DocsContext);
-  // eslint-disable-next-line react/destructuring-assignment
   const anchorId = getFirstStoryId(context) || context.id;
 
   return <Anchor storyId={anchorId} />;

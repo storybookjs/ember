@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { User } from './User';
 
 @Component({
   selector: 'storybook-page',
@@ -35,13 +36,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
       </ul>
       <p>
         Get a guided tutorial on component-driven development at
-        <a href="https://www.learnstorybook.com" target="_blank" rel="noopener noreferrer">
-          Learn Storybook
+        <a href="https://storybook.js.org/tutorials/" target="_blank" rel="noopener noreferrer">
+          Storybook tutorials
         </a>
         . Read more in the
-        <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer">
-          docs
-        </a>
+        <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer"> docs </a>
         .
       </p>
       <div class="tip-wrapper">
@@ -63,7 +62,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export default class PageComponent {
   @Input()
-  user: unknown = null;
+  user: User | null = null;
 
   @Output()
   onLogin = new EventEmitter<Event>();

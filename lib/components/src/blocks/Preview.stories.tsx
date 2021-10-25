@@ -1,11 +1,14 @@
 import React from 'react';
 import { styled } from '@storybook/theming';
+import global from 'global';
 
 import { Spaced } from '../spaced/Spaced';
 import { Preview } from './Preview';
 import { Story } from './Story';
 import { Button } from '../Button/Button';
 import * as Source from './Source.stories';
+
+const { window: globalWindow } = global;
 
 export default {
   title: 'Docs/Preview',
@@ -134,5 +137,21 @@ export const WithCenteredMulti = () => (
   <Preview withToolbar>
     <Story inline storyFn={buttonFn} title="story1" parameters={{ layout: 'centered' }} />
     <Story inline storyFn={buttonFn} title="story2" parameters={{ layout: 'centered' }} />
+  </Preview>
+);
+
+export const WithAdditionalActions = () => (
+  <Preview
+    additionalActions={[
+      {
+        title: 'Open on GitHub',
+        onClick: () => {
+          globalWindow.location.href =
+            'https://github.com/storybookjs/storybook/blob/next/lib/components/src/blocks/Preview.stories.tsx#L140-L147';
+        },
+      },
+    ]}
+  >
+    <Button secondary>Button 1</Button>
   </Preview>
 );

@@ -2,11 +2,11 @@
 title: 'TypeScript'
 ---
 
-Storybook has built-in Typescript support, so your Typescript project should work with zero configuration needed.
+Storybook has built-in Typescript support, so your Typescript project should work with zero configuration needed [unless you use the `paths` option in your TSConfig.](./webpack#typescript-module-resolution)
 
 ### Default configuration
 
-The base Typescript configuration uses [`babel-loader`](https://webpack.js.org/loaders/babel-loader/) for Typescript transpilation, and optionally [`fork-ts-checker-webpack-plugin`](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin) for checking.
+The base Typescript configuration uses [`babel-loader`](https://webpack.js.org/loaders/babel-loader/) for Typescript transpilation, and optionally <a href="https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/v4.1.6/README.md#options"><code>fork-ts-checker-webpack-plugin</code></a> for checking.
 
 Each framework uses the base configuration unless otherwise specified:
 
@@ -30,11 +30,33 @@ The following code snippets shows the fields for you to use with TypeScript:
 
 <!-- prettier-ignore-end -->
 
-| Field                            | Framework | Description                                                                              | Type                                                                          |
-| :------------------------------- | :-------- | :--------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------- |
-| **check**                        | All       | Optionally run fork-ts-checker-webpack-plugin                                            | boolean                                                                       |
-| **checkOptions**                 | All       | Options to pass to fork-ts-checker-webpack-plugin if it's enabled                        | [See docs](https://github.com/TypeStrong/fork-ts-checker-webpack-plugin)      |
-| **reactDocgen**                  | React     | Which react docgen processor to run: `react-docgen-typescript`, `react-docgen`, `none`   | string                                                                        |
-| **reactDocgenTypescriptOptions** | React     | Options to pass to react-docgen-typescript-plugin if react-docgen-typescript is enabled. | [See docs](https://github.com/hipstersmoothie/react-docgen-typescript-plugin) |
+| Field                            | Framework | Description                                                                                 | Type                                                                                                              |
+| :------------------------------- | :-------- | :------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------- |
+| **check**                        | All       | Optionally run fork-ts-checker-webpack-plugin                                               | boolean                                                                                                           |
+| **checkOptions**                 | All       | Options to pass to fork-ts-checker-webpack-plugin if it's enabled                           | <a href="https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/v4.1.6/README.md#options">See Docs</a> |
+| **reactDocgen**                  | React     | Which react docgen processor to run: `"react-docgen-typescript"`, `"react-docgen"`, `false` | string or false                                                                                                   |
+| **reactDocgenTypescriptOptions** | React     | Options to pass to react-docgen-typescript-plugin if react-docgen-typescript is enabled.    | [See docs](https://github.com/hipstersmoothie/react-docgen-typescript-plugin)                                     |
 
-Default value is [here](https://github.com/storybookjs/storybook/blob/next/lib/core/src/server/config/defaults.js)
+### Overriding the configuration to infer additional props
+
+The configuration provided above will remove any props from any third party libraries.
+
+If it's required you can adjust the configuration and include the extra props.
+
+Adjust the configuration as shown below and any third party props will be displayed as soon as you restart your Storybook.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-extend-ts-config.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Next time you restart your Storybook the extra props will also be in the UI.
+
+<div class="aside">
+If you run into an issue where the extra props aren't included, check how your component is being exported. If it's using a default export, change it to a named export and the extra props will be included as well.
+</div>

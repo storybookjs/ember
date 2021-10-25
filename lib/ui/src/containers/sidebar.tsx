@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from 'react';
 
-import { Consumer, Combo, StoriesHash } from '@storybook/api';
+import type { Combo, StoriesHash } from '@storybook/api';
+import { Consumer } from '@storybook/api';
 
-import SidebarComponent from '../components/sidebar/Sidebar';
+import { Sidebar as SidebarComponent } from '../components/sidebar/Sidebar';
 import { useMenu } from './menu';
 
 export type Item = StoriesHash[keyof StoriesHash];
@@ -13,14 +14,15 @@ const Sidebar: FunctionComponent<{}> = React.memo(() => {
       ui: { name, url, enableShortcuts },
       viewMode,
       storyId,
-      layout: { isFullscreen, showPanel, showNav },
+      refId,
+      layout: { isToolshown, isFullscreen, showPanel, showNav },
       storiesHash,
       storiesConfigured,
       storiesFailed,
       refs,
     } = state;
 
-    const menu = useMenu(api, isFullscreen, showPanel, showNav, enableShortcuts);
+    const menu = useMenu(api, isToolshown, isFullscreen, showPanel, showNav, enableShortcuts);
 
     return {
       title: name,
@@ -30,9 +32,11 @@ const Sidebar: FunctionComponent<{}> = React.memo(() => {
       storiesConfigured,
       refs,
       storyId,
+      refId,
       viewMode,
       menu,
       menuHighlighted: api.versionUpdateAvailable(),
+      enableShortcuts,
     };
   };
   return (

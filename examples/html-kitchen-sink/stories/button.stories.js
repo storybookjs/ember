@@ -1,6 +1,8 @@
-import { document } from 'global';
+import global from 'global';
 import { action } from '@storybook/addon-actions';
 import { useEffect } from '@storybook/client-api';
+
+const { document } = global;
 
 export default {
   title: 'Demo',
@@ -24,3 +26,5 @@ export const Effect = () => {
 
   return '<button id="button">I should be yellow</button>';
 };
+
+export const Script = () => '<div>JS alert</div><script>alert("hello")</script>';

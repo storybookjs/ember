@@ -1,13 +1,13 @@
 {
   "name": "cra-ts-kitchen-sink",
-  "version": "6.0.15",
+  "version": "6.4.0-beta.19",
   "private": true,
   "scripts": {
     "build": "react-scripts build",
     "build-storybook": "build-storybook -s public",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9009 -s public",
+    "storybook": "start-storybook -p 9009 -s public --no-manager-cache",
     "test": "react-scripts test"
   },
   "browserslist": {
@@ -23,32 +23,34 @@
     ]
   },
   "dependencies": {
-    "@types/jest": "25.2.1",
-    "@types/node": "14.0.10",
-    "@types/react": "16.9.34",
-    "@types/react-dom": "16.9.8",
+    "@types/jest": "25.2.3",
+    "@types/node": "14.14.20",
+    "@types/react": "16.14.2",
+    "@types/react-dom": "16.9.10",
     "prop-types": "^15.7.2",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-scripts": "3.4.1",
-    "typescript": "3.8.3"
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-scripts": "^4.0.2",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "6.0.15",
-    "@storybook/addon-actions": "6.0.15",
-    "@storybook/addon-docs": "6.0.15",
-    "@storybook/addon-knobs": "6.0.15",
-    "@storybook/addon-links": "6.0.15",
-    "@storybook/addons": "6.0.15",
-    "@storybook/preset-create-react-app": "^3.1.4",
-    "@storybook/react": "6.0.15",
-    "@types/enzyme": "^3.9.0",
-    "enzyme": "^3.9.0",
+    "@storybook/addon-a11y": "6.4.0-beta.19",
+    "@storybook/addon-actions": "6.4.0-beta.19",
+    "@storybook/addon-docs": "6.4.0-beta.19",
+    "@storybook/addon-ie11": "0.0.7--canary.5e87b64.0",
+    "@storybook/addon-links": "6.4.0-beta.19",
+    "@storybook/addons": "6.4.0-beta.19",
+    "@storybook/builder-webpack4": "6.4.0-beta.19",
+    "@storybook/preset-create-react-app": "^3.1.6",
+    "@storybook/react": "6.4.0-beta.19",
+    "@types/enzyme": "^3.10.8",
+    "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.9.1",
-    "enzyme-to-json": "^3.4.1",
-    "fork-ts-checker-webpack-plugin": "^4.0.3",
+    "enzyme-to-json": "^3.6.1",
+    "fork-ts-checker-webpack-plugin": "^6.0.4",
     "react-moment-proptypes": "^1.7.0",
-    "ts-node": "~8.9.1"
+    "ts-node": "^9.1.0",
+    "webpack": "4"
   },
   "storybook": {
     "chromatic": {

@@ -74,6 +74,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'loaders',
+          title: 'Loaders',
+          type: 'link',
+        },
+        {
           pathSegment: 'naming-components-and-hierarchy',
           title: 'Naming components and hierarchy',
           type: 'link',
@@ -147,6 +152,11 @@ module.exports = {
           title: 'Toolbars & globals',
           type: 'link',
         },
+        {
+          pathSegment: 'measure-and-outline',
+          title: 'Measure & Outline',
+          type: 'link',
+        },
       ],
     },
     {
@@ -157,6 +167,11 @@ module.exports = {
         {
           pathSegment: 'overview',
           title: 'Overview',
+          type: 'link',
+        },
+        {
+          pathSegment: 'upgrading',
+          title: 'Upgrading',
           type: 'link',
         },
         {
@@ -306,6 +321,58 @@ module.exports = {
       ],
     },
     {
+      title: '🔧 Addons',
+      pathSegment: 'addons',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'introduction',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'install-addons',
+          title: 'Install',
+          type: 'link',
+        },
+        {
+          pathSegment: 'writing-addons',
+          title: 'Write',
+          type: 'link',
+        },
+        {
+          pathSegment: 'configure-addons',
+          title: 'Configure addons',
+          type: 'link',
+        },
+        {
+          pathSegment: 'writing-presets',
+          title: 'Write a preset',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-catalog',
+          title: 'Add to catalog',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-types',
+          title: 'Types of addons',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-knowledge-base',
+          title: 'Knowledge base',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addons-api',
+          title: 'Addon API',
+          type: 'link',
+        },
+      ],
+    },
+    {
       title: '🔌 API',
       pathSegment: 'api',
       type: 'menu',
@@ -333,33 +400,6 @@ module.exports = {
           ],
         },
         {
-          title: 'Addons',
-          pathSegment: '',
-          type: 'menu',
-          children: [
-            {
-              pathSegment: 'addons',
-              title: 'Introduction',
-              type: 'link',
-            },
-            {
-              pathSegment: 'presets',
-              title: 'Presets',
-              type: 'link',
-            },
-            {
-              pathSegment: 'writing-presets',
-              title: 'Writing Presets',
-              type: 'link',
-            },
-            {
-              pathSegment: 'addons-api',
-              title: 'Addons API',
-              type: 'link',
-            },
-          ],
-        },
-        {
           pathSegment: 'new-frameworks',
           title: 'Frameworks',
           type: 'link',
@@ -372,6 +412,45 @@ module.exports = {
         {
           pathSegment: 'frameworks-feature-support',
           title: 'Feature support for frameworks',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🛠 Contribute',
+      pathSegment: 'contribute',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'how-to-contribute',
+          title: 'How to',
+          type: 'link',
+        },
+        {
+          pathSegment: 'code',
+          title: 'Code',
+          type: 'link',
+        },
+        {
+          pathSegment: '',
+          title: 'Documentation',
+          type: 'menu',
+          children: [
+            {
+              pathSegment: 'documentation-updates',
+              title: 'Content',
+              type: 'link',
+            },
+            {
+              pathSegment: 'new-snippets',
+              title: 'Code snippets',
+              type: 'link',
+            },
+          ],
+        },
+        {
+          pathSegment: 'how-to-reproduce',
+          title: 'Reproduce',
           type: 'link',
         },
       ],

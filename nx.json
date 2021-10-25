@@ -1,0 +1,251 @@
+{
+  "npmScope": "storybook",
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    }
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare"],
+        "strictlyOrderedTargets": ["build", "package", "prepare"],
+        "accessToken": "NGVmYTkxMmItYzY3OS00MjkxLTk1ZDktZDFmYTFmNmVlNGY4fHJlYWQ=",
+        "canTrackAnalytics": false,
+        "showUsageWarnings": true
+      }
+    }
+  },
+  "projects": {
+    "@storybook/addon-a11y": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-actions": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-backgrounds": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-controls": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-docs": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-essentials": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-interactions": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-jest": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-links": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-measure": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-outline": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-storyshots": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-storyshots-puppeteer": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-storysource": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-toolbars": {
+      "implicitDependencies": []
+    },
+    "@storybook/addon-viewport": {
+      "implicitDependencies": []
+    },
+    "@storybook/angular": {
+      "implicitDependencies": []
+    },
+    "@storybook/ember": {
+      "implicitDependencies": []
+    },
+    "@storybook/html": {
+      "implicitDependencies": []
+    },
+    "@storybook/manager-webpack4": {
+      "implicitDependencies": []
+    },
+    "@storybook/manager-webpack5": {
+      "implicitDependencies": []
+    },
+    "@storybook/preact": {
+      "implicitDependencies": []
+    },
+    "@storybook/react": {
+      "implicitDependencies": []
+    },
+    "@storybook/server": {
+      "implicitDependencies": []
+    },
+    "@storybook/svelte": {
+      "implicitDependencies": []
+    },
+    "@storybook/vue": {
+      "implicitDependencies": []
+    },
+    "@storybook/vue3": {
+      "implicitDependencies": []
+    },
+    "@storybook/web-components": {
+      "implicitDependencies": []
+    },
+    "angular-cli": {
+      "implicitDependencies": []
+    },
+    "cra-kitchen-sink": {
+      "implicitDependencies": []
+    },
+    "cra-react15": {
+      "implicitDependencies": []
+    },
+    "cra-ts-essentials": {
+      "implicitDependencies": []
+    },
+    "cra-ts-kitchen-sink": {
+      "implicitDependencies": []
+    },
+    "ember-example": {
+      "implicitDependencies": []
+    },
+    "html-kitchen-sink": {
+      "implicitDependencies": []
+    },
+    "official-storybook": {
+      "implicitDependencies": []
+    },
+    "preact-example": {
+      "implicitDependencies": []
+    },
+    "@storybook/example-react-ts": {
+      "implicitDependencies": []
+    },
+    "@storybook/example-react-ts-webpack4": {
+      "implicitDependencies": []
+    },
+    "server-kitchen-sink": {
+      "implicitDependencies": []
+    },
+    "standalone-preview": {
+      "implicitDependencies": []
+    },
+    "svelte-example": {
+      "implicitDependencies": []
+    },
+    "vue-3-cli-example": {
+      "implicitDependencies": []
+    },
+    "vue-cli-example": {
+      "implicitDependencies": []
+    },
+    "vue-example": {
+      "implicitDependencies": []
+    },
+    "web-components-kitchen-sink": {
+      "implicitDependencies": []
+    },
+    "@storybook/addons": {
+      "implicitDependencies": []
+    },
+    "@storybook/api": {
+      "implicitDependencies": []
+    },
+    "@storybook/builder-webpack4": {
+      "implicitDependencies": []
+    },
+    "@storybook/builder-webpack5": {
+      "implicitDependencies": []
+    },
+    "@storybook/channel-postmessage": {
+      "implicitDependencies": []
+    },
+    "@storybook/channel-websocket": {
+      "implicitDependencies": []
+    },
+    "@storybook/channels": {
+      "implicitDependencies": []
+    },
+    "@storybook/cli": {
+      "implicitDependencies": []
+    },
+    "sb": {
+      "implicitDependencies": []
+    },
+    "storybook": {
+      "implicitDependencies": []
+    },
+    "@storybook/client-api": {
+      "implicitDependencies": []
+    },
+    "@storybook/client-logger": {
+      "implicitDependencies": []
+    },
+    "@storybook/codemod": {
+      "implicitDependencies": []
+    },
+    "@storybook/components": {
+      "implicitDependencies": []
+    },
+    "@storybook/core": {
+      "implicitDependencies": []
+    },
+    "@storybook/core-client": {
+      "implicitDependencies": []
+    },
+    "@storybook/core-common": {
+      "implicitDependencies": []
+    },
+    "@storybook/core-events": {
+      "implicitDependencies": []
+    },
+    "@storybook/core-server": {
+      "implicitDependencies": []
+    },
+    "@storybook/instrumenter": {
+      "implicitDependencies": []
+    },
+    "@storybook/node-logger": {
+      "implicitDependencies": []
+    },
+    "@storybook/postinstall": {
+      "implicitDependencies": []
+    },
+    "@storybook/store": {
+      "implicitDependencies": []
+    },
+    "@storybook/router": {
+      "implicitDependencies": []
+    },
+    "@storybook/source-loader": {
+      "implicitDependencies": []
+    },
+    "@storybook/theming": {
+      "implicitDependencies": []
+    },
+    "@storybook/csf-tools": {
+      "implicitDependencies": []
+    },
+    "@storybook/ui": {
+      "implicitDependencies": []
+    },
+    "@storybook/preview-web": {
+      "implicitDependencies": []
+    }
+  },
+  "affected": {
+    "defaultBase": "next"
+  }
+}

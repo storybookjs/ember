@@ -8,7 +8,7 @@ This document describes the pre-6.0 usage of the addon, and as such is no longer
 
 Import the `action` function and use it to create actions handlers. When creating action handlers, provide a **name** to make it easier to identify.
 
-> _Note: Make sure NOT to use reserved words as function names. [issues#29](https://github.com/storybookjs/storybook-addon-actions/issues/29#issuecomment-288274794)_
+> _Note: Be mindful of the choice of the function's name. Avoid using Javascript reserved words such as **default** or **if**, as they will lead into unexpected errors._
 
 ```js
 import { action } from '@storybook/addon-actions';
@@ -60,7 +60,7 @@ To apply the configuration globally use the `configureActions` function in your 
 import { configureActions } from '@storybook/addon-actions';
 
 configureActions({
-  depth: 100,
+  maxDepth: 100,
   // Limit the number of items logged into the actions panel
   limit: 20,
 });
@@ -70,7 +70,7 @@ To apply the configuration per action use:
 
 ```js
 action('my-action', {
-  depth: 5,
+  maxDepth: 5,
 });
 ```
 
@@ -78,6 +78,6 @@ action('my-action', {
 
 | Name                 | Type    | Description                                                                         | Default |
 | -------------------- | ------- | ----------------------------------------------------------------------------------- | ------- |
-| `depth`              | Number  | Configures the transferred depth of any logged objects.                             | `10`    |
+| `maxDepth`           | Number  | Configures the transferred depth of any logged objects.                             | `10`    |
 | `clearOnStoryChange` | Boolean | Flag whether to clear the action logger when switching away from the current story. | `true`  |
 | `limit`              | Number  | Limits the number of items logged in the action logger                              | `50`    |

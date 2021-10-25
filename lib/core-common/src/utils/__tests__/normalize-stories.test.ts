@@ -1,0 +1,252 @@
+import dedent from 'ts-dedent';
+
+import { normalizeStoriesEntry } from '../normalize-stories';
+
+expect.addSnapshotSerializer({
+  print: (val: any) => JSON.stringify(val, null, 2),
+  test: (val) => typeof val !== 'string',
+});
+
+expect.extend({
+  toMatchPaths(regex: RegExp, paths: string[]) {
+    const matched = paths.map((p) => !!p.match(regex));
+
+    const pass = matched.every(Boolean);
+    const failures = paths.filter((_, i) => (pass ? matched[i] : !matched[i]));
+    const message = () => dedent`Expected ${regex} to ${pass ? 'not ' : ''}match all strings.
+    
+    Failures:${['', ...failures].join('\n - ')}`;
+    return {
+      pass,
+      message,
+    };
+  },
+});
+
+jest.mock('fs', () => ({
+  lstatSync: (path: string) => ({
+    isDirectory: () => !path.match(/\.[a-z]+$/),
+  }),
+}));
+
+describe('normalizeStoriesEntry', () => {
+  const options = {
+    configDir: '/path/to/project/.storybook',
+    workingDir: '/path/to/project',
+  };
+
+  it('direct file path', () => {
+    const specifier = normalizeStoriesEntry('../path/to/file.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": "./path/to",
+        "files": "file.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths(['./path/to/file.stories.mdx']);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './path/to/file.stories.js',
+      './file.stories.mdx',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('non-recursive files glob', () => {
+    const specifier = normalizeStoriesEntry('../*/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "*/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './path/file.stories.mdx',
+      './second-path/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './path/file.stories.js',
+      './path/to/file.stories.mdx',
+      './file.stories.mdx',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('double non-recursive directory/files glob', () => {
+    const specifier = normalizeStoriesEntry('../*/*/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "*/*/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './path/to/file.stories.mdx',
+      './second-path/to/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './file.stories.mdx',
+      './path/file.stories.mdx',
+      './path/to/third/file.stories.mdx',
+      './path/to/file.stories.js',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('directory/files glob', () => {
+    const specifier = normalizeStoriesEntry('../**/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "**/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './file.stories.mdx',
+      './path/file.stories.mdx',
+      './path/to/file.stories.mdx',
+      './path/to/third/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './file.stories.js',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('double stars glob', () => {
+    const specifier = normalizeStoriesEntry('../**/foo/**/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "**/foo/**/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './foo/file.stories.mdx',
+      './path/to/foo/file.stories.mdx',
+      './path/to/foo/third/fourth/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './file.stories.mdx',
+      './file.stories.js',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('intermediate directory glob', () => {
+    const specifier = normalizeStoriesEntry('../**/foo/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "**/foo/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './path/to/foo/file.stories.mdx',
+      './foo/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './file.stories.mdx',
+      './file.stories.js',
+      './path/to/foo/third/fourth/file.stories.mdx',
+      '../file.stories.mdx',
+    ]);
+  });
+
+  it('directory outside of working dir', () => {
+    const specifier = normalizeStoriesEntry('../../src/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": "../src",
+        "files": "*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths(['../src/file.stories.mdx']);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './src/file.stories.mdx',
+      '../src/file.stories.js',
+    ]);
+  });
+
+  it('directory', () => {
+    const specifier = normalizeStoriesEntry('..', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "**/*.stories.@(mdx|tsx|ts|jsx|js)",
+        "importPathMatcher": {}
+      }
+    `);
+  });
+
+  it('directory specifier', () => {
+    const specifier = normalizeStoriesEntry({ directory: '..' }, options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "files": "**/*.stories.@(mdx|tsx|ts|jsx|js)",
+        "directory": ".",
+        "importPathMatcher": {}
+      }
+    `);
+  });
+
+  it('directory/files specifier', () => {
+    const specifier = normalizeStoriesEntry({ directory: '..', files: '*.stories.mdx' }, options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "files": "*.stories.mdx",
+        "directory": ".",
+        "importPathMatcher": {}
+      }
+    `);
+  });
+
+  it('directory/titlePrefix specifier', () => {
+    const specifier = normalizeStoriesEntry({ directory: '..', titlePrefix: 'atoms' }, options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "atoms",
+        "files": "**/*.stories.@(mdx|tsx|ts|jsx|js)",
+        "directory": ".",
+        "importPathMatcher": {}
+      }
+    `);
+  });
+
+  it('directory/titlePrefix/files specifier', () => {
+    const specifier = normalizeStoriesEntry(
+      { directory: '..', titlePrefix: 'atoms', files: '*.stories.mdx' },
+      options
+    );
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "atoms",
+        "files": "*.stories.mdx",
+        "directory": ".",
+        "importPathMatcher": {}
+      }
+    `);
+  });
+});

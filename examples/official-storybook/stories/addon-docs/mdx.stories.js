@@ -1,10 +1,19 @@
 import React from 'react';
-import { DocsContainer } from '@storybook/addon-docs/blocks';
+import { DocsContainer } from '@storybook/addon-docs';
+import { themes } from '@storybook/theming';
 import markdown from './markdown.stories.mdx';
 
 export default {
   title: 'Addons/Docs/mdx-in-story',
-  decorators: [(storyFn) => <DocsContainer context={{}}>{storyFn()}</DocsContainer>],
+  decorators: [
+    (storyFn) => (
+      <DocsContainer
+        context={{ componentStories: () => [], storyById: () => ({ parameters: {} }) }}
+      >
+        {storyFn()}
+      </DocsContainer>
+    ),
+  ],
   parameters: {
     layout: 'fullscreen',
   },
@@ -15,3 +24,21 @@ export const Typography = () => {
   const Docs = markdown.parameters.docs.page;
   return <Docs />;
 };
+
+export const DarkModeDocs = () => {
+  const Docs = markdown.parameters.docs.page;
+  return <Docs />;
+};
+
+DarkModeDocs.decorators = [
+  (storyFn) => (
+    <DocsContainer
+      context={{
+        componentStories: () => [],
+        storyById: () => ({ parameters: { docs: { theme: themes.dark } } }),
+      }}
+    >
+      {storyFn()}
+    </DocsContainer>
+  ),
+];

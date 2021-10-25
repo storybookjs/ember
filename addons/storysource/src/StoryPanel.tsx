@@ -1,16 +1,17 @@
 import React from 'react';
-import { API } from '@storybook/api';
+import { API, Story, useParameter } from '@storybook/api';
 import { styled } from '@storybook/theming';
 import { Link } from '@storybook/router';
 import {
   SyntaxHighlighter,
   SyntaxHighlighterProps,
   SyntaxHighlighterRendererProps,
-  createSyntaxHighlighterElement,
 } from '@storybook/components';
 
+// @ts-expect-error Typedefs don't currently expose `createElement` even though it exists
+import { createElement as createSyntaxHighlighterElement } from 'react-syntax-highlighter';
+
 import { SourceBlock, LocationsMap } from '@storybook/source-loader';
-import { Story } from '@storybook/api/dist/lib/stories';
 
 const StyledStoryLink = styled(Link)<{ to: string; key: string }>(({ theme }) => ({
   display: 'block',
@@ -44,42 +45,27 @@ interface StoryPanelProps {
 
 interface SourceParams {
   source: string;
-  locationsMap: LocationsMap;
+  locationsMap?: LocationsMap;
 }
 export const StoryPanel: React.FC<StoryPanelProps> = ({ api }) => {
-  const [state, setState] = React.useState<SourceParams & { currentLocation?: SourceBlock }>({
-    source: 'loading source...',
-    locationsMap: {},
-  });
-
   const story: Story | undefined = api.getCurrentStoryData() as Story;
   const selectedStoryRef = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    if (story) {
-      const {
-        parameters: {
-          // @ts-ignore
-          storySource: { source, locationsMap } = { source: '', locationsMap: {} },
-        } = {},
-      } = story;
-      const currentLocation = locationsMap
-        ? locationsMap[
-            Object.keys(locationsMap).find((key: string) => {
-              const sourceLoaderId = key.split('--');
-              return story.id.endsWith(sourceLoaderId[sourceLoaderId.length - 1]);
-            })
-          ]
-        : undefined;
-      setState({ source, locationsMap, currentLocation });
-    }
-  }, [story ? story.id : null]);
+  const { source, locationsMap }: SourceParams = useParameter('storySource', {
+    source: 'loading source...',
+  });
+  const currentLocation = locationsMap
+    ? locationsMap[
+        Object.keys(locationsMap).find((key: string) => {
+          const sourceLoaderId = key.split('--');
+          return story.id.endsWith(sourceLoaderId[sourceLoaderId.length - 1]);
+        })
+      ]
+    : undefined;
   React.useEffect(() => {
     if (selectedStoryRef.current) {
       selectedStoryRef.current.scrollIntoView();
     }
   }, [selectedStoryRef.current]);
-
-  const { source, locationsMap, currentLocation } = state;
 
   const createPart = ({ rows, stylesheet, useInlineStyles }: SyntaxHighlighterRendererProps) =>
     rows.map((node, i) =>
@@ -87,7 +73,7 @@ export const StoryPanel: React.FC<StoryPanelProps> = ({ api }) => {
         node,
         stylesheet,
         useInlineStyles,
-        key: `code-segement${i}`,
+        key: `code-segment${i}`,
       })
     );
 

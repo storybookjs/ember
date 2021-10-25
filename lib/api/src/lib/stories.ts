@@ -1,14 +1,25 @@
+import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { sanitize } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
+import countBy from 'lodash/countBy';
+import {
+  StoryId,
+  ComponentTitle,
+  StoryKind,
+  StoryName,
+  Args,
+  ArgTypes,
+  Parameters,
+  sanitize,
+} from '@storybook/csf';
 
-import { StoryId, StoryKind, Args, Parameters, combineParameters } from '../index';
+import { combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
 
-export { StoryId };
+export type { StoryId };
 
 export interface Root {
   id: StoryId;
@@ -19,6 +30,8 @@ export interface Root {
   isComponent: false;
   isRoot: true;
   isLeaf: false;
+  renderLabel?: (item: Root) => React.ReactNode;
+  startCollapsed?: boolean;
 }
 
 export interface Group {
@@ -31,6 +44,7 @@ export interface Group {
   isComponent: boolean;
   isRoot: false;
   isLeaf: false;
+  renderLabel?: (item: Group) => React.ReactNode;
   // MDX docs-only stories are "Group" type
   parameters?: {
     docsOnly?: boolean;
@@ -49,6 +63,8 @@ export interface Story {
   isComponent: boolean;
   isRoot: false;
   isLeaf: true;
+  renderLabel?: (item: Story) => React.ReactNode;
+  prepared: boolean;
   parameters?: {
     fileName: string;
     options: {
@@ -58,7 +74,9 @@ export interface Story {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  args: Args;
+  args?: Args;
+  argTypes?: ArgTypes;
+  initialArgs?: Args;
 }
 
 export interface StoryInput {
@@ -66,7 +84,6 @@ export interface StoryInput {
   name: string;
   refId?: string;
   kind: StoryKind;
-  children: string[];
   parameters: {
     fileName: string;
     options: {
@@ -76,8 +93,8 @@ export interface StoryInput {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  isLeaf: boolean;
-  args: Args;
+  args?: Args;
+  initialArgs?: Args;
 }
 
 export interface StoriesHash {
@@ -90,6 +107,18 @@ export type GroupsList = (Root | Group)[];
 
 export interface StoriesRaw {
   [id: string]: StoryInput;
+}
+
+type Path = string;
+export interface StoryIndexStory {
+  id: StoryId;
+  name: StoryName;
+  title: ComponentTitle;
+  importPath: Path;
+}
+export interface StoryIndex {
+  v: number;
+  stories: Record<StoryId, StoryIndexStory>;
 }
 
 export type SetStoriesPayload =
@@ -108,6 +137,14 @@ export type SetStoriesPayload =
       stories: StoriesRaw;
     } & Record<string, never>);
 
+const warnLegacyShowRoots = deprecate(
+  () => {},
+  dedent`
+    The 'showRoots' config option is deprecated and will be removed in Storybook 7.0. Use 'sidebar.showRoots' instead.
+    Read more about it in the migration guide: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md
+  `
+);
+
 const warnChangedDefaultHierarchySeparators = deprecate(
   () => {},
   dedent`
@@ -116,14 +153,6 @@ const warnChangedDefaultHierarchySeparators = deprecate(
     Read more about it in the migration guide: https://github.com/storybookjs/storybook/blob/master/MIGRATION.md
   `
 );
-
-const toKey = (input: string) =>
-  input.replace(/[^a-z0-9]+([a-z0-9])/gi, (...params) => params[1].toUpperCase());
-
-const toGroup = (name: string) => ({
-  name,
-  id: toKey(name),
-});
 
 export const denormalizeStoryParameters = ({
   globalParameters,
@@ -140,107 +169,123 @@ export const denormalizeStoryParameters = ({
   }));
 };
 
-export const transformStoriesRawToStoriesHash = (
-  input: StoriesRaw,
+const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
+
+export const transformStoryIndexToStoriesHash = (
+  index: StoryIndex,
   { provider }: { provider: Provider }
 ): StoriesHash => {
-  const anyKindMatchesOldHierarchySeparators = Object.values(input)
-    .filter(Boolean)
-    .some(({ kind }) => kind.match(/\.|\|/));
+  const countByTitle = countBy(Object.values(index.stories), 'title');
+  const input = Object.entries(index.stories).reduce((acc, [id, { title, name, importPath }]) => {
+    const docsOnly = name === 'Page' && countByTitle[title] === 1;
+    acc[id] = {
+      id,
+      kind: title,
+      name,
+      parameters: { fileName: importPath, options: {}, docsOnly },
+    };
+    return acc;
+  }, {} as StoriesRaw);
 
-  const storiesHashOutOfOrder = Object.values(input)
-    .filter(Boolean)
-    .reduce((acc, item) => {
-      const { kind, parameters } = item;
-      const { showRoots } = provider.getConfig();
+  return transformStoriesRawToStoriesHash(input, { provider, prepared: false });
+};
 
-      const setShowRoots = typeof showRoots !== 'undefined';
-      if (anyKindMatchesOldHierarchySeparators && !setShowRoots) {
-        warnChangedDefaultHierarchySeparators();
-      }
+export const transformStoriesRawToStoriesHash = (
+  input: StoriesRaw,
+  { provider, prepared = true }: { provider: Provider; prepared?: Story['prepared'] }
+): StoriesHash => {
+  const values = Object.values(input).filter(Boolean);
+  const usesOldHierarchySeparator = values.some(({ kind }) => kind.match(/\.|\|/)); // dot or pipe
 
-      let root = '';
-      let groups: string[];
-      const parts: string[] = kind.split('/');
-      // Default showRoots to true if they didn't set it.
-      if ((!setShowRoots || showRoots) && parts.length > 1) {
-        [root, ...groups] = parts;
-      } else {
-        groups = parts;
-      }
+  const storiesHashOutOfOrder = values.reduce((acc, item) => {
+    const { kind, parameters } = item;
+    const { sidebar = {}, showRoots: deprecatedShowRoots } = provider.getConfig();
+    const { showRoots = deprecatedShowRoots, collapsedRoots = [], renderLabel } = sidebar;
 
-      const rootAndGroups = []
-        .concat(root || [])
-        .concat(groups)
-        .map(toGroup)
-        // Map a bunch of extra fields onto the groups, collecting the path as we go (thus the reduce)
-        .reduce((soFar, group, index, original) => {
-          const { name } = group;
-          const parent = index > 0 && soFar[index - 1].id;
-          const id = sanitize(parent ? `${parent}-${name}` : name);
-          if (parent === id) {
-            throw new Error(
-              dedent`
+    if (typeof deprecatedShowRoots !== 'undefined') {
+      warnLegacyShowRoots();
+    }
+
+    const setShowRoots = typeof showRoots !== 'undefined';
+    if (usesOldHierarchySeparator && !setShowRoots) {
+      warnChangedDefaultHierarchySeparators();
+    }
+
+    const groups = kind.trim().split(STORY_KIND_PATH_SEPARATOR);
+    const root = (!setShowRoots || showRoots) && groups.length > 1 ? [groups.shift()] : [];
+
+    const rootAndGroups = [...root, ...groups].reduce((list, name, index) => {
+      const parent = index > 0 && list[index - 1].id;
+      const id = sanitize(parent ? `${parent}-${name}` : name);
+
+      if (parent === id) {
+        throw new Error(
+          dedent`
               Invalid part '${name}', leading to id === parentId ('${id}'), inside kind '${kind}'
 
               Did you create a path that uses the separator char accidentally, such as 'Vue <docs/>' where '/' is a separator char? See https://github.com/storybookjs/storybook/issues/6128
             `
-            );
-          }
+        );
+      }
 
-          if (!!root && index === 0) {
-            const result: Root = {
-              ...group,
-              id,
-              depth: index,
-              children: [],
-              isComponent: false,
-              isLeaf: false,
-              isRoot: true,
-            };
-            return soFar.concat([result]);
-          }
-          const result: Group = {
-            ...group,
-            id,
-            parent,
-            depth: index,
-            children: [],
-            isComponent: false,
-            isLeaf: false,
-            isRoot: false,
-            parameters: {
-              docsOnly: parameters?.docsOnly,
-              viewMode: parameters?.viewMode,
-            },
-          };
-          return soFar.concat([result]);
-        }, [] as GroupsList);
-
-      const paths = [...rootAndGroups.map((g) => g.id), item.id];
-
-      // Ok, now let's add everything to the store
-      rootAndGroups.forEach((group, index) => {
-        const child = paths[index + 1];
-        const { id } = group;
-        acc[id] = merge(acc[id] || {}, {
-          ...group,
-          ...(child && { children: [child] }),
+      if (root.length && index === 0) {
+        list.push({
+          id,
+          name,
+          depth: index,
+          children: [],
+          isComponent: false,
+          isLeaf: false,
+          isRoot: true,
+          renderLabel,
+          startCollapsed: collapsedRoots.includes(id),
         });
+      } else {
+        list.push({
+          id,
+          name,
+          parent,
+          depth: index,
+          children: [],
+          isComponent: false,
+          isLeaf: false,
+          isRoot: false,
+          renderLabel,
+          parameters: {
+            docsOnly: parameters?.docsOnly,
+            viewMode: parameters?.viewMode,
+          },
+        });
+      }
+
+      return list;
+    }, [] as GroupsList);
+
+    const paths = [...rootAndGroups.map(({ id }) => id), item.id];
+
+    // Ok, now let's add everything to the store
+    rootAndGroups.forEach((group, index) => {
+      const child = paths[index + 1];
+      const { id } = group;
+      acc[id] = merge(acc[id] || {}, {
+        ...group,
+        ...(child && { children: [child] }),
       });
+    });
 
-      const story: Story = {
-        ...item,
-        depth: rootAndGroups.length,
-        parent: rootAndGroups[rootAndGroups.length - 1].id,
-        isLeaf: true,
-        isComponent: false,
-        isRoot: false,
-      };
-      acc[item.id] = story;
+    acc[item.id] = {
+      ...item,
+      depth: rootAndGroups.length,
+      parent: rootAndGroups[rootAndGroups.length - 1].id,
+      isLeaf: true,
+      isComponent: false,
+      isRoot: false,
+      renderLabel,
+      prepared,
+    };
 
-      return acc;
-    }, {} as StoriesHash);
+    return acc;
+  }, {} as StoriesHash);
 
   function addItem(acc: StoriesHash, item: Story | Group) {
     if (!acc[item.id]) {

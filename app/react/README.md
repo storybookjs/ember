@@ -3,7 +3,7 @@
 Storybook for React is a UI development environment for your React components.
 With it, you can visualize different states of your UI components and develop them interactively.
 
-![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/master/media/storybook-intro.gif)
+![Storybook Screenshot](https://github.com/storybookjs/storybook/blob/main/media/storybook-intro.gif)
 
 Storybook runs outside of your app.
 So you can develop UI components in isolation without worrying about app specific dependencies and requirements.
@@ -12,7 +12,7 @@ So you can develop UI components in isolation without worrying about app specifi
 
 ```sh
 cd my-react-app
-npx -p @storybook/cli sb init
+npx sb init
 ```
 
 For more information visit: [storybook.js.org](https://storybook.js.org)
@@ -24,14 +24,15 @@ You can also build a [static version](https://storybook.js.org/docs/react/workfl
 
 Here are some featured storybooks that you can reference to see how Storybook works:
 
-- [Demo of React Dates](http://airbnb.io/react-dates/) - [source](https://github.com/airbnb/react-dates)
-- [Demo of React Native Web](https://necolas.github.io/react-native-web/docs/) - [source](https://github.com/necolas/react-native-web)
+- [Demo of Storybook Design System](https://storybook.js.org/design-system) - [source](https://github.com/storybookjs/design-system)
 
 ## Create React App
 
 Support for [Create React App](https://create-react-app.dev/) is handled by [`@storybook/preset-create-react-app`](https://github.com/storybookjs/presets/tree/master/packages/preset-create-react-app).
 
 This preset enables support for all Create React App features, including Sass/SCSS and TypeScript.
+
+If you're working on an app that was initialized manually (i.e., without the use of Create React App), ensure that your app has [react-dom](https://www.npmjs.com/package/react-dom) included as a dependency. Failing to do so can lead to unforeseen issues with Storybook and your project.
 
 ## Typescript
 

@@ -5,7 +5,7 @@ import {
   SourceProps as PureSourceProps,
 } from '@storybook/components';
 import { StoryId } from '@storybook/api';
-import { logger } from '@storybook/client-logger';
+import { Story } from '@storybook/store';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
@@ -13,6 +13,13 @@ import { CURRENT_SELECTION } from './types';
 import { SourceType } from '../shared';
 
 import { enhanceSource } from './enhanceSource';
+import { useStories } from './useStory';
+
+export enum SourceState {
+  OPEN = 'open',
+  CLOSED = 'closed',
+  NONE = 'none',
+}
 
 interface CommonProps {
   language?: string;
@@ -36,70 +43,101 @@ type NoneProps = CommonProps;
 
 type SourceProps = SingleSourceProps | MultiSourceProps | CodeProps | NoneProps;
 
-const getSnippet = (
-  storyId: StoryId,
-  sourceContext: SourceContextProps,
-  docsContext: DocsContextProps
-): string => {
+const getSourceState = (stories: Story[]) => {
+  const states = stories.map((story) => story.parameters.docs?.source?.state).filter(Boolean);
+  if (states.length === 0) return SourceState.CLOSED;
+  // FIXME: handling multiple stories is a pain
+  return states[0];
+};
+
+const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): string => {
   const { sources } = sourceContext;
-  const { storyStore } = docsContext;
+  // source rendering is async so source is unavailable at the start of the render cycle,
+  // so we fail gracefully here without warning
+  return sources?.[storyId] || '';
+};
 
-  const snippet = sources && sources[storyId];
-  const data = storyStore?.fromId(storyId);
-
-  if (!data) {
-    // Fallback if we can't get the story data for this story
-    logger.warn(`Unable to find source for story ID '${storyId}'`);
-    return snippet || '';
+const getSnippet = (snippet: string, story?: Story<any>): string => {
+  if (!story) {
+    return snippet;
   }
 
-  const { parameters } = data;
+  const { parameters } = story;
   // eslint-disable-next-line no-underscore-dangle
   const isArgsStory = parameters.__isArgsStory;
   const type = parameters.docs?.source?.type || SourceType.AUTO;
 
   // if user has hard-coded the snippet, that takes precedence
   const userCode = parameters.docs?.source?.code;
-  if (userCode) return userCode;
+  if (userCode) {
+    return userCode;
+  }
 
   // if user has explicitly set this as dynamic, use snippet
   if (type === SourceType.DYNAMIC) {
-    return snippet || '';
+    return parameters.docs?.transformSource?.(snippet, story) || snippet;
   }
 
   // if this is an args story and there's a snippet
   if (type === SourceType.AUTO && snippet && isArgsStory) {
-    return snippet;
+    return parameters.docs?.transformSource?.(snippet, story) || snippet;
   }
 
   // otherwise, use the source code logic
-  const enhanced = enhanceSource(data) || data.parameters;
+  const enhanced = enhanceSource(story) || parameters;
   return enhanced?.docs?.source?.code || '';
 };
 
+type SourceStateProps = { state: SourceState };
+
 export const getSourceProps = (
   props: SourceProps,
-  docsContext: DocsContextProps,
+  docsContext: DocsContextProps<any>,
   sourceContext: SourceContextProps
-): PureSourceProps => {
-  const { id: currentId } = docsContext;
+): PureSourceProps & SourceStateProps => {
+  const { id: currentId, storyById } = docsContext;
+  const { parameters } = storyById(currentId);
 
   const codeProps = props as CodeProps;
   const singleProps = props as SingleSourceProps;
   const multiProps = props as MultiSourceProps;
 
   let source = codeProps.code; // prefer user-specified code
+
+  const targetIds = multiProps.ids || [singleProps.id || currentId];
+  const storyIds = targetIds.map((targetId) =>
+    targetId === CURRENT_SELECTION ? currentId : targetId
+  );
+
+  const stories = useStories(storyIds, docsContext);
+  if (!stories.every(Boolean)) {
+    return { error: SourceError.SOURCE_UNAVAILABLE, state: SourceState.NONE };
+  }
+
   if (!source) {
-    const targetId =
-      singleProps.id === CURRENT_SELECTION || !singleProps.id ? currentId : singleProps.id;
-    const targetIds = multiProps.ids || [targetId];
-    source = targetIds
-      .map((storyId) => getSnippet(storyId, sourceContext, docsContext))
+    source = storyIds
+      .map((storyId, idx) => {
+        const storySource = getStorySource(storyId, sourceContext);
+        const storyObj = stories[idx] as Story;
+        return getSnippet(storySource, storyObj);
+      })
       .join('\n\n');
   }
+
+  const state = getSourceState(stories as Story[]);
+
+  const { docs: docsParameters = {} } = parameters;
+  const { source: sourceParameters = {} } = docsParameters;
+  const { language: docsLanguage = null } = sourceParameters;
+
   return source
-    ? { code: source, language: props.language || 'jsx', dark: props.dark || false }
-    : { error: SourceError.SOURCE_UNAVAILABLE };
+    ? {
+        code: source,
+        state,
+        language: props.language || docsLanguage || 'jsx',
+        dark: props.dark || false,
+      }
+    : { error: SourceError.SOURCE_UNAVAILABLE, state };
 };
 
 /**

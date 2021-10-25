@@ -10,46 +10,41 @@ For example, let’s customize the backgrounds addon via a parameter. We’ll us
 
 We can set a parameter for a single story with the `parameters` key on a CSF export:
 
-```js
-// Button.story.js
+<!-- prettier-ignore-start -->
 
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-Primary.parameters = {
-  backgrounds: {
-    values: [
-      { name: 'red', value: '#f00' },
-      { name: 'green', value: '#0f0' },
-    ],
-  },
-};
-```
+<CodeSnippets
+  paths={[
+   'common/component-story-custom-params.js.mdx',
+   'common/component-story-custom-params.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 
 ## Component parameters
 
 We can set the parameters for all stories of a component using the `parameters` key on the default CSF export:
 
-```js
-// Button.story.js
+<!-- prettier-ignore-start -->
 
-import Button from './';
+<CodeSnippets
+  paths={[
+    'react/button-story-with-blue-args.js.mdx',
+    'react/button-story-with-blue-args.ts.mdx',
+    'react/button-story-with-blue-args.mdx.mdx',
+    'vue/button-story-with-blue-args.js.mdx',
+    'vue/button-story-with-blue-args.mdx.mdx',
+    'angular/button-story-with-blue-args.ts.mdx',
+    'angular/button-story-with-blue-args.mdx.mdx',
+    'svelte/button-story-with-blue-args.js.mdx',
+    'svelte/button-story-with-blue-args.native-format.mdx',
+    'svelte/button-story-with-blue-args.mdx.mdx',
+    'web-components/button-story-with-blue-args.js.mdx',
+  ]}
+/>
 
-export default {
-  title: 'Button',
-  component: Button,
-  parameters: {
-    backgrounds: {
-      values: [
-        { name: 'red', value: '#f00' },
-        { name: 'green', value: '#0f0' },
-      ],
-    },
-  },
-};
-```
+<!-- prettier-ignore-end -->
 
 ## Global parameters
 
@@ -79,4 +74,4 @@ The way the global, component and story parameters are combined is:
 
 The merging of parameters is important. It means it is possible to override a single specific sub-parameter on a per-story basis but still retain the majority of the parameters defined globally.
 
-If you are defining an API that relies on parameters (e..g an [**addon**](../api/addons.md)) it is a good idea to take this behavior into account.
+If you are defining an API that relies on parameters (e.g. an [**addon**](../addons/introduction.md)) it is a good idea to take this behavior into account.

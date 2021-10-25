@@ -1,10 +1,13 @@
 ```ts
-// Page.stories.tsx
+// Page.stories.ts | Page.stories.tsx
 
 import React from 'react';
-import { Story, Meta } from '@storybook/react/types-6-0';
+
+import { Story, Meta } from '@storybook/react';
 
 import { Page, PageProps } from './Page';
+
+//👇 Imports all Header stories
 import * as HeaderStories from './Header.stories';
 
 export default {

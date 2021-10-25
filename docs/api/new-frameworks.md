@@ -24,7 +24,7 @@ Supporting a new framework in Storybook typically consists of two main aspects:
 
 ## Configuring the server
 
-Storybook has the concept of [presets](./addons.md#addon-presets), which are typically babel/webpack configurations for file loading. If your framework has its own file format, e.g. “.vue,” you might need to transform these files into JS files at load time. If you expect every user of your framework to need this, you should add it to the framework. So far every framework added to Storybook has done this, because Storybook’s core configuration is very minimal.
+Storybook has the concept of [presets](../addons/writing-presets.md#presets-api), which are typically babel/webpack configurations for file loading. If your framework has its own file format, e.g. “.vue,” you might need to transform these files into JS files at load time. If you expect every user of your framework to need this, you should add it to the framework. So far every framework added to Storybook has done this, because Storybook’s core configuration is very minimal.
 
 ### Package structure
 
@@ -81,17 +81,17 @@ When developing your own framework that is not published by storybook, you can p
 ```ts
 // my-framework/src/server/options.ts
 
-const packageJson = require('../../package.json');
+import { sync } from 'read-pkg-up';
 
 export default {
-  packageJson,
+  packageJson: sync({ cwd: __dirname }).packageJson,
   framework: 'my-framework',
   frameworkPath: '@my-framework/storybook',
   frameworkPresets: [require.resolve('./framework-preset-my-framework.js')],
 };
 ```
 
-Passing a relative path to `frameworkPath` is also possible, just keep in mind that these are resolved from the storybook config directory (`.storybook` by default). 
+Passing a relative path to `frameworkPath` is also possible, just keep in mind that these are resolved from the storybook config directory (`.storybook` by default).
 
 Make sure the `frameworkPath` ends up at the `dist/client/index.js` file within your framework app.
 

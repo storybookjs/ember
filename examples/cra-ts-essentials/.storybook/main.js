@@ -1,10 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  stories: ['../src/**/*.stories.tsx'],
-  logLevel: 'debug',
+  stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
     '@storybook/preset-create-react-app',
+    '@storybook/addon-ie11',
     {
       name: '@storybook/addon-essentials',
       options: {
@@ -12,6 +12,7 @@ module.exports = {
       },
     },
   ],
+  logLevel: 'debug',
   webpackFinal: (config) => {
     // add monorepo root as a valid directory to import modules from
     config.resolve.plugins.forEach((p) => {
@@ -20,5 +21,8 @@ module.exports = {
       }
     });
     return config;
+  },
+  core: {
+    builder: 'webpack4',
   },
 };

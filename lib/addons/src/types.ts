@@ -1,5 +1,106 @@
-import { HooksContext } from './hooks';
+import {
+  AnyFramework,
+  InputType,
+  StoryContext as StoryContextForFramework,
+  LegacyStoryFn as LegacyStoryFnForFramework,
+  PartialStoryFn as PartialStoryFnForFramework,
+  ArgsStoryFn as ArgsStoryFnForFramework,
+  StoryFn as StoryFnForFramework,
+  DecoratorFunction as DecoratorFunctionForFramework,
+  LoaderFunction as LoaderFunctionForFramework,
+  StoryId,
+  StoryKind,
+  StoryName,
+  Args,
+} from '@storybook/csf';
+
 import { Addon } from './index';
+
+// NOTE: The types exported from this file are simplified versions of the types exported
+// by @storybook/csf, with the simpler form retained for backwards compatibility.
+// We will likely start exporting the more complex <StoryFnReturnType> based types in 7.0
+
+export type {
+  StoryId,
+  StoryKind,
+  StoryName,
+  StoryIdentifier,
+  ViewMode,
+  Args,
+} from '@storybook/csf';
+
+export interface ArgType<TArg = unknown> extends InputType {
+  defaultValue?: TArg;
+}
+
+export type ArgTypes<TArgs = Args> = {
+  [key in keyof Partial<TArgs>]: ArgType<TArgs[key]>;
+} &
+  {
+    // for custom defined args
+    [key in string]: ArgType<unknown>;
+  };
+
+export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
+export type StorySortMethod = 'configure' | 'alphabetical';
+export interface StorySortObjectParameter {
+  method?: StorySortMethod;
+  order?: any[];
+  locales?: string;
+  includeNames?: boolean;
+}
+
+interface StoryIndexEntry {
+  id: StoryId;
+  name: StoryName;
+  title: string;
+  importPath: string;
+}
+
+// The `any` here is the story store's `StoreItem` record. Ideally we should probably only
+// pass a defined subset of that full data, but we pass it all so far :shrug:
+export type StorySortComparator = Comparator<[StoryId, any, Parameters, Parameters]>;
+export type StorySortParameter = StorySortComparator | StorySortObjectParameter;
+export type StorySortComparatorV7 = Comparator<StoryIndexEntry>;
+export type StorySortParameterV7 = StorySortComparatorV7 | StorySortObjectParameter;
+
+export interface OptionsParameter extends Object {
+  storySort?: StorySortParameter;
+  theme?: {
+    base: string;
+    brandTitle?: string;
+  };
+  [key: string]: any;
+}
+
+export interface Parameters {
+  fileName?: string;
+  options?: OptionsParameter;
+  /** The layout property defines basic styles added to the preview body where the story is rendered. If you pass 'none', no styles are applied. */
+  layout?: 'centered' | 'fullscreen' | 'padded' | 'none';
+  docsOnly?: boolean;
+  [key: string]: any;
+}
+
+export type StoryContext = StoryContextForFramework<AnyFramework>;
+export type StoryContextUpdate = Partial<StoryContext>;
+
+type ReturnTypeFramework<ReturnType> = { component: any; storyResult: ReturnType };
+export type PartialStoryFn<ReturnType = unknown> = PartialStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type LegacyStoryFn<ReturnType = unknown> = LegacyStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type ArgsStoryFn<ReturnType = unknown> = ArgsStoryFnForFramework<
+  ReturnTypeFramework<ReturnType>
+>;
+export type StoryFn<ReturnType = unknown> = StoryFnForFramework<ReturnTypeFramework<ReturnType>>;
+
+export type DecoratorFunction<StoryFnReturnType = unknown> = DecoratorFunctionForFramework<
+  ReturnTypeFramework<StoryFnReturnType>
+>;
+export type LoaderFunction = LoaderFunctionForFramework<ReturnTypeFramework<unknown>>;
 
 export enum types {
   TAB = 'tab',
@@ -16,87 +117,15 @@ export function isSupportedType(type: Types): boolean {
   return !!Object.values(types).find((typeVal) => typeVal === type);
 }
 
-export type StoryId = string;
-export type StoryKind = string;
-export type StoryName = string;
-export type ViewMode = 'story' | 'docs';
-
-export interface Parameters {
-  fileName?: string;
-  options?: OptionsParameter;
-  layout?: 'centered' | 'fullscreen' | 'padded';
-  docsOnly?: boolean;
-  [key: string]: any;
-}
-
-// This is duplicated in @storybook/api because there is no common place to put types (manager/preview)
-// We cannot import from @storybook/api here because it will lead to manager code (i.e. emotion) imported in the preview
-export interface Args {
-  [key: string]: any;
-}
-
-export interface ArgType {
-  name?: string;
-  description?: string;
-  defaultValue?: any;
-  [key: string]: any;
-}
-
-export interface ArgTypes {
-  [key: string]: ArgType;
-}
-
-export interface StoryIdentifier {
-  id: StoryId;
-  kind: StoryKind;
-  name: StoryName;
-}
-
-export type StoryContext = StoryIdentifier & {
-  [key: string]: any;
-  parameters: Parameters;
-  args: Args;
-  argTypes: ArgTypes;
-  globals: Args;
-  hooks?: HooksContext;
-};
-
 export interface WrapperSettings {
-  options: OptionsParameter;
+  options: object;
   parameters: {
     [key: string]: any;
   };
 }
 
-export type Comparator<T> = ((a: T, b: T) => boolean) | ((a: T, b: T) => number);
-export type StorySortMethod = 'configure' | 'alphabetical';
-export interface StorySortObjectParameter {
-  method?: StorySortMethod;
-  order?: any[];
-  locales?: string;
-}
-// The `any` here is the story store's `StoreItem` record. Ideally we should probably only
-// pass a defined subset of that full data, but we pass it all so far :shrug:
-export type StorySortComparator = Comparator<[StoryId, any, Parameters, Parameters]>;
-export type StorySortParameter = StorySortComparator | StorySortObjectParameter;
-
-export interface OptionsParameter extends Object {
-  storySort?: StorySortParameter;
-  theme?: {
-    base: string;
-    brandTitle?: string;
-  };
-  [key: string]: any;
-}
-
-export type StoryGetter = (context: StoryContext) => any;
-
-export type LegacyStoryFn<ReturnType = unknown> = (p?: StoryContext) => ReturnType;
-export type ArgsStoryFn<ReturnType = unknown> = (a?: Args, p?: StoryContext) => ReturnType;
-export type StoryFn<ReturnType = unknown> = LegacyStoryFn<ReturnType> | ArgsStoryFn<ReturnType>;
-
 export type StoryWrapper = (
-  getStory: StoryGetter,
+  storyFn: LegacyStoryFn,
   context: StoryContext,
   settings: WrapperSettings
 ) => any;
@@ -118,7 +147,20 @@ export interface ClientApiAddons<StoryFnReturnType> {
   [key: string]: ClientApiAddon<StoryFnReturnType>;
 }
 
-export type ClientApiReturnFn<StoryFnReturnType> = (...args: any[]) => StoryApi<StoryFnReturnType>;
+// Old types for getStorybook()
+export interface IStorybookStory {
+  name: string;
+  render: (context: any) => any;
+}
+
+export interface IStorybookSection {
+  kind: string;
+  stories: IStorybookStory[];
+}
+
+export type ClientApiReturnFn<StoryFnReturnType = unknown> = (
+  ...args: any[]
+) => StoryApi<StoryFnReturnType>;
 
 export interface StoryApi<StoryFnReturnType = unknown> {
   kind: StoryKind;
@@ -128,19 +170,10 @@ export interface StoryApi<StoryFnReturnType = unknown> {
     parameters?: Parameters
   ) => StoryApi<StoryFnReturnType>;
   addDecorator: (decorator: DecoratorFunction<StoryFnReturnType>) => StoryApi<StoryFnReturnType>;
+  addLoader: (decorator: LoaderFunction) => StoryApi<StoryFnReturnType>;
   addParameters: (parameters: Parameters) => StoryApi<StoryFnReturnType>;
   [k: string]: string | ClientApiReturnFn<StoryFnReturnType>;
 }
-
-export type DecoratorFunction<StoryFnReturnType = unknown> = (
-  fn: StoryFn<StoryFnReturnType>,
-  c: StoryContext
-) => ReturnType<StoryFn<StoryFnReturnType>>;
-
-export type DecorateStoryFunction<StoryFnReturnType = unknown> = (
-  storyFn: StoryFn<StoryFnReturnType>,
-  decorators: DecoratorFunction<StoryFnReturnType>[]
-) => StoryFn<StoryFnReturnType>;
 
 export interface ClientStoryApi<StoryFnReturnType = unknown> {
   storiesOf(kind: StoryKind, module: NodeModule): StoryApi<StoryFnReturnType>;
@@ -158,10 +191,10 @@ export type BaseDecorators<StoryFnReturnType> = Array<
   (story: () => StoryFnReturnType, context: StoryContext) => StoryFnReturnType
 >;
 
-export interface Annotations<Args, StoryFnReturnType> {
+export interface BaseAnnotations<Args, StoryFnReturnType> {
   /**
    * Dynamic data that are provided (and possibly updated by) Storybook and its addons.
-   * @see [Arg story inputs](https://github.com/storybookjs/storybook/blob/next/docs/src/pages/formats/component-story-format/index.md#args-story-inputs)
+   * @see [Arg story inputs](https://storybook.js.org/docs/react/api/csf#args-story-inputs)
    */
   args?: Partial<Args>;
 
@@ -169,7 +202,7 @@ export interface Annotations<Args, StoryFnReturnType> {
    * ArgTypes encode basic metadata for args, such as `name`, `description`, `defaultValue` for an arg. These get automatically filled in by Storybook Docs.
    * @see [Control annotations](https://github.com/storybookjs/storybook/blob/91e9dee33faa8eff0b342a366845de7100415367/addons/controls/README.md#control-annotations)
    */
-  argTypes?: ArgTypes;
+  argTypes?: ArgTypes<Args>;
 
   /**
    * Custom metadata for a story.
@@ -185,6 +218,19 @@ export interface Annotations<Args, StoryFnReturnType> {
    */
   decorators?: BaseDecorators<StoryFnReturnType>;
 
+  /**
+   * Define a custom render function for the story(ies). If not passed, a default render function by the framework will be used.
+   */
+  render?: (args: Args, context: StoryContext) => StoryFnReturnType;
+
+  /**
+   * Function that is executed after the story is rendered.
+   */
+  play?: (context: StoryContext) => Promise<void> | void;
+}
+
+export interface Annotations<Args, StoryFnReturnType>
+  extends BaseAnnotations<Args, StoryFnReturnType> {
   /**
    * Used to only include certain named exports as stories. Useful when you want to have non-story exports such as mock data or ignore a few stories.
    * @example
@@ -212,6 +258,8 @@ export interface BaseMeta<ComponentType> {
    *
    * Stories can be organized in a nested structure using "/" as a separator.
    *
+   * Since CSF 3.0 this property is optional.
+   *
    * @example
    * export default {
    *   ...
@@ -220,7 +268,16 @@ export interface BaseMeta<ComponentType> {
    *
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
-  title: string;
+  title?: string;
+
+  /**
+   * Manually set the id of a story, which in particular is useful if you want to rename stories without breaking permalinks.
+   *
+   * Storybook will prioritize the id over the title for ID generation, if provided, and will prioritize the story.storyName over the export key for display.
+   *
+   * @see [Sidebar and URLs](https://storybook.js.org/docs/react/configure/sidebar-and-urls#permalinking-to-stories)
+   */
+  id?: string;
 
   /**
    * The primary component for your story.
@@ -247,11 +304,17 @@ export interface BaseMeta<ComponentType> {
   subcomponents?: Record<string, ComponentType>;
 }
 
-export interface BaseStory<Args, StoryFnReturnType> {
-  (args: Args, context: StoryContext): StoryFnReturnType;
-
+export type BaseStoryObject<Args, StoryFnReturnType> = {
   /**
    * Override the display name in the UI
    */
   storyName?: string;
-}
+};
+
+export type BaseStoryFn<Args, StoryFnReturnType> = {
+  (args: Args, context: StoryContext): StoryFnReturnType;
+} & BaseStoryObject<Args, StoryFnReturnType>;
+
+export type BaseStory<Args, StoryFnReturnType> =
+  | BaseStoryFn<Args, StoryFnReturnType>
+  | BaseStoryObject<Args, StoryFnReturnType>;

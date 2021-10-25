@@ -123,6 +123,8 @@ initStoryshots({
 });
 ```
 
+Alternatively, you may set the `SB_CHROMIUM_PATH` environment variable. If both are set, then `chromeExecutablePath` will take precedence.
+
 ### Specifying a custom Puppeteer `browser` instance
 
 You might use the async `getCustomBrowser` function to obtain a custom instance of a Puppeteer `browser` object. This will prevent `storyshots-puppeteer` from creating its own `browser`. It will create and close pages within the `browser`, and it is your responsibility to manage the lifecycle of the `browser` itself.
@@ -177,7 +179,7 @@ Those can be customized with `setupTimeout` and `testTimeout` parameters.
 ### Integrate Puppeteer storyshots with regular app
 
 You may want to use another Jest project to run your Puppeteer storyshots as they require more resources: Chrome and Storybook built/served.
-You can find a working example of this in the [official-storybook](https://github.com/storybookjs/storybook/tree/master/examples/official-storybook) example.
+You can find a working example of this in the [official-storybook](https://github.com/storybookjs/storybook/tree/main/examples/official-storybook) example.
 
 ### Integrate Puppeteer storyshots with [Create React App](https://github.com/facebookincubator/create-react-app)
 
@@ -227,6 +229,25 @@ initStoryshots({ suite: 'A11y checks', test: axeTest() });
 ```
 
 For configuration, it uses the same `story.parameters.a11y` parameter as [`@storybook/addon-a11y`](https://github.com/storybookjs/storybook/tree/next/addons/a11y#parameters)
+
+### Specifying options to `axeTest`
+
+```js
+import initStoryshots from '@storybook/addon-storyshots';
+import { axeTest } from '@storybook/addon-storyshots-puppeteer';
+
+const beforeAxeTest = (page, { context: { kind, story }, url }) => {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve();
+    }, 600)
+  );
+};
+
+initStoryshots({ suite: 'A11y checks', test: axeTest({ beforeAxeTest }) });
+```
+
+`beforeAxeTest` receives the [Puppeteer page instance](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page) and an object: `{ context: {kind, story}, url}`. _kind_ is the kind of the story and the _story_ its name. _url_ is the URL the browser will use to screenshot. `beforeAxeTest` is part of the promise chain and is called after the browser navigation is completed but before the screenshot is taken. It allows for triggering events on the page elements and delaying the axe test .
 
 ## _imageSnapshots_
 
@@ -305,3 +326,17 @@ initStoryshots({
 ```
 
 `getScreenshotOptions` receives an object `{ context: {kind, story}, url}`. _kind_ is the kind of the story and the _story_ its name. _url_ is the URL the browser will use to screenshot.
+
+To create a screenshot of just a single element (with its children), rather than the page or current viewport, an ElementHandle can be returned from `beforeScreenshot`:
+
+```js
+import initStoryshots from '@storybook/addon-storyshots';
+import { imageSnapshot } from '@storybook/addon-storyshots-puppeteer';
+
+const beforeScreenshot = (page) => page.$('#root > *');
+
+initStoryshots({
+  suite: 'Image storyshots',
+  test: imageSnapshot({ storybookUrl: 'http://localhost:6006', beforeScreenshot }),
+});
+```

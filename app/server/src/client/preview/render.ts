@@ -1,13 +1,16 @@
-import { document, fetch, Node } from 'global';
+/* eslint-disable no-param-reassign */
+import global from 'global';
 import dedent from 'ts-dedent';
-import { Args, ArgTypes } from '@storybook/api';
-import { RenderContext, FetchStoryHtmlType } from './types';
+import { RenderContext } from '@storybook/store';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
+import { StoryFn, Args, ArgTypes } from '@storybook/csf';
+import { FetchStoryHtmlType, ServerFramework } from './types';
 
-const rootElement = document.getElementById('root');
+const { fetch, Node } = global;
 
-const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params) => {
+const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, storyContext) => {
   const fetchUrl = new URL(`${url}/${path}`);
-  fetchUrl.search = new URLSearchParams(params).toString();
+  fetchUrl.search = new URLSearchParams({ ...storyContext.globals, ...params }).toString();
 
   const response = await fetch(fetchUrl);
   return response.text();
@@ -26,12 +29,6 @@ const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
         // For cross framework & language support we pick a consistent representation of Dates as strings
         storyArgs[key] = new Date(argValue).toISOString();
         break;
-      case 'array': {
-        // use the supplied separator when seriazlizing an array as a string
-        const separator = control.separator || ',';
-        storyArgs[key] = argValue.join(separator);
-        break;
-      }
       case 'object':
         // send objects as JSON strings
         storyArgs[key] = JSON.stringify(argValue);
@@ -43,18 +40,22 @@ const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
   return storyArgs;
 };
 
-export async function renderMain({
-  id,
-  kind,
-  name,
-  showMain,
-  showError,
-  forceRender,
-  parameters,
-  storyFn,
-  args,
-  argTypes,
-}: RenderContext) {
+export const render: StoryFn<ServerFramework> = (args: Args) => {};
+
+export async function renderToDOM(
+  {
+    id,
+    title,
+    name,
+    showMain,
+    showError,
+    forceRemount,
+    storyFn,
+    storyContext,
+    storyContext: { parameters, args, argTypes },
+  }: RenderContext<ServerFramework>,
+  domElement: HTMLElement
+) {
   // Some addons wrap the storyFn so we need to call it even though Server doesn't need the answer
   storyFn();
   const storyArgs = buildStoryArgs(args, argTypes);
@@ -64,23 +65,25 @@ export async function renderMain({
   } = parameters;
 
   const fetchId = storyId || id;
-  const fetchParams = { ...params, ...storyArgs };
-  const element = await fetchStoryHtml(url, fetchId, fetchParams);
+  const storyParams = { ...params, ...storyArgs };
+  const element = await fetchStoryHtml(url, fetchId, storyParams, storyContext);
 
   showMain();
   if (typeof element === 'string') {
-    rootElement.innerHTML = element;
+    domElement.innerHTML = element;
+    simulatePageLoad(domElement);
   } else if (element instanceof Node) {
     // Don't re-mount the element if it didn't change and neither did the story
-    if (rootElement.firstChild === element && forceRender === true) {
+    if (domElement.firstChild === element && forceRemount === false) {
       return;
     }
 
-    rootElement.innerHTML = '';
-    rootElement.appendChild(element);
+    domElement.innerHTML = '';
+    domElement.appendChild(element);
+    simulateDOMContentLoaded();
   } else {
     showError({
-      title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${kind}".`,
+      title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${title}".`,
       description: dedent`
         Did you forget to return the HTML snippet from the story?
         Use "() => <your snippet or node>" or when defining the story.

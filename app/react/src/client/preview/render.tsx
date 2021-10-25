@@ -1,21 +1,35 @@
-import { document } from 'global';
-import React, { Component, FunctionComponent, ReactElement, StrictMode } from 'react';
+import global from 'global';
+import React, {
+  Component as ReactComponent,
+  FunctionComponent,
+  ReactElement,
+  StrictMode,
+  Fragment,
+} from 'react';
 import ReactDOM from 'react-dom';
+import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
 
-import { RenderContext } from './types';
+import { StoryContext } from './types';
+import { ReactFramework } from './types-6-0';
 
-const rootEl = document ? document.getElementById('root') : null;
+const { FRAMEWORK_OPTIONS } = global;
 
-const render = (node: ReactElement, el: Element) =>
-  new Promise((resolve) => {
-    ReactDOM.render(
-      process.env.STORYBOOK_EXAMPLE_APP ? <StrictMode>{node}</StrictMode> : node,
-      el,
-      resolve
+export const render: ArgsStoryFn<ReactFramework> = (args, { id, component: Component }) => {
+  if (!Component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
     );
+  }
+  return <Component {...args} />;
+};
+
+const renderElement = async (node: ReactElement, el: Element) =>
+  new Promise((resolve) => {
+    ReactDOM.render(node, el, () => resolve(null));
   });
 
-class ErrorBoundary extends Component<{
+class ErrorBoundary extends ReactComponent<{
   showException: (err: Error) => void;
   showMain: () => void;
 }> {
@@ -47,29 +61,37 @@ class ErrorBoundary extends Component<{
   }
 }
 
-export default async function renderMain({
-  storyFn,
-  showMain,
-  showException,
-  forceRender,
-}: RenderContext) {
-  // storyFn has context bound in by now so can be treated as a function component with no args
-  const StoryFn = storyFn as FunctionComponent;
+const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
 
-  const element = (
+export async function renderToDOM(
+  {
+    storyContext,
+    unboundStoryFn,
+    showMain,
+    showException,
+    forceRemount,
+  }: RenderContext<ReactFramework>,
+  domElement: HTMLElement
+) {
+  const Story = unboundStoryFn as FunctionComponent<StoryContext<ReactFramework>>;
+
+  const content = (
     <ErrorBoundary showMain={showMain} showException={showException}>
-      <StoryFn />
+      <Story {...storyContext} />
     </ErrorBoundary>
   );
 
-  // We need to unmount the existing set of components in the DOM node.
+  // For React 15, StrictMode & Fragment doesn't exists.
+  const element = Wrapper ? <Wrapper>{content}</Wrapper> : content;
+
+  // In most cases, we need to unmount the existing set of components in the DOM node.
   // Otherwise, React may not recreate instances for every story run.
   // This could leads to issues like below:
   // https://github.com/storybookjs/react-storybook/issues/81
-  // But forceRender means that it's the same story, so we want too keep the state in that case.
-  if (!forceRender) {
-    ReactDOM.unmountComponentAtNode(rootEl);
+  // (This is not the case when we change args or globals to the story however)
+  if (forceRemount) {
+    ReactDOM.unmountComponentAtNode(domElement);
   }
 
-  await render(element, rootEl);
+  await renderElement(element, domElement);
 }

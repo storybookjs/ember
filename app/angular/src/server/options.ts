@@ -1,10 +1,8 @@
-const packageJson = require('../../package.json');
+import { sync } from 'read-pkg-up';
+import { LoadOptions } from '@storybook/core-common';
 
 export default {
-  packageJson,
+  packageJson: sync({ cwd: __dirname }).packageJson,
   framework: 'angular',
-  frameworkPresets: [
-    require.resolve('./framework-preset-angular.js'),
-    require.resolve('./framework-preset-angular-cli.js'),
-  ],
-};
+  frameworkPresets: [require.resolve('./preset')],
+} as LoadOptions;

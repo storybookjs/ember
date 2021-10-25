@@ -1,14 +1,17 @@
 // @ts-ignore
-import { document } from 'global';
-import { enableProdMode, NgModule, Component, NgModuleRef, Type } from '@angular/core';
+import global from 'global';
+import { enableProdMode, NgModule, Component, NgModuleRef, Type, NgZone } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReplaySubject } from 'rxjs';
-import { StoryFn } from '@storybook/addons';
+import { Observable, ReplaySubject, Subscriber } from 'rxjs';
+import { PartialStoryFn } from '@storybook/csf';
 import { AppComponent } from './components/app.component';
 import { STORY } from './app.token';
 import { NgModuleMetadata, StoryFnAngularReturnType } from '../types';
+import { AngularFramework } from '../types-6-0';
+
+const { document } = global;
 
 declare global {
   interface Window {
@@ -18,13 +21,33 @@ declare global {
 
 let platform: any = null;
 let promises: Promise<NgModuleRef<any>>[] = [];
+let storyData = new ReplaySubject<StoryFnAngularReturnType>(1);
 
 const moduleClass = class DynamicModule {};
 const componentClass = class DynamicComponent {};
 
 type DynamicComponentType = typeof componentClass;
 
-const storyData = new ReplaySubject(1);
+function storyDataFactory<T>(data: Observable<T>) {
+  return (ngZone: NgZone) =>
+    new Observable((subscriber: Subscriber<T>) => {
+      const sub = data.subscribe(
+        (v: T) => {
+          ngZone.run(() => subscriber.next(v));
+        },
+        (err) => {
+          ngZone.run(() => subscriber.error(err));
+        },
+        () => {
+          ngZone.run(() => subscriber.complete());
+        }
+      );
+
+      return () => {
+        sub.unsubscribe();
+      };
+    });
+}
 
 const getModule = (
   declarations: (Type<any> | any[])[],
@@ -33,12 +56,18 @@ const getModule = (
   data: StoryFnAngularReturnType,
   moduleMetadata: NgModuleMetadata
 ) => {
+  // Complete last ReplaySubject and create a new one for the current module
+  storyData.complete();
+  storyData = new ReplaySubject<StoryFnAngularReturnType>(1);
   storyData.next(data);
 
   const moduleMeta = {
     declarations: [...declarations, ...(moduleMetadata.declarations || [])],
     imports: [BrowserModule, FormsModule, ...(moduleMetadata.imports || [])],
-    providers: [{ provide: STORY, useValue: storyData }, ...(moduleMetadata.providers || [])],
+    providers: [
+      { provide: STORY, useFactory: storyDataFactory(storyData.asObservable()), deps: [NgZone] },
+      ...(moduleMetadata.providers || []),
+    ],
     entryComponents: [...entryComponents, ...(moduleMetadata.entryComponents || [])],
     schemas: [...(moduleMetadata.schemas || [])],
     bootstrap: [...bootstrap],
@@ -104,7 +133,7 @@ const getExistenceOfComponentInModules = (
   });
 };
 
-const initModule = (storyFn: StoryFn<StoryFnAngularReturnType>) => {
+const initModule = (storyFn: PartialStoryFn<AngularFramework>) => {
   const storyObj = storyFn();
   const { component, template, props, styles, moduleMetadata = {} } = storyObj;
 
@@ -143,6 +172,7 @@ const initModule = (storyFn: StoryFn<StoryFnAngularReturnType>) => {
 const staticRoot = document.getElementById('root');
 const insertDynamicRoot = () => {
   const app = document.createElement('storybook-dynamic-app-root');
+  staticRoot.innerHTML = '';
   staticRoot.appendChild(app);
 };
 
@@ -171,7 +201,7 @@ const draw = (newModule: DynamicComponentType): void => {
   }
 };
 
-export const renderNgApp = (storyFn: StoryFn<StoryFnAngularReturnType>, forced: boolean) => {
+export const renderNgApp = (storyFn: PartialStoryFn<AngularFramework>, forced: boolean) => {
   if (!forced) {
     draw(initModule(storyFn));
   } else {

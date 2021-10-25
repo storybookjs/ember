@@ -14,6 +14,7 @@ export interface ButtonProps {
   outline?: boolean;
   containsIcon?: boolean;
   children?: React.ReactNode;
+  href?: string;
 }
 
 type ButtonWrapperProps = ButtonProps;
@@ -83,14 +84,12 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
   ({ theme, primary, secondary, gray }) => {
     let color;
 
-    if (primary) {
-      color = theme.color.primary;
-    }
-    if (secondary) {
-      color = theme.color.secondary;
-    }
     if (gray) {
       color = theme.color.medium;
+    } else if (secondary) {
+      color = theme.color.secondary;
+    } else if (primary) {
+      color = theme.color.primary;
     }
 
     return color
@@ -199,12 +198,13 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>(
   },
   ({ theme, outline, primary, secondary }) => {
     let color;
-    if (primary) {
-      color = theme.color.primary;
-    }
+
     if (secondary) {
       color = theme.color.secondary;
+    } else if (primary) {
+      color = theme.color.primary;
     }
+
     return outline && color
       ? {
           boxShadow: `${color} 0 0 0 1px inset`,

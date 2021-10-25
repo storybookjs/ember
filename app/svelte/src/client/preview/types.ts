@@ -1,4 +1,4 @@
-export { RenderContext } from '@storybook/core';
+export type { RenderContext } from '@storybook/core';
 
 export interface ShowErrorArgs {
   title: string;
@@ -23,3 +23,8 @@ interface WrapperData {
   innerStyle: string;
   style: string;
 }
+
+export type SvelteFramework = {
+  component: any;
+  storyResult: any;
+};

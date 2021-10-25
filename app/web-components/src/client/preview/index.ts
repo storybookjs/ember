@@ -3,12 +3,13 @@ import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import render from './render';
-import { StoryFnHtmlReturnType, IStorybookSection } from './types';
+import { renderToDOM } from './render';
+import { IStorybookSection } from './types';
+import { WebComponentsFramework } from './types-6-0';
 
 const framework = 'web-components';
 
-interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
+interface ClientApi extends ClientStoryApi<WebComponentsFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
@@ -17,7 +18,7 @@ interface ClientApi extends ClientStoryApi<StoryFnHtmlReturnType> {
   raw: () => any; // todo add type
 }
 
-const api = start(render);
+const api = start(renderToDOM);
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({
@@ -26,8 +27,10 @@ export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
 };
 
 export const configure: ClientApi['configure'] = (...args) => api.configure(framework, ...args);
-export const addDecorator: ClientApi['addDecorator'] = api.clientApi.addDecorator;
-export const addParameters: ClientApi['addParameters'] = api.clientApi.addParameters;
+export const addDecorator: ClientApi['addDecorator'] = api.clientApi
+  .addDecorator as ClientApi['addDecorator'];
+export const addParameters: ClientApi['addParameters'] = api.clientApi
+  .addParameters as ClientApi['addParameters'];
 export const clearDecorators: ClientApi['clearDecorators'] = api.clientApi.clearDecorators;
 export const setAddon: ClientApi['setAddon'] = api.clientApi.setAddon;
 export const forceReRender: ClientApi['forceReRender'] = api.forceReRender;
