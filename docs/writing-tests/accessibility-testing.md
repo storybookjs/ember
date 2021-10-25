@@ -141,14 +141,11 @@ When you execute your test script, it will run the accessibility audit along wit
 
 ![Accessibility testing with Jest Axe Core](./jest-accessibility-testing-optimized.png)
 
-<div class="aside">
-What’s the difference between browser-based and linter-based accessibility tests?
+---
+
+#### What’s the difference between browser-based and linter-based accessibility tests?
 
 Browser-based accessibility tests, like found in Storybook, evaluates the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing so you won't catch everything the user might experience.
-
-</div>
-
----
 
 #### Learn about other UI tests
 

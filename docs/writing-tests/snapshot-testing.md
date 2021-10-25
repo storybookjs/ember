@@ -102,17 +102,11 @@ These are the frameworks currently supported by Storyshots: `angular`, `html`, `
 
 Storyshots is highly customizable and includes options for various advanced use cases. You can read more in the [addon’s documentation](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#options).
 
-<div class="aside">
-
-What’s the difference between snapshot tests and visual tests?
-
-Visual tests capture images of stories and compare them against image baselines. Snapshot tests take DOM snapshots and compare them against DOM baselines.
-
-Visual tests are better suited for verifying appearance. Snapshot tests are useful for smoke testing and ensuring the DOM doesn’t change.
-
-</div>
-
 ---
+
+#### What’s the difference between snapshot tests and visual tests?
+
+Visual tests capture images of stories and compare them against image baselines. Snapshot tests take DOM snapshots and compare them against DOM baselines. Visual tests are better suited for verifying appearance. Snapshot tests are useful for smoke testing and ensuring the DOM doesn’t change.
 
 #### Learn about other UI tests
 

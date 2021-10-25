@@ -60,7 +60,9 @@ If the changes are intentional, accept them as baselines. Otherwise, deny them t
 
 Learn how to [integrate Chromatic UI Tests](https://www.chromatic.com/docs/) into your CI pipeline.
 
-## What’s the difference between visual tests and snapshot tests?
+---
+
+#### What’s the difference between visual tests and snapshot tests?
 
 Snapshot tests compare the rendered markup of every story against known baselines. This means the test compares blobs of HTML and not what the user actually sees. Which in turn, can lead to an increase in false positives as code changes don’t always yield visual changes in the component.
 
