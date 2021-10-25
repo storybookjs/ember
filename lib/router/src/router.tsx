@@ -1,17 +1,14 @@
 import global from 'global';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import {
   Link,
-  Location,
-  navigate,
-  LocationProvider,
-  RouteComponentProps,
-  LocationContext,
-  NavigateFn,
+  BrowserRouter,
+  useNavigate,
+  useLocation,
   NavigateOptions,
-  History,
-} from '@reach/router';
+  Router,
+} from 'react-router-dom';
 import { ToggleVisibility } from './visibility';
 import { queryFromString, parsePath, getMatch, StoryData } from './utils';
 
@@ -22,9 +19,12 @@ interface Other extends StoryData {
   singleStory?: boolean;
 }
 
-export type RenderData = Pick<LocationContext, 'location'> &
-  Partial<Pick<LocationContext, 'navigate'>> &
-  Other;
+export type RouterData = {
+  location: Partial<Location>;
+  navigate: ReturnType<typeof useQueryNavigate>;
+} & Other;
+
+export type RenderData = Pick<RouterData, 'location'> & Other;
 
 interface MatchingData {
   match: null | { path: string };
@@ -52,8 +52,26 @@ export interface QueryLinkProps {
 
 const getBase = () => `${document.location.pathname}?`;
 
-const queryNavigate: NavigateFn = (to: string | number, options?: NavigateOptions<{}>) =>
-  typeof to === 'number' ? navigate(to) : navigate(`${getBase()}path=${to}`, options);
+type ExpandedNavigateOptions = NavigateOptions & { plain?: boolean };
+
+// const queryNavigate: NavigateFn = (to: string | number, options?: NavigateOptions<{}>) =>
+//   typeof to === 'number' ? navigate(to) : navigate(`${getBase()}path=${to}`, options);
+
+const useQueryNavigate = () => {
+  const navigate = useNavigate();
+
+  return useCallback((to: string | number, options?: ExpandedNavigateOptions) => {
+    if (typeof to === 'string') {
+      const target = options?.plain ? to : `?path=${to}`;
+      return navigate(target, options);
+    }
+    if (typeof to === 'number') {
+      return navigate(to);
+    }
+
+    return undefined;
+  }, []);
+};
 
 // A component that will navigate to a new location/path when clicked
 const QueryLink = ({ to, children, ...rest }: QueryLinkProps) => (
@@ -65,24 +83,24 @@ QueryLink.displayName = 'QueryLink';
 
 // A render-prop component where children is called with a location
 // and will be called whenever it changes when it changes
-const QueryLocation = ({ children }: QueryLocationProps) => (
-  <Location>
-    {({ location }: RouteComponentProps): ReactNode => {
-      const { path, singleStory } = queryFromString(location.search);
-      const { viewMode, storyId, refId } = parsePath(path);
+const QueryLocation = ({ children }: QueryLocationProps) => {
+  const location = useLocation();
+  const { path, singleStory } = queryFromString(location.search);
+  const { viewMode, storyId, refId } = parsePath(path);
 
-      return children({
+  return (
+    <>
+      {children({
         path,
         location,
-        navigate: queryNavigate,
         viewMode,
         storyId,
         refId,
         singleStory: singleStory === 'true',
-      });
-    }}
-  </Location>
-);
+      })}
+    </>
+  );
+};
 QueryLocation.displayName = 'QueryLocation';
 
 // A render-prop component for rendering when a certain path is hit.
@@ -117,6 +135,10 @@ export { QueryLink as Link };
 export { QueryMatch as Match };
 export { QueryLocation as Location };
 export { Route };
-export { queryNavigate as navigate };
-export { LocationProvider };
-export type { History };
+export { useQueryNavigate as useNavigate };
+export { BrowserRouter as LocationProvider };
+export { Router as BaseLocationProvider };
+export { useNavigate as usePlainNavigate };
+
+// eslint-disable-next-line no-undef
+export type { ExpandedNavigateOptions as NavigateOptions };
