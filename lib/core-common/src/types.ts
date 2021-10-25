@@ -1,4 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import type { Options as TelejsonOptions } from 'telejson';
 import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
@@ -23,6 +24,7 @@ export interface TypescriptConfig {
 export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
   disableWebpackDefaults?: boolean;
+  channelOptions?: Partial<TelejsonOptions>;
 }
 
 export interface Presets {
@@ -259,6 +261,11 @@ export type Preset =
  */
 export type Entry = string;
 
+type StorybookRefs = Record<string, {
+  title: string;
+  url: string;
+}>;
+
 /**
  * The interface for Storybook configuration in `main.ts` files.
  */
@@ -326,6 +333,11 @@ export interface StorybookConfig {
    * Controls how Storybook handles TypeScript files.
    */
   typescript?: Partial<TypescriptOptions>;
+
+  /**
+   * References external Storybooks
+   */
+  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs)
 
   /**
    * Modify or return a custom Webpack config.

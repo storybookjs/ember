@@ -102,6 +102,8 @@ const getRetainedState = (state: State, isDebugging = false) => {
 export class Instrumenter {
   channel: Channel;
 
+  initialized = false;
+
   // State is tracked per story to deal with multiple stories on the same canvas (i.e. docs mode)
   state: Record<StoryId, State>;
 
@@ -144,8 +146,11 @@ export class Instrumenter {
       }
     });
 
-    // Trash non-retained state and clear the log when switching stories.
-    this.channel.on(SET_CURRENT_STORY, this.cleanup.bind(this));
+    // Trash non-retained state and clear the log when switching stories, but not on initial boot.
+    this.channel.on(SET_CURRENT_STORY, () => {
+      if (this.initialized) this.cleanup();
+      else this.initialized = true;
+    });
 
     const start = ({ storyId, playUntil }: { storyId: string; playUntil?: Call['id'] }) => {
       if (!this.getState(storyId).isDebugging) {
