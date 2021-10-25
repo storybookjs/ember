@@ -317,6 +317,7 @@ describe('Instrumenter', () => {
   });
 
   it('clears state when switching stories', () => {
+    addons.getChannel().emit(SET_CURRENT_STORY); // initialization
     instrumenter.state = {
       'kind--story': {
         isDebugging: false,

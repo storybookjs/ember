@@ -393,7 +393,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const fullDocsContext = {
         ...docsContext,
         // Put all the storyContext fields onto the docs context for back-compat
-        ...(!FEATURES.breakingChangesV7 && this.storyStore.getStoryContext(story)),
+        ...(!FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
       (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
