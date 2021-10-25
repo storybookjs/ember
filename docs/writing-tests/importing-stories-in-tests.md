@@ -8,7 +8,7 @@ Storybook enables you to isolate a component and capture all of its use cases in
 
 Stories as a practical starting point for UI testing. Import stories into tools like [Jest](https://jestjs.io/), [Testing Library](https://testing-library.com/), [Puppeteer](https://pptr.dev/), [Cypress](https://www.cypress.io/), and [Playwright](https://playwright.dev/) to save time and maintenance work.
 
-## Setup testing addon for your framework
+## Setup the testing addon for your framework
 
 Storybook has test addons for core frameworks React, Vue (2,3), and Angular. This allows you to reuse stories along with all of their mocks, dependencies, and context.
 
@@ -64,7 +64,7 @@ Update your test script to include the configuration file:
 
 <div class="aside">
 
-💡 <strong>Note</strong>, You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md)
+💡 <strong>Note:</strong> You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md)
 
 </div>
 
@@ -159,8 +159,8 @@ Once you execute Playwright, it opens a new browser window, load Storybook's iso
 
 #### Learn about other UI tests
 
-1. [Visual tests](./visual-testing.md) for appearance
-2. [Accessibility tests](./accessibility-testing.md) for accessibility
-3. [Interaction tests](./interaction-testing.md) for user behavior simulation
-4. [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
-5. Import stories in other tests for other tools
+- [Visual tests](./visual-testing.md) for appearance
+- [Accessibility tests](./accessibility-testing.md) for accessibility
+- [Interaction tests](./interaction-testing.md) for user behavior simulation
+- [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
+- Import stories in other tests for other tools

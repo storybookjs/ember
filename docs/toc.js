@@ -1,7 +1,7 @@
 module.exports = {
   toc: [
     {
-      title: '🚀 Get Started',
+      title: '🚀 Get started',
       pathSegment: 'get-started',
       type: 'menu',
       children: [
@@ -49,7 +49,7 @@ module.exports = {
       ],
     },
     {
-      title: '🖋 Writing Stories',
+      title: '🖋 Writing stories',
       pathSegment: 'writing-stories',
       type: 'menu',
       children: [
@@ -91,7 +91,7 @@ module.exports = {
       ],
     },
     {
-      title: '📖 Writing Docs',
+      title: '📖 Writing docs',
       pathSegment: 'writing-docs',
       type: 'menu',
       children: [
@@ -118,6 +118,43 @@ module.exports = {
         {
           pathSegment: 'build-documentation',
           title: 'Preview and build docs',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🔬 Writing tests',
+      pathSegment: 'writing-tests',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'introduction',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'visual-testing',
+          title: 'Visual tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'accessibility-testing',
+          title: 'Accessibility tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'interaction-testing',
+          title: 'Interaction tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'snapshot-testing',
+          title: 'Snapshot tests',
+          type: 'link',
+        },
+        {
+          pathSegment: 'importing-stories-in-tests',
+          title: 'Import stories in tests',
           type: 'link',
         },
       ],
@@ -164,43 +201,7 @@ module.exports = {
         },
       ],
     },
-    {
-      title: '🔬 Writing tests',
-      pathSegment: 'writing-tests',
-      type: 'menu',
-      children: [
-        {
-          pathSegment: 'introduction',
-          title: 'Introduction',
-          type: 'link',
-        },
-        {
-          pathSegment: 'visual-testing',
-          title: 'Visual tests',
-          type: 'link',
-        },
-        {
-          pathSegment: 'accessibility-testing',
-          title: 'Accessibility tests',
-          type: 'link',
-        },
-        {
-          pathSegment: 'interaction-testing',
-          title: 'Interaction tests',
-          type: 'link',
-        },
-        {
-          pathSegment: 'snapshot-testing',
-          title: 'Snapshot tests',
-          type: 'link',
-        },
-        {
-          pathSegment: 'importing-stories-in-tests',
-          title: 'Import stories in tests',
-          type: 'link',
-        },
-      ],
-    },
+
     {
       title: '⚙️ Configure',
       pathSegment: 'configure',

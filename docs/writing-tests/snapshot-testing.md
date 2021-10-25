@@ -96,34 +96,28 @@ By default, Storyshots detects your project's framework. If you run into a situa
 
 <!-- prettier-ignore-end -->
 
-These are the frameworks currently supported by Storyshots:
-
-- angular
-- html
-- preact
-- rax
-- react
-- react-native
-- riot
-- svelte
-- vue
-- vue3
-- web-components
+These are the frameworks currently supported by Storyshots: `angular`, `html`, `preact`, `rax`, `react`, `react-native`, `riot`, `svelte`, `vue`, `vue3`, and `web-components`.
 
 ## Additional customization
 
 Storyshots is highly customizable and includes options for various advanced use cases. You can read more in the [addon’s documentation](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#options).
 
-#### Snapshot vs. visual tests
+<div class="aside">
+
+What’s the difference between snapshot tests and visual tests?
 
 Visual tests capture images of stories and compare them against image baselines. Snapshot tests take DOM snapshots and compare them against DOM baselines.
 
 Visual tests are better suited for verifying appearance. Snapshot tests are useful for smoke testing and ensuring the DOM doesn’t change.
 
+</div>
+
+---
+
 #### Learn about other UI tests
 
-1. [Visual tests](./visual-testing.md) for appearance
-2. [Accessibility tests](./accessibility-testing.md) for accessibility
-3. [Interaction tests](./interaction-testing.md) for user behavior simulation
-4. Snapshot tests for rendering errors and warnings
-5. [Import stories in other tests](./importing-stories-in-tests.md) for other tools
+- [Visual tests](./visual-testing.md) for appearance
+- [Accessibility tests](./accessibility-testing.md) for accessibility
+- [Interaction tests](./interaction-testing.md) for user behavior simulation
+- Snapshot tests for rendering errors and warnings
+- [Import stories in other tests](./importing-stories-in-tests.md) for other tools

@@ -1,5 +1,5 @@
 ---
-title: 'Interaction testing'
+title: 'Interaction testing with Storybook'
 ---
 
 As you build more complex UIs like pages, components become responsible for more than just rendering the UI. They fetch data and manage state. Interaction tests allow you to verify these functional aspects of UI.
@@ -43,17 +43,17 @@ Under the hood, Storybook’s interaction addon mirrors Testing Library’s `use
 
 Below is an abridged API for user-event. For more, check out the [official user-event docs](https://testing-library.com/docs/ecosystem-user-event/).
 
-| User events     | Description                                                      | Example                                                                                |
-| --------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| clear           | Selects the text inside inputs, or textareas and deletes it      | `userEvent.clear(await within(canvasElement).getByRole('myinput'));`                   |
-| click           | Clicks the element, calling a click() function                   | `userEvent.click(await within(canvasElement).getByText('mycheckbox'));`                |
-| dblClick        | Clicks the element twice                                         | `userEvent.dblClick(await within(canvasElement).getByText('mycheckbox'));`             |
-| deselectOptions | Removes the selection from a specific option of a select element | `userEvent.deselectOptions(await within(canvasElement).getByRole('listbox','1'));`     |
-| hover           | Hovers an element                                                | `userEvent.hover(await within(canvasElement).getByTestId('example-test'));`            |
-| keyboard        | Simulates the keyboard events                                    | `userEvent.keyboard(‘foo’);`                                                           |
-| selectOptions   | Selects the specified option, or options of a select element     | `userEvent.selectOptions(await within(canvasElement).getByRole('listbox'),['1','2']);` |
-| type            | Writes text inside inputs, or textareas                          | `userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`       |
-| unhover         | Unhovers out of element                                          | `userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`           |
+| User events     | Description                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| clear           | Selects the text inside inputs, or textareas and deletes it <br>`userEvent.clear(await within(canvasElement).getByRole('myinput'));`                    |
+| click           | Clicks the element, calling a click() function <br>`userEvent.click(await within(canvasElement).getByText('mycheckbox'));`                              |
+| dblClick        | Clicks the element twice <br>`userEvent.dblClick(await within(canvasElement).getByText('mycheckbox'));`                                                 |
+| deselectOptions | Removes the selection from a specific option of a select element <br>`userEvent.deselectOptions(await within(canvasElement).getByRole('listbox','1'));` |
+| hover           | Hovers an element <br>`userEvent.hover(await within(canvasElement).getByTestId('example-test'));`                                                       |
+| keyboard        | Simulates the keyboard events <br>`userEvent.keyboard(‘foo’);`                                                                                          |
+| selectOptions   | Selects the specified option, or options of a select element <br>`userEvent.selectOptions(await within(canvasElement).getByRole('listbox'),['1','2']);` |
+| type            | Writes text inside inputs, or textareas <br>`userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
+| unhover         | Unhovers out of element <br>`userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
 
 ## Running tests
 
@@ -93,14 +93,19 @@ Since Storybook is a webapp, anyone with the URL can reproduce the error with th
 
 Streamline interaction testing further by automatically [publishing Storybook](../workflows/publish-storybook.md) in pull requests. That gives teams a universal reference point to test and debug stories.
 
-#### What’s the difference between interaction tests and visual tests
+<div class="aside">
+What’s the difference between interaction tests and visual tests?
 
 Interaction tests can be expensive to maintain when applied wholesale to every component. We recommend combining them with other methods like visual testing for comprehensive coverage with less maintenance work.
 
+</div>
+
+---
+
 #### Learn about other UI tests
 
-1. [Visual tests](./visual-testing.md) for appearance
-2. [Accessibility tests](accessibility-testing.md) for accessibility
-3. Interaction tests for user behavior simulation
-4. [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
-5. [Import stories in other tests](./importing-stories-in-tests.md) for other tools
+- [Visual tests](./visual-testing.md) for appearance
+- [Accessibility tests](accessibility-testing.md) for accessibility
+- Interaction tests for user behavior simulation
+- [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
+- [Import stories in other tests](./importing-stories-in-tests.md) for other tools

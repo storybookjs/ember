@@ -1,5 +1,5 @@
 ---
-title: 'Visual Testing with Storybook'
+title: 'Visual testing with Storybook'
 ---
 
 Visual tests, also called visual regression tests, catch bugs in UI appearance. They work by taking screenshots of every story and comparing them commit-to-commit to identify changes.
@@ -66,8 +66,8 @@ Snapshot tests compare the rendered markup of every story against known baseline
 
 #### Learn about other UI tests
 
-1. Visual tests for appearance
-2. [Accessibility tests](./accessibility-testing.md) for accessibility
-3. [Interaction tests](./interaction-testing.md) for user behavior simulation
-4. [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
-5. [Import stories in other tests](./importing-stories-in-tests.md) for other tools
+- Visual tests for appearance
+- [Accessibility tests](./accessibility-testing.md) for accessibility
+- [Interaction tests](./interaction-testing.md) for user behavior simulation
+- [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
+- [Import stories in other tests](./importing-stories-in-tests.md) for other tools

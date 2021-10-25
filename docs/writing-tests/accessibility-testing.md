@@ -1,5 +1,5 @@
 ---
-title: 'Accessibility testing'
+title: 'Accessibility testing with Storybook'
 ---
 
 Accessibility is the practice of making websites inclusive to all. That means supporting requirements such as: keyboard navigation, screen reader support, touch-friendly, usable color contrast, reduced motion, and zoom support.
@@ -141,14 +141,19 @@ When you execute your test script, it will run the accessibility audit along wit
 
 ![Accessibility testing with Jest Axe Core](./jest-accessibility-testing-optimized.png)
 
-#### What’s the difference between browser-based and linter-based accessibility tests?
+<div class="aside">
+What’s the difference between browser-based and linter-based accessibility tests?
 
-Evaluates the rendered DOM. You want to render it in a browser for highest accuracy. Auditing pre-compiled code is one step removed from the real thing so you won't catch everything that the user could experience.
+Browser-based accessibility tests, like found in Storybook, evaluates the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing so you won't catch everything the user might experience.
+
+</div>
+
+---
 
 #### Learn about other UI tests
 
-1. [Visual tests](./visual-testing.md) for appearance
-2. Accessibility tests for accessibility
-3. [Interaction tests](./interaction-testing.md) for user behavior simulation
-4. [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
-5. [Import stories in other tests](./importing-stories-in-tests.md) for other tools
+- [Visual tests](./visual-testing.md) for appearance
+- Accessibility tests for accessibility
+- [Interaction tests](./interaction-testing.md) for user behavior simulation
+- [Snapshot tests](./snapshot-testing.md) for rendering errors and warnings
+- [Import stories in other tests](./importing-stories-in-tests.md) for other tools

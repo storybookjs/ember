@@ -2,7 +2,7 @@
 title: 'How to test UIs with Storybook'
 ---
 
-![Storybook example chart](./storybook-chart-optimized.png)
+![Storybook example chart](./stories-are-tests-cropped.gif)
 
 Storybook provides a clean-room environment for testing components in isolation. Stories make it easy to explore a component in all its variations, no matter how complex.
 
@@ -12,8 +12,8 @@ The simplest testing method is manual “spot checking”. You run Storybook loc
 
 Storybook also comes with tools, test runners, and handy integrations with the larger JavaScript ecosystem to expand your UI test coverage. These docs detail how you can use Storybook for UI testing.
 
-1. [Visual tests](./visual-testing.md) capture a screenshot of every story then compare it against baselines to detect appearance and integration issues
-2. [Accessibility tests](./accessibility-testing.md) catch usability issues related to visual, hearing, mobility, cognitive, speech, or neurological disabilities
-3. [Interaction tests](./interaction-testing.md) verify component functionality by simulating user behaviour, firing events, and ensuring that state is updated as expected
-4. [Snapshot tests](./snapshot-testing.md) detect changes in the rendered markup to surface rendering errors or warnings
-5. [Import stories in other tests](./importing-stories-in-tests.md) to QA even more UI characteristics
+- [**Visual tests**](./visual-testing.md) capture a screenshot of every story then compare it against baselines to detect appearance and integration issues
+- [**Accessibility tests**](./accessibility-testing.md) catch usability issues related to visual, hearing, mobility, cognitive, speech, or neurological disabilities
+- [**Interaction tests**](./interaction-testing.md) verify component functionality by simulating user behaviour, firing events, and ensuring that state is updated as expected
+- [**Snapshot tests**](./snapshot-testing.md) detect changes in the rendered markup to surface rendering errors or warnings
+- [**Import stories in other tests**](./importing-stories-in-tests.md) to QA even more UI characteristics
