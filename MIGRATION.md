@@ -5,6 +5,7 @@
   - [CSF3 enabled](#csf3-enabled)
     - [Optional titles](#optional-titles)
     - [String literal titles](#string-literal-titles)
+    - [StoryObj type](#storyobj-type)
   - [Story Store v7](#story-store-v7)
     - [Behavioral differences](#behavioral-differences)
     - [Main.js framework field](#mainjs-framework-field)
@@ -260,6 +261,30 @@ export default {
 export default {
   title: `${bar}`,
 };
+```
+
+#### StoryObj type
+
+The TypeScript type for CSF3 story objects is `StoryObj`, and this will become the default in Storybook 7.0. In 6.x, the `StoryFn` type is the default, and `Story` is aliased to `StoryFn`.
+
+If you are migrating to experimental CSF3, the following is compatible with 6.4 and requires the least amount of change to your code today:
+
+```ts
+// CSF2 function stories, current API, will break in 7.0
+import type { Story } from '@storybook/<framework>';
+
+// CSF3 object stories, will persist in 7.0
+import type { StoryObj } from '@storybook/<framework>';
+```
+
+The following is compatible with 6.4 and also forward-compatible with anticipated 7.0 changes:
+
+```ts
+// CSF2 function stories, forward-compatible mode
+import type { StoryFn } from '@storybook/<framework>';
+
+// CSF3 object stories, using future 7.0 types
+import type { Story } from '@storybook/<framework>/types-7-0';
 ```
 
 ### Story Store v7
