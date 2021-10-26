@@ -21,7 +21,7 @@ const Side = styled.div<SideProps>(
     left
       ? {
           '& > *': {
-            marginLeft: 5,
+            marginLeft: 4,
           },
         }
       : {},
@@ -30,7 +30,7 @@ const Side = styled.div<SideProps>(
       ? {
           marginLeft: 30,
           '& > *': {
-            marginRight: 5,
+            marginRight: 4,
           },
         }
       : {}

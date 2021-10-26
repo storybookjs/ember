@@ -86,10 +86,10 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     display: 'inline-flex',
     fontSize: 13,
     fontWeight: 'bold',
-    height: 24,
+    height: 28,
     justifyContent: 'center',
-    marginTop: 8,
-    padding: '6px 5px',
+    marginTop: 6,
+    padding: '8px 7px',
 
     '&:hover': {
       background: transparentize(0.88, theme.color.secondary),
