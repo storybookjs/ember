@@ -154,7 +154,7 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   const [fileName] = storyFilePath.toString().split('/').slice(-1);
   const scrollToTarget = () => scrollTarget?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
-  const isDebuggingEnabled = FEATURES.debugModeInteractions === true;
+  const isDebuggingEnabled = FEATURES.interactionsDebugger === true;
 
   const isDebugging = log.some((item) => pendingStates.includes(item.state));
   const hasPrevious = log.some((item) => completedStates.includes(item.state));
