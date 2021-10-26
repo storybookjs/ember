@@ -77,7 +77,7 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
         logger.warn('received globals from a non-local ref. This is not currently supported.');
       }
 
-      if (currentGlobals) {
+      if (currentGlobals && !deepEqual(globals, currentGlobals)) {
         api.updateGlobals(currentGlobals);
       }
     });
