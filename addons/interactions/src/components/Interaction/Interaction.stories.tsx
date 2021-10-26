@@ -14,6 +14,7 @@ export default {
   args: {
     callsById: new Map(),
     isDisabled: false,
+    isDebuggingEnabled: true,
   },
 } as ComponentMeta<typeof Interaction>;
 
