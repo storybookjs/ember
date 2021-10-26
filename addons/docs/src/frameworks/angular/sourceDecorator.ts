@@ -16,16 +16,24 @@ export const skipSourceRender = (context: StoryContext) => {
   return sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
+let prettyUpInternal: (source: string) => string | undefined;
+
 const makePrettyUp = async () => {
+  if (prettyUpInternal) {
+    return prettyUpInternal;
+  }
+
   const prettierHtml = await import('prettier/parser-html');
   const prettier = await import('prettier/standalone');
-  return (source: string) => {
+
+  prettyUpInternal = (source: string) => {
     return prettier.format(source, {
       parser: 'angular',
       plugins: [prettierHtml],
       htmlWhitespaceSensitivity: 'ignore',
     });
   };
+  return prettyUpInternal;
 };
 
 /**
@@ -51,7 +59,7 @@ export const sourceDecorator = (
 
   useEffect(() => {
     prettyUpPromise.then((prettyUp) => {
-      if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
+      if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(toEmit));
     });
   });
 
