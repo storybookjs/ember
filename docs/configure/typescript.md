@@ -37,6 +37,8 @@ The following code snippets shows the fields for you to use with TypeScript:
 | **reactDocgen**                  | React     | Which react docgen processor to run: `"react-docgen-typescript"`, `"react-docgen"`, `false` | string or false                                                                                                   |
 | **reactDocgenTypescriptOptions** | React     | Options to pass to react-docgen-typescript-plugin if react-docgen-typescript is enabled.    | [See docs](https://github.com/hipstersmoothie/react-docgen-typescript-plugin)                                     |
 
+See default values [here](https://github.com/storybookjs/storybook/blob/next/lib/core-server/src/presets/common-preset.ts#L51)
+
 ### Overriding the configuration to infer additional props
 
 The configuration provided above will remove any props from any third party libraries.
