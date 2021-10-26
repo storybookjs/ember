@@ -46,6 +46,7 @@ export function start<TFramework extends AnyFramework>(
         clearDecorators: removedApi('clientApi.clearDecorators'),
         setAddon: removedApi('clientApi.setAddon'),
         getStorybook: removedApi('clientApi.getStorybook'),
+        storiesOf: removedApi('clientApi.storiesOf'),
       },
     };
   }
