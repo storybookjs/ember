@@ -147,6 +147,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       projectAnnotations = getProjectAnnotations();
       this.renderToDOM = projectAnnotations.renderToDOM;
+      if (!this.renderToDOM) {
+        throw new Error(dedent`
+            Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+
+            You can fix this automatically by running:
+
+            npx sb@next automigrate
+        
+            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
+          `);
+      }
       return projectAnnotations;
     } catch (err) {
       logger.warn(err);
@@ -463,20 +474,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
     let controller: AbortController;
-    let loadedContext: StoryContext<TFramework>;
-    const render = async ({ initial = false, forceRemount = false } = {}) => {
+    let notYetRendered = true;
+    const render = async ({ forceRemount = false } = {}) => {
       let ctrl = controller; // we also need a stable reference within this closure
 
-      if (initial || forceRemount) {
-        // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
-        // play function might continue execution regardless, which we deal with during cleanup.
-        // Note we can't reload the page here because there's a legitimate use case for forceRemount
-        // while in the 'playing' phase: the play function may never resolve during debugging, while
-        // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
-        if (ctrl) ctrl.abort();
-        ctrl = createController();
-        controller = ctrl;
-      }
+      // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
+      // play function might continue execution regardless, which we deal with during cleanup.
+      // Note we can't reload the page here because there's a legitimate use case for forceRemount
+      // while in the 'playing' phase: the play function may never resolve during debugging, while
+      // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
+      if (ctrl) ctrl.abort();
+      ctrl = createController();
+      controller = ctrl;
 
       const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
         phase = phaseName;
@@ -488,55 +497,34 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         }
       };
 
-      if (initial) {
-        const storyContext = this.storyStore.getStoryContext(story);
-        try {
-          await runPhase('loading', async () => {
-            loadedContext = await applyLoaders({
-              ...storyContext,
-              viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
-            } as StoryContextForLoaders<TFramework>);
-          });
-          if (ctrl.signal.aborted) return;
-        } catch (err) {
-          renderContextWithoutStoryContext.showException(err);
-          return;
-        }
-      } else if (!loadedContext) {
-        // The story has not finished rendering the first time. The loaders are still running
-        // and we will pick up the new args/globals values when renderToDOM is called.
-        return;
-      }
-
-      // By this stage, it is possible that new args/globals have been received for this story
-      // and we need to ensure we render it with the new values
-      const renderStoryContext: StoryContext<TFramework> = {
-        ...loadedContext,
-        ...this.storyStore.getStoryContext(story),
-        abortSignal: ctrl.signal,
-        canvasElement: element,
-      };
-      const renderContext: RenderContext<TFramework> = {
-        ...renderContextWithoutStoryContext,
-        forceRemount,
-        storyContext: renderStoryContext,
-        storyFn: () => unboundStoryFn(renderStoryContext),
-        unboundStoryFn,
-      };
-
       try {
-        if (!this.renderToDOM) {
-          throw new Error(dedent`
-            Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+        let loadedContext: StoryContext<TFramework>;
+        await runPhase('loading', async () => {
+          loadedContext = await applyLoaders({
+            ...this.storyStore.getStoryContext(story),
+            viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
+          } as StoryContextForLoaders<TFramework>);
+        });
+        if (ctrl.signal.aborted) return;
 
-            You can fix this automatically by running:
+        const renderStoryContext: StoryContext<TFramework> = {
+          ...loadedContext,
+          // By this stage, it is possible that new args/globals have been received for this story
+          // and we need to ensure we render it with the new values
+          ...this.storyStore.getStoryContext(story),
+          abortSignal: ctrl.signal,
+          canvasElement: element,
+        };
+        const renderContext: RenderContext<TFramework> = {
+          ...renderContextWithoutStoryContext,
+          forceRemount: forceRemount || notYetRendered,
+          storyContext: renderStoryContext,
+          storyFn: () => unboundStoryFn(renderStoryContext),
+          unboundStoryFn,
+        };
 
-            npx sb@next automigrate
-        
-            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
-          `);
-        }
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
+        notYetRendered = false;
         if (ctrl.signal.aborted) return;
 
         if (forceRemount && playFunction) {
@@ -554,7 +542,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // function below right away, so if the user changes story during the first render we can cancel
     // it without having to first wait for it to finish.
     // Whenever the selection changes we want to force the component to be remounted.
-    render({ initial: true, forceRemount: true });
+    render({ forceRemount: true });
 
     const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) render({ forceRemount: true });

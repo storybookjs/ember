@@ -430,7 +430,8 @@ describe('PreviewWeb', () => {
           const preview = await createAndRenderPreview();
 
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
-          expect(preview.view.showErrorDisplay.mock.calls[0][0]).toMatchInlineSnapshot(`
+          expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
+            .toMatchInlineSnapshot(`
             [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
 
                 You can fix this automatically by running:
@@ -709,7 +710,7 @@ describe('PreviewWeb', () => {
     });
 
     describe('while story is still rendering', () => {
-      it('silently changes args if still running loaders', async () => {
+      it('runs loaders again and stops previous render', async () => {
         const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
@@ -718,14 +719,27 @@ describe('PreviewWeb', () => {
         await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRenderPhase('loading');
 
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: { foo: 'a' },
+          })
+        );
+
+        componentOneExports.default.loaders[0].mockClear();
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
 
-        // Now let the loader resolve
+        // Now let the first loader call resolve
         openGate({ l: 8 });
         await waitForRender();
+
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: { foo: 'a', new: 'arg' },
+          })
+        );
 
         // Story gets rendered with updated args
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
@@ -733,7 +747,7 @@ describe('PreviewWeb', () => {
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
-              loaded: { l: 8 },
+              loaded: { l: 7 }, // This is the value returned by the *second* loader call
               args: { foo: 'a', new: 'arg' },
             }),
           }),
