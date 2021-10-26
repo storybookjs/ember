@@ -319,7 +319,7 @@
   "optionalDependencies": {
     "@cypress/skip-test": "^2.6.1",
     "@cypress/webpack-preprocessor": "^5.9.1",
-    "cypress": "8.5.0",
+    "cypress": "8.7.0",
     "puppeteer": "^2.1.1",
     "ts-loader": "^8.0.14",
     "verdaccio": "^4.10.0",
