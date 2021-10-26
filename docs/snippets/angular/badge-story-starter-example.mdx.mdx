@@ -24,7 +24,6 @@ Let's define a story for our `Badge` component:
     template:`<Badge status="positive">Positive</Badge>`,
   })} />
 
-
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
@@ -58,12 +57,12 @@ with unique URLs and isolated snapshot tests.
       template: `<Badge status="error">Error</Badge>`,
     })} />
 
-  <Story 
+  <Story
     name="with icon"
     decorators={[
       moduleMetadata({
-        declarations: [Badge, Icon],
-        imports: [CommonModule],
+       declarations: [Badge, Icon],
+       imports: [CommonModule],
       })
     ]} 
     render={() => ({
