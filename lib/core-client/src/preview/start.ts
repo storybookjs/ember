@@ -38,7 +38,6 @@ export function start<TFramework extends AnyFramework>(
     return {
       forceReRender: removedApi('forceReRender'),
       getStorybook: removedApi('getStorybook'),
-      raw: removedApi('raw'),
       configure: removedApi('configure'),
       clientApi: {
         addDecorator: removedApi('clientApi.addDecorator'),
@@ -48,6 +47,7 @@ export function start<TFramework extends AnyFramework>(
         setAddon: removedApi('clientApi.setAddon'),
         getStorybook: removedApi('clientApi.getStorybook'),
         storiesOf: removedApi('clientApi.storiesOf'),
+        raw: removedApi('raw'),
       },
     };
   }
