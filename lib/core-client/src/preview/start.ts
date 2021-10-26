@@ -34,7 +34,7 @@ export function start<TFramework extends AnyFramework>(
     render?: ArgsStoryFn<TFramework>;
   } = {}
 ) {
-  if (FEATURES.storyStoreV7) {
+  if (FEATURES?.storyStoreV7) {
     return {
       forceReRender: removedApi('forceReRender'),
       getStorybook: removedApi('getStorybook'),
