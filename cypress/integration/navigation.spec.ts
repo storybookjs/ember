@@ -28,7 +28,7 @@ describe('Routing', () => {
   it('should navigate to story addons-a11y-basebutton--default', () => {
     visit('official-storybook');
 
-    cy.get('#addons-a11y-basebutton--label').click();
+    cy.get('#addons-a11y-basebutton--label').click({ force: true });
     cy.url().should('include', 'path=/story/addons-a11y-basebutton--label');
   });
 
