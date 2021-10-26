@@ -1,9 +1,10 @@
 import React from 'react';
-import { createMemorySource, createHistory } from '@reach/router';
 
-import { Root as App } from './index';
+import { Provider as ManagerProvider } from '@storybook/api';
+import { LocationProvider } from '@storybook/router';
+import { HelmetProvider } from 'react-helmet-async';
+import App from './app';
 import { PrettyFakeProvider, FakeProvider } from './FakeProvider';
-import Provider from './provider';
 
 export default {
   title: 'UI/App',
@@ -11,14 +12,67 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [
+    (StoryFn) => (
+      <HelmetProvider key="helmet.Provider">
+        <LocationProvider>
+          <StoryFn />
+        </LocationProvider>
+      </HelmetProvider>
+    ),
+  ],
 };
 
-const history = createHistory(createMemorySource('/?path=/story/story--id'));
-
 export const Default = () => (
-  <App provider={(new FakeProvider() as unknown) as Provider} history={history} />
+  <ManagerProvider
+    key="manager"
+    provider={new FakeProvider()}
+    path="/story/ui-app--loading-state"
+    storyId="ui-app--loading-state"
+    location={{ search: '' }}
+    navigate={() => {}}
+    docsMode={false}
+  >
+    <App
+      key="app"
+      viewMode="story"
+      layout={{
+        initialActive: 'addons',
+        isFullscreen: false,
+        isToolshown: true,
+        panelPosition: 'right',
+        showNav: true,
+        showPanel: true,
+      }}
+      panelCount={0}
+      docsOnly={false}
+    />
+  </ManagerProvider>
 );
 
 export const LoadingState = () => (
-  <App provider={(new PrettyFakeProvider() as unknown) as Provider} history={history} />
+  <ManagerProvider
+    key="manager"
+    provider={new PrettyFakeProvider()}
+    path=""
+    storyId="ui-app--loading-state"
+    location={{ search: '' }}
+    navigate={() => {}}
+    docsMode={false}
+  >
+    <App
+      key="app"
+      viewMode="story"
+      layout={{
+        initialActive: 'addons',
+        isFullscreen: false,
+        isToolshown: true,
+        panelPosition: 'right',
+        showNav: true,
+        showPanel: true,
+      }}
+      panelCount={0}
+      docsOnly={false}
+    />
+  </ManagerProvider>
 );
