@@ -44,6 +44,7 @@ export function start<TFramework extends AnyFramework>(
         addDecorator: removedApi('clientApi.addDecorator'),
         addParameters: removedApi('clientApi.addParameters'),
         clearDecorators: removedApi('clientApi.clearDecorators'),
+        addLoader: removedApi('clientApi.addLoader'),
         setAddon: removedApi('clientApi.setAddon'),
         getStorybook: removedApi('clientApi.getStorybook'),
         storiesOf: removedApi('clientApi.storiesOf'),
