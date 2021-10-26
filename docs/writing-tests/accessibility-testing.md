@@ -1,5 +1,5 @@
 ---
-title: 'Accessibility testing with Storybook'
+title: 'Accessibility tests'
 ---
 
 Accessibility is the practice of making websites inclusive to all. That means supporting requirements such as: keyboard navigation, screen reader support, touch-friendly, usable color contrast, reduced motion, and zoom support.
@@ -10,7 +10,7 @@ Storybook’s official [a11y addon](https://storybook.js.org/addons/@storybook/a
 
 ![Accessibility testing](./accessibility-testing-storybook.gif)
 
-### Setup a11y addon
+## Setup a11y addon
 
 To enable accessibility testing with Storybook, you'll need to install the [`@storybook/addon-a11y`](https://storybook.js.org/addons/@storybook/addon-a11y/) addon. Run the following command:
 

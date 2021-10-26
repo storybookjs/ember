@@ -1,5 +1,5 @@
 ---
-title: 'Interaction testing with Storybook'
+title: 'Interaction tests'
 ---
 
 As you build more complex UIs like pages, components become responsible for more than just rendering the UI. They fetch data and manage state. Interaction tests allow you to verify these functional aspects of UI.
@@ -73,7 +73,7 @@ The example below showcases how a form component behaves when information is add
 
 When Storybook finishes rendering the story, it interacts with the component, fills in the form, simulates a button click, and verifies if the values returned match the provided ones.
 
-## Debugging
+### Debugging
 
 The [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/) addon includes a set of UI controls to allow you control over the test execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also, providing you with an easy-to-use debugger for errors.
 
@@ -83,7 +83,7 @@ Open your `Interactions` panel and click on an individual step to jump to the ex
 
 ![Storybook addon interactions click steps](./addon-interactions-individual-states.gif)
 
-## Permalinks for reproductions
+### Permalinks for reproductions
 
 The `play` function is executed after the story is rendered. If there’s an error, it’ll be shown in the interaction addon panel to help with debugging.
 
