@@ -13,11 +13,11 @@ import { Interaction } from './components/Interaction/Interaction';
 
 const { FEATURES } = global;
 
-interface PanelProps {
+interface AddonPanelProps {
   active: boolean;
 }
 
-interface PanelPropsy {
+interface InteractionsPanelProps {
   active: boolean;
   showTabIcon?: boolean;
   interactions: (Call & { state?: CallStates })[];
@@ -45,7 +45,7 @@ const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
 });
 
-export const AddonPanelPure: React.FC<PanelPropsy> = React.memo(
+export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   ({
     showTabIcon,
     interactions,
@@ -118,7 +118,7 @@ export const AddonPanelPure: React.FC<PanelPropsy> = React.memo(
   }
 );
 
-export const Panel: React.FC<PanelProps> = (props) => {
+export const Panel: React.FC<AddonPanelProps> = (props) => {
   const [isLocked, setLock] = React.useState(false);
   const [isPlaying, setPlaying] = React.useState(true);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
