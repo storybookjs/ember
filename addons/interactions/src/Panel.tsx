@@ -167,6 +167,15 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
 
   const showTabIcon = isDebugging || (!isPlaying && hasException);
 
+  const onStart = React.useCallback(() => emit(EVENTS.START, { storyId }), [storyId]);
+  const onPrevious = React.useCallback(() => emit(EVENTS.BACK, { storyId }), [storyId]);
+  const onNext = React.useCallback(() => emit(EVENTS.NEXT, { storyId }), [storyId]);
+  const onEnd = React.useCallback(() => emit(EVENTS.END, { storyId }), [storyId]);
+  const onInteractionClick = React.useCallback(
+    (callId: string) => emit(EVENTS.GOTO, { storyId, callId }),
+    [storyId]
+  );
+
   return (
     <AddonPanelPure
       showTabIcon={showTabIcon}
@@ -180,11 +189,11 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
       calls={calls.current}
       endRef={endRef}
       isDebuggingEnabled={isDebuggingEnabled}
-      onStart={() => emit(EVENTS.START, { storyId })}
-      onPrevious={() => emit(EVENTS.BACK, { storyId })}
-      onNext={() => emit(EVENTS.NEXT, { storyId })}
-      onEnd={() => emit(EVENTS.END, { storyId })}
-      onInteractionClick={(callId) => emit(EVENTS.GOTO, { storyId, callId })}
+      onStart={onStart}
+      onPrevious={onPrevious}
+      onNext={onNext}
+      onEnd={onEnd}
+      onInteractionClick={onInteractionClick}
       onScrollToEnd={scrollTarget && scrollToTarget}
       {...props}
     />
