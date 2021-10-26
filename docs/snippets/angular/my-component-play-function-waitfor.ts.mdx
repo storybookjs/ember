@@ -7,8 +7,6 @@ import { MyComponent } from './MyComponent.component';
 
 export default {
   component: MyComponent,
-  //👇 Marking the onSubmit with this configuration will log the event in the Actions panel
-  argTypes: { onSubmit: { action: true } },
 };
 
 export const ExampleAsyncStory = {
@@ -20,7 +18,7 @@ export const ExampleAsyncStory = {
     await userEvent.type(emailInput, 'WrongInput', {
       delay: 100,
     });
-
+    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const Submit = screen.getByRole('button');
 
     await userEvent.click(Submit);

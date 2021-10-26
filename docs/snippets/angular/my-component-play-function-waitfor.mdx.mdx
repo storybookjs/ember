@@ -7,9 +7,7 @@ import { screen, fireEvent, userEvent, waitFor } from '@storybook/testing-librar
 
 import { MyComponent } from './MyComponent.component';
 
-<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel -->
-
-<Meta title="WithAsync" component={MyComponent} argTypes={{ onSubmit: { action: true }}/>
+<Meta title="WithAsync" component={MyComponent}/>
 
 <!-- The delay option sets the amount of milliseconds between characters being typed-->
 
@@ -24,7 +22,7 @@ import { MyComponent } from './MyComponent.component';
     await userEvent.type(emailInput, 'WrongInput', {
       delay: 100,
     });
-
+    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const Submit = screen.getByRole('button');
     await userEvent.click(Submit);
 

@@ -7,9 +7,7 @@ import { screen, userEvent } from '@storybook/testing-library';
 
 import { RegistrationForm } from './RegistrationForm.component';
 
-<!-- 👇 Marking the onSubmit with this configuration will log the event in the Actions panel -->
-
-<Meta title="RegistrationForm" component={RegistrationForm} argTypes={{ onSubmit: { action: true }} />
+<Meta title="RegistrationForm" component={RegistrationForm} />
 
 <Story
   name="FilledForm"
@@ -30,10 +28,10 @@ import { RegistrationForm } from './RegistrationForm.component';
     await userEvent.type(passwordInput, 'ExamplePassword', {
       delay: 100,
     });
-
+    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     const submitButton = screen.getByRole('button');
 
-    await fireEvent.click(submitButton);
+    await userEvent.click(submitButton);
   }}
 />
 ```

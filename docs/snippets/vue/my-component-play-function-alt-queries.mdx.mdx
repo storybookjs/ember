@@ -7,13 +7,12 @@ import { screen, userEvent } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
-<!-- 👇 Marking the onButtonClick with this configuration will log the event in the Actions panel -->
-
-<Meta title="QueryMethods" component={MyComponent} argTypes={{ onButtonClick: { action: true }}/>
+<Meta title="QueryMethods" component={MyComponent}/>
 
 <Story 
   name="ExampleWithRole"
   play={async () => {
+    // See https://storybook.js.org/docs/7.0/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await userEvent.click(screen.getByRole('button'));
   }}
   render={() => ({

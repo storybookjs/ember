@@ -7,12 +7,11 @@ import MyComponent from './MyComponent.svelte';
 
 export default {
   component: MyComponent,
-   //👇 Marking the onClick with this configuration will log the event in the Actions panel
-  argTypes: { onClick: { action: true } },
 };
 
 export const ClickExample = {
   play: async () => {
+    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await userEvent.click(screen.getByRole('button'));
   },
   render: () => ({
@@ -22,6 +21,7 @@ export const ClickExample = {
 
 export const FireEventExample = {
   play: async () => {
+    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await fireEvent.click(screen.getByTestId('data-testid'));
   },
   render: () => ({
