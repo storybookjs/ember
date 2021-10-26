@@ -3,8 +3,8 @@ import dedent from 'ts-dedent';
 import type { NormalizedStoriesSpecifier } from '../types';
 import { globToRegexp } from './glob-to-regexp';
 
-export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
-  const { directory, files, importPathMatcher } = specifier;
+export function webpackIncludeRegexp(specifier: NormalizedStoriesSpecifier) {
+  const { directory, files } = specifier;
 
   // It appears webpack passes *something* similar to the absolute path to the file
   // on disk (prefixed with something unknown) to the matcher.
@@ -13,9 +13,16 @@ export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
   // It's imperfect as it could match extra things in extremely unusual cases, but it'll do for now.
   // NOTE: directory is "slashed" so will contain only `/` (no `\`), even on windows
   const directoryWithoutLeadingDots = directory.replace(/^(\.+\/)+/, '/');
-  const webpackIncludeRegexWithCaret = globToRegexp(`${directoryWithoutLeadingDots}/${files}`);
+  const webpackIncludeGlob = ['.', '..'].includes(directory)
+    ? files
+    : `${directoryWithoutLeadingDots}/${files}`;
+  const webpackIncludeRegexpWithCaret = globToRegexp(webpackIncludeGlob);
   // micromatch is creating an exact match, but we are only matching the end of the filename
-  const webpackIncludeRegex = new RegExp(webpackIncludeRegexWithCaret.source.replace(/^\^/, ''));
+  return new RegExp(webpackIncludeRegexpWithCaret.source.replace(/^\^/, ''));
+}
+
+export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
+  const { directory, importPathMatcher } = specifier;
 
   return dedent`
       async (path) => {
@@ -25,7 +32,7 @@ export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
 
         const pathRemainder = path.substring(${directory.length + 1});
         return import(
-          /* webpackInclude: ${webpackIncludeRegex} */
+          /* webpackInclude: ${webpackIncludeRegexp(specifier)} */
           '${directory}/' + pathRemainder
         );
       }
