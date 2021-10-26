@@ -164,8 +164,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
           return acc;
         }, queryParams),
       };
-      const equal = deepEqual(customQueryParams, update);
-      if (!equal) {
+      if (!deepEqual(customQueryParams, update)) {
         store.setState({ customQueryParams: update });
         fullAPI.emit(UPDATE_QUERY_PARAMS, update);
       }
