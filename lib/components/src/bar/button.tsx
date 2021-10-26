@@ -77,31 +77,24 @@ export interface IconButtonProps {
 
 export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<IconButtonProps>(
   ({ theme }) => ({
-    display: 'inline-flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    height: 24,
-    marginTop: 8,
-    padding: '6px 5px',
     background: 'transparent',
     border: 'none',
     borderRadius: 4,
     color: 'inherit',
     cursor: 'pointer',
-
-    // Icon Buttons may have text depending on user preferences.
-    // While we don't recommend having text for IconButtons, this style ensures that the text is the correct size.
-    fontWeight: 'bold',
+    display: 'inline-flex',
     fontSize: 13,
-
-    // I am unsure we need this transition, but if you want a smooth animation, this works nicely
-    // transition: 'all 0.15s ease-in-out',
+    fontWeight: 'bold',
+    height: 24,
+    justifyContent: 'center',
+    marginTop: 8,
+    padding: '6px 5px',
 
     '&:hover': {
-      outline: '0 none',
-      // background: theme.background.hoverable,
       background: transparentize(0.88, theme.color.secondary),
       color: theme.color.secondary,
+      outline: '0 none',
     },
     '& > svg': {
       width: 14,
@@ -110,9 +103,9 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
   ({ active, theme }) =>
     active
       ? {
-          outline: '0 none',
           backgroundColor: theme.background.hoverable,
           color: theme.color.secondary,
+          outline: '0 none',
         }
       : {}
 );
