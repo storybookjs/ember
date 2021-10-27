@@ -56,10 +56,17 @@ export const Passing: Story = {
   },
 };
 
-export const Playing: Story = {
+export const Paused: Story = {
   args: {
     isPlaying: true,
     interactions: [getCall(CallStates.WAITING)],
+  },
+};
+
+export const Playing: Story = {
+  args: {
+    isPlaying: true,
+    interactions: [getCall(CallStates.ACTIVE)],
   },
 };
 
