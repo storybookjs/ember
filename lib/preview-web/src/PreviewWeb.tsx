@@ -164,6 +164,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.indexClient.addEventListener(INVALIDATE, this.onStoryIndexChanged.bind(this));
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
+    this.channel.on(Events.UPDATE_QUERY_PARAMS, this.onUpdateQueryParams.bind(this));
     this.channel.on(Events.UPDATE_GLOBALS, this.onUpdateGlobals.bind(this));
     this.channel.on(Events.UPDATE_STORY_ARGS, this.onUpdateArgs.bind(this));
     this.channel.on(Events.RESET_STORY_ARGS, this.onResetArgs.bind(this));
@@ -219,6 +220,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.urlStore.setSelection(selection);
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
     this.renderSelection();
+  }
+
+  onUpdateQueryParams(queryParams: any) {
+    this.urlStore.setQueryParams(queryParams);
   }
 
   onUpdateGlobals({ globals }: { globals: Globals }) {

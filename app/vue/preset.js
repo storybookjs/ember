@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-babel-vue');
+module.exports = require('./dist/cjs/server/framework-preset-vue');
