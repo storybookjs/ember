@@ -65,13 +65,20 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
         );
       }
     });
+
+    // Emitted by the preview on initialization
     fullAPI.on(SET_GLOBALS, function handleSetStories({ globals, globalTypes }: SetGlobalsPayload) {
       const { ref } = getEventMetadata(this, fullAPI);
+      const currentGlobals = store.getState()?.globals;
 
       if (!ref) {
         store.setState({ globals, globalTypes });
       } else if (Object.keys(globals).length > 0) {
         logger.warn('received globals from a non-local ref. This is not currently supported.');
+      }
+
+      if (currentGlobals && !deepEqual(globals, currentGlobals)) {
+        api.updateGlobals(currentGlobals);
       }
     });
   };
