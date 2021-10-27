@@ -117,7 +117,7 @@ describe('PreviewWeb', () => {
     it('shows an error if getProjectAnnotations throws', async () => {
       const err = new Error('meta error');
       const preview = new PreviewWeb();
-      preview.initialize({
+      await preview.initialize({
         importFn,
         getProjectAnnotations: () => {
           throw err;
@@ -184,6 +184,18 @@ describe('PreviewWeb', () => {
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
         foo: 'url',
       });
+    });
+
+    it('allows async getProjectAnnotations', async () => {
+      const preview = new PreviewWeb();
+      await preview.initialize({
+        importFn,
+        getProjectAnnotations: async () => {
+          return getProjectAnnotations();
+        },
+      });
+
+      expect(preview.storyStore.globals.get()).toEqual({ a: 'b' });
     });
   });
 
@@ -2385,7 +2397,7 @@ describe('PreviewWeb', () => {
 
       mockChannel.emit.mockClear();
       const err = new Error('error getting meta');
-      preview.onGetProjectAnnotationsChanged({
+      await preview.onGetProjectAnnotationsChanged({
         getProjectAnnotations: () => {
           throw err;
         },
