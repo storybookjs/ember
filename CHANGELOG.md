@@ -1,3 +1,15 @@
+## 6.4.0-beta.20 (October 26, 2021)
+
+### Bug Fixes
+
+- Interactions: Do not cleanup state when loading initial story ([#16462](https://github.com/storybookjs/storybook/pull/16462))
+- Addon-interactions: Add safety check on fileName parameter ([#16454](https://github.com/storybookjs/storybook/pull/16454))
+- Core: Fix optional global features in PreviewWeb ([#16448](https://github.com/storybookjs/storybook/pull/16448))
+
+### Maintenance
+
+- UI: Migrate router to react-router ([#16440](https://github.com/storybookjs/storybook/pull/16440))
+
 ## 6.4.0-beta.19 (October 22, 2021)
 
 ### Bug Fixes

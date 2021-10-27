@@ -53,7 +53,8 @@ export const Panel: React.FC<PanelProps> = (props) => {
   });
 
   const { storyId } = useStorybookState();
-  const [fileName] = useParameter('fileName', '').split('/').slice(-1);
+  const storyFilePath = useParameter('fileName', '');
+  const [fileName] = storyFilePath.toString().split('/').slice(-1);
   const scrollToTarget = () => scrollTarget?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
   const isDebugging = log.some((item) => pendingStates.includes(item.state));
