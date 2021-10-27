@@ -2233,6 +2233,78 @@ describe('PreviewWeb', () => {
       });
     });
 
+    describe('when another (not current) story changes', () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+      afterEach(() => {
+        jest.useRealTimers();
+      });
+      const newComponentOneExports = merge({}, componentOneExports, {
+        a: { args: { bar: 'edited' }, argTypes: { bar: { type: { name: 'string' } } } },
+      });
+      const newImportFn = jest.fn(async (path) => {
+        return path === './src/ComponentOne.stories.js'
+          ? newComponentOneExports
+          : componentTwoExports;
+      });
+      it('retains the same delta to the args', async () => {
+        // Start at Story A
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        // Change A's args
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { foo: 'updated' },
+        });
+        await waitForRender();
+
+        // Change to story B
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'updated',
+        });
+
+        // Update story A's args via HMR
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        // Change back to Story A
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'updated',
+          bar: 'edited',
+        });
+
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              id: 'component-one--a',
+              args: { foo: 'updated', bar: 'edited' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+      });
+    });
+
     describe('if the story no longer exists', () => {
       const { a, ...componentOneExportsWithoutA } = componentOneExports;
       const newImportFn = jest.fn(async (path) => {
