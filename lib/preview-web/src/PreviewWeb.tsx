@@ -328,8 +328,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     if (persistedArgs) {
       this.storyStore.args.updateFromPersisted(story, persistedArgs);
-    } else if (implementationChanged) {
-      this.storyStore.args.resetOnImplementationChange(story, this.previousStory);
     }
 
     // Don't re-render the story if nothing has changed to justify it
