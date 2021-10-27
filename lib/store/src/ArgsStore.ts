@@ -26,7 +26,7 @@ export class ArgsStore {
     if (!this.initialArgsByStoryId[story.id]) {
       this.initialArgsByStoryId[story.id] = story.initialArgs;
       this.argsByStoryId[story.id] = story.initialArgs;
-    } else {
+    } else if (this.initialArgsByStoryId[story.id] !== story.initialArgs) {
       // When we get a new version of a story (with new initialArgs), we re-apply the same diff
       // that we had previously applied to the old version of the story
       const delta = deepDiff(this.initialArgsByStoryId[story.id], this.argsByStoryId[story.id]);
