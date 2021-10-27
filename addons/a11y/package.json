@@ -81,7 +81,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "1a9315fd39f7e4abcdf3eb839dc29aedce346e01",
+  "gitHead": "eb83ef6aefb6791324e2c70567bdc128cef09d92",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Accessibility",
