@@ -22,7 +22,7 @@ export default {
     ),
   ],
   parameters: {
-    layout: 'fullscren',
+    layout: 'fullscreen',
   },
 };
 
