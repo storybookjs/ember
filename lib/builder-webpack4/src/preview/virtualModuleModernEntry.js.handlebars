@@ -3,7 +3,8 @@ import fetch from 'unfetch';
 import { composeConfigs, PreviewWeb } from '@storybook/preview-web';    
 import { ClientApi } from '@storybook/client-api';    
 import { addons } from '@storybook/addons';
-import createChannel from '@storybook/channel-postmessage';
+import createPostMessageChannel from '@storybook/channel-postmessage';
+import createWebSocketChannel from '@storybook/channel-websocket';
 
 import { importFn } from './{{storiesFilename}}';
 
@@ -14,14 +15,19 @@ const getProjectAnnotations = () =>
     {{/each}}
   ]);
 
-const channel = createChannel({ page: 'preview' });
+const channel = createPostMessageChannel({ page: 'preview' });
 addons.setChannel(channel);
+
+// TODO--how to construct URL?
+const serverChannel = createWebSocketChannel({ url: `ws://${document.location.hostname}:${document.location.port}/` });
+addons.setServerChannel(serverChannel);
 
 const preview = new PreviewWeb();
 
 window.__STORYBOOK_PREVIEW__ = preview;
 window.__STORYBOOK_STORY_STORE__ = preview.storyStore;
 window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+window.__STORYBOOK_SERVER_CHANNEL__ = serverChannel;
 window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore });
 
 preview.initialize({ importFn, getProjectAnnotations });

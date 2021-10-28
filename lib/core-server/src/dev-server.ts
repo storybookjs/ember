@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import compression from 'compression';
+import { WebSocketServer } from 'ws';
 
 import { Builder, logConfig, Options, StorybookConfig } from '@storybook/core-common';
 
@@ -20,6 +21,7 @@ export async function storybookDevServer(options: Options) {
   const startTime = process.hrtime();
   const app = express();
   const server = await getServer(app, options);
+  const webSocketServer = new WebSocketServer({ server });
 
   app.use(compression({ level: 1 }));
 
@@ -38,7 +40,7 @@ export async function storybookDevServer(options: Options) {
 
   const features = await options.presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson || features?.storyStoreV7) {
-    await useStoriesJson(router, options);
+    await useStoriesJson(router, webSocketServer, options);
   }
 
   getMiddleware(options.configDir)(router);

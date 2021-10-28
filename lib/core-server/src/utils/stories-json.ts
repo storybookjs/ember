@@ -1,20 +1,20 @@
 import { Router, Request, Response } from 'express';
 import fs from 'fs-extra';
-import EventEmitter from 'events';
 import {
   Options,
   normalizeStories,
   NormalizedStoriesSpecifier,
   StorybookConfig,
 } from '@storybook/core-common';
+import Events from '@storybook/core-events';
 import debounce from 'lodash/debounce';
+import { WebSocket, WebSocketServer } from 'ws';
+import { stringify } from 'telejson';
 
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 import { watchStorySpecifiers } from './watch-story-specifiers';
-import { useEventsAsSSE } from './use-events-as-sse';
 
-const INVALIDATE = 'INVALIDATE';
-export const DEBOUNCE = 50;
+export const DEBOUNCE = 100;
 
 export async function extractStoriesJson(
   outputFile: string,
@@ -30,6 +30,7 @@ export async function extractStoriesJson(
 
 export async function useStoriesJson(
   router: Router,
+  webSocketServer: WebSocketServer,
   options: Options,
   workingDir: string = process.cwd()
 ) {
@@ -47,10 +48,14 @@ export async function useStoriesJson(
   // Wait until someone actually requests `stories.json` before we start generating/watching.
   // This is mainly for testing purposes.
   let started = false;
-  const invalidationEmitter = new EventEmitter();
-  const maybeInvalidate = debounce(() => invalidationEmitter.emit(INVALIDATE), DEBOUNCE, {
-    leading: true,
-  });
+  const invalidate = () => {
+    const event: any = { type: Events.STORY_INDEX_INVALIDATED, args: [] };
+    const data = stringify(event, { maxDepth: 15, allowFunction: true });
+    Array.from(webSocketServer.clients)
+      .filter((c) => c.readyState === WebSocket.OPEN)
+      .forEach((client) => client.send(data));
+  };
+  const maybeInvalidate = debounce(invalidate, DEBOUNCE, { leading: true });
   async function ensureStarted() {
     if (started) return;
     started = true;
@@ -63,12 +68,8 @@ export async function useStoriesJson(
     await generator.initialize();
   }
 
-  const eventsAsSSE = useEventsAsSSE(invalidationEmitter, [INVALIDATE]);
-
   router.use('/stories.json', async (req: Request, res: Response) => {
     await ensureStarted();
-
-    if (eventsAsSSE(req, res)) return;
 
     try {
       const index = await generator.getIndex();
