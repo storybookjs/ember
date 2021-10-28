@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import merge from 'lodash/merge';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import addons from '@storybook/addons';
+import addons, { mockChannel as createMockChannel } from '@storybook/addons';
 import { ModuleImportFn } from '@storybook/store';
 import { AnyFramework } from '@storybook/csf';
 
@@ -105,12 +105,9 @@ beforeEach(() => {
   mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
   addons.setChannel(mockChannel as any);
+  addons.setServerChannel(createMockChannel());
   mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
 });
-
-// afterEach(async () => {
-//   await new Promise((resolve) => setTimeout(resolve, 0));
-// });
 
 describe('PreviewWeb', () => {
   describe('initialize', () => {
