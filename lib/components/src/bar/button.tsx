@@ -1,6 +1,7 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
-import { transparentize } from 'polished';
+import { darken, transparentize } from 'polished';
+import { auto } from '@popperjs/core';
 
 interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -91,9 +92,15 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     marginTop: 6,
     padding: '8px 7px',
 
-    '&:hover, &:focus': {
+    '&:hover, &:focus-visible': {
       background: transparentize(0.88, theme.color.secondary),
       color: theme.color.secondary,
+    },
+    '&:focus-visible': {
+      outline: auto, // Ensures links have the same focus style
+    },
+    '&:focus:not(:focus-visible)': {
+      outline: 'none',
     },
     '& > svg': {
       width: 14,
@@ -104,11 +111,6 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
       ? {
           backgroundColor: theme.background.hoverable,
           color: theme.color.secondary,
-
-          '&:hover, &:focus': {
-            background: transparentize(0.82, theme.color.secondary),
-            color: theme.color.secondary,
-          },
         }
       : {}
 );
