@@ -65,11 +65,13 @@ export const Interaction = ({
   callsById,
   onClick,
   isDisabled,
+  isDebuggingEnabled,
 }: {
   call: Call;
   callsById: Map<Call['id'], Call>;
   onClick: React.MouseEventHandler<HTMLElement>;
   isDisabled: boolean;
+  isDebuggingEnabled?: boolean;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
@@ -77,9 +79,9 @@ export const Interaction = ({
       <RowLabel
         call={call}
         onClick={onClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        disabled={isDisabled}
+        disabled={isDebuggingEnabled ? isDisabled : true}
+        onMouseEnter={() => isDebuggingEnabled && setIsHovered(true)}
+        onMouseLeave={() => isDebuggingEnabled && setIsHovered(false)}
       >
         <StatusIcon status={isHovered ? CallStates.ACTIVE : call.state} />
         <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>

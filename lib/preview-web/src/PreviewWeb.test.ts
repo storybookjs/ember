@@ -430,7 +430,8 @@ describe('PreviewWeb', () => {
           const preview = await createAndRenderPreview();
 
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
-          expect(preview.view.showErrorDisplay.mock.calls[0][0]).toMatchInlineSnapshot(`
+          expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
+            .toMatchInlineSnapshot(`
             [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
 
                 You can fix this automatically by running:
@@ -709,7 +710,7 @@ describe('PreviewWeb', () => {
     });
 
     describe('while story is still rendering', () => {
-      it('silently changes args if still running loaders', async () => {
+      it('runs loaders again and stops previous render', async () => {
         const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
@@ -718,14 +719,27 @@ describe('PreviewWeb', () => {
         await new PreviewWeb().initialize({ importFn, getProjectAnnotations });
         await waitForRenderPhase('loading');
 
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: { foo: 'a' },
+          })
+        );
+
+        componentOneExports.default.loaders[0].mockClear();
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
 
-        // Now let the loader resolve
+        // Now let the first loader call resolve
         openGate({ l: 8 });
         await waitForRender();
+
+        expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
+          expect.objectContaining({
+            args: { foo: 'a', new: 'arg' },
+          })
+        );
 
         // Story gets rendered with updated args
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
@@ -733,7 +747,7 @@ describe('PreviewWeb', () => {
           expect.objectContaining({
             forceRemount: true,
             storyContext: expect.objectContaining({
-              loaded: { l: 8 },
+              loaded: { l: 7 }, // This is the value returned by the *second* loader call
               args: { foo: 'a', new: 'arg' },
             }),
           }),
@@ -1973,6 +1987,20 @@ describe('PreviewWeb', () => {
         });
       });
 
+      it('emits STORY_ARGS_UPDATED with new args', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+        mockChannel.emit.mockClear();
+
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+          storyId: 'component-one--a',
+          args: { foo: 'edited' },
+        });
+      });
+
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
         const preview = await createAndRenderPreview();
@@ -2215,6 +2243,78 @@ describe('PreviewWeb', () => {
         expect(mockChannel.emit).not.toHaveBeenCalledWith(
           Events.STORY_RENDERED,
           'component-one--a'
+        );
+      });
+    });
+
+    describe('when another (not current) story changes', () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+      afterEach(() => {
+        jest.useRealTimers();
+      });
+      const newComponentOneExports = merge({}, componentOneExports, {
+        a: { args: { bar: 'edited' }, argTypes: { bar: { type: { name: 'string' } } } },
+      });
+      const newImportFn = jest.fn(async (path) => {
+        return path === './src/ComponentOne.stories.js'
+          ? newComponentOneExports
+          : componentTwoExports;
+      });
+      it('retains the same delta to the args', async () => {
+        // Start at Story A
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        // Change A's args
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { foo: 'updated' },
+        });
+        await waitForRender();
+
+        // Change to story B
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'updated',
+        });
+
+        // Update story A's args via HMR
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        // Change back to Story A
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'updated',
+          bar: 'edited',
+        });
+
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            forceRemount: true,
+            storyContext: expect.objectContaining({
+              id: 'component-one--a',
+              args: { foo: 'updated', bar: 'edited' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
         );
       });
     });
