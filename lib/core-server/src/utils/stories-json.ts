@@ -8,11 +8,10 @@ import {
 } from '@storybook/core-common';
 import Events from '@storybook/core-events';
 import debounce from 'lodash/debounce';
-import { WebSocket, WebSocketServer } from 'ws';
-import { stringify } from 'telejson';
 
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 import { watchStorySpecifiers } from './watch-story-specifiers';
+import { ServerChannel } from './get-server-channel';
 
 export const DEBOUNCE = 100;
 
@@ -30,7 +29,7 @@ export async function extractStoriesJson(
 
 export async function useStoriesJson(
   router: Router,
-  webSocketServer: WebSocketServer,
+  serverChannel: ServerChannel,
   options: Options,
   workingDir: string = process.cwd()
 ) {
@@ -48,14 +47,11 @@ export async function useStoriesJson(
   // Wait until someone actually requests `stories.json` before we start generating/watching.
   // This is mainly for testing purposes.
   let started = false;
-  const invalidate = () => {
-    const event: any = { type: Events.STORY_INDEX_INVALIDATED, args: [] };
-    const data = stringify(event, { maxDepth: 15, allowFunction: true });
-    Array.from(webSocketServer.clients)
-      .filter((c) => c.readyState === WebSocket.OPEN)
-      .forEach((client) => client.send(data));
-  };
-  const maybeInvalidate = debounce(invalidate, DEBOUNCE, { leading: true });
+  const maybeInvalidate = debounce(
+    () => serverChannel.emit(Events.STORY_INDEX_INVALIDATED),
+    DEBOUNCE,
+    { leading: true }
+  );
   async function ensureStarted() {
     if (started) return;
     started = true;

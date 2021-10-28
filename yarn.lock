@@ -7795,7 +7795,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/channel-websocket@workspace:*, @storybook/channel-websocket@workspace:lib/channel-websocket":
+"@storybook/channel-websocket@6.4.0-beta.21, @storybook/channel-websocket@workspace:*, @storybook/channel-websocket@workspace:lib/channel-websocket":
   version: 0.0.0-use.local
   resolution: "@storybook/channel-websocket@workspace:lib/channel-websocket"
   dependencies:
@@ -7986,6 +7986,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.4.0-beta.21
     "@storybook/channel-postmessage": 6.4.0-beta.21
+    "@storybook/channel-websocket": 6.4.0-beta.21
     "@storybook/client-api": 6.4.0-beta.21
     "@storybook/client-logger": 6.4.0-beta.21
     "@storybook/core-events": 6.4.0-beta.21
