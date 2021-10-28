@@ -1,3 +1,24 @@
+## 6.4.0-beta.21 (October 28, 2021)
+
+### Features
+
+- Core: Rerun loaders when args/globals change ([#16476](https://github.com/storybookjs/storybook/pull/16476))
+- Interactions: move step debugger behind a feature flag ([#16481](https://github.com/storybookjs/storybook/pull/16481))
+
+### Bug Fixes
+
+- Core: Always update initial args when loading a story ([#16487](https://github.com/storybookjs/storybook/pull/16487))
+- Core: Ensure we don't reset `WebPreview` if calling `start()` in v7 mode ([#16475](https://github.com/storybookjs/storybook/pull/16475))
+- Core: Save and restore globals on preview init using the channel ([#16469](https://github.com/storybookjs/storybook/pull/16469))
+
+### Maintenance
+
+- CI: Upgrade Cypress and Node.js version used in e2e tests ([#16263](https://github.com/storybookjs/storybook/pull/16263))
+
+### Dependency Upgrades
+
+- Interactions: Use latest package versions ([#16464](https://github.com/storybookjs/storybook/pull/16464))
+
 ## 6.4.0-beta.20 (October 26, 2021)
 
 ### Bug Fixes
