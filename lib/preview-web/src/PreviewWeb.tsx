@@ -533,6 +533,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           unboundStoryFn,
         };
 
+        // Populate args from url to ArgsTable controls.
+        if (notYetRendered) {
+          const { args } = this.urlStore.selectionSpecifier;
+          if (Object.keys(args).length > 0) {
+            this.channel.emit(Events.STORY_ARGS_UPDATED, {
+              storyId: id,
+              updatedArgs: args,
+            });
+          }
+        }
+
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
         notYetRendered = false;
         if (ctrl.signal.aborted) return;
