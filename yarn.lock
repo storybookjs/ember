@@ -8314,6 +8314,7 @@ __metadata:
     "@storybook/addon-essentials": 6.4.0-beta.21
     "@storybook/addon-storyshots": 6.4.0-beta.21
     "@storybook/addon-storysource": 6.4.0-beta.21
+    "@storybook/cli": 6.4.0-beta.21
     "@storybook/components": 6.4.0-beta.21
     "@storybook/react": 6.4.0-beta.21
     "@storybook/theming": 6.4.0-beta.21
