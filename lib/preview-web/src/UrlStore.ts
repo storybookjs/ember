@@ -3,7 +3,7 @@ import { SelectionSpecifier, Selection } from '@storybook/store';
 import global from 'global';
 import qs from 'qs';
 import deprecate from 'util-deprecate';
-import { StoryId, ViewMode } from '@storybook/addons';
+import { ViewMode } from '@storybook/addons';
 
 import { parseArgsParam } from './parseArgsParam';
 
@@ -17,21 +17,21 @@ export function pathToId(path: string) {
   return match[1];
 }
 
-export const setPath = (selection?: Selection) => {
-  if (!selection) {
-    return;
-  }
-
-  const { storyId, viewMode }: { storyId: StoryId; viewMode: ViewMode } = selection;
-  const { search = '', hash = '' } = document.location;
+const getQueryString = (selection: Selection, extraParams?: qs.ParsedQs) => {
+  const { search = '' } = document.location;
   const { path, selectedKind, selectedStory, ...rest } = qs.parse(search, {
     ignoreQueryPrefix: true,
   });
-  const query = qs.stringify(
-    { ...rest, id: storyId, viewMode },
+  return qs.stringify(
+    { ...rest, ...extraParams, id: selection.storyId, viewMode: selection.viewMode },
     { encode: false, addQueryPrefix: true }
   );
+};
 
+export const setPath = (selection?: Selection) => {
+  if (!selection) return;
+  const query = getQueryString(selection);
+  const { hash = '' } = document.location;
   history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);
 };
 
@@ -99,7 +99,12 @@ export class UrlStore {
 
   setSelection(selection: Selection) {
     this.selection = selection;
-
     setPath(this.selection);
+  }
+
+  setQueryParams(queryParams: qs.ParsedQs) {
+    const query = getQueryString(this.selection, queryParams);
+    const { hash = '' } = document.location;
+    history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);
   }
 }

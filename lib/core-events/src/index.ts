@@ -48,6 +48,7 @@ enum events {
   SHARED_STATE_CHANGED = 'sharedStateChanged',
   SHARED_STATE_SET = 'sharedStateSet',
   NAVIGATE_URL = 'navigateUrl',
+  UPDATE_QUERY_PARAMS = 'updateQueryParams',
 }
 
 // Enables: `import Events from ...`
@@ -87,6 +88,7 @@ export const {
   SHARED_STATE_CHANGED,
   SHARED_STATE_SET,
   NAVIGATE_URL,
+  UPDATE_QUERY_PARAMS,
 } = events;
 
 // Used to break out of the current render without showing a redbox

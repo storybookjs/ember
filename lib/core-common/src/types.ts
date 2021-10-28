@@ -261,10 +261,13 @@ export type Preset =
  */
 export type Entry = string;
 
-type StorybookRefs = Record<string, {
-  title: string;
-  url: string;
-}>;
+type StorybookRefs = Record<
+  string,
+  {
+    title: string;
+    url: string;
+  }
+>;
 
 /**
  * The interface for Storybook configuration in `main.ts` files.
@@ -312,6 +315,11 @@ export interface StorybookConfig {
     breakingChangesV7?: boolean;
 
     /**
+     * Enable the step debugger functionality in Addon-interactions.
+     */
+    interactionsDebugger?: boolean;
+
+    /**
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
@@ -337,7 +345,7 @@ export interface StorybookConfig {
   /**
    * References external Storybooks
    */
-  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs)
+  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs);
 
   /**
    * Modify or return a custom Webpack config.

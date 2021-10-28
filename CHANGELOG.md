@@ -1,3 +1,47 @@
+## 6.4.0-beta.22 (October 28, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Track code-level args changes in `ArgsTable` ([#16488](https://github.com/storybookjs/storybook/pull/16488))
+
+### Maintenance
+
+- Addon-a11y: Lazy load axe-core only when running tests ([#16484](https://github.com/storybookjs/storybook/pull/16484))
+- Addon-docs: Lazy load Prettier in Vue and Angular ([#16459](https://github.com/storybookjs/storybook/pull/16459))
+
+## 6.4.0-beta.21 (October 28, 2021)
+
+### Features
+
+- Core: Rerun loaders when args/globals change ([#16476](https://github.com/storybookjs/storybook/pull/16476))
+- Interactions: move step debugger behind a feature flag ([#16481](https://github.com/storybookjs/storybook/pull/16481))
+
+### Bug Fixes
+
+- Core: Always update initial args when loading a story ([#16487](https://github.com/storybookjs/storybook/pull/16487))
+- Core: Ensure we don't reset `WebPreview` if calling `start()` in v7 mode ([#16475](https://github.com/storybookjs/storybook/pull/16475))
+- Core: Save and restore globals on preview init using the channel ([#16469](https://github.com/storybookjs/storybook/pull/16469))
+
+### Maintenance
+
+- CI: Upgrade Cypress and Node.js version used in e2e tests ([#16263](https://github.com/storybookjs/storybook/pull/16263))
+
+### Dependency Upgrades
+
+- Interactions: Use latest package versions ([#16464](https://github.com/storybookjs/storybook/pull/16464))
+
+## 6.4.0-beta.20 (October 26, 2021)
+
+### Bug Fixes
+
+- Interactions: Do not cleanup state when loading initial story ([#16462](https://github.com/storybookjs/storybook/pull/16462))
+- Addon-interactions: Add safety check on fileName parameter ([#16454](https://github.com/storybookjs/storybook/pull/16454))
+- Core: Fix optional global features in PreviewWeb ([#16448](https://github.com/storybookjs/storybook/pull/16448))
+
+### Maintenance
+
+- UI: Migrate router to react-router ([#16440](https://github.com/storybookjs/storybook/pull/16440))
+
 ## 6.4.0-beta.19 (October 22, 2021)
 
 ### Bug Fixes
