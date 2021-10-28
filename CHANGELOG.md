@@ -1,3 +1,14 @@
+## 6.4.0-beta.22 (October 28, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Track code-level args changes in `ArgsTable` ([#16488](https://github.com/storybookjs/storybook/pull/16488))
+
+### Maintenance
+
+- Addon-a11y: Lazy load axe-core only when running tests ([#16484](https://github.com/storybookjs/storybook/pull/16484))
+- Addon-docs: Lazy load Prettier in Vue and Angular ([#16459](https://github.com/storybookjs/storybook/pull/16459))
+
 ## 6.4.0-beta.21 (October 28, 2021)
 
 ### Features
