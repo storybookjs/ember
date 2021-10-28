@@ -1987,6 +1987,20 @@ describe('PreviewWeb', () => {
         });
       });
 
+      it('emits STORY_ARGS_UPDATED with new args', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+        mockChannel.emit.mockClear();
+
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+          storyId: 'component-one--a',
+          args: { foo: 'edited' },
+        });
+      });
+
       it('applies loaders with story context', async () => {
         document.location.search = '?id=component-one--a';
         const preview = await createAndRenderPreview();

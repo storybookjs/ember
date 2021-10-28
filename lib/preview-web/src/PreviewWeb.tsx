@@ -324,19 +324,22 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       throw new Error('Cannot render story as no selection was made');
     }
 
-    const { selection } = this.urlStore;
+    const {
+      selection,
+      selection: { storyId },
+    } = this.urlStore;
 
     let story;
     try {
-      story = await this.storyStore.loadStory({ storyId: selection.storyId });
+      story = await this.storyStore.loadStory({ storyId });
     } catch (err) {
       this.previousStory = null;
       logger.warn(err);
-      await this.renderMissingStory(selection.storyId);
+      await this.renderMissingStory(storyId);
       return;
     }
 
-    const storyIdChanged = this.previousSelection?.storyId !== selection.storyId;
+    const storyIdChanged = this.previousSelection?.storyId !== storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
@@ -348,7 +351,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     // Don't re-render the story if nothing has changed to justify it
     if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
-      this.channel.emit(Events.STORY_UNCHANGED, selection.storyId);
+      this.channel.emit(Events.STORY_UNCHANGED, storyId);
       return;
     }
 
@@ -356,7 +359,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
     if (this.previousSelection && (storyIdChanged || viewModeChanged)) {
-      this.channel.emit(Events.STORY_CHANGED, selection.storyId);
+      this.channel.emit(Events.STORY_CHANGED, storyId);
     }
 
     // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
@@ -366,12 +369,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
     if (FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
-        id: story.id,
+        id: storyId,
         parameters,
         initialArgs,
         argTypes,
         args,
       });
+    }
+    // If the implementation changed, the args also may have changed
+    if (implementationChanged) {
+      this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args });
     }
 
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
