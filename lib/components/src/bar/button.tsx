@@ -91,10 +91,9 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     marginTop: 6,
     padding: '8px 7px',
 
-    '&:hover': {
+    '&:hover, &:focus': {
       background: transparentize(0.88, theme.color.secondary),
       color: theme.color.secondary,
-      outline: '0 none',
     },
     '& > svg': {
       width: 14,
@@ -105,7 +104,11 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
       ? {
           backgroundColor: theme.background.hoverable,
           color: theme.color.secondary,
-          outline: '0 none',
+
+          '&:hover, &:focus': {
+            background: transparentize(0.82, theme.color.secondary),
+            color: theme.color.secondary,
+          },
         }
       : {}
 );
