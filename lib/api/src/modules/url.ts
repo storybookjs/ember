@@ -4,6 +4,7 @@ import {
   STORY_ARGS_UPDATED,
   SET_CURRENT_STORY,
   GLOBALS_UPDATED,
+  UPDATE_QUERY_PARAMS,
 } from '@storybook/core-events';
 import { queryFromLocation, buildArgsParam, NavigateOptions } from '@storybook/router';
 import { toId, sanitize } from '@storybook/csf';
@@ -163,8 +164,10 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
           return acc;
         }, queryParams),
       };
-      const equal = deepEqual(customQueryParams, update);
-      if (!equal) store.setState({ customQueryParams: update });
+      if (!deepEqual(customQueryParams, update)) {
+        store.setState({ customQueryParams: update });
+        fullAPI.emit(UPDATE_QUERY_PARAMS, update);
+      }
     },
     navigateUrl(url, options) {
       navigate(url, { ...options, plain: true });

@@ -315,6 +315,11 @@ export interface StorybookConfig {
     breakingChangesV7?: boolean;
 
     /**
+     * Enable the step debugger functionality in Addon-interactions.
+     */
+    interactionsDebugger?: boolean;
+
+    /**
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;

@@ -1,5 +1,4 @@
 import global from 'global';
-import axe from 'axe-core';
 import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 import { A11yParameters } from './params';
@@ -40,6 +39,7 @@ const run = async (storyId: string) => {
     if (!active) {
       active = true;
       channel.emit(EVENTS.RUNNING);
+      const axe = await import('axe-core');
 
       const { element = getElement(), config, options = {} } = input;
       axe.reset();
