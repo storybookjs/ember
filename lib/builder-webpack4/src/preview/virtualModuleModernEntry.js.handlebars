@@ -19,7 +19,11 @@ const channel = createPostMessageChannel({ page: 'preview' });
 addons.setChannel(channel);
 
 // TODO--how to construct URL?
-const serverChannel = createWebSocketChannel({ url: `ws://${document.location.hostname}:${document.location.port}/` });
+const serverChannel = createWebSocketChannel({
+  url: `ws://${document.location.hostname}:${document.location.port}/`,
+  async: false,
+  onError: console.error.bind(console),
+});
 addons.setServerChannel(serverChannel);
 
 const preview = new PreviewWeb();
