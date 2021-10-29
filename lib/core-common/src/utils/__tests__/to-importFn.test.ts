@@ -1,15 +1,15 @@
 import { webpackIncludeRegexp } from '../to-importFn';
 import { normalizeStoriesEntry } from '../normalize-stories';
 
-const testCases = [
-  {
-    glob: '**/*.stories.tsx',
-    validPaths: [
+const testCases: [string, string[], string[]][] = [
+  [
+    '**/*.stories.tsx',
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
       '/Users/user/code/Icon.stories.js',
@@ -18,34 +18,16 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: './**/*.stories.tsx',
-    validPaths: [
-      '/Users/user/code/Icon.stories.tsx',
-      '/Users/user/code/src/Icon.stories.tsx',
-      '/Users/user/code/src/components/Icon.stories.tsx',
-      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
-    ],
-    invalidPaths: [
-      '/Users/user/code/stories.tsx',
-      '/Users/user/code/Icon.stories.ts',
-      '/Users/user/code/Icon.stories.js',
-      '/Users/user/code/src/components/stories.tsx',
-      '/Users/user/code/src/components/Icon.stories/stories.tsx',
-      '/Users/user/code/src/components/Icon.stories.ts',
-      '/Users/user/code/src/components/Icon.stories.js',
-    ],
-  },
-  {
-    glob: '../**/*.stories.tsx',
-    validPaths: [
+  ],
+  [
+    './**/*.stories.tsx',
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
       '/Users/user/code/Icon.stories.js',
@@ -54,11 +36,29 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: 'src',
-    validPaths: [],
-    invalidPaths: [
+  ],
+  [
+    '../**/*.stories.tsx',
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    'src',
+    [],
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
@@ -71,11 +71,11 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: 'src/*',
-    validPaths: ['/Users/user/code/src/Icon.stories.tsx'],
-    invalidPaths: [
+  ],
+  [
+    'src/*',
+    ['/Users/user/code/src/Icon.stories.tsx'],
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
@@ -87,15 +87,15 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: './src/**/*.stories.tsx',
-    validPaths: [
+  ],
+  [
+    './src/**/*.stories.tsx',
+    [
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
@@ -105,15 +105,15 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: '../src/**/*.stories.tsx',
-    validPaths: [
+  ],
+  [
+    '../src/**/*.stories.tsx',
+    [
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
@@ -123,15 +123,15 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: '../../src/**/*.stories.tsx',
-    validPaths: [
+  ],
+  [
+    '../../src/**/*.stories.tsx',
+    [
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
@@ -141,15 +141,15 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
-  {
-    glob: './../../src/**/*.stories.tsx',
-    validPaths: [
+  ],
+  [
+    './../../src/**/*.stories.tsx',
+    [
       '/Users/user/code/src/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories.tsx',
       '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
     ],
-    invalidPaths: [
+    [
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
@@ -159,25 +159,23 @@ const testCases = [
       '/Users/user/code/src/components/Icon.stories.ts',
       '/Users/user/code/src/components/Icon.stories.js',
     ],
-  },
+  ],
 ];
 
 describe('toImportFn - webpackIncludeRegexp', () => {
-  testCases.forEach(({ glob, validPaths, invalidPaths }) => {
-    it(`matches only suitable paths - ${glob}`, () => {
-      const regex = webpackIncludeRegexp(
-        normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
-      );
+  it.each(testCases)('matches only suitable paths - %s', (glob, validPaths, invalidPaths) => {
+    const regex = webpackIncludeRegexp(
+      normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
+    );
 
-      const isNotMatchedForValidPaths = validPaths.filter(
-        (absolutePath) => !regex.test(absolutePath)
-      );
-      const isMatchedForInvalidPaths = invalidPaths.filter(
-        (absolutePath) => !!regex.test(absolutePath)
-      );
+    const isNotMatchedForValidPaths = validPaths.filter(
+      (absolutePath) => !regex.test(absolutePath)
+    );
+    const isMatchedForInvalidPaths = invalidPaths.filter(
+      (absolutePath) => !!regex.test(absolutePath)
+    );
 
-      expect(isNotMatchedForValidPaths).toEqual([]);
-      expect(isMatchedForInvalidPaths).toEqual([]);
-    });
+    expect(isNotMatchedForValidPaths).toEqual([]);
+    expect(isMatchedForInvalidPaths).toEqual([]);
   });
 });
