@@ -7895,6 +7895,7 @@ __metadata:
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
     store2: ^2.12.0
+    synchronous-promise: ^2.0.15
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   peerDependencies:
@@ -8659,6 +8660,7 @@ __metadata:
     lodash: ^4.17.20
     qs: ^6.10.0
     regenerator-runtime: ^0.13.7
+    synchronous-promise: ^2.0.15
     ts-dedent: ^2.0.0
     unfetch: ^4.2.0
     util-deprecate: ^1.0.2
@@ -9084,6 +9086,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     slash: ^3.0.0
     stable: ^0.1.8
+    synchronous-promise: ^2.0.15
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   languageName: unknown
@@ -42568,6 +42571,13 @@ resolve@1.19.0:
     rimraf: ^3.0.0
     username-sync: ^1.0.2
   checksum: d1bfc95940188d500f17aaec249e45fbf55c30839d9a68be8a28606183b149beb87c76969e74372ba601ea50b42716489673ea7031334f42f98ec2f06921b59c
+  languageName: node
+  linkType: hard
+
+"synchronous-promise@npm:^2.0.15":
+  version: 2.0.15
+  resolution: "synchronous-promise@npm:2.0.15"
+  checksum: 967778e7570dc496d7630a89db3bada38876574797c9b272ee50f6ecd7afcebf450268b4bb48a84274d213ab9fd4865dbcc6edeb279f9ecaddf189d5446cbe43
   languageName: node
   linkType: hard
 
