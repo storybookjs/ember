@@ -208,7 +208,3 @@ Here’s an example of how to render Vue stories inline. The following docs conf
 With this function, anyone using the docs addon for [@storybook/vue](https://github.com/storybookjs/storybook/tree/master/app/vue) can make their stories render inline, either globally with the inlineStories docs parameter, or on a per-story-basis using the inline prop on the `<Story>` doc block.
 
 If you come up with an elegant and flexible implementation for the `prepareForInline` function for your framework, let us know. We'd love to make it the default configuration to make inline stories more accessible for a larger variety of frameworks!
-
-```
-
-```
