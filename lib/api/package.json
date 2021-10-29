@@ -58,9 +58,11 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.167",
+    "@types/qs": "^6",
     "@types/semver": "^7.3.4",
     "flush-promises": "^1.0.2",
-    "preval.macro": "^5.0.0"
+    "preval.macro": "^5.0.0",
+    "qs": "^6.10.1"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0",
