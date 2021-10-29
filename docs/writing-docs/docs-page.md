@@ -168,7 +168,7 @@ Unless you use a custom [webpack configuration](../configure/webpack.md#extendin
 
 DocsPage displays all the stories of a component on one page. You have the option of rendering those stories inline or in an iframe.
 
-The iframe creates a clean separation between your code and Storybook’s UI, which is useful if your stories are rendering correctly in the Canvas but not on the docs page.
+The iframe creates a clean separation between your code and Storybook’s UI, which is useful if your stories are rendering correctly in the Canvas but not on the docs page, for instance with fixed positioned components like modals.
 
 But using an iframe has disadvantages. For example, you have to set the height of iframe stories explicitly, or you’ll see a scroll bar. Having more than a few iframe stories on a page can lead to performance issues. And certain dev tools might not work right.
 
