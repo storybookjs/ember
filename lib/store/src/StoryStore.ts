@@ -99,7 +99,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     this.prepareStoryWithCache = memoize(STORY_CACHE_SIZE)(prepareStory) as typeof prepareStory;
 
     // We cannot call `loadStory()` until we've been initialized properly. But we can wait for it.
-    this.initializationPromise = new Promise((resolve) => {
+    this.initializationPromise = new SynchronousPromise((resolve) => {
       this.resolveInitializationPromise = resolve;
     });
   }
@@ -168,7 +168,7 @@ export class StoryStore<TFramework extends AnyFramework> {
       }))
     );
 
-    return Promise.all(csfFilePromiseList).then((list) =>
+    return SynchronousPromise.all(csfFilePromiseList).then((list) =>
       list.reduce((acc, { importPath, csfFile }) => {
         acc[importPath] = csfFile;
         return acc;
