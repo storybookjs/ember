@@ -109,56 +109,58 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // getProjectAnnotations has been run, thus this slightly awkward approach
     getStoryIndex?: () => StoryIndex;
     importFn: ModuleImportFn;
-    getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
+    getProjectAnnotations: () => MaybePromise<WebProjectAnnotations<TFramework>>;
   }): PromiseLike<void> {
-    this.storyStore.setProjectAnnotations(
-      this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {}
-    );
+    return this.getProjectAnnotationsOrRenderError(getProjectAnnotations).then(
+      (projectAnnotations) => {
+        this.storyStore.setProjectAnnotations(projectAnnotations);
 
-    this.setupListeners();
+        this.setupListeners();
 
-    let storyIndexPromise: PromiseLike<StoryIndex>;
-    if (FEATURES?.storyStoreV7) {
-      this.indexClient = new StoryIndexClient();
-      storyIndexPromise = this.indexClient.fetch();
-    } else {
-      if (!getStoryIndex) {
-        throw new Error('No `getStoryIndex` passed defined in v6 mode');
-      }
-      storyIndexPromise = SynchronousPromise.resolve().then(getStoryIndex);
-    }
+        let storyIndexPromise: PromiseLike<StoryIndex>;
+        if (FEATURES?.storyStoreV7) {
+          this.indexClient = new StoryIndexClient();
+          storyIndexPromise = this.indexClient.fetch();
+        } else {
+          if (!getStoryIndex) {
+            throw new Error('No `getStoryIndex` passed defined in v6 mode');
+          }
+          storyIndexPromise = SynchronousPromise.resolve().then(getStoryIndex);
+        }
 
-    return storyIndexPromise
-      .then((storyIndex: StoryIndex) => {
-        return this.storyStore
-          .initialize({
-            storyIndex,
-            importFn,
-            cache: !FEATURES?.storyStoreV7,
+        return storyIndexPromise
+          .then((storyIndex: StoryIndex) => {
+            return this.storyStore
+              .initialize({
+                storyIndex,
+                importFn,
+                cache: !FEATURES?.storyStoreV7,
+              })
+              .then(() => {
+                if (!FEATURES?.storyStoreV7) {
+                  this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+                }
+
+                this.setGlobalsAndRenderSelection();
+              });
           })
-          .then(() => {
-            if (!FEATURES?.storyStoreV7) {
-              this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
-            }
-
-            this.setGlobalsAndRenderSelection();
+          .catch((err) => {
+            logger.warn(err);
+            this.renderPreviewEntryError(err);
           });
-      })
-      .catch((err) => {
-        logger.warn(err);
-        this.renderPreviewEntryError(err);
-      });
+      }
+    );
   }
 
   getProjectAnnotationsOrRenderError(
-    getProjectAnnotations: () => WebProjectAnnotations<TFramework>
-  ): ProjectAnnotations<TFramework> | undefined {
-    let projectAnnotations;
-    try {
-      projectAnnotations = getProjectAnnotations();
-      this.renderToDOM = projectAnnotations.renderToDOM;
-      if (!this.renderToDOM) {
-        throw new Error(dedent`
+    getProjectAnnotations: () => MaybePromise<WebProjectAnnotations<TFramework>>
+  ): PromiseLike<ProjectAnnotations<TFramework>> {
+    return SynchronousPromise.resolve()
+      .then(() => getProjectAnnotations())
+      .then((projectAnnotations) => {
+        this.renderToDOM = projectAnnotations.renderToDOM;
+        if (!this.renderToDOM) {
+          throw new Error(dedent`
             Expected 'framework' in your main.js to export 'renderToDOM', but none found.
 
             You can fix this automatically by running:
@@ -167,15 +169,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         
             More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
           `);
-      }
-      return projectAnnotations;
-    } catch (err) {
-      logger.warn(err);
-      // This is an error extracting the projectAnnotations (i.e. evaluating the previewEntries) and
-      // needs to be show to the user as a simple error
-      this.renderPreviewEntryError(err);
-      return undefined;
-    }
+        }
+        return projectAnnotations;
+      })
+      .catch((err) => {
+        logger.warn(err);
+        // This is an error extracting the projectAnnotations (i.e. evaluating the previewEntries) and
+        // needs to be show to the user as a simple error
+        this.renderPreviewEntryError(err);
+        return {};
+      });
   }
 
   setupListeners() {
@@ -310,12 +313,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   // This happens when a config file gets reloade
-  onGetProjectAnnotationsChanged({
+  async onGetProjectAnnotationsChanged({
     getProjectAnnotations,
   }: {
-    getProjectAnnotations: () => ProjectAnnotations<TFramework>;
+    getProjectAnnotations: () => MaybePromise<ProjectAnnotations<TFramework>>;
   }) {
-    const projectAnnotations = this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
+    const projectAnnotations = await this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
     if (!projectAnnotations) {
       return;
     }
