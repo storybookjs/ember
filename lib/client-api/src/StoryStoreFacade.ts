@@ -1,5 +1,6 @@
 import global from 'global';
 import dedent from 'ts-dedent';
+import { SynchronousPromise } from 'synchronous-promise';
 import {
   StoryId,
   AnyFramework,
@@ -59,9 +60,11 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    const moduleExports = this.csfExports[path];
-    if (!moduleExports) throw new Error(`Unknown path: ${path}`);
-    return moduleExports;
+    return SynchronousPromise.resolve().then(() => {
+      const moduleExports = this.csfExports[path];
+      if (!moduleExports) throw new Error(`Unknown path: ${path}`);
+      return moduleExports;
+    });
   }
 
   getStoryIndex(store: StoryStore<TFramework>) {

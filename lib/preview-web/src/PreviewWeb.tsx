@@ -1,8 +1,9 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import global from 'global';
+import { SynchronousPromise } from 'synchronous-promise';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import global from 'global';
 import { addons, Channel } from '@storybook/addons';
 import {
   AnyFramework,
@@ -50,6 +51,7 @@ function createController() {
 }
 
 export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
+type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => MaybePromise<void>;
 
@@ -92,6 +94,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     );
   }
 
+  // NOTE: the reason that the preview and store's initialization code is written in a promise
+  // style and not `async-await`, and the use of `SynchronousPromise`s is in order to allow
+  // storyshots to immediately call `raw()` on the store without waiting for a later tick.
+  // (Even simple things like `Promise.resolve()` and `await` involve the callback happening
+  // in the next promise "tick").
+  // See the comment in `storyshots-core/src/api/index.ts` for more detail.
   initialize({
     getStoryIndex,
     importFn,
@@ -102,42 +110,44 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     getStoryIndex?: () => StoryIndex;
     importFn: ModuleImportFn;
     getProjectAnnotations: () => WebProjectAnnotations<TFramework>;
-  }): MaybePromise<void> {
+  }): PromiseLike<void> {
     this.storyStore.setProjectAnnotations(
       this.getProjectAnnotationsOrRenderError(getProjectAnnotations) || {}
     );
 
     this.setupListeners();
 
+    let storyIndexPromise: PromiseLike<StoryIndex>;
     if (FEATURES?.storyStoreV7) {
       this.indexClient = new StoryIndexClient();
-      return this.indexClient
-        .fetch()
-        .then((storyIndex: StoryIndex) => {
-          this.storyStore.initialize({
+      storyIndexPromise = this.indexClient.fetch();
+    } else {
+      if (!getStoryIndex) {
+        throw new Error('No `getStoryIndex` passed defined in v6 mode');
+      }
+      storyIndexPromise = SynchronousPromise.resolve().then(getStoryIndex);
+    }
+
+    return storyIndexPromise
+      .then((storyIndex: StoryIndex) => {
+        return this.storyStore
+          .initialize({
             storyIndex,
             importFn,
-            cache: false,
+            cache: !FEATURES?.storyStoreV7,
+          })
+          .then(() => {
+            if (!FEATURES?.storyStoreV7) {
+              this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+            }
+
+            this.setGlobalsAndRenderSelection();
           });
-          return this.setGlobalsAndRenderSelection();
-        })
-        .catch((err) => {
-          logger.warn(err);
-          this.renderPreviewEntryError(err);
-        });
-    }
-
-    if (!getStoryIndex) {
-      throw new Error('No `getStoryIndex` passed defined in v6 mode');
-    }
-    this.storyStore.initialize({
-      storyIndex: getStoryIndex(),
-      importFn,
-      cache: true,
-    });
-    this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
-
-    return this.setGlobalsAndRenderSelection();
+      })
+      .catch((err) => {
+        logger.warn(err);
+        this.renderPreviewEntryError(err);
+      });
   }
 
   getProjectAnnotationsOrRenderError(
@@ -391,9 +401,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   async renderDocs({ story }: { story: Story<TFramework> }) {
     const { id, title, name } = story;
     const element = this.view.prepareForDocs();
-    const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id, {
-      sync: false,
-    });
+    const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
       title,

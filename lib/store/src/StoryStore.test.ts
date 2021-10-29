@@ -186,7 +186,7 @@ describe('StoryStore', () => {
       expect(prepareStory).toHaveBeenCalledTimes(1);
 
       await store.onStoriesChanged({
-        importFn: () => ({
+        importFn: async () => ({
           ...componentOneExports,
           c: { args: { foo: 'c' } },
         }),
@@ -257,7 +257,7 @@ describe('StoryStore', () => {
       expect(importFn).toHaveBeenCalledWith(storyIndex.stories['component-one--a'].importPath);
 
       const newImportPath = './src/ComponentOne-new.stories.js';
-      const newImportFn = jest.fn(() => componentOneExports);
+      const newImportFn = jest.fn(async () => componentOneExports);
       await store.onStoriesChanged({
         importFn: newImportFn,
         storyIndex: {
@@ -287,7 +287,7 @@ describe('StoryStore', () => {
       expect(importFn).toHaveBeenCalledWith(storyIndex.stories['component-one--a'].importPath);
 
       const newImportPath = './src/ComponentOne-new.stories.js';
-      const newImportFn = jest.fn(() => componentOneExports);
+      const newImportFn = jest.fn(async () => componentOneExports);
       await store.onStoriesChanged({
         importFn: newImportFn,
         storyIndex: {
@@ -350,7 +350,7 @@ describe('StoryStore', () => {
       store.setProjectAnnotations(projectAnnotations);
       store.initialize({ storyIndex, importFn, cache: false });
 
-      const csfFile = await store.loadCSFFileByStoryId('component-one--a', { sync: false });
+      const csfFile = await store.loadCSFFileByStoryId('component-one--a');
       const stories = store.componentStoriesFromCSFFile({ csfFile });
 
       expect(stories).toHaveLength(2);
@@ -426,7 +426,7 @@ describe('StoryStore', () => {
       store.initialize({ storyIndex, importFn, cache: false });
 
       importFn.mockClear();
-      const csfFiles = await store.loadAllCSFFiles(false);
+      const csfFiles = await store.loadAllCSFFiles();
 
       expect(Object.keys(csfFiles)).toEqual([
         './src/ComponentOne.stories.js',
@@ -448,7 +448,7 @@ describe('StoryStore', () => {
       const store = new StoryStore();
       store.setProjectAnnotations(projectAnnotations);
       store.initialize({ storyIndex, importFn, cache: false });
-      await store.cacheAllCSFFiles(false);
+      await store.cacheAllCSFFiles();
 
       expect(store.extract()).toMatchInlineSnapshot(`
         Object {
@@ -574,7 +574,7 @@ describe('StoryStore', () => {
         importFn: docsOnlyImportFn,
         cache: false,
       });
-      await store.cacheAllCSFFiles(false);
+      await store.cacheAllCSFFiles();
 
       expect(Object.keys(store.extract())).toEqual(['component-one--b', 'component-two--c']);
 
@@ -591,7 +591,7 @@ describe('StoryStore', () => {
       const store = new StoryStore();
       store.setProjectAnnotations(projectAnnotations);
       store.initialize({ storyIndex, importFn, cache: false });
-      await store.cacheAllCSFFiles(false);
+      await store.cacheAllCSFFiles();
 
       expect(store.raw()).toMatchInlineSnapshot(`
         Array [
@@ -713,7 +713,7 @@ describe('StoryStore', () => {
       const store = new StoryStore();
       store.setProjectAnnotations(projectAnnotations);
       store.initialize({ storyIndex, importFn, cache: false });
-      await store.cacheAllCSFFiles(false);
+      await store.cacheAllCSFFiles();
 
       expect(store.getSetStoriesPayload()).toMatchInlineSnapshot(`
         Object {
@@ -847,7 +847,7 @@ describe('StoryStore', () => {
         const store = new StoryStore();
         store.setProjectAnnotations(projectAnnotations);
         store.initialize({ storyIndex, importFn, cache: false });
-        await store.cacheAllCSFFiles(false);
+        await store.cacheAllCSFFiles();
 
         expect(store.getStoriesJsonData()).toMatchInlineSnapshot(`
           Object {
@@ -903,7 +903,7 @@ describe('StoryStore', () => {
         const store = new StoryStore();
         store.setProjectAnnotations(projectAnnotations);
         store.initialize({ storyIndex, importFn, cache: false });
-        await store.cacheAllCSFFiles(false);
+        await store.cacheAllCSFFiles();
 
         expect(store.getStoriesJsonData()).toMatchInlineSnapshot(`
           Object {
