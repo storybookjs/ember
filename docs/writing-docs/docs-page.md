@@ -174,7 +174,7 @@ But using an iframe has disadvantages. For example, you have to set the height o
 
 Therefore, we recommend inline rendering where possible. It's the default mode for all the frameworks in which [we support it](../api/frameworks-feature-support.md). The one exception is Angular, where it's opt-in.
 
-To toggle the between the two settings, set the `docs.inlineStories` parameter in `.storybook/preview.js`:
+To toggle the between the two settings, set `docs.inlineStories` in `.storybook/preview.js`. Like most [parameters](../writing-stories/parameters.md), you can also toggle at the component or story level:
 
 ```js
 export const parameters = {
