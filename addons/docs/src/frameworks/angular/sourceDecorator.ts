@@ -2,8 +2,6 @@ import { addons, useEffect } from '@storybook/addons';
 import { PartialStoryFn } from '@storybook/csf';
 import { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
-import prettierHtml from 'prettier/parser-html';
-import prettier from 'prettier/standalone';
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 
 export const skipSourceRender = (context: StoryContext) => {
@@ -18,16 +16,28 @@ export const skipSourceRender = (context: StoryContext) => {
   return sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
-const prettyUp = (source: string) => {
-  return prettier.format(source, {
-    parser: 'angular',
-    plugins: [prettierHtml],
-    htmlWhitespaceSensitivity: 'ignore',
-  });
+let prettyUpInternal: (source: string) => string | undefined;
+
+const makePrettyUp = async () => {
+  if (prettyUpInternal) {
+    return prettyUpInternal;
+  }
+
+  const prettierHtml = await import('prettier/parser-html');
+  const prettier = await import('prettier/standalone');
+
+  prettyUpInternal = (source: string) => {
+    return prettier.format(source, {
+      parser: 'angular',
+      plugins: [prettierHtml],
+      htmlWhitespaceSensitivity: 'ignore',
+    });
+  };
+  return prettyUpInternal;
 };
 
 /**
- * Svelte source decorator.
+ * Angular source decorator.
  * @param storyFn Fn
  * @param context  StoryContext
  */
@@ -45,21 +55,27 @@ export const sourceDecorator = (
   const { component, argTypes } = context;
 
   let toEmit: string;
+  const prettyUpPromise = makePrettyUp();
+
   useEffect(() => {
-    if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(template));
+    prettyUpPromise.then((prettyUp) => {
+      if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(toEmit));
+    });
   });
 
-  if (component && !userDefinedTemplate) {
-    const source = computesTemplateSourceFromComponent(component, props, argTypes);
+  prettyUpPromise.then((prettyUp) => {
+    if (component && !userDefinedTemplate) {
+      const source = computesTemplateSourceFromComponent(component, props, argTypes);
 
-    // We might have a story with a Directive or Service defined as the component
-    // In these cases there might exist a template, even if we aren't able to create source from component
-    if (source || template) {
-      toEmit = prettyUp(source || template);
+      // We might have a story with a Directive or Service defined as the component
+      // In these cases there might exist a template, even if we aren't able to create source from component
+      if (source || template) {
+        toEmit = prettyUp(source || template);
+      }
+    } else if (template) {
+      toEmit = prettyUp(template);
     }
-  } else if (template) {
-    toEmit = prettyUp(template);
-  }
+  });
 
   return story;
 };
