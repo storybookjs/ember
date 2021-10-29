@@ -217,7 +217,7 @@ const extractDefaultValue = (property: Property) => {
 
 const resolveTypealias = (compodocType: string): string => {
   const compodocJson = getCompodocJson();
-  const typeAlias = compodocJson?.miscellaneous.typealiases.find((x) => x.name === compodocType);
+  const typeAlias = compodocJson?.miscellaneous?.typealiases?.find((x) => x.name === compodocType);
   return typeAlias ? resolveTypealias(typeAlias.rawtype) : compodocType;
 };
 
