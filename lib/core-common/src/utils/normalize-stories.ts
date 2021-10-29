@@ -6,7 +6,7 @@ import { scan } from 'micromatch';
 import slash from 'slash';
 
 import type { StoriesEntry, NormalizedStoriesSpecifier } from '../types';
-import { globToRegex } from './glob-to-regexp';
+import { globToRegexp } from './glob-to-regexp';
 
 const DEFAULT_TITLE_PREFIX = '';
 const DEFAULT_FILES = '**/*.stories.@(mdx|tsx|ts|jsx|js)';
@@ -101,7 +101,7 @@ export const normalizeStoriesEntry = (
   directory = directory.replace(/\/$/, '');
 
   // Now make the importFn matcher.
-  const importPathMatcher = globToRegex(`${directory}/${files}`);
+  const importPathMatcher = globToRegexp(`${directory}/${files}`);
 
   return {
     ...specifierWithoutMatcher,
