@@ -71,6 +71,16 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   });
 
   const staticDirs = await presets.apply<StorybookConfig['staticDirs']>('staticDirs');
+
+  if (staticDirs && options.staticDir) {
+    throw new Error(`Conflict when trying to read staticDirs:
+    * Storybook's configuration option: 'staticDirs'
+    * Storybook's CLI flag: '--staticDir' or '-s'
+     
+    Choose one of them, but not both.
+    `);
+  }
+
   if (staticDirs) {
     await copyAllStaticFilesRelativeToMain(staticDirs, options.outputDir, options.configDir);
   }

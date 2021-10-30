@@ -15,6 +15,15 @@ export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
   const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
 
+  if (staticDirs && options.staticDir) {
+    throw new Error(`Conflict when trying to read staticDirs:
+    * Storybook's configuration option: 'staticDirs'
+    * Storybook's CLI flag: '--staticDir' or '-s'
+     
+    Choose one of them, but not both.
+    `);
+  }
+
   staticDirs.forEach(async (dir) => {
     const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
     const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
