@@ -86,6 +86,21 @@ const JumpToEndButton = styled(StyledButton)({
   lineHeight: '12px',
 });
 
+const withTooltipModifiers = [
+  {
+    name: 'preventOverflow',
+    options: {
+      padding: 0,
+    },
+  },
+  {
+    name: 'offset',
+    options: {
+      offset: [0, -2],
+    },
+  },
+];
+
 export const Subnav: React.FC<SubnavProps> = ({
   isDisabled,
   hasNext,
@@ -112,13 +127,23 @@ export const Subnav: React.FC<SubnavProps> = ({
 
           <StyledSeparator />
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasPrevious ? 'hover' : 'none'}
+            tooltip={<Note note="Go to start" />}
+          >
             <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
               <Icons icon="rewind" />
             </RewindButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasPrevious ? 'hover' : 'none'}
+            tooltip={<Note note="Go back" />}
+          >
             <StyledIconButton
               containsIcon
               onClick={onPrevious}
@@ -128,13 +153,23 @@ export const Subnav: React.FC<SubnavProps> = ({
             </StyledIconButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasNext ? 'hover' : 'none'}
+            tooltip={<Note note="Go forward" />}
+          >
             <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
               <Icons icon="playnext" />
             </StyledIconButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            trigger={hasNext ? 'hover' : 'none'}
+            hasChrome={false}
+            tooltip={<Note note="Go to end" />}
+          >
             <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
               <Icons icon="fastforward" />
             </StyledIconButton>

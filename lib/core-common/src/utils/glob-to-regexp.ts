@@ -1,6 +1,6 @@
-import { makeRe } from 'micromatch';
+import { makeRe } from 'picomatch';
 
-export function globToRegex(glob: string) {
+export function globToRegexp(glob: string) {
   const regex = makeRe(glob, {
     fastpaths: false,
     noglobstar: false,
