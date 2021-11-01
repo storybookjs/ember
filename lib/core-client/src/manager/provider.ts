@@ -5,7 +5,7 @@ import createPostMessageChannel from '@storybook/channel-postmessage';
 import createWebSocketChannel from '@storybook/channel-websocket';
 import Events from '@storybook/core-events';
 
-const { FEATURES, document } = global;
+const { FEATURES, SERVER_CHANNEL_URL } = global;
 
 export default class ReactProvider extends Provider {
   private addons: AddonStore;
@@ -26,12 +26,7 @@ export default class ReactProvider extends Provider {
     this.channel = channel;
 
     if (FEATURES?.storyStoreV7) {
-      // TODO--how to construct URL?
-      const serverChannel = createWebSocketChannel({
-        url: `ws://${document.location.hostname}:${document.location.port}/`,
-        async: false,
-        onError: console.error.bind(console),
-      });
+      const serverChannel = createWebSocketChannel({ url: SERVER_CHANNEL_URL });
       this.serverChannel = serverChannel;
       addons.setServerChannel(this.serverChannel);
     }

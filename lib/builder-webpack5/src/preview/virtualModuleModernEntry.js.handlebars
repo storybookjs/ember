@@ -1,4 +1,5 @@
 import fetch from 'unfetch';
+import global from 'global';
 
 import { composeConfigs, PreviewWeb } from '@storybook/preview-web';
 import { ClientApi } from '@storybook/client-api';
@@ -7,6 +8,8 @@ import createPostMessageChannel from '@storybook/channel-postmessage';
 import createWebSocketChannel from '@storybook/channel-websocket';
 
 import { importFn } from './{{storiesFilename}}';
+
+const { SERVER_CHANNEL_URL } = global;
 
 const getProjectAnnotations = () =>
 composeConfigs([
@@ -18,12 +21,7 @@ require('{{this}}'),
 const channel = createPostMessageChannel({ page: 'preview' });
 addons.setChannel(channel);
 
-// TODO--how to construct URL?
-const serverChannel = createWebSocketChannel({
-url: `ws://${document.location.hostname}:${document.location.port}/`,
-async: false,
-onError: console.error.bind(console),
-});
+const serverChannel = createWebSocketChannel({ url: SERVER_CHANNEL_URL, });
 addons.setServerChannel(serverChannel);
 
 const preview = new PreviewWeb();

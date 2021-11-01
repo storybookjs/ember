@@ -15,3 +15,7 @@ export const getServerPort = (port: number) =>
     logger.error(error);
     process.exit(-1);
   });
+
+export const getServerChannelUrl = (port: number, { https }: { https?: boolean }) => {
+  return `${https ? 'wss' : 'ws'}://localhost:${port}/`;
+};
