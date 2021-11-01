@@ -13,6 +13,7 @@ const Notification = styled.div(({ theme }) => ({
   padding: 15,
   width: 280,
   borderRadius: 4,
+  alignItems: 'center',
 
   background:
     theme.base === 'light'
@@ -98,25 +99,23 @@ const ItemContent: FunctionComponent<Pick<State['notifications'][0], 'icon' | 'c
 );
 
 const DismissButtonWrapper = styled(IconButton)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
+  alignSelf: 'center',
+  marginTop: 0,
   color: theme.base === 'light' ? 'rgba(255,255,255,0.7)' : ' #999999',
 }));
 
 const DismissNotificationItem: FunctionComponent<{
   onDismiss: () => void;
 }> = ({ onDismiss }) => (
-  <div>
-    <DismissButtonWrapper
-      title="Dismiss notification"
-      onClick={(e: SyntheticEvent) => {
-        e.preventDefault();
-        onDismiss();
-      }}
-    >
-      <Icons icon="closeAlt" height={12} width={12} />
-    </DismissButtonWrapper>
-  </div>
+  <DismissButtonWrapper
+    title="Dismiss notification"
+    onClick={(e: SyntheticEvent) => {
+      e.preventDefault();
+      onDismiss();
+    }}
+  >
+    <Icons icon="closeAlt" height={12} width={12} />
+  </DismissButtonWrapper>
 );
 
 export const NotificationItemSpacer = styled.div({

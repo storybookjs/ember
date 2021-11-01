@@ -4,9 +4,11 @@ import { styled } from '@storybook/theming';
 export const Separator = styled.span<SeparatorProps>(
   ({ theme }) => ({
     width: 1,
-    height: 24,
+    height: 20,
     background: theme.appBorderColor,
-    marginTop: 8,
+    marginTop: 10,
+    marginLeft: 6,
+    marginRight: 2,
   }),
   ({ force }) =>
     force

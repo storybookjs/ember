@@ -1,3 +1,4 @@
+import { SynchronousPromise } from 'synchronous-promise';
 import {
   DecoratorFunction,
   Args,
@@ -25,7 +26,8 @@ import {
 export type { StoryId, Parameters };
 export type Path = string;
 export type ModuleExports = Record<string, any>;
-export type ModuleImportFn = (path: Path) => Promise<ModuleExports> | ModuleExports;
+type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
+export type ModuleImportFn = (path: Path) => PromiseLike<ModuleExports>;
 
 export type NormalizedProjectAnnotations<
   TFramework extends AnyFramework = AnyFramework

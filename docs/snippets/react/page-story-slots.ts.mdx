@@ -5,16 +5,16 @@ import React from 'react';
 
 import { Story, Meta } from '@storybook/react';
 
-import Page from './Page';
+import { Page, PageProps } from './Page';
 
 export default {
   component: Page,
   title: 'Page',
 } as Meta;
 
-const Template: Story<Page> = (args) => (
+const Template: Story<PageProps> = (args) => (
   <Page {...args}>
-    <footer>{args.footer}</footer
+    <footer>{args.footer}</footer>
   </Page>
 );
 
