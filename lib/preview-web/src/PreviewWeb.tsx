@@ -342,6 +342,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const storyIdChanged = this.previousSelection?.storyId !== storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
+    const { args: urlArgs } = this.urlStore.selectionSpecifier;
+    let hasChangedArgs = !this.previousSelection && Object.keys(urlArgs).length > 0;
+    const updatedArgs = hasChangedArgs ? urlArgs : {};
+
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
 
@@ -367,6 +371,13 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousStory = story;
 
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
+
+    // Populate args from url to ArgsTable controls.
+    if (implementationChanged) {
+      Object.assign(updatedArgs, args);
+      hasChangedArgs = true;
+    }
+
     if (FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
         id: storyId,
@@ -377,8 +388,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       });
     }
     // If the implementation changed, the args also may have changed
-    if (implementationChanged) {
-      this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args });
+    if (hasChangedArgs) {
+      this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args: updatedArgs });
     }
 
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
@@ -532,17 +543,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           storyFn: () => unboundStoryFn(renderStoryContext),
           unboundStoryFn,
         };
-
-        // Populate args from url to ArgsTable controls.
-        if (notYetRendered) {
-          const { args } = this.urlStore.selectionSpecifier;
-          if (Object.keys(args).length > 0) {
-            this.channel.emit(Events.STORY_ARGS_UPDATED, {
-              storyId: id,
-              updatedArgs: args,
-            });
-          }
-        }
 
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
         notYetRendered = false;
