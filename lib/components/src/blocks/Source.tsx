@@ -24,6 +24,7 @@ export enum SourceError {
 }
 
 interface SourceErrorProps {
+  isLoading?: boolean;
   error?: SourceError;
 }
 
@@ -34,6 +35,8 @@ interface SourceCodeProps {
   dark?: boolean;
 }
 
+const SourceSkeleton = () => <div>Loading...</div>;
+
 // FIXME: Using | causes a typescript error, so stubbing it with & for now
 // and making `error` optional
 export type SourceProps = SourceErrorProps & SourceCodeProps;
@@ -42,7 +45,10 @@ export type SourceProps = SourceErrorProps & SourceCodeProps;
  * Syntax-highlighted source code for a component (or anything!)
  */
 const Source: FunctionComponent<SourceProps> = (props) => {
-  const { error } = props as SourceErrorProps;
+  const { isLoading, error } = props as SourceErrorProps;
+  if (isLoading) {
+    return <SourceSkeleton />;
+  }
   if (error) {
     return <EmptyBlock>{error}</EmptyBlock>;
   }
