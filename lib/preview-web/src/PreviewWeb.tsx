@@ -146,6 +146,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
               });
           })
           .catch((err) => {
+            // If there's an error w/ the index we need to initialize the store anyway,
+            // so we can recover later on HMR
+            this.storyStore.initialize({ importFn, cache: !FEATURES?.storyStoreV7 });
             logger.warn(err);
             this.renderPreviewEntryError(err);
           });

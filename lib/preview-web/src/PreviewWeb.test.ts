@@ -1944,6 +1944,24 @@ describe('PreviewWeb', () => {
   });
 
   describe('onStoriesChanged', () => {
+    it('recovers if stories.json endpoint 500s initially', async () => {
+      document.location.search = '?id=component-one--a';
+      const err = new Error('sort error');
+      mockFetchResult = { status: 500, text: async () => err.toString() };
+
+      const preview = new PreviewWeb();
+      await preview.initialize({ importFn, getProjectAnnotations });
+
+      expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+
+      mockChannel.emit.mockClear();
+      mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
+      preview.onStoryIndexChanged();
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+    });
+
     describe('when the current story changes', () => {
       const newComponentOneExports = merge({}, componentOneExports, {
         a: { args: { foo: 'edited' } },

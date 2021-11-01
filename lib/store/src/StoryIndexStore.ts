@@ -8,7 +8,7 @@ export class StoryIndexStore {
 
   stories: StoryIndex['stories'];
 
-  constructor({ stories }: StoryIndex) {
+  constructor({ stories }: StoryIndex = { v: 3, stories: {} }) {
     this.stories = stories;
   }
 
