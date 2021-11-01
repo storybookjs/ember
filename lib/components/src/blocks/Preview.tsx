@@ -189,7 +189,7 @@ const getLayout = (children: ReactElement[]): layout => {
  * items. The preview also shows the source for the component
  * as a drop-down.
  */
-const Preview: FunctionComponent<PreviewProps> = ({
+export const Preview: FunctionComponent<PreviewProps> = ({
   isColumn,
   columns,
   children,
@@ -284,4 +284,4 @@ const Preview: FunctionComponent<PreviewProps> = ({
   );
 };
 
-export { Preview };
+export const PreviewSkeleton = () => <div>Loading...</div>;

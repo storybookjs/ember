@@ -3,7 +3,7 @@ import { styled } from '@storybook/theming';
 import global from 'global';
 
 import { Spaced } from '../spaced/Spaced';
-import { Preview } from './Preview';
+import { Preview, PreviewSkeleton } from './Preview';
 import { Story } from './Story';
 import { Button } from '../Button/Button';
 import * as Source from './Source.stories';
@@ -14,6 +14,8 @@ export default {
   title: 'Docs/Preview',
   component: Preview,
 };
+
+export const Loading = () => <PreviewSkeleton />;
 
 export const CodeCollapsed = () => (
   <Preview isExpanded={false} withSource={Source.JSX.args}>

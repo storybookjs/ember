@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import global from 'global';
-import { resetComponents, Story as PureStory } from '@storybook/components';
+import { resetComponents, Story as PureStory, StorySkeleton } from '@storybook/components';
 import { StoryId, toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import { addons } from '@storybook/addons';
@@ -143,7 +143,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   }, [story]);
 
   if (!story) {
-    return <div>Loading...</div>;
+    return <StorySkeleton />;
   }
 
   // If we are rendering a old-style inline Story via `PureStory` below, we want to emit

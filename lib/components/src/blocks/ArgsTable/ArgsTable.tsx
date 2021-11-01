@@ -451,3 +451,5 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     </ResetWrapper>
   );
 };
+
+export const ArgsTableSkeleton = () => <div>Loading...</div>;

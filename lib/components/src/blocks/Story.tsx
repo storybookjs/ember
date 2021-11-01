@@ -19,7 +19,7 @@ export enum StoryError {
 const MISSING_STORY = (id?: string) => (id ? `Story "${id}" doesn't exist.` : StoryError.NO_STORY);
 
 interface CommonProps {
-  title: string;
+  title?: string;
   height?: string;
   id: string;
 }
@@ -72,7 +72,7 @@ const IFrameStory: FunctionComponent<IFrameStoryProps> = ({ id, title, height = 
  * A story element, either rendered inline or in an iframe,
  * with configurable height.
  */
-const Story: FunctionComponent<StoryProps & { inline: boolean; error?: StoryError }> = ({
+const Story: FunctionComponent<StoryProps & { inline?: boolean; error?: StoryError }> = ({
   children,
   error,
   inline,
@@ -90,4 +90,6 @@ const Story: FunctionComponent<StoryProps & { inline: boolean; error?: StoryErro
   );
 };
 
-export { Story };
+const StorySkeleton = () => <div>Loading...</div>;
+
+export { Story, StorySkeleton };

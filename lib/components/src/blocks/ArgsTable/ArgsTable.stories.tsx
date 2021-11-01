@@ -1,7 +1,7 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { styled } from '@storybook/theming';
-import { ArgsTable, ArgsTableError } from './ArgsTable';
+import { ArgsTable, ArgsTableSkeleton, ArgsTableError } from './ArgsTable';
 import { NoControlsWarning } from './NoControlsWarning';
 import * as ArgRow from './ArgRow.stories';
 
@@ -26,6 +26,8 @@ const numberType = ArgRow.Number.args.row;
 const longEnumType = ArgRow.LongEnum.args.row;
 
 const Template = (args) => <ArgsTable {...args} />;
+
+export const Loading = () => <ArgsTableSkeleton />;
 
 export const Normal = Template.bind({});
 Normal.args = {
