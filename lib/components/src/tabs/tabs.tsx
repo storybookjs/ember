@@ -51,7 +51,7 @@ export const TabBar = styled.div({
   overflow: 'hidden',
 
   '&:first-of-type': {
-    marginLeft: 0,
+    marginLeft: -3,
   },
 });
 
