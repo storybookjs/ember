@@ -1238,6 +1238,19 @@ describe('PreviewWeb', () => {
         );
       });
 
+      it('renders preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+
+        expect(preview.view.showPreparing).toHaveBeenCalled();
+      });
+
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
         await createAndRenderPreview();

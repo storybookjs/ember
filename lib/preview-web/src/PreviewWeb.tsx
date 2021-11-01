@@ -402,6 +402,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       selection: { storyId },
     } = this.urlStore;
 
+    const storyIdChanged = this.previousSelection?.storyId !== storyId;
+    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
+
+    // Show a spinner while we load the next story
+    if (selection.viewMode !== 'docs' || viewModeChanged) this.view.showPreparing();
+
     let story;
     try {
       story = await this.storyStore.loadStory({ storyId });
@@ -410,9 +416,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       await this.renderMissingStory(storyId);
       return;
     }
-
-    const storyIdChanged = this.previousSelection?.storyId !== storyId;
-    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
