@@ -1,4 +1,4 @@
-import { StoryWrapper, StoryGetter, StoryContext } from './types';
+import { StoryWrapper, LegacyStoryFn, StoryContext } from './types';
 
 type MakeDecoratorResult = (...args: any) => any;
 
@@ -15,18 +15,18 @@ export const makeDecorator = ({
   wrapper,
   skipIfNoParametersOrOptions = false,
 }: MakeDecoratorOptions): MakeDecoratorResult => {
-  const decorator: any = (options: object) => (getStory: StoryGetter, context: StoryContext) => {
+  const decorator: any = (options: object) => (storyFn: LegacyStoryFn, context: StoryContext) => {
     const parameters = context.parameters && context.parameters[parameterName];
 
     if (parameters && parameters.disable) {
-      return getStory(context);
+      return storyFn(context);
     }
 
     if (skipIfNoParametersOrOptions && !options && !parameters) {
-      return getStory(context);
+      return storyFn(context);
     }
 
-    return wrapper(getStory, context, {
+    return wrapper(storyFn, context, {
       options,
       parameters,
     });

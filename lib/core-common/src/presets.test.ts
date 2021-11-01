@@ -412,6 +412,7 @@ describe('resolveAddonName', () => {
 });
 
 describe('loadPreset', () => {
+  mockPreset('@storybook/react', {});
   mockPreset('@storybook/preset-typescript', {});
   mockPreset('@storybook/addon-docs/preset', {});
   mockPreset('@storybook/addon-actions/register', {});
@@ -421,6 +422,54 @@ describe('loadPreset', () => {
   mockPreset('@storybook/addon-notes/register-panel', {});
 
   const { loadPreset } = jest.requireActual('./presets');
+
+  it('should prepend framework field to list of presets', () => {
+    const loaded = loadPreset(
+      {
+        name: '',
+        type: 'managerEntries',
+        framework: '@storybook/react',
+        presets: ['@storybook/preset-typescript'],
+        addons: ['@storybook/addon-docs'],
+      },
+      0,
+      {}
+    );
+    expect(loaded).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "@storybook/react",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": "@storybook/preset-typescript",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": "@storybook/addon-docs/preset",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": Object {
+            "addons": Array [
+              "@storybook/addon-docs",
+            ],
+            "framework": "@storybook/react",
+            "name": "",
+            "presets": Array [
+              "@storybook/preset-typescript",
+            ],
+            "type": "managerEntries",
+          },
+          "options": Object {},
+          "preset": Object {},
+        },
+      ]
+    `);
+  });
 
   it('should resolve all addons & presets in correct order', () => {
     const loaded = loadPreset(

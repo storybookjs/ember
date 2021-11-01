@@ -1,12 +1,24 @@
 /* eslint-disable prefer-destructuring */
 import { start } from '@storybook/core/client';
+import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import render from './render';
-import { ClientApi } from './types';
+import { renderToDOM } from './render';
+import { IStorybookSection } from './types';
+import { PreactFramework } from './types-6-0';
+
+export interface ClientApi extends ClientStoryApi<PreactFramework['storyResult']> {
+  setAddon(addon: any): void;
+  configure(loader: Loadable, module: NodeModule): void;
+  getStorybook(): IStorybookSection[];
+  clearDecorators(): void;
+  forceReRender(): void;
+  raw: () => any; // todo add type
+  load: (...args: any[]) => void;
+}
 
 const framework = 'preact';
-const api = start(render);
+const api = start(renderToDOM);
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

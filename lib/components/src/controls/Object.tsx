@@ -13,7 +13,7 @@ import { styled, useTheme, Theme } from '@storybook/theming';
 
 // @ts-ignore
 import { JsonTree, getObjectType } from './react-editable-json-tree';
-import { getControlId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, ObjectValue, ObjectConfig } from './types';
 import { Form } from '../form';
 import { Icons, IconsProps } from '../icon/icon';
@@ -271,7 +271,11 @@ export const ObjectControl: React.FC<ObjectProps> = ({ name, value, onChange }) 
   }, [forceVisible]);
 
   if (!hasData) {
-    return <Form.Button onClick={onForceVisible}>Set object</Form.Button>;
+    return (
+      <Form.Button id={getControlSetterButtonId(name)} onClick={onForceVisible}>
+        Set object
+      </Form.Button>
+    );
   }
 
   const rawJSONForm = (

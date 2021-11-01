@@ -58,18 +58,40 @@ export class PostmsgTransport {
    * @param event
    */
   send(event: ChannelEvent, options?: any): Promise<any> {
-    let depth = 25;
-    let allowFunction = true;
-    let target;
+    const {
+      target,
 
-    if (options && typeof options.allowFunction === 'boolean') {
-      allowFunction = options.allowFunction;
-    }
+      // telejson options
+      allowRegExp,
+      allowFunction = true,
+      allowSymbol,
+      allowDate,
+      allowUndefined,
+      allowClass,
+      maxDepth = 25,
+      space,
+      lazyEval,
+    } = options || {};
+
+    const c = Object.fromEntries(
+      Object.entries({
+        allowRegExp,
+        allowFunction,
+        allowSymbol,
+        allowDate,
+        allowUndefined,
+        allowClass,
+        maxDepth,
+        space,
+        lazyEval,
+      }).filter(([k, v]) => typeof v !== 'undefined')
+    );
+
+    const stringifyOptions = { ...(global.CHANNEL_OPTIONS || {}), ...c };
+
+    // backwards compat: convert depth to maxDepth
     if (options && Number.isInteger(options.depth)) {
-      depth = options.depth;
-    }
-    if (options && typeof options.target === 'string') {
-      target = options.target;
+      stringifyOptions.maxDepth = options.depth;
     }
 
     const frames = this.getFrames(target);
@@ -82,7 +104,7 @@ export class PostmsgTransport {
         event,
         refId: query.refId,
       },
-      { maxDepth: depth, allowFunction }
+      stringifyOptions
     );
 
     if (!frames.length) {

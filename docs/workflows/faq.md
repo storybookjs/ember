@@ -53,7 +53,7 @@ module.exports = {
     const nextConfig = require('/path/to/next.config.js');
 
     // merge whatever from nextConfig into the webpack config storybook will use
-    return { ...baseConfig };
+    return { ...baseConfig, ...nextConfig };
   },
 };
 ```
@@ -322,3 +322,52 @@ Yes, check the [addon's examples](https://github.com/mswjs/msw-storybook-addon/t
 ### Can I mock GraphQL mutations with Storybook's MSW addon?
 
 No, currently, the MSW addon only has support for GraphQL queries. If you're interested in including this feature, open an issue in the [MSW addon repository](https://github.com/mswjs/msw-storybook-addon) and follow up with the maintainer.
+
+### Why aren't my code blocks highlighted with Storybook MDX
+
+Out of the box, Storybook provides syntax highlighting for a set of languages (e.g., Javascript, Markdown, CSS, HTML, Typescript, GraphQL) that you can use with your code blocks. If you're writing your custom code blocks with MDX, you'll need to import the syntax highlighter manually. For example, if you're adding a code block for SCSS, adjust your story to the following:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-custom-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+💡 Check <code>react-syntax-highlighter</code>'s <a href="https://github.com/react-syntax-highlighter/react-syntax-highlighter">documentation</a> for a list of available languages.
+</div>
+
+Applying this small change will enable you to add syntax highlight for SCSS or any other language available.
+
+### How can my code detect if it is running in Storybook?
+
+You can do this by checking the value of `process.env.STORYBOOK`, which will
+equal `'true'` when running in Storybook. Be careful — `process` may be
+undefined when your code runs outside of Storybook.
+
+```javascript
+export function isRunningInStorybook() {
+  try {
+    if (process.env.STORYBOOK) return true;
+  } catch {
+    // A ReferenceError will be thrown if process is undefined
+  }
+
+  return false;
+}
+```
+
+This works because Babel replaces `process.env.STORYBOOK` with the value of the
+`STORYBOOK` environment variable. Because this is done through a Babel plugin,
+the following will **NOT** work:
+
+```javascript
+export function isRunningInStorybook() {
+  return typeof process?.env?.STORYBOOK !== 'undefined';
+  // ReferenceError: process is not defined
+}
+```

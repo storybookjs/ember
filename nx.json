@@ -37,6 +37,9 @@
     "@storybook/addon-essentials": {
       "implicitDependencies": []
     },
+    "@storybook/addon-interactions": {
+      "implicitDependencies": []
+    },
     "@storybook/addon-jest": {
       "implicitDependencies": []
     },
@@ -211,10 +214,16 @@
     "@storybook/core-server": {
       "implicitDependencies": []
     },
+    "@storybook/instrumenter": {
+      "implicitDependencies": []
+    },
     "@storybook/node-logger": {
       "implicitDependencies": []
     },
     "@storybook/postinstall": {
+      "implicitDependencies": []
+    },
+    "@storybook/store": {
       "implicitDependencies": []
     },
     "@storybook/router": {
@@ -230,6 +239,9 @@
       "implicitDependencies": []
     },
     "@storybook/ui": {
+      "implicitDependencies": []
+    },
+    "@storybook/preview-web": {
       "implicitDependencies": []
     }
   },

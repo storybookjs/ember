@@ -1,5 +1,7 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
+import { darken, transparentize } from 'polished';
+import { auto } from '@popperjs/core';
 
 interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
@@ -76,39 +78,39 @@ export interface IconButtonProps {
 
 export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<IconButtonProps>(
   ({ theme }) => ({
-    display: 'inline-flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    background: 'none',
+    background: 'transparent',
+    border: 'none',
+    borderRadius: 4,
     color: 'inherit',
-    padding: 0,
     cursor: 'pointer',
-
-    // Icon Buttons may have text depending on user preferences.
-    // While we don't recommend having text for IconButtons, this style ensures that the text is the correct size.
-    fontWeight: 'bold',
+    display: 'inline-flex',
     fontSize: 13,
+    fontWeight: 'bold',
+    height: 28,
+    justifyContent: 'center',
+    marginTop: 6,
+    padding: '8px 7px',
 
-    border: '0 solid transparent',
-    borderTop: '3px solid transparent',
-    borderBottom: '3px solid transparent',
-
-    transition: 'color 0.2s linear, border-bottom-color 0.2s linear',
-
-    '&:hover, &:focus': {
-      outline: '0 none',
+    '&:hover, &:focus-visible': {
+      background: transparentize(0.88, theme.color.secondary),
       color: theme.color.secondary,
     },
+    '&:focus-visible': {
+      outline: auto, // Ensures links have the same focus style
+    },
+    '&:focus:not(:focus-visible)': {
+      outline: 'none',
+    },
     '& > svg': {
-      width: 15,
+      width: 14,
     },
   }),
   ({ active, theme }) =>
     active
       ? {
-          outline: '0 none',
-          borderBottomColor: theme.color.secondary,
+          backgroundColor: theme.background.hoverable,
+          color: theme.color.secondary,
         }
       : {}
 );

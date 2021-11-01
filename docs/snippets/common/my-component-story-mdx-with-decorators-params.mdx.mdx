@@ -1,15 +1,18 @@
 ```md
 <!--- MyComponent.stories.mdx --->
 
-<!--- This is your Story template function, shown here in React -->
+import { Meta, Story } from '@storybook/addon-docs';
 
 <Meta
-  title='MyComponent'
+  title="MyComponent"
   decorators={[ ... ]}
   parameters={{ ... }}
 />
 
-<Story name="story" decorators={[ ... ]} parameters={{ ... }} >
+<Story 
+  name="story" 
+  decorators={[ ... ]} 
+  parameters={{ ... }} >
 ...
 </Story>
 ```

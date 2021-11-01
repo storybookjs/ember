@@ -202,7 +202,7 @@ Just like CSF stories we can define `argTypes` to specify the controls used in t
 ```json
 {
   "title": "Buttons",
-  "argTypess": {
+  "argTypes": {
     "color": { "control": { "type": "color" } }
   },
   "stories": [

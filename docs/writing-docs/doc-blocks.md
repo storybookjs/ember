@@ -265,11 +265,14 @@ As an example, if you had the following story:
   paths={[
     'react/button-story-default-docs-code.js.mdx',
     'react/button-story-default-docs-code.ts.mdx',
-    'vue/button-story-default-docs-code.2.js.mdx',
+    'react/button-story-default-docs-code.mdx.mdx',
     'vue/button-story-default-docs-code.3.js.mdx',
+    'vue/button-story-default-docs-code.mdx-3.mdx.mdx',
     'angular/button-story-default-docs-code.ts.mdx',
+    'angular/button-story-default-docs-code.mdx.mdx',
     'svelte/button-story-default-docs-code.js.mdx',
     'svelte/button-story-default-docs-code.native-format.mdx',
+    'svelte/button-story-default-docs-code.mdx.mdx',
   ]}
 />
 
@@ -308,7 +311,7 @@ The pattern described will be applied to all the stories for the component. If y
 
 ### MDX
 
-You can also use the `Source` block in MDX. It accepts either a story ID or `code` snippet. Use the `language` for syntax highlighting. It supports the following languages: `javascript`, `jsx`, `json`, `yml`, ,`md`, `bash`, `css`, `html`, `tsx`, `typescript`, `graphql`.
+You can also use the `Source` block in MDX. It accepts either a story ID or `code` snippet. Use the `language` for syntax highlighting. It supports the following languages: `javascript`, `jsx`, `json`, `yml`, `md`, `bash`, `css`, `html`, `tsx`, `typescript`, `graphql`.
 
 <!-- prettier-ignore-start -->
 
@@ -372,7 +375,11 @@ In MDX, the `Story` block is not only a way of displaying stories, but also the 
 
 <CodeSnippets
   paths={[
-    'common/component-story-mdx-story-by-name.mdx.mdx',
+    'react/component-story-mdx-story-by-name.mdx.mdx',
+    'angular/component-story-mdx-story-by-name.mdx.mdx',
+    'vue/component-story-mdx-story-by-name.mdx-2.mdx.mdx',
+    'vue/component-story-mdx-story-by-name.mdx-3.mdx.mdx',
+    'svelte/component-story-mdx-story-by-name.mdx.mdx',
   ]}
 />
 
@@ -396,7 +403,7 @@ In Storybook’s Canvas, all stories are rendered in the Preview iframe for isol
 
 ## Canvas
 
-Storybook Docs’ `Canvas` block is a wrapper that provides a toolbar for interacting with its contents, and also also provides [Source](#source) snippets automatically.
+Storybook Docs’ `Canvas` block is a wrapper that provides a toolbar for interacting with its contents, and also provides [Source](#source) snippets automatically.
 
 ![Docs block with a story preview](./docblock-preview.png)
 
@@ -414,7 +421,11 @@ In MDX, `Canvas` is more flexible: in addition to the DocsPage behavior, it can 
 
 <CodeSnippets
   paths={[
-    'common/mdx-canvas-multiple-stories.mdx.mdx',
+    'react/mdx-canvas-multiple-stories.mdx.mdx',
+    'angular/mdx-canvas-multiple-stories.mdx.mdx',
+    'vue/mdx-canvas-multiple-stories.mdx-2.mdx.mdx',
+    'vue/mdx-canvas-multiple-stories.mdx-3.mdx.mdx',
+    'svelte/mdx-canvas-multiple-stories.mdx.mdx',
   ]}
 />
 

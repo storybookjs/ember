@@ -18,6 +18,7 @@ module.exports = {
       },
     },
     '@storybook/addon-controls',
+    '@storybook/addon-interactions',
     '@storybook/addon-links',
     '@storybook/addon-backgrounds',
     '@storybook/addon-viewport',

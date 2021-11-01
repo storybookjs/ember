@@ -91,7 +91,7 @@ For example, with Angular start by adding a `babel.config.js` file at the root o
 ```js
 // babel.config.js
 
-module.exports = function(api) {
+module.exports = function (api) {
   process.env.NODE_ENV === 'development' ? api.cache(false) : api.cache(true);
   const presets = [
     [
@@ -124,8 +124,8 @@ Then, update your `tsconfig.json` to include the following:
   },
 }
 ```
-Finally write your custom React component and and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
 
+Finally write your custom React component and and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
 
 <!-- prettier-ignore-start -->
 
@@ -168,11 +168,26 @@ Unless you use a custom [webpack configuration](../configure/webpack.md#extendin
 
 DocsPage displays all the stories of a component on one page. You have the option of rendering those stories inline or in an iframe.
 
-By default, we render React and Vue stories inline. Stories from other supported frameworks will render in an `<iframe>` by default.
+The iframe creates a clean separation between your code and Storybook’s UI, which is useful if your stories are rendering correctly in the Canvas but not on the docs page, for instance with fixed positioned components like modals.
 
-The iframe creates a clean separation between your code and Storybook’s UI. But using an iframe has disadvantages. For example, you have to set the height of iframe stories explicitly, or you’ll see a scroll bar. And certain dev tools might not work right.
+But using an iframe has disadvantages. For example, you have to set the height of iframe stories explicitly, or you’ll see a scroll bar. Having more than a few iframe stories on a page can lead to performance issues. And certain dev tools might not work right.
 
-Render your framework’s stories inline using two docs configuration options in tandem, `inlineStories` and `prepareForInline`.
+Therefore, we recommend inline rendering where possible. It's the default mode for all the frameworks in which [we support it](../api/frameworks-feature-support.md). The one exception is Angular, where it's opt-in.
+
+To toggle the between the two settings, set `docs.inlineStories` in `.storybook/preview.js`. Like most [parameters](../writing-stories/parameters.md), you can also toggle at the component or story level:
+
+```js
+export const parameters = {
+  docs: {
+    // opt-out of inline rendering
+    inlineStories: false,
+  },
+};
+```
+
+### Custom inline rendering
+
+If your framework doesn't [support inline rendering](../api/frameworks-feature-support.md), you also need to provide a `prepareForInline` function in addition to the `inlineStories` parameter.
 
 Setting `inlineStories` to `true` tells Storybook to stop putting your stories in an iframe. The `prepareForInline` accepts a function that transforms story content from your given framework to something React can render (Storybook’s UI is built in React).
 

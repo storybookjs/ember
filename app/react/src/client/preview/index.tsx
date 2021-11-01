@@ -1,16 +1,13 @@
 /* eslint-disable prefer-destructuring */
-import React from 'react';
 import { start } from '@storybook/core/client';
 import { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import render from './render';
-import { IStorybookSection, StoryFnReactReturnType } from './types';
-import { Story } from './types-6-3';
+import { renderToDOM, render } from './render';
+import { IStorybookSection } from './types';
+import { ReactFramework } from './types-6-0';
 
-const framework = 'react';
-
-interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
+interface ClientApi extends ClientStoryApi<ReactFramework['storyResult']> {
   setAddon(addon: any): void;
   configure(loader: Loadable, module: NodeModule): void;
   getStorybook(): IStorybookSection[];
@@ -18,14 +15,9 @@ interface ClientApi extends ClientStoryApi<StoryFnReactReturnType> {
   forceReRender(): void;
   raw: () => any; // todo add type
 }
+const framework = 'react';
 
-const globalRender: Story = (args, { parameters }) => {
-  const Component = parameters.component;
-  return <Component {...args} />;
-};
-
-const api = start(render);
-api.clientApi.globalRender = globalRender;
+const api = start(renderToDOM, { render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

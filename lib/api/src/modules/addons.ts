@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { WindowLocation } from '@reach/router';
+import type { RenderData } from '@storybook/router';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
@@ -35,13 +35,13 @@ export interface RenderOptions {
 export interface RouteOptions {
   storyId: string;
   viewMode: ViewMode;
-  location: WindowLocation;
+  location: RenderData['location'];
   path: string;
 }
 export interface MatchOptions {
   storyId: string;
   viewMode: ViewMode;
-  location: WindowLocation;
+  location: RenderData['location'];
   path: string;
 }
 

@@ -14,6 +14,7 @@ Object {
     "ROOT/addons/toolbars/dist/esm/register.js",
     "ROOT/addons/measure/dist/esm/register.js",
     "ROOT/addons/outline/dist/esm/register.js",
+    "ROOT/addons/interactions/dist/esm/register.js",
   ],
   "keys": Array [
     "name",
@@ -46,6 +47,8 @@ Object {
           Object {
             "loader": "NODE_MODULES/babel-loader/lib/index.js",
             "options": Object {
+              "babelrc": false,
+              "configFile": false,
               "plugins": Array [
                 "NODE_MODULES/@babel/plugin-transform-shorthand-properties/lib/index.js",
                 "NODE_MODULES/@babel/plugin-transform-block-scoping/lib/index.js",
@@ -216,7 +219,6 @@ Object {
     "VirtualModulesPlugin",
     "HtmlWebpackPlugin",
     "CaseSensitivePathsPlugin",
-    "DefinePlugin",
     "DefinePlugin",
   ],
 }

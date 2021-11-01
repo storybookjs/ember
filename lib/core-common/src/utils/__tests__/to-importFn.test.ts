@@ -1,0 +1,181 @@
+import { webpackIncludeRegexp } from '../to-importFn';
+import { normalizeStoriesEntry } from '../normalize-stories';
+
+const testCases: [string, string[], string[]][] = [
+  [
+    '**/*.stories.tsx',
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    './**/*.stories.tsx',
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    '../**/*.stories.tsx',
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    'src',
+    [],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    'src/*',
+    ['/Users/user/code/src/Icon.stories.tsx'],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    './src/**/*.stories.tsx',
+    [
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    '../src/**/*.stories.tsx',
+    [
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    '../../src/**/*.stories.tsx',
+    [
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+  [
+    './../../src/**/*.stories.tsx',
+    [
+      '/Users/user/code/src/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/Icon.stories.tsx',
+    ],
+    [
+      '/Users/user/code/Icon.stories.tsx',
+      '/Users/user/code/stories.tsx',
+      '/Users/user/code/Icon.stories.ts',
+      '/Users/user/code/Icon.stories.js',
+      '/Users/user/code/src/components/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories/stories.tsx',
+      '/Users/user/code/src/components/Icon.stories.ts',
+      '/Users/user/code/src/components/Icon.stories.js',
+    ],
+  ],
+];
+
+describe('toImportFn - webpackIncludeRegexp', () => {
+  it.each(testCases)('matches only suitable paths - %s', (glob, validPaths, invalidPaths) => {
+    const regex = webpackIncludeRegexp(
+      normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
+    );
+
+    const isNotMatchedForValidPaths = validPaths.filter(
+      (absolutePath) => !regex.test(absolutePath)
+    );
+    const isMatchedForInvalidPaths = invalidPaths.filter(
+      (absolutePath) => !!regex.test(absolutePath)
+    );
+
+    expect(isNotMatchedForValidPaths).toEqual([]);
+    expect(isMatchedForInvalidPaths).toEqual([]);
+  });
+});

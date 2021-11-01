@@ -13,11 +13,9 @@ export default {
 } as Meta;
 
 export const ChipsGroup: Story = (args) => ({
+  component: ChipsGroupComponent,
   props: args,
 });
-ChipsGroup.parameters = {
-  component: ChipsGroupComponent,
-};
 ChipsGroup.args = {
   chips: [
     {
@@ -36,11 +34,9 @@ ChipsGroup.argTypes = {
 };
 
 export const Chip: Story = (args) => ({
+  component: ChipComponent,
   props: args,
 });
-Chip.parameters = {
-  component: ChipComponent,
-};
 Chip.args = {
   displayText: 'Chip',
 };

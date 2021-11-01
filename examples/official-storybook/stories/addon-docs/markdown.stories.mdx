@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/addon-docs';
-import { Icons } from '@storybook/components';
+import { Icons, Code } from '@storybook/components';
 
 <Meta title="Addons/Docs/markdown-docs" />
 
@@ -159,3 +159,17 @@ Table with icons
 
 ![Minion](https://octodex.github.com/images/minion.png)
 ![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg 'The Stormtroopocat')
+
+## Code
+
+<Code>{'first'}, second</Code>
+
+<Code>{['first', 'second']}</Code>
+
+<Code>{<b>first</b>}, second</Code>
+
+<Code>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rutrum {'commodo nibh'},
+  sollicitudin posuere elit varius sed. Curabitur non risus et eros blandit consequat. Cras rutrum
+  dignissim convallis.
+</Code>

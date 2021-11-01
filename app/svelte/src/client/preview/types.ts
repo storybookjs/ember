@@ -23,3 +23,8 @@ interface WrapperData {
   innerStyle: string;
   style: string;
 }
+
+export type SvelteFramework = {
+  component: any;
+  storyResult: any;
+};

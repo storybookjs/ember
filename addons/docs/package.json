@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-docs",
-  "version": "6.4.0-alpha.23",
+  "version": "6.4.0-beta.23",
   "description": "Document component usage and properties in Markdown",
   "keywords": [
     "addon",
@@ -29,7 +29,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -63,20 +63,21 @@
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@storybook/addons": "6.4.0-alpha.23",
-    "@storybook/api": "6.4.0-alpha.23",
-    "@storybook/builder-webpack4": "6.4.0-alpha.23",
-    "@storybook/client-api": "6.4.0-alpha.23",
-    "@storybook/client-logger": "6.4.0-alpha.23",
-    "@storybook/components": "6.4.0-alpha.23",
-    "@storybook/core": "6.4.0-alpha.23",
-    "@storybook/core-events": "6.4.0-alpha.23",
-    "@storybook/csf": "0.0.1",
-    "@storybook/csf-tools": "6.4.0-alpha.23",
-    "@storybook/node-logger": "6.4.0-alpha.23",
-    "@storybook/postinstall": "6.4.0-alpha.23",
-    "@storybook/source-loader": "6.4.0-alpha.23",
-    "@storybook/theming": "6.4.0-alpha.23",
+    "@storybook/addons": "6.4.0-beta.23",
+    "@storybook/api": "6.4.0-beta.23",
+    "@storybook/builder-webpack4": "6.4.0-beta.23",
+    "@storybook/client-logger": "6.4.0-beta.23",
+    "@storybook/components": "6.4.0-beta.23",
+    "@storybook/core": "6.4.0-beta.23",
+    "@storybook/core-events": "6.4.0-beta.23",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/csf-tools": "6.4.0-beta.23",
+    "@storybook/node-logger": "6.4.0-beta.23",
+    "@storybook/postinstall": "6.4.0-beta.23",
+    "@storybook/preview-web": "6.4.0-beta.23",
+    "@storybook/source-loader": "6.4.0-beta.23",
+    "@storybook/store": "6.4.0-beta.23",
+    "@storybook/theming": "6.4.0-beta.23",
     "acorn": "^7.4.1",
     "acorn-jsx": "^5.3.1",
     "acorn-walk": "^7.2.0",
@@ -93,7 +94,7 @@
     "p-limit": "^3.1.0",
     "prettier": "^2.2.1",
     "prop-types": "^15.7.2",
-    "react-element-to-jsx-string": "^14.3.2",
+    "react-element-to-jsx-string": "^14.3.4",
     "regenerator-runtime": "^0.13.7",
     "remark-external-links": "^8.0.0",
     "remark-slug": "^6.0.0",
@@ -105,10 +106,11 @@
     "@babel/core": "^7.12.10",
     "@emotion/core": "^10.1.1",
     "@emotion/styled": "^10.0.27",
-    "@storybook/angular": "6.4.0-alpha.23",
-    "@storybook/react": "6.4.0-alpha.23",
-    "@storybook/vue": "6.4.0-alpha.23",
-    "@storybook/web-components": "6.4.0-alpha.23",
+    "@storybook/angular": "6.4.0-beta.23",
+    "@storybook/html": "6.4.0-beta.23",
+    "@storybook/react": "6.4.0-beta.23",
+    "@storybook/vue": "6.4.0-beta.23",
+    "@storybook/web-components": "6.4.0-beta.23",
     "@types/cross-spawn": "^6.0.2",
     "@types/doctrine": "^0.0.3",
     "@types/enzyme": "^3.10.8",
@@ -138,10 +140,12 @@
     "zone.js": "^0.11.3"
   },
   "peerDependencies": {
-    "@storybook/angular": "6.4.0-alpha.23",
-    "@storybook/vue": "6.4.0-alpha.23",
-    "@storybook/vue3": "6.4.0-alpha.23",
-    "@storybook/web-components": "6.4.0-alpha.23",
+    "@storybook/angular": "6.4.0-beta.23",
+    "@storybook/html": "6.4.0-beta.23",
+    "@storybook/react": "6.4.0-beta.23",
+    "@storybook/vue": "6.4.0-beta.23",
+    "@storybook/vue3": "6.4.0-beta.23",
+    "@storybook/web-components": "6.4.0-beta.23",
     "lit": "^2.0.0-rc.1",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
@@ -153,6 +157,12 @@
   },
   "peerDependenciesMeta": {
     "@storybook/angular": {
+      "optional": true
+    },
+    "@storybook/html": {
+      "optional": true
+    },
+    "@storybook/react": {
       "optional": true
     },
     "@storybook/vue": {
@@ -192,7 +202,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "691fc1f7155bd50179573b146c45f9528d2dc7df",
+  "gitHead": "34dd760d275faabff6855b84bb64bb69adc1ec1a",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Docs",

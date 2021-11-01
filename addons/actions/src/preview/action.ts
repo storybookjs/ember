@@ -22,7 +22,7 @@ export function action(name: string, options: ActionOptions = {}): HandlerFuncti
       data: { name, args: normalizedArgs },
       options: {
         ...actionOptions,
-        depth: minDepth + (actionOptions.depth || 3),
+        maxDepth: minDepth + (actionOptions.depth || 3),
         allowFunction: actionOptions.allowFunction || false,
       },
     };

@@ -177,7 +177,7 @@ object ExamplesTemplate : Template({
                 rm -rf built-storybooks
                 mkdir -p built-storybooks
                 
-                yarn build-storybooks
+                yarn build-storybooks --all
             """.trimIndent()
             dockerImage = "buildkite/puppeteer"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux

@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 
 export * from './types';
 
-export * from './Array';
 export * from './Boolean';
 export type { ColorProps } from './Color';
 

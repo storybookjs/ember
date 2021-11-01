@@ -1,102 +1,136 @@
 import global from 'global';
-
-import { addons, DecorateStoryFunction, Channel } from '@storybook/addons';
+import deprecate from 'util-deprecate';
+import { ClientApi } from '@storybook/client-api';
+import { WebProjectAnnotations, PreviewWeb } from '@storybook/preview-web';
+import { AnyFramework, ArgsStoryFn } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
-import { ClientApi, ConfigApi, StoryStore } from '@storybook/client-api';
+import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
+import { Path } from '@storybook/store';
 
-import { getSelectionSpecifierFromPath, setPath } from './url';
-import { RenderStoryFunction } from './types';
-import { loadCsf } from './loadCsf';
-import { StoryRenderer } from './StoryRenderer';
+import { Loadable } from './types';
+import { executeLoadableForChanges } from './executeLoadable';
 
-const { navigator, window: globalWindow } = global;
-const isBrowser =
-  navigator &&
-  navigator.userAgent &&
-  navigator.userAgent !== 'storyshots' &&
-  !(navigator.userAgent.indexOf('Node.js') > -1) &&
-  !(navigator.userAgent.indexOf('jsdom') > -1);
+const { window: globalWindow, FEATURES } = global;
 
-function getOrCreateChannel() {
-  let channel = null;
-  if (isBrowser) {
-    try {
-      channel = addons.getChannel();
-    } catch (e) {
-      channel = createChannel({ page: 'preview' });
-      addons.setChannel(channel);
-    }
-  }
+const configureDeprecationWarning = deprecate(
+  () => {},
+  `\`configure()\` is deprecated and will be removed in Storybook 7.0. 
+Please use the \`stories\` field of \`main.js\` to load stories.
+Read more at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-configure`
+);
 
-  return channel;
-}
+const removedApi = (name: string) => () => {
+  throw new Error(`@storybook/client-api:${name} was removed in storyStoreV7.`);
+};
 
-function getClientApi(decorateStory: DecorateStoryFunction, channel?: Channel) {
-  let storyStore: StoryStore;
-  let clientApi: ClientApi;
-  if (
-    typeof globalWindow !== 'undefined' &&
-    globalWindow.__STORYBOOK_CLIENT_API__ &&
-    globalWindow.__STORYBOOK_STORY_STORE__
-  ) {
-    clientApi = globalWindow.__STORYBOOK_CLIENT_API__;
-    storyStore = globalWindow.__STORYBOOK_STORY_STORE__;
-  } else {
-    storyStore = new StoryStore({ channel });
-    clientApi = new ClientApi({ storyStore, decorateStory });
-  }
-  return { clientApi, storyStore };
-}
-
-function focusInInput(event: Event) {
-  const target = event.target as Element;
-  return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
-}
-
-// todo improve typings
-export default function start(
-  render: RenderStoryFunction,
-  { decorateStory }: { decorateStory?: DecorateStoryFunction } = {}
+export function start<TFramework extends AnyFramework>(
+  renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'],
+  {
+    decorateStory,
+    render,
+  }: {
+    decorateStory?: WebProjectAnnotations<TFramework>['applyDecorators'];
+    render?: ArgsStoryFn<TFramework>;
+  } = {}
 ) {
-  const channel = getOrCreateChannel();
-  const { clientApi, storyStore } = getClientApi(decorateStory, channel);
-  const configApi = new ConfigApi({ storyStore });
-  const storyRenderer = new StoryRenderer({ render, channel, storyStore });
-
-  // Only try and do URL/event based stuff in a browser context (i.e. not in storyshots)
-  if (isBrowser) {
-    const selectionSpecifier = getSelectionSpecifierFromPath();
-    if (selectionSpecifier) {
-      storyStore.setSelectionSpecifier(selectionSpecifier);
-    }
-
-    channel.on(Events.CURRENT_STORY_WAS_SET, setPath);
-
-    // Handle keyboard shortcuts
-    globalWindow.onkeydown = (event: KeyboardEvent) => {
-      if (!focusInInput(event)) {
-        // We have to pick off the keys of the event that we need on the other side
-        const { altKey, ctrlKey, metaKey, shiftKey, key, code, keyCode } = event;
-        channel.emit(Events.PREVIEW_KEYDOWN, {
-          event: { altKey, ctrlKey, metaKey, shiftKey, key, code, keyCode },
-        });
-      }
+  if (FEATURES?.storyStoreV7) {
+    return {
+      forceReRender: removedApi('forceReRender'),
+      getStorybook: removedApi('getStorybook'),
+      configure: removedApi('configure'),
+      clientApi: {
+        addDecorator: removedApi('clientApi.addDecorator'),
+        addParameters: removedApi('clientApi.addParameters'),
+        clearDecorators: removedApi('clientApi.clearDecorators'),
+        addLoader: removedApi('clientApi.addLoader'),
+        setAddon: removedApi('clientApi.setAddon'),
+        getStorybook: removedApi('clientApi.getStorybook'),
+        storiesOf: removedApi('clientApi.storiesOf'),
+        raw: removedApi('raw'),
+      },
     };
   }
 
-  if (typeof globalWindow !== 'undefined') {
-    globalWindow.__STORYBOOK_CLIENT_API__ = clientApi;
-    globalWindow.__STORYBOOK_STORY_STORE__ = storyStore;
-    globalWindow.__STORYBOOK_ADDONS_CHANNEL__ = channel; // may not be defined
+  const channel = createChannel({ page: 'preview' });
+  addons.setChannel(channel);
+
+  const clientApi = new ClientApi<TFramework>();
+  const preview = new PreviewWeb<TFramework>();
+  let initialized = false;
+
+  const importFn = (path: Path) => clientApi.importFn(path);
+  function onStoriesChanged() {
+    const storyIndex = clientApi.getStoryIndex();
+    preview.onStoriesChanged({ storyIndex, importFn });
   }
 
-  const configure = loadCsf({ clientApi, storyStore, configApi });
+  // These two bits are a bit ugly, but due to dependencies, `ClientApi` cannot have
+  // direct reference to `PreviewWeb`, so we need to patch in bits
+  clientApi.onImportFnChanged = onStoriesChanged;
+  clientApi.storyStore = preview.storyStore;
+
+  if (globalWindow) {
+    globalWindow.__STORYBOOK_CLIENT_API__ = clientApi;
+    globalWindow.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+    // eslint-disable-next-line no-underscore-dangle
+    globalWindow.__STORYBOOK_PREVIEW__ = preview;
+    globalWindow.__STORYBOOK_STORY_STORE__ = preview.storyStore;
+  }
+
   return {
-    configure,
+    forceReRender: () => channel.emit(Events.FORCE_RE_RENDER),
+    getStorybook: (): void[] => [],
+    raw: (): void => {},
+
     clientApi,
-    configApi,
-    channel,
-    forceReRender: () => storyRenderer.forceReRender(),
+    // This gets called each time the user calls configure (i.e. once per HMR)
+    // The first time, it constructs the preview, subsequently it updates it
+    configure(
+      framework: string,
+      loadable: Loadable,
+      m?: NodeModule,
+      showDeprecationWarning = true
+    ) {
+      if (showDeprecationWarning) {
+        configureDeprecationWarning();
+      }
+
+      clientApi.addParameters({ framework });
+
+      // We need to run the `executeLoadableForChanges` function *inside* the `getProjectAnnotations
+      // function in case it throws. So we also need to process its output there also
+      const getProjectAnnotations = () => {
+        const { added, removed } = executeLoadableForChanges(loadable, m);
+
+        Array.from(added.entries()).forEach(([fileName, fileExports]) =>
+          clientApi.facade.addStoriesFromExports(fileName, fileExports)
+        );
+
+        Array.from(removed.entries()).forEach(([fileName]) =>
+          clientApi.facade.clearFilenameExports(fileName)
+        );
+
+        return {
+          ...clientApi.facade.projectAnnotations,
+          render,
+          renderToDOM,
+          applyDecorators: decorateStory,
+        };
+      };
+
+      if (!initialized) {
+        preview.initialize({
+          getStoryIndex: () => clientApi.getStoryIndex(),
+          importFn,
+          getProjectAnnotations,
+        });
+        initialized = true;
+      } else {
+        // TODO -- why don't we care about the new annotations?
+        getProjectAnnotations();
+        onStoriesChanged();
+      }
+    },
   };
 }
