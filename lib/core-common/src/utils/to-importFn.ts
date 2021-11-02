@@ -32,6 +32,7 @@ export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
 
         const pathRemainder = path.substring(${directory.length + 1});
         return import(
+          /* webpackChunkName: "[request]" */
           /* webpackInclude: ${webpackIncludeRegexp(specifier)} */
           '${directory}/' + pathRemainder
         );
