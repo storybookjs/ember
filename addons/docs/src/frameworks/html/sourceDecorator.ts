@@ -41,8 +41,16 @@ export function sourceDecorator(
     : storyFn();
 
   let source: string;
-  if (typeof story === 'string' && !skipSourceRender(context)) {
-    source = applyTransformSource(story, context);
+  if (!skipSourceRender(context)) {
+    if (typeof story === 'string') {
+      source = story;
+    }
+    // eslint-disable-next-line no-undef
+    else if (story instanceof Element) {
+      source = story.outerHTML;
+    }
+
+    if (source) source = applyTransformSource(source, context);
   }
   useEffect(() => {
     if (source) addons.getChannel().emit(SNIPPET_RENDERED, context.id, source);
