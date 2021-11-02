@@ -217,14 +217,16 @@ export interface BaseAnnotations<Args, StoryFnReturnType> {
    * @see [Decorators](https://storybook.js.org/docs/addons/introduction/#1-decorators)
    */
   decorators?: BaseDecorators<StoryFnReturnType>;
+
   /**
    * Define a custom render function for the story(ies). If not passed, a default render function by the framework will be used.
    */
   render?: (args: Args, context: StoryContext) => StoryFnReturnType;
+
   /**
    * Function that is executed after the story is rendered.
    */
-  play?: Function;
+  play?: (context: StoryContext) => Promise<void> | void;
 }
 
 export interface Annotations<Args, StoryFnReturnType>
@@ -267,6 +269,15 @@ export interface BaseMeta<ComponentType> {
    * @see [Story Hierarchy](https://storybook.js.org/docs/basics/writing-stories/#story-hierarchy)
    */
   title?: string;
+
+  /**
+   * Manually set the id of a story, which in particular is useful if you want to rename stories without breaking permalinks.
+   *
+   * Storybook will prioritize the id over the title for ID generation, if provided, and will prioritize the story.storyName over the export key for display.
+   *
+   * @see [Sidebar and URLs](https://storybook.js.org/docs/react/configure/sidebar-and-urls#permalinking-to-stories)
+   */
+  id?: string;
 
   /**
    * The primary component for your story.

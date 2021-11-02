@@ -17,11 +17,11 @@ import {
   handlebars,
   interpolate,
   Options,
-  NormalizedStoriesSpecifier,
   toImportFn,
   normalizeStories,
   readTemplate,
   loadPreviewOrConfigFile,
+  CoreConfig,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -51,7 +51,6 @@ const storybookPaths: Record<string, string> = [
 
 export default async (options: Options & Record<string, any>): Promise<Configuration> => {
   const {
-    configDir,
     babelOptions,
     outputDir = path.join('.', 'public'),
     quiet,
@@ -71,6 +70,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const headHtmlSnippet = await presets.apply('previewHead');
   const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
+  const coreOptions = await presets.apply<CoreConfig>('core');
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
@@ -80,29 +80,31 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     loadPreviewOrConfigFile(options),
   ].filter(Boolean);
   const entries = (await presets.apply('entries', [], options)) as string[];
+  const workingDir = process.cwd();
   const stories = normalizeStories(await presets.apply('stories', [], options), {
     configDir: options.configDir,
-    workingDir: process.cwd(),
+    workingDir,
   });
 
   const virtualModuleMapping: Record<string, string> = {};
   if (features?.storyStoreV7) {
     const storiesFilename = 'storybook-stories.js';
-    const storiesPath = path.resolve(path.join(configDir, storiesFilename));
+    const storiesPath = path.resolve(path.join(workingDir, storiesFilename));
 
     virtualModuleMapping[storiesPath] = toImportFn(stories);
-    const configEntryPath = path.resolve(path.join(configDir, 'storybook-config-entry.js'));
+    const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
       await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
       {
         storiesFilename,
         configs,
       }
-    );
+      // We need to double escape `\` for webpack. We may have some in windows paths
+    ).replace(/\\/g, '\\\\');
     entries.push(configEntryPath);
   } else {
     const frameworkInitEntry = path.resolve(
-      path.join(configDir, 'storybook-init-framework-entry.js')
+      path.join(workingDir, 'storybook-init-framework-entry.js')
     );
     const frameworkImportPath = frameworkPath || `@storybook/${framework}`;
     virtualModuleMapping[frameworkInitEntry] = `import '${frameworkImportPath}';`;
@@ -130,16 +132,10 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const storyTemplate = await readTemplate(
         path.join(__dirname, 'virtualModuleStory.template.js')
       );
-      const storiesFilename = path.resolve(path.join(configDir, `generated-stories-entry.js`));
+      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.js`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
-        .replace(
-          "'{{stories}}'",
-          stories
-            .map((s: NormalizedStoriesSpecifier) => s.glob)
-            .map(toRequireContextString)
-            .join(',')
-        );
+        .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
       entries.push(storiesFilename);
     }
   }
@@ -186,10 +182,15 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           options: templateOptions,
           version: packageJson.version,
           globals: {
+            CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
-            STORIES: stories,
+            STORIES: stories.map((specifier) => ({
+              ...specifier,
+              importPathMatcher: specifier.importPathMatcher.source,
+            })),
           },
           headHtmlSnippet,
           bodyHtmlSnippet,

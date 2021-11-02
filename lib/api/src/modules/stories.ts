@@ -34,8 +34,10 @@ import type {
 
 import { Args, ModuleFn } from '../index';
 import { ComposedRef } from './refs';
+import { StoryIndexClient } from '../lib/StoryIndexClient';
 
-const { DOCS_MODE } = global;
+const { DOCS_MODE, FEATURES } = global;
+const INVALIDATE = 'INVALIDATE';
 
 type Direction = -1 | 1;
 type ParameterName = string;
@@ -121,6 +123,8 @@ export const init: ModuleFn = ({
   storyId: initialStoryId,
   viewMode: initialViewMode,
 }) => {
+  let indexClient: StoryIndexClient;
+
   const api: SubAPI = {
     storyId: toId,
     getData: (storyId, refId) => {
@@ -269,7 +273,7 @@ export const init: ModuleFn = ({
 
       navigate('/');
     },
-    selectStory: (kindOrId, story = undefined, options = {}) => {
+    selectStory: (kindOrId = undefined, story = undefined, options = {}) => {
       const { ref, viewMode: viewModeFromArgs } = options;
       const {
         viewMode: viewModeFromState = 'story',
@@ -280,8 +284,10 @@ export const init: ModuleFn = ({
 
       const hash = ref ? refs[ref].stories : storiesHash;
 
+      const kindSlug = storyId?.split('--', 2)[0];
+
       if (!story) {
-        const s = hash[kindOrId] || hash[sanitize(kindOrId)];
+        const s = kindOrId ? hash[kindOrId] || hash[sanitize(kindOrId)] : hash[kindSlug];
         // eslint-disable-next-line no-nested-ternary
         const id = s ? (s.children ? s.children[0] : s.id) : kindOrId;
         let viewMode =
@@ -301,8 +307,7 @@ export const init: ModuleFn = ({
         navigate(p);
       } else if (!kindOrId) {
         // This is a slugified version of the kind, but that's OK, our toId function is idempotent
-        const kind = storyId.split('--', 2)[0];
-        const id = toId(kind, story);
+        const id = toId(kindSlug, story);
 
         api.selectStory(id, undefined, options);
       } else {
@@ -350,17 +355,22 @@ export const init: ModuleFn = ({
       });
     },
     fetchStoryList: async () => {
-      // This needs some fleshing out as part of the stories list server project
-      const result = await global.fetch('./stories.json');
-      const storyIndex = (await result.json()) as StoryIndex;
+      try {
+        const storyIndex = await indexClient.fetch();
 
-      // We can only do this if the stories.json is a proper storyIndex
-      if (storyIndex.v !== 3) {
-        logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
-        return;
+        // We can only do this if the stories.json is a proper storyIndex
+        if (storyIndex.v !== 3) {
+          logger.warn(`Skipping story index with version v${storyIndex.v}, awaiting SET_STORIES.`);
+          return;
+        }
+
+        await fullAPI.setStoryList(storyIndex);
+      } catch (err) {
+        store.setState({
+          storiesConfigured: true,
+          storiesFailed: err,
+        });
       }
-
-      await fullAPI.setStoryList(storyIndex);
     },
     setStoryList: async (storyIndex: StoryIndex) => {
       const hash = transformStoryIndexToStoriesHash(storyIndex, {
@@ -460,18 +470,20 @@ export const init: ModuleFn = ({
       function handler({
         kind,
         story,
+        storyId,
         ...rest
       }: {
         kind: string;
         story: string;
+        storyId: string;
         viewMode: ViewMode;
       }) {
         const { ref } = getEventMetadata(this, fullAPI);
 
         if (!ref) {
-          fullAPI.selectStory(kind, story, rest);
+          fullAPI.selectStory(storyId || kind, story, rest);
         } else {
-          fullAPI.selectStory(kind, story, { ...rest, ref: ref.id });
+          fullAPI.selectStory(storyId || kind, story, { ...rest, ref: ref.id });
         }
       }
     );
@@ -480,11 +492,15 @@ export const init: ModuleFn = ({
       const { ref } = getEventMetadata(this, fullAPI);
       fullAPI.updateStory(id, { ...update, prepared: true }, ref);
 
-      if (!store.getState().hasCalledSetOptions) {
-        const { options } = update.parameters;
-        checkDeprecatedOptionParameters(options);
-        fullAPI.setOptions(options);
-        store.setState({ hasCalledSetOptions: true });
+      if (!ref) {
+        if (!store.getState().hasCalledSetOptions) {
+          const { options } = update.parameters;
+          checkDeprecatedOptionParameters(options);
+          fullAPI.setOptions(options);
+          store.setState({ hasCalledSetOptions: true });
+        }
+      } else {
+        fullAPI.updateRef(ref.id, { ready: true });
       }
     });
 
@@ -496,7 +512,11 @@ export const init: ModuleFn = ({
       }
     );
 
-    await fullAPI.fetchStoryList();
+    if (FEATURES?.storyStoreV7) {
+      indexClient = new StoryIndexClient();
+      indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
+      await fullAPI.fetchStoryList();
+    }
   };
 
   return {

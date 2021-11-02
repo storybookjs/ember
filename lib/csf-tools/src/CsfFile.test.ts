@@ -9,7 +9,7 @@ expect.addSnapshotSerializer({
   test: (val) => typeof val !== 'string',
 });
 
-const parse = async (code: string, includeParameters?: boolean) => {
+const parse = (code: string, includeParameters?: boolean) => {
   const { stories, meta } = loadCsf(code, { defaultTitle: 'Default Title' }).parse();
   const filtered = includeParameters
     ? stories
@@ -19,9 +19,9 @@ const parse = async (code: string, includeParameters?: boolean) => {
 
 describe('CsfFile', () => {
   describe('basic', () => {
-    it('args stories', async () => {
+    it('args stories', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = () => {};
@@ -46,9 +46,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('underscores', async () => {
+    it('underscores', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const __Basic__ = () => {};
@@ -67,9 +67,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('exclude stories', async () => {
+    it('exclude stories', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar', excludeStories: ['B', 'C'] };
           export const A = () => {};
@@ -89,9 +89,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('include stories', async () => {
+    it('include stories', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar', includeStories: /^Include.*/ };
           export const SomeHelper = () => {};
@@ -108,9 +108,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('storyName annotation', async () => {
+    it('storyName annotation', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = () => {};
@@ -126,23 +126,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('no meta', async () => {
+    it('no title', () => {
       expect(
-        await parse(
-          dedent`
-          export const A = () => {};
-          export const B = () => {};
-      `
-        )
-      ).toMatchInlineSnapshot(`
-        meta: !<tag:yaml.org,2002:js/undefined> ''
-        stories: []
-      `);
-    });
-
-    it('no title', async () => {
-      expect(
-        await parse(
+        parse(
           dedent`
           export default { component: 'foo' }
           export const A = () => {};
@@ -151,7 +137,7 @@ describe('CsfFile', () => {
         )
       ).toMatchInlineSnapshot(`
         meta:
-          component: foo
+          component: '''foo'''
           title: Default Title
         stories:
           - id: default-title--a
@@ -161,9 +147,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('typescript', async () => {
+    it('typescript', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           import { Meta, Story } from '@storybook/react';
           type PropTypes = {};
@@ -183,9 +169,30 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('template bind', async () => {
+    it('component object', () => {
       expect(
-        await parse(
+        parse(
+          dedent`
+          export default { component: {} }
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          component: '{}'
+          title: Default Title
+        stories:
+          - id: default-title--a
+            name: A
+          - id: default-title--b
+            name: B
+      `);
+    });
+
+    it('template bind', () => {
+      expect(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           const Template = (args) => { };
@@ -206,9 +213,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('meta variable', async () => {
+    it('meta variable', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           const meta = { title: 'foo/bar' };
           export default meta;
@@ -228,9 +235,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('docs-only story', async () => {
+    it('docs-only story', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const __page = () => {};
@@ -249,6 +256,82 @@ describe('CsfFile', () => {
               __id: foo-bar--page
               docsOnly: true
       `);
+    });
+
+    it('title variable', () => {
+      expect(
+        parse(
+          dedent`
+            const title = 'foo/bar';
+            export default { title };
+            export const A = () => {};
+            export const B = (args) => {};
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--a
+          - id: foo-bar--b
+            name: B
+            parameters:
+              __isArgsStory: true
+              __id: foo-bar--b
+      `);
+    });
+  });
+
+  describe('error handling', () => {
+    it('no meta', () => {
+      expect(() =>
+        parse(
+          dedent`
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toThrow('CSF: missing default export');
+    });
+    it('no metadata', () => {
+      expect(() =>
+        parse(
+          dedent`
+          export default { foo: '5' };
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toThrow('CSF: missing title/component');
+    });
+    it('dynamic titles', () => {
+      expect(() =>
+        parse(
+          dedent`
+            export default { title: 'foo' + 'bar' };
+            export const A = () => {};
+        `,
+          true
+        )
+      ).toThrow('CSF: unexpected dynamic title');
+    });
+    it('storiesOf calls', () => {
+      expect(() =>
+        parse(
+          dedent`
+            import { storiesOf } from '@storybook/react';
+            export default { title: 'foo/bar' };
+            export const A = () => {};
+            storiesOf('foo').add('bar', () => <baz />);
+        `,
+          true
+        )
+      ).toThrow('CSF: unexpected storiesOf call');
     });
   });
 
@@ -296,9 +379,9 @@ describe('CsfFile', () => {
   });
 
   describe('CSF3', () => {
-    it('Object export with no-args render', async () => {
+    it('Object export with no-args render', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = {
@@ -319,9 +402,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('Object export with args render', async () => {
+    it('Object export with args render', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = {
@@ -342,9 +425,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('Object export with default render', async () => {
+    it('Object export with default render', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = {}
@@ -363,9 +446,9 @@ describe('CsfFile', () => {
       `);
     });
 
-    it('Object export with name', async () => {
+    it('Object export with name', () => {
       expect(
-        await parse(
+        parse(
           dedent`
           export default { title: 'foo/bar' };
           export const A = {

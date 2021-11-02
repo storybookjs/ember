@@ -60,7 +60,7 @@ To apply the configuration globally use the `configureActions` function in your 
 import { configureActions } from '@storybook/addon-actions';
 
 configureActions({
-  depth: 100,
+  maxDepth: 100,
   // Limit the number of items logged into the actions panel
   limit: 20,
 });
@@ -70,7 +70,7 @@ To apply the configuration per action use:
 
 ```js
 action('my-action', {
-  depth: 5,
+  maxDepth: 5,
 });
 ```
 
@@ -78,6 +78,6 @@ action('my-action', {
 
 | Name                 | Type    | Description                                                                         | Default |
 | -------------------- | ------- | ----------------------------------------------------------------------------------- | ------- |
-| `depth`              | Number  | Configures the transferred depth of any logged objects.                             | `10`    |
+| `maxDepth`           | Number  | Configures the transferred depth of any logged objects.                             | `10`    |
 | `clearOnStoryChange` | Boolean | Flag whether to clear the action logger when switching away from the current story. | `true`  |
 | `limit`              | Number  | Limits the number of items logged in the action logger                              | `50`    |

@@ -6,7 +6,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
     extensions: ['json'],
   });
 
-  copyTemplate(__dirname, options.storyFormat);
+  copyTemplate(__dirname);
 };
 
 export default generator;

@@ -40,10 +40,14 @@ You can import `.json` files and have them expanded to a JavaScript object:
 
 <!-- prettier-ignore-end -->
 
-If you want to know the exact details of the webpack config, the best way is to run:
+If you want to know the exact details of the webpack config, the best way is to run either of the following:
 
 ```shell
-yarn storybook --debug-webpack
+yarn start-storybook --debug-webpack
+```
+
+```shell
+yarn build-storybook --debug-webpack
 ```
 
 ### Extending Storybook’s webpack config

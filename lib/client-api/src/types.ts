@@ -71,7 +71,7 @@ export type StoreItem = StoryIdentifier & {
   getDecorated: () => StoryFn<any>;
   getOriginal: () => StoryFn<any>;
   applyLoaders: () => Promise<StoryContext>;
-  runPlayFunction: () => Promise<any>;
+  playFunction: (context: StoryContext) => Promise<void> | void;
   storyFn: StoryFn<any>;
   unboundStoryFn: StoryFn<any>;
   hooks: HooksContext<AnyFramework>;

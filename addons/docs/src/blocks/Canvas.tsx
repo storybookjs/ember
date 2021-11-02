@@ -70,6 +70,7 @@ export const Canvas: FC<CanvasProps> = (props) => {
   const sourceContext = useContext(SourceContext);
   const { isLoading, previewProps } = getPreviewProps(props, docsContext, sourceContext);
   const { children } = props;
+
   return isLoading ? null : (
     <MDXProvider components={resetComponents}>
       <PurePreview {...previewProps}>{children}</PurePreview>

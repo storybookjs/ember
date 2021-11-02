@@ -66,9 +66,22 @@ const importAngularCliReadTsconfigUtil = (): typeof import('@angular-devkit/buil
 const buildWebpackConfigOptions = async (
   dirToSearch: string,
   project: workspaces.ProjectDefinition,
-  target: workspaces.TargetDefinition
+  target: workspaces.TargetDefinition,
+  confName?: string
 ): Promise<WebpackConfigOptions> => {
-  const { options: projectBuildOptions = {} } = target;
+  let conf: Record<string, unknown> = {};
+
+  if (confName) {
+    if (!target.configurations) {
+      throw new Error('Missing "configurations" section in project target');
+    }
+    if (!target.configurations[confName]) {
+      throw new Error(`Missing required configuration in project target. Check "${confName}"`);
+    }
+    conf = target.configurations[confName];
+  }
+
+  const projectBuildOptions = { ...target.options, ...conf };
 
   const requiredOptions = ['tsConfig'];
   if (!requiredOptions.every((key) => !!projectBuildOptions[key])) {
@@ -159,11 +172,17 @@ export type AngularCliWebpackConfig = {
 export async function extractAngularCliWebpackConfig(
   dirToSearch: string,
   project: workspaces.ProjectDefinition,
-  target: workspaces.TargetDefinition
+  target: workspaces.TargetDefinition,
+  confName?: string
 ): Promise<AngularCliWebpackConfig> {
   const { getCommonConfig, getStylesConfig } = importAngularCliWebpackConfigGenerator();
 
-  const webpackConfigOptions = await buildWebpackConfigOptions(dirToSearch, project, target);
+  const webpackConfigOptions = await buildWebpackConfigOptions(
+    dirToSearch,
+    project,
+    target,
+    confName
+  );
 
   const cliCommonConfig = getCommonConfig(webpackConfigOptions);
   const cliStyleConfig = getStylesConfig(webpackConfigOptions);

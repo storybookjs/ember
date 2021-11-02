@@ -18,7 +18,7 @@ import {
   SHARED_STATE_SET,
   SET_STORIES,
 } from '@storybook/core-events';
-import { RenderData as RouterData } from '@storybook/router';
+import { RouterData } from '@storybook/router';
 import { Listener } from '@storybook/channels';
 
 import { createContext } from './context';

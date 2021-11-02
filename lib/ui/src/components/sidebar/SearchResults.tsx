@@ -9,7 +9,6 @@ import React, {
   useEffect,
 } from 'react';
 import { ControllerStateAndHelpers } from 'downshift';
-import { transparentize } from 'polished';
 
 import { ComponentNode, DocumentNode, Path, RootNode, StoryNode } from './TreeNode';
 import {
@@ -37,7 +36,7 @@ const ResultRow = styled.li<{ isHighlighted: boolean }>(({ theme, isHighlighted 
   display: 'block',
   margin: 0,
   padding: 0,
-  background: isHighlighted ? transparentize(0.9, theme.color.secondary) : 'transparent',
+  background: isHighlighted ? theme.background.hoverable : 'transparent',
   cursor: 'pointer',
   'a:hover, button:hover': {
     background: 'transparent',

@@ -20,6 +20,8 @@ const defaultContext: StoryContext = {
   loaded: {},
   originalStoryFn: jest.fn(),
   viewMode: 'story',
+  abortSignal: undefined,
+  canvasElement: undefined,
 };
 
 class MockModule {}

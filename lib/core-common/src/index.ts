@@ -2,6 +2,7 @@ export * from './presets';
 
 export * from './utils/babel';
 export * from './utils/check-webpack-version';
+export * from './utils/check-addon-order';
 export * from './utils/envs';
 export * from './utils/es6Transpiler';
 export * from './utils/handlebars';
@@ -25,5 +26,6 @@ export * from './utils/to-require-context';
 export * from './utils/normalize-stories';
 export * from './utils/to-importFn';
 export * from './utils/readTemplate';
+export * from './utils/findDistEsm';
 
 export * from './types';

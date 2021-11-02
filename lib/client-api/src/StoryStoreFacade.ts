@@ -1,4 +1,5 @@
 import global from 'global';
+import dedent from 'ts-dedent';
 import {
   StoryId,
   AnyFramework,
@@ -10,6 +11,7 @@ import {
 } from '@storybook/csf';
 import {
   NormalizedProjectAnnotations,
+  NormalizedStoriesSpecifier,
   Path,
   StoryIndex,
   ModuleExports,
@@ -17,6 +19,7 @@ import {
   Story,
   autoTitle,
   sortStoriesV6,
+  StoryIndexEntry,
 } from '@storybook/store';
 
 const { STORIES = [] } = global;
@@ -61,7 +64,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     return moduleExports;
   }
 
-  fetchStoryIndex(store: StoryStore<TFramework>) {
+  getStoryIndex(store: StoryStore<TFramework>) {
     const fileNameOrder = Object.keys(this.csfExports);
     const storySortParameter = this.projectAnnotations.parameters?.options?.storySort;
 
@@ -81,12 +84,29 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     );
 
     // NOTE: the sortStoriesV6 version returns the v7 data format. confusing but more convenient!
-    const sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    let sortedV7: StoryIndexEntry[];
+
+    try {
+      sortedV7 = sortStoriesV6(sortableV6, storySortParameter, fileNameOrder);
+    } catch (err) {
+      if (typeof storySortParameter === 'function') {
+        throw new Error(dedent`
+          Error sorting stories with sort parameter ${storySortParameter}:
+
+          > ${err.message}
+          
+          Are you using a V7-style sort function in V6 compatibilty mode?
+          
+          More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
+        `);
+      }
+      throw err;
+    }
     const stories = sortedV7.reduce((acc, s) => {
-  // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
-  // exports a `parameters.fileName` which can be different and mess up our `importFn`.
-  // In fact, in Storyshots there is a Jest transformer that does exactly that.
-  // NOTE: this doesn't actually change the story object, just the index.
+      // We use the original entry we stored in `this.stories` because it is possible that the CSF file itself
+      // exports a `parameters.fileName` which can be different and mess up our `importFn`.
+      // In fact, in Storyshots there is a Jest transformer that does exactly that.
+      // NOTE: this doesn't actually change the story object, just the index.
       acc[s.id] = this.stories[s.id];
       return acc;
     }, {} as StoryIndex['stories']);
@@ -123,7 +143,15 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     // eslint-disable-next-line prefer-const
     let { id: componentId, title } = defaultExport || {};
 
-    title = title || autoTitle(fileName, STORIES);
+    title =
+      title ||
+      autoTitle(
+        fileName,
+        STORIES.map((specifier: NormalizedStoriesSpecifier & { importPathMatcher: string }) => ({
+          ...specifier,
+          importPathMatcher: new RegExp(specifier.importPathMatcher),
+        }))
+      );
     if (!title) {
       throw new Error(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
