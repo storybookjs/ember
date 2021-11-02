@@ -12,11 +12,7 @@ import { importFn } from './{{storiesFilename}}';
 const { SERVER_CHANNEL_URL } = global;
 
 const getProjectAnnotations = () =>
-composeConfigs([
-{{#each configs}}
-require('{{this}}'),
-{{/each}}
-]);
+  composeConfigs([{{#each configs}}require('{{this}}'),{{/each}}]);
 
 const channel = createPostMessageChannel({ page: 'preview' });
 addons.setChannel(channel);
@@ -35,13 +31,13 @@ window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore
 preview.initialize({ importFn, getProjectAnnotations });
 
 if (module.hot) {
-module.hot.accept('./{{storiesFilename}}', () => {
-// importFn has changed so we need to patch the new one in
-preview.onStoriesChanged({ importFn });
-});
+  module.hot.accept('./{{storiesFilename}}', () => {
+    // importFn has changed so we need to patch the new one in
+    preview.onStoriesChanged({ importFn });
+  });
 
-module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
-// getProjectAnnotations has changed so we need to patch the new one in
-preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
-});
+  module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
+    // getProjectAnnotations has changed so we need to patch the new one in
+    preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
+  });
 }
