@@ -8976,8 +8976,8 @@ __metadata:
     lodash: ^4.17.20
     memoizerific: ^1.11.3
     qs: ^6.10.0
-    react-router: ^6.0.0-beta.7
-    react-router-dom: ^6.0.0-beta.7
+    react-router: ^6.0.0-beta.8
+    react-router-dom: ^6.0.0-beta.8
     ts-dedent: ^2.0.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -37871,7 +37871,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.0.0-beta.7":
+"react-router-dom@npm:^6.0.0-beta.8":
   version: 6.0.0-beta.7
   resolution: "react-router-dom@npm:6.0.0-beta.7"
   dependencies:
@@ -37884,7 +37884,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router@npm:6.0.0-beta.7, react-router@npm:^6.0.0-beta.7":
+"react-router@npm:6.0.0-beta.7, react-router@npm:^6.0.0-beta.8":
   version: 6.0.0-beta.7
   resolution: "react-router@npm:6.0.0-beta.7"
   peerDependencies:
