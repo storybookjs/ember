@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { scan } from 'micromatch';
+import { scan } from 'picomatch';
 import slash from 'slash';
 
 import type { StoriesEntry, NormalizedStoriesSpecifier } from '../types';
