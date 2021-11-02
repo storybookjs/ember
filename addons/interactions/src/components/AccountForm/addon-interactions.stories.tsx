@@ -8,7 +8,11 @@ import { AccountForm } from './AccountForm';
 export default {
   title: 'Addons/Interactions/AccountForm',
   component: AccountForm,
-  parameters: { layout: 'centered', theme: 'light' },
+  parameters: {
+    layout: 'centered',
+    theme: 'light',
+    options: { selectedPanel: 'storybook/interactions/panel' },
+  },
   argTypes: {
     onSubmit: { action: true },
   },
