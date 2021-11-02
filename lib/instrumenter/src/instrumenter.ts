@@ -175,7 +175,6 @@ export class Instrumenter {
       });
 
       // Force remount may trigger a page reload if the play function can't be aborted.
-      // global.window.location.reload();
       this.channel.emit(FORCE_REMOUNT, { storyId, isDebugging: true });
     };
 
