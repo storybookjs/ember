@@ -64,7 +64,7 @@ Update your test script to include the configuration file:
 
 <div class="aside">
 
-💡 <strong>Note:</strong> You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md)
+💡 <strong>Note:</strong> You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md).
 
 </div>
 
@@ -96,7 +96,12 @@ An example of an end-to-end test with Cypress and Storybook is testing a login c
 
 <CodeSnippets
   paths={[
-    'common/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
   ]}
 />
 
@@ -133,7 +138,12 @@ A real-life scenario of user flow testing with Playwright would be how to test a
 
 <CodeSnippets
   paths={[
-    'common/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
   ]}
 />
 

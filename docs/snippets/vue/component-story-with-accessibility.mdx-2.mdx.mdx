@@ -1,0 +1,47 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Button from './Button.vue';
+
+<Meta 
+  title="Accessibility testing" 
+  component={Button} 
+  argTypes={{
+    backgroundColor: {
+      control: {
+        type: 'color',
+      }
+    }
+  }} />
+
+export const Template = (args, { argTypes }) => ({
+  components: { Button },
+  props: Object.keys(argTypes),
+  template: '<Button v-bind="$props" v-on="$props" />',
+});
+
+## This is an accessible story
+
+<Story
+  name="Accessible"
+  args={{
+    primary: false,
+    label: 'Button'
+  }}>
+  {Template.bind({})}
+</Story>
+
+## This is not
+
+<Story
+  name="Inaccessible"
+  args={{
+    primary: false,
+    label: 'Button',
+    backgroundColor: 'red'
+  }}>
+  {Template.bind({})}
+</Story>
+```
