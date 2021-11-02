@@ -14,7 +14,8 @@
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
-  - [Deprecated --static-dir CLI flag](#deprecated-static-dir-flag)
+  - [6.4 deprecations](#64-deprecations)
+    - [Deprecated --static-dir CLI flag](#deprecated---static-dir-cli-flag)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5](#webpack-5)
     - [Fixing hoisting issues](#fixing-hoisting-issues)
@@ -411,6 +412,29 @@ export const MyStory = () => ({ component: MyComponent, ... })
 ```
 
 [More discussion here.](https://github.com/storybookjs/storybook/pull/16010#issuecomment-917378595)
+
+### 6.4 deprecations
+
+#### Deprecated --static-dir CLI flag
+
+In 6.4 we've replaced the `--static-dir` CLI flag with the the `staticDirs` field in `.storybook/main.js`. Note that the CLI directories are relative to the current working directory, whereas the `staticDirs` are relative to the location of `main.js`.
+
+Before:
+
+```sh
+start-storybook --static-dir ./public,./static,./foo/assets:/assets
+```
+
+After:
+
+```js
+// .storybook/main.js
+module.exports = {
+  staticDirs: ['../public', '../static', { from: '../foo/assets', to: '/assets' }],
+};
+```
+
+The `--static-dir` flag has been deprecated and will be removed in Storybook 7.0.
 
 ## From version 6.2.x to 6.3.0
 
