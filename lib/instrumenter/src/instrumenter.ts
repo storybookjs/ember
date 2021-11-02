@@ -361,6 +361,9 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call, options: Options) {
+    const { abortSignal } = global.window.__STORYBOOK_PREVIEW__ || {};
+    if (abortSignal && abortSignal.aborted) throw IGNORED_EXCEPTION;
+
     const { parentCall, callRefsByResult, forwardedException, renderPhase } = this.getState(
       call.storyId
     );

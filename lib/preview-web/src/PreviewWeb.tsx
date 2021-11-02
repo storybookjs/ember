@@ -38,7 +38,7 @@ function focusInInput(event: Event) {
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
 
-function createController() {
+function createController(): AbortController {
   if (AbortController) return new AbortController();
   // Polyfill for IE11
   return {
@@ -46,7 +46,7 @@ function createController() {
     abort() {
       this.signal.aborted = true;
     },
-  };
+  } as AbortController;
 }
 
 export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
@@ -74,6 +74,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   previousStory: Story<TFramework>;
 
   previousCleanup: StoryCleanupFn;
+
+  abortSignal: AbortSignal;
 
   constructor() {
     this.channel = addons.getChannel();
@@ -514,6 +516,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       if (ctrl) ctrl.abort();
       ctrl = createController();
       controller = ctrl;
+      this.abortSignal = controller.signal;
 
       const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
         phase = phaseName;
