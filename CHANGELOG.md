@@ -1,3 +1,11 @@
+## 6.4.0-beta.26 (November 2, 2021)
+
+### Bug Fixes
+
+- Core: Replace SSE with websockets ([#16504](https://github.com/storybookjs/storybook/pull/16504))
+- UI: Upgrade react-router ([#16554](https://github.com/storybookjs/storybook/pull/16554))
+- Addon-docs/HTML: Fix source snippetization for DOM elements ([#16553](https://github.com/storybookjs/storybook/pull/16553))
+
 ## 6.4.0-beta.25 (November 2, 2021)
 
 ### Bug Fixes
