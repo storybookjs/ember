@@ -42,6 +42,7 @@
   "dependencies": {
     "@storybook/addons": "6.4.0-beta.25",
     "@storybook/channel-postmessage": "6.4.0-beta.25",
+    "@storybook/channel-websocket": "6.4.0-beta.25",
     "@storybook/client-api": "6.4.0-beta.25",
     "@storybook/client-logger": "6.4.0-beta.25",
     "@storybook/core-events": "6.4.0-beta.25",

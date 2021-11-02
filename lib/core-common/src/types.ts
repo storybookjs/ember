@@ -162,6 +162,7 @@ export interface BuilderOptions {
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;
+  serverChannelUrl?: string;
 }
 
 export interface StorybookConfigOptions {

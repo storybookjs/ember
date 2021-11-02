@@ -30,9 +30,8 @@ import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { StoryIndexClient } from './StoryIndexClient';
 
-const { window: globalWindow, AbortController, FEATURES } = global;
+const { window: globalWindow, AbortController, FEATURES, fetch } = global;
 
 function focusInInput(event: Event) {
   const target = event.target as Element;
@@ -55,14 +54,14 @@ type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => MaybePromise<void>;
 
-const INVALIDATE = 'INVALIDATE';
+const STORY_INDEX_PATH = './stories.json';
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
 
-  urlStore: UrlStore;
+  serverChannel?: Channel;
 
-  indexClient?: StoryIndexClient;
+  urlStore: UrlStore;
 
   storyStore: StoryStore<TFramework>;
 
@@ -78,6 +77,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   constructor() {
     this.channel = addons.getChannel();
+    if (FEATURES?.storyStoreV7) {
+      this.serverChannel = addons.getServerChannel();
+    }
     this.view = new WebView();
 
     this.urlStore = new UrlStore();
@@ -119,8 +121,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
         let storyIndexPromise: PromiseLike<StoryIndex>;
         if (FEATURES?.storyStoreV7) {
-          this.indexClient = new StoryIndexClient();
-          storyIndexPromise = this.indexClient.fetch();
+          storyIndexPromise = this.getStoryIndexFromServer();
         } else {
           if (!getStoryIndex) {
             throw new Error('No `getStoryIndex` passed defined in v6 mode');
@@ -184,8 +185,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   setupListeners() {
     globalWindow.onkeydown = this.onKeydown.bind(this);
 
-    if (this.indexClient)
-      this.indexClient.addEventListener(INVALIDATE, this.onStoryIndexChanged.bind(this));
+    this.serverChannel?.on(Events.STORY_INDEX_INVALIDATED, this.onStoryIndexChanged.bind(this));
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
     this.channel.on(Events.UPDATE_QUERY_PARAMS, this.onUpdateQueryParams.bind(this));
@@ -287,7 +287,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async onStoryIndexChanged() {
-    const storyIndex = await this.indexClient.fetch();
+    const storyIndex = await this.getStoryIndexFromServer();
     return this.onStoriesChanged({ storyIndex });
   }
 
@@ -325,6 +325,13 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     this.storyStore.setProjectAnnotations(projectAnnotations);
     this.renderSelection();
+  }
+
+  async getStoryIndexFromServer() {
+    const result = await fetch(STORY_INDEX_PATH);
+    if (result.status === 200) return result.json() as StoryIndex;
+
+    throw new Error(await result.text());
   }
 
   // We can either have:

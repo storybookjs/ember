@@ -44,6 +44,7 @@
     "@storybook/builder-webpack4": "6.4.0-beta.25",
     "@storybook/core-client": "6.4.0-beta.25",
     "@storybook/core-common": "6.4.0-beta.25",
+    "@storybook/core-events": "6.4.0-beta.25",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
     "@storybook/csf-tools": "6.4.0-beta.25",
     "@storybook/manager-webpack4": "6.4.0-beta.25",
@@ -75,16 +76,19 @@
     "regenerator-runtime": "^0.13.7",
     "serve-favicon": "^2.5.0",
     "slash": "^3.0.0",
+    "telejson": "^5.3.3",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
-    "webpack": "4"
+    "webpack": "4",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
     "@storybook/builder-webpack5": "6.4.0-beta.25",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
+    "@types/ws": "^8",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
