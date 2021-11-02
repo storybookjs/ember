@@ -5,16 +5,16 @@ import { ActionDisplay, ActionOptions, HandlerFunction } from '../models';
 import { config } from './configureActions';
 
 type SyntheticEvent = any; // import('react').SyntheticEvent;
-const protoWithName = (obj: unknown, name: string): Function | null => {
+const findProto = (obj: unknown, callback: (proto: any) => boolean): Function | null => {
   const proto = Object.getPrototypeOf(obj);
-  if (!proto || proto.constructor.name === name) return proto;
-  return protoWithName(proto, name);
+  if (!proto || callback(proto)) return proto;
+  return findProto(proto, callback);
 };
 const isReactSyntheticEvent = (e: unknown): e is SyntheticEvent =>
   Boolean(
     typeof e === 'object' &&
       e &&
-      protoWithName(e, 'SyntheticEvent') &&
+      findProto(e, (proto) => /^Synthetic(?:Base)?Event$/.test(proto.constructor.name)) &&
       typeof (e as SyntheticEvent).persist === 'function'
   );
 const serializeArg = <T>(a: T) => {
