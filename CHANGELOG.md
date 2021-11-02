@@ -1,4 +1,4 @@
-## 6.4.0-beta.24 (November 2, 2021)
+## 6.4.0-beta.25 (November 2, 2021)
 
 ### Bug Fixes
 
@@ -15,7 +15,11 @@
 - Migrate from micromatch to picomatch ([#16522](https://github.com/storybookjs/storybook/pull/16522))
 - Add qs as a dev dependency of the api package ([#16525](https://github.com/storybookjs/storybook/pull/16525))
 
-## 6.4.0-beta.23 (October 29, 2021)
+## 6.4.0-beta.24 (November 2, 2021)
+
+bad npm publish
+
+# 6.4.0-beta.23 (October 29, 2021)
 
 ### Features
 
