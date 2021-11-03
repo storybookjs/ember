@@ -76,7 +76,11 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     const sortableV6: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
       ([storyId, { importPath }]) => {
         const exports = this.csfExports[importPath];
-        const csfFile = store.processCSFFileWithCache<TFramework>(exports, exports.default.title);
+        const csfFile = store.processCSFFileWithCache<TFramework>(
+          exports,
+          importPath,
+          exports.default.title
+        );
         return [
           storyId,
           store.storyFromCSFFile({ storyId, csfFile }),
@@ -165,14 +169,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
 
     this.csfExports[fileName] = {
       ...fileExports,
-      default: {
-        ...defaultExport,
-        title,
-        parameters: {
-          fileName,
-          ...defaultExport.parameters,
-        },
-      },
+      default: { ...defaultExport, title },
     };
 
     Object.entries(namedExports)
