@@ -498,7 +498,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   renderStoryToElement({
     story,
     renderContext: renderContextWithoutStoryContext,
-    element,
+    element: canvasElement,
   }: {
     story: Story<TFramework>;
     renderContext: Omit<
@@ -509,21 +509,24 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
 
+    let notYetRendered = true;
     let phase: RenderPhase;
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
-    let notYetRendered = true;
-    const render = async ({ forceRemount = false } = {}) => {
-      if (forceRemount) {
-        this.abortController?.abort();
+    this.abortController = createController();
+
+    const render = async ({ initial = false, forceRemount = false } = {}) => {
+      if (forceRemount && !initial) {
+        this.abortController.abort();
         this.abortController = createController();
       }
 
+      const abortSignal = this.abortController.signal; // we need a stable reference to the signal
       const runPhase = async (phaseName: RenderPhase, phaseFn?: () => MaybePromise<void>) => {
         phase = phaseName;
         this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
         if (phaseFn) await phaseFn();
-        if (this.abortController.signal.aborted) {
+        if (abortSignal.aborted) {
           phase = 'aborted';
           this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
         }
@@ -534,18 +537,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         await runPhase('loading', async () => {
           loadedContext = await applyLoaders({
             ...this.storyStore.getStoryContext(story),
-            viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
+            viewMode: canvasElement === this.view.storyRoot() ? 'story' : 'docs',
           } as StoryContextForLoaders<TFramework>);
         });
-        if (this.abortController.signal.aborted) return;
+        if (abortSignal.aborted) return;
 
         const renderStoryContext: StoryContext<TFramework> = {
           ...loadedContext,
           // By this stage, it is possible that new args/globals have been received for this story
           // and we need to ensure we render it with the new values
           ...this.storyStore.getStoryContext(story),
-          abortSignal: this.abortController.signal,
-          canvasElement: element,
+          abortSignal,
+          canvasElement,
         };
         const renderContext: RenderContext<TFramework> = {
           ...renderContextWithoutStoryContext,
@@ -555,16 +558,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           unboundStoryFn,
         };
 
-        await runPhase('rendering', () => this.renderToDOM(renderContext, element));
+        await runPhase('rendering', () => this.renderToDOM(renderContext, canvasElement));
         notYetRendered = false;
-        if (this.abortController.signal.aborted) return;
+        if (abortSignal.aborted) return;
 
         if (forceRemount && playFunction) {
           this.disableKeyListeners = true;
           await runPhase('playing', () => playFunction(renderContext.storyContext));
           await runPhase('played');
           this.disableKeyListeners = false;
-          if (this.abortController.signal.aborted) return;
+          if (abortSignal.aborted) return;
         }
 
         await runPhase('completed', () => this.channel.emit(Events.STORY_RENDERED, id));
@@ -577,7 +580,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // function below right away, so if the user changes story during the first render we can cancel
     // it without having to first wait for it to finish.
     // Whenever the selection changes we want to force the component to be remounted.
-    render({ forceRemount: true });
+    render({ initial: true, forceRemount: true });
 
     const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) render({ forceRemount: true });
