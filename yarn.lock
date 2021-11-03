@@ -8874,7 +8874,7 @@ __metadata:
     eslint-plugin-cypress: ^2.11.2
     eslint-plugin-import: ^2.22.1
     eslint-plugin-react: ^7.22.0
-    eslint-plugin-storybook: "link:../../NewLine/eslint-plugin-storybook/"
+    eslint-plugin-storybook: "link:../eslint-plugin-storybook/"
     eslint-teamcity: ^3.0.1
     esm: ^3.2.25
     express: ^4.17.1
@@ -21952,9 +21952,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@link:../../NewLine/eslint-plugin-storybook/::locator=%40storybook%2Froot%40workspace%3A.":
+"eslint-plugin-storybook@link:../eslint-plugin-storybook/::locator=%40storybook%2Froot%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "eslint-plugin-storybook@link:../../NewLine/eslint-plugin-storybook/::locator=%40storybook%2Froot%40workspace%3A."
+  resolution: "eslint-plugin-storybook@link:../eslint-plugin-storybook/::locator=%40storybook%2Froot%40workspace%3A."
   languageName: node
   linkType: soft
 
