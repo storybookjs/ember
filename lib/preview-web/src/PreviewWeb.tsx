@@ -67,6 +67,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   view: WebView;
 
+  getStoryIndex?: () => StoryIndex;
+
+  importFn?: ModuleImportFn;
+
   renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'];
 
   previousSelection: Selection;
@@ -96,6 +100,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     );
   }
 
+  // INITIALIZATION
+
   // NOTE: the reason that the preview and store's initialization code is written in a promise
   // style and not `async-await`, and the use of `SynchronousPromise`s is in order to allow
   // storyshots to immediately call `raw()` on the store without waiting for a later tick.
@@ -112,77 +118,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     getStoryIndex?: () => StoryIndex;
     importFn: ModuleImportFn;
     getProjectAnnotations: () => MaybePromise<WebProjectAnnotations<TFramework>>;
-  }): PromiseLike<void> {
-    return this.getProjectAnnotationsOrRenderError(getProjectAnnotations).then(
-      (projectAnnotations) => {
-        this.storyStore.setProjectAnnotations(projectAnnotations);
+  }) {
+    // We save these two on initialization in case `getProjectAnnotations` errors,
+    // in which case we may need them later when we recover.
+    this.getStoryIndex = getStoryIndex;
+    this.importFn = importFn;
 
-        this.setupListeners();
+    this.setupListeners();
 
-        let storyIndexPromise: PromiseLike<StoryIndex>;
-        if (FEATURES?.storyStoreV7) {
-          storyIndexPromise = this.getStoryIndexFromServer();
-        } else {
-          if (!getStoryIndex) {
-            throw new Error('No `getStoryIndex` passed defined in v6 mode');
-          }
-          storyIndexPromise = SynchronousPromise.resolve().then(getStoryIndex);
-        }
-
-        return storyIndexPromise
-          .then((storyIndex: StoryIndex) => {
-            return this.storyStore
-              .initialize({
-                storyIndex,
-                importFn,
-                cache: !FEATURES?.storyStoreV7,
-              })
-              .then(() => {
-                if (!FEATURES?.storyStoreV7) {
-                  this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
-                }
-
-                this.setGlobalsAndRenderSelection();
-              });
-          })
-          .catch((err) => {
-            // If there's an error w/ the index we need to initialize the store anyway,
-            // so we can recover later on HMR
-            this.storyStore.initialize({ importFn, cache: !FEATURES?.storyStoreV7 });
-            logger.warn(err);
-            this.renderPreviewEntryError(err);
-          });
-      }
-    );
-  }
-
-  getProjectAnnotationsOrRenderError(
-    getProjectAnnotations: () => MaybePromise<WebProjectAnnotations<TFramework>>
-  ): PromiseLike<ProjectAnnotations<TFramework>> {
-    return SynchronousPromise.resolve()
-      .then(() => getProjectAnnotations())
-      .then((projectAnnotations) => {
-        this.renderToDOM = projectAnnotations.renderToDOM;
-        if (!this.renderToDOM) {
-          throw new Error(dedent`
-            Expected 'framework' in your main.js to export 'renderToDOM', but none found.
-
-            You can fix this automatically by running:
-
-            npx sb@next automigrate
-        
-            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
-          `);
-        }
-        return projectAnnotations;
-      })
-      .catch((err) => {
-        logger.warn(err);
-        // This is an error extracting the projectAnnotations (i.e. evaluating the previewEntries) and
-        // needs to be show to the user as a simple error
-        this.renderPreviewEntryError(err);
-        return {};
-      });
+    return this.getProjectAnnotationsOrRenderError(
+      getProjectAnnotations
+    ).then((projectAnnotations) => this.initializeWithProjectAnnotations(projectAnnotations));
   }
 
   setupListeners() {
@@ -197,17 +143,93 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.on(Events.RESET_STORY_ARGS, this.onResetArgs.bind(this));
   }
 
-  async setGlobalsAndRenderSelection() {
+  getProjectAnnotationsOrRenderError(
+    getProjectAnnotations: () => MaybePromise<WebProjectAnnotations<TFramework>>
+  ): PromiseLike<ProjectAnnotations<TFramework>> {
+    return SynchronousPromise.resolve()
+      .then(getProjectAnnotations)
+      .then((projectAnnotations) => {
+        this.renderToDOM = projectAnnotations.renderToDOM;
+        if (!this.renderToDOM) {
+          throw new Error(dedent`
+            Expected your framework's preset to export a \`renderToDOM\` field.
+
+            Perhaps it needs to be upgraded for Storybook 6.4?
+
+            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          
+          `);
+        }
+        return projectAnnotations;
+      })
+      .catch((err) => {
+        // This is an error extracting the projectAnnotations (i.e. evaluating the previewEntries) and
+        // needs to be show to the user as a simple error
+        this.renderPreviewEntryError('Error reading preview.js:', err);
+        throw err;
+      });
+  }
+
+  // If initialization gets as far as project annotations, this function runs.
+  initializeWithProjectAnnotations(projectAnnotations: WebProjectAnnotations<TFramework>) {
+    this.storyStore.setProjectAnnotations(projectAnnotations);
+
+    this.setInitialGlobals();
+
+    let storyIndexPromise: PromiseLike<StoryIndex>;
+    if (FEATURES?.storyStoreV7) {
+      storyIndexPromise = this.getStoryIndexFromServer();
+    } else {
+      if (!this.getStoryIndex) {
+        throw new Error('No `getStoryIndex` passed defined in v6 mode');
+      }
+      storyIndexPromise = SynchronousPromise.resolve().then(this.getStoryIndex);
+    }
+
+    return storyIndexPromise
+      .then((storyIndex: StoryIndex) => this.initializeWithStoryIndex(storyIndex))
+      .catch((err) => {
+        this.renderPreviewEntryError('Error loading story index:', err);
+        throw err;
+      });
+  }
+
+  async setInitialGlobals() {
     const { globals } = this.urlStore.selectionSpecifier || {};
     if (globals) {
       this.storyStore.globals.updateFromPersisted(globals);
     }
+    this.emitGlobals();
+  }
+
+  emitGlobals() {
     this.channel.emit(Events.SET_GLOBALS, {
       globals: this.storyStore.globals.get() || {},
       globalTypes: this.storyStore.projectAnnotations.globalTypes || {},
     });
+  }
 
-    return this.selectSpecifiedStory();
+  async getStoryIndexFromServer() {
+    const result = await fetch(STORY_INDEX_PATH);
+    if (result.status === 200) return result.json() as StoryIndex;
+
+    throw new Error(await result.text());
+  }
+
+  // If initialization gets as far as the story index, this function runs.
+  initializeWithStoryIndex(storyIndex: StoryIndex) {
+    return this.storyStore
+      .initialize({
+        storyIndex,
+        importFn: this.importFn,
+        cache: !FEATURES?.storyStoreV7,
+      })
+      .then(() => {
+        if (!FEATURES?.storyStoreV7) {
+          this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
+        }
+
+        return this.selectSpecifiedStory();
+      });
   }
 
   // Use the selection specifier to choose a story, then render it
@@ -231,6 +253,69 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.emit(Events.CURRENT_STORY_WAS_SET, this.urlStore.selection);
 
     await this.renderSelection({ persistedArgs: args });
+  }
+
+  // EVENT HANDLERS
+
+  // This happens when a config file gets reloaded
+  async onGetProjectAnnotationsChanged({
+    getProjectAnnotations,
+  }: {
+    getProjectAnnotations: () => MaybePromise<ProjectAnnotations<TFramework>>;
+  }) {
+    const projectAnnotations = await this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
+    if (!this.storyStore.projectAnnotations) {
+      await this.initializeWithProjectAnnotations(projectAnnotations);
+      return;
+    }
+
+    await this.storyStore.setProjectAnnotations(projectAnnotations);
+    this.emitGlobals();
+    this.renderSelection();
+  }
+
+  async onStoryIndexChanged() {
+    if (!this.storyStore.projectAnnotations) {
+      // We haven't successfully set project annotations yet,
+      // we need to do that before we can do anything else.
+      return;
+    }
+
+    try {
+      const storyIndex = await this.getStoryIndexFromServer();
+
+      // This is the first time the story index worked, let's load it into the store
+      if (!this.storyStore.storyIndex) {
+        await this.initializeWithStoryIndex(storyIndex);
+      }
+
+      // Update the store with the new stories.
+      await this.onStoriesChanged({ storyIndex });
+    } catch (err) {
+      this.renderPreviewEntryError('Error loading story index:', err);
+      throw err;
+    }
+  }
+
+  // This happens when a glob gets HMR-ed
+  async onStoriesChanged({
+    importFn,
+    storyIndex,
+  }: {
+    importFn?: ModuleImportFn;
+    storyIndex?: StoryIndex;
+  }) {
+    await this.storyStore.onStoriesChanged({ importFn, storyIndex });
+    if (!FEATURES?.storyStoreV7) {
+      this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
+    }
+
+    if (this.urlStore.selection) {
+      await this.renderSelection();
+    } else {
+      // Our selection has never applied before, but maybe it does now, let's try!
+      await this.selectSpecifiedStory();
+    }
   }
 
   onKeydown(event: KeyboardEvent) {
@@ -289,53 +374,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.onUpdateArgs({ storyId, updatedArgs });
   }
 
-  async onStoryIndexChanged() {
-    const storyIndex = await this.getStoryIndexFromServer();
-    return this.onStoriesChanged({ storyIndex });
-  }
-
-  // This happens when a glob gets HMR-ed
-  async onStoriesChanged({
-    importFn,
-    storyIndex,
-  }: {
-    importFn?: ModuleImportFn;
-    storyIndex?: StoryIndex;
-  }) {
-    await this.storyStore.onStoriesChanged({ importFn, storyIndex });
-
-    if (this.urlStore.selection) {
-      await this.renderSelection();
-    } else {
-      await this.selectSpecifiedStory();
-    }
-
-    if (!FEATURES?.storyStoreV7) {
-      this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
-    }
-  }
-
-  // This happens when a config file gets reloade
-  async onGetProjectAnnotationsChanged({
-    getProjectAnnotations,
-  }: {
-    getProjectAnnotations: () => MaybePromise<ProjectAnnotations<TFramework>>;
-  }) {
-    const projectAnnotations = await this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
-    if (!projectAnnotations) {
-      return;
-    }
-
-    this.storyStore.setProjectAnnotations(projectAnnotations);
-    this.renderSelection();
-  }
-
-  async getStoryIndexFromServer() {
-    const result = await fetch(STORY_INDEX_PATH);
-    if (result.status === 200) return result.json() as StoryIndex;
-
-    throw new Error(await result.text());
-  }
+  // RENDERING
 
   // We can either have:
   // - a story selected in "story" viewMode,
@@ -357,7 +396,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       story = await this.storyStore.loadStory({ storyId });
     } catch (err) {
       this.previousStory = null;
-      logger.warn(err);
       await this.renderMissingStory(storyId);
       return;
     }
@@ -642,12 +680,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     }
   }
 
-  renderPreviewEntryError(err: Error) {
+  renderPreviewEntryError(reason: string, err: Error) {
+    logger.error(reason);
+    logger.error(err);
     this.view.showErrorDisplay(err);
     this.channel.emit(Events.CONFIG_ERROR, err);
   }
 
   async renderMissingStory(storySpecifier?: StorySpecifier) {
+    logger.error(`Unable to find story with specifier '${storySpecifier}'`);
     await this.cleanupPreviousRender();
     this.view.showNoPreview();
     this.channel.emit(Events.STORY_MISSING, storySpecifier);
@@ -661,6 +702,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // Ignored exceptions exist for control flow purposes, and are typically handled elsewhere.
     if (error !== IGNORED_EXCEPTION) {
       this.view.showErrorDisplay(error);
+      logger.error(`Error rendering story '${storyId}':`);
       logger.error(error);
     }
   }
@@ -668,6 +710,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // renderError is used by the various app layers to inform the user they have done something
   // wrong -- for instance returned the wrong thing from a story
   renderError(storyId: StoryId, { title, description }: { title: string; description: string }) {
+    logger.error(`Error rendering story ${title}: ${description}`);
     this.channel.emit(Events.STORY_ERRORED, { title, description });
     this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'errored', storyId });
     this.view.showErrorDisplay({

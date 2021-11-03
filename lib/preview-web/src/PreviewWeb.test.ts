@@ -114,12 +114,14 @@ describe('PreviewWeb', () => {
     it('shows an error if getProjectAnnotations throws', async () => {
       const err = new Error('meta error');
       const preview = new PreviewWeb();
-      await preview.initialize({
-        importFn,
-        getProjectAnnotations: () => {
-          throw err;
-        },
-      });
+      await expect(
+        preview.initialize({
+          importFn,
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
@@ -130,7 +132,9 @@ describe('PreviewWeb', () => {
       mockFetchResult = { status: 500, text: async () => err.toString() };
 
       const preview = new PreviewWeb();
-      await preview.initialize({ importFn, getProjectAnnotations });
+      await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+        'sort error'
+      );
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
@@ -154,7 +158,7 @@ describe('PreviewWeb', () => {
     });
 
     it('SET_GLOBALS sets globals and types even when undefined', async () => {
-      await createAndRenderPreview({ getProjectAnnotations: () => ({}) });
+      await createAndRenderPreview({ getProjectAnnotations: () => ({ renderToDOM: jest.fn() }) });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: {},
@@ -436,18 +440,17 @@ describe('PreviewWeb', () => {
           projectAnnotations.renderToDOM = undefined;
 
           document.location.search = '?id=component-one--a';
-          const preview = await createAndRenderPreview();
+          const preview = new PreviewWeb();
+          await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow();
 
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
           expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
             .toMatchInlineSnapshot(`
-            [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+            [Error: Expected your framework's preset to export a \\\`renderToDOM\\\` field.
 
-                You can fix this automatically by running:
+            Perhaps it needs to be upgraded for Storybook 6.4?
 
-                npx sb@next automigrate
-
-                More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
+            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
           `);
         } finally {
           projectAnnotations.renderToDOM = originalRenderToDOM;
@@ -1944,22 +1947,48 @@ describe('PreviewWeb', () => {
   });
 
   describe('onStoriesChanged', () => {
-    it('recovers if stories.json endpoint 500s initially', async () => {
-      document.location.search = '?id=component-one--a';
-      const err = new Error('sort error');
-      mockFetchResult = { status: 500, text: async () => err.toString() };
+    describe('if stories.json endpoint 500s initially', () => {
+      it('recovers and renders the story', async () => {
+        document.location.search = '?id=component-one--a';
+        const err = new Error('sort error');
+        mockFetchResult = { status: 500, text: async () => err.toString() };
 
-      const preview = new PreviewWeb();
-      await preview.initialize({ importFn, getProjectAnnotations });
+        const preview = new PreviewWeb();
+        await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+          'sort error'
+        );
 
-      expect(preview.view.showErrorDisplay).toHaveBeenCalled();
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
 
-      mockChannel.emit.mockClear();
-      mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
-      preview.onStoryIndexChanged();
-      await waitForRender();
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+        mockChannel.emit.mockClear();
+        mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
+        preview.onStoryIndexChanged();
+        await waitForRender();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
+      it('sets story args from the URL', async () => {
+        document.location.search = '?id=component-one--a&args=foo:url';
+        const err = new Error('sort error');
+        mockFetchResult = { status: 500, text: async () => err.toString() };
+
+        const preview = new PreviewWeb();
+        await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+          'sort error'
+        );
+
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+
+        mockChannel.emit.mockClear();
+        mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
+        preview.onStoryIndexChanged();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'url',
+        });
+      });
     });
 
     describe('when the current story changes', () => {
@@ -2406,24 +2435,68 @@ describe('PreviewWeb', () => {
   });
 
   describe('onGetProjectAnnotationsChanged', () => {
+    describe('if initial getProjectAnnotations threw', () => {
+      it('recovers and renders the story', async () => {
+        document.location.search = '?id=component-one--a';
+
+        const err = new Error('meta error');
+        const preview = new PreviewWeb();
+        await expect(
+          preview.initialize({
+            importFn,
+            getProjectAnnotations: () => {
+              throw err;
+            },
+          })
+        ).rejects.toThrow(err);
+
+        preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
+      it('sets globals from the URL', async () => {
+        document.location.search = '?id=*&globals=a:c';
+
+        const err = new Error('meta error');
+        const preview = new PreviewWeb();
+        await expect(
+          preview.initialize({
+            importFn,
+            getProjectAnnotations: () => {
+              throw err;
+            },
+          })
+        ).rejects.toThrow(err);
+
+        preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
+        await waitForRender();
+
+        expect(preview.storyStore.globals.get()).toEqual({ a: 'c' });
+      });
+    });
+
     it('shows an error the new value throws', async () => {
       document.location.search = '?id=component-one--a';
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
       const err = new Error('error getting meta');
-      await preview.onGetProjectAnnotationsChanged({
-        getProjectAnnotations: () => {
-          throw err;
-        },
-      });
+      await expect(
+        preview.onGetProjectAnnotationsChanged({
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
     });
 
     const newGlobalDecorator = jest.fn((s) => s());
-    const newGetGlobalMeta = () => {
+    const newGetProjectAnnotations = () => {
       return {
         ...projectAnnotations,
         args: { global: 'added' },
@@ -2437,10 +2510,25 @@ describe('PreviewWeb', () => {
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(preview.storyStore.globals.get()).toEqual({ a: 'edited' });
+    });
+
+    it('emits SET_GLOBALS with new values', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+
+      mockChannel.emit.mockClear();
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
+      await waitForRender();
+
+      await waitForEvents([Events.SET_GLOBALS]);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
+        globals: { a: 'edited' },
+        globalTypes: {},
+      });
     });
 
     it('updates args to their new values', async () => {
@@ -2448,12 +2536,26 @@ describe('PreviewWeb', () => {
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
         foo: 'a',
         global: 'added',
+      });
+    });
+
+    it('emits SET_STORY_ARGS with new values', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+
+      mockChannel.emit.mockClear();
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
+      await waitForRender();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a', global: 'added' },
       });
     });
 
@@ -2463,7 +2565,7 @@ describe('PreviewWeb', () => {
 
       projectAnnotations.renderToDOM.mockClear();
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
