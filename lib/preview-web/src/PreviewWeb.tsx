@@ -82,7 +82,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   previousCleanup: StoryCleanupFn;
 
-  abortSignal: AbortSignal;
+  abortController: AbortController;
 
   disableKeyListeners: boolean;
 
@@ -512,26 +512,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     let phase: RenderPhase;
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
-    let controller: AbortController;
     let notYetRendered = true;
     const render = async ({ forceRemount = false } = {}) => {
-      let ctrl = controller; // we also need a stable reference within this closure
-
-      // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
-      // play function might continue execution regardless, which we deal with during cleanup.
-      // Note we can't reload the page here because there's a legitimate use case for forceRemount
-      // while in the 'playing' phase: the play function may never resolve during debugging, while
-      // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
-      if (ctrl) ctrl.abort();
-      ctrl = createController();
-      controller = ctrl;
-      this.abortSignal = controller.signal;
+      if (forceRemount) {
+        this.abortController?.abort();
+        this.abortController = createController();
+      }
 
       const runPhase = async (phaseName: RenderPhase, phaseFn?: () => MaybePromise<void>) => {
         phase = phaseName;
         this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
         if (phaseFn) await phaseFn();
-        if (ctrl.signal.aborted) {
+        if (this.abortController.signal.aborted) {
           phase = 'aborted';
           this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
         }
@@ -545,14 +537,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
             viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
           } as StoryContextForLoaders<TFramework>);
         });
-        if (ctrl.signal.aborted) return;
+        if (this.abortController.signal.aborted) return;
 
         const renderStoryContext: StoryContext<TFramework> = {
           ...loadedContext,
           // By this stage, it is possible that new args/globals have been received for this story
           // and we need to ensure we render it with the new values
           ...this.storyStore.getStoryContext(story),
-          abortSignal: ctrl.signal,
+          abortSignal: this.abortController.signal,
           canvasElement: element,
         };
         const renderContext: RenderContext<TFramework> = {
@@ -565,14 +557,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
         await runPhase('rendering', () => this.renderToDOM(renderContext, element));
         notYetRendered = false;
-        if (ctrl.signal.aborted) return;
+        if (this.abortController.signal.aborted) return;
 
         if (forceRemount && playFunction) {
           this.disableKeyListeners = true;
           await runPhase('playing', () => playFunction(renderContext.storyContext));
           await runPhase('played');
           this.disableKeyListeners = false;
-          if (ctrl.signal.aborted) return;
+          if (this.abortController.signal.aborted) return;
         }
 
         await runPhase('completed', () => this.channel.emit(Events.STORY_RENDERED, id));
@@ -609,7 +601,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // (possibly the loaders or the play function are still running). We use the controller
       // as a method to abort them, ASAP, but this is not foolproof as we cannot control what
       // happens inside the user's code.
-      controller.abort();
+      this.abortController.abort();
 
       this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, render);
