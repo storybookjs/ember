@@ -4,25 +4,30 @@
 import Page from './Page.vue';
 
 export default {
+   /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Page',
   component: Page,
 };
 
-export const CustomFooter = {
-  args: {
-    footer: '<a href="https://storybook.js.org/">Built with Storybook</a>',
+const Template = (args) => ({
+  components: { Page },
+  setup() {
+    return { args };
   },
-  render: (args) => ({
-    components: { Page },
-    setup() {
-      return { args };
-    },
-    template: `
-      <page v-bind="args">
-        <template v-slot:footer>
-          <footer v-if="args.footer" v-html="args.footer" />
-        </template>
-      </page>    
-    `,
-  }),
+  template: `
+    <page v-bind="args">
+      <template v-slot:footer>
+        <footer v-if="args.footer" v-html="args.footer" />
+      </template>
+    </page>
+  `,
+});
+
+export const CustomFooter = Template.bind({});
+CustomFooter.args = {
+  footer: '<a href="https://storybook.js.org/">Built with Storybook</a>',
 };
 ```

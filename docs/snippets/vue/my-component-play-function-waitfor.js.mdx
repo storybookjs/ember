@@ -6,32 +6,35 @@ import { screen, userEvent, waitFor } from '@storybook/testing-library';
 import MyComponent from './MyComponent.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'WithAsync',
   component: MyComponent,
 };
 
-export const ExampleAsyncStory = {
-  play: async () => {
-    const exampleElement = screen.getByLabelText('example-element', {
-      selector: 'input',
-    });
+const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
 
-    // The delay option set the ammount of milliseconds between characters being typed
-    await userEvent.type(exampleElement, 'WrongInput', {
-      delay: 100,
-    });
+export const ExampleAsyncStory = Template.bind({});
+ExampleAsyncStory.play = async () => {
+  const Input = screen.getByLabelText('Username', {
+    selector: 'input',
+  });
 
-    // See https://storybook.js.org/docs/7.0/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.type(Input, 'WrongInput', {
+    delay: 100,
+  });
 
-    const Submit = screen.getByRole('button');
-    await userEvent.click(Submit);
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  const Submit = screen.getByRole('button');
+  await userEvent.click(Submit);
 
-    await waitFor(async () => {
-      await userEvent.hover(screen.getByTestId('error'));
-    });
-  },
-  render: () => ({
-    components: { MyComponent },
-    template: '<MyComponent />',
-  }),
+  await waitFor(async () => {
+    await userEvent.hover(screen.getByTestId('error'));
+  });
 };
 ```

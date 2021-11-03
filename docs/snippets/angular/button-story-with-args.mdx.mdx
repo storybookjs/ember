@@ -7,15 +7,16 @@ import { Button } from './button.component';
 
 <Meta title="Button" component={Button} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+<!-- 👇 We create a “template” of how args map to rendering -->
+export const Template = (args) => ({ props: args });
 
+<!-- 👇 Each story then reuses that template -->
 <Story
   name="Primary"
   args={{
     primary: true,
     label: 'Button',
-  }}
-  render={(args) => ({
-    props: args,
-  })} />
+  }} >
+  {Template.bind({})}
+</Story>
 ```

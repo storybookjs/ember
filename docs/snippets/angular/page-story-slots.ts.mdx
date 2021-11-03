@@ -1,22 +1,30 @@
 ```ts
 // Page.stories.ts
 
+import { Meta, Story } from '@storybook/angular';
+
 import { Page } from './page.component';
 
 export default {
+   /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Page',
   component: Page,
-};
+} as Meta;
 
-export const CustomFooter = {
-  args: {
-    footer: 'Built with Storybook',
-  },
-  render: (args) => ({
-    props: args,
-    template: `
-      <storybook-page>
-        <ng-container footer>${args.footer}</ng-container>
-      </storybook-page>`,
-  }),
+
+const Template: Story = (args) => ({
+  props: args,
+  template: `
+    <storybook-page>
+      <ng-container footer>${args.footer}</ng-container>
+    </storybook-page>`,
+});
+
+export const CustomFooter = Template.bind({});
+CustomFooter.args = {
+  footer: 'Built with Storybook',
 };
 ```

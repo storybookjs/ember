@@ -1,5 +1,5 @@
 ```js
-// List.stories.js | List.stories.jsx
+// List.stories.js|jsx
 
 import React from 'react';
 
@@ -10,16 +10,19 @@ import { ListItem } from './ListItem';
 import { Selected, Unselected } from './ListItem.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
 };
 
-export const ManyItems = {
-  render: (args) => (
-    <List {...args}>
-      <ListItem {...Selected.args} />
-      <ListItem {...Unselected.args} />
-      <ListItem {...Unselected.args} />
-    </List>
-  ),
-};
+export const ManyItems = (args) => (
+  <List {...args}>
+    <Selected {...Selected.args} />
+    <Unselected {...Unselected.args} />
+    <Unselected {...Unselected.args} />
+  </List>
+);
 ```

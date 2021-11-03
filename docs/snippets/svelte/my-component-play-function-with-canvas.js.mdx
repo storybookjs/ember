@@ -1,25 +1,31 @@
 ```js
 // MyComponent.stories.js
 
-import { fireEvent, userEvent, within } from '@storybook/testing-library';
+import { getByRole, userEvent, within } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
 export default {
-  component: MyComponent,
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'WithCanvasElement',
+  component: MyComponent,  
 };
 
-export const ExampleStory = {
-  play: async ({ canvasElement }) => {
-    // Assigns canvas to the component root element
+const Template = (args) => ({
+  Component: MyComponent,
+  props: args,
+});
+
+export const ExampleStory = Template.bind({});
+ExampleStory.play = async ({ canvasElement }) => {
+  // Assigns canvas to the component root element
     const canvas = within(canvasElement);
 
     // Starts querying from the component's root element
     await userEvent.type(canvas.getByTestId('example-element'), 'something');
-    await fireEvent.click(canvas.getByRole('another-element'));
-  },
-  render: () => ({
-    Component: MyComponent,
-  }),
+    await userEvent.click(canvas.getByRole('another-element'));
 };
 ```

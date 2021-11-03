@@ -1,25 +1,32 @@
 ```js
-// MyComponent.stories.js|jsx|ts|tsx
+// MyComponent.stories.js|jsx
+
+import React from 'react';
 
 import { fireEvent, screen, userEvent } from '@storybook/testing-library';
 
-import { MyComponent } from './MyComponent.js';
+import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'ClickExamples',
   component: MyComponent,
 };
 
-export const ClickExample = {
-  play: async () => {
-    // See https://storybook.js.org/docs/7.0/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    await userEvent.click(screen.getByRole('button'));
-  },
+const Template = (args) => <MyComponent {...args} />;
+
+export const ClickExample = Template.bind({});
+ClickExample.play = async () => {
+  // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.click(screen.getByRole('button'));
 };
 
-export const FireEventExample = {
-  play: async () => {
-    // See https://storybook.js.org/docs/7.0/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    await fireEvent.click(screen.getByTestId('data-testid'));
-  },
+export const FireEventExample = Template.bind({});
+FireEventExample.play = async () => {
+  // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await fireEvent.click(screen.getByTestId('data-testid'));
 };
 ```

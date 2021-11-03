@@ -6,21 +6,27 @@ import TodoItem from './TodoItem.vue';
 import fetch from 'node-fetch';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Examples/Loader',
   component: TodoItem,
 };
 
-export const Primary = {
-  render: (args, { loaded: { todo } }) => ({
+export const Primary = (args, { loaded: { todo } }) => {
+  return {
     components: { TodoItem },
     setup() {
       return { args, todo: todo };
     },
-    template: '<TodoItem :todo="todo" />',
-  }),
-  loaders: [
-    async () => ({
-      todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
-    }),
-  ],
+    template: `<TodoItem :todo="todo"/>`,
+  };
 };
+
+Primary.loaders = [
+  async () => ({
+    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+  }),
+];
 ```

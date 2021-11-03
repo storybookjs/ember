@@ -3,19 +3,24 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { fireEvent, getByRole, userEvent, within } from '@storybook/testing-library'
+import { getByRole, userEvent, within } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
 <Meta title="WithCanvasElement" component={MyComponent} />
 
-<!--Assigns canvas to the component root element and queries the element based on it-->
+export const Template = (args) => ({ props: args });
 
 <Story
   name="ExampleStory"
-  play={async ({canvasElement}) => {
+  play={async ({ canvasElement }) => {
+    // Assigns canvas to the component root element
     const canvas = within(canvasElement);
+
+    // Starts querying from the component's root element
     await userEvent.type(canvas.getByTestId('example-element'), 'something');
-    await fireEvent.click(canvas.getByRole('another-element'));
-  }} />
+    await userEvent.click(canvas.getByRole('another-element'));
+  }} >
+  {Template.bind({})}
+</Story>
 ```

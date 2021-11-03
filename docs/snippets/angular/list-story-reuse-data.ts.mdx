@@ -1,7 +1,7 @@
 ```ts
 // List.stories.ts
 
-import { moduleMetadata } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
@@ -12,6 +12,11 @@ import { ListItem } from './list-item.component';
 import { Selected, Unselected } from './ListItem.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
   decorators: [
     moduleMetadata({
@@ -19,22 +24,21 @@ export default {
       imports: [CommonModule],
     }),
   ],
-};
+} as Meta;
 
-export const ManyItems = {
-  args: {
-    Selected: Selected.args.isSelected,
-    Unselected: Unselected.args.isSelected,
-  },
-  render: (args) => ({
-    props: args,
-    template: `
-      <list>
-        <list-item [isSelected]="Selected"></list-item>
-        <list-item [isSelected]="Unselected"></list-item>
-        <list-item [isSelected]="Unselected"></list-item>
-      </app-list>
-    `,
-  }),
+
+export const ManyItems: Story = (args) => ({
+  props: args,
+  template: `
+    <app-list>
+      <app-listitem [isSelected]="Selected"></app-listitem>
+      <app-listitem [isSelected]="Unselected"></app-listitem>
+      <app-listitem [isSelected]="Unselected"></app-listitem>
+    </app-list>
+  `,
+});
+ManyItems.args= {
+  Selected: Selected.args.isSelected,
+  Unselected: Unselected.args.isSelected,
 };
 ```

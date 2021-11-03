@@ -4,50 +4,29 @@
 import Button from './Button.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
   component: Button,
 };
 
-//👇 The render function is a framework specific construct to tell how the story should render
-
-export const Primary = {
-  args: {
-    backgroundColor: '#ff0',
-    label: 'Button',
+//👇 We create a “template” of how args map to rendering
+const Template = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
   },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args };
-    },
-    template: '<Button v-bind="args" />',
-  }),
-};
+  template: '<Button v-bind="args" />',
+});
+//👇 Each story then reuses that template
+export const Primary = Template.bind({});
+Primary.args = { background: '#ff0', label: 'Button' };
 
-export const Secondary = {
-  args: {
-    ...Primary.args,
-    label: '😄👍😍💯',
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args };
-    },
-    template: '<Button v-bind="args" />',
-  }),
-};
+export const Secondary = Template.bind({});
+Secondary.args = { ...Primary.args, label: '😄👍😍💯' };
 
-export const Tertiary = {
-  args: {
-    ...Primary.args,
-    label: '📚📕📈🤓',
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args };
-    },
-    template: '<Button v-bind="args" />',
-  }),
-};
+export const Tertiary = Template.bind({});
+Tertiary.args = { ...Primary.args, label: '📚📕📈🤓' };
 ```

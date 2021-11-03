@@ -50,18 +50,15 @@ We can set the parameters for all stories of a component using the `parameters` 
 
 We can also set the parameters for **all stories** via the `parameters` export of your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file (this is the file where you configure all stories):
 
-```js
-// .storybook/preview.js
+<!-- prettier-ignore-start -->
 
-export const parameters = {
-  backgrounds: {
-    values: [
-      { name: 'red', value: '#f00' },
-      { name: 'green', value: '#0f0' },
-    ],
-  },
-};
-```
+<CodeSnippets
+  paths={[
+   'common/preview-story-custom-params.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Setting a global parameter is a common way to configure addons. With backgrounds, you configure the list of backgrounds that every story can render in.
 

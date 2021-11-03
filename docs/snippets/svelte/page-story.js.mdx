@@ -7,16 +7,21 @@ import Page from './Page.svelte';
 import * as HeaderStories from './Header.stories';
 
 export default {
+   /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Page',
   component: Page,
 };
 
-export const LoggedIn = {
-  args: {
-    ...HeaderStories.LoggedIn.args,
-  },
-  render: (args) => ({
-    component: Page,
-    props: args,
-  }),
+const Template = (args)=>({
+  Component: Page,
+  props: args,
+});
+
+export const LoggedIn = Template.bind({});
+LoggedIn.args = {
+  ...HeaderStories.LoggedIn.args,
 };
 ```

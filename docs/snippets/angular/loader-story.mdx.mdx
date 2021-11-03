@@ -9,8 +9,6 @@ import fetch from 'node-fetch';
 
 <Meta title="Examples/Loader" component={TodoItem} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story
   name="Primary"
   loaders={[
@@ -19,11 +17,11 @@ import fetch from 'node-fetch';
         await fetch('https://jsonplaceholder.typicode.com/todos/1')
       ).json(),
     }),
-  ]}
-  render={(args, { loaded: { todo } }) => ({
+  ]} >
+  {(args, { loaded: { todo } }) => ({
     props: {
-      args,
-      todo,
+      todo: todo,
     },
-  })} />
+  })}
+</Story>
 ```

@@ -1,31 +1,40 @@
 ```ts
 // MyComponent.stories.ts
 
+import { Story, Meta } from '@storybook/angular';
+
 import { screen, userEvent } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'WithSelectEvent',
   component: MyComponent,
-};
+} as Meta;
 
-// Custom function to emulate a pause
-function sleep(ms: any) {
+// Function to emulate pausing between interactions
+function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Queries the element by it's role and fires the event
-export const ExampleChangeEvent = {
-  play: async () => {
-    const select = screen.getByRole('listbox');
+const Template: Story = (args) => ({
+  props: args,
+});
 
-    await userEvent.selectOptions(select, ['One Item']);
-    await sleep(2000);
+export const ExampleChangeEvent: Story = Template.bind({});
+ExampleChangeEvent.play = async () => {
+  const select = screen.getByRole('listbox');
 
-    await userEvent.selectOptions(select, ['Another Item']);
-    await sleep(2000);
-    
-    await userEvent.selectOptions(select, ['Yet another item']);
-  },
+  await userEvent.selectOptions(select, ['One Item']);
+  await sleep(2000);
+
+  await userEvent.selectOptions(select, ['Another Item']);
+  await sleep(2000);
+
+  await userEvent.selectOptions(select, ['Yet another item']);
 };
 ```

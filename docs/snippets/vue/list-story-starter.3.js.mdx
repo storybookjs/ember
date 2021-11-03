@@ -4,17 +4,20 @@
 import List from './ListComponent.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
 };
 
 // Always an empty list, not super interesting
-export const Empty = {
-  render: (args) => ({
-    components: { List },
-    setup() {
-      return { args };
-    },
-    template: '<List v-bind="args">',
-  }),
-};
+const Template = (args) => ({
+  components: { List },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"/>',
+});
 ```

@@ -9,14 +9,13 @@ import { MyComponent } from './MyComponent.component';
 
 <Meta title="WithSelectEvent" component={MyComponent}/>
 
-
-<!-- Custom function to emulate a pause -->
+<!-- Function to emulate pausing between interactions -->
 
 export const sleep= (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
-<!-- Queries the element by it's role and fires the event -->
+export const Template = (args) => ({ props: args });
 
 <Story 
   name="ExampleChangeEvent"
@@ -28,7 +27,10 @@ export const sleep= (ms) => {
 
     await userEvent.selectOptions(select, ['Another Item']);
     await sleep(2000);
-    
+
     await userEvent.selectOptions(select, ['Yet another item']);
-  }} />
+
+  }}>
+  {Template.bind({})}
+</Story>
 ```

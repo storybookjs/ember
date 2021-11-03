@@ -6,30 +6,35 @@ import { screen, userEvent, waitFor } from '@storybook/testing-library';
 import MyComponent from './MyComponent.svelte';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'WithAsync',
   component: MyComponent,
 };
 
-export const ExampleAsyncStory = {
-  play: async () => {
-    const exampleElement = screen.getByLabelText('Username', {
-      selector: 'input',
-    });
+const Template = (args) => ({
+  Component: MyComponent,
+  props: args,
+});
 
-    // The delay option set the ammount of milliseconds between characters being typed
-    await userEvent.type(exampleElement, 'WrongInput', {
-      delay: 100,
-    });
+export const ExampleAsyncStory = Template.bind({});
+ExampleAsyncStory.play = async () => {
+  const Input = screen.getByLabelText('Username', {
+    selector: 'input',
+  });
 
-    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    const Submit = screen.getByRole('button');
-    await userEvent.click(Submit);
+  await userEvent.type(Input, 'WrongInput', {
+    delay: 100,
+  });
 
-    await waitFor(async () => {
-      await userEvent.hover(screen.getByTestId('error'));
-    });
-  },
-  render: () => ({
-    component: MyComponent,
-  }),
+    // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  const Submit = screen.getByRole('button');
+  await userEvent.click(Submit);
+
+  await waitFor(async () => {
+    await userEvent.hover(screen.getByTestId('error'));
+  });
 };
 ```

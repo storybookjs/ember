@@ -8,14 +8,14 @@ title: 'Play function'
 
 We recommend installing Storybook's [`addon-interactions`](/addons/@storybook/addon-interactions/) before you start writing stories with the `play` function. It's the perfect complement for it, including a handy set of UI controls to allow you command over the execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also providing you with an easy-to-use debugger for potential issues.
 
-Run the following command to install the addon.
+Run the following command to install the addon and the required dependencies.
 
 ```shell
 # With npm
-npm install @storybook/addon-interactions --save-dev
+npm install @storybook/addon-interactions @storybook/testing-library --save-dev
 
 # With yarn
-yarn add --dev @storybook/addon-interactions
+yarn add --dev @storybook/addon-interactions @storybook/testing-library
 ```
 
 Update your Storybook configuration (in `.storybook/main.js`) to include the interactions addon.
@@ -41,6 +41,7 @@ Storybook's `play` functions are small code snippets that run once the story fin
 <CodeSnippets
   paths={[
    'react/register-component-with-play-function.js.mdx',
+   'react/register-component-with-play-function.ts.mdx',
    'react/register-component-with-play-function.mdx.mdx',
    'angular/register-component-with-play-function.ts.mdx',
    'angular/register-component-with-play-function.mdx.mdx',
@@ -64,6 +65,7 @@ Thanks to the [Component Story Format](../api/csf.md), an ES6 module based file 
 <CodeSnippets
   paths={[
    'react/my-component-play-function-composition.js.mdx',
+   'react/my-component-play-function-composition.ts.mdx',
    'angular/my-component-play-function-composition.ts.mdx',
    'vue/my-component-play-function-composition.js.mdx',
    'svelte/my-component-play-function-composition.js.mdx',
@@ -85,6 +87,7 @@ A common type of component interaction is a button click. If you need to reprodu
 <CodeSnippets
   paths={[
    'react/my-component-play-function-with-clickevent.js.mdx',
+   'react/my-component-play-function-with-clickevent.ts.mdx',
    'react/my-component-play-function-with-clickevent.mdx.mdx',
    'angular/my-component-play-function-with-clickevent.ts.mdx',
    'angular/my-component-play-function-with-clickevent.mdx.mdx',
@@ -106,6 +109,7 @@ Asides from click events, you can also script additional events with the `play` 
 <CodeSnippets
   paths={[
    'react/my-component-play-function-with-selectevent.js.mdx',
+   'react/my-component-play-function-with-selectevent.ts.mdx',
    'react/my-component-play-function-with-selectevent.mdx.mdx',
    'angular/my-component-play-function-with-selectevent.ts.mdx',
    'angular/my-component-play-function-with-selectevent.mdx.mdx',
@@ -125,6 +129,7 @@ In addition to events, you can also create interactions with the `play` function
 <CodeSnippets
   paths={[
    'react/my-component-play-function-with-delay.js.mdx',
+   'react/my-component-play-function-with-delay.ts.mdx',
    'react/my-component-play-function-with-delay.mdx.mdx',
    'angular/my-component-play-function-with-delay.ts.mdx',
    'angular/my-component-play-function-with-delay.mdx.mdx',
@@ -146,6 +151,7 @@ You can also use the `play` function to verify the existence of an element based
 <CodeSnippets
   paths={[
    'react/my-component-play-function-waitfor.js.mdx',
+   'react/my-component-play-function-waitfor.ts.mdx',
    'react/my-component-play-function-waitfor.mdx.mdx',
    'angular/my-component-play-function-waitfor.ts.mdx',
    'angular/my-component-play-function-waitfor.mdx.mdx',
@@ -167,6 +173,7 @@ If you need, you can also adjust your `play` function to find elements based on 
 <CodeSnippets
   paths={[
    'react/my-component-play-function-alt-queries.js.mdx',
+   'react/my-component-play-function-alt-queries.ts.mdx',
    'react/my-component-play-function-alt-queries.mdx.mdx',
    'angular/my-component-play-function-alt-queries.ts.mdx',
    'angular/my-component-play-function-alt-queries.mdx.mdx',
@@ -192,12 +199,13 @@ By default, each interaction you write inside your `play` function will be execu
 <CodeSnippets
   paths={[
    'react/my-component-play-function-with-canvas.js.mdx',
+   'react/my-component-play-function-with-canvas.ts.mdx',
    'react/my-component-play-function-with-canvas.mdx.mdx',
    'angular/my-component-play-function-with-canvas.ts.mdx',
    'angular/my-component-play-function-with-canvas.mdx.mdx',
    'vue/my-component-play-function-with-canvas.js.mdx',
    'vue/my-component-play-function-with-canvas.mdx.mdx',
-    'svelte/my-component-play-function-with-canvas.js.mdx',
+   'svelte/my-component-play-function-with-canvas.js.mdx',
    'svelte/my-component-play-function-with-canvas.mdx.mdx',
   ]}
 />

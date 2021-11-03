@@ -7,17 +7,23 @@ import Page from './Page.vue';
 import * as HeaderStories from './Header.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Page',
   component: Page,
 };
 
-export const LoggedIn = {
-  args: {
-    ...HeaderStories.LoggedIn.args,
-  },
-  render: (args, { argTypes }) => ({
-    components: { Page },
-    props: Object.keys(argTypes),
-    template: '<page v-bind="$props" />',
-  }),
+
+const Template = (args, { argTypes }) => ({
+  components: { Page },
+  props: Object.keys(argTypes),
+  template: '<page v-bind="$props" />',
+});
+
+export const LoggedIn = Template.bind({});
+LoggedIn.args = {
+  ...HeaderStories.LoggedIn.args,
 };
 ```

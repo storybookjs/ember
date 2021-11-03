@@ -7,17 +7,25 @@ import ButtonGroup from '../ButtonGroup.svelte';
 import * as ButtonStories from './Button.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'ButtonGroup',
   component: ButtonGroup,
 };
 
-export const Pair = {
-  args: {
-    buttons: [{ ...ButtonStories.Primary.args }, { ...ButtonStories.Secondary.args }],
-    orientation: 'horizontal',
-  },
-  render: (args) => ({
-    Component: ButtonGroup,
-    props: args,
-  }),
+const Template = (args) => ({
+  Component: ButtonGroup,
+  props: args,
+});
+
+export const Pair = Template.bind({});
+Pair.args = {
+  buttons: [
+    { ...ButtonStories.Primary.args },
+    { ...ButtonStories.Secondary.args }
+  ],
+  orientation: 'horizontal',
 };
 ```

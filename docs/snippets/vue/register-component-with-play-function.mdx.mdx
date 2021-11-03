@@ -7,9 +7,12 @@ import { screen, userEvent } from '@storybook/testing-library';
 
 import RegistrationForm from './RegistrationForm.vue';
 
-
-
 <Meta title="RegistrationForm" component={RegistrationForm} />
+
+export const Template = (args) => ({
+  components: { RegistrationForm },
+  template: '<RegistrationForm />',
+});
 
 <Story
   name="FilledForm"
@@ -17,26 +20,23 @@ import RegistrationForm from './RegistrationForm.vue';
     const emailInput = screen.getByLabelText('email', {
       selector: 'input',
     });
-   
+
     await userEvent.type(emailInput, 'example-email@email.com', {
       delay: 100,
     });
-
+    
     const passwordInput = screen.getByLabelText('password', {
       selector: 'input',
     });
-    
+
     await userEvent.type(passwordInput, 'ExamplePassword', {
       delay: 100,
     });
-
-    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    const submitButton = screen.getByRole('button');
-
-    await userEvent.click(submitButton);
-  }}
-  render={() => ({
-    components: { RegistrationForm },
-    template: '<RegistrationForm />',
-  })} />
+    
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
+  }}>
+  {Template.bind({})}
+</Story>
 ```

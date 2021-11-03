@@ -1,11 +1,16 @@
 ```js
-// Button.stories.js | Button.stories.ts | Button.stories.jsx | Button.stories.tsx
+// Button.stories.js|ts|jsx|tsx
 
 import React, { useState } from 'react';
 
 import { Button } from './Button';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
   component: Button,
 };
 
@@ -13,7 +18,7 @@ export default {
  * Example Button story with React Hooks.
  * See note below related to this example.
  */
-const ButtonWithHooks = () => {
+export const Primary = () => {
   // Sets the hooks for both the label and primary props
   const [value, setValue] = useState('Secondary');
   const [isPrimary, setIsPrimary] = useState(false);
@@ -26,9 +31,5 @@ const ButtonWithHooks = () => {
     }
   };
   return <Button primary={isPrimary} onClick={handleOnChange} label={value} />;
-};
-
-export const Primary = {
-  render: () => <ButtonWithHooks />,
 };
 ```

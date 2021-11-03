@@ -1,38 +1,38 @@
 ```ts
 // Button.stories.ts
 
+import { Meta, Story } from '@storybook/angular';
+
 import { Button } from './button.component';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
   component: Button,
 };
 
-// The render function is a framework specific construct to define how the story should render
+export const Primary: Story = () => ({
+  props: {
+    label: 'Button',
+    backgroundColor: '#ff0',
+  },
+});
 
-export const Primary = {
-  render: () => ({
-    props: {
-      label: 'Button',
-      backgroundColor: '#ff0',
-    },
-  }),
-};
 
-export const Secondary = {
-  render: () => ({
-    props: {
-      label: '😄👍😍💯',
-      backgroundColor: '#ff0',
-    },
-  }),
-};
+export const Secondary: Story = () => ({
+  props: {
+    label: '😄👍😍💯',
+    backgroundColor: '#ff0',
+  },
+});
 
-export const Tertiary = {
-  render: () => ({
-    props: {
-      label: '📚📕📈🤓',
-      backgroundColor: '#ff0',
-    },
-  }),
-};
+export const Tertiary: Story = () => ({
+  props: {
+    label: '📚📕📈🤓',
+    backgroundColor: '#ff0',
+  },
+});
 ```

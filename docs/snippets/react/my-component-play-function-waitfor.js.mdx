@@ -1,31 +1,39 @@
 ```js
-// MyComponent.stories.js|jsx|ts|tsx
+// MyComponent.stories.js|jsx
+
+import React from 'react';
 
 import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
-import { MyComponent } from './MyComponent.js';
+import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'WithAsync',
   component: MyComponent,
 };
 
-export const ExampleAsyncStory = {
-  play: async () => {
-    const Input = screen.getByLabelText('Username', {
-      selector: 'input',
-    });
+const Template = (args) => <MyComponent {...args} />;
 
-    await userEvent.type(Input, 'WrongInput', {
-      delay: 100,
-    });
+export const ExampleAsyncStory = Template.bind({});
+ExampleAsyncStory.play = async () => {
+  const Input = screen.getByLabelText('Username', {
+    selector: 'input',
+  });
 
-    // See https://storybook.js.org/docs/7.0/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    const Submit = screen.getByRole('button');
-    await userEvent.click(Submit);
+  await userEvent.type(Input, 'WrongInput', {
+    delay: 100,
+  });
+  // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  const Submit = screen.getByRole('button');
 
-    await waitFor(async () => {
-      await userEvent.hover(screen.getByTestId('error'));
-    });
-  },
+  await userEvent.click(Submit);
+
+  await waitFor(async () => {
+    await userEvent.hover(screen.getByTestId('error'));
+  });
 };
 ```

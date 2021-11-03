@@ -1,13 +1,17 @@
 ```ts
 // List.stories.ts
 
-import { moduleMetadata } from '@storybook/angular';
+import { Story, Meta, moduleMetadata } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
 import { List } from './list.component';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
   component: List,
   decorators: [
     moduleMetadata({
@@ -18,10 +22,8 @@ export default {
 };
 
 // Always an empty list, not super interesting
-export const Empty = {
-  render: (args) => ({
-    props: args,
-    template: '<list></list>',
-  }),
-};
+const Template: Story = (args) => ({
+  props: args,
+  template: `<app-list></app-list>`,
+});
 ```

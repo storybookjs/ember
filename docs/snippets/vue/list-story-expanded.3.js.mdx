@@ -5,44 +5,41 @@ import List from './ListComponent.vue';
 import ListItem from './ListItem.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
 };
 
-export const Empty = {
-  render: (args) => ({
-    components: { List },
-    setup() {
-      return { args };
-    },
-    template: '<List v-bind="args">',
-  }),
-};
+export const Empty = (args) => ({
+  components: { List },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"/>',
+});
 
-export const OneItem = {
-  render: (args) => ({
-    components: { List, ListItem },
-    setup() {
-      return { args };
-    },
-    template: `
-      <List v-bind="args">
-        <list-item/>
-      </List>`,
-  }),
-};
+export const OneItem = (args) => ({
+  components: { List, ListItem },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"><list-item/></list>',
+});
 
-export const ManyItems = {
-  render: (args) => ({
-    components: { List, ListItem },
-    setup() {
-      return { ...args };
-    },
-    template: `
-      <List v-bind="args">
-        <list-item/>
-        <list-item/>
-        <list-item/>
-      </List>`,
-  }),
-};
+export const ManyItems = (args) => ({
+  components: { List, ListItem },
+  setup() {
+    return { args };
+  },
+  template: `
+    <list v-bind="args">
+      <list-item/>
+      <list-item/>
+      <list-item/>
+    </list>
+    `,
+});
 ```

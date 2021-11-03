@@ -3,23 +3,24 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { Page } from './page.component.ts';
+import { Page } from './page.component';
 
 <Meta title="Page" component={Page} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => ({ 
+  props: args,
+  template:`
+    <storybook-page>
+      <ng-container footer>${args.footer}</ng-container>
+    </storybook-page>
+  `,
+});
 
 <Story
   name="CustomFooter"
   args={{
     footer: 'Built with Storybook',
-  }}
-  render={(args) => ({
-    props: args,
-    template:`
-      <storybook-page>
-        <ng-container footer>${args.footer}</ng-container>
-      </storybook-page>
-    `,
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

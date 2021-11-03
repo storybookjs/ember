@@ -3,31 +3,34 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { screen, fireEvent, userEvent, waitFor } from '@storybook/testing-library';
+import { screen, userEvent, waitFor } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
-<Meta title="WithAsync" component={MyComponent}/>
+<Meta title="WithAsync" component={MyComponent} />
 
-<!-- The delay option sets the amount of milliseconds between characters being typed-->
+export const Template = (args) => ({ props: args });
 
 <Story
   name="ExampleAsyncStory"
   play={async () => {
-
-    const emailInput = screen.getByLabelText('Username', {
+    const Input = screen.getByLabelText('Username', {
       selector: 'input',
     });
 
-    await userEvent.type(emailInput, 'WrongInput', {
+    await userEvent.type(Input, 'WrongInput', {
       delay: 100,
     });
-    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+
+    // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    
     const Submit = screen.getByRole('button');
     await userEvent.click(Submit);
 
     await waitFor(async () => {
       await userEvent.hover(screen.getByTestId('error'));
     });
-  }} />
+  }} >
+  {Template.bind({})}
+</Story>
 ```
