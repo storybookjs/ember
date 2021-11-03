@@ -5,6 +5,7 @@ import type { Parameters } from '@storybook/api';
 import { IFrame } from './IFrame';
 import { EmptyBlock } from './EmptyBlock';
 import { ZoomContext } from './ZoomContext';
+import { Loader } from '..';
 
 const BASE_URL = 'iframe.html';
 
@@ -90,6 +91,6 @@ const Story: FunctionComponent<StoryProps & { inline?: boolean; error?: StoryErr
   );
 };
 
-const StorySkeleton = () => <div>Loading...</div>;
+const StorySkeleton = () => <Loader />;
 
 export { Story, StorySkeleton };
