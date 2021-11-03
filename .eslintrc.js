@@ -1,10 +1,23 @@
 module.exports = {
   root: true,
   extends: ['@storybook/eslint-config-storybook'],
+  plugins: ['storybook'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'warn',
   },
   overrides: [
+    {
+      files: [
+        'examples/official-storybook/**/*.stories.@(js|jsx|ts|tsx)',
+        'addons/interactions/**/*.stories.@(js|jsx|ts|tsx)',
+      ],
+      extends: ['plugin:storybook/recommended'],
+
+      // 4) Optional: you can override specific rules here
+      rules: {
+        'storybook/no-redundant-story-name': 'warn',
+      },
+    },
     {
       files: [
         '**/__tests__/**',
