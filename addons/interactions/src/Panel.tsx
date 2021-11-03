@@ -19,7 +19,6 @@ interface AddonPanelProps {
 
 interface InteractionsPanelProps {
   active: boolean;
-  showTabIcon?: boolean;
   interactions: (Call & { state?: CallStates })[];
   isDisabled?: boolean;
   hasPrevious?: boolean;
@@ -47,7 +46,6 @@ const TabIcon = styled(StatusIcon)({
 
 export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   ({
-    showTabIcon,
     interactions,
     isDisabled,
     hasPrevious,
@@ -68,9 +66,9 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   }) => {
     return (
       <AddonPanel {...panelProps}>
-        {showTabIcon &&
+        {interactions.length > 0 &&
           ReactDOM.createPortal(
-            <TabIcon status={hasException ? CallStates.ERROR : CallStates.ACTIVE} />,
+            hasException ? <TabIcon status={CallStates.ERROR} /> : ` (${interactions.length})`,
             global.document.getElementById('tabbutton-interactions')
           )}
         {isDebuggingEnabled && interactions.length > 0 && (
@@ -165,8 +163,6 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
     ? hasActive || isLocked || (isPlaying && !isDebugging)
     : true;
 
-  const showTabIcon = isDebugging || (!isPlaying && hasException);
-
   const onStart = React.useCallback(() => emit(EVENTS.START, { storyId }), [storyId]);
   const onPrevious = React.useCallback(() => emit(EVENTS.BACK, { storyId }), [storyId]);
   const onNext = React.useCallback(() => emit(EVENTS.NEXT, { storyId }), [storyId]);
@@ -178,7 +174,6 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
 
   return (
     <AddonPanelPure
-      showTabIcon={showTabIcon}
       interactions={interactions}
       isDisabled={isDisabled}
       hasPrevious={hasPrevious}
