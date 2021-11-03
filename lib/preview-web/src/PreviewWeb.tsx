@@ -49,7 +49,14 @@ function createController(): AbortController {
   } as AbortController;
 }
 
-export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
+export type RenderPhase =
+  | 'loading'
+  | 'rendering'
+  | 'playing'
+  | 'played'
+  | 'completed'
+  | 'aborted'
+  | 'errored';
 type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => MaybePromise<void>;
@@ -518,10 +525,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       controller = ctrl;
       this.abortSignal = controller.signal;
 
-      const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
+      const runPhase = async (phaseName: RenderPhase, phaseFn?: () => MaybePromise<void>) => {
         phase = phaseName;
         this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
-        await phaseFn();
+        if (phaseFn) await phaseFn();
         if (ctrl.signal.aborted) {
           phase = 'aborted';
           this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
@@ -560,6 +567,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
         if (forceRemount && playFunction) {
           await runPhase('playing', () => playFunction(renderContext.storyContext));
+          await runPhase('played');
           if (ctrl.signal.aborted) return;
         }
 

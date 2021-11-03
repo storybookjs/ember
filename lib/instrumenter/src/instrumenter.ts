@@ -31,7 +31,7 @@ export interface Options {
 }
 
 export interface State {
-  renderPhase: 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
+  renderPhase: 'loading' | 'rendering' | 'playing' | 'played' | 'completed' | 'aborted' | 'errored';
   isDebugging: boolean;
   cursor: number;
   calls: Call[];
@@ -139,7 +139,7 @@ export class Instrumenter {
       if (newPhase === 'playing') {
         resetState({ storyId, isDebugging });
       }
-      if (newPhase === 'completed') {
+      if (newPhase === 'played') {
         this.setState(storyId, { isDebugging: false, forwardedException: undefined });
         // Rethrow any unhandled forwarded exception so it doesn't go unnoticed.
         if (forwardedException) throw forwardedException;
@@ -430,7 +430,7 @@ export class Instrumenter {
         throw forwardedException;
       }
 
-      if (renderPhase === 'completed' && !call.retain) {
+      if (renderPhase === 'played' && !call.retain) {
         throw alreadyCompletedException;
       }
 
