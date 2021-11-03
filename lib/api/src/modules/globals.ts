@@ -82,7 +82,6 @@ export const init: ModuleFn = ({ store, fullAPI }) => {
         Object.keys(currentGlobals).length !== 0 &&
         !deepEqual(globals, currentGlobals)
       ) {
-        console.log('foo', { globals, currentGlobals });
         api.updateGlobals(currentGlobals);
       }
     });
