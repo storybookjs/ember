@@ -84,6 +84,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   abortSignal: AbortSignal;
 
+  disableKeyListeners: boolean;
+
   constructor() {
     this.channel = addons.getChannel();
     if (FEATURES?.storyStoreV7) {
@@ -240,7 +242,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   onKeydown(event: KeyboardEvent) {
-    if (!focusInInput(event)) {
+    if (!this.disableKeyListeners && !focusInInput(event)) {
       // We have to pick off the keys of the event that we need on the other side
       const { altKey, ctrlKey, metaKey, shiftKey, key, code, keyCode } = event;
       this.channel.emit(Events.PREVIEW_KEYDOWN, {
@@ -566,8 +568,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         if (ctrl.signal.aborted) return;
 
         if (forceRemount && playFunction) {
+          this.disableKeyListeners = true;
           await runPhase('playing', () => playFunction(renderContext.storyContext));
           await runPhase('played');
+          this.disableKeyListeners = false;
           if (ctrl.signal.aborted) return;
         }
 
