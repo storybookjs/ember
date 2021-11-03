@@ -1,0 +1,15 @@
+---
+title: 'Interactions'
+---
+
+The `play` function in Storybook allows you to simulate user interactions to run after a story renders. With the Interactions addon, you have a way to visualize and debug these interactions. 
+
+## Play function for interactions
+
+Stories isolate and capture component states in a structured manner. While developing a component, you can quickly cycle through the stories to verify the look and feel. Each story specifies all the inputs required to reproduce a specific state. You can even mock context and API calls. That allows you to handle most use cases of a component. But what about states that require user interaction?
+
+For example, clicking a button to open/close a dialog box, dragging a list item to reorder it or filling out a form to check for validation errors. To test those behaviours, you have to interact with the components as a user would. Interactive stories enable you to automate these interactions using a play function. These are small snippets of code that script out the exact steps a human would take to interact with the component. It's then executed as soon as the story is rendered.
+
+## Powered by Testing Library and Jest
+
+The interactions are written using a Storybook-instrumented versions of Testing Library and Jes. That gives you a familiar developer-friendly syntax to interact with the DOM and make assertions, but with extra telemetry to help with debugging.
