@@ -8830,7 +8830,7 @@ __metadata:
     "@testing-library/dom": ^7.29.4
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.2
-    "@testing-library/user-event": ^12.6.0
+    "@testing-library/user-event": ^13.2.1
     "@types/detect-port": ^1.3.0
     "@types/doctrine": ^0.0.3
     "@types/enzyme": ^3.10.8
@@ -9706,17 +9706,6 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: e38e05ed0c70d2edae6c5bbeed796c8c6674312e8ee45614fb26b4121add1c4ee623bf179bf31319fe2a934f6e23f5ad75d78d2ff81c4514cabfe6f68fc63c7a
-  languageName: node
-  linkType: hard
-
-"@testing-library/user-event@npm:^12.6.0":
-  version: 12.7.3
-  resolution: "@testing-library/user-event@npm:12.7.3"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-  peerDependencies:
-    "@testing-library/dom": ">=7.21.4"
-  checksum: e4c176bd40ac7ad564c8f215245f30f93a395d9f96207bdf29bf9ed2dfdc81226059dd182509695cbf27f49e87a46adcdae40a87d330cc4b96998cd33a5e8bd6
   languageName: node
   linkType: hard
 
