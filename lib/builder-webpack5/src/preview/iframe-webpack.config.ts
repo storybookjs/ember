@@ -62,6 +62,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     typescriptOptions,
     modern,
     features,
+    serverChannelUrl,
   } = options;
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -191,6 +192,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
               ...specifier,
               importPathMatcher: specifier.importPathMatcher.source,
             })),
+            SERVER_CHANNEL_URL: serverChannelUrl,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,

@@ -1,4 +1,33 @@
-## 6.4.0-beta.23 (October 29, 2021)
+## 6.4.0-beta.26 (November 2, 2021)
+
+### Bug Fixes
+
+- Core: Replace SSE with websockets ([#16504](https://github.com/storybookjs/storybook/pull/16504))
+- UI: Upgrade react-router ([#16554](https://github.com/storybookjs/storybook/pull/16554))
+- Addon-docs/HTML: Fix source snippetization for DOM elements ([#16553](https://github.com/storybookjs/storybook/pull/16553))
+
+## 6.4.0-beta.25 (November 2, 2021)
+
+### Bug Fixes
+
+- Core: Fix `decorateStory` exports from frameworks that have it ([#16529](https://github.com/storybookjs/storybook/pull/16529))
+- Fix v7.0 type exports and update MIGRATION.md ([#16466](https://github.com/storybookjs/storybook/pull/16466))
+- UI: Do not display menu toggle when `singleStory=true` ([#15755](https://github.com/storybookjs/storybook/pull/15755))
+
+### Maintenance
+
+- Core: Improve webpack chunk names ([#16513](https://github.com/storybookjs/storybook/pull/16513))
+
+### Dependency Upgrades
+
+- Migrate from micromatch to picomatch ([#16522](https://github.com/storybookjs/storybook/pull/16522))
+- Add qs as a dev dependency of the api package ([#16525](https://github.com/storybookjs/storybook/pull/16525))
+
+## 6.4.0-beta.24 (November 2, 2021)
+
+bad npm publish
+
+# 6.4.0-beta.23 (October 29, 2021)
 
 ### Features
 

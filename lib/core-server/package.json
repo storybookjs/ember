@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-beta.23",
+  "version": "6.4.0-beta.26",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,15 +41,16 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.4.0-beta.23",
-    "@storybook/core-client": "6.4.0-beta.23",
-    "@storybook/core-common": "6.4.0-beta.23",
+    "@storybook/builder-webpack4": "6.4.0-beta.26",
+    "@storybook/core-client": "6.4.0-beta.26",
+    "@storybook/core-common": "6.4.0-beta.26",
+    "@storybook/core-events": "6.4.0-beta.26",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-tools": "6.4.0-beta.23",
-    "@storybook/manager-webpack4": "6.4.0-beta.23",
-    "@storybook/node-logger": "6.4.0-beta.23",
+    "@storybook/csf-tools": "6.4.0-beta.26",
+    "@storybook/manager-webpack4": "6.4.0-beta.26",
+    "@storybook/node-logger": "6.4.0-beta.26",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-beta.23",
+    "@storybook/store": "6.4.0-beta.26",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -75,21 +76,24 @@
     "regenerator-runtime": "^0.13.7",
     "serve-favicon": "^2.5.0",
     "slash": "^3.0.0",
+    "telejson": "^5.3.3",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
-    "webpack": "4"
+    "webpack": "4",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.23",
+    "@storybook/builder-webpack5": "6.4.0-beta.26",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
+    "@types/ws": "^8",
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-beta.23",
-    "@storybook/manager-webpack5": "6.4.0-beta.23",
+    "@storybook/builder-webpack5": "6.4.0-beta.26",
+    "@storybook/manager-webpack5": "6.4.0-beta.26",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -107,6 +111,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "34dd760d275faabff6855b84bb64bb69adc1ec1a",
+  "gitHead": "ddc43c3b4cf4ae8463a2e284b290e5014e33780e",
   "sbmodern": "dist/modern/index.js"
 }

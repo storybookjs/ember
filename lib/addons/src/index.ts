@@ -63,6 +63,8 @@ export class AddonStore {
 
   private channel: Channel | undefined;
 
+  private serverChannel: Channel | undefined;
+
   private promise: any;
 
   private resolve: any;
@@ -78,6 +80,14 @@ export class AddonStore {
     return this.channel;
   };
 
+  getServerChannel = (): Channel => {
+    if (!this.serverChannel) {
+      throw new Error('Accessing non-existent serverChannel');
+    }
+
+    return this.serverChannel;
+  };
+
   ready = (): Promise<Channel> => this.promise;
 
   hasChannel = (): boolean => !!this.channel;
@@ -85,6 +95,10 @@ export class AddonStore {
   setChannel = (channel: Channel): void => {
     this.channel = channel;
     this.resolve();
+  };
+
+  setServerChannel = (channel: Channel): void => {
+    this.serverChannel = channel;
   };
 
   getElements = (type: Types): Collection => {

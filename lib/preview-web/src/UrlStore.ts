@@ -17,20 +17,30 @@ export function pathToId(path: string) {
   return match[1];
 }
 
-const getQueryString = (selection: Selection, extraParams?: qs.ParsedQs) => {
+const getQueryString = ({
+  selection,
+  extraParams,
+}: {
+  selection?: Selection;
+  extraParams?: qs.ParsedQs;
+}) => {
   const { search = '' } = document.location;
   const { path, selectedKind, selectedStory, ...rest } = qs.parse(search, {
     ignoreQueryPrefix: true,
   });
   return qs.stringify(
-    { ...rest, ...extraParams, id: selection.storyId, viewMode: selection.viewMode },
+    {
+      ...rest,
+      ...extraParams,
+      ...(selection && { id: selection.storyId, viewMode: selection.viewMode }),
+    },
     { encode: false, addQueryPrefix: true }
   );
 };
 
 export const setPath = (selection?: Selection) => {
   if (!selection) return;
-  const query = getQueryString(selection);
+  const query = getQueryString({ selection });
   const { hash = '' } = document.location;
   history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);
 };
@@ -103,7 +113,7 @@ export class UrlStore {
   }
 
   setQueryParams(queryParams: qs.ParsedQs) {
-    const query = getQueryString(this.selection, queryParams);
+    const query = getQueryString({ extraParams: queryParams });
     const { hash = '' } = document.location;
     history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);
   }
