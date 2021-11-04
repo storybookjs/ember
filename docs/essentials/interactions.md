@@ -12,4 +12,4 @@ For example, clicking a button to open/close a dialog box, dragging a list item 
 
 ## Powered by Testing Library and Jest
 
-The interactions are written using a Storybook-instrumented versions of Testing Library and Jes. That gives you a familiar developer-friendly syntax to interact with the DOM and make assertions, but with extra telemetry to help with debugging.
+The interactions are written using a Storybook-instrumented versions of Testing Library and Jest. That gives you a familiar developer-friendly syntax to interact with the DOM and make assertions, but with extra telemetry to help with debugging.
