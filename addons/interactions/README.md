@@ -24,7 +24,7 @@ Note that `@storybook/addon-interactions` must be listed **after** `@storybook/a
 
 ## Experimental step debugging
 
-Debugging features are experimental and disabled by default. To enable them:
+Step debugging features are experimental and disabled by default. To enable them:
 
 ```js
 // main.js
