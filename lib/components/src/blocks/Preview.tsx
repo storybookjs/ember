@@ -17,6 +17,7 @@ import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
 import { Zoom } from '../Zoom/Zoom';
+import { StorySkeleton } from '.';
 
 export interface PreviewProps {
   isColumn?: boolean;
@@ -284,4 +285,8 @@ export const Preview: FunctionComponent<PreviewProps> = ({
   );
 };
 
-export const PreviewSkeleton = () => <div>Loading...</div>;
+export const PreviewSkeleton = () => (
+  <Preview withToolbar>
+    <StorySkeleton />
+  </Preview>
+);
