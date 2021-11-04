@@ -1,9 +1,9 @@
-```js
-// MyComponent.story.js|jsx
+```ts
+// MyComponent.story.ts|tsx
 
 import React from 'react';
 
-
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { MyComponent } from './MyComponent';
 
@@ -14,9 +14,9 @@ export default {
    */
   title: 'Path/To/MyComponent',
   component: MyComponent,
-};
+} as ComponentMeta<typeof MyComponent>;
 
-export const Basic = () => <MyComponent />;
+export const Basic: ComponentStory<typeof MyComponent> = () => <MyComponent/>;
 
-export const WithProp = () => <MyComponent prop="value" />;
+export const WithProp: ComponentStory<typeof MyComponent> = () => <MyComponent prop="value"/>;
 ```

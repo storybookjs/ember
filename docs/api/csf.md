@@ -41,6 +41,7 @@ With CSF, every named export in the file represents a story object by default.
 <CodeSnippets
   paths={[
     'react/my-component-story-basic-and-props.js.mdx',
+    'react/my-component-story-basic-and-props.ts.mdx',
     'vue/my-component-story-basic-and-props.js.mdx',
     'svelte/my-component-story-basic-and-props.js.mdx',
     'svelte/my-component-story-basic-and-props.native-format.mdx',
@@ -87,6 +88,7 @@ Consider Storybook’s ["Button" example](../writing-stories/introduction.md#def
 <CodeSnippets
   paths={[
     'react/button-story-click-handler.js.mdx',
+    'react/button-story-click-handler.ts.mdx',
     'vue/button-story-click-handler.2.js.mdx',
     'vue/button-story-click-handler.3.js.mdx',
     'svelte/button-story-click-handler.js.mdx',
@@ -106,7 +108,7 @@ Now consider the same example, re-written with args:
     'react/button-story-click-handler-args.js.mdx',
     'vue/button-story-click-handler-args.2.js.mdx',
     'vue/button-story-click-handler-args.3.js.mdx',
-     'angular/button-story-click-handler-args.ts.mdx',
+    'angular/button-story-click-handler-args.ts.mdx',
   ]}
 />
 
@@ -153,35 +155,18 @@ A good use case for the `play` function is a form component. With previous Story
 
 <CodeSnippets
   paths={[
-    'react/form-story-component-with-play-function.js.mdx',
-    'angular/form-story-component-with-play-function.ts.mdx',
-    'vue/form-story-component-with-play-function.2.js.mdx',
-    'vue/form-story-component-with-play-function.3.js.mdx',
-    'svelte/form-story-component-with-play-function.js.mdx',
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
 When the story renders in the UI, Storybook executes each step defined in the `play` function and runs the assertions without the need for user interaction.
-
-## Default render functions
-
-Starting in Storybook 6.4, you can write your stories as JavaScript objects, reducing the boilerplate code you need to generate to test your components, thus improving functionality and usability. `Render` functions are helpful methods to give you additional control over how the story renders. For example, if you were writing a story as an object and you wanted to specify how your component should render, you could write the following story:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-   'react/component-story-with-custom-render-function.js.mdx',
-   'angular/component-story-with-custom-render-function.ts.mdx',
-   'vue/component-story-with-custom-render-function.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-When Storybook loads this story, it will detect the existence of a `render` function and adjust the component rendering accordingly based on what's defined.
 
 ## Storybook export vs. name handling
 
@@ -221,6 +206,7 @@ Consider the following story file:
 <CodeSnippets
   paths={[
     'react/my-component-story-with-nonstory.js.mdx',
+    'react/my-component-story-with-nonstory.ts.mdx',
     'vue/my-component-story-with-nonstory.2.js.mdx',
     'vue/my-component-story-with-nonstory.3.js.mdx',
     'svelte/my-component-story-with-nonstory.js.mdx',

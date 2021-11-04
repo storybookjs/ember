@@ -41,6 +41,7 @@ For example, here's the story from the `Checkbox` example above, rewritten in CS
 <CodeSnippets
   paths={[
     'react/checkbox-story-csf.js.mdx',
+    'react/checkbox-story-csf.ts.mdx',
     'vue/checkbox-story-csf.js.mdx',
     'angular/checkbox-story-csf.ts.mdx',
     'svelte/checkbox-story-csf.native-format.mdx',
@@ -121,23 +122,11 @@ Storybook's `play` functions are small snippets of code that run after the story
 
 <CodeSnippets
   paths={[
-    'common/login-form-with-play-function.mdx.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-## Default render functions
-
-`Render` functions are helpful methods to give you additional control over how the story renders. For example if you wanted to specify how your component should render, you could write the following story:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-   'react/component-story-with-custom-render-function.mdx.mdx',
-   'angular/component-story-with-custom-render-function.mdx.mdx',
-   'vue/component-story-with-custom-render-function.mdx.mdx',
+    'react/login-form-with-play-function.mdx.mdx',
+    'angular/login-form-with-play-function.mdx.mdx',
+    'vue/login-form-with-play-function.mdx-2.mdx',
+    'vue/login-form-with-play-function.mdx-3.mdx',
+    'svelte/login-form-with-play-function.mdx.mdx',
   ]}
 />
 

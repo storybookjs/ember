@@ -4,21 +4,22 @@
 import MyComponent from './MyComponent.svelte';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Path/To/MyComponent',
   component: MyComponent,
 };
 
-export const Basic = {
-  render: () => ({
-    Component: MyComponent,
-  }),
-};
+export const Basic = () => ({
+  Component: MyComponent,
+});
 
-export const WithProp = {
-  render: () => ({
-    Component: MyComponent,
-    props: {
-      prop: 'value',
-    },
-  }),
-};
+export const WithProp = () => ({
+  Component: MyComponent,
+  props:{
+    prop: 'value',
+  },
+});
 ```
