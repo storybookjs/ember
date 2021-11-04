@@ -20745,6 +20745,7 @@ __metadata:
     ember-source: ~3.24.0
     ember-template-compiler: ^1.9.0-alpha
     loader.js: ^4.7.0
+    shx: ^0.3.2
     webpack: 4
     webpack-cli: ^4.2.0
   languageName: unknown

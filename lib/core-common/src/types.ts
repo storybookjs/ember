@@ -27,6 +27,11 @@ export interface CoreConfig {
   channelOptions?: Partial<TelejsonOptions>;
 }
 
+interface DirectoryMapping {
+  from: string;
+  to: string;
+}
+
 export interface Presets {
   apply(
     extension: 'typescript',
@@ -128,6 +133,9 @@ export interface CLIOptions {
   previewUrl?: string;
   forceBuildPreview?: boolean;
   host?: string;
+  /**
+   * @deprecated Use 'staticDirs' Storybook Configuration option instead
+   */
   staticDir?: string[];
   configDir?: string;
   https?: boolean;
@@ -275,6 +283,12 @@ export interface StorybookConfig {
    */
   addons?: Preset[];
   core?: CoreConfig;
+  /**
+   * Sets a list of directories of static files to be loaded by Storybook server
+   *
+   * @example `['./public']` or `[{from: './public', 'to': '/assets'}]`
+   */
+  staticDirs?: (DirectoryMapping | string)[];
   logLevel?: string;
   features?: {
     /**

@@ -39,4 +39,5 @@ module.exports = {
       url: 'https://storybookjs.netlify.app/cra-ts-essentials',
     },
   },
+  staticDirs: ['../src/assets'],
 };

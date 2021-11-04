@@ -38,6 +38,22 @@ const isDirectory = (configDir: string, entry: string) => {
   }
 };
 
+export const getDirectoryFromWorkingDir = ({
+  configDir,
+  workingDir,
+  directory,
+}: NormalizeOptions & { directory: string }) => {
+  const directoryFromConfig = path.resolve(configDir, directory);
+  let directoryFromWorking = path.relative(workingDir, directoryFromConfig);
+
+  // relative('/foo', '/foo/src') => 'src'
+  // but we want `./src` to match importPaths
+  if (!directoryFromWorking.startsWith('.')) {
+    directoryFromWorking = `.${path.sep}${directoryFromWorking}`;
+  }
+  return directoryFromWorking;
+};
+
 export const normalizeStoriesEntry = (
   entry: StoriesEntry,
   { configDir, workingDir }: NormalizeOptions
@@ -90,15 +106,14 @@ export const normalizeStoriesEntry = (
   // At this stage `directory` is relative to `main.js` (the config dir)
   // We want to work relative to the working dir, so we transform it here.
   const { directory: directoryRelativeToConfig } = specifierWithoutMatcher;
-  const absoluteDirectory = path.resolve(configDir, directoryRelativeToConfig);
-  let directory = slash(path.relative(workingDir, absoluteDirectory));
 
-  // relative('/foo', '/foo/src') => 'src'
-  // but we want `./src` to match importPaths
-  if (!directory.startsWith('.')) {
-    directory = `./${directory}`;
-  }
-  directory = directory.replace(/\/$/, '');
+  const directory = slash(
+    getDirectoryFromWorkingDir({
+      configDir,
+      workingDir,
+      directory: directoryRelativeToConfig,
+    })
+  ).replace(/\/$/, '');
 
   // Now make the importFn matcher.
   const importPathMatcher = globToRegexp(`${directory}/${files}`);
