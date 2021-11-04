@@ -1,6 +1,6 @@
 import { logger } from '@storybook/node-logger';
 import type { Options, StorybookConfig } from '@storybook/core-common';
-import { getDirectoryFromWorking } from '@storybook/core-common';
+import { getDirectoryFromWorkingDir } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
@@ -16,18 +16,19 @@ export async function useStatics(router: any, options: Options) {
   const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
 
   if (staticDirs && options.staticDir) {
-    throw new Error(`Conflict when trying to read staticDirs:
-    * Storybook's configuration option: 'staticDirs'
-    * Storybook's CLI flag: '--staticDir' or '-s'
-     
-    Choose one of them, but not both.
+    throw new Error(dedent`
+      Conflict when trying to read staticDirs:
+      * Storybook's configuration option: 'staticDirs'
+      * Storybook's CLI flag: '--staticDir' or '-s'
+      
+      Choose one of them, but not both.
     `);
   }
 
   staticDirs.forEach(async (dir) => {
     const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
     const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
-      getDirectoryFromWorking({
+      getDirectoryFromWorkingDir({
         configDir: options.configDir,
         workingDir: process.cwd(),
         directory: staticDirAndTarget,

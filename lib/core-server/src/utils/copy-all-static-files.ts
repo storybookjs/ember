@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 import { logger } from '@storybook/node-logger';
-import { getDirectoryFromWorking } from '@storybook/core-common';
+import { getDirectoryFromWorkingDir } from '@storybook/core-common';
 import { parseStaticDir } from './server-statics';
 
 export async function copyAllStaticFiles(staticDirs: any[] | undefined, outputDir: string) {
@@ -37,7 +37,7 @@ export async function copyAllStaticFilesRelativeToMain(
   staticDirs.forEach(async (dir) => {
     const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
     const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
-      getDirectoryFromWorking({
+      getDirectoryFromWorkingDir({
         configDir,
         workingDir: process.cwd(),
         directory: staticDirAndTarget,

@@ -38,7 +38,7 @@ const isDirectory = (configDir: string, entry: string) => {
   }
 };
 
-export const getDirectoryFromWorking = ({
+export const getDirectoryFromWorkingDir = ({
   configDir,
   workingDir,
   directory,
@@ -108,7 +108,7 @@ export const normalizeStoriesEntry = (
   const { directory: directoryRelativeToConfig } = specifierWithoutMatcher;
 
   const directory = slash(
-    getDirectoryFromWorking({
+    getDirectoryFromWorkingDir({
       configDir,
       workingDir,
       directory: directoryRelativeToConfig,
