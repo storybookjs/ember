@@ -7,7 +7,10 @@ import Badge from './Badge.svelte';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => ({
+  Component: Badge,
+  props: args,
+});
 
 <Canvas>
   <Story 
@@ -15,32 +18,26 @@ import Badge from './Badge.svelte';
     args={{
       status: 'warning',
       label: 'Warning',
-    }}
-    render={(args) => ({
-      Component: Badge,
-      props: args,
-    })} />
-  
+    }}>
+    {Template.bind({})}
+  </Story>
+
   <Story 
     name="neutral"
     args={{
       status: 'neutral',
       label: 'Neutral',
-    }} 
-    render={(args) => ({
-      Component: Badge,
-      props: args,
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 
   <Story 
     name="error"
     args={{
       status: 'error',
       label: 'Error',
-    }}
-    render={(args) => ({
-      Component: Badge,
-      props: args,
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

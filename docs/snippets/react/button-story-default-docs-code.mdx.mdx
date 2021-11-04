@@ -22,8 +22,6 @@ export const someFunction = (someValue) => {
 };
 
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <!-- 👇 Destructure the label from the args object and assigns the function result to a variable and pass it as a prop into the component -->
 <Story
   name="ExampleStory"
@@ -31,10 +29,11 @@ export const someFunction = (someValue) => {
     primary: true,
     size: 'small',
     label: 'button',
-  }}
-  render={(args) => {
+  }}>
+  {(args) => {
     const { label } = args;
     const functionResult = someFunction(label);
     return <Button {...args} label={functionResult} />;
-  }}/>
+  }}
+</Story>
 ```

@@ -7,7 +7,7 @@ import { Checkbox } from './checkbox.component';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => ({ props: args });
 
 # Checkbox
 
@@ -19,20 +19,18 @@ Markdown documentation.
     name="Unchecked"
     args={{ 
       label: 'Unchecked',
-    }}
-    render={(args) => ({
-      props: args,
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 
   <Story 
     name="Checked"
     args={{ 
       label: 'Unchecked',
       checked: true,
-    }}
-    render={(args) => ({
-      props: args,
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 
   <Story 
     name="Secondary"
@@ -40,9 +38,8 @@ Markdown documentation.
       label: 'Secondary',
       checked: true, 
       appearance: 'secondary',
-    }}
-    render={(args) => ({
-      props: args,
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

@@ -1,14 +1,14 @@
 ```md
 <!---Badge.stories.mdx --->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import { Badge } from './Badge';
 import { Icon } from './Icon';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => <Badge {...args } />
 
 # Badge
 
@@ -19,9 +19,10 @@ Let's define a story for our `Badge` component:
   args={{
     status: 'positive',
     label: 'Positive'
-  }}
-  render={(args) => <Badge {...args } />} />
- 
+  }}>
+  {Template.bind({})}
+</Story>
+
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
@@ -30,8 +31,9 @@ We can drop it in a `Canvas` to get a code snippet:
     args={{
       status: 'negative', 
       label: 'Negative'
-    }}
-    render={(args) => <Badge {...args } />} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 
 We can even preview multiple Stories in a block. This
@@ -44,8 +46,8 @@ with unique URLs, which is great for review and testing.
     args={{
       status: 'warning',
       label: 'Warning' 
-    }}
-    render={(args) => <Badge {...args } />} />
+    }}>
+    {Template.bind({})}
   </Story>
 
   <Story 
@@ -53,23 +55,26 @@ with unique URLs, which is great for review and testing.
     args={{
       status: 'neutral', 
       label: 'Neutral' 
-    }}
-    render={(args) => <Badge {...args } />} />
+    }}>
+    {Template.bind({})}
+  </Story>
 
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error' 
-    }} 
-    render={(args) => <Badge {...args } />} />
-  
+    }}>
+    {Template.bind({})}
+  </Story>
+
   <Story 
     name="with icon" 
     args={{
       status: 'warning', 
       label: (<Icon icon="check" inline /> with icon)
-    }}
-    render={(args) => <Badge {...args } />} />
+    )}}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```
