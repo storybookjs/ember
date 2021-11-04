@@ -92,7 +92,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   constructor() {
     this.channel = addons.getChannel();
-    if (FEATURES?.storyStoreV7) {
+    if (FEATURES?.storyStoreV7 && addons.hasServerChannel()) {
       this.serverChannel = addons.getServerChannel();
     }
     this.view = new WebView();

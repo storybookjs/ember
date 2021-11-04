@@ -92,6 +92,8 @@ export class AddonStore {
 
   hasChannel = (): boolean => !!this.channel;
 
+  hasServerChannel = (): boolean => !!this.serverChannel;
+
   setChannel = (channel: Channel): void => {
     this.channel = channel;
     this.resolve();
