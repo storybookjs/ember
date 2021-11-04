@@ -333,7 +333,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
   async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
-    const { selection } = this.urlStore;
+    const { selection, selectionSpecifier } = this.urlStore;
     if (!selection) {
       throw new Error('Cannot render story as no selection was made');
     }
@@ -353,9 +353,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const storyIdChanged = this.previousSelection?.storyId !== storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    const { args: urlArgs } = this.urlStore.selectionSpecifier;
-    let hasChangedArgs = !this.previousSelection && Object.keys(urlArgs).length > 0;
-    const updatedArgs = hasChangedArgs ? urlArgs : {};
+    let hasChangedArgs = false;
+    const updatedArgs = {};
+    if (!this.previousSelection && selectionSpecifier) {
+      const { args } = selectionSpecifier;
+      hasChangedArgs = typeof args === 'object' && Object.keys(args).length > 0;
+      if (hasChangedArgs) {
+        Object.assign(updatedArgs, args);
+      }
+    }
 
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
