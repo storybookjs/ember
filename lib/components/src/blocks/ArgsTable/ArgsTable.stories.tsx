@@ -27,8 +27,14 @@ const longEnumType = ArgRow.LongEnum.args.row;
 
 const Template = (args) => <ArgsTable {...args} />;
 
-export const Loading = () => <ArgsTableSkeleton />;
-
+export const Loading = Template.bind({});
+Loading.args = {
+  isLoading: true,
+  rows: {
+    stringType,
+    numberType,
+  },
+};
 export const Normal = Template.bind({});
 Normal.args = {
   rows: {

@@ -248,6 +248,7 @@ export interface ArgsTableRowProps {
   compact?: boolean;
   inAddonPanel?: boolean;
   initialExpandedArgs?: boolean;
+  isLoading?: boolean;
   sort?: SortType;
 }
 
@@ -326,6 +327,120 @@ const groupRows = (rows: ArgType, sort: SortType) => {
   return sorted;
 };
 
+const SkeletonHeader = styled.div(({ theme }) => ({
+  alignContent: 'stretch',
+  display: 'flex',
+  gap: 16,
+  marginTop: 25,
+  padding: '10px 20px',
+
+  div: {
+    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+    background: theme.color.medium,
+    flexShrink: 0,
+    height: 20,
+
+    '&:first-child, &:nth-child(4)': {
+      width: '20%',
+    },
+
+    '&:nth-child(2)': {
+      width: '30%',
+    },
+
+    '&:nth-child(3)': {
+      flexGrow: 1,
+    },
+
+    '&:last-child': {
+      width: 30,
+    },
+  },
+}));
+
+const SkeletonBody = styled.div(({ theme }) => ({
+  boxShadow:
+    theme.base === 'light'
+      ? `rgba(0, 0, 0, 0.10) 0 1px 3px 1px,
+          ${transparentize(0.035, theme.appBorderColor)} 0 0 0 1px`
+      : `rgba(0, 0, 0, 0.20) 0 2px 5px 1px,
+          ${opacify(0.05, theme.appBorderColor)} 0 0 0 1px`,
+  borderRadius: theme.appBorderRadius,
+  background: theme.background.content,
+
+  '> div': {
+    alignContent: 'stretch',
+    borderTopWidth: 1,
+    borderTopStyle: 'solid',
+    borderTopColor:
+      theme.base === 'light'
+        ? darken(0.1, theme.background.content)
+        : lighten(0.05, theme.background.content),
+    display: 'flex',
+    gap: 16,
+    padding: 20,
+
+    '&:first-child': {
+      borderTop: 0,
+    },
+  },
+
+  '> div div': {
+    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+    background: theme.appBorderColor,
+    height: 20,
+    flexShrink: 0,
+
+    '&:first-child': {
+      width: '20%',
+    },
+
+    '&:nth-child(2)': {
+      width: '30%',
+    },
+
+    '&:nth-child(3)': {
+      flexGrow: 1,
+    },
+
+    '&:nth-child(4)': {
+      width: 'calc(20% + 47px)',
+    },
+  },
+}));
+
+const Skeleton = () => (
+  <div>
+    <SkeletonHeader>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </SkeletonHeader>
+    <SkeletonBody>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    </SkeletonBody>
+  </div>
+);
+
 /**
  * Display the props for a component as a props table. Each row is a collection of
  * ArgDefs, usually derived from docgen info for the component.
@@ -351,6 +466,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     compact,
     inAddonPanel,
     initialExpandedArgs,
+    isLoading,
     sort = 'none',
   } = props as ArgsTableRowProps;
 
@@ -380,15 +496,19 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
   const expandable = Object.keys(groups.sections).length > 0;
 
   const common = { updateArgs, compact, inAddonPanel, initialExpandedArgs };
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
   return (
     <ResetWrapper>
       <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
         <thead className="docblock-argstable-head">
           <tr>
-            <th>Name</th>
-            {compact ? null : <th>Description</th>}
-            {compact ? null : <th>Default</th>}
-            {updateArgs ? (
+            {isLoading ? null : <th>Name</th>}
+            {compact || isLoading ? null : <th>Description</th>}
+            {compact || isLoading ? null : <th>Default</th>}
+            {updateArgs && !isLoading ? (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
@@ -400,6 +520,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
                 </ControlHeadingWrapper>
               </th>
             ) : null}
+            {isLoading ? <div>loading indicators here</div> : null}
           </tr>
         </thead>
         <tbody className="docblock-argstable-body">
