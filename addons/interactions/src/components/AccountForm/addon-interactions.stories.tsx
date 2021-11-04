@@ -8,7 +8,11 @@ import { AccountForm } from './AccountForm';
 export default {
   title: 'Addons/Interactions/AccountForm',
   component: AccountForm,
-  parameters: { layout: 'centered', theme: 'light' },
+  parameters: {
+    layout: 'centered',
+    theme: 'light',
+    options: { selectedPanel: 'storybook/interactions/panel' },
+  },
   argTypes: {
     onSubmit: { action: true },
   },
@@ -58,15 +62,11 @@ export const StandardEmailFailed: CSF3Story = {
   ...Standard,
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByTestId('email'), 'me');
-    await userEvent.type(canvas.getByTestId('password1'), 'helloyou');
+    await userEvent.type(canvas.getByTestId('email'), 'gert@chromatic');
+    await userEvent.type(canvas.getByTestId('password1'), 'supersecret');
     await userEvent.click(canvas.getByRole('button', { name: /create account/i }));
 
-    await canvas.findByText(
-      'Please enter a correctly formatted email address',
-      {},
-      { timeout: 2000 }
-    );
+    await canvas.findByText('Please enter a correctly formatted email address');
     expect(args.onSubmit).not.toHaveBeenCalled();
   },
 };

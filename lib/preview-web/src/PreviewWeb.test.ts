@@ -722,7 +722,7 @@ describe('PreviewWeb', () => {
     });
 
     describe('while story is still rendering', () => {
-      it('runs loaders again and stops previous render', async () => {
+      it('runs loaders again', async () => {
         const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
@@ -742,9 +742,6 @@ describe('PreviewWeb', () => {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
-
-        // Now let the first loader call resolve
-        openGate({ l: 8 });
         await waitForRender();
 
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
@@ -757,9 +754,28 @@ describe('PreviewWeb', () => {
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
-            forceRemount: true,
+            forceRemount: true, // Wasn't yet rendered so we need to force remount
             storyContext: expect.objectContaining({
               loaded: { l: 7 }, // This is the value returned by the *second* loader call
+              args: { foo: 'a', new: 'arg' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+
+        // Now let the first loader call resolve
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        openGate({ l: 8 });
+        await waitForRender();
+
+        // Now the first call comes through, but picks up the new args
+        // Note this isn't a particularly realistic case (the second loader being quicker than the first)
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            storyContext: expect.objectContaining({
+              loaded: { l: 8 },
               args: { foo: 'a', new: 'arg' },
             }),
           }),
@@ -841,7 +857,7 @@ describe('PreviewWeb', () => {
         );
       });
 
-      it('warns and calls renderToDOM again if play function is running', async () => {
+      it('calls renderToDOM again if play function is running', async () => {
         const [gate, openGate] = createGate();
         componentOneExports.a.play.mockImplementationOnce(async () => gate);
 

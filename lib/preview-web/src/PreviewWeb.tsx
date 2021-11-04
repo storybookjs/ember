@@ -38,7 +38,7 @@ function focusInInput(event: Event) {
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
 }
 
-function createController() {
+function createController(): AbortController {
   if (AbortController) return new AbortController();
   // Polyfill for IE11
   return {
@@ -46,10 +46,17 @@ function createController() {
     abort() {
       this.signal.aborted = true;
     },
-  };
+  } as AbortController;
 }
 
-export type RenderPhase = 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted' | 'errored';
+export type RenderPhase =
+  | 'loading'
+  | 'rendering'
+  | 'playing'
+  | 'played'
+  | 'completed'
+  | 'aborted'
+  | 'errored';
 type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 type MaybePromise<T> = Promise<T> | T;
 type StoryCleanupFn = () => MaybePromise<void>;
@@ -78,6 +85,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   previousStory: Story<TFramework>;
 
   previousCleanup: StoryCleanupFn;
+
+  abortController: AbortController;
+
+  disableKeyListeners: boolean;
 
   constructor() {
     this.channel = addons.getChannel();
@@ -319,7 +330,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   onKeydown(event: KeyboardEvent) {
-    if (!focusInInput(event)) {
+    if (!this.disableKeyListeners && !focusInInput(event)) {
       // We have to pick off the keys of the event that we need on the other side
       const { altKey, ctrlKey, metaKey, shiftKey, key, code, keyCode } = event;
       this.channel.emit(Events.PREVIEW_KEYDOWN, {
@@ -528,7 +539,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   renderStoryToElement({
     story,
     renderContext: renderContextWithoutStoryContext,
-    element,
+    element: canvasElement,
   }: {
     story: Story<TFramework>;
     renderContext: Omit<
@@ -539,28 +550,24 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
 
+    let notYetRendered = true;
     let phase: RenderPhase;
     const isPending = () => ['rendering', 'playing'].includes(phase);
 
-    let controller: AbortController;
-    let notYetRendered = true;
-    const render = async ({ forceRemount = false } = {}) => {
-      let ctrl = controller; // we also need a stable reference within this closure
+    this.abortController = createController();
 
-      // Abort the signal used by the previous render, so it'll (hopefully) stop executing. The
-      // play function might continue execution regardless, which we deal with during cleanup.
-      // Note we can't reload the page here because there's a legitimate use case for forceRemount
-      // while in the 'playing' phase: the play function may never resolve during debugging, while
-      // "step back" will trigger a forceRemount. In this case it's up to the debugger to reload.
-      if (ctrl) ctrl.abort();
-      ctrl = createController();
-      controller = ctrl;
+    const render = async ({ initial = false, forceRemount = false } = {}) => {
+      if (forceRemount && !initial) {
+        this.abortController.abort();
+        this.abortController = createController();
+      }
 
-      const runPhase = async (phaseName: RenderPhase, phaseFn: () => MaybePromise<void>) => {
+      const abortSignal = this.abortController.signal; // we need a stable reference to the signal
+      const runPhase = async (phaseName: RenderPhase, phaseFn?: () => MaybePromise<void>) => {
         phase = phaseName;
         this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
-        await phaseFn();
-        if (ctrl.signal.aborted) {
+        if (phaseFn) await phaseFn();
+        if (abortSignal.aborted) {
           phase = 'aborted';
           this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: phase, storyId: id });
         }
@@ -571,18 +578,18 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         await runPhase('loading', async () => {
           loadedContext = await applyLoaders({
             ...this.storyStore.getStoryContext(story),
-            viewMode: element === this.view.storyRoot() ? 'story' : 'docs',
+            viewMode: canvasElement === this.view.storyRoot() ? 'story' : 'docs',
           } as StoryContextForLoaders<TFramework>);
         });
-        if (ctrl.signal.aborted) return;
+        if (abortSignal.aborted) return;
 
         const renderStoryContext: StoryContext<TFramework> = {
           ...loadedContext,
           // By this stage, it is possible that new args/globals have been received for this story
           // and we need to ensure we render it with the new values
           ...this.storyStore.getStoryContext(story),
-          abortSignal: ctrl.signal,
-          canvasElement: element,
+          abortSignal,
+          canvasElement,
         };
         const renderContext: RenderContext<TFramework> = {
           ...renderContextWithoutStoryContext,
@@ -592,13 +599,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
           unboundStoryFn,
         };
 
-        await runPhase('rendering', () => this.renderToDOM(renderContext, element));
+        await runPhase('rendering', () => this.renderToDOM(renderContext, canvasElement));
         notYetRendered = false;
-        if (ctrl.signal.aborted) return;
+        if (abortSignal.aborted) return;
 
         if (forceRemount && playFunction) {
+          this.disableKeyListeners = true;
           await runPhase('playing', () => playFunction(renderContext.storyContext));
-          if (ctrl.signal.aborted) return;
+          await runPhase('played');
+          this.disableKeyListeners = false;
+          if (abortSignal.aborted) return;
         }
 
         await runPhase('completed', () => this.channel.emit(Events.STORY_RENDERED, id));
@@ -611,7 +621,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // function below right away, so if the user changes story during the first render we can cancel
     // it without having to first wait for it to finish.
     // Whenever the selection changes we want to force the component to be remounted.
-    render({ forceRemount: true });
+    render({ initial: true, forceRemount: true });
 
     const remountStoryIfMatches = ({ storyId }: { storyId: StoryId }) => {
       if (storyId === story.id) render({ forceRemount: true });
@@ -635,7 +645,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       // (possibly the loaders or the play function are still running). We use the controller
       // as a method to abort them, ASAP, but this is not foolproof as we cannot control what
       // happens inside the user's code.
-      controller.abort();
+      this.abortController.abort();
 
       this.storyStore.cleanupStory(story);
       this.channel.off(Events.UPDATE_GLOBALS, render);
