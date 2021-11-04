@@ -5,17 +5,23 @@ import YourComponent from './YourComponent.vue';
 
 //👇 This default export determines where your story goes in the story list
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'YourComponent',
   component: YourComponent,
 };
 
-export const FirstStory = {
-  args: {
-    //👇 The args you need here will depend on your component
-  },
-  render: (args, { argTypes }) => ({
-    components: { Button },
-    props: Object.keys(argTypes),
-    template: '<Button v-bind="$props" />',
-  }),
+//👇 We create a “template” of how args map to rendering
+const Template = (args, { argTypes }) => ({
+  components: { YourComponent },
+  props: Object.keys(argTypes),
+  template: '<YourComponent v-bind="$props"/>',
+});
+
+export const FirstStory = Template.bind({});
+FirstStory.args = {
+  //👇 The args you need here will depend on your component
 };
 ```
