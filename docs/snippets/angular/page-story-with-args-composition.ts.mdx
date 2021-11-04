@@ -1,7 +1,7 @@
 ```ts
 // YourPage.stories.ts
 
-import { moduleMetadata } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
@@ -16,6 +16,11 @@ import * as DocumentHeaderStories from './DocumentHeader.stories';
 import * as DocumentListStories from './DocumentList.stories';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
   decorators: [
     moduleMetadata({
@@ -23,13 +28,17 @@ export default {
       imports: [CommonModule],
     }),
   ],
-};
+} as Meta;
 
-export const Simple = {
-  args: {
-    user: PageLayoutStories.Simple.args.user,
-    document: DocumentHeaderStories.Simple.args.document,
-    subdocuments: DocumentListStories.Simple.args.documents,
-  },
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const Simple = Template.bind({});
+Simple.args = {
+  user: PageLayoutStories.PageLayoutSimple.args.user,
+  document: DocumentHeaderStories.DocumentHeaderSimple.args.document,
+  subdocuments: DocumentListStories.DocumentListSimple.args.documents
 };
 ```

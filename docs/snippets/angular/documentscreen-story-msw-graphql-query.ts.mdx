@@ -4,7 +4,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { moduleMetadata } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
 import { graphql } from 'msw';
 
@@ -16,6 +16,11 @@ import { PageLayout } from './PageLayout.component';
 import { MockGraphQLModule } from './mock-graphql.module';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
   decorators: [
     moduleMetadata({
@@ -23,7 +28,7 @@ export default {
       imports: [CommonModule, HttpClientModule, MockGraphQLModule],
     }),
   ],
-};
+}as Meta;
 
 //👇The mocked data that will be used in the story
 const TestData = {
@@ -74,30 +79,32 @@ const TestData = {
   ],
 };
 
-export const MockedSuccess = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(ctx.data(TestData));
-      }),
-    ],
-  },
+const PageTemplate: Story = () => ({
+  props: {},
+});
+
+export const MockedSuccess = PageTemplate.bind({});
+MockedSuccess.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(ctx.data(TestData));
+    }),
+  ],
 };
 
-export const MockedError = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(
-          ctx.delay(800),
-          ctx.errors([
-            {
-              message: 'Access denied',
-            },
-          ])
-        );
-      }),
-    ],
-  },
+export const MockedError = PageTemplate.bind({});
+MockedError.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(
+        ctx.delay(800),
+        ctx.errors([
+          {
+            message: 'Access denied',
+          },
+        ])
+      );
+    }),
+  ],
 };
 ```

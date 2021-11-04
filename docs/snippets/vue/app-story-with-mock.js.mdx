@@ -1,27 +1,29 @@
 ```js
-// App.stories.js|jsx
+// App.stories.js
 
-import React from 'react';
-
-import App from './App';
+import App from './App.vue';
 
 export default {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
   title: 'App',
   component: App,
 };
 
-const Template = (ags) => <App />;
+
+const Template = () => ({
+  components: { App },
+  template: '<App />',
+});
 
 export const Success = Template.bind({});
 Success.parameters = {
   fetch: {
     json: {
       JavaScript: 3390991,
-      'C++': 44974,
+      "C++": 44974,
       TypeScript: 15530,
       CoffeeScript: 12253,
       Python: 9383,
@@ -29,7 +31,7 @@ Success.parameters = {
       Shell: 5115,
       HTML: 3420,
       CSS: 3171,
-      Makefile: 189,
+      Makefile: 189
     }
   }
 };

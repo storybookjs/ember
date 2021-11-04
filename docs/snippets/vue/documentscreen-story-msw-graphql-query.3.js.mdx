@@ -8,6 +8,11 @@ import WrapperComponent from './ApolloWrapperClient.vue';
 import { graphql } from 'msw';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
 };
 
@@ -60,44 +65,37 @@ const TestData = {
   ],
 };
 
-export const MockedSuccess = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(ctx.data(TestData));
-      }),
-    ],
-  },
-  render: (args) => ({
-    components: { DocumentScreen, WrapperComponent },
-    setup() {
-      return { args };
-    },
-    template: '<WrapperComponent><DocumentScreen v-bind="args"/></WrapperComponent>',
-  }),
+const PageTemplate = () => ({
+  components: { DocumentScreen, WrapperComponent },
+  template: `
+    <WrapperComponent>
+      <SampleGraphqlComponent />
+    </WrapperComponent>
+  `,
+});
+
+export const MockedSuccess = PageTemplate.bind({});
+MockedSuccess.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(ctx.data(TestData));
+    }),
+  ],
 };
 
-export const MockedError = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(
-          ctx.delay(800),
-          ctx.errors([
-            {
-              message: 'Access denied',
-            },
-          ])
-        );
-      }),
-    ],
-  },
-  render: (args) => ({
-    components: { DocumentScreen, WrapperComponent },
-    setup() {
-      return { args };
-    },
-    template: '<WrapperComponent><DocumentScreen v-bind="args"/></WrapperComponent>',
-  }),
+export const MockedError = PageTemplate.bind({});
+MockedError.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(
+        ctx.delay(800),
+        ctx.errors([
+          {
+            message: 'Access denied',
+          },
+        ])
+      );
+    }),
+  ],
 };
 ```

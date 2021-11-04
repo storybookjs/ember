@@ -1,7 +1,9 @@
-```js
-// App.stories.js|jsx
+```ts
+// App.stories.ts|tsx
 
 import React from 'react';
+
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import App from './App';
 
@@ -12,9 +14,9 @@ export default {
    */
   title: 'App',
   component: App,
-};
+} as ComponentMeta<typeof App>;
 
-const Template = (ags) => <App />;
+const Template: ComponentStory<typeof App> = () => <App />;
 
 export const Success = Template.bind({});
 Success.parameters = {
