@@ -1,3 +1,22 @@
+## 6.4.0-beta.27 (November 4, 2021)
+
+### Features
+
+* Core: Add 'staticDirs' config option ([#15969](https://github.com/storybookjs/storybook/pull/15969))
+
+### Bug Fixes
+
+* TS: Fix type for Refs so they can be disabled ([#16582](https://github.com/storybookjs/storybook/pull/16582))
+* CLI: Add a check for source-dir in `sb extract` ([#16505](https://github.com/storybookjs/storybook/pull/16505))
+* UI: Fix links that have no onClick handler ([#16581](https://github.com/storybookjs/storybook/pull/16581))
+* Core: Continue running play function on rerender ([#16574](https://github.com/storybookjs/storybook/pull/16574))
+* Ensure we always initialize the story store, even when the index errors. ([#16537](https://github.com/storybookjs/storybook/pull/16537))
+* Interactions: Fix panel tab icon/count ([#16578](https://github.com/storybookjs/storybook/pull/16578))
+
+### Dependency Upgrades
+
+* Pin the version of `history` for `react-router-dom` compat ([#16560](https://github.com/storybookjs/storybook/pull/16560))
+
 ## 6.4.0-beta.26 (November 2, 2021)
 
 ### Bug Fixes
