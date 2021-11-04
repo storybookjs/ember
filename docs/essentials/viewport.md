@@ -118,6 +118,7 @@ Update your story through [parameters](../writing-stories/parameters.md) to incl
 <CodeSnippets
   paths={[
     'react/my-component-story-configure-viewports.js.mdx',
+    'react/my-component-story-configure-viewports.ts.mdx',
     'react/my-component-story-configure-viewports.mdx.mdx',
     'vue/my-component-story-configure-viewports.js.mdx',
     'vue/my-component-story-configure-viewports.mdx.mdx',

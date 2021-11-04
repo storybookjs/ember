@@ -247,15 +247,15 @@ And here's what the resulting UI looks like:
 
 For `color` controls, you can specify an array of `presetColors`, either on the `control` in `argTypes`, or as a parameter under the `controls` namespace:
 
-```js
-// .storybook/preview.js
+<!-- prettier-ignore-start -->
 
-export const parameters = {
-  controls: {
-    presetColors: [{ color: '#ff4785', title: 'Coral' }, 'rgba(0, 159, 183, 1)', '#fe4a49'],
-  },
-};
-```
+<CodeSnippets
+  paths={[
+    'common/storybook-preview-parameters-color-swatches.js.mdx',
+    ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Color presets can be defined as an object with `color` and `title` or a simple CSS color string. These will then be available as swatches in the color picker. When you hover over the color swatch, you'll be able to see its title. If none is specified, it will default to the nearest CSS color name instead.
 

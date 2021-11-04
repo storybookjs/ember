@@ -7,10 +7,8 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 import MyComponent from './MyComponent.vue';
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Meta
-  title="Stories"
+  title="MyComponent"
   parameters={{
     viewport: {
       viewports: INITIAL_VIEWPORTS,
@@ -26,9 +24,11 @@ import MyComponent from './MyComponent.vue';
     viewport: {
       defaultViewport: 'iphonex',
     }
+  }}>
+  {() => {
+    return {
+      template: `<MyComponent />`,
+    };
   }}
-  render={() => ({
-    components: { MyComponent },
-    template: '<MyComponent />',
-  })} />
+</Story>
 ```

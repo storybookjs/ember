@@ -1,11 +1,16 @@
 ```js
-// YourComponent.stories.js | YourComponent.stories.jsx
+// YourComponent.stories.js|jsx
 
 import React from 'react';
 
 import { YourComponent } from './your-component';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'YourComponent',
   component: YourComponent,
   //👇 Creates specific argTypes with options
   argTypes: {
@@ -24,17 +29,16 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
   // Makes some computations and returns something
 };
 
-export const ExampleStory = {
-  args: {
-    propertyA: 'Something',
-    propertyB: 'Something else',
-  },
-  render: (args) => {
-    const { propertyA, propertyB } = args;
-    //👇 Assigns the function result to a variable
-    const someFunctionResult = someFunction(propertyA, propertyB);
+const Template = ({ propertyA, propertyB, ...rest }) => {
+  //👇 Assigns the function result to a variable
+  const someFunctionResult = someFunction(propertyA, propertyB);
 
-    return <YourComponent {...args} someProperty={someFunctionResult} />;
-  },
+  return <YourComponent someProperty={someFunctionResult} {...rest} />;
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

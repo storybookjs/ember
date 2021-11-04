@@ -9,7 +9,7 @@ import { MyComponent } from './MyComponent.component';
 
 
 <Meta
-  title="Stories"
+  title="MyComponent"
   parameters={{
     viewport: {
       viewports: INITIAL_VIEWPORTS,
@@ -18,16 +18,15 @@ import { MyComponent } from './MyComponent.component';
   }}
   component={MyComponent} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story
   name="MyStory"
   parameters={{
     viewport: {
       defaultViewport: 'iphonex',
     }
+  }}>
+  {{
+    template: '<MyComponent></MyComponent>',
   }}
-  render={() => ({
-    template: `<MyComponent></MyComponent>`,
-  })} />
+</Story>
 ```

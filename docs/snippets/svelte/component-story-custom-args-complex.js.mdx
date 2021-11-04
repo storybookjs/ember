@@ -4,6 +4,11 @@
 import YourComponent from './YourComponent.svelte';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'YourComponent',
   component: YourComponent,
   //👇 Creates specific argTypes
   argTypes: {
@@ -22,22 +27,23 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
   // Makes some computations and returns something
 };
 
-export const ExampleStory = {
-  args: {
-    propertyA: 'Something',
-    propertyB: 'Something else',
-  },
-  render: (args) => {
-    const { propertyA, propertyB } = args;
-    //👇 Assigns the function result to a variable
-    const someFunctionResult = someFunction(propertyA, propertyB);
-    return {
-      Component: YourComponent,
-      props: {
-        ...args,
-        someProperty: someFunctionResult,
-      },
-    };
-  },
+const Template = (args) => {
+  const { propertyA, propertyB } = args;
+  
+  //👇 Assigns the function result to a variable
+  const someFunctionResult = someFunction(propertyA, propertyB);
+  return {
+    Component: YourComponent,
+    props: {
+      ...args,
+      someProperty: someFunctionResult,
+    },
+  };
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

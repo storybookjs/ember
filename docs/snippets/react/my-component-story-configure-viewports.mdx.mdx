@@ -18,14 +18,13 @@ import { MyComponent } from './MyComponent';
   component={MyComponent}
 />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story
   name="MyStory"
   parameters={{
     viewport: {
       defaultViewport: 'iphonex',
     },
-  }}
-  render={() => <MyComponent />} />
+  }}>
+  <MyComponent />
+</Story>
 ```

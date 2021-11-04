@@ -1,33 +1,31 @@
 ```js
-// YourComponent.stories.js | YourComponent.stories.jsx | YourComponent.stories.ts | YourComponent.stories.tsx
+// YourComponent.stories.js|jsx|ts|tsx
 
 import { YourComponent } from './YourComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'YourComponent',
   component: YourComponent,
 };
 
-export const ArrayInclude = {
-  parameters: {
-    controls: { include: ['foo', 'bar'] },
-  },
-};
+const Template = (args) => ({
+  //👇 Your template goes here
+});
 
-export const RegexInclude = {
-  parameters: {
-    controls: { include: /^hello*/ },
-  },
-};
 
-export const ArrayExclude = {
-  parameters: {
-    controls: { exclude: ['foo', 'bar'] },
-  },
-};
+ArrayInclude = Template.bind({})
+ArrayInclude.parameters = { controls: { include: ['foo', 'bar'] } };
 
-export const RegexExclude = {
-  parameters: {
-    controls: { exclude: /^hello*/ },
-  },
-};
+RegexInclude = Template.bind({})
+RegexInclude.parameters = { controls: { include: /^hello*/ } };
+
+ArrayExclude = Template.bind({})
+ArrayExclude.parameters = { controls: { exclude: ['foo', 'bar'] } };
+
+RegexExclude = Template.bind({})
+RegexExclude.parameters = { controls: { exclude: /^hello*/ } };
 ```
