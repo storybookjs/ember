@@ -101,7 +101,7 @@ You can map your local static directories to a different path like this:
 
 ### **[⚠️ Deprecated]** Serving static files via Storybook CLI
 
-Using `--static-dir` or `-s` option with Storybook CLI is deprecated. It is recommended to use [Storybook static directoy Configuration option](#serving-static-files-via-storybook-configuration) instead.
+Using `--static-dir` or `-s` option with Storybook CLI is deprecated. It is recommended to use [Storybook static directory configuration option](#serving-static-files-via-storybook-configuration) instead.
 
 ### Reference assets from a CDN
 
