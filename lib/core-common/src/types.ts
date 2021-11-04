@@ -262,13 +262,7 @@ export type Preset =
  */
 export type Entry = string;
 
-type StorybookRefs = Record<
-  string,
-  {
-    title: string;
-    url: string;
-  }
->;
+type StorybookRefs = Record<string, { title: string; url: string } | { disable: boolean }>;
 
 /**
  * The interface for Storybook configuration in `main.ts` files.
