@@ -8323,6 +8323,7 @@ __metadata:
     "@storybook/addon-essentials": 6.4.0-beta.26
     "@storybook/addon-storyshots": 6.4.0-beta.26
     "@storybook/addon-storysource": 6.4.0-beta.26
+    "@storybook/cli": 6.4.0-beta.26
     "@storybook/components": 6.4.0-beta.26
     "@storybook/react": 6.4.0-beta.26
     "@storybook/theming": 6.4.0-beta.26
