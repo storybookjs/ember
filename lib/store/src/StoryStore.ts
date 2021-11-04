@@ -117,7 +117,7 @@ export class StoryStore<TFramework extends AnyFramework> {
     importFn,
     cache = false,
   }: {
-    storyIndex: StoryIndex;
+    storyIndex?: StoryIndex;
     importFn: ModuleImportFn;
     cache?: boolean;
   }): PromiseLike<void> {
