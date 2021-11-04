@@ -6,10 +6,12 @@ import { auto } from '@popperjs/core';
 interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: void;
+  disabled?: boolean;
 }
 interface LinkProps
   extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   href: string;
+  disabled?: boolean;
 }
 
 const ButtonOrLink = ({ children, ...restProps }: ButtonProps | LinkProps) =>
@@ -74,10 +76,11 @@ TabButton.displayName = 'TabButton';
 
 export interface IconButtonProps {
   active?: boolean;
+  disabled?: boolean;
 }
 
 export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<IconButtonProps>(
-  ({ theme }) => ({
+  ({ disabled, theme }) => ({
     alignItems: 'center',
     background: 'transparent',
     border: 'none',
@@ -92,16 +95,6 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
     marginTop: 6,
     padding: '8px 7px',
 
-    '&:hover, &:focus-visible': {
-      background: transparentize(0.88, theme.color.secondary),
-      color: theme.color.secondary,
-    },
-    '&:focus-visible': {
-      outline: auto, // Ensures links have the same focus style
-    },
-    '&:focus:not(:focus-visible)': {
-      outline: 'none',
-    },
     '& > svg': {
       width: 14,
     },
@@ -112,6 +105,24 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
           backgroundColor: theme.background.hoverable,
           color: theme.color.secondary,
         }
-      : {}
+      : {},
+  ({ disabled, theme }) =>
+    disabled
+      ? {
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        }
+      : {
+          '&:hover, &:focus-visible': {
+            background: transparentize(0.88, theme.color.secondary),
+            color: theme.color.secondary,
+          },
+          '&:focus-visible': {
+            outline: auto, // Ensures links have the same focus style
+          },
+          '&:focus:not(:focus-visible)': {
+            outline: 'none',
+          },
+        }
 );
 IconButton.displayName = 'IconButton';
