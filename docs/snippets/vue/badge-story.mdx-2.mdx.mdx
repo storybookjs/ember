@@ -7,7 +7,12 @@ import Badge from './Badge.vue';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Badge },
+  template: '<Badge v-bind="$props" />',
+});
+
 
 # Badge
 
@@ -18,13 +23,10 @@ Let's define a story for our `Badge` component:
   args={{
     status: 'positive',
     label: 'Positive',
-  }}
-  render={(args, { argTypes }) => ({
-    props: Object.keys(argTypes),
-    components: { Badge },
-    template: '<Badge v-bind="$props" />',
-  })} />
-  
+  }}>
+  {Template.bind({})}
+</Story>
+
 We can drop it in a `Canvas` to get a code snippet:
 
 <Canvas>
@@ -33,12 +35,9 @@ We can drop it in a `Canvas` to get a code snippet:
     args={{
       status: 'negative', 
      label: 'Negative',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 
 We can even preview multiple Stories in a block. This
@@ -51,35 +50,26 @@ with unique URLs, which is great for review and testing.
     args={{
       status: 'warning',
       label: 'Warning',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
   
   <Story 
     name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
-
+    }}>
+    {Template.bind({})}
+  </Story>
+  
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

@@ -5,10 +5,9 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import { Badge } from './Badge';
 
-
 <Meta title="MDX/Badge" component={Badge} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => <Badge {...args } />;
 
 <Canvas>
   <Story 
@@ -16,23 +15,26 @@ import { Badge } from './Badge';
     args={{
       status: 'warning', 
       label: 'Warning',
-    }}
-    render={(args) => <Badge {...args } />} />
-
+    }}>
+    {Template.bind({})}
+  </Story>
+  
   <Story 
     name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral',
-    }}
-    render={(args) => <Badge {...args } />} />
-
+    }}>
+    {Template.bind({})}
+  </Story>
+  
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error',
-    }}
-    render={(args) => <Badge {...args } />} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

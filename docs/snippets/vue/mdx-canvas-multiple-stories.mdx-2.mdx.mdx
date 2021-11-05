@@ -7,7 +7,11 @@ import Badge from './Badge.vue';
 
 <Meta title="MDX/Badge" component={Badge} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Badge },
+  template: '<Badge v-bind="$props" />',
+});
 
 <Canvas>
   <Story 
@@ -15,35 +19,26 @@ import Badge from './Badge.vue';
     args={{
       status: 'warning', 
       label: 'Warning',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
-    
+    }}>
+    {Template.bind({})}
+  </Story>
+  
   <Story 
     name="neutral"
     args={{
       status: 'neutral', 
       label: 'Neutral',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
-
+    }}>
+    {Template.bind({})}
+  </Story>
+  
   <Story 
     name="error"
     args={{
       status: 'error', 
       label: 'Error',
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Badge },
-      template: '<Badge v-bind="$props" />',
-    })} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

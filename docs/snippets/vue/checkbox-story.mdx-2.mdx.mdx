@@ -7,7 +7,11 @@ import Checkbox from './Checkbox.vue';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args, { argTypes }) => ({
+  props: Object.keys(argTypes),
+  components: { Checkbox },
+  template: '<Checkbox v-bind="$props" />',
+});
 
 # Checkbox
 
@@ -16,39 +20,30 @@ Markdown documentation.
 
 <Canvas>
   <Story 
-    name="Unchecked" 
+    name="Unchecked"
     args={{ 
-      label: 'Unchecked'
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Checkbox },
-      template: '<Checkbox v-bind="$props" />',
-    })} />
+      label: 'Unchecked',
+    }}>
+    {Template.bind({})}
+   </Story>
 
   <Story 
-    name="Checked" 
+    name="Checked"
     args={{ 
       label: 'Unchecked', 
-      checked: true 
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Checkbox },
-      template: '<Checkbox v-bind="$props" />',
-    })} />
-
+      checked: true,
+    }}>
+    {Template.bind({})}
+   </Story>
+  
   <Story 
-    name="Secondary" 
+    name="Secondary"
     args={{
       label: 'Secondary', 
       checked: true, 
-      appearance: 'secondary'
-    }}
-    render={(args, { argTypes }) => ({
-      props: Object.keys(argTypes),
-      components: { Checkbox },
-      template: '<Checkbox v-bind="$props" />',
-    })} />
+      appearance: 'secondary',
+    }}>
+    {Template.bind({})}
+   </Story>
 </Canvas>
 ```
