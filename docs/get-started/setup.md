@@ -63,14 +63,20 @@ If a particular story has a problem rendering, often it means your component exp
 
 A common frontend pattern is for components to assume that they render in a specific “context” with parent components higher up the rendering hierarchy (for instance, theme providers).
 
-Use [decorators](../writing-stories/decorators.md) to “wrap” every story in the necessary context providers. The [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file allows you to customize how components render in Canvas, the preview iframe. In this decorator example, we wrap every component rendered in Storybook with `ThemeProvider`.
+Use [decorators](../writing-stories/decorators.md) to “wrap” every story in the necessary context providers. The [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file allows you to customize how components render in Canvas, the preview iframe. See how you can wrap every component rendered in Storybook with [Styled Components](https://styled-components.com/) `ThemeProvider`, [Vue's Fortawesome](https://github.com/FortAwesome/vue-fontawesome), or with an Angular theme provider component in the example below.
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
     'react/storybook-preview-with-styled-components-decorator.js.mdx',
-    'vue/storybook-preview-with-styled-components-decorator.js.mdx',
+    'react/storybook-preview-with-styled-components-decorator.story-function.js.mdx',
+    'vue/storybook-preview-with-library-decorator.2-library.js.mdx',
+    'vue/storybook-preview-with-library-decorator.3-library.js.mdx',
+    'vue/storybook-preview-with-hoc-component-decorator.2-component.js.mdx',
+    'vue/storybook-preview-with-hoc-component-decorator.3-component.js.mdx',
+    'vue/storybook-preview-with-mixin-decorator.2-mixin.js.mdx',
+    'vue/storybook-preview-with-mixin-decorator.3-mixin.js.mdx',
     'angular/storybook-preview-with-styled-components-decorator.ts.mdx'
   ]}
 />
