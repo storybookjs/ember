@@ -353,16 +353,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const storyIdChanged = this.previousSelection?.storyId !== storyId;
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
-    let hasChangedArgs = false;
-    const updatedArgs = {};
-    if (!this.previousSelection && selectionSpecifier) {
-      const { args } = selectionSpecifier;
-      hasChangedArgs = typeof args === 'object' && Object.keys(args).length > 0;
-      if (hasChangedArgs) {
-        Object.assign(updatedArgs, args);
-      }
-    }
-
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
 
@@ -389,12 +379,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
 
-    // Populate args from url to ArgsTable controls.
-    if (implementationChanged) {
-      Object.assign(updatedArgs, args);
-      hasChangedArgs = true;
-    }
-
     if (FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
         id: storyId,
@@ -404,9 +388,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         args,
       });
     }
-    // If the implementation changed, the args also may have changed
-    if (hasChangedArgs) {
-      this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args: updatedArgs });
+
+    // For v6 mode / compatibility
+    // If the implementation changed, or args were persisted, the args may have changed,
+    // and the STORY_PREPARED event above may not be respected.
+    if (implementationChanged || persistedArgs) {
+      this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args });
     }
 
     if (selection.viewMode === 'docs' || story.parameters.docsOnly) {
