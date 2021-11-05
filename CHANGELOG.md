@@ -1,3 +1,17 @@
+## 6.4.0-beta.29 (November 6, 2021)
+
+### Features
+
+- CSFFile: Handle re-exported stories ([#16607](https://github.com/storybookjs/storybook/pull/16607))
+
+### Bug Fixes
+
+- StoryIndex: Skip files with no default export ([#16606](https://github.com/storybookjs/storybook/pull/16606))
+- Addon-docs/Source: Fix disabling show code with null ([#16615](https://github.com/storybookjs/storybook/pull/16615))
+- Core: Handle missing websocket in production build ([#16590](https://github.com/storybookjs/storybook/pull/16590))
+- Core: Ensure we set `parameters.filePath` in v7 mode ([#16566](https://github.com/storybookjs/storybook/pull/16566))
+- Core: Fix behavior around missing stories to be more clear ([#16608](https://github.com/storybookjs/storybook/pull/16608))
+
 ## 6.4.0-beta.28 (November 5, 2021)
 
 ### Bug Fixes
