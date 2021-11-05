@@ -365,7 +365,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -379,7 +383,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'a' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
@@ -396,7 +404,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -546,7 +558,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -1267,7 +1283,11 @@ describe('PreviewWeb', () => {
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--b',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'b' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'b' },
@@ -1289,7 +1309,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--b',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'b' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'b' },
@@ -1314,7 +1338,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--b',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'b' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -1805,7 +1833,11 @@ describe('PreviewWeb', () => {
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -1827,7 +1859,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'a' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
@@ -1852,7 +1888,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -2052,7 +2092,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'edited' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'edited' },
@@ -2085,7 +2129,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'edited' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'edited' },
@@ -2107,7 +2155,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'edited' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },

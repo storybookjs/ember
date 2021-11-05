@@ -333,6 +333,7 @@ describe('StoryStore', () => {
             "name": "A",
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentOne-new.stories.js",
             },
             "playFunction": undefined,
             "story": "A",
@@ -480,6 +481,7 @@ describe('StoryStore', () => {
             "name": "A",
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentOne.stories.js",
             },
             "playFunction": undefined,
             "story": "A",
@@ -514,6 +516,7 @@ describe('StoryStore', () => {
             "name": "B",
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentOne.stories.js",
             },
             "playFunction": undefined,
             "story": "B",
@@ -548,6 +551,7 @@ describe('StoryStore', () => {
             "name": "C",
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentTwo.stories.js",
             },
             "playFunction": undefined,
             "story": "C",
@@ -622,6 +626,7 @@ describe('StoryStore', () => {
             "originalStoryFn": [MockFunction],
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentOne.stories.js",
             },
             "playFunction": undefined,
             "story": "A",
@@ -658,6 +663,7 @@ describe('StoryStore', () => {
             "originalStoryFn": [MockFunction],
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentOne.stories.js",
             },
             "playFunction": undefined,
             "story": "B",
@@ -694,6 +700,7 @@ describe('StoryStore', () => {
             "originalStoryFn": [MockFunction],
             "parameters": Object {
               "__isArgsStory": false,
+              "fileName": "./src/ComponentTwo.stories.js",
             },
             "playFunction": undefined,
             "story": "C",
@@ -754,6 +761,7 @@ describe('StoryStore', () => {
               "name": "A",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "./src/ComponentOne.stories.js",
               },
               "playFunction": undefined,
               "story": "A",
@@ -788,6 +796,7 @@ describe('StoryStore', () => {
               "name": "B",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "./src/ComponentOne.stories.js",
               },
               "playFunction": undefined,
               "story": "B",
@@ -822,6 +831,7 @@ describe('StoryStore', () => {
               "name": "C",
               "parameters": Object {
                 "__isArgsStory": false,
+                "fileName": "./src/ComponentTwo.stories.js",
               },
               "playFunction": undefined,
               "story": "C",
