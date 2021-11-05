@@ -389,7 +389,7 @@ Storyshots is not currently compatible with the v7 store. However, you can use t
 
 ```js
 features: {
-  storyStoreV7: !global.navigator.userAgent.match('jsdom');
+  storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom');
 }
 ```
 
