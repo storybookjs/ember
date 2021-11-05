@@ -246,7 +246,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // Use the selection specifier to choose a story, then render it
   async selectSpecifiedStory() {
     if (!this.urlStore.selectionSpecifier) {
-      await this.renderMissingStory();
+      this.renderMissingStory();
       return;
     }
 
@@ -254,7 +254,15 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const storyId = this.storyStore.storyIndex.storyIdFromSpecifier(storySpecifier);
 
     if (!storyId) {
-      await this.renderMissingStory(storySpecifier);
+      if (storySpecifier === '*') {
+        this.renderMissingStory();
+      } else {
+        this.renderStoryLoadingException(
+          storySpecifier,
+          new Error(`Couldn't find story matching ${storySpecifier}.`)
+        );
+      }
+
       return;
     }
 
@@ -406,8 +414,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       story = await this.storyStore.loadStory({ storyId });
     } catch (err) {
+      await this.cleanupPreviousRender();
       this.previousStory = null;
-      await this.renderMissingStory(storyId);
+      this.renderStoryLoadingException(storyId, err);
       return;
     }
 
@@ -697,23 +706,29 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.emit(Events.CONFIG_ERROR, err);
   }
 
-  async renderMissingStory(storySpecifier?: StorySpecifier) {
-    logger.error(`Unable to find story with specifier '${storySpecifier}'`);
-    await this.cleanupPreviousRender();
+  renderMissingStory() {
+    logger.error(`No story selected`);
     this.view.showNoPreview();
+    this.channel.emit(Events.STORY_MISSING);
+  }
+
+  renderStoryLoadingException(storySpecifier: StorySpecifier, err: Error) {
+    logger.error(`Unable to load story '${storySpecifier}':`);
+    logger.error(err);
+    this.view.showErrorDisplay(err);
     this.channel.emit(Events.STORY_MISSING, storySpecifier);
   }
 
   // renderException is used if we fail to render the story and it is uncaught by the app layer
-  renderException(storyId: StoryId, error: Error) {
-    this.channel.emit(Events.STORY_THREW_EXCEPTION, error);
+  renderException(storyId: StoryId, err: Error) {
+    this.channel.emit(Events.STORY_THREW_EXCEPTION, err);
     this.channel.emit(Events.STORY_RENDER_PHASE_CHANGED, { newPhase: 'errored', storyId });
 
     // Ignored exceptions exist for control flow purposes, and are typically handled elsewhere.
-    if (error !== IGNORED_EXCEPTION) {
-      this.view.showErrorDisplay(error);
+    if (err !== IGNORED_EXCEPTION) {
+      this.view.showErrorDisplay(err);
       logger.error(`Error rendering story '${storyId}':`);
-      logger.error(error);
+      logger.error(err);
     }
   }
 
