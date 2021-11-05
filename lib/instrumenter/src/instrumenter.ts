@@ -31,7 +31,7 @@ export interface Options {
 }
 
 export interface State {
-  renderPhase: 'loading' | 'rendering' | 'playing' | 'completed' | 'aborted';
+  renderPhase: 'loading' | 'rendering' | 'playing' | 'played' | 'completed' | 'aborted' | 'errored';
   isDebugging: boolean;
   cursor: number;
   calls: Call[];
@@ -139,7 +139,7 @@ export class Instrumenter {
       if (newPhase === 'playing') {
         resetState({ storyId, isDebugging });
       }
-      if (newPhase === 'completed') {
+      if (newPhase === 'played') {
         this.setState(storyId, { isDebugging: false, forwardedException: undefined });
         // Rethrow any unhandled forwarded exception so it doesn't go unnoticed.
         if (forwardedException) throw forwardedException;
@@ -175,7 +175,6 @@ export class Instrumenter {
       });
 
       // Force remount may trigger a page reload if the play function can't be aborted.
-      // global.window.location.reload();
       this.channel.emit(FORCE_REMOUNT, { storyId, isDebugging: true });
     };
 
@@ -362,6 +361,10 @@ export class Instrumenter {
   }
 
   invoke(fn: Function, call: Call, options: Options) {
+    // TODO this doesnt work because the abortSignal we have here is the newly created one
+    // const { abortSignal } = global.window.__STORYBOOK_PREVIEW__ || {};
+    // if (abortSignal && abortSignal.aborted) throw IGNORED_EXCEPTION;
+
     const { parentCall, callRefsByResult, forwardedException, renderPhase } = this.getState(
       call.storyId
     );
@@ -428,7 +431,7 @@ export class Instrumenter {
         throw forwardedException;
       }
 
-      if (renderPhase === 'completed' && !call.retain) {
+      if (renderPhase === 'played' && !call.retain) {
         throw alreadyCompletedException;
       }
 

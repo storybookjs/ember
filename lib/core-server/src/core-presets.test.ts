@@ -57,6 +57,7 @@ jest.mock('http', () => ({
   ...jest.requireActual('http'),
   createServer: () => ({ listen: (_options, cb) => cb() }),
 }));
+jest.mock('ws');
 jest.mock('@storybook/node-logger', () => ({
   logger: {
     info: jest.fn(),

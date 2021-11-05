@@ -9,6 +9,7 @@ import {
   SELECT_STORY,
   SET_STORIES,
   STORY_SPECIFIED,
+  STORY_INDEX_INVALIDATED,
 } from '@storybook/core-events';
 import deprecate from 'util-deprecate';
 import { logger } from '@storybook/client-logger';
@@ -34,10 +35,9 @@ import type {
 
 import { Args, ModuleFn } from '../index';
 import { ComposedRef } from './refs';
-import { StoryIndexClient } from '../lib/StoryIndexClient';
 
-const { DOCS_MODE, FEATURES } = global;
-const INVALIDATE = 'INVALIDATE';
+const { DOCS_MODE, FEATURES, fetch } = global;
+const STORY_INDEX_PATH = './stories.json';
 
 type Direction = -1 | 1;
 type ParameterName = string;
@@ -123,8 +123,6 @@ export const init: ModuleFn = ({
   storyId: initialStoryId,
   viewMode: initialViewMode,
 }) => {
-  let indexClient: StoryIndexClient;
-
   const api: SubAPI = {
     storyId: toId,
     getData: (storyId, refId) => {
@@ -356,7 +354,10 @@ export const init: ModuleFn = ({
     },
     fetchStoryList: async () => {
       try {
-        const storyIndex = await indexClient.fetch();
+        const result = await fetch(STORY_INDEX_PATH);
+        if (result.status !== 200) throw new Error(await result.text());
+
+        const storyIndex = (await result.json()) as StoryIndex;
 
         // We can only do this if the stories.json is a proper storyIndex
         if (storyIndex.v !== 3) {
@@ -513,8 +514,7 @@ export const init: ModuleFn = ({
     );
 
     if (FEATURES?.storyStoreV7) {
-      indexClient = new StoryIndexClient();
-      indexClient.addEventListener(INVALIDATE, () => fullAPI.fetchStoryList());
+      provider.serverChannel.on(STORY_INDEX_INVALIDATED, () => fullAPI.fetchStoryList());
       await fullAPI.fetchStoryList();
     }
   };
