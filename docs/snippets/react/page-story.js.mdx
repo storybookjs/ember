@@ -1,5 +1,5 @@
 ```js
-// Page.stories.js | Page.stories.jsx
+// Page.stories.js|jsx
 
 import React from 'react';
 
@@ -9,12 +9,18 @@ import { Page } from './Page';
 import * as HeaderStories from './Header.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Page',
   component: Page,
 };
 
-export const LoggedIn = {
-  args: {
-    ...HeaderStories.LoggedIn.args,
-  },
+const Template = (args) => <Page {...args} />;
+
+export const LoggedIn = Template.bind({});
+LoggedIn.args = {
+  ...HeaderStories.LoggedIn.args,
 };
 ```

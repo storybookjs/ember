@@ -3,14 +3,19 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { componentWrapperDecorator,moduleMetadata } from '@storybook/angular';
+import { componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
 import { Button } from './button.component';
-import { ParentComponent } from './parent.component';
+
+<!-- Parent contains ng-content -->
+import { Parent } from './parent.component';
 
 <Meta title="Button" component={Button}/>
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+
+export const Template = () => ({
+  template: `<app-button label="Submit"></app-button>`,
+});
 
 <!-- With a template -->
 
@@ -18,10 +23,8 @@ import { ParentComponent } from './parent.component';
   name="Primary"
   decorators={[
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)
-  ]}
-  render={() => ({
-    template: `<app-button label="Submit"></app-button>`,
-  })} />
+  ]} >
+  {Template.bind({})}
 </Story>
 
 <!-- With a component -->
@@ -33,9 +36,7 @@ import { ParentComponent } from './parent.component';
       declarations: [ParentComponent],
     }),
     componentWrapperDecorator(ParentComponent)
-  ]}
-  render={() => ({
-    template: `<app-button label="Submit"></app-button>`,
-  })} />
+  ]} >
+  {Template.bind({})}
 </Story>
 ```

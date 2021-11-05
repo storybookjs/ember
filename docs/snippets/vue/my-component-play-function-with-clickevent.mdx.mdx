@@ -3,32 +3,32 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { fireEvent,screen, userEvent } from '@storybook/testing-library';
+import { fireEvent, screen, userEvent } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
+<Meta title="ClickExamples" component={MyComponent} />
 
-<Meta title="ClickExamples" component={MyComponent}/>
+export const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent/>',
+});
 
-<Story 
+<Story
   name="ClickExample"
   play={async () => {
-    // See https://storybook.js.org/docs/7.0/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await userEvent.click(screen.getByRole('button'));
-  }}
-  render={()=>({
-    components: { MyComponent },
-    template: '<MyComponent/>',
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 
-<Story 
-  name="FireEventExample" 
+<Story
+  name="FireEventExample"
   play={async () => {
-    // See https://storybook.js.org/docs/7.0/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
     await fireEvent.click(screen.getByTestId('data-testid'));
-  }}
-  render={()=> ({
-    components: { MyComponent },
-    template: '<MyComponent/>',
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

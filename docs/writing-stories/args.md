@@ -78,9 +78,7 @@ You can also define args at the component level; they will apply to all the comp
 
 ## Args composition
 
-You can separate the arguments to a story to compose in other stories.
-
-Here's how you can combine args for multiple stories of the same component.
+You can separate the arguments to a story to compose in other stories. Here's how you can combine args for multiple stories of the same component.
 
 <!-- prettier-ignore-start -->
 
@@ -93,7 +91,9 @@ Here's how you can combine args for multiple stories of the same component.
 <!-- prettier-ignore-end -->
 
 <div class="aside">
+
 💡<strong>Note:</strong> If you find yourself re-using the same args for most of a component's stories, you should consider using [component-level args](#component-args).
+
 </div>
 
 Args are useful when writing stories for composite components that are assembled from other components. Composite components often pass their arguments unchanged to their child components, and similarly, their stories can be compositions of their child components stories. With args, you can directly compose the arguments:
@@ -138,7 +138,7 @@ You can use args in your stories to configure the component's appearance, simila
 
 ## Setting args through the URL
 
-You can also override the set of initial args for the active story by adding an `args` query parameter to the URL. Typically you would use the Controls addon to handle this. For example, here's how you could set a `size` and `style` arg in the Storybook's URL:
+You can also override the set of initial args for the active story by adding an `args` query parameter to the URL. Typically you would use the [Controls addon](../essentials/controls.md) to handle this. For example, here's how you could set a `size` and `style` arg in the Storybook's URL:
 
 ```
 ?path=/story/avatar--default&args=style:rounded;size:100
@@ -148,13 +148,15 @@ As a safeguard against [XSS](https://owasp.org/www-community/attacks/xss/) attac
 
 The `args` param is always a set of `key: value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 
-```js
-{
-  obj: { key: 'val' },
-  arr: ['one', 'two'],
-  nil: null
-}
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'storybook-args-url-params-converted.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Similarly, special formats are available for dates and colors. Date objects will be encoded as `!date(value)` with value represented as an ISO date string. Colors are encoded as `!hex(value)`, `!rgba(value)` or `!hsla(value)`. Note that rgb(a) and hsl(a) should not contain spaces or percentage signs in the URL.
 
@@ -164,17 +166,15 @@ Args specified through the URL will extend and override any default values of ar
 
 Complex values such as JSX elements cannot be serialized to the manager (e.g., the Controls addon) or synced with the URL. Arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes` to work around this limitation. It works in any arg but makes the most sense when used with the `select` control type.
 
-```js
-argTypes: {
-  label: {
-    options: ['Normal', 'Bold', 'Italic'],
-    mapping: {
-      Bold: <b>Bold</b>,
-      Italic: <i>Italic</i>
-    }
-  }
-}
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/my-component-argtypes-with-mapping.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg _values_, not their index in the `options` array.
 

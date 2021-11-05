@@ -6,21 +6,22 @@ import fetch from 'node-fetch';
 import TodoItem from './TodoItem.svelte';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Examples/Loader',
   component: TodoItem,
 };
 
-export const Primary = {
-  render: (args, { loaded: { todo } }) => ({
-    component: TodoItem,
-    props: {
-      ...args,
-      todo,
-    },
+export const Primary = (args, { loaded: { todo } }) => ({
+  Component: TodoItem,
+  props: { ...args, ...todo },
+});
+
+Primary.loaders = [
+  async () => ({
+    todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
   }),
-  loaders: [
-    async () => ({
-      todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
-    }),
-  ],
-};
+];
 ```

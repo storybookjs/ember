@@ -7,9 +7,9 @@ import { Button } from './Button';
 
 <Meta title="Button" component={Button} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
-import { Button } from './Button';
+export const Template = (args) =>({
+  // 👈 Your template goes here
+});
 
 <Story
   name="Primary"
@@ -25,8 +25,7 @@ import { Button } from './Button';
   args={{
     primary: true,
     label: 'Button',
-
-  }}
-  render={() => ({ // Your implementation here })} />
-
+  }}>
+  {Template.bind({})}
+</Story>
 ```

@@ -7,26 +7,28 @@ import { screen, userEvent } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
-<Meta title="QueryMethods" component={MyComponent}/>
+<Meta title="QueryMethods" component={MyComponent} />
 
-<Story 
+export const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+<Story
   name="ExampleWithRole"
   play={async () => {
-    // See https://storybook.js.org/docs/7.0/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    await userEvent.click(screen.getByRole('button'));
-  }}
-  render={() => ({
-    components: { MyComponent },
-    template: '<MyComponent/>',
-  })} />
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await userEvent.click(screen.getByRole('button', { name: / button label/i }));
+  }}>
+  {Template.bind({})}
+</Story>
 
-<Story 
-  name="ExampleWithText" 
+<Story
+  name="ExampleWithText"
   play={async () => {
+    // The play function interacts with the component and looks for the text
     await screen.findByText('example string');
-  }}
-  render={() => ({
-    components: { MyComponent },
-    template: '<MyComponent/>',
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

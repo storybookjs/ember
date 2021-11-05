@@ -3,26 +3,27 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-<!-- These are placeholders until the addon-interaction is out -->
-
-import userEvent from '@testing-library/user-event';
-import { screen, within } from '@testing-library/vue';
+import { getByRole, userEvent, within } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.vue';
 
 <Meta title="WithCanvasElement" component={MyComponent} />
 
-<!-- Assigns canvas to the component root element and queries the element based on it-->
+export const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent/>',
+});
 
-<Story 
+<Story
   name="ExampleStory"
   play={async ({ canvasElement }) => {
+    // Assigns canvas to the component root element
     const canvas = within(canvasElement);
+
+    // Starts querying from the component's root element
     await userEvent.type(canvas.getByTestId('example-element'), 'something');
-    await userEvent.type(canvas.getByTestId('another-element'), 'something else');
-  }}
-  render={() => ({
-    components: { MyComponent },
-    template: '<MyComponent/>',
-  })} />
+    await userEvent.click(canvas.getByRole('another-element'));
+  }}>
+  {Template.bind({})}
+</Story>
 ```

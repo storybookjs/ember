@@ -2,7 +2,7 @@
 title: 'How to write stories'
 ---
 
-A story captures the rendered state of a UI component. It’s an object that returns a component’s state given a set of arguments.
+A story captures the rendered state of a UI component. It’s a function that returns a component’s state given a set of arguments.
 
 Storybook uses the generic term arguments (args for short) when talking about React’s `props`, Vue’s `props`, Angular’s `@Input`, and other similar concepts.
 
@@ -90,7 +90,7 @@ Your story will now be shown in the sidebar with the given text.
 
 ## How to write stories
 
-A story is an object that describes how to render a component. You can have multiple stories per component, and the simplest way to create stories is to render a component with different arguments multiple times.
+A story is a function that describes how to render a component. You can have multiple stories per component, and the simplest way to create stories is to render a component with different arguments multiple times.
 
 <!-- prettier-ignore-start -->
 
@@ -135,6 +135,10 @@ Refine this pattern by introducing `args` for your component's stories. It reduc
 
 <!-- prettier-ignore-end -->
 
+<div class="aside">
+💡 <strong>Note:</strong> <code>Template.bind({})</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">standard JavaScript techique</a> for making a copy of a function. We copy the <code>Template</code> so each exported story can set its own properties on it.
+</div>
+
 By introducing args into your component's stories, you're not only reducing the amount of code you need to write, but you're also decreasing data duplication, as shown by spreading the `Primary` story's args into the other stories.
 
 What’s more, you can import `args` to reuse when writing stories for other components, and it's helpful when you’re building composite components. For example, if we make a `ButtonGroup` story, we might remix two stories from its child component `Button`.
@@ -177,14 +181,23 @@ Addons can enhance args. For instance, [Actions](../essentials/actions.md) auto-
 
 ### Using the play function
 
-Storybook's `play` function and the `@storybook/addon-interactions` are convenient helper methods to test component scenarios that otherwise require user intervention. They're small code snippets that execute once your story renders. For example, suppose you wanted to validate a form component, you could write the following story using the `play` function to check how the component responds when filling in the inputs with information:
+Storybook's `play` function and the [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) are convenient helper methods to test component scenarios that otherwise require user intervention. They're small code snippets that execute once your story renders. For example, suppose you wanted to validate a form component, you could write the following story using the `play` function to check how the component responds when filling in the inputs with information:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'common/login-form-with-play-function.js.mdx',
-    'common/login-form-with-play-function.mdx.mdx',
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'react/login-form-with-play-function.mdx.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.mdx.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.mdx-2.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'vue/login-form-with-play-function.mdx-3.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
+    'svelte/login-form-with-play-function.mdx.mdx',
   ]}
 />
 

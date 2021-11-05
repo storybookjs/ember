@@ -9,23 +9,26 @@ import MyComponent from './MyComponent.svelte';
 
 <Meta title="ClickExamples" component={MyComponent} />
 
-<Story 
-  name="ClickExample" 
-  play={async () => {
-    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    await userEvent.click(screen.getByRole('button'));
-  }}
-  render={() => ({
-    Component: MyComponent,
-  })} />
+export const Template = (args) => ({
+  Component: MyComponent,
+  props: args,
+});
 
-<Story 
-  name="FireEventExample" 
+<Story
+  name="ClickExample"
   play={async () => {
-    // See https://storybook.js.org/docs/7.0/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    await fireEvent.click(screen.getByTestId('data-testid'));
-  }}
-  render={() => ({
-    Component: MyComponent,
-  })} />
+    // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await userEvent.click(screen.getByRole('button'));
+  }}>
+  {Template.bind({})}
+</Story>
+
+<Story
+  name="FireEventExample"
+  play={async ()=>{
+  // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await fireEvent.click(screen.getByTestId('data-testid'));
+  }}>
+  {Template.bind({})}
+</Story>
 ```

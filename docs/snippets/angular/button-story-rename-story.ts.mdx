@@ -1,19 +1,26 @@
 ```ts
 // Button.stories.ts
 
+import { Meta, Story } from '@storybook/angular';
+
 import { Button } from './button.component';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
   component: Button,
-};
+} as Meta;
 
-export const Primary = {
-  name: 'I am the primary',
-  render: () => ({
-    props: {
-      label: 'Button',
-      primary: true,
-    },
-  }),
-};
+
+export const Primary: Story = () => ({
+  props: {
+    label: 'Button',
+    primary: true,
+  },
+});
+
+Primary.storyName = 'I am the primary';
 ```

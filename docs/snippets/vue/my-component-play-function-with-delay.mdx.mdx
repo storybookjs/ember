@@ -9,25 +9,26 @@ import MyComponent from './MyComponent.vue';
 
 <Meta title="WithDelay" component={MyComponent} />
 
-<!-- The delay option set the ammount of milliseconds between characters being typed-->
+const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
 
 <Story
   name="DelayedStory"
   play={async () => {
     const exampleElement= screen.getByLabelText('example-element');
 
+    // The delay option set the ammount of milliseconds between characters being typed
     await userEvent.type(exampleElement, 'random string', {
       delay: 100,
     });
 
     const AnotherExampleElement= screen.getByLabelText('another-example-element');
-    
     await userEvent.type(AnotherExampleElement, 'another random string', {
       delay: 100,
     });
-  }}
-  render={() => ({
-    components: { MyComponent },
-    template: "<MyComponent />",
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

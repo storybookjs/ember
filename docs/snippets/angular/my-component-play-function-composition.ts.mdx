@@ -1,33 +1,40 @@
 ```ts
 // MyComponent.stories.ts
 
+import { Story, Meta } from '@storybook/angular';
+
 import { screen, userEvent } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
 export default {
-  component: MyComponent,
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'MyComponent',
+  component: MyComponent, 
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const FirstStory: Story = Template.bind({});
+FirstStory.play = async () => {
+  userEvent.type(screen.getByTestId('an-element'), 'example-value');
 };
 
-export const FirstStory = {
-  play: async () => {
-    userEvent.type(screen.getByTestId('an-element'), 'example-value');
-  },
+export const SecondStory: Story = Template.bind({});
+SecondStory.play = async () => {
+  await userEvent.type(screen.getByTestId('other-element'), 'another value');
 };
 
-export const SecondStory = {
-  play: async () => {
-    await userEvent.type(screen.getByTestId('other-element'), 'another value');
-  },
-};
-
-export const CombinedStories = {
-  ...FirstStory,
-  play: async () => {
-    // Runs the FirstStory and Second story play function before running this story's play function
-    await FirstStory.play();
-    await SecondStory.play();
-    await userEvent.type(screen.getByTestId('another-element'), 'random value');
-  },
+export const CombinedStories: Story = Template.bind({});
+CombinedStories.play = async () => {
+  // Runs the FirstStory and Second story play function before running this story's play function
+  await FirstStory.play();
+  await SecondStory.play();
+  await userEvent.type(screen.getByTestId('another-element'), 'random value');
 };
 ```

@@ -9,14 +9,16 @@ import { RegistrationForm } from './RegistrationForm.component';
 
 <Meta title="RegistrationForm" component={RegistrationForm} />
 
+export const Template = (args) => ({ props: args });
+
 <Story
   name="FilledForm"
   play={async () => {
-    
+
     const emailInput = screen.getByLabelText('email', {
       selector: 'input',
     });
-   
+
     await userEvent.type(emailInput, 'example-email@email.com', {
       delay: 100,
     });
@@ -24,14 +26,16 @@ import { RegistrationForm } from './RegistrationForm.component';
     const passwordInput = screen.getByLabelText('password', {
       selector: 'input',
     });
-    
+
     await userEvent.type(passwordInput, 'ExamplePassword', {
       delay: 100,
     });
-    // See https://storybook.js.org/docs/7.0/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
-    const submitButton = screen.getByRole('button');
+    
+    // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    const Submit = screen.getByRole('button');
 
-    await userEvent.click(submitButton);
-  }}
-/>
+    await userEvent.click(Submit);
+  }}>
+  {Template.bind({})}
+</Story>
 ```

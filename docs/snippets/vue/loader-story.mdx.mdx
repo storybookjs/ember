@@ -9,22 +9,21 @@ import fetch from 'node-fetch';
 
 <Meta title="Examples/Loader" component={TodoItem} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story
   name="Primary"
   loaders={[
     async () => ({
       todo: await (
-        await fetch('https://jsonplaceholder.typicode.com/todos/1')
+        await fetch("https://jsonplaceholder.typicode.com/todos/1")
       ).json(),
     }),
-  ]}
-  render={(args, { loaded: { todo } }) => ({
+  ]}>
+  {(args, { loaded: { todo } }) => ({
     components: { TodoItem },
     setup() {
       return { args, todo: todo };
     },
-    template: '<TodoItem :todo="todo" />',
-  })} />
+    template: `<TodoItem :todo="todo"/>`,
+  })}
+</Story>
 ```

@@ -3,19 +3,22 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { screen, userEvent } from '@storybook/testing-library';
+import { userEvent, screen } from '@storybook/testing-library';
 
 import MyComponent from './MyComponent.svelte';
 
 <Meta title="WithSelectEvent" component={MyComponent} />
 
-<!-- Custom function to emulate a pause -->
+<!-- Function to emulate pausing between interactions -->
 
 export const sleep(ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
-<!--  Queries the element by it's role and fires the event -->
+export const Template= (args)=>({
+  Component: MyComponent,
+  props: args,
+});
 
 <Story 
   name="ExampleChangeEvent"
@@ -27,10 +30,10 @@ export const sleep(ms) => {
 
     await userEvent.selectOptions(select, ['Another Item']);
     await sleep(2000);
-    
+
     await userEvent.selectOptions(select, ['Yet another item']);
-  }}
-  render={() => ({
-    Component: MyComponent,
-  })} />
+
+  }}>
+  {Template.bind({})}
+</Story>
 ```

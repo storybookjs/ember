@@ -7,20 +7,20 @@ import Button from './Button.vue';
 
 <Meta title="Button" component={Button}/>
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
+export const Template = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
+});
 
 <Story
   name="Primary"
   args={{
     primary: true,
     label: 'Button',
-  }}
-  render={(args) => ({
-    components: { Button },
-    setup() {
-      return { args };
-    },
-    template: '<Button v-bind="args" />',
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

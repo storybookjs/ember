@@ -8,35 +8,30 @@ import Button from './Button.svelte';
 <Meta title="Button" component={Button} />
 
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
-<Story 
-  name="Primary"
-  render={() => ({
-    Component: Button,
+<Story name="Primary">
+  {{
     props: {
       background: '#ff0',
       label: 'Button',
     },
-  })} />
+  }}
+</Story>
 
-<Story 
-  name="Secondary" 
-  render={() => ({
-    Component: Button,
+<Story name="Secondary">
+  {{
     props: {
       background: '#ff0',
-      label: 'Button',
+      label: '😄👍😍💯',
     },
-  })} />
+  }}
+</Story>
 
-<Story 
-  name="Tertiary" 
-  render={() => ({
-    Component: Button,
+<Story name="Tertiary">
+  {{
     props: {
       background: '#ff0',
       label: '📚📕📈🤓',
     },
-  })} />
+  }}
+</Story>
 ```

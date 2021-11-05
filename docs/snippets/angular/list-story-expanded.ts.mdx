@@ -1,7 +1,7 @@
 ```ts
 // List.stories.ts
 
-import { moduleMetadata } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
 import { CommonModule } from '@angular/common';
 
@@ -9,6 +9,11 @@ import { List } from './list.component';
 import { ListItem } from './list-item.component';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
   decorators: [
     moduleMetadata({
@@ -16,35 +21,29 @@ export default {
       imports: [CommonModule],
     }),
   ],
-};
+} as Meta;
 
-export const Empty = {
-  render: (args) => ({
-    props: args,
-    template: '<list></list>',
-  }),
-};
+// Always an empty list, not super interesting
+export const Empty: Story = (args) => ({
+  props: args,
+  template: `<app-list></app-list>`,
+});
 
-export const OneItem = {
-  render: (args) => ({
-    props: args,
-    template: `
-      <list>
-        <list-item></app-list-item>
-      </app-list>`,
-  }),
-};
+export const OneItem: Story = (args) => ({
+  props: args,
+  template: `
+    <app-list>
+      <app-listitem></app-listitem>
+    </app-list>`,
+});
 
-export const ManyItems = {
-  render: (args) => ({
-    props: args,
-    template: `
-      <list>
-        <list-item></list-item>
-        <list-item></list-item>
-        <list-item></list-item>
-      </app-list>
-    `,
-  }),
-};
+export const ManyItems: Story = (args) => ({
+  props: args,
+  template: `
+    <app-list>
+      <app-listitem></app-listitem>
+      <app-listitem></app-listitem>
+      <app-listitem></app-listitem>
+    </app-list>`,
+});
 ```
