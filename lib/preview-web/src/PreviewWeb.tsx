@@ -378,7 +378,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousStory = story;
 
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
-
     if (FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
         id: storyId,
