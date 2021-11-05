@@ -115,3 +115,7 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
       : {}
 );
 IconButton.displayName = 'IconButton';
+
+export const IconButtonSkeleton = () => (
+  <div style={{ backgroundColor: 'grey', width: '20px', height: '20px' }} />
+);
