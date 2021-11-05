@@ -1,7 +1,9 @@
-```js
-// Button.stories.js|jsx
+```ts
+// Button.stories.ts|tsx
 
 import React from 'react';
+
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { action } from '@storybook/addon-actions';
 
@@ -14,7 +16,7 @@ export default {
    */
   title: 'Button', 
   component: Button,
-};
+} as ComponentMeta<typeof Button>;
 
-export const Text = () => <Button label="Hello" onClick={action('clicked')} />;
+export const Basic: ComponentStory<typeof Button> = () => <Button label="Hello" onClick={action('clicked')} />;
 ```

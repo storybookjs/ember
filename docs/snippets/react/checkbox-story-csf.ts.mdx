@@ -1,7 +1,9 @@
-```js
-// Checkbox.stories.js|jsx
+```ts
+// Checkbox.stories.ts|tsx
 
 import React from 'react';
+
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Checkbox } from './Checkbox';
 
@@ -12,9 +14,9 @@ export default {
    */
   title: 'Checkbox', 
   component: Checkbox,
-};
+} as ComponentMeta<typeof Checkbox>;
 
-export const allCheckboxes = () => (
+export const allCheckboxes: ComponentStory<typeof Checkbox> = () => (
   <form>
     <Checkbox id="Unchecked" label="Unchecked" />
     <Checkbox id="Checked" label="Checked" checked />
