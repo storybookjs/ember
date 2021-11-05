@@ -333,7 +333,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // - a story selected in "docs" viewMode,
   //     in which case we render the docsPage for that story
   async renderSelection({ persistedArgs }: { persistedArgs?: Args } = {}) {
-    const { selection, selectionSpecifier } = this.urlStore;
+    const { selection } = this.urlStore;
     if (!selection) {
       throw new Error('Cannot render story as no selection was made');
     }
