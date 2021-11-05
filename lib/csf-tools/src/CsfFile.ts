@@ -234,6 +234,15 @@ export class CsfFile {
                 };
               }
             });
+          } else if (node.specifiers.length > 0) {
+            // export { X as Y }
+            node.specifiers.forEach((specifier) => {
+              if (t.isExportSpecifier(specifier) && t.isIdentifier(specifier.exported)) {
+                const { name: exportName } = specifier.exported;
+                self._storyAnnotations[exportName] = {};
+                self._stories[exportName] = { id: 'FIXME', name: exportName, parameters: {} };
+              }
+            });
           }
         },
       },
