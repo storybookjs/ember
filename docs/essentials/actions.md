@@ -36,7 +36,19 @@ When Storybook sees this argType, it will create an arg set to a special “acti
 
 ### Automatically matching args
 
-Another option is to use a parameter to match all [argTypes](../api/argtypes.md) that match a certain pattern. The following configuration automatically creates actions for each `on` argType (which you can either specify manually or can be [inferred automatically](../api/argtypes.md#automatic-argtype-inference)).
+Another option is to use a global parameter to match all [argTypes](../api/argtypes.md) that match a certain pattern. The following configuration automatically creates actions for each `on` argType (which you can either specify manually or can be [inferred automatically](../api/argtypes.md#automatic-argtype-inference)).
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-preview-matching-argtypes.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+If you need more granular control over which `argTypes` are matched, you can adjust your stories and include the `argTypes` parameter. For example:
 
 <!-- prettier-ignore-start -->
 

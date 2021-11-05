@@ -8,7 +8,7 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import MyComponent from './MyComponent.svelte';
 
 <Meta
-  title="Stories"
+  title="MyComponent"
   parameters={{
     viewport: {
       viewports: INITIAL_VIEWPORTS,
@@ -17,16 +17,17 @@ import MyComponent from './MyComponent.svelte';
   }}
   component={MyComponent} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story
   name="MyStory"
   parameters={{
     viewport: {
       defaultViewport: 'iphonex',
     }
+  }}>
+   {() => {
+    return {
+      Component: MyComponent,
+    };
   }}
-  render={() => ({
-    Component: MyComponent,
-  })} />
+</Story>
 ```

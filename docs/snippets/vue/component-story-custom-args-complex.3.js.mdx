@@ -4,6 +4,11 @@
 import YourComponent from './YourComponent.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'YourComponent',
   component: YourComponent,
   //👇 Creates specific argTypes with options
   argTypes: {
@@ -22,27 +27,28 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
   // Makes some computations and returns something
 };
 
-export const ExampleStory = {
-  args: {
-    propertyA: 'Something',
-    propertyB: 'Something else',
-  },
-  render: (args) => {
-    const { propertyA, propertyB } = args;
-    //👇 Assigns the function result to a variable
-    const functionResult = someFunction(propertyA, propertyB);
-    return {
-      components: { YourComponent },
-      setup() {
-        return {
+const Template = (args) => {
+  //👇 Assigns the function result to a variable
+  const functionResult = someFunction(args.propertyA, args.propertyB);
+  return {
+    components: { YourComponent },
+    setup() {
+      //👇 The args will now be passed down to the template
+      return {
+        args: {
           ...args,
           //👇 Replaces arg variable with the override (without the need of mutation)
           someProperty: functionResult,
-        };
-      },
-      template:
-        '<YourComponent :propertyA="propertyA" :propertyB="propertyB" :someProperty="someProperty"/>',
-    };
-  },
+        },
+      };
+    },
+    template:  '<YourComponent :propertyA="propertyA" :propertyB="propertyB" :someProperty="someProperty"/>',
+  };
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

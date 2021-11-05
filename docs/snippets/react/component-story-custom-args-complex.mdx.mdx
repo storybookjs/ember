@@ -1,24 +1,24 @@
 ```md
 <!--- YourComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import { YourComponent } from './your-component';
 
-<Meta title="Example of how to use argTypes and functions" component={YourComponent} />
-
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
+<Meta title="YourComponent" component={YourComponent} />
 
 <!---👇 A function to apply some computations -->
 
 export const someFunction = (valuePropertyA, valuePropertyB) => {
-
-  <!--- Makes some computations and returns something -->
-
+  // Makes some computations and returns something
 };
 
-<!---👇 Assigns the function result to a variable -->
+export const Template = ({propertyA,propertyB,...rest})=>{
+  //👇 Assigns the function result to a variable
+
+const someFunctionResult = someFunction(propertyA, propertyB);
+  return <YourComponent someProperty={someFunctionResult} {...rest} />;
+}
 
 <Canvas>
   <Story
@@ -42,11 +42,8 @@ export const someFunction = (valuePropertyA, valuePropertyB) => {
     args={{
       propertyA: 'Item One',
       propertyB: 'Another Item One',
-    }}
-    render={(args) => {
-      const { propertyA, propertyB } = args;
-      const someFunctionResult = someFunction(propertyA, propertyB);
-      return <YourComponent {...args} someProperty={someFunctionResult} />;
-    }} />
+    }}>
+    {Template.bind({})}
+  </Story>
 </Canvas>
 ```

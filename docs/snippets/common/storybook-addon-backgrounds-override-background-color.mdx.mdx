@@ -7,7 +7,10 @@ import { Button } from './Button';
 
 <Meta title="Button" component={Button} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args) => ({
+   //👇 Your template goes here
+});
+
 
 <Story
   name="Large"
@@ -15,7 +18,7 @@ import { Button } from './Button';
     backgrounds: {
       default: 'facebook',
     },
-  }}
-  render={() => ({ })}>
+  }}>
+  {Template.bind({})}
 </Story>
 ```

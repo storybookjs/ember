@@ -1,11 +1,16 @@
 ```js
-// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+// MyComponent.stories.js|jsx|ts|tsx
 
 import React from 'react';
 
 import { MyComponent } from './MyComponent';
 
 export default {
+    /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'MyComponent',
   component: MyComponent,
 };
 
@@ -24,10 +29,8 @@ const getCaptionForLocale = (locale) => {
   }
 };
 
-export const StoryWithLocale = {
-  render: (args, { globals: { locale } }) => {
-    const caption = getCaptionForLocale(locale);
-    return <>{caption}</>;
-  },
+export const StoryWithLocale = (args, { globals: { locale } }) => {
+  const caption = getCaptionForLocale(locale);
+  return <>{caption}</>;
 };
 ```

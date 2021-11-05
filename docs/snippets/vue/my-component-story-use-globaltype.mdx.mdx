@@ -5,7 +5,7 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import MyComponent from './MyComponent.vue';
 
-<Meta title="MDX Story with toolbars" component={MyComponent} />
+<Meta title="MyComponent" component={MyComponent} />
 
 export const getCaptionForLocale = (locale) => {
   switch(locale) {
@@ -18,14 +18,12 @@ export const getCaptionForLocale = (locale) => {
   }
 };
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
-<Story 
-  name="StoryWithLocale"
-  render={(args, { globals: { locale } }) => {
+<Story name="StoryWithLocale">
+  {(args, { globals: { locale } }) => {
     const caption = getCaptionForLocale(locale);
     return {
       template: `<p>${caption}</p>`,
     };
-  }} />
+  }}
+</Story>
 ```

@@ -1,5 +1,5 @@
 ```js
-// MyComponent.stories.js | MyComponent.stories.ts | MyComponent.stories.jsx | MyComponent.stories.tsx
+// MyComponent.stories.js|jsx
 
 import React from 'react';
 
@@ -8,6 +8,11 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'MyComponent',
   component: MyComponent,
   parameters: {
     //👇 The viewports object from the Essentials addon
@@ -20,11 +25,10 @@ export default {
   },
 };
 
-export const MyStory = {
-  parameters: {
-    viewport: {
-      defaultViewport: 'iphonex',
-    },
+export const MyStory = () => <MyComponent />;
+MyStory.parameters = {
+  viewport: {
+    defaultViewport: 'iphonex',
   },
 };
 ```
