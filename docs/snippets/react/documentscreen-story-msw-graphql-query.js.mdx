@@ -1,5 +1,5 @@
 ```js
-// YourPage.stories.js | YourPage.stories.jsx | YourPage.stories.ts | YourPage.stories.tsx
+// YourPage.stories.js|jsx|ts|tsx
 
 import React from 'react';
 
@@ -10,6 +10,11 @@ import { graphql } from 'msw';
 import { DocumentScreen } from './YourPage';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
 };
 
@@ -77,40 +82,34 @@ const TestData = {
   ],
 };
 
-export const MockedSuccess = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(ctx.data(TestData));
-      }),
-    ],
-  },
-  render: () => (
-    <ApolloProvider client={mockedClient}>
-      <DocumentScreen />
-    </ApolloProvider>
-  ),
+const PageTemplate = () => (
+  <ApolloProvider client={mockedClient}>
+    <DocumentScreen />
+  </ApolloProvider>
+);
+
+export const MockedSuccess = PageTemplate.bind({});
+MockedSuccess.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(ctx.data(TestData));
+    }),
+  ],
 };
 
-export const MockedError = {
-  parameters: {
-    msw: [
-      graphql.query('AllInfoQuery', (req, res, ctx) => {
-        return res(
-          ctx.delay(800),
-          ctx.errors([
-            {
-              message: 'Access denied',
-            },
-          ])
-        );
-      }),
-    ],
-  },
-  render: () => (
-    <ApolloProvider client={mockedClient}>
-      <DocumentScreen />
-    </ApolloProvider>
-  ),
+export const MockedError = PageTemplate.bind({});
+MockedError.parameters = {
+  msw: [
+    graphql.query('AllInfoQuery', (req, res, ctx) => {
+      return res(
+        ctx.delay(800),
+        ctx.errors([
+          {
+            message: 'Access denied',
+          },
+        ])
+      );
+    }),
+  ],
 };
 ```

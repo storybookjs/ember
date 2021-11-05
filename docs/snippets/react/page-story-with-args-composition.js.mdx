@@ -1,5 +1,7 @@
 ```js
-// YourPage.stories.js | YourPage.stories.jsx
+// YourPage.stories.js|jsx
+
+import React from 'react';
 
 import { DocumentScreen } from './YourPage';
 
@@ -9,14 +11,20 @@ import * as DocumentHeader from './DocumentHeader.stories';
 import * as DocumentList from './DocumentList.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
 };
 
-export const Simple = {
-  args: {
-    user: PageLayout.Simple.args.user,
-    document: DocumentHeader.Simple.args.document,
-    subdocuments: DocumentList.Simple.args.documents,
-  },
+const Template = (args) => <DocumentScreen {...args} />;
+
+export const Simple = Template.bind({});
+Simple.args = {
+  user: PageLayout.Simple.args.user,
+  document: DocumentHeader.Simple.args.document,
+  subdocuments: DocumentList.Simple.args.documents,
 };
 ```

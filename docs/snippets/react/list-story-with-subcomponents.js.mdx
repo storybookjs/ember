@@ -1,5 +1,5 @@
 ```js
-// List.stories.js | List.stories.jsx
+// List.stories.js|jsx
 
 import React from 'react';
 
@@ -7,17 +7,20 @@ import { List } from './List';
 import { ListItem } from './ListItem';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
   component: List,
   subcomponents: { ListItem }, //👈 Adds the ListItem component as a subcomponent
 };
 
-export const Empty = {};
+export const Empty = (args) => <List {...args} />;
 
-export const OneItem = {
-  render: (args) => (
-    <List {...args}>
-      <ListItem />
-    </List>
-  ),
-};
+export const OneItem = (args) => (
+  <List {...args}>
+    <ListItem />
+  </List>
+);
 ```

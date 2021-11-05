@@ -6,6 +6,11 @@ import { rest } from 'msw';
 import DocumentScreen from './YourPage.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'DocumentScreen',
   component: DocumentScreen,
 };
 
@@ -58,37 +63,26 @@ const TestData = {
   ],
 };
 
-export const MockedSuccess = {
-  parameters: {
-    msw: [
-      rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
-        return res(ctx.json(TestData));
-      }),
-    ],
-  },
-  render: (args) => ({
-    components: { DocumentScreen },
-    setup() {
-      return { args };
-    },
-    template: '<DocumentScreen v-bind="args" />',
-  }),
+const PageTemplate = () => ({
+  components: { DocumentScreen },
+  template: '<DocumentScreen />',
+});
+
+export const MockedSuccess = PageTemplate.bind({});
+MockedSuccess.parameters = {
+  msw: [
+    rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
+      return res(ctx.json(TestData));
+    }),
+  ],
 };
 
-export const MockedError = {
-  parameters: {
-    msw: [
-      rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
-        return res(ctx.delay(800), ctx.status(403));
-      }),
-    ],
-  },
-  render: (args) => ({
-    components: { DocumentScreen },
-    setup() {
-      return { args };
-    },
-    template: '<DocumentScreen v-bind="args" />',
-  }),
+export const MockedError = PageTemplate.bind({});
+MockedError.parameters = {
+  msw: [
+    rest.get('https://your-restful-endpoint/', (_req, res, ctx) => {
+      return res(ctx.delay(800), ctx.status(403));
+    }),
+  ],
 };
 ```
