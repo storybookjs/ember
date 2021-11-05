@@ -13,7 +13,7 @@ import {
 } from '@storybook/store';
 import { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
-import { readCsfOrMdx, getStorySortParameter, NoMetaError } from '@storybook/csf-tools';
+import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
 import { ComponentTitle } from '@storybook/csf';
 
 function sortExtractedStories(
