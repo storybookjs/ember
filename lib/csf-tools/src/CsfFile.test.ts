@@ -285,6 +285,26 @@ describe('CsfFile', () => {
               __id: foo-bar--b
       `);
     });
+
+    it('re-exported stories', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export { default as A } from './A';
+          export { B } from './B';
+        `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+          - id: foo-bar--b
+            name: B
+      `);
+    });
   });
 
   describe('error handling', () => {
