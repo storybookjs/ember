@@ -1,0 +1,23 @@
+```js
+// MyComponent.test.js
+
+import { render } from '@testing-library/vue';
+
+import { composeStories } from '@storybook/testing-vue';
+
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+import * as MyComponentStories from './MyComponent.stories';
+
+const { Accessible } = composeStories(MyComponentStories);
+
+expect.extend(toHaveNoViolations);
+
+test('Example accessiblity test', async () => {
+  const { container } = render(Accessible());
+
+  const AxeResults = await axe(container);
+
+  expect(AxeResults).toHaveNoViolations();
+});
+```

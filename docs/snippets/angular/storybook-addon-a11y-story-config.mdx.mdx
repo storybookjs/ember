@@ -1,15 +1,19 @@
-```js
-// MyComponent.stories.js|jsx|ts|tsx
+```md
+<!-- MyComponent.stories.mdx -->
 
-import { MyComponent } from './MyComponent';
+import { Meta, Story } from '@storybook/addon-docs';
 
-export default {
-  component: MyComponent,
-};
+import { MyComponent } from './MyComponent.component';
 
-export const ExampleStory = {
-  args: {},
-  parameters: {
+<Meta 
+  title="Configure a11y addon" 
+  component={MyComponent} />
+
+export const Template = () => ({});
+
+<Story
+  name="ExampleStory"
+  parameters={{
     a11y: {
       element: '#root',
       config: {
@@ -29,6 +33,7 @@ export const ExampleStory = {
       options: {},
       manual: true,
     },
-  },
-};
+  }}>
+  {Template.bind({})}
+</Story>
 ```

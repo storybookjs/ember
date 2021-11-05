@@ -12,9 +12,9 @@ In a nutshell, you start by supplying the appropriate props for the initial stat
 
 You can set up interaction testing in Storybook using the `play` function and [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/).
 
-- `play` function is a convenient helper method to help test use cases that would otherwise require manual interaction from a user. They are small snippets of code that run after the story finishes rendering.
+- [`play`](../writing-stories/play-function.md) function is a convenient helper method to help test use cases that would otherwise require manual interaction from a user. They are small snippets of code that run after the story finishes rendering.
 
-- `@storybook/addon-interactions` includes helper utilities and a playback interface that simulates user behavior in the browser. It’s powered Testing Library and includes convenient instrumentation for debugging.
+- [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) includes helper utilities and a playback interface that simulates user behavior in the browser. It’s powered Testing Library and includes convenient instrumentation for debugging.
 
 Here's an example of how to set up interaction testing in Storybook with the `play` function:
 
@@ -22,7 +22,17 @@ Here's an example of how to set up interaction testing in Storybook with the `pl
 
 <CodeSnippets
   paths={[
-    'common/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'react/login-form-with-play-function.mdx.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.mdx.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.mdx-2.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'vue/login-form-with-play-function.mdx-3.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
+    'svelte/login-form-with-play-function.mdx.mdx',
   ]}
 />
 
@@ -55,27 +65,9 @@ Below is an abridged API for user-event. For more, check out the [official user-
 | `type`            | Writes text inside inputs, or textareas <br/>`userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
 | `unhover`         | Unhovers out of element <br/>`userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
 
-## Running tests
-
-In addition to interacting with the component using the `play` function, you can also write assertions to verify behavior. That offers a complete testing workflow without additional packages or configuration.
-
-The example below showcases how a form component behaves when information is added.
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/my-component-interaction-test-with-play-function.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-When Storybook finishes rendering the story, it interacts with the component, fills in the form, simulates a button click, and verifies if the values returned match the provided ones.
-
 ### Debugging
 
-The [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/) addon includes a set of UI controls to allow you control over the test execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also, providing you with an easy-to-use debugger for errors.
+The [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) addon includes a set of UI controls to allow you control over the test execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also, providing you with an easy-to-use debugger for errors.
 
 ![Storybook addon interactions preview](./addon-interactions-preview.png)
 

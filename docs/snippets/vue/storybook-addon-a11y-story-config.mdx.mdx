@@ -1,17 +1,23 @@
-```js
-// MyComponent.stories.js|jsx|ts|tsx
+```md
+<!-- MyComponent.stories.mdx -->
 
-import { MyComponent } from './MyComponent';
+import { Meta, Story } from '@storybook/addon-docs';
 
-export default {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading to learn how to generate automatic titles
-   */
-  title: 'Configure a11y addon',
-  component: MyComponent,
-  parameters: {
+import MyComponent from './MyComponent.vue';
+
+<Meta 
+  title="Configure a11y addon" 
+  component={MyComponent} />
+
+export const Template = () => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+<Story
+  name="ExampleStory"
+  parameters={{
     a11y: {
-      // Optional selector to inspect
       element: '#root',
       config: {
         rules: [
@@ -30,6 +36,7 @@ export default {
       options: {},
       manual: true,
     },
-  },
-};
+  }}>
+  {Template.bind({})}
+</Story>
 ```
