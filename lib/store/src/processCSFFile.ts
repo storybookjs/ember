@@ -48,8 +48,8 @@ export function processCSFFile<TFramework extends AnyFramework>(
     title,
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
     parameters: {
-      ...defaultExport.parameters,
       fileName: importPath,
+      ...defaultExport.parameters,
     },
   };
   checkDisallowedParameters(meta.parameters);
