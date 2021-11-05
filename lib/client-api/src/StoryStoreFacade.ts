@@ -22,6 +22,7 @@ import {
   sortStoriesV6,
   StoryIndexEntry,
 } from '@storybook/store';
+import { logger } from '@storybook/client-logger';
 
 const { STORIES = [] } = global;
 
@@ -160,11 +161,12 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
         }))
       );
     if (!title) {
-      throw new Error(
+      logger.info(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
           fileExports.default
         )}`
       );
+      return;
     }
 
     this.csfExports[fileName] = {
