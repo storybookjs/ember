@@ -24,6 +24,7 @@ const isFile = (file: string): boolean => {
 };
 
 interface Output {
+  features?: Record<string, boolean>;
   preview?: string;
   stories?: NormalizedStoriesSpecifier[];
   requireContexts?: string[];
@@ -56,7 +57,9 @@ function getConfigPathParts(input: string): Output {
       output.preview = preview;
     }
     if (main) {
-      const { stories = [] } = jest.requireActual(main);
+      const { stories = [], features = {} } = jest.requireActual(main);
+
+      output.features = features;
 
       const workingDir = process.cwd();
       output.stories = stories.map((entry: StoriesEntry) => {
@@ -88,8 +91,9 @@ function configure<TFramework extends AnyFramework>(
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
 
-  const { preview, stories, requireContexts } = getConfigPathParts(configPath);
+  const { preview, features, stories, requireContexts } = getConfigPathParts(configPath);
 
+  global.FEATURES = features;
   global.STORIES = stories.map((specifier) => ({
     ...specifier,
     importPathMatcher: specifier.importPathMatcher.source,

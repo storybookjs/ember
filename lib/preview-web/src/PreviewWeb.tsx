@@ -31,7 +31,7 @@ import { WebProjectAnnotations } from './types';
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 
-const { window: globalWindow, AbortController, FEATURES, fetch } = global;
+const { window: globalWindow, AbortController, fetch } = global;
 
 function focusInInput(event: Event) {
   const target = event.target as Element;
@@ -77,7 +77,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   constructor() {
     this.channel = addons.getChannel();
-    if (FEATURES?.storyStoreV7) {
+    if (global.FEATURES?.storyStoreV7) {
       this.serverChannel = addons.getServerChannel();
     }
     this.view = new WebView();
@@ -120,7 +120,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         this.setupListeners();
 
         let storyIndexPromise: PromiseLike<StoryIndex>;
-        if (FEATURES?.storyStoreV7) {
+        if (global.FEATURES?.storyStoreV7) {
           storyIndexPromise = this.getStoryIndexFromServer();
         } else {
           if (!getStoryIndex) {
@@ -135,10 +135,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
               .initialize({
                 storyIndex,
                 importFn,
-                cache: !FEATURES?.storyStoreV7,
+                cache: !global.FEATURES?.storyStoreV7,
               })
               .then(() => {
-                if (!FEATURES?.storyStoreV7) {
+                if (!global.FEATURES?.storyStoreV7) {
                   this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
                 }
 
@@ -307,7 +307,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       await this.selectSpecifiedStory();
     }
 
-    if (!FEATURES?.storyStoreV7) {
+    if (!global.FEATURES?.storyStoreV7) {
       this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
     }
   }
@@ -387,7 +387,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousStory = story;
 
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
-    if (FEATURES?.storyStoreV7) {
+    if (global.FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
         id: storyId,
         parameters,
@@ -432,7 +432,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const fullDocsContext = {
         ...docsContext,
         // Put all the storyContext fields onto the docs context for back-compat
-        ...(!FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
+        ...(!global.FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
       (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
@@ -449,14 +449,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // of which ones were rendered by the docs page.
     // However, in `modernInlineRender`, the individual stories track their own events as they
     // each call `renderStoryToElement` below.
-    if (!global?.FEATURES?.modernInlineRender) {
+    if (!global.FEATURES?.modernInlineRender) {
       this.channel.on(Events.UPDATE_GLOBALS, render);
       this.channel.on(Events.UPDATE_STORY_ARGS, render);
       this.channel.on(Events.RESET_STORY_ARGS, render);
     }
 
     return async () => {
-      if (!global?.FEATURES?.modernInlineRender) {
+      if (!global.FEATURES?.modernInlineRender) {
         this.channel.off(Events.UPDATE_GLOBALS, render);
         this.channel.off(Events.UPDATE_STORY_ARGS, render);
         this.channel.off(Events.RESET_STORY_ARGS, render);
