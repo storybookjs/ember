@@ -1,9 +1,16 @@
 ```ts
 // Button.stories.ts
 
+import { Meta, Story } from '@storybook/angular';
+
 import { Button } from './button.component';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
   component: Button,
   //👇 Creates specific parameters for the story
   parameters: {
@@ -11,11 +18,9 @@ export default {
       data: 'this data is passed to the addon',
     },
   },
-};
+} as Meta;
 
-export const Basic = {
-  render: () => ({
-    template: `<app-button>hello</<app-button>`,
-  }),
-};
+export const Basic: Story = () => ({
+   template: `<app-button>hello</<app-button>`,
+});
 ```

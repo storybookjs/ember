@@ -1,7 +1,9 @@
-```js
-// Button.stories.js|jsx
+```ts
+// Button.stories.ts|tsx
 
 import React from 'react';
+
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Button } from './Button';
 
@@ -18,7 +20,7 @@ export default {
       data: 'this data is passed to the addon',
     },
   },
-};
+} as ComponentMeta<typeof Button>;
 
-export const Basic = () => <Button>hello</Button>;
+const Basic: ComponentStory<typeof Button> = () => <Button>hello</Button>;
 ```
