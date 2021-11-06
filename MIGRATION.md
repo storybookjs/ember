@@ -190,7 +190,7 @@ Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, i
 upgrade the configuration. You can do this automatically by running:
 
 ```
-npx sb@next fix
+npx sb@next automigrate
 ```
 
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
