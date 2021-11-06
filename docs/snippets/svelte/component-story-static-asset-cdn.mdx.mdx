@@ -7,15 +7,16 @@ import MyComponent from './MyComponent.svelte';
 
 <Meta title="img" component={MyComponent} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story 
-  name="withAnImage"
-  render={() => ({
-    Component: MyComponent,
-    props: {
-      src: 'https://place-hold.it/350x150',
-      alt: 'my image',
-    },
-  })} />
+  name="WithAnImage">
+  {() => {
+    return {
+      Component: MyComponent,
+      props: {
+        src: 'https://place-hold.it/350x150',
+        alt: 'my image',
+      },
+    };
+  }}
+</Story>
 ```

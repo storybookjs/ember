@@ -4,6 +4,10 @@
 import imageFile from './static/image.png';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
   title: 'img',
 };
 
@@ -12,13 +16,13 @@ const image = {
   alt: 'my image',
 };
 
-export const WithAnImage = {
-  render: () => ({
+export const WithAnImage = () => {
+  return {
     setup() {
-      //👇 Returns the content of the image object create above.
+       //👇 Returns the content of the image object create above.
       return { image };
     },
     template: `<img v-bind="image"/>`,
-  }),
+  };
 };
 ```

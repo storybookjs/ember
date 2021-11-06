@@ -2,7 +2,7 @@
 title: 'TypeScript'
 ---
 
-Storybook has built-in Typescript support, so your Typescript project should work with zero configuration needed [unless you use the `paths` option in your TSConfig.](./webpack#typescript-module-resolution)
+Storybook has built-in Typescript support, so your Typescript project should work with zero configuration needed.
 
 ### Default configuration
 
@@ -18,7 +18,7 @@ Each framework uses the base configuration unless otherwise specified:
 
 To make it easier to configure Typescript handling, use the `typescript` field in your [`.storybook/main.js`](./overview.md#configure-story-rendering).
 
-The following code snippets shows the fields for you to use with TypeScript:
+The following code snippets show the fields for you to use with TypeScript:
 
 <!-- prettier-ignore-start -->
 
@@ -37,15 +37,13 @@ The following code snippets shows the fields for you to use with TypeScript:
 | **reactDocgen**                  | React     | Which react docgen processor to run: `"react-docgen-typescript"`, `"react-docgen"`, `false` | string or false                                                                                                   |
 | **reactDocgenTypescriptOptions** | React     | Options to pass to react-docgen-typescript-plugin if react-docgen-typescript is enabled.    | [See docs](https://github.com/hipstersmoothie/react-docgen-typescript-plugin)                                     |
 
-See default values [here](https://github.com/storybookjs/storybook/blob/next/lib/core-server/src/presets/common-preset.ts#L51)
-
 ### Overriding the configuration to infer additional props
 
-The configuration provided above will remove any props from any third party libraries.
+The configuration provided above will remove any props from any third-party libraries.
 
-If it's required you can adjust the configuration and include the extra props.
+If required, you can adjust the configuration and include the extra props.
 
-Adjust the configuration as shown below and any third party props will be displayed as soon as you restart your Storybook.
+Adjust the configuration as demonstrated below. And the next time you restart your Storybook, the extra props will also be in the UI.
 
 <!-- prettier-ignore-start -->
 
@@ -57,8 +55,6 @@ Adjust the configuration as shown below and any third party props will be displa
 
 <!-- prettier-ignore-end -->
 
-Next time you restart your Storybook the extra props will also be in the UI.
-
 <div class="aside">
-If you run into an issue where the extra props aren't included, check how your component is being exported. If it's using a default export, change it to a named export and the extra props will be included as well.
+If you run into an issue where any additional props don't show up, check your component's code. If you're using a default export, change it to a named export, and doing that will ensure that the additional props are included.
 </div>

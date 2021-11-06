@@ -14,15 +14,13 @@ export const image = {
   alt: 'my image',
 };
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
-<Story 
-  name="withAnImage"
-  render={() => ({
+<Story name="WithAnImage">
+  {{
     props: {
       src: image.src,
       alt: image.alt,
     },
     template: `<img src="{{src}}" alt="{{alt}}" />`,
-  })} />
+  }}
+</Story>
 ```

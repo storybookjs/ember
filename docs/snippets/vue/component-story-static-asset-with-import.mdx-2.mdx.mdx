@@ -9,22 +9,23 @@ import imageFile from './static/image.png'
 
 export const image = {
   src: imageFile,
-  alt: "my image",
+  alt: 'my image',
 };
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
 <Story 
-  name="withAnImage"
-  render={() => ({
-    props: {
-      src: {
-        default: () => image.src,
+  name="WithAnImage">
+  {() => {
+    return {
+      props: {
+        src: {
+          default: () => image.src,
+        },
+        alt: {
+          default: () => image.alt,
+        },
       },
-      alt: {
-        default: () => image.alt,
-      },
-    },
-    template: `<img :src="src" :alt="alt"/>`,
-  })} />
+      template: `<img :src="src" :alt="alt"/>`,
+    };
+  }}
+</Story>
 ```
