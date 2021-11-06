@@ -148,7 +148,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       title ||
       autoTitle(
         fileName,
-        global.STORIES.map(
+        (global.STORIES || []).map(
           (specifier: NormalizedStoriesSpecifier & { importPathMatcher: string }) => ({
             ...specifier,
             importPathMatcher: new RegExp(specifier.importPathMatcher),

@@ -91,7 +91,9 @@ function configure<TFramework extends AnyFramework>(
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
 
-  const { preview, features, stories, requireContexts } = getConfigPathParts(configPath);
+  const { preview, features = {}, stories = [], requireContexts = [] } = getConfigPathParts(
+    configPath
+  );
 
   global.FEATURES = features;
   global.STORIES = stories.map((specifier) => ({
