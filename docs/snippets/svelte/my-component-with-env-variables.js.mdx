@@ -4,16 +4,22 @@
 import MyComponent from './MyComponent.svelte';
 
 export default {
+   /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'MyComponent',
   component: MyComponent,
 };
 
-const Template = {
-  args: {
-    propertyA: process.env.STORYBOOK_DATA_KEY,
-  },
-  render: (args) => ({
-    Component: MyComponent,
-    props: args,
-  }),
+
+const Template = (args) => ({
+  Component: MyComponent,
+  props: args,
+});
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
+  propertyA: process.env.STORYBOOK_DATA_KEY
 };
 ```

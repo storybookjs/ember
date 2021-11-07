@@ -9,17 +9,19 @@ import imageFile from './static/image.png'
 
 export const image = {
   src: imageFile,
-  alt: "my image",
+  alt: 'my image',
 };
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
 
 <Story 
-  name="withAnImage"
-  render={() => ({
-    setup() {
-      return { image };
-    },
-    template: `<img v-bind="image"/>`,
-  })} />
+  name="WithAnImage">
+  {() => {
+    return {
+      setup() {
+        return { image };
+      },
+      template: `<img v-bind="image"/>`,
+    };
+  }}
+</Story>
 ```

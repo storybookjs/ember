@@ -1,17 +1,19 @@
-```js
-// MyComponent.stories.js|jsx
+```ts
+//  MyComponent.stories.ts|tsx
 
 import React from 'react';
 
 import imageFile from './static/image.png';
 
+import { Meta } from '@storybook/react';
+
 export default {
-   /* 👇 The title prop is optional.
+  /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
   title: 'img',
-};
+} as Meta;
 
 const image = {
   src: imageFile,

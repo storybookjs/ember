@@ -7,11 +7,14 @@ import { MyComponent } from './MyComponent.component';
 
 <Meta title="img" component={MyComponent}/>
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
-
+<!-- Assume image.png is located in the "public" directory.-->
 <Story 
-  name="withAnImage"
-  render={() => ({
-    template: `<img src="/otherimage.jpg" alt="my image"/>`,
-  })} />
+  name="WithAnImage">
+  {{
+    props: {
+      src: '/image.png',
+      alt: 'my image',
+    },
+  }}
+</Story>
 ```

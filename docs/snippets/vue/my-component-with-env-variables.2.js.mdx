@@ -4,17 +4,22 @@
 import MyComponent from './MyComponent.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'MyComponent',
   component: MyComponent,
 };
 
-export const ExampleStory = {
-  args: {
-    propertyA: process.env.STORYBOOK_DATA_KEY,
-  },
-  render: (args, { argTypes }) => ({
-    components: { MyComponent },
-    props: Object.keys(argTypes),
-    template: `<MyComponent v-bind="$props"/>`,
-  }),
+const Template = (args, { argTypes }) => ({
+  components: { MyComponent },
+  props: Object.keys(argTypes),
+  template: '<MyComponent v-bind="$props"/>',
+});
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
+  propertyA: process.env.STORYBOOK_DATA_KEY,
 };
 ```

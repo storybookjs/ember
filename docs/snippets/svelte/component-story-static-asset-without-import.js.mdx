@@ -4,17 +4,20 @@
 import MyComponent from './MyComponent.svelte';
 
 export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'img',
   component: MyComponent,
 };
 
 // Assume image.png is located in the "public" directory.
-export const WithAnImage = {
-  render: () => ({
-    Component: MyComponent,
+export const WithAnImage = () => ({
+  Component: MyComponent,
     props: {
       src: '/image.png',
       alt: 'my image',
     },
-  }),
-};
+});
 ```
