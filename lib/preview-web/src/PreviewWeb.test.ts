@@ -186,6 +186,16 @@ describe('PreviewWeb', () => {
         foo: 'url',
       });
     });
+    it('updates args from the URL', async () => {
+      document.location.search = '?id=component-one--a&args=foo:url';
+
+      await createAndRenderPreview();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'url' },
+      });
+    });
 
     it('allows async getProjectAnnotations', async () => {
       const preview = new PreviewWeb();
