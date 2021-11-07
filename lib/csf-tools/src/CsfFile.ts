@@ -100,6 +100,26 @@ const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
   return false;
 };
 
+const parseExportsOrder = (init: t.Expression) => {
+  if (t.isArrayExpression(init)) {
+    return init.elements.map((item: t.Expression) => {
+      if (t.isStringLiteral(item)) {
+        return item.value;
+      }
+      throw new Error(`Expected string literal named export: ${item}`);
+    });
+  }
+  throw new Error(`Expected array of string literals: ${init}`);
+};
+
+const sortExports = (exportByName: Record<string, any>, order: string[]) => {
+  return order.reduce((acc, name) => {
+    const namedExport = exportByName[name];
+    if (namedExport) acc[name] = namedExport;
+    return acc;
+  }, {} as Record<string, any>);
+};
+
 export interface CsfOptions {
   defaultTitle: string;
   fileName?: string;
@@ -133,6 +153,8 @@ export class CsfFile {
   _storyAnnotations: Record<string, Record<string, t.Node>> = {};
 
   _templates: Record<string, t.Expression> = {};
+
+  _namedExportsOrder?: string[];
 
   constructor(ast: t.File, { defaultTitle, fileName }: CsfOptions) {
     this._ast = ast;
@@ -207,6 +229,10 @@ export class CsfFile {
             node.declaration.declarations.forEach((decl) => {
               if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
                 const { name: exportName } = decl.id;
+                if (exportName === '__namedExportsOrder') {
+                  self._namedExportsOrder = parseExportsOrder(decl.init);
+                  return;
+                }
                 self._storyExports[exportName] = decl;
                 let name = storyNameFromExport(exportName);
                 if (self._storyAnnotations[exportName]) {
@@ -343,6 +369,11 @@ export class CsfFile {
         delete self._storyAnnotations[key];
       }
     });
+
+    if (self._namedExportsOrder) {
+      self._storyExports = sortExports(self._storyExports, self._namedExportsOrder);
+      self._stories = sortExports(self._stories, self._namedExportsOrder);
+    }
 
     return self;
   }

@@ -60,9 +60,8 @@ export function processCSFFile<TFramework extends AnyFramework>(
   if (Array.isArray(__namedExportsOrder)) {
     exports = {};
     __namedExportsOrder.forEach((name) => {
-      if (namedExports[name]) {
-        exports[name] = namedExports[name];
-      }
+      const namedExport = namedExports[name];
+      if (namedExport) exports[name] = namedExport;
     });
   }
 
