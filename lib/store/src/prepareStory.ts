@@ -173,23 +173,26 @@ export function prepareStory<TFramework extends AnyFramework>(
     }, {} as Args);
     const mappedContext = { ...context, args: mappedArgs };
 
-    let finalContext: StoryContext<TFramework> = mappedContext;
-    if (context.parameters.argTypeTarget) {
-      const argsByTarget = groupArgsByTarget({ args: mappedArgs, ...context });
+    const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
+    return renderTimePassArgsFirst
+      ? (render as ArgsStoryFn<TFramework>)(mappedContext.args, mappedContext)
+      : (render as LegacyStoryFn<TFramework>)(mappedContext);
+  };
+  const decoratedStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
+  const unboundStoryFn = (context: StoryContext<TFramework>) => {
+    let finalContext: StoryContext<TFramework> = context;
+    if (global.FEATURES?.argTypeTargetsV7) {
+      const argsByTarget = groupArgsByTarget({ args: context.args, ...context });
       finalContext = {
-        ...mappedContext,
-        fullArgs: mappedArgs,
+        ...context,
+        allArgs: context.args,
         argsByTarget,
         args: argsByTarget[NO_TARGET_NAME],
       };
     }
 
-    const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
-    return renderTimePassArgsFirst
-      ? (render as ArgsStoryFn<TFramework>)(finalContext.args, finalContext)
-      : (render as LegacyStoryFn<TFramework>)(finalContext);
+    return decoratedStoryFn(finalContext);
   };
-  const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
   const playFunction = storyAnnotations.play;
 
   return Object.freeze({
