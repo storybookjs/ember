@@ -130,7 +130,7 @@ Static parameters can be defined using the `params` story parameter. For example
 }
 ```
 
-The Red and Green story HTML will be fetched from the urls `server.url/controls/button?color=red&label=Stopr` and `server.url/controls/button?color=green&label=OK`
+The Red and Green story HTML will be fetched from the urls `server.url/controls/button?color=red&label=Stop` and `server.url/controls/button?color=green&label=OK`
 
 Like all story parameters server params can be defined in the default export and overridden in stories.
 
