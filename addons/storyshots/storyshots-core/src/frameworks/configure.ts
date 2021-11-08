@@ -91,6 +91,11 @@ function configure<TFramework extends AnyFramework>(
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
 
+  if (config && typeof config === 'function') {
+    config(storybook);
+    return;
+  }
+
   const { preview, features = {}, stories = [], requireContexts = [] } = getConfigPathParts(
     configPath
   );
@@ -100,11 +105,6 @@ function configure<TFramework extends AnyFramework>(
     ...specifier,
     importPathMatcher: specifier.importPathMatcher.source,
   }));
-
-  if (config && typeof config === 'function') {
-    config(storybook);
-    return;
-  }
 
   if (preview) {
     // This is essentially the same code as lib/core/src/server/preview/virtualModuleEntry.template
