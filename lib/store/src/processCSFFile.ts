@@ -39,7 +39,6 @@ export function processCSFFile<TFramework extends AnyFramework>(
   title: ComponentTitle
 ): CSFFile<TFramework> {
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
-  let exports = namedExports;
 
   const { id, argTypes } = defaultExport;
   const meta: NormalizedComponentAnnotations<TFramework> = {
@@ -54,23 +53,11 @@ export function processCSFFile<TFramework extends AnyFramework>(
   };
   checkDisallowedParameters(meta.parameters);
 
-  // prefer a user/loader provided `__namedExportsOrder` array if supplied
-  // we do this as es module exports are always ordered alphabetically
-  // see https://github.com/storybookjs/storybook/issues/9136
-  if (Array.isArray(__namedExportsOrder)) {
-    exports = {};
-    __namedExportsOrder.forEach((name) => {
-      if (namedExports[name]) {
-        exports[name] = namedExports[name];
-      }
-    });
-  }
-
   const csfFile: CSFFile<TFramework> = { meta, stories: {} };
 
-  Object.keys(exports).forEach((key) => {
+  Object.keys(namedExports).forEach((key) => {
     if (isExportStory(key, meta)) {
-      const storyMeta = normalizeStory(key, exports[key], meta);
+      const storyMeta = normalizeStory(key, namedExports[key], meta);
       checkDisallowedParameters(storyMeta.parameters);
 
       csfFile.stories[storyMeta.id] = storyMeta;
