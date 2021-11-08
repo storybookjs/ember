@@ -1,5 +1,5 @@
 import deepEqual from 'fast-deep-equal';
-import { SBType, Args, ArgTypes } from '@storybook/csf';
+import { SBType, Args, ArgTypes, StoryContext, AnyFramework } from '@storybook/csf';
 import { once } from '@storybook/client-logger';
 import isPlainObject from 'lodash/isPlainObject';
 import dedent from 'ts-dedent';
@@ -137,3 +137,22 @@ export const deepDiff = (value: any, update: any): any => {
   }
   return update;
 };
+
+export const NO_TARGET_NAME = '';
+export function groupArgsByTarget<TArgs = Args>({
+  args,
+  argTypes,
+}: StoryContext<AnyFramework, TArgs>) {
+  const groupedArgs: Record<string, Partial<TArgs>> = {};
+  (Object.entries(args) as [keyof TArgs, any][]).forEach(([name, value]) => {
+    const { target = NO_TARGET_NAME } = (argTypes[name] || {}) as { target: string };
+
+    groupedArgs[target] = groupedArgs[target] || {};
+    groupedArgs[target][name] = value;
+  });
+  return groupedArgs;
+}
+
+export function noTargetArgs<TArgs = Args>(context: StoryContext<AnyFramework, TArgs>) {
+  return groupArgsByTarget(context)[NO_TARGET_NAME];
+}
