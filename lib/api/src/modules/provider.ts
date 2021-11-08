@@ -23,6 +23,7 @@ type IframeRenderer = (
 
 export interface Provider {
   channel?: Channel;
+  serverChannel?: Channel;
   renderPreview?: IframeRenderer;
   handleAPI(api: API): void;
   getConfig(): {

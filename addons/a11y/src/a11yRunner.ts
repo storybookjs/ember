@@ -1,5 +1,4 @@
 import global from 'global';
-import axe from 'axe-core';
 import { addons } from '@storybook/addons';
 import { EVENTS } from './constants';
 import { A11yParameters } from './params';
@@ -40,6 +39,7 @@ const run = async (storyId: string) => {
     if (!active) {
       active = true;
       channel.emit(EVENTS.RUNNING);
+      const axe = await import('axe-core');
 
       const { element = getElement(), config, options = {} } = input;
       axe.reset();
@@ -68,7 +68,8 @@ const run = async (storyId: string) => {
 
 /** Returns story parameters or default ones. */
 const getParams = async (storyId: string): Promise<A11yParameters> => {
-  const { parameters } = (await globalWindow.__STORYBOOK_STORY_STORE__.loadStory({ storyId })) || {};
+  const { parameters } =
+    (await globalWindow.__STORYBOOK_STORY_STORE__.loadStory({ storyId })) || {};
   return (
     parameters.a11y || {
       config: {},

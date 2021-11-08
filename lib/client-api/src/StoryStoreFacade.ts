@@ -1,5 +1,6 @@
 import global from 'global';
 import dedent from 'ts-dedent';
+import { SynchronousPromise } from 'synchronous-promise';
 import {
   StoryId,
   AnyFramework,
@@ -21,6 +22,7 @@ import {
   sortStoriesV6,
   StoryIndexEntry,
 } from '@storybook/store';
+import { logger } from '@storybook/client-logger';
 
 const { STORIES = [] } = global;
 
@@ -59,9 +61,11 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
   // This doesn't actually import anything because the client-api loads fully
   // on startup, but this is a shim after all.
   importFn(path: Path) {
-    const moduleExports = this.csfExports[path];
-    if (!moduleExports) throw new Error(`Unknown path: ${path}`);
-    return moduleExports;
+    return SynchronousPromise.resolve().then(() => {
+      const moduleExports = this.csfExports[path];
+      if (!moduleExports) throw new Error(`Unknown path: ${path}`);
+      return moduleExports;
+    });
   }
 
   getStoryIndex(store: StoryStore<TFramework>) {
@@ -73,7 +77,11 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     const sortableV6: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
       ([storyId, { importPath }]) => {
         const exports = this.csfExports[importPath];
-        const csfFile = store.processCSFFileWithCache<TFramework>(exports, exports.default.title);
+        const csfFile = store.processCSFFileWithCache<TFramework>(
+          exports,
+          importPath,
+          exports.default.title
+        );
         return [
           storyId,
           store.storyFromCSFFile({ storyId, csfFile }),
@@ -153,23 +161,17 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
         }))
       );
     if (!title) {
-      throw new Error(
+      logger.info(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
           fileExports.default
         )}`
       );
+      return;
     }
 
     this.csfExports[fileName] = {
       ...fileExports,
-      default: {
-        ...defaultExport,
-        title,
-        parameters: {
-          fileName,
-          ...defaultExport.parameters,
-        },
-      },
+      default: { ...defaultExport, title },
     };
 
     Object.entries(namedExports)

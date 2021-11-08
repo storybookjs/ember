@@ -8,10 +8,15 @@ describe('processCSFFile', () => {
         storyOne: { args: { a: 1 } },
         storyTwo: { args: { a: 2 } },
       },
+      './path/to/component.js',
       'Component'
     );
 
-    expect(meta).toEqual({ id: 'component', title: 'Component' });
+    expect(meta).toEqual({
+      id: 'component',
+      title: 'Component',
+      parameters: { fileName: './path/to/component.js' },
+    });
     expect(stories).toEqual({
       'component--story-one': expect.objectContaining({
         id: 'component--story-one',
@@ -32,10 +37,15 @@ describe('processCSFFile', () => {
         default: {},
         storyOne: {},
       },
+      './path/to/component.js',
       'Prefix/to/file'
     );
 
-    expect(meta).toEqual({ id: 'prefix-to-file', title: 'Prefix/to/file' });
+    expect(meta).toEqual({
+      id: 'prefix-to-file',
+      title: 'Prefix/to/file',
+      parameters: { fileName: './path/to/component.js' },
+    });
   });
 
   it('adds stories in the right order if __namedExportsOrder is supplied', () => {
@@ -48,6 +58,7 @@ describe('processCSFFile', () => {
         w: () => 0,
         __namedExportsOrder: ['w', 'x', 'z', 'y'],
       },
+      './path/to/component.js',
       'Component'
     );
 
@@ -68,6 +79,7 @@ describe('processCSFFile', () => {
         z: () => 0,
         w: () => 0,
       },
+      './path/to/component.js',
       'Component'
     );
 
@@ -83,6 +95,7 @@ describe('processCSFFile', () => {
         z: () => 0,
         w: () => 0,
       },
+      './path/to/component.js',
       'Component'
     );
 
@@ -98,6 +111,7 @@ describe('processCSFFile', () => {
         z: () => 0,
         w: () => 0,
       },
+      './path/to/component.js',
       'Component'
     );
 
@@ -113,6 +127,7 @@ describe('processCSFFile', () => {
         z: () => 0,
         w: () => 0,
       },
+      './path/to/component.js',
       'Component'
     );
 

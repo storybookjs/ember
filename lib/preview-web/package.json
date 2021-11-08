@@ -1,6 +1,6 @@
 {
   "name": "@storybook/preview-web",
-  "version": "6.4.0-beta.15",
+  "version": "6.4.0-beta.29",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,18 +40,19 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-beta.15",
-    "@storybook/channel-postmessage": "6.4.0-beta.15",
-    "@storybook/client-logger": "6.4.0-beta.15",
-    "@storybook/core-events": "6.4.0-beta.15",
+    "@storybook/addons": "6.4.0-beta.29",
+    "@storybook/channel-postmessage": "6.4.0-beta.29",
+    "@storybook/client-logger": "6.4.0-beta.29",
+    "@storybook/core-events": "6.4.0-beta.29",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/store": "6.4.0-beta.15",
+    "@storybook/store": "6.4.0-beta.29",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "lodash": "^4.17.20",
     "qs": "^6.10.0",
     "regenerator-runtime": "^0.13.7",
+    "synchronous-promise": "^2.0.15",
     "ts-dedent": "^2.0.0",
     "unfetch": "^4.2.0",
     "util-deprecate": "^1.0.2"
@@ -63,6 +64,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "f3bcbe0094355fe373d47570cdabc548b93b0b64",
+  "gitHead": "2e8d1c0f398c1fcea941899abe3a17c1e3b7d7b3",
   "sbmodern": "dist/modern/index.js"
 }

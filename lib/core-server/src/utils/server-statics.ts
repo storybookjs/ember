@@ -1,4 +1,6 @@
 import { logger } from '@storybook/node-logger';
+import type { Options, StorybookConfig } from '@storybook/core-common';
+import { getDirectoryFromWorkingDir } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
@@ -9,8 +11,33 @@ import dedent from 'ts-dedent';
 
 const defaultFavIcon = require.resolve('../public/favicon.ico');
 
-export async function useStatics(router: any, options: { staticDir?: string[] }) {
+export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
+  const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
+
+  if (staticDirs && options.staticDir) {
+    throw new Error(dedent`
+      Conflict when trying to read staticDirs:
+      * Storybook's configuration option: 'staticDirs'
+      * Storybook's CLI flag: '--staticDir' or '-s'
+      
+      Choose one of them, but not both.
+    `);
+  }
+
+  staticDirs.forEach(async (dir) => {
+    const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
+    const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
+      getDirectoryFromWorkingDir({
+        configDir: options.configDir,
+        workingDir: process.cwd(),
+        directory: staticDirAndTarget,
+      })
+    );
+
+    logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
+    router.use(to, express.static(from, { index: false }));
+  });
 
   if (options.staticDir && options.staticDir.length > 0) {
     await Promise.all(

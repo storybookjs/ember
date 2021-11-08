@@ -104,6 +104,17 @@ export interface CsfOptions {
   defaultTitle: string;
   fileName?: string;
 }
+
+export class NoMetaError extends Error {
+  constructor(ast: t.Node, fileName?: string) {
+    super(dedent`
+      CSF: missing default export ${formatLocation(ast, fileName)}
+
+      More info: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+    `);
+    this.name = this.constructor.name;
+  }
+}
 export class CsfFile {
   _ast: t.File;
 
@@ -234,6 +245,15 @@ export class CsfFile {
                 };
               }
             });
+          } else if (node.specifiers.length > 0) {
+            // export { X as Y }
+            node.specifiers.forEach((specifier) => {
+              if (t.isExportSpecifier(specifier) && t.isIdentifier(specifier.exported)) {
+                const { name: exportName } = specifier.exported;
+                self._storyAnnotations[exportName] = {};
+                self._stories[exportName] = { id: 'FIXME', name: exportName, parameters: {} };
+              }
+            });
           }
         },
       },
@@ -291,11 +311,7 @@ export class CsfFile {
     });
 
     if (!self._meta) {
-      throw new Error(dedent`
-        CSF: missing default export ${formatLocation(self._ast, self._fileName)}
-
-        More info: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-      `);
+      throw new NoMetaError(self._ast, self._fileName);
     }
 
     if (!self._meta.title && !self._meta.component) {

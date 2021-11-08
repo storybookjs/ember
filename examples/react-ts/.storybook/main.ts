@@ -1,9 +1,13 @@
 import type { StorybookConfig } from '@storybook/react/types';
 
 const config: StorybookConfig = {
-  stories: [{ directory: '../src', titlePrefix: 'Demo' }],
+  stories: [
+    {
+      directory: '../src',
+      titlePrefix: 'Demo',
+    },
+  ],
   logLevel: 'debug',
-  framework: '@storybook/react',
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-storysource',
@@ -19,6 +23,7 @@ const config: StorybookConfig = {
   },
   core: {
     builder: 'webpack4',
+    channelOptions: { allowFunction: false, maxDepth: 10 },
   },
   features: {
     postcss: false,
@@ -27,6 +32,6 @@ const config: StorybookConfig = {
     buildStoriesJson: true,
     babelModeV7: true,
   },
+  framework: '@storybook/react',
 };
-
 module.exports = config;

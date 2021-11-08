@@ -1,15 +1,16 @@
 import { Router, Request, Response } from 'express';
 import Watchpack from 'watchpack';
 import path from 'path';
+import debounce from 'lodash/debounce';
+import Events from '@storybook/core-events';
 
-import { useStoriesJson } from './stories-json';
-
-// Avoid ping events
-jest.useFakeTimers();
+import { useStoriesJson, DEBOUNCE } from './stories-json';
+import { ServerChannel } from './get-server-channel';
 
 jest.mock('watchpack');
+jest.mock('lodash/debounce');
 
-const options: Parameters<typeof useStoriesJson>[1] = {
+const options: Parameters<typeof useStoriesJson>[2] = {
   configDir: path.join(__dirname, '__mockdata__'),
   presets: {
     apply: async () => ['./src/**/*.stories.(ts|js|jsx)'] as any,
@@ -37,15 +38,17 @@ describe('useStoriesJson', () => {
     use.mockClear();
     send.mockClear();
     write.mockClear();
+    (debounce as jest.Mock).mockImplementation((cb) => cb);
   });
 
-  describe('JSON endpoint', () => {
-    const request: Request = {
-      headers: { accept: 'application/json' },
-    } as any;
+  const request: Request = {
+    headers: { accept: 'application/json' },
+  } as any;
 
+  describe('JSON endpoint', () => {
     it('scans and extracts stories', async () => {
-      await useStoriesJson(router, options, options.configDir);
+      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -129,17 +132,14 @@ describe('useStoriesJson', () => {
   });
 
   describe('SSE endpoint', () => {
-    const request: Request = {
-      headers: { accept: 'text/event-stream' },
-    } as any;
-
     beforeEach(() => {
       use.mockClear();
       send.mockClear();
     });
 
     it('sends invalidate events', async () => {
-      await useStoriesJson(router, options, options.configDir);
+      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -155,13 +155,14 @@ describe('useStoriesJson', () => {
       expect(watcher.on).toHaveBeenCalledTimes(2);
       const onChange = watcher.on.mock.calls[0][1];
 
-      onChange('src/nested/Button.stories.ts');
-      expect(write).toHaveBeenCalledTimes(1);
-      expect(write).toHaveBeenCalledWith('event:INVALIDATE\ndata:\n\n');
+      await onChange('src/nested/Button.stories.ts');
+      expect(mockServerChannel.emit).toHaveBeenCalledTimes(1);
+      expect(mockServerChannel.emit).toHaveBeenCalledWith(Events.STORY_INDEX_INVALIDATED);
     });
 
     it('only sends one invalidation when multiple event listeners are listening', async () => {
-      await useStoriesJson(router, options, options.configDir);
+      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -181,9 +182,43 @@ describe('useStoriesJson', () => {
       expect(watcher.on).toHaveBeenCalledTimes(2);
       const onChange = watcher.on.mock.calls[0][1];
 
-      onChange('src/nested/Button.stories.ts');
-      expect(write).toHaveBeenCalledTimes(1);
-      expect(write).toHaveBeenCalledWith('event:INVALIDATE\ndata:\n\n');
+      await onChange('src/nested/Button.stories.ts');
+      expect(mockServerChannel.emit).toHaveBeenCalledTimes(1);
+      expect(mockServerChannel.emit).toHaveBeenCalledWith(Events.STORY_INDEX_INVALIDATED);
+    });
+
+    it('debounces invalidation events', async () => {
+      (debounce as jest.Mock).mockImplementation(jest.requireActual('lodash/debounce'));
+
+      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+
+      expect(use).toHaveBeenCalledTimes(1);
+      const route = use.mock.calls[0][1];
+
+      await route(request, response);
+
+      expect(write).not.toHaveBeenCalled();
+
+      expect(Watchpack).toHaveBeenCalledTimes(1);
+      const watcher = Watchpack.mock.instances[0];
+      expect(watcher.watch).toHaveBeenCalledWith({ directories: ['./src'] });
+
+      expect(watcher.on).toHaveBeenCalledTimes(2);
+      const onChange = watcher.on.mock.calls[0][1];
+
+      await onChange('src/nested/Button.stories.ts');
+      await onChange('src/nested/Button.stories.ts');
+      await onChange('src/nested/Button.stories.ts');
+      await onChange('src/nested/Button.stories.ts');
+      await onChange('src/nested/Button.stories.ts');
+
+      expect(mockServerChannel.emit).toHaveBeenCalledTimes(1);
+      expect(mockServerChannel.emit).toHaveBeenCalledWith(Events.STORY_INDEX_INVALIDATED);
+
+      await new Promise((r) => setTimeout(r, 2 * DEBOUNCE));
+
+      expect(mockServerChannel.emit).toHaveBeenCalledTimes(2);
     });
   });
 });

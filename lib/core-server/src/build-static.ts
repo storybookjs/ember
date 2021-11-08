@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import cpy from 'cpy';
 import fs from 'fs-extra';
 import path from 'path';
+import dedent from 'ts-dedent';
 
 import { logger } from '@storybook/node-logger';
 
@@ -20,7 +21,10 @@ import {
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
-import { copyAllStaticFiles } from './utils/copy-all-static-files';
+import {
+  copyAllStaticFiles,
+  copyAllStaticFilesRelativeToMain,
+} from './utils/copy-all-static-files';
 import { getPreviewBuilder } from './utils/get-preview-builder';
 import { getManagerBuilder } from './utils/get-manager-builder';
 import { extractStoriesJson } from './utils/stories-json';
@@ -52,7 +56,6 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   await fs.emptyDir(options.outputDir);
 
   await cpy(defaultFavIcon, options.outputDir);
-  await copyAllStaticFiles(options.staticDir, options.outputDir);
 
   const previewBuilder: Builder<unknown, unknown> = await getPreviewBuilder(options.configDir);
   const managerBuilder: Builder<unknown, unknown> = await getManagerBuilder(options.configDir);
@@ -67,6 +70,25 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     overridePresets: previewBuilder.overridePresets,
     ...options,
   });
+
+  const staticDirs = await presets.apply<StorybookConfig['staticDirs']>('staticDirs');
+
+  if (staticDirs && options.staticDir) {
+    throw new Error(dedent`
+      Conflict when trying to read staticDirs:
+      * Storybook's configuration option: 'staticDirs'
+      * Storybook's CLI flag: '--staticDir' or '-s'
+      
+      Choose one of them, but not both.
+    `);
+  }
+
+  if (staticDirs) {
+    await copyAllStaticFilesRelativeToMain(staticDirs, options.outputDir, options.configDir);
+  }
+  if (options.staticDir) {
+    await copyAllStaticFiles(options.staticDir, options.outputDir);
+  }
 
   const features = await presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson || features?.storyStoreV7) {

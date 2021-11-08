@@ -14,12 +14,14 @@ const Side = styled.div<SideProps>(
     whiteSpace: 'nowrap',
     flexBasis: 'auto',
     flexShrink: 0,
+    marginLeft: 3,
+    marginRight: 3,
   },
   ({ left }) =>
     left
       ? {
           '& > *': {
-            marginLeft: 15,
+            marginLeft: 4,
           },
         }
       : {},
@@ -28,7 +30,7 @@ const Side = styled.div<SideProps>(
       ? {
           marginLeft: 30,
           '& > *': {
-            marginRight: 15,
+            marginRight: 4,
           },
         }
       : {}

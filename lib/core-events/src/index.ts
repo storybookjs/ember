@@ -2,6 +2,8 @@ enum events {
   CHANNEL_CREATED = 'channelCreated',
   // There was an error executing the config, likely an bug in the user's preview.js
   CONFIG_ERROR = 'configError',
+  // The (v7 store) story index has changed, needs to refetch
+  STORY_INDEX_INVALIDATED = 'storyIndexInvalidated',
   // When the preview boots, the first story is chosen via a selection specifier
   STORY_SPECIFIED = 'storySpecified',
   // Emitted by the preview whenever the list of stories changes (in batches)
@@ -48,6 +50,7 @@ enum events {
   SHARED_STATE_CHANGED = 'sharedStateChanged',
   SHARED_STATE_SET = 'sharedStateSet',
   NAVIGATE_URL = 'navigateUrl',
+  UPDATE_QUERY_PARAMS = 'updateQueryParams',
 }
 
 // Enables: `import Events from ...`
@@ -58,6 +61,7 @@ export default events;
 export const {
   CHANNEL_CREATED,
   CONFIG_ERROR,
+  STORY_INDEX_INVALIDATED,
   STORY_SPECIFIED,
   SET_STORIES,
   SET_CURRENT_STORY,
@@ -87,6 +91,7 @@ export const {
   SHARED_STATE_CHANGED,
   SHARED_STATE_SET,
   NAVIGATE_URL,
+  UPDATE_QUERY_PARAMS,
 } = events;
 
 // Used to break out of the current render without showing a redbox

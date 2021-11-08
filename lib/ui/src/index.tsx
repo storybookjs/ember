@@ -1,8 +1,8 @@
 import global from 'global';
-import React, { FunctionComponent } from 'react';
+import React, { FC, FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Location, LocationProvider, History } from '@storybook/router';
+import { Location, LocationProvider, useNavigate } from '@storybook/router';
 import { Provider as ManagerProvider, Combo } from '@storybook/api';
 import { ThemeProvider, ensure as ensureTheme } from '@storybook/theming';
 import { HelmetProvider } from 'react-helmet-async';
@@ -33,44 +33,52 @@ export interface RootProps {
   history?: History;
 }
 
-export const Root: FunctionComponent<RootProps> = ({ provider, history }) => (
+export const Root: FunctionComponent<RootProps> = ({ provider }) => (
   <Container key="container">
     <HelmetProvider key="helmet.Provider">
-      <LocationProvider key="location.provider" history={history}>
-        <Location key="location.consumer">
-          {(locationData) => (
-            <ManagerProvider
-              key="manager"
-              provider={provider}
-              {...locationData}
-              docsMode={getDocsMode()}
-            >
-              {({ state, api }: Combo) => {
-                const panelCount = Object.keys(api.getPanels()).length;
-                const story = api.getData(state.storyId, state.refId);
-                const isLoading = story
-                  ? !!state.refs[state.refId] && !state.refs[state.refId].ready
-                  : !state.storiesFailed && !state.storiesConfigured;
-
-                return (
-                  <ThemeProvider key="theme.provider" theme={ensureTheme(state.theme)}>
-                    <App
-                      key="app"
-                      viewMode={state.viewMode}
-                      layout={isLoading ? { ...state.layout, showPanel: false } : state.layout}
-                      panelCount={panelCount}
-                      docsOnly={story && story.parameters && story.parameters.docsOnly}
-                    />
-                  </ThemeProvider>
-                );
-              }}
-            </ManagerProvider>
-          )}
-        </Location>
+      <LocationProvider key="location.provider">
+        <Main provider={provider} />
       </LocationProvider>
     </HelmetProvider>
   </Container>
 );
+
+const Main: FC<{ provider: Provider }> = ({ provider }) => {
+  const navigate = useNavigate();
+  return (
+    <Location key="location.consumer">
+      {(locationData) => (
+        <ManagerProvider
+          key="manager"
+          provider={provider}
+          {...locationData}
+          navigate={navigate}
+          docsMode={getDocsMode()}
+        >
+          {({ state, api }: Combo) => {
+            const panelCount = Object.keys(api.getPanels()).length;
+            const story = api.getData(state.storyId, state.refId);
+            const isLoading = story
+              ? !!state.refs[state.refId] && !state.refs[state.refId].ready
+              : !state.storiesFailed && !state.storiesConfigured;
+
+            return (
+              <ThemeProvider key="theme.provider" theme={ensureTheme(state.theme)}>
+                <App
+                  key="app"
+                  viewMode={state.viewMode}
+                  layout={isLoading ? { ...state.layout, showPanel: false } : state.layout}
+                  panelCount={panelCount}
+                  docsOnly={story && story.parameters && story.parameters.docsOnly}
+                />
+              </ThemeProvider>
+            );
+          }}
+        </ManagerProvider>
+      )}
+    </Location>
+  );
+};
 
 function renderStorybookUI(domNode: HTMLElement, provider: Provider) {
   if (!(provider instanceof Provider)) {

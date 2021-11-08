@@ -1,3 +1,187 @@
+## 6.4.0-beta.29 (November 6, 2021)
+
+### Features
+
+- CSFFile: Handle re-exported stories ([#16607](https://github.com/storybookjs/storybook/pull/16607))
+
+### Bug Fixes
+
+- StoryIndex: Skip files with no default export ([#16606](https://github.com/storybookjs/storybook/pull/16606))
+- Addon-docs/Source: Fix disabling show code with null ([#16615](https://github.com/storybookjs/storybook/pull/16615))
+- Core: Handle missing websocket in production build ([#16590](https://github.com/storybookjs/storybook/pull/16590))
+- Core: Ensure we set `parameters.filePath` in v7 mode ([#16566](https://github.com/storybookjs/storybook/pull/16566))
+- Core: Fix behavior around missing stories to be more clear ([#16608](https://github.com/storybookjs/storybook/pull/16608))
+
+## 6.4.0-beta.28 (November 5, 2021)
+
+### Bug Fixes
+
+- Interactions: Fix README link ([#16596](https://github.com/storybookjs/storybook/pull/16596))
+
+## 6.4.0-beta.27 (November 4, 2021)
+
+### Features
+
+- Core: Add 'staticDirs' config option ([#15969](https://github.com/storybookjs/storybook/pull/15969))
+
+### Bug Fixes
+
+- TS: Fix type for Refs so they can be disabled ([#16582](https://github.com/storybookjs/storybook/pull/16582))
+- CLI: Add a check for source-dir in `sb extract` ([#16505](https://github.com/storybookjs/storybook/pull/16505))
+- UI: Fix links that have no onClick handler ([#16581](https://github.com/storybookjs/storybook/pull/16581))
+- Core: Continue running play function on rerender ([#16574](https://github.com/storybookjs/storybook/pull/16574))
+- Ensure we always initialize the story store, even when the index errors. ([#16537](https://github.com/storybookjs/storybook/pull/16537))
+- Interactions: Fix panel tab icon/count ([#16578](https://github.com/storybookjs/storybook/pull/16578))
+
+### Dependency Upgrades
+
+- Pin the version of `history` for `react-router-dom` compat ([#16560](https://github.com/storybookjs/storybook/pull/16560))
+
+## 6.4.0-beta.26 (November 2, 2021)
+
+### Bug Fixes
+
+- Core: Replace SSE with websockets ([#16504](https://github.com/storybookjs/storybook/pull/16504))
+- UI: Upgrade react-router ([#16554](https://github.com/storybookjs/storybook/pull/16554))
+- Addon-docs/HTML: Fix source snippetization for DOM elements ([#16553](https://github.com/storybookjs/storybook/pull/16553))
+
+## 6.4.0-beta.25 (November 2, 2021)
+
+### Bug Fixes
+
+- Core: Fix `decorateStory` exports from frameworks that have it ([#16529](https://github.com/storybookjs/storybook/pull/16529))
+- Fix v7.0 type exports and update MIGRATION.md ([#16466](https://github.com/storybookjs/storybook/pull/16466))
+- UI: Do not display menu toggle when `singleStory=true` ([#15755](https://github.com/storybookjs/storybook/pull/15755))
+
+### Maintenance
+
+- Core: Improve webpack chunk names ([#16513](https://github.com/storybookjs/storybook/pull/16513))
+
+### Dependency Upgrades
+
+- Migrate from micromatch to picomatch ([#16522](https://github.com/storybookjs/storybook/pull/16522))
+- Add qs as a dev dependency of the api package ([#16525](https://github.com/storybookjs/storybook/pull/16525))
+
+## 6.4.0-beta.24 (November 2, 2021)
+
+bad npm publish
+
+# 6.4.0-beta.23 (October 29, 2021)
+
+### Features
+
+- Core: Add support for async `getProjectAnnotations` function ([#16495](https://github.com/storybookjs/storybook/pull/16495))
+
+### Bug Fixes
+
+- Addon-docs: Fix centered layout on DocsPage ([#16506](https://github.com/storybookjs/storybook/pull/16506))
+- Addon-docs/Angular: Fix missing condition in compodoc resolveTypealias ([#16523](https://github.com/storybookjs/storybook/pull/16523))
+- Core: Fix `toImportFn` when dealing with `../`-led paths ([#16474](https://github.com/storybookjs/storybook/pull/16474))
+
+### Maintenance
+
+- UI: Update the toolbar button styles ([#16429](https://github.com/storybookjs/storybook/pull/16429))
+- CLI: Fix build selection menu ([#16521](https://github.com/storybookjs/storybook/pull/16521))
+- Core: Use synchronous promises to "fake" promises for sync code ([#16517](https://github.com/storybookjs/storybook/pull/16517))
+- UI: Improve WithTooltip contrast and positioning ([#16510](https://github.com/storybookjs/storybook/pull/16510))
+
+## 6.4.0-beta.22 (October 28, 2021)
+
+### Bug Fixes
+
+- Addon-docs: Track code-level args changes in `ArgsTable` ([#16488](https://github.com/storybookjs/storybook/pull/16488))
+
+### Maintenance
+
+- Addon-a11y: Lazy load axe-core only when running tests ([#16484](https://github.com/storybookjs/storybook/pull/16484))
+- Addon-docs: Lazy load Prettier in Vue and Angular ([#16459](https://github.com/storybookjs/storybook/pull/16459))
+
+## 6.4.0-beta.21 (October 28, 2021)
+
+### Features
+
+- Core: Rerun loaders when args/globals change ([#16476](https://github.com/storybookjs/storybook/pull/16476))
+- Interactions: move step debugger behind a feature flag ([#16481](https://github.com/storybookjs/storybook/pull/16481))
+
+### Bug Fixes
+
+- Core: Always update initial args when loading a story ([#16487](https://github.com/storybookjs/storybook/pull/16487))
+- Core: Ensure we don't reset `WebPreview` if calling `start()` in v7 mode ([#16475](https://github.com/storybookjs/storybook/pull/16475))
+- Core: Save and restore globals on preview init using the channel ([#16469](https://github.com/storybookjs/storybook/pull/16469))
+
+### Maintenance
+
+- CI: Upgrade Cypress and Node.js version used in e2e tests ([#16263](https://github.com/storybookjs/storybook/pull/16263))
+
+### Dependency Upgrades
+
+- Interactions: Use latest package versions ([#16464](https://github.com/storybookjs/storybook/pull/16464))
+
+## 6.4.0-beta.20 (October 26, 2021)
+
+### Bug Fixes
+
+- Interactions: Do not cleanup state when loading initial story ([#16462](https://github.com/storybookjs/storybook/pull/16462))
+- Addon-interactions: Add safety check on fileName parameter ([#16454](https://github.com/storybookjs/storybook/pull/16454))
+- Core: Fix optional global features in PreviewWeb ([#16448](https://github.com/storybookjs/storybook/pull/16448))
+
+### Maintenance
+
+- UI: Migrate router to react-router ([#16440](https://github.com/storybookjs/storybook/pull/16440))
+
+## 6.4.0-beta.19 (October 22, 2021)
+
+### Bug Fixes
+
+- Core: Fix some slashes for windows ([#16445](https://github.com/storybookjs/storybook/pull/16445))
+
+### Maintenance
+
+- Core: Add typing for StorybookConfig.refs ([#16443](https://github.com/storybookjs/storybook/pull/16443))
+
+## 6.4.0-beta.18 (October 21, 2021)
+
+### Features
+
+- StoryIndex: Detect added/moved directories and batch invalidations ([#16432](https://github.com/storybookjs/storybook/pull/16432))
+
+### Bug Fixes
+
+- Core: Fix module loading support ([#16404](https://github.com/storybookjs/storybook/pull/16404))
+- Addon-links: Modernize to be compatible with v7 store ([#16420](https://github.com/storybookjs/storybook/pull/16420))
+
+### Maintenance
+
+- CLI: Improve build-storybooks script in the monorepo ([#16433](https://github.com/storybookjs/storybook/pull/16433))
+
+## 6.4.0-beta.17 (October 21, 2021)
+
+### Features
+
+- Core: Add `core.channelOptions` main.js config ([#16415](https://github.com/storybookjs/storybook/pull/16415))
+
+### Maintenance
+
+- Addon-docs: Lazy load docs to reduce bundle size ([#16412](https://github.com/storybookjs/storybook/pull/16412))
+- UI: Update mono font stack ([#16409](https://github.com/storybookjs/storybook/pull/16409))
+- UI: Update sidebar hover color to be a refreshing transparent blue ([#16408](https://github.com/storybookjs/storybook/pull/16408))
+
+## 6.4.0-beta.16 (October 20, 2021)
+
+### Bug Fixes
+
+- Core: Consolidate framework presets ([#16417](https://github.com/storybookjs/storybook/pull/16417))
+- Addon-a11y: Fix to use `loadStory` over deprecated `fromId` ([#16398](https://github.com/storybookjs/storybook/pull/16398))
+- Core: Restore `queryparams` exports in `client-api` ([#16414](https://github.com/storybookjs/storybook/pull/16414))
+
+### Maintenance
+
+- Core: Minor cleanup of `PreviewWeb` ([#16418](https://github.com/storybookjs/storybook/pull/16418))
+
+### Dependency Upgrades
+
+- Update `react-element-to-jsx-string` package ([#16407](https://github.com/storybookjs/storybook/pull/16407))
+
 ## 6.4.0-beta.15 (October 19, 2021)
 
 ### Features

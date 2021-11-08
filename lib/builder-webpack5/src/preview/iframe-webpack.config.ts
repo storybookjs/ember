@@ -21,6 +21,7 @@ import {
   normalizeStories,
   readTemplate,
   loadPreviewOrConfigFile,
+  CoreConfig,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
@@ -61,6 +62,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     typescriptOptions,
     modern,
     features,
+    serverChannelUrl,
   } = options;
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -69,6 +71,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const headHtmlSnippet = await presets.apply('previewHead');
   const bodyHtmlSnippet = await presets.apply('previewBody');
   const template = await presets.apply<string>('previewMainTemplate');
+  const coreOptions = await presets.apply<CoreConfig>('core');
 
   const babelLoader = createBabelLoader(babelOptions, framework);
   const isProd = configType === 'PRODUCTION';
@@ -97,7 +100,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         storiesFilename,
         configs,
       }
-    );
+      // We need to double escape `\` for webpack. We may have some in windows paths
+    ).replace(/\\/g, '\\\\');
     entries.push(configEntryPath);
   } else {
     const frameworkInitEntry = path.resolve(
@@ -182,11 +186,13 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             CONFIG_TYPE: configType,
             LOGLEVEL: logLevel,
             FRAMEWORK_OPTIONS: frameworkOptions,
+            CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
             STORIES: stories.map((specifier) => ({
               ...specifier,
               importPathMatcher: specifier.importPathMatcher.source,
             })),
+            SERVER_CHANNEL_URL: serverChannelUrl,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,

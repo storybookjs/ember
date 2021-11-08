@@ -1,4 +1,5 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import type { Options as TelejsonOptions } from 'telejson';
 import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
@@ -23,6 +24,12 @@ export interface TypescriptConfig {
 export interface CoreConfig {
   builder: 'webpack4' | 'webpack5';
   disableWebpackDefaults?: boolean;
+  channelOptions?: Partial<TelejsonOptions>;
+}
+
+interface DirectoryMapping {
+  from: string;
+  to: string;
 }
 
 export interface Presets {
@@ -126,6 +133,9 @@ export interface CLIOptions {
   previewUrl?: string;
   forceBuildPreview?: boolean;
   host?: string;
+  /**
+   * @deprecated Use 'staticDirs' Storybook Configuration option instead
+   */
   staticDir?: string[];
   configDir?: string;
   https?: boolean;
@@ -160,6 +170,7 @@ export interface BuilderOptions {
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;
+  serverChannelUrl?: string;
 }
 
 export interface StorybookConfigOptions {
@@ -254,6 +265,14 @@ export type Preset =
     };
 
 /**
+ * An additional script that gets injected into the
+ * preview or the manager,
+ */
+export type Entry = string;
+
+type StorybookRefs = Record<string, { title: string; url: string } | { disable: boolean }>;
+
+/**
  * The interface for Storybook configuration in `main.ts` files.
  */
 export interface StorybookConfig {
@@ -264,6 +283,12 @@ export interface StorybookConfig {
    */
   addons?: Preset[];
   core?: CoreConfig;
+  /**
+   * Sets a list of directories of static files to be loaded by Storybook server
+   *
+   * @example `['./public']` or `[{from: './public', 'to': '/assets'}]`
+   */
+  staticDirs?: (DirectoryMapping | string)[];
   logLevel?: string;
   features?: {
     /**
@@ -299,6 +324,11 @@ export interface StorybookConfig {
     breakingChangesV7?: boolean;
 
     /**
+     * Enable the step debugger functionality in Addon-interactions.
+     */
+    interactionsDebugger?: boolean;
+
+    /**
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
@@ -322,10 +352,20 @@ export interface StorybookConfig {
   typescript?: Partial<TypescriptOptions>;
 
   /**
+   * References external Storybooks
+   */
+  refs?: StorybookRefs | ((config: Configuration, options: Options) => StorybookRefs);
+
+  /**
    * Modify or return a custom Webpack config.
    */
   webpackFinal?: (
     config: Configuration,
     options: Options
   ) => Configuration | Promise<Configuration>;
+
+  /**
+   * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   */
+  config?: (entries: Entry[], options: Options) => Entry[];
 }

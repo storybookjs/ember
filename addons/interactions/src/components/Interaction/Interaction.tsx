@@ -40,14 +40,14 @@ const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].inclu
   textAlign: 'start',
   cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
   '&:hover': {
-    background: theme.base === 'dark' ? transparentize(0.9, theme.color.secondary) : '#F3FAFF',
+    background: theme.background.hoverable,
   },
   '&:focus-visible': {
     outline: 0,
     boxShadow: `inset 3px 0 0 0 ${
       call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
     }`,
-    background: call.state === CallStates.ERROR ? 'transparent' : '#F3FAFF',
+    background: call.state === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
   },
   '& > div': {
     opacity: call.state === CallStates.WAITING ? 0.5 : 1,
@@ -65,11 +65,13 @@ export const Interaction = ({
   callsById,
   onClick,
   isDisabled,
+  isDebuggingEnabled,
 }: {
   call: Call;
   callsById: Map<Call['id'], Call>;
   onClick: React.MouseEventHandler<HTMLElement>;
   isDisabled: boolean;
+  isDebuggingEnabled?: boolean;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
@@ -77,9 +79,9 @@ export const Interaction = ({
       <RowLabel
         call={call}
         onClick={onClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        disabled={isDisabled}
+        disabled={isDebuggingEnabled ? isDisabled : true}
+        onMouseEnter={() => isDebuggingEnabled && setIsHovered(true)}
+        onMouseLeave={() => isDebuggingEnabled && setIsHovered(false)}
       >
         <StatusIcon status={isHovered ? CallStates.ACTIVE : call.state} />
         <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>

@@ -10,6 +10,8 @@ function deleteUndefined(obj: Record<string, any>) {
 }
 
 export class ArgsStore {
+  initialArgsByStoryId: Record<StoryId, Args> = {};
+
   argsByStoryId: Record<StoryId, Args> = {};
 
   get(storyId: StoryId) {
@@ -20,9 +22,19 @@ export class ArgsStore {
     return this.argsByStoryId[storyId];
   }
 
-  setInitial(storyId: StoryId, args: Args) {
-    if (!this.argsByStoryId[storyId]) {
-      this.argsByStoryId[storyId] = args;
+  setInitial(story: Story<any>) {
+    if (!this.initialArgsByStoryId[story.id]) {
+      this.initialArgsByStoryId[story.id] = story.initialArgs;
+      this.argsByStoryId[story.id] = story.initialArgs;
+    } else if (this.initialArgsByStoryId[story.id] !== story.initialArgs) {
+      // When we get a new version of a story (with new initialArgs), we re-apply the same diff
+      // that we had previously applied to the old version of the story
+      const delta = deepDiff(this.initialArgsByStoryId[story.id], this.argsByStoryId[story.id]);
+      this.initialArgsByStoryId[story.id] = story.initialArgs;
+      this.argsByStoryId[story.id] = story.initialArgs;
+      if (delta !== DEEPLY_EQUAL) {
+        this.updateFromDelta(story, delta);
+      }
     }
   }
 
@@ -42,15 +54,6 @@ export class ArgsStore {
     const mappedPersisted = mapArgsToTypes(persisted, story.argTypes);
 
     return this.updateFromDelta(story, mappedPersisted);
-  }
-
-  resetOnImplementationChange(story: Story<any>, previousStory: Story<any>) {
-    const delta = deepDiff(previousStory.initialArgs, this.get(story.id));
-
-    this.argsByStoryId[story.id] = story.initialArgs;
-    if (delta !== DEEPLY_EQUAL) {
-      this.updateFromDelta(story, delta);
-    }
   }
 
   update(storyId: StoryId, argsUpdate: Partial<Args>) {

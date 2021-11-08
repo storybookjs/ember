@@ -286,7 +286,7 @@ describe('Instrumenter', () => {
       },
     });
     expect(fn()).toEqual(new Error('Boom!'));
-    expect(() => setRenderPhase('completed')).toThrow(new Error('Boom!'));
+    expect(() => setRenderPhase('played')).toThrow(new Error('Boom!'));
   });
 
   it('forwards nested exceptions', () => {
@@ -297,7 +297,7 @@ describe('Instrumenter', () => {
       },
     });
     expect(fn1(fn2())).toEqual(new Error('Boom!'));
-    expect(() => setRenderPhase('completed')).toThrow(new Error('Boom!'));
+    expect(() => setRenderPhase('played')).toThrow(new Error('Boom!'));
   });
 
   it("re-throws anything that isn't an error", () => {
@@ -317,6 +317,7 @@ describe('Instrumenter', () => {
   });
 
   it('clears state when switching stories', () => {
+    addons.getChannel().emit(SET_CURRENT_STORY); // initialization
     instrumenter.state = {
       'kind--story': {
         isDebugging: false,

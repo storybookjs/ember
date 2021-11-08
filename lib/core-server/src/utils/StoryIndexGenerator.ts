@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import glob from 'globby';
+import slash from 'slash';
 
 import {
   autoTitleFromSpecifier,
@@ -57,7 +58,9 @@ export class StoryIndexGenerator {
       this.specifiers.map(async (specifier) => {
         const pathToSubIndex = {} as SpecifierStoriesCache;
 
-        const fullGlob = path.join(this.options.workingDir, specifier.directory, specifier.files);
+        const fullGlob = slash(
+          path.join(this.options.workingDir, specifier.directory, specifier.files)
+        );
         const files = await glob(fullGlob);
         files.forEach((absolutePath: Path) => {
           const ext = path.extname(absolutePath);
@@ -96,11 +99,10 @@ export class StoryIndexGenerator {
 
   async extractStories(specifier: NormalizedStoriesSpecifier, absolutePath: Path) {
     const relativePath = path.relative(this.options.workingDir, absolutePath);
+    const fileStories = {} as StoryIndex['stories'];
+    const entry = this.storyIndexEntries.get(specifier);
     try {
-      const entry = this.storyIndexEntries.get(specifier);
-      const fileStories = {} as StoryIndex['stories'];
-
-      const importPath = relativePath[0] === '.' ? relativePath : `./${relativePath}`;
+      const importPath = slash(relativePath[0] === '.' ? relativePath : `./${relativePath}`);
       const defaultTitle = autoTitleFromSpecifier(importPath, specifier);
       const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
       csf.stories.forEach(({ id, name }) => {
@@ -111,13 +113,16 @@ export class StoryIndexGenerator {
           importPath,
         };
       });
-
-      entry[absolutePath] = fileStories;
-      return fileStories;
     } catch (err) {
-      logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
-      throw err;
+      if (err.name === 'NoMetaError') {
+        logger.info(`💡 Skipping ${relativePath}: ${err}`);
+      } else {
+        logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
+        throw err;
+      }
     }
+    entry[absolutePath] = fileStories;
+    return fileStories;
   }
 
   async sortStories(storiesList: StoryIndex['stories'][]) {

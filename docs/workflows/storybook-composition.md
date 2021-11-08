@@ -64,7 +64,7 @@ You can also compose Storybooks based on the current development environment. Fo
 
 ### Improve your Storybook composition
 
-So far we've covered how we can use composition with local or published Storybooks. One thing worth mentioning as your Storybook will grow in time with your own stories, or through composition with other Storybooks, is that you can optimize the deployment process by including the following command in your workflow:
+So far we've covered how we can use composition with local or published Storybooks. One thing worth mentioning as your Storybook will grow in time with your own stories, or through composition with other Storybooks, is that you can optimize the deployment process by including the following command in your workflow, run from your project root:
 
 ```shell
 npx sb extract
