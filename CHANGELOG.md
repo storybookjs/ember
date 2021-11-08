@@ -1,3 +1,17 @@
+## 6.4.0-beta.30 (November 8, 2021)
+
+### Features
+
+- Args: Add ability to specific argType "targets" ([#16333](https://github.com/storybookjs/storybook/pull/16333))
+
+### Bug Fixes
+
+- Core: Fix sorting by `__namedExportsOrder` ([#16626](https://github.com/storybookjs/storybook/pull/16626))
+- Angular: Fix zonejs imports in framework preset ([#16631](https://github.com/storybookjs/storybook/pull/16631))
+- Core: Change CSF loading problems from warning to error ([#16632](https://github.com/storybookjs/storybook/pull/16632))
+- Core: Fix args values updated from url to control ([#16508](https://github.com/storybookjs/storybook/pull/16508))
+- CLI: Fix upgrade error state ([#16622](https://github.com/storybookjs/storybook/pull/16622))
+
 ## 6.4.0-beta.29 (November 6, 2021)
 
 ### Features
