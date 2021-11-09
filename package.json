@@ -252,6 +252,7 @@
     "mocha-list-tests": "^1.0.5",
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.6.1",
+    "node-gyp": "^8.4.0",
     "npmlog": "^5.0.1",
     "p-limit": "^3.1.0",
     "postcss-loader": "^4.2.0",
