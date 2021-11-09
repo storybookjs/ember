@@ -2,8 +2,9 @@ import webpack from 'webpack';
 import { logger } from '@storybook/node-logger';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { targetFromTargetString, Target } from '@angular-devkit/architect';
+import { sync as findUpSync } from 'find-up';
+import semver from '@storybook/semver';
 
-import { Options as CoreOptions } from '@storybook/core-common';
 import { workspaces } from '@angular-devkit/core';
 import {
   findAngularProjectTarget,
@@ -16,13 +17,32 @@ import {
 } from './angular-devkit-build-webpack';
 import { moduleIsAvailable } from './utils/module-is-available';
 import { filterOutStylingRules } from './utils/filter-out-styling-rules';
+import { getWebpackConfig as getWebpackConfig12_2_x } from './angular-cli-webpack-12.2.x';
+import { getWebpackConfig as getWebpackConfig13_x_x } from './angular-cli-webpack-13.x.x';
+import { PresetOptions } from './options';
 
-export type Options = CoreOptions & {
-  angularBrowserTarget?: string;
-  tsConfig?: string;
-};
+export async function webpackFinal(baseConfig: webpack.Configuration, options: PresetOptions) {
+  /**
+   * Find angular version and use right getWebpackConfig
+   *
+   * ⚠️ Only work with angular storybook builder
+   */
+  const packageJson = await import(findUpSync('package.json', { cwd: options.configDir }));
+  const angularCliVersion = semver.coerce(packageJson.devDependencies['@angular/cli'])?.version;
 
-export async function webpackFinal(baseConfig: webpack.Configuration, options: Options) {
+  const isNg12_2_x = semver.satisfies(angularCliVersion, '12.2.x');
+  if (isNg12_2_x && options.angularBuilderContext) {
+    return getWebpackConfig12_2_x(baseConfig, options);
+  }
+
+  const isNg13_x_x = semver.satisfies(angularCliVersion, '13.x.x');
+  if (isNg13_x_x && options.angularBuilderContext) {
+    return getWebpackConfig13_x_x(baseConfig, options);
+  }
+
+  /**
+   * Classic way currently support version lower than 12.2.x
+   */
   const dirToSearch = process.cwd();
 
   if (!moduleIsAvailable('@angular-devkit/build-angular')) {
