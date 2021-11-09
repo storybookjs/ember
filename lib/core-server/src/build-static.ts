@@ -73,7 +73,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
 
   const staticDirs = await presets.apply<StorybookConfig['staticDirs']>('staticDirs');
 
-  if (staticDirs && options.staticDir) {
+  if (staticDirs.length > 0 && options.staticDir) {
     throw new Error(dedent`
       Conflict when trying to read staticDirs:
       * Storybook's configuration option: 'staticDirs'
