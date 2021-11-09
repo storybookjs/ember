@@ -1,3 +1,17 @@
+## 6.4.0-beta.31 (November 10, 2021)
+
+### Features
+
+* Core: Add feature flag to stop storybook from aliasing emotion ([#16613](https://github.com/storybookjs/storybook/pull/16613))
+
+### Bug Fixes
+
+* Core: Fix `staticDirs` and `-s` conflict check ([#16649](https://github.com/storybookjs/storybook/pull/16649))
+
+### Maintenance
+
+* Build: Add node-gyp for M1 macs ([#16645](https://github.com/storybookjs/storybook/pull/16645))
+
 ## 6.4.0-beta.30 (November 8, 2021)
 
 ### Features
