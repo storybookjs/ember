@@ -35,7 +35,39 @@ interface SourceCodeProps {
   dark?: boolean;
 }
 
-const SourceSkeleton = () => <div>Loading...</div>;
+const SourceSkeletonWrapper = styled.div<{}>(({ theme }) => ({
+  background: theme.background.content,
+  borderRadius: theme.appBorderRadius,
+  boxShadow:
+    theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
+  margin: '25px 0 40px',
+  padding: 20,
+
+  'pre.prismjs': {
+    background: 'inherit',
+    padding: 20,
+  },
+}));
+
+const SourceSkeletonPlaceholder = styled.div<{}>(({ theme }) => ({
+  animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+  background: theme.appBorderColor,
+  height: 18,
+  marginTop: 10,
+  width: '60%',
+
+  '&:first-child': {
+    margin: 0,
+  },
+}));
+
+const SourceSkeleton = () => (
+  <SourceSkeletonWrapper>
+    <SourceSkeletonPlaceholder />
+    <SourceSkeletonPlaceholder style={{ width: '80%' }} />
+    <SourceSkeletonPlaceholder style={{ width: '30%' }} />
+  </SourceSkeletonWrapper>
+);
 
 // FIXME: Using | causes a typescript error, so stubbing it with & for now
 // and making `error` optional
