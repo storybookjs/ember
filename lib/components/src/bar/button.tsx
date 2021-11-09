@@ -1,6 +1,6 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
-import { darken, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import { auto } from '@popperjs/core';
 
 interface ButtonProps
@@ -116,6 +116,19 @@ export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid 
 );
 IconButton.displayName = 'IconButton';
 
+const IconPlaceholder = styled.div(({ theme }) => ({
+  width: 14,
+  height: 14,
+  backgroundColor: theme.appBorderColor,
+  animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+}));
+
+const IconButtonSkeletonWrapper = styled.div(() => ({
+  padding: 5,
+}));
+
 export const IconButtonSkeleton = () => (
-  <div style={{ backgroundColor: 'grey', width: '20px', height: '20px' }} />
+  <IconButtonSkeletonWrapper>
+    <IconPlaceholder />
+  </IconButtonSkeletonWrapper>
 );
