@@ -8,7 +8,7 @@ export default {
 };
 
 const style: CSSProperties = {
-  width: '500px',
+  maxWidth: '700px',
   height: '500px',
   border: '2px solid hotpink',
   position: 'relative',

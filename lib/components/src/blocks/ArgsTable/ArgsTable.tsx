@@ -336,7 +336,7 @@ const SkeletonHeader = styled.div(({ theme }) => ({
 
   div: {
     animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    background: theme.color.medium,
+    background: theme.appBorderColor,
     flexShrink: 0,
     height: 20,
 
@@ -355,10 +355,17 @@ const SkeletonHeader = styled.div(({ theme }) => ({
     '&:last-child': {
       width: 30,
     },
+
+    '@media ( max-width: 500px )': {
+      '&:nth-child( n + 4 )': {
+        display: 'none',
+      },
+    },
   },
 }));
 
 const SkeletonBody = styled.div(({ theme }) => ({
+  background: theme.background.content,
   boxShadow:
     theme.base === 'light'
       ? `rgba(0, 0, 0, 0.10) 0 1px 3px 1px,
@@ -366,16 +373,15 @@ const SkeletonBody = styled.div(({ theme }) => ({
       : `rgba(0, 0, 0, 0.20) 0 2px 5px 1px,
           ${opacify(0.05, theme.appBorderColor)} 0 0 0 1px`,
   borderRadius: theme.appBorderRadius,
-  background: theme.background.content,
 
   '> div': {
     alignContent: 'stretch',
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
     borderTopColor:
       theme.base === 'light'
         ? darken(0.1, theme.background.content)
         : lighten(0.05, theme.background.content),
+    borderTopStyle: 'solid',
+    borderTopWidth: 1,
     display: 'flex',
     gap: 16,
     padding: 20,
@@ -388,8 +394,8 @@ const SkeletonBody = styled.div(({ theme }) => ({
   '> div div': {
     animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
     background: theme.appBorderColor,
-    height: 20,
     flexShrink: 0,
+    height: 20,
 
     '&:first-child': {
       width: '20%',
@@ -403,8 +409,12 @@ const SkeletonBody = styled.div(({ theme }) => ({
       flexGrow: 1,
     },
 
-    '&:nth-child(4)': {
+    '&:last-child': {
       width: 'calc(20% + 47px)',
+
+      '@media ( max-width: 500px )': {
+        display: 'none',
+      },
     },
   },
 }));
