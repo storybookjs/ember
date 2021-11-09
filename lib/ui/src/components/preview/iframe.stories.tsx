@@ -40,3 +40,27 @@ export const missingStory = () => (
     scale={1.0}
   />
 );
+
+export const preparingStory = () => (
+  <IFrame
+    active
+    id="iframe"
+    title="Preparing Story"
+    src="/iframe.html?__SPECIAL_TEST_PARAMETER__=preparing-story"
+    allowFullScreen
+    style={style}
+    scale={1.0}
+  />
+);
+
+export const preparingDocs = () => (
+  <IFrame
+    active
+    id="iframe"
+    title="Preparing Docs"
+    src="/iframe.html?__SPECIAL_TEST_PARAMETER__=preparing-docs"
+    allowFullScreen
+    style={style}
+    scale={1.0}
+  />
+);

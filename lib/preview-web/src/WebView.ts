@@ -2,6 +2,7 @@ import global from 'global';
 import { logger } from '@storybook/client-logger';
 import AnsiToHtml from 'ansi-to-html';
 import dedent from 'ts-dedent';
+import qs from 'qs';
 
 import { Story } from '@storybook/store';
 
@@ -26,6 +27,24 @@ const ansiConverter = new AnsiToHtml({
 
 export class WebView {
   currentLayoutClass?: typeof layoutClassMap[keyof typeof layoutClassMap] | null;
+
+  constructor() {
+    // Special code for testing situations
+    const { __SPECIAL_TEST_PARAMETER__ } = qs.parse(document.location.search, {
+      ignoreQueryPrefix: true,
+    });
+    switch (__SPECIAL_TEST_PARAMETER__) {
+      case 'preparing-story': {
+        console.log('preparing-story');
+        break;
+      }
+      case 'preparing-docs': {
+        console.log('preparing-docs');
+        break;
+      }
+      default: // pass;
+    }
+  }
 
   // Get ready to render a story, returning the element to render to
   prepareForStory(story: Story<any>) {
