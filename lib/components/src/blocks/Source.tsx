@@ -42,12 +42,7 @@ const SourceSkeletonWrapper = styled.div<{}>(({ theme }) => ({
   boxShadow:
     theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
   margin: '25px 0 40px',
-  padding: 20,
-
-  'pre.prismjs': {
-    background: 'inherit',
-    padding: 20,
-  },
+  padding: '20px 20px 20px 22px',
 }));
 
 const SourceSkeletonPlaceholder = styled.div<{}>(({ theme }) => ({
