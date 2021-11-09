@@ -87,6 +87,6 @@ Stories are also helpful for checking that UI continues to look correct as you m
   />
 </video>
 
-Checking component’s stories as you develop helps prevent accidental regressions. Tools that integrate with Storybook can also [automate](../workflows/testing-with-storybook.md) this for you.
+Checking component’s stories as you develop helps prevent accidental regressions. Tools that integrate with Storybook can also [automate](../writing-tests/introduction.md) this for you.
 
 Now that we’ve seen the basic anatomy of a story let’s see how we use Storybook’s UI to develop stories.

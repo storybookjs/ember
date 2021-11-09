@@ -152,7 +152,7 @@ The `args` param is always a set of `key: value` pairs delimited with a semicolo
 
 <CodeSnippets
   paths={[
-   'storybook-args-url-params-converted.js.mdx',
+   'common/storybook-args-url-params-converted.js.mdx',
   ]}
 />
 
