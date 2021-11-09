@@ -297,6 +297,11 @@ export interface StorybookConfig {
     postcss?: boolean;
 
     /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
+    emotionAlias?: boolean;
+
+    /**
      * Build stories.json automatically on start/build
      */
     buildStoriesJson?: boolean;
