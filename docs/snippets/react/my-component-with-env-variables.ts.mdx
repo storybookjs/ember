@@ -3,20 +3,20 @@
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { MyComponent, MyComponentProps } from './MyComponent';
+import { MyComponent } from './MyComponent';
 
 export default {
-   /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'MyComponent',
   component: MyComponent,
-} as Meta;
+} as ComponentMeta<typeof MyComponent>;
 
-const Template: Story<MyComponentProps> = (args) => <MyComponent {...args} />;
+const Template: ComponentStory<typeof MyComponent> = (args) => <MyComponent {...args} />;
 
 export const ExampleStory = Template.bind({});
 ExampleStory.args = {

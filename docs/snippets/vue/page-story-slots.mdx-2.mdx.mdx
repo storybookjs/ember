@@ -7,19 +7,21 @@ import Page from './Page.vue';
 
 <Meta title="Page" component={Page} />
 
-<!-- Render functions are a framework specific feature to allow you control on how the component renders -->
+export const Template = (args, { argTypes }) => ({
+  components: { Page },
+  props: Object.keys(argTypes),
+  template: `
+    <page v-bind="$props">
+      <footer v-if="footer" v-slot=footer v-html="footer"/>
+    </page>
+  `,
+});
 
 <Story
   name="CustomFooter"
   args={{
    footer: `<a href="https://storybook.js.org/">Built with Storybook</a>`,
-  }}
-  render={(args, { argTypes }) => ({
-    props: Object.keys(argTypes),
-    components: { Page },
-    template: `
-      <page v-bind="$props">
-        <footer v-if="footer" v-slot=footer v-html="footer"/>
-      </page>`,
-  })} />
+  }}>
+  {Template.bind({})}
+</Story>
 ```

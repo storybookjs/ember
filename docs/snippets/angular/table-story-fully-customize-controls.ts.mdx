@@ -1,18 +1,18 @@
 ```ts
 // Table.stories.ts
 
-import { Meta, Story} from '@storybook/angular',
+import { Meta, Story } from '@storybook/angular',
 
 import { Table } from './Table.component';
 
 export default {
   /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Custom Table',
   component: Table,
-};
+} as Meta;
 
 const TableStory: Story = (args) => ({
   props: args,
