@@ -15,8 +15,16 @@ const layoutClassMap = {
 } as const;
 type Layout = keyof typeof layoutClassMap | 'none';
 
-const classes = {
-  PREPARING: 'sb-show-preparing',
+enum Mode {
+  'MAIN' = 'MAIN',
+  'NOPREVIEW' = 'NOPREVIEW',
+  'PREPARING_STORY' = 'PREPARING_STORY',
+  'PREPARING_DOCS' = 'PREPARING_DOCS',
+  'ERROR' = 'ERROR',
+}
+const classes: Record<Mode, string> = {
+  PREPARING_STORY: 'sb-show-preparing-story',
+  PREPARING_DOCS: 'sb-show-preparing-docs',
   MAIN: 'sb-show-main',
   NOPREVIEW: 'sb-show-nopreview',
   ERROR: 'sb-show-errordisplay',
@@ -29,6 +37,8 @@ const ansiConverter = new AnsiToHtml({
 export class WebView {
   currentLayoutClass?: typeof layoutClassMap[keyof typeof layoutClassMap] | null;
 
+  testing = false;
+
   constructor() {
     // Special code for testing situations
     const { __SPECIAL_TEST_PARAMETER__ } = qs.parse(document.location.search, {
@@ -36,11 +46,13 @@ export class WebView {
     });
     switch (__SPECIAL_TEST_PARAMETER__) {
       case 'preparing-story': {
-        console.log('preparing-story');
+        this.showPreparingStory();
+        this.testing = true;
         break;
       }
       case 'preparing-docs': {
-        console.log('preparing-docs');
+        this.showPreparingDocs();
+        this.testing = true;
         break;
       }
       default: // pass;
@@ -98,43 +110,43 @@ export class WebView {
     }
   }
 
+  showMode(mode: Mode) {
+    Object.keys(Mode).forEach((otherMode) => {
+      if (otherMode === mode) {
+        document.body.classList.add(classes[otherMode]);
+      } else {
+        document.body.classList.remove(classes[otherMode as Mode]);
+      }
+    });
+  }
+
   showErrorDisplay({ message = '', stack = '' }) {
     document.getElementById('error-message').innerHTML = ansiConverter.toHtml(message);
     document.getElementById('error-stack').innerHTML = ansiConverter.toHtml(stack);
 
-    document.body.classList.remove(classes.MAIN);
-    document.body.classList.remove(classes.NOPREVIEW);
-    document.body.classList.remove(classes.PREPARING);
-
-    document.body.classList.add(classes.ERROR);
+    this.showMode(Mode.ERROR);
   }
 
   showNoPreview() {
-    document.body.classList.remove(classes.MAIN);
-    document.body.classList.remove(classes.ERROR);
-    document.body.classList.remove(classes.PREPARING);
+    if (this.testing) return;
 
-    document.body.classList.add(classes.NOPREVIEW);
+    this.showMode(Mode.NOPREVIEW);
 
     // In storyshots this can get called and these two can be null
     this.storyRoot()?.setAttribute('hidden', 'true');
     this.docsRoot()?.setAttribute('hidden', 'true');
   }
 
-  showPreparing() {
-    document.body.classList.remove(classes.MAIN);
-    document.body.classList.remove(classes.ERROR);
-    document.body.classList.remove(classes.NOPREVIEW);
+  showPreparingStory() {
+    this.showMode(Mode.PREPARING_STORY);
+  }
 
-    document.body.classList.add(classes.PREPARING);
+  showPreparingDocs() {
+    this.showMode(Mode.PREPARING_DOCS);
   }
 
   showMain() {
-    document.body.classList.remove(classes.NOPREVIEW);
-    document.body.classList.remove(classes.ERROR);
-    document.body.classList.remove(classes.PREPARING);
-
-    document.body.classList.add(classes.MAIN);
+    this.showMode(Mode.MAIN);
   }
 
   showDocs() {

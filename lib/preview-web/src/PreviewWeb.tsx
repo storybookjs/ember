@@ -406,7 +406,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     // Show a spinner while we load the next story
-    if (selection.viewMode !== 'docs' || viewModeChanged) this.view.showPreparing();
+    if (selection.viewMode === 'story') {
+      this.view.showPreparingStory();
+    } else {
+      this.view.showPreparingDocs();
+    }
 
     let story;
     try {
@@ -465,7 +469,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
     const { id, title, name } = story;
-    const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
@@ -490,7 +493,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         ...(!FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
-      (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
+      const renderer = await import('./renderDocs');
+      const element = this.view.prepareForDocs();
+      renderer.renderDocs(story, fullDocsContext, element, () =>
         this.channel.emit(Events.DOCS_RENDERED, id)
       );
     };
