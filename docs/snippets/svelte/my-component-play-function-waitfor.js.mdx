@@ -7,9 +7,9 @@ import MyComponent from './MyComponent.svelte';
 
 export default {
   /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'WithAsync',
   component: MyComponent,
 };
@@ -29,7 +29,7 @@ ExampleAsyncStory.play = async () => {
     delay: 100,
   });
 
-    // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
   const Submit = screen.getByRole('button');
   await userEvent.click(Submit);
 

@@ -1,7 +1,8 @@
 ```ts
 // ButtonGroup.stories.ts
 
-import { moduleMetadata } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
 import { CommonModule } from '@angular/common';
 
 import { ButtonGroup } from './ButtonGroup.component';
@@ -23,7 +24,7 @@ export default {
       imports: [CommonModule],
     }),
   ],
-};
+} as Meta;
 
 const Template: Story = (args) => ({
   props: args,

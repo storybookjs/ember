@@ -1,17 +1,17 @@
 ```ts
 // MyComponent.stories.ts
 
-import { Story, Meta } from '@storybook/angular';
+import { Meta, Story } from '@storybook/angular';
 
 import { screen, userEvent } from '@storybook/testing-library';
 
 import { MyComponent } from './MyComponent.component';
 
 export default {
-   /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'WithSelectEvent',
   component: MyComponent,
 } as Meta;
