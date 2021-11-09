@@ -38,6 +38,7 @@ interface SourceCodeProps {
 const SourceSkeletonWrapper = styled.div<{}>(({ theme }) => ({
   background: theme.background.content,
   borderRadius: theme.appBorderRadius,
+  border: `1px solid ${theme.appBorderColor}`,
   boxShadow:
     theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
   margin: '25px 0 40px',
@@ -52,8 +53,8 @@ const SourceSkeletonWrapper = styled.div<{}>(({ theme }) => ({
 const SourceSkeletonPlaceholder = styled.div<{}>(({ theme }) => ({
   animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
   background: theme.appBorderColor,
-  height: 18,
-  marginTop: 10,
+  height: 17,
+  marginTop: 1,
   width: '60%',
 
   '&:first-child': {
@@ -66,6 +67,7 @@ const SourceSkeleton = () => (
     <SourceSkeletonPlaceholder />
     <SourceSkeletonPlaceholder style={{ width: '80%' }} />
     <SourceSkeletonPlaceholder style={{ width: '30%' }} />
+    <SourceSkeletonPlaceholder style={{ width: '80%' }} />
   </SourceSkeletonWrapper>
 );
 
