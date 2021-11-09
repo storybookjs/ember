@@ -295,6 +295,7 @@ export interface StorybookConfig {
      * Allows to disable deprecated implicit PostCSS loader.
      */
     postcss?: boolean;
+
     /**
      * Allows to disable deprecated implicit PostCSS loader.
      */
