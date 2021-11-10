@@ -28,9 +28,15 @@ function loadEsmModule<T>(modulePath: string): Promise<T> {
  * Information about Ivy can be found here https://angular.io/guide/ivy
  */
 export const runNgcc = async () => {
-  const ngcc = await loadEsmModule<typeof import('@angular/compiler-cli/ngcc')>(
-    '@angular/compiler-cli/ngcc'
-  );
+  let ngcc: typeof import('@angular/compiler-cli/ngcc');
+  try {
+    ngcc = await import('@angular/compiler-cli/ngcc');
+  } catch (error) {
+    ngcc = await loadEsmModule<typeof import('@angular/compiler-cli/ngcc')>(
+      '@angular/compiler-cli/ngcc'
+    );
+  }
+
   ngcc.process({
     // should be async: true but does not work due to
     // https://github.com/storybookjs/storybook/pull/11157/files#r615413803
