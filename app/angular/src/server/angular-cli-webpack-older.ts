@@ -20,7 +20,6 @@ import { PresetOptions } from './options';
  * Old way currently support version lower than 12.2.x
  */
 export async function getWebpackConfig(baseConfig: webpack.Configuration, options: PresetOptions) {
-  logger.info('=> Loading angular-cli config for angular <=12.2.0');
   const dirToSearch = process.cwd();
 
   // Read angular workspace
