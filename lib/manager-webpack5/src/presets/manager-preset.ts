@@ -92,10 +92,8 @@ export async function managerWebpack(
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, options) => ({
-          compilation,
-          files,
-          options,
+        template,
+        templateParameters: {
           version,
           globals: {
             CONFIG_TYPE: configType,
@@ -108,8 +106,7 @@ export async function managerWebpack(
             SERVER_CHANNEL_URL: serverChannelUrl,
           },
           headHtmlSnippet,
-        }),
-        template,
+        },
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
       // graphql sources check process variable
