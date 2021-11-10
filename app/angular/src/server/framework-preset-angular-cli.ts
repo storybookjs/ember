@@ -115,8 +115,10 @@ async function getBuilderOptions(
    */
   const builderOptions = {
     ...browserTargetOptions,
+    ...options.angularBuilderOptions,
     tsConfig:
       options.tsConfig ??
+      options.angularBuilderOptions?.tsConfig ??
       browserTargetOptions.tsConfig ??
       findUpSync('tsconfig.json', { cwd: options.configDir }),
   };
