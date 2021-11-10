@@ -48,11 +48,13 @@ function commandBuilder(
     map(({ tsConfig }) => {
       const { browserTarget, ...otherOptions } = options;
 
-      return {
+      const standaloneOptions: StandaloneOptions = {
         ...otherOptions,
         angularBrowserTarget: browserTarget,
+        angularBuilderContext: context,
         tsConfig,
       };
+      return standaloneOptions;
     }),
     switchMap((standaloneOptions) => runInstance({ ...standaloneOptions, mode: 'static' })),
     map(() => {

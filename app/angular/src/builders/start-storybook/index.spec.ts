@@ -75,6 +75,7 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -107,6 +108,7 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -165,6 +167,7 @@ describe('Start Storybook Builder', () => {
     ]);
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
