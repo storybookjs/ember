@@ -26,7 +26,6 @@ export type StorybookBuilderOptions = JsonObject & {
     CLIOptions,
     | 'port'
     | 'host'
-    | 'staticDir'
     | 'configDir'
     | 'https'
     | 'sslCa'
@@ -91,8 +90,7 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
     tsConfig: options.tsConfig ?? browserOptions.tsConfig ?? undefined,
   };
 }
-// FIXME : staticDir is deprecated and cause bug if i put it here. need to find a solution with core team
-function runInstance({ staticDir, ...options }: StandaloneOptions) {
+function runInstance(options: StandaloneOptions) {
   return new Observable<void>((observer) => {
     // This Observable intentionally never complete, leaving the process running ;)
     buildStandalone(options).then(
