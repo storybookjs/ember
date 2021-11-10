@@ -1,4 +1,5 @@
-/* eslint-disable storybook/await-interactions storybook/use-expect */
+/* eslint-disable storybook/use-storybook-expect */
+/* eslint-disable storybook/await-interactions */
 import React, { useState } from 'react';
 import { styled } from '@storybook/theming';
 

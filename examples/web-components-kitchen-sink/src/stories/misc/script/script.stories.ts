@@ -1,3 +1,5 @@
+/* eslint-disable storybook/hierarchy-separator */
+// @TODO: discuss about having dots in a meta title (that is not related to a separator)
 import { html } from 'lit';
 
 export default {

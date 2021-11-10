@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions, import/no-unresolved */
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import addCssWarning from '../src/cssWarning';
 

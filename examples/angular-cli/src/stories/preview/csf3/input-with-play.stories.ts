@@ -1,5 +1,4 @@
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, userEvent, within } from '@storybook/testing-library';
 import { InputComponent } from './sb-input.component';
 
 export default {
@@ -25,8 +24,8 @@ export const WithTemplate = {
     props,
     template: '<h1>Heading</h1><sb-input></sb-input>',
   }),
-  play: async () => {
-    const input = await screen.getByAltText('sb-input');
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByAltText('sb-input');
     await userEvent.type(input, `Typing from CSF3`);
   },
 };

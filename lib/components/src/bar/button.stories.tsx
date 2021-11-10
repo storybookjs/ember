@@ -8,7 +8,8 @@ export default {
   title: 'Basics/IconButton',
 };
 
-// eslint-disable-next-line no-underscore-dangle
+// @TODO: Discuss about this use case
+/* eslint-disable-next-line storybook/prefer-pascal-case, no-underscore-dangle */
 export const _IconButton = () => (
   <IconButton>
     <Icons icon="bookmark" />

@@ -1,3 +1,5 @@
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: fix this and use addon-interactions
 import React from 'react';
 import type { StoriesHash } from '@storybook/api';
 import { screen } from '@testing-library/dom';
