@@ -6,7 +6,7 @@ export default {
   title: 'Welcome/ To Angular',
 } as Meta;
 
-export const toAngular: Story = () => ({
+export const ToAngular: Story = () => ({
   component: AppComponent,
   props: {
     showApp: linkTo('Button'),

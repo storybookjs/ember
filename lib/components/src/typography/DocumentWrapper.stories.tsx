@@ -9,13 +9,13 @@ export default {
   decorators: [(storyFn: any) => <div style={{ width: '600px' }}>{storyFn()}</div>],
 };
 
-export const withMarkdown = () => (
+export const WithMarkdown = () => (
   <DocumentWrapper>
     <MarkdownSample />
   </DocumentWrapper>
 );
 
-export const withDOM = () => (
+export const WithDOM = () => (
   <DocumentWrapper>
     <h1>h1 Heading</h1>
     <h2>h2 Heading</h2>
