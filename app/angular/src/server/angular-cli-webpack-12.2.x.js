@@ -1,5 +1,3 @@
-const { targetFromTargetString } = require('@angular-devkit/architect');
-
 // Private angular devkit stuff
 const {
   generateI18nBrowserWebpackConfigFromContext,
@@ -7,53 +5,47 @@ const {
 const {
   getCommonConfig,
   getStylesConfig,
-  getTypescriptWorkerPlugin,
+  getTypeScriptConfig,
 } = require('@angular-devkit/build-angular/src/webpack/configs');
 
 const { filterOutStylingRules } = require('./utils/filter-out-styling-rules');
 
 /**
- * Extract wepack config from angular-cli 12.2.x
+ * Extract webpack config from angular-cli 12.2.x
  * ⚠️ This file is in JavaScript to not use TypeScript. Because current storybook TypeScript version is not compatible with Angular CLI.
  * FIXME: Try another way with TypeScript on future storybook version (7 maybe 🤞)
  *
  * @param {*} baseConfig Previous webpack config from storybook
- * @param {*} options PresetOptions
+ * @param {*} options { builderOptions, builderContext }
  */
-exports.getWebpackConfig = async (baseConfig, options) => {
-  const builderContext = options.angularBuilderContext;
-  const target = options.angularBrowserTarget;
-
-  let targetOptions = {};
-
-  if (target) {
-    targetOptions = await builderContext.getTargetOptions(targetFromTargetString(target));
-  }
-
-  const tsConfig = options.tsConfig ?? targetOptions.tsConfig;
-
+exports.getWebpackConfig = async (baseConfig, { builderOptions, builderContext }) => {
+  /**
+   * Get angular-cli Webpack config
+   */
   const { config: cliConfig } = await generateI18nBrowserWebpackConfigFromContext(
     {
-      // Default required options
+      // Default options
       index: 'noop-index',
       main: 'noop-main',
       outputPath: 'noop-out',
 
-      // Target options to override
-      ...targetOptions,
+      // Options provided by user
+      ...builderOptions,
 
       // Fixed options
       optimization: false,
       namedChunks: false,
       progress: false,
-      tsConfig,
       buildOptimizer: false,
       aot: false,
     },
     builderContext,
-    (wco) => [getCommonConfig(wco), getStylesConfig(wco), getTypescriptWorkerPlugin(wco)]
+    (wco) => [getCommonConfig(wco), getStylesConfig(wco), getTypeScriptConfig(wco)]
   );
 
+  /**
+   * Merge baseConfig Webpack with angular-cli Webpack
+   */
   const entry = [
     ...baseConfig.entry,
     ...(cliConfig.entry.styles ?? []),
@@ -63,6 +55,12 @@ exports.getWebpackConfig = async (baseConfig, options) => {
   // Don't use storybooks styling rules because we have to use rules created by @angular-devkit/build-angular
   // because @angular-devkit/build-angular created rules have include/exclude for global style files.
   const rulesExcludingStyles = filterOutStylingRules(baseConfig);
+  const module = {
+    ...baseConfig.module,
+    rules: [...cliConfig.module.rules, ...rulesExcludingStyles],
+  };
+
+  const plugins = [...(cliConfig.plugins ?? []), ...baseConfig.plugins];
 
   const resolve = {
     ...baseConfig.resolve,
@@ -72,11 +70,8 @@ exports.getWebpackConfig = async (baseConfig, options) => {
   return {
     ...baseConfig,
     entry,
-    module: {
-      ...baseConfig.module,
-      rules: [...cliConfig.module.rules, ...rulesExcludingStyles],
-    },
-    plugins: [...(cliConfig.plugins ?? []), ...baseConfig.plugins],
+    module,
+    plugins,
     resolve,
     resolveLoader: cliConfig.resolveLoader,
   };
