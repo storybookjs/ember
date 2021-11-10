@@ -1,3 +1,4 @@
+/* eslint-disable storybook/default-exports */
 import React from 'react';
 import { styled } from '@storybook/theming';
 import { storiesOf } from '@storybook/react';
