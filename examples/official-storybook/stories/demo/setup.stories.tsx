@@ -1,6 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
+import { screen, userEvent } from '@storybook/testing-library';
 
 const Input = () => <input data-testid="test-input" />;
 

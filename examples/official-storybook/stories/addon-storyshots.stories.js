@@ -1,7 +1,8 @@
+/* eslint-disable storybook/await-interactions storybook/use-expect */
 import React, { useState } from 'react';
 import { styled } from '@storybook/theming';
 
-const Block = styled.div({
+const BlockDiv = styled.div({
   display: 'inline-block',
   height: 400,
   width: 400,
@@ -12,18 +13,22 @@ export default {
   title: 'Addons/Storyshots',
 };
 
-export const block = () => {
+export const Block = () => {
   const [hover, setHover] = useState(false);
 
   return (
-    <Block data-test-block onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <BlockDiv
+      data-test-block
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
       {hover && 'I am hovered'}
-    </Block>
+    </BlockDiv>
   );
 };
-block.storyName = 'Block story';
+Block.storyName = 'Block story';
 
-block.parameters = {
+Block.parameters = {
   async puppeteerTest(page) {
     const element = await page.$('[data-test-block]');
     await element.hover();
