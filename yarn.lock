@@ -8883,7 +8883,7 @@ __metadata:
     eslint-plugin-cypress: ^2.11.2
     eslint-plugin-import: ^2.22.1
     eslint-plugin-react: ^7.22.0
-    eslint-plugin-storybook: 0.2.2
+    eslint-plugin-storybook: ^0.2.2
     eslint-teamcity: ^3.0.1
     esm: ^3.2.25
     express: ^4.17.1
@@ -22029,7 +22029,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@npm:0.2.2":
+"eslint-plugin-storybook@npm:^0.2.2":
   version: 0.2.2
   resolution: "eslint-plugin-storybook@npm:0.2.2"
   dependencies:
