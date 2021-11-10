@@ -102,15 +102,18 @@ describe('eslint-plugin fix', () => {
             packageJson,
             main: {
               stories: [
-                './stories/**/*.stories.@(js|ts|tsx)',
+                // this is the path relative to .storybook
+                // or wherever the main.js file is
+                '../stories/**/*.stories.@(js|ts|tsx)',
                 '../src/components/Accordion.stories.tsx',
               ],
             },
           })
         ).resolves.toMatchObject({
           storiesGlobs: [
-            './stories/**/*.stories.@(js|ts|tsx)',
-            '../src/components/Accordion.stories.tsx',
+            // this should be the path based on main.js AND root directory
+            'stories/**/*.stories.@(js|ts|tsx)',
+            'src/components/Accordion.stories.tsx',
           ],
         });
       });
@@ -121,6 +124,8 @@ describe('eslint-plugin fix', () => {
             packageJson,
             main: {
               stories: [
+                // this is the path relative to .storybook
+                // or wherever the main.js file is
                 {
                   dir: '../src/components',
                 },
@@ -132,8 +137,9 @@ describe('eslint-plugin fix', () => {
           })
         ).resolves.toMatchObject({
           storiesGlobs: [
-            '../src/components/**/*.stories.@(js|ts|jsx|tsx)',
-            '../src/pages/**/*.stories.@(js|ts|jsx|tsx)',
+            // this should be the path based on main.js AND root directory
+            'src/components/**/*.stories.@(js|ts|jsx|tsx)',
+            'src/pages/**/*.stories.@(js|ts|jsx|tsx)',
           ],
         });
       });
