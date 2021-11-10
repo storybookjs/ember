@@ -8883,7 +8883,7 @@ __metadata:
     eslint-plugin-cypress: ^2.11.2
     eslint-plugin-import: ^2.22.1
     eslint-plugin-react: ^7.22.0
-    eslint-plugin-storybook: ^0.2.2
+    eslint-plugin-storybook: ^0.2.3
     eslint-teamcity: ^3.0.1
     esm: ^3.2.25
     express: ^4.17.1
@@ -22029,16 +22029,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "eslint-plugin-storybook@npm:0.2.2"
+"eslint-plugin-storybook@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "eslint-plugin-storybook@npm:0.2.3"
   dependencies:
     "@storybook/csf": ^0.0.1
     "@typescript-eslint/experimental-utils": ^5.3.0
     requireindex: ^1.1.0
   peerDependencies:
     eslint: ">=6"
-  checksum: d20b62174c53db708c6deca2126d2e6971a00ebbf4f329e13bd2671d99d15e4ca07a666090b9dcea049216b3d5d078e0337372970beef22f074aa104306d94cb
+  checksum: 85c32b4aa0509478c594f7cb8265f9208b292fa23a5fd4824125cb52ee0bd238cf233699743e9777208bcb720d72c0ea6581a5c7736be5b79e74d08cb00f54f4
   languageName: node
   linkType: hard
 
