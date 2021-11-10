@@ -46,7 +46,7 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions) => {
       } else {
         logger.info(`Skipping the ${chalk.cyan(f.id)} fix.`);
         logger.info();
-        logger.info(`If you change your mind, run '${chalk.cyan('npx sb@next fix')}'`);
+        logger.info(`If you change your mind, run '${chalk.cyan('npx sb@next automigrate')}'`);
       }
     }
   }

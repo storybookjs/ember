@@ -13,6 +13,7 @@ export default {
 
 export const WithArgs: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 WithArgs.args = { label: 'With args' };
+
 export const Basic = () => <Button label="Click me" />;
 
 export const StoryObject = {
@@ -36,3 +37,13 @@ CSF2StoryWithPlay.play = () => {
   console.log('play!!');
   userEvent.click(screen.getByRole('button'));
 };
+
+// eslint-disable-next-line no-underscore-dangle
+export const __namedExportsOrder = [
+  'Basic',
+  'WithArgs',
+  'StoryObject',
+  'StoryNoRender',
+  'StoryWithPlay',
+  'CSF2StoryWithPlay',
+];

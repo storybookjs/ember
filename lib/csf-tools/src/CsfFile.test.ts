@@ -285,6 +285,54 @@ describe('CsfFile', () => {
               __id: foo-bar--b
       `);
     });
+
+    it('re-exported stories', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export { default as A } from './A';
+          export { B } from './B';
+        `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+          - id: foo-bar--b
+            name: B
+      `);
+    });
+
+    it('named exports order', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export const A = () => {};
+          export const B = (args) => {};
+          export const __namedExportsOrder = ['B', 'A'];
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--b
+            name: B
+            parameters:
+              __isArgsStory: true
+              __id: foo-bar--b
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __isArgsStory: false
+              __id: foo-bar--a
+      `);
+    });
   });
 
   describe('error handling', () => {
@@ -298,6 +346,7 @@ describe('CsfFile', () => {
         )
       ).toThrow('CSF: missing default export');
     });
+
     it('no metadata', () => {
       expect(() =>
         parse(
@@ -309,6 +358,7 @@ describe('CsfFile', () => {
         )
       ).toThrow('CSF: missing title/component');
     });
+
     it('dynamic titles', () => {
       expect(() =>
         parse(
@@ -320,6 +370,7 @@ describe('CsfFile', () => {
         )
       ).toThrow('CSF: unexpected dynamic title');
     });
+
     it('storiesOf calls', () => {
       expect(() =>
         parse(

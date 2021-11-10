@@ -22,6 +22,7 @@ import {
   sortStoriesV6,
   StoryIndexEntry,
 } from '@storybook/store';
+import { logger } from '@storybook/client-logger';
 
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
@@ -74,7 +75,11 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
     const sortableV6: [StoryId, Story<TFramework>, Parameters, Parameters][] = storyEntries.map(
       ([storyId, { importPath }]) => {
         const exports = this.csfExports[importPath];
-        const csfFile = store.processCSFFileWithCache<TFramework>(exports, exports.default.title);
+        const csfFile = store.processCSFFileWithCache<TFramework>(
+          exports,
+          importPath,
+          exports.default.title
+        );
         return [
           storyId,
           store.storyFromCSFFile({ storyId, csfFile }),
@@ -156,26 +161,33 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
         )
       );
     if (!title) {
-      throw new Error(
+      logger.info(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
           fileExports.default
         )}`
       );
+      return;
     }
 
     this.csfExports[fileName] = {
       ...fileExports,
-      default: {
-        ...defaultExport,
-        title,
-        parameters: {
-          fileName,
-          ...defaultExport.parameters,
-        },
-      },
+      default: { ...defaultExport, title },
     };
 
-    Object.entries(namedExports)
+    let sortedExports = namedExports;
+
+    // prefer a user/loader provided `__namedExportsOrder` array if supplied
+    // we do this as es module exports are always ordered alphabetically
+    // see https://github.com/storybookjs/storybook/issues/9136
+    if (Array.isArray(__namedExportsOrder)) {
+      sortedExports = {};
+      __namedExportsOrder.forEach((name) => {
+        const namedExport = namedExports[name];
+        if (namedExport) sortedExports[name] = namedExport;
+      });
+    }
+
+    Object.entries(sortedExports)
       .filter(([key]) => isExportStory(key, defaultExport))
       .forEach(([key, storyExport]: [string, any]) => {
         const exportName = storyNameFromExport(key);
