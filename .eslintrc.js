@@ -7,10 +7,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        'examples/official-storybook/**/*.stories.@(js|jsx|ts|tsx)',
-        'addons/interactions/**/*.stories.@(js|jsx|ts|tsx)',
-      ],
+      files: ['*/**/*.stories.@(js|jsx|ts|tsx)'],
       extends: ['plugin:storybook/recommended'],
 
       // 4) Optional: you can override specific rules here
