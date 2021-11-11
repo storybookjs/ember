@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC } from 'react';
 import Markdown from 'markdown-to-jsx';
 import { transparentize } from 'polished';
 import { styled } from '@storybook/theming';
@@ -84,7 +84,7 @@ const StyledTd = styled.td<{ expandable: boolean }>(({ theme, expandable }) => (
 }));
 
 export const ArgRow: FC<ArgRowProps> = (props) => {
-  const isLoading = 'isLoading' in props;
+  // const isLoading = 'isLoading' in props;
   const { row, updateArgs, compact, expandable, initialExpandedArgs } =
     'row' in props ? props : argRowLoadingData;
   const { name, description } = row;

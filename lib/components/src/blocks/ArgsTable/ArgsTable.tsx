@@ -477,6 +477,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
       </EmptyBlock>
     );
   }
+
   const isLoading = 'isLoading' in props;
   const {
     rows,
@@ -488,6 +489,10 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     initialExpandedArgs,
     sort = 'none',
   } = 'rows' in props ? props : argTableLoadingData;
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -521,10 +526,10 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
       <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
         <thead className="docblock-argstable-head">
           <tr>
-            {isLoading ? null : <th>Name</th>}
-            {compact || isLoading ? null : <th>Description</th>}
-            {compact || isLoading ? null : <th>Default</th>}
-            {updateArgs && !isLoading ? (
+            <th>Name</th>
+            {compact || <th>Description</th>}
+            {compact || <th>Default</th>}
+            {updateArgs && (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
@@ -535,8 +540,8 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
                   )}
                 </ControlHeadingWrapper>
               </th>
-            ) : null}
-            {isLoading ? <div>loading indicators here</div> : null}
+            )}
+            {null}
           </tr>
         </thead>
         <tbody className="docblock-argstable-body">
