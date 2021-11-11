@@ -12,6 +12,7 @@
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
     - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
+  - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
@@ -383,6 +384,20 @@ The Story Store in v7 mode is async, so synchronous story loading APIs no longer
 
 - `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
 - `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
+
+### Emotion11 quasi-compatibility
+
+Now that the web is moving to Emotion 11 for styling, popular libraries like MUI5 and ChakraUI are breaking with Storybook 6.3 which only supports emotion@10.
+
+Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
+
+```js
+module.exports {
+  emotionAlias: false,
+}
+```
+
+Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.
 
 ### Babel mode v7
 
