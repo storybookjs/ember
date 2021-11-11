@@ -1,17 +1,15 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
-import { darken, transparentize } from 'polished';
+import { transparentize } from 'polished';
 import { auto } from '@popperjs/core';
 
 interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: void;
-  disabled?: boolean;
 }
 interface LinkProps
   extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   href: string;
-  disabled?: boolean;
 }
 
 const ButtonOrLink = ({ children, ...restProps }: ButtonProps | LinkProps) =>
@@ -80,7 +78,7 @@ export interface IconButtonProps {
 }
 
 export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<IconButtonProps>(
-  ({ disabled, theme }) => ({
+  () => ({
     alignItems: 'center',
     background: 'transparent',
     border: 'none',
