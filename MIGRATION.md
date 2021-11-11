@@ -13,6 +13,7 @@
     - [V7-style story sort](#v7-style-story-sort)
     - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
     - [Storyshots compatibility in the v7 store](#storyshots-compatibility-in-the-v7-store)
+  - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
@@ -399,6 +400,20 @@ There are some caveats with the above approach:
 
 - The code path in the v6 store is different to the v7 store and your mileage may vary in identical behavior. Buyer beware.
 - The story sort API [changed between the stores](#v7-style-story-sort). If you are using a custom story sort function, you will need to ensure it works in both contexts (perhaps using the check `global.navigator.userAgent.match('jsdom')`).
+
+### Emotion11 quasi-compatibility
+
+Now that the web is moving to Emotion 11 for styling, popular libraries like MUI5 and ChakraUI are breaking with Storybook 6.3 which only supports emotion@10.
+
+Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
+
+```js
+module.exports {
+  emotionAlias: false,
+}
+```
+
+Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.
 
 ### Babel mode v7
 
