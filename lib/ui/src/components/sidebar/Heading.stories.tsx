@@ -1,7 +1,7 @@
 /* eslint-disable storybook/use-storybook-testing-library */
 // @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStory, ComponentMeta, ComponentStoryObj } from '@storybook/react';
 import { ThemeProvider, useTheme, Theme } from '@storybook/theming';
 import { action } from '@storybook/addon-actions';
 import { screen } from '@testing-library/dom';
@@ -192,7 +192,7 @@ export const NoBrand: Story = () => {
   );
 };
 
-export const SkipToCanvasLinkFocused: Story = {
+export const SkipToCanvasLinkFocused: ComponentStoryObj<typeof Heading> = {
   args: { menu: menuItems, skipLinkHref: '#storybook-preview-wrapper' },
   parameters: { layout: 'padded', chromatic: { delay: 300 } },
   play: () => {
