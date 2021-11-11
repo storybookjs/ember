@@ -27,27 +27,6 @@ jobs:
 
       - run: curl -X POST "https://api.netlify.com/build_hooks/${{ secrets.FRONTPAGE_HOOK }}"
 
-  get-latest-release-branch:
-    needs: branch-checks
-    if: ${{ needs.branch-checks.outputs.is-release-branch == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          path: main
-
-      - id: latest-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: ${{ github.workspace }}/main/docs/versions/latest.json
-          prop_path: version
-
-      - run: |
-          LATEST_RELEASE_BRANCH=($(echo ${{ steps.latest-version.outputs.prop }} | sed -E 's/([0-9]+)\.([0-9]+).*/release-\1-\2/'))
-          echo "latest-release-branch=$LATEST_RELEASE_BRANCH" >> $GITHUB_ENV
-    outputs:
-      branch: ${{ env.latest-release-branch }}
-
   get-next-release-branch:
     needs: branch-checks
     if: ${{ needs.branch-checks.outputs.is-next-branch == 'true' || needs.branch-checks.outputs.is-release-branch == 'true' }}
@@ -87,40 +66,31 @@ jobs:
     outputs:
       branch: ${{ needs.get-next-release-branch.outputs.branch }}
 
-  latest-or-next-release-branch-check:
+  next-release-branch-check:
     if: ${{ always() }}
-    needs: [branch-checks, get-latest-release-branch, get-next-release-branch]
+    needs: [branch-checks, get-next-release-branch]
     runs-on: ubuntu-latest
     steps:
       - run: |
-          IS_LATEST_RELEASE_BRANCH=${{ needs.branch-checks.outputs.branch == needs.get-latest-release-branch.outputs.branch }}
           IS_NEXT_RELEASE_BRANCH=${{ needs.branch-checks.outputs.branch == needs.get-next-release-branch.outputs.branch }}
-          echo "is-latest-release-branch=$IS_LATEST_RELEASE_BRANCH" >> $GITHUB_ENV
           echo "is-next-release-branch=$IS_NEXT_RELEASE_BRANCH" >> $GITHUB_ENV
-
-      - run: |
-          IS_LATEST_OR_NEXT_RELEASE_BRANCH=${{ env.is-latest-release-branch == 'true' || env.is-next-release-branch == 'true' }}
-          echo "is-latest-or-next-release-branch=$IS_LATEST_OR_NEXT_RELEASE_BRANCH" >> $GITHUB_ENV
-
-      - if: ${{ env.is-latest-release-branch == 'true' }}
-        run: echo "relevant-base-branch=main" >> $GITHUB_ENV
 
       - if: ${{ env.is-next-release-branch == 'true' }}
         run: echo "relevant-base-branch=next" >> $GITHUB_ENV
 
-      - if: ${{ env.is-latest-or-next-release-branch == 'true' }}
+      - if: ${{ env.is-next-release-branch == 'true' }}
         run: |
           echo 'WARNING: Do not push directly to the `${{ needs.branch-checks.outputs.branch }}` branch. This branch is created and force-pushed over after pushing to the `${{ env.relevant-base-branch }}` branch and the changes you just pushed will be lost.'
           exit 1
     outputs:
-      check: ${{ env.is-latest-or-next-release-branch }}
+      check: ${{ env.is-next-release-branch }}
 
   request-create-frontpage-branch:
     if: ${{ always() }}
-    needs: [branch-checks, latest-or-next-release-branch-check, create-next-release-branch]
+    needs: [branch-checks, next-release-branch-check, create-next-release-branch]
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ needs.branch-checks.outputs.is-actionable-branch == 'true' && needs.latest-or-next-release-branch-check.outputs.check == 'false' }}
+      - if: ${{ needs.branch-checks.outputs.is-actionable-branch == 'true' && needs.next-release-branch-check.outputs.check == 'false' }}
         run: |
           curl -X POST https://api.github.com/repos/storybookjs/frontpage/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
