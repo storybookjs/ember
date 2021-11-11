@@ -96,51 +96,13 @@ describe('eslint-plugin fix', () => {
     });
 
     describe('should install eslint plugin', () => {
-      it('with globs defined in main.js', async () => {
+      it('when .eslintrc is using a supported extension', async () => {
         await expect(
           checkEslint({
             packageJson,
-            main: {
-              stories: [
-                // this is the path relative to .storybook
-                // or wherever the main.js file is
-                '../stories/**/*.stories.@(js|ts|tsx)',
-                '../src/components/Accordion.stories.tsx',
-              ],
-            },
           })
         ).resolves.toMatchObject({
-          storiesGlobs: [
-            // this should be the path based on main.js AND root directory
-            'stories/**/*.stories.@(js|ts|tsx)',
-            'src/components/Accordion.stories.tsx',
-          ],
-        });
-      });
-
-      it('with composed globs from CSF3 configuration format', async () => {
-        await expect(
-          checkEslint({
-            packageJson,
-            main: {
-              stories: [
-                // this is the path relative to .storybook
-                // or wherever the main.js file is
-                {
-                  dir: '../src/components',
-                },
-                {
-                  dir: '../src/pages',
-                },
-              ],
-            },
-          })
-        ).resolves.toMatchObject({
-          storiesGlobs: [
-            // this should be the path based on main.js AND root directory
-            'src/components/**/*.stories.@(js|ts|jsx|tsx)',
-            'src/pages/**/*.stories.@(js|ts|jsx|tsx)',
-          ],
+          unsupportedExtension: undefined,
         });
       });
 

@@ -12,15 +12,8 @@ const logger = console;
 interface EslintPluginRunOptions {
   main: ConfigFile;
   eslintFile: string;
-  storiesGlobs: string[];
   unsupportedExtension?: string;
 }
-
-type StoriesConfig =
-  | string
-  | {
-      dir: string;
-    };
 
 /**
  * Does the user not have eslint-plugin-storybook installed?
@@ -47,7 +40,7 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
 
     const { mainConfig } = config;
     if (!mainConfig) {
-      logger.warn('Unable to find storybook main.js config');
+      logger.warn('Unable to find storybook main.js config, skipping');
       return null;
     }
 
@@ -60,28 +53,14 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
     }
 
     if (!eslintFile && !unsupportedExtension) {
-      logger.warn('Unable to find .eslintrc config file');
+      logger.warn('Unable to find .eslintrc config file, skipping');
       return null;
     }
 
+    // If in the future the eslint plugin has a framework option, using main to extract the framework field will be very useful
     const main = await readConfig(mainConfig);
 
-    const storiesGlobs: string[] = [];
-    if (!unsupportedExtension) {
-      const rawStoriesGlobs = main.getFieldValue(['stories']);
-      rawStoriesGlobs.forEach((glob: StoriesConfig) => {
-        if (typeof glob === 'string') {
-          if (!glob.endsWith('.mdx')) {
-            storiesGlobs.push(glob.replace(/(\|mdx)|(mdx\|)|(\|md)|(md\|)/g, ''));
-          }
-        } else {
-          // stories in CSF3 format. Users only specify the folder so we add a wildcard
-          storiesGlobs.push(`${glob.dir}/**/*.stories.@(js|ts|jsx|tsx)`);
-        }
-      });
-    }
-
-    return { eslintFile, main, storiesGlobs, unsupportedExtension };
+    return { eslintFile, main, unsupportedExtension };
   },
 
   prompt() {
@@ -94,11 +73,7 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
     `;
   },
 
-  async run({
-    result: { main, eslintFile, storiesGlobs, unsupportedExtension },
-    packageManager,
-    dryRun,
-  }) {
+  async run({ result: { eslintFile, unsupportedExtension }, packageManager, dryRun }) {
     const deps = [`eslint-plugin-storybook`];
 
     logger.info(`✅ Adding dependencies: ${deps}`);
@@ -123,18 +98,9 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
     logger.info(`✅ Configuring eslint rules in ${eslint.fileName}`);
 
     if (!dryRun) {
-      logger.info(`✅ Adding Storybook to plugin list`);
-      eslint.setFieldValue(['plugins'], [...eslint.getFieldValue(['plugins']), 'storybook']);
-
-      const storybookOverrides = {
-        files: storiesGlobs,
-        extends: ['plugin:storybook/recommended'],
-      };
-
-      logger.info(`✅ Adding overrides using stories defined in ${main.fileName}`);
-      const currentOverrides = eslint.getFieldValue(['overrides']) || [];
-
-      eslint.setFieldValue(['overrides'], [...currentOverrides, storybookOverrides]);
+      logger.info(`✅ Adding Storybook to extends list`);
+      const extendsConfig = eslint.getFieldValue(['extends']) || [];
+      eslint.setFieldValue(['extends'], [...extendsConfig, 'plugin:storybook/recommended']);
       await writeConfig(eslint);
     }
   },
