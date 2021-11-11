@@ -431,6 +431,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // Don't re-render the story if nothing has changed to justify it
     if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
+      this.view.showMain();
       return;
     }
 
