@@ -21,6 +21,12 @@ export const Active = () => (
   </IconButton>
 );
 
+export const Disabled = () => (
+  <IconButton disabled>
+    <Icons icon="beaker" />
+  </IconButton>
+);
+
 export const WithText = () => (
   <IconButton>
     <Icons icon="circlehollow" />
@@ -30,6 +36,13 @@ export const WithText = () => (
 
 export const WithTextActive = () => (
   <IconButton active>
+    <Icons icon="circlehollow" />
+    &nbsp;Howdy!
+  </IconButton>
+);
+
+export const WithTextDisabled = () => (
+  <IconButton disabled>
     <Icons icon="circlehollow" />
     &nbsp;Howdy!
   </IconButton>
