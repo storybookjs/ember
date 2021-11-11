@@ -1,23 +1,25 @@
 import program, { CommanderStatic } from 'commander';
 import chalk from 'chalk';
 import { logger } from '@storybook/node-logger';
+import type { CLIOptions } from '@storybook/core-common';
 import { parseList, getEnvConfig, checkDeprecatedFlags } from './utils';
 
-export interface ProdCliOptions {
-  staticDir?: string[];
-  outputDir?: string;
-  configDir?: string;
-  quiet?: boolean;
-  loglevel?: string;
-  dll?: boolean;
-  docsDll?: boolean;
-  uiDll?: boolean;
-  debugWebpack?: boolean;
-  previewUrl?: string;
-  forceBuildPreview?: boolean;
-  docs?: boolean;
-  modern?: boolean;
-}
+export type ProdCliOptions = Pick<
+  CLIOptions,
+  | 'configDir'
+  | 'debugWebpack'
+  | 'dll'
+  | 'docs'
+  | 'docsDll'
+  | 'forceBuildPreview'
+  | 'loglevel'
+  | 'modern'
+  | 'outputDir'
+  | 'previewUrl'
+  | 'quiet'
+  | 'staticDir'
+  | 'uiDll'
+>;
 
 export function getProdCli(packageJson: {
   version: string;

@@ -1,5 +1,7 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
+import type { CLIOptions } from '@storybook/core-common';
+import type { ProdCliOptions } from './prod';
 
 export function parseList(str: string): string[] {
   return str
@@ -18,21 +20,36 @@ export function getEnvConfig(program: Record<string, any>, configEnv: Record<str
   });
 }
 
-const warnDLLsDeprecated = deprecate(
-  () => {},
-  dedent`
+const warnDeprecatedFlag = (message: string) => {
+  return deprecate(() => {}, dedent(message));
+};
+
+const warnDLLsDeprecated = warnDeprecatedFlag(
+  `
     DLL-related CLI flags are deprecated, see:
     
     https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-dll-flags
   `
 );
 
-export function checkDeprecatedFlags(options: {
-  dll?: boolean;
-  uiDll?: boolean;
-  docsDll?: boolean;
-}) {
-  if (!options.dll || options.uiDll || options.docsDll) {
+const warnStaticDirDeprecated = warnDeprecatedFlag(
+  `
+    --static-dir CLI flag is deprecated, see:
+
+    https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-static-dir-flag
+  `
+);
+
+export function checkDeprecatedFlags({
+  dll,
+  uiDll,
+  docsDll,
+  staticDir,
+}: CLIOptions | ProdCliOptions) {
+  if (!dll || uiDll || docsDll) {
     warnDLLsDeprecated();
+  }
+  if (staticDir) {
+    warnStaticDirDeprecated();
   }
 }

@@ -514,7 +514,7 @@ export const init: ModuleFn = ({
     );
 
     if (FEATURES?.storyStoreV7) {
-      provider.serverChannel.on(STORY_INDEX_INVALIDATED, () => fullAPI.fetchStoryList());
+      provider.serverChannel?.on(STORY_INDEX_INVALIDATED, () => fullAPI.fetchStoryList());
       await fullAPI.fetchStoryList();
     }
   };

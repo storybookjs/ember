@@ -31,7 +31,7 @@ export function executeLoadable(loadable: Loadable) {
         } catch (error) {
           const errorString =
             error.message && error.stack ? `${error.message}\n ${error.stack}` : error.toString();
-          logger.warn(`Unexpected error while loading ${filename}: ${errorString}`);
+          logger.error(`Unexpected error while loading ${filename}: ${errorString}`);
         }
       });
     });

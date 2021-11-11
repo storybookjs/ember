@@ -12,9 +12,12 @@
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
     - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
+  - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
+  - [6.4 deprecations](#64-deprecations)
+    - [Deprecated --static-dir CLI flag](#deprecated---static-dir-cli-flag)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
   - [Webpack 5](#webpack-5)
     - [Fixing hoisting issues](#fixing-hoisting-issues)
@@ -188,7 +191,7 @@ Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, i
 upgrade the configuration. You can do this automatically by running:
 
 ```
-npx sb@next fix
+npx sb@next automigrate
 ```
 
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
@@ -382,6 +385,20 @@ The Story Store in v7 mode is async, so synchronous story loading APIs no longer
 - `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
 - `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
 
+### Emotion11 quasi-compatibility
+
+Now that the web is moving to Emotion 11 for styling, popular libraries like MUI5 and ChakraUI are breaking with Storybook 6.3 which only supports emotion@10.
+
+Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
+
+```js
+module.exports {
+  emotionAlias: false,
+}
+```
+
+Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.
+
 ### Babel mode v7
 
 SB6.4 introduces an opt-in feature flag, `features.babelModeV7`, that reworks the way Babel is configured in Storybook to make it more consistent with the Babel is configured in your app. This breaking change will become the default in SB 7.0, but we encourage you to migrate today.
@@ -435,6 +452,29 @@ export const MyStory = () => ({ component: MyComponent, ... })
 ```
 
 [More discussion here.](https://github.com/storybookjs/storybook/pull/16010#issuecomment-917378595)
+
+### 6.4 deprecations
+
+#### Deprecated --static-dir CLI flag
+
+In 6.4 we've replaced the `--static-dir` CLI flag with the the `staticDirs` field in `.storybook/main.js`. Note that the CLI directories are relative to the current working directory, whereas the `staticDirs` are relative to the location of `main.js`.
+
+Before:
+
+```sh
+start-storybook --static-dir ./public,./static,./foo/assets:/assets
+```
+
+After:
+
+```js
+// .storybook/main.js
+module.exports = {
+  staticDirs: ['../public', '../static', { from: '../foo/assets', to: '/assets' }],
+};
+```
+
+The `--static-dir` flag has been deprecated and will be removed in Storybook 7.0.
 
 ## From version 6.2.x to 6.3.0
 
@@ -594,7 +634,7 @@ export const Basic = () => ({
 });
 ```
 
-The new convention is consistent with how other frameworks and addons work in Storybook. The old way will be supported until 7.0. For a full discussion see https://github.com/storybookjs/storybook/issues/8673.
+The new convention is consistent with how other frameworks and addons work in Storybook. The old way will be supported until 7.0. For a full discussion see <https://github.com/storybookjs/storybook/issues/8673>.
 
 #### New Angular renderer
 
@@ -631,7 +671,7 @@ Instead of continuing to include PostCSS inside the core library, it has been mo
 
 If you require PostCSS support, please install `@storybook/addon-postcss` in your project, add it to your list of addons inside `.storybook/main.js`, and configure a `postcss.config.js` file.
 
-Further information is available at https://github.com/storybookjs/storybook/issues/12668 and https://github.com/storybookjs/storybook/pull/13669.
+Further information is available at <https://github.com/storybookjs/storybook/issues/12668> and <https://github.com/storybookjs/storybook/pull/13669>.
 
 If you're not using Postcss and you don't want to see the warning, you can disable it by adding the following to your `.storybook/main.js`:
 
@@ -772,7 +812,7 @@ Starting in 6.1, `react` and `react-dom` are required peer dependencies of `@sto
 Error: Cannot find module 'react-dom/package.json'
 ```
 
-They were also peer dependencies in earlier versions, but due to the package structure they would be installed by Storybook if they were not required by the user's project. For more discussion: https://github.com/storybookjs/storybook/issues/13269
+They were also peer dependencies in earlier versions, but due to the package structure they would be installed by Storybook if they were not required by the user's project. For more discussion: <https://github.com/storybookjs/storybook/issues/13269>
 
 ### 6.1 deprecations
 
@@ -801,7 +841,7 @@ console.log(unboundStoryFn(context));
 
 If you're not using loaders, `storyFn` will work as before. If you are, you'll need to use the new approach.
 
-> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in a future release. You can track the issue at https://github.com/storybookjs/storybook/issues/13074.
+> NOTE: If you're using `@storybook/addon-docs`, this deprecation warning is triggered by the Docs tab in 6.1. It's safe to ignore and we will be providing a proper fix in a future release. You can track the issue at <https://github.com/storybookjs/storybook/issues/13074>.
 
 #### Deprecated onBeforeRender
 
@@ -2271,16 +2311,16 @@ The `@storybook/react-native` had built-in addons (`addon-actions` and `addon-li
 
 ### Storyshots Changes
 
-1.  `imageSnapshot` test function was extracted from `addon-storyshots`
-    and moved to a new package - `addon-storyshots-puppeteer` that now will
-    be dependant on puppeteer. [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-puppeteer)
-2.  `getSnapshotFileName` export was replaced with the `Stories2SnapsConverter`
-    class that now can be overridden for a custom implementation of the
-    snapshot-name generation. [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#stories2snapsconverter)
-3.  Storybook that was configured with Webpack's `require.context()` feature
-    will need to add a babel plugin to polyfill this functionality.
-    A possible plugin might be [babel-plugin-require-context-hook](https://github.com/smrq/babel-plugin-require-context-hook).
-    [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#configure-jest-to-work-with-webpacks-requirecontext)
+1. `imageSnapshot` test function was extracted from `addon-storyshots`
+   and moved to a new package - `addon-storyshots-puppeteer` that now will
+   be dependant on puppeteer. [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-puppeteer)
+2. `getSnapshotFileName` export was replaced with the `Stories2SnapsConverter`
+   class that now can be overridden for a custom implementation of the
+   snapshot-name generation. [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#stories2snapsconverter)
+3. Storybook that was configured with Webpack's `require.context()` feature
+   will need to add a babel plugin to polyfill this functionality.
+   A possible plugin might be [babel-plugin-require-context-hook](https://github.com/smrq/babel-plugin-require-context-hook).
+   [README](https://github.com/storybookjs/storybook/tree/master/addons/storyshots/storyshots-core#configure-jest-to-work-with-webpacks-requirecontext)
 
 ### Webpack 4
 
@@ -2291,9 +2331,11 @@ Storybook now uses webpack 4. If you have a [custom webpack config](https://stor
 Storybook now uses Babel 7. There's a couple of cases when it can break with your app:
 
 - If you aren't using Babel yourself, and don't have .babelrc, install following dependencies:
+
   ```
   npm i -D @babel/core babel-loader@next
   ```
+
 - If you're using Babel 6, make sure that you have direct dependencies on `babel-core@6` and `babel-loader@7` and that you have a `.babelrc` in your project directory.
 
 ### Create-react-app
@@ -2544,11 +2586,14 @@ If you **are** using these addons, it takes two steps to migrate:
 - add the addons you use to your `package.json`.
 - update your code:
   change `addons.js` like so:
+
   ```js
   import '@storybook/addon-actions/register';
   import '@storybook/addon-links/register';
   ```
+
   change `x.story.js` like so:
+
   ```js
   import React from 'react';
   import { storiesOf } from '@storybook/react';

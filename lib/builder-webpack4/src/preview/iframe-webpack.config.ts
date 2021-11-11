@@ -238,7 +238,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
       mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
-        ...themingPaths,
+        ...(features?.emotionAlias ? themingPaths : {}),
         ...storybookPaths,
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
