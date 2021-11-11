@@ -1,5 +1,5 @@
-// @TODO: fix this and use addon-interactions
 /* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ThemeProvider, useTheme, Theme } from '@storybook/theming';

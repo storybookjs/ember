@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import React, { Fragment, Key } from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';

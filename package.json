@@ -226,7 +226,7 @@
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-storybook": "^0.2.3",
+    "eslint-plugin-storybook": "^0.3.3",
     "eslint-teamcity": "^3.0.1",
     "esm": "^3.2.25",
     "express": "^4.17.1",

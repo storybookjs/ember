@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import { storiesOf, moduleMetadata } from '@storybook/angular';
 import { Button } from '@storybook/angular/demo';
 

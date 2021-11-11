@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import React, { useState } from 'react';
 import mapValues from 'lodash/mapValues';
 import { storiesOf, StoryContext } from '@storybook/react';

@@ -1,5 +1,8 @@
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 
 const Input = () => <input data-testid="test-input" />;
 

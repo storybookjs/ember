@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import React, { FunctionComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 import { styled } from '@storybook/theming';

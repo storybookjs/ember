@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import React, { Children, cloneElement, FunctionComponent, MouseEvent, ReactElement } from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
@@ -33,8 +32,6 @@ StoryLinkWrapper.defaultProps = {
   passHref: false,
 };
 
-// @TODO: not a story, but not in excludeStories because this is storiesOf format [?]
-// eslint-disable-next-line storybook/prefer-pascal-case
 export const links = [
   { id: '1', title: 'Link', href: 'http://google.com' },
   { id: '2', title: 'Link', href: 'http://google.com' },

@@ -1,4 +1,3 @@
-/* eslint-disable storybook/default-exports */
 import React from 'react';
 import { storiesOf, setAddon } from '@storybook/react';
 import { linkTo } from '@storybook/addon-links';
