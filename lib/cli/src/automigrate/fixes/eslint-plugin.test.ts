@@ -77,7 +77,7 @@ describe('eslint-plugin fix', () => {
           hasEslint: false,
         });
 
-        expect(loggerSpy).toHaveBeenCalledWith('Unable to find storybook main.js config');
+        expect(loggerSpy).toHaveBeenCalledWith('Unable to find storybook main.js config, skipping');
 
         await expect(result).toBeFalsy();
       });
@@ -89,7 +89,7 @@ describe('eslint-plugin fix', () => {
           hasEslint: false,
         });
 
-        expect(loggerSpy).toHaveBeenCalledWith('Unable to find .eslintrc config file');
+        expect(loggerSpy).toHaveBeenCalledWith('Unable to find .eslintrc config file, skipping');
 
         await expect(result).toBeFalsy();
       });
