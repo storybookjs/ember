@@ -3,7 +3,7 @@ import pickBy from 'lodash/pickBy';
 import { styled, ignoreSsrWarning } from '@storybook/theming';
 import { opacify, transparentize, darken, lighten } from 'polished';
 import { Icons } from '../../icon/icon';
-import { ArgRow } from './ArgRow';
+import { ArgRow, argRowLoadingData } from './ArgRow';
 import { SectionRow } from './SectionRow';
 import { ArgType, ArgTypes, Args } from './types';
 import { EmptyBlock } from '../EmptyBlock';
@@ -240,7 +240,7 @@ const sortFns: Record<SortType, SortFn | null> = {
     Number(!!b.type?.required) - Number(!!a.type?.required) || a.name.localeCompare(b.name),
   none: undefined,
 };
-export interface ArgsTableRowProps {
+export interface ArgsTableData {
   rows: ArgTypes;
   args?: Args;
   updateArgs?: (args: Args) => void;
@@ -255,8 +255,19 @@ export interface ArgsTableRowProps {
 export interface ArgsTableErrorProps {
   error: ArgsTableError;
 }
+interface ArgTableLoading {
+  isLoading: true;
+}
 
-export type ArgsTableProps = ArgsTableRowProps | ArgsTableErrorProps;
+export const argTableLoadingData: ArgsTableData = {
+  rows: {
+    row1: argRowLoadingData.row,
+    row2: argRowLoadingData.row,
+    row3: argRowLoadingData.row,
+  },
+};
+
+export type ArgsTableProps = ArgsTableData | ArgsTableErrorProps | ArgTableLoading;
 
 type Rows = ArgType[];
 type Subsection = Rows;
@@ -456,18 +467,17 @@ const Skeleton = () => (
  * ArgDefs, usually derived from docgen info for the component.
  */
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
-  const { error } = props as ArgsTableErrorProps;
-  if (error) {
+  if ('error' in props) {
     return (
       <EmptyBlock>
-        {error}&nbsp;
+        {props.error}&nbsp;
         <Link href="http://storybook.js.org/docs/" target="_blank" withArrow>
           Read the docs
         </Link>
       </EmptyBlock>
     );
   }
-
+  const isLoading = 'isLoading' in props;
   const {
     rows,
     args,
@@ -476,9 +486,8 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     compact,
     inAddonPanel,
     initialExpandedArgs,
-    isLoading,
     sort = 'none',
-  } = props as ArgsTableRowProps;
+  } = 'rows' in props ? props : argTableLoadingData;
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -507,9 +516,6 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
 
   const common = { updateArgs, compact, inAddonPanel, initialExpandedArgs };
 
-  if (isLoading) {
-    return <Skeleton />;
-  }
   return (
     <ResetWrapper>
       <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">

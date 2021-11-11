@@ -2,7 +2,6 @@ import React, { FC, useContext, useEffect, useState, useCallback } from 'react';
 import mapValues from 'lodash/mapValues';
 import {
   ArgsTable as PureArgsTable,
-  ArgsTableSkeleton,
   ArgsTableProps as PureArgsTableProps,
   ArgsTableError,
   SortType,
@@ -163,7 +162,7 @@ export const StoryTable: FC<
     const story = useStory(storyId, context);
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, context);
-    if (!story) return <ArgsTableSkeleton />;
+    if (!story) return <PureArgsTable isLoading />;
 
     const argTypes = filterArgTypes(story.argTypes, include, exclude);
 
