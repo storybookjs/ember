@@ -353,17 +353,6 @@ jobs:
           command: |
             cd examples/cra-react15
             yarn storybook --smoke-test --quiet
-  frontpage:
-    executor: sb_node_12_browsers
-    steps:
-      - git-shallow-clone/checkout_advanced:
-          clone_options: '--depth 1 --verbose'
-      - run:
-          name: Install dependencies
-          command: yarn install --immutable
-      - run:
-          name: Trigger build
-          command: ./scripts/build-frontpage.js
   lint:
     executor:
       class: small
@@ -446,6 +435,3 @@ workflows:
       - cra-bench:
           requires:
             - publish
-  deploy:
-    jobs:
-      - frontpage
