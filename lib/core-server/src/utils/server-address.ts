@@ -17,5 +17,5 @@ export const getServerPort = (port: number) =>
   });
 
 export const getServerChannelUrl = (port: number, { https }: { https?: boolean }) => {
-  return `${https ? 'wss' : 'ws'}://localhost:${port}/server-channel`;
+  return `${https ? 'wss' : 'ws'}://localhost:${port}/storybook-server-channel`;
 };

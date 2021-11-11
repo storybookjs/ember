@@ -10,7 +10,7 @@ export class ServerChannel {
     this.webSocketServer = new WebSocketServer({ noServer: true });
 
     server.on('upgrade', (request, socket, head) => {
-      if (request.url === '/server-channel') {
+      if (request.url === '/storybook-server-channel') {
         this.webSocketServer.handleUpgrade(request, socket, head, (ws) => {
           this.webSocketServer.emit('connection', ws, request);
         });
