@@ -10,5 +10,5 @@ export default {
   },
 };
 
-export const displaysCorrectly = () => <MemoButton label="Hello memo World" />;
-displaysCorrectly.storyName = 'Displays components with memo correctly';
+export const DisplaysCorrectly = () => <MemoButton label="Hello memo World" />;
+DisplaysCorrectly.storyName = 'Displays components with memo correctly';

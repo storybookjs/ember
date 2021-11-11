@@ -45,12 +45,6 @@ exports[`Storyshots Another Button with text 1`] = `
 </button>
 `;
 
-exports[`Storyshots Async with 5ms timeout simulating async operation 1`] = `
-<h1>
-  
-</h1>
-`;
-
 exports[`Storyshots Button With Text 1`] = `
 <button
   onClick={[Function]}

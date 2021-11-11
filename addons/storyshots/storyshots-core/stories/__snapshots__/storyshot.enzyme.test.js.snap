@@ -53,12 +53,6 @@ exports[`Storyshots Another Button with text 1`] = `
 </Button>
 `;
 
-exports[`Storyshots Async with 5ms timeout simulating async operation 1`] = `
-<AsyncTestComponent>
-  <h1 />
-</AsyncTestComponent>
-`;
-
 exports[`Storyshots Button With Text 1`] = `
 <Button
   onClick={[Function]}

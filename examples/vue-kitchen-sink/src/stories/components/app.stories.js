@@ -8,7 +8,7 @@ export default {
   },
 };
 
-export const app = () => ({
+export const Default = () => ({
   render: (h) => h(App),
 });
-app.storyName = 'App';
+Default.storyName = 'App';

@@ -8,7 +8,7 @@ export default {
   title: 'Basics/IconButton',
 };
 
-// eslint-disable-next-line no-underscore-dangle
+/* eslint-disable-next-line no-underscore-dangle */
 export const _IconButton = () => (
   <IconButton>
     <Icons icon="bookmark" />

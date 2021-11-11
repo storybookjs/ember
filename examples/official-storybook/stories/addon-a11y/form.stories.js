@@ -17,7 +17,6 @@ export const WithoutLabel = () => (
     <Form.Input />
   </Form.Field>
 );
-WithoutLabel.storyName = 'Without Label';
 
 export const WithLabel = () => (
   <Form.Field label={text}>
