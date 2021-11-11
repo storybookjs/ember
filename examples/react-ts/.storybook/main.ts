@@ -28,7 +28,7 @@ const config: StorybookConfig = {
   features: {
     postcss: false,
     // modernInlineRender: true,
-    storyStoreV7: true,
+    storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom'),
     buildStoriesJson: true,
     babelModeV7: true,
   },
