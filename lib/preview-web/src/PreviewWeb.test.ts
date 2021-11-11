@@ -1248,7 +1248,7 @@ describe('PreviewWeb', () => {
         });
         await waitForSetCurrentStory();
 
-        expect(preview.view.showPreparing).toHaveBeenCalled();
+        expect(preview.view.showPreparingStory).toHaveBeenCalled();
       });
 
       it('emits STORY_CHANGED', async () => {
@@ -1660,6 +1660,19 @@ describe('PreviewWeb', () => {
           '',
           'pathname?id=component-one--a&viewMode=docs'
         );
+      });
+
+      it('renders preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+        await waitForSetCurrentStory();
+
+        expect(preview.view.showPreparingDocs).toHaveBeenCalled();
       });
 
       it('emits STORY_CHANGED', async () => {
@@ -2313,6 +2326,18 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_UNCHANGED, 'component-one--a');
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
+      });
+
+      it('clears preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        (preview.view.showMain as jest.Mock).mockClear();
+        mockChannel.emit.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForEvents([Events.STORY_UNCHANGED]);
+
+        expect(preview.view.showMain).toHaveBeenCalled();
       });
 
       it('does not re-render the story', async () => {
