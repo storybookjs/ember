@@ -6,7 +6,7 @@ import {
   normalizeStoriesEntry,
   NormalizedStoriesSpecifier,
 } from '@storybook/core-common';
-import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
+import registerRequireContextHook from '@storybook/babel-plugin-require-context-hook/register';
 import global from 'global';
 import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
 

@@ -7288,6 +7288,7 @@ __metadata:
     "@storybook/addon-docs": 6.4.0-beta.31
     "@storybook/addons": 6.4.0-beta.31
     "@storybook/angular": 6.4.0-beta.31
+    "@storybook/babel-plugin-require-context-hook": 1.0.1--canary.4.86c1352.0
     "@storybook/client-api": 6.4.0-beta.31
     "@storybook/core": 6.4.0-beta.31
     "@storybook/core-client": 6.4.0-beta.31
@@ -7300,7 +7301,6 @@ __metadata:
     "@types/jest": ^26.0.16
     "@types/jest-specific-snapshot": ^0.5.3
     babel-loader: ^8.0.0
-    babel-plugin-require-context-hook: ^1.0.0
     core-js: ^3.8.2
     enzyme: ^3.11.0
     enzyme-to-json: ^3.6.1
@@ -7633,6 +7633,13 @@ __metadata:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: b19728903ca0032105a8069de7747ffeeaf4da67890aa0359abd8f6d328bc93773b773164f0790a30f2f1a14e83d0b67ae848a428051d679db5bbf4a034a358a
+  languageName: node
+  linkType: hard
+
+"@storybook/babel-plugin-require-context-hook@npm:1.0.1--canary.4.86c1352.0":
+  version: 1.0.1--canary.4.86c1352.0
+  resolution: "@storybook/babel-plugin-require-context-hook@npm:1.0.1--canary.4.86c1352.0"
+  checksum: 2d6e506c3648021ab97da7d5e8f38225c5bb363b5acf3e78c955502fe647b6cb7301d55b68812dc22a9df2d2ed37bf860938d12f9fc504c4d985d2bf2f4a4a94
   languageName: node
   linkType: hard
 
@@ -8811,6 +8818,7 @@ __metadata:
     "@storybook/addons": "workspace:*"
     "@storybook/angular": "workspace:*"
     "@storybook/api": "workspace:*"
+    "@storybook/babel-plugin-require-context-hook": 1.0.1--canary.4.86c1352.0
     "@storybook/channel-postmessage": "workspace:*"
     "@storybook/channel-websocket": "workspace:*"
     "@storybook/channels": "workspace:*"
@@ -8874,7 +8882,6 @@ __metadata:
     babel-plugin-dynamic-import-node: ^2.3.3
     babel-plugin-emotion: ^10.0.33
     babel-plugin-macros: ^3.0.1
-    babel-plugin-require-context-hook: ^1.0.0
     chalk: ^4.1.0
     chromatic: ^6.0.2
     codecov: ^3.8.1
@@ -13046,6 +13053,7 @@ __metadata:
     "@storybook/addon-storysource": 6.4.0-beta.31
     "@storybook/addons": 6.4.0-beta.31
     "@storybook/angular": 6.4.0-beta.31
+    "@storybook/babel-plugin-require-context-hook": 1.0.1--canary.4.86c1352.0
     "@storybook/jest": ^0.0.2
     "@storybook/source-loader": 6.4.0-beta.31
     "@storybook/testing-library": ^0.0.3
@@ -13054,7 +13062,6 @@ __metadata:
     "@types/node": ^14.14.20
     "@types/webpack-env": ^1.16.0
     "@webcomponents/custom-elements": ^1.4.3
-    babel-plugin-require-context-hook: ^1.0.0
     core-js: ^3.8.2
     global: ^4.4.0
     jasmine-core: ~3.6.0
@@ -14441,13 +14448,6 @@ __metadata:
     lodash: ^4.17.15
     react-docgen: ^5.0.0
   checksum: 9f7af20e6ebd794beae14aa1ffe4f1c1c5855821a5a9f205099602c89b557e33b9cb3dc3fe0b3a2f2ca35007c6ab45f52da9695a681d8495ad0f5494ef78ec34
-  languageName: node
-  linkType: hard
-
-"babel-plugin-require-context-hook@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "babel-plugin-require-context-hook@npm:1.0.0"
-  checksum: 1abd58b832a0819daa39c39b6cafbd18ca7b1e13786ae5238f393c4e558d9c8642b04147334dc2b9990950098c300ba1362da4401124da6e6ac532234a72dd30
   languageName: node
   linkType: hard
 
