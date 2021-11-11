@@ -114,13 +114,7 @@ jobs:
 
   request-create-frontpage-branch:
     if: ${{ always() }}
-    needs:
-      [
-        branch-checks,
-        latest-or-next-release-branch-check,
-        create-latest-release-branch,
-        create-next-release-branch,
-      ]
+    needs: [branch-checks, latest-or-next-release-branch-check, create-next-release-branch]
     runs-on: ubuntu-latest
     steps:
       - if: ${{ needs.branch-checks.outputs.is-actionable-branch == 'true' && needs.latest-or-next-release-branch-check.outputs.check == 'false' }}
@@ -128,4 +122,4 @@ jobs:
           curl -X POST https://api.github.com/repos/storybookjs/frontpage/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
           -u ${{ secrets.FRONTPAGE_ACCESS_TOKEN }} \
-          --data '{"event_type": "request-create-frontpage-branch", "client_payload": { "branch": "${{ needs.create-latest-release-branch.outputs.branch || needs.create-next-release-branch.outputs.branch || needs.branch-checks.outputs.branch }}" }}'
+          --data '{"event_type": "request-create-frontpage-branch", "client_payload": { "branch": "${{ needs.create-next-release-branch.outputs.branch || needs.branch-checks.outputs.branch }}" }}'
