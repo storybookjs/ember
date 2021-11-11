@@ -76,12 +76,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - run: |
           REMOTE_BRANCH=$(git branch -a | grep remotes/origin/${{ needs.get-next-release-branch.outputs.branch }})
           if [[ ! -z $REMOTE_BRANCH ]]; then git push origin --delete ${{ needs.get-next-release-branch.outputs.branch }}; fi
           echo 'Pushing branch ${{ needs.get-next-release-branch.outputs.branch }}...'
-          git push origin HEAD:${{ needs.get-next-release-branch.outputs.branch }}
+          git push -f origin ${{ needs.branch-checks.outputs.branch }}:${{ needs.get-next-release-branch.outputs.branch }}
     outputs:
       branch: ${{ needs.get-next-release-branch.outputs.branch }}
 
