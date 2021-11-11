@@ -1,16 +1,34 @@
+## 6.4.0-beta.32 (November 12, 2021)
+
+### Features
+
+- CLI: Add eslint-plugin-storybook to automigrate ([#16550](https://github.com/storybookjs/storybook/pull/16550))
+
+### Bug Fixes
+
+- Core: Ensure manager caching respects globals ([#16653](https://github.com/storybookjs/storybook/pull/16653))
+- Core: Move the websocket channel to a specific path ([#16665](https://github.com/storybookjs/storybook/pull/16665))
+- Storyshots: Fix autotitle ([#16568](https://github.com/storybookjs/storybook/pull/16568))
+
+### Maintenance
+
+- Interactions: Use Icon button and add disabled state to IconButton ([#16601](https://github.com/storybookjs/storybook/pull/16601))
+- Add handle-release-branches-workflow ([#16580](https://github.com/storybookjs/storybook/pull/16580))
+- Addon-interactions: add waitForElementToBeRemoved example ([#16434](https://github.com/storybookjs/storybook/pull/16434))
+
 ## 6.4.0-beta.31 (November 10, 2021)
 
 ### Features
 
-* Core: Add feature flag to stop storybook from aliasing emotion ([#16613](https://github.com/storybookjs/storybook/pull/16613))
+- Core: Add feature flag to stop storybook from aliasing emotion ([#16613](https://github.com/storybookjs/storybook/pull/16613))
 
 ### Bug Fixes
 
-* Core: Fix `staticDirs` and `-s` conflict check ([#16649](https://github.com/storybookjs/storybook/pull/16649))
+- Core: Fix `staticDirs` and `-s` conflict check ([#16649](https://github.com/storybookjs/storybook/pull/16649))
 
 ### Maintenance
 
-* Build: Add node-gyp for M1 macs ([#16645](https://github.com/storybookjs/storybook/pull/16645))
+- Build: Add node-gyp for M1 macs ([#16645](https://github.com/storybookjs/storybook/pull/16645))
 
 ## 6.4.0-beta.30 (November 8, 2021)
 
