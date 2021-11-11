@@ -22,6 +22,19 @@ module.exports = {
 
 Note that `@storybook/addon-interactions` must be listed **after** `@storybook/addon-actions` or `@storybook/addon-essentials`.
 
+## Experimental step debugging
+
+Step debugging features are experimental and disabled by default. To enable them:
+
+```js
+// main.js
+module.exports = {
+  features: {
+    interactionsDebugger: true,
+  },
+};
+```
+
 ## Usage
 
 Interactions relies on "instrumented" versions of Jest and Testing Library, that you import from `@storybook/jest` and
@@ -43,8 +56,8 @@ export const Demo = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button'));
     await expect(args.onClick).toHaveBeenCalled();
-  }
-}
+  },
+};
 ```
 
 In order to enable step-through debugging, calls to `userEvent.*`, `fireEvent`, `findBy*`, `waitFor*` and `expect` have to

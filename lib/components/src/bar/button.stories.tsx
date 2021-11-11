@@ -8,7 +8,7 @@ export default {
   title: 'Basics/IconButton',
 };
 
-// eslint-disable-next-line no-underscore-dangle
+/* eslint-disable-next-line no-underscore-dangle */
 export const _IconButton = () => (
   <IconButton>
     <Icons icon="bookmark" />
@@ -17,6 +17,12 @@ export const _IconButton = () => (
 
 export const Active = () => (
   <IconButton active>
+    <Icons icon="beaker" />
+  </IconButton>
+);
+
+export const Disabled = () => (
+  <IconButton disabled>
     <Icons icon="beaker" />
   </IconButton>
 );
@@ -30,6 +36,13 @@ export const WithText = () => (
 
 export const WithTextActive = () => (
   <IconButton active>
+    <Icons icon="circlehollow" />
+    &nbsp;Howdy!
+  </IconButton>
+);
+
+export const WithTextDisabled = () => (
+  <IconButton disabled>
     <Icons icon="circlehollow" />
     &nbsp;Howdy!
   </IconButton>

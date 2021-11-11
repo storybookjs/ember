@@ -7,8 +7,9 @@ export default {
   component: Welcome,
 };
 
-export const welcome = () => {
+export const WelcomeStory = () => {
   return {
     render: (h) => h(Welcome, { listeners: { buttonRequested: linkTo('Button') } }),
   };
 };
+WelcomeStory.storyName = 'Welcome';

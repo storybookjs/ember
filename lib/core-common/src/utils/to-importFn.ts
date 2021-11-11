@@ -17,7 +17,7 @@ export function webpackIncludeRegexp(specifier: NormalizedStoriesSpecifier) {
     ? files
     : `${directoryWithoutLeadingDots}/${files}`;
   const webpackIncludeRegexpWithCaret = globToRegexp(webpackIncludeGlob);
-  // micromatch is creating an exact match, but we are only matching the end of the filename
+  // picomatch is creating an exact match, but we are only matching the end of the filename
   return new RegExp(webpackIncludeRegexpWithCaret.source.replace(/^\^/, ''));
 }
 
@@ -32,6 +32,7 @@ export function toImportFnPart(specifier: NormalizedStoriesSpecifier) {
 
         const pathRemainder = path.substring(${directory.length + 1});
         return import(
+          /* webpackChunkName: "[request]" */
           /* webpackInclude: ${webpackIncludeRegexp(specifier)} */
           '${directory}/' + pathRemainder
         );

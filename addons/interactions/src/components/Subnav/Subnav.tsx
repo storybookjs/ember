@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Icons, Separator, P, TooltipNote, WithTooltip, Bar } from '@storybook/components';
+import {
+  Button,
+  IconButton,
+  Icons,
+  Separator,
+  P,
+  TooltipNote,
+  WithTooltip,
+  Bar,
+} from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
@@ -46,14 +55,9 @@ const Note = styled(TooltipNote)(({ theme }) => ({
   fontFamily: theme.typography.fonts.base,
 }));
 
-export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
-  '&:not(:disabled)': {
-    '&:hover,&:focus-visible': {
-      background: theme.background.hoverable,
-    },
-  },
 }));
 
 const StyledSeparator = styled(Separator)({
@@ -133,7 +137,7 @@ export const Subnav: React.FC<SubnavProps> = ({
             trigger={hasPrevious ? 'hover' : 'none'}
             tooltip={<Note note="Go to start" />}
           >
-            <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+            <RewindButton onClick={onStart} disabled={isDisabled || !hasPrevious}>
               <Icons icon="rewind" />
             </RewindButton>
           </WithTooltip>
@@ -144,11 +148,7 @@ export const Subnav: React.FC<SubnavProps> = ({
             trigger={hasPrevious ? 'hover' : 'none'}
             tooltip={<Note note="Go back" />}
           >
-            <StyledIconButton
-              containsIcon
-              onClick={onPrevious}
-              disabled={isDisabled || !hasPrevious}
-            >
+            <StyledIconButton onClick={onPrevious} disabled={isDisabled || !hasPrevious}>
               <Icons icon="playback" />
             </StyledIconButton>
           </WithTooltip>
@@ -159,7 +159,7 @@ export const Subnav: React.FC<SubnavProps> = ({
             trigger={hasNext ? 'hover' : 'none'}
             tooltip={<Note note="Go forward" />}
           >
-            <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+            <StyledIconButton onClick={onNext} disabled={isDisabled || !hasNext}>
               <Icons icon="playnext" />
             </StyledIconButton>
           </WithTooltip>
@@ -170,7 +170,7 @@ export const Subnav: React.FC<SubnavProps> = ({
             hasChrome={false}
             tooltip={<Note note="Go to end" />}
           >
-            <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+            <StyledIconButton onClick={onEnd} disabled={isDisabled || !hasNext}>
               <Icons icon="fastforward" />
             </StyledIconButton>
           </WithTooltip>

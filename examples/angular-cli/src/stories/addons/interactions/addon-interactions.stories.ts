@@ -1,6 +1,9 @@
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import { Story, Meta } from '@storybook/angular';
 import { expect } from '@storybook/jest';
-import { within, userEvent } from '@storybook/testing-library';
+import { within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { CounterComponent } from './counter/counter.component';
 

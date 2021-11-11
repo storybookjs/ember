@@ -30,7 +30,7 @@ Usage:
 module.exports = function ({ config }) {
   config.module.rules.push({
     test: /\.stories\.tsx?$/,
-    loaders: [
+    use: [
       {
         loader: require.resolve('@storybook/source-loader'),
         options: { parser: 'typescript' },
@@ -65,7 +65,7 @@ Usage:
 module.exports = function ({ config }) {
   config.module.rules.push({
     test: /\.stories\.jsx?$/,
-    loaders: [
+    use: [
       {
         loader: require.resolve('@storybook/source-loader'),
         options: {
@@ -99,7 +99,7 @@ Usage:
 module.exports = function ({ config }) {
   config.module.rules.push({
     test: /\.stories\.jsx?$/,
-    loaders: [
+    use: [
       {
         loader: require.resolve('@storybook/source-loader'),
         options: {
@@ -126,7 +126,7 @@ Usage:
 module.exports = function ({ config }) {
   config.module.rules.push({
     test: /\.stories\.jsx?$/,
-    loaders: [
+    use: [
       {
         loader: require.resolve('@storybook/source-loader'),
         options: { injectDecorator: false },

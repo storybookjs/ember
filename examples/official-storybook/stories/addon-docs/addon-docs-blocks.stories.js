@@ -23,11 +23,11 @@ export default {
   },
 };
 
-export const defDocsPage = () => <div>Default docs page</div>;
+export const DefDocsPage = () => <div>Default docs page</div>;
 
-export const smallDocsPage = () => <div>Just primary story, </div>;
+export const SmallDocsPage = () => <div>Just primary story, </div>;
 
-smallDocsPage.parameters = {
+SmallDocsPage.parameters = {
   docs: {
     page: () => (
       <>
@@ -38,9 +38,9 @@ smallDocsPage.parameters = {
   },
 };
 
-export const checkBoxProps = () => <div>Primary props displayed with a check box </div>;
+export const CheckBoxProps = () => <div>Primary props displayed with a check box </div>;
 
-checkBoxProps.parameters = {
+CheckBoxProps.parameters = {
   docs: {
     page: () => {
       const [showProps, setShowProps] = React.useState(false);
@@ -61,9 +61,9 @@ checkBoxProps.parameters = {
   },
 };
 
-export const customLabels = () => <div>Display custom title, Subtitle, Description</div>;
+export const CustomLabels = () => <div>Display custom title, Subtitle, Description</div>;
 
-customLabels.parameters = {
+CustomLabels.parameters = {
   docs: {
     page: () => (
       <>
@@ -78,15 +78,15 @@ customLabels.parameters = {
   },
 };
 
-export const customStoriesFilter = () => <div>Displays ALL stories (not excluding first one)</div>;
+export const CustomStoriesFilter = () => <div>Displays ALL stories (not excluding first one)</div>;
 
-customStoriesFilter.parameters = {
+CustomStoriesFilter.parameters = {
   docs: {
     page: () => <Stories includePrimary />,
   },
 };
 
-export const multipleComponents = () => (
+export const MultipleComponents = () => (
   <ButtonGroup>
     <DocgenButton label="one" />
     <DocgenButton label="two" />
@@ -94,9 +94,9 @@ export const multipleComponents = () => (
   </ButtonGroup>
 );
 
-multipleComponents.storyName = 'Many Components';
+MultipleComponents.storyName = 'Many Components';
 
-multipleComponents.parameters = {
+MultipleComponents.parameters = {
   component: ButtonGroup,
   subcomponents: {
     SubGroup,
@@ -116,14 +116,14 @@ multipleComponents.parameters = {
   },
 };
 
-export const componentsProps = () => <div>Display multiple prop tables in tabs</div>;
+export const ComponentsProps = () => <div>Display multiple prop tables in tabs</div>;
 
-componentsProps.subcomponents = {
+ComponentsProps.subcomponents = {
   'Docgen Button': DocgenButton,
   'Base Button': BaseButton,
 };
 
-componentsProps.parameters = {
+ComponentsProps.parameters = {
   docs: {
     page: () => (
       <>

@@ -55,8 +55,9 @@ jest.mock('@storybook/store', () => {
 jest.mock('cpy', () => () => Promise.resolve());
 jest.mock('http', () => ({
   ...jest.requireActual('http'),
-  createServer: () => ({ listen: (_options, cb) => cb() }),
+  createServer: () => ({ listen: (_options, cb) => cb(), on: jest.fn() }),
 }));
+jest.mock('ws');
 jest.mock('@storybook/node-logger', () => ({
   logger: {
     info: jest.fn(),
