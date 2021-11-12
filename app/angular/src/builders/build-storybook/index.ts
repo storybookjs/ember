@@ -12,7 +12,11 @@ import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
-import { BrowserBuilderOptions } from '@angular-devkit/build-angular';
+import {
+  BrowserBuilderOptions,
+  ExtraEntryPoint,
+  StylePreprocessorOptions,
+} from '@angular-devkit/build-angular';
 import { runCompodoc } from '../utils/run-compodoc';
 import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 
@@ -21,6 +25,8 @@ export type StorybookBuilderOptions = JsonObject & {
   tsConfig?: string;
   compodoc: boolean;
   compodocArgs: string[];
+  styles?: ExtraEntryPoint[];
+  stylePreprocessorOptions?: StylePreprocessorOptions;
 } & Pick<
     // makes sure the option exists
     CLIOptions,
@@ -46,12 +52,29 @@ function commandBuilder(
       return runCompodoc$.pipe(mapTo({ tsConfig }));
     }),
     map(({ tsConfig }) => {
-      const { browserTarget, ...otherOptions } = options;
+      const {
+        browserTarget,
+        stylePreprocessorOptions,
+        styles,
+        configDir,
+        docs,
+        loglevel,
+        outputDir,
+        quiet,
+      } = options;
 
       const standaloneOptions: StandaloneOptions = {
-        ...otherOptions,
+        configDir,
+        docs,
+        loglevel,
+        outputDir,
+        quiet,
         angularBrowserTarget: browserTarget,
         angularBuilderContext: context,
+        angularBuilderOptions: {
+          stylePreprocessorOptions,
+          styles,
+        },
         tsConfig,
       };
       return standaloneOptions;
