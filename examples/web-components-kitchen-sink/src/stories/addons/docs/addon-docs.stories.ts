@@ -13,7 +13,7 @@ export const NoDocs: Story = () => html`<div>Click docs tab to see no docs error
 NoDocs.parameters = { docs: { page: null } };
 
 export const LargerThanPreview: Story = () =>
-  html`<div style=${styleMap({ width: '1000px', background: 'pink' })}>HUGE</div>`;
+  html`<div style=${styleMap({ width: '1000px', backgroundColor: 'pink' })}>HUGE</div>`;
 
 export const MdxOverride: Story = () => html`<div>Click docs tab to see MDX-overridden docs</div>`;
 MdxOverride.parameters = {
