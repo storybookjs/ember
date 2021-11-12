@@ -1,3 +1,9 @@
+## 6.4.0-rc.1 (November 13, 2021)
+
+### Features
+
+* Angular: Add getWebpackConfig for angular 12.2.x & 13.x.x ([#16644](https://github.com/storybookjs/storybook/pull/16644))
+
 ## 6.4.0-rc.0 (November 12, 2021)
 
 Storybook 6.4 is in RC!! 🎉🎉🎉
