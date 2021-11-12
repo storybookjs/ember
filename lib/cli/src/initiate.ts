@@ -332,5 +332,5 @@ export async function initiate(options: CommandOptions, pkg: Package): Promise<v
     ...(isEsm ? { commonJs: true } : undefined),
   });
 
-  return automigrate({ yes: true });
+  return automigrate();
 }
