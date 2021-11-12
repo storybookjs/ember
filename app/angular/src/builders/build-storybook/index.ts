@@ -24,7 +24,7 @@ export type StorybookBuilderOptions = JsonObject & {
 } & Pick<
     // makes sure the option exists
     CLIOptions,
-    'staticDir' | 'outputDir' | 'configDir' | 'loglevel' | 'quiet' | 'docs'
+    'outputDir' | 'configDir' | 'loglevel' | 'quiet' | 'docs'
   >;
 
 export type StorybookBuilderOutput = JsonObject & BuilderOutput & {};
@@ -48,11 +48,13 @@ function commandBuilder(
     map(({ tsConfig }) => {
       const { browserTarget, ...otherOptions } = options;
 
-      return {
+      const standaloneOptions: StandaloneOptions = {
         ...otherOptions,
         angularBrowserTarget: browserTarget,
+        angularBuilderContext: context,
         tsConfig,
       };
+      return standaloneOptions;
     }),
     switchMap((standaloneOptions) => runInstance({ ...standaloneOptions, mode: 'static' })),
     map(() => {

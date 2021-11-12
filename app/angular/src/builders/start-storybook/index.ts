@@ -26,7 +26,6 @@ export type StorybookBuilderOptions = JsonObject & {
     CLIOptions,
     | 'port'
     | 'host'
-    | 'staticDir'
     | 'configDir'
     | 'https'
     | 'sslCa'
@@ -59,11 +58,14 @@ function commandBuilder(
     map(({ tsConfig }) => {
       const { browserTarget, ...otherOptions } = options;
 
-      return {
+      const standaloneOptions: StandaloneOptions = {
         ...otherOptions,
         angularBrowserTarget: browserTarget,
+        angularBuilderContext: context,
         tsConfig,
       };
+
+      return standaloneOptions;
     }),
     switchMap((standaloneOptions) => runInstance(standaloneOptions)),
     map(() => {
@@ -88,7 +90,6 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
     tsConfig: options.tsConfig ?? browserOptions.tsConfig ?? undefined,
   };
 }
-
 function runInstance(options: StandaloneOptions) {
   return new Observable<void>((observer) => {
     // This Observable intentionally never complete, leaving the process running ;)

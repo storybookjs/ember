@@ -1,154 +1,128 @@
 import webpack from 'webpack';
 import { logger } from '@storybook/node-logger';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import { targetFromTargetString, Target } from '@angular-devkit/architect';
+import { targetFromTargetString, BuilderContext } from '@angular-devkit/architect';
+import { sync as findUpSync } from 'find-up';
+import semver from '@storybook/semver';
 
-import { Options as CoreOptions } from '@storybook/core-common';
-import { workspaces } from '@angular-devkit/core';
-import {
-  findAngularProjectTarget,
-  getDefaultProjectName,
-  readAngularWorkspaceConfig,
-} from './angular-read-workspace';
-import {
-  AngularCliWebpackConfig,
-  extractAngularCliWebpackConfig,
-} from './angular-devkit-build-webpack';
+import { logging, JsonObject } from '@angular-devkit/core';
 import { moduleIsAvailable } from './utils/module-is-available';
-import { filterOutStylingRules } from './utils/filter-out-styling-rules';
+import { getWebpackConfig as getWebpackConfig12_2_x } from './angular-cli-webpack-12.2.x';
+import { getWebpackConfig as getWebpackConfig13_x_x } from './angular-cli-webpack-13.x.x';
+import { getWebpackConfig as getWebpackConfigOlder } from './angular-cli-webpack-older';
+import { PresetOptions } from './options';
 
-export type Options = CoreOptions & {
-  angularBrowserTarget?: string;
-  tsConfig?: string;
-};
-
-export async function webpackFinal(baseConfig: webpack.Configuration, options: Options) {
-  const dirToSearch = process.cwd();
-
+export async function webpackFinal(baseConfig: webpack.Configuration, options: PresetOptions) {
   if (!moduleIsAvailable('@angular-devkit/build-angular')) {
     logger.info('=> Using base config because "@angular-devkit/build-angular" is not installed');
     return baseConfig;
   }
-  logger.info('=> Loading angular-cli config');
 
-  // Read angular workspace
-  let workspaceConfig;
-  try {
-    workspaceConfig = await readAngularWorkspaceConfig(dirToSearch);
-  } catch (error) {
-    logger.error(
-      `=> Could not find angular workspace config (angular.json) on this path "${dirToSearch}"`
-    );
-    logger.info(`=> Fail to load angular-cli config. Using base config`);
-    return baseConfig;
-  }
+  const packageJson = await import(findUpSync('package.json', { cwd: options.configDir }));
+  const angularCliVersion = semver.coerce(packageJson.devDependencies['@angular/cli'])?.version;
 
-  // Find angular project target
-  let project: workspaces.ProjectDefinition;
-  let target: workspaces.TargetDefinition;
-  let confName: string;
-  try {
-    // Default behavior when `angularBrowserTarget` are not explicitly defined to null
-    if (options.angularBrowserTarget !== null) {
-      const browserTarget = options.angularBrowserTarget
-        ? targetFromTargetString(options.angularBrowserTarget)
-        : ({
-            configuration: undefined,
-            project: getDefaultProjectName(workspaceConfig),
-            target: 'build',
-          } as Target);
+  /**
+   * Ordered array to use the specific  getWebpackConfig according to some condition like angular-cli version
+   */
+  const webpackGetterByVersions: {
+    info: string;
+    condition: boolean;
+    getWebpackConfig(
+      baseConfig: webpack.Configuration,
+      options: PresetOptions
+    ): Promise<webpack.Configuration> | webpack.Configuration;
+  }[] = [
+    {
+      info: '=> Loading angular-cli config for angular >= 13.0.0',
+      condition: semver.satisfies(angularCliVersion, '>=13.0.0'),
+      getWebpackConfig: async (_baseConfig, _options) => {
+        const builderContext = getBuilderContext(_options);
+        const builderOptions = await getBuilderOptions(_options, builderContext);
 
-      const fondProject = findAngularProjectTarget(
-        workspaceConfig,
-        browserTarget.project,
-        browserTarget.target
-      );
-      project = fondProject.project;
-      target = fondProject.target;
-      confName = browserTarget.configuration;
+        return getWebpackConfig13_x_x(_baseConfig, {
+          builderOptions,
+          builderContext,
+        });
+      },
+    },
+    {
+      info: '=> Loading angular-cli config for angular 12.2.x',
+      condition: semver.satisfies(angularCliVersion, '12.2.x') && options.angularBuilderContext,
+      getWebpackConfig: async (_baseConfig, _options) => {
+        const builderContext = getBuilderContext(_options);
+        const builderOptions = await getBuilderOptions(_options, builderContext);
 
-      logger.info(
-        `=> Using angular project "${browserTarget.project}:${browserTarget.target}${
-          confName ? `:${confName}` : ''
-        }" for configuring Storybook`
-      );
-    }
-    // Start storybook when only tsConfig is provided.
-    if (options.angularBrowserTarget === null && options.tsConfig) {
-      logger.info(`=> Using default angular project with "tsConfig:${options.tsConfig}"`);
+        return getWebpackConfig12_2_x(_baseConfig, {
+          builderOptions,
+          builderContext,
+        });
+      },
+    },
+    {
+      info: '=> Loading angular-cli config for angular lower than 12.2.0',
+      condition: true,
+      getWebpackConfig: getWebpackConfigOlder,
+    },
+  ];
 
-      project = { root: '', extensions: {}, targets: undefined };
-      target = { builder: '', options: { tsConfig: options.tsConfig } };
-    }
-  } catch (error) {
-    logger.error(`=> Could not find angular project: ${error.message}`);
-    logger.info(`=> Fail to load angular-cli config. Using base config`);
-    return baseConfig;
-  }
+  const webpackGetter = webpackGetterByVersions.find((wg) => wg.condition);
 
-  // Use angular-cli to get some webpack config
-  let angularCliWebpackConfig: AngularCliWebpackConfig;
-  try {
-    angularCliWebpackConfig = await extractAngularCliWebpackConfig(
-      dirToSearch,
-      project,
-      target,
-      confName
-    );
-    logger.info(`=> Using angular-cli webpack config`);
-  } catch (error) {
-    logger.error(`=> Could not get angular cli webpack config`);
-    throw error;
-  }
-
-  return mergeAngularCliWebpackConfig(angularCliWebpackConfig, baseConfig);
+  logger.info(webpackGetter.info);
+  return Promise.resolve(webpackGetter.getWebpackConfig(baseConfig, options));
 }
 
-function mergeAngularCliWebpackConfig(
-  { cliCommonWebpackConfig, cliStyleWebpackConfig, tsConfigPath }: AngularCliWebpackConfig,
-  baseConfig: webpack.Configuration
-) {
-  // Don't use storybooks styling rules because we have to use rules created by @angular-devkit/build-angular
-  // because @angular-devkit/build-angular created rules have include/exclude for global style files.
-  const rulesExcludingStyles = filterOutStylingRules(baseConfig);
+/**
+ * Get Builder Context
+ * If storybook is not start by angular builder create dumb BuilderContext
+ */
+function getBuilderContext(options: PresetOptions): BuilderContext {
+  return (
+    options.angularBuilderContext ??
+    (({
+      target: { project: 'noop-project', builder: '', options: {} },
+      workspaceRoot: process.cwd(),
+      getProjectMetadata: () => ({}),
+      getTargetOptions: () => ({}),
+      logger: new logging.Logger('Storybook'),
+    } as unknown) as BuilderContext)
+  );
+}
 
-  // styleWebpackConfig.entry adds global style files to the webpack context
-  const entry = [
-    ...(baseConfig.entry as string[]),
-    ...Object.values(cliStyleWebpackConfig.entry).reduce((acc, item) => acc.concat(item), []),
-  ];
+/**
+ * Get builder options
+ * Merge target options from browser target and from storybook options
+ */
+async function getBuilderOptions(
+  options: PresetOptions,
+  builderContext: BuilderContext
+): Promise<JsonObject> {
+  /**
+   * Get Browser Target options
+   */
+  let browserTargetOptions: JsonObject = {};
+  if (options.angularBrowserTarget) {
+    const browserTarget = targetFromTargetString(options.angularBrowserTarget);
 
-  const module = {
-    ...baseConfig.module,
-    rules: [...cliStyleWebpackConfig.module.rules, ...rulesExcludingStyles],
+    logger.info(
+      `=> Using angular browser target options from "${browserTarget.project}:${
+        browserTarget.target
+      }${browserTarget.configuration ? `:${browserTarget.configuration}` : ''}"`
+    );
+    browserTargetOptions = await builderContext.getTargetOptions(browserTarget);
+  }
+
+  /**
+   * Merge target options from browser target options and from storybook options
+   */
+  const builderOptions = {
+    ...browserTargetOptions,
+    ...options.angularBuilderOptions,
+    tsConfig:
+      options.tsConfig ??
+      options.angularBuilderOptions?.tsConfig ??
+      browserTargetOptions.tsConfig ??
+      findUpSync('tsconfig.json', { cwd: options.configDir }),
   };
+  logger.info(`=> Using angular project with "tsConfig:${builderOptions.tsConfig}"`);
 
-  // We use cliCommonConfig plugins to serve static assets files.
-  const plugins = [
-    ...cliStyleWebpackConfig.plugins,
-    ...cliCommonWebpackConfig.plugins,
-    ...baseConfig.plugins,
-  ];
-
-  const resolve = {
-    ...baseConfig.resolve,
-    modules: Array.from(
-      new Set([...baseConfig.resolve.modules, ...cliCommonWebpackConfig.resolve.modules])
-    ),
-    plugins: [
-      new TsconfigPathsPlugin({
-        configFile: tsConfigPath,
-        mainFields: ['browser', 'module', 'main'],
-      }),
-    ],
-  };
-
-  return {
-    ...baseConfig,
-    entry,
-    module,
-    plugins,
-    resolve,
-    resolveLoader: cliCommonWebpackConfig.resolveLoader,
-  };
+  return builderOptions;
 }
