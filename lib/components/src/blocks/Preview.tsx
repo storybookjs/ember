@@ -17,6 +17,7 @@ import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
 import { Zoom } from '../Zoom/Zoom';
+import { StorySkeleton } from '.';
 
 export interface PreviewProps {
   isColumn?: boolean;
@@ -189,7 +190,7 @@ const getLayout = (children: ReactElement[]): layout => {
  * items. The preview also shows the source for the component
  * as a drop-down.
  */
-const Preview: FunctionComponent<PreviewProps> = ({
+export const Preview: FunctionComponent<PreviewProps> = ({
   isColumn,
   columns,
   children,
@@ -284,4 +285,8 @@ const Preview: FunctionComponent<PreviewProps> = ({
   );
 };
 
-export { Preview };
+export const PreviewSkeleton = () => (
+  <Preview withToolbar>
+    <StorySkeleton />
+  </Preview>
+);

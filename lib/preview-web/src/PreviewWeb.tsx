@@ -408,6 +408,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     const { storyId } = selection;
 
+    const storyIdChanged = this.previousSelection?.storyId !== storyId;
+    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
+
+    // Show a spinner while we load the next story
+    if (selection.viewMode === 'story') {
+      this.view.showPreparingStory();
+    } else {
+      this.view.showPreparingDocs();
+    }
+
     let story;
     try {
       story = await this.storyStore.loadStory({ storyId });
@@ -417,9 +427,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.renderStoryLoadingException(storyId, err);
       return;
     }
-
-    const storyIdChanged = this.previousSelection?.storyId !== storyId;
-    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
@@ -431,6 +438,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // Don't re-render the story if nothing has changed to justify it
     if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
+      this.view.showMain();
       return;
     }
 
@@ -472,7 +480,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
     const { id, title, name } = story;
-    const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
@@ -497,7 +504,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         ...(!global.FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
-      (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
+      const renderer = await import('./renderDocs');
+      const element = this.view.prepareForDocs();
+      renderer.renderDocs(story, fullDocsContext, element, () =>
         this.channel.emit(Events.DOCS_RENDERED, id)
       );
     };
