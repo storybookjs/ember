@@ -80,18 +80,14 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
     if (!dryRun) packageManager.addDependencies({ installAsDevDependencies: true }, deps);
 
     if (!dryRun && unsupportedExtension) {
-      logger.warn(
-        dedent(`
-            ⚠️ The plugin was successfuly installed but failed to configure.
-            
-            Found an .eslintrc config file with an unsupported automigration format: ${unsupportedExtension}.
-            Supported formats for automigration are: ${SUPPORTED_ESLINT_EXTENSIONS.join(', ')}.
+      throw new Error(dedent`
+          ⚠️ The plugin was successfuly installed but failed to configure.
+          
+          Found an .eslintrc config file with an unsupported automigration format: ${unsupportedExtension}.
+          Supported formats for automigration are: ${SUPPORTED_ESLINT_EXTENSIONS.join(', ')}.
 
-            Please refer to https://github.com/storybookjs/eslint-plugin-storybook#usage to finish setting up the plugin manually.
-        `)
-      );
-
-      return;
+          Please refer to https://github.com/storybookjs/eslint-plugin-storybook#usage to finish setting up the plugin manually.
+      `);
     }
 
     const eslint = await readConfig(eslintFile);
