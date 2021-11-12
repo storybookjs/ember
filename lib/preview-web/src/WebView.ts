@@ -121,8 +121,16 @@ export class WebView {
   }
 
   showErrorDisplay({ message = '', stack = '' }) {
-    document.getElementById('error-message').innerHTML = ansiConverter.toHtml(message);
-    document.getElementById('error-stack').innerHTML = ansiConverter.toHtml(stack);
+    let header = message;
+    let detail = stack;
+    const parts = message.split('\n');
+    if (parts.length > 1) {
+      [header] = parts;
+      detail = parts.slice(1).join('\n');
+    }
+
+    document.getElementById('error-message').innerHTML = ansiConverter.toHtml(header);
+    document.getElementById('error-stack').innerHTML = ansiConverter.toHtml(detail);
 
     this.showMode(Mode.ERROR);
   }
