@@ -41,8 +41,14 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions = {}) => {
             ]);
 
       if (runAnswer.fix) {
-        await f.run({ result, packageManager, dryRun });
-        logger.info(`✅ fixed ${chalk.cyan(f.id)}`);
+        try {
+          await f.run({ result, packageManager, dryRun });
+          logger.info(`✅ fixed ${chalk.cyan(f.id)}`);
+        } catch (error) {
+          logger.info(`❌ error in ${chalk.cyan(f.id)}:`);
+          logger.info(error.message);
+          logger.info();
+        }
       } else {
         logger.info(`Skipping the ${chalk.cyan(f.id)} fix.`);
         logger.info();
