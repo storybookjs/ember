@@ -255,11 +255,23 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     if (!storyId) {
       if (storySpecifier === '*') {
-        this.renderMissingStory();
+        this.renderStoryLoadingException(
+          storySpecifier,
+          new Error(dedent`
+            Couldn't find any stories in your Storybook.
+            - Please check your stories field of your main.js config.
+            - Also check the browser console and terminal for error messages.
+          `)
+        );
       } else {
         this.renderStoryLoadingException(
           storySpecifier,
-          new Error(`Couldn't find story matching ${storySpecifier}.`)
+          new Error(dedent`
+            Couldn't find story matching '${storySpecifier}'.
+            - Are you sure a story with that id exists?
+            - Please check your stories field of your main.js config.
+            - Also check the browser console and terminal for error messages.
+          `)
         );
       }
 
