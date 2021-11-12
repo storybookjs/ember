@@ -1,4 +1,17 @@
-## 6.4.0-beta.33 (November 12, 2021)
+## 6.4.0-rc.0 (November 12, 2021)
+
+Storybook 6.4 is in RC!! 🎉🎉🎉
+
+Hundreds of improvements and fixes, including:
+
+- ▶️ **Interactive stories** to simulate user behavior and tools to debug it
+- ⚡️ **On-demand architecture** for smaller builds and faster load times
+- ⛸ **Streamlined tooling and documentation** for easier upgrades
+- 💯 **Hundreds more fixes** and quality of life improvements
+
+Track the release in the Github: [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355)
+
+- ## 6.4.0-beta.33 (November 12, 2021)
 
 ### Features
 
