@@ -76,9 +76,14 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       ci: false,
       configDir: '.storybook',
-      docsMode: false,
       host: 'localhost',
       https: false,
       port: 4400,
@@ -87,8 +92,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      compodoc: false,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',
     });
   });
@@ -109,9 +112,14 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       ci: false,
       configDir: '.storybook',
-      docsMode: false,
       host: 'localhost',
       https: false,
       port: 4400,
@@ -120,8 +128,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      compodoc: false,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'path/to/tsConfig.json',
     });
   });
@@ -168,9 +174,14 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       ci: false,
       configDir: '.storybook',
-      docsMode: false,
       host: 'localhost',
       https: false,
       port: 9009,
@@ -179,8 +190,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      compodoc: true,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',
     });
   });

@@ -75,14 +75,17 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       configDir: '.storybook',
-      docsMode: false,
       loglevel: undefined,
       quiet: false,
       outputDir: 'storybook-static',
       mode: 'static',
-      compodoc: false,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',
     });
   });
@@ -102,14 +105,17 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       configDir: '.storybook',
-      docsMode: false,
       loglevel: undefined,
       quiet: false,
       outputDir: 'storybook-static',
       mode: 'static',
-      compodoc: false,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'path/to/tsConfig.json',
     });
   });
@@ -156,14 +162,17 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        stylePreprocessorOptions: {
+          includePaths: [],
+        },
+        styles: [],
+      },
       configDir: '.storybook',
-      docsMode: false,
       loglevel: undefined,
       quiet: false,
       outputDir: 'storybook-static',
       mode: 'static',
-      compodoc: true,
-      compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',
     });
   });
