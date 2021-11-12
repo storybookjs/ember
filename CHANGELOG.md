@@ -11,7 +11,7 @@ Hundreds of improvements and fixes, including:
 
 Track the release in the Github: [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355)
 
-- ## 6.4.0-beta.33 (November 12, 2021)
+## 6.4.0-beta.33 (November 12, 2021)
 
 ### Features
 
