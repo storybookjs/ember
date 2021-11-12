@@ -12,6 +12,8 @@
     - [Using the v7 store](#using-the-v7-store)
     - [V7-style story sort](#v7-style-story-sort)
     - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
+    - [Storyshots compatibility in the v7 store](#storyshots-compatibility-in-the-v7-store)
+  - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
   - [Angular component parameter removed](#angular-component-parameter-removed)
@@ -190,7 +192,7 @@ Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, i
 upgrade the configuration. You can do this automatically by running:
 
 ```
-npx sb@next fix
+npx sb@next automigrate
 ```
 
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
@@ -341,7 +343,7 @@ module.exports = {
 
 NOTE: `features.storyStoreV7` implies `features.buildStoriesJson` and has the same limitations.
 
-#### V7-style story sort
+#### v7-style story sort
 
 If you've written a custom `storySort` function, you'll need to rewrite it for V7.
 
@@ -377,12 +379,41 @@ function storySort(a, b) {
 },
 ```
 
-#### V7 Store API changes for addon authors
+#### v7 Store API changes for addon authors
 
 The Story Store in v7 mode is async, so synchronous story loading APIs no longer work. In particular:
 
 - `store.fromId()` has been replaced by `store.loadStory()`, which is async (i.e. returns a `Promise` you will need to await).
 - `store.raw()/store.extract()` and friends that list all stories require a prior call to `store.cacheAllCSFFiles()` (which is async). This will load all stories, and isn't generally a good idea in an addon, as it will force the whole store to load.
+
+#### Storyshots compatibility in the v7 store
+
+Storyshots is not currently compatible with the v7 store. However, you can use the following workaround to opt-out of the v7 store when running storyshots; in your `main.js`:
+
+```js
+features: {
+  storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom');
+}
+```
+
+There are some caveats with the above approach:
+
+- The code path in the v6 store is different to the v7 store and your mileage may vary in identical behavior. Buyer beware.
+- The story sort API [changed between the stores](#v7-style-story-sort). If you are using a custom story sort function, you will need to ensure it works in both contexts (perhaps using the check `global.navigator.userAgent.match('jsdom')`).
+
+### Emotion11 quasi-compatibility
+
+Now that the web is moving to Emotion 11 for styling, popular libraries like MUI5 and ChakraUI are breaking with Storybook 6.3 which only supports emotion@10.
+
+Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
+
+```js
+module.exports {
+  emotionAlias: false,
+}
+```
+
+Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.
 
 ### Babel mode v7
 

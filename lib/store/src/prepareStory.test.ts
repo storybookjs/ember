@@ -1,3 +1,4 @@
+import global from 'global';
 import addons, { HooksContext } from '@storybook/addons';
 import {
   AnyFramework,
@@ -6,6 +7,7 @@ import {
   SBScalarType,
   StoryContext,
 } from '@storybook/csf';
+import { NO_TARGET_NAME } from './args';
 import { prepareStory } from './prepareStory';
 
 jest.mock('global', () => ({
@@ -37,6 +39,10 @@ const complexType: SBObjectType = {
     },
   },
 };
+
+beforeEach(() => {
+  global.FEATURES = { breakingChangesV7: true };
+});
 
 describe('prepareStory', () => {
   describe('parameters', () => {
@@ -470,18 +476,71 @@ describe('prepareStory', () => {
     });
   });
 
-  describe('playFunction', () => {
-    it('awaits play if defined', async () => {
-      const inner = jest.fn();
-      const play = jest.fn(async () => {
-        await new Promise((r) => setTimeout(r, 0)); // Ensure this puts an async boundary in
-        inner();
-      });
-      const { playFunction } = prepareStory({ id, name, play }, { id, title }, { render });
-
-      await playFunction({} as StoryContext<AnyFramework>);
-      expect(play).toHaveBeenCalled();
-      expect(inner).toHaveBeenCalled();
+  describe('with `FEATURES.argTypeTargetsV7`', () => {
+    beforeEach(() => {
+      global.FEATURES = { breakingChangesV7: true, argTypeTargetsV7: true };
     });
+    it('filters out targeted args', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+          args: { a: 1, b: 2 },
+          argTypes: { b: { name: 'b', target: 'foo' } },
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith(
+        { a: 1 },
+        expect.objectContaining({ args: { a: 1 }, allArgs: { a: 1, b: 2 } })
+      );
+    });
+
+    it('adds argsByTarget to context', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+          args: { a: 1, b: 2 },
+          argTypes: { b: { name: 'b', target: 'foo' } },
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith(
+        { a: 1 },
+        expect.objectContaining({ argsByTarget: { [NO_TARGET_NAME]: { a: 1 }, foo: { b: 2 } } })
+      );
+    });
+  });
+});
+
+describe('playFunction', () => {
+  it('awaits play if defined', async () => {
+    const inner = jest.fn();
+    const play = jest.fn(async () => {
+      await new Promise((r) => setTimeout(r, 0)); // Ensure this puts an async boundary in
+      inner();
+    });
+    const { playFunction } = prepareStory({ id, name, play }, { id, title }, { render });
+
+    await playFunction({} as StoryContext<AnyFramework>);
+    expect(play).toHaveBeenCalled();
+    expect(inner).toHaveBeenCalled();
   });
 });

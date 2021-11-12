@@ -20,5 +20,3 @@ export default {
 } as Meta;
 
 export const WithPreserveWhitespaces: Story = (_args) => ({});
-
-WithPreserveWhitespaces.storyName = 'With Preserve Whitespaces';

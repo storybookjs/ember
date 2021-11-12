@@ -297,6 +297,11 @@ export interface StorybookConfig {
     postcss?: boolean;
 
     /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
+    emotionAlias?: boolean;
+
+    /**
      * Build stories.json automatically on start/build
      */
     buildStoriesJson?: boolean;
@@ -332,6 +337,11 @@ export interface StorybookConfig {
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
+
+    /**
+     * Filter args with a "target" on the type from the render function (EXPERIMENTAL)
+     */
+    argTypeTargetsV7?: boolean;
   };
 
   /**

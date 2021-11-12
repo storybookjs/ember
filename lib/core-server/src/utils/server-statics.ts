@@ -13,7 +13,7 @@ const defaultFavIcon = require.resolve('../public/favicon.ico');
 
 export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
-  const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs', []);
+  const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs');
 
   if (staticDirs && options.staticDir) {
     throw new Error(dedent`
@@ -25,19 +25,21 @@ export async function useStatics(router: any, options: Options) {
     `);
   }
 
-  staticDirs.forEach(async (dir) => {
-    const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
-    const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
-      getDirectoryFromWorkingDir({
-        configDir: options.configDir,
-        workingDir: process.cwd(),
-        directory: staticDirAndTarget,
-      })
-    );
+  if (staticDirs) {
+    staticDirs.forEach(async (dir) => {
+      const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
+      const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
+        getDirectoryFromWorkingDir({
+          configDir: options.configDir,
+          workingDir: process.cwd(),
+          directory: staticDirAndTarget,
+        })
+      );
 
-    logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
-    router.use(to, express.static(from, { index: false }));
-  });
+      logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
+      router.use(to, express.static(from, { index: false }));
+    });
+  }
 
   if (options.staticDir && options.staticDir.length > 0) {
     await Promise.all(

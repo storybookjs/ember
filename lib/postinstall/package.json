@@ -1,6 +1,6 @@
 {
   "name": "@storybook/postinstall",
-  "version": "6.4.0-beta.28",
+  "version": "6.4.0-beta.32",
   "description": "Storybook addons postinstall utilities",
   "keywords": [
     "api",
@@ -51,6 +51,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "72316abb8354d1f84d2bf8f645b18aeb315768c3",
+  "gitHead": "0f99f609b55928e48cca7c57f6e343d079bb94dd",
   "sbmodern": "dist/modern/index.js"
 }
