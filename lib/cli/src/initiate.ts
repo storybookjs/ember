@@ -296,7 +296,7 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   let projectType;
   const projectTypeProvided = options.type;
   const infoText = projectTypeProvided
-    ? 'Installing Storybook for user specified project type'
+    ? `Installing Storybook for user specified project type: ${projectTypeProvided}`
     : 'Detecting project type';
   const done = commandLog(infoText);
 
@@ -305,13 +305,13 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
 
   try {
     if (projectTypeProvided) {
-      if (installableProjectTypes.includes(options.type)) {
+      if (installableProjectTypes.includes(projectTypeProvided)) {
         const storybookInstalled = isStorybookInstalled(packageJson, options.force);
         projectType = storybookInstalled
           ? ProjectType.ALREADY_HAS_STORYBOOK
-          : options.type.toUpperCase();
+          : projectTypeProvided.toUpperCase();
       } else {
-        done(`The provided project type was not recognized by Storybook.`);
+        done(`The provided project type was not recognized by Storybook: ${projectTypeProvided}`);
         logger.log(`\nThe project types currently supported by Storybook are:\n`);
         installableProjectTypes.sort().forEach((framework) => paddedLog(`- ${framework}`));
         logger.log();
