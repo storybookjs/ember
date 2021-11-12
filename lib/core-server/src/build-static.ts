@@ -17,6 +17,7 @@ import {
   cache,
   normalizeStories,
   logConfig,
+  CoreConfig,
 } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
@@ -114,10 +115,10 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     logConfig('Manager webpack config', await managerBuilder.getConfig(fullOptions));
   }
 
-  const core = await presets.apply<{ builder?: string }>('core');
-
+  const core = await presets.apply<CoreConfig | undefined>('core');
+  const builderName = typeof core?.builder === 'string' ? core.builder : core?.builder?.name;
   const { getPrebuiltDir } =
-    core?.builder === 'webpack5'
+    builderName === 'webpack5'
       ? await import('@storybook/manager-webpack5/prebuilt-manager')
       : await import('@storybook/manager-webpack4/prebuilt-manager');
 

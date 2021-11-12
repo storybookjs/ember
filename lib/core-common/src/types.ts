@@ -21,8 +21,23 @@ export interface TypescriptConfig {
   };
 }
 
+export type BuilderName = 'webpack4' | 'webpack5';
+
+export type Webpack5BuilderConfig = {
+  name: 'webpack5';
+  options?: {
+    fsCache?: boolean;
+  };
+};
+
+export type Webpack4BuilderConfig = {
+  name: 'webpack4';
+};
+
+export type BuilderConfig = BuilderName | Webpack4BuilderConfig | Webpack5BuilderConfig;
+
 export interface CoreConfig {
-  builder: 'webpack4' | 'webpack5';
+  builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
 }

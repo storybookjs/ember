@@ -1,4 +1,4 @@
-import { Options } from '@storybook/core-common';
+import { CoreConfig, Options, Webpack5BuilderConfig } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import fs from 'fs-extra';
 import path from 'path';
@@ -14,6 +14,13 @@ export const useManagerCache = async (
   options: Options,
   managerConfig: webpack.Configuration
 ) => {
+  const coreConfig = await options.presets.apply<CoreConfig>('core');
+  if ((coreConfig.builder as Webpack5BuilderConfig).options?.fsCache) {
+    logger.line(1); // force starting new line
+    logger.info('=> Ignoring Storybook cache because webpack cache is being used');
+    return false;
+  }
+
   const [cachedISOTime, cachedConfig] = await options.cache
     .get(cacheKey)
     .then((str) => str.match(/^([0-9TZ.:+-]+)_(.*)/).slice(1))
