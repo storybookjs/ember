@@ -6,7 +6,7 @@ export default {
   component: ColorPalette,
 };
 
-export const defaultStyle = () => (
+export const DefaultStyle = () => (
   <ColorPalette>
     <ColorItem
       title="theme.color.greyscale"

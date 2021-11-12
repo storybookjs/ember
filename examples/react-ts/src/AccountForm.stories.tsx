@@ -1,3 +1,6 @@
+/* eslint-disable storybook/await-interactions */
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
 import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';

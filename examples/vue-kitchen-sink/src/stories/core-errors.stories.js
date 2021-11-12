@@ -3,9 +3,9 @@ export default {
   parameters: { chromatic: { disable: true } },
 };
 
-export const throwsError = () => {
+export const ThrowsError = () => {
   throw new Error('foo');
 };
-throwsError.parameters = { storyshots: { disable: true } };
+ThrowsError.parameters = { storyshots: { disable: true } };
 
-export const nullError = () => null;
+export const NullError = () => null;

@@ -28,6 +28,7 @@ import raxGenerator from './generators/RAX';
 import serverGenerator from './generators/SERVER';
 import { JsPackageManagerFactory, readPackageJson } from './js-package-manager';
 import { NpmOptions } from './NpmOptions';
+import { automigrate } from './automigrate';
 
 const logger = console;
 
@@ -283,7 +284,7 @@ const projectTypeInquirer = async (options: { yes?: boolean }) => {
   return Promise.resolve();
 };
 
-export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
+export async function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   const welcomeMessage = 'sb init - the simplest way to add a Storybook to your project.';
   logger.log(chalk.inverse(`\n ${welcomeMessage} \n`));
 
@@ -296,7 +297,7 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   let projectType;
   const projectTypeProvided = options.type;
   const infoText = projectTypeProvided
-    ? 'Installing Storybook for user specified project type'
+    ? `Installing Storybook for user specified project type: ${projectTypeProvided}`
     : 'Detecting project type';
   const done = commandLog(infoText);
 
@@ -305,13 +306,13 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
 
   try {
     if (projectTypeProvided) {
-      if (installableProjectTypes.includes(options.type)) {
+      if (installableProjectTypes.includes(projectTypeProvided)) {
         const storybookInstalled = isStorybookInstalled(packageJson, options.force);
         projectType = storybookInstalled
           ? ProjectType.ALREADY_HAS_STORYBOOK
-          : options.type.toUpperCase();
+          : projectTypeProvided.toUpperCase();
       } else {
-        done(`The provided project type was not recognized by Storybook.`);
+        done(`The provided project type was not recognized by Storybook: ${projectTypeProvided}`);
         logger.log(`\nThe project types currently supported by Storybook are:\n`);
         installableProjectTypes.sort().forEach((framework) => paddedLog(`- ${framework}`));
         logger.log();
@@ -326,8 +327,10 @@ export function initiate(options: CommandOptions, pkg: Package): Promise<void> {
   }
   done();
 
-  return installStorybook(projectType, {
+  await installStorybook(projectType, {
     ...options,
     ...(isEsm ? { commonJs: true } : undefined),
   });
+
+  return automigrate();
 }

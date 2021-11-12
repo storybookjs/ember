@@ -24,8 +24,6 @@ import {
 } from '@storybook/store';
 import { logger } from '@storybook/client-logger';
 
-const { STORIES = [] } = global;
-
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
   render: StoryFn<TFramework>;
@@ -155,10 +153,12 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       title ||
       autoTitle(
         fileName,
-        STORIES.map((specifier: NormalizedStoriesSpecifier & { importPathMatcher: string }) => ({
-          ...specifier,
-          importPathMatcher: new RegExp(specifier.importPathMatcher),
-        }))
+        (global.STORIES || []).map(
+          (specifier: NormalizedStoriesSpecifier & { importPathMatcher: string }) => ({
+            ...specifier,
+            importPathMatcher: new RegExp(specifier.importPathMatcher),
+          })
+        )
       );
     if (!title) {
       logger.info(

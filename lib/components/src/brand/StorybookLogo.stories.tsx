@@ -7,4 +7,4 @@ export default {
   title: 'Basics/Brand/StorybookLogo',
 };
 
-export const normal = () => <StorybookLogo alt="Storybook logo" />;
+export const Normal = () => <StorybookLogo alt="Storybook logo" />;

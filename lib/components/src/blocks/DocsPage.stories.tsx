@@ -34,6 +34,19 @@ export default {
   },
 };
 
+export const Loading = () => (
+  <DocsPageWrapper>
+    <Title>DocsPage</Title>
+    <Subtitle>
+      What the DocsPage looks like. Meant to be QAed in Canvas tab not in Docs tab.
+    </Subtitle>
+    <Description {...description.Text.args} />
+    <Preview.Loading />
+    <argsTable.Loading />
+    <Source {...source.Loading.args} />
+  </DocsPageWrapper>
+);
+
 export const WithSubtitle = () => (
   <DocsPageWrapper>
     <Title>DocsPage</Title>

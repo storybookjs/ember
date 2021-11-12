@@ -1,3 +1,6 @@
+/* eslint-disable storybook/await-interactions */
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { InputComponent } from './sb-input.component';
@@ -26,7 +29,7 @@ export const WithTemplate = {
     template: '<h1>Heading</h1><sb-input></sb-input>',
   }),
   play: async () => {
-    const input = await screen.getByAltText('sb-input');
-    await userEvent.type(input, `Typing from CSF3`);
+    const input = screen.getByAltText('sb-input');
+    userEvent.type(input, `Typing from CSF3`);
   },
 };
