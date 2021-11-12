@@ -59,7 +59,8 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          REMOTE_BRANCH=$(git branch -a | grep remotes/origin/${{ needs.get-next-release-branch.outputs.branch }})
+          set +e
+          REMOTE_BRANCH=$(git branch -r | grep origin/${{ needs.get-next-release-branch.outputs.branch }})
           if [[ ! -z $REMOTE_BRANCH ]]; then git push origin --delete ${{ needs.get-next-release-branch.outputs.branch }}; fi
           echo 'Pushing branch ${{ needs.get-next-release-branch.outputs.branch }}...'
           git push -f origin ${{ needs.branch-checks.outputs.branch }}:${{ needs.get-next-release-branch.outputs.branch }}
@@ -90,7 +91,7 @@ jobs:
     needs: [branch-checks, next-release-branch-check, create-next-release-branch]
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ needs.branch-checks.outputs.is-actionable-branch == 'true' && needs.next-release-branch-check.outputs.check == 'false' }}
+      - if: ${{ needs.branch-checks.outputs.is-actionable-branch == 'true' && needs.branch-checks.outputs.is-latest-branch == 'false' && needs.next-release-branch-check.outputs.check == 'false' }}
         run: |
           curl -X POST https://api.github.com/repos/storybookjs/frontpage/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
