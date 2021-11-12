@@ -53,13 +53,5 @@
       }
     }
   },
-  "additionalProperties": false,
-  "oneOf": [
-    {
-      "required": ["browserTarget"]
-    },
-    {
-      "required": ["tsConfig"]
-    }
-  ]
+  "additionalProperties": false
 }
