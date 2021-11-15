@@ -21,20 +21,29 @@ export interface TypescriptConfig {
   };
 }
 
-export type BuilderName = 'webpack4' | 'webpack5';
+export type BuilderName = 'webpack4' | 'webpack5' | string;
 
-export type Webpack5BuilderConfig = {
+export type BuilderConfigObject = {
+  name: BuilderName;
+  options?: Record<string, any>;
+};
+
+export interface Webpack5BuilderConfig extends BuilderConfigObject {
   name: 'webpack5';
   options?: {
     fsCache?: boolean;
   };
-};
+}
 
-export type Webpack4BuilderConfig = {
+export interface Webpack4BuilderConfig extends BuilderConfigObject {
   name: 'webpack4';
-};
+}
 
-export type BuilderConfig = BuilderName | Webpack4BuilderConfig | Webpack5BuilderConfig;
+export type BuilderConfig =
+  | BuilderName
+  | BuilderConfigObject
+  | Webpack4BuilderConfig
+  | Webpack5BuilderConfig;
 
 export interface CoreConfig {
   builder: BuilderConfig;
