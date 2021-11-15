@@ -182,7 +182,7 @@ export class Instrumenter {
       const { isDebugging } = this.getState(storyId);
       const log = this.getLog(storyId);
       const next = isDebugging
-        ? log.findIndex(({ state }) => state === CallStates.WAITING)
+        ? log.findIndex(({ status }) => status === CallStates.WAITING)
         : log.length;
       start({ storyId, playUntil: log[next - 2]?.callId });
     };
@@ -192,7 +192,7 @@ export class Instrumenter {
       const call = calls.find(({ id }) => id === callId);
       const shadowCall = shadowCalls.find(({ id }) => id === callId);
       if (!call && shadowCall) {
-        const nextCallId = this.getLog(storyId).find(({ state }) => state === CallStates.WAITING)
+        const nextCallId = this.getLog(storyId).find(({ status }) => status === CallStates.WAITING)
           ?.callId;
         if (shadowCall.id !== nextCallId) this.setState(storyId, { playUntil: shadowCall.id });
         Object.values(resolvers).forEach((resolve) => resolve());
@@ -261,7 +261,7 @@ export class Instrumenter {
         }
       });
       if (call.interceptable && !seen.has(call.id) && !seen.has(call.parentId)) {
-        acc.unshift({ callId: call.id, state: call.state });
+        acc.unshift({ callId: call.id, status: call.status });
         seen.add(call.id);
         if (call.parentId) {
           seen.add(call.parentId);
@@ -326,7 +326,7 @@ export class Instrumenter {
     const id = `${parentId || storyId} [${cursor}] ${method}`;
     const { path = [], intercept = false, retain = false } = options;
     const interceptable = typeof intercept === 'function' ? intercept(method, path) : intercept;
-    const call: Call = { id, path, method, parentId, storyId, args, interceptable, retain };
+    const call: Call = { id, parentId, storyId, cursor, path, method, args, interceptable, retain };
     const result = (interceptable ? this.intercept : this.invoke).call(this, fn, call, options);
     return this.instrument(result, { ...options, mutate: true, path: [{ __callId__: call.id }] });
   }
@@ -365,13 +365,10 @@ export class Instrumenter {
     // const { abortSignal } = global.window.__STORYBOOK_PREVIEW__ || {};
     // if (abortSignal && abortSignal.aborted) throw IGNORED_EXCEPTION;
 
-    const { callRefsByResult, forwardedException, parentId, renderPhase } = this.getState(
-      call.storyId
-    );
-    const callWithParent = { ...call, parentId };
+    const { callRefsByResult, forwardedException, renderPhase } = this.getState(call.storyId);
 
     const info: Call = {
-      ...callWithParent,
+      ...call,
       // Map args that originate from a tracked function call to a call reference to enable nesting.
       // These values are often not fully serializable anyway (e.g. HTML elements).
       args: call.args.map((arg) => {
@@ -399,8 +396,8 @@ export class Instrumenter {
     const handleException = (e: unknown) => {
       if (e instanceof Error) {
         const { name, message, stack } = e;
-        const exception = { name, message, stack, callId: call.id };
-        this.sync({ ...info, state: CallStates.ERROR, exception });
+        const exception = { name, message, stack };
+        this.sync({ ...info, status: CallStates.ERROR, exception });
 
         // Always track errors to their originating call.
         this.setState(call.storyId, (state) => ({
@@ -444,10 +441,12 @@ export class Instrumenter {
         ...finalArgs.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
-            const { cursor: prevCursor, parentId: prevParentId } = this.getState(call.storyId);
+            const { cursor, parentId } = call;
             this.setState(call.storyId, { cursor: 0, parentId: call.id });
+            const restore = () => this.setState(call.storyId, { cursor, parentId });
             const res = arg(...args);
-            this.setState(call.storyId, { cursor: prevCursor, parentId: prevParentId });
+            if (res instanceof Promise) res.then(restore, restore);
+            else restore();
             return res;
           };
         })
@@ -466,12 +465,12 @@ export class Instrumenter {
 
       this.sync({
         ...info,
-        state: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
+        status: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
       });
 
       if (result instanceof Promise) {
         return result.then((value) => {
-          this.sync({ ...info, state: CallStates.DONE });
+          this.sync({ ...info, status: CallStates.DONE });
           return value;
         }, handleException);
       }
