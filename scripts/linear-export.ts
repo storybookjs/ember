@@ -92,7 +92,7 @@ const exportToLinear = async (issueId: number) => {
   const linearIssue = await created.issue;
   logger.log(`Created ${linearIssue.url}`);
 
-  const link = await linear.attachmentCreate({
+  await linear.attachmentCreate({
     issueId: linearIssue.id,
     title: issue.title,
     url: issue.url,
