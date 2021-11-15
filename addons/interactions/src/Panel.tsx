@@ -19,7 +19,7 @@ interface AddonPanelProps {
 
 interface InteractionsPanelProps {
   active: boolean;
-  interactions: (Call & { state?: CallStates })[];
+  interactions: (Call & { status?: CallStates })[];
   isDisabled?: boolean;
   hasPrevious?: boolean;
   hasNext?: boolean;
@@ -120,11 +120,11 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
   // Calls are tracked in a ref so we don't needlessly rerender.
-  const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
-  const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
+  const calls = React.useRef<Map<Call['id'], Omit<Call, 'status'>>>(new Map());
+  const setCall = ({ status, ...call }: Call) => calls.current.set(call.id, call);
 
   const [log, setLog] = React.useState<LogItem[]>([]);
-  const interactions = log.map(({ callId, state }) => ({ ...calls.current.get(callId), state }));
+  const interactions = log.map(({ callId, status }) => ({ ...calls.current.get(callId), status }));
 
   const endRef = React.useRef();
   React.useEffect(() => {
@@ -154,11 +154,11 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   const isDebuggingEnabled = FEATURES.interactionsDebugger === true;
 
   const showStatus = log.length > 0 && !isPlaying;
-  const isDebugging = log.some((item) => pendingStates.includes(item.state));
-  const hasPrevious = log.some((item) => completedStates.includes(item.state));
-  const hasNext = log.some((item) => item.state === CallStates.WAITING);
-  const hasActive = log.some((item) => item.state === CallStates.ACTIVE);
-  const hasException = log.some((item) => item.state === CallStates.ERROR);
+  const isDebugging = log.some((item) => pendingStates.includes(item.status));
+  const hasPrevious = log.some((item) => completedStates.includes(item.status));
+  const hasNext = log.some((item) => item.status === CallStates.WAITING);
+  const hasActive = log.some((item) => item.status === CallStates.ACTIVE);
+  const hasException = log.some((item) => item.status === CallStates.ERROR);
   const isDisabled = isDebuggingEnabled
     ? hasActive || isLocked || (isPlaying && !isDebugging)
     : true;

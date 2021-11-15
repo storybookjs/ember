@@ -32,7 +32,7 @@ export interface SubnavProps {
   hasPrevious: boolean;
   hasNext: boolean;
   storyFileName?: string;
-  status: Call['state'];
+  status: Call['status'];
   onStart: () => void;
   onPrevious: () => void;
   onNext: () => void;

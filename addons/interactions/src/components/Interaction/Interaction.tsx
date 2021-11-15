@@ -20,7 +20,7 @@ const RowContainer = styled('div', { shouldForwardProp: (prop) => !['call'].incl
   borderBottom: `1px solid ${theme.appBorderColor}`,
   fontFamily: typography.fonts.base,
   fontSize: 13,
-  ...(call.state === CallStates.ERROR && {
+  ...(call.status === CallStates.ERROR && {
     backgroundColor:
       theme.base === 'dark' ? transparentize(0.93, theme.color.negative) : theme.background.warning,
   }),
@@ -38,19 +38,19 @@ const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].inclu
   margin: 0,
   padding: '8px 15px',
   textAlign: 'start',
-  cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
+  cursor: disabled || call.status === CallStates.ERROR ? 'default' : 'pointer',
   '&:hover': {
     background: theme.background.hoverable,
   },
   '&:focus-visible': {
     outline: 0,
     boxShadow: `inset 3px 0 0 0 ${
-      call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
+      call.status === CallStates.ERROR ? theme.color.warning : theme.color.secondary
     }`,
-    background: call.state === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
+    background: call.status === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
   },
   '& > div': {
-    opacity: call.state === CallStates.WAITING ? 0.5 : 1,
+    opacity: call.status === CallStates.WAITING ? 0.5 : 1,
   },
 }));
 
@@ -83,12 +83,12 @@ export const Interaction = ({
         onMouseEnter={() => isDebuggingEnabled && setIsHovered(true)}
         onMouseLeave={() => isDebuggingEnabled && setIsHovered(false)}
       >
-        <StatusIcon status={isHovered ? CallStates.ACTIVE : call.state} />
+        <StatusIcon status={isHovered ? CallStates.ACTIVE : call.status} />
         <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
           <MethodCall call={call} callsById={callsById} />
         </MethodCallWrapper>
       </RowLabel>
-      {call.state === CallStates.ERROR &&
+      {call.status === CallStates.ERROR &&
         call.exception &&
         (call.exception.message.startsWith('expect(') ? (
           <MatcherResult {...call.exception} />
