@@ -495,7 +495,9 @@ export class Instrumenter {
         .reduce<Record<Call['id'], Call>>((a, c) => Object.assign(a, { [c.id]: c }), {});
       return {
         // Calls are sorted to ensure parent calls always come before calls in their callback.
-        calls: Object.values(callsById).sort((a, b) => a.id.localeCompare(b.id)),
+        calls: Object.values(callsById).sort((a, b) =>
+          a.id.localeCompare(b.id, undefined, { numeric: true })
+        ),
         syncTimeout: setTimeout(() => this.channel.emit(EVENTS.SYNC, this.getLog(call.storyId)), 0),
       };
     });
