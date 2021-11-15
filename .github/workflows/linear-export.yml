@@ -12,6 +12,7 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Export to linear
         run: >
           yarn linear-export ${{ github.event.number }}
