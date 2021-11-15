@@ -97,7 +97,7 @@ export const eslintPlugin: Fix<EslintPluginRunOptions> = {
       logger.info(`✅ Adding Storybook to extends list`);
       const extendsConfig = eslint.getFieldValue(['extends']) || [];
       const existingConfigValue =
-        typeof extendsConfig === 'string' ? [extendsConfig] : extendsConfig;
+        Array.isArray(extendsConfig) ? extendsConfig : [extendsConfig];
       eslint.setFieldValue(['extends'], [...existingConfigValue, 'plugin:storybook/recommended']);
 
       await writeConfig(eslint);
