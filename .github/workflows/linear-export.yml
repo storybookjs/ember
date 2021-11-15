@@ -17,7 +17,7 @@ jobs:
         run: yarn install
       - name: Export to linear
         run: >
-          yarn linear-export ${{ github.event.number }}
+          yarn linear-export ${{ github.event.issue.number }}
         env:
           GH_TOKEN: ${{ secrets.LINEAR_GH_TOKEN }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
