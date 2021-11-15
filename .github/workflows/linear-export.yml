@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
       - name: Export to linear
         run: >
           yarn linear-export ${{ github.event.number }}
