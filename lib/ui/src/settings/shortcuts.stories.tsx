@@ -50,5 +50,5 @@ export default {
   ],
 };
 
-export const defaults = () => <ShortcutsScreen shortcutKeys={defaultShortcuts} {...actions} />;
-defaults.storyName = 'default shortcuts';
+export const Defaults = () => <ShortcutsScreen shortcutKeys={defaultShortcuts} {...actions} />;
+Defaults.storyName = 'default shortcuts';

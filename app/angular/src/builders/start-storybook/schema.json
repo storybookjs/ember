@@ -24,13 +24,6 @@
       "description": "Host to listen on.",
       "default": "localhost"
     },
-    "staticDir": {
-      "type": "array",
-      "description": "Directory where to load static files from, array of strings.",
-      "items": {
-        "type": "string"
-      }
-    },
     "configDir": {
       "type": "string",
       "description": "Directory where to load Storybook configurations from.",
@@ -87,13 +80,5 @@
       }
     }
   },
-  "additionalProperties": false,
-  "oneOf": [
-    {
-      "required": ["browserTarget"]
-    },
-    {
-      "required": ["tsConfig"]
-    }
-  ]
+  "additionalProperties": false
 }

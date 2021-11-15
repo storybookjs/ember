@@ -7,7 +7,15 @@ export class ServerChannel {
   webSocketServer: WebSocketServer;
 
   constructor(server: Server) {
-    this.webSocketServer = new WebSocketServer({ server });
+    this.webSocketServer = new WebSocketServer({ noServer: true });
+
+    server.on('upgrade', (request, socket, head) => {
+      if (request.url === '/storybook-server-channel') {
+        this.webSocketServer.handleUpgrade(request, socket, head, (ws) => {
+          this.webSocketServer.emit('connection', ws, request);
+        });
+      }
+    });
   }
 
   emit(type: string, args: any[] = []) {

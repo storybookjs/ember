@@ -177,10 +177,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, templateOptions) => ({
-          compilation,
-          files,
-          options: templateOptions,
+        template,
+        templateParameters: {
           version: packageJson.version,
           globals: {
             CONFIG_TYPE: configType,
@@ -196,7 +194,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
-        }),
+        },
         minify: {
           collapseWhitespace: true,
           removeComments: true,
@@ -205,7 +203,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           removeStyleLinkTypeAttributes: true,
           useShortDoctype: true,
         },
-        template,
       }),
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),

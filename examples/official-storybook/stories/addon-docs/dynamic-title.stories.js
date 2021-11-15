@@ -6,4 +6,4 @@ export default {
   title: 'Addons/Docs/dynamic title',
 };
 
-export const basic = () => 'Story with title that is evaluated in runtime';
+export const Basic = () => 'Story with title that is evaluated in runtime';

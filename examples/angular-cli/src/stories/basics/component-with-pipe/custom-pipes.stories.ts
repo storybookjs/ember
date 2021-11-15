@@ -19,8 +19,6 @@ export const Simple: Story = () => ({
   },
 });
 
-Simple.storyName = 'Simple';
-
 export const WithArgsStory: Story = (args) => ({
   props: args,
 });

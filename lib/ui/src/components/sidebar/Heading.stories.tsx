@@ -1,5 +1,7 @@
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStory, ComponentMeta, ComponentStoryObj } from '@storybook/react';
 import { ThemeProvider, useTheme, Theme } from '@storybook/theming';
 import { action } from '@storybook/addon-actions';
 import { screen } from '@testing-library/dom';
@@ -24,11 +26,11 @@ const menuItems = [
   { title: 'Menu Item 3', onClick: action('onActivateMenuItem'), id: '3' },
 ];
 
-export const menuHighlighted: Story = () => <Heading menuHighlighted menu={menuItems} />;
+export const MenuHighlighted: Story = () => <Heading menuHighlighted menu={menuItems} />;
 
 export const standardData = { menu: menuItems };
 
-export const standard: Story = () => {
+export const Standard: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -46,7 +48,7 @@ export const standard: Story = () => {
   );
 };
 
-export const standardNoLink: Story = () => {
+export const StandardNoLink: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -64,7 +66,7 @@ export const standardNoLink: Story = () => {
   );
 };
 
-export const linkAndText: Story = () => {
+export const LinkAndText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -82,7 +84,7 @@ export const linkAndText: Story = () => {
   );
 };
 
-export const onlyText: Story = () => {
+export const OnlyText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -100,7 +102,7 @@ export const onlyText: Story = () => {
   );
 };
 
-export const longText: Story = () => {
+export const LongText: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -118,7 +120,7 @@ export const longText: Story = () => {
   );
 };
 
-export const customBrandImage: Story = () => {
+export const CustomBrandImage: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -136,7 +138,7 @@ export const customBrandImage: Story = () => {
   );
 };
 
-export const customBrandImageTall: Story = () => {
+export const CustomBrandImageTall: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -154,7 +156,7 @@ export const customBrandImageTall: Story = () => {
   );
 };
 
-export const customBrandImageUnsizedSVG: Story = () => {
+export const CustomBrandImageUnsizedSVG: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -172,7 +174,7 @@ export const customBrandImageUnsizedSVG: Story = () => {
   );
 };
 
-export const noBrand: Story = () => {
+export const NoBrand: Story = () => {
   const theme = useTheme() as Theme;
   return (
     <ThemeProvider
@@ -190,7 +192,7 @@ export const noBrand: Story = () => {
   );
 };
 
-export const skipToCanvasLinkFocused: Story = {
+export const SkipToCanvasLinkFocused: ComponentStoryObj<typeof Heading> = {
   args: { menu: menuItems, skipLinkHref: '#storybook-preview-wrapper' },
   parameters: { layout: 'padded', chromatic: { delay: 300 } },
   play: () => {

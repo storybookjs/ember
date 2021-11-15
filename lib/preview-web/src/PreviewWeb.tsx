@@ -31,7 +31,7 @@ import { WebProjectAnnotations } from './types';
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
 
-const { window: globalWindow, AbortController, FEATURES, fetch } = global;
+const { window: globalWindow, AbortController, fetch } = global;
 
 function focusInInput(event: Event) {
   const target = event.target as Element;
@@ -92,7 +92,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   constructor() {
     this.channel = addons.getChannel();
-    if (FEATURES?.storyStoreV7 && addons.hasServerChannel()) {
+    if (global.FEATURES?.storyStoreV7 && addons.hasServerChannel()) {
       this.serverChannel = addons.getServerChannel();
     }
     this.view = new WebView();
@@ -187,7 +187,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.setInitialGlobals();
 
     let storyIndexPromise: PromiseLike<StoryIndex>;
-    if (FEATURES?.storyStoreV7) {
+    if (global.FEATURES?.storyStoreV7) {
       storyIndexPromise = this.getStoryIndexFromServer();
     } else {
       if (!this.getStoryIndex) {
@@ -232,10 +232,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       .initialize({
         storyIndex,
         importFn: this.importFn,
-        cache: !FEATURES?.storyStoreV7,
+        cache: !global.FEATURES?.storyStoreV7,
       })
       .then(() => {
-        if (!FEATURES?.storyStoreV7) {
+        if (!global.FEATURES?.storyStoreV7) {
           this.channel.emit(Events.SET_STORIES, this.storyStore.getSetStoriesPayload());
         }
 
@@ -255,11 +255,23 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     if (!storyId) {
       if (storySpecifier === '*') {
-        this.renderMissingStory();
+        this.renderStoryLoadingException(
+          storySpecifier,
+          new Error(dedent`
+            Couldn't find any stories in your Storybook.
+            - Please check your stories field of your main.js config.
+            - Also check the browser console and terminal for error messages.
+          `)
+        );
       } else {
         this.renderStoryLoadingException(
           storySpecifier,
-          new Error(`Couldn't find story matching ${storySpecifier}.`)
+          new Error(dedent`
+            Couldn't find story matching '${storySpecifier}'.
+            - Are you sure a story with that id exists?
+            - Please check your stories field of your main.js config.
+            - Also check the browser console and terminal for error messages.
+          `)
         );
       }
 
@@ -325,7 +337,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     storyIndex?: StoryIndex;
   }) {
     await this.storyStore.onStoriesChanged({ importFn, storyIndex });
-    if (!FEATURES?.storyStoreV7) {
+    if (!global.FEATURES?.storyStoreV7) {
       this.channel.emit(Events.SET_STORIES, await this.storyStore.getSetStoriesPayload());
     }
 
@@ -408,6 +420,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     const { storyId } = selection;
 
+    const storyIdChanged = this.previousSelection?.storyId !== storyId;
+    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
+
+    // Show a spinner while we load the next story
+    if (selection.viewMode === 'story') {
+      this.view.showPreparingStory();
+    } else {
+      this.view.showPreparingDocs();
+    }
+
     let story;
     try {
       story = await this.storyStore.loadStory({ storyId });
@@ -417,9 +439,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.renderStoryLoadingException(storyId, err);
       return;
     }
-
-    const storyIdChanged = this.previousSelection?.storyId !== storyId;
-    const viewModeChanged = this.previousSelection?.viewMode !== selection.viewMode;
 
     const implementationChanged =
       !storyIdChanged && this.previousStory && story !== this.previousStory;
@@ -431,6 +450,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // Don't re-render the story if nothing has changed to justify it
     if (this.previousStory && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
+      this.view.showMain();
       return;
     }
 
@@ -446,7 +466,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.previousStory = story;
 
     const { parameters, initialArgs, argTypes, args } = this.storyStore.getStoryContext(story);
-    if (FEATURES?.storyStoreV7) {
+    if (global.FEATURES?.storyStoreV7) {
       this.channel.emit(Events.STORY_PREPARED, {
         id: storyId,
         parameters,
@@ -472,7 +492,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   async renderDocs({ story }: { story: Story<TFramework> }) {
     const { id, title, name } = story;
-    const element = this.view.prepareForDocs();
     const csfFile: CSFFile<TFramework> = await this.storyStore.loadCSFFileByStoryId(id);
     const docsContext = {
       id,
@@ -494,10 +513,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       const fullDocsContext = {
         ...docsContext,
         // Put all the storyContext fields onto the docs context for back-compat
-        ...(!FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
+        ...(!global.FEATURES?.breakingChangesV7 && this.storyStore.getStoryContext(story)),
       };
 
-      (await import('./renderDocs')).renderDocs(story, fullDocsContext, element, () =>
+      const renderer = await import('./renderDocs');
+      const element = this.view.prepareForDocs();
+      renderer.renderDocs(story, fullDocsContext, element, () =>
         this.channel.emit(Events.DOCS_RENDERED, id)
       );
     };
@@ -511,14 +532,14 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     // of which ones were rendered by the docs page.
     // However, in `modernInlineRender`, the individual stories track their own events as they
     // each call `renderStoryToElement` below.
-    if (!global?.FEATURES?.modernInlineRender) {
+    if (!global.FEATURES?.modernInlineRender) {
       this.channel.on(Events.UPDATE_GLOBALS, render);
       this.channel.on(Events.UPDATE_STORY_ARGS, render);
       this.channel.on(Events.RESET_STORY_ARGS, render);
     }
 
     return async () => {
-      if (!global?.FEATURES?.modernInlineRender) {
+      if (!global.FEATURES?.modernInlineRender) {
         this.channel.off(Events.UPDATE_GLOBALS, render);
         this.channel.off(Events.UPDATE_STORY_ARGS, render);
         this.channel.off(Events.RESET_STORY_ARGS, render);
