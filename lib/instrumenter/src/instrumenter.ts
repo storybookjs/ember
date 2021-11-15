@@ -260,12 +260,9 @@ export class Instrumenter {
           seen.add((node as CallRef).__callId__);
         }
       });
-      if (call.interceptable && !seen.has(call.id) && !seen.has(call.parentId)) {
+      if (call.interceptable && !seen.has(call.id)) {
         acc.unshift({ callId: call.id, status: call.status });
         seen.add(call.id);
-        if (call.parentId) {
-          seen.add(call.parentId);
-        }
       }
       return acc;
     }, []);
