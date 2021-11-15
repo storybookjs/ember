@@ -7,7 +7,7 @@ import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
 import { Configuration } from 'webpack';
-import { Ref, Options, CoreConfig, Webpack5BuilderConfig } from '@storybook/core-common';
+import { Ref, Options } from '@storybook/core-common';
 
 export const getAutoRefs = async (
   options: Options,
@@ -143,15 +143,5 @@ export async function getManagerWebpackConfig(options: Options): Promise<Configu
     );
   }
 
-  const coreOptions = await presets.apply<CoreConfig>('core');
-  const cache = (coreOptions.builder as Webpack5BuilderConfig).options?.fsCache
-    ? {
-        cache: {
-          type: 'filesystem',
-        },
-      }
-    : {};
-  const result = await presets.apply('managerWebpack', {}, { ...options, entries, refs });
-
-  return { ...result, ...cache } as any;
+  return presets.apply('managerWebpack', {}, { ...options, entries, refs });
 }
