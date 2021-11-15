@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.4.0-rc.1",
+  "version": "6.4.0-rc.2",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -71,6 +71,7 @@
     "lint:js": "cross-env NODE_ENV=production eslint  --cache --cache-location=.cache/eslint --ext .js,.jsx,.json,.html,.ts,.tsx,.mjs --report-unused-disable-directives",
     "lint:md": "remark -q",
     "lint:package": "sort-package-json",
+    "linear-export": "ts-node --project=./scripts/tsconfig.json ./scripts/linear-export.ts",
     "local-registry": "ts-node --project=./scripts/tsconfig.json ./scripts/run-registry.ts ",
     "publish:debug": "npm run publish:latest -- --npm-tag=debug --no-push",
     "publish:latest": "lerna publish --exact --concurrency 1 --force-publish",
@@ -122,6 +123,7 @@
     "@babel/runtime": "^7.12.5",
     "@compodoc/compodoc": "^1.1.14",
     "@emotion/snapshot-serializer": "^0.8.2",
+    "@linear/sdk": "^1.21.0",
     "@nicolo-ribaudo/chokidar-2": "^2.1.8",
     "@nrwl/cli": "12.3.4",
     "@nrwl/nx-cloud": "12.1.1",

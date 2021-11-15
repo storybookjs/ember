@@ -1,8 +1,23 @@
+## 6.4.0-rc.2 (November 16, 2021)
+
+### Features
+
+- Core: Add option to use webpack filesystem cache ([#16219](https://github.com/storybookjs/storybook/pull/16219))
+
+### Bug Fixes
+
+- CLI: Fix automigrate command for eslint with extends as string ([#16687](https://github.com/storybookjs/storybook/pull/16687))
+- Core: Bust the prebuilt manager cache if user has set `features` ([#16684](https://github.com/storybookjs/storybook/pull/16684))
+
+### Maintenance
+
+- Build: GH Action for exporting to linear by GH label ([#16683](https://github.com/storybookjs/storybook/pull/16683))
+
 ## 6.4.0-rc.1 (November 13, 2021)
 
 ### Features
 
-* Angular: Add getWebpackConfig for angular 12.2.x & 13.x.x ([#16644](https://github.com/storybookjs/storybook/pull/16644))
+- Angular: Add getWebpackConfig for angular 12.2.x & 13.x.x ([#16644](https://github.com/storybookjs/storybook/pull/16644))
 
 ## 6.4.0-rc.0 (November 12, 2021)
 
