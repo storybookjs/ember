@@ -4418,6 +4418,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-typed-document-node/core@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@graphql-typed-document-node/core@npm:3.1.0"
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: 29de073789cb503072bc9df0f987f575ab6c722fd309c97954c0b330259df10ea8d3c885afbb04e43f0ed1ded0243a1398d713f12d63bdcf3d2a0a5501e43229
+  languageName: node
+  linkType: hard
+
 "@hapi/address@npm:2.x.x":
   version: 2.1.4
   resolution: "@hapi/address@npm:2.1.4"
@@ -5771,6 +5780,17 @@ __metadata:
     npmlog: ^4.1.2
     write-file-atomic: ^2.3.0
   checksum: 45973fe41cf9f081926ab4d4dd5ecaa66781157d6084cee187a04de24453ad6eb0c61fb2a91bd8ddfd63524692f023022443f5b0091f85060686b8e95c6a26f4
+  languageName: node
+  linkType: hard
+
+"@linear/sdk@npm:^1.21.0":
+  version: 1.21.0
+  resolution: "@linear/sdk@npm:1.21.0"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.0
+    graphql: ^15.4.0
+    isomorphic-unfetch: ^3.1.0
+  checksum: 6f320277e30fbf58981f4d5b648675c4be14638f85aab06091ecb4ef1f9ea151638f61ea13960b24ed363d2bd5d854cd0e45fe2a64e7cfbfe2cac538fe40a710
   languageName: node
   linkType: hard
 
@@ -8805,6 +8825,7 @@ __metadata:
     "@cypress/skip-test": ^2.6.1
     "@cypress/webpack-preprocessor": ^5.9.1
     "@emotion/snapshot-serializer": ^0.8.2
+    "@linear/sdk": ^1.21.0
     "@nicolo-ribaudo/chokidar-2": ^2.1.8
     "@nrwl/cli": 12.3.4
     "@nrwl/nx-cloud": 12.1.1
@@ -25000,6 +25021,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"graphql@npm:^15.4.0":
+  version: 15.7.2
+  resolution: "graphql@npm:15.7.2"
+  checksum: eb7c7fbf0821eae069d077435805899f13967d518814ac36e8a32b0793f42ae32723827e5d09d840f68234d82aef1479eab3c5db07a739ca766d843afad00c90
+  languageName: node
+  linkType: hard
+
 "grizzly@npm:^4.0.0":
   version: 4.0.3
   resolution: "grizzly@npm:4.0.3"
@@ -27682,6 +27710,16 @@ fsevents@^1.2.7:
     node-fetch: ^1.0.1
     whatwg-fetch: ">=0.10.0"
   checksum: ea9fd37d31ec7b35b82180e1946d4a2f512506d0559fa567ec6ee6701ff1c6d924be90e75499c50982274b707e03ecd9eaa21d618872dd0deff530e4c3bdb074
+  languageName: node
+  linkType: hard
+
+"isomorphic-unfetch@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "isomorphic-unfetch@npm:3.1.0"
+  dependencies:
+    node-fetch: ^2.6.1
+    unfetch: ^4.2.0
+  checksum: d3b61fca06304db692b7f76bdfd3a00f410e42cfa7403c3b250546bf71589d18cf2f355922f57198e4cc4a9872d3647b20397a5c3edf1a347c90d57c83cf2a89
   languageName: node
   linkType: hard
 
