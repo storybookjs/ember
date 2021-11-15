@@ -68,9 +68,9 @@ const exportToLinear = async (issueId: number) => {
   const issue = await getGHIssue(issueId);
 
   const issueKey = `SB${issueId}`;
-  const linearIssue = await findLinearIssue(issueKey);
-  if (linearIssue) {
-    logger.log('Existing linear issue, skipping', linearIssue.url);
+  const existingIssue = await findLinearIssue(issueKey);
+  if (existingIssue) {
+    logger.log('Existing linear issue, skipping', existingIssue.url);
     return;
   }
 
@@ -89,7 +89,16 @@ const exportToLinear = async (issueId: number) => {
     labelIds,
   });
 
-  logger.log(`Created ${(await created.issue).url}`);
+  const linearIssue = await created.issue;
+  logger.log(`Created ${linearIssue.url}`);
+
+  const link = await linear.attachmentCreate({
+    issueId: linearIssue.id,
+    title: issue.title,
+    url: issue.url,
+  });
+
+  logger.log('Created GH URL attachment');
 };
 
 program
