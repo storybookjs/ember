@@ -3,7 +3,7 @@ import pickBy from 'lodash/pickBy';
 import { styled, ignoreSsrWarning } from '@storybook/theming';
 import { opacify, transparentize, darken, lighten } from 'polished';
 import { Icons } from '../../icon/icon';
-import { ArgRow } from './ArgRow';
+import { ArgRow, argRowLoadingData } from './ArgRow';
 import { SectionRow } from './SectionRow';
 import { ArgType, ArgTypes, Args } from './types';
 import { EmptyBlock } from '../EmptyBlock';
@@ -240,7 +240,7 @@ const sortFns: Record<SortType, SortFn | null> = {
     Number(!!b.type?.required) - Number(!!a.type?.required) || a.name.localeCompare(b.name),
   none: undefined,
 };
-export interface ArgsTableRowProps {
+export interface ArgsTableData {
   rows: ArgTypes;
   args?: Args;
   updateArgs?: (args: Args) => void;
@@ -248,14 +248,26 @@ export interface ArgsTableRowProps {
   compact?: boolean;
   inAddonPanel?: boolean;
   initialExpandedArgs?: boolean;
+  isLoading?: boolean;
   sort?: SortType;
 }
 
 export interface ArgsTableErrorProps {
   error: ArgsTableError;
 }
+interface ArgTableLoading {
+  isLoading: true;
+}
 
-export type ArgsTableProps = ArgsTableRowProps | ArgsTableErrorProps;
+export const argTableLoadingData: ArgsTableData = {
+  rows: {
+    row1: argRowLoadingData.row,
+    row2: argRowLoadingData.row,
+    row3: argRowLoadingData.row,
+  },
+};
+
+export type ArgsTableProps = ArgsTableData | ArgsTableErrorProps | ArgTableLoading;
 
 type Rows = ArgType[];
 type Subsection = Rows;
@@ -326,16 +338,139 @@ const groupRows = (rows: ArgType, sort: SortType) => {
   return sorted;
 };
 
+const SkeletonHeader = styled.div(({ theme }) => ({
+  alignContent: 'stretch',
+  display: 'flex',
+  gap: 16,
+  marginTop: 25,
+  padding: '10px 20px',
+
+  div: {
+    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+    background: theme.appBorderColor,
+    flexShrink: 0,
+    height: 20,
+
+    '&:first-child, &:nth-child(4)': {
+      width: '20%',
+    },
+
+    '&:nth-child(2)': {
+      width: '30%',
+    },
+
+    '&:nth-child(3)': {
+      flexGrow: 1,
+    },
+
+    '&:last-child': {
+      width: 30,
+    },
+
+    '@media ( max-width: 500px )': {
+      '&:nth-child( n + 4 )': {
+        display: 'none',
+      },
+    },
+  },
+}));
+
+const SkeletonBody = styled.div(({ theme }) => ({
+  background: theme.background.content,
+  boxShadow:
+    theme.base === 'light'
+      ? `rgba(0, 0, 0, 0.10) 0 1px 3px 1px,
+          ${transparentize(0.035, theme.appBorderColor)} 0 0 0 1px`
+      : `rgba(0, 0, 0, 0.20) 0 2px 5px 1px,
+          ${opacify(0.05, theme.appBorderColor)} 0 0 0 1px`,
+  borderRadius: theme.appBorderRadius,
+
+  '> div': {
+    alignContent: 'stretch',
+    borderTopColor:
+      theme.base === 'light'
+        ? darken(0.1, theme.background.content)
+        : lighten(0.05, theme.background.content),
+    borderTopStyle: 'solid',
+    borderTopWidth: 1,
+    display: 'flex',
+    gap: 16,
+    padding: 20,
+
+    '&:first-child': {
+      borderTop: 0,
+    },
+  },
+
+  '> div div': {
+    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+    background: theme.appBorderColor,
+    flexShrink: 0,
+    height: 20,
+
+    '&:first-child': {
+      width: '20%',
+    },
+
+    '&:nth-child(2)': {
+      width: '30%',
+    },
+
+    '&:nth-child(3)': {
+      flexGrow: 1,
+    },
+
+    '&:last-child': {
+      width: 'calc(20% + 47px)',
+
+      '@media ( max-width: 500px )': {
+        display: 'none',
+      },
+    },
+  },
+}));
+
+const Skeleton = () => (
+  <div>
+    <SkeletonHeader>
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </SkeletonHeader>
+    <SkeletonBody>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+      <div>
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    </SkeletonBody>
+  </div>
+);
+
 /**
  * Display the props for a component as a props table. Each row is a collection of
  * ArgDefs, usually derived from docgen info for the component.
  */
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
-  const { error } = props as ArgsTableErrorProps;
-  if (error) {
+  if ('error' in props) {
     return (
       <EmptyBlock>
-        {error}&nbsp;
+        {props.error}&nbsp;
         <Link href="http://storybook.js.org/docs/" target="_blank" withArrow>
           Read the docs
         </Link>
@@ -343,6 +478,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     );
   }
 
+  const isLoading = 'isLoading' in props;
   const {
     rows,
     args,
@@ -352,7 +488,11 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     inAddonPanel,
     initialExpandedArgs,
     sort = 'none',
-  } = props as ArgsTableRowProps;
+  } = 'rows' in props ? props : argTableLoadingData;
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -380,15 +520,16 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
   const expandable = Object.keys(groups.sections).length > 0;
 
   const common = { updateArgs, compact, inAddonPanel, initialExpandedArgs };
+
   return (
     <ResetWrapper>
       <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
         <thead className="docblock-argstable-head">
           <tr>
             <th>Name</th>
-            {compact ? null : <th>Description</th>}
-            {compact ? null : <th>Default</th>}
-            {updateArgs ? (
+            {compact || <th>Description</th>}
+            {compact || <th>Default</th>}
+            {updateArgs && (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
@@ -399,7 +540,8 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
                   )}
                 </ControlHeadingWrapper>
               </th>
-            ) : null}
+            )}
+            {null}
           </tr>
         </thead>
         <tbody className="docblock-argstable-body">

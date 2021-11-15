@@ -69,7 +69,7 @@ const getSnippet = (snippet: string, story?: Story<any>): string => {
 
   // if user has hard-coded the snippet, that takes precedence
   const userCode = parameters.docs?.source?.code;
-  if (userCode) {
+  if (userCode !== undefined) {
     return userCode;
   }
 

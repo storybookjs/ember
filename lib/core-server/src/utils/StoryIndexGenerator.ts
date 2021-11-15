@@ -99,10 +99,9 @@ export class StoryIndexGenerator {
 
   async extractStories(specifier: NormalizedStoriesSpecifier, absolutePath: Path) {
     const relativePath = path.relative(this.options.workingDir, absolutePath);
+    const fileStories = {} as StoryIndex['stories'];
+    const entry = this.storyIndexEntries.get(specifier);
     try {
-      const entry = this.storyIndexEntries.get(specifier);
-      const fileStories = {} as StoryIndex['stories'];
-
       const importPath = slash(relativePath[0] === '.' ? relativePath : `./${relativePath}`);
       const defaultTitle = autoTitleFromSpecifier(importPath, specifier);
       const csf = (await readCsfOrMdx(absolutePath, { defaultTitle })).parse();
@@ -114,13 +113,16 @@ export class StoryIndexGenerator {
           importPath,
         };
       });
-
-      entry[absolutePath] = fileStories;
-      return fileStories;
     } catch (err) {
-      logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
-      throw err;
+      if (err.name === 'NoMetaError') {
+        logger.info(`💡 Skipping ${relativePath}: ${err}`);
+      } else {
+        logger.warn(`🚨 Extraction error on ${relativePath}: ${err}`);
+        throw err;
+      }
     }
+    entry[absolutePath] = fileStories;
+    return fileStories;
   }
 
   async sortStories(storiesList: StoryIndex['stories'][]) {

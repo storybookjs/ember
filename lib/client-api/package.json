@@ -1,6 +1,6 @@
 {
   "name": "@storybook/client-api",
-  "version": "6.4.0-beta.21",
+  "version": "6.4.0-rc.1",
   "description": "Storybook Client API",
   "keywords": [
     "storybook"
@@ -40,13 +40,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-beta.21",
-    "@storybook/channel-postmessage": "6.4.0-beta.21",
-    "@storybook/channels": "6.4.0-beta.21",
-    "@storybook/client-logger": "6.4.0-beta.21",
-    "@storybook/core-events": "6.4.0-beta.21",
+    "@storybook/addons": "6.4.0-rc.1",
+    "@storybook/channel-postmessage": "6.4.0-rc.1",
+    "@storybook/channels": "6.4.0-rc.1",
+    "@storybook/client-logger": "6.4.0-rc.1",
+    "@storybook/core-events": "6.4.0-rc.1",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/store": "6.4.0-beta.21",
+    "@storybook/store": "6.4.0-rc.1",
     "@types/qs": "^6.9.5",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
@@ -57,6 +57,7 @@
     "qs": "^6.10.0",
     "regenerator-runtime": "^0.13.7",
     "store2": "^2.12.0",
+    "synchronous-promise": "^2.0.15",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2"
   },
@@ -67,6 +68,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "eb83ef6aefb6791324e2c70567bdc128cef09d92",
+  "gitHead": "0d79fcc7dd9f8d949c2644aefb54e77a3f932db4",
   "sbmodern": "dist/modern/index.js"
 }

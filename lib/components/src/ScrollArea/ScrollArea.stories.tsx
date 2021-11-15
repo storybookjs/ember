@@ -39,7 +39,7 @@ export default {
   decorators: [(storyFn: () => any) => <Wrapper>{storyFn()}</Wrapper>],
 };
 
-export const vertical = () => (
+export const Vertical = () => (
   <ScrollArea vertical>
     {list((i) => (
       <Fragment key={i}>
@@ -50,7 +50,7 @@ export const vertical = () => (
   </ScrollArea>
 );
 
-export const horizontal = () => (
+export const Horizontal = () => (
   <ScrollArea horizontal>
     {list((i) => (
       <Block key={i}>{i}</Block>
@@ -58,7 +58,7 @@ export const horizontal = () => (
   </ScrollArea>
 );
 
-export const both = () => (
+export const Both = () => (
   <ScrollArea horizontal vertical>
     {list((i) => (
       <Fragment key={i}>
@@ -71,7 +71,7 @@ export const both = () => (
   </ScrollArea>
 );
 
-export const withOuterBorder = () => (
+export const WithOuterBorder = () => (
   <ScrollArea horizontal vertical>
     <div
       style={{

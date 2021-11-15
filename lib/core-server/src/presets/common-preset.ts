@@ -64,4 +64,5 @@ export const typescript = () => ({
 export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
+  emotionAlias: true,
 });

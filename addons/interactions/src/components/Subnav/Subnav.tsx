@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Icons, Separator, P, TooltipNote, WithTooltip, Bar } from '@storybook/components';
+import {
+  Button,
+  IconButton,
+  Icons,
+  Separator,
+  P,
+  TooltipNote,
+  WithTooltip,
+  Bar,
+} from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
@@ -46,14 +55,9 @@ const Note = styled(TooltipNote)(({ theme }) => ({
   fontFamily: theme.typography.fonts.base,
 }));
 
-export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
-  '&:not(:disabled)': {
-    '&:hover,&:focus-visible': {
-      background: theme.background.hoverable,
-    },
-  },
 }));
 
 const StyledSeparator = styled(Separator)({
@@ -86,6 +90,21 @@ const JumpToEndButton = styled(StyledButton)({
   lineHeight: '12px',
 });
 
+const withTooltipModifiers = [
+  {
+    name: 'preventOverflow',
+    options: {
+      padding: 0,
+    },
+  },
+  {
+    name: 'offset',
+    options: {
+      offset: [0, -2],
+    },
+  },
+];
+
 export const Subnav: React.FC<SubnavProps> = ({
   isDisabled,
   hasNext,
@@ -112,30 +131,46 @@ export const Subnav: React.FC<SubnavProps> = ({
 
           <StyledSeparator />
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
-            <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasPrevious ? 'hover' : 'none'}
+            tooltip={<Note note="Go to start" />}
+          >
+            <RewindButton onClick={onStart} disabled={isDisabled || !hasPrevious}>
               <Icons icon="rewind" />
             </RewindButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
-            <StyledIconButton
-              containsIcon
-              onClick={onPrevious}
-              disabled={isDisabled || !hasPrevious}
-            >
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasPrevious ? 'hover' : 'none'}
+            tooltip={<Note note="Go back" />}
+          >
+            <StyledIconButton onClick={onPrevious} disabled={isDisabled || !hasPrevious}>
               <Icons icon="playback" />
             </StyledIconButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
-            <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            hasChrome={false}
+            trigger={hasNext ? 'hover' : 'none'}
+            tooltip={<Note note="Go forward" />}
+          >
+            <StyledIconButton onClick={onNext} disabled={isDisabled || !hasNext}>
               <Icons icon="playnext" />
             </StyledIconButton>
           </WithTooltip>
 
-          <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
-            <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+          <WithTooltip
+            modifiers={withTooltipModifiers}
+            trigger={hasNext ? 'hover' : 'none'}
+            hasChrome={false}
+            tooltip={<Note note="Go to end" />}
+          >
+            <StyledIconButton onClick={onEnd} disabled={isDisabled || !hasNext}>
               <Icons icon="fastforward" />
             </StyledIconButton>
           </WithTooltip>

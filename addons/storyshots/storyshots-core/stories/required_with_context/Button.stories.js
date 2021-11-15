@@ -11,9 +11,9 @@ export default {
   },
 };
 
-export const withText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
+export const WithText = () => <Button onClick={action('clicked')}>Hello Button</Button>;
 
-export const withSomeEmoji = () => (
+export const WithSomeEmoji = () => (
   <Button onClick={action('clicked')}>
     <span role="img" aria-label="so cool">
       😀 😎 👍 💯
@@ -21,4 +21,4 @@ export const withSomeEmoji = () => (
   </Button>
 );
 
-withSomeEmoji.storyName = 'with some emoji';
+WithSomeEmoji.storyName = 'with some emoji';

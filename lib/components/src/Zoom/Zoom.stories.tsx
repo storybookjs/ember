@@ -26,23 +26,23 @@ const EXAMPLE_ELEMENT = (
 
 const TemplateElement = (args) => <Zoom.Element {...args} />;
 
-export const elementActualSize = TemplateElement.bind({});
+export const ElementActualSize = TemplateElement.bind({});
 
-elementActualSize.args = {
+ElementActualSize.args = {
   scale: 1,
   children: EXAMPLE_ELEMENT,
 };
 
-export const elementZoomedIn = TemplateElement.bind({});
+export const ElementZoomedIn = TemplateElement.bind({});
 
-elementZoomedIn.args = {
+ElementZoomedIn.args = {
   scale: 0.7,
   children: EXAMPLE_ELEMENT,
 };
 
-export const elementZoomedOut = TemplateElement.bind({});
+export const ElementZoomedOut = TemplateElement.bind({});
 
-elementZoomedOut.args = {
+ElementZoomedOut.args = {
   scale: 3,
   children: EXAMPLE_ELEMENT,
 };
@@ -78,37 +78,37 @@ const TemplateIFrame = (args) => {
     </Zoom.IFrame>
   );
 };
-export const iFrameActualSize = TemplateIFrame.bind({});
+export const IFrameActualSize = TemplateIFrame.bind({});
 
-iFrameActualSize.args = {
+IFrameActualSize.args = {
   scale: 1,
   active: true,
 };
 
 // The iFrame stories are disabled because useGlobals works in practice
 // but, for some reason breaks in the stories for Zoom.iFrame
-iFrameActualSize.parameters = {
+IFrameActualSize.parameters = {
   chromatic: { disableSnapshot: true },
 };
 
-export const iFrameZoomedIn = TemplateIFrame.bind({});
+export const IFrameZoomedIn = TemplateIFrame.bind({});
 
-iFrameZoomedIn.args = {
+IFrameZoomedIn.args = {
   scale: 0.7,
   active: true,
 };
 
-iFrameZoomedIn.parameters = {
+IFrameZoomedIn.parameters = {
   chromatic: { disableSnapshot: true },
 };
 
-export const iFrameZoomedOut = TemplateIFrame.bind({});
+export const IFrameZoomedOut = TemplateIFrame.bind({});
 
-iFrameZoomedOut.args = {
+IFrameZoomedOut.args = {
   scale: 3,
   active: true,
 };
 
-iFrameZoomedOut.parameters = {
+IFrameZoomedOut.parameters = {
   chromatic: { disableSnapshot: true },
 };

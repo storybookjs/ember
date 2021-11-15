@@ -30,5 +30,5 @@ export default {
   includeStories: ['withTimeout'],
 };
 
-export const withTimeout = () => <AsyncTestComponent />;
-withTimeout.storyName = `with ${TIMEOUT}ms timeout simulating async operation`;
+export const WithTimeout = () => <AsyncTestComponent />;
+WithTimeout.storyName = `with ${TIMEOUT}ms timeout simulating async operation`;

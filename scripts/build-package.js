@@ -85,6 +85,7 @@ function run() {
         type: 'autocompleteMultiselect',
         message: 'Select the packages to build',
         name: 'todo',
+        min: 1,
         hint:
           'You can also run directly with package name like `yarn build core`, or `yarn build --all` for all packages!',
         optionsPerPage: terminalSize.height - 3, // 3 lines for extra info
@@ -110,46 +111,42 @@ function run() {
 
   selection
     .then((list) => {
-      if (list.length === 0) {
-        log.warn(prefix, 'Nothing to build!');
-      } else {
-        const packageNames = list
-          // filters out watch command if --watch is used
-          .map((key) => key.suffix)
-          .filter(Boolean);
+      const packageNames = list
+        // filters out watch command if --watch is used
+        .map((key) => key.suffix)
+        .filter(Boolean);
 
-        let glob =
-          packageNames.length > 1
-            ? `@storybook/{${packageNames.join(',')}}`
-            : `@storybook/${packageNames[0]}`;
+      let glob =
+        packageNames.length > 1
+          ? `@storybook/{${packageNames.join(',')}}`
+          : `@storybook/${packageNames[0]}`;
 
-        const isAllPackages = process.argv.includes('--all');
-        if (isAllPackages) {
-          glob = '@storybook/*';
+      const isAllPackages = process.argv.includes('--all');
+      if (isAllPackages) {
+        glob = '@storybook/*';
 
-          log.warn(
-            'You are building a lot of packages on watch mode. This is an expensive action and might slow your computer down.\nIf this is an issue, run yarn build to filter packages and speed things up!'
-          );
-        }
-
-        if (watchMode) {
-          const runWatchMode = () => {
-            const baseWatchCommand = `lerna exec --scope '${glob}' --parallel -- cross-env-shell node ${resolve(
-              __dirname
-            )}`;
-            const watchTsc = `${baseWatchCommand}/utils/watch-tsc.js`;
-            const watchBabel = `${baseWatchCommand}/utils/watch-babel.js`;
-            const command = `concurrently --kill-others-on-fail "${watchTsc}" "${watchBabel}"`;
-
-            spawn(command);
-          };
-
-          runWatchMode();
-        } else {
-          spawn(`lerna run prepare --scope "${glob}"`);
-        }
-        process.stdout.write('\x07');
+        log.warn(
+          'You are building a lot of packages on watch mode. This is an expensive action and might slow your computer down.\nIf this is an issue, run yarn build to filter packages and speed things up!'
+        );
       }
+
+      if (watchMode) {
+        const runWatchMode = () => {
+          const baseWatchCommand = `lerna exec --scope '${glob}' --parallel -- cross-env-shell node ${resolve(
+            __dirname
+          )}`;
+          const watchTsc = `${baseWatchCommand}/utils/watch-tsc.js`;
+          const watchBabel = `${baseWatchCommand}/utils/watch-babel.js`;
+          const command = `concurrently --kill-others-on-fail "${watchTsc}" "${watchBabel}"`;
+
+          spawn(command);
+        };
+
+        runWatchMode();
+      } else {
+        spawn(`lerna run prepare --scope "${glob}"`);
+      }
+      process.stdout.write('\x07');
     })
     .catch((e) => {
       log.aborted(prefix, chalk.red(e.message));

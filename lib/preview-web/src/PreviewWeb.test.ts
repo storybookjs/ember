@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import merge from 'lodash/merge';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import addons from '@storybook/addons';
+import addons, { mockChannel as createMockChannel } from '@storybook/addons';
 import { ModuleImportFn } from '@storybook/store';
 import { AnyFramework } from '@storybook/csf';
 
@@ -105,24 +105,23 @@ beforeEach(() => {
   mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
   addons.setChannel(mockChannel as any);
+  addons.setServerChannel(createMockChannel());
   mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
 });
-
-// afterEach(async () => {
-//   await new Promise((resolve) => setTimeout(resolve, 0));
-// });
 
 describe('PreviewWeb', () => {
   describe('initialize', () => {
     it('shows an error if getProjectAnnotations throws', async () => {
       const err = new Error('meta error');
       const preview = new PreviewWeb();
-      preview.initialize({
-        importFn,
-        getProjectAnnotations: () => {
-          throw err;
-        },
-      });
+      await expect(
+        preview.initialize({
+          importFn,
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
@@ -133,7 +132,9 @@ describe('PreviewWeb', () => {
       mockFetchResult = { status: 500, text: async () => err.toString() };
 
       const preview = new PreviewWeb();
-      await preview.initialize({ importFn, getProjectAnnotations });
+      await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+        'sort error'
+      );
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
@@ -157,7 +158,7 @@ describe('PreviewWeb', () => {
     });
 
     it('SET_GLOBALS sets globals and types even when undefined', async () => {
-      await createAndRenderPreview({ getProjectAnnotations: () => ({}) });
+      await createAndRenderPreview({ getProjectAnnotations: () => ({ renderToDOM: jest.fn() }) });
 
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
         globals: {},
@@ -184,6 +185,28 @@ describe('PreviewWeb', () => {
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
         foo: 'url',
       });
+    });
+    it('updates args from the URL', async () => {
+      document.location.search = '?id=component-one--a&args=foo:url';
+
+      await createAndRenderPreview();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'url' },
+      });
+    });
+
+    it('allows async getProjectAnnotations', async () => {
+      const preview = new PreviewWeb();
+      await preview.initialize({
+        importFn,
+        getProjectAnnotations: async () => {
+          return getProjectAnnotations();
+        },
+      });
+
+      expect(preview.storyStore.globals.get()).toEqual({ a: 'b' });
     });
   });
 
@@ -227,12 +250,12 @@ describe('PreviewWeb', () => {
     });
 
     describe('if the story specified does not exist', () => {
-      it('renders missing', async () => {
+      it('renders a loading error', async () => {
         document.location.search = '?id=random';
 
         const preview = await createAndRenderPreview();
 
-        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
       });
 
@@ -241,7 +264,7 @@ describe('PreviewWeb', () => {
 
         const preview = await createAndRenderPreview();
 
-        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
 
         mockChannel.emit.mockClear();
@@ -285,7 +308,7 @@ describe('PreviewWeb', () => {
 
           const preview = await createAndRenderPreview();
 
-          expect(preview.view.showNoPreview).toHaveBeenCalled();
+          expect(preview.view.showErrorDisplay).toHaveBeenCalled();
           expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--d');
 
           emitter.emit(Events.SET_CURRENT_STORY, {
@@ -330,7 +353,7 @@ describe('PreviewWeb', () => {
       const preview = await createAndRenderPreview();
 
       expect(preview.view.showNoPreview).toHaveBeenCalled();
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, undefined);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING);
     });
 
     describe('in story viewMode', () => {
@@ -352,7 +375,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -366,7 +393,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'a' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
@@ -383,7 +414,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -427,18 +462,17 @@ describe('PreviewWeb', () => {
           projectAnnotations.renderToDOM = undefined;
 
           document.location.search = '?id=component-one--a';
-          const preview = await createAndRenderPreview();
+          const preview = new PreviewWeb();
+          await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow();
 
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
           expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
             .toMatchInlineSnapshot(`
-            [Error:     Expected 'framework' in your main.js to export 'renderToDOM', but none found.
+            [Error: Expected your framework's preset to export a \\\`renderToDOM\\\` field.
 
-                You can fix this automatically by running:
+            Perhaps it needs to be upgraded for Storybook 6.4?
 
-                npx sb@next automigrate
-
-                More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
+            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field          ]
           `);
         } finally {
           projectAnnotations.renderToDOM = originalRenderToDOM;
@@ -534,7 +568,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -710,7 +748,7 @@ describe('PreviewWeb', () => {
     });
 
     describe('while story is still rendering', () => {
-      it('runs loaders again and stops previous render', async () => {
+      it('runs loaders again', async () => {
         const [gate, openGate] = createGate();
 
         document.location.search = '?id=component-one--a';
@@ -730,9 +768,6 @@ describe('PreviewWeb', () => {
           storyId: 'component-one--a',
           updatedArgs: { new: 'arg' },
         });
-
-        // Now let the first loader call resolve
-        openGate({ l: 8 });
         await waitForRender();
 
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
@@ -745,9 +780,28 @@ describe('PreviewWeb', () => {
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
         expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
           expect.objectContaining({
-            forceRemount: true,
+            forceRemount: true, // Wasn't yet rendered so we need to force remount
             storyContext: expect.objectContaining({
               loaded: { l: 7 }, // This is the value returned by the *second* loader call
+              args: { foo: 'a', new: 'arg' },
+            }),
+          }),
+          undefined // this is coming from view.prepareForStory, not super important
+        );
+
+        // Now let the first loader call resolve
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        openGate({ l: 8 });
+        await waitForRender();
+
+        // Now the first call comes through, but picks up the new args
+        // Note this isn't a particularly realistic case (the second loader being quicker than the first)
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+          expect.objectContaining({
+            storyContext: expect.objectContaining({
+              loaded: { l: 8 },
               args: { foo: 'a', new: 'arg' },
             }),
           }),
@@ -829,7 +883,7 @@ describe('PreviewWeb', () => {
         );
       });
 
-      it('warns and calls renderToDOM again if play function is running', async () => {
+      it('calls renderToDOM again if play function is running', async () => {
         const [gate, openGate] = createGate();
         componentOneExports.a.play.mockImplementationOnce(async () => gate);
 
@@ -1119,7 +1173,7 @@ describe('PreviewWeb', () => {
       });
     });
 
-    it('renders missing if the story specified does not exist', async () => {
+    it('renders loading error if the story specified does not exist', async () => {
       document.location.search = '?id=component-one--a';
       const preview = await createAndRenderPreview();
 
@@ -1130,7 +1184,7 @@ describe('PreviewWeb', () => {
       await waitForSetCurrentStory();
 
       await waitForEvents([Events.STORY_MISSING]);
-      expect(preview.view.showNoPreview).toHaveBeenCalled();
+      expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'random');
     });
 
@@ -1210,6 +1264,19 @@ describe('PreviewWeb', () => {
         );
       });
 
+      it('renders preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--b',
+          viewMode: 'story',
+        });
+        await waitForSetCurrentStory();
+
+        expect(preview.view.showPreparingStory).toHaveBeenCalled();
+      });
+
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
         await createAndRenderPreview();
@@ -1239,7 +1306,11 @@ describe('PreviewWeb', () => {
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--b',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'b' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'b' },
@@ -1261,7 +1332,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--b',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'b' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'b' },
@@ -1286,7 +1361,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--b',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'b' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -1621,6 +1700,19 @@ describe('PreviewWeb', () => {
         );
       });
 
+      it('renders preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'docs',
+        });
+        await waitForSetCurrentStory();
+
+        expect(preview.view.showPreparingDocs).toHaveBeenCalled();
+      });
+
       it('emits STORY_CHANGED', async () => {
         document.location.search = '?id=component-one--a';
         await createAndRenderPreview();
@@ -1777,7 +1869,11 @@ describe('PreviewWeb', () => {
         await waitForEvents([Events.STORY_PREPARED]);
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'a' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'a' },
@@ -1799,7 +1895,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'a' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'a' },
@@ -1824,7 +1924,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'a' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -1935,6 +2039,50 @@ describe('PreviewWeb', () => {
   });
 
   describe('onStoriesChanged', () => {
+    describe('if stories.json endpoint 500s initially', () => {
+      it('recovers and renders the story', async () => {
+        document.location.search = '?id=component-one--a';
+        const err = new Error('sort error');
+        mockFetchResult = { status: 500, text: async () => err.toString() };
+
+        const preview = new PreviewWeb();
+        await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+          'sort error'
+        );
+
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+
+        mockChannel.emit.mockClear();
+        mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
+        preview.onStoryIndexChanged();
+        await waitForRender();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
+      it('sets story args from the URL', async () => {
+        document.location.search = '?id=component-one--a&args=foo:url';
+        const err = new Error('sort error');
+        mockFetchResult = { status: 500, text: async () => err.toString() };
+
+        const preview = new PreviewWeb();
+        await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+          'sort error'
+        );
+
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, expect.any(Error));
+
+        mockChannel.emit.mockClear();
+        mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
+        preview.onStoryIndexChanged();
+        await waitForRender();
+        expect(preview.storyStore.args.get('component-one--a')).toEqual({
+          foo: 'url',
+        });
+      });
+    });
+
     describe('when the current story changes', () => {
       const newComponentOneExports = merge({}, componentOneExports, {
         a: { args: { foo: 'edited' } },
@@ -1980,7 +2128,11 @@ describe('PreviewWeb', () => {
 
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_PREPARED, {
           id: 'component-one--a',
-          parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+          parameters: {
+            __isArgsStory: false,
+            docs: { container: expect.any(Function) },
+            fileName: './src/ComponentOne.stories.js',
+          },
           initialArgs: { foo: 'edited' },
           argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
           args: { foo: 'edited' },
@@ -2013,7 +2165,11 @@ describe('PreviewWeb', () => {
         expect(componentOneExports.default.loaders[0]).toHaveBeenCalledWith(
           expect.objectContaining({
             id: 'component-one--a',
-            parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+            parameters: {
+              __isArgsStory: false,
+              docs: { container: expect.any(Function) },
+              fileName: './src/ComponentOne.stories.js',
+            },
             initialArgs: { foo: 'edited' },
             argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
             args: { foo: 'edited' },
@@ -2035,7 +2191,11 @@ describe('PreviewWeb', () => {
             forceRemount: true,
             storyContext: expect.objectContaining({
               id: 'component-one--a',
-              parameters: { __isArgsStory: false, docs: { container: expect.any(Function) } },
+              parameters: {
+                __isArgsStory: false,
+                docs: { container: expect.any(Function) },
+                fileName: './src/ComponentOne.stories.js',
+              },
               globals: { a: 'b' },
               initialArgs: { foo: 'edited' },
               argTypes: { foo: { name: 'foo', type: { name: 'string' } } },
@@ -2230,6 +2390,18 @@ describe('PreviewWeb', () => {
         expect(mockChannel.emit).not.toHaveBeenCalledWith(Events.STORY_CHANGED, 'component-one--a');
       });
 
+      it('clears preparing state', async () => {
+        document.location.search = '?id=component-one--a';
+        const preview = await createAndRenderPreview();
+
+        (preview.view.showMain as jest.Mock).mockClear();
+        mockChannel.emit.mockClear();
+        preview.onStoriesChanged({ importFn: newImportFn });
+        await waitForEvents([Events.STORY_UNCHANGED]);
+
+        expect(preview.view.showMain).toHaveBeenCalled();
+      });
+
       it('does not re-render the story', async () => {
         document.location.search = '?id=component-one--a';
         const preview = await createAndRenderPreview();
@@ -2334,7 +2506,7 @@ describe('PreviewWeb', () => {
         },
       };
 
-      it('renders story missing', async () => {
+      it('renders loading error', async () => {
         document.location.search = '?id=component-one--a';
         const preview = await createAndRenderPreview();
 
@@ -2342,7 +2514,7 @@ describe('PreviewWeb', () => {
         preview.onStoriesChanged({ importFn: newImportFn, storyIndex: newStoryIndex });
         await waitForEvents([Events.STORY_MISSING]);
 
-        expect(preview.view.showNoPreview).toHaveBeenCalled();
+        expect(preview.view.showErrorDisplay).toHaveBeenCalled();
         expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_MISSING, 'component-one--a');
       });
 
@@ -2379,24 +2551,68 @@ describe('PreviewWeb', () => {
   });
 
   describe('onGetProjectAnnotationsChanged', () => {
+    describe('if initial getProjectAnnotations threw', () => {
+      it('recovers and renders the story', async () => {
+        document.location.search = '?id=component-one--a';
+
+        const err = new Error('meta error');
+        const preview = new PreviewWeb();
+        await expect(
+          preview.initialize({
+            importFn,
+            getProjectAnnotations: () => {
+              throw err;
+            },
+          })
+        ).rejects.toThrow(err);
+
+        preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
+        await waitForRender();
+
+        expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_RENDERED, 'component-one--a');
+      });
+
+      it('sets globals from the URL', async () => {
+        document.location.search = '?id=*&globals=a:c';
+
+        const err = new Error('meta error');
+        const preview = new PreviewWeb();
+        await expect(
+          preview.initialize({
+            importFn,
+            getProjectAnnotations: () => {
+              throw err;
+            },
+          })
+        ).rejects.toThrow(err);
+
+        preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
+        await waitForRender();
+
+        expect(preview.storyStore.globals.get()).toEqual({ a: 'c' });
+      });
+    });
+
     it('shows an error the new value throws', async () => {
       document.location.search = '?id=component-one--a';
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
       const err = new Error('error getting meta');
-      preview.onGetProjectAnnotationsChanged({
-        getProjectAnnotations: () => {
-          throw err;
-        },
-      });
+      await expect(
+        preview.onGetProjectAnnotationsChanged({
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
 
       expect(preview.view.showErrorDisplay).toHaveBeenCalled();
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.CONFIG_ERROR, err);
     });
 
     const newGlobalDecorator = jest.fn((s) => s());
-    const newGetGlobalMeta = () => {
+    const newGetProjectAnnotations = () => {
       return {
         ...projectAnnotations,
         args: { global: 'added' },
@@ -2410,10 +2626,25 @@ describe('PreviewWeb', () => {
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(preview.storyStore.globals.get()).toEqual({ a: 'edited' });
+    });
+
+    it('emits SET_GLOBALS with new values', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+
+      mockChannel.emit.mockClear();
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
+      await waitForRender();
+
+      await waitForEvents([Events.SET_GLOBALS]);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.SET_GLOBALS, {
+        globals: { a: 'edited' },
+        globalTypes: {},
+      });
     });
 
     it('updates args to their new values', async () => {
@@ -2421,12 +2652,26 @@ describe('PreviewWeb', () => {
       const preview = await createAndRenderPreview();
 
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(preview.storyStore.args.get('component-one--a')).toEqual({
         foo: 'a',
         global: 'added',
+      });
+    });
+
+    it('emits SET_STORY_ARGS with new values', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+
+      mockChannel.emit.mockClear();
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
+      await waitForRender();
+
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a', global: 'added' },
       });
     });
 
@@ -2436,7 +2681,7 @@ describe('PreviewWeb', () => {
 
       projectAnnotations.renderToDOM.mockClear();
       mockChannel.emit.mockClear();
-      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetGlobalMeta });
+      preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
       expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(

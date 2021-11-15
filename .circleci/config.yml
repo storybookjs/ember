@@ -195,7 +195,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: Run E2E tests
-          command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip vue3 --skip web_components_typescript --skip cra
+          command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip angular12 --skip vue3 --skip web_components_typescript --skip cra
           no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/cypress-record
@@ -221,7 +221,8 @@ jobs:
           name: Run E2E tests
           # Do not test CRA here because it's done in PnP part
           # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
-          command: yarn test:e2e-framework vue3 angular angular11 web_components_typescript web_components_lit2
+          # TODO: Add `angular` as soon as Storybook is compatible with Angular 13
+          command: yarn test:e2e-framework vue3 angular12 angular11 web_components_typescript web_components_lit2
           no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/cypress-record
@@ -353,17 +354,6 @@ jobs:
           command: |
             cd examples/cra-react15
             yarn storybook --smoke-test --quiet
-  frontpage:
-    executor: sb_node_12_browsers
-    steps:
-      - git-shallow-clone/checkout_advanced:
-          clone_options: '--depth 1 --verbose'
-      - run:
-          name: Install dependencies
-          command: yarn install --immutable
-      - run:
-          name: Trigger build
-          command: ./scripts/build-frontpage.js
   lint:
     executor:
       class: small
@@ -446,6 +436,3 @@ workflows:
       - cra-bench:
           requires:
             - publish
-  deploy:
-    jobs:
-      - frontpage

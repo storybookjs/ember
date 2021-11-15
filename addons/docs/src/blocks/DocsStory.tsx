@@ -41,7 +41,7 @@ export const DocsStory: FunctionComponent<DocsStoryProps> = ({
       {subheading && <Subheading>{subheading}</Subheading>}
       {description && <Description markdown={description} />}
       <Canvas withToolbar={withToolbar}>
-        <Story id={id} />
+        <Story id={id} parameters={parameters} />
       </Canvas>
     </Anchor>
   );

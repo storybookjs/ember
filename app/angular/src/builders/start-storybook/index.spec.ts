@@ -75,6 +75,7 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -86,7 +87,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      staticDir: [],
       compodoc: false,
       compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',
@@ -108,6 +108,7 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -119,7 +120,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      staticDir: [],
       compodoc: false,
       compodocArgs: ['-e', 'json'],
       tsConfig: 'path/to/tsConfig.json',
@@ -167,6 +167,7 @@ describe('Start Storybook Builder', () => {
     ]);
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
       ci: false,
       configDir: '.storybook',
       docsMode: false,
@@ -178,7 +179,6 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      staticDir: [],
       compodoc: true,
       compodocArgs: ['-e', 'json'],
       tsConfig: 'src/tsconfig.app.json',

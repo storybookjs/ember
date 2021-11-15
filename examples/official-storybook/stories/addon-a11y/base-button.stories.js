@@ -22,9 +22,9 @@ export const InvalidContrast = () => (
 );
 InvalidContrast.storyName = 'Invalid contrast';
 
-export const delayedRender = () => (
+export const DelayedRenderStory = () => (
   <DelayedRender>
     <BaseButton label="This button has a delayed render of 1s" />
   </DelayedRender>
 );
-delayedRender.storyName = 'delayed render';
+DelayedRenderStory.storyName = 'delayed render';

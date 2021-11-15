@@ -75,7 +75,7 @@ export default {
   ],
 };
 
-export const noTabs = () => (
+export const NoTabs = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -89,7 +89,7 @@ export const noTabs = () => (
   </Consumer>
 );
 
-export const hideFullscreen = () => (
+export const HideFullscreen = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -103,7 +103,7 @@ export const hideFullscreen = () => (
   </Consumer>
 );
 
-export const hideAllDefaultTools = () => (
+export const HideAllDefaultTools = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -127,7 +127,7 @@ export const hideAllDefaultTools = () => (
   </Consumer>
 );
 
-export const withCanvasTab = () => (
+export const WithCanvasTab = () => (
   <Consumer>
     {({ api }: Combo) => {
       return <Preview {...previewProps} api={{ ...api, getElements: () => ({}) }} />;
@@ -135,4 +135,4 @@ export const withCanvasTab = () => (
   </Consumer>
 );
 
-export const withTabs = () => <Preview {...previewProps} />;
+export const WithTabs = () => <Preview {...previewProps} />;
