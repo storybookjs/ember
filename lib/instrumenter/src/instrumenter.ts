@@ -441,7 +441,7 @@ export class Instrumenter {
         ...finalArgs.map((arg: any) => {
           if (typeof arg !== 'function' || Object.keys(arg).length) return arg;
           return (...args: any) => {
-            const { cursor, parentId } = call;
+            const { cursor, parentId } = this.getState(call.storyId);
             this.setState(call.storyId, { cursor: 0, parentId: call.id });
             const restore = () => this.setState(call.storyId, { cursor, parentId });
             const res = arg(...args);

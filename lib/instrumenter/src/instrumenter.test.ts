@@ -133,7 +133,7 @@ describe('Instrumenter', () => {
         path: ['obj'],
         method: 'fn',
         interceptable: false,
-        state: 'done',
+        status: 'done',
         parentId: undefined,
       })
     );
@@ -286,8 +286,8 @@ describe('Instrumenter', () => {
     fn('baz');
     jest.runAllTimers();
     expect(syncSpy).toHaveBeenCalledWith([
-      { callId: 'kind--story [2] fn2', state: 'done' },
-      { callId: 'kind--story [3] fn', state: 'done' },
+      { callId: 'kind--story [2] fn2', status: 'done' },
+      { callId: 'kind--story [3] fn', status: 'done' },
     ]);
   });
 
@@ -352,7 +352,7 @@ describe('Instrumenter', () => {
   describe('with intercept: true', () => {
     const options = { intercept: true };
 
-    it('emits a call event with exception metadata when the function throws', () => {
+    it('emits a call event with error data when the function throws', () => {
       const { fn } = instrument(
         {
           fn: () => {
@@ -369,7 +369,6 @@ describe('Instrumenter', () => {
             name: 'Error',
             message: 'Boom!',
             stack: expect.stringContaining('Error: Boom!'),
-            callId: 'kind--story [0] fn',
           },
         })
       );
