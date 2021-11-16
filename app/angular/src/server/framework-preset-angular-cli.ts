@@ -17,8 +17,7 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
     return baseConfig;
   }
 
-  const packageJson = await import(findUpSync('package.json', { cwd: options.configDir }));
-  const angularCliVersion = semver.coerce(packageJson.devDependencies['@angular/cli'])?.version;
+  const angularCliVersion = await import('@angular/cli').then((m) => semver.coerce(m.VERSION.full));
 
   /**
    * Ordered array to use the specific  getWebpackConfig according to some condition like angular-cli version
