@@ -55,7 +55,7 @@ const Note = styled(TooltipNote)(({ theme }) => ({
   fontFamily: theme.typography.fonts.base,
 }));
 
-export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton as any)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
 }));
