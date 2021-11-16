@@ -18,17 +18,23 @@ class Hero {
   styleUrls: ['./hero-form.component.css'],
 })
 export class HeroForm {
+  /**
+   * This does not work on addon-controls as it is turned into a string
+   * @ignore
+   */
   model = new Hero(0, '', '', '');
 
+  /**
+   * This does not work on addon-controls as it is turned into a string
+   * @ignore
+   */
   powers = ['Really Smart', 'Super Flexible', 'Super Hot', 'Weather Changer'];
 
   submitting = false;
 
   submitted = false;
 
-  onSubmit(model) {
-    // eslint-disable-next-line no-console
-    console.log('Submitting hero', model);
+  onSubmit() {
     this.submitting = true;
     setTimeout(() => {
       this.submitted = true;

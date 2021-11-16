@@ -25,6 +25,7 @@
                 required
                 [(ngModel)]="model.power" name="power"
                 #power="ngModel">
+          <option></option>
           <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
         </select>
 
@@ -44,15 +45,15 @@
     <h2>You submitted the following:</h2>
     <div class="row">
       <div class="col-sm-3 font-weight-bold">Name</div>
-      <div class="col-sm-9">{{ model.name }}</div>
+      <div class="col-sm-9" data-testid="hero-name">{{ model.name }}</div>
     </div>
     <div class="row">
       <div class="col-sm-3 font-weight-bold">Alter Ego</div>
-      <div class="col-sm-9">{{ model.alterEgo }}</div>
+      <div class="col-sm-9" data-testid="hero-alterego">{{ model.alterEgo }}</div>
     </div>
     <div class="row">
       <div class="col-sm-3 font-weight-bold">Power</div>
-      <div class="col-sm-9">{{ model.power }}</div>
+      <div class="col-sm-9" data-testid="hero-power">{{ model.power }}</div>
     </div>
     <br>
     <button class="btn btn-primary" (click)="submitted=false">Edit</button>
