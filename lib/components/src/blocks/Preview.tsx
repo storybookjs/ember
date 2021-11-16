@@ -285,8 +285,15 @@ export const Preview: FunctionComponent<PreviewProps> = ({
   );
 };
 
+const StyledPreview = styled(Preview)(() => ({
+  '.docs-story': {
+    paddingTop: 32,
+    paddingBottom: 40,
+  },
+}));
+
 export const PreviewSkeleton = () => (
-  <Preview withToolbar>
+  <StyledPreview withToolbar>
     <StorySkeleton />
-  </Preview>
+  </StyledPreview>
 );
