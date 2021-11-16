@@ -156,7 +156,7 @@ export class Instrumenter {
       if (!this.getState(storyId).isDebugging) {
         this.setState(storyId, ({ calls }) => ({
           calls: [],
-          shadowCalls: calls.map((call) => ({ ...call, state: CallStates.WAITING })),
+          shadowCalls: calls.map((call) => ({ ...call, status: CallStates.WAITING })),
           isDebugging: true,
         }));
       }
