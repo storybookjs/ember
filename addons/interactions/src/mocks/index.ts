@@ -3,6 +3,7 @@ import { CallStates, Call } from '@storybook/instrumenter';
 export const getCall = (status: CallStates): Call => {
   const defaultData = {
     id: 'addons-interactions-accountform--standard-email-filled [3] change',
+    cursor: 0,
     path: ['fireEvent'],
     method: 'change',
     storyId: 'addons-interactions-accountform--standard-email-filled',
