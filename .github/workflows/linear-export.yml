@@ -12,12 +12,16 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: yarn install
-      - name: Export to linear
-        run: >
-          yarn linear-export ${{ github.event.issue.number }}
+      - name: Linear action
+        uses: shilman/linear-action@v1
+        with:
+          ghIssueNumber: ${{ github.event.issue.number }}
+          ghRepoName: ${{ github.event.repository.name }}
+          ghToken: ${{ secrets.LINEAR_GH_TOKEN }}
+          linearIssuePrefix: SB
+          linearLabel: Storybook
+          linearPRLabel: PR
+          linearTeam: CH
+          linearApiKey: ${{ secrets.LINEAR_API_KEY }}
         env:
-          GH_TOKEN: ${{ secrets.LINEAR_GH_TOKEN }}
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ACTIONS_STEP_DEBUG: true
