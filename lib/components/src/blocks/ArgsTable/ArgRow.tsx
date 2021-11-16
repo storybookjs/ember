@@ -22,7 +22,20 @@ interface ArgRowLoading {
 }
 
 export const argRowLoadingData: ArgRowData = {
-  row: { name: 'loading', description: 'loading' },
+  row: {
+    name: 'property',
+    description: 'description',
+    control: { type: 'text' },
+    key: 'key',
+    table: {
+      defaultValue: {
+        summary: 'a summary',
+      },
+      type: {
+        summary: 'a summary',
+      },
+    },
+  },
   arg: 0,
 };
 

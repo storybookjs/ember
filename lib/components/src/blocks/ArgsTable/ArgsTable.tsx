@@ -10,7 +10,11 @@ import { EmptyBlock } from '../EmptyBlock';
 import { Link } from '../../typography/link/link';
 import { ResetWrapper } from '../../typography/DocumentFormatting';
 
-export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boolean }>(
+export const TableWrapper = styled.table<{
+  compact?: boolean;
+  inAddonPanel?: boolean;
+  isLoading?: boolean;
+}>(
   ({ theme, compact, inAddonPanel }) => ({
     '&&': {
       // Resets for cascading/system styles
@@ -183,7 +187,17 @@ export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boo
       },
       // End finicky table styling
     },
-  })
+  }),
+  ({ isLoading, theme }) =>
+    isLoading
+      ? {
+          'th span, td span': {
+            backgroundColor: theme.appBorderColor,
+            animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+            color: 'transparent',
+          },
+        }
+      : {}
 );
 
 const ResetButton = styled.button(({ theme }) => ({
@@ -338,130 +352,6 @@ const groupRows = (rows: ArgType, sort: SortType) => {
   return sorted;
 };
 
-const SkeletonHeader = styled.div(({ theme }) => ({
-  alignContent: 'stretch',
-  display: 'flex',
-  gap: 16,
-  marginTop: 25,
-  padding: '10px 20px',
-
-  div: {
-    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    background: theme.appBorderColor,
-    flexShrink: 0,
-    height: 20,
-
-    '&:first-child, &:nth-child(4)': {
-      width: '20%',
-    },
-
-    '&:nth-child(2)': {
-      width: '30%',
-    },
-
-    '&:nth-child(3)': {
-      flexGrow: 1,
-    },
-
-    '&:last-child': {
-      width: 30,
-    },
-
-    '@media ( max-width: 500px )': {
-      '&:nth-child( n + 4 )': {
-        display: 'none',
-      },
-    },
-  },
-}));
-
-const SkeletonBody = styled.div(({ theme }) => ({
-  background: theme.background.content,
-  boxShadow:
-    theme.base === 'light'
-      ? `rgba(0, 0, 0, 0.10) 0 1px 3px 1px,
-          ${transparentize(0.035, theme.appBorderColor)} 0 0 0 1px`
-      : `rgba(0, 0, 0, 0.20) 0 2px 5px 1px,
-          ${opacify(0.05, theme.appBorderColor)} 0 0 0 1px`,
-  borderRadius: theme.appBorderRadius,
-
-  '> div': {
-    alignContent: 'stretch',
-    borderTopColor:
-      theme.base === 'light'
-        ? darken(0.1, theme.background.content)
-        : lighten(0.05, theme.background.content),
-    borderTopStyle: 'solid',
-    borderTopWidth: 1,
-    display: 'flex',
-    gap: 16,
-    padding: 20,
-
-    '&:first-child': {
-      borderTop: 0,
-    },
-  },
-
-  '> div div': {
-    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    background: theme.appBorderColor,
-    flexShrink: 0,
-    height: 20,
-
-    '&:first-child': {
-      width: '20%',
-    },
-
-    '&:nth-child(2)': {
-      width: '30%',
-    },
-
-    '&:nth-child(3)': {
-      flexGrow: 1,
-    },
-
-    '&:last-child': {
-      width: 'calc(20% + 47px)',
-
-      '@media ( max-width: 500px )': {
-        display: 'none',
-      },
-    },
-  },
-}));
-
-const Skeleton = () => (
-  <div>
-    <SkeletonHeader>
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-    </SkeletonHeader>
-    <SkeletonBody>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </SkeletonBody>
-  </div>
-);
-
 /**
  * Display the props for a component as a props table. Each row is a collection of
  * ArgDefs, usually derived from docgen info for the component.
@@ -518,13 +408,27 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
 
   return (
     <ResetWrapper>
-      <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
+      <TableWrapper
+        aria-hidden={isLoading}
+        {...{ compact, inAddonPanel, isLoading }}
+        className="docblock-argstable"
+      >
         <thead className="docblock-argstable-head">
           <tr>
-            {isLoading ? null : <th>Name</th>}
-            {compact || isLoading ? null : <th>Description</th>}
-            {compact || isLoading ? null : <th>Default</th>}
-            {updateArgs && !isLoading ? (
+            <th>
+              <span>Name</span>
+            </th>
+            {compact ? null : (
+              <th>
+                <span>Description</span>
+              </th>
+            )}
+            {compact ? null : (
+              <th>
+                <span>Default</span>
+              </th>
+            )}
+            {updateArgs ? (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
@@ -536,7 +440,6 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
                 </ControlHeadingWrapper>
               </th>
             ) : null}
-            {isLoading ? <div>loading indicators here</div> : null}
           </tr>
         </thead>
         <tbody className="docblock-argstable-body">
