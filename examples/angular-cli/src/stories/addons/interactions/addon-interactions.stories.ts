@@ -1,27 +1,59 @@
-/* eslint-disable storybook/use-storybook-testing-library */
-// @TODO: use addon-interactions and remove the rule disable above
-import { Story, Meta } from '@storybook/angular';
+import { Story, Meta, moduleMetadata } from '@storybook/angular';
 import { expect } from '@storybook/jest';
-import { within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { within, userEvent, waitFor } from '@storybook/testing-library';
 
-import { CounterComponent } from './counter/counter.component';
+import { HeroForm, HeroFormModule } from './hero-form/hero-form.component';
 
 export default {
   title: 'Addons/Interactions',
-  component: CounterComponent,
-} as Meta;
+  component: HeroForm,
+  decorators: [
+    moduleMetadata({
+      imports: [HeroFormModule],
+    }),
+  ],
+} as Meta<HeroForm>;
 
-const Template: Story = (args) => ({
+const Template: Story<HeroForm> = (args) => ({
   props: args,
 });
 
-export const Default: Story = Template.bind({});
+export const Standard: Story<HeroForm> = Template.bind({});
 
-Default.play = async ({ canvasElement }) => {
+export const InvalidFields: Story<HeroForm> = Template.bind({});
+InvalidFields.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  await userEvent.click(await canvas.findByText('Increment'));
+  const heroName = canvas.getByRole('textbox', {
+    name: /name/i,
+  });
+  await userEvent.type(heroName, 'Ororo Munroe');
+  await userEvent.clear(heroName);
+};
 
-  const count = await canvas.findByTestId('count');
-  await expect(count.textContent).toEqual('You clicked 1 times');
+export const Submitted: Story<HeroForm> = Template.bind({});
+
+Submitted.play = async ({ canvasElement, args }) => {
+  const canvas = within(canvasElement);
+  const heroName = canvas.getByRole('textbox', {
+    name: /name/i,
+  });
+  await userEvent.type(heroName, 'Ororo Munroe');
+
+  const alterEgo = canvas.getByRole('textbox', {
+    name: /alter ego/i,
+  });
+  await userEvent.type(alterEgo, 'Storm');
+
+  const heroPower = canvas.getByRole('combobox', { name: /hero power/i });
+  await userEvent.selectOptions(heroPower, 'Weather Changer');
+
+  await userEvent.click(canvas.getByText('Submit'));
+
+  await waitFor(async () => {
+    await expect(
+      canvas.getByRole('heading', {
+        name: /you submitted the following:/i,
+      })
+    ).not.toBeNull();
+  });
 };
