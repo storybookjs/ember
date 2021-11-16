@@ -1,3 +1,9 @@
+## 6.4.0-rc.3 (November 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix detection of @angular/cli package version ([#16696](https://github.com/storybookjs/storybook/pull/16696))
+
 ## 6.4.0-rc.2 (November 16, 2021)
 
 ### Features
