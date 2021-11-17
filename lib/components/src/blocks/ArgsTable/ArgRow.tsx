@@ -23,17 +23,14 @@ interface ArgRowLoading {
 
 export const argRowLoadingData: ArgRowData = {
   row: {
-    name: 'property',
-    description: 'description',
+    key: 'someKey',
+    name: 'propertyName',
+    description: 'This is a short description',
+    type: { required: true },
     control: { type: 'text' },
-    key: 'key',
     table: {
-      defaultValue: {
-        summary: 'a summary',
-      },
-      type: {
-        summary: 'a summary',
-      },
+      type: { summary: 'summary' },
+      defaultValue: { summary: 'defaultValue' },
     },
   },
   arg: 0,
