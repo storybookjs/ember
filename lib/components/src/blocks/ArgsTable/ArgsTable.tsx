@@ -191,10 +191,12 @@ export const TableWrapper = styled.table<{
   ({ isLoading, theme }) =>
     isLoading
       ? {
-          'th span, td span': {
+          'th span, td span, td button': {
             backgroundColor: theme.appBorderColor,
             animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
             color: 'transparent',
+            boxShadow: 'none',
+            borderRadius: 0,
           },
         }
       : {}
