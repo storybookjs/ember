@@ -26,7 +26,6 @@ export const argRowLoadingData: ArgRowData = {
     key: 'someKey',
     name: 'propertyName',
     description: 'This is a short description',
-    type: { required: true },
     control: { type: 'text' },
     table: {
       type: { summary: 'summary' },
