@@ -192,6 +192,7 @@ export const TableWrapper = styled.table<{
     isLoading
       ? {
           'th span, td span, td button': {
+            display: 'inline',
             backgroundColor: theme.appBorderColor,
             animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
             color: 'transparent',
