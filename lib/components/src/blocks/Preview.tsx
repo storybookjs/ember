@@ -20,6 +20,7 @@ import { Zoom } from '../Zoom/Zoom';
 import { StorySkeleton } from '.';
 
 export interface PreviewProps {
+  isLoading?: true;
   isColumn?: boolean;
   columns?: number;
   withSource?: SourceProps;
@@ -191,6 +192,7 @@ const getLayout = (children: ReactElement[]): layout => {
  * as a drop-down.
  */
 export const Preview: FunctionComponent<PreviewProps> = ({
+  isLoading,
   isColumn,
   columns,
   children,
@@ -254,6 +256,7 @@ export const Preview: FunctionComponent<PreviewProps> = ({
     >
       {withToolbar && (
         <PositionedToolbar
+          isLoading={isLoading}
           border
           zoom={(z) => setScale(scale * z)}
           resetZoom={() => setScale(1)}
@@ -293,7 +296,7 @@ const StyledPreview = styled(Preview)(() => ({
 }));
 
 export const PreviewSkeleton = () => (
-  <StyledPreview withToolbar>
+  <StyledPreview isLoading withToolbar>
     <StorySkeleton />
   </StyledPreview>
 );
