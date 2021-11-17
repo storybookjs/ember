@@ -279,6 +279,7 @@ export const argTableLoadingData: ArgsTableData = {
     row2: argRowLoadingData.row,
     row3: argRowLoadingData.row,
   },
+  updateArgs: () => {},
 };
 
 export type ArgsTableProps = ArgsTableData | ArgsTableErrorProps | ArgTableLoading;
