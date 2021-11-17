@@ -6,10 +6,11 @@ import React, {
   useContext,
   useRef,
   useEffect,
+  useState,
 } from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import global from 'global';
-import { resetComponents, Story as PureStory } from '@storybook/components';
+import { resetComponents, Story as PureStory, StorySkeleton } from '@storybook/components';
 import { StoryId, toId, storyNameFromExport, StoryAnnotations, AnyFramework } from '@storybook/csf';
 import { Story as StoryType } from '@storybook/store';
 import { addons } from '@storybook/addons';
@@ -113,13 +114,14 @@ export const getStoryProps = <TFramework extends AnyFramework>(
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const channel = addons.getChannel();
-  const ref = useRef();
+  const storyRef = useRef();
   const storyId = getStoryId(props, context);
   const story = useStory(storyId, context);
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     let cleanup: () => void;
-    if (story && ref.current) {
+    if (story && storyRef.current) {
       const { componentId, id, title, name } = story;
       const renderContext = {
         componentId,
@@ -136,14 +138,15 @@ const Story: FunctionComponent<StoryProps> = (props) => {
       cleanup = context.renderStoryToElement({
         story,
         renderContext,
-        element: ref.current as HTMLElement,
+        element: storyRef.current as HTMLElement,
       });
+      setShowLoader(false);
     }
     return () => cleanup && cleanup();
   }, [story]);
 
   if (!story) {
-    return <div>Loading...</div>;
+    return <StorySkeleton />;
   }
 
   // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
@@ -158,7 +161,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
 
   if (global?.FEATURES?.modernInlineRender) {
     // We do this so React doesn't complain when we replace the span in a secondary render
-    const htmlContents = `<span data-is-loading-indicator="true">loading story...</span>`;
+    const htmlContents = `<span></span>`;
 
     // FIXME: height/style/etc. lifted from PureStory
     const { height } = storyProps;
@@ -168,8 +171,9 @@ const Story: FunctionComponent<StoryProps> = (props) => {
           {height ? (
             <style>{`#story--${story.id} { min-height: ${height}; transform: translateZ(0); overflow: auto }`}</style>
           ) : null}
+          {showLoader && <StorySkeleton />}
           <div
-            ref={ref}
+            ref={storyRef}
             data-name={story.name}
             dangerouslySetInnerHTML={{ __html: htmlContents }}
           />

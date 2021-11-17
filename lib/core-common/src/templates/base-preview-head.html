@@ -1,7 +1,10 @@
-<base target="_parent">
+<base target="_parent" />
 
 <style>
-  :not(.sb-show-main) > .sb-main,
+  :not(.sb-show-main) > #root,
+  :not(.sb-show-main) > #docs-root,
+  :not(.sb-show-preparing-story) > .sb-preparing-story,
+  :not(.sb-show-preparing-docs) > .sb-preparing-docs,
   :not(.sb-show-nopreview) > .sb-nopreview,
   :not(.sb-show-errordisplay) > .sb-errordisplay {
     display: none;
@@ -50,7 +53,8 @@
     left: 0;
     right: 0;
     padding: 20px;
-    font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Nunito Sans', -apple-system, '.SFNSText-Regular', 'San Francisco',
+      BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow: auto;
   }
@@ -73,7 +77,7 @@
     margin: auto;
     padding: 30px;
     border-radius: 10px;
-    background: rgba(0,0,0,0.03);
+    background: rgba(0, 0, 0, 0.03);
   }
 
   .sb-nopreview_heading {
@@ -91,7 +95,8 @@
     padding: 10px;
     background: #000;
     color: #eee;
-    font-family: "Operator Mono", "Fira Code Retina", "Fira Code", "FiraCode-Retina", "Andale Mono", "Lucida Console", Consolas, Monaco, monospace;
+    font-family: 'Operator Mono', 'Fira Code Retina', 'Fira Code', 'FiraCode-Retina', 'Andale Mono',
+      'Lucida Console', Consolas, Monaco, monospace;
   }
 
   .sb-errordisplay pre {

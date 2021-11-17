@@ -21,10 +21,39 @@ export interface TypescriptConfig {
   };
 }
 
+export type BuilderName = 'webpack4' | 'webpack5' | string;
+
+export type BuilderConfigObject = {
+  name: BuilderName;
+  options?: Record<string, any>;
+};
+
+export interface Webpack5BuilderConfig extends BuilderConfigObject {
+  name: 'webpack5';
+  options?: {
+    fsCache?: boolean;
+  };
+}
+
+export interface Webpack4BuilderConfig extends BuilderConfigObject {
+  name: 'webpack4';
+}
+
+export type BuilderConfig =
+  | BuilderName
+  | BuilderConfigObject
+  | Webpack4BuilderConfig
+  | Webpack5BuilderConfig;
+
 export interface CoreConfig {
-  builder: 'webpack4' | 'webpack5';
+  builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
+}
+
+interface DirectoryMapping {
+  from: string;
+  to: string;
 }
 
 export interface Presets {
@@ -128,6 +157,9 @@ export interface CLIOptions {
   previewUrl?: string;
   forceBuildPreview?: boolean;
   host?: string;
+  /**
+   * @deprecated Use 'staticDirs' Storybook Configuration option instead
+   */
   staticDir?: string[];
   configDir?: string;
   https?: boolean;
@@ -162,6 +194,7 @@ export interface BuilderOptions {
   versionCheck?: VersionCheck;
   releaseNotesData?: ReleaseNotesData;
   disableWebpackDefaults?: boolean;
+  serverChannelUrl?: string;
 }
 
 export interface StorybookConfigOptions {
@@ -261,13 +294,7 @@ export type Preset =
  */
 export type Entry = string;
 
-type StorybookRefs = Record<
-  string,
-  {
-    title: string;
-    url: string;
-  }
->;
+type StorybookRefs = Record<string, { title: string; url: string } | { disable: boolean }>;
 
 /**
  * The interface for Storybook configuration in `main.ts` files.
@@ -280,12 +307,23 @@ export interface StorybookConfig {
    */
   addons?: Preset[];
   core?: CoreConfig;
+  /**
+   * Sets a list of directories of static files to be loaded by Storybook server
+   *
+   * @example `['./public']` or `[{from: './public', 'to': '/assets'}]`
+   */
+  staticDirs?: (DirectoryMapping | string)[];
   logLevel?: string;
   features?: {
     /**
      * Allows to disable deprecated implicit PostCSS loader.
      */
     postcss?: boolean;
+
+    /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
+    emotionAlias?: boolean;
 
     /**
      * Build stories.json automatically on start/build
@@ -323,6 +361,11 @@ export interface StorybookConfig {
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
+
+    /**
+     * Filter args with a "target" on the type from the render function (EXPERIMENTAL)
+     */
+    argTypeTargetsV7?: boolean;
   };
 
   /**

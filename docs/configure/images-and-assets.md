@@ -30,27 +30,27 @@ Afterwards you can use any asset in your stories:
 
 <!-- prettier-ignore-end -->
 
-### Serving static files via Storybook
+### Serving static files via Storybook Configuration
 
 We recommend serving static files via Storybook to ensure that your components always have the assets they need to load. This technique is recommended for assets that your components often use like logos, fonts, and icons.
 
-Configure a directory (or a list of directories) where your assets live when starting Storybook. Use the`-s` flag in your npm script like so:
+Configure a directory (or a list of directories) where your assets live in your Storybook configuration. Use the `staticDirs` property in your `main.js` or `main.ts` configuration file like so:
 
-```json
+```js
 {
-  "scripts": {
-    "start-storybook": "start-storybook -s ./public -p 9001"
-  }
+  ...
+  staticDirs: ['./public'];
+  ...
 }
 ```
 
-Or when building your Storybook with `build-storybook`:
+You can map your local static directories to a different path like this:
 
-```json
+```js
 {
-  "scripts": {
-    "build-storybook": "build-storybook -s public"
-  }
+  ...
+  staticDirs: [{ from: './public', to: '/assets' }];
+  ...
 }
 ```
 
@@ -76,22 +76,32 @@ Here `./public` is your static directory. Now use it in a component or story lik
 
 You can also pass a list of directories separated by commas without spaces instead of a single directory.
 
-```json
+```js
 {
-  "scripts": {
-    "start-storybook": "start-storybook -s ./public,./static -p 9001"
-  }
+  ...
+  staticDirs: ['./public', './statics'];
+  ...
 }
 ```
-The same can be applied when you're building your Storybook.
 
-```json
+Or you can map each of them to different paths:
+
+You can map your local static directories to a different path like this:
+
+```js
 {
-  "scripts": {
-    "build-storybook": "build-storybook -s ./public,./static -p 9001"
-  }
+  ...
+  staticDirs: [
+    { from: './public', to: '/assets' },
+    { from: './statics', to: '/resources' }
+  ];
+  ...
 }
 ```
+
+### **[⚠️ Deprecated]** Serving static files via Storybook CLI
+
+Using `--static-dir` or `-s` option with Storybook CLI is deprecated. It is recommended to use [Storybook static directory configuration option](#serving-static-files-via-storybook-configuration) instead.
 
 ### Reference assets from a CDN
 

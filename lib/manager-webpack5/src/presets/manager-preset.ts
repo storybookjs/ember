@@ -38,6 +38,7 @@ export async function managerWebpack(
     presets,
     modern,
     features,
+    serverChannelUrl,
   }: Options & ManagerWebpackOptions
 ): Promise<Configuration> {
   const envs = await presets.apply<Record<string, string>>('env');
@@ -91,10 +92,8 @@ export async function managerWebpack(
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, options) => ({
-          compilation,
-          files,
-          options,
+        template,
+        templateParameters: {
           version,
           globals: {
             CONFIG_TYPE: configType,
@@ -104,10 +103,10 @@ export async function managerWebpack(
             RELEASE_NOTES_DATA: JSON.stringify(releaseNotesData),
             DOCS_MODE: docsMode, // global docs mode
             PREVIEW_URL: previewUrl, // global preview URL
+            SERVER_CHANNEL_URL: serverChannelUrl,
           },
           headHtmlSnippet,
-        }),
-        template,
+        },
       }) as any) as WebpackPluginInstance,
       (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
       // graphql sources check process variable

@@ -111,6 +111,12 @@ export const angular11: Parameters = {
   version: 'v11-lts',
 };
 
+export const angular12: Parameters = {
+  ...baseAngular,
+  name: 'angular12',
+  version: 'v12-lts',
+};
+
 export const angular: Parameters = baseAngular;
 // #endregion
 

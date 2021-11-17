@@ -1,4 +1,4 @@
-import { makeRe } from 'micromatch';
+import { makeRe } from 'picomatch';
 
 export function globToRegexp(glob: string) {
   const regex = makeRe(glob, {

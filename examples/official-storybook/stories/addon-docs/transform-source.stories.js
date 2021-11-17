@@ -9,17 +9,17 @@ export default {
   },
 };
 
-export const code = () => 'StoryType "CODE" story which has source transformed';
-code.parameters = {
+export const Code = () => 'StoryType "CODE" story which has source transformed';
+Code.parameters = {
   docs: { source: { type: 'code' } },
 };
 
-export const dynamic = () => 'StoryType "DYNAMIC" story which has source transformed';
-dynamic.parameters = {
+export const Dynamic = () => 'StoryType "DYNAMIC" story which has source transformed';
+Dynamic.parameters = {
   docs: { source: { type: 'dynamic' } },
 };
 
-export const auto = () => 'StoryType "AUTO" story which has source transformed';
-dynamic.parameters = {
+export const Auto = () => 'StoryType "AUTO" story which has source transformed';
+Dynamic.parameters = {
   docs: { source: { type: 'auto' } },
 };

@@ -19,7 +19,6 @@ interface AddonPanelProps {
 
 interface InteractionsPanelProps {
   active: boolean;
-  showTabIcon?: boolean;
   interactions: (Call & { state?: CallStates })[];
   isDisabled?: boolean;
   hasPrevious?: boolean;
@@ -45,9 +44,13 @@ const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
 });
 
+const TabStatus = ({ children }: { children: React.ReactChild }) => {
+  const container = global.document.getElementById('tabbutton-interactions');
+  return container && ReactDOM.createPortal(children, container);
+};
+
 export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   ({
-    showTabIcon,
     interactions,
     isDisabled,
     hasPrevious,
@@ -65,57 +68,50 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
     endRef,
     isDebuggingEnabled,
     ...panelProps
-  }) => {
-    return (
-      <AddonPanel {...panelProps}>
-        {showTabIcon &&
-          ReactDOM.createPortal(
-            <TabIcon status={hasException ? CallStates.ERROR : CallStates.ACTIVE} />,
-            global.document.getElementById('tabbutton-interactions')
-          )}
-        {isDebuggingEnabled && interactions.length > 0 && (
-          <Subnav
-            isDisabled={isDisabled}
-            hasPrevious={hasPrevious}
-            hasNext={hasNext}
-            storyFileName={fileName}
-            status={
-              // eslint-disable-next-line no-nested-ternary
-              isPlaying ? CallStates.ACTIVE : hasException ? CallStates.ERROR : CallStates.DONE
-            }
-            onStart={onStart}
-            onPrevious={onPrevious}
-            onNext={onNext}
-            onEnd={onEnd}
-            onScrollToEnd={onScrollToEnd}
-          />
-        )}
-        {interactions.map((call) => (
-          <Interaction
-            key={call.id}
-            call={call}
-            callsById={calls}
-            isDebuggingEnabled={isDebuggingEnabled}
-            isDisabled={isDisabled}
-            onClick={() => onInteractionClick(call.id)}
-          />
-        ))}
-        <div ref={endRef} />
-        {!isPlaying && interactions.length === 0 && (
-          <Placeholder>
-            No interactions found
-            <Link
-              href="https://storybook.js.org/docs/react/essentials/interactions"
-              target="_blank"
-              withArrow
-            >
-              Learn how to add interactions to your story
-            </Link>
-          </Placeholder>
-        )}
-      </AddonPanel>
-    );
-  }
+  }) => (
+    <AddonPanel {...panelProps}>
+      {isDebuggingEnabled && interactions.length > 0 && (
+        <Subnav
+          isDisabled={isDisabled}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+          storyFileName={fileName}
+          status={
+            // eslint-disable-next-line no-nested-ternary
+            isPlaying ? CallStates.ACTIVE : hasException ? CallStates.ERROR : CallStates.DONE
+          }
+          onStart={onStart}
+          onPrevious={onPrevious}
+          onNext={onNext}
+          onEnd={onEnd}
+          onScrollToEnd={onScrollToEnd}
+        />
+      )}
+      {interactions.map((call) => (
+        <Interaction
+          key={call.id}
+          call={call}
+          callsById={calls}
+          isDebuggingEnabled={isDebuggingEnabled}
+          isDisabled={isDisabled}
+          onClick={() => onInteractionClick(call.id)}
+        />
+      ))}
+      <div ref={endRef} />
+      {!isPlaying && interactions.length === 0 && (
+        <Placeholder>
+          No interactions found
+          <Link
+            href="https://github.com/storybookjs/storybook/blob/next/addons/interactions/README.md"
+            target="_blank"
+            withArrow
+          >
+            Learn how to add interactions to your story
+          </Link>
+        </Placeholder>
+      )}
+    </AddonPanel>
+  )
 );
 
 export const Panel: React.FC<AddonPanelProps> = (props) => {
@@ -156,6 +152,7 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
 
   const isDebuggingEnabled = FEATURES.interactionsDebugger === true;
 
+  const showStatus = log.length > 0 && !isPlaying;
   const isDebugging = log.some((item) => pendingStates.includes(item.state));
   const hasPrevious = log.some((item) => completedStates.includes(item.state));
   const hasNext = log.some((item) => item.state === CallStates.WAITING);
@@ -164,8 +161,6 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   const isDisabled = isDebuggingEnabled
     ? hasActive || isLocked || (isPlaying && !isDebugging)
     : true;
-
-  const showTabIcon = isDebugging || (!isPlaying && hasException);
 
   const onStart = React.useCallback(() => emit(EVENTS.START, { storyId }), [storyId]);
   const onPrevious = React.useCallback(() => emit(EVENTS.BACK, { storyId }), [storyId]);
@@ -177,25 +172,30 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   );
 
   return (
-    <AddonPanelPure
-      showTabIcon={showTabIcon}
-      interactions={interactions}
-      isDisabled={isDisabled}
-      hasPrevious={hasPrevious}
-      hasNext={hasNext}
-      fileName={fileName}
-      hasException={hasException}
-      isPlaying={isPlaying}
-      calls={calls.current}
-      endRef={endRef}
-      isDebuggingEnabled={isDebuggingEnabled}
-      onStart={onStart}
-      onPrevious={onPrevious}
-      onNext={onNext}
-      onEnd={onEnd}
-      onInteractionClick={onInteractionClick}
-      onScrollToEnd={scrollTarget && scrollToTarget}
-      {...props}
-    />
+    <React.Fragment key="interactions">
+      <TabStatus>
+        {showStatus &&
+          (hasException ? <TabIcon status={CallStates.ERROR} /> : ` (${interactions.length})`)}
+      </TabStatus>
+      <AddonPanelPure
+        interactions={interactions}
+        isDisabled={isDisabled}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+        fileName={fileName}
+        hasException={hasException}
+        isPlaying={isPlaying}
+        calls={calls.current}
+        endRef={endRef}
+        isDebuggingEnabled={isDebuggingEnabled}
+        onStart={onStart}
+        onPrevious={onPrevious}
+        onNext={onNext}
+        onEnd={onEnd}
+        onInteractionClick={onInteractionClick}
+        onScrollToEnd={scrollTarget && scrollToTarget}
+        {...props}
+      />
+    </React.Fragment>
   );
 };

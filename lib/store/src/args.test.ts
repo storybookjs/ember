@@ -1,5 +1,11 @@
 import { once } from '@storybook/client-logger';
-import { combineArgs, mapArgsToTypes, validateOptions } from './args';
+import {
+  combineArgs,
+  groupArgsByTarget,
+  mapArgsToTypes,
+  NO_TARGET_NAME,
+  validateOptions,
+} from './args';
 
 const stringType = { name: 'string' };
 const numberType = { name: 'number' };
@@ -236,5 +242,39 @@ describe('validateOptions', () => {
     expect(once.warn).toHaveBeenCalledWith(
       "Received illegal value for 'a[0]'. Supported options: 2, 3"
     );
+  });
+});
+
+describe('groupArgsByTarget', () => {
+  it('groups targeted args', () => {
+    const groups = groupArgsByTarget({
+      args: { a: 1, b: 2, c: 3 },
+      argTypes: { a: { target: 'group1' }, b: { target: 'group2' }, c: { target: 'group2' } },
+    } as any);
+    expect(groups).toEqual({
+      group1: {
+        a: 1,
+      },
+      group2: {
+        b: 2,
+        c: 3,
+      },
+    });
+  });
+
+  it('groups non-targetted args into a group with no name', () => {
+    const groups = groupArgsByTarget({
+      args: { a: 1, b: 2, c: 3 },
+      argTypes: { b: { name: 'b', target: 'group2' }, c: {} },
+    } as any);
+    expect(groups).toEqual({
+      [NO_TARGET_NAME]: {
+        a: 1,
+        c: 3,
+      },
+      group2: {
+        b: 2,
+      },
+    });
   });
 });

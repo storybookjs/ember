@@ -1,0 +1,23 @@
+name: Export to linear
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  trigger:
+    if: github.event.label.name == 'linear'
+    name: Export to linear
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn install
+      - name: Export to linear
+        run: >
+          yarn linear-export ${{ github.event.issue.number }}
+        env:
+          GH_TOKEN: ${{ secrets.LINEAR_GH_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}

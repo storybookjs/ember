@@ -17,15 +17,15 @@ Exception.parameters = {
   chromatic: { disable: true },
 };
 
-export const badComponent = () => (
+export const BadComponentStory = () => (
   <Fragment>
     <div>Hello world</div>
     <BadComponent />
   </Fragment>
 );
-badComponent.storyName = 'story errors - invariant error';
+BadComponentStory.storyName = 'story errors - invariant error';
 
-badComponent.parameters = {
+BadComponentStory.parameters = {
   storyshots: { disable: true },
   chromatic: { disable: true },
 };

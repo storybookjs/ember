@@ -30,3 +30,7 @@ ForceCodeSource.parameters = { docs: { source: { type: 'code' } } };
 export const CustomSource = Template.bind({});
 CustomSource.args = { ...Basic.args };
 CustomSource.parameters = { docs: { source: { code: 'custom source' } } };
+
+export const NoSource = Template.bind({});
+NoSource.args = { ...Basic.args };
+NoSource.parameters = { docs: { source: { code: null } } };

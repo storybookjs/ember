@@ -46,7 +46,7 @@ By default, Storybook will load stories from your project based on a glob (patte
         └── Button.stories.js
 ```
 
-If you want to use a different naming convention, you can alter the glob, using the syntax supported by [micromatch](https://github.com/micromatch/micromatch#extended-globbing).
+If you want to use a different naming convention, you can alter the glob, using the syntax supported by [picomatch](https://github.com/micromatch/picomatch#globbing-features).
 
 For example if you wanted to pull both `.md` and `.js` files from the `my-project/src/components` directory, you could write:
 

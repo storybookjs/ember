@@ -8,7 +8,7 @@ import { ArgValue } from './ArgValue';
 import { ArgControl, ArgControlProps } from './ArgControl';
 import { codeCommon } from '../../typography/shared';
 
-export interface ArgRowProps {
+interface ArgRowData {
   row: ArgType;
   arg: any;
   updateArgs?: (args: Args) => void;
@@ -16,6 +16,17 @@ export interface ArgRowProps {
   expandable?: boolean;
   initialExpandedArgs?: boolean;
 }
+
+interface ArgRowLoading {
+  isLoading: true;
+}
+
+export const argRowLoadingData: ArgRowData = {
+  row: { name: 'loading', description: 'loading' },
+  arg: 0,
+};
+
+export type ArgRowProps = ArgRowData | ArgRowLoading;
 
 const Name = styled.span({ fontWeight: 'bold' });
 
@@ -73,7 +84,9 @@ const StyledTd = styled.td<{ expandable: boolean }>(({ theme, expandable }) => (
 }));
 
 export const ArgRow: FC<ArgRowProps> = (props) => {
-  const { row, updateArgs, compact, expandable, initialExpandedArgs } = props;
+  // const isLoading = 'isLoading' in props;
+  const { row, updateArgs, compact, expandable, initialExpandedArgs } =
+    'row' in props ? props : argRowLoadingData;
   const { name, description } = row;
   const table = (row.table || {}) as TableAnnotation;
   const type = table.type || row.type;

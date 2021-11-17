@@ -6,4 +6,4 @@ export default {
   component: EmptyBlock,
 };
 
-export const error = () => <EmptyBlock>Generic error message</EmptyBlock>;
+export const Error = () => <EmptyBlock>Generic error message</EmptyBlock>;
