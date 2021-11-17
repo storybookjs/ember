@@ -77,7 +77,6 @@ export interface FlexBarProps {
 }
 
 export const FlexBar: FunctionComponent<FlexBarProps> = ({
-  isLoading,
   children,
   backgroundColor,
   ...rest
