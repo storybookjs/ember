@@ -12,10 +12,7 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - name: Print event data
-        env:
-          EVENT: ${{ toJSON( github.event ) }}
-        run: echo "$EVENT"
+      - uses: hmarr/debug-action@v2
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
