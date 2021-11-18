@@ -12,7 +12,7 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - uses: hmarr/debug-action@v2
+      # - uses: hmarr/debug-action@v2
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
@@ -25,6 +25,3 @@ jobs:
           linearPRLabel: PR
           linearTeam: CH
           linearApiKey: ${{ secrets.LINEAR_API_KEY }}
-        env:
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
