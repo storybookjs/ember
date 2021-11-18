@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
+  - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
   - [CSF3 enabled](#csf3-enabled)
     - [Optional titles](#optional-titles)
@@ -10,8 +11,8 @@
     - [Behavioral differences](#behavioral-differences)
     - [Main.js framework field](#mainjs-framework-field)
     - [Using the v7 store](#using-the-v7-store)
-    - [V7-style story sort](#v7-style-story-sort)
-    - [V7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
+    - [v7-style story sort](#v7-style-story-sort)
+    - [v7 Store API changes for addon authors](#v7-store-api-changes-for-addon-authors)
     - [Storyshots compatibility in the v7 store](#storyshots-compatibility-in-the-v7-store)
   - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
@@ -186,10 +187,25 @@
 
 ## From version 6.3.x to 6.4.0
 
+### Automigrate
+
+Automigrate is a new 6.4 feature that provides zero-config upgrades to your dependencies, configurations, and story files.
+
+Each automigration analyzes your project, and if it's is applicable, propose a change alongside relevant documentation. If you accept the changes, the automigration will update your files accordingly.
+
+For example, if you're in a webpack5 project but still use Storybook's default webpack4 builder, the automigration can detect this and propose an upgrade. If you opt-in, it will install the webpack5 builder and update your `main.js` configuration automatically.
+
+You can run the existing suite of automigrations to see which ones apply to your project. This won't update any files unless you accept the changes:
+
+```
+npx sb@next automigrate
+```
+
+The automigration suite also runs when you create a new project (`sb init`) or when you update storybook (`sb upgrade`).
+
 ### CRA5 upgrade
 
-Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to
-upgrade the configuration. You can do this automatically by running:
+Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to upgrade the configuration. You can do this automatically by running:
 
 ```
 npx sb@next automigrate
