@@ -12,16 +12,15 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - name: debug
-        run: |
-          echo "issue ${{ github.event.issue }}"
-          echo "gh repo ${{ github.event.repository }}"
-          echo "gh repo ${{ github.event.repository.name }}"
+      - name: Print event data
+        env:
+          EVENT: ${{ toJSON( github.event ) }}
+        run: echo "$EVENT"
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
           ghIssueNumber: ${{ github.event.issue.number }}
-          ghRepoOwner: ${{ github.event.repository.name }}
+          ghRepoOwner: ${{ github.event.repository.owner }}
           ghRepoName: ${{ github.event.repository.name }}
           ghToken: ${{ secrets.LINEAR_GH_TOKEN }}
           linearIssuePrefix: SB
