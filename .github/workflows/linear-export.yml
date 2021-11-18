@@ -20,7 +20,7 @@ jobs:
         uses: shilman/linear-action@v1
         with:
           ghIssueNumber: ${{ github.event.issue.number }}
-          ghRepoOwner: ${{ github.event.repository.owner }}
+          ghRepoOwner: ${{ github.event.repository.owner.login }}
           ghRepoName: ${{ github.event.repository.name }}
           ghToken: ${{ secrets.LINEAR_GH_TOKEN }}
           linearIssuePrefix: SB
