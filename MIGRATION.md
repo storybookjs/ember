@@ -201,6 +201,8 @@ You can run the existing suite of automigrations to see which ones apply to your
 npx sb@next automigrate
 ```
 
+The automigration suite also runs when you create a new project (`sb init`) or when you update storybook (`sb upgrade`).
+
 ### CRA5 upgrade
 
 Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to upgrade the configuration. You can do this automatically by running:
