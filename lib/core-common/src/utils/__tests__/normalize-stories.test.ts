@@ -54,6 +54,25 @@ describe('normalizeStoriesEntry', () => {
     ]);
   });
 
+  it('story in config dir', () => {
+    const specifier = normalizeStoriesEntry('./file.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".storybook",
+        "files": "file.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths(['./.storybook/file.stories.mdx']);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      '.storybook/file.stories.mdx',
+      './file.stories.mdx',
+      '../file.stories.mdx',
+    ]);
+  });
+
   it('non-recursive files glob', () => {
     const specifier = normalizeStoriesEntry('../*/*.stories.mdx', options);
     expect(specifier).toMatchInlineSnapshot(`
