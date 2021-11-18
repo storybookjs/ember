@@ -12,9 +12,11 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+      - name: debug
+        run: |
+          echo "issue ${{ github.event.issue }}"
+          echo "gh repo ${{ github.event.repository }}"
+          echo "gh repo ${{ github.event.repository.name }}"
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
