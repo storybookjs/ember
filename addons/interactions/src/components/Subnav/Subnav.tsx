@@ -9,10 +9,11 @@ import {
   WithTooltip,
   Bar,
 } from '@storybook/components';
-import { Call, CallStates } from '@storybook/instrumenter';
+import { Call, CallStates, ControlStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
+import { Controls } from '../../Panel';
 
 const StyledSubnav = styled.nav(({ theme }) => ({
   background: theme.background.app,
@@ -28,15 +29,10 @@ const StyledSubnav = styled.nav(({ theme }) => ({
 }));
 
 export interface SubnavProps {
-  isDisabled: boolean;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  storyFileName?: string;
+  controls: Controls;
+  controlStates: ControlStates;
   status: Call['status'];
-  onStart: () => void;
-  onPrevious: () => void;
-  onNext: () => void;
-  onEnd: () => void;
+  storyFileName?: string;
   onScrollToEnd?: () => void;
 }
 
@@ -106,15 +102,9 @@ const withTooltipModifiers = [
 ];
 
 export const Subnav: React.FC<SubnavProps> = ({
-  isDisabled,
-  hasNext,
-  hasPrevious,
-  storyFileName,
+  controls,
   status,
-  onStart,
-  onPrevious,
-  onNext,
-  onEnd,
+  storyFileName,
   onScrollToEnd,
 }) => {
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
@@ -134,10 +124,10 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={hasPrevious ? 'hover' : 'none'}
+            trigger={controls.start ? 'hover' : 'none'}
             tooltip={<Note note="Go to start" />}
           >
-            <RewindButton onClick={onStart} disabled={isDisabled || !hasPrevious}>
+            <RewindButton onClick={controls.start} disabled={!controls.start}>
               <Icons icon="rewind" />
             </RewindButton>
           </WithTooltip>
@@ -145,10 +135,10 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={hasPrevious ? 'hover' : 'none'}
+            trigger={controls.back ? 'hover' : 'none'}
             tooltip={<Note note="Go back" />}
           >
-            <StyledIconButton onClick={onPrevious} disabled={isDisabled || !hasPrevious}>
+            <StyledIconButton onClick={controls.back} disabled={!controls.back}>
               <Icons icon="playback" />
             </StyledIconButton>
           </WithTooltip>
@@ -156,21 +146,21 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={hasNext ? 'hover' : 'none'}
+            trigger={controls.next ? 'hover' : 'none'}
             tooltip={<Note note="Go forward" />}
           >
-            <StyledIconButton onClick={onNext} disabled={isDisabled || !hasNext}>
+            <StyledIconButton onClick={controls.next} disabled={!controls.next}>
               <Icons icon="playnext" />
             </StyledIconButton>
           </WithTooltip>
 
           <WithTooltip
             modifiers={withTooltipModifiers}
-            trigger={hasNext ? 'hover' : 'none'}
+            trigger={controls.end ? 'hover' : 'none'}
             hasChrome={false}
             tooltip={<Note note="Go to end" />}
           >
-            <StyledIconButton onClick={onEnd} disabled={isDisabled || !hasNext}>
+            <StyledIconButton onClick={controls.end} disabled={!controls.end}>
               <Icons icon="fastforward" />
             </StyledIconButton>
           </WithTooltip>

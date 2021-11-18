@@ -8,7 +8,8 @@ import {
 } from '@storybook/core-events';
 import global from 'global';
 
-import { EVENTS, Instrumenter, Options } from './instrumenter';
+import { EVENTS, Instrumenter } from './instrumenter';
+import { Options } from './types';
 
 const callSpy = jest.fn();
 const syncSpy = jest.fn();
@@ -285,10 +286,14 @@ describe('Instrumenter', () => {
     fn('foo', fn('bar')).fn2();
     fn('baz');
     jest.runAllTimers();
-    expect(syncSpy).toHaveBeenCalledWith([
-      { callId: 'kind--story [2] fn2', status: 'done' },
-      { callId: 'kind--story [3] fn', status: 'done' },
-    ]);
+    expect(syncSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        logItems: [
+          { callId: 'kind--story [2] fn2', status: 'done' },
+          { callId: 'kind--story [3] fn', status: 'done' },
+        ],
+      })
+    );
   });
 
   it('catches thrown errors and returns the error', () => {

@@ -9,12 +9,11 @@ import {
 } from '@storybook/core-events';
 import global from 'global';
 
-import { Call, CallRef, CallStates, LogItem } from './types';
+import { Call, CallRef, CallStates, State, Options, ControlStates, LogItem } from './types';
 
 export const EVENTS = {
   CALL: 'instrumenter/call',
   SYNC: 'instrumenter/sync',
-  LOCK: 'instrumenter/lock',
   START: 'instrumenter/start',
   BACK: 'instrumenter/back',
   GOTO: 'instrumenter/goto',
@@ -22,31 +21,18 @@ export const EVENTS = {
   END: 'instrumenter/end',
 };
 
-export interface Options {
-  intercept?: boolean | ((method: string, path: Array<string | CallRef>) => boolean);
-  retain?: boolean;
-  mutate?: boolean;
-  path?: Array<string | CallRef>;
-  getArgs?: (call: Call, state: State) => Call['args'];
-}
-
-export interface State {
-  renderPhase: 'loading' | 'rendering' | 'playing' | 'played' | 'completed' | 'aborted' | 'errored';
-  isDebugging: boolean;
-  cursor: number;
-  calls: Call[];
-  shadowCalls: Call[];
-  callRefsByResult: Map<any, CallRef & { retain: boolean }>;
-  chainedCallIds: Set<Call['id']>;
-  parentId?: Call['id'];
-  playUntil?: Call['id'];
-  resolvers: Record<Call['id'], Function>;
-  syncTimeout: ReturnType<typeof setTimeout>;
-  forwardedException?: Error;
-}
-
-export type PatchedObj<TObj> = {
+type PatchedObj<TObj> = {
   [Property in keyof TObj]: TObj[Property] & { __originalFn__: PatchedObj<TObj> };
+};
+
+const debuggerDisabled = global.FEATURES?.interactionsDebugger !== true;
+const controlsDisabled: ControlStates = {
+  debugger: !debuggerDisabled,
+  start: false,
+  back: false,
+  goto: false,
+  next: false,
+  end: false,
 };
 
 const alreadyCompletedException = new Error(
@@ -75,6 +61,8 @@ const construct = (obj: any) => {
 const getInitialState = (): State => ({
   renderPhase: undefined,
   isDebugging: false,
+  isPlaying: false,
+  isLocked: false,
   cursor: 0,
   calls: [],
   shadowCalls: [],
@@ -114,7 +102,15 @@ export class Instrumenter {
     this.state = global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || {};
 
     // When called from `start`, isDebugging will be true
-    const resetState = ({ storyId, isDebugging }: { storyId?: StoryId; isDebugging?: boolean }) => {
+    const resetState = ({
+      storyId,
+      isPlaying = true,
+      isDebugging = false,
+    }: {
+      storyId?: StoryId;
+      isPlaying?: boolean;
+      isDebugging?: boolean;
+    }) => {
       const state = this.getState(storyId);
       this.setState(storyId, {
         ...getInitialState(),
@@ -122,11 +118,12 @@ export class Instrumenter {
         shadowCalls: isDebugging ? state.shadowCalls : [],
         chainedCallIds: isDebugging ? state.chainedCallIds : new Set<Call['id']>(),
         playUntil: isDebugging ? state.playUntil : undefined,
+        isPlaying,
         isDebugging,
       });
 
       // Don't sync while debugging, as it'll cause flicker.
-      if (!isDebugging) this.channel.emit(EVENTS.SYNC, this.getLog(storyId));
+      if (!isDebugging) this.sync(storyId);
     };
 
     // A forceRemount might be triggered for debugging (on `start`), or elsewhere in Storybook.
@@ -140,7 +137,11 @@ export class Instrumenter {
         resetState({ storyId, isDebugging });
       }
       if (newPhase === 'played') {
-        this.setState(storyId, { isDebugging: false, forwardedException: undefined });
+        this.setState(storyId, {
+          isPlaying: false,
+          isDebugging: false,
+          forwardedException: undefined,
+        });
         // Rethrow any unhandled forwarded exception so it doesn't go unnoticed.
         if (forwardedException) throw forwardedException;
       }
@@ -191,10 +192,9 @@ export class Instrumenter {
       const { calls, shadowCalls, resolvers } = this.getState(storyId);
       const call = calls.find(({ id }) => id === callId);
       const shadowCall = shadowCalls.find(({ id }) => id === callId);
-      if (!call && shadowCall) {
-        const nextCallId = this.getLog(storyId).find(({ status }) => status === CallStates.WAITING)
-          ?.callId;
-        if (shadowCall.id !== nextCallId) this.setState(storyId, { playUntil: shadowCall.id });
+      if (!call && shadowCall && Object.values(resolvers).length > 0) {
+        const nextId = this.getLog(storyId).find((c) => c.status === CallStates.WAITING)?.callId;
+        if (shadowCall.id !== nextId) this.setState(storyId, { playUntil: shadowCall.id });
         Object.values(resolvers).forEach((resolve) => resolve());
       } else {
         start({ storyId, playUntil: callId });
@@ -202,7 +202,14 @@ export class Instrumenter {
     };
 
     const next = ({ storyId }: { storyId: string }) => {
-      Object.values(this.getState(storyId).resolvers).forEach((resolve) => resolve());
+      const { resolvers } = this.getState(storyId);
+      if (Object.values(resolvers).length > 0) {
+        Object.values(resolvers).forEach((resolve) => resolve());
+      } else {
+        const nextId = this.getLog(storyId).find((c) => c.status === CallStates.WAITING)?.callId;
+        if (nextId) start({ storyId, playUntil: nextId });
+        else end({ storyId });
+      }
     };
 
     const end = ({ storyId }: { storyId: string }) => {
@@ -237,7 +244,7 @@ export class Instrumenter {
       acc[storyId] = Object.assign(getInitialState(), retainedState);
       return acc;
     }, {} as Record<StoryId, State>);
-    this.channel.emit(EVENTS.SYNC, []);
+    this.channel.emit(EVENTS.SYNC, { controlStates: controlsDisabled, logItems: [] });
     global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
   }
 
@@ -343,15 +350,14 @@ export class Instrumenter {
 
     // Instead of invoking the function, defer the function call until we continue playing.
     return new Promise((resolve) => {
-      this.channel.emit(EVENTS.LOCK, false);
       this.setState(call.storyId, ({ resolvers }) => ({
+        isLocked: false,
         resolvers: { ...resolvers, [call.id]: resolve },
       }));
     }).then(() => {
-      this.channel.emit(EVENTS.LOCK, true);
       this.setState(call.storyId, (state) => {
         const { [call.id]: _, ...resolvers } = state.resolvers;
-        return { resolvers };
+        return { isLocked: true, resolvers };
       });
       return this.invoke(fn, call, options);
     });
@@ -394,7 +400,7 @@ export class Instrumenter {
       if (e instanceof Error) {
         const { name, message, stack } = e;
         const exception = { name, message, stack };
-        this.sync({ ...info, status: CallStates.ERROR, exception });
+        this.update({ ...info, status: CallStates.ERROR, exception });
 
         // Always track errors to their originating call.
         this.setState(call.storyId, (state) => ({
@@ -460,14 +466,14 @@ export class Instrumenter {
         }));
       }
 
-      this.sync({
+      this.update({
         ...info,
         status: result instanceof Promise ? CallStates.ACTIVE : CallStates.DONE,
       });
 
       if (result instanceof Promise) {
         return result.then((value) => {
-          this.sync({ ...info, status: CallStates.DONE });
+          this.update({ ...info, status: CallStates.DONE });
           return value;
         }, handleException);
       }
@@ -480,10 +486,10 @@ export class Instrumenter {
 
   // Sends the call info and log to the manager.
   // Uses a 0ms debounce because this might get called many times in one tick.
-  sync(call: Call) {
+  update(call: Call) {
     clearTimeout(this.getState(call.storyId).syncTimeout);
     this.channel.emit(EVENTS.CALL, call);
-    this.setState(call.storyId, ({ calls }) => {
+    this.setState(call.storyId, ({ calls, isLocked }) => {
       // Omit earlier calls for the same ID, which may have been superceded by a later invocation.
       // This typically happens when calls are part of a callback which runs multiple times.
       const callsById = calls
@@ -494,9 +500,33 @@ export class Instrumenter {
         calls: Object.values(callsById).sort((a, b) =>
           a.id.localeCompare(b.id, undefined, { numeric: true })
         ),
-        syncTimeout: setTimeout(() => this.channel.emit(EVENTS.SYNC, this.getLog(call.storyId)), 0),
+        syncTimeout: setTimeout(() => this.sync(call.storyId), 0),
       };
     });
+  }
+
+  sync(storyId: StoryId) {
+    const { isLocked, isPlaying } = this.getState(storyId);
+    const logItems: LogItem[] = this.getLog(storyId);
+
+    const hasActive = logItems.some((item) => item.status === CallStates.ACTIVE);
+    if (debuggerDisabled || isLocked || hasActive || logItems.length === 0) {
+      this.channel.emit(EVENTS.SYNC, { controlStates: controlsDisabled, logItems });
+      return;
+    }
+
+    const hasPrevious = logItems.some((item) =>
+      [CallStates.DONE, CallStates.ERROR].includes(item.status)
+    );
+    const controlStates: ControlStates = {
+      debugger: true,
+      start: hasPrevious,
+      back: hasPrevious,
+      goto: true,
+      next: isPlaying,
+      end: isPlaying,
+    };
+    this.channel.emit(EVENTS.SYNC, { controlStates, logItems });
   }
 }
 

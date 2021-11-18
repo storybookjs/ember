@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Call, CallStates } from '@storybook/instrumenter';
+import { Call, CallStates, ControlStates } from '@storybook/instrumenter';
 import { styled, typography } from '@storybook/theming';
 import { transparentize } from 'polished';
 
 import { MatcherResult } from '../MatcherResult';
 import { MethodCall } from '../MethodCall';
 import { StatusIcon } from '../StatusIcon/StatusIcon';
+import { Controls } from '../../Panel';
 
 const MethodCallWrapper = styled.div(() => ({
   fontFamily: typography.fonts.mono,
@@ -63,25 +64,23 @@ const RowMessage = styled('pre')({
 export const Interaction = ({
   call,
   callsById,
-  onClick,
-  isDisabled,
-  isDebuggingEnabled,
+  controls,
+  controlStates,
 }: {
   call: Call;
   callsById: Map<Call['id'], Call>;
-  onClick: React.MouseEventHandler<HTMLElement>;
-  isDisabled: boolean;
-  isDebuggingEnabled?: boolean;
+  controls: Controls;
+  controlStates: ControlStates;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
     <RowContainer call={call}>
       <RowLabel
         call={call}
-        onClick={onClick}
-        disabled={isDebuggingEnabled ? isDisabled : true}
-        onMouseEnter={() => isDebuggingEnabled && setIsHovered(true)}
-        onMouseLeave={() => isDebuggingEnabled && setIsHovered(false)}
+        onClick={() => controls.goto(call.id)}
+        disabled={!controlStates.goto}
+        onMouseEnter={() => controlStates.goto && setIsHovered(true)}
+        onMouseLeave={() => controlStates.goto && setIsHovered(false)}
       >
         <StatusIcon status={isHovered ? CallStates.ACTIVE : call.status} />
         <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
