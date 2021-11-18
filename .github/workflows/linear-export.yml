@@ -29,4 +29,4 @@ jobs:
           linearTeam: CH
           linearApiKey: ${{ secrets.LINEAR_API_KEY }}
         env:
-          ACTIONS_STEP_DEBUG: true
+          ACTIONS_RUNNER_DEBUG: true
