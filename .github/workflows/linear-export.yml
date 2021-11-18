@@ -12,6 +12,9 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
@@ -24,6 +27,4 @@ jobs:
           linearTeam: CH
           linearApiKey: ${{ secrets.LINEAR_API_KEY }}
         env:
-          GH_TOKEN: ${{ secrets.LINEAR_GH_TOKEN }}
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           ACTIONS_STEP_DEBUG: true
