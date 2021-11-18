@@ -1,0 +1,42 @@
+```md
+<!-- LoginForm.stories.mdx -->
+
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import { userEvent, within } from '@storybook/testing-library';
+
+import LoginForm from './LoginForm.vue';
+
+<Meta title="Form" component={LoginForm} />
+
+export const Template = (args, { argTypes }) => ({
+  components: { LoginForm },
+  props: Object.keys(argTypes),
+  template: `<LoginForm v-bind="$props" v-on="$props" />`,
+});
+
+<Canvas>
+  <Story name="Empty Form">
+   {Template.bind({})}
+  </Story>
+
+  <Story
+    name="Filled Form"
+    play={async ({ canvasElement }) => {
+      // Starts querying the component from it's root element
+      const canvas = within(canvasElement);
+
+      await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
+        delay: 100,
+      });
+      await userEvent.type(canvas.getByTestId('password'), 'a-random-password', {
+        delay: 100,
+      });
+
+      // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+      await userEvent.click(canvas.getByRole('button'));
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+```

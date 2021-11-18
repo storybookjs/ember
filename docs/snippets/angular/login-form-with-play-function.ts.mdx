@@ -1,0 +1,40 @@
+```ts
+// LoginForm.stories.ts
+
+import { Meta, Story } from '@storybook/angular';
+
+import { userEvent, within } from '@storybook/testing-library';
+
+import { LoginForm } from './LoginForm.component';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Form',
+  component: LoginForm,
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const EmptyForm: Story = Template.bind({});
+
+export const FilledForm: Story = Template.bind({});
+FilledForm.play = async ({ canvasElement }) => {
+  // Starts querying the component from it's root element
+  const canvas = within(canvasElement);
+
+  await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
+    delay: 100,
+  });
+  await userEvent.type(canvas.getByTestId('password'), 'a-random-password', {
+    delay: 100,
+  });
+
+  // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.click(canvas.getByRole('button'));
+};
+```

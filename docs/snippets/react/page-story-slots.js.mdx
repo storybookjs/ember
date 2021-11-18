@@ -1,22 +1,26 @@
 ```js
-// Page.stories.js | Page.stories.jsx
+// Page.stories.js|jsx
 
 import React from 'react';
 
-import Page from './Page';
+import { Page } from './Page';
 
 export default {
-  component: Page,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Page',
+  component: Page,
 };
 
-const Template = (args) => (
+const Template = (args) => (args) => (
   <Page {...args}>
     <footer>{args.footer}</footer>
   </Page>
 );
 
-export const CustomFooter = Template.bind({});
+export const CustomFooter= Template.bind({});
 CustomFooter.args = {
   footer: 'Built with Storybook',
 };

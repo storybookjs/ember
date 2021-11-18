@@ -20,12 +20,12 @@ If you ran `sb init` to include Storybook in your project, the Essentials addon 
 If you're upgrading from a previous Storybook version, you'll need to run the following command in your terminal:
 
 ```shell
-npm install --save-dev @storybook/addon-essentials
-```
+#With npm
+npm install -D @storybook/addon-essentials
 
-<div class="aside">
-💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly.
-</div>
+#With yarn
+yarn add -D @storybook/addon-essentials
+```
 
 Update your Storybook configuration (in `.storybook/main.js`) to include the Essentials addon.
 

@@ -1,5 +1,5 @@
 ```js
-// TodoItem.stories.js | TodoItem.stories.jsx | TodoItem.stories.ts | TodoItem.stories.tsx
+// TodoItem.stories.js|jsx|ts|tsx
 
 import React from 'react';
 
@@ -8,14 +8,18 @@ import fetch from 'node-fetch';
 import { TodoItem } from './TodoItem';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Examples/Loader'
   component: TodoItem,
-  title: 'Examples/Loader',
 };
 
 export const Primary = (args, { loaded: { todo } }) => <TodoItem {...args} {...todo} />;
 Primary.loaders = [
-  async () => ({
-    todo: (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
-  }),
+    async () => ({
+      todo: await (await fetch('https://jsonplaceholder.typicode.com/todos/1')).json(),
+    }),
 ];
 ```

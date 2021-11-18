@@ -68,17 +68,16 @@ For example, here is how Storybook automatically adopts `create-react-app`'s con
 
 As of Storybook 6.3, Storybook can run with either `webpack4` or `webpack5` builder. If your addon needs to know which version of Webpack it's running inside, the version and the actual webpack instance itself are both available inside your preset:
 
-```js
-// .storybook/main.js
+<!-- prettier-ignore-start -->
 
-export function webpackFinal(config, { presets }) {
-  const version = await presets.apply('webpackVersion');
-  const instance = (await presets.apply('webpackInstance'))?.default;
+<CodeSnippets
+  paths={[
+    'common/storybook-main-versioned-webpack.js.mdx',
+  ]}
+/>
 
-  logger.info(`=> Running in webpack ${version}: ${instance}`);
-  return config;
-}
-```
+<!-- prettier-ignore-end -->
+
 
 ### Manager entries
 
@@ -110,30 +109,32 @@ This is equivalent to [registering the addon manually](../get-started/browse-sto
 
 ### Preview entries
 
-The addon config `config` allows you to add extra preview configuration from within a preset, for example to add parameters or decorators from an addon.
+The addon `config` function allows you to add extra preview configuration from within a preset, for example to add parameters or decorators from an addon.
 
 For example, the Backgrounds preset contains the following code:
 
-```js
-// preset.js
-export function config(entry = []) {
-  return [...entry, require.resolve('./defaultParameters')];
-}
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-backgrounds-preset-config.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 
 Which in turn invokes:
 
-```js
-// defaultParameters.js
-export const parameters = {
-  backgrounds: {
-    values: [
-      { name: 'light', value: '#F8F8F8' },
-      { name: 'dark', value: '#333333' },
-    ],
-  },
-};
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-backgrounds-addon-default-params.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 This is equivalent to exporting the `backgrounds` parameter manually in `main.js`.
 

@@ -5,9 +5,10 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import MyComponent from './MyComponent.svelte';
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent} />
 
-<Story name="withAnImage">
+<Story 
+  name="WithAnImage">
   {() => {
     return {
       Component: MyComponent,

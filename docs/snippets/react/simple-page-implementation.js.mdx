@@ -1,13 +1,13 @@
 ```js
-// YourPage.js | YourPage.jsx
+// YourPage.js|jsx
 
 import React from 'react';
 
-import PageLayout from './PageLayout';
-import DocumentHeader from './DocumentHeader';
-import DocumentList from './DocumentList';
+import { PageLayout } from './PageLayout';
+import { DocumentHeader } from './DocumentHeader';
+import { DocumentList } from './DocumentList';
 
-function DocumentScreen({ user, document, subdocuments }) {
+export function DocumentScreen({ user, document, subdocuments }) {
   return (
     <PageLayout user={user}>
       <DocumentHeader document={document} />

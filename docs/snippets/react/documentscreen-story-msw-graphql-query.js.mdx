@@ -1,5 +1,5 @@
 ```js
-// YourPage.stories.js | YourPage.stories.jsx | YourPage.stories.ts | YourPage.stories.tsx
+// YourPage.stories.js|jsx|ts|tsx
 
 import React from 'react';
 
@@ -7,11 +7,15 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import { graphql } from 'msw';
 
-import DocumentScreen from './DocumentScreen';
+import { DocumentScreen } from './YourPage';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'DocumentScreen',
   component: DocumentScreen,
-  title: 'Mock GraphQL query with Storybook and MSW',
 };
 
 const mockedClient = new ApolloClient({

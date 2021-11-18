@@ -5,18 +5,16 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Page from './Page.vue';
 
-<Meta
-  title="Page"
-  component={Page}
-/>
+<Meta title="Page" component={Page} />
 
 export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
   components: { Page },
+  props: Object.keys(argTypes),
   template: `
     <page v-bind="$props">
       <footer v-if="footer" v-slot=footer v-html="footer"/>
-    </page>`,
+    </page>
+  `,
 });
 
 <Story

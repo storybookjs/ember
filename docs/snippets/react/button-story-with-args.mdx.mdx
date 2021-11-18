@@ -5,10 +5,13 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { Button } from './Button';
 
-<Meta title="Components/Button" component={Button} />
+<Meta title="Button" component={Button} />
+
+<!-- 👇 We create a “template” of how args map to rendering -->
 
 export const Template = (args) => <Button {...args} />;
 
+<!-- 👇 Each story then reuses that template -->
 <Story
   name="Primary"
   args={{

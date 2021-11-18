@@ -1,13 +1,22 @@
 ```js
-// List.stories.js | List.stories.jsx
+// List.stories.js|jsx
 
 import React from 'react';
 
-import List from './List';
-import ListItem from './ListItem';
+import { List } from './List';
+import { ListItem } from './ListItem';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'List',
+  component: List,
+};
 
 const ListTemplate = ({ items, ...args }) => (
   <List>
@@ -21,5 +30,11 @@ export const Empty = ListTemplate.bind({});
 Empty.args = { items: [] };
 
 export const OneItem = ListTemplate.bind({});
-OneItem.args = { items: [Unchecked.args] };
+OneItem.args = {
+  items: [
+    {
+      ...Unchecked.args,
+    },
+  ],
+};
 ```

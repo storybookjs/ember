@@ -1,13 +1,19 @@
 ```ts
-// Button.stories.js | Button.stories.jsx
+// Button.stories.js|jsx
+
+import React from 'react';
 
 import { Button } from './Button';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
   component: Button,
-  title: 'Components/Button',
-}
-export const Primary = () => <Button background="#ff0" label="Button" />;
-export const Secondary = () => <Button background="#ff0" label="😄👍😍💯" />;
-export const Tertiary = () => <Button background="#ff0" label="📚📕📈🤓" />;
+};
+export const Primary = () => <Button backgroundColor="#ff0" label="Button" />;
+export const Secondary = () => <Button backgroundColor="#ff0" label="😄👍😍💯" />;
+export const Tertiary = () => <Button backgroundColor="#ff0" label="📚📕📈🤓" />;
 ```

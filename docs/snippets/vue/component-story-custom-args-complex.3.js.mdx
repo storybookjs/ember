@@ -4,13 +4,17 @@
 import YourComponent from './YourComponent.vue';
 
 export default {
-  title: 'A complex case with a function',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   component: YourComponent,
   //👇 Creates specific argTypes with options
   argTypes: {
     propertyA: {
       options: ['Item One', 'Item Two', 'Item Three'],
-      control: { type: 'select' } // automatically inferred when 'options' is defined
+      control: { type: 'select' }, // automatically inferred when 'options' is defined
     },
     propertyB: {
       options: ['Another Item One', 'Another Item Two', 'Another Item Three'],
@@ -38,7 +42,13 @@ const Template = (args) => {
         },
       };
     },
-    template: '<YourComponent v-bind="args" />',
+    template:  '<YourComponent :propertyA="propertyA" :propertyB="propertyB" :someProperty="someProperty"/>',
   };
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

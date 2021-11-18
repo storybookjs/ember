@@ -1,0 +1,44 @@
+```js
+// RegistrationForm.stories.js
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import RegistrationForm from './RegistrationForm.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'RegistrationForm',
+  component: RegistrationForm,
+};
+
+const Template = (args) => ({
+  components: { RegistrationForm },
+  template: '<RegistrationForm />',
+});
+
+export const FilledForm = Template.bind({});
+FilledForm.play = async () => {
+  const emailInput = screen.getByLabelText('email', {
+      selector: 'input',
+    });
+
+    await userEvent.type(emailInput, 'example-email@email.com', {
+      delay: 100,
+    });
+    
+    const passwordInput = screen.getByLabelText('password', {
+      selector: 'input',
+    });
+
+    await userEvent.type(passwordInput, 'ExamplePassword', {
+      delay: 100,
+    });
+    
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    const Submit = screen.getByRole('button');
+    await userEvent.click(Submit);
+};
+```

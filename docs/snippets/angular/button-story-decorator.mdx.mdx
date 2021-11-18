@@ -1,36 +1,42 @@
 ```md
-<!-- button.stories.mdx -->
+<!-- Button.stories.mdx -->
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import { componentWrapperDecorator,moduleMetadata } from '@storybook/angular';
+import { componentWrapperDecorator, moduleMetadata } from '@storybook/angular';
 
-import Button from './button.component';
-import { ParentComponent } from './parent.component';
+import { Button } from './button.component';
 
-<Meta title="Components/Button" component={Button}/>
+<!-- Parent contains ng-content -->
+import { Parent } from './parent.component';
+
+<Meta title="Button" component={Button}/>
+
+
+export const Template = () => ({
+  template: `<app-button label="Submit"></app-button>`,
+});
 
 <!-- With a template -->
+
 <Story 
   name="Primary"
   decorators={[
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`)
-  ]}>
-  {{
-    template: `<app-button label="Submit"></app-button>`,
-  }}
+  ]} >
+  {Template.bind({})}
 </Story>
 
 <!-- With a component -->
+
 <Story 
   name="InsideParent"
   decorators={[
     moduleMetadata({
       declarations: [ParentComponent],
     }),
-    componentWrapperDecorator(ParentComponent)]}>
-  {{
-    template: `<app-button label="Submit"></app-button>`,
-  }}
+    componentWrapperDecorator(ParentComponent)
+  ]} >
+  {Template.bind({})}
 </Story>
 ```

@@ -1,13 +1,24 @@
 ```ts
 // MyComponent.stories.ts
 
-import { Meta } from '@storybook/angular/types-6-0';
+import { Meta, Story } from '@storybook/angular';
+
+import { MyComponent } from './MyComponent.component';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'img',
+  component: MyComponent,
 } as Meta;
 
-export const withAnImage = () => ({
-  template: `<img src="/image.png" alt="my image"/>`
+// Assume image.png is located in the "public" directory.
+export const WithAnImage: Story = () => ({
+  props: {
+    src: '/image.png',
+    alt: 'my image',
+  },
 });
 ```

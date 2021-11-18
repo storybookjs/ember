@@ -1,0 +1,36 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+<Meta title="WithSelectEvent" component={MyComponent}/>
+
+<!-- Function to emulate pausing between interactions -->
+
+export const sleep= (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+export const Template = (args) => ({ props: args });
+
+<Story 
+  name="ExampleChangeEvent"
+  play={async () => {
+    const select = screen.getByRole('listbox');
+
+    await userEvent.selectOptions(select, ['One Item']);
+    await sleep(2000);
+
+    await userEvent.selectOptions(select, ['Another Item']);
+    await sleep(2000);
+
+    await userEvent.selectOptions(select, ['Yet another item']);
+
+  }}>
+  {Template.bind({})}
+</Story>
+```

@@ -1,7 +1,7 @@
 ```js
 // YourPage.stories.js
 
-import DocumentScreen from './DocumentScreen.svelte';
+import DocumentScreen from './YourPage.svelte';
 
 //👇 Imports the required stories
 import * as PageLayoutStories from './PageLayout.stories';
@@ -9,12 +9,17 @@ import * as DocumentHeaderStories from './DocumentHeader.stories';
 import * as DocumentListStories from './DocumentList.stories';
 
 export default {
-  component: DocumentScreen,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'DocumentScreen',
+  component: DocumentScreen,
 };
 
+
 const Template = (args) => ({
-  Component: DocumentScreen,
+  component: DocumentScreen,
   props: args,
 });
 

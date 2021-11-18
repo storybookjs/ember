@@ -14,13 +14,12 @@ import { TodoItem } from './TodoItem';
   loaders={[
     async () => ({
       todo: await (
-        await fetch("https://jsonplaceholder.typicode.com/todos/1")
+        await fetch('https://jsonplaceholder.typicode.com/todos/1')
       ).json(),
     }),
-  ]}
->
+  ]}>
   {(args, { loaded: { todo } }) => (
     <TodoItem {...args} todo={todo} />
   )}
-</Story>
+</Story
 ```

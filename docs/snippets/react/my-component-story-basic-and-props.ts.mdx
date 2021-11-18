@@ -1,0 +1,22 @@
+```ts
+// MyComponent.story.ts|tsx
+
+import React from 'react';
+
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { MyComponent } from './MyComponent';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Path/To/MyComponent',
+  component: MyComponent,
+} as ComponentMeta<typeof MyComponent>;
+
+export const Basic: ComponentStory<typeof MyComponent> = () => <MyComponent/>;
+
+export const WithProp: ComponentStory<typeof MyComponent> = () => <MyComponent prop="value"/>;
+```

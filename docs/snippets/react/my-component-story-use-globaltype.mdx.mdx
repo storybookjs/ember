@@ -1,7 +1,11 @@
 ```md
 <!-- MyComponent.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { MyComponent } from './MyComponent';
+
+<Meta title="MyComponent" component={MyComponent} />
 
 export const getCaptionForLocale = (locale) => {
   switch(locale) {
