@@ -160,6 +160,24 @@ const testCases: [string, string[], string[]][] = [
       '/Users/user/code/src/components/Icon.stories.js',
     ],
   ],
+  [
+    './Introduction.stories.tsx',
+    ['/Users/user/code/path/Introduction.stories.tsx'],
+    [
+      '/Users/user/code/Introduction.stories.tsx',
+      '/Users/user/code/src/Introduction.stories.tsx',
+      '/Users/user/code/src/Introduction.tsx',
+    ],
+  ],
+  [
+    'Introduction.stories.tsx',
+    ['/Users/user/code/path/Introduction.stories.tsx'],
+    [
+      '/Users/user/code/Introduction.stories.tsx',
+      '/Users/user/code/src/Introduction.stories.tsx',
+      '/Users/user/code/src/Introduction.tsx',
+    ],
+  ],
 ];
 
 describe('toImportFn - webpackIncludeRegexp', () => {
