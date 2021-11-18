@@ -27,3 +27,4 @@ jobs:
           linearApiKey: ${{ secrets.LINEAR_API_KEY }}
         env:
           ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
