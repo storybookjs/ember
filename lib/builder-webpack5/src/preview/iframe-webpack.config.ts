@@ -1,5 +1,11 @@
 import path from 'path';
-import { Configuration, DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
+import {
+  Configuration,
+  DefinePlugin,
+  HotModuleReplacementPlugin,
+  ProgressPlugin,
+  ProvidePlugin,
+} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
@@ -208,6 +214,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
+      new ProvidePlugin({ process: 'process/browser' }),
       isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
