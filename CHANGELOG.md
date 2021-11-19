@@ -1,3 +1,9 @@
+## 6.4.0-rc.5 (November 19, 2021)
+
+### Bug Fixes
+
+- Core: Restore `stringifyEnvs` utility used by Vite builder ([#16731](https://github.com/storybookjs/storybook/pull/16731))
+
 ## 6.4.0-rc.4 (November 19, 2021)
 
 ### Bug Fixes
