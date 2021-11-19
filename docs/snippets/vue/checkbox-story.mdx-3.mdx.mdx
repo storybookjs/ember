@@ -1,16 +1,11 @@
 ```md
-<!--- Checkbox.stories.mdx -->
+<!-- Checkbox.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import Checkbox from './Checkbox.vue';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
-
-# Checkbox
-
-With `MDX`, we can define a story for `Checkbox` right in the middle of our
-Markdown documentation.
 
 export const Template = (args) => ({
   components: { Checkbox },
@@ -19,24 +14,36 @@ export const Template = (args) => ({
   },
   template: '<Checkbox v-bind="args" />',
 });
+# Checkbox
+
+With `MDX`, we can define a story for `Checkbox` right in the middle of our
+Markdown documentation.
 
 <Canvas>
-  <Story name="Unchecked" args={{ 
-      label: 'Unchecked'
+  <Story 
+    name="Unchecked"
+    args={{ 
+      label: 'Unchecked',
     }}>
     {Template.bind({})}
    </Story>
-  <Story name="Checked" args={{ 
+
+  <Story 
+    name="Checked"
+    args={{ 
       label: 'Unchecked', 
-      checked: true 
+      checked: true,
     }}>
     {Template.bind({})}
    </Story>
-  <Story name="Secondary" args={{
-    label: 'Secondary', 
-    checked: true, 
-    appearance: 'secondary'
-  }}>
+  
+  <Story 
+    name="Secondary"
+    args={{
+      label: 'Secondary', 
+      checked: true, 
+      appearance: 'secondary',
+    }}>
     {Template.bind({})}
    </Story>
 </Canvas>

@@ -1,11 +1,11 @@
 ```js
-// ProfilePage.js | ProfilePage.jsx
+// ProfilePage.js|jsx
 
 import { useContext } from 'react';
 
 import ProfilePageContext from './ProfilePageContext';
 
-const ProfilePage = ({ name, userId }) => {
+export const ProfilePage = ({ name, userId }) => {
   const { UserPostsContainer, UserFriendsContainer } = useContext(ProfilePageContext);
 
   return (
@@ -16,6 +16,4 @@ const ProfilePage = ({ name, userId }) => {
     </div>
   );
 };
-
-export default ProfilePage;
 ```

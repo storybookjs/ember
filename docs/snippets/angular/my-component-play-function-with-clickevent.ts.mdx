@@ -1,0 +1,34 @@
+```ts
+// MyComponent.stories.ts
+
+import { Meta, Story } from '@storybook/angular';
+
+import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'ClickExamples',
+  component: MyComponent,
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const ClickExample: Story = Template.bind({});
+ClickExample.play = async () => {
+  // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.click(screen.getByRole('button'));
+};
+
+export const FireEventExample: Story = Template.bind({});
+FireEventExample.play = async () => {
+  // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await fireEvent.click(screen.getByTestId('data-testid'));
+};
+```

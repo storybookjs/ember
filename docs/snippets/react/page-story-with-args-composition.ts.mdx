@@ -1,21 +1,28 @@
 ```ts
-// YourPage.stories.ts | YourPage.stories.tsx
+// YourPage.stories.ts|tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react';
-import { DocumentScreen, DocumentScreenProps } from './YourPage';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { DocumentScreen } from './YourPage';
 
 import PageLayout from './PageLayout.stories';
 import DocumentHeader from './DocumentHeader.stories';
 import DocumentList from './DocumentList.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'DocumentScreen',
   component: DocumentScreen,
   title: 'DocumentScreen',
-} as Meta;
+} as ComponentMeta<typeof DocumentScreen>;
 
-const Template: Story<DocumentScreenProps> = (args) => <DocumentScreen {...args} />;
+
+const Template: ComponentStory<typeof DocumentScreen> = (args) => <DocumentScreen {...args} />;
 
 export const Simple = Template.bind({});
 Simple.args = {

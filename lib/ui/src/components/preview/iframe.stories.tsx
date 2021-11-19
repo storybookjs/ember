@@ -14,7 +14,7 @@ const style: CSSProperties = {
   position: 'relative',
 };
 
-export const workingStory = () => (
+export const WorkingStory = () => (
   <IFrame
     active
     id="iframe"
@@ -25,11 +25,11 @@ export const workingStory = () => (
     scale={1.0}
   />
 );
-workingStory.parameters = {
+WorkingStory.parameters = {
   chromatic: { disable: true },
 };
 
-export const missingStory = () => (
+export const MissingStory = () => (
   <IFrame
     active
     id="iframe"

@@ -3,9 +3,11 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent}/>
 
-<Story name="withAnImage">
+<!-- Assume image.png is located in the "public" directory.-->
+<Story 
+  name="WithAnImage">
   {() => {
     return {
       setup() {

@@ -4,7 +4,11 @@
 import YourComponent from './YourComponent.svelte';
 
 export default {
-  title: 'A complex case with a function',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   component: YourComponent,
   //👇 Creates specific argTypes
   argTypes: {
@@ -35,5 +39,11 @@ const Template = (args) => {
       someProperty: someFunctionResult,
     },
   };
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

@@ -25,7 +25,7 @@ export default class ReactProvider extends Provider {
     this.addons = addons;
     this.channel = channel;
 
-    if (FEATURES?.storyStoreV7) {
+    if (FEATURES?.storyStoreV7 && SERVER_CHANNEL_URL) {
       const serverChannel = createWebSocketChannel({ url: SERVER_CHANNEL_URL });
       this.serverChannel = serverChannel;
       addons.setServerChannel(this.serverChannel);

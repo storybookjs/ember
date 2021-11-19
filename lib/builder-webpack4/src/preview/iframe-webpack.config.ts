@@ -179,10 +179,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, templateOptions) => ({
-          compilation,
-          files,
-          options: templateOptions,
+        template,
+        templateParameters: {
           version: packageJson.version,
           globals: {
             CONFIG_TYPE: configType,
@@ -198,7 +196,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
-        }),
+        },
         minify: {
           collapseWhitespace: true,
           removeComments: true,
@@ -207,7 +205,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           removeStyleLinkTypeAttributes: true,
           useShortDoctype: true,
         },
-        template,
       }),
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),
@@ -238,7 +235,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
       mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
-        ...themingPaths,
+        ...(features?.emotionAlias ? themingPaths : {}),
         ...storybookPaths,
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),

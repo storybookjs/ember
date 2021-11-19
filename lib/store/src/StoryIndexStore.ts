@@ -1,3 +1,4 @@
+import dedent from 'ts-dedent';
 import { Channel } from '@storybook/addons';
 import { StoryId } from '@storybook/csf';
 
@@ -40,7 +41,11 @@ export class StoryIndexStore {
   storyIdToEntry(storyId: StoryId): StoryIndexEntry {
     const storyEntry = this.stories[storyId];
     if (!storyEntry) {
-      throw new Error(`Didn't find '${storyId}' in story index (\`stories.json\`)`);
+      throw new Error(dedent`Couldn't find story matching '${storyId}' after HMR.
+      - Did you remove it from your CSF file?
+      - Are you sure a story with that id exists?
+      - Please check your stories field of your main.js config.
+      - Also check the browser console and terminal for error messages.`);
     }
 
     return storyEntry;

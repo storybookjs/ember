@@ -1,12 +1,16 @@
 ```js
 // MyComponent.stories.js
 
-import MyComponent from './MyComponent.svelte';
-
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
+import MyComponent from './MyComponent.svelte';
+
 export default {
-  title: 'Stories',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
   component: MyComponent,
   parameters: {
     //👇 The viewports object from the Essentials addon
@@ -19,11 +23,9 @@ export default {
   },
 };
 
-export const MyStory = (args) => ({
+export const MyStory = () => ({
   Component: MyComponent,
-  props: args,
 });
-
 MyStory.parameters = {
   viewport: {
     defaultViewport: 'iphonex',

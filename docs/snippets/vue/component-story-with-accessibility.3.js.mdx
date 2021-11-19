@@ -1,0 +1,39 @@
+```js
+// Button.stories.js
+
+import Button from './Button.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading 
+  * to learn how to generate automatic titles
+  */
+  title: 'Accessibility testing',
+  component: Button,
+  argTypes: {
+    backgroundColor: { control: 'color' },
+  },
+};
+
+const Template = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
+});
+
+// This is an accessible story
+export const Accessible = Template.bind({});
+Accessible.args = {
+  primary: false,
+  label: 'Button',
+};
+
+// This is not
+export const Inaccessible = Template.bind({});
+Inaccessible.args = {
+  ...Accessible.args,
+  backgroundColor: 'red',
+};
+```

@@ -1,25 +1,24 @@
 ```md
 <!-- MyComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import MyComponent from './MyComponent.vue';
 
-<Meta title="A MDX story using environment variables inside a .env file" component={MyComponent}/>
+<Meta title="MyComponent" component={MyComponent}/>
 
 export const Template = (args, { argTypes }) => ({
-  props: Object.keys(argTypes),
   components: { MyComponent },
-  template: '<MyComponent v-bind="$props" />',
+  props: Object.keys(argTypes),
+  template: '<MyComponent v-bind="$props"/>',
 });
 
 <Canvas>
   <Story
-    name="A MDX story using environment variables inside a .env file"
+    name="ExampleStory"
     args={{
       propertyA: process.env.STORYBOOK_DATA_KEY,
-    }}
-  >
+    }}>
     {Template.bind({})}
   </Story>
 </Canvas>

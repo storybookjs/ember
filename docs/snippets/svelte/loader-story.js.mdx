@@ -6,8 +6,12 @@ import fetch from 'node-fetch';
 import TodoItem from './TodoItem.svelte';
 
 export default {
-  component: TodoItem,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Examples/Loader',
+  component: TodoItem,
 };
 
 export const Primary = (args, { loaded: { todo } }) => ({

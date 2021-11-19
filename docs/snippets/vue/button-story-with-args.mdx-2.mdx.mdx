@@ -5,7 +5,9 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
 
-<Meta title="Components/Button" component={Button} />
+<Meta title="Button" component={Button} />
+
+<!-- 👇 We create a “template” of how args map to rendering -->
 
 export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
@@ -13,6 +15,7 @@ export const Template = (args, { argTypes }) => ({
   template: `<Button v-bind="$props" v-on="$props" />`,
 });
 
+<!-- 👇 Each story then reuses that template -->
 <Story
   name="Primary"
   args={{

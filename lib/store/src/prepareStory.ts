@@ -22,6 +22,7 @@ import {
 import { combineParameters } from './parameters';
 import { applyHooks } from './hooks';
 import { defaultDecorateStory } from './decorators';
+import { groupArgsByTarget, NO_TARGET_NAME } from './args';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},
@@ -170,14 +171,28 @@ export function prepareStory<TFramework extends AnyFramework>(
       acc[key] = mapping && val in mapping ? mapping[val] : val;
       return acc;
     }, {} as Args);
-
     const mappedContext = { ...context, args: mappedArgs };
+
     const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
     return renderTimePassArgsFirst
-      ? (render as ArgsStoryFn<TFramework>)(mappedArgs, mappedContext)
+      ? (render as ArgsStoryFn<TFramework>)(mappedContext.args, mappedContext)
       : (render as LegacyStoryFn<TFramework>)(mappedContext);
   };
-  const unboundStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
+  const decoratedStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
+  const unboundStoryFn = (context: StoryContext<TFramework>) => {
+    let finalContext: StoryContext<TFramework> = context;
+    if (global.FEATURES?.argTypeTargetsV7) {
+      const argsByTarget = groupArgsByTarget({ args: context.args, ...context });
+      finalContext = {
+        ...context,
+        allArgs: context.args,
+        argsByTarget,
+        args: argsByTarget[NO_TARGET_NAME],
+      };
+    }
+
+    return decoratedStoryFn(finalContext);
+  };
   const playFunction = storyAnnotations.play;
 
   return Object.freeze({

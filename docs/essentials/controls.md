@@ -2,7 +2,7 @@
 title: 'Controls'
 ---
 
-Storybook Controls gives you a graphical UI to interact with a component's arguments dynamically, without needing to code. It creates an addon panel next to your component examples ("stories"), so you can edit them live.
+Storybook Controls gives you a graphical UI to interact with a component's arguments dynamically without needing to code. It creates an addon panel next to your component examples ("stories"), so you can edit them live.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -17,17 +17,17 @@ Controls does not require any modification to your components. Stories for contr
 - Portable. Reuse your interactive stories in documentation, tests, and even in designs.
 - Rich. Customize the controls and interactive data to suit your exact needs.
 
-To use the Controls addon, you need to write your stories using [args](../writing-stories/args.md). Storybook will automatically generate UI controls based on your args and what it can infer about your component; but you can configure the controls further using [argTypes](../api/argtypes.md), see below.
+To use the Controls addon, you need to write your stories using [args](../writing-stories/args.md). Storybook will automatically generate UI controls based on your args and what it can infer about your component. Still, you can configure the controls further using [argTypes](../api/argtypes.md), see below.
 
 <div class="aside">
 
-If you have written stories in the older pre-Storybook 6 style, you may want to read the [args & controls migration guide](https://medium.com/storybookjs/storybook-6-migration-guide-200346241bb5) to help understand how to convert your stories for args.
+💡 If you have stories in the older pre-Storybook 6 style, check the <a href="https://medium.com/storybookjs/storybook-6-migration-guide-200346241bb5">args & controls migration guide</a> to learn how to convert your existing stories for args.
 
 </div>
 
 ## Choosing the control type
 
-By default, Storybook will choose a control for each arg based on the initial value of the arg. This works well with some kind of args, such as boolean values or free-text strings, but in other cases you want a more restricted control.
+By default, Storybook will choose a control for each arg based on the initial value of the arg. It works well with certain types of args, such as boolean values or free-text strings, but in other cases, you want a more restricted control.
 
 <!-- prettier-ignore-start -->
 
@@ -61,11 +61,11 @@ By default, Storybook will render a free text input for the `variant` arg:
 
 ![Essential addon Controls using a string](addon-controls-args-variant-string.png)
 
-This works as long as you type a valid string into the auto-generated text control, but it's not the best UI for our scenario, given that the component only accepts `primary` or `secondary` as variants. Let’s replace it with Storybook’s radio component.
+It works as long as you type a valid string into the auto-generated text control. Still, it's not the best UI for our scenario, given that the component only accepts `primary` or `secondary` as variants. Let’s replace it with Storybook’s radio component.
 
 We can specify which controls get used by declaring a custom [argType](../api/argtypes.md) for the `variant` property. ArgTypes encode basic metadata for args, such as name, description, defaultValue for an arg. These get automatically filled in by Storybook Docs.
 
-ArgTypes can also contain arbitrary annotations which can be overridden by the user. Since `variant` is a property of the component, let's put that annotation on the default export.
+ArgTypes can also contain arbitrary annotations, which the user can override. Since `variant` is a property of the component, let's put that annotation on the default export.
 
 <!-- prettier-ignore-start -->
 
@@ -91,7 +91,7 @@ For a few types, Controls will automatically infer them by using [regex](https:/
 | **color** | `/(background\|color)$/i` | Will display a color picker UI for the args that match it |
 | **date**  |         `/Date$/`         | Will display a date picker UI for the args that match it  |
 
-To do so, use the `matchers` property in `controls` parameter:
+To do so, use the `matchers` property in the `controls` parameter:
 
 <!-- prettier-ignore-start -->
 
@@ -105,7 +105,7 @@ To do so, use the `matchers` property in `controls` parameter:
 
 ## Fully custom args
 
-Up until now, we only used auto-generated controls based on the component we're writing stories for. If we are writing [complex stories](../workflows/stories-for-multiple-components.md) we may want to add controls for args that aren’t part of the component.
+Up until now, we only used auto-generated controls based on the component we're writing stories for. If we are writing [complex stories](../workflows/stories-for-multiple-components.md), we may want to add controls for args that aren’t part of the component.
 
 <!-- prettier-ignore-start -->
 
@@ -135,9 +135,9 @@ Using `argTypes`, you can change the display and behavior of each control.
 
 ### Dealing with complex values
 
-You'll notice when dealing with non-primitive values, you'll run into some limitations. The most obvious issue is that not every value can be represented as part of the `args` param in the URL, losing the ability to share and deeplink to such a state. Beyond that, complex values such as JSX cannot be synchronized between the manager (e.g. Controls addon) and the preview (your story).
+You'll notice that when dealing with non-primitive values, you'll run into some limitations. The most obvious issue is that not every value can be represented as part of the `args` param in the URL, losing the ability to share and deeplink to such a state. Beyond that, complex values such as JSX cannot be synchronized between the manager (e.g., Controls addon) and the preview (your story).
 
-One way to deal with this is to use primitive values (e.g. strings) as arg values, and using a story template to convert these values to their complex counterpart before rendering. This isn't the nicest way to do it (see below), but certainly the most flexible.
+One way to deal with this is to use primitive values (e.g., strings) as arg values and add a custom `render` function to convert these values to their complex counterpart before rendering. It isn't the nicest way to do it (see below), but certainly the most flexible.
 
 <!-- prettier-ignore-start -->
 
@@ -157,7 +157,7 @@ One way to deal with this is to use primitive values (e.g. strings) as arg value
 
 <!-- prettier-ignore-end -->
 
-Unless you need the flexibility of a function, an easier way to map primitives to complex values before rendering is to define a `mapping`. Additionally, you can specify `control.labels` to configure custom labels for your checkbox, radio or select input.
+Unless you need the flexibility of a function, an easier way to map primitives to complex values before rendering is to define a `mapping`. Additionally, you can specify `control.labels` to configure custom labels for your checkbox, radio, or select input.
 
 <!-- prettier-ignore-start -->
 
@@ -169,7 +169,7 @@ Unless you need the flexibility of a function, an easier way to map primitives t
 
 <!-- prettier-ignore-end -->
 
-Note that both `mapping` and `control.labels` don't have to be exhaustive. If the currently selected option is not listed, it will be used verbatim.
+Note that both `mapping` and `control.labels` don't have to be exhaustive. If the currently selected option is not listed, it's used verbatim.
 
 ## Configuration
 
@@ -216,7 +216,7 @@ If you need to customize a control for a number data type in your story, you can
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-If you don't provide a specific one, it defaults to the number control type.
+💡 If you don't provide a specific one, it defaults to the number control type.
 </div>
 
 ### Parameters
@@ -225,7 +225,7 @@ Controls supports the following configuration [parameters](../writing-stories/pa
 
 ## Show full documentation for each property
 
-Since Controls is built on the same engine as Storybook Docs, it can also show property documentation alongside your controls using the expanded parameter (defaults to false). This means you embed a complete [ArgsTable](../writing-docs/doc-blocks.md#argstable) doc block in the controls pane. The description and default value rendering can be [customized](#fully-custom-args) in the same way as the doc block.
+Since Controls is built on the same engine as Storybook Docs, it can also show property documentation alongside your controls using the expanded parameter (defaults to false). This means you embed a complete [ArgsTable](../writing-docs/doc-blocks.md#argstable) doc block in the controls panel. The description and default value rendering can be [customized](#fully-custom-args) in the same way as the doc block.
 
 To enable expanded mode globally, add the following to [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
 
@@ -247,21 +247,17 @@ And here's what the resulting UI looks like:
 
 For `color` controls, you can specify an array of `presetColors`, either on the `control` in `argTypes`, or as a parameter under the `controls` namespace:
 
-```js
-// .storybook/preview.js
+<!-- prettier-ignore-start -->
 
-export const parameters = {
-  controls: {
-    presetColors: [
-      { color: '#ff4785', title: 'Coral' },
-      'rgba(0, 159, 183, 1)',
-      '#fe4a49',
-    ]
-  },
-};
-```
+<CodeSnippets
+  paths={[
+    'common/storybook-preview-parameters-color-swatches.js.mdx',
+    ]}
+/>
 
-These will then be available as swatches in the color picker. Color presets can be defined as an object with `color` and `title`, or as a simple CSS color string. The `title` will be shown when you hover over the color swatch. In case no title is specified, the nearest CSS color name will be used instead.
+<!-- prettier-ignore-end -->
+
+Color presets can be defined as an object with `color` and `title` or a simple CSS color string. These will then be available as swatches in the color picker. When you hover over the color swatch, you'll be able to see its title. If none is specified, it will default to the nearest CSS color name instead.
 
 ### Disable controls for specific properties
 
@@ -289,7 +285,7 @@ Resulting in the following change in Storybook UI:
   />
 </video>
 
-The previous example also removed the prop documentation from the table. In some cases this is fine, however sometimes you might want to still render the prop documentation but without a control. The following example illustrates how:
+The previous example also removed the prop documentation from the table. In some cases, this is fine. However, sometimes you might want to render the prop documentation, but without a control. The following example illustrates how:
 
 <CodeSnippets
 paths={[
@@ -300,7 +296,7 @@ paths={[
 
 <div class="aside">
 
-As with other Storybook properties, such as [decorators](../writing-stories/decorators.md) the same principle can also be applied at a story-level for more granular cases.
+💡 As with other Storybook properties, such as [decorators](../writing-stories/decorators.md), you can apply the same pattern at a story level for more granular cases.
 
 </div>
 
@@ -320,9 +316,9 @@ If you don't plan to handle the control args inside your Story, you can remove t
 
 ## Filtering controls
 
-In some cases, you may want to either only present a few controls in the controls panel, or present all controls except a small set.
+In specific cases, you may require to display only a limited number of controls in the controls panel, or all of them except a particular set.
 
-To make this possible, you can use optional `include` and `exclude` configuration fields in the `controls` parameter, which can be set to either an array of strings, or a regular expression.
+To make this possible, you can use optional `include` and `exclude` configuration fields in the `controls` parameter, which you can define as an array of strings, or as a regular expression.
 
 Consider the following story snippets:
 
@@ -339,7 +335,7 @@ Consider the following story snippets:
 
 ## Sorting controls
 
-By default, controls are unsorted and use whatever order the args data is processed in (`none`). It can also be configured to sort alphabetically by arg name (`alpha`) or alphabetically required args first (`requiredFirst`).
+By default, controls are unsorted and use whatever order the args data is processed in (`none`). Additionally, you can sort them alphabetically by the arg's name (`alpha`) or with the required args first (`requiredFirst`).
 
 Consider the following snippet to force required args first:
 

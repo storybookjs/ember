@@ -27,7 +27,7 @@ title: 'Install Storybook'
 
 <summary><code>sb init</code> is not made for empty projects</summary>
 
-Storybook needs to be installed into a project that is already set up with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework including:
+Storybook needs to be installed into a project that is already set up with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework, including:
 
 - 📦 [Create an Angular Workspace](https://angular.io/cli/new)
 - 📦 [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
@@ -37,16 +37,16 @@ Storybook needs to be installed into a project that is already set up with a fra
 
 </details>
 
-During its install process, Storybook will look into your project's dependencies and provide you with the best configuration available.
+Storybook will look into your project's dependencies during its install process and provide you with the best configuration available.
 
 The command above will make the following changes to your local environment:
 
 - 📦 Install the required dependencies.
-- 🛠 Set up the necessary scripts to run and build Storybook.
+- 🛠 Setup the necessary scripts to run and build Storybook.
 - 🛠 Add the default Storybook configuration.
 - 📝 Add some boilerplate stories to get you started.
 
-Depending on your framework, first build your app and then check that everything worked by running:
+Depending on your framework, first, build your app and then check that everything worked by running:
 
 <!-- prettier-ignore-start -->
 
@@ -59,14 +59,14 @@ Depending on your framework, first build your app and then check that everything
 
 <!-- prettier-ignore-end -->
 
-It will start Storybook locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab and you'll be greeted by a welcome screen.
+It will start Storybook locally and output the address. Depending on your system configuration, it will automatically open the address in a new browser tab, and you'll be greeted by a welcome screen.
 
 ![Storybook welcome screen](./example-welcome.png)
 
 There are some noteworthy items here:
 
-- A collection of useful links for more in depth configuration and customization options you have at your disposal.
-- A second set of links for you to expand your Storybook knowledge and get involved with the ever growing Storybook community.
+- A collection of useful links for more in-depth configuration and customization options you have at your disposal.
+- A second set of links for you to expand your Storybook knowledge and get involved with the ever-growing Storybook community.
 - A few example stories to get you started.
 
 <details>

@@ -1,8 +1,22 @@
 ```js
 // Button.stories.js
 
+import Button from './Button.svelte';
 import MarginDecorator from './MarginDecorator.svelte';
 
-export const Primary = …
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
+  component: Button,
+};
+
+const Template = () => ({
+  Component: Button,
+})
+
+export const Primary = Template.bind({});
 Primary.decorators = [() => MarginDecorator]
 ```

@@ -8,14 +8,14 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import MyComponent from './MyComponent.svelte';
 
 <Meta
-  title="Stories"
+  title="MyComponent"
   parameters={{
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: 'iphone6',
     },
   }}
-/>
+  component={MyComponent} />
 
 <Story
   name="MyStory"

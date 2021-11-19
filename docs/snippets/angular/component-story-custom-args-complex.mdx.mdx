@@ -1,24 +1,24 @@
 ```md
-<!--- YourComponent.stories.mdx -->
+<!-- YourComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
-import YourComponent from './your-component.component';
+import { YourComponent } from './your-component.component';
 
-<Meta title="Example of how to use argTypes and functions" component={YourComponent}/>
+<Meta title="YourComponent" component={YourComponent}/>
 
-<!---👇 A function to apply some computations -->
+<!--👇 A function to apply some computations -->
 
 export const someFunction = (valuePropertyA, valuePropertyB) => {
 
-  <!--- Makes some computations and returns something -->
+  // Makes some computations and returns something
 
 };
 
-export const Template = (args)=>{
+export const Template = (args) => {
   const { propertyA, propertyB } = args;
 
-  <!---👇 Assigns the function result to a variable -->
+  // 👇 Assigns the function result to a variable 
   const someFunctionResult = someFunction(propertyA, propertyB);
   return {
     props: {
@@ -26,11 +26,11 @@ export const Template = (args)=>{
       someProperty: someFunctionResult,
     },
   };
-}
+};
 
 <Canvas>
   <Story
-    name="A complex case with a function"
+    name="ExampleStory"
     argTypes={{
       propertyA: {
         options: [
@@ -53,5 +53,5 @@ export const Template = (args)=>{
     }}>
     {Template.bind({})}
   </Story>
-</Canvas>
+</Canvas
 ```

@@ -1,0 +1,39 @@
+```md
+<!-- RegistrationForm.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { RegistrationForm } from './RegistrationForm';
+
+<Meta title="RegistrationForm" component={RegistrationForm} />
+
+export const Template = (args) => <RegistrationForm {...args} />;
+
+<Story
+  name="FilledForm"
+  play={async () => {
+    const emailInput = screen.getByLabelText('email', {
+      selector: 'input',
+    });
+
+    await userEvent.type(emailInput, 'example-email@email.com', {
+      delay: 100,
+    });
+
+    const passwordInput = screen.getByLabelText('password', {
+      selector: 'input',
+    });
+
+    await userEvent.type(passwordInput, 'ExamplePassword', {
+      delay: 100,
+    });
+    // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    const submitButton = screen.getByRole('button');
+
+    await userEvent.click(submitButton);
+  }}>
+  {Template.bind({})}
+</Story>
+```

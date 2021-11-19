@@ -21,8 +21,32 @@ export interface TypescriptConfig {
   };
 }
 
+export type BuilderName = 'webpack4' | 'webpack5' | string;
+
+export type BuilderConfigObject = {
+  name: BuilderName;
+  options?: Record<string, any>;
+};
+
+export interface Webpack5BuilderConfig extends BuilderConfigObject {
+  name: 'webpack5';
+  options?: {
+    fsCache?: boolean;
+  };
+}
+
+export interface Webpack4BuilderConfig extends BuilderConfigObject {
+  name: 'webpack4';
+}
+
+export type BuilderConfig =
+  | BuilderName
+  | BuilderConfigObject
+  | Webpack4BuilderConfig
+  | Webpack5BuilderConfig;
+
 export interface CoreConfig {
-  builder: 'webpack4' | 'webpack5';
+  builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
 }
@@ -297,6 +321,11 @@ export interface StorybookConfig {
     postcss?: boolean;
 
     /**
+     * Allows to disable deprecated implicit PostCSS loader.
+     */
+    emotionAlias?: boolean;
+
+    /**
      * Build stories.json automatically on start/build
      */
     buildStoriesJson?: boolean;
@@ -332,6 +361,11 @@ export interface StorybookConfig {
      * Use Storybook 7.0 babel config scheme
      */
     babelModeV7?: boolean;
+
+    /**
+     * Filter args with a "target" on the type from the render function (EXPERIMENTAL)
+     */
+    argTypeTargetsV7?: boolean;
   };
 
   /**

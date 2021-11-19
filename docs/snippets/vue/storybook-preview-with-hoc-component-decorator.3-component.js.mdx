@@ -1,0 +1,22 @@
+```js
+// .storybook/preview.js
+
+import { app } from '@storybook/vue3';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlusSquare as fasPlusSquare } from '@fortawesome/free-solid-svg-icons';
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(fasPlusSquare);
+
+//👇 Storybook Vue app being extended and registering the component
+app.component('font-awesome-icon', FontAwesomeIcon);
+
+export const decorators = [
+  (story) => ({
+    components: { story },
+    template: '<div style="margin: 3em;"><story /></div>',
+  }),
+];
+```

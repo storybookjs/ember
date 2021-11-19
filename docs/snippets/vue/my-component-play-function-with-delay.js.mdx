@@ -1,0 +1,36 @@
+```js
+// MyComponent.stories.js
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'WithDelay',
+  component: MyComponent,
+};
+
+const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+export const DelayedStory = Template.bind({});
+DelayedStory.play = async () => {
+  const exampleElement= screen.getByLabelText('example-element');
+
+  // The delay option set the ammount of milliseconds between characters being typed
+  await userEvent.type(exampleElement, 'random string', {
+    delay: 100,
+  });
+
+  const AnotherExampleElement= screen.getByLabelText('another-example-element');
+  await userEvent.type(AnotherExampleElement, 'another random string', {
+     delay: 100,
+  });
+};
+```

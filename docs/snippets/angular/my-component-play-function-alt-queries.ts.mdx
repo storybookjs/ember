@@ -1,0 +1,35 @@
+```ts
+// MyComponent.stories.ts
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'QueryMethods',
+  component: MyComponent,
+  
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const ExampleWithRole: Story = Template.bind({});
+ExampleWithRole.play = async () => {
+  // See https://storybook.js.org/docs/angular/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.click(screen.getByRole('button', { name: / button label/i }));
+};
+
+export const ExampleWithText: Story = Template.bind({});
+ExampleWithText.play = async () => {
+  // The play function interacts with the component and looks for the text
+  await screen.findByText('example string');
+};
+```

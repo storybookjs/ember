@@ -2,7 +2,7 @@
 title: 'Decorators'
 ---
 
-A decorator is a way to wrap a story in extra “rendering” functionality. Many addons define decorators to augment your stories with extra rendering or gather details about how your story is rendered.
+A decorator is a way to wrap a story in extra “rendering” functionality. Many addons define decorators to augment your stories with extra rendering or gather details about how your story renders.
 
 When writing stories, decorators are typically used to wrap stories with extra markup or context mocking.
 
@@ -38,7 +38,9 @@ Some components require a “harness” to render in a useful way. For instance,
 
 ## “Context” for mocking
 
-Some libraries require components higher up in the component hierarchy to render correctly. For example, in Styled Components, a `ThemeProvider` is necessary if your components use themes. Add a single global decorator that adds this context to all stories in [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
+Framework-specific libraries (e.g., [Styled Components](https://styled-components.com/), [Fortawesome](https://github.com/FortAwesome/vue-fontawesome) for Vue) may require additional configuration to render correctly in Storybook.
+
+For example, if you're working with Styled Components and your components use a theme, add a single global decorator to [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) to provide it. Or with Vue, extend Storybook's application and register your library:
 
 <!-- prettier-ignore-start -->
 
@@ -46,18 +48,24 @@ Some libraries require components higher up in the component hierarchy to render
   paths={[
     'react/storybook-preview-with-styled-components-decorator.js.mdx',
     'react/storybook-preview-with-styled-components-decorator.story-function.js.mdx',
+    'vue/storybook-preview-with-library-decorator.2-library.js.mdx',
+    'vue/storybook-preview-with-library-decorator.3-library.js.mdx',
+    'vue/storybook-preview-with-hoc-component-decorator.2-component.js.mdx',
+    'vue/storybook-preview-with-hoc-component-decorator.3-component.js.mdx',
+    'vue/storybook-preview-with-mixin-decorator.2-mixin.js.mdx',
+    'vue/storybook-preview-with-mixin-decorator.3-mixin.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-In the example above, the theme is hardcoded to a mock value of `default`. Still, you may want to vary that value, either on a per-story basis (if it is data you are mocking that is relevant to the other args of the story) or in a user-controlled way (for instance, to provide a theme switcher).
+In the example above, the values provided are hardcoded. Still, you may want to vary them, either on a per-story basis (i.e., if the values you're providing are relevant to a specific story) or in a user-controlled way (e.g., provide a theme switcher or a different set of icons).
 
 The second argument to a decorator function is the **story context** which in particular contains the keys:
 
 - `args` - the story arguments. You can use some [`args`](./args.md) in your decorators and drop them in the story implementation itself.
 - `argTypes`- Storybook's [argTypes](../api/argtypes.md) allow you to customize and fine-tune your stories [`args`](./args.md).
-- `globals` -  Storybook-wide [globals](../essentials/toolbars-and-globals.md#globals). In particular you can use the [toolbars feature](../essentials/toolbars-and-globals.md#global-types-toolbar-annotations) to allow you to change these values using Storybook’s UI.
+- `globals` - Storybook-wide [globals](../essentials/toolbars-and-globals.md#globals). In particular you can use the [toolbars feature](../essentials/toolbars-and-globals.md#global-types-toolbar-annotations) to allow you to change these values using Storybook’s UI.
 - `hooks` - Storybook's API hooks (e.g., useArgs).
 - `parameters`- the story's static metadata, most commonly used to control Storybook's behavior of features and addons.
 - `viewMode`- Storybook's current active window (e.g., canvas, docs).
@@ -79,7 +87,9 @@ To define a decorator for a single story, use the `decorators` key on a named ex
 <CodeSnippets
   paths={[
     'react/button-story-decorator.js.mdx',
+    'react/button-story-decorator.ts.mdx',
     'react/button-story-decorator.story-function.js.mdx',
+    'react/button-story-decorator.story-function-ts.ts.mdx',
     'react/button-story-decorator.mdx.mdx',
     'vue/button-story-decorator.js.mdx',
     'vue/button-story-decorator.mdx.mdx',
@@ -93,7 +103,7 @@ To define a decorator for a single story, use the `decorators` key on a named ex
 
 <!-- prettier-ignore-end -->
 
-It is useful to ensure that the story remains a “pure” rendering of the component under test, and any extra HTML or components you need to add don’t pollute that. In particular the [Source](../writing-docs/doc-blocks.md#source) docblock works best when you do this.
+It is useful to ensure that the story remains a “pure” rendering of the component under test, and any extra HTML or components don't pollute that. In particular the [Source](../writing-docs/doc-blocks.md#source) docblock works best when you do this.
 
 ## Component decorators
 
@@ -142,7 +152,7 @@ We can also set a decorator for **all stories** via the `decorators` export of y
 
 Like parameters, decorators can be defined globally, at the component level, and for a single story (as we’ve seen).
 
-All decorators, defined at all levels that apply to a story, will run whenever that story is rendered, in the order:
+All decorators relevant to a story will run in the following order once the story renders:
 
 - Global decorators, in the order they are defined
 - Component decorators, in the order they are defined

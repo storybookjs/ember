@@ -14,13 +14,6 @@
       "type": "string",
       "description": "The full path for the TypeScript configuration file, relative to the current workspace."
     },
-    "staticDir": {
-      "type": "array",
-      "description": "Directory where to load static files from, array of strings.",
-      "items": {
-        "type": "string"
-      }
-    },
     "outputDir": {
       "type": "string",
       "description": "Directory where to store built files.",

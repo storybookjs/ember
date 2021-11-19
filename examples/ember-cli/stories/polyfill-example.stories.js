@@ -4,7 +4,7 @@ export default {
   title: 'EmberOptions/Polyfills',
 };
 
-export const namedBlockExample = () => {
+export const NamedBlockExample = () => {
   return {
     template: hbs`
       <NamedBlock

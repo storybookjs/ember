@@ -4,23 +4,27 @@
 import imageFile from './static/image.png';
 
 export default {
-  title: 'img'
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'img',
 };
 
 const image = {
   src: imageFile,
-  alt: 'my image'
+  alt: 'my image',
 };
 
-export const withAnImage = () => ({
-  template: `<img :src="src" :alt="alt"/>`,
+export const WithAnImage = () => ({
   props: {
     src: {
       default: () => image.src,
     },
     alt: {
       default: () => image.alt,
-    }
-  }
+    },
+  },
+  template: `<img :src="src" :alt="alt"/>`,
 });
 ```
