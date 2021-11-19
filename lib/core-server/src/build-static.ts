@@ -101,6 +101,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     await extractStoriesJson(path.join(options.outputDir, 'stories.json'), stories, {
       ...directories,
       storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
+      storyStoreV7: features?.storyStoreV7,
     });
   }
 
