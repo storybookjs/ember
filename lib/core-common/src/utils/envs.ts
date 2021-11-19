@@ -42,6 +42,12 @@ export function loadEnvs(
   };
 }
 
+export const stringifyEnvs = (raw: Record<string, string>): Record<string, string> =>
+  Object.entries(raw).reduce<Record<string, string>>((acc, [key, value]) => {
+    acc[key] = JSON.stringify(value);
+    return acc;
+  }, {});
+
 export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string, string> => {
   const envs = Object.entries(raw).reduce<Record<string, string>>(
     (acc, [key, value]) => {
