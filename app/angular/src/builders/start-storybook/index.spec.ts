@@ -2,6 +2,9 @@ import { Architect, createBuilder } from '@angular-devkit/architect';
 import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { schema } from '@angular-devkit/core';
 import * as path from 'path';
+import { platform } from 'os';
+
+const shell = platform() === 'win32' ? 'powershell.exe' : 'bash';
 
 const buildStandaloneMock = jest.fn();
 jest.doMock('@storybook/angular/standalone', () => buildStandaloneMock);
@@ -157,14 +160,15 @@ describe('Start Storybook Builder', () => {
     await run.stop();
 
     expect(output.success).toBeTruthy();
-    expect(cpSpawnMock.spawn).toHaveBeenCalledWith('compodoc', [
-      '-p',
-      'src/tsconfig.app.json',
-      '-d',
-      '',
-      '-e',
-      'json',
-    ]);
+    expect(cpSpawnMock.spawn).toHaveBeenCalledWith(
+      'npx',
+      ['compodoc', '-p', 'src/tsconfig.app.json', '-d', '', '-e', 'json'],
+      {
+        cwd: '',
+        env: process.env,
+        shell,
+      }
+    );
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
