@@ -1,3 +1,19 @@
+## 6.4.0-rc.4 (November 19, 2021)
+
+### Bug Fixes
+
+- Core: Fix `process.env` stringification ([#16725](https://github.com/storybookjs/storybook/pull/16725))
+- Core: Fix build-storybook sort bug in v6-mode ([#16724](https://github.com/storybookjs/storybook/pull/16724))
+- Addon-docs/Angular: fix extractEnumValues undefined error ([#16524](https://github.com/storybookjs/storybook/pull/16524))
+
+### Maintenance
+
+- Angular: update addon interactions example ([#16698](https://github.com/storybookjs/storybook/pull/16698))
+
+### Dependency Upgrades
+
+- Upgrade from node-sass to sass in examples/angular-cli ([#16663](https://github.com/storybookjs/storybook/pull/16663))
+
 ## 6.4.0-rc.3 (November 16, 2021)
 
 ### Bug Fixes
