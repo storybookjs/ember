@@ -257,9 +257,8 @@ const sortFns: Record<SortType, SortFn | null> = {
     Number(!!b.type?.required) - Number(!!a.type?.required) || a.name.localeCompare(b.name),
   none: undefined,
 };
-export interface ArgsTableData {
-  rows: ArgTypes;
-  args?: Args;
+
+export interface ArgsTableOptionProps {
   updateArgs?: (args: Args) => void;
   resetArgs?: (argNames?: string[]) => void;
   compact?: boolean;
@@ -268,24 +267,39 @@ export interface ArgsTableData {
   isLoading?: boolean;
   sort?: SortType;
 }
+export interface ArgsTableDataProps {
+  rows: ArgTypes;
+  args?: Args;
+}
 
 export interface ArgsTableErrorProps {
   error: ArgsTableError;
 }
-interface ArgTableLoading {
+export interface ArgsTableLoadingProps {
   isLoading: true;
 }
 
-export const argTableLoadingData: ArgsTableData = {
-  rows: {
-    row1: argRowLoadingData.row,
-    row2: argRowLoadingData.row,
-    row3: argRowLoadingData.row,
+const rowLoadingData = (key: string) => ({
+  key,
+  name: 'propertyName',
+  description: 'This is a short description',
+  control: { type: 'text' },
+  table: {
+    type: { summary: 'summary' },
+    defaultValue: { summary: 'defaultValue' },
   },
-  updateArgs: () => {},
+});
+
+export const argsTableLoadingData: ArgsTableDataProps = {
+  rows: {
+    row1: rowLoadingData('row1'),
+    row2: rowLoadingData('row2'),
+    row3: rowLoadingData('row3'),
+  },
 };
 
-export type ArgsTableProps = ArgsTableData | ArgsTableErrorProps | ArgTableLoading;
+export type ArgsTableProps = ArgsTableOptionProps &
+  (ArgsTableDataProps | ArgsTableErrorProps | ArgsTableLoadingProps);
 
 type Rows = ArgType[];
 type Subsection = Rows;
@@ -371,17 +385,17 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
       </EmptyBlock>
     );
   }
-  const isLoading = 'isLoading' in props;
+
   const {
-    rows,
-    args,
     updateArgs,
     resetArgs,
     compact,
     inAddonPanel,
     initialExpandedArgs,
     sort = 'none',
-  } = 'rows' in props ? props : argTableLoadingData;
+  } = props;
+  const isLoading = 'isLoading' in props;
+  const { rows, args } = 'rows' in props ? props : argsTableLoadingData;
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -436,7 +450,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
-                  {resetArgs && (
+                  {!isLoading && resetArgs && (
                     <ResetButton onClick={() => resetArgs()} title="Reset controls">
                       <Icons icon="undo" aria-hidden />
                     </ResetButton>
