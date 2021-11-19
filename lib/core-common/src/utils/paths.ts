@@ -28,3 +28,12 @@ export const nodePathsToArray = (nodePath: string) =>
     .split(process.platform === 'win32' ? ';' : ':')
     .filter(Boolean)
     .map((p) => path.resolve('./', p));
+
+/**
+ * Ensures that a path starts with `./` or `../`
+ */
+export function normalizeStoryPath(filename: string) {
+  if (filename.startsWith(`.${path.sep}`) || filename.startsWith(`..${path.sep}`)) return filename;
+
+  return `.${path.sep}${filename}`;
+}

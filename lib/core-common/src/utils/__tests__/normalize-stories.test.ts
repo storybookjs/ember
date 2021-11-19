@@ -23,11 +23,26 @@ expect.extend({
   },
 });
 
-jest.mock('fs', () => ({
-  lstatSync: (path: string) => ({
-    isDirectory: () => !path.match(/\.[a-z]+$/),
-  }),
-}));
+jest.mock('fs', () => {
+  const mockStat = (
+    path: string,
+    options: Record<string, any>,
+    cb: (error?: Error, stats?: Record<string, any>) => void
+  ) => {
+    cb(undefined, {
+      isDirectory: () => !path.match(/\.[a-z]+$/),
+    });
+  };
+
+  return {
+    access: (path: string, mode: number, cb: (err?: Error) => void): void => undefined,
+    lstatSync: (path: string) => ({
+      isDirectory: () => !path.match(/\.[a-z]+$/),
+    }),
+    stat: mockStat,
+    lstat: mockStat,
+  };
+});
 
 describe('normalizeStoriesEntry', () => {
   const options = {
@@ -59,7 +74,7 @@ describe('normalizeStoriesEntry', () => {
     expect(specifier).toMatchInlineSnapshot(`
       {
         "titlePrefix": "",
-        "directory": ".storybook",
+        "directory": "./.storybook",
         "files": "file.stories.mdx",
         "importPathMatcher": {}
       }
