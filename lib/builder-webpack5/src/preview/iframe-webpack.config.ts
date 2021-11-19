@@ -139,7 +139,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const storyTemplate = await readTemplate(
         path.join(__dirname, 'virtualModuleStory.template.js')
       );
-      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.js`));
+      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.cjs`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
         .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
