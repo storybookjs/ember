@@ -6,7 +6,7 @@ Teams test a variety of UI characteristics using different tools. Each tool requ
 
 Storybook enables you to isolate a component and capture all of its use cases in a `*.stories.js` file. Stories are standard JavaScript modules so they’re cross compatible with the whole JavaScript ecosystem. No API lock-in.
 
-Stories as a practical starting point for UI testing. Import stories into tools like [Jest](https://jestjs.io/), [Testing Library](https://testing-library.com/), [Puppeteer](https://pptr.dev/), [Cypress](https://www.cypress.io/), and [Playwright](https://playwright.dev/) to save time and maintenance work.
+Stories are a practical starting point for UI testing. Import stories into tools like [Jest](https://jestjs.io/), [Testing Library](https://testing-library.com/), [Puppeteer](https://pptr.dev/), [Cypress](https://www.cypress.io/), and [Playwright](https://playwright.dev/) to save time and maintenance work.
 
 ## Setup the testing addon for your framework
 
