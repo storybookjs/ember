@@ -4485,11 +4485,11 @@ __metadata:
   linkType: hard
 
 "@graphql-typed-document-node/core@npm:^3.1.0":
-  version: 3.1.1
-  resolution: "@graphql-typed-document-node/core@npm:3.1.1"
+  version: 3.1.0
+  resolution: "@graphql-typed-document-node/core@npm:3.1.0"
   peerDependencies:
-    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: c186e5adceb0dfdaa770856d2f17c831a474f5927d79f984326ecb3d8680ba3c1ee2314f7def1d863692cd9cbe4dffc8bb52fc74ee0aa9b31e9491f24ef59f90
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: 29de073789cb503072bc9df0f987f575ab6c722fd309c97954c0b330259df10ea8d3c885afbb04e43f0ed1ded0243a1398d713f12d63bdcf3d2a0a5501e43229
   languageName: node
   linkType: hard
 
@@ -9485,14 +9485,14 @@ __metadata:
     babel-plugin-bundled-import-meta: ^0.3.1
     core-js: ^3.8.2
     global: ^4.4.0
-    lit-html: ^2.0.0-rc.3
+    lit-html: 2.0.2
     react: 16.14.0
     react-dom: 16.14.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    lit-html: ^1.4.1 || ^2.0.0-rc.3
+    lit-html: ^1.4.1 || ^2.0.0
   bin:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
@@ -11065,13 +11065,6 @@ __metadata:
   version: 0.2.0
   resolution: "@types/tmp@npm:0.2.0"
   checksum: e639b7ed4a219da18407f5c0ec5297e4759d8d3b5b9d54b8a54a7b948ee1477c63dccf71931b742cf5e1a4377456f44b7e8167e1551aa058dda05bc770e1602c
-  languageName: node
-  linkType: hard
-
-"@types/trusted-types@npm:^1.0.1":
-  version: 1.0.6
-  resolution: "@types/trusted-types@npm:1.0.6"
-  checksum: 4bc61ac65b8e42d17c77a23f29cdf94e498acd2e23f4c00cf15c8281de94263ac313d46cbcd7cd1d03c066d497f9396845e3210ff0074f5f90f212cb3e8aac28
   languageName: node
   linkType: hard
 
@@ -30471,21 +30464,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lit-html@npm:^2.0.0, lit-html@npm:^2.0.2":
+"lit-html@npm:2.0.2, lit-html@npm:^2.0.0, lit-html@npm:^2.0.2":
   version: 2.0.2
   resolution: "lit-html@npm:2.0.2"
   dependencies:
     "@types/trusted-types": ^2.0.2
   checksum: 3a199fdc8a2a914cae0f4bcb61582d15ca671a84e34db387651d4009be9c41951c8d29381a8d858c2037efb4fce6f4eccf51d4da545d9dd419651b0b42b1b88b
-  languageName: node
-  linkType: hard
-
-"lit-html@npm:^2.0.0-rc.3":
-  version: 2.0.0-rc.3
-  resolution: "lit-html@npm:2.0.0-rc.3"
-  dependencies:
-    "@types/trusted-types": ^1.0.1
-  checksum: 26120f0bfdd65c2f32fb15ea4e554cdf2072289fae5d1f6820b6110a42da069c6062ec19ff26734f4fff3be77cd3c61a1d0146cd9c257c64b199cb52eebc756f
   languageName: node
   linkType: hard
 

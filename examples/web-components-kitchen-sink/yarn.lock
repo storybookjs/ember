@@ -3198,7 +3198,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    lit-html: ^1.4.1 || ^2.0.0-rc.3
+    lit-html: ^1.4.1 || ^2.0.0
   bin:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
