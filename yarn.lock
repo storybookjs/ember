@@ -9140,8 +9140,8 @@ __metadata:
     lodash: ^4.17.20
     memoizerific: ^1.11.3
     qs: ^6.10.0
-    react-router: ^6.0.0-beta.8
-    react-router-dom: ^6.0.0-beta.8
+    react-router: ^6.0.0
+    react-router-dom: ^6.0.0
     ts-dedent: ^2.0.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -25557,6 +25557,15 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"history@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "history@npm:5.1.0"
+  dependencies:
+    "@babel/runtime": ^7.7.6
+  checksum: f76cd11b905cd947e9db371d7bf6e6c403d52e081ae88953c1ba6208d741470fd8f85f22acfb0d9fb11ef7d8811e6fbd20d0a7b87f05263e2cc80393ba1be315
+  languageName: node
+  linkType: hard
+
 "hmac-drbg@npm:^1.0.1":
   version: 1.0.1
   resolution: "hmac-drbg@npm:1.0.1"
@@ -38125,26 +38134,27 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.0.0-beta.8":
-  version: 6.0.0-beta.8
-  resolution: "react-router-dom@npm:6.0.0-beta.8"
+"react-router-dom@npm:^6.0.0":
+  version: 6.0.2
+  resolution: "react-router-dom@npm:6.0.2"
   dependencies:
-    react-router: 6.0.0-beta.8
+    history: ^5.1.0
+    react-router: 6.0.2
   peerDependencies:
-    history: ">=5"
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 6f1a49ff010fb1c59cec67d035b47accbcf764f0d1c5b6e7f011d91f794bdcdc2156430030da5f8a038390a4b37e38a764b2854d84d30a612c39aab4a0c8c024
+  checksum: f34d30742631813ff5a9bff2dc20adc0ae3932c956cf5b1ecaeeb5287f41c4dcb612e2eb2a98244ee5cc6f6c6827ebc91c771ebb3beb7eca103c5e4b8d251f24
   languageName: node
   linkType: hard
 
-"react-router@npm:6.0.0-beta.8, react-router@npm:^6.0.0-beta.8":
-  version: 6.0.0-beta.8
-  resolution: "react-router@npm:6.0.0-beta.8"
+"react-router@npm:6.0.2, react-router@npm:^6.0.0":
+  version: 6.0.2
+  resolution: "react-router@npm:6.0.2"
+  dependencies:
+    history: ^5.1.0
   peerDependencies:
-    history: ">=5"
     react: ">=16.8"
-  checksum: af2ac31557915cf35417413b3b2cc27efeaf889d16aad48cd964414637fcb387f710969c4d6b30ff1b46b1df98b3b2f81a0e1854a0f4d73b551d832b40a4317a
+  checksum: 60f9b079c03b6d213740cda937ba7265c2b6ce31d3e9cd9155fa64fb5b62fa5b15cfa9a487fb272809d935e4238697833d5910bb9aaed89b948c0071e3e5c399
   languageName: node
   linkType: hard
 
