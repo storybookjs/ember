@@ -94,21 +94,6 @@ const JumpToEndButton = styled(StyledButton)({
   lineHeight: '12px',
 });
 
-const withTooltipModifiers = [
-  {
-    name: 'preventOverflow',
-    options: {
-      padding: 0,
-    },
-  },
-  {
-    name: 'offset',
-    options: {
-      offset: [0, -2],
-    },
-  },
-];
-
 export const Subnav: React.FC<SubnavProps> = ({
   isDisabled,
   hasNext,
