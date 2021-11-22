@@ -162,7 +162,7 @@ export const StoryTable: FC<
     const story = useStory(storyId, context);
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, context);
-    if (!story) return <PureArgsTable isLoading />;
+    if (!story) return <PureArgsTable isLoading updateArgs={updateArgs} resetArgs={resetArgs} />;
 
     const argTypes = filterArgTypes(story.argTypes, include, exclude);
 

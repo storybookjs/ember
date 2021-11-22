@@ -32,7 +32,7 @@ function applyTransformSource(
 export function sourceDecorator(
   storyFn: PartialStoryFn<WebComponentsFramework>,
   context: StoryContext<WebComponentsFramework>
-) {
+): WebComponentsFramework['storyResult'] {
   const story = context?.parameters.docs?.source?.excludeDecorators
     ? (context.originalStoryFn as ArgsStoryFn<WebComponentsFramework>)(context.args, context)
     : storyFn();

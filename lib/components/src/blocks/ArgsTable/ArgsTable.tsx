@@ -3,14 +3,18 @@ import pickBy from 'lodash/pickBy';
 import { styled, ignoreSsrWarning } from '@storybook/theming';
 import { opacify, transparentize, darken, lighten } from 'polished';
 import { Icons } from '../../icon/icon';
-import { ArgRow, argRowLoadingData } from './ArgRow';
+import { ArgRow } from './ArgRow';
 import { SectionRow } from './SectionRow';
 import { ArgType, ArgTypes, Args } from './types';
 import { EmptyBlock } from '../EmptyBlock';
 import { Link } from '../../typography/link/link';
 import { ResetWrapper } from '../../typography/DocumentFormatting';
 
-export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boolean }>(
+export const TableWrapper = styled.table<{
+  compact?: boolean;
+  inAddonPanel?: boolean;
+  isLoading?: boolean;
+}>(
   ({ theme, compact, inAddonPanel }) => ({
     '&&': {
       // Resets for cascading/system styles
@@ -183,7 +187,20 @@ export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boo
       },
       // End finicky table styling
     },
-  })
+  }),
+  ({ isLoading, theme }) =>
+    isLoading
+      ? {
+          'th span, td span, td button': {
+            display: 'inline',
+            backgroundColor: theme.appBorderColor,
+            animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+            color: 'transparent',
+            boxShadow: 'none',
+            borderRadius: 0,
+          },
+        }
+      : {}
 );
 
 const ResetButton = styled.button(({ theme }) => ({
@@ -240,9 +257,8 @@ const sortFns: Record<SortType, SortFn | null> = {
     Number(!!b.type?.required) - Number(!!a.type?.required) || a.name.localeCompare(b.name),
   none: undefined,
 };
-export interface ArgsTableData {
-  rows: ArgTypes;
-  args?: Args;
+
+export interface ArgsTableOptionProps {
   updateArgs?: (args: Args) => void;
   resetArgs?: (argNames?: string[]) => void;
   compact?: boolean;
@@ -251,23 +267,39 @@ export interface ArgsTableData {
   isLoading?: boolean;
   sort?: SortType;
 }
+export interface ArgsTableDataProps {
+  rows: ArgTypes;
+  args?: Args;
+}
 
 export interface ArgsTableErrorProps {
   error: ArgsTableError;
 }
-interface ArgTableLoading {
+export interface ArgsTableLoadingProps {
   isLoading: true;
 }
 
-export const argTableLoadingData: ArgsTableData = {
+const rowLoadingData = (key: string) => ({
+  key,
+  name: 'propertyName',
+  description: 'This is a short description',
+  control: { type: 'text' },
+  table: {
+    type: { summary: 'summary' },
+    defaultValue: { summary: 'defaultValue' },
+  },
+});
+
+export const argsTableLoadingData: ArgsTableDataProps = {
   rows: {
-    row1: argRowLoadingData.row,
-    row2: argRowLoadingData.row,
-    row3: argRowLoadingData.row,
+    row1: rowLoadingData('row1'),
+    row2: rowLoadingData('row2'),
+    row3: rowLoadingData('row3'),
   },
 };
 
-export type ArgsTableProps = ArgsTableData | ArgsTableErrorProps | ArgTableLoading;
+export type ArgsTableProps = ArgsTableOptionProps &
+  (ArgsTableDataProps | ArgsTableErrorProps | ArgsTableLoadingProps);
 
 type Rows = ArgType[];
 type Subsection = Rows;
@@ -338,130 +370,6 @@ const groupRows = (rows: ArgType, sort: SortType) => {
   return sorted;
 };
 
-const SkeletonHeader = styled.div(({ theme }) => ({
-  alignContent: 'stretch',
-  display: 'flex',
-  gap: 16,
-  marginTop: 25,
-  padding: '10px 20px',
-
-  div: {
-    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    background: theme.appBorderColor,
-    flexShrink: 0,
-    height: 20,
-
-    '&:first-child, &:nth-child(4)': {
-      width: '20%',
-    },
-
-    '&:nth-child(2)': {
-      width: '30%',
-    },
-
-    '&:nth-child(3)': {
-      flexGrow: 1,
-    },
-
-    '&:last-child': {
-      width: 30,
-    },
-
-    '@media ( max-width: 500px )': {
-      '&:nth-child( n + 4 )': {
-        display: 'none',
-      },
-    },
-  },
-}));
-
-const SkeletonBody = styled.div(({ theme }) => ({
-  background: theme.background.content,
-  boxShadow:
-    theme.base === 'light'
-      ? `rgba(0, 0, 0, 0.10) 0 1px 3px 1px,
-          ${transparentize(0.035, theme.appBorderColor)} 0 0 0 1px`
-      : `rgba(0, 0, 0, 0.20) 0 2px 5px 1px,
-          ${opacify(0.05, theme.appBorderColor)} 0 0 0 1px`,
-  borderRadius: theme.appBorderRadius,
-
-  '> div': {
-    alignContent: 'stretch',
-    borderTopColor:
-      theme.base === 'light'
-        ? darken(0.1, theme.background.content)
-        : lighten(0.05, theme.background.content),
-    borderTopStyle: 'solid',
-    borderTopWidth: 1,
-    display: 'flex',
-    gap: 16,
-    padding: 20,
-
-    '&:first-child': {
-      borderTop: 0,
-    },
-  },
-
-  '> div div': {
-    animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    background: theme.appBorderColor,
-    flexShrink: 0,
-    height: 20,
-
-    '&:first-child': {
-      width: '20%',
-    },
-
-    '&:nth-child(2)': {
-      width: '30%',
-    },
-
-    '&:nth-child(3)': {
-      flexGrow: 1,
-    },
-
-    '&:last-child': {
-      width: 'calc(20% + 47px)',
-
-      '@media ( max-width: 500px )': {
-        display: 'none',
-      },
-    },
-  },
-}));
-
-const Skeleton = () => (
-  <div>
-    <SkeletonHeader>
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-    </SkeletonHeader>
-    <SkeletonBody>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      <div>
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </SkeletonBody>
-  </div>
-);
-
 /**
  * Display the props for a component as a props table. Each row is a collection of
  * ArgDefs, usually derived from docgen info for the component.
@@ -478,21 +386,16 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     );
   }
 
-  const isLoading = 'isLoading' in props;
   const {
-    rows,
-    args,
     updateArgs,
     resetArgs,
     compact,
     inAddonPanel,
     initialExpandedArgs,
     sort = 'none',
-  } = 'rows' in props ? props : argTableLoadingData;
-
-  if (isLoading) {
-    return <Skeleton />;
-  }
+  } = props;
+  const isLoading = 'isLoading' in props;
+  const { rows, args } = 'rows' in props ? props : argsTableLoadingData;
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -523,25 +426,38 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
 
   return (
     <ResetWrapper>
-      <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
+      <TableWrapper
+        aria-hidden={isLoading}
+        {...{ compact, inAddonPanel, isLoading }}
+        className="docblock-argstable"
+      >
         <thead className="docblock-argstable-head">
           <tr>
-            <th>Name</th>
-            {compact || <th>Description</th>}
-            {compact || <th>Default</th>}
-            {updateArgs && (
+            <th>
+              <span>Name</span>
+            </th>
+            {compact ? null : (
+              <th>
+                <span>Description</span>
+              </th>
+            )}
+            {compact ? null : (
+              <th>
+                <span>Default</span>
+              </th>
+            )}
+            {updateArgs ? (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
-                  {resetArgs && (
+                  {!isLoading && resetArgs && (
                     <ResetButton onClick={() => resetArgs()} title="Reset controls">
                       <Icons icon="undo" aria-hidden />
                     </ResetButton>
                   )}
                 </ControlHeadingWrapper>
               </th>
-            )}
-            {null}
+            ) : null}
           </tr>
         </thead>
         <tbody className="docblock-argstable-body">
