@@ -29,11 +29,12 @@ export const nodePathsToArray = (nodePath: string) =>
     .filter(Boolean)
     .map((p) => path.resolve('./', p));
 
+const relativePattern = /^\.{1,2}[/\\]/;
 /**
  * Ensures that a path starts with `./` or `../`
  */
 export function normalizeStoryPath(filename: string) {
-  if (filename.startsWith(`.${path.sep}`) || filename.startsWith(`..${path.sep}`)) return filename;
+  if (relativePattern.test(filename)) return filename;
 
   return `.${path.sep}${filename}`;
 }
