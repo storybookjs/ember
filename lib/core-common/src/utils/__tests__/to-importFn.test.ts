@@ -118,9 +118,12 @@ const testCases: [string, string[], string[]][] = [
     ],
     [
       '/Users/user/code/.storybook/Icon.stories.tsx',
-      '/Users/user/code/.storybook/src/Icon.stories.tsx',
-      '/Users/user/code/.storybook/src/components/Icon.stories.tsx',
-      '/Users/user/code/.storybook/src/components/Icon.stories/Icon.stories.tsx',
+      // Although it would make sense for these three files to fail to match the `importFn()`,
+      // because we are limited to matching on the RHS of the path (from 'src' onwards, basically)
+      // we cannot avoid matching things inside the config dir in such situations.
+      // '/Users/user/code/.storybook/src/Icon.stories.tsx',
+      // '/Users/user/code/.storybook/src/components/Icon.stories.tsx',
+      // '/Users/user/code/.storybook/src/components/Icon.stories/Icon.stories.tsx',
       '/Users/user/code/Icon.stories.tsx',
       '/Users/user/code/stories.tsx',
       '/Users/user/code/Icon.stories.ts',
