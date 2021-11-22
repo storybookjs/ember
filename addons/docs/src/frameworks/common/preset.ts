@@ -38,7 +38,8 @@ export async function webpack(
       typeof createCompiler
     >[0]
 ) {
-  const { builder } = await options.presets.apply('core');
+  // @ts-ignore
+  const { builder = 'webpack4' } = await options.presets.apply('core', {});
 
   const resolvedBabelLoader = require.resolve('babel-loader', {
     paths: [require.resolve(`@storybook/builder-${builder}`)], // FIXME!!!
