@@ -1,3 +1,18 @@
+## 6.4.0-rc.6 (November 22, 2021)
+
+### Bug Fixes
+
+- CSF: Fix component id handling ([#16746](https://github.com/storybookjs/storybook/pull/16746))
+- Addon-docs: Improved loading state ([#16709](https://github.com/storybookjs/storybook/pull/16709))
+
+### Maintenance
+
+- WebComponents: Update Lit peerDep to use Lit 2 stable version ([#16670](https://github.com/storybookjs/storybook/pull/16670))
+
+### Dependency Upgrades
+
+- Upgrade react-router to 6.0.0 ([#16742](https://github.com/storybookjs/storybook/pull/16742))
+
 ## 6.4.0-rc.5 (November 19, 2021)
 
 ### Bug Fixes
