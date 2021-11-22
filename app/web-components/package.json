@@ -68,10 +68,10 @@
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "lit-html": "^2.0.0-rc.3"
+    "lit-html": "2.0.2"
   },
   "peerDependencies": {
-    "lit-html": "^1.4.1 || ^2.0.0-rc.3"
+    "lit-html": "^1.4.1 || ^2.0.0"
   },
   "engines": {
     "node": ">=10.13.0"

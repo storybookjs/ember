@@ -10,7 +10,7 @@
   "scripts": {
     "build-storybook": "build-storybook",
     "storybook": "start-storybook -p 9006 --no-manager-cache",
-    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\""
+    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\""
   },
   "resolutions": {
     "@storybook/addon-a11y": "portal:../../addons/a11y",
@@ -57,10 +57,10 @@
     "typescript": "4.2.4"
   },
   "dependencies": {
-    "lit": "^2.0.0-rc.2"
+    "lit": "^2.0.2"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.3.11",
+    "@custom-elements-manifest/analyzer": "^0.5.7",
     "@storybook/addon-a11y": "*",
     "@storybook/addon-actions": "*",
     "@storybook/addon-backgrounds": "*",
@@ -73,7 +73,7 @@
     "@storybook/addon-viewport": "*",
     "@storybook/web-components": "*",
     "global": "^4.4.0",
-    "jest": "^27.0.1",
+    "jest": "^27.3.1",
     "typescript": "4.2.4"
   },
   "customElements": "custom-elements.json",
