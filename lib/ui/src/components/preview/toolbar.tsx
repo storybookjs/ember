@@ -43,6 +43,8 @@ const fullScreenMapper = ({ api, state }: Combo) => ({
   toggle: api.toggleFullscreen,
   value: state.layout.isFullscreen,
   shortcut: shortcutToHumanString(api.getShortcutKeys().fullScreen),
+  hasPanel: Object.keys(api.getPanels()).length > 0,
+  singleStory: state.singleStory,
 });
 
 export const fullScreenTool: Addon = {
@@ -51,17 +53,19 @@ export const fullScreenTool: Addon = {
   match: (p) => ['story', 'docs'].includes(p.viewMode),
   render: () => (
     <Consumer filter={fullScreenMapper}>
-      {({ toggle, value, shortcut }) => (
-        <S.DesktopOnly>
-          <IconButton
-            key="full"
-            onClick={toggle as any}
-            title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
-          >
-            <Icons icon={value ? 'close' : 'expand'} />
-          </IconButton>
-        </S.DesktopOnly>
-      )}
+      {({ toggle, value, shortcut, hasPanel, singleStory }) =>
+        (!singleStory || (singleStory && hasPanel)) && (
+          <S.DesktopOnly>
+            <IconButton
+              key="full"
+              onClick={toggle as any}
+              title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
+            >
+              <Icons icon={value ? 'close' : 'expand'} />
+            </IconButton>
+          </S.DesktopOnly>
+        )
+      }
     </Consumer>
   ),
 };

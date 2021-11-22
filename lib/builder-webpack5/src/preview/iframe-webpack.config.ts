@@ -1,5 +1,11 @@
 import path from 'path';
-import { Configuration, DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
+import {
+  Configuration,
+  DefinePlugin,
+  HotModuleReplacementPlugin,
+  ProgressPlugin,
+  ProvidePlugin,
+} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
@@ -62,6 +68,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     typescriptOptions,
     modern,
     features,
+    serverChannelUrl,
   } = options;
   const envs = await presets.apply<Record<string, string>>('env');
   const logLevel = await presets.apply('logLevel', undefined);
@@ -176,10 +183,8 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         chunksSortMode: 'none' as any,
         alwaysWriteToDisk: true,
         inject: false,
-        templateParameters: (compilation, files, templateOptions) => ({
-          compilation,
-          files,
-          options: templateOptions,
+        template,
+        templateParameters: {
           version: packageJson.version,
           globals: {
             CONFIG_TYPE: configType,
@@ -191,10 +196,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
               ...specifier,
               importPathMatcher: specifier.importPathMatcher.source,
             })),
+            SERVER_CHANNEL_URL: serverChannelUrl,
           },
           headHtmlSnippet,
           bodyHtmlSnippet,
-        }),
+        },
         minify: {
           collapseWhitespace: true,
           removeComments: true,
@@ -203,12 +209,12 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           removeStyleLinkTypeAttributes: true,
           useShortDoctype: true,
         },
-        template,
       }),
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
+      new ProvidePlugin({ process: 'process/browser' }),
       isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
@@ -230,7 +236,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       modules: ['node_modules'].concat(envs.NODE_PATH || []),
       mainFields: [modern ? 'sbmodern' : null, 'browser', 'module', 'main'].filter(Boolean),
       alias: {
-        ...themingPaths,
+        ...(features?.emotionAlias ? themingPaths : {}),
         ...storybookPaths,
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),

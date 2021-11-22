@@ -1,0 +1,36 @@
+```ts
+// MyComponent.stories.ts
+
+import { Meta, Story } from '@storybook/angular';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'WithDelay',
+  component: MyComponent,
+} as Meta;
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const DelayedStory: Story = Template.bind({});
+DelayedStory.play = () => {
+  const exampleElement= screen.getByLabelText('example-element');
+    // The delay option set the ammount of milliseconds between characters being typed
+  await userEvent.type(exampleElement, 'random string', {
+    delay: 100,
+  });
+
+  const AnotherExampleElement= screen.getByLabelText('another-example-element');
+  await userEvent.type(AnotherExampleElement, 'another random string', {
+    delay: 100,
+  });
+};
+```

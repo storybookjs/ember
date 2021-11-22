@@ -205,8 +205,8 @@ Finally, we can set the mock values in a specific story. Let's borrow an example
 <CodeSnippets
   paths={[
     'react/app-story-with-mock.js.mdx',
-    'vue/app-story-with-mock.2.js.mdx',
-    'vue/app-story-with-mock.3.js.mdx',
+    'react/app-story-with-mock.ts.mdx',
+    'vue/app-story-with-mock.js.mdx',
     'angular/app-story-with-mock.ts.mdx',
   ]}
 />

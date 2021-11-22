@@ -4,8 +4,12 @@
 import MyComponent from './MyComponent.vue';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
   component: MyComponent,
-  title: 'A story using environment variables inside a .env file',
 };
 
 const Template = (args, { argTypes }) => ({
@@ -14,8 +18,8 @@ const Template = (args, { argTypes }) => ({
   template: '<MyComponent v-bind="$props"/>',
 });
 
-export const Default = Template.bind({});
-Default.args = {
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
   propertyA: process.env.STORYBOOK_DATA_KEY,
 };
 ```

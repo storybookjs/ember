@@ -5,6 +5,7 @@ import {
   resetComponents,
   Preview as PurePreview,
   PreviewProps as PurePreviewProps,
+  PreviewSkeleton,
 } from '@storybook/components';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
@@ -71,7 +72,9 @@ export const Canvas: FC<CanvasProps> = (props) => {
   const { isLoading, previewProps } = getPreviewProps(props, docsContext, sourceContext);
   const { children } = props;
 
-  return isLoading ? null : (
+  if (isLoading) return <PreviewSkeleton />;
+
+  return (
     <MDXProvider components={resetComponents}>
       <PurePreview {...previewProps}>{children}</PurePreview>
     </MDXProvider>

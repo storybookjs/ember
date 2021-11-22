@@ -8,10 +8,10 @@ export default {
   title: 'Basics/Placeholder',
 };
 
-export const singleChild = () => (
+export const SingleChild = () => (
   <Placeholder>This is a placeholder with single child, it's bolded</Placeholder>
 );
-export const twoChildren = () => (
+export const TwoChildren = () => (
   <Placeholder>
     <Fragment key="title">This has two children, the first bold</Fragment>
     <Fragment key="desc">

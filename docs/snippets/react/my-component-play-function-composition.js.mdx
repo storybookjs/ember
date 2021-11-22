@@ -1,0 +1,38 @@
+```js
+// MyComponent.stories.js|jsx
+
+import React from 'react';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
+  component: MyComponent,
+};
+
+const Template = (args) => <MyComponent {...args} />;
+
+export const FirstStory = Template.bind({});
+FirstStory.play = async () => {
+  userEvent.type(screen.getByTestId('an-element'), 'example-value');
+};
+
+export const SecondStory = Template.bind({});
+SecondStory.play = async () => {
+  await userEvent.type(screen.getByTestId('other-element'), 'another value');
+};
+
+export const CombinedStories = Template.bind({});
+CombinedStories.play = async () => {
+  // Runs the FirstStory and Second story play function before running this story's play function
+  await FirstStory.play();
+  await SecondStory.play();
+  await userEvent.type(screen.getByTestId('another-element'), 'random value');
+};
+```

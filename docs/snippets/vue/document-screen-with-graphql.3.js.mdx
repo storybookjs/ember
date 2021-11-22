@@ -15,8 +15,13 @@
 </template>
 
 <script>
+  import PageLayout from './PageLayout';
+  import DocumentHeader from './DocumentHeader';
+  import DocumentList from './DocumentList';
+
   import gql from 'graphql-tag';
   import { useQuery } from '@vue/apollo-composable';
+
   export default {
     name: 'DocumentScreen',
     setup() {

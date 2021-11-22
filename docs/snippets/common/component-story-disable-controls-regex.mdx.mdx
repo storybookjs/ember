@@ -1,7 +1,15 @@
 ```md
-<!--- YourComponent.stories.mdx -->
+<!-- YourComponent.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { YourComponent } from './YourComponent';
+
+<Meta title="YourComponent" component={YourComponent} />
+
+export const Template = (args) => ({
+  //👇 Your template goes here
+});
 
 <Story 
   name="Array Include"

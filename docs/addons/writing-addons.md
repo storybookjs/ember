@@ -187,6 +187,7 @@ When Storybook was initialized, it provided a small set of example stories. Chan
 <CodeSnippets
   paths={[
     'react/button-story-with-addon-example.js.mdx',
+    'react/button-story-with-addon-example.ts.mdx',
     'vue/button-story-with-addon-example.js.mdx',
     'angular/button-story-with-addon-example.ts.mdx',
     'svelte/button-story-with-addon-example.js.mdx',

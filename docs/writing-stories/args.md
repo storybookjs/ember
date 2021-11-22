@@ -2,15 +2,15 @@
 title: 'Args'
 ---
 
-A story is a component with a set of arguments that define how the component is to be rendered. “Args” are Storybook’s mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. This allows Storybook and its addons to live edit components. You _do not_ need to change your underlying component code to use args.
+A story is a component with a set of arguments that define how the component should render. “Args” are Storybook’s mechanism for defining those arguments in a single JavaScript object. Args can be used to dynamically change props, slots, styles, inputs, etc. It allows Storybook and its addons to live edit components. You _do not_ need to modify your underlying component code to use args.
 
-When an arg’s value is changed, the component re-renders, allowing you to interact with components in Storybook’s UI via addons that affect args.
+When an arg’s value changes, the component re-renders, allowing you to interact with components in Storybook’s UI via addons that affect args.
 
 Learn how and why to write stories in [the introduction](./introduction.md#using-args). For details on how args work, read on.
 
 ## Args object
 
-The args object can be defined at the story and component level (see below). It is a JSON serializable object, composed of string keys with matching valid value types that can be passed into a component for your framework.
+The `args` object can be defined at the [story](#story-args) and [component level](#component-args). It is a JSON serializable object composed of string keys with matching valid value types that can be passed into a component for your framework.
 
 ## Story args
 
@@ -54,7 +54,7 @@ In the above example, we use the [object spread](https://developer.mozilla.org/e
 
 ## Component args
 
-You can also define args at the component level; such args will apply to all stories of the component unless they are overwritten. To do so, use the `args` key of the `default` CSF export:
+You can also define args at the component level; they will apply to all the component's stories unless you overwrite them. To do so, use the `args` key on the `default` CSF export:
 
 <!-- prettier-ignore-start -->
 
@@ -78,7 +78,7 @@ You can also define args at the component level; such args will apply to all sto
 
 ## Args composition
 
-You can separate the arguments to a story to compose in other stories. Here’s how args can be used in multiple stories for the same component.
+You can separate the arguments to a story to compose in other stories. Here's how you can combine args for multiple stories of the same component.
 
 <!-- prettier-ignore-start -->
 
@@ -92,11 +92,11 @@ You can separate the arguments to a story to compose in other stories. Here’s 
 
 <div class="aside">
 
-Note that if you are doing the above often, you may want to consider using [component-level args](#component-args).
+💡<strong>Note:</strong> If you find yourself re-using the same args for most of a component's stories, you should consider using [component-level args](#component-args).
 
 </div>
 
-Args are useful when writing stories for composite components that are assembled from other components. Composite components often pass their arguments unchanged to their child components, and similarly their stories can be compositions of their child components stories. With args, you can directly compose the arguments:
+Args are useful when writing stories for composite components that are assembled from other components. Composite components often pass their arguments unchanged to their child components, and similarly, their stories can be compositions of their child components stories. With args, you can directly compose the arguments:
 
 <!-- prettier-ignore-start -->
 
@@ -115,7 +115,7 @@ Args are useful when writing stories for composite components that are assembled
 
 ## Args can modify any aspect of your component
 
-Args are used in story templates to configure the component appearance just as you would in an application. Here’s an example of how a `footer` arg can be used to populate a child component.
+You can use args in your stories to configure the component's appearance, similar to what you would do in an application. For example, here's how you could use a `footer` arg to populate a child component:
 
 <!-- prettier-ignore-start -->
 
@@ -138,45 +138,45 @@ Args are used in story templates to configure the component appearance just as y
 
 ## Setting args through the URL
 
-Initial args for the currently active story can be overruled by setting the `args` query parameter on the URL. Typically, you would use the Controls addon to handle this automatically, but you can also manually tweak the URL if desired. An example of Storybook URL query params could look like this:
+You can also override the set of initial args for the active story by adding an `args` query parameter to the URL. Typically you would use the [Controls addon](../essentials/controls.md) to handle this. For example, here's how you could set a `size` and `style` arg in the Storybook's URL:
 
 ```
 ?path=/story/avatar--default&args=style:rounded;size:100
 ```
 
-In order to protect against [XSS](https://owasp.org/www-community/attacks/xss/) attacks, keys and values of args specified through the URL are limited to alphanumeric characters, spaces, underscores and dashes. Any args that don't abide these restrictions will be ignored and stripped, but can still be used through code and manipulated through the Controls addon.
+As a safeguard against [XSS](https://owasp.org/www-community/attacks/xss/) attacks, the arg's keys and values provided in the URL are limited to alphanumeric characters, spaces, underscores, and dashes. Any other types will be ignored and removed from the URL, but you can still use them with the Controls addon and [within your story](#mapping-to-complex-arg-values).
 
-The `args` param is always a set of `key:value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
+The `args` param is always a set of `key: value` pairs delimited with a semicolon `;`. Values will be coerced (cast) to their respective `argTypes` (which may have been automatically inferred). Objects and arrays are supported. Special values `null` and `undefined` can be set by prefixing with a bang `!`. For example, `args=obj.key:val;arr[0]:one;arr[1]:two;nil:!null` will be interpreted as:
 
-```js
-{
-  obj: { key: 'val' },
-  arr: ['one', 'two'],
-  nil: null
-}
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/storybook-args-url-params-converted.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Similarly, special formats are available for dates and colors. Date objects will be encoded as `!date(value)` with value represented as an ISO date string. Colors are encoded as `!hex(value)`, `!rgba(value)` or `!hsla(value)`. Note that rgb(a) and hsl(a) should not contain spaces or percentage signs in the URL.
 
-Args specified through the URL will extend and override any default values of args specified on the story.
+Args specified through the URL will extend and override any default values of args set on the story.
 
 ## Mapping to complex arg values
 
-Complex values such as JSX elements cannot be serialized to the manager (e.g. the Controls addon) or synced with the URL. To work around this limitation, arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes`. This works on any type of arg, but makes most sense when used with the `select` control type.
+Complex values such as JSX elements cannot be serialized to the manager (e.g., the Controls addon) or synced with the URL. Arg values can be "mapped" from a simple string to a complex type using the `mapping` property in `argTypes` to work around this limitation. It works in any arg but makes the most sense when used with the `select` control type.
 
-```js
-argTypes: {
-  label: {
-    options: ['Normal', 'Bold', 'Italic'],
-    mapping: {
-      Bold: <b>Bold</b>,
-      Italic: <i>Italic</i>
-    }
-  }
-}
-```
+<!-- prettier-ignore-start -->
 
-Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg *values*, not their index in the `options` array.
+<CodeSnippets
+  paths={[
+    'common/my-component-argtypes-with-mapping.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Note that `mapping` does not have to be exhaustive. If the arg value is not a property of `mapping`, the value will be used directly. Keys in `mapping` always correspond to arg _values_, not their index in the `options` array.
 
 <details>
 <summary>Using args in addons</summary>
@@ -198,7 +198,7 @@ If you are [writing an addon](../addons/writing-addons.md) that wants to read or
 <details>
 <summary>parameters.passArgsFirst</summary>
 
-In Storybook 6+, we pass the args as the first argument to the story function. The second argument is the “context” which contains things like the story parameters etc.
+In Storybook 6+, we pass the args as the first argument to the story function. The second argument is the “context”, which includes story parameters, globals, argTypes, and other information.
 
 In Storybook 5 and before we passed the context as the first argument. If you’d like to revert to that functionality set the `parameters.passArgsFirst` parameter in [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
 
@@ -213,8 +213,6 @@ In Storybook 5 and before we passed the context as the first argument. If you’
 <!-- prettier-ignore-end -->
 
   <div class="aside">
-
-Note that `args` is still available as a key on the context.
-
+  💡 Note that `args` is still available as a key in the context.
   </div>
 </details>

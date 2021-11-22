@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-babel-preact');
+module.exports = require('./dist/cjs/server/framework-preset-preact');

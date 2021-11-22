@@ -1,0 +1,31 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent';
+
+<Meta title="ClickExamples" component={MyComponent} />
+
+export const Template = (args) => <MyComponent {...args} />;
+
+<Story
+  name="ClickExample"
+  play={async () => {
+    // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await userEvent.click(screen.getByRole('button'));
+  }}>
+  {Template.bind({})}
+</Story>
+
+<Story
+  name="FireEventExample"
+  play={async ()=>{
+    // See https://storybook.js.org/docs/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await fireEvent.click(screen.getByTestId('data-testid'));
+  }}>
+  {Template.bind({})}
+</Story>
+```

@@ -1,0 +1,39 @@
+```js
+// MyComponent.stories.js
+
+import MyComponent from './MyComponent.vue';
+
+import someData from './data.json';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent', 
+  component: MyComponent,
+  includeStories: ['SimpleStory', 'ComplexStory'],
+  excludeStories: /.*Data$/, // 👈 Storybook ignores anything that contains Data
+};
+
+export const simpleData = { foo: 1, bar: 'baz' };
+export const complexData = { foo: 1, foobar: { bar: 'baz', baz: someData } };
+
+
+const Template = (args, { argTypes }) => ({
+  components: { MyComponent },
+  props: Object.keys(argTypes),
+  template: `<MyComponent v-bind="$props"/>`,
+});
+
+
+export const SimpleStory = Template.bind({});
+SimpleStory,args = {
+  data: simpleData,
+};
+
+export const ComplexStory = Template.bind({});
+ComplexStory,args = {
+  data: complexData,
+};
+```

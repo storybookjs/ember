@@ -1,9 +1,11 @@
 ```md
-<!-- Button.stories.mdx --->
+<!-- Button.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
+
+<Meta title="Button" component={Button} />
 
 export const Template = (args) => ({
   components: { Button },

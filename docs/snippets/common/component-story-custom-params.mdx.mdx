@@ -1,7 +1,15 @@
 ```md
 <!-- Button.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button} />
+
+export const Template = (args) =>({
+  // 👈 Your template goes here
+});
 
 <Story
   name="Primary"

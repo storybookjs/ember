@@ -3,9 +3,10 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Page from './Page';
+import { Page } from './Page';
 
 <Meta title="Page" component={Page} />
+
 
 export const Template = (args) => (
   <Page {...args}>
@@ -13,9 +14,9 @@ export const Template = (args) => (
   </Page>
 );
 
-<Story 
-  name="CustomFooter" 
-  args={{ 
+<Story
+  name="CustomFooter"
+  args={{
     footer: 'Built with Storybook',
   }}>
   {Template.bind({})}

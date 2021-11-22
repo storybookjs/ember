@@ -5,17 +5,21 @@ import YourComponent from './YourComponent.svelte';
 
 //👇This default export determines where your story goes in the story list
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'YourComponent',
   component: YourComponent,
 };
 
+//👇 We create a “template” of how args map to rendering
 const Template = (args) => ({
   props: args,
 });
 
 export const FirstStory = Template.bind({});
-
-FirstStory.args = {
-  /* The args you need here will depend on your component */
+FirstStory.args= {
+ //👇 The args you need here will depend on your component
 };
 ```

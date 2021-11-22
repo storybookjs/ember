@@ -1,0 +1,36 @@
+```ts
+// MyComponent.stories.ts|tsx
+
+import React from 'react';
+
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+
+import { MyComponent } from './MyComponent';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
+  component: MyComponent,
+  parameters: {
+    //👇 The viewports object from the Essentials addon
+    viewport: {
+      //👇 The viewports you want to use
+      viewports: INITIAL_VIEWPORTS,
+      //👇 Your own default viewport
+      defaultViewport: 'iphone6',
+    },
+  },
+} as ComponentMeta<typeof MyComponent>;
+
+export const MyStory: ComponentStory<typeof MyComponent> = () => <MyComponent />;
+MyStory.parameters = {
+  viewport: {
+    defaultViewport: 'iphonex',
+  },
+};
+```

@@ -1,5 +1,5 @@
 import path from 'path';
-import { writeFile } from 'fs-extra';
+import { writeFile, stat } from 'fs-extra';
 import puppeteerCore from 'puppeteer-core';
 import express from 'express';
 import getPort from 'get-port';
@@ -28,6 +28,9 @@ const read = async (url: string) => {
 };
 
 const useLocation: (input: string) => Promise<[string, () => void]> = async (input: string) => {
+  // check for input's existence
+  await stat(path.resolve(input));
+
   if (input.match(/^http/)) {
     return [input, async () => {}];
   }

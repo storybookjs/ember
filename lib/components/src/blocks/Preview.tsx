@@ -17,8 +17,10 @@ import { ActionBar, ActionItem } from '../ActionBar/ActionBar';
 import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
 import { Zoom } from '../Zoom/Zoom';
+import { StorySkeleton } from '.';
 
 export interface PreviewProps {
+  isLoading?: true;
   isColumn?: boolean;
   columns?: number;
   withSource?: SourceProps;
@@ -189,7 +191,8 @@ const getLayout = (children: ReactElement[]): layout => {
  * items. The preview also shows the source for the component
  * as a drop-down.
  */
-const Preview: FunctionComponent<PreviewProps> = ({
+export const Preview: FunctionComponent<PreviewProps> = ({
+  isLoading,
   isColumn,
   columns,
   children,
@@ -253,6 +256,7 @@ const Preview: FunctionComponent<PreviewProps> = ({
     >
       {withToolbar && (
         <PositionedToolbar
+          isLoading={isLoading}
           border
           zoom={(z) => setScale(scale * z)}
           resetZoom={() => setScale(1)}
@@ -284,4 +288,15 @@ const Preview: FunctionComponent<PreviewProps> = ({
   );
 };
 
-export { Preview };
+const StyledPreview = styled(Preview)(() => ({
+  '.docs-story': {
+    paddingTop: 32,
+    paddingBottom: 40,
+  },
+}));
+
+export const PreviewSkeleton = () => (
+  <StyledPreview isLoading withToolbar>
+    <StorySkeleton />
+  </StyledPreview>
+);

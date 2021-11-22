@@ -8,7 +8,7 @@ import { ArgValue } from './ArgValue';
 import { ArgControl, ArgControlProps } from './ArgControl';
 import { codeCommon } from '../../typography/shared';
 
-export interface ArgRowProps {
+interface ArgRowProps {
   row: ArgType;
   arg: any;
   updateArgs?: (args: Args) => void;

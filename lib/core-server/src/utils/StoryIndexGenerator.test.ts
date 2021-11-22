@@ -15,6 +15,7 @@ const options = {
   configDir: path.join(__dirname, '__mockdata__'),
   workingDir: path.join(__dirname, '__mockdata__'),
   storiesV2Compatibility: false,
+  storyStoreV7: true,
 };
 
 describe('StoryIndexGenerator', () => {
@@ -167,7 +168,7 @@ describe('StoryIndexGenerator', () => {
         const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
-        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
+        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
 
         readCsfOrMdxMock.mockClear();
         await generator.getIndex();
@@ -204,7 +205,7 @@ describe('StoryIndexGenerator', () => {
         const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
-        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
+        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
 
         generator.invalidate(specifier, './src/B.stories.ts', false);
 
@@ -244,7 +245,7 @@ describe('StoryIndexGenerator', () => {
           const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
-          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
+          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
 
           generator.invalidate(specifier, './src/B.stories.ts', true);
 
@@ -283,7 +284,7 @@ describe('StoryIndexGenerator', () => {
           const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
-          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(5);
+          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
 
           generator.invalidate(specifier, './src/B.stories.ts', true);
 

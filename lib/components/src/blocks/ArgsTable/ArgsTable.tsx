@@ -10,7 +10,11 @@ import { EmptyBlock } from '../EmptyBlock';
 import { Link } from '../../typography/link/link';
 import { ResetWrapper } from '../../typography/DocumentFormatting';
 
-export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boolean }>(
+export const TableWrapper = styled.table<{
+  compact?: boolean;
+  inAddonPanel?: boolean;
+  isLoading?: boolean;
+}>(
   ({ theme, compact, inAddonPanel }) => ({
     '&&': {
       // Resets for cascading/system styles
@@ -183,7 +187,20 @@ export const TableWrapper = styled.table<{ compact?: boolean; inAddonPanel?: boo
       },
       // End finicky table styling
     },
-  })
+  }),
+  ({ isLoading, theme }) =>
+    isLoading
+      ? {
+          'th span, td span, td button': {
+            display: 'inline',
+            backgroundColor: theme.appBorderColor,
+            animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+            color: 'transparent',
+            boxShadow: 'none',
+            borderRadius: 0,
+          },
+        }
+      : {}
 );
 
 const ResetButton = styled.button(({ theme }) => ({
@@ -240,22 +257,49 @@ const sortFns: Record<SortType, SortFn | null> = {
     Number(!!b.type?.required) - Number(!!a.type?.required) || a.name.localeCompare(b.name),
   none: undefined,
 };
-export interface ArgsTableRowProps {
-  rows: ArgTypes;
-  args?: Args;
+
+export interface ArgsTableOptionProps {
   updateArgs?: (args: Args) => void;
   resetArgs?: (argNames?: string[]) => void;
   compact?: boolean;
   inAddonPanel?: boolean;
   initialExpandedArgs?: boolean;
+  isLoading?: boolean;
   sort?: SortType;
+}
+export interface ArgsTableDataProps {
+  rows: ArgTypes;
+  args?: Args;
 }
 
 export interface ArgsTableErrorProps {
   error: ArgsTableError;
 }
+export interface ArgsTableLoadingProps {
+  isLoading: true;
+}
 
-export type ArgsTableProps = ArgsTableRowProps | ArgsTableErrorProps;
+const rowLoadingData = (key: string) => ({
+  key,
+  name: 'propertyName',
+  description: 'This is a short description',
+  control: { type: 'text' },
+  table: {
+    type: { summary: 'summary' },
+    defaultValue: { summary: 'defaultValue' },
+  },
+});
+
+export const argsTableLoadingData: ArgsTableDataProps = {
+  rows: {
+    row1: rowLoadingData('row1'),
+    row2: rowLoadingData('row2'),
+    row3: rowLoadingData('row3'),
+  },
+};
+
+export type ArgsTableProps = ArgsTableOptionProps &
+  (ArgsTableDataProps | ArgsTableErrorProps | ArgsTableLoadingProps);
 
 type Rows = ArgType[];
 type Subsection = Rows;
@@ -331,11 +375,10 @@ const groupRows = (rows: ArgType, sort: SortType) => {
  * ArgDefs, usually derived from docgen info for the component.
  */
 export const ArgsTable: FC<ArgsTableProps> = (props) => {
-  const { error } = props as ArgsTableErrorProps;
-  if (error) {
+  if ('error' in props) {
     return (
       <EmptyBlock>
-        {error}&nbsp;
+        {props.error}&nbsp;
         <Link href="http://storybook.js.org/docs/" target="_blank" withArrow>
           Read the docs
         </Link>
@@ -344,15 +387,15 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
   }
 
   const {
-    rows,
-    args,
     updateArgs,
     resetArgs,
     compact,
     inAddonPanel,
     initialExpandedArgs,
     sort = 'none',
-  } = props as ArgsTableRowProps;
+  } = props;
+  const isLoading = 'isLoading' in props;
+  const { rows, args } = 'rows' in props ? props : argsTableLoadingData;
 
   const groups = groupRows(
     pickBy(rows, (row) => !row?.table?.disable),
@@ -380,19 +423,34 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
   const expandable = Object.keys(groups.sections).length > 0;
 
   const common = { updateArgs, compact, inAddonPanel, initialExpandedArgs };
+
   return (
     <ResetWrapper>
-      <TableWrapper {...{ compact, inAddonPanel }} className="docblock-argstable">
+      <TableWrapper
+        aria-hidden={isLoading}
+        {...{ compact, inAddonPanel, isLoading }}
+        className="docblock-argstable"
+      >
         <thead className="docblock-argstable-head">
           <tr>
-            <th>Name</th>
-            {compact ? null : <th>Description</th>}
-            {compact ? null : <th>Default</th>}
+            <th>
+              <span>Name</span>
+            </th>
+            {compact ? null : (
+              <th>
+                <span>Description</span>
+              </th>
+            )}
+            {compact ? null : (
+              <th>
+                <span>Default</span>
+              </th>
+            )}
             {updateArgs ? (
               <th>
                 <ControlHeadingWrapper>
                   Control{' '}
-                  {resetArgs && (
+                  {!isLoading && resetArgs && (
                     <ResetButton onClick={() => resetArgs()} title="Reset controls">
                       <Icons icon="undo" aria-hidden />
                     </ResetButton>

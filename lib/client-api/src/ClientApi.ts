@@ -29,8 +29,6 @@ import { ClientApiAddons, StoryApi } from '@storybook/addons';
 
 import { StoryStoreFacade } from './StoryStoreFacade';
 
-const { FEATURES } = global;
-
 export interface GetStorybookStory<TFramework extends AnyFramework> {
   name: string;
   render: LegacyStoryFn<TFramework>;
@@ -70,7 +68,7 @@ const warnings = {
 };
 
 const checkMethod = (method: string, deprecationWarning: boolean) => {
-  if (FEATURES?.storyStoreV7) {
+  if (global.FEATURES?.storyStoreV7) {
     throw new Error(
       dedent`You cannot use \`${method}\` with the new Story Store.
       

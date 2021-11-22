@@ -61,6 +61,6 @@ export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string
   );
   // support destructuring like
   // const { foo } = process.env;
-  envs['process.env'] = JSON.stringify(stringifyEnvs(raw));
+  envs['process.env'] = JSON.stringify(raw);
   return envs;
 };

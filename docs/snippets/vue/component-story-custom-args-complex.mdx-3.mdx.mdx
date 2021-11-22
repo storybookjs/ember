@@ -1,40 +1,42 @@
 ```md
-<!--- YourComponent.stories.mdx -->
+<!-- YourComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import YourComponent from './YourComponent.vue';
 
-<Meta title="Example of how to use argTypes and functions" component={YourComponent}/>
+<Meta title="YourComponent" component={YourComponent}/>
 
-<!---👇 A function to apply some computations -->
+<!-- 👇 A function to apply some computations -->
 
 export const someFunction = (valuePropertyA, valuePropertyB) => {
 
-  <!--- Makes some computations and returns something -->
+  // Makes some computations and returns something 
 
 };
 
-export const Template = (args)=>{
-  <!---👇 Assigns the function result to a variable -->
+export const Template = (args) => {
+  //👇 Assigns the function result to a variable
   const functionResult = someFunction(args.propertyA, args.propertyB);
   return {
     components: { YourComponent },
     setup() {
+      //👇 The args will now be passed down to the template
       return {
         args: {
           ...args,
+          //👇 Replaces arg variable with the override (without the need of mutation)
           someProperty: functionResult,
         },
       };
     },
-    template: '<YourComponent v-bind="args" />',
+    template:  '<YourComponent :propertyA="propertyA" :propertyB="propertyB" :someProperty="someProperty"/>',
   };
-}
+};
 
 <Canvas>
   <Story
-    name="A complex case with a function"
+    name="ExampleStory"
     argTypes={{
       propertyA: {
         options: [

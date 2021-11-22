@@ -1,5 +1,5 @@
 ```md
-<!-- MyComponent.stories.js -->
+<!-- MyComponent.stories.mdx -->
 
 import { Meta, Story } from '@storybook/addon-docs';
 
@@ -7,14 +7,14 @@ import MyComponent from './MyComponent.svelte';
 
 import imageFile from './static/image.png';
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent} />
 
 export const image = {
   src: imageFile,
   alt: 'my image',
 };
 
-<Story name="withAnImage">
+<Story name="WithAnImage">
   {() => {
     return {
       Component: MyComponent,

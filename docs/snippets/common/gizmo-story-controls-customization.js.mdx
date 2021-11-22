@@ -1,11 +1,17 @@
 ```js
-// Gizmo.stories.js | Gizmo.stories.jsx | Gizmo.stories.ts | Gizmo.stories.tsx
+// Gizmo.stories.js|jsx|ts|tsx
+
+import { Gizmo } from './Gizmo';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Gizmo',
   component: Gizmo,
   argTypes: {
-    width: { 
+    width: {
       control: { type: 'range', min: 400, max: 1200, step: 50 },
     },
   },

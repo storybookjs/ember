@@ -1,14 +1,16 @@
 ```js
-// MyComponent.stories.js | MyComponent.stories.jsx | MyComponent.stories.ts | MyComponent.stories.tsx
+// MyComponent.stories.js|jsx
 
 import React from 'react';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'img',
 };
 
 // Assume image.png is located in the "public" directory.
-export const withAnImage = () => (
-  <img src="/image.png" alt="my image" />
-);
+export const WithAnImage = () => <img src="/image.png" alt="my image" />;
 ```

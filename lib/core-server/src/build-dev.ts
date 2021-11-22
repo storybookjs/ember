@@ -19,7 +19,7 @@ import { getReleaseNotesData, getReleaseNotesFailedState } from './utils/release
 import { outputStats } from './utils/output-stats';
 import { outputStartupInformation } from './utils/output-startup-information';
 import { updateCheck } from './utils/update-check';
-import { getServerPort } from './utils/server-address';
+import { getServerPort, getServerChannelUrl } from './utils/server-address';
 import { getPreviewBuilder } from './utils/get-preview-builder';
 import { getManagerBuilder } from './utils/get-manager-builder';
 
@@ -57,6 +57,7 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   options.outputDir = options.smokeTest
     ? resolvePathInStorybookCache('public')
     : path.resolve(options.outputDir || resolvePathInStorybookCache('public'));
+  options.serverChannelUrl = getServerChannelUrl(port, options);
   /* eslint-enable no-param-reassign */
 
   const previewBuilder = await getPreviewBuilder(options.configDir);

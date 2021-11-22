@@ -1,5 +1,14 @@
 import React from 'react';
-import { Button, Icons, Separator, P, TooltipNote, WithTooltip, Bar } from '@storybook/components';
+import {
+  Button,
+  IconButton,
+  Icons,
+  Separator,
+  P,
+  TooltipNote,
+  WithTooltip,
+  Bar,
+} from '@storybook/components';
 import { Call, CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
@@ -49,14 +58,9 @@ const Note = styled(TooltipNote)(({ theme }) => ({
   fontFamily: theme.typography.fonts.base,
 }));
 
-export const StyledIconButton = styled(StyledButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
-  '&:not(:disabled)': {
-    '&:hover,&:focus-visible': {
-      background: theme.background.hoverable,
-    },
-  },
 }));
 
 const StyledSeparator = styled(Separator)({
@@ -89,6 +93,21 @@ const JumpToEndButton = styled(StyledButton)({
   marginBottom: 1,
   lineHeight: '12px',
 });
+
+const withTooltipModifiers = [
+  {
+    name: 'preventOverflow',
+    options: {
+      padding: 0,
+    },
+  },
+  {
+    name: 'offset',
+    options: {
+      offset: [0, -2],
+    },
+  },
+];
 
 export const Subnav: React.FC<SubnavProps> = ({
   isDisabled,

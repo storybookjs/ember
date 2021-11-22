@@ -5,6 +5,10 @@ import { html } from 'lit-html';
 
 import './demo-button';
 
+export default {
+  title: 'Button',
+};
+
 //👇 We create a “template” of how args map to rendering
 const Template = ({ background, label }) =>
   html`<demo-button .background=${background} .label=${label}></demo-button>`;

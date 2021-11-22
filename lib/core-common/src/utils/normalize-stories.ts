@@ -2,11 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { scan } from 'micromatch';
+import { scan } from 'picomatch';
 import slash from 'slash';
 
 import type { StoriesEntry, NormalizedStoriesSpecifier } from '../types';
-import { globToRegex } from './glob-to-regexp';
+import { normalizeStoryPath } from './paths';
+import { globToRegexp } from './glob-to-regexp';
 
 const DEFAULT_TITLE_PREFIX = '';
 const DEFAULT_FILES = '**/*.stories.@(mdx|tsx|ts|jsx|js)';
@@ -36,6 +37,19 @@ const isDirectory = (configDir: string, entry: string) => {
   } catch (err) {
     return false;
   }
+};
+
+export const getDirectoryFromWorkingDir = ({
+  configDir,
+  workingDir,
+  directory,
+}: NormalizeOptions & { directory: string }) => {
+  const directoryFromConfig = path.resolve(configDir, directory);
+  const directoryFromWorking = path.relative(workingDir, directoryFromConfig);
+
+  // relative('/foo', '/foo/src') => 'src'
+  // but we want `./src` to match importPaths
+  return normalizeStoryPath(directoryFromWorking);
 };
 
 export const normalizeStoriesEntry = (
@@ -90,18 +104,17 @@ export const normalizeStoriesEntry = (
   // At this stage `directory` is relative to `main.js` (the config dir)
   // We want to work relative to the working dir, so we transform it here.
   const { directory: directoryRelativeToConfig } = specifierWithoutMatcher;
-  const absoluteDirectory = path.resolve(configDir, directoryRelativeToConfig);
-  let directory = slash(path.relative(workingDir, absoluteDirectory));
 
-  // relative('/foo', '/foo/src') => 'src'
-  // but we want `./src` to match importPaths
-  if (!directory.startsWith('.')) {
-    directory = `./${directory}`;
-  }
-  directory = directory.replace(/\/$/, '');
+  const directory = slash(
+    getDirectoryFromWorkingDir({
+      configDir,
+      workingDir,
+      directory: directoryRelativeToConfig,
+    })
+  ).replace(/\/$/, '');
 
   // Now make the importFn matcher.
-  const importPathMatcher = globToRegex(`${directory}/${files}`);
+  const importPathMatcher = globToRegexp(`${directory}/${files}`);
 
   return {
     ...specifierWithoutMatcher,

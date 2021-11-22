@@ -6,13 +6,17 @@ import MyComponent from './MyComponent.svelte';
 import imageFile from './static/image.png';
 
 export default {
-  component: MyComponent,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'img',
+  component: MyComponent,
 };
 
 const image = {
   src: imageFile,
-  alt: "my image",
+  alt: 'my image',
 };
 
 export const WithAnImage = () => ({

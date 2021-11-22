@@ -1,15 +1,19 @@
 ```js
-// YourPage.stories.js | YourPage.stories.jsx | YourPage.stories.ts | YourPage.stories.tsx
+// YourPage.stories.js|jsx|ts|tsx
 
 import React from 'react';
 
 import { rest } from 'msw';
 
-import DocumentScreen from './DocumentScreen';
+import { DocumentScreen } from './YourPage';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'DocumentScreen',
   component: DocumentScreen,
-  title: 'Mock Rest request with Storybook and MSW',
 };
 
 //👇The mocked data that will be used in the story

@@ -1,12 +1,16 @@
 ```js
-// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+// Button.stories.js|jsx|ts|tsx
 
 import { Button } from './Button';
 
-import CustomMDXDocumentation from './Custom-MDX-Documentation.mdx' 
+import CustomMDXDocumentation from './Custom-MDX-Documentation.mdx';
 
 export default {
-  title: 'Example/Button',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
   component: Button,
   argTypes: {
     backgroundColor: { control: 'color' },
@@ -14,15 +18,31 @@ export default {
   parameters: {
     docs: {
       page: CustomMDXDocumentation,
-    }
+    },
   },
 };
 
-export const Primary = () => <Button backgroundColor="primary" />;
+const Template = (args) => ({
+  //👇 Your template goes here
+});
 
-export const Secondary = () => <Button backgroundColor="secondary" />;
+export const Primary = Template.bind({});
+Primary.args = {
+  backgroundColor: 'primary',
+};
 
-export const Large = () => <Button size="large" />;
+export const Secondary = Template.bind({});
+Secondary.args = {
+  backgroundColor: 'secondary',
+};
 
-export const Small = () => <Button size="small" />;
+export const Large = Template.bind({});
+Large.args = {
+  size: 'large',
+};
+
+export const Small = Template.bind({});
+Small.args = {
+  size: 'small',
+};
 ```

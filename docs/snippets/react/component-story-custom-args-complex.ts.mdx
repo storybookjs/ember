@@ -1,11 +1,11 @@
 ```ts
-// YourComponent.stories.ts | YourComponent.stories.tsx
+// YourComponent.stories.ts|tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { YourComponent, YourComponentProps } from './your-component';
+import { YourComponent } from './your-component';
 
 //👇 Some function to demonstrate the behavior
 const someFunction = (valuePropertyA, valuePropertyB) => {
@@ -13,8 +13,11 @@ const someFunction = (valuePropertyA, valuePropertyB) => {
 };
 
 export default {
-  component: YourComponent,
-  title: 'A complex case with a function',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   //👇 Creates specific argTypes with options
   argTypes: {
     propertyA: {
@@ -25,12 +28,18 @@ export default {
       options: ['Another Item One', 'Another Item Two', 'Another Item Three'],
     },
   },
-} as Meta;
+} as ComponentMeta<typeof YourComponent>;
 
-const Template: Story<YourComponentProps> = ({ propertyA, propertyB, ...rest }) => {
+const Template: ComponentStory<typeof YourComponent> = ({ propertyA, propertyB, ...rest }) => {
   //👇 Assigns the result from the function to a variable
   const someFunctionResult = someFunction(propertyA, propertyB);
 
   return <YourComponent someProperty={someFunctionResult} {...rest} />;
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

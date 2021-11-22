@@ -2,7 +2,7 @@
 title: 'Webpack'
 ---
 
-Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](/addons) are also available that extend the configuration for other common use cases.
+Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](/addons) are also available that extend the configuration for other everyday use cases.
 
 You can customize Storybook's webpack setup by providing a `webpackFinal` field in [`.storybook/main.js`](./overview.md#configure-your-storybook-project) file.
 
@@ -43,10 +43,11 @@ You can import `.json` files and have them expanded to a JavaScript object:
 If you want to know the exact details of the webpack config, the best way is to run either of the following:
 
 ```shell
-yarn start-storybook --debug-webpack
-```
 
-```shell
+## Development mode
+yarn start-storybook --debug-webpack
+
+## Production mode
 yarn build-storybook --debug-webpack
 ```
 
@@ -56,7 +57,7 @@ To extend the above configuration, use the `webpackFinal` field of [`.storybook/
 
 The value should export a `function`, which will receive the default config as its first argument. The second argument is an options object from Storybook, and this will have information about where config came from, whether we're in production or development mode, etc.
 
-For example, here's a `.storybook/main.js` to add [Sass](https://sass-lang.com/) support:
+For example, if you wanted to add [Sass](https://sass-lang.com/) support, you can adjust your configuration as such:
 
 <!-- prettier-ignore-start -->
 
@@ -111,9 +112,25 @@ The following code snippet shows how you can replace the loaders from Storybook 
 💡 <strong>Note:</strong> Projects initialized via generators (e.g, Vue CLI) may require that you import their own webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions. 
 </div>
 
+### Bundle splitting
+
+Starting with Storybook 6.4, [bundle splitting](https://v4.webpack.js.org/guides/code-splitting/) is supported through a configuration flag. Update your Storybook configuration and add the `storyStoreV7` flag:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-on-demand-story-loading.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+When you start your Storybook, you'll see an improvement in loading times. Read more about it in the [announcement post](https://storybook.js.org/blog/storybook-on-demand-architecture/) and the [configuration documentation](./overview.md#on-demand-story-loading).
+
 ### TypeScript Module Resolution
 
-When working with TypeScript projects the default Webpack configuration may fail to resolve module aliases defined in your [`tsconfig` file](https://www.typescriptlang.org/tsconfig). To work around this issue you may use [`tsconfig-paths-webpack-plugin`](https://github.com/dividab/tsconfig-paths-webpack-plugin#tsconfig-paths-webpack-plugin) while [extending Storybook's Webpack config](#extending-storybooks-webpack-config) like:
+When working with TypeScript projects, the default Webpack configuration may fail to resolve module aliases defined in your [`tsconfig` file](https://www.typescriptlang.org/tsconfig). To work around this issue you may use [`tsconfig-paths-webpack-plugin`](https://github.com/dividab/tsconfig-paths-webpack-plugin#tsconfig-paths-webpack-plugin) while [extending Storybook's Webpack config](#extending-storybooks-webpack-config) like:
 
 <!-- prettier-ignore-start -->
 

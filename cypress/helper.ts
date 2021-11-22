@@ -11,22 +11,19 @@ const getUrl = (route: string) => {
 };
 
 export const visit = (route = '') => {
-  return cy
-    .clearLocalStorage()
-    .visit(getUrl(route))
-    .get(`#storybook-preview-iframe`)
-    .then({ timeout: 15000 }, (iframe) => {
-      return cy.wrap(iframe, { timeout: 10000 }).should(() => {
-        const content: Document | null = (iframe[0] as HTMLIFrameElement).contentDocument;
-        const element: HTMLElement | null = content !== null ? content.documentElement : null;
+  cy.clearLocalStorage().visit(getUrl(route));
+  return cy.get(`#storybook-preview-iframe`).then({ timeout: 15000 }, (iframe) => {
+    return cy.wrap(iframe, { timeout: 10000 }).should(() => {
+      const content: Document | null = (iframe[0] as HTMLIFrameElement).contentDocument;
+      const element: HTMLElement | null = content !== null ? content.documentElement : null;
 
-        expect(element).not.null;
+      expect(element).not.null;
 
-        if (element !== null) {
-          expect(element.querySelector('#root > *')).not.null;
-        }
-      });
+      if (element !== null) {
+        expect(element.querySelector('#root > *')).not.null;
+      }
     });
+  });
 };
 
 export const clickAddon = (addonName: Addons) => {

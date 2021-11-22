@@ -1,13 +1,19 @@
 ```md
 <!-- Button.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
+import Button from './Button.svelte';
 import MarginDecorator from './MarginDecorator.svelte';
+
+<Meta title="Button" component={Button}/>
+
+export const Template = () => ({ Component:Button });
 
 <Story
   name="Primary"
   args={{}}
   decorators={[() => MarginDecorator]}>
+  {Template.bind({})}
 </Story>
 ```

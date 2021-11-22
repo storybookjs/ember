@@ -1,0 +1,36 @@
+```js
+// MyComponent.stories.js|jsx|ts|tsx
+
+import { MyComponent } from './MyComponent';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading 
+  * to learn how to generate automatic titles
+  */
+  title: 'Configure a11y addon',
+  component: MyComponent,
+  parameters: {
+    a11y: {
+      // Optional selector to inspect
+      element: '#root',
+      config: {
+        rules: [
+          {
+            // The autocomplete rule will not run based on the CSS selector provided
+            id: 'autocomplete-valid',
+            selector: '*:not([autocomplete="nope"])',
+          },
+          {
+            // Setting the enabled option to false will disable checks for this particular rule on all stories.
+            id: 'image-alt',
+            enabled: false,
+          },
+        ],
+      },
+      options: {},
+      manual: true,
+    },
+  },
+};
+```

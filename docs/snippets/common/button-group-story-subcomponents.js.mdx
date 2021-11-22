@@ -1,10 +1,14 @@
 ```js
-// ButtonGroup.stories.js | ButtonGroup.stories.jsx
+// ButtonGroup.stories.js|jsx
 
-import { Button, ButtonGroup } from '../ButtonGroup';
+import { Button, ButtonGroup } from './ButtonGroup';
 
 export default {
-  title: 'Path/to/ButtonGroup',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'ButtonGroup',
   component: ButtonGroup,
   subcomponents: { Button },
 };

@@ -1,14 +1,19 @@
 ```js
 // YourPage.stories.js
 
-import DocumentScreen from './DocumentScreen.vue';
+import DocumentScreen from './YourPage.vue';
+
 import WrapperComponent from './ApolloWrapperClient.vue';
 
 import { graphql } from 'msw';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'DocumentScreen',
   component: DocumentScreen,
-  title: 'Mock GraphQL query with Storybook and MSW',
 };
 
 //👇The mocked data that will be used in the story
@@ -60,12 +65,13 @@ const TestData = {
   ],
 };
 
-const PageTemplate = (args) => ({
+const PageTemplate = () => ({
   components: { DocumentScreen, WrapperComponent },
-  setup() {
-    return { args };
-  },
-  template: '<WrapperComponent><SampleGraphqlComponent v-bind="args"/></WrapperComponent>',
+  template: `
+    <WrapperComponent>
+      <SampleGraphqlComponent />
+    </WrapperComponent>
+  `,
 });
 
 export const MockedSuccess = PageTemplate.bind({});

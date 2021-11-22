@@ -1,14 +1,18 @@
 ```js
-// List.stories.js | List.stories.jsx
+// List.stories.js|jsx
 
 import React from 'react';
 
-import List from './List';
-import ListItem from './ListItem';
+import { List } from './List';
+import { ListItem } from './ListItem';
 
 export default {
-  component: List,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'List',
+  component: List,
 };
 
 export const Empty = (args) => <List {...args} />;

@@ -34,8 +34,8 @@ export const getPrebuiltDir = async (options: Options): Promise<string | false> 
   const mainConfigFile = getInterpretedFile(path.resolve(configDir, 'main'));
   if (!mainConfigFile) return false;
 
-  const { addons, refs, managerBabel, managerWebpack } = serverRequire(mainConfigFile);
-  if (!addons || refs || managerBabel || managerWebpack) return false;
+  const { addons, refs, managerBabel, managerWebpack, features } = serverRequire(mainConfigFile);
+  if (!addons || refs || managerBabel || managerWebpack || features) return false;
   if (DEFAULT_ADDONS.some((addon) => !addons.includes(addon))) return false;
   if (addons.some((addon: string) => !IGNORED_ADDONS.includes(addon))) return false;
 

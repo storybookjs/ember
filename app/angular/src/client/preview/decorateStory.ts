@@ -27,6 +27,8 @@ export default function decorateStory(
   return returnDecorators;
 }
 
+export { decorateStory };
+
 const prepareMain = (
   story: AngularFramework['storyResult'],
   context: StoryContext<AngularFramework>
