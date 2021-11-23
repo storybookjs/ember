@@ -36,7 +36,7 @@ const warnStaticDirDeprecated = warnDeprecatedFlag(
   `
     --static-dir CLI flag is deprecated, see:
 
-    https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-static-dir-flag
+    https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated---static-dir-cli-flag
   `
 );
 
