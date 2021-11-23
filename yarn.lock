@@ -7658,7 +7658,7 @@ __metadata:
     webpack: 4
   peerDependencies:
     "@angular-devkit/architect": ">=0.8.9"
-    "@angular-devkit/build-angular": ">=0.8.9"
+    "@angular-devkit/build-angular": ">=0.8.9 || >= 12.0.0"
     "@angular-devkit/core": ^0.6.1 || >=7.0.0
     "@angular/cli": ">=6.0.0"
     "@angular/common": ">=6.0.0"
@@ -7672,7 +7672,7 @@ __metadata:
     "@babel/core": "*"
     "@nrwl/workspace": ">=11.1.0"
     "@webcomponents/custom-elements": ">=1.4.3"
-    rxjs: ^6.0.0
+    rxjs: ^6.0.0 || ^7.4.0
     typescript: ^3.4.0 || >=4.0.0
     zone.js: ^0.8.29 || ^0.9.0 || ^0.10.0 || ^0.11.0
   peerDependenciesMeta:
