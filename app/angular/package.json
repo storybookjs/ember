@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.4.0-rc.3",
+  "version": "6.4.0-rc.6",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,15 +45,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-rc.3",
-    "@storybook/api": "6.4.0-rc.3",
-    "@storybook/core": "6.4.0-rc.3",
-    "@storybook/core-common": "6.4.0-rc.3",
-    "@storybook/core-events": "6.4.0-rc.3",
+    "@storybook/addons": "6.4.0-rc.6",
+    "@storybook/api": "6.4.0-rc.6",
+    "@storybook/core": "6.4.0-rc.6",
+    "@storybook/core-common": "6.4.0-rc.6",
+    "@storybook/core-events": "6.4.0-rc.6",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.4.0-rc.3",
+    "@storybook/node-logger": "6.4.0-rc.6",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-rc.3",
+    "@storybook/store": "6.4.0-rc.6",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
     "core-js": "^3.8.2",
@@ -99,7 +99,7 @@
   },
   "peerDependencies": {
     "@angular-devkit/architect": ">=0.8.9",
-    "@angular-devkit/build-angular": ">=0.8.9",
+    "@angular-devkit/build-angular": ">=0.8.9 || >= 12.0.0",
     "@angular-devkit/core": "^0.6.1 || >=7.0.0",
     "@angular/cli": ">=6.0.0",
     "@angular/common": ">=6.0.0",
@@ -113,7 +113,7 @@
     "@babel/core": "*",
     "@nrwl/workspace": ">=11.1.0",
     "@webcomponents/custom-elements": ">=1.4.3",
-    "rxjs": "^6.0.0",
+    "rxjs": "^6.0.0 || ^7.4.0",
     "typescript": "^3.4.0 || >=4.0.0",
     "zone.js": "^0.8.29 || ^0.9.0 || ^0.10.0 || ^0.11.0"
   },
@@ -138,5 +138,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "f23a6daa88a2f051e2a94d803431ab3b3d11e26b"
+  "gitHead": "b2afbb87f07d81f5c3830748490f6dca84d8e470"
 }

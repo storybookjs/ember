@@ -147,6 +147,27 @@ describe('CsfFile', () => {
       `);
     });
 
+    it('custom component id', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar', id: 'custom-id' };
+          export const A = () => {};
+          export const B = () => {};
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+          id: custom-id
+        stories:
+          - id: custom-id--a
+            name: A
+          - id: custom-id--b
+            name: B
+      `);
+    });
+
     it('typescript', () => {
       expect(
         parse(

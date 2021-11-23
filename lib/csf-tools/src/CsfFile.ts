@@ -9,6 +9,7 @@ import { babelParse } from './babelParse';
 
 const logger = console;
 interface Meta {
+  id?: string;
   title?: string;
   component?: string;
   includeStories?: string[] | RegExp;
@@ -188,6 +189,12 @@ export class CsfFile {
         } else if (p.key.name === 'component') {
           const { code } = generate(p.value, {});
           meta.component = code;
+        } else if (p.key.name === 'id') {
+          if (t.isStringLiteral(p.value)) {
+            meta.id = p.value.value;
+          } else {
+            throw new Error(`Unexpected component id: ${p.value}`);
+          }
         }
       }
     });
@@ -353,7 +360,7 @@ export class CsfFile {
     self._meta.title = self._meta.title || this._defaultTitle;
     self._stories = entries.reduce((acc, [key, story]) => {
       if (isExportStory(key, self._meta)) {
-        const id = toId(self._meta.title, storyNameFromExport(key));
+        const id = toId(self._meta.id || self._meta.title, storyNameFromExport(key));
         const parameters: Record<string, any> = { ...story.parameters, __id: id };
         if (entries.length === 1 && key === '__page') {
           parameters.docsOnly = true;

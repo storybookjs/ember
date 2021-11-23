@@ -41,7 +41,7 @@ export const MissingStory = () => (
   />
 );
 
-export const preparingStory = () => (
+export const PreparingStory = () => (
   <IFrame
     active
     id="iframe"
@@ -52,8 +52,11 @@ export const preparingStory = () => (
     scale={1.0}
   />
 );
+PreparingStory.parameters = {
+  chromatic: { disable: true },
+};
 
-export const preparingDocs = () => (
+export const PreparingDocs = () => (
   <IFrame
     active
     id="iframe"
@@ -64,3 +67,6 @@ export const preparingDocs = () => (
     scale={1.0}
   />
 );
+PreparingDocs.parameters = {
+  chromatic: { disable: true },
+};

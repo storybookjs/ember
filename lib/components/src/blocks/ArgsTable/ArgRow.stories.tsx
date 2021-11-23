@@ -23,8 +23,6 @@ const Template = (args) => <ArgRow {...args} />;
 const baseArgs = {
   updateArgs: action('updateArgs'),
 };
-export const Loading = Template.bind({});
-Loading.args = { isLoading: true };
 
 export const String = Template.bind({});
 String.args = {

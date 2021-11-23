@@ -29,6 +29,7 @@ const Template = (args) => <ArgsTable {...args} />;
 
 export const Loading = Template.bind({});
 Loading.args = { isLoading: true };
+
 export const Normal = Template.bind({});
 Normal.args = {
   rows: {
