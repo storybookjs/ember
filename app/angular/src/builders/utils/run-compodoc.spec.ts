@@ -1,7 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { LoggerApi } from '@angular-devkit/core/src/logger';
 import { take } from 'rxjs/operators';
-import { platform } from 'os';
 
 const cpSpawnMock = {
   spawn: jest.fn(),
