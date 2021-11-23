@@ -63,12 +63,12 @@ export class PostmsgTransport {
 
       // telejson options
       allowRegExp,
-      allowFunction = true,
+      allowFunction,
       allowSymbol,
       allowDate,
       allowUndefined,
       allowClass,
-      maxDepth = 25,
+      maxDepth,
       space,
       lazyEval,
     } = options || {};
@@ -87,7 +87,11 @@ export class PostmsgTransport {
       }).filter(([k, v]) => typeof v !== 'undefined')
     );
 
-    const stringifyOptions = { ...(global.CHANNEL_OPTIONS || {}), ...c };
+    const stringifyOptions = {
+      ...{ allowFunction: true, maxDepth: 25 },
+      ...(global.CHANNEL_OPTIONS || {}),
+      ...c,
+    };
 
     // backwards compat: convert depth to maxDepth
     if (options && Number.isInteger(options.depth)) {
