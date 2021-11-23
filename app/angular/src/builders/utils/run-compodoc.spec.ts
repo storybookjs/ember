@@ -3,8 +3,6 @@ import { LoggerApi } from '@angular-devkit/core/src/logger';
 import { take } from 'rxjs/operators';
 import { platform } from 'os';
 
-const shell = platform() === 'win32' ? 'powershell.exe' : 'bash';
-
 const cpSpawnMock = {
   spawn: jest.fn(),
 };
@@ -59,7 +57,7 @@ describe('runCompodoc', () => {
       {
         cwd: 'path/to/project',
         env: { FOO: 'bar' },
-        shell,
+        shell: true,
       }
     );
   });
@@ -84,7 +82,7 @@ describe('runCompodoc', () => {
       {
         cwd: 'path/to/project',
         env: { FOO: 'bar' },
-        shell,
+        shell: true,
       }
     );
   });

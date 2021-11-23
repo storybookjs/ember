@@ -1,9 +1,6 @@
 import { BuilderContext } from '@angular-devkit/architect';
 import { spawn } from 'child_process';
-import { platform } from 'os';
 import { Observable } from 'rxjs';
-
-const shell = platform() === 'win32' ? 'powershell.exe' : 'bash';
 
 const hasTsConfigArg = (args: string[]) => args.indexOf('-p') !== -1;
 
@@ -26,7 +23,7 @@ export const runCompodoc = (
       const child = spawn('npx', finalCompodocArgs, {
         cwd: context.workspaceRoot,
         env: process.env,
-        shell,
+        shell: true,
       });
 
       child.stdout.on('data', (data) => {

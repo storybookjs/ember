@@ -10,6 +10,7 @@ const cpSpawnMock = {
   spawn: jest.fn(),
 };
 jest.doMock('child_process', () => cpSpawnMock);
+
 describe('Build Storybook Builder', () => {
   let architect: Architect;
   let architectHost: TestingArchitectHost;
@@ -145,14 +146,15 @@ describe('Build Storybook Builder', () => {
     await run.stop();
 
     expect(output.success).toBeTruthy();
-    expect(cpSpawnMock.spawn).toHaveBeenCalledWith('compodoc', [
-      '-p',
-      'src/tsconfig.app.json',
-      '-d',
-      '',
-      '-e',
-      'json',
-    ]);
+    expect(cpSpawnMock.spawn).toHaveBeenCalledWith(
+      'npx',
+      ['compodoc', '-p', 'src/tsconfig.app.json', '-d', '', '-e', 'json'],
+      {
+        cwd: '',
+        env: process.env,
+        shell: true,
+      }
+    );
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
