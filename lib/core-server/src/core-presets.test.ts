@@ -19,6 +19,8 @@ import htmlOptions from '../../../app/html/src/server/options';
 import webComponentsOptions from '../../../app/web-components/src/server/options';
 import { outputStats } from './utils/output-stats';
 
+const { SNAPSHOT_OS } = global;
+
 // this only applies to this file
 jest.setTimeout(10000);
 
@@ -151,13 +153,13 @@ describe.each([
       await buildDevStandalone({ ...options, ignorePreview: true });
 
       const managerConfig = prepareSnap(managerExecutor.get, 'manager');
-      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-dev`));
+      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-dev-${SNAPSHOT_OS}`));
     });
     it('production mode', async () => {
       await buildStaticStandalone({ ...options, ignorePreview: true });
 
       const managerConfig = prepareSnap(managerExecutor.get, 'manager');
-      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-prod`));
+      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-prod-${SNAPSHOT_OS}`));
     });
   });
 
@@ -166,13 +168,13 @@ describe.each([
       await buildDevStandalone({ ...options, managerCache: true });
 
       const previewConfig = prepareSnap(previewExecutor.get, 'preview');
-      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-dev`));
+      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-dev-${SNAPSHOT_OS}`));
     });
     it('production mode', async () => {
       await buildStaticStandalone({ ...options, managerCache: true });
 
       const previewConfig = prepareSnap(previewExecutor.get, 'preview');
-      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-prod`));
+      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-prod-${SNAPSHOT_OS}`));
     });
   });
 });
