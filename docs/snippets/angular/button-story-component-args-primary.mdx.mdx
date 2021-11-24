@@ -3,9 +3,10 @@
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Button from './button.component';
+import { Button } from './button.component';
 
 <!-- 👇 Creates specific argTypes for args and turns every Button story into primary -->
+
 <Meta 
   title="Button"
   component={Button}
@@ -14,7 +15,7 @@ import Button from './button.component';
   }},
   args={{
     primary: true,
-  }}/>
+  }} />
 
 <!-- Remainder story implementation -->
 ```

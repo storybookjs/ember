@@ -1,9 +1,13 @@
 ```md
 <!-- Table.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
-import Table from './Table';
+import { Table } from './Table';
+import { TD } from './TableDataCell';
+import { TR } from './TableRow';
+
+<Meta title="Custom Table" component={Table} />
 
 export const TableStory = ({ data, ...args }) => (
   <Table {...args} >
@@ -16,8 +20,7 @@ export const TableStory = ({ data, ...args }) => (
   args={{
     data: [[1, 2, 3], [4, 5, 6]],
     size: 'large',
-  }}
->
+  }}>
   {TableStory.bind({})}
 </Story>
 ```

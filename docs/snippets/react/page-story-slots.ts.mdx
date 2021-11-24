@@ -1,18 +1,22 @@
 ```ts
-// Page.stories.ts | Page.stories.tsx
+// Page.stories.ts|tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Page, PageProps } from './Page';
+import { Page } from './Page';
 
 export default {
-  component: Page,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Page',
-} as Meta;
+  component: Page,
+} as ComponentMeta<typeof Page>;
 
-const Template: Story<PageProps> = (args) => (
+const Template: ComponentStory<typeof Page> = (args) => (
   <Page {...args}>
     <footer>{args.footer}</footer>
   </Page>

@@ -1,9 +1,16 @@
 ```ts
-// YourComponent.stories.ts | YourComponent.stories.tsx
+// YourComponent.stories.ts|tsx
 
-import { Meta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
+
+import { YourComponent } from './YourComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   component: YourComponent,
   decorators: [
     (Story) => (
@@ -12,5 +19,5 @@ export default {
       </div>
     ),
   ],
-} as Meta;
+} as ComponentMeta<typeof YourComponent>;
 ```

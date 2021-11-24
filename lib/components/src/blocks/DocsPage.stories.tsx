@@ -42,7 +42,7 @@ export const Loading = () => (
     </Subtitle>
     <Description {...description.Text.args} />
     <Preview.Loading />
-    <argsTable.Loading />
+    <argsTable.Loading {...argsTable.Loading.args} />
     <Source {...source.Loading.args} />
   </DocsPageWrapper>
 );

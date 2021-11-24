@@ -1,23 +1,22 @@
 ```js
-// YourComponent.stories.js | YourComponent.stories.jsx
+// YourComponent.stories.js|jsx
 
 import React from 'react';
 
 import { YourComponent } from './your-component';
 
-//👇 Some function to demonstrate the behavior
-const someFunction = (valuePropertyA, valuePropertyB) => {
-  // Makes some computations and returns something
-};
-
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   component: YourComponent,
-  title: 'A complex case with a function',
   //👇 Creates specific argTypes with options
   argTypes: {
     propertyA: {
       options: ['Item One', 'Item Two', 'Item Three'],
-      control: { type: 'select' } // Automatically inferred when 'options' is defined
+      control: { type: 'select' }, // Automatically inferred when 'options' is defined
     },
     propertyB: {
       options: ['Another Item One', 'Another Item Two', 'Another Item Three'],
@@ -25,10 +24,21 @@ export default {
   },
 };
 
+//👇 Some function to demonstrate the behavior
+const someFunction = (valuePropertyA, valuePropertyB) => {
+  // Makes some computations and returns something
+};
+
 const Template = ({ propertyA, propertyB, ...rest }) => {
   //👇 Assigns the function result to a variable
   const someFunctionResult = someFunction(propertyA, propertyB);
 
   return <YourComponent someProperty={someFunctionResult} {...rest} />;
+};
+
+export const ExampleStory = Template.bind({});
+ExampleStory.args= {
+  propertyA: 'Item One',
+  propertyB: 'Another Item One',
 };
 ```

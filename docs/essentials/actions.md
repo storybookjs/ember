@@ -17,7 +17,7 @@ Actions work via supplying special Storybook-generated “action” arguments (r
 
 ### Action argType annotation
 
-You can use [argTypes](../api/argtypes.md) to tell Storybook that an arg to your story should be an action. Usually it makes sense to do this at the component level (although it can be done per story):
+You can use [argTypes](../api/argtypes.md) to tell Storybook that an arg to your story should be an action. Usually, it makes sense to do this at the component level (although you can apply it per individual story):
 
 <!-- prettier-ignore-start -->
 
@@ -30,13 +30,25 @@ You can use [argTypes](../api/argtypes.md) to tell Storybook that an arg to your
 
 <!-- prettier-ignore-end -->
 
-When Storybook sees this argType it will create an arg that is set to a special “action” callback. If your component calls this arg (based on user interaction) the event will show up in the action panel:
+When Storybook sees this argType, it will create an arg set to a special “action” callback. If your component calls this arg (based on the user's interaction or through the `play` function), the event will show up in the action panel:
 
 ![Essential Actions addon usage](./addon-actions-screenshot.png)
 
 ### Automatically matching args
 
-Another option is to use a parameter to match all [argTypes](../api/argtypes.md) that match a certain pattern. The following configuration automatically creates actions for each `on` argType (which you can either specify manually or can be [inferred automatically](../api/argtypes.md#automatic-argtype-inference)).
+Another option is to use a global parameter to match all [argTypes](../api/argtypes.md) that match a certain pattern. The following configuration automatically creates actions for each `on` argType (which you can either specify manually or can be [inferred automatically](../api/argtypes.md#automatic-argtype-inference)).
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-preview-matching-argtypes.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+If you need more granular control over which `argTypes` are matched, you can adjust your stories and include the `argTypes` parameter. For example:
 
 <!-- prettier-ignore-start -->
 
@@ -51,7 +63,7 @@ Another option is to use a parameter to match all [argTypes](../api/argtypes.md)
 
 <div class="aside">
 
-NOTE: If you're generating argTypes in using another addon (like [docs](../writing-docs/introduction.md), which is the common behavior) you'll need to make sure that the actions addon loads **AFTER** the other addon. You can do this by listing it later in the addons registration code in [`.storybook/main.js`](../configure/overview.md#configure-story-rendering). This is default in [essentials](./introduction.md).
+💡 <strong>NOTE</strong>: If you're generating argTypes with another addon (like [docs](../writing-docs/introduction.md), which is the common behavior), ensure the actions addon <strong>AFTER</strong> the other addon. You can do this by listing it later in the addons registration code in [`.storybook/main.js`](../configure/overview.md#configure-story-rendering). This is default in [essentials](./introduction.md).
 
 </div>
 
@@ -70,7 +82,7 @@ It is also possible to detect if your component is emitting the correct HTML eve
 
 <!-- prettier-ignore-end -->
 
-This will bind a standard HTML event handler to the outermost HTML element rendered by your component and trigger an action when the event is called for a given selector. The format is `<eventname> <selector>`. Selector is optional; it defaults to all elements.
+This will bind a standard HTML event handler to the outermost HTML element rendered by your component and trigger an action when the event is called for a given selector. The format is `<eventname> <selector>`. The selector is optional; it defaults to all elements.
 
 ## Advanced / legacy usage
 

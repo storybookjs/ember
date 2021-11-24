@@ -1,9 +1,21 @@
 ```js
-// MyComponent.story.js | MyComponent.story.jsx | MyComponent.story.ts | MyComponent.story.tsx
+// MyComponent.story.js|jsx|ts|tsx
 
-export const Simple = () => <MyComponent />;
+import { MyComponent } from './MyComponent';
 
-Simple.storyName = 'So simple!';
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Path/To/MyComponent', 
+  component: MyComponent,
+};
+
+export const Simple = () => ({
+  //👇 Your story goes here
+});
 Simple.decorators = [ ... ];
 Simple.parameters = { ... };
+Simple.storyName = 'So simple!';
 ```

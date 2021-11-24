@@ -1,12 +1,17 @@
 ```js
 // YourPage.stories.js
 
-import DocumentScreen from './DocumentScreen.svelte';
+import DocumentScreen from './YourPage.svelte';
 
 import { rest } from 'msw';
+
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'DocumentScreen',
   component: DocumentScreen,
-  title: 'Mock Rest request with Storybook and MSW',
 };
 
 //👇The mocked data that will be used in the story
@@ -58,9 +63,8 @@ const TestData = {
   ],
 };
 
-const PageTemplate = (args) => ({
+const PageTemplate = () => ({
   Component: DocumentScreen,
-  props: args,
 });
 
 export const MockedSuccess = PageTemplate.bind({});

@@ -18,7 +18,12 @@ export const DEBOUNCE = 100;
 export async function extractStoriesJson(
   outputFile: string,
   normalizedStories: NormalizedStoriesSpecifier[],
-  options: { configDir: string; workingDir: string; storiesV2Compatibility: boolean }
+  options: {
+    configDir: string;
+    workingDir: string;
+    storiesV2Compatibility: boolean;
+    storyStoreV7: boolean;
+  }
 ) {
   const generator = new StoryIndexGenerator(normalizedStories, options);
   await generator.initialize();
@@ -42,6 +47,7 @@ export async function useStoriesJson(
     configDir: options.configDir,
     workingDir,
     storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
+    storyStoreV7: features?.storyStoreV7,
   });
 
   // Wait until someone actually requests `stories.json` before we start generating/watching.

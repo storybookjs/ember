@@ -3,11 +3,16 @@
 
 import Page from './Page.vue';
 
+//👇 Imports all Header stories
 import * as HeaderStories from './Header.stories';
 
 export default {
-  component: Page,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Page',
+  component: Page,
 };
 
 const Template = (args) => ({

@@ -101,7 +101,7 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
 
           > ${err.message}
           
-          Are you using a V7-style sort function in V6 compatibilty mode?
+          Are you using a V7-style sort function in V6 compatibility mode?
           
           More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
         `);

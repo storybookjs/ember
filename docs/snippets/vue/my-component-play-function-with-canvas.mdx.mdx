@@ -1,0 +1,29 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { getByRole, userEvent, within } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.vue';
+
+<Meta title="WithCanvasElement" component={MyComponent} />
+
+export const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent/>',
+});
+
+<Story
+  name="ExampleStory"
+  play={async ({ canvasElement }) => {
+    // Assigns canvas to the component root element
+    const canvas = within(canvasElement);
+
+    // Starts querying from the component's root element
+    await userEvent.type(canvas.getByTestId('example-element'), 'something');
+    await userEvent.click(canvas.getByRole('another-element'));
+  }}>
+  {Template.bind({})}
+</Story>
+```

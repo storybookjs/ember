@@ -1,15 +1,21 @@
 ```md
-<!--- MyComponent.stories.mdx -->
+<!-- MyComponent.stories.mdx -->
 
-import { ArgsTable, Story } from '@storybook/addon-docs';
+import { ArgsTable, Meta, Story } from '@storybook/addon-docs';
 
 import { MyComponent } from './MyComponent';
 
+<Meta title="MyComponent" component={MyComponent} />
+
+export const Template = (args) => ({
+  //👇 Your template goes here
+});
+
 # My Component!
 
-<Story name="My Story">
-  <!-- my story for MyComponent -->
-  {(args) => <MyComponent {...args} />}
+<Story 
+  name="My Story" >
+  {Template.bind({})}
 </Story>
 
 <ArgsTable story="My Story" />

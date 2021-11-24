@@ -15,6 +15,7 @@ const options = {
   configDir: path.join(__dirname, '__mockdata__'),
   workingDir: path.join(__dirname, '__mockdata__'),
   storiesV2Compatibility: false,
+  storyStoreV7: true,
 };
 
 describe('StoryIndexGenerator', () => {

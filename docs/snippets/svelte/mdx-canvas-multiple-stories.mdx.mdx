@@ -1,7 +1,11 @@
 ```md
-<!-- Badge.stories.mdx --->
+<!-- Badge.stories.mdx -->
 
-import { Canvas } from '@storybook/addon-docs';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import Badge from './Badge.svelte';
+
+<Meta title="MDX/Badge" component={Badge} />
 
 export const Template = (args) => ({
   Component: Badge,

@@ -4,14 +4,22 @@
 import Button from './Button.svelte';
 
 export default {
-  title: 'Components/Button',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
   component: Button,
-}
+};
 
-const Template = (args) => ({ Component: Button, props: args });
+// 👇 We create a “template” of how args map to rendering
+const Template = (args)=>({
+  component: Button,
+  props: args,
+});
 
+//👇 Each story then reuses that template
 export const Primary = Template.bind({});
-
 Primary.args = {
   primary: true,
   label: 'Button',

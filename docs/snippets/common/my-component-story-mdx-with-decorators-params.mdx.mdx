@@ -1,12 +1,14 @@
 ```md
-<!--- MyComponent.stories.mdx --->
+<!-- MyComponent.stories.mdx -->
 
 import { Meta, Story } from '@storybook/addon-docs';
 
+import { MyComponent } from './MyComponent';
 <Meta
   title="MyComponent"
   decorators={[ ... ]}
   parameters={{ ... }}
+  component={MyComponent}
 />
 
 <Story 

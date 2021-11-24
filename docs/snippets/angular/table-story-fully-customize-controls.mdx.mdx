@@ -1,7 +1,11 @@
 ```md
 <!-- Table.stories.mdx -->
 
-import { Story } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Table } from './Table.component';
+
+<Meta title="Custom Table" component={Table} />
 
 export const TableStory = (args) => ({
   props: args,

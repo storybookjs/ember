@@ -4,7 +4,7 @@ title: 'Loaders (experimental)'
 
 Loaders (experimental) are asynchronous functions that load data for a story and its [decorators](./decorators.md). A story's loaders run before the story renders, and the loaded data injected into the story via its render context.
 
-Loaders can be used to load any asset, lazy load components, or fetch data from a remote API. This feature was designed as a performance optimization to handle large story imports. However, [Args](./args.md) is the recommended way to manage story data. We're building up an ecosystem of tools and techniques around Args that might not be compatible with loaded data.
+Loaders can be used to load any asset, lazy load components, or fetch data from a remote API. This feature was designed as a performance optimization to handle large story imports. However, [args](./args.md) is the recommended way to manage story data. We're building up an ecosystem of tools and techniques around Args that might not be compatible with loaded data.
 
 They are an advanced feature (i.e., escape hatch), and we only recommend using them if you have a specific need that other means can't fulfill. They are experimental in Storybook 6.1, and the APIs are subject to change outside of the normal semver cycle.
 

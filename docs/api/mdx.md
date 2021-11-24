@@ -20,27 +20,28 @@ Let's get started with an example that combines Markdown with a single story:
 
 <!-- prettier-ignore-end -->
 
-And here's how that's rendered in Storybook:
+And here's how it renders in Storybook:
 
 ![Show a simple mdx example](./mdx-simple.png)
 
-As you can see there's a lot going on here. We're writing Markdown, we're writing JSX, and somehow we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
+As you can see, a lot is going on here. We're writing Markdown, we're writing JSX, and somehow we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
 
 Let's break it down.
 
 ## MDX-Flavored CSF
 
-[MDX](https://mdxjs.com/) is a standard file format that combines Markdown with JSX. This means you can use Markdown’s terse syntax (such as `# heading`) for your documentation, and freely embed JSX component blocks at any point in the file.
+[MDX](https://mdxjs.com/) is a standard file format that combines Markdown with JSX. It means you can use Markdown’s terse syntax (such as `# heading`) for your documentation and freely embed JSX component blocks at any point in the file.
 
-MDX-flavored [Component Story Format (CSF)](https://medium.com/storybookjs/component-story-format-66f4c32366df) includes a collection of components called **"Doc Blocks"**, that allow Storybook to translate MDX files into storybook stories. MDX-defined stories are identical to regular Storybook stories, so they can be used with Storybook's entire ecosystem of addons and view layers.
+MDX-flavored [Component Story Format (CSF)](https://medium.com/storybookjs/component-story-format-66f4c32366df) includes a collection of components called **"Doc Blocks"**, that allow Storybook to translate MDX files into Storybook stories. MDX-defined stories are identical to regular Storybook stories, so they can be used with Storybook's entire ecosystem of addons and view layers.
 
-For example, here's the story from `Checkbox` example above, rewritten in CSF:
+For example, here's the story from the `Checkbox` example above, rewritten in CSF:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
     'react/checkbox-story-csf.js.mdx',
+    'react/checkbox-story-csf.ts.mdx',
     'vue/checkbox-story-csf.js.mdx',
     'angular/checkbox-story-csf.ts.mdx',
     'svelte/checkbox-story-csf.native-format.mdx',
@@ -49,7 +50,7 @@ For example, here's the story from `Checkbox` example above, rewritten in CSF:
 
 <!-- prettier-ignore-end -->
 
-There's a one-to-one mapping from the code in `MDX` to `CSF`, which in turn directly corresponds to Storybook's internal `storiesOf` API. As a user, this means your existing Storybook knowledge should translate between the three. And technically, this means that the transformations that happen under the hood are simple and predictable.
+There's a one-to-one mapping from the code in `MDX` to `CSF`, which in turn directly corresponds to Storybook's internal `storiesOf` API. As a user, this means your existing Storybook knowledge should translate between the three constructs. And technically, this means that the transformations that happen under the hood are predictable and straightforward.
 
 ## Writing stories
 
@@ -101,7 +102,7 @@ To add [decorators](../writing-docs/mdx.md#decorators-and-parameters) and [param
 
 <!-- prettier-ignore-end -->
 
-In addition, global decorators work just like before, e.g. adding the following to your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
+In addition, global decorators work just like before, e.g., adding the following to your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
 
 <!-- prettier-ignore-start -->
 
@@ -113,20 +114,38 @@ In addition, global decorators work just like before, e.g. adding the following 
 
 <!-- prettier-ignore-end -->
 
+### Play function
+
+Storybook's `play` functions are small snippets of code that run after the story loads. They're helpful methods to help test scenarios that otherwise would require user intervention. For example, if you're working on a login component and want to interact with it and verify the component's workflow, you could write the following story:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'react/login-form-with-play-function.mdx.mdx',
+    'angular/login-form-with-play-function.mdx.mdx',
+    'vue/login-form-with-play-function.mdx-2.mdx',
+    'vue/login-form-with-play-function.mdx-3.mdx',
+    'svelte/login-form-with-play-function.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 ## Documentation-only MDX
 
-Typically, when you use Storybook MDX, you define stories in the MDX and the documentation is automatically associated with those stories. But what if you want to write Markdown-style documentation and have it show up in your Storybook?
+Typically, when you use the MDX format, you define your stories and are automatically generated by Storybook. But what if you want to write Markdown-style documentation and have it show up in your Storybook?
 
-If you don't define stories in your MDX, you can write MDX documentation and associate it with an existing story, or embed that MDX as its own documentation node in your Storybook's navigation.
+Suppose you don't define stories in your MDX. In that case, you can write MDX documentation and associate it with an existing story or embed that MDX as its documentation node in your Storybook's navigation.
 
-If you don't define a `Meta`, you can write Markdown and associate with an existing story. See ["CSF Stories with MDX Docs"](../writing-docs/mdx.md).
+If you don't define a `Meta`, you can write Markdown and associate it with an existing story. See ["CSF Stories with MDX Docs"](../writing-docs/mdx.md).
 
-To get a "documentation-only story", in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
+To get a "documentation-only story" in your UI, define a `<Meta>` as you usually would, but don't define any stories. It will show up in your UI as a documentation node:
 
 ![Show documentation](./mdx-documentation-only.png)
 
 ## MDX file names
 
-Unless you use a custom webpack configuration, all of your `MDX` files should have the suffix `*.stories.mdx`. This tells Storybook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
+Unless you use a custom webpack configuration, all of your `MDX` files should have the suffix `*.stories.mdx`. It tells Storybook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
 
 Be sure to update your Storybook config file to load `.stories.mdx` stories, as per the [`addon-docs` installation instructions](https://github.com/storybookjs/storybook/tree/master/addons/docs#installation).

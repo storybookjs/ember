@@ -1,12 +1,12 @@
 ```md
-<!--- YourComponent.stories.mdx -->
+<!-- YourComponent.stories.mdx -->
 
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Meta } from '@storybook/addon-docs';
 
 import { YourComponent } from './YourComponent'
 
 <Meta 
-  title="My Story"
+  title="YourComponent"
   component={YourComponent} 
   argTypes={{
     foo:{
@@ -15,14 +15,4 @@ import { YourComponent } from './YourComponent'
       }
     }
   }} />
-
-<Canvas>
-  <Story 
-    name="My Story"
-    args={{ 
-      foo: 'bar',
-    }}>
-    {Template.bind({})}
-  </Story>
-</Canvas>
 ```

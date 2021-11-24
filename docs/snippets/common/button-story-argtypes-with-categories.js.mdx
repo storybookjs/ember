@@ -1,7 +1,13 @@
 ```js
-// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+// Button.stories.js|jsx|ts|tsx
+
+import { Button } from './Button';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Button',
   component: Button,
   argTypes: {
@@ -9,32 +15,32 @@ export default {
     backgroundColor: {
       control: 'color',
       table: {
-        category: 'Colors'
-      }
+        category: 'Colors',
+      },
     },
     primary: {
       table: {
-        category: 'Colors'
-      }
+        category: 'Colors',
+      },
     },
     // Assigns the argType to the Text category
     label: {
       table: {
-        category: 'Text'
-      }
+        category: 'Text',
+      },
     },
     // Assigns the argType to the Events category
     onClick: {
       table: {
-        category: 'Events'
-      }
+        category: 'Events',
+      },
     },
     // Assigns the argType to the Sizes category
     size: {
       table: {
-        category: 'Sizes'
-      }
-    }
-  }
+        category: 'Sizes',
+      },
+    },
+  },
 };
 ```

@@ -1,12 +1,11 @@
 ```md
-
 <!-- Custom-MDX-Documentation.mdx -->
 
 # Replacing DocsPage with custom `MDX` content
 
 This file is a documentation-only `MDX`file to customize Storybook's [DocsPage](https://storybook.js.org/docs/react/writing-docs/docs-page#replacing-docspage).
 
-It can be further expanded with your own code snippets and include specific information related to your stories. 
+It can be further expanded with your own code snippets and include specific information related to your stories.
 
 For example:
 
@@ -20,6 +19,10 @@ Button is the primary component. It has four possible states.
 - [Secondary](#secondary)
 - [Large](#large)
 - [Small](#small)
+
+## With the story title defined
+
+If you included the title in the story's default export, use this approach.
 
 ### Primary
 
@@ -36,4 +39,24 @@ Button is the primary component. It has four possible states.
 ### Small
 
 <Story id="example-button--small" />
+
+## Without the story title defined
+
+If you didn't include the title in the story's default export, use this approach.
+
+### Primary
+
+<Story id="your-directory-button--primary"/>
+
+### Secondary
+
+<Story id="your-directory-button--secondary"/>
+
+### Large
+
+<Story id="your-directory-button--large"/>
+
+### Small
+
+<Story id="your-directory-button--small" />
 ```

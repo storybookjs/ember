@@ -1,6 +1,17 @@
 ```js
 // Table.stories.js
 
+import Table from './Table.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Custom Table',
+  component: Table,
+};
+
 const TableStory = (args, { argTypes }) => ({
   components: { Table },
   props: Object.keys(argTypes),
