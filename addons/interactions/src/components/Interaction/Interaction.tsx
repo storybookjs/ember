@@ -40,9 +40,7 @@ const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].inclu
   padding: '8px 15px',
   textAlign: 'start',
   cursor: disabled || call.status === CallStates.ERROR ? 'default' : 'pointer',
-  '&:hover': {
-    background: theme.background.hoverable,
-  },
+  '&:hover': disabled ? {} : { background: theme.background.hoverable },
   '&:focus-visible': {
     outline: 0,
     boxShadow: `inset 3px 0 0 0 ${

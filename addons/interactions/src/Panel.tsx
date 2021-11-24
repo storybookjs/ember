@@ -47,6 +47,7 @@ const TabStatus = ({ children }: { children: React.ReactChild }) => {
 
 export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   ({
+    calls,
     controls,
     controlStates,
     interactions,
@@ -54,12 +55,11 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
     hasException,
     isPlaying,
     onScrollToEnd,
-    calls,
     endRef,
     ...panelProps
   }) => (
     <AddonPanel {...panelProps}>
-      {controls && interactions.length > 0 && (
+      {controlStates.debugger && interactions.length > 0 && (
         <Subnav
           controls={controls}
           controlStates={controlStates}

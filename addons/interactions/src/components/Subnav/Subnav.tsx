@@ -103,6 +103,7 @@ const withTooltipModifiers = [
 
 export const Subnav: React.FC<SubnavProps> = ({
   controls,
+  controlStates,
   status,
   storyFileName,
   onScrollToEnd,
@@ -124,10 +125,10 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={controls.start ? 'hover' : 'none'}
+            trigger={controlStates.start ? 'hover' : 'none'}
             tooltip={<Note note="Go to start" />}
           >
-            <RewindButton onClick={controls.start} disabled={!controls.start}>
+            <RewindButton onClick={controls.start} disabled={!controlStates.start}>
               <Icons icon="rewind" />
             </RewindButton>
           </WithTooltip>
@@ -135,10 +136,10 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={controls.back ? 'hover' : 'none'}
+            trigger={controlStates.back ? 'hover' : 'none'}
             tooltip={<Note note="Go back" />}
           >
-            <StyledIconButton onClick={controls.back} disabled={!controls.back}>
+            <StyledIconButton onClick={controls.back} disabled={!controlStates.back}>
               <Icons icon="playback" />
             </StyledIconButton>
           </WithTooltip>
@@ -146,21 +147,21 @@ export const Subnav: React.FC<SubnavProps> = ({
           <WithTooltip
             modifiers={withTooltipModifiers}
             hasChrome={false}
-            trigger={controls.next ? 'hover' : 'none'}
+            trigger={controlStates.next ? 'hover' : 'none'}
             tooltip={<Note note="Go forward" />}
           >
-            <StyledIconButton onClick={controls.next} disabled={!controls.next}>
+            <StyledIconButton onClick={controls.next} disabled={!controlStates.next}>
               <Icons icon="playnext" />
             </StyledIconButton>
           </WithTooltip>
 
           <WithTooltip
             modifiers={withTooltipModifiers}
-            trigger={controls.end ? 'hover' : 'none'}
+            trigger={controlStates.end ? 'hover' : 'none'}
             hasChrome={false}
             tooltip={<Note note="Go to end" />}
           >
-            <StyledIconButton onClick={controls.end} disabled={!controls.end}>
+            <StyledIconButton onClick={controls.end} disabled={!controlStates.end}>
               <Icons icon="fastforward" />
             </StyledIconButton>
           </WithTooltip>
