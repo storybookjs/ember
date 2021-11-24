@@ -1,3 +1,13 @@
+## 6.4.0-rc.7 (November 24, 2021)
+
+### Bug Fixes
+
+- Core: Add `./` to start of hidden file & folder paths ([#16723](https://github.com/storybookjs/storybook/pull/16723))
+
+### Dependency Upgrades
+
+- Update peer dependencies for angular 13 support ([#16758](https://github.com/storybookjs/storybook/pull/16758))
+
 ## 6.4.0-rc.6 (November 22, 2021)
 
 ### Bug Fixes
