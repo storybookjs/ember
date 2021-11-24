@@ -40,7 +40,7 @@ Demo.play = async ({ args, canvasElement }) => {
 export const FindBy: CSF2Story = (args) => {
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1500);
+    setTimeout(() => setIsLoading(false), 500);
   }, []);
   return isLoading ? <div>Loading...</div> : <button type="button">Loaded!</button>;
 };
