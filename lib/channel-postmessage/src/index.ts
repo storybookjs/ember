@@ -19,6 +19,8 @@ interface BufferedEvent {
 
 export const KEY = 'storybook-channel';
 
+const defaultEventOptions = { allowFunction: true, maxDepth: 25 };
+
 // TODO: we should export a method for opening child windows here and keep track of em.
 // that way we can send postMessage to child windows as well, not just iframe
 // https://stackoverflow.com/questions/6340160/how-to-get-the-references-of-all-already-opened-child-windows
@@ -63,17 +65,17 @@ export class PostmsgTransport {
 
       // telejson options
       allowRegExp,
-      allowFunction = true,
+      allowFunction,
       allowSymbol,
       allowDate,
       allowUndefined,
       allowClass,
-      maxDepth = 25,
+      maxDepth,
       space,
       lazyEval,
     } = options || {};
 
-    const c = Object.fromEntries(
+    const eventOptions = Object.fromEntries(
       Object.entries({
         allowRegExp,
         allowFunction,
@@ -87,7 +89,11 @@ export class PostmsgTransport {
       }).filter(([k, v]) => typeof v !== 'undefined')
     );
 
-    const stringifyOptions = { ...(global.CHANNEL_OPTIONS || {}), ...c };
+    const stringifyOptions = {
+      ...defaultEventOptions,
+      ...(global.CHANNEL_OPTIONS || {}),
+      ...eventOptions,
+    };
 
     // backwards compat: convert depth to maxDepth
     if (options && Number.isInteger(options.depth)) {
