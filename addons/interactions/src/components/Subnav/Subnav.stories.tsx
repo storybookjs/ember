@@ -18,8 +18,8 @@ export default {
       start: true,
       back: true,
       goto: true,
-      next: true,
-      end: true,
+      next: false,
+      end: false,
     },
     storyFileName: 'Subnav.stories.tsx',
     hasNext: true,
@@ -45,18 +45,44 @@ export const Runs = {
   },
 };
 
-export const AtTheBeginning = {
-  name: 'at the beginning',
+export const AtStart = {
   args: {
-    status: CallStates.DONE,
-    hasPrevious: false,
+    status: CallStates.WAITING,
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: true,
+      next: true,
+      end: true,
+    },
   },
 };
 
-export const AtTheEnd = {
-  name: 'at the end',
+export const Midway = {
   args: {
-    status: CallStates.DONE,
-    hasNext: false,
+    status: CallStates.WAITING,
+    controlStates: {
+      debugger: true,
+      start: true,
+      back: true,
+      goto: true,
+      next: true,
+      end: true,
+    },
+  },
+};
+
+export const Locked = {
+  args: {
+    status: CallStates.ACTIVE,
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: false,
+      next: false,
+      end: false,
+    },
   },
 };

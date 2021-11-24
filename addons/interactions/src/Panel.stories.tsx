@@ -60,6 +60,14 @@ export const Paused: Story = {
   args: {
     isPlaying: true,
     interactions: [getCall(CallStates.WAITING)],
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: true,
+      next: true,
+      end: true,
+    },
   },
 };
 
