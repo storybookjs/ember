@@ -8,7 +8,8 @@ import {
 } from '@storybook/core-events';
 import global from 'global';
 
-import { EVENTS, Instrumenter, Options } from './instrumenter';
+import { EVENTS, Instrumenter } from './instrumenter';
+import { Options } from './types';
 
 const callSpy = jest.fn();
 const syncSpy = jest.fn();
@@ -133,7 +134,7 @@ describe('Instrumenter', () => {
         path: ['obj'],
         method: 'fn',
         interceptable: false,
-        state: 'done',
+        status: 'done',
         parentId: undefined,
       })
     );
@@ -213,16 +214,25 @@ describe('Instrumenter', () => {
       expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: 'kind--story [1] fn2' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2 [0] fn3',
+        parentId: 'kind--story [0] fn1 [0] fn2',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [3] fn4', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [1] fn4',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [4] fn5', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [1] fn5', parentId: undefined })
     );
   });
 
@@ -235,10 +245,13 @@ describe('Instrumenter', () => {
       expect.objectContaining({ id: 'kind--story [0] fn1', parentId: undefined })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [1] fn2', parentId: 'kind--story [0] fn1' })
+      expect.objectContaining({
+        id: 'kind--story [0] fn1 [0] fn2',
+        parentId: 'kind--story [0] fn1',
+      })
     );
     expect(callSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'kind--story [2] fn3', parentId: undefined })
+      expect.objectContaining({ id: 'kind--story [1] fn3', parentId: undefined })
     );
   });
 
@@ -273,10 +286,14 @@ describe('Instrumenter', () => {
     fn('foo', fn('bar')).fn2();
     fn('baz');
     jest.runAllTimers();
-    expect(syncSpy).toHaveBeenCalledWith([
-      { callId: 'kind--story [2] fn2', state: 'done' },
-      { callId: 'kind--story [3] fn', state: 'done' },
-    ]);
+    expect(syncSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        logItems: [
+          { callId: 'kind--story [2] fn2', status: 'done' },
+          { callId: 'kind--story [3] fn', status: 'done' },
+        ],
+      })
+    );
   });
 
   it('catches thrown errors and returns the error', () => {
@@ -340,7 +357,7 @@ describe('Instrumenter', () => {
   describe('with intercept: true', () => {
     const options = { intercept: true };
 
-    it('emits a call event with exception metadata when the function throws', () => {
+    it('emits a call event with error data when the function throws', () => {
       const { fn } = instrument(
         {
           fn: () => {
@@ -357,7 +374,6 @@ describe('Instrumenter', () => {
             name: 'Error',
             message: 'Boom!',
             stack: expect.stringContaining('Error: Boom!'),
-            callId: 'kind--story [0] fn',
           },
         })
       );
