@@ -1,0 +1,39 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { MyComponent } from './MyComponent.component';
+
+<Meta 
+  title="Configure a11y addon" 
+  component={MyComponent} />
+
+export const Template = () => ({});
+
+<Story
+  name="ExampleStory"
+  parameters={{
+    a11y: {
+      element: '#root',
+      config: {
+        rules: [
+          {
+            // The autocomplete rule will not run based on the CSS selector provided
+            id: 'autocomplete-valid',
+            selector: '*:not([autocomplete="nope"])',
+          },
+          {
+            // Setting the enabled option to false will disable checks for this particular rule on all stories.
+            id: 'image-alt',
+            enabled: false,
+          },
+        ],
+      },
+      options: {},
+      manual: true,
+    },
+  }}>
+  {Template.bind({})}
+</Story>
+```

@@ -1,14 +1,19 @@
 ```ts
 // Button.stories.ts
 
-import { componentWrapperDecorator, Meta, moduleMetadata, Story } from '@storybook/angular';
+import { componentWrapperDecorator, Meta, moduleMetadata } from '@storybook/angular';
 
-import { ButtonComponent } from './button.component';
-import { ParentComponent } from './parent.component';
+import { Button } from './button.component';
+
+import { Parent } from './parent.component'; // Parent contains ng-content
 
 export default {
-  title: 'Components/Button',
-  component: ButtonComponent,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
+  component: Button,
   decorators: [
     moduleMetadata({
       declarations: [ParentComponent],
@@ -16,16 +21,7 @@ export default {
     // With template
     componentWrapperDecorator((story) => `<div style="margin: 3em">${story}</div>`),
     // With component which contains ng-content
-    componentWrapperDecorator(ParentComponent),
+    componentWrapperDecorator(Parent),
   ],
 } as Meta;
-
-const Template: Story<ButtonComponent> = (args) => ({
-  props: args,
-  template: '<app-button label="Submit"></app-button>',
-});
-
-const Component: Story<ButtonComponent> = (args) => ({
-  props: args,
-});
 ```

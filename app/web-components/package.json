@@ -1,6 +1,6 @@
 {
   "name": "@storybook/web-components",
-  "version": "6.4.0-rc.1",
+  "version": "6.4.0-rc.7",
   "description": "Storybook for web-components: View web components snippets in isolation with Hot Reloading.",
   "keywords": [
     "lit-html",
@@ -50,13 +50,13 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-env": "^7.12.11",
-    "@storybook/addons": "6.4.0-rc.1",
-    "@storybook/client-api": "6.4.0-rc.1",
-    "@storybook/core": "6.4.0-rc.1",
-    "@storybook/core-common": "6.4.0-rc.1",
+    "@storybook/addons": "6.4.0-rc.7",
+    "@storybook/client-api": "6.4.0-rc.7",
+    "@storybook/core": "6.4.0-rc.7",
+    "@storybook/core-common": "6.4.0-rc.7",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/preview-web": "6.4.0-rc.1",
-    "@storybook/store": "6.4.0-rc.1",
+    "@storybook/preview-web": "6.4.0-rc.7",
+    "@storybook/store": "6.4.0-rc.7",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-bundled-import-meta": "^0.3.1",
     "core-js": "^3.8.2",
@@ -68,10 +68,10 @@
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "lit-html": "^2.0.0-rc.3"
+    "lit-html": "2.0.2"
   },
   "peerDependencies": {
-    "lit-html": "^1.4.1 || ^2.0.0-rc.3"
+    "lit-html": "^1.4.1 || ^2.0.0"
   },
   "engines": {
     "node": ">=10.13.0"
@@ -79,6 +79,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "0d79fcc7dd9f8d949c2644aefb54e77a3f932db4",
+  "gitHead": "7162286c0d8d122c7206265fab41c4c191c86d40",
   "sbmodern": "dist/modern/client/index.js"
 }

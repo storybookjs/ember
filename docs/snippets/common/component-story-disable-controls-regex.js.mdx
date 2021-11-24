@@ -1,5 +1,21 @@
 ```js
-// YourComponent.stories.js | YourComponent.stories.jsx | YourComponent.stories.ts | YourComponent.stories.tsx
+// YourComponent.stories.js|jsx|ts|tsx
+
+import { YourComponent } from './YourComponent';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
+  component: YourComponent,
+};
+
+const Template = (args) => ({
+  //👇 Your template goes here
+});
+
 
 ArrayInclude = Template.bind({})
 ArrayInclude.parameters = { controls: { include: ['foo', 'bar'] } };

@@ -1,11 +1,12 @@
 ```md
-<!--- MyComponent.stories.mdx -->
+<!-- MyComponent.stories.mdx -->
 
 import { Meta, Story } from '@storybook/addon-docs';
 
 import { MyComponent } from './MyComponent';
 
-<!--- Add new argTypes to your component or further adjust them --->
+<!-- Add new argTypes to your component or further adjust them -->
+
 <Meta
   title="MyComponent"
   component={MyComponent}
@@ -16,7 +17,8 @@ import { MyComponent } from './MyComponent';
   }}
 />
 
-<!--- Add new argTypes to your Story or further adjust them --->
+<!-- Add new argTypes to your Story or further adjust them -->
+
 <Story 
   name="some story" 
   argTypes={{
@@ -24,6 +26,6 @@ import { MyComponent } from './MyComponent';
       name: 'different label',
     }
 }}>
-  <!--- Story Contents --->
+  <!-- Story Contents -->
 </Story>
 ```

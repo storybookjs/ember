@@ -5,15 +5,17 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 
+import { MyComponent } from './MyComponent.component';
+
 <Meta
-  title="Stories"
+  title="MyComponent"
   parameters={{
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: 'iphone6',
     },
   }}
-/>
+  component={MyComponent} />
 
 <Story
   name="MyStory"
@@ -23,7 +25,7 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
     }
   }}>
   {{
-    template: '<div></div>',
+    template: '<MyComponent></MyComponent>',
   }}
 </Story>
 ```

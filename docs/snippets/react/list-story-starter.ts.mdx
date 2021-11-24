@@ -1,17 +1,21 @@
 ```ts
-// List.stories.ts | List.stories.tsx
+// List.stories.ts|tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { List, ListProps } from './List';
+import { List } from './List';
 
 export default {
-  component: List,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'List',
-} as Meta;
+  component: List,
+} as ComponentMeta<typeof List>;
 
 //👇 Always an empty list, not super interesting
-const Template : Story<ListProps> = (args) => <List {...args} />;
+const Template: ComponentStory<typeof List> = (args) => <List {...args} />;
 ```

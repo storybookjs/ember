@@ -8,7 +8,7 @@ Storybook uses the generic term arguments (args for short) when talking about Re
 
 ## Where to put stories
 
-A component’s stories are defined in a story file that lives alongside the component file. The story file is for development-only, it won't be included in your production bundle.
+A component’s stories are defined in a story file that lives alongside the component file. The story file is for development-only, and it won't be included in your production bundle.
 
 ```
 Button.js | ts | jsx | tsx
@@ -63,13 +63,13 @@ Use the _named_ exports of a CSF file to define your component’s stories. We r
 
 <div class="aside">
 
-💡 <strong>Note</strong>: Using framework specific elements such as [React Hooks](https://reactjs.org/docs/hooks-intro.html) alongside your stories is a perfectly valid approach, but should be used as an advanced use case. We <strong>recommend</strong> using [args](./args.md) as much as possible when writing your own stories.
+💡 <strong>Note</strong>: Using framework specific elements such as [React Hooks](https://reactjs.org/docs/hooks-intro.html) alongside your stories is a valid approach, but you should treat them as an advanced use case. We <strong>recommend</strong> using [args](./args.md) as much as possible when writing your own stories.
 
 </div>
 
 ### Rename stories
 
-You can rename any particular story you need. For instance to give it a clearer name. Here's how you can change the name of the `Primary` story:
+You can rename any particular story you need. For instance, to give it a more accurate name. Here's how you can change the name of the `Primary` story:
 
 <!-- prettier-ignore-start -->
 
@@ -90,7 +90,7 @@ Your story will now be shown in the sidebar with the given text.
 
 ## How to write stories
 
-A story is a function that describes how to render a component. You can have multiple stories per component. The simplest way to create stories is to render a component with different arguments multiple times.
+A story is a function that describes how to render a component. You can have multiple stories per component, and the simplest way to create stories is to render a component with different arguments multiple times.
 
 <!-- prettier-ignore-start -->
 
@@ -112,11 +112,11 @@ A story is a function that describes how to render a component. You can have mul
 
 <!-- prettier-ignore-end -->
 
-This is straightforward for components with few stories, but can be repetitive with many stories.
+It's straightforward for components with few stories but can be repetitive with many stories.
 
 ### Using args
 
-Refine this pattern by defining a master template for a component’s stories that allows you to pass in `args`. This reduces the unique code you’ll need to write and maintain for each story.
+Refine this pattern by introducing `args` for your component's stories. It reduces the boilerplate code you'll need to write and maintain for each story.
 
 <!-- prettier-ignore-start -->
 
@@ -135,9 +135,13 @@ Refine this pattern by defining a master template for a component’s stories th
 
 <!-- prettier-ignore-end -->
 
-The template is reused across stories. Template.bind({}) makes a copy of the function which reduces code duplication. Similarly,`...Primary.args` makes a copy of the data, reducing data duplication.
+<div class="aside">
+💡 <strong>Note:</strong> <code>Template.bind({})</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">standard JavaScript techique</a> for making a copy of a function. We copy the <code>Template</code> so each exported story can set its own properties on it.
+</div>
 
-What’s more, you can import args to reuse when writing stories for other components. This is useful when you’re building composite components. For example, if we make a `ButtonGroup` story, we might remix two stories from its child component `Button`.
+By introducing args into your component's stories, you're not only reducing the amount of code you need to write, but you're also decreasing data duplication, as shown by spreading the `Primary` story's args into the other stories.
+
+What’s more, you can import `args` to reuse when writing stories for other components, and it's helpful when you’re building composite components. For example, if we make a `ButtonGroup` story, we might remix two stories from its child component `Button`.
 
 <!-- prettier-ignore-start -->
 
@@ -155,9 +159,9 @@ What’s more, you can import args to reuse when writing stories for other compo
 
 <!-- prettier-ignore-end -->
 
-When Button’s signature changes, you only need to change Button’s stories to reflect the new schema. ButtonGroup’s stories will automatically be updated. This pattern allows you to reuse your data definitions up and down your component hierarchy, making your stories more maintainable.
+When Button’s signature changes, you only need to change Button’s stories to reflect the new schema, and ButtonGroup’s stories will automatically be updated. This pattern allows you to reuse your data definitions across the component hierarchy, making your stories more maintainable.
 
-That’s not all! Each of the args from the story function are live editable using Storybook’s [controls](../essentials/controls.md) panel. This means your team can dynamically change components in Storybook to stress test and find edge cases.
+That’s not all! Each of the args from the story function are live editable using Storybook’s [controls](../essentials/controls.md) panel. It means your team can dynamically change components in Storybook to stress test and find edge cases.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -166,7 +170,7 @@ That’s not all! Each of the args from the story function are live editable usi
   />
 </video>
 
-Addons can enhance args. For instance, [Actions](../essentials/actions.md) auto detects which args are callbacks and appends a logging function to them. That way interactions (like clicks) get logged in the actions panel.
+Addons can enhance args. For instance, [Actions](../essentials/actions.md) auto-detects which args are callbacks and appends a logging function to them. That way, interactions (like clicks) get logged in the actions panel.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -174,6 +178,30 @@ Addons can enhance args. For instance, [Actions](../essentials/actions.md) auto 
     type="video/mp4"
   />
 </video>
+
+### Using the play function
+
+Storybook's `play` function and the [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) are convenient helper methods to test component scenarios that otherwise require user intervention. They're small code snippets that execute once your story renders. For example, suppose you wanted to validate a form component, you could write the following story using the `play` function to check how the component responds when filling in the inputs with information:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'react/login-form-with-play-function.js.mdx',
+    'react/login-form-with-play-function.ts.mdx',
+    'react/login-form-with-play-function.mdx.mdx',
+    'angular/login-form-with-play-function.ts.mdx',
+    'angular/login-form-with-play-function.mdx.mdx',
+    'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.mdx-2.mdx',
+    'vue/login-form-with-play-function.3.js.mdx',
+    'vue/login-form-with-play-function.mdx-3.mdx',
+    'svelte/login-form-with-play-function.js.mdx',
+    'svelte/login-form-with-play-function.mdx.mdx',
+  ]}
+/>
+
+Without the help of the `play` function and the `@storybook/addon-interactions`, you had to write your own stories and manually interact with the component to test out each use case scenario possible. 
 
 ### Using parameters
 
@@ -207,7 +235,7 @@ This parameter would instruct the backgrounds addon to reconfigure itself whenev
 
 ### Using decorators
 
-Decorators are a mechanism to wrap a component in arbitrary markup when rendering a story. Components are often created with assumptions about ‘where’ they render. Your styles might expect a theme or layout wrapper. Or your UI might expect certain context or data providers.
+Decorators are a mechanism to wrap a component in arbitrary markup when rendering a story. Components are often created with assumptions about ‘where’ they render. Your styles might expect a theme or layout wrapper, or your UI might expect specific context or data providers.
 
 A simple example is adding padding to a component’s stories. Accomplish this using a decorator that wraps the stories in a `div` with padding, like so:
 
@@ -235,7 +263,7 @@ Decorators [can be more complex](./decorators.md#context-for-mocking) and are of
 
 ## Stories for two or more components
 
-When building design systems or component libraries, you may have two or more components that are designed to work together. For instance, if you have a parent `List` component, it may require child `ListItem` components.
+When building design systems or component libraries, you may have two or more components created to work together. For instance, if you have a parent `List` component, it may require child `ListItem` components.
 
 <!-- prettier-ignore-start -->
 
@@ -271,7 +299,7 @@ In such cases, it makes sense to render a different function for each story:
 
 <!-- prettier-ignore-end -->
 
-You can also reuse stories from the child `ListItem` in your `List` component. That’s easier to maintain because you don’t have to keep the identical story definitions up to date in multiple places.
+You can also reuse stories from the child `ListItem` in your `List` component. That’s easier to maintain because you don’t have to keep the identical story definitions updated in multiple places.
 
 <!-- prettier-ignore-start -->
 
@@ -290,6 +318,6 @@ You can also reuse stories from the child `ListItem` in your `List` component. T
 
 <div class="aside">
 
-Note that there are disadvantages in writing stories like this as you cannot take full advantage of the args mechanism and composing args as you build more complex composite components. For more discussion, see the [multi component stories](../workflows/stories-for-multiple-components.md) workflow article.
+💡 Note that there are disadvantages in writing stories like this as you cannot take full advantage of the args mechanism and composing args as you build even more complex composite components. For more discussion, see the [multi component stories](../workflows/stories-for-multiple-components.md) workflow documentation.
 
 </div>

@@ -12,6 +12,10 @@ const options = {
   configDir: '/path',
   workingDir: '/path',
 };
+const winOptions = {
+  configDir: '\\path',
+  workingDir: '\\path',
+};
 
 describe('autoTitle', () => {
   it('no match', () => {
@@ -58,7 +62,7 @@ describe('autoTitle', () => {
       expect(
         auto(
           './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path' }, options)
+          normalizeStoriesEntry({ directory: '.\\path' }, winOptions)
         )
       ).toMatchInlineSnapshot(`To My/File`);
     });
@@ -102,7 +106,7 @@ describe('autoTitle', () => {
       expect(
         auto(
           './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path\\' }, options)
+          normalizeStoriesEntry({ directory: '.\\path\\' }, winOptions)
         )
       ).toMatchInlineSnapshot(`To My/File`);
     });

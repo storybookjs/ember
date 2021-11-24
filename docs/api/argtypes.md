@@ -4,15 +4,15 @@ title: 'ArgTypes'
 
 <div class="aside">
 
-NOTE: This API is experimental and may change outside of the typical semver release cycle
+<strong>NOTE</strong>: This API is experimental and may change outside of the typical semver release cycle
 
 </div>
 
-ArgTypes are a first-class feature in Storybook for specifying the behaviour of [Args](../writing-stories/args.md). By specifying the type of an arg you constrain the values that it can take and can also provide information about args that are not explicitly set (i.e. not required).
+ArgTypes are a first-class feature in Storybook for specifying the behaviour of [Args](../writing-stories/args.md). By specifying the type of an arg, you constrain the values that it can take and provide information about args that are not explicitly set (i.e., not required).
 
-You can also use argTypes to “annotate” args with information that is used by addons that make use of those args, for instance to instruct the controls addons to render a color choose for a string-valued arg.
+You can also use argTypes to “annotate” args with information used by addons that make use of those args. For instance, to instruct the controls addon to render a color, you could choose a string-valued arg.
 
-The most concrete realization of argTypes is the [Args Table](../writing-docs/doc-blocks.md#argstable) doc block. Each row in the table corresponds to a single argType, as well as the current value of that arg.
+The most concrete realization of argTypes is the [Args Table](../writing-docs/doc-blocks.md#argstable) doc block. Each row in the table corresponds to a single argType and the current value of that arg.
 
 ![Storybook inferring automatically the argType](./argstable.png)
 
@@ -34,7 +34,7 @@ To do so, Storybook uses various static analysis tools depending on your framewo
 - Ember
   - [YUI doc](https://github.com/ember-learn/ember-cli-addon-docs-yuidoc#documenting-components)
 
-The format of the generated argType will look something like:
+The format of the generated argType will look something like this:
 
 <!-- prettier-ignore-start -->
 
@@ -46,11 +46,11 @@ The format of the generated argType will look something like:
 
 <!-- prettier-ignore-end -->
 
-In this ArgTypes data structure, name, type, defaultValue, and description are standard fields in all ArgTypes (analogous to PropTypes in React). The table and control fields are addon-specific annotations. So, for example, the table annotation provides extra information to customize how label gets rendered, and the control annotation provides extra information for the control for editing the property.
+This ArgTypes data structure, name, type, defaultValue, and description are standard fields in all ArgTypes (analogous to PropTypes in React). The table and control fields are addon-specific annotations. So, for example, the table annotation provides extra information to customize how the label gets rendered, and the control annotation includes additional information for the control editing the property.
 
 <div class="aside">
 
-`@storybook/addon-docs` provide shorthand for common tasks:
+💡 The `@storybook/addon-docs` provide a shorthand for common tasks:
 
 - `type: 'number'` is shorthand for type: { name: 'number' }
 - `control: 'radio'` is shorthand for control: { type: 'radio' }
@@ -59,7 +59,7 @@ In this ArgTypes data structure, name, type, defaultValue, and description are s
 
 #### Manual specification
 
-If you want more control over the args table or any other aspect of using argTypes, you can overwrite the generated argTypes for your component on a per-arg basis. For instance, with the above inferred argTypes and the following default export:
+If you want more control over the args table or any other aspect of using argTypes, you can overwrite the generated argTypes for your component on a per-arg basis. For instance, with the above-inferred argTypes and the following default export:
 
 <!-- prettier-ignore-start -->
 
@@ -71,7 +71,7 @@ If you want more control over the args table or any other aspect of using argTyp
 
 <!-- prettier-ignore-end -->
 
-These values--description, table.type, and controls.type--get merged over the defaults that are extracted by Storybook. The final merged values would be:
+The `values.description`, `table.type`, and `controls.type` are merged into the defaults extracted by Storybook. The final merged values would be:
 
 <!-- prettier-ignore-start -->
 
@@ -86,9 +86,7 @@ These values--description, table.type, and controls.type--get merged over the de
 In particular, this would render a row with a modified description, a type display with a dropdown that shows the detail, and no control.
 
 <div class="aside">
-
-As it happens with other properties such as `args`, `argTypes` can be overridden in a single story.
-
+💡 As with other Storybook properties (e.g., args, decorators), you can also override ArgTypes per story basis.
 </div>
 
 #### Using argTypes in addons

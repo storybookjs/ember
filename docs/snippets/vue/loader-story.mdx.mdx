@@ -17,8 +17,7 @@ import fetch from 'node-fetch';
         await fetch("https://jsonplaceholder.typicode.com/todos/1")
       ).json(),
     }),
-  ]}
->
+  ]}>
   {(args, { loaded: { todo } }) => ({
     components: { TodoItem },
     setup() {

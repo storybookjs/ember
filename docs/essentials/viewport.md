@@ -2,7 +2,7 @@
 title: 'Viewport'
 ---
 
-The Viewport toolbar item allows you to adjust the dimensions of the iframe your story is rendered in. This makes it easy to develop responsive UIs.
+The Viewport toolbar item allows you to adjust the dimensions of the iframe your story is rendered in. It makes it easy to develop responsive UIs.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -13,7 +13,7 @@ The Viewport toolbar item allows you to adjust the dimensions of the iframe your
 
 ### Configuration
 
-By default, you are presented with a set of common viewports.
+Out of the box, the Viewport addon offers you a standard set of viewports that you can use.
 
 If you want to change the default set of viewports, you can set the global `parameters.viewport` [parameter](../writing-stories/parameters.md) in your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering):
 
@@ -27,7 +27,7 @@ If you want to change the default set of viewports, you can set the global `para
 
 <!-- prettier-ignore-end -->
 
-The viewport global can take a object with the following keys:
+The viewport global can take an object with the following keys:
 
 | Field               |  Type   |                Description                | Default Value  |
 | ------------------- | :-----: | :---------------------------------------: | :------------: |
@@ -43,9 +43,9 @@ The viewports object needs the following keys:
 | **styles** | Object | Sets Inline styles to be applied to the story        | `{width:0,height:0}` |
 | **type**   | String | Type of the device (e.g. desktop, mobile, or tablet) |      `desktop`       |
 
-### Use detailed set of devices
+### Use a detailed set of devices
 
-By default Storybook uses a [minimal set of viewports](https://github.com/storybookjs/storybook/blob/master/addons/viewport/src/defaults.ts#L135) to get you started. But you're not restricted to these, the addon offers a more granular list of devices that you can use.
+By default, Storybook uses a [minimal set of viewports](https://github.com/storybookjs/storybook/blob/master/addons/viewport/src/defaults.ts#L135) to get you started. But you're not restricted to these. The addon offers a more granular list of devices that you can use.
 
 Change your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) to the following:
 
@@ -59,13 +59,13 @@ Change your [`.storybook/preview.js`](../configure/overview.md#configure-story-r
 
 <!-- prettier-ignore-end -->
 
-Once you start your Storybook, you'll see that now you have a whole different set of devices to use.
+Start your Storybook, and you'll see the new devices that you can use.
 
 See [here](https://github.com/storybookjs/storybook/blob/master/addons/viewport/src/defaults.ts#L3) the complete list of devices and their configurations.
 
 ### Add new devices
 
-If you have either a specific viewport, or a list of viewports that you need to use. You can modify your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file to include them like so:
+If you have either a specific viewport or a list of viewports that you need to use, you can modify your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file and include them:
 
 <!-- prettier-ignore-start -->
 
@@ -77,7 +77,7 @@ If you have either a specific viewport, or a list of viewports that you need to 
 
 <!-- prettier-ignore-end -->
 
-To use them in your Storybook you'll need to make the following change:
+Make the following change to use them in your Storybook:
 
 <!-- prettier-ignore-start -->
 
@@ -93,7 +93,7 @@ Once you start Storybook, you'll see your new viewports and devices.
 
 If you need, you can also add these two to another list of viewports.
 
-For instance, if you wanted to use these two with the minimal set of viewports, you can do it like so:
+For instance, if you want to use these two with the minimal set of viewports, you can do it like so:
 
 <!-- prettier-ignore-start -->
 
@@ -105,21 +105,20 @@ For instance, if you wanted to use these two with the minimal set of viewports, 
 
 <!-- prettier-ignore-end -->
 
-This will add both `Kindle Fire 2` and `Kindle Fire HD` to the list of devices. This is achieved by making use of the exported [`MINIMAL_VIEWPORTS`](https://github.com/storybookjs/storybook/blob/master/addons/viewport/src/defaults.ts#L135) property, by merging it with the new ones.
+Both viewports (`Kindle Fire 2` and `Kindle Fire HD`) will feature in the list of devices by merging them into the [`MINIMAL_VIEWPORTS`](https://github.com/storybookjs/storybook/blob/master/addons/viewport/src/defaults.ts#L135).
 
 ### Configuring per component or story
 
-There are cases where it's not effective for you to use a certain visual viewport on a global scale and you need it to adjust it to a individual story.
+There are cases where it's not practical for you to use a specific visual viewport on a global scale, and you need it to adjust it to an individual story.
 
-You can change your story through [parameters](../writing-stories/parameters.md) to include the viewports you need to use for your component.
-
-[Parameters](../writing-stories/parameters.md) can be configured for a whole set of stories or a single story via the standard parameter API:
+Update your story through [parameters](../writing-stories/parameters.md) to include your viewports at a component level or for a specific story:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
     'react/my-component-story-configure-viewports.js.mdx',
+    'react/my-component-story-configure-viewports.ts.mdx',
     'react/my-component-story-configure-viewports.mdx.mdx',
     'vue/my-component-story-configure-viewports.js.mdx',
     'vue/my-component-story-configure-viewports.mdx.mdx',
@@ -136,9 +135,8 @@ You can change your story through [parameters](../writing-stories/parameters.md)
 
 ### Keyboard shortcuts
 
-* Previous viewport: <kbd>shift</kbd> + <kbd>v</kbd>
-* Next viewport: <kbd>v</kbd>
-* Reset viewport: <kbd>alt</kbd> + <kbd>v</kbd>
+- Previous viewport: <kbd>shift</kbd> + <kbd>v</kbd>
+- Next viewport: <kbd>v</kbd>
+- Reset viewport: <kbd>alt</kbd> + <kbd>v</kbd>
 
-
-These shortcuts can be edited in Storybook's Keyboard shortcuts page.
+If you need, you can edit them on the shortcuts page.

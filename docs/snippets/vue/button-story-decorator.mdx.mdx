@@ -5,14 +5,13 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import Button from './Button.vue';
 
-<Meta
-  title="Components/Button"
-  component={Button}/>
+<Meta title="Button" component={Button}/>
 
 export const Template = () => ({
   components: { Button },
   template: '<Button primary label="Hello World"/>',
 });
+
 
 <Story
   name="Primary"
@@ -22,5 +21,5 @@ export const Template = () => ({
     }),
   ]}>
   {Template.bind({})}
-</Story>
+<Story>
 ```

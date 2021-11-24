@@ -1,8 +1,76 @@
+## 6.4.0-rc.7 (November 24, 2021)
+
+### Bug Fixes
+
+- Core: Add `./` to start of hidden file & folder paths ([#16723](https://github.com/storybookjs/storybook/pull/16723))
+
+### Dependency Upgrades
+
+- Update peer dependencies for angular 13 support ([#16758](https://github.com/storybookjs/storybook/pull/16758))
+
+## 6.4.0-rc.6 (November 22, 2021)
+
+### Bug Fixes
+
+- CSF: Fix component id handling ([#16746](https://github.com/storybookjs/storybook/pull/16746))
+- Addon-docs: Improved loading state ([#16709](https://github.com/storybookjs/storybook/pull/16709))
+
+### Maintenance
+
+- WebComponents: Update Lit peerDep to use Lit 2 stable version ([#16670](https://github.com/storybookjs/storybook/pull/16670))
+
+### Dependency Upgrades
+
+- Upgrade react-router to 6.0.0 ([#16742](https://github.com/storybookjs/storybook/pull/16742))
+
+## 6.4.0-rc.5 (November 19, 2021)
+
+### Bug Fixes
+
+- Core: Restore `stringifyEnvs` utility used by Vite builder ([#16731](https://github.com/storybookjs/storybook/pull/16731))
+
+## 6.4.0-rc.4 (November 19, 2021)
+
+### Bug Fixes
+
+- Core: Fix `process.env` stringification ([#16725](https://github.com/storybookjs/storybook/pull/16725))
+- Core: Fix build-storybook sort bug in v6-mode ([#16724](https://github.com/storybookjs/storybook/pull/16724))
+- Addon-docs/Angular: fix extractEnumValues undefined error ([#16524](https://github.com/storybookjs/storybook/pull/16524))
+
+### Maintenance
+
+- Angular: update addon interactions example ([#16698](https://github.com/storybookjs/storybook/pull/16698))
+
+### Dependency Upgrades
+
+- Upgrade from node-sass to sass in examples/angular-cli ([#16663](https://github.com/storybookjs/storybook/pull/16663))
+
+## 6.4.0-rc.3 (November 16, 2021)
+
+### Bug Fixes
+
+- Angular: Fix detection of @angular/cli package version ([#16696](https://github.com/storybookjs/storybook/pull/16696))
+
+## 6.4.0-rc.2 (November 16, 2021)
+
+### Features
+
+- Core: Add option to use webpack filesystem cache ([#16219](https://github.com/storybookjs/storybook/pull/16219))
+
+### Bug Fixes
+
+- CLI: Fix automigrate command for eslint with extends as string ([#16687](https://github.com/storybookjs/storybook/pull/16687))
+- Core: Bust the prebuilt manager cache if user has set `features` ([#16684](https://github.com/storybookjs/storybook/pull/16684))
+
+### Maintenance
+
+- Build: GH Action for exporting to linear by GH label ([#16683](https://github.com/storybookjs/storybook/pull/16683))
+
 ## 6.4.0-rc.1 (November 13, 2021)
 
 ### Features
 
-* Angular: Add getWebpackConfig for angular 12.2.x & 13.x.x ([#16644](https://github.com/storybookjs/storybook/pull/16644))
+- Angular: Add getWebpackConfig for angular 12.2.x & 13.x.x ([#16644](https://github.com/storybookjs/storybook/pull/16644))
 
 ## 6.4.0-rc.0 (November 12, 2021)
 

@@ -1,9 +1,9 @@
 ```md
-<!-- Button.stories.mdx -->
+<!-- Page.stories.mdx -->
 
 import { Meta, Story } from '@storybook/addon-docs';
 
-import Page from './page.component.ts';
+import { Page } from './page.component';
 
 <Meta title="Page" component={Page} />
 
@@ -11,7 +11,7 @@ export const Template = (args) => ({
   props: args,
   template:`
     <storybook-page>
-       <ng-container footer>${args.footer}</ng-container>
+      <ng-container footer>${args.footer}</ng-container>
     </storybook-page>
   `,
 });

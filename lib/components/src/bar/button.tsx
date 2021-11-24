@@ -133,7 +133,9 @@ const IconPlaceholder = styled.div(({ theme }) => ({
 }));
 
 const IconButtonSkeletonWrapper = styled.div(() => ({
-  padding: 5,
+  marginTop: 6,
+  padding: 7,
+  height: 28,
 }));
 
 export const IconButtonSkeleton = () => (

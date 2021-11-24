@@ -1,31 +1,54 @@
 ```ts
 // List.stories.ts
 
-import { Story } from '@storybook/angular/types-6-0';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
-import ListComponent from './List.component';
-import ListItemComponent from './ListItem.component';
+import { CommonModule } from '@angular/common';
+
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-const ListTemplate: Story<ListComponent> = (args) => ({
-  moduleMetadata: {
-    declarations: [ListComponent, ListItemComponent],
-  },
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'List',
+  component: List,
+  decorators: [
+    moduleMetadata({
+      declarations: [List, ListItem],
+      imports: [CommonModule],
+    }),
+  ],
+} as Meta;
+
+
+const ListTemplate: Story = (args) => ({
   props: args,
   template: `
-    <list-component>
-        <div *ngFor="let item of items">
-            <listitem-component [item]="item"></listitem-component>
-        </div>
-    </list-component>`,
+    <app-list>
+      <div *ngFor="let item of items">
+        <app-list-item [item]="item"></app-list-item>
+      </div>
+    </app-list>
+  `,
 });
 
-export const EmptyWithTemplate = ListTemplate.bind({});
-Empty.args = { items: [] };
+export const Empty = ListTemplate.bind({});
+EmptyListTemplate.args = {
+  items: [],
+};
 
-
-export const OneItemWithTemplate = ListTemplate.bind({});
-OneItemWithTemplate.args = { items: [Unchecked.args.item] };
+export const OneItem = ListTemplate.bind({});
+OneItem.args = {
+  items: [
+    {
+      ...Unchecked.args,
+    },
+  ],
+};
 ```

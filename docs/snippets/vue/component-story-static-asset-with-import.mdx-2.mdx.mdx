@@ -5,17 +5,17 @@ import { Meta, Story } from '@storybook/addon-docs';
 
 import imageFile from './static/image.png'
 
-<Meta title="img" />
+<Meta title="img" component={MyComponent}/>
 
 export const image = {
   src: imageFile,
-  alt: "my image",
+  alt: 'my image',
 };
 
-<Story name="withAnImage">
+<Story 
+  name="WithAnImage">
   {() => {
     return {
-      template: `<img :src="src" :alt="alt"/>`,
       props: {
         src: {
           default: () => image.src,
@@ -24,6 +24,7 @@ export const image = {
           default: () => image.alt,
         },
       },
+      template: `<img :src="src" :alt="alt"/>`,
     };
   }}
 </Story>

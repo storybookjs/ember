@@ -1,27 +1,42 @@
 ```ts
 // List.stories.ts
 
-import { Story } from '@storybook/angular/types-6-0';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
-import ListComponent from './List.component';
-import ListItemComponent from './ListItem.component';
+import { CommonModule } from '@angular/common';
+
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
-export const OneItem: Story<ListComponent> = (args) => ({
-  moduleMetadata: {
-    declarations: [ListComponent, ListItemComponent],
-  },
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'List',
+  component: List,
+  decorators: [
+    moduleMetadata({
+      declarations: [List, ListItem],
+      imports: [CommonModule],
+    }),
+  ],
+} as Meta;
+
+
+export const OneItem: Story = (args) => ({
   props: args,
   template: `
-    <list-component>
-        <listitem-component [item]="item"></listitem-component>
-    </list-component>
-   `,
+    <app-list>
+      <app-list-item [item]="item"></app-list-item>
+    </app-list>
+  `,
 });
 
 OneItem.args = {
-  ...Unchecked.args,
+   ...Unchecked.args,
 };
 ```
