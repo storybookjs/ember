@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cra-ts-essentials manager production mode 1`] = `
+exports[`cra-ts-essentials manager prod 1`] = `
 Object {
   "entry": Array [
     "NODE_MODULES\\\\@storybook\\\\addon-ie11\\\\dist\\\\event-source-polyfill.js",
