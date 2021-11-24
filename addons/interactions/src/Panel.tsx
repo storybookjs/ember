@@ -36,6 +36,15 @@ interface InteractionsPanelProps {
   onScrollToEnd?: () => void;
 }
 
+const INITIAL_CONTROL_STATES = {
+  debugger: false,
+  start: false,
+  back: false,
+  goto: false,
+  next: false,
+  end: false,
+};
+
 const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
 });
@@ -99,7 +108,7 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
 
 export const Panel: React.FC<AddonPanelProps> = (props) => {
   const [storyId, setStoryId] = React.useState<StoryId>();
-  const [controlStates, setControlStates] = React.useState<ControlStates>();
+  const [controlStates, setControlStates] = React.useState<ControlStates>(INITIAL_CONTROL_STATES);
   const [isPlaying, setPlaying] = React.useState(false);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
