@@ -46,7 +46,7 @@ export const FindBy: CSF2Story = (args) => {
 };
 FindBy.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  const button = await canvas.findByRole('button');
+  await canvas.findByRole('button');
   await expect(true).toBe(true);
 };
 
