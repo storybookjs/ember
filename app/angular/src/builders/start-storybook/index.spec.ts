@@ -5,6 +5,7 @@ import * as path from 'path';
 
 const buildStandaloneMock = jest.fn();
 jest.doMock('@storybook/angular/standalone', () => buildStandaloneMock);
+jest.doMock('find-up', () => ({ sync: () => './storybook/tsconfig.ts' }));
 
 const cpSpawnMock = {
   spawn: jest.fn(),
@@ -92,7 +93,7 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      tsConfig: 'src/tsconfig.app.json',
+      tsConfig: './storybook/tsconfig.ts',
     });
   });
 
@@ -165,7 +166,7 @@ describe('Start Storybook Builder', () => {
     expect(output.success).toBeTruthy();
     expect(cpSpawnMock.spawn).toHaveBeenCalledWith('compodoc', [
       '-p',
-      'src/tsconfig.app.json',
+      './storybook/tsconfig.ts',
       '-d',
       '',
       '-e',
@@ -190,7 +191,7 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      tsConfig: 'src/tsconfig.app.json',
+      tsConfig: './storybook/tsconfig.ts',
     });
   });
 });

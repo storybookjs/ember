@@ -9,6 +9,7 @@ import { JsonObject } from '@angular-devkit/core';
 import { from, Observable, of, throwError } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+import { sync as findUpSync } from 'find-up';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
@@ -99,7 +100,10 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
   }
 
   return {
-    tsConfig: options.tsConfig ?? browserOptions.tsConfig ?? undefined,
+    tsConfig:
+      options.tsConfig ??
+      findUpSync('tsconfig.json', { cwd: options.configDir }) ??
+      browserOptions.tsConfig,
   };
 }
 
