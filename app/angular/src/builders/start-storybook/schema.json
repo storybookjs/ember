@@ -84,7 +84,8 @@
       "description": "Global styles to be included in the build.",
       "items": {
         "$ref": "#/definitions/extraEntryPoint"
-      }
+      },
+      "default": ""
     },
     "stylePreprocessorOptions": {
       "description": "Options to pass to style preprocessors.",
@@ -99,7 +100,8 @@
           "default": []
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "default": ""
     }
   },
   "additionalProperties": false,

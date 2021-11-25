@@ -73,8 +73,8 @@ function commandBuilder(
         angularBrowserTarget: browserTarget,
         angularBuilderContext: context,
         angularBuilderOptions: {
-          stylePreprocessorOptions,
-          styles,
+          ...(stylePreprocessorOptions ? { stylePreprocessorOptions } : {}),
+          ...(styles ? { styles } : {}),
         },
         tsConfig,
       };

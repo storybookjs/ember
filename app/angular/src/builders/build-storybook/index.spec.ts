@@ -76,12 +76,7 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       configDir: '.storybook',
       loglevel: undefined,
       quiet: false,
@@ -106,12 +101,7 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       configDir: '.storybook',
       loglevel: undefined,
       quiet: false,
@@ -163,18 +153,39 @@ describe('Build Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       configDir: '.storybook',
       loglevel: undefined,
       quiet: false,
       outputDir: 'storybook-static',
       mode: 'static',
       tsConfig: './storybook/tsconfig.ts',
+    });
+  });
+
+  it('should start storybook with styles options', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:build-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      compodoc: false,
+      styles: ['style.scss'],
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: { styles: ['style.scss'] },
+      configDir: '.storybook',
+      loglevel: undefined,
+      quiet: false,
+      outputDir: 'storybook-static',
+      mode: 'static',
+      tsConfig: 'path/to/tsConfig.json',
     });
   });
 });

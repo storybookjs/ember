@@ -77,12 +77,7 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       ci: false,
       configDir: '.storybook',
       host: 'localhost',
@@ -113,12 +108,7 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: null,
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       ci: false,
       configDir: '.storybook',
       host: 'localhost',
@@ -175,12 +165,7 @@ describe('Start Storybook Builder', () => {
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
       angularBuilderContext: expect.any(Object),
-      angularBuilderOptions: {
-        stylePreprocessorOptions: {
-          includePaths: [],
-        },
-        styles: [],
-      },
+      angularBuilderOptions: {},
       ci: false,
       configDir: '.storybook',
       host: 'localhost',
@@ -192,6 +177,40 @@ describe('Start Storybook Builder', () => {
       sslCert: undefined,
       sslKey: undefined,
       tsConfig: './storybook/tsconfig.ts',
+    });
+  });
+
+  it('should start storybook with styles options', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      port: 4400,
+      compodoc: false,
+      styles: ['src/styles.css'],
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        styles: ['src/styles.css'],
+      },
+      ci: false,
+      configDir: '.storybook',
+      host: 'localhost',
+      https: false,
+      port: 4400,
+      quiet: false,
+      smokeTest: false,
+      sslCa: undefined,
+      sslCert: undefined,
+      sslKey: undefined,
+      tsConfig: 'path/to/tsConfig.json',
     });
   });
 });
