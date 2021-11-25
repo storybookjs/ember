@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-rc.7",
+  "version": "6.4.0-rc.8",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.4.0-rc.7",
-    "@storybook/core-client": "6.4.0-rc.7",
-    "@storybook/core-common": "6.4.0-rc.7",
-    "@storybook/core-events": "6.4.0-rc.7",
+    "@storybook/builder-webpack4": "6.4.0-rc.8",
+    "@storybook/core-client": "6.4.0-rc.8",
+    "@storybook/core-common": "6.4.0-rc.8",
+    "@storybook/core-events": "6.4.0-rc.8",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-tools": "6.4.0-rc.7",
-    "@storybook/manager-webpack4": "6.4.0-rc.7",
-    "@storybook/node-logger": "6.4.0-rc.7",
+    "@storybook/csf-tools": "6.4.0-rc.8",
+    "@storybook/manager-webpack4": "6.4.0-rc.8",
+    "@storybook/node-logger": "6.4.0-rc.8",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-rc.7",
+    "@storybook/store": "6.4.0-rc.8",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -84,7 +84,7 @@
     "ws": "^8.2.3"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-rc.7",
+    "@storybook/builder-webpack5": "6.4.0-rc.8",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
@@ -92,8 +92,8 @@
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-rc.7",
-    "@storybook/manager-webpack5": "6.4.0-rc.7",
+    "@storybook/builder-webpack5": "6.4.0-rc.8",
+    "@storybook/manager-webpack5": "6.4.0-rc.8",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -111,6 +111,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "7162286c0d8d122c7206265fab41c4c191c86d40",
+  "gitHead": "0be6dde43b848e310e705a4354c6c8abe0431448",
   "sbmodern": "dist/modern/index.js"
 }

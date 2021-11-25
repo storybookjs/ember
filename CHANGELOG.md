@@ -1,3 +1,14 @@
+## 6.4.0-rc.8 (November 25, 2021)
+
+### Bug Fixes
+
+- Interactions: Fix duplicate rows in waitFor ([#16465](https://github.com/storybookjs/storybook/pull/16465))
+- Core: Fix channel options so that they are merged in correct order ([#16764](https://github.com/storybookjs/storybook/pull/16764))
+
+### Dependency Upgrades
+
+- Add missing peer dependencies ([#16551](https://github.com/storybookjs/storybook/pull/16551))
+
 ## 6.4.0-rc.7 (November 24, 2021)
 
 ### Bug Fixes

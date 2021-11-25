@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-interactions",
-  "version": "6.4.0-rc.7",
+  "version": "6.4.0-rc.8",
   "description": "Automate, test and debug user interactions",
   "keywords": [
     "storybook-addons",
@@ -41,22 +41,22 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-rc.7",
-    "@storybook/api": "6.4.0-rc.7",
-    "@storybook/components": "6.4.0-rc.7",
-    "@storybook/core-common": "6.4.0-rc.7",
-    "@storybook/core-events": "6.4.0-rc.7",
+    "@storybook/addons": "6.4.0-rc.8",
+    "@storybook/api": "6.4.0-rc.8",
+    "@storybook/components": "6.4.0-rc.8",
+    "@storybook/core-common": "6.4.0-rc.8",
+    "@storybook/core-events": "6.4.0-rc.8",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/instrumenter": "6.4.0-rc.7",
-    "@storybook/theming": "6.4.0-rc.7",
+    "@storybook/instrumenter": "6.4.0-rc.8",
+    "@storybook/theming": "6.4.0-rc.8",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
     "polished": "^4.0.5",
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {
-    "@storybook/jest": "^0.0.2",
-    "@storybook/testing-library": "^0.0.3",
+    "@storybook/jest": "^0.0.5",
+    "@storybook/testing-library": "^0.0.7",
     "formik": "^2.2.9"
   },
   "peerDependencies": {
@@ -74,7 +74,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "7162286c0d8d122c7206265fab41c4c191c86d40",
+  "gitHead": "0be6dde43b848e310e705a4354c6c8abe0431448",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Interactions",
