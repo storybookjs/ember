@@ -1,4 +1,4 @@
-import { RuleSetRule } from 'webpack';
+import type { RuleSetRule } from 'webpack';
 import { getStorybookBabelConfig } from './babel';
 
 const { plugins } = getStorybookBabelConfig();
