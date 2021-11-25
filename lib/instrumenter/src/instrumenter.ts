@@ -138,6 +138,7 @@ export class Instrumenter {
       }
       if (newPhase === 'played') {
         this.setState(storyId, {
+          isLocked: false,
           isPlaying: false,
           isDebugging: false,
           forwardedException: undefined,
@@ -489,7 +490,7 @@ export class Instrumenter {
   update(call: Call) {
     clearTimeout(this.getState(call.storyId).syncTimeout);
     this.channel.emit(EVENTS.CALL, call);
-    this.setState(call.storyId, ({ calls, isLocked }) => {
+    this.setState(call.storyId, ({ calls }) => {
       // Omit earlier calls for the same ID, which may have been superceded by a later invocation.
       // This typically happens when calls are part of a callback which runs multiple times.
       const callsById = calls
