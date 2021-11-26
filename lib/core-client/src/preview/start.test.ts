@@ -322,6 +322,43 @@ describe('start', () => {
       );
     });
 
+    it('allows setting compomnent/args/argTypes via a parameter', async () => {
+      const render = jest.fn(({ storyFn }) => storyFn());
+
+      const { configure, clientApi } = start(render);
+
+      const component = {};
+      configure('test', () => {
+        clientApi
+          .storiesOf('Component A', { id: 'file1' } as NodeModule)
+          .addParameters({
+            component,
+            args: { a: 'a' },
+            argTypes: { a: { type: 'string' } },
+          })
+          .add('default', jest.fn(), {
+            args: { b: 'b' },
+            argTypes: { b: { type: 'string' } },
+          });
+      });
+
+      await waitForRender();
+
+      expect(render).toHaveBeenCalledWith(
+        expect.objectContaining({
+          storyContext: expect.objectContaining({
+            component,
+            args: { a: 'a', b: 'b' },
+            argTypes: {
+              a: { name: 'a', type: { name: 'string' } },
+              b: { name: 'b', type: { name: 'string' } },
+            },
+          }),
+        }),
+        undefined
+      );
+    });
+
     it('supports forceRerender()', async () => {
       const render = jest.fn(({ storyFn }) => storyFn());
 
