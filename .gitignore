@@ -8,6 +8,7 @@ dist
 .tern-port
 *.DS_Store
 .cache
+.parcel-cache
 coverage/
 *.lerna_backup
 build
