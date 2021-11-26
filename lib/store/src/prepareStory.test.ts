@@ -527,6 +527,49 @@ describe('prepareStory', () => {
         expect.objectContaining({ argsByTarget: { [NO_TARGET_NAME]: { a: 1 }, foo: { b: 2 } } })
       );
     });
+
+    it('always sets args, even when all are targetted', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+          args: { b: 2 },
+          argTypes: { b: { name: 'b', target: 'foo' } },
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith(
+        {},
+        expect.objectContaining({ argsByTarget: { foo: { b: 2 } } })
+      );
+    });
+
+    it('always sets args, even when none are set for the story', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith({}, expect.objectContaining({ argsByTarget: {} }));
+    });
   });
 });
 
