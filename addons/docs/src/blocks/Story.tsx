@@ -165,7 +165,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     //  (a) React's `useEffect` hook needs to fire. This is needed for React stories, as
     //      decorators of the form `<A><B/></A>` will not actually execute `B` in the first
     //      call to the story function.
-    //  (b) The story function needs to acutally have been called.
+    //  (b) The story function needs to actually have been called.
     //      Certain frameworks (i.e.angular) don't actually render the component in the very first
     //      React render cycle, so we need to wait for the framework to actually do that
     Promise.all([storyFnRan, rendered]).then(() => {
