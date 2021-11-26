@@ -70,7 +70,7 @@ This will then be visually presented in the sidebar like this:
 
 ![Stories hierarchy with single story hoisting](./naming-hierarchy-single-story-hoisting.png)
 
-Because story exports are automatically "start cased" (`myStory` becomes `"My Story"`), your component name should match that. Alternatively you can override the story name using `myStory.name = '...'` to match the component name.
+Because story exports are automatically "start cased" (`myStory` becomes `"My Story"`), your component name should match that. Alternatively you can override the story name using `myStory.storyName = '...'` to match the component name.
 
 ## Sorting stories
 
