@@ -1,7 +1,7 @@
 import path from 'path';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
 // @ts-ignore
-import { Configuration, RuleSetRule } from '@types/webpack';
+import type { Configuration, RuleSetRule } from '@types/webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';

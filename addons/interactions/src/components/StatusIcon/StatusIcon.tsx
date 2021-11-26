@@ -7,7 +7,7 @@ import { transparentize } from 'polished';
 import localTheme from '../../theme';
 
 export interface StatusIconProps extends IconsProps {
-  status: Call['state'];
+  status: Call['status'];
 }
 
 const {

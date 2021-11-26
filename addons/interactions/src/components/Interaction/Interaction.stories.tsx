@@ -5,6 +5,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import { getCall } from '../../mocks';
 
 import { Interaction } from './Interaction';
+import SubnavStories from '../Subnav/Subnav.stories';
 
 type Story = ComponentStoryObj<typeof Interaction>;
 
@@ -13,8 +14,8 @@ export default {
   component: Interaction,
   args: {
     callsById: new Map(),
-    isDisabled: false,
-    isDebuggingEnabled: true,
+    controls: SubnavStories.args.controls,
+    controlStates: SubnavStories.args.controlStates,
   },
 } as ComponentMeta<typeof Interaction>;
 
@@ -43,7 +44,7 @@ export const Done: Story = {
 };
 
 export const Disabled: Story = {
-  args: { ...Done.args, isDisabled: true },
+  args: { ...Done.args, controlStates: { ...SubnavStories.args.controlStates, goto: false } },
 };
 
 export const Hovered: Story = {

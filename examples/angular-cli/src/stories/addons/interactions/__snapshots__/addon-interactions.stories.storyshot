@@ -1,0 +1,921 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Addons/Interactions Filled 1`] = `
+<storybook-wrapper>
+  <hero-form>
+    <div
+      class="container"
+    >
+      <div>
+        <h1>
+          Hero Form
+        </h1>
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          novalidate=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              for="name"
+            >
+              Name
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="name"
+              name="name"
+              ng-reflect-model=""
+              ng-reflect-name="name"
+              ng-reflect-required=""
+              required=""
+              type="text"
+            />
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Name is required 
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="alterEgo"
+            >
+              Alter Ego
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="alterEgo"
+              name="alterEgo"
+              ng-reflect-model=""
+              ng-reflect-name="alterEgo"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="power"
+            >
+              Hero Power
+            </label>
+            <select
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="power"
+              name="power"
+              ng-reflect-model=""
+              ng-reflect-name="power"
+              ng-reflect-required=""
+              required=""
+            >
+              <option />
+              <option
+                ng-reflect-value="Really Smart"
+                value="Really Smart"
+              >
+                Really Smart
+              </option>
+              <option
+                ng-reflect-value="Super Flexible"
+                value="Super Flexible"
+              >
+                Super Flexible
+              </option>
+              <option
+                ng-reflect-value="Super Hot"
+                value="Super Hot"
+              >
+                Super Hot
+              </option>
+              <option
+                ng-reflect-value="Weather Changer"
+                value="Weather Changer"
+              >
+                Weather Changer
+              </option>
+              
+            </select>
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Power is required 
+            </div>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+             Submit 
+            <span
+              aria-hidden="true"
+              class="spinner-border spinner-border-sm ml-2"
+              hidden=""
+              role="status"
+            />
+          </button>
+        </form>
+      </div>
+      <div
+        hidden=""
+      >
+        <h2>
+          You submitted the following:
+        </h2>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Name
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-name"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Alter Ego
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-alterego"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Power
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-power"
+          >
+            
+          </div>
+        </div>
+        <br />
+        <button
+          class="btn btn-primary"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </hero-form>
+</storybook-wrapper>
+`;
+
+exports[`Storyshots Addons/Interactions Invalid Fields 1`] = `
+<storybook-wrapper>
+  <hero-form>
+    <div
+      class="container"
+    >
+      <div>
+        <h1>
+          Hero Form
+        </h1>
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          novalidate=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              for="name"
+            >
+              Name
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="name"
+              name="name"
+              ng-reflect-model=""
+              ng-reflect-name="name"
+              ng-reflect-required=""
+              required=""
+              type="text"
+            />
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Name is required 
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="alterEgo"
+            >
+              Alter Ego
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="alterEgo"
+              name="alterEgo"
+              ng-reflect-model=""
+              ng-reflect-name="alterEgo"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="power"
+            >
+              Hero Power
+            </label>
+            <select
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="power"
+              name="power"
+              ng-reflect-model=""
+              ng-reflect-name="power"
+              ng-reflect-required=""
+              required=""
+            >
+              <option />
+              <option
+                ng-reflect-value="Really Smart"
+                value="Really Smart"
+              >
+                Really Smart
+              </option>
+              <option
+                ng-reflect-value="Super Flexible"
+                value="Super Flexible"
+              >
+                Super Flexible
+              </option>
+              <option
+                ng-reflect-value="Super Hot"
+                value="Super Hot"
+              >
+                Super Hot
+              </option>
+              <option
+                ng-reflect-value="Weather Changer"
+                value="Weather Changer"
+              >
+                Weather Changer
+              </option>
+              
+            </select>
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Power is required 
+            </div>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+             Submit 
+            <span
+              aria-hidden="true"
+              class="spinner-border spinner-border-sm ml-2"
+              hidden=""
+              role="status"
+            />
+          </button>
+        </form>
+      </div>
+      <div
+        hidden=""
+      >
+        <h2>
+          You submitted the following:
+        </h2>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Name
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-name"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Alter Ego
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-alterego"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Power
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-power"
+          >
+            
+          </div>
+        </div>
+        <br />
+        <button
+          class="btn btn-primary"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </hero-form>
+</storybook-wrapper>
+`;
+
+exports[`Storyshots Addons/Interactions Standard 1`] = `
+<storybook-wrapper>
+  <hero-form>
+    <div
+      class="container"
+    >
+      <div>
+        <h1>
+          Hero Form
+        </h1>
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          novalidate=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              for="name"
+            >
+              Name
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="name"
+              name="name"
+              ng-reflect-model=""
+              ng-reflect-name="name"
+              ng-reflect-required=""
+              required=""
+              type="text"
+            />
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Name is required 
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="alterEgo"
+            >
+              Alter Ego
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="alterEgo"
+              name="alterEgo"
+              ng-reflect-model=""
+              ng-reflect-name="alterEgo"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="power"
+            >
+              Hero Power
+            </label>
+            <select
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="power"
+              name="power"
+              ng-reflect-model=""
+              ng-reflect-name="power"
+              ng-reflect-required=""
+              required=""
+            >
+              <option />
+              <option
+                ng-reflect-value="Really Smart"
+                value="Really Smart"
+              >
+                Really Smart
+              </option>
+              <option
+                ng-reflect-value="Super Flexible"
+                value="Super Flexible"
+              >
+                Super Flexible
+              </option>
+              <option
+                ng-reflect-value="Super Hot"
+                value="Super Hot"
+              >
+                Super Hot
+              </option>
+              <option
+                ng-reflect-value="Weather Changer"
+                value="Weather Changer"
+              >
+                Weather Changer
+              </option>
+              
+            </select>
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Power is required 
+            </div>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+             Submit 
+            <span
+              aria-hidden="true"
+              class="spinner-border spinner-border-sm ml-2"
+              hidden=""
+              role="status"
+            />
+          </button>
+        </form>
+      </div>
+      <div
+        hidden=""
+      >
+        <h2>
+          You submitted the following:
+        </h2>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Name
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-name"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Alter Ego
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-alterego"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Power
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-power"
+          >
+            
+          </div>
+        </div>
+        <br />
+        <button
+          class="btn btn-primary"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </hero-form>
+</storybook-wrapper>
+`;
+
+exports[`Storyshots Addons/Interactions Submitted 1`] = `
+<storybook-wrapper>
+  <hero-form>
+    <div
+      class="container"
+    >
+      <div>
+        <h1>
+          Hero Form
+        </h1>
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          novalidate=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              for="name"
+            >
+              Name
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="name"
+              name="name"
+              ng-reflect-model=""
+              ng-reflect-name="name"
+              ng-reflect-required=""
+              required=""
+              type="text"
+            />
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Name is required 
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="alterEgo"
+            >
+              Alter Ego
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="alterEgo"
+              name="alterEgo"
+              ng-reflect-model=""
+              ng-reflect-name="alterEgo"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="power"
+            >
+              Hero Power
+            </label>
+            <select
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="power"
+              name="power"
+              ng-reflect-model=""
+              ng-reflect-name="power"
+              ng-reflect-required=""
+              required=""
+            >
+              <option />
+              <option
+                ng-reflect-value="Really Smart"
+                value="Really Smart"
+              >
+                Really Smart
+              </option>
+              <option
+                ng-reflect-value="Super Flexible"
+                value="Super Flexible"
+              >
+                Super Flexible
+              </option>
+              <option
+                ng-reflect-value="Super Hot"
+                value="Super Hot"
+              >
+                Super Hot
+              </option>
+              <option
+                ng-reflect-value="Weather Changer"
+                value="Weather Changer"
+              >
+                Weather Changer
+              </option>
+              
+            </select>
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Power is required 
+            </div>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+             Submit 
+            <span
+              aria-hidden="true"
+              class="spinner-border spinner-border-sm ml-2"
+              hidden=""
+              role="status"
+            />
+          </button>
+        </form>
+      </div>
+      <div
+        hidden=""
+      >
+        <h2>
+          You submitted the following:
+        </h2>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Name
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-name"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Alter Ego
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-alterego"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Power
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-power"
+          >
+            
+          </div>
+        </div>
+        <br />
+        <button
+          class="btn btn-primary"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </hero-form>
+</storybook-wrapper>
+`;
+
+exports[`Storyshots Addons/Interactions Submitted And Edited After 1`] = `
+<storybook-wrapper>
+  <hero-form>
+    <div
+      class="container"
+    >
+      <div>
+        <h1>
+          Hero Form
+        </h1>
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          novalidate=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              for="name"
+            >
+              Name
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="name"
+              name="name"
+              ng-reflect-model=""
+              ng-reflect-name="name"
+              ng-reflect-required=""
+              required=""
+              type="text"
+            />
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Name is required 
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="alterEgo"
+            >
+              Alter Ego
+            </label>
+            <input
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="alterEgo"
+              name="alterEgo"
+              ng-reflect-model=""
+              ng-reflect-name="alterEgo"
+              type="text"
+            />
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              for="power"
+            >
+              Hero Power
+            </label>
+            <select
+              class="form-control ng-untouched ng-pristine ng-valid"
+              id="power"
+              name="power"
+              ng-reflect-model=""
+              ng-reflect-name="power"
+              ng-reflect-required=""
+              required=""
+            >
+              <option />
+              <option
+                ng-reflect-value="Really Smart"
+                value="Really Smart"
+              >
+                Really Smart
+              </option>
+              <option
+                ng-reflect-value="Super Flexible"
+                value="Super Flexible"
+              >
+                Super Flexible
+              </option>
+              <option
+                ng-reflect-value="Super Hot"
+                value="Super Hot"
+              >
+                Super Hot
+              </option>
+              <option
+                ng-reflect-value="Weather Changer"
+                value="Weather Changer"
+              >
+                Weather Changer
+              </option>
+              
+            </select>
+            <div
+              class="alert alert-danger"
+              hidden=""
+            >
+               Power is required 
+            </div>
+          </div>
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+             Submit 
+            <span
+              aria-hidden="true"
+              class="spinner-border spinner-border-sm ml-2"
+              hidden=""
+              role="status"
+            />
+          </button>
+        </form>
+      </div>
+      <div
+        hidden=""
+      >
+        <h2>
+          You submitted the following:
+        </h2>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Name
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-name"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Alter Ego
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-alterego"
+          >
+            
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-sm-3 font-weight-bold"
+          >
+            Power
+          </div>
+          <div
+            class="col-sm-9"
+            data-testid="hero-power"
+          >
+            
+          </div>
+        </div>
+        <br />
+        <button
+          class="btn btn-primary"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
+  </hero-form>
+</storybook-wrapper>
+`;

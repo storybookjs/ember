@@ -1,6 +1,6 @@
 {
   "name": "standalone-preview",
-  "version": "6.4.0-rc.7",
+  "version": "6.4.0-rc.9",
   "private": true,
   "scripts": {
     "storybook": "parcel ./storybook.html --port 1337",
@@ -8,9 +8,9 @@
   },
   "browserslist": "defaults",
   "devDependencies": {
-    "@storybook/addon-docs": "6.4.0-rc.7",
-    "@storybook/cli": "6.4.0-rc.7",
-    "@storybook/react": "6.4.0-rc.7",
+    "@storybook/addon-docs": "6.4.0-rc.9",
+    "@storybook/cli": "6.4.0-rc.9",
+    "@storybook/react": "6.4.0-rc.9",
     "cross-env": "^7.0.3",
     "parcel": "^1.12.4",
     "react": "16.14.0",

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Call, CallStates } from '@storybook/instrumenter';
+import { Call, CallStates, ControlStates } from '@storybook/instrumenter';
 import { styled, typography } from '@storybook/theming';
 import { transparentize } from 'polished';
 
 import { MatcherResult } from '../MatcherResult';
 import { MethodCall } from '../MethodCall';
 import { StatusIcon } from '../StatusIcon/StatusIcon';
+import { Controls } from '../../Panel';
 
 const MethodCallWrapper = styled.div(() => ({
   fontFamily: typography.fonts.mono,
@@ -20,7 +21,7 @@ const RowContainer = styled('div', { shouldForwardProp: (prop) => !['call'].incl
   borderBottom: `1px solid ${theme.appBorderColor}`,
   fontFamily: typography.fonts.base,
   fontSize: 13,
-  ...(call.state === CallStates.ERROR && {
+  ...(call.status === CallStates.ERROR && {
     backgroundColor:
       theme.base === 'dark' ? transparentize(0.93, theme.color.negative) : theme.background.warning,
   }),
@@ -38,19 +39,17 @@ const RowLabel = styled('button', { shouldForwardProp: (prop) => !['call'].inclu
   margin: 0,
   padding: '8px 15px',
   textAlign: 'start',
-  cursor: disabled || call.state === CallStates.ERROR ? 'default' : 'pointer',
-  '&:hover': {
-    background: theme.background.hoverable,
-  },
+  cursor: disabled || call.status === CallStates.ERROR ? 'default' : 'pointer',
+  '&:hover': disabled ? {} : { background: theme.background.hoverable },
   '&:focus-visible': {
     outline: 0,
     boxShadow: `inset 3px 0 0 0 ${
-      call.state === CallStates.ERROR ? theme.color.warning : theme.color.secondary
+      call.status === CallStates.ERROR ? theme.color.warning : theme.color.secondary
     }`,
-    background: call.state === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
+    background: call.status === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
   },
   '& > div': {
-    opacity: call.state === CallStates.WAITING ? 0.5 : 1,
+    opacity: call.status === CallStates.WAITING ? 0.5 : 1,
   },
 }));
 
@@ -63,32 +62,30 @@ const RowMessage = styled('pre')({
 export const Interaction = ({
   call,
   callsById,
-  onClick,
-  isDisabled,
-  isDebuggingEnabled,
+  controls,
+  controlStates,
 }: {
   call: Call;
   callsById: Map<Call['id'], Call>;
-  onClick: React.MouseEventHandler<HTMLElement>;
-  isDisabled: boolean;
-  isDebuggingEnabled?: boolean;
+  controls: Controls;
+  controlStates: ControlStates;
 }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
     <RowContainer call={call}>
       <RowLabel
         call={call}
-        onClick={onClick}
-        disabled={isDebuggingEnabled ? isDisabled : true}
-        onMouseEnter={() => isDebuggingEnabled && setIsHovered(true)}
-        onMouseLeave={() => isDebuggingEnabled && setIsHovered(false)}
+        onClick={() => controls.goto(call.id)}
+        disabled={!controlStates.goto}
+        onMouseEnter={() => controlStates.goto && setIsHovered(true)}
+        onMouseLeave={() => controlStates.goto && setIsHovered(false)}
       >
-        <StatusIcon status={isHovered ? CallStates.ACTIVE : call.state} />
+        <StatusIcon status={isHovered ? CallStates.ACTIVE : call.status} />
         <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
           <MethodCall call={call} callsById={callsById} />
         </MethodCallWrapper>
       </RowLabel>
-      {call.state === CallStates.ERROR &&
+      {call.status === CallStates.ERROR &&
         call.exception &&
         (call.exception.message.startsWith('expect(') ? (
           <MatcherResult {...call.exception} />

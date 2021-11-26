@@ -1,8 +1,9 @@
 import { CallStates, Call } from '@storybook/instrumenter';
 
-export const getCall = (state: CallStates): Call => {
+export const getCall = (status: CallStates): Call => {
   const defaultData = {
     id: 'addons-interactions-accountform--standard-email-filled [3] change',
+    cursor: 0,
     path: ['fireEvent'],
     method: 'change',
     storyId: 'addons-interactions-accountform--standard-email-filled',
@@ -19,11 +20,11 @@ export const getCall = (state: CallStates): Call => {
     ],
     interceptable: true,
     retain: false,
-    state,
+    status,
   };
 
   const overrides = CallStates.ERROR
-    ? { exception: { callId: '', stack: '', message: "Things didn't work!" } }
+    ? { exception: { name: 'Error', stack: '', message: "Things didn't work!" } }
     : {};
 
   return { ...defaultData, ...overrides };
