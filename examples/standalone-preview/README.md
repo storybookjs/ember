@@ -14,7 +14,7 @@ To view the stories in the storybook UI:
 
 ```
 cd ../official-storybook
-npm storybook -- --preview-url=http://localhost:1337/iframe.html # or yarn
+npm run storybook -- --preview-url=http://localhost:1337/iframe.html # or yarn storybook...
 ```
 
 This runs the Storybook dev server, but instead of showing `official-storybook`'s stories, it attaches to the `parcel` dev server, lists its stories in the navigation, and shows its stories in the preview iframe.
