@@ -3,7 +3,6 @@ import { LoadOptions, Options as CoreOptions } from '@storybook/core-common';
 
 import { BuilderContext } from '@angular-devkit/architect';
 import { ExtraEntryPoint, StylePreprocessorOptions } from '@angular-devkit/build-angular';
-import { JsonValue } from '@angular-devkit/core';
 
 export type PresetOptions = CoreOptions & {
   /* Allow to get the options of a targeted "browser builder"  */
