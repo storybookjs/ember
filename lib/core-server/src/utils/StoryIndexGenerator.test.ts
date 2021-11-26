@@ -68,11 +68,11 @@ describe('StoryIndexGenerator', () => {
                 "name": "Story One",
                 "title": "Nested/Button",
               },
-              "second-nested-f--story-one": Object {
-                "id": "second-nested-f--story-one",
-                "importPath": "./src/second-nested/F.stories.ts",
+              "second-nested-g--story-one": Object {
+                "id": "second-nested-g--story-one",
+                "importPath": "./src/second-nested/G.stories.ts",
                 "name": "Story One",
-                "title": "Second Nested/F",
+                "title": "Second Nested/G",
               },
             },
             "v": 3,
@@ -112,17 +112,23 @@ describe('StoryIndexGenerator', () => {
                 "name": "Story One",
                 "title": "D",
               },
+              "first-nested-deeply-f--story-one": Object {
+                "id": "first-nested-deeply-f--story-one",
+                "importPath": "./src/first-nested/deeply/F.stories.js",
+                "name": "Story One",
+                "title": "First Nested/Deeply/F",
+              },
               "nested-button--story-one": Object {
                 "id": "nested-button--story-one",
                 "importPath": "./src/nested/Button.stories.ts",
                 "name": "Story One",
                 "title": "Nested/Button",
               },
-              "second-nested-f--story-one": Object {
-                "id": "second-nested-f--story-one",
-                "importPath": "./src/second-nested/F.stories.ts",
+              "second-nested-g--story-one": Object {
+                "id": "second-nested-g--story-one",
+                "importPath": "./src/second-nested/G.stories.ts",
                 "name": "Story One",
-                "title": "Second Nested/F",
+                "title": "Second Nested/G",
               },
             },
             "v": 3,
@@ -143,7 +149,7 @@ describe('StoryIndexGenerator', () => {
       await generator.initialize();
 
       (getStorySortParameter as jest.Mock).mockReturnValueOnce({
-        order: ['D', 'B', 'Nested', 'A', 'Second Nested'],
+        order: ['D', 'B', 'Nested', 'A', 'Second Nested', 'First Nested/Deeply'],
       });
 
       expect(Object.keys((await generator.getIndex()).stories)).toEqual([
@@ -151,7 +157,8 @@ describe('StoryIndexGenerator', () => {
         'b--story-one',
         'nested-button--story-one',
         'a--story-one',
-        'second-nested-f--story-one',
+        'second-nested-g--story-one',
+        'first-nested-deeply-f--story-one',
       ]);
     });
   });
@@ -168,7 +175,7 @@ describe('StoryIndexGenerator', () => {
         const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
-        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
+        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(7);
 
         readCsfOrMdxMock.mockClear();
         await generator.getIndex();
@@ -205,7 +212,7 @@ describe('StoryIndexGenerator', () => {
         const generator = new StoryIndexGenerator([specifier], options);
         await generator.initialize();
         await generator.getIndex();
-        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
+        expect(readCsfOrMdxMock).toHaveBeenCalledTimes(7);
 
         generator.invalidate(specifier, './src/B.stories.ts', false);
 
@@ -245,7 +252,7 @@ describe('StoryIndexGenerator', () => {
           const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
-          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
+          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(7);
 
           generator.invalidate(specifier, './src/B.stories.ts', true);
 
@@ -284,7 +291,7 @@ describe('StoryIndexGenerator', () => {
           const generator = new StoryIndexGenerator([specifier], options);
           await generator.initialize();
           await generator.getIndex();
-          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(6);
+          expect(readCsfOrMdxMock).toHaveBeenCalledTimes(7);
 
           generator.invalidate(specifier, './src/B.stories.ts', true);
 
