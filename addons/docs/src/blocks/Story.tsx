@@ -169,7 +169,6 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     //      Certain frameworks (i.e.angular) don't actually render the component in the very first
     //      React render cycle, so we need to wait for the framework to actually do that
     Promise.all([storyFnRan, rendered]).then(() => {
-      console.log('called story fn', story.id);
       channel.emit(Events.STORY_RENDERED, storyId);
     });
   }
