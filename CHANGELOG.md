@@ -1,3 +1,17 @@
+## 6.4.0-rc.9 (November 26, 2021)
+
+### Features
+
+- Angular: Add styles and stylePreprocessorOptions to angular builder ([#16675](https://github.com/storybookjs/storybook/pull/16675))
+
+### Bug Fixes
+
+- Interactions: Unlock controls when play function is finished ([#16784](https://github.com/storybookjs/storybook/pull/16784))
+
+### Maintenance
+
+- Misc: Cleanup typescript webpack types ([#16780](https://github.com/storybookjs/storybook/pull/16780))
+
 ## 6.4.0-rc.8 (November 25, 2021)
 
 ### Bug Fixes
