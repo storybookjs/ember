@@ -1,12 +1,18 @@
+## 6.4.0-rc.11 (November 26, 2021)
+
+### Bug Fixes
+
+- Core: Fix breaking change in process/browser ([#16795](https://github.com/storybookjs/storybook/pull/16795))
+
 ## 6.4.0-rc.10 (November 26, 2021)
 
 ### Bug Fixes
 
-* Core: Allow args/argTypes/component to be set via parameters for storiesOf back-compat ([#16791](https://github.com/storybookjs/storybook/pull/16791))
-* Core: Sort the results of `globby` when constructing Story Index ([#16788](https://github.com/storybookjs/storybook/pull/16788))
-* Core: Don't log a console error when the story is missing ([#16783](https://github.com/storybookjs/storybook/pull/16783))
-* Addon-docs: Wait for the story component to render before emitting ([#16792](https://github.com/storybookjs/storybook/pull/16792))
-* Core: Ensure that `context.args` is always set ([#16790](https://github.com/storybookjs/storybook/pull/16790))
+- Core: Allow args/argTypes/component to be set via parameters for storiesOf back-compat ([#16791](https://github.com/storybookjs/storybook/pull/16791))
+- Core: Sort the results of `globby` when constructing Story Index ([#16788](https://github.com/storybookjs/storybook/pull/16788))
+- Core: Don't log a console error when the story is missing ([#16783](https://github.com/storybookjs/storybook/pull/16783))
+- Addon-docs: Wait for the story component to render before emitting ([#16792](https://github.com/storybookjs/storybook/pull/16792))
+- Core: Ensure that `context.args` is always set ([#16790](https://github.com/storybookjs/storybook/pull/16790))
 
 ## 6.4.0-rc.9 (November 26, 2021)
 
