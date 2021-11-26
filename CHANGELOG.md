@@ -1,3 +1,17 @@
+## 6.4.0 (November 27, 2021)
+
+Storybook 6.4 is here!! 🎉🎉🎉
+
+SB6.4 adds adds interaction testing and performance re-architecture ahead of a huge 7.0 release.
+
+- ▶️ **Interactive stories** to simulate user behavior and tools to debug it
+- ⚡️ **On-demand architecture** for smaller builds and faster load times
+- ⛸ **Automigrate + versioned documentation** for easier upgrades
+- 📋 **Linter** to enforce Storybook best practices
+- 💯 **Hundreds more fixes** and quality of life improvements
+
+More info in the Github issue [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355). Release announcement coming soon!!!
+
 ## 6.4.0-rc.11 (November 26, 2021)
 
 ### Bug Fixes
