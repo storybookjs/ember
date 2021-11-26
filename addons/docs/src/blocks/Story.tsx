@@ -111,6 +111,14 @@ export const getStoryProps = <TFramework extends AnyFramework>(
   };
 };
 
+function makeGate(): [Promise<void>, () => void] {
+  let open;
+  const gate = new Promise<void>((r) => {
+    open = r;
+  });
+  return [gate, open];
+}
+
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const channel = addons.getChannel();
@@ -145,16 +153,31 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     return () => cleanup && cleanup();
   }, [story]);
 
-  if (!story) {
-    return <StorySkeleton />;
-  }
+  const [storyFnRan, onStoryFnRan] = makeGate();
+  const [rendered, onRendered] = makeGate();
+  useEffect(onRendered);
 
   // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
   // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
   // `Preview.renderStoryToDom()` which itself emits the event.
-  const storyProps = getStoryProps(props, story, context, () =>
-    channel.emit(Events.STORY_RENDERED, storyId)
-  );
+  if (story && !global?.FEATURES?.modernInlineRender) {
+    // We need to wait for two things before we can consider the story rendered:
+    //  (a) React's `useEffect` hook needs to fire. This is needed for React stories, as
+    //      decorators of the form `<A><B/></A>` will not actually execute `B` in the first
+    //      call to the story function.
+    //  (b) The story function needs to actually have been called.
+    //      Certain frameworks (i.e.angular) don't actually render the component in the very first
+    //      React render cycle, so we need to wait for the framework to actually do that
+    Promise.all([storyFnRan, rendered]).then(() => {
+      channel.emit(Events.STORY_RENDERED, storyId);
+    });
+  }
+
+  if (!story) {
+    return <StorySkeleton />;
+  }
+
+  const storyProps = getStoryProps(props, story, context, onStoryFnRan);
   if (!storyProps) {
     return null;
   }

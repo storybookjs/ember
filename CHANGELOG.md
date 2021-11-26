@@ -1,3 +1,33 @@
+## 6.4.0 (November 27, 2021)
+
+Storybook 6.4 is here!! 🎉🎉🎉
+
+SB6.4 adds adds interaction testing and performance re-architecture ahead of a huge 7.0 release.
+
+- ▶️ **Interactive stories** to simulate user behavior and tools to debug it
+- ⚡️ **On-demand architecture** for smaller builds and faster load times
+- ⛸ **Automigrate + versioned documentation** for easier upgrades
+- 📋 **Linter** to enforce Storybook best practices
+- 💯 **Hundreds more fixes** and quality of life improvements
+
+More info in the Github issue [Storybook 6.4 Release 🛠](https://github.com/storybookjs/storybook/issues/15355). Release announcement coming soon!!!
+
+## 6.4.0-rc.11 (November 26, 2021)
+
+### Bug Fixes
+
+- Core: Fix breaking change in process/browser ([#16795](https://github.com/storybookjs/storybook/pull/16795))
+
+## 6.4.0-rc.10 (November 26, 2021)
+
+### Bug Fixes
+
+- Core: Allow args/argTypes/component to be set via parameters for storiesOf back-compat ([#16791](https://github.com/storybookjs/storybook/pull/16791))
+- Core: Sort the results of `globby` when constructing Story Index ([#16788](https://github.com/storybookjs/storybook/pull/16788))
+- Core: Don't log a console error when the story is missing ([#16783](https://github.com/storybookjs/storybook/pull/16783))
+- Addon-docs: Wait for the story component to render before emitting ([#16792](https://github.com/storybookjs/storybook/pull/16792))
+- Core: Ensure that `context.args` is always set ([#16790](https://github.com/storybookjs/storybook/pull/16790))
+
 ## 6.4.0-rc.9 (November 26, 2021)
 
 ### Features
