@@ -2,7 +2,7 @@
 
 Storybook 6.4 is here!! 🎉🎉🎉
 
-SB6.4 adds adds interaction testing and performance re-architecture ahead of a huge 7.0 release.
+SB6.4 adds interaction testing and performance re-architecture ahead of a huge 7.0 release.
 
 - ▶️ **Interactive stories** to simulate user behavior and tools to debug it
 - ⚡️ **On-demand architecture** for smaller builds and faster load times
