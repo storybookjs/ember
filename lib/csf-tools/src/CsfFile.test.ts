@@ -405,6 +405,26 @@ describe('CsfFile', () => {
         )
       ).toThrow('CSF: unexpected storiesOf call');
     });
+
+    it('function exports', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export function A() {}
+          export function B() {}
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+          - id: foo-bar--b
+            name: B
+      `);
+    });
   });
 
   // NOTE: this does not have a public API, but we can still test it
