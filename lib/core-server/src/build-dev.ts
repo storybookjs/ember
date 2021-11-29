@@ -112,7 +112,7 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   }
 
   // Get package name and capitalize it e.g. @storybook/react -> React
-  const packageName = name.split('@storybook/').length > 0 ? name.split('@storybook/')[1] : name;
+  const packageName = name.split('@storybook/').length > 1 ? name.split('@storybook/')[1] : name;
   const frameworkName = packageName.charAt(0).toUpperCase() + packageName.slice(1);
 
   outputStartupInformation({
