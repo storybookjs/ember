@@ -1,3 +1,14 @@
+## 6.4.1 (November 30, 2021)
+
+### Bug Fixes
+
+- Core: Fix packageName check in build-dev ([#16823](https://github.com/storybookjs/storybook/pull/16823))
+- CSFFile: Fix function exports ([#16829](https://github.com/storybookjs/storybook/pull/16829))
+
+### Maintenance
+
+- Fix `handle-release-branches` workflow ([#16801](https://github.com/storybookjs/storybook/pull/16801))
+
 ## 6.4.0 (November 27, 2021)
 
 Storybook 6.4 is here!! 🎉🎉🎉
