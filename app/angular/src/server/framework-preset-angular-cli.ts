@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 import { logger } from '@storybook/node-logger';
-import { targetFromTargetString, BuilderContext } from '@angular-devkit/architect';
+import { targetFromTargetString, BuilderContext, Target } from '@angular-devkit/architect';
 import { sync as findUpSync } from 'find-up';
 import semver from '@storybook/semver';
 
@@ -10,6 +10,11 @@ import { getWebpackConfig as getWebpackConfig12_2_x } from './angular-cli-webpac
 import { getWebpackConfig as getWebpackConfig13_x_x } from './angular-cli-webpack-13.x.x';
 import { getWebpackConfig as getWebpackConfigOlder } from './angular-cli-webpack-older';
 import { PresetOptions } from './options';
+import {
+  getDefaultProjectName,
+  findAngularProjectTarget,
+  readAngularWorkspaceConfig,
+} from './angular-read-workspace';
 
 export async function webpackFinal(baseConfig: webpack.Configuration, options: PresetOptions) {
   if (!moduleIsAvailable('@angular-devkit/build-angular')) {
@@ -36,9 +41,10 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
       getWebpackConfig: async (_baseConfig, _options) => {
         const builderContext = getBuilderContext(_options);
         const builderOptions = await getBuilderOptions(_options, builderContext);
+        const legacyDefaultOptions = await getLegacyDefaultBuildOptions(_options);
 
         return getWebpackConfig13_x_x(_baseConfig, {
-          builderOptions,
+          builderOptions: { ...builderOptions, ...legacyDefaultOptions },
           builderContext,
         });
       },
@@ -123,4 +129,54 @@ async function getBuilderOptions(
   logger.info(`=> Using angular project with "tsConfig:${builderOptions.tsConfig}"`);
 
   return builderOptions;
+}
+
+/**
+ * Get options from legacy way
+ * /!\ This is only for backward compatibility and would be removed on Storybook 7.0
+ * only work for angular.json with [defaultProject].build or "storybook.build" config
+ */
+async function getLegacyDefaultBuildOptions(options: PresetOptions) {
+  if (options.angularBrowserTarget !== undefined) {
+    // Not use legacy way with builder (`angularBrowserTarget` is defined or null with builder and undefined without)
+    return {};
+  }
+
+  // TODO ~ legacy way to get default options
+  // TODO ~ Add deprecation warning and ex for builder use ? `);
+  const dirToSearch = process.cwd();
+
+  // Read angular workspace
+  let workspaceConfig;
+  try {
+    workspaceConfig = await readAngularWorkspaceConfig(dirToSearch);
+  } catch (error) {
+    logger.error(
+      `=> Could not find angular workspace config (angular.json) on this path "${dirToSearch}"`
+    );
+    logger.info(`=> Fail to load angular-cli config. Using base config`);
+    return {};
+  }
+
+  // Find angular project target
+  try {
+    const browserTarget = {
+      configuration: undefined,
+      project: getDefaultProjectName(workspaceConfig),
+      target: 'build',
+    } as Target;
+
+    const { target, project } = findAngularProjectTarget(
+      workspaceConfig,
+      browserTarget.project,
+      browserTarget.target
+    );
+
+    logger.info(`=> Using angular project "${project}:${target}" for configuring Storybook`);
+    return { ...target.options };
+  } catch (error) {
+    logger.error(`=> Could not find angular project: ${error.message}`);
+    logger.info(`=> Fail to load angular-cli config. Using base config`);
+    return {};
+  }
 }
