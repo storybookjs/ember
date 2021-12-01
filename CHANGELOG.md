@@ -1,3 +1,9 @@
+## 6.4.4 (December 2, 2021)
+
+### Bug Fixes
+
+* CLI: Fix mainjsFramework automigrate ([#16866](https://github.com/storybookjs/storybook/pull/16866))
+
 ## 6.4.3 (December 1, 2021)
 
 ### Bug Fixes
