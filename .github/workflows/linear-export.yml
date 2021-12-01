@@ -14,7 +14,7 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      # - uses: hmarr/debug-action@v2
+      - uses: hmarr/debug-action@v2
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
