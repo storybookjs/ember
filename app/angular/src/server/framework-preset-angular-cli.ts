@@ -4,7 +4,7 @@ import { targetFromTargetString, BuilderContext, Target } from '@angular-devkit/
 import { sync as findUpSync } from 'find-up';
 import semver from '@storybook/semver';
 
-import { logging, JsonObject, workspaces } from '@angular-devkit/core';
+import { logging, JsonObject } from '@angular-devkit/core';
 import { moduleIsAvailable } from './utils/module-is-available';
 import { getWebpackConfig as getWebpackConfig12_2_x } from './angular-cli-webpack-12.2.x';
 import { getWebpackConfig as getWebpackConfig13_x_x } from './angular-cli-webpack-13.x.x';
