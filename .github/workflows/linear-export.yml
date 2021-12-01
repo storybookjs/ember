@@ -14,11 +14,11 @@ jobs:
     name: Export to linear
     runs-on: ubuntu-latest
     steps:
-      - uses: hmarr/debug-action@v2
+      # - uses: hmarr/debug-action@v2
       - name: Linear action
         uses: shilman/linear-action@v1
         with:
-          ghIssueNumber: ${{ github.event.number || github.event.issue.number }}
+          ghIssueNumber: ${{ github.event.number || github.event.issue.number || github.event.discussion.number }}
           ghRepoOwner: ${{ github.event.repository.owner.login }}
           ghRepoName: ${{ github.event.repository.name }}
           ghToken: ${{ secrets.LINEAR_GH_TOKEN }}
