@@ -37,6 +37,19 @@ Demo.play = async ({ args, canvasElement }) => {
   await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
 };
 
+export const FindBy: CSF2Story = (args) => {
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    setTimeout(() => setIsLoading(false), 500);
+  }, []);
+  return isLoading ? <div>Loading...</div> : <button type="button">Loaded!</button>;
+};
+FindBy.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await canvas.findByRole('button');
+  await expect(true).toBe(true);
+};
+
 export const WaitFor: CSF2Story = (args) => (
   <button type="button" onClick={() => setTimeout(() => args.onSubmit('clicked'), 100)}>
     Click
@@ -46,6 +59,7 @@ WaitFor.play = async ({ args, canvasElement }) => {
   await userEvent.click(await within(canvasElement).findByText('Click'));
   await waitFor(async () => {
     await expect(args.onSubmit).toHaveBeenCalledWith(expect.stringMatching(/([A-Z])\w+/gi));
+    await expect(true).toBe(true);
   });
 };
 
@@ -54,7 +68,6 @@ export const WaitForElementToBeRemoved: CSF2Story = () => {
   React.useEffect(() => {
     setTimeout(() => setIsLoading(false), 1500);
   }, []);
-
   return isLoading ? <div>Loading...</div> : <button type="button">Loaded!</button>;
 };
 WaitForElementToBeRemoved.play = async ({ canvasElement }) => {

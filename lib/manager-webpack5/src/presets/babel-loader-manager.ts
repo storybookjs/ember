@@ -1,4 +1,4 @@
-import { RuleSetRule } from 'webpack';
+import type { RuleSetRule } from 'webpack';
 import { getProjectRoot, getStorybookBabelConfig } from '@storybook/core-common';
 
 export const babelLoader = () => {

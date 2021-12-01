@@ -9,10 +9,11 @@ import {
   WithTooltip,
   Bar,
 } from '@storybook/components';
-import { Call, CallStates } from '@storybook/instrumenter';
+import { Call, CallStates, ControlStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
 import { StatusBadge } from '../StatusBadge/StatusBadge';
+import { Controls } from '../../Panel';
 
 const SubnavWrapper = styled.div(({ theme }) => ({
   background: theme.background.app,
@@ -31,15 +32,10 @@ const StyledSubnav = styled.nav(({ theme }) => ({
 }));
 
 export interface SubnavProps {
-  isDisabled: boolean;
-  hasPrevious: boolean;
-  hasNext: boolean;
+  controls: Controls;
+  controlStates: ControlStates;
+  status: Call['status'];
   storyFileName?: string;
-  status: Call['state'];
-  onStart: () => void;
-  onPrevious: () => void;
-  onNext: () => void;
-  onEnd: () => void;
   onScrollToEnd?: () => void;
 }
 
@@ -58,7 +54,7 @@ const Note = styled(TooltipNote)(({ theme }) => ({
   fontFamily: theme.typography.fonts.base,
 }));
 
-export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton as any)(({ theme }) => ({
   color: theme.color.mediumdark,
   margin: '0 3px',
 }));
@@ -95,15 +91,10 @@ const JumpToEndButton = styled(StyledButton)({
 });
 
 export const Subnav: React.FC<SubnavProps> = ({
-  isDisabled,
-  hasNext,
-  hasPrevious,
-  storyFileName,
+  controls,
+  controlStates,
   status,
-  onStart,
-  onPrevious,
-  onNext,
-  onEnd,
+  storyFileName,
   onScrollToEnd,
 }) => {
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
@@ -122,29 +113,25 @@ export const Subnav: React.FC<SubnavProps> = ({
             <StyledSeparator />
 
             <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
-              <RewindButton containsIcon onClick={onStart} disabled={isDisabled || !hasPrevious}>
+              <RewindButton containsIcon onClick={controls.start} disabled={!controlStates.start}>
                 <Icons icon="rewind" />
               </RewindButton>
             </WithTooltip>
 
             <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
-              <StyledIconButton
-                containsIcon
-                onClick={onPrevious}
-                disabled={isDisabled || !hasPrevious}
-              >
+              <StyledIconButton containsIcon onClick={controls.back} disabled={!controlStates.back}>
                 <Icons icon="playback" />
               </StyledIconButton>
             </WithTooltip>
 
             <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
-              <StyledIconButton containsIcon onClick={onNext} disabled={isDisabled || !hasNext}>
+              <StyledIconButton containsIcon onClick={controls.next} disabled={!controlStates.next}>
                 <Icons icon="playnext" />
               </StyledIconButton>
             </WithTooltip>
 
             <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
-              <StyledIconButton containsIcon onClick={onEnd} disabled={isDisabled || !hasNext}>
+              <StyledIconButton containsIcon onClick={controls.end} disabled={!controlStates.end}>
                 <Icons icon="fastforward" />
               </StyledIconButton>
             </WithTooltip>

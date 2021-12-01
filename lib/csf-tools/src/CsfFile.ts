@@ -70,7 +70,7 @@ const formatLocation = (node: t.Node, fileName?: string) => {
   return `${fileName || ''} (line ${line}, col ${column})`.trim();
 };
 
-const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
+const isArgsStory = (init: t.Node, parent: t.Node, csf: CsfFile) => {
   let storyFn: t.Node = init;
   // export const Foo = Bar.bind({})
   if (t.isCallExpression(init)) {
@@ -96,6 +96,9 @@ const isArgsStory = (init: t.Expression, parent: t.Node, csf: CsfFile) => {
     }
   }
   if (t.isArrowFunctionExpression(storyFn)) {
+    return storyFn.params.length > 0;
+  }
+  if (t.isFunctionDeclaration(storyFn)) {
     return storyFn.params.length > 0;
   }
   return false;
@@ -149,7 +152,7 @@ export class CsfFile {
 
   _metaAnnotations: Record<string, t.Node> = {};
 
-  _storyExports: Record<string, t.VariableDeclarator> = {};
+  _storyExports: Record<string, t.VariableDeclarator | t.FunctionDeclaration> = {};
 
   _storyAnnotations: Record<string, Record<string, t.Node>> = {};
 
@@ -231,12 +234,18 @@ export class CsfFile {
       },
       ExportNamedDeclaration: {
         enter({ node, parent }) {
+          let declarations;
           if (t.isVariableDeclaration(node.declaration)) {
+            declarations = node.declaration.declarations.filter((d) => t.isVariableDeclarator(d));
+          } else if (t.isFunctionDeclaration(node.declaration)) {
+            declarations = [node.declaration];
+          }
+          if (declarations) {
             // export const X = ...;
-            node.declaration.declarations.forEach((decl) => {
-              if (t.isVariableDeclarator(decl) && t.isIdentifier(decl.id)) {
+            declarations.forEach((decl: t.VariableDeclarator | t.FunctionDeclaration) => {
+              if (t.isIdentifier(decl.id)) {
                 const { name: exportName } = decl.id;
-                if (exportName === '__namedExportsOrder') {
+                if (exportName === '__namedExportsOrder' && t.isVariableDeclarator(decl)) {
                   self._namedExportsOrder = parseExportsOrder(decl.init);
                   return;
                 }
@@ -250,7 +259,7 @@ export class CsfFile {
                   self._storyAnnotations[exportName] = {};
                 }
                 let parameters;
-                if (t.isObjectExpression(decl.init)) {
+                if (t.isVariableDeclarator(decl) && t.isObjectExpression(decl.init)) {
                   let __isArgsStory = true; // assume default render is an args story
                   // CSF3 object export
                   decl.init.properties.forEach((p: t.ObjectProperty) => {
@@ -265,10 +274,11 @@ export class CsfFile {
                   });
                   parameters = { __isArgsStory };
                 } else {
+                  const fn = t.isVariableDeclarator(decl) ? decl.init : decl;
                   parameters = {
                     // __id: toId(self._meta.title, name),
                     // FIXME: Template.bind({});
-                    __isArgsStory: isArgsStory(decl.init, parent, self),
+                    __isArgsStory: isArgsStory(fn, parent, self),
                   };
                 }
                 self._stories[exportName] = {
