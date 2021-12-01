@@ -21,6 +21,11 @@ export const mainjsFramework: Fix<MainjsFrameworkRunOptions> = {
     const packageJson = packageManager.retrievePackageJson();
     const { mainConfig, framework, version: storybookVersion } = getStorybookInfo(packageJson);
 
+    if (!mainConfig) {
+      logger.warn('Unable to find storybook main.js config, skipping');
+      return null;
+    }
+
     const storybookCoerced = storybookVersion && semver.coerce(storybookVersion)?.version;
     if (!storybookCoerced) {
       logger.warn(dedent`
