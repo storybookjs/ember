@@ -133,7 +133,7 @@ async function getBuilderOptions(
 
 /**
  * Get options from legacy way
- * /!\ This is only for backward compatibility and wild be removed on Storybook 7.0
+ * /!\ This is only for backward compatibility and would be removed on Storybook 7.0
  * only work for angular.json with [defaultProject].build or "storybook.build" config
  */
 async function getLegacyDefaultBuildOptions(options: PresetOptions) {
@@ -142,8 +142,8 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
     return {};
   }
 
-  logger.info(`=> TODO ~ legacy way to get default options`);
-  logger.info(`=> TODO ~ Add deprecation warning and ex for builder use ? `);
+  // TODO ~ legacy way to get default options
+  // TODO ~ Add deprecation warning and ex for builder use ? `);
   const dirToSearch = process.cwd();
 
   // Read angular workspace
@@ -159,9 +159,6 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
   }
 
   // Find angular project target
-  let project: workspaces.ProjectDefinition;
-  let target: workspaces.TargetDefinition;
-  let confName: string;
   try {
     const browserTarget = {
       configuration: undefined,
@@ -169,26 +166,17 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
       target: 'build',
     } as Target;
 
-    const fondProject = findAngularProjectTarget(
+    const { target, project } = findAngularProjectTarget(
       workspaceConfig,
       browserTarget.project,
       browserTarget.target
     );
-    project = fondProject.project;
-    target = fondProject.target;
 
-    logger.info(
-      `=> Using angular project "${browserTarget.project}:${browserTarget.target}${
-        confName ? `:${confName}` : ''
-      }" for configuring Storybook`
-    );
+    logger.info(`=> Using angular project "${project}:${target}" for configuring Storybook`);
+    return { ...target.options };
   } catch (error) {
     logger.error(`=> Could not find angular project: ${error.message}`);
     logger.info(`=> Fail to load angular-cli config. Using base config`);
     return {};
   }
-
-  const projectBuildOptions = { ...target.options };
-
-  return projectBuildOptions;
 }
