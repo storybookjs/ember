@@ -1,3 +1,10 @@
+## 6.4.3 (December 1, 2021)
+
+### Bug Fixes
+
+- Don't render with `modernInline` if `inlineStories` is `false` ([#16853](https://github.com/storybookjs/storybook/pull/16853))
+- Preview: Don't hide the story while preparing ([#16850](https://github.com/storybookjs/storybook/pull/16850))
+
 ## 6.4.2 (December 1, 2021)
 
 ### Bug Fixes
