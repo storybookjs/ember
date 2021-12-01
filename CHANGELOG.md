@@ -1,3 +1,28 @@
+## 6.4.3 (December 1, 2021)
+
+### Bug Fixes
+
+- Don't render with `modernInline` if `inlineStories` is `false` ([#16853](https://github.com/storybookjs/storybook/pull/16853))
+- Preview: Don't hide the story while preparing ([#16850](https://github.com/storybookjs/storybook/pull/16850))
+
+## 6.4.2 (December 1, 2021)
+
+### Bug Fixes
+
+- UI: Ensure all classes+animations for our loaders are prefixed ([#16815](https://github.com/storybookjs/storybook/pull/16815))
+- Angular: Add back-compat method to find options (styles) in angular.json ([#16832](https://github.com/storybookjs/storybook/pull/16832))
+
+## 6.4.1 (November 30, 2021)
+
+### Bug Fixes
+
+- Core: Fix packageName check in build-dev ([#16823](https://github.com/storybookjs/storybook/pull/16823))
+- CSFFile: Fix function exports ([#16829](https://github.com/storybookjs/storybook/pull/16829))
+
+### Maintenance
+
+- Fix `handle-release-branches` workflow ([#16801](https://github.com/storybookjs/storybook/pull/16801))
+
 ## 6.4.0 (November 27, 2021)
 
 Storybook 6.4 is here!! 🎉🎉🎉
