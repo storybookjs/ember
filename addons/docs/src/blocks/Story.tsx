@@ -166,10 +166,10 @@ const Story: FunctionComponent<StoryProps> = (props) => {
     return null;
   }
 
-  // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
-  // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
-  // `Preview.renderStoryToDom()` which itself emits the event.
   if (storyProps.inline) {
+    // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
+    // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
+    // `Preview.renderStoryToDom()` which itself emits the event.
     if (!global?.FEATURES?.modernInlineRender) {
       // We need to wait for two things before we can consider the story rendered:
       //  (a) React's `useEffect` hook needs to fire. This is needed for React stories, as
