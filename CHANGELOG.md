@@ -1,3 +1,10 @@
+## 6.4.2 (December 1, 2021)
+
+### Bug Fixes
+
+- UI: Ensure all classes+animations for our loaders are prefixed ([#16815](https://github.com/storybookjs/storybook/pull/16815))
+- Angular: Add back-compat method to find options (styles) in angular.json ([#16832](https://github.com/storybookjs/storybook/pull/16832))
+
 ## 6.4.1 (November 30, 2021)
 
 ### Bug Fixes
