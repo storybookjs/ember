@@ -46,6 +46,32 @@ describe('CsfFile', () => {
       `);
     });
 
+    it('exported const stories', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          const A = () => {};
+          const B = (args) => {};
+          export { A, B };
+        `,
+          true
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+            parameters:
+              __id: foo-bar--a
+          - id: foo-bar--b
+            name: B
+            parameters:
+              __id: foo-bar--b
+      `);
+    });
+
     it('underscores', () => {
       expect(
         parse(
@@ -404,6 +430,26 @@ describe('CsfFile', () => {
           true
         )
       ).toThrow('CSF: unexpected storiesOf call');
+    });
+
+    it('function exports', () => {
+      expect(
+        parse(
+          dedent`
+          export default { title: 'foo/bar' };
+          export function A() {}
+          export function B() {}
+      `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar
+        stories:
+          - id: foo-bar--a
+            name: A
+          - id: foo-bar--b
+            name: B
+      `);
     });
   });
 

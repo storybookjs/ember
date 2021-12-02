@@ -187,7 +187,7 @@ export function prepareStory<TFramework extends AnyFramework>(
         ...context,
         allArgs: context.args,
         argsByTarget,
-        args: argsByTarget[NO_TARGET_NAME],
+        args: argsByTarget[NO_TARGET_NAME] || {},
       };
     }
 

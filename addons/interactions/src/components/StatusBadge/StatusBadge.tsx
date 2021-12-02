@@ -3,7 +3,7 @@ import { Call, CallStates } from '@storybook/instrumenter';
 import { styled, typography } from '@storybook/theming';
 
 export interface StatusBadgeProps {
-  status: Call['state'];
+  status: Call['status'];
 }
 
 const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {

@@ -50,7 +50,7 @@ export class StoryIndexGenerator {
           path.join(this.options.workingDir, specifier.directory, specifier.files)
         );
         const files = await glob(fullGlob);
-        files.forEach((absolutePath: Path) => {
+        files.sort().forEach((absolutePath: Path) => {
           const ext = path.extname(absolutePath);
           const relativePath = path.relative(this.options.workingDir, absolutePath);
           if (!['.js', '.jsx', '.ts', '.tsx', '.mdx'].includes(ext)) {

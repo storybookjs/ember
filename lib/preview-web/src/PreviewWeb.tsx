@@ -729,7 +729,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   renderMissingStory() {
-    logger.error(`No story selected`);
     this.view.showNoPreview();
     this.channel.emit(Events.STORY_MISSING);
   }

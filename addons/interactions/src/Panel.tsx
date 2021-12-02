@@ -1,17 +1,23 @@
 import global from 'global';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { useChannel, useParameter, useStorybookState } from '@storybook/api';
+import { useChannel, useParameter, StoryId } from '@storybook/api';
 import { STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
-import { EVENTS, Call, CallStates, LogItem } from '@storybook/instrumenter';
+import { EVENTS, Call, CallStates, ControlStates, LogItem } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
 import { StatusIcon } from './components/StatusIcon/StatusIcon';
 import { Subnav } from './components/Subnav/Subnav';
 import { Interaction } from './components/Interaction/Interaction';
 
-const { FEATURES } = global;
+export interface Controls {
+  start: (args: any) => void;
+  back: (args: any) => void;
+  goto: (args: any) => void;
+  next: (args: any) => void;
+  end: (args: any) => void;
+}
 
 interface AddonPanelProps {
   active: boolean;
@@ -19,26 +25,25 @@ interface AddonPanelProps {
 
 interface InteractionsPanelProps {
   active: boolean;
-  interactions: (Call & { state?: CallStates })[];
-  isDisabled?: boolean;
-  hasPrevious?: boolean;
-  hasNext?: boolean;
+  controls: Controls;
+  controlStates: ControlStates;
+  interactions: (Call & { status?: CallStates })[];
   fileName?: string;
   hasException?: boolean;
   isPlaying?: boolean;
   calls: Map<string, any>;
   endRef?: React.Ref<HTMLDivElement>;
-  isDebuggingEnabled?: boolean;
-  onStart?: () => void;
-  onPrevious?: () => void;
-  onNext?: () => void;
-  onEnd?: () => void;
   onScrollToEnd?: () => void;
-  onInteractionClick?: (callId: string) => void;
 }
 
-const pendingStates = [CallStates.ACTIVE, CallStates.WAITING];
-const completedStates = [CallStates.DONE, CallStates.ERROR];
+const INITIAL_CONTROL_STATES = {
+  debugger: false,
+  start: false,
+  back: false,
+  goto: false,
+  next: false,
+  end: false,
+};
 
 const TabIcon = styled(StatusIcon)({
   marginLeft: 5,
@@ -51,39 +56,27 @@ const TabStatus = ({ children }: { children: React.ReactChild }) => {
 
 export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
   ({
+    calls,
+    controls,
+    controlStates,
     interactions,
-    isDisabled,
-    hasPrevious,
-    hasNext,
     fileName,
     hasException,
     isPlaying,
-    onStart,
-    onPrevious,
-    onNext,
-    onEnd,
     onScrollToEnd,
-    calls,
-    onInteractionClick,
     endRef,
-    isDebuggingEnabled,
     ...panelProps
   }) => (
     <AddonPanel {...panelProps}>
-      {isDebuggingEnabled && interactions.length > 0 && (
+      {controlStates.debugger && interactions.length > 0 && (
         <Subnav
-          isDisabled={isDisabled}
-          hasPrevious={hasPrevious}
-          hasNext={hasNext}
-          storyFileName={fileName}
+          controls={controls}
+          controlStates={controlStates}
           status={
             // eslint-disable-next-line no-nested-ternary
             isPlaying ? CallStates.ACTIVE : hasException ? CallStates.ERROR : CallStates.DONE
           }
-          onStart={onStart}
-          onPrevious={onPrevious}
-          onNext={onNext}
-          onEnd={onEnd}
+          storyFileName={fileName}
           onScrollToEnd={onScrollToEnd}
         />
       )}
@@ -92,9 +85,8 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
           key={call.id}
           call={call}
           callsById={calls}
-          isDebuggingEnabled={isDebuggingEnabled}
-          isDisabled={isDisabled}
-          onClick={() => onInteractionClick(call.id)}
+          controls={controls}
+          controlStates={controlStates}
         />
       ))}
       <div ref={endRef} />
@@ -115,15 +107,17 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
 );
 
 export const Panel: React.FC<AddonPanelProps> = (props) => {
-  const [isLocked, setLock] = React.useState(false);
-  const [isPlaying, setPlaying] = React.useState(true);
+  const [storyId, setStoryId] = React.useState<StoryId>();
+  const [controlStates, setControlStates] = React.useState<ControlStates>(INITIAL_CONTROL_STATES);
+  const [isPlaying, setPlaying] = React.useState(false);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
-  const calls = React.useRef<Map<Call['id'], Omit<Call, 'state'>>>(new Map());
-  const setCall = ({ state, ...call }: Call) => calls.current.set(call.id, call);
+  // Calls are tracked in a ref so we don't needlessly rerender.
+  const calls = React.useRef<Map<Call['id'], Omit<Call, 'status'>>>(new Map());
+  const setCall = ({ status, ...call }: Call) => calls.current.set(call.id, call);
 
   const [log, setLog] = React.useState<LogItem[]>([]);
-  const interactions = log.map(({ callId, state }) => ({ ...calls.current.get(callId), state }));
+  const interactions = log.map(({ callId, status }) => ({ ...calls.current.get(callId), status }));
 
   const endRef = React.useRef();
   React.useEffect(() => {
@@ -135,41 +129,38 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
     return () => observer.disconnect();
   }, []);
 
-  const emit = useChannel({
-    [EVENTS.CALL]: setCall,
-    [EVENTS.SYNC]: setLog,
-    [EVENTS.LOCK]: setLock,
-    [STORY_RENDER_PHASE_CHANGED]: ({ newPhase }) => {
-      setLock(false);
-      setPlaying(newPhase === 'playing');
+  const emit = useChannel(
+    {
+      [EVENTS.CALL]: setCall,
+      [EVENTS.SYNC]: (payload) => {
+        setControlStates(payload.controlStates);
+        setLog(payload.logItems);
+      },
+      [STORY_RENDER_PHASE_CHANGED]: (event) => {
+        setStoryId(event.storyId);
+        setPlaying(event.newPhase === 'playing');
+      },
     },
-  });
+    []
+  );
 
-  const { storyId } = useStorybookState();
+  const controls = React.useMemo(
+    () => ({
+      start: () => emit(EVENTS.START, { storyId }),
+      back: () => emit(EVENTS.BACK, { storyId }),
+      goto: (callId: string) => emit(EVENTS.GOTO, { storyId, callId }),
+      next: () => emit(EVENTS.NEXT, { storyId }),
+      end: () => emit(EVENTS.END, { storyId }),
+    }),
+    [storyId]
+  );
+
   const storyFilePath = useParameter('fileName', '');
   const [fileName] = storyFilePath.toString().split('/').slice(-1);
   const scrollToTarget = () => scrollTarget?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
-  const isDebuggingEnabled = FEATURES.interactionsDebugger === true;
-
   const showStatus = log.length > 0 && !isPlaying;
-  const isDebugging = log.some((item) => pendingStates.includes(item.state));
-  const hasPrevious = log.some((item) => completedStates.includes(item.state));
-  const hasNext = log.some((item) => item.state === CallStates.WAITING);
-  const hasActive = log.some((item) => item.state === CallStates.ACTIVE);
-  const hasException = log.some((item) => item.state === CallStates.ERROR);
-  const isDisabled = isDebuggingEnabled
-    ? hasActive || isLocked || (isPlaying && !isDebugging)
-    : true;
-
-  const onStart = React.useCallback(() => emit(EVENTS.START, { storyId }), [storyId]);
-  const onPrevious = React.useCallback(() => emit(EVENTS.BACK, { storyId }), [storyId]);
-  const onNext = React.useCallback(() => emit(EVENTS.NEXT, { storyId }), [storyId]);
-  const onEnd = React.useCallback(() => emit(EVENTS.END, { storyId }), [storyId]);
-  const onInteractionClick = React.useCallback(
-    (callId: string) => emit(EVENTS.GOTO, { storyId, callId }),
-    [storyId]
-  );
+  const hasException = log.some((item) => item.status === CallStates.ERROR);
 
   return (
     <React.Fragment key="interactions">
@@ -178,21 +169,14 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
           (hasException ? <TabIcon status={CallStates.ERROR} /> : ` (${interactions.length})`)}
       </TabStatus>
       <AddonPanelPure
+        calls={calls.current}
+        controls={controls}
+        controlStates={controlStates}
         interactions={interactions}
-        isDisabled={isDisabled}
-        hasPrevious={hasPrevious}
-        hasNext={hasNext}
         fileName={fileName}
         hasException={hasException}
         isPlaying={isPlaying}
-        calls={calls.current}
         endRef={endRef}
-        isDebuggingEnabled={isDebuggingEnabled}
-        onStart={onStart}
-        onPrevious={onPrevious}
-        onNext={onNext}
-        onEnd={onEnd}
-        onInteractionClick={onInteractionClick}
         onScrollToEnd={scrollTarget && scrollToTarget}
         {...props}
       />
