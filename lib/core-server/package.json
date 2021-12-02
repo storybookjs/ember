@@ -71,6 +71,7 @@
     "ip": "^1.1.5",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
+    "open": "^8.4.0",
     "pretty-hrtime": "^1.0.3",
     "prompts": "^2.4.0",
     "regenerator-runtime": "^0.13.7",
@@ -81,7 +82,8 @@
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
     "webpack": "4",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "x-default-browser": "^0.4.0"
   },
   "devDependencies": {
     "@storybook/builder-webpack5": "6.4.0-rc.11",
