@@ -1,8 +1,19 @@
+## 6.5.0-alpha.1 (December 3, 2021)
+
+### Bug Fixes
+
+- CLI: Fix open storybook in default browser ([#16844](https://github.com/storybookjs/storybook/pull/16844))
+- Addon-docs: Fix transclusion crash on webpack rules without test field ([#16873](https://github.com/storybookjs/storybook/pull/16873))
+
+### Maintenance
+
+- CLI: Improve `sb repro` directory prompt ([#16854](https://github.com/storybookjs/storybook/pull/16854))
+
 ## 6.4.4 (December 2, 2021)
 
 ### Bug Fixes
 
-* CLI: Fix mainjsFramework automigrate ([#16866](https://github.com/storybookjs/storybook/pull/16866))
+- CLI: Fix mainjsFramework automigrate ([#16866](https://github.com/storybookjs/storybook/pull/16866))
 
 ## 6.4.3 (December 1, 2021)
 
