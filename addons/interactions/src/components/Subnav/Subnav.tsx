@@ -15,17 +15,20 @@ import { styled } from '@storybook/theming';
 import { StatusBadge } from '../StatusBadge/StatusBadge';
 import { Controls } from '../../Panel';
 
-const StyledSubnav = styled.nav(({ theme }) => ({
+const SubnavWrapper = styled.div(({ theme }) => ({
   background: theme.background.app,
   borderBottom: `1px solid ${theme.appBorderColor}`,
+  position: 'sticky',
+  top: 0,
+  zIndex: 1,
+}));
+
+const StyledSubnav = styled.nav(({ theme }) => ({
   height: 40,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   paddingLeft: 15,
-  position: 'sticky',
-  top: 0,
-  zIndex: 1,
 }));
 
 export interface SubnavProps {
@@ -64,6 +67,7 @@ const StyledLocation = styled(P)(({ theme }) => ({
   color: theme.textMutedColor,
   justifyContent: 'flex-end',
   textAlign: 'right',
+  whiteSpace: 'nowrap',
   marginTop: 'auto',
   marginBottom: 1,
   paddingRight: 15,
@@ -86,21 +90,6 @@ const JumpToEndButton = styled(StyledButton)({
   lineHeight: '12px',
 });
 
-const withTooltipModifiers = [
-  {
-    name: 'preventOverflow',
-    options: {
-      padding: 0,
-    },
-  },
-  {
-    name: 'offset',
-    options: {
-      offset: [0, -2],
-    },
-  },
-];
-
 export const Subnav: React.FC<SubnavProps> = ({
   controls,
   controlStates,
@@ -111,67 +100,49 @@ export const Subnav: React.FC<SubnavProps> = ({
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
   return (
-    <Bar>
-      <StyledSubnav>
-        <Group>
-          <StatusBadge status={status} />
-
-          <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
-            {buttonText}
-          </JumpToEndButton>
-
-          <StyledSeparator />
-
-          <WithTooltip
-            modifiers={withTooltipModifiers}
-            hasChrome={false}
-            trigger={controlStates.start ? 'hover' : 'none'}
-            tooltip={<Note note="Go to start" />}
-          >
-            <RewindButton onClick={controls.start} disabled={!controlStates.start}>
-              <Icons icon="rewind" />
-            </RewindButton>
-          </WithTooltip>
-
-          <WithTooltip
-            modifiers={withTooltipModifiers}
-            hasChrome={false}
-            trigger={controlStates.back ? 'hover' : 'none'}
-            tooltip={<Note note="Go back" />}
-          >
-            <StyledIconButton onClick={controls.back} disabled={!controlStates.back}>
-              <Icons icon="playback" />
-            </StyledIconButton>
-          </WithTooltip>
-
-          <WithTooltip
-            modifiers={withTooltipModifiers}
-            hasChrome={false}
-            trigger={controlStates.next ? 'hover' : 'none'}
-            tooltip={<Note note="Go forward" />}
-          >
-            <StyledIconButton onClick={controls.next} disabled={!controlStates.next}>
-              <Icons icon="playnext" />
-            </StyledIconButton>
-          </WithTooltip>
-
-          <WithTooltip
-            modifiers={withTooltipModifiers}
-            trigger={controlStates.end ? 'hover' : 'none'}
-            hasChrome={false}
-            tooltip={<Note note="Go to end" />}
-          >
-            <StyledIconButton onClick={controls.end} disabled={!controlStates.end}>
-              <Icons icon="fastforward" />
-            </StyledIconButton>
-          </WithTooltip>
-        </Group>
-        {storyFileName && (
+    <SubnavWrapper>
+      <Bar>
+        <StyledSubnav>
           <Group>
-            <StyledLocation>{storyFileName}</StyledLocation>
+            <StatusBadge status={status} />
+
+            <JumpToEndButton onClick={onScrollToEnd} disabled={!onScrollToEnd}>
+              {buttonText}
+            </JumpToEndButton>
+
+            <StyledSeparator />
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go to start" />}>
+              <RewindButton containsIcon onClick={controls.start} disabled={!controlStates.start}>
+                <Icons icon="rewind" />
+              </RewindButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go back" />}>
+              <StyledIconButton containsIcon onClick={controls.back} disabled={!controlStates.back}>
+                <Icons icon="playback" />
+              </StyledIconButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go forward" />}>
+              <StyledIconButton containsIcon onClick={controls.next} disabled={!controlStates.next}>
+                <Icons icon="playnext" />
+              </StyledIconButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Go to end" />}>
+              <StyledIconButton containsIcon onClick={controls.end} disabled={!controlStates.end}>
+                <Icons icon="fastforward" />
+              </StyledIconButton>
+            </WithTooltip>
           </Group>
-        )}
-      </StyledSubnav>
-    </Bar>
+          {storyFileName && (
+            <Group>
+              <StyledLocation>{storyFileName}</StyledLocation>
+            </Group>
+          )}
+        </StyledSubnav>
+      </Bar>
+    </SubnavWrapper>
   );
 };

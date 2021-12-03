@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-common",
-  "version": "6.4.0-rc.11",
+  "version": "6.5.0-alpha.1",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -61,7 +61,7 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/register": "^7.12.1",
-    "@storybook/node-logger": "6.4.0-rc.11",
+    "@storybook/node-logger": "6.5.0-alpha.1",
     "@storybook/semver": "^7.3.2",
     "@types/node": "^14.0.10",
     "@types/pretty-hrtime": "^1.0.0",
@@ -91,7 +91,7 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.253f8c1.0",
+    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0",
     "@types/compression": "^1.7.0",
     "@types/interpret": "^1.1.1",
     "@types/mock-fs": "^4.13.0",
@@ -110,6 +110,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "77eb43c5f02179fb2a823f975448e706710931fc",
+  "gitHead": "fbf6e247a099ec45c30f8594f255a088847b7957",
   "sbmodern": "dist/modern/index.js"
 }

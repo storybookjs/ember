@@ -214,9 +214,9 @@ npx sb@next automigrate
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
 
 ```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+npm install @storybook/builder-webpack5 @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
