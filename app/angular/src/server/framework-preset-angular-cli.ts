@@ -172,7 +172,7 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
       browserTarget.target
     );
 
-    logger.info(`=> Using angular project "${project}:${target}" for configuring Storybook`);
+    logger.info(`=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`);
     return { ...target.options };
   } catch (error) {
     logger.error(`=> Could not find angular project: ${error.message}`);
