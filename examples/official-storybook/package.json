@@ -50,7 +50,7 @@
     "format-json": "^1.0.3",
     "global": "^4.4.0",
     "jest-emotion": "^10.0.32",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "paths.macro": "^3.0.1",
     "prop-types": "^15.7.2",
     "react": "16.14.0",
