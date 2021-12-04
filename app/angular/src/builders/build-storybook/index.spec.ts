@@ -145,7 +145,7 @@ describe('Build Storybook Builder', () => {
     expect(output.success).toBeTruthy();
     expect(cpSpawnMock.spawn).toHaveBeenCalledWith(
       'npx',
-      ['compodoc', '-p', 'src/tsconfig.app.json', '-d', '', '-e', 'json'],
+      ['compodoc', '-p', './storybook/tsconfig.ts', '-d', '', '-e', 'json'],
       {
         cwd: '',
         env: process.env,
