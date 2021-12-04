@@ -1,10 +1,12 @@
 import React from 'react';
+import { action } from '@storybook/addon-actions';
 import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
 import { CallStates } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
 
 import { getCall } from './mocks';
 import { AddonPanelPure } from './Panel';
+import SubnavStories from './components/Subnav/Subnav.stories';
 
 const StyledWrapper = styled.div(({ theme }) => ({
   backgroundColor: theme.background.content,
@@ -33,16 +35,14 @@ export default {
   },
   args: {
     calls: new Map(),
-    endRef: null,
+    controls: SubnavStories.args.controls,
+    controlStates: SubnavStories.args.controlStates,
+    interactions: [getCall(CallStates.DONE)],
     fileName: 'addon-interactions.stories.tsx',
     hasException: false,
-    hasNext: false,
-    hasPrevious: true,
-    interactions: [getCall(CallStates.DONE)],
-    isDisabled: false,
     isPlaying: false,
-    showTabIcon: false,
-    isDebuggingEnabled: true,
+    onScrollToEnd: action('onScrollToEnd'),
+    endRef: null,
     // prop for the AddonPanel used as wrapper of Panel
     active: true,
   },
@@ -60,6 +60,14 @@ export const Paused: Story = {
   args: {
     isPlaying: true,
     interactions: [getCall(CallStates.WAITING)],
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: true,
+      next: true,
+      end: true,
+    },
   },
 };
 
@@ -78,7 +86,7 @@ export const Failed: Story = {
 };
 
 export const WithDebuggingDisabled: Story = {
-  args: { isDebuggingEnabled: false },
+  args: { controlStates: { ...SubnavStories.args.controlStates, debugger: false } },
 };
 
 export const NoInteractions: Story = {

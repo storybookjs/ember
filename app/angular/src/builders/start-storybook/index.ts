@@ -6,10 +6,15 @@ import {
   Target,
 } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
-import { BrowserBuilderOptions } from '@angular-devkit/build-angular';
+import {
+  BrowserBuilderOptions,
+  ExtraEntryPoint,
+  StylePreprocessorOptions,
+} from '@angular-devkit/build-angular';
 import { from, Observable, of } from 'rxjs';
 import { CLIOptions } from '@storybook/core-common';
 import { map, switchMap, mapTo } from 'rxjs/operators';
+import { sync as findUpSync } from 'find-up';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
@@ -21,6 +26,8 @@ export type StorybookBuilderOptions = JsonObject & {
   tsConfig?: string;
   compodoc: boolean;
   compodocArgs: string[];
+  styles?: ExtraEntryPoint[];
+  stylePreprocessorOptions?: StylePreprocessorOptions;
 } & Pick<
     // makes sure the option exists
     CLIOptions,
@@ -56,12 +63,41 @@ function commandBuilder(
       return runCompodoc$.pipe(mapTo({ tsConfig }));
     }),
     map(({ tsConfig }) => {
-      const { browserTarget, ...otherOptions } = options;
+      const {
+        browserTarget,
+        stylePreprocessorOptions,
+        styles,
+        ci,
+        configDir,
+        docs,
+        host,
+        https,
+        port,
+        quiet,
+        smokeTest,
+        sslCa,
+        sslCert,
+        sslKey,
+      } = options;
 
       const standaloneOptions: StandaloneOptions = {
-        ...otherOptions,
+        ci,
+        configDir,
+        docs,
+        host,
+        https,
+        port,
+        quiet,
+        smokeTest,
+        sslCa,
+        sslCert,
+        sslKey,
         angularBrowserTarget: browserTarget,
         angularBuilderContext: context,
+        angularBuilderOptions: {
+          ...(stylePreprocessorOptions ? { stylePreprocessorOptions } : {}),
+          ...(styles ? { styles } : {}),
+        },
         tsConfig,
       };
 
@@ -87,7 +123,10 @@ async function setup(options: StorybookBuilderOptions, context: BuilderContext) 
   }
 
   return {
-    tsConfig: options.tsConfig ?? browserOptions.tsConfig ?? undefined,
+    tsConfig:
+      options.tsConfig ??
+      findUpSync('tsconfig.json', { cwd: options.configDir }) ??
+      browserOptions.tsConfig,
   };
 }
 function runInstance(options: StandaloneOptions) {

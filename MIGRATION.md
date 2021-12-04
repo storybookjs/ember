@@ -214,9 +214,9 @@ npx sb@next automigrate
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
 
 ```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+npm install @storybook/builder-webpack5 @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
@@ -407,9 +407,11 @@ The Story Store in v7 mode is async, so synchronous story loading APIs no longer
 Storyshots is not currently compatible with the v7 store. However, you can use the following workaround to opt-out of the v7 store when running storyshots; in your `main.js`:
 
 ```js
-features: {
-  storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom');
-}
+module.exports = {
+  features: {
+    storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom'),
+  },
+};
 ```
 
 There are some caveats with the above approach:
@@ -424,9 +426,11 @@ Now that the web is moving to Emotion 11 for styling, popular libraries like MUI
 Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
 
 ```js
-module.exports {
-  emotionAlias: false,
-}
+module.exports = {
+  features: {
+    emotionAlias: false,
+  },
+};
 ```
 
 Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.

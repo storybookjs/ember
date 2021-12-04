@@ -118,11 +118,13 @@ export const repro = async ({
       type: 'text',
       message: 'Enter the output directory',
       name: 'directory',
+      initial: selectedConfig.name,
+      validate: (directoryName) =>
+        fs.existsSync(directoryName)
+          ? `${directoryName} already exists. Please choose another name.`
+          : true,
     });
     selectedDirectory = directory;
-    if (fs.existsSync(selectedDirectory)) {
-      throw new Error(`🚨 Repro: ${selectedDirectory} already exists`);
-    }
   }
 
   try {

@@ -65,7 +65,7 @@ export function webpack(webpackConfig: any = {}, options: any = {}) {
   let rules = module.rules || [];
   if (transcludeMarkdown) {
     rules = [
-      ...rules.filter((rule: any) => rule.test.toString() !== '/\\.md$/'),
+      ...rules.filter((rule: any) => rule.test?.toString() !== '/\\.md$/'),
       {
         test: /\.md$/,
         use: [

@@ -1,6 +1,8 @@
 ```js
 // .storybook/main.js
 
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   webpackFinal: async (config) => {
     config.resolve.plugins = [
