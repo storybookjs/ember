@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import path from 'path';
 import dedent from 'ts-dedent';
 import { JsPackageManager } from '../../js-package-manager';
 import { eslintPlugin } from './eslint-plugin';
@@ -14,7 +15,9 @@ const checkEslint = async ({
 }) => {
   // eslint-disable-next-line global-require
   require('fs-extra').__setMockFiles({
-    '.storybook/main.js': !main ? null : `module.exports = ${JSON.stringify(main)};`,
+    [path.join('.storybook', 'main.js')]: !main
+      ? null
+      : `module.exports = ${JSON.stringify(main)};`,
     [`.eslintrc.${eslintExtension}`]: !hasEslint
       ? null
       : dedent(`
