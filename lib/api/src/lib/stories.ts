@@ -3,6 +3,7 @@ import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import mapValues from 'lodash/mapValues';
 import countBy from 'lodash/countBy';
+import global from 'global';
 import {
   StoryId,
   ComponentTitle,
@@ -18,6 +19,8 @@ import { combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
+
+const { FEATURES } = global;
 
 export type { StoryId };
 
@@ -207,7 +210,7 @@ export const transformStoriesRawToStoriesHash = (
     }
 
     const setShowRoots = typeof showRoots !== 'undefined';
-    if (usesOldHierarchySeparator && !setShowRoots) {
+    if (usesOldHierarchySeparator && !setShowRoots && FEATURES?.warnOnLegacyHierarchySeparator) {
       warnChangedDefaultHierarchySeparators();
     }
 

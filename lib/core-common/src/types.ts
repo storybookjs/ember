@@ -366,6 +366,12 @@ export interface StorybookConfig {
      * Filter args with a "target" on the type from the render function (EXPERIMENTAL)
      */
     argTypeTargetsV7?: boolean;
+
+    /**
+     * Warn when there is a pre-6.0 hierarchy separator ('.' / '|') in the story title.
+     * Will be removed in 7.0.
+     */
+    warnOnLegacyHierarchySeparator?: boolean;
   };
 
   /**
