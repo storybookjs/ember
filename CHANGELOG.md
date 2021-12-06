@@ -1,3 +1,14 @@
+## 6.4.5 (December 3, 2021)
+
+### Bug Fixes
+
+- Angular: Fix tsConfig paths not resolving for Angular >=12.2 ([#16882](https://github.com/storybookjs/storybook/pull/16882))
+- Addon-docs: Fix transclusion crash on webpack rules without test field ([#16873](https://github.com/storybookjs/storybook/pull/16873))
+
+### Dependency Upgrades
+
+- Bump lodash to 4.17.21 ([#16883](https://github.com/storybookjs/storybook/pull/16883))
+
 ## 6.5.0-alpha.1 (December 3, 2021)
 
 ### Bug Fixes
