@@ -1,3 +1,4 @@
+import { Socket } from 'net';
 import WebSocket, { WebSocketServer } from 'ws';
 import { stringify } from 'telejson';
 
@@ -11,7 +12,8 @@ export class ServerChannel {
 
     server.on('upgrade', (request, socket, head) => {
       if (request.url === '/storybook-server-channel') {
-        this.webSocketServer.handleUpgrade(request, socket, head, (ws) => {
+        // Cast can be removed once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/57590 is released.
+        this.webSocketServer.handleUpgrade(request, socket as Socket, head, (ws) => {
           this.webSocketServer.emit('connection', ws, request);
         });
       }
