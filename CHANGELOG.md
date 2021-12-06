@@ -1,3 +1,14 @@
+## 6.4.8 (December 6, 2021)
+
+### Bug Fixes
+
+- Core: Fix auto-title in webpack5 ([#16913](https://github.com/storybookjs/storybook/pull/16913))
+- CLI: Fix `sb repro` clobbering .vuerc ([#16897](https://github.com/storybookjs/storybook/pull/16897))
+
+### Maintenance
+
+- Core: Add feature flag to disable legacy hierarchy separator warning ([#16915](https://github.com/storybookjs/storybook/pull/16915))
+
 ## 6.4.7 (December 3, 2021)
 
 ### Bug Fixes
