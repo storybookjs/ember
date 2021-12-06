@@ -10186,13 +10186,13 @@ __metadata:
   linkType: hard
 
 "@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.18":
-  version: 4.17.18
-  resolution: "@types/express-serve-static-core@npm:4.17.18"
+  version: 4.17.26
+  resolution: "@types/express-serve-static-core@npm:4.17.26"
   dependencies:
     "@types/node": "*"
     "@types/qs": "*"
     "@types/range-parser": "*"
-  checksum: 5d9909a93d1e1af386bf3d39a96ac8beaf0b13e68da2db218c579652b115a164cb93b5561557dca535897d45afdf24d3e7cc098360985a9e9d1446f66d7a41c9
+  checksum: 7092334366a21d1b7844ca7b18c04bc54832dc6898477b2338d3da2736209fd8d9bfa11af8ee7b6eb3de1114b6175ba58fc846d99e4e0a6cf2bfe80e6cccd649
   languageName: node
   linkType: hard
 
