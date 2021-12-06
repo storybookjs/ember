@@ -1,5 +1,5 @@
 import dedent from 'ts-dedent';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 import { logger } from '@storybook/node-logger';
 import resolveFrom from 'resolve-from';
 import {
@@ -79,7 +79,7 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
   try {
     return {
-      name: resolveFrom(configDir, join(name, 'preset')),
+      name: resolveFrom(configDir, `${name}/preset`),
       type: 'presets',
     };
     // eslint-disable-next-line no-empty
@@ -87,7 +87,7 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
   try {
     return {
-      name: resolveFrom(configDir, join(name, 'register')),
+      name: resolveFrom(configDir, `${name}/register`),
       type: 'managerEntries',
     };
     // eslint-disable-next-line no-empty
