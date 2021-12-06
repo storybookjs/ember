@@ -1,3 +1,35 @@
+## 6.4.8 (December 6, 2021)
+
+### Bug Fixes
+
+- Core: Fix auto-title in webpack5 ([#16913](https://github.com/storybookjs/storybook/pull/16913))
+- CLI: Fix `sb repro` clobbering .vuerc ([#16897](https://github.com/storybookjs/storybook/pull/16897))
+
+### Maintenance
+
+- Core: Add feature flag to disable legacy hierarchy separator warning ([#16915](https://github.com/storybookjs/storybook/pull/16915))
+
+## 6.4.7 (December 3, 2021)
+
+### Bug Fixes
+
+- Angular: Fix incorrect log ([#16885](https://github.com/storybookjs/storybook/pull/16885))
+
+## 6.4.6 (December 3, 2021)
+
+Npm publish failed.
+
+## 6.4.5 (December 3, 2021)
+
+### Bug Fixes
+
+- Angular: Fix tsConfig paths not resolving for Angular >=12.2 ([#16882](https://github.com/storybookjs/storybook/pull/16882))
+- Addon-docs: Fix transclusion crash on webpack rules without test field ([#16873](https://github.com/storybookjs/storybook/pull/16873))
+
+### Dependency Upgrades
+
+- Bump lodash to 4.17.21 ([#16883](https://github.com/storybookjs/storybook/pull/16883))
+
 ## 6.5.0-alpha.1 (December 3, 2021)
 
 ### Bug Fixes
