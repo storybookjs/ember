@@ -44,7 +44,7 @@ export interface StoryMetadata {
 export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
 export type ArgsEnhancer = (context: StoryContext) => Args;
 
-export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 
 export interface StoreSelectionSpecifier {
   storySpecifier: StorySpecifier;
@@ -116,17 +116,3 @@ export interface GetStorybookKind {
   fileName: string;
   stories: GetStorybookStory[];
 }
-
-// This really belongs in lib/core, but that depends on lib/ui which (dev) depends on app/react
-// which needs this type. So we put it here to avoid the circular dependency problem.
-export type RenderContextWithoutStoryContext = StoreItem & {
-  forceRender: boolean;
-
-  showMain: () => void;
-  showError: (error: { title: string; description: string }) => void;
-  showException: (err: Error) => void;
-};
-
-export type RenderContext = RenderContextWithoutStoryContext & {
-  storyContext: StoryContext;
-};
