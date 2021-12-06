@@ -12,7 +12,9 @@ export const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
   template: `
     <page v-bind="$props">
-      <footer v-if="footer" v-slot=footer v-html="footer"/>
+      <template v-slot:footer>
+        <footer v-if="footer" v-html="footer"/>
+      </template>
     </page>
   `,
 });

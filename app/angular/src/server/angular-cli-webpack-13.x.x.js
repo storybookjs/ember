@@ -7,6 +7,7 @@ const {
   getStylesConfig,
   getTypescriptWorkerPlugin,
 } = require('@angular-devkit/build-angular/src/webpack/configs');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const { filterOutStylingRules } = require('./utils/filter-out-styling-rules');
 
@@ -65,6 +66,12 @@ exports.getWebpackConfig = async (baseConfig, { builderOptions, builderContext }
   const resolve = {
     ...baseConfig.resolve,
     modules: Array.from(new Set([...baseConfig.resolve.modules, ...cliConfig.resolve.modules])),
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: builderOptions.tsConfig,
+        mainFields: ['browser', 'module', 'main'],
+      }),
+    ],
   };
 
   return {

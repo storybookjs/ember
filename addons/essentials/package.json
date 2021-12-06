@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-essentials",
-  "version": "6.4.0-rc.11",
+  "version": "6.5.0-alpha.1",
   "description": "Curated addons to bring out the best of Storybook",
   "keywords": [
     "addon",
@@ -39,31 +39,31 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addon-actions": "6.4.0-rc.11",
-    "@storybook/addon-backgrounds": "6.4.0-rc.11",
-    "@storybook/addon-controls": "6.4.0-rc.11",
-    "@storybook/addon-docs": "6.4.0-rc.11",
-    "@storybook/addon-measure": "6.4.0-rc.11",
-    "@storybook/addon-outline": "6.4.0-rc.11",
-    "@storybook/addon-toolbars": "6.4.0-rc.11",
-    "@storybook/addon-viewport": "6.4.0-rc.11",
-    "@storybook/addons": "6.4.0-rc.11",
-    "@storybook/api": "6.4.0-rc.11",
-    "@storybook/node-logger": "6.4.0-rc.11",
+    "@storybook/addon-actions": "6.5.0-alpha.1",
+    "@storybook/addon-backgrounds": "6.5.0-alpha.1",
+    "@storybook/addon-controls": "6.5.0-alpha.1",
+    "@storybook/addon-docs": "6.5.0-alpha.1",
+    "@storybook/addon-measure": "6.5.0-alpha.1",
+    "@storybook/addon-outline": "6.5.0-alpha.1",
+    "@storybook/addon-toolbars": "6.5.0-alpha.1",
+    "@storybook/addon-viewport": "6.5.0-alpha.1",
+    "@storybook/addons": "6.5.0-alpha.1",
+    "@storybook/api": "6.5.0-alpha.1",
+    "@storybook/node-logger": "6.5.0-alpha.1",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/vue": "6.4.0-rc.11",
+    "@storybook/vue": "6.5.0-alpha.1",
     "@types/jest": "^26.0.16",
     "@types/webpack-env": "^1.16.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.9.6",
-    "@storybook/vue": "6.4.0-rc.11",
-    "@storybook/web-components": "6.4.0-rc.11",
+    "@storybook/vue": "6.5.0-alpha.1",
+    "@storybook/web-components": "6.5.0-alpha.1",
     "babel-loader": "^8.0.0",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
@@ -93,6 +93,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "77eb43c5f02179fb2a823f975448e706710931fc",
+  "gitHead": "fbf6e247a099ec45c30f8594f255a088847b7957",
   "sbmodern": "dist/modern/index.js"
 }

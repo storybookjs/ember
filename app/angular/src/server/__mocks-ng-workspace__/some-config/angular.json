@@ -3,6 +3,7 @@
   "projects": {
     "foo-project": {
       "root": "",
+      "sourceRoot": "src",
       "architect": {
         "build": {
           "options": {

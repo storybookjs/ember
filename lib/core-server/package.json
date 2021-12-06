@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.4.0-rc.11",
+  "version": "6.5.0-alpha.1",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.4.0-rc.11",
-    "@storybook/core-client": "6.4.0-rc.11",
-    "@storybook/core-common": "6.4.0-rc.11",
-    "@storybook/core-events": "6.4.0-rc.11",
+    "@storybook/builder-webpack4": "6.5.0-alpha.1",
+    "@storybook/core-client": "6.5.0-alpha.1",
+    "@storybook/core-common": "6.5.0-alpha.1",
+    "@storybook/core-events": "6.5.0-alpha.1",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-tools": "6.4.0-rc.11",
-    "@storybook/manager-webpack4": "6.4.0-rc.11",
-    "@storybook/node-logger": "6.4.0-rc.11",
+    "@storybook/csf-tools": "6.5.0-alpha.1",
+    "@storybook/manager-webpack4": "6.5.0-alpha.1",
+    "@storybook/node-logger": "6.5.0-alpha.1",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-rc.11",
+    "@storybook/store": "6.5.0-alpha.1",
     "@types/node": "^14.0.10",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -69,8 +69,9 @@
     "fs-extra": "^9.0.1",
     "globby": "^11.0.2",
     "ip": "^1.1.5",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
+    "open": "^8.4.0",
     "pretty-hrtime": "^1.0.3",
     "prompts": "^2.4.0",
     "regenerator-runtime": "^0.13.7",
@@ -81,10 +82,11 @@
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
     "webpack": "4",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "x-default-browser": "^0.4.0"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-rc.11",
+    "@storybook/builder-webpack5": "6.5.0-alpha.1",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
@@ -92,8 +94,8 @@
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.4.0-rc.11",
-    "@storybook/manager-webpack5": "6.4.0-rc.11",
+    "@storybook/builder-webpack5": "6.5.0-alpha.1",
+    "@storybook/manager-webpack5": "6.5.0-alpha.1",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -111,6 +113,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "77eb43c5f02179fb2a823f975448e706710931fc",
+  "gitHead": "fbf6e247a099ec45c30f8594f255a088847b7957",
   "sbmodern": "dist/modern/index.js"
 }

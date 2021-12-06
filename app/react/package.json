@@ -1,6 +1,6 @@
 {
   "name": "@storybook/react",
-  "version": "6.4.0-rc.11",
+  "version": "6.5.0-alpha.1",
   "description": "Storybook for React: Develop React Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -49,21 +49,21 @@
     "@babel/preset-flow": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
-    "@storybook/addons": "6.4.0-rc.11",
-    "@storybook/core": "6.4.0-rc.11",
-    "@storybook/core-common": "6.4.0-rc.11",
+    "@storybook/addons": "6.5.0-alpha.1",
+    "@storybook/core": "6.5.0-alpha.1",
+    "@storybook/core-common": "6.5.0-alpha.1",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.4.0-rc.11",
+    "@storybook/node-logger": "6.5.0-alpha.1",
     "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.4.0-rc.11",
+    "@storybook/store": "6.5.0-alpha.1",
     "@types/webpack-env": "^1.16.0",
     "babel-plugin-add-react-displayname": "^0.0.5",
     "babel-plugin-named-asset-import": "^0.3.1",
     "babel-plugin-react-docgen": "^4.2.1",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react-dev-utils": "^11.0.4",
     "react-refresh": "^0.10.0",
@@ -73,7 +73,7 @@
     "webpack": "4"
   },
   "devDependencies": {
-    "@storybook/client-api": "6.4.0-rc.11",
+    "@storybook/client-api": "6.5.0-alpha.1",
     "@types/node": "^14.14.20",
     "@types/prompts": "^2.0.9"
   },
@@ -96,6 +96,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "77eb43c5f02179fb2a823f975448e706710931fc",
+  "gitHead": "fbf6e247a099ec45c30f8594f255a088847b7957",
   "sbmodern": "dist/modern/client/index.js"
 }
