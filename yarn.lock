@@ -7889,6 +7889,7 @@ __metadata:
     glob: ^7.1.6
     glob-promise: ^3.4.0
     html-webpack-plugin: ^5.0.0
+    path-browserify: ^1.0.1
     react-dev-utils: ^11.0.4
     stable: ^0.1.8
     style-loader: ^2.0.0
