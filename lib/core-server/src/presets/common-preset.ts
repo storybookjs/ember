@@ -65,4 +65,5 @@ export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
   emotionAlias: true,
+  warnOnLegacyHierarchySeparator: true,
 });

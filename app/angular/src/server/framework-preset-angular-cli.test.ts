@@ -1,6 +1,7 @@
 /* eslint-disable jest/no-interpolation-in-snapshots */
 import { Configuration } from 'webpack';
 import { logger } from '@storybook/node-logger';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { webpackFinal } from './framework-preset-angular-cli';
 import { PresetOptions } from './options';
 
@@ -189,7 +190,11 @@ describe('framework-preset-angular-cli', () => {
           ...baseWebpackConfig.resolve,
           modules: expect.arrayContaining(baseWebpackConfig.resolve.modules),
           // the base resolve.plugins are not kept 🤷‍♂️
-          plugins: expect.not.arrayContaining(baseWebpackConfig.resolve.plugins),
+          plugins: expect.arrayContaining([
+            expect.objectContaining({
+              absoluteBaseUrl: expect.any(String),
+            } as TsconfigPathsPlugin),
+          ]),
         },
         resolveLoader: expect.anything(),
       });
@@ -480,7 +485,11 @@ describe('framework-preset-angular-cli', () => {
           ...baseWebpackConfig.resolve,
           modules: expect.arrayContaining(baseWebpackConfig.resolve.modules),
           // the base resolve.plugins are not kept 🤷‍♂️
-          plugins: expect.not.arrayContaining(baseWebpackConfig.resolve.plugins),
+          plugins: expect.arrayContaining([
+            expect.objectContaining({
+              absoluteBaseUrl: expect.any(String),
+            } as TsconfigPathsPlugin),
+          ]),
         },
         resolveLoader: expect.anything(),
       });

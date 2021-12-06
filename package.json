@@ -251,7 +251,7 @@
     "js-yaml": "^3.14.1",
     "lerna": "^3.22.1",
     "lint-staged": "^10.5.4",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mocha-list-tests": "^1.0.5",
     "node-cleanup": "^2.1.2",
     "node-fetch": "^2.6.1",

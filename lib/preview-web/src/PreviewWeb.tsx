@@ -562,7 +562,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       showException: (err: Error) => this.renderException(id, err),
     };
 
-    return this.renderStoryToElement({ story, renderContext, element });
+    return this.renderStoryToElement({ story, renderContext, element, viewMode: 'story' });
   }
 
   // Render a story into a given element and watch for the events that would trigger us
@@ -571,6 +571,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     story,
     renderContext: renderContextWithoutStoryContext,
     element: canvasElement,
+    viewMode,
   }: {
     story: Story<TFramework>;
     renderContext: Omit<
@@ -578,6 +579,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       'storyContext' | 'storyFn' | 'unboundStoryFn' | 'forceRemount'
     >;
     element: HTMLElement;
+    viewMode: ViewMode;
   }): StoryCleanupFn {
     const { id, applyLoaders, unboundStoryFn, playFunction } = story;
 
@@ -609,7 +611,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
         await runPhase('loading', async () => {
           loadedContext = await applyLoaders({
             ...this.storyStore.getStoryContext(story),
-            viewMode: canvasElement === this.view.storyRoot() ? 'story' : 'docs',
+            viewMode,
           } as StoryContextForLoaders<TFramework>);
         });
         if (abortSignal.aborted) return;

@@ -147,6 +147,7 @@ const Story: FunctionComponent<StoryProps> = (props) => {
         story,
         renderContext,
         element: storyRef.current as HTMLElement,
+        viewMode: 'docs',
       });
       setShowLoader(false);
     }
