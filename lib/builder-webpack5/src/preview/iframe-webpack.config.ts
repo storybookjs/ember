@@ -241,7 +241,9 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
       },
-      fallback: { path: false },
+      fallback: {
+        path: require.resolve('path-browserify'),
+      },
     },
     optimization: {
       splitChunks: {
