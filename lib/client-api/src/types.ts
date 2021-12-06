@@ -14,7 +14,7 @@ import {
   StoryContext,
 } from '@storybook/addons';
 import { AnyFramework, StoryIdentifier, ProjectAnnotations } from '@storybook/csf';
-import { StoryStore, HooksContext } from '@storybook/store';
+import { StoryStore, HooksContext, RenderContext } from '@storybook/store';
 
 export type {
   SBType,
@@ -116,3 +116,5 @@ export interface GetStorybookKind {
   fileName: string;
   stories: GetStorybookStory[];
 }
+
+export type RenderContextWithoutStoryContext = Omit<RenderContext, 'storyContext'>;
