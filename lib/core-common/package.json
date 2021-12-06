@@ -63,7 +63,7 @@
     "@babel/register": "^7.12.1",
     "@storybook/node-logger": "6.5.0-alpha.1",
     "@storybook/semver": "^7.3.2",
-    "@types/node": "^14.0.10",
+    "@types/node": "^14.0.10 || ^16.0.0",
     "@types/pretty-hrtime": "^1.0.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-macros": "^3.0.1",
