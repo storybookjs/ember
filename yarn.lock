@@ -10571,21 +10571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>= 8":
-  version: 14.14.31
-  resolution: "@types/node@npm:14.14.31"
-  checksum: 9ba9faaa4e88fe84296bb7c81d78ab8ddca4ba6b309307ea7a23eb0c50767a886505d73eaf7de83725ad9c051b7831ff61c5537841d29e69f63c095c80ecc945
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:14.14.20":
-  version: 14.14.20
-  resolution: "@types/node@npm:14.14.20"
-  checksum: e7d85a34923dba7ec101c436344899fa4a0036f1dcec64a8a0aa1b650fe5087b9407dcf114ff44fa20dec2f78debb7243e5fe7368b0e15faae34c7fce3c148f2
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14.0.10 || ^16.0.0, @types/node@npm:^14.14.20 || ^16.0.0":
+"@types/node@npm:*, @types/node@npm:>= 8, @types/node@npm:^14.0.10 || ^16.0.0, @types/node@npm:^14.14.20 || ^16.0.0, @types/node@npm:^16.0":
   version: 16.11.11
   resolution: "@types/node@npm:16.11.11"
   checksum: 2762d21c752de2f6bdebd62b7bbea79af14125a0dd53f9a4ad14c5601db77d3b7fc733913b750d1411aed372b66da520b610d6f1a8858da8542d67c07bb648e0
@@ -10596,13 +10582,6 @@ __metadata:
   version: 14.17.27
   resolution: "@types/node@npm:14.17.27"
   checksum: 085f0df42c297b6279500e7d04544003c7d82a5d733ad67a2dd69439fc8835dba5b4b945c94e03eafc1b373a60bc7b63e574216d439d0df677a4267cbef7c1d4
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.0":
-  version: 16.6.1
-  resolution: "@types/node@npm:16.6.1"
-  checksum: 6fb1cff755290d1ecc6bf1d036fb822112d583e9fdc69c685b40c3b2ea965d0e4da71e1f24aaa000911b24ec8ac76683ee5df914351678c37f9dee5304d0bbf2
   languageName: node
   linkType: hard
 
@@ -18387,7 +18366,7 @@ __metadata:
     "@storybook/preset-create-react-app": ^3.1.6
     "@storybook/react": 6.5.0-alpha.1
     "@types/jest": ^26.0.16
-    "@types/node": 14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/react": ^16.14.2
     "@types/react-dom": 16.9.10
     global: ^4.4.0
@@ -18414,7 +18393,7 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.1
     "@types/enzyme": ^3.10.8
     "@types/jest": 25.2.3
-    "@types/node": 14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/react": 16.14.2
     "@types/react-dom": 16.9.10
     enzyme: ^3.11.0
