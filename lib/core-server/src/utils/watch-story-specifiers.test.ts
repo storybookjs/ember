@@ -79,7 +79,7 @@ describe('watchStorySpecifiers', () => {
     onInvalidate.mockClear();
     await onChange('src/nested', 1234);
     expect(onInvalidate).toHaveBeenCalledWith(specifier, `./src/nested/Button.stories.ts`, false);
-  }, 10000);
+  });
 
   it('watches single file globs', async () => {
     const specifier = normalizeStoriesEntry('../src/nested/Button.stories.mdx', options);
