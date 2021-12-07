@@ -293,10 +293,9 @@ export const init: ModuleFn = ({
             ? s.parameters.viewMode
             : viewModeFromState;
 
-        // In some cases, the viewMode could be something other than docs/story
-        // ('settings', for example) and therefore we should make sure we go back
-        // to the 'story' viewMode when navigating away from those pages.
-        if (!viewMode.match(/docs|story/)) {
+        // If the viewMode is settings, we should go back to the 'story' view
+        // when navigating to another story.
+        if (viewMode === 'settings') {
           viewMode = 'story';
         }
 
