@@ -239,6 +239,49 @@ describe('RendererFactory', () => {
 
       expect(countDestroy).toEqual(1);
     });
+
+    describe('when story id contains non-Ascii characters', () => {
+      it('should render my-story for story template', async () => {
+        const render = await rendererFactory.getRendererInstance(
+          'my-ストーリー',
+          rootTargetDOMNode
+        );
+        await render.render({
+          storyFnAngular: {
+            template: '🦊',
+            props: {},
+          },
+          forced: false,
+          parameters: {},
+          targetDOMNode: rootTargetDOMNode,
+        });
+
+        expect(document.body.getElementsByTagName('sb-my--component')[0].innerHTML).toBe('🦊');
+      });
+
+      it('should render my-story for story component', async () => {
+        @Component({ selector: 'foo', template: '🦊' })
+        class FooComponent {}
+
+        const render = await rendererFactory.getRendererInstance(
+          'my-ストーリー',
+          rootTargetDOMNode
+        );
+        await render.render({
+          storyFnAngular: {
+            props: {},
+          },
+          forced: false,
+          parameters: {},
+          component: FooComponent,
+          targetDOMNode: rootTargetDOMNode,
+        });
+
+        expect(document.body.getElementsByTagName('sb-my--component')[0].innerHTML).toBe(
+          '<foo>🦊</foo><!--container-->'
+        );
+      });
+    });
   });
 
   describe('DocsRenderer', () => {
