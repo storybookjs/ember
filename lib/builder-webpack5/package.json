@@ -75,7 +75,7 @@
     "@storybook/semver": "^7.3.2",
     "@storybook/store": "6.5.0-alpha.1",
     "@storybook/theming": "6.5.0-alpha.1",
-    "@types/node": "^14.0.10",
+    "@types/node": "^14.0.10 || ^16.0.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-macros": "^3.0.1",
     "babel-plugin-polyfill-corejs3": "^0.1.0",

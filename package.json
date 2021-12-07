@@ -196,7 +196,7 @@
     "@types/jest": "^26.0.16",
     "@types/js-yaml": "^3.12.6",
     "@types/lodash": "^4.14.167",
-    "@types/node": "^14.14.20",
+    "@types/node": "^14.14.20 || ^16.0.0",
     "@types/node-cleanup": "^2.1.1",
     "@types/prompts": "2.0.11",
     "@types/semver": "^7.3.4",

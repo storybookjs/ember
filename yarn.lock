@@ -7616,6 +7616,7 @@ __metadata:
     "@storybook/store": 6.5.0-alpha.1
     "@types/autoprefixer": ^9.7.2
     "@types/jest": ^26.0.16
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     "@webcomponents/custom-elements": ^1.4.3
     autoprefixer: ^9.8.6
@@ -7786,7 +7787,7 @@ __metadata:
     "@storybook/theming": 6.5.0-alpha.1
     "@storybook/ui": 6.5.0-alpha.1
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack": ^4.41.26
@@ -7873,7 +7874,7 @@ __metadata:
     "@storybook/store": 6.5.0-alpha.1
     "@storybook/theming": 6.5.0-alpha.1
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack-dev-middleware": ^4.1.0
@@ -8175,7 +8176,7 @@ __metadata:
     "@types/compression": ^1.7.0
     "@types/interpret": ^1.1.1
     "@types/mock-fs": ^4.13.0
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/picomatch": ^2.3.0
     "@types/pretty-hrtime": ^1.0.0
     babel-loader: ^8.0.0
@@ -8247,7 +8248,7 @@ __metadata:
     "@storybook/store": 6.5.0-alpha.1
     "@types/compression": ^1.7.0
     "@types/ip": ^1.1.0
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/node-fetch": ^2.5.7
     "@types/pretty-hrtime": ^1.0.0
     "@types/serve-favicon": ^2.5.2
@@ -8497,6 +8498,7 @@ __metadata:
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/preview-web": 6.5.0-alpha.1
     "@storybook/store": 6.5.0-alpha.1
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -8591,7 +8593,7 @@ __metadata:
     "@storybook/theming": 6.5.0-alpha.1
     "@storybook/ui": 6.5.0-alpha.1
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack": ^4.41.26
     "@types/webpack-dev-middleware": ^3.7.3
@@ -8644,7 +8646,7 @@ __metadata:
     "@storybook/theming": 6.5.0-alpha.1
     "@storybook/ui": 6.5.0-alpha.1
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
-    "@types/node": ^14.0.10
+    "@types/node": ^14.0.10 || ^16.0.0
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack-dev-middleware": ^4.1.0
     "@types/webpack-virtual-modules": ^0.1.0
@@ -8739,6 +8741,7 @@ __metadata:
     "@storybook/core-common": 6.5.0-alpha.1
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.5.0-alpha.1
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -8849,7 +8852,7 @@ __metadata:
     "@storybook/react-docgen-typescript-plugin": 1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0
     "@storybook/semver": ^7.3.2
     "@storybook/store": 6.5.0-alpha.1
-    "@types/node": ^14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/prompts": ^2.0.9
     "@types/webpack-env": ^1.16.0
     babel-plugin-add-react-displayname: ^0.0.5
@@ -8979,7 +8982,7 @@ __metadata:
     "@types/jest": ^26.0.16
     "@types/js-yaml": ^3.12.6
     "@types/lodash": ^4.14.167
-    "@types/node": ^14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/node-cleanup": ^2.1.1
     "@types/prompts": 2.0.11
     "@types/semver": ^7.3.4
@@ -9180,6 +9183,7 @@ __metadata:
     "@storybook/node-logger": 6.5.0-alpha.1
     "@storybook/preview-web": 6.5.0-alpha.1
     "@storybook/store": 6.5.0-alpha.1
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     fs-extra: ^9.0.1
@@ -9388,7 +9392,7 @@ __metadata:
     "@storybook/core-common": 6.5.0-alpha.1
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.5.0-alpha.1
-    "@types/node": ^14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     "@vue/compiler-sfc": ^3.0.0
     core-js: ^3.8.2
@@ -9425,7 +9429,7 @@ __metadata:
     "@storybook/core-common": 6.5.0-alpha.1
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/store": 6.5.0-alpha.1
-    "@types/node": ^14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
@@ -9469,6 +9473,7 @@ __metadata:
     "@storybook/csf": 0.0.2--canary.87bc651.0
     "@storybook/preview-web": 6.5.0-alpha.1
     "@storybook/store": 6.5.0-alpha.1
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/webpack-env": ^1.16.0
     babel-plugin-bundled-import-meta: ^0.3.1
     core-js: ^3.8.2
@@ -10181,13 +10186,13 @@ __metadata:
   linkType: hard
 
 "@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^4.17.18":
-  version: 4.17.18
-  resolution: "@types/express-serve-static-core@npm:4.17.18"
+  version: 4.17.26
+  resolution: "@types/express-serve-static-core@npm:4.17.26"
   dependencies:
     "@types/node": "*"
     "@types/qs": "*"
     "@types/range-parser": "*"
-  checksum: 5d9909a93d1e1af386bf3d39a96ac8beaf0b13e68da2db218c579652b115a164cb93b5561557dca535897d45afdf24d3e7cc098360985a9e9d1446f66d7a41c9
+  checksum: 7092334366a21d1b7844ca7b18c04bc54832dc6898477b2338d3da2736209fd8d9bfa11af8ee7b6eb3de1114b6175ba58fc846d99e4e0a6cf2bfe80e6cccd649
   languageName: node
   linkType: hard
 
@@ -10566,17 +10571,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>= 8, @types/node@npm:^14.0.10, @types/node@npm:^14.14.20":
-  version: 14.14.31
-  resolution: "@types/node@npm:14.14.31"
-  checksum: 9ba9faaa4e88fe84296bb7c81d78ab8ddca4ba6b309307ea7a23eb0c50767a886505d73eaf7de83725ad9c051b7831ff61c5537841d29e69f63c095c80ecc945
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:14.14.20":
-  version: 14.14.20
-  resolution: "@types/node@npm:14.14.20"
-  checksum: e7d85a34923dba7ec101c436344899fa4a0036f1dcec64a8a0aa1b650fe5087b9407dcf114ff44fa20dec2f78debb7243e5fe7368b0e15faae34c7fce3c148f2
+"@types/node@npm:*, @types/node@npm:>= 8, @types/node@npm:^14.0.10 || ^16.0.0, @types/node@npm:^14.14.20 || ^16.0.0, @types/node@npm:^16.0":
+  version: 16.11.11
+  resolution: "@types/node@npm:16.11.11"
+  checksum: 2762d21c752de2f6bdebd62b7bbea79af14125a0dd53f9a4ad14c5601db77d3b7fc733913b750d1411aed372b66da520b610d6f1a8858da8542d67c07bb648e0
   languageName: node
   linkType: hard
 
@@ -10584,13 +10582,6 @@ __metadata:
   version: 14.17.27
   resolution: "@types/node@npm:14.17.27"
   checksum: 085f0df42c297b6279500e7d04544003c7d82a5d733ad67a2dd69439fc8835dba5b4b945c94e03eafc1b373a60bc7b63e574216d439d0df677a4267cbef7c1d4
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.0":
-  version: 16.6.1
-  resolution: "@types/node@npm:16.6.1"
-  checksum: 6fb1cff755290d1ecc6bf1d036fb822112d583e9fdc69c685b40c3b2ea965d0e4da71e1f24aaa000911b24ec8ac76683ee5df914351678c37f9dee5304d0bbf2
   languageName: node
   linkType: hard
 
@@ -11185,11 +11176,11 @@ __metadata:
   linkType: hard
 
 "@types/ws@npm:^8":
-  version: 8.2.0
-  resolution: "@types/ws@npm:8.2.0"
+  version: 8.2.2
+  resolution: "@types/ws@npm:8.2.2"
   dependencies:
     "@types/node": "*"
-  checksum: c15360ae193a4f76d78fc3d3f1511d06fc321e6bfb8d2b0b3227f08e96cf68035e206572fec230e61c7b97035d8078bb9526bc73afee0df5d4b58d1f7f9fc4bb
+  checksum: 8f8464170d3729c9a3632e16e679b0cc25f329d178b94d10830c8eb4b97f492ef5950e654ff3018f13b7f1acd335c67bc1998a2b58436709aaa152553d8a8afa
   languageName: node
   linkType: hard
 
@@ -13245,7 +13236,7 @@ __metadata:
     "@storybook/testing-library": ^0.0.7
     "@types/core-js": ^2.5.4
     "@types/jest": ^26.0.16
-    "@types/node": ^14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/sass": ^1
     "@types/webpack-env": ^1.16.0
     "@webcomponents/custom-elements": ^1.4.3
@@ -18375,7 +18366,7 @@ __metadata:
     "@storybook/preset-create-react-app": ^3.1.6
     "@storybook/react": 6.5.0-alpha.1
     "@types/jest": ^26.0.16
-    "@types/node": 14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/react": ^16.14.2
     "@types/react-dom": 16.9.10
     global: ^4.4.0
@@ -18402,7 +18393,7 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.1
     "@types/enzyme": ^3.10.8
     "@types/jest": 25.2.3
-    "@types/node": 14.14.20
+    "@types/node": ^14.14.20 || ^16.0.0
     "@types/react": 16.14.2
     "@types/react-dom": 16.9.10
     enzyme: ^3.11.0
