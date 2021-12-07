@@ -1,4 +1,3 @@
-import { Socket } from 'net';
 import WebSocket, { WebSocketServer } from 'ws';
 import { stringify } from 'telejson';
 
