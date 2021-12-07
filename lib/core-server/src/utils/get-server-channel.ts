@@ -12,8 +12,7 @@ export class ServerChannel {
 
     server.on('upgrade', (request, socket, head) => {
       if (request.url === '/storybook-server-channel') {
-        // Cast can be removed once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/57590 is released.
-        this.webSocketServer.handleUpgrade(request, socket as Socket, head, (ws) => {
+        this.webSocketServer.handleUpgrade(request, socket, head, (ws) => {
           this.webSocketServer.emit('connection', ws, request);
         });
       }

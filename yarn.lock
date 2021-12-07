@@ -11176,11 +11176,11 @@ __metadata:
   linkType: hard
 
 "@types/ws@npm:^8":
-  version: 8.2.0
-  resolution: "@types/ws@npm:8.2.0"
+  version: 8.2.2
+  resolution: "@types/ws@npm:8.2.2"
   dependencies:
     "@types/node": "*"
-  checksum: c15360ae193a4f76d78fc3d3f1511d06fc321e6bfb8d2b0b3227f08e96cf68035e206572fec230e61c7b97035d8078bb9526bc73afee0df5d4b58d1f7f9fc4bb
+  checksum: 8f8464170d3729c9a3632e16e679b0cc25f329d178b94d10830c8eb4b97f492ef5950e654ff3018f13b7f1acd335c67bc1998a2b58436709aaa152553d8a8afa
   languageName: node
   linkType: hard
 
