@@ -108,7 +108,7 @@ export abstract class AbstractRenderer {
     parameters: Parameters;
     targetDOMNode: HTMLElement;
   }) {
-    const targetSelector = `${this.storyId}`;
+    const targetSelector = `${this.generateTargetSelectorFromStoryId()}`;
 
     const newStoryProps$ = new BehaviorSubject<ICollection>(storyFnAngular.props);
     const moduleMetadata = getStorybookModuleMetadata(
@@ -142,6 +142,26 @@ export abstract class AbstractRenderer {
       parameters.bootstrapModuleOptions ?? undefined
     );
     await this.afterFullRender();
+  }
+
+  /**
+   * Only ASCII alphanumerics can be used as HTML tag name.
+   * https://html.spec.whatwg.org/#elements-2
+   *
+   * Therefore, stories break when non-ASCII alphanumerics are included in target selector.
+   * https://github.com/storybookjs/storybook/issues/15147
+   *
+   * This method returns storyId when it doesn't contain any non-ASCII alphanumerics.
+   * Otherwise, it generates a valid HTML tag name from storyId by removing non-ASCII alphanumerics from storyId, prefixing "sb-", and suffixing "-component"
+   * @protected
+   * @memberof AbstractRenderer
+   */
+  protected generateTargetSelectorFromStoryId() {
+    const invalidHtmlTag = /[^A-Za-z0-9-]/g;
+    const storyIdIsInvalidHtmlTagName = invalidHtmlTag.test(this.storyId);
+    return storyIdIsInvalidHtmlTagName
+      ? `sb-${this.storyId.replace(invalidHtmlTag, '')}-component`
+      : this.storyId;
   }
 
   protected initAngularRootElement(targetDOMNode: HTMLElement, targetSelector: string) {
