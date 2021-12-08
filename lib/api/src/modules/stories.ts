@@ -293,9 +293,9 @@ export const init: ModuleFn = ({
             ? s.parameters.viewMode
             : viewModeFromState;
 
-        // If the viewMode is settings, we should go back to the 'story' view
-        // when navigating to another story.
-        if (viewMode === 'settings') {
+        // Some viewModes are not story-specific, and we should reset viewMode
+        //  to 'story' if one of those is active when navigating to another story
+        if (['settings', 'about', 'release'].includes(viewMode)) {
           viewMode = 'story';
         }
 
