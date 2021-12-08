@@ -281,7 +281,7 @@ describe('StoryStore', () => {
       const store = new StoryStore();
       store.setProjectAnnotations(projectAnnotations);
       store.initialize({ storyIndex, importFn, cache: false });
-      await store.cacheAllCSFFiles(false);
+      await store.cacheAllCSFFiles();
 
       await store.loadStory({ storyId: 'component-one--a' });
       expect(importFn).toHaveBeenCalledWith(storyIndex.stories['component-one--a'].importPath);
@@ -940,6 +940,22 @@ describe('StoryStore', () => {
             "v": 3,
           }
         `);
+      });
+    });
+  });
+
+  describe('cacheAllCsfFiles', () => {
+    describe('if the store is not yet initialized', () => {
+      it('waits for initialization', async () => {
+        const store = new StoryStore();
+
+        importFn.mockClear();
+        const cachePromise = store.cacheAllCSFFiles();
+
+        store.setProjectAnnotations(projectAnnotations);
+        store.initialize({ storyIndex, importFn, cache: false });
+
+        await expect(cachePromise).resolves.toEqual(undefined);
       });
     });
   });
