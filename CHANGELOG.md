@@ -1,3 +1,12 @@
+## 6.4.9 (December 9, 2021)
+
+### Bug Fixes
+
+- Core: Ensure we have a full story index before caching ([#16947](https://github.com/storybookjs/storybook/pull/16947))
+- Angular: Fix support for non-roman alphabets in story titles ([#16931](https://github.com/storybookjs/storybook/pull/16931))
+- Core: Be explicit about `viewMode` to fix Vue issue ([#16919](https://github.com/storybookjs/storybook/pull/16919))
+- Core: Remove unused and occluded types ([#16917](https://github.com/storybookjs/storybook/pull/16917))
+
 ## 6.4.8 (December 6, 2021)
 
 ### Bug Fixes
