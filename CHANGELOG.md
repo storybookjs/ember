@@ -1,3 +1,9 @@
+## 6.5.0-alpha.3 (December 9, 2021)
+
+### Bug Fixes
+
+* Core: Support custom PREVIEW URL for block story iframe ([#16773](https://github.com/storybookjs/storybook/pull/16773))
+
 ## 6.5.0-alpha.2 (December 9, 2021)
 
 ### Bug Fixes
