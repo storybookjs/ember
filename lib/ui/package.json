@@ -40,7 +40,7 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@emotion/core": "^10.1.1",
+    "@emotion/core": "^10.3.1",
     "@storybook/addons": "6.5.0-alpha.3",
     "@storybook/api": "6.5.0-alpha.3",
     "@storybook/channels": "6.5.0-alpha.3",

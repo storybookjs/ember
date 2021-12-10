@@ -4262,6 +4262,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/core@npm:^10.3.1":
+  version: 10.3.1
+  resolution: "@emotion/core@npm:10.3.1"
+  dependencies:
+    "@babel/runtime": ^7.5.5
+    "@emotion/cache": ^10.0.27
+    "@emotion/css": ^10.0.27
+    "@emotion/serialize": ^0.11.15
+    "@emotion/sheet": 0.9.4
+    "@emotion/utils": 0.11.3
+  peerDependencies:
+    react: ">=16.3.0"
+  checksum: 99b27ffa33408e3987f0d77e1f18a6145c0c11fa0c8991adf09e5dba0451fcfb45288132b8caf2a038695fa081c593bfaab82e01f64fee86ddbb2bd3c5a41ed7
+  languageName: node
+  linkType: hard
+
 "@emotion/css@npm:^10.0.27":
   version: 10.0.27
   resolution: "@emotion/css@npm:10.0.27"
@@ -7802,7 +7818,7 @@ __metadata:
     "@babel/parser": ^7.12.11
     "@babel/plugin-transform-react-jsx": ^7.12.12
     "@babel/preset-env": ^7.12.11
-    "@emotion/core": ^10.1.1
+    "@emotion/core": ^10.3.1
     "@emotion/styled": ^10.0.27
     "@jest/transform": ^26.6.2
     "@mdx-js/loader": ^1.6.22
@@ -10076,7 +10092,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/theming@workspace:lib/theming"
   dependencies:
-    "@emotion/core": ^10.1.1
+    "@emotion/core": ^10.3.1
     "@emotion/is-prop-valid": ^0.8.6
     "@emotion/styled": ^10.0.27
     "@storybook/client-logger": 6.5.0-alpha.3
@@ -10122,7 +10138,7 @@ __metadata:
   resolution: "@storybook/ui@workspace:lib/ui"
   dependencies:
     "@babel/core": ^7.12.10
-    "@emotion/core": ^10.1.1
+    "@emotion/core": ^10.3.1
     "@storybook/addons": 6.5.0-alpha.3
     "@storybook/api": 6.5.0-alpha.3
     "@storybook/channels": 6.5.0-alpha.3

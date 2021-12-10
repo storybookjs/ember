@@ -1,10 +1,10 @@
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes, Keyframes, SerializedStyles } from '@emotion/core';
 
 export const easing = {
   rubber: 'cubic-bezier(0.175, 0.885, 0.335, 1.05)',
 };
 
-const rotate360 = keyframes`
+const rotate360: Keyframes = keyframes`
 	from {
 		transform: rotate(0deg);
 	}
@@ -13,32 +13,32 @@ const rotate360 = keyframes`
 	}
 `;
 
-const glow = keyframes`
+const glow: Keyframes = keyframes`
   0%, 100% { opacity: 1; }
   50% { opacity: .4; }
 `;
 
-const float = keyframes`
+const float: Keyframes = keyframes`
   0% { transform: translateY(1px); }
   25% { transform: translateY(0px); }
   50% { transform: translateY(-3px); }
   100% { transform: translateY(1px); }
 `;
 
-const jiggle = keyframes`
+const jiggle: Keyframes = keyframes`
   0%, 100% { transform:translate3d(0,0,0); }
   12.5%, 62.5% { transform:translate3d(-4px,0,0); }
   37.5%, 87.5% {  transform: translate3d(4px,0,0);  }
 `;
 
-const inlineGlow = css`
+const inlineGlow: SerializedStyles = css`
   animation: ${glow} 1.5s ease-in-out infinite;
   color: transparent;
   cursor: progress;
 `;
 
 // hover & active state for links and buttons
-const hoverable = css`
+const hoverable: SerializedStyles = css`
   transition: all 150ms ease-out;
   transform: translate3d(0, 0, 0);
 
