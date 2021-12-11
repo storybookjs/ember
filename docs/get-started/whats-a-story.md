@@ -26,6 +26,7 @@ Let’s start with the `Button` component. A story is a function that describes 
     'svelte/button-story.mdx.mdx',
     'web-components/button-story.js.mdx',
     'html/button-story.js.mdx',
+    'html/button-story.ts.mdx',
   ]}
 />
 
