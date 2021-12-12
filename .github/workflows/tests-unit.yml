@@ -1,10 +1,16 @@
 name: Unit tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - next
+  pull_request:
+    types: [labeled]
 
 jobs:
   build:
     name: Core Unit Tests node-${{ matrix.node_version }}, ${{ matrix.os }}
+    if: ${{ github.event.label.name == 'ci:matrix' || github.event.type == 'push'}}
     strategy:
       fail-fast: false
       matrix:
