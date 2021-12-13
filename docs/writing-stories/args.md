@@ -10,7 +10,7 @@ Learn how and why to write stories in [the introduction](./introduction.md#using
 
 ## Args object
 
-The `args` object can be defined at the [story](#story-args) and [component level](#component-args). It is a JSON serializable object composed of string keys with matching valid value types that can be passed into a component for your framework.
+The `args` object can be defined at the [story](#story-args), [component](#component-args) and [project level](#project-args). It is a JSON serializable object composed of string keys with matching valid value types that can be passed into a component for your framework.
 
 ## Story args
 
@@ -71,6 +71,20 @@ You can also define args at the component level; they will apply to all the comp
     'svelte/button-story-component-args-primary.native-format.mdx',
     'svelte/button-story-component-args-primary.mdx.mdx',
     'web-components/button-story-component-args-primary.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+## Project args
+
+You can also define args at the project level; they will apply to every component's stories unless you overwrite them. To do so, export the `args` key in your `preview.js`:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'react/button-story-project-args-theme.js.mdx',
   ]}
 />
 
