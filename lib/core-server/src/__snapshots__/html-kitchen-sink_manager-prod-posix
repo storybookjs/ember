@@ -1,18 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cra-ts-essentials manager production mode 1`] = `
+exports[`html-kitchen-sink manager prod 1`] = `
 Object {
   "entry": Array [
-    "NODE_MODULES/@storybook/addon-ie11/dist/event-source-polyfill.js",
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
     "ROOT/addons/docs/dist/esm/register.js",
-    "ROOT/addons/controls/dist/esm/register.js",
+    "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
-    "ROOT/addons/toolbars/dist/esm/register.js",
-    "ROOT/addons/measure/dist/esm/register.js",
-    "ROOT/addons/outline/dist/esm/register.js",
+    "ROOT/addons/controls/dist/esm/register.js",
+    "ROOT/addons/jest/register.js",
+    "ROOT/addons/links/dist/esm/register.js",
+    "ROOT/addons/storysource/dist/esm/register.js",
+    "ROOT/addons/viewport/dist/esm/register.js",
   ],
   "keys": Array [
     "name",
@@ -210,29 +211,6 @@ Object {
           "name": "static/media/[name].[contenthash:8].[ext]",
         },
         "test": "/\\\\.(mp4|webm|wav|mp3|m4a|aac|oga)(\\\\?.*)?$/",
-      },
-      Object {
-        "include": "NODE_MODULES[\\\\\\\\/](@storybook[\\\\\\\\/]node_logger|@testing-library[\\\\\\\\/]dom|@testing-library[\\\\\\\\/]user-event|acorn-jsx|ansi-align|ansi-colors|ansi-escapes|ansi-regex|ansi-styles|better-opn|boxen|camelcase|chalk|color-convert|commander|find-cache-dir|find-up|fs-extra|highlight.js|json5|node-fetch|pkg-dir|prettier|pretty-format|react-dev-utils|resolve-from|semver|slash|strip-ansi|uuid)/",
-        "test": "/\\\\.js$/",
-        "use": Array [
-          Object {
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
-            "options": Object {
-              "presets": Array [
-                Array [
-                  "@babel/preset-env",
-                  Object {
-                    "targets": Object {
-                      "ie": "11",
-                    },
-                  },
-                  "storybook-addon-ie11",
-                ],
-              ],
-              "sourceType": "unambiguous",
-            },
-          },
-        ],
       },
     ],
   },

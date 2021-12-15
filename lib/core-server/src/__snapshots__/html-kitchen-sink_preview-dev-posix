@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`html-kitchen-sink preview dev mode 1`] = `
+exports[`html-kitchen-sink preview dev 1`] = `
 Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",

@@ -9827,6 +9827,7 @@ __metadata:
     jest-enzyme: ^7.1.2
     jest-image-snapshot: ^4.3.0
     jest-jasmine2: ^26.6.3
+    jest-os-detection: ^1.3.1
     jest-raw-loader: ^1.0.1
     jest-serializer-html: ^7.0.0
     jest-teamcity: ^1.9.0
@@ -29770,6 +29771,13 @@ fsevents@^1.2.7:
     "@jest/types": ^27.2.5
     "@types/node": "*"
   checksum: 90033366823d6c7ad847dae1fec5d1bc5a103c83342ca5867fe9b69fefefbcb12d08fe718202e92cafd72bd091558ecd663b4c261e2e85b6c9244c3fc6951f35
+  languageName: node
+  linkType: hard
+
+"jest-os-detection@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "jest-os-detection@npm:1.3.1"
+  checksum: 0fd540b9518d443fe037bd74c3413869e23b167faa3c3f2653c652eb9b0f4acf5448df92344bdf67f4d0d6e994294513e3ba6b0507c245e5d9d31e83541ac621
   languageName: node
   linkType: hard
 

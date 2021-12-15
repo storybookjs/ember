@@ -1,5 +1,8 @@
 import 'jest-specific-snapshot';
 import path from 'path';
+import { mkdtemp as mkdtempCb } from 'fs';
+import os from 'os';
+import { promisify } from 'util';
 import { Configuration } from 'webpack';
 import Cache from 'file-system-cache';
 import { resolvePathInStorybookCache } from '@storybook/core-common';
@@ -19,9 +22,13 @@ import htmlOptions from '../../../app/html/src/server/options';
 import webComponentsOptions from '../../../app/web-components/src/server/options';
 import { outputStats } from './utils/output-stats';
 
+const { SNAPSHOT_OS } = global;
+const mkdtemp = promisify(mkdtempCb);
+
 // this only applies to this file
 jest.setTimeout(10000);
 
+// FIXME: this doesn't work
 const skipStoriesJsonPreset = [{ features: { buildStoriesJson: false, storyStoreV7: false } }];
 
 jest.mock('@storybook/builder-webpack4', () => {
@@ -85,7 +92,6 @@ const baseOptions = {
   docsMode: false,
   cache,
   configDir: path.resolve(`${__dirname}/../../../examples/react-ts/.storybook`),
-  outputDir: `${__dirname}/storybook-static`, // production
   ci: true,
   managerCache: false,
 };
@@ -135,44 +141,35 @@ describe.each([
   ['web-components-kitchen-sink', webComponentsOptions],
   ['html-kitchen-sink', htmlOptions],
 ])('%s', (example, frameworkOptions) => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    cache.clear();
-  });
-
-  const options = {
-    ...baseOptions,
-    ...frameworkOptions,
-    configDir: path.resolve(`${__dirname}/../../../examples/${example}/.storybook`),
-  };
-
-  describe('manager', () => {
-    it('dev mode', async () => {
-      await buildDevStandalone({ ...options, ignorePreview: true });
-
-      const managerConfig = prepareSnap(managerExecutor.get, 'manager');
-      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-dev`));
+  describe.each([
+    ['manager', managerExecutor],
+    ['preview', previewExecutor],
+  ])('%s', (component, executor) => {
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      await cache.clear();
     });
-    it('production mode', async () => {
-      await buildStaticStandalone({ ...options, ignorePreview: true });
 
-      const managerConfig = prepareSnap(managerExecutor.get, 'manager');
-      expect(managerConfig).toMatchSpecificSnapshot(snap(`${example}_manager-prod`));
-    });
-  });
+    it.each([
+      ['prod', buildStaticStandalone],
+      ['dev', buildDevStandalone],
+    ])('%s', async (mode, builder) => {
+      const options = {
+        ...baseOptions,
+        ...frameworkOptions,
+        configDir: path.resolve(`${__dirname}/../../../examples/${example}/.storybook`),
+        // Only add an outputDir in production mode.
+        outputDir:
+          mode === 'prod' ? await mkdtemp(path.join(os.tmpdir(), 'storybook-static-')) : undefined,
+        ignorePreview: component === 'manager',
+        managerCache: component === 'preview',
+      };
 
-  describe('preview', () => {
-    it('dev mode', async () => {
-      await buildDevStandalone({ ...options, managerCache: true });
-
-      const previewConfig = prepareSnap(previewExecutor.get, 'preview');
-      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-dev`));
-    });
-    it('production mode', async () => {
-      await buildStaticStandalone({ ...options, managerCache: true });
-
-      const previewConfig = prepareSnap(previewExecutor.get, 'preview');
-      expect(previewConfig).toMatchSpecificSnapshot(snap(`${example}_preview-prod`));
+      await builder(options);
+      const config = prepareSnap(executor.get, component);
+      expect(config).toMatchSpecificSnapshot(
+        snap(`${example}_${component}-${mode}-${SNAPSHOT_OS}`)
+      );
     });
   });
 });
@@ -181,9 +178,9 @@ const progressPlugin = (config) =>
   config.plugins.find((p) => p.constructor.name === 'ProgressPlugin');
 
 describe('dev cli flags', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
-    cache.clear();
+    await cache.clear();
   });
 
   const cliOptions = { ...reactOptions, ...baseOptions };
@@ -248,11 +245,15 @@ describe('dev cli flags', () => {
 });
 
 describe('build cli flags', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
-    cache.clear();
+    await cache.clear();
   });
-  const cliOptions = { ...reactOptions, ...baseOptions };
+  const cliOptions = {
+    ...reactOptions,
+    ...baseOptions,
+    outputDir: `${__dirname}/storybook-static`,
+  };
 
   it('--webpack-stats-json calls output-stats', async () => {
     await buildStaticStandalone(cliOptions);
