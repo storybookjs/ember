@@ -1,0 +1,22 @@
+```js
+export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/html/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
+};
+
+export const Primary = () => {
+  const btn = document.createElement('button');
+  btn.innerText = 'Button';
+
+  btn.className = [
+    'storybook-button',
+    'storybook-button--medium',
+    'storybook-button--primary',
+  ].join(' ');
+
+  return btn;
+};
+```
