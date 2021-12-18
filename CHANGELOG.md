@@ -1,8 +1,24 @@
+## 6.5.0-alpha.4 (December 18, 2021)
+
+### Bug Fixes
+
+- Angular: Fix for renamed method in angular 13.1 ([#17032](https://github.com/storybookjs/storybook/pull/17032))
+- Source-loader: Fix node.declaration edge case ([#17027](https://github.com/storybookjs/storybook/pull/17027))
+- Core: Fix debug output on webpack failures ([#16988](https://github.com/storybookjs/storybook/pull/16988))
+
+### Maintenance
+
+- Build: Run unit tests on more node versions, mac, and windows ([#16744](https://github.com/storybookjs/storybook/pull/16744))
+
+### Dependency Upgrades
+
+- Avoid referencing internal Emotion packages in built types ([#16905](https://github.com/storybookjs/storybook/pull/16905))
+
 ## 6.5.0-alpha.3 (December 9, 2021)
 
 ### Bug Fixes
 
-* Core: Support custom PREVIEW URL for block story iframe ([#16773](https://github.com/storybookjs/storybook/pull/16773))
+- Core: Support custom PREVIEW URL for block story iframe ([#16773](https://github.com/storybookjs/storybook/pull/16773))
 
 ## 6.5.0-alpha.2 (December 9, 2021)
 
