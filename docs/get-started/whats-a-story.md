@@ -56,6 +56,7 @@ The above story definition can be further improved to take advantage of [Storybo
     'svelte/button-story-with-args.native-format.mdx',
     'svelte/button-story-with-args.mdx.mdx',
     'html/button-story-with-args.js.mdx',
+    'html/button-story-with-args.ts.mdx',
   ]}
 />
 
