@@ -76,15 +76,15 @@ You can also define args at the component level; they will apply to all the comp
 
 <!-- prettier-ignore-end -->
 
-## Project args
+## Global args
 
-You can also define args at the project level; they will apply to every component's stories unless you overwrite them. To do so, export the `args` key in your `preview.js`:
+You can also define args at the global level; they will apply to every component's stories unless you overwrite them. To do so, export the `args` key in your `preview.js`:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'react/button-story-project-args-theme.js.mdx',
+    'common/button-story-project-args-theme.js.mdx',
   ]}
 />
 
