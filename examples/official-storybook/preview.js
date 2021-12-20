@@ -243,3 +243,6 @@ export const globalTypes = {
 };
 
 export const loaders = [async () => ({ globalValue: 1 })];
+
+export const argTypes = { color: { control: 'color' } };
+export const args = { color: 'red' };
