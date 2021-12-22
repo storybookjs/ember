@@ -270,7 +270,7 @@ export default {
   title: 'Components/Atoms/Button',
 };
 
-// ✅ undefined 6.3 KO / 7.0 OK
+// ✅ undefined 6.3 OK / 7.0 OK
 export default {
   component: Button,
 };
