@@ -7459,9 +7459,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.1"
+"@pmmmwh/react-refresh-webpack-plugin@npm:^0.5.3":
+  version: 0.5.4
+  resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.5.4"
   dependencies:
     ansi-html-community: ^0.0.8
     common-path-prefix: ^3.0.0
@@ -7474,7 +7474,7 @@ __metadata:
     source-map: ^0.7.3
   peerDependencies:
     "@types/webpack": 4.x || 5.x
-    react-refresh: ^0.10.0
+    react-refresh: ">=0.10.0 <1.0.0"
     sockjs-client: ^1.4.0
     type-fest: ">=0.17.0 <3.0.0"
     webpack: ">=4.43.0 <6.0.0"
@@ -7494,7 +7494,7 @@ __metadata:
       optional: true
     webpack-plugin-serve:
       optional: true
-  checksum: 553da170e479a855475efd1c7200be4ac29727d272143861827866278353916e39921647c3b2df39c6cf86ce5740f735c6ff26f876484d909b69365e8c77976d
+  checksum: 305f7f9ed8164f787d97a2e2c2a301c7b6c9fb193e8ddf83a3e47cc9231944e8904b53243cf69ac85f44d19f1517cf25765c4c3c19159a77be9c9f8972e7f2da
   languageName: node
   linkType: hard
 
@@ -9638,7 +9638,7 @@ __metadata:
   dependencies:
     "@babel/preset-flow": ^7.12.1
     "@babel/preset-react": ^7.12.10
-    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.1
+    "@pmmmwh/react-refresh-webpack-plugin": ^0.5.3
     "@storybook/addons": 6.5.0-alpha.4
     "@storybook/client-api": 6.5.0-alpha.4
     "@storybook/core": 6.5.0-alpha.4
@@ -9659,7 +9659,7 @@ __metadata:
     lodash: ^4.17.21
     prop-types: ^15.7.2
     react-dev-utils: ^11.0.4
-    react-refresh: ^0.10.0
+    react-refresh: ^0.11.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
@@ -39646,10 +39646,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-refresh@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "react-refresh@npm:0.10.0"
-  checksum: 616e82bed3787bf4e55dcc1c9836f251b93523dd4b0ffb1c24c2dcf5d09f686fbf3cffc7d489cd7f12429f76ddf66eb431748fc07df56b18a888a7705cbc079e
+"react-refresh@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "react-refresh@npm:0.11.0"
+  checksum: cbb5616c7ba670bbd2f37ddadcdfefa66e727ea188e89733ccb8184d3b874631104b0bc016d5676a7ade4d9c79100b99b46b6ed10cd117ab5d1ddcbf8653a9f2
   languageName: node
   linkType: hard
 
