@@ -94,4 +94,4 @@ Type /html in your Ghost post, press Enter and paste the iframe URL. You can res
 
 ![Embed Ghost](./embed-ghost.png)
 
-</details
+</details>
