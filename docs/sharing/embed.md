@@ -26,6 +26,8 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowbox
 
 <!-- prettier-ignore-end -->
 
+<br/>
+
 <iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true" width="800" height="260"></iframe>
 
 ## Embed a story without the toolbar
@@ -46,6 +48,8 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 ></iframe>;
 ```
 <!-- prettier-ignore-end -->
+
+<br/>
 
 <iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true" width="800" height="200"></iframe>
 
@@ -69,6 +73,8 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 
 <!-- prettier-ignore-end -->
 
+<br/>
+
 <iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
 
 ## Embed stories on other platforms
@@ -83,7 +89,12 @@ Paste the Storybook URL into your Medium article, then press Enter. The embed wi
 
 While editing an article, Medium renders all embeds non-interactive. Once your article is published, it will become interactive. [Preview a demo on Medium](https://medium.com/@ghengeveld/embedding-storybook-on-medium-ce8a280c03ad).
 
-![Embed Medium](./embed-medium.gif)
+<video autoPlay muted playsInline loop>
+  <source
+    src="embed-medium-optimized.mp4"
+    type="video/mp4"
+  />
+</video>
 
 </details>
 
