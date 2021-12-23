@@ -81,7 +81,7 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   prepareStoryWithCache: typeof prepareStory;
 
-  initializationPromise: Promise<void>;
+  initializationPromise: SynchronousPromise<void>;
 
   resolveInitializationPromise: () => void;
 
@@ -175,9 +175,11 @@ export class StoryStore<TFramework extends AnyFramework> {
   }
 
   cacheAllCSFFiles(): PromiseLike<void> {
-    return this.loadAllCSFFiles().then((csfFiles) => {
-      this.cachedCSFFiles = csfFiles;
-    });
+    return this.initializationPromise.then(() =>
+      this.loadAllCSFFiles().then((csfFiles) => {
+        this.cachedCSFFiles = csfFiles;
+      })
+    );
   }
 
   // Load the CSF file for a story and prepare the story from it and the project annotations.

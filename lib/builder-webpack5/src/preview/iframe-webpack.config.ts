@@ -65,6 +65,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     framework,
     frameworkPath,
     presets,
+    previewUrl,
     typescriptOptions,
     modern,
     features,
@@ -192,6 +193,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             FRAMEWORK_OPTIONS: frameworkOptions,
             CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
+            PREVIEW_URL: previewUrl,
             STORIES: stories.map((specifier) => ({
               ...specifier,
               importPathMatcher: specifier.importPathMatcher.source,

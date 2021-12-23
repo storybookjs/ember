@@ -73,9 +73,14 @@ export function watchStorySpecifiers(
               // because the directoru could already be within the files part (e.g. './x/foo/bar')
               path.basename(specifier.files)
             );
-            const files = await glob(dirGlob);
+            // glob only supports forward slashes
+            const files = await glob(dirGlob.replace(/\\/g, '/'));
+
             files.forEach((filePath) => {
-              const fileImportPath = toImportPath(path.relative(options.workingDir, filePath));
+              const fileImportPath = toImportPath(
+                // use posix path separators even on windows
+                path.relative(options.workingDir, filePath).replace(/\\/g, '/')
+              );
 
               if (specifier.importPathMatcher.exec(fileImportPath)) {
                 onInvalidate(specifier, fileImportPath, removed);

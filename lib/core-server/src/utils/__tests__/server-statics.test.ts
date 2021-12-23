@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import 'jest-os-detection';
 import { parseStaticDir } from '../server-statics';
 
 fs.pathExists = jest.fn().mockReturnValue(true);
@@ -37,30 +38,34 @@ describe('parseStaticDir', () => {
     });
   });
 
-  it('supports absolute file paths', async () => {
+  it.skipWindows('supports absolute file paths - posix', async () => {
     await expect(parseStaticDir('/foo/bar')).resolves.toEqual({
       staticDir: '/foo/bar',
       staticPath: '/foo/bar',
       targetDir: './',
       targetEndpoint: '/',
     });
+  });
 
+  it.onWindows('supports absolute file paths - windows', async () => {
     await expect(parseStaticDir('C:\\foo\\bar')).resolves.toEqual({
-      staticDir: expect.any(String), // can't test this properly on unix
+      staticDir: path.resolve('C:\\foo\\bar'),
       staticPath: path.resolve('C:\\foo\\bar'),
       targetDir: './',
       targetEndpoint: '/',
     });
   });
 
-  it('supports absolute file paths with custom endpoint', async () => {
+  it.skipWindows('supports absolute file paths with custom endpoint - posix', async () => {
     await expect(parseStaticDir('/foo/bar:/custom-endpoint')).resolves.toEqual({
       staticDir: '/foo/bar',
       staticPath: '/foo/bar',
       targetDir: './custom-endpoint',
       targetEndpoint: '/custom-endpoint',
     });
+  });
 
+  it.onWindows('supports absolute file paths with custom endpoint - windows', async () => {
     await expect(parseStaticDir('C:\\foo\\bar:/custom-endpoint')).resolves.toEqual({
       staticDir: expect.any(String), // can't test this properly on unix
       staticPath: path.resolve('C:\\foo\\bar'),

@@ -1,3 +1,60 @@
+## 6.5.0-alpha.5 (December 23, 2021)
+
+### Dependency Upgrades
+
+- Update react-refresh@0.11.0 & react-refresh-webpack-plugin@0.5.3 same as cra5 ([#17056](https://github.com/storybookjs/storybook/pull/17056))
+
+## 6.5.0-alpha.4 (December 18, 2021)
+
+### Bug Fixes
+
+- Angular: Fix for renamed method in angular 13.1 ([#17032](https://github.com/storybookjs/storybook/pull/17032))
+- Source-loader: Fix node.declaration edge case ([#17027](https://github.com/storybookjs/storybook/pull/17027))
+- Core: Fix debug output on webpack failures ([#16988](https://github.com/storybookjs/storybook/pull/16988))
+
+### Maintenance
+
+- Build: Run unit tests on more node versions, mac, and windows ([#16744](https://github.com/storybookjs/storybook/pull/16744))
+
+### Dependency Upgrades
+
+- Avoid referencing internal Emotion packages in built types ([#16905](https://github.com/storybookjs/storybook/pull/16905))
+
+## 6.5.0-alpha.3 (December 9, 2021)
+
+### Bug Fixes
+
+- Core: Support custom PREVIEW URL for block story iframe ([#16773](https://github.com/storybookjs/storybook/pull/16773))
+
+## 6.5.0-alpha.2 (December 9, 2021)
+
+### Bug Fixes
+
+- UI: Only push the view back to Story if the viewMode is settings ([#16943](https://github.com/storybookjs/storybook/pull/16943))
+- Core: Ensure we have a full story index before caching ([#16947](https://github.com/storybookjs/storybook/pull/16947))
+- Angular: Fix support for non-roman alphabets in story titles ([#16931](https://github.com/storybookjs/storybook/pull/16931))
+- Core: Be explicit about `viewMode` to fix Vue issue ([#16919](https://github.com/storybookjs/storybook/pull/16919))
+- Core: Remove unused and occluded types ([#16917](https://github.com/storybookjs/storybook/pull/16917))
+- CLI: Fix `sb repro` clobbering .vuerc ([#16897](https://github.com/storybookjs/storybook/pull/16897))
+- Core: Fix auto-title in webpack5 ([#16913](https://github.com/storybookjs/storybook/pull/16913))
+- Angular: Fix incorrect log ([#16885](https://github.com/storybookjs/storybook/pull/16885))
+- Angular: Fix tsConfig paths not resolving for Angular >=12.2 ([#16882](https://github.com/storybookjs/storybook/pull/16882))
+- Core: Add feature flag to disable legacy hierarchy separator warning ([#16915](https://github.com/storybookjs/storybook/pull/16915))
+
+### Dependency Upgrades
+
+- Move @types/node to dependencies and accept v16 types ([#16904](https://github.com/storybookjs/storybook/pull/16904))
+- Bump lodash to 4.17.21 ([#16883](https://github.com/storybookjs/storybook/pull/16883))
+
+## 6.4.9 (December 9, 2021)
+
+### Bug Fixes
+
+- Core: Ensure we have a full story index before caching ([#16947](https://github.com/storybookjs/storybook/pull/16947))
+- Angular: Fix support for non-roman alphabets in story titles ([#16931](https://github.com/storybookjs/storybook/pull/16931))
+- Core: Be explicit about `viewMode` to fix Vue issue ([#16919](https://github.com/storybookjs/storybook/pull/16919))
+- Core: Remove unused and occluded types ([#16917](https://github.com/storybookjs/storybook/pull/16917))
+
 ## 6.4.8 (December 6, 2021)
 
 ### Bug Fixes

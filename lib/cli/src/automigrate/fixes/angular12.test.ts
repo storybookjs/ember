@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import path from 'path';
 import { JsPackageManager } from '../../js-package-manager';
 import { angular12 } from './angular12';
 
@@ -8,7 +9,7 @@ jest.mock('fs-extra', () => require('../../../../../__mocks__/fs-extra'));
 const checkCra5 = async ({ packageJson, main }) => {
   // eslint-disable-next-line global-require
   require('fs-extra').__setMockFiles({
-    '.storybook/main.js': `module.exports = ${JSON.stringify(main)};`,
+    [path.join('.storybook', 'main.js')]: `module.exports = ${JSON.stringify(main)};`,
   });
   const packageManager = {
     retrievePackageJson: () => ({ dependencies: {}, devDependencies: {}, ...packageJson }),
