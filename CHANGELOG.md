@@ -1,3 +1,9 @@
+## 6.5.0-alpha.5 (December 23, 2021)
+
+### Dependency Upgrades
+
+- Update react-refresh@0.11.0 & react-refresh-webpack-plugin@0.5.3 same as cra5 ([#17056](https://github.com/storybookjs/storybook/pull/17056))
+
 ## 6.5.0-alpha.4 (December 18, 2021)
 
 ### Bug Fixes
