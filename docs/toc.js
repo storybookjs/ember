@@ -49,7 +49,7 @@ module.exports = {
       ],
     },
     {
-      title: '🖋 Writing stories',
+      title: '🖋 Write stories',
       pathSegment: 'writing-stories',
       type: 'menu',
       children: [
@@ -88,10 +88,20 @@ module.exports = {
           title: 'Naming components and hierarchy',
           type: 'link',
         },
+        {
+          pathSegment: 'build-pages-with-storybook',
+          title: 'Build pages and screens',
+          type: 'link',
+        },
+        {
+          pathSegment: 'stories-for-multiple-components',
+          title: 'Stories for multiple components',
+          type: 'link',
+        },
       ],
     },
     {
-      title: '📖 Writing docs',
+      title: '📖 Write docs',
       pathSegment: 'writing-docs',
       type: 'menu',
       children: [
@@ -123,7 +133,7 @@ module.exports = {
       ],
     },
     {
-      title: '🔬 Writing tests',
+      title: '🔬 Testing',
       pathSegment: 'writing-tests',
       type: 'menu',
       children: [
@@ -155,6 +165,33 @@ module.exports = {
         {
           pathSegment: 'importing-stories-in-tests',
           title: 'Import stories in tests',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🔖 Sharing',
+      pathSegment: 'sharing',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'publish-storybook',
+          title: 'Publish',
+          type: 'link',
+        },
+        {
+          pathSegment: 'embed',
+          title: 'Embed',
+          type: 'link',
+        },
+        {
+          pathSegment: 'storybook-composition',
+          title: 'Composition',
+          type: 'link',
+        },
+        {
+          pathSegment: 'package-composition',
+          title: 'Package Composition',
           type: 'link',
         },
       ],
@@ -199,14 +236,13 @@ module.exports = {
           title: 'Measure & Outline',
           type: 'link',
         },
-         {
+        {
           pathSegment: 'interactions',
           title: 'Interactions',
           type: 'link',
         },
       ],
     },
-
     {
       title: '⚙️ Configure',
       pathSegment: 'configure',
@@ -294,43 +330,6 @@ module.exports = {
         {
           pathSegment: 'environment-variables',
           title: 'Environment variables',
-          type: 'link',
-        },
-      ],
-    },
-    {
-      title: '🔄 Workflows',
-      pathSegment: 'workflows',
-      type: 'menu',
-      children: [
-        {
-          pathSegment: 'publish-storybook',
-          title: 'Publish Storybook',
-          type: 'link',
-        },
-        {
-          pathSegment: 'build-pages-with-storybook',
-          title: 'Building pages and screens',
-          type: 'link',
-        },
-        {
-          pathSegment: 'stories-for-multiple-components',
-          title: 'Stories for multiple components',
-          type: 'link',
-        },
-        {
-          pathSegment: 'storybook-composition',
-          title: 'Composition',
-          type: 'link',
-        },
-        {
-          pathSegment: 'package-composition',
-          title: 'Package Composition',
-          type: 'link',
-        },
-        {
-          pathSegment: 'faq',
-          title: 'Frequently Asked Questions',
           type: 'link',
         },
       ],
@@ -469,6 +468,11 @@ module.exports = {
           type: 'link',
         },
       ],
+    },
+    {
+      title: '❓ Frequently Asked Questions',
+      pathSegment: 'faq',
+      type: 'link',
     },
   ],
 };
