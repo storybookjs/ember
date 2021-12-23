@@ -2,45 +2,7 @@
 title: 'Publish Storybook'
 ---
 
-Storybook is more than a UI component development tool. Teams also publish Storybook online to review and collaborate on works in progress. That allows developers, designers, and PMs to check if UI looks right without touching code or needing a local dev environment.
-
-## Build Storybook as a static web application
-
-First, we’ll need to build Storybook as a static web application using `build-storybook`, a command that’s installed by default. If you're using Yarn run the following command:
-
-<div class="aside">
-💡 <strong>Note</strong>: Be careful when running the <code>build-storybook</code> command with the <code>-o</code> flag as you might unknowingly overwrite essential files and folders. For instance <strong>avoid</strong> running <code>build-storybook -o ./</code> as this will replace the root project contents with the output of the command. 
-</div>
-
-```shell
-yarn build-storybook -o ./path/to/build
-```
-
-If you're using npm run the following command:
-
-```shell
-npm run build-storybook -- -o ./path/to/build
-```
-
-Storybook will create a static web application at the path you specify. This can be served by any web server. Try it out locally by running:
-
-```shell
-npx http-server ./path/to/build
-```
-
-<div class="aside">
-
-Asides from the `-o` flag, you can also include other flags to build Storybook, for instance if you're using [Docs](../writing-docs/introduction.md), you can append the `--docs` flag and Storybook will build your [MDX](../writing-docs/mdx.md) and [CSF](../writing-stories/introduction.md#component-story-format) stories into a rich and interactive documentation.
-
-You can learn more about these flag options [here](../api/cli-options.md).
-
-</div>
-
-## Publish Storybook online
-
-Once your Storybook is built as a static web app it can be deployed to any static site hosting services. The Storybook team uses [Chromatic](https://www.chromatic.com/), a free publishing service made by Storybook maintainers that documents, versions, and indexes your UI components securely in the cloud.
-
-We also maintain [`storybook-deployer`](https://github.com/storybookjs/storybook-deployer) to deploy to GitHub pages or AWS S3.
+Teams publish Storybook online to review and collaborate on works in progress. That allows developers, designers, PMs, and other stakeholders to check if the UI looks right without touching code or requiring a local dev environment.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -49,7 +11,97 @@ We also maintain [`storybook-deployer`](https://github.com/storybookjs/storybook
   />
 </video>
 
-## Review with your team
+## Build Storybook as a static web application
+
+First, we'll need to build Storybook as a static web application. The functionality is already built-in and pre-configured. Run the following command inside your project's root directory:
+
+<div class="aside">
+
+💡 <strong>Note</strong>: You can provide additional flags to customize the command. Read more about the flag options [here](../api/cli-options.md).
+
+</div>
+
+```shell
+# With yarn
+yarn build-storybook
+
+# With npm
+npm run build-storybook
+```
+
+Storybook will create a static web application capable of being served by any web server. Preview it locally by running the following command:
+
+```shell
+npx http-server ./path/to/build
+```
+
+![Storybook publishing workflow](./workflow-publish.png)
+
+## Publish Storybook with Chromatic
+
+Once you've built your Storybook as a static web app, you can publish it to your web host. We recommend [Chromatic](https://www.chromatic.com/), a free publishing service made for Storybook that documents, versions, and indexes your UI components securely in the cloud.
+
+To get started, sign up with your GitHub, GitLab, Bitbucket, or email and generate a unique _project-token_ for your project.
+
+Next, install the [Chromatic CLI](https://www.npmjs.com/package/chromatic) package from npm:
+
+```shell
+# With npm
+npm install --save-dev chromatic
+
+# With yarn
+yarn add --dev chromatic
+```
+
+Run the following command after the package finishes installing.
+
+```shell
+npx chromatic --project-token=<your-project-token>
+```
+
+<div class="aside">
+
+💡 <strong>Note</strong>: Make sure that you replace `your-project-token` with your own project token.
+
+</div>
+
+When Chromatic finishes, you should have successfully deployed your Storybook. Preview it by clicking the link provided (i.e., https://random-uuid.chromatic.com).
+
+```shell
+Build 1 published.
+
+View it online at https://www.chromatic.com/build?appId=...&number=1.
+```
+
+![Chromatic publish build](./build-publish-only.png)
+
+### Setup CI to publish automatically
+
+Configure your CI environment to publish your Storybook and [run Chromatic](https://www.chromatic.com/docs/ci)) whenever you push code to a repository. Let's see how to set it up using GitHub Actions.
+
+In your project's root directory, add a new file called `chromatic.yml` inside the `.github/workflows` directory:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/chromatic-github-action.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+
+💡 Secrets are secure environment variables provided by GitHub so that you don't need to hard code your `project-token`. Read the [official documentation](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to learn how to configure them.
+
+</div>
+
+Commit and push the file. Congratulations, you've successfully automated publishing your Storybook. Now whenever you open a PR you’ll get a handy link to your published Storybook in your PR checks.
+
+![PR check publish](./prbadge-publish.png)
+
+### Review with your team
 
 Publishing Storybook as part of the development process makes it quick and easy to [gather team feedback](https://storybook.js.org/tutorials/design-systems-for-developers/react/en/review/).
 
@@ -57,18 +109,30 @@ A common method to ask for review is to paste a link to the published Storybook 
 
 If you publish your Storybook to Chromatic, you can use the [UI Review](https://www.chromatic.com/features/publish) feature to automatically scan your PRs for new and updated stories. That makes it easy to identify what changed and give feedback.
 
-![Storybook publishing workflow](./workflow-publish.png)
+![UI review in Chromatic](./workflow-uireview.png)
 
-## Reference external Storybooks
+## Publish Storybook to other services
 
-Storybook allows you to browse components from any [Storybook published online](./storybook-composition.md) inside your local Storybook. It unlocks common workflows that teams often struggle with:
+You can publish the static Storybook web app to many hosts. We maintain [`storybook-deployer`](https://github.com/storybookjs/storybook-deployer), a handy tool to help you publish to AWS or GitHub pages.
 
-- 👩‍💻 UI developers can quickly reference prior art without switching between Storybooks.
-- 🎨 Design systems can expand adoption by composing themselves into their users’ Storybooks.
-- 🛠 Frontend platform can audit how components are used across projects.
+But features like [Composition](./storybook-composition.md), [embed](./embed.md), history, and versioning require tighter integration with Storybook APIs and secure authentication. Your hosting provider may not be capable of supporting these features. Learn about the Component Publishing Protocol (CPP) to see what.
 
-![Storybook reference external](./reference-external-storybooks-composition.jpg)
+## Component Publishing Protocol (CPP)
 
-Toggle between multiple versions of Storybook to see how components change between versions. This is useful for design system package authors who maintain many versions at once.
+Storybook can communicate with services that host built Storybooks online. This enables features such as [Composition](./storybook-composition.md). We categorize services via compliance with the "Component Publishing Protocol" (CPP) with various levels of support in Storybook.
 
-**Requires** a [CHP level 1](./package-composition.md#chp-level-1) server (such as [chromatic.com](https://www.chromatic.com/)),
+### CPP level 1
+
+This level of service serves published Storybooks and makes the following available:
+
+- Versioned endpoints, URLs that resolve to different published Storybooks depending on a `version=x.y.z` query parameter (where `x.y.z` is the released version of the package).
+- Support for `/stories.json`
+- Support for `/metadata.json` and the `releases` field.
+
+Example: [Chromatic](https://www.chromatic.com/)
+
+### CPP level 0
+
+This level of service can serve published Storybooks but has no further integration with Storybook’s APIs.
+
+Examples: [Netlify](https://www.netlify.com/), [S3](https://aws.amazon.com/en/s3/)

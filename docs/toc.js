@@ -197,53 +197,6 @@ module.exports = {
       ],
     },
     {
-      title: '🧩 Essential addons',
-      pathSegment: 'essentials',
-      type: 'menu',
-      children: [
-        {
-          pathSegment: 'introduction',
-          title: 'Introduction',
-          type: 'link',
-        },
-        {
-          pathSegment: 'controls',
-          title: 'Controls',
-          type: 'link',
-        },
-        {
-          pathSegment: 'actions',
-          title: 'Actions',
-          type: 'link',
-        },
-        {
-          pathSegment: 'viewport',
-          title: 'Viewport',
-          type: 'link',
-        },
-        {
-          pathSegment: 'backgrounds',
-          title: 'Backgrounds',
-          type: 'link',
-        },
-        {
-          pathSegment: 'toolbars-and-globals',
-          title: 'Toolbars & globals',
-          type: 'link',
-        },
-        {
-          pathSegment: 'measure-and-outline',
-          title: 'Measure & Outline',
-          type: 'link',
-        },
-        {
-          pathSegment: 'interactions',
-          title: 'Interactions',
-          type: 'link',
-        },
-      ],
-    },
-    {
       title: '⚙️ Configure',
       pathSegment: 'configure',
       type: 'menu',
@@ -387,6 +340,53 @@ module.exports = {
       ],
     },
     {
+      title: '🧩 Essential addons',
+      pathSegment: 'essentials',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'introduction',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'controls',
+          title: 'Controls',
+          type: 'link',
+        },
+        {
+          pathSegment: 'actions',
+          title: 'Actions',
+          type: 'link',
+        },
+        {
+          pathSegment: 'viewport',
+          title: 'Viewport',
+          type: 'link',
+        },
+        {
+          pathSegment: 'backgrounds',
+          title: 'Backgrounds',
+          type: 'link',
+        },
+        {
+          pathSegment: 'toolbars-and-globals',
+          title: 'Toolbars & globals',
+          type: 'link',
+        },
+        {
+          pathSegment: 'measure-and-outline',
+          title: 'Measure & Outline',
+          type: 'link',
+        },
+        {
+          pathSegment: 'interactions',
+          title: 'Interactions',
+          type: 'link',
+        },
+      ],
+    },
+    {
       title: '🔌 API',
       pathSegment: 'api',
       type: 'menu',
@@ -470,7 +470,7 @@ module.exports = {
       ],
     },
     {
-      title: '❓ Frequently Asked Questions',
+      title: '❓ FAQ',
       pathSegment: 'faq',
       type: 'link',
     },

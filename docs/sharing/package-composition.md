@@ -6,13 +6,19 @@ Storybook is widely used by component libraries and design systems. Design syste
 
 For example, if you use a design system package, its stories can appear alongside your own. That makes it convenient to cross reference usage documentation without leaving Storybook.
 
-## For package consumers
+<div class="aside">
 
-Composition happens automatically if the package [supports](#for-package-authors) it. When you install the package, Storybook will load its stories alongside your own.
+Composition via a package requires a tight, secure integration between the service where you publish Storybook and Storybook’s own APIs. We recommend [publishing Storybook to Chromatic](./publish-storybook.md#publish-storybook-with-chromatic), by Storybook maintainers for full support of these features.
+
+</div>
+
+## For consumers
+
+Composition happens automatically if the package [supports](#for-authors) it. When you install the package, Storybook will load its stories alongside your own.
 
 ![Package composition workflow](./package-composition.png)
 
-### Configuring
+### Set up
 
 If you want to configure how the composed Storybook behaves, you can disable the `ref` element in your [`.storybook/main.js`](../configure/overview.md#configure-story-rendering)
 
@@ -26,13 +32,13 @@ If you want to configure how the composed Storybook behaves, you can disable the
 
 <!-- prettier-ignore-end -->
 
-### Changing versions
+### Switching versions
 
-Change the version of the composed Storybook to see how the library evolves. This requires [configuration](#providing-a-version-section) from the package author.
+Change the version of the composed Storybook to see how the library evolves. This requires [configuration](#show-a-version-selector) from the package author.
 
 ![Package composition workflow](./composition-versioning.png)
 
-## For package authors
+## For authors
 
 Component library authors can expand adoption by composing their components in their consumer’s Storybooks.
 
@@ -49,9 +55,7 @@ Add a `storybook` property in your published `package.json`that contains an obje
 
 ### Automatic version selection
 
-If you are using a [CHP level 1 service](#chp-level-1) for hosting (such as [Chromatic.com](https://www.chromatic.com/)), you can provide a single URL for your Storybook in the `storybook.url` field. You do not need to change the URL each time you publish a new version. Storybook will automatically find the correct URL for your package.
-
-For example, for Chromatic, you might do:
+If you're using [Chromatic](./publish-storybook.md#publish-storybook-with-chromatic), you can provide a single URL for your Storybook in the `storybook.url` field. You do not need to change the URL each time you publish a new version. Storybook will automatically find the correct URL for your package. For example:
 
 ```json
 {
@@ -61,28 +65,8 @@ For example, for Chromatic, you might do:
 }
 ```
 
-In this example `xyz123` is your project’s id. Storybook will automatically compose in the Storybook published to that project corresponding to the version the user has installed.
+In this example `xyz123` is your Chromatic project id. Storybook will automatically compose in the Storybook published to that project corresponding to the version the user has installed.
 
-### Providing a version section
+### Show a version selector
 
-Similarly, if you're using a [CHP level 1 service](#chp-level-1) (such as chromatic.com) for hosting, you can provide a list of versions for the user to [choose from](#changing-versions) to experiment with other versions of your package.
-
-## Component Hosting Protocol (CHP)
-
-Storybook can communicate with services that host built Storybooks online. This enables features such as [Composition](./storybook-composition). We categorize services via compliance with the "Component Hosting Protocol" (CHP) with various levels of support in Storybook.
-
-### CHP level 1
-
-The service serves uploaded Storybooks and makes the following available:
-
-- Versioned endpoints, URLs that resolve to different published Storybooks depending on a `version=x.y.z` query parameter (where `x.y.z` is the released version of the package).
-- Support for `/stories.json`
-- Support for `/metadata.json` and the `releases` field.
-
-Examples of such services: [chromatic.com](https://www.chromatic.com/).
-
-### CHP level 0
-
-The service can serve uploaded Storybooks. There is no special integration with Storybook APIs.
-
-Examples of such services: [Netlify](https://www.netlify.com/) and [S3](https://aws.amazon.com/en/s3/).
+If you're using [Chromatic](./publish-storybook.md#publish-storybook-with-chromatic), you can provide a list of versions for the user to [choose from](#switching-versions) to experiment with other versions of your package.
