@@ -15,12 +15,6 @@ Teams publish Storybook online to review and collaborate on works in progress. T
 
 First, we'll need to build Storybook as a static web application. The functionality is already built-in and pre-configured. Run the following command inside your project's root directory:
 
-<div class="aside">
-
-💡 <strong>Note</strong>: You can provide additional flags to customize the command. Read more about the flag options [here](../api/cli-options.md).
-
-</div>
-
 ```shell
 # With yarn
 yarn build-storybook
@@ -29,17 +23,23 @@ yarn build-storybook
 npm run build-storybook
 ```
 
+<div class="aside">
+
+💡 You can provide additional flags to customize the command. Read more about the flag options [here](../api/cli-options.md).
+
+</div>
+
 Storybook will create a static web application capable of being served by any web server. Preview it locally by running the following command:
 
 ```shell
 npx http-server ./path/to/build
 ```
 
-![Storybook publishing workflow](./workflow-publish.png)
-
 ## Publish Storybook with Chromatic
 
 Once you've built your Storybook as a static web app, you can publish it to your web host. We recommend [Chromatic](https://www.chromatic.com/), a free publishing service made for Storybook that documents, versions, and indexes your UI components securely in the cloud.
+
+![Storybook publishing workflow](./workflow-publish.png)
 
 To get started, sign up with your GitHub, GitLab, Bitbucket, or email and generate a unique _project-token_ for your project.
 
@@ -53,19 +53,15 @@ npm install --save-dev chromatic
 yarn add --dev chromatic
 ```
 
-Run the following command after the package finishes installing.
+Run the following command after the package finishes installing. Make sure that you replace `your-project-token` with your own project token.
 
 ```shell
 npx chromatic --project-token=<your-project-token>
 ```
 
-<div class="aside">
-
-💡 <strong>Note</strong>: Make sure that you replace `your-project-token` with your own project token.
-
-</div>
-
 When Chromatic finishes, you should have successfully deployed your Storybook. Preview it by clicking the link provided (i.e., https://random-uuid.chromatic.com).
+
+<br/>
 
 ```shell
 Build 1 published.
@@ -117,7 +113,9 @@ You can publish the static Storybook web app to many hosts. We maintain [`storyb
 
 But features like [Composition](./storybook-composition.md), [embed](./embed.md), history, and versioning require tighter integration with Storybook APIs and secure authentication. Your hosting provider may not be capable of supporting these features. Learn about the Component Publishing Protocol (CPP) to see what.
 
-## Component Publishing Protocol (CPP)
+<details>
+
+<summary><h2>Component Publishing Protocol (CPP)</h2></summary>
 
 Storybook can communicate with services that host built Storybooks online. This enables features such as [Composition](./storybook-composition.md). We categorize services via compliance with the "Component Publishing Protocol" (CPP) with various levels of support in Storybook.
 
@@ -136,3 +134,5 @@ Example: [Chromatic](https://www.chromatic.com/)
 This level of service can serve published Storybooks but has no further integration with Storybook’s APIs.
 
 Examples: [Netlify](https://www.netlify.com/), [S3](https://aws.amazon.com/en/s3/)
+
+</details>
