@@ -4,7 +4,7 @@ title: 'Embed stories'
 
 Embed stories to showcase your work to teammates and the developer community at large. In order to use embeds, your Storybook must be published and publicly accessible.
 
-Storybook supports `<iframe>` embeds out of the box. If you use Chromatic to publish Storybook, you can embed stories in Notion, Medium, and countless other platforms that support the oEmbed standard.
+Storybook supports `<iframe>` embeds out of the box. If you use Chromatic to [publish Storybook](./publish-storybook.md#publish-storybook-with-chromatic), you can also embed stories in Notion, Medium, and countless other platforms that support the oEmbed standard.
 
 ## Embed a story with the toolbar
 
@@ -112,7 +112,7 @@ In your Notion document, type /embed, press Enter, and paste the story URL as th
 
 <summary>How to embed in Ghost</summary>
 
-Type /html in your Ghost post, press Enter and paste the iframe URL. You can resize the embed via the width and height properties as required.
+Type `/html` in your Ghost post, press Enter and paste the iframe URL. You can resize the embed via the width and height properties as required.
 
 ![Embed Ghost](./embed-ghost.png)
 
