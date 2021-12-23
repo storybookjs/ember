@@ -100,11 +100,11 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   if (options.smokeTest) {
     // @ts-ignore
     const managerWarnings = (managerStats && managerStats.toJson().warnings) || [];
-    if (managerWarnings.length > 0) logger.warn(`manager: ${managerWarnings}`);
+    if (managerWarnings.length > 0) logger.warn(`manager: ${JSON.stringify(managerWarnings, null, 2)}`);
     // I'm a little reticent to import webpack types in this file :shrug:
     // @ts-ignore
     const previewWarnings = (previewStats && previewStats.toJson().warnings) || [];
-    if (previewWarnings.length > 0) logger.warn(`preview: ${previewWarnings}`);
+    if (previewWarnings.length > 0) logger.warn(`preview: ${JSON.stringify(previewWarnings, null, 2)}`);
     process.exit(
       managerWarnings.length > 0 || (previewWarnings.length > 0 && !options.ignorePreview) ? 1 : 0
     );

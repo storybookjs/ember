@@ -1,15 +1,15 @@
 {
   "name": "standalone-preview",
-  "version": "6.5.0-alpha.3",
+  "version": "6.5.0-alpha.4",
   "private": true,
   "scripts": {
     "storybook-preview": "cross-env PREVIEW_URL=external-iframe.html parcel ./storybook.html --port 1337",
     "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 -c ../official-storybook --no-manager-cache --preview-url=http://localhost:1337/external-iframe.html"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "6.5.0-alpha.3",
-    "@storybook/cli": "6.5.0-alpha.3",
-    "@storybook/react": "6.5.0-alpha.3",
+    "@storybook/addon-docs": "6.5.0-alpha.4",
+    "@storybook/cli": "6.5.0-alpha.4",
+    "@storybook/react": "6.5.0-alpha.4",
     "cross-env": "^7.0.3",
     "parcel": "2.0.1",
     "react": "16.14.0",

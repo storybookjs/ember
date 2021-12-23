@@ -1,23 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cra-ts-essentials preview production mode 1`] = `
+exports[`cra-ts-essentials preview dev 1`] = `
 Object {
   "entry": Array [
-    "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
-    "ROOT/lib/core-client/dist/esm/globals/globals.js",
-    "NODE_MODULES/@storybook/addon-ie11/dist/event-source-polyfill.js",
-    "ROOT/storybook-init-framework-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/react/config.js-generated-config-entry.js",
-    "ROOT/app/react/dist/esm/client/preview/config-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
-    "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/examples/cra-ts-essentials/.storybook/preview.js-generated-config-entry.js",
-    "ROOT/generated-stories-entry.js",
+    "ROOT\\\\lib\\\\core-client\\\\dist\\\\esm\\\\globals\\\\polyfills.js",
+    "ROOT\\\\lib\\\\core-client\\\\dist\\\\esm\\\\globals\\\\globals.js",
+    "NODE_MODULES\\\\webpack-hot-middleware\\\\client.js?reload=true&quiet=false&noInfo=undefined",
+    "NODE_MODULES\\\\@storybook\\\\addon-ie11\\\\dist\\\\event-source-polyfill.js",
+    "ROOT\\\\storybook-init-framework-entry.js",
+    "ROOT\\\\addons\\\\docs\\\\dist\\\\esm\\\\frameworks\\\\common\\\\config.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\docs\\\\dist\\\\esm\\\\frameworks\\\\react\\\\config.js-generated-config-entry.js",
+    "ROOT\\\\app\\\\react\\\\dist\\\\esm\\\\client\\\\preview\\\\config-generated-config-entry.js",
+    "ROOT\\\\addons\\\\actions\\\\dist\\\\esm\\\\preset\\\\addDecorator.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\actions\\\\dist\\\\esm\\\\preset\\\\addArgs.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\backgrounds\\\\dist\\\\esm\\\\preset\\\\addDecorator.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\backgrounds\\\\dist\\\\esm\\\\preset\\\\addParameter.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\measure\\\\dist\\\\esm\\\\preset\\\\addDecorator.js-generated-config-entry.js",
+    "ROOT\\\\addons\\\\outline\\\\dist\\\\esm\\\\preset\\\\addDecorator.js-generated-config-entry.js",
+    "ROOT\\\\examples\\\\cra-ts-essentials\\\\.storybook\\\\preview.js-generated-config-entry.js",
+    "ROOT\\\\generated-stories-entry.js",
   ],
   "keys": Array [
     "name",
@@ -40,7 +41,7 @@ Object {
         "test": "/\\\\.md$/",
         "use": Array [
           Object {
-            "loader": "NODE_MODULES/raw-loader/dist/cjs.js",
+            "loader": "NODE_MODULES\\\\raw-loader\\\\dist\\\\cjs.js",
           },
         ],
       },
@@ -52,7 +53,7 @@ Object {
       Object {
         "oneOf": Array [
           Object {
-            "loader": "NODE_MODULES/url-loader/dist/cjs.js",
+            "loader": "NODE_MODULES\\\\url-loader\\\\dist\\\\cjs.js",
             "options": Object {
               "limit": 10000,
               "mimetype": "image/avif",
@@ -63,7 +64,7 @@ Object {
             ],
           },
           Object {
-            "loader": "NODE_MODULES/url-loader/dist/cjs.js",
+            "loader": "NODE_MODULES\\\\url-loader\\\\dist\\\\cjs.js",
             "options": Object {
               "limit": 10000,
               "name": "static/media/[name].[hash:8].[ext]",
@@ -77,24 +78,24 @@ Object {
           },
           Object {
             "include": Array [
-              "ROOT/src",
-              "ROOT/examples/cra-ts-essentials/.storybook",
+              "ROOT\\\\src",
+              "ROOT\\\\examples\\\\cra-ts-essentials\\\\.storybook",
             ],
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "babelrc": false,
               "cacheCompression": false,
               "cacheDirectory": true,
-              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
-              "compact": true,
+              "cacheIdentifier": "development:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
+              "compact": false,
               "configFile": false,
-              "customize": "NODE_MODULES/babel-preset-react-app/webpack-overrides.js",
+              "customize": "NODE_MODULES\\\\babel-preset-react-app\\\\webpack-overrides.js",
               "extends": undefined,
               "overrides": Array [
                 Object {
                   "plugins": Array [
                     Array [
-                      "NODE_MODULES/babel-plugin-react-docgen/lib/index.js",
+                      "NODE_MODULES\\\\babel-plugin-react-docgen\\\\lib\\\\index.js",
                       Object {
                         "DOC_GEN_COLLECTION_NAME": "STORYBOOK_REACT_CLASSES",
                       },
@@ -105,7 +106,7 @@ Object {
               ],
               "plugins": Array [
                 Array [
-                  "NODE_MODULES/babel-plugin-named-asset-import/index.js",
+                  "NODE_MODULES\\\\babel-plugin-named-asset-import\\\\index.js",
                   Object {
                     "loaderMap": Object {
                       "svg": Object {
@@ -114,6 +115,7 @@ Object {
                     },
                   },
                 ],
+                "NODE_MODULES\\\\react-refresh\\\\babel.js",
               ],
               "presets": Array [
                 Array [
@@ -126,7 +128,7 @@ Object {
                   "storybook-addon-ie11",
                 ],
                 Array [
-                  "NODE_MODULES/babel-preset-react-app/index.js",
+                  "NODE_MODULES\\\\babel-preset-react-app\\\\index.js",
                   Object {
                     "runtime": "automatic",
                   },
@@ -138,20 +140,20 @@ Object {
           Object {
             "exclude": "/@babel(?:\\\\/|\\\\\\\\{1,2})runtime/",
             "include": Array [
-              "ROOT/examples/cra-ts-essentials/.storybook",
+              "ROOT\\\\examples\\\\cra-ts-essentials\\\\.storybook",
             ],
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "babelrc": false,
               "cacheCompression": false,
               "cacheDirectory": true,
-              "cacheIdentifier": "production:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
+              "cacheIdentifier": "development:babel-plugin-named-asset-import@0.3.7:babel-preset-react-app@10.0.0:react-dev-utils@11.0.3:react-scripts@4.0.3",
               "compact": false,
               "configFile": false,
               "inputSourceMap": true,
               "presets": Array [
                 Array [
-                  "NODE_MODULES/babel-preset-react-app/dependencies.js",
+                  "NODE_MODULES\\\\babel-preset-react-app\\\\dependencies.js",
                   Object {
                     "helpers": true,
                   },
@@ -170,21 +172,16 @@ Object {
             "sideEffects": true,
             "test": "/\\\\.css$/",
             "use": Array [
+              "NODE_MODULES\\\\style-loader\\\\dist\\\\cjs.js",
               Object {
-                "loader": "NODE_MODULES/mini-css-extract-plugin/dist/loader.js",
-                "options": Object {
-                  "publicPath": "../../",
-                },
-              },
-              Object {
-                "loader": "NODE_MODULES/css-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\css-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "importLoaders": 1,
                   "sourceMap": true,
                 },
               },
               Object {
-                "loader": "NODE_MODULES/postcss-loader/src/index.js",
+                "loader": "NODE_MODULES\\\\postcss-loader\\\\src\\\\index.js",
                 "options": Object {
                   "ident": "postcss",
                   "plugins": [Function],
@@ -196,14 +193,9 @@ Object {
           Object {
             "test": "/\\\\.module\\\\.css$/",
             "use": Array [
+              "NODE_MODULES\\\\style-loader\\\\dist\\\\cjs.js",
               Object {
-                "loader": "NODE_MODULES/mini-css-extract-plugin/dist/loader.js",
-                "options": Object {
-                  "publicPath": "../../",
-                },
-              },
-              Object {
-                "loader": "NODE_MODULES/css-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\css-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "importLoaders": 1,
                   "modules": Object {
@@ -213,7 +205,7 @@ Object {
                 },
               },
               Object {
-                "loader": "NODE_MODULES/postcss-loader/src/index.js",
+                "loader": "NODE_MODULES\\\\postcss-loader\\\\src\\\\index.js",
                 "options": Object {
                   "ident": "postcss",
                   "plugins": [Function],
@@ -227,21 +219,16 @@ Object {
             "sideEffects": true,
             "test": "/\\\\.(scss|sass)$/",
             "use": Array [
+              "NODE_MODULES\\\\style-loader\\\\dist\\\\cjs.js",
               Object {
-                "loader": "NODE_MODULES/mini-css-extract-plugin/dist/loader.js",
-                "options": Object {
-                  "publicPath": "../../",
-                },
-              },
-              Object {
-                "loader": "NODE_MODULES/css-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\css-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "importLoaders": 3,
                   "sourceMap": true,
                 },
               },
               Object {
-                "loader": "NODE_MODULES/postcss-loader/src/index.js",
+                "loader": "NODE_MODULES\\\\postcss-loader\\\\src\\\\index.js",
                 "options": Object {
                   "ident": "postcss",
                   "plugins": [Function],
@@ -249,14 +236,14 @@ Object {
                 },
               },
               Object {
-                "loader": "NODE_MODULES/resolve-url-loader/index.js",
+                "loader": "NODE_MODULES\\\\resolve-url-loader\\\\index.js",
                 "options": Object {
-                  "root": "ROOT/src",
+                  "root": "ROOT\\\\src",
                   "sourceMap": true,
                 },
               },
               Object {
-                "loader": "NODE_MODULES/sass-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\sass-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "sourceMap": true,
                 },
@@ -266,14 +253,9 @@ Object {
           Object {
             "test": "/\\\\.module\\\\.(scss|sass)$/",
             "use": Array [
+              "NODE_MODULES\\\\style-loader\\\\dist\\\\cjs.js",
               Object {
-                "loader": "NODE_MODULES/mini-css-extract-plugin/dist/loader.js",
-                "options": Object {
-                  "publicPath": "../../",
-                },
-              },
-              Object {
-                "loader": "NODE_MODULES/css-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\css-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "importLoaders": 3,
                   "modules": Object {
@@ -283,7 +265,7 @@ Object {
                 },
               },
               Object {
-                "loader": "NODE_MODULES/postcss-loader/src/index.js",
+                "loader": "NODE_MODULES\\\\postcss-loader\\\\src\\\\index.js",
                 "options": Object {
                   "ident": "postcss",
                   "plugins": [Function],
@@ -291,14 +273,14 @@ Object {
                 },
               },
               Object {
-                "loader": "NODE_MODULES/resolve-url-loader/index.js",
+                "loader": "NODE_MODULES\\\\resolve-url-loader\\\\index.js",
                 "options": Object {
-                  "root": "ROOT/src",
+                  "root": "ROOT\\\\src",
                   "sourceMap": true,
                 },
               },
               Object {
-                "loader": "NODE_MODULES/sass-loader/dist/cjs.js",
+                "loader": "NODE_MODULES\\\\sass-loader\\\\dist\\\\cjs.js",
                 "options": Object {
                   "sourceMap": true,
                 },
@@ -312,7 +294,7 @@ Object {
               "/\\\\.json$/",
               "/\\\\.(ejs|md|mdx)$/",
             ],
-            "loader": "NODE_MODULES/file-loader/dist/cjs.js",
+            "loader": "NODE_MODULES\\\\file-loader\\\\dist\\\\cjs.js",
             "options": Object {
               "name": "static/media/[name].[hash:8].[ext]",
             },
@@ -324,7 +306,7 @@ Object {
         "test": "/\\\\.js$/",
         "use": Array [
           Object {
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "presets": Array [
                 Array [
@@ -343,15 +325,15 @@ Object {
         ],
       },
       Object {
-        "include": "NODE_MODULES\\\\/acorn-jsx/",
+        "include": "NODE_MODULES\\\\\\\\acorn-jsx/",
         "test": "/\\\\.js$/",
         "use": Array [
           Object {
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "presets": Array [
                 Array [
-                  "NODE_MODULES/@babel/preset-env/lib/index.js",
+                  "NODE_MODULES\\\\@babel\\\\preset-env\\\\lib\\\\index.js",
                   Object {
                     "modules": "commonjs",
                   },
@@ -365,16 +347,16 @@ Object {
         "test": "/(stories|story)\\\\.mdx$/",
         "use": Array [
           Object {
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "babelrc": false,
-              "cacheDirectory": "NODE_MODULES/.cache/storybook/babel",
+              "cacheDirectory": "NODE_MODULES\\\\.cache\\\\storybook\\\\babel",
               "configFile": false,
               "overrides": Array [
                 Object {
                   "plugins": Array [
                     Array [
-                      "NODE_MODULES/babel-plugin-react-docgen/lib/index.js",
+                      "NODE_MODULES\\\\babel-plugin-react-docgen\\\\lib\\\\index.js",
                       Object {
                         "DOC_GEN_COLLECTION_NAME": "STORYBOOK_REACT_CLASSES",
                       },
@@ -385,7 +367,7 @@ Object {
               ],
               "plugins": Array [
                 Array [
-                  "NODE_MODULES/@babel/plugin-transform-react-jsx/lib/index.js",
+                  "NODE_MODULES\\\\@babel\\\\plugin-transform-react-jsx\\\\lib\\\\index.js",
                   Object {
                     "pragma": "React.createElement",
                     "pragmaFrag": "React.Fragment",
@@ -406,7 +388,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES\\\\@mdx-js\\\\loader\\\\index.js",
             "options": Object {
               "compilers": Array [
                 [Function],
@@ -424,16 +406,16 @@ Object {
         "test": "/\\\\.mdx$/",
         "use": Array [
           Object {
-            "loader": "NODE_MODULES/babel-loader/lib/index.js",
+            "loader": "NODE_MODULES\\\\babel-loader\\\\lib\\\\index.js",
             "options": Object {
               "babelrc": false,
-              "cacheDirectory": "NODE_MODULES/.cache/storybook/babel",
+              "cacheDirectory": "NODE_MODULES\\\\.cache\\\\storybook\\\\babel",
               "configFile": false,
               "overrides": Array [
                 Object {
                   "plugins": Array [
                     Array [
-                      "NODE_MODULES/babel-plugin-react-docgen/lib/index.js",
+                      "NODE_MODULES\\\\babel-plugin-react-docgen\\\\lib\\\\index.js",
                       Object {
                         "DOC_GEN_COLLECTION_NAME": "STORYBOOK_REACT_CLASSES",
                       },
@@ -444,7 +426,7 @@ Object {
               ],
               "plugins": Array [
                 Array [
-                  "NODE_MODULES/@babel/plugin-transform-react-jsx/lib/index.js",
+                  "NODE_MODULES\\\\@babel\\\\plugin-transform-react-jsx\\\\lib\\\\index.js",
                   Object {
                     "pragma": "React.createElement",
                     "pragmaFrag": "React.Fragment",
@@ -465,7 +447,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES\\\\@mdx-js\\\\loader\\\\index.js",
             "options": Object {
               "remarkPlugins": Array [
                 [Function],
@@ -477,7 +459,7 @@ Object {
       },
       Object {
         "enforce": "pre",
-        "loader": "ROOT/lib/source-loader/dist/cjs/index.js",
+        "loader": "ROOT\\\\lib\\\\source-loader\\\\dist\\\\cjs\\\\index.js",
         "options": Object {
           "injectStoryParameters": true,
           "inspectLocalDependencies": true,
@@ -491,12 +473,13 @@ Object {
     "VirtualModulesPlugin",
     "HtmlWebpackPlugin",
     "DefinePlugin",
+    "WatchMissingNodeModulesPlugin",
+    "HotModuleReplacementPlugin",
     "CaseSensitivePathsPlugin",
     "ProgressPlugin",
-    "InlineChunkHtmlPlugin",
     "InterpolateHtmlPlugin",
     "ModuleNotFoundPlugin",
-    "MiniCssExtractPlugin",
+    "ReactRefreshPlugin",
     "ManifestPlugin",
     "IgnorePlugin",
     "ForkTsCheckerWebpackPlugin",

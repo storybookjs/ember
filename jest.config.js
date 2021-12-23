@@ -1,3 +1,5 @@
+const os = require('os');
+
 module.exports = {
   cacheDirectory: '.cache/jest',
   clearMocks: true,
@@ -81,6 +83,7 @@ module.exports = {
   globals: {
     DOCS_MODE: false,
     PREVIEW_URL: undefined,
+    SNAPSHOT_OS: os.platform() === 'win32' ? 'windows' : 'posix',
   },
   snapshotSerializers: ['jest-emotion', 'enzyme-to-json/serializer', 'jest-serializer-html'],
   coverageDirectory: 'coverage',

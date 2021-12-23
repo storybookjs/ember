@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`inject-decorator positive - ts - csf includes storySource parameter in the default exported object 1`] = `
+"import React from \\"react\\";
+import { action } from \\"@storybook/addon-actions\\";
+import { Button } from \\"@storybook/react/demo\\";
+
+export default {parameters: {\\"storySource\\":{\\"source\\":\\"import React from \\\\\\"react\\\\\\";\\\\r\\\\nimport { action } from \\\\\\"@storybook/addon-actions\\\\\\";\\\\r\\\\nimport { Button } from \\\\\\"@storybook/react/demo\\\\\\";\\\\r\\\\n\\\\r\\\\nexport default {\\\\r\\\\n  title: \\\\\\"Button\\\\\\",\\\\r\\\\n  excludeStories: [\\\\\\"text\\\\\\"],\\\\r\\\\n  includeStories: /emoji.*/\\\\r\\\\n};\\\\r\\\\n\\\\r\\\\nexport const text = () => (\\\\r\\\\n  <Button onClick={action(\\\\\\"clicked\\\\\\")}>Hello Button</Button>\\\\r\\\\n);\\\\r\\\\n\\\\r\\\\nexport const emoji = () => (\\\\r\\\\n  <Button onClick={action(\\\\\\"clicked\\\\\\")}>\\\\r\\\\n    <span role=\\\\\\"img\\\\\\" aria-label=\\\\\\"so cool\\\\\\">\\\\r\\\\n      😀 😎 👍 💯\\\\r\\\\n    </span>\\\\r\\\\n  </Button>\\\\r\\\\n);\\\\r\\\\n\\\\r\\\\nexport function emojiFn() {\\\\r\\\\n  return (\\\\r\\\\n    <Button onClick={action(\\\\\\"clicked\\\\\\")}>\\\\r\\\\n      <span role=\\\\\\"img\\\\\\" aria-label=\\\\\\"so cool\\\\\\">\\\\r\\\\n        😀 😎 👍 💯\\\\r\\\\n      </span>\\\\r\\\\n    </Button>\\\\r\\\\n  )\\\\r\\\\n};\\\\r\\\\n\\",\\"locationsMap\\":{\\"text\\":{\\"startLoc\\":{\\"col\\":20,\\"line\\":11},\\"endLoc\\":{\\"col\\":1,\\"line\\":13},\\"startBody\\":{\\"col\\":20,\\"line\\":11},\\"endBody\\":{\\"col\\":1,\\"line\\":13}},\\"emoji\\":{\\"startLoc\\":{\\"col\\":21,\\"line\\":15},\\"endLoc\\":{\\"col\\":1,\\"line\\":21},\\"startBody\\":{\\"col\\":21,\\"line\\":15},\\"endBody\\":{\\"col\\":1,\\"line\\":21}},\\"emoji-fn\\":{\\"startLoc\\":{\\"col\\":7,\\"line\\":23},\\"endLoc\\":{\\"col\\":1,\\"line\\":31},\\"startBody\\":{\\"col\\":7,\\"line\\":23},\\"endBody\\":{\\"col\\":1,\\"line\\":31}}}},},
+  title: \\"Button\\",
+  excludeStories: [\\"text\\"],
+  includeStories: /emoji.*/
+};
+
+export const text = () => (
+  <Button onClick={action(\\"clicked\\")}>Hello Button</Button>
+);
+
+export const emoji = () => (
+  <Button onClick={action(\\"clicked\\")}>
+    <span role=\\"img\\" aria-label=\\"so cool\\">
+      😀 😎 👍 💯
+    </span>
+  </Button>
+);;
+
+export const emojiFn = function emojiFn() {
+  return (
+    <Button onClick={action(\\"clicked\\")}>
+      <span role=\\"img\\" aria-label=\\"so cool\\">
+        😀 😎 👍 💯
+      </span>
+    </Button>
+  )
+};
+"
+`;

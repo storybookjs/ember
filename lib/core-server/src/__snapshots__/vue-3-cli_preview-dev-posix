@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`vue-3-cli preview dev mode 1`] = `
+exports[`vue-3-cli preview dev 1`] = `
 Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
