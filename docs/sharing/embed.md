@@ -10,17 +10,21 @@ Storybook supports `<iframe>` embeds out of the box. If you use Chromatic to pub
 
 Embed a story with the toolbar, paste the published story URL. For example:
 
+<!-- prettier-ignore-start -->
+
 ```js
 // oEmbed
-//5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default
+https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default
 
 // iframe embed
-https: <iframe
+<iframe
   src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true"
   width="800"
   height="400"
-></iframe>;
+></iframe>
 ```
+
+<!-- prettier-ignore-end -->
 
 <iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
 
@@ -28,17 +32,20 @@ https: <iframe
 
 To embed a plain story without Storybook's toolbar, click the "open canvas in new tab" icon in the top-right corner of Storybook to get the canvas URL. For example:
 
+<!-- prettier-ignore-start -->
+
 ```js
 // oEmbed
-//5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/shadowboxcta--default&viewMode=story
+https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/shadowboxcta--default&viewMode=story
 
 // iframe embed
-https: <iframe
+ <iframe
   src="5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
   width="800"
   height="400"
 ></iframe>;
 ```
+<!-- prettier-ignore-end -->
 
 <iframe src="5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
 
@@ -46,17 +53,21 @@ https: <iframe
 
 Embed a component's docs page by replacing the viewMode=story with viewMode=docs in the story URL.
 
+<!-- prettier-ignore-start -->
+
 ```js
 // oEmbed
-//5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/shadowboxcta--default&viewMode=docs
+https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/shadowboxcta--default&viewMode=docs
 
 // iframe embed
-https: <iframe
+ <iframe
   src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true"
   width="800"
   height="400"
-></iframe>;
+></iframe>
 ```
+
+<!-- prettier-ignore-end -->
 
 <iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
 
