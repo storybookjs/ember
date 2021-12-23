@@ -20,13 +20,13 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowbox
 <iframe
   src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true"
   width="800"
-  height="400"
+  height="260"
 ></iframe>
 ```
 
 <!-- prettier-ignore-end -->
 
-<iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
+<iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&full=1&shortcuts=false&singleStory=true" width="800" height="260"></iframe>
 
 ## Embed a story without the toolbar
 
@@ -40,14 +40,14 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 
 // iframe embed
  <iframe
-  src="5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
+  src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
   width="800"
-  height="400"
+  height="200"
 ></iframe>;
 ```
 <!-- prettier-ignore-end -->
 
-<iframe src="5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
+<iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true" width="800" height="200"></iframe>
 
 ## Embed a docs page
 
@@ -61,7 +61,7 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 
 // iframe embed
  <iframe
-  src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true"
+  src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true"
   width="800"
   height="400"
 ></iframe>
@@ -69,7 +69,7 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 
 <!-- prettier-ignore-end -->
 
-<iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
+<iframe src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=docs&shortcuts=false&singleStory=true" width="800" height="400"></iframe>
 
 ## Embed stories on other platforms
 
