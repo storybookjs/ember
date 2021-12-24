@@ -40,7 +40,7 @@ There's some caveats to this build mode, as to the normal Storybook build:
 
 ## Publish Storybook's documentation
 
-You can also publish your documentation, the same you would [publish](../workflows/publish-storybook.md) your Storybook. You can use the `--docs` flag with `build-storybook` command. We recommend as well including it as a script in your `package.json` file:
+You can also publish your documentation, the same you would [publish](../sharing/publish-storybook.md) your Storybook. You can use the `--docs` flag with `build-storybook` command. We recommend as well including it as a script in your `package.json` file:
 
 ```json
 {

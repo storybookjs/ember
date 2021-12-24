@@ -65,7 +65,7 @@ Then you can access this environment variable anywhere, even within your stories
 You can also use specific files for specific modes. Add a <code>.env.development</code> or <code>.env.production</code> to apply different values to your environment variables.
 </div>
 
-You can also pass these environment variables when you are [building your Storybook](../workflows/publish-storybook.md) with `build-storybook`.
+You can also pass these environment variables when you are [building your Storybook](../sharing/publish-storybook.md) with `build-storybook`.
 
 Then they'll be hardcoded to the static version of your Storybook.
 

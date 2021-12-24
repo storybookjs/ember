@@ -44,7 +44,7 @@ If you need, you can also generate automatic titles for all your stories using a
 
 ## Permalinking to stories
 
-By default, Storybook generates an `id` for each story based on the component title and the story name. This `id` in particular is used in the URL for each story, and that URL can serve as a permalink (primarily when you [publish](../workflows/publish-storybook.md) your Storybook).
+By default, Storybook generates an `id` for each story based on the component title and the story name. This `id` in particular is used in the URL for each story, and that URL can serve as a permalink (primarily when you [publish](../sharing/publish-storybook.md) your Storybook).
 
 Consider the following story:
 
