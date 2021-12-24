@@ -1,19 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`html-kitchen-sink manager production mode 1`] = `
+exports[`web-components-kitchen-sink manager prod 1`] = `
 Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
     "ROOT/addons/docs/dist/esm/register.js",
+    "ROOT/addons/controls/dist/esm/register.js",
     "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",
     "ROOT/addons/backgrounds/dist/esm/register.js",
-    "ROOT/addons/controls/dist/esm/register.js",
-    "ROOT/addons/jest/register.js",
+    "ROOT/addons/interactions/dist/esm/register.js",
     "ROOT/addons/links/dist/esm/register.js",
     "ROOT/addons/storysource/dist/esm/register.js",
     "ROOT/addons/viewport/dist/esm/register.js",
+    "ROOT/addons/toolbars/dist/esm/register.js",
   ],
   "keys": Array [
     "name",

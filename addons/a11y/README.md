@@ -22,6 +22,8 @@ module.exports = {
 };
 ```
 
+And here's a sample story file to test the addon:
+
 ```js
 import React from 'react';
 
