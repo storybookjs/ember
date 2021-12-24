@@ -76,7 +76,7 @@ The second argument to a decorator function is the **story context** which in pa
 
 ### Using decorators to provide data
 
-If your components are “connected” and require side-loaded data to render, you can use decorators to provide that data in a mocked way without having to refactor your components to take that data as an arg. There are several techniques to achieve this. Depending on exactly how you are loading that data -- read more in the [building pages in Storybook](../workflows/build-pages-with-storybook.md) section.
+If your components are “connected” and require side-loaded data to render, you can use decorators to provide that data in a mocked way without having to refactor your components to take that data as an arg. There are several techniques to achieve this. Depending on exactly how you are loading that data -- read more in the [building pages in Storybook](./build-pages-with-storybook.md) section.
 
 ## Story decorators
 

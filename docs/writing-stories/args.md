@@ -38,7 +38,7 @@ To define the args of a single story, use the `args` CSF story key:
 
 <!-- prettier-ignore-end -->
 
-These args will only apply to the story for which they are attached, although you can [reuse](../workflows/build-pages-with-storybook.md#args-composition-for-presentational-screens) them via JavaScript object reuse:
+These args will only apply to the story for which they are attached, although you can [reuse](./build-pages-with-storybook.md#args-composition-for-presentational-screens) them via JavaScript object reuse:
 
 <!-- prettier-ignore-start -->
 

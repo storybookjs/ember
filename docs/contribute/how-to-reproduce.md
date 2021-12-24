@@ -68,7 +68,7 @@ An excellent way to check your reproduction is to have it deployed online.  We r
 
 ### Helpful resources when working with Chromatic
 
-- [Publish Storybook](../workflows/publish-storybook.md)
+- [Publish Storybook](../sharing/publish-storybook.md)
 - [Setup Chromatic](https://www.chromatic.com/docs/setup)
 - [Automate Chromatic with continuous integration](https://www.chromatic.com/docs/ci)
 

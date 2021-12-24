@@ -105,7 +105,7 @@ To do so, use the `matchers` property in the `controls` parameter:
 
 ## Fully custom args
 
-Up until now, we only used auto-generated controls based on the component we're writing stories for. If we are writing [complex stories](../workflows/stories-for-multiple-components.md), we may want to add controls for args that aren’t part of the component.
+Up until now, we only used auto-generated controls based on the component we're writing stories for. If we are writing [complex stories](../writing-stories/stories-for-multiple-components.md), we may want to add controls for args that aren’t part of the component.
 
 <!-- prettier-ignore-start -->
 
