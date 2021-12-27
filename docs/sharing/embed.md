@@ -42,7 +42,7 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
 
 // iframe embed
  <iframe
-  src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/?path=/story/shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
+  src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
   width="800"
   height="200"
 ></iframe>;
