@@ -4,7 +4,7 @@ title: 'ArgTypes'
 
 <div class="aside">
 
-<strong>NOTE</strong>: This API is experimental and may change outside of the typical semver release cycle
+This API is experimental and may change outside of the typical semver release cycle
 
 </div>
 

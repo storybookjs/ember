@@ -82,5 +82,5 @@ The table below lists the available options:
 | Chromium | `BROWSER="chromium"` |
 
 <div class="aside">
-💡 <strong>Note</strong>: By default, Storybook will open a new Chrome window as part of its startup process. If you don't have Chrome installed, make sure to include one of the following options, or set your default browser accordingly.
+💡 By default, Storybook will open a new Chrome window as part of its startup process. If you don't have Chrome installed, make sure to include one of the following options, or set your default browser accordingly.
 </div>

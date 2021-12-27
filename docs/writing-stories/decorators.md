@@ -71,7 +71,7 @@ The second argument to a decorator function is the **story context** which in pa
 - `viewMode`- Storybook's current active window (e.g., canvas, docs).
 
 <div class="aside">
-💡 <strong>Note:</strong> This pattern can also be applied to your own stories. Some of Storybook's supported frameworks already use it (e.g., vue 2).
+💡 This pattern can also be applied to your own stories. Some of Storybook's supported frameworks already use it (e.g., vue 2).
 </div>
 
 ### Using decorators to provide data

@@ -39,7 +39,7 @@ Next, update [`.storybook/main.js`](../configure/overview.md#configure-story-ren
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-⚠️ <strong>Note</strong>: Make sure to list `@storybook/addon-interactions` **after** `addon-essentials` (or `addon-actions`).
+💡 Make sure to list `@storybook/addon-interactions` **after** `addon-essentials` (or `addon-actions`).
 </div>
 
 Now when you run Storybook, the Interactions addon will be enabled.

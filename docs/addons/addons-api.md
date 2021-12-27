@@ -85,7 +85,7 @@ The options to `makeDecorator` are:
 
 <div class="aside">
 
-💡 <strong>Note:</strong>If the story's parameters include `{ foo: { disable: true } }` (where `foo` is the `parameterName` of your addon), your decorator will not be called.
+💡 If the story's parameters include `{ foo: { disable: true } }` (where `foo` is the `parameterName` of your addon), your decorator will not be called.
 
 </div>
 
@@ -286,7 +286,7 @@ This method allows you to set query string parameters. You can use that as tempo
 
 <div class="aside">
 
-💡 <strong>Note:</strong> If you need to remove a query param, use `null` for that. For example, let's say we need to remove the `bbc` query param. See below how to do it:
+💡 If you need to remove a query param, use `null` for that. For example, let's say we need to remove the `bbc` query param. See below how to do it:
 
 </div>
 

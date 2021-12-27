@@ -33,7 +33,7 @@ npm test -- --coverage --collectCoverageFrom='["src/**/*.{js,jsx}","!src/**/stor
 ```
 
 <div class="aside">
-💡 <strong>Note</strong>: If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly.
+💡 If you're using <a href="https://yarnpkg.com/">yarn</a> as a package manager, you'll need to adjust the command accordingly.
 </div>
 
 ### I see `ReferenceError: React is not defined` when using Storybook with Next.js
@@ -80,7 +80,7 @@ module.exports = {
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> Fast Refresh only works in development mode with React 16.10 or higher.
+💡 Fast Refresh only works in development mode with React 16.10 or higher.
 </div>
 
 ### Why is there no addons channel?
