@@ -64,7 +64,7 @@ Update your test script to include the configuration file:
 
 <div class="aside">
 
-💡 <strong>Note:</strong> You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md).
+💡 You can use Testing Library out-of-the-box with [Storybook Interaction Testing](./interaction-testing.md).
 
 </div>
 
@@ -108,7 +108,7 @@ An example of an end-to-end test with Cypress and Storybook is testing a login c
 <!-- prettier-ignore-end -->
 
 <div class="aside">
- 💡 <strong>Note:</strong> the play function contains small snippets of code that run after the story renders. It allows you to sequence interactions in stories.
+ 💡 The play function contains small snippets of code that run after the story renders. It allows you to sequence interactions in stories.
 
 </div>
 
@@ -150,7 +150,7 @@ A real-life scenario of user flow testing with Playwright would be how to test a
 <!-- prettier-ignore-end -->
 
 <div class="aside">
- 💡 <strong>Note:</strong> the play function contains small snippets of code that run after the story renders. It allows you to sequence interactions in stories.
+ 💡 The play function contains small snippets of code that run after the story renders. It allows you to sequence interactions in stories.
 </div>
 
 With Playwright, you can write a test to check if the inputs are filled and match the story:

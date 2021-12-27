@@ -92,7 +92,7 @@ You can separate the arguments to a story to compose in other stories. Here's ho
 
 <div class="aside">
 
-💡<strong>Note:</strong> If you find yourself re-using the same args for most of a component's stories, you should consider using [component-level args](#component-args).
+💡 If you find yourself re-using the same args for most of a component's stories, you should consider using [component-level args](#component-args).
 
 </div>
 

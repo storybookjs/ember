@@ -113,7 +113,7 @@ To test your screen with the mocked data, you could write a similar set of stori
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-💡 <strong>Note:</strong> This example details how you can mock the REST request with fetch. Similar HTTP clients such as <a href="https://axios-http.com/">axios</a> can be used as well.
+💡 This example details how you can mock the REST request with fetch. Similar HTTP clients such as <a href="https://axios-http.com/">axios</a> can be used as well.
 </div>
 
 The mocked data (i.e., `TestData`) will be injected via [parameters](./writing-stories/parameters), enabling you to configure it per-story basis.
