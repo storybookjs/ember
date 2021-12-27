@@ -61,8 +61,6 @@ npx chromatic --project-token=<your-project-token>
 
 When Chromatic finishes, you should have successfully deployed your Storybook. Preview it by clicking the link provided (i.e., https://random-uuid.chromatic.com).
 
-<br/>
-
 ```shell
 Build 1 published.
 
