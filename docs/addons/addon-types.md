@@ -47,7 +47,7 @@ Use this boilerplate code to add a new `button` to Storybook's Toolbar:
 
 <div class="aside">
 
-The <code>icon</code> element used in the example loads the icons from the <code>@storybook/components</code> package. See [here](../workflows/faq.md#what-icons-are-available-for-my-toolbar-or-my-addon) for the list of available icons that you can use.
+The <code>icon</code> element used in the example loads the icons from the <code>@storybook/components</code> package. See [here](../faq.md#what-icons-are-available-for-my-toolbar-or-my-addon) for the list of available icons that you can use.
 
 </div>
 

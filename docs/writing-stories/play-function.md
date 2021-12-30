@@ -187,7 +187,7 @@ If you need, you can also adjust your `play` function to find elements based on 
 <!-- prettier-ignore-end -->
 
 <div class="aside">
- 💡 <strong>Note:</strong> You can read more about the querying elements in the <a href="https://testing-library.com/docs/queries/about/"> Testing library documentation</a>.
+ 💡 You can read more about the querying elements in the <a href="https://testing-library.com/docs/queries/about/"> Testing library documentation</a>.
 </div>
 
 ## Working with the Canvas

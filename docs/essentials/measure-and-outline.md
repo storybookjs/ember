@@ -15,7 +15,7 @@ With Storybook's Measure addon, you can quickly visualize each component's measu
 </video>
 
 <div class="aside">
-💡 <strong>Note: </strong> Alternatively you can press the <code>m</code> key on your keyboard to toggle the addon.
+💡 Alternatively you can press the <code>m</code> key on your keyboard to toggle the addon.
 </div>
 
 ## Outline addon
