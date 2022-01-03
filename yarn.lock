@@ -9714,7 +9714,6 @@ __metadata:
     "@storybook/ui": 6.5.0-alpha.5
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
     "@types/node": ^14.0.10 || ^16.0.0
-    "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack": ^4.41.26
     "@types/webpack-dev-middleware": ^3.7.3
@@ -9739,7 +9738,6 @@ __metadata:
     postcss-flexbugs-fixes: ^4.2.1
     postcss-loader: ^4.2.0
     raw-loader: ^4.0.2
-    react-dev-utils: ^11.0.4
     stable: ^0.1.8
     style-loader: ^1.3.0
     terser-webpack-plugin: ^4.2.3
@@ -9801,7 +9799,6 @@ __metadata:
     "@storybook/theming": 6.5.0-alpha.5
     "@types/case-sensitive-paths-webpack-plugin": ^2.1.4
     "@types/node": ^14.0.10 || ^16.0.0
-    "@types/react-dev-utils": ^9.0.4
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack-dev-middleware": ^4.1.0
     "@types/webpack-hot-middleware": ^2.25.3
@@ -9817,7 +9814,6 @@ __metadata:
     glob-promise: ^3.4.0
     html-webpack-plugin: ^5.0.0
     path-browserify: ^1.0.1
-    react-dev-utils: ^11.0.4
     stable: ^0.1.8
     style-loader: ^2.0.0
     terser-webpack-plugin: ^5.0.3
@@ -10788,7 +10784,6 @@ __metadata:
     global: ^4.4.0
     lodash: ^4.17.21
     prop-types: ^15.7.2
-    react-dev-utils: ^11.0.4
     react-refresh: ^0.11.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
@@ -11982,16 +11977,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/clean-css@npm:*":
-  version: 4.2.3
-  resolution: "@types/clean-css@npm:4.2.3"
-  dependencies:
-    "@types/node": "*"
-    source-map: ^0.6.0
-  checksum: 922cc60be02326d8b177f0b017975bcf546c94f7ccfab2289662e33a65c8dd78620b90ec2ca9771aaae1e9898f73f0a4bdb5d789b659b5b28000949249e79276
-  languageName: node
-  linkType: hard
-
 "@types/color-convert@npm:^2.0.0":
   version: 2.0.0
   resolution: "@types/color-convert@npm:2.0.0"
@@ -12229,28 +12214,6 @@ __metadata:
   version: 5.1.1
   resolution: "@types/html-minifier-terser@npm:5.1.1"
   checksum: 2fdd635949f5ab30978ab22a9bb23308bc8175bc38061b9f56af01ad19d6034f95d9d1794fea9214b560e099ba928293a5afaa850839cddfced57fca9e5524ef
-  languageName: node
-  linkType: hard
-
-"@types/html-minifier@npm:*":
-  version: 4.0.0
-  resolution: "@types/html-minifier@npm:4.0.0"
-  dependencies:
-    "@types/clean-css": "*"
-    "@types/relateurl": "*"
-    "@types/uglify-js": "*"
-  checksum: 21fd26a5285928e7da5c6ad78a12727984ac0d97bfd609bab27f40d90aa615acefc7d34e7f4c367c37ffaf5572e2c65fa0b1479ce2fcc531be2e8fd4520e7bb3
-  languageName: node
-  linkType: hard
-
-"@types/html-webpack-plugin@npm:*":
-  version: 3.2.4
-  resolution: "@types/html-webpack-plugin@npm:3.2.4"
-  dependencies:
-    "@types/html-minifier": "*"
-    "@types/tapable": "*"
-    "@types/webpack": "*"
-  checksum: 7320f7e12217c34b3ebabe831bae054bfe8d011612c7f9777a9ddd1a8c4437b9e9b7431d4984b43a9d5aa5b5b88e29110b7102c4abd3a9c5902d95dc071413f0
   languageName: node
   linkType: hard
 
@@ -12718,19 +12681,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dev-utils@npm:^9.0.4":
-  version: 9.0.4
-  resolution: "@types/react-dev-utils@npm:9.0.4"
-  dependencies:
-    "@types/eslint": "*"
-    "@types/express": "*"
-    "@types/html-webpack-plugin": "*"
-    "@types/webpack": "*"
-    "@types/webpack-dev-server": "*"
-  checksum: 3b5e073508bfe48204b78250c82d9fa2eb6f5369afbff378cd6f1749a1d41f2cd66e7f983b4579e07cc81503d11f5b26274215f5c1e640144b90b4de9a2621df
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:16.9.10":
   version: 16.9.10
   resolution: "@types/react-dom@npm:16.9.10"
@@ -12805,13 +12755,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 94d390d4033e72962b71a969b7cbfc870a0fa499d93322a58b4f5e3dcfecd0833ecd1ed59882ed92a362a41189195c285f2be100fb1199b76e87577ac662808c
-  languageName: node
-  linkType: hard
-
-"@types/relateurl@npm:*":
-  version: 0.2.28
-  resolution: "@types/relateurl@npm:0.2.28"
-  checksum: 355727429aa8cd9e3f6cf9baca8bdbd4f1fe521f19938d43f82f5aa673a2b4c9d26a147e420f0690bb51207c4e9ff273d41d83eb7d8cbffdb0a14ddd94f6b6f2
   languageName: node
   linkType: hard
 
@@ -13062,7 +13005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-dev-server@npm:*, @types/webpack-dev-server@npm:^3.11.0":
+"@types/webpack-dev-server@npm:^3.11.0":
   version: 3.11.1
   resolution: "@types/webpack-dev-server@npm:3.11.1"
   dependencies:
@@ -40609,38 +40552,6 @@ fsevents@^1.2.7:
     strip-ansi: 6.0.0
     text-table: 0.2.0
   checksum: d2b42c0dae864c2cf91d3d1b0bdc7e281c03a242eef33f65f4a9c8626dc748c781a1c361509fa64099415a353dfb05c523504bc1f96627ac4985175cb9bc0328
-  languageName: node
-  linkType: hard
-
-"react-dev-utils@npm:^11.0.4":
-  version: 11.0.4
-  resolution: "react-dev-utils@npm:11.0.4"
-  dependencies:
-    "@babel/code-frame": 7.10.4
-    address: 1.1.2
-    browserslist: 4.14.2
-    chalk: 2.4.2
-    cross-spawn: 7.0.3
-    detect-port-alt: 1.1.6
-    escape-string-regexp: 2.0.0
-    filesize: 6.1.0
-    find-up: 4.1.0
-    fork-ts-checker-webpack-plugin: 4.1.6
-    global-modules: 2.0.0
-    globby: 11.0.1
-    gzip-size: 5.1.1
-    immer: 8.0.1
-    is-root: 2.1.0
-    loader-utils: 2.0.0
-    open: ^7.0.2
-    pkg-up: 3.1.0
-    prompts: 2.4.0
-    react-error-overlay: ^6.0.9
-    recursive-readdir: 2.2.2
-    shell-quote: 1.7.2
-    strip-ansi: 6.0.0
-    text-table: 0.2.0
-  checksum: 3982f6a35035627b4465c8afd2f6db6a571b9e7b09c7d2f2e517de9cd48bb76778f4c692cdc99a26d2961d7dac371553fd7815ec0d2ec281927feeba60ce8a70
   languageName: node
   linkType: hard
 
