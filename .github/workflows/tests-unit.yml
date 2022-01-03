@@ -10,10 +10,7 @@ on:
 jobs:
   build:
     name: Core Unit Tests node-${{ matrix.node_version }}, ${{ matrix.os }}
-    if: |
-      ${{ github.event.label.name == 'ci:matrix' || 
-      contains(github.event.pull_request.labels.*.name, 'ci:matrix') ||
-      github.event.type == 'push'}}
+    if: ${{ github.event.label.name == 'ci:matrix' || github.event.type == 'push' }}
     strategy:
       fail-fast: false
       matrix:

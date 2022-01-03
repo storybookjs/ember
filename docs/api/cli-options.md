@@ -35,12 +35,12 @@ Usage: start-storybook [options]
 | `--no-manager-cache`            | Disables Storybook's manager caching mechanism. See note below.<br/>`start-storybook --no-manager-cache`                                                                    |
 
 <div class="aside">
-💡 <strong>NOTE</strong>: The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
+💡 The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
 </div>
 
 <div class="aside" id="static-dir-deprecation">
 
-💡 <strong>NOTE</strong>: Starting in 6.4 the `-s` flag is deprecated. Instead, use a configuration object in your `.storybook/main.js` file. See the [images and assets documentation](../configure/images-and-assets.md#serving-static-files-via-storybook) for more information.
+💡 Starting in 6.4 the `-s` flag is deprecated. Instead, use a configuration object in your `.storybook/main.js` file. See the [images and assets documentation](../configure/images-and-assets.md#serving-static-files-via-storybook) for more information.
 
 </div>
 
@@ -65,5 +65,5 @@ Usage: build-storybook [options]
 | `--docs`                        | Builds Storybook in documentation mode. Learn more about it in [here](../writing-docs/build-documentation.md#publish-storybooks-documentation)<br/>`build-storybook --docs` |
 
 <div class="aside">
-💡 <strong>NOTE</strong>: If you're using npm instead of yarn to publish Storybook, the commands work slightly different. For example, <code>npm run build-storybook -- -o ./path/to/build</code>.
+💡  If you're using npm instead of yarn to publish Storybook, the commands work slightly different. For example, <code>npm run build-storybook -- -o ./path/to/build</code>.
 </div>

@@ -65,7 +65,7 @@ Then you can access this environment variable anywhere, even within your stories
 You can also use specific files for specific modes. Add a <code>.env.development</code> or <code>.env.production</code> to apply different values to your environment variables.
 </div>
 
-You can also pass these environment variables when you are [building your Storybook](../workflows/publish-storybook.md) with `build-storybook`.
+You can also pass these environment variables when you are [building your Storybook](../sharing/publish-storybook.md) with `build-storybook`.
 
 Then they'll be hardcoded to the static version of your Storybook.
 
@@ -82,5 +82,5 @@ The table below lists the available options:
 | Chromium | `BROWSER="chromium"` |
 
 <div class="aside">
-💡 <strong>Note</strong>: By default, Storybook will open a new Chrome window as part of its startup process. If you don't have Chrome installed, make sure to include one of the following options, or set your default browser accordingly.
+💡 By default, Storybook will open a new Chrome window as part of its startup process. If you don't have Chrome installed, make sure to include one of the following options, or set your default browser accordingly.
 </div>

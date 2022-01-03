@@ -63,7 +63,7 @@ Use the _named_ exports of a CSF file to define your component’s stories. We r
 
 <div class="aside">
 
-💡 <strong>Note</strong>: Using framework specific elements such as [React Hooks](https://reactjs.org/docs/hooks-intro.html) alongside your stories is a valid approach, but you should treat them as an advanced use case. We <strong>recommend</strong> using [args](./args.md) as much as possible when writing your own stories.
+💡 Using framework specific elements such as [React Hooks](https://reactjs.org/docs/hooks-intro.html) alongside your stories is a valid approach, but you should treat them as an advanced use case. We <strong>recommend</strong> using [args](./args.md) as much as possible when writing your own stories.
 
 </div>
 
@@ -136,7 +136,9 @@ Refine this pattern by introducing `args` for your component's stories. It reduc
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-💡 <strong>Note:</strong> <code>Template.bind({})</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">standard JavaScript technique</a> for making a copy of a function. We copy the <code>Template</code> so each exported story can set its own properties on it.
+
+💡 `Template.bind({})` is a [standard JavaScript technique](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) for making a copy of a function. We copy the `Template` so each exported story can set its own properties on it.
+
 </div>
 
 By introducing args into your component's stories, you're not only reducing the amount of code you need to write, but you're also decreasing data duplication, as shown by spreading the `Primary` story's args into the other stories.
@@ -318,6 +320,6 @@ You can also reuse stories from the child `ListItem` in your `List` component. T
 
 <div class="aside">
 
-💡 Note that there are disadvantages in writing stories like this as you cannot take full advantage of the args mechanism and composing args as you build even more complex composite components. For more discussion, see the [multi component stories](../workflows/stories-for-multiple-components.md) workflow documentation.
+💡 Note that there are disadvantages in writing stories like this as you cannot take full advantage of the args mechanism and composing args as you build even more complex composite components. For more discussion, see the [multi component stories](../writing-stories/stories-for-multiple-components.md) workflow documentation.
 
 </div>
