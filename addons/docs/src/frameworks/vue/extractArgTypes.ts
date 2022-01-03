@@ -8,7 +8,7 @@ import {
 } from '../../lib/docgen';
 import { convert } from '../../lib/convert';
 
-const SECTIONS = ['props', 'events', 'slots'];
+const SECTIONS = ['props', 'events', 'slots', 'methods'];
 
 /**
  * Check if "@values" tag is defined within docgenInfo.
