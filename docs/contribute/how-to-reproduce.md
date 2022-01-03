@@ -17,7 +17,7 @@ npx sb@next repro
 ```
 
 <div class="aside">
-💡 <strong>Note</strong>: You can add the <code>--template</code> flag to include a custom template.
+💡 You can add the <code>--template</code> flag to include a custom template.
 </div>
 
 Next, select the framework, for example, `react`:
@@ -33,7 +33,7 @@ Finally, enter a location for your reproduction:
 ![Storybook reproduction location](./storybook-reproduction-generator-location-optimized.png)
 
 <div class="aside">
-💡 <strong>Note</strong>: If you don't provide a full path for the reproduction it will be generated in the current directory.
+💡 If you don't provide a full path for the reproduction it will be generated in the current directory.
 </div>
 
 If everything worked as it should, you should have a fully functional Storybook set up in your local environment.
@@ -68,7 +68,7 @@ An excellent way to check your reproduction is to have it deployed online.  We r
 
 ### Helpful resources when working with Chromatic
 
-- [Publish Storybook](../workflows/publish-storybook.md)
+- [Publish Storybook](../sharing/publish-storybook.md)
 - [Setup Chromatic](https://www.chromatic.com/docs/setup)
 - [Automate Chromatic with continuous integration](https://www.chromatic.com/docs/ci)
 

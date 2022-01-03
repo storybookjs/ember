@@ -56,6 +56,10 @@
 <script>
   export default {
     methods: {
+      /**
+       * emit buttonRequested event
+       * @public
+       **/
       requestButton() {
         /**
          * Emitted when the button example is requested

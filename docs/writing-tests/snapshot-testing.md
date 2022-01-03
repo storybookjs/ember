@@ -35,7 +35,7 @@ Add a test file to your environment with the following contents to configure Sto
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-💡 <strong>NOTE:</strong> You can name the test file differently to suit your needs. Bear in mind that it requires to be picked up by Jest.
+💡 You can name the test file differently to suit your needs. Bear in mind that it requires to be picked up by Jest.
 </div>
 
 Run your first test. Storyshots will recognize your stories (based on [.storybook/main.js's setup](https://storybook.js.org/docs/react/configure/story-rendering)) and save them in the **snapshots** directory.
