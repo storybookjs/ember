@@ -1,6 +1,6 @@
 {
   "name": "@storybook/instrumenter",
-  "version": "6.5.0-alpha.4",
+  "version": "6.5.0-alpha.6",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,14 +40,14 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.4",
-    "@storybook/client-logger": "6.5.0-alpha.4",
-    "@storybook/core-events": "6.5.0-alpha.4",
+    "@storybook/addons": "6.5.0-alpha.6",
+    "@storybook/client-logger": "6.5.0-alpha.6",
+    "@storybook/core-events": "6.5.0-alpha.6",
     "global": "^4.4.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9a73995d6a5cfa36c5a5ce60cb33259ff40e2fe6",
+  "gitHead": "f2ec6752a3e940f99ead3ab721b513e5d1b76e17",
   "sbmodern": "dist/modern/index.js"
 }

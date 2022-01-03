@@ -35,7 +35,9 @@ npx chromatic --project-token <your-project-token>
 ```
 
 <div class="aside">
- <strong>Note:</strong> Don't forget to replace <code>your-project-token</code> with the one provided by Chromatic.
+ 
+ Don't forget to replace `your-project-token` with the one provided by Chromatic.
+ 
 </div>
 
 ```shell

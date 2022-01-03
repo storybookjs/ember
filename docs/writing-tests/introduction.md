@@ -8,7 +8,7 @@ That means stories are a pragmatic starting point for your UI testing strategy. 
 
 ![Stories are tests](./stories-are-tests-cropped.gif)
 
-The simplest testing method is manual “spot checking”. You run Storybook locally, then eyeball every story to verify its appearance and behavior. [Publish](../workflows/publish-storybook.md) your Storybook online to share reproductions and get teammates involved.
+The simplest testing method is manual “spot checking”. You run Storybook locally, then eyeball every story to verify its appearance and behavior. [Publish](../sharing/publish-storybook.md) your Storybook online to share reproductions and get teammates involved.
 
 Storybook also comes with tools, test runners, and handy integrations with the larger JavaScript ecosystem to expand your UI test coverage. These docs detail how you can use Storybook for UI testing.
 

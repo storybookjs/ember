@@ -63,7 +63,7 @@ If you need more granular control over which `argTypes` are matched, you can adj
 
 <div class="aside">
 
-💡 <strong>NOTE</strong>: If you're generating argTypes with another addon (like [docs](../writing-docs/introduction.md), which is the common behavior), ensure the actions addon <strong>AFTER</strong> the other addon. You can do this by listing it later in the addons registration code in [`.storybook/main.js`](../configure/overview.md#configure-story-rendering). This is default in [essentials](./introduction.md).
+💡 If you're generating argTypes with another addon (like [docs](../writing-docs/introduction.md), which is the common behavior), ensure the actions addon <strong>AFTER</strong> the other addon. You can do this by listing it later in the addons registration code in [`.storybook/main.js`](../configure/overview.md#configure-story-rendering). This is default in [essentials](./introduction.md).
 
 </div>
 

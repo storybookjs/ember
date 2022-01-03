@@ -46,7 +46,7 @@ You may want to add the result file to `.gitignore`, since it's a generated file
 
 But much like lockfiles and snapshots, checking-in generated files can have certain advantages as well. It's up to you.
 We recommend to **do** check in the test results file so starting Storybook from a clean git clone doesn't require running all tests first,
-but this can mean you'll encounter merge conflicts on this file in the future (_re-generating this file is very similar to re-generating lockfiles and snapshots_). 
+but this can mean you'll encounter merge conflicts on this file in the future (_re-generating this file is very similar to re-generating lockfiles and snapshots_).
 
 ### Generating the test results
 
@@ -101,17 +101,17 @@ You can also add multiple tests results within your story by including the `jest
 ```js
 // MyComponent.stories.js |  MyComponent.stories.jsx
 
-import MyComponent from './MyComponent'; 
+import MyComponent from './MyComponent';
 
-import results from '../.jest-test-results.json'; 
+import results from '../.jest-test-results.json';
 
-import { withTests } from '@storybook/addon-jest'; 
+import { withTests } from '@storybook/addon-jest';
 
-export default { 
-  component: MyComponent, 
-  title: 'MyComponent', 
+export default {
+  component: MyComponent,
+  title: 'MyComponent',
   decorators: [withTests({ results })],
-}; 
+};
 
 const Template = (args) => <MyComponent {....args} />;
 
@@ -126,7 +126,7 @@ Default.parameters = {
 
 ### Global level
 
-To avoid importing the results of the tests in each story, you can update 
+To avoid importing the results of the tests in each story, you can update
 your [`.storybook/preview.js`](https://storybook.js.org/docs/react/configure/overview#configure-story-rendering) and include a decorator allowing you to display the results only for the stories that have the `jest` parameter defined:
 
 ```js
@@ -140,7 +140,7 @@ export const decorators = [
   withTests({
     results,
   }),
-]; 
+];
 ```
 
 Then in your story file:
@@ -162,7 +162,7 @@ Default.args={
   text: 'Jest results in Storybook',
 };
 Default.parameters = {
-  jest: ['MyComponent.test.js'],
+  jest: 'MyComponent.test.js',
 };
 ```
 
@@ -230,7 +230,7 @@ const Template: Story<MyComponent> = (args: MyComponent) => ({
 
 export const Default = Template.bind({});
 Default.parameters = {
-  jest: ['MyComponent.component'],
+  jest: 'MyComponent.component',
 };
 ```
 

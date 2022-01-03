@@ -83,7 +83,7 @@ Since Storybook is a webapp, anyone with the URL can reproduce the error with th
 
 ![Interaction testing with a component](./storybook-addon-interactions-error-optimized.png)
 
-Streamline interaction testing further by automatically [publishing Storybook](../workflows/publish-storybook.md) in pull requests. That gives teams a universal reference point to test and debug stories.
+Streamline interaction testing further by automatically [publishing Storybook](../sharing/publish-storybook.md) in pull requests. That gives teams a universal reference point to test and debug stories.
 
 ---
 

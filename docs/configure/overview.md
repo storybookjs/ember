@@ -75,7 +75,7 @@ Additionally, you can also customize your Storybook configuration to load your s
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-💡 <strong>Note:</strong> If you've enabled <a href="#on-demand-story-loading">on-demand story loading</a>, this option will not work. You must define the story's titles manually.
+💡 If you've enabled <a href="#on-demand-story-loading">on-demand story loading</a>, this option will not work. You must define the story's titles manually.
 </div>
 
 When Storybook starts, it will look for any file containing the `stories` extension inside the `packages/stories` directory and generate the titles for your stories.
