@@ -7,7 +7,7 @@ import { IStorybookSection } from './types';
 import { VueFramework } from './types-6-0';
 import { decorateStory } from './decorateStory';
 
-import { renderToDOM, storybookApp } from './render';
+import { render, renderToDOM, storybookApp } from './render';
 
 const framework = 'vue3';
 
@@ -22,7 +22,7 @@ interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   app: App;
 }
 
-const api = start(renderToDOM, { decorateStory });
+const api = start(renderToDOM, { decorateStory, render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({
