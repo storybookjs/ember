@@ -40,6 +40,13 @@ npx chromatic --project-token <your-project-token>
  
 </div>
 
+<div class="aside">
+ 
+ GOTCHA: If you're project has less than 2 commits chromatic publishing will fail while `Retrieving git information` add another commit and try again.
+ 
+</div>
+
+
 ```shell
 Build 1 published.
 
