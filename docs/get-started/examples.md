@@ -55,6 +55,7 @@ Learn how leading teams build design systems.
 - [Telefónica Mística UI](https://mistica-web.vercel.app/?path=/story/welcome-welcome--mistica)
 - [Codecademy Gamut](https://gamut.codecademy.com)
 - [Talend Coral](https://design.talend.com)
+- [Vibe Design by monday.com](https://style.monday.com)
 
 
 <!--

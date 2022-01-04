@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-essentials",
-  "version": "6.5.0-alpha.5",
+  "version": "6.5.0-alpha.6",
   "description": "Curated addons to bring out the best of Storybook",
   "keywords": [
     "addon",
@@ -39,31 +39,31 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addon-actions": "6.5.0-alpha.5",
-    "@storybook/addon-backgrounds": "6.5.0-alpha.5",
-    "@storybook/addon-controls": "6.5.0-alpha.5",
-    "@storybook/addon-docs": "6.5.0-alpha.5",
-    "@storybook/addon-measure": "6.5.0-alpha.5",
-    "@storybook/addon-outline": "6.5.0-alpha.5",
-    "@storybook/addon-toolbars": "6.5.0-alpha.5",
-    "@storybook/addon-viewport": "6.5.0-alpha.5",
-    "@storybook/addons": "6.5.0-alpha.5",
-    "@storybook/api": "6.5.0-alpha.5",
-    "@storybook/node-logger": "6.5.0-alpha.5",
+    "@storybook/addon-actions": "6.5.0-alpha.6",
+    "@storybook/addon-backgrounds": "6.5.0-alpha.6",
+    "@storybook/addon-controls": "6.5.0-alpha.6",
+    "@storybook/addon-docs": "6.5.0-alpha.6",
+    "@storybook/addon-measure": "6.5.0-alpha.6",
+    "@storybook/addon-outline": "6.5.0-alpha.6",
+    "@storybook/addon-toolbars": "6.5.0-alpha.6",
+    "@storybook/addon-viewport": "6.5.0-alpha.6",
+    "@storybook/addons": "6.5.0-alpha.6",
+    "@storybook/api": "6.5.0-alpha.6",
+    "@storybook/node-logger": "6.5.0-alpha.6",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/vue": "6.5.0-alpha.5",
+    "@storybook/vue": "6.5.0-alpha.6",
     "@types/jest": "^26.0.16",
     "@types/webpack-env": "^1.16.0"
   },
   "peerDependencies": {
     "@babel/core": "^7.9.6",
-    "@storybook/vue": "6.5.0-alpha.5",
-    "@storybook/web-components": "6.5.0-alpha.5",
+    "@storybook/vue": "6.5.0-alpha.6",
+    "@storybook/web-components": "6.5.0-alpha.6",
     "babel-loader": "^8.0.0",
     "lit-html": "^1.4.1 || ^2.0.0-rc.3",
     "react": "^16.8.0 || ^17.0.0",
@@ -93,6 +93,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "df18f2ad3794d61c59c6458f66f73635502b8963",
+  "gitHead": "f2ec6752a3e940f99ead3ab721b513e5d1b76e17",
   "sbmodern": "dist/modern/index.js"
 }

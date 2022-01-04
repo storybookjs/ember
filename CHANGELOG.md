@@ -1,3 +1,19 @@
+## 6.5.0-alpha.6 (January 3, 2022)
+
+### Features
+
+* Vue3: Add default render function CSF3 ([#17068](https://github.com/storybookjs/storybook/pull/17068))
+* Addon-docs/Vue: Include methods in ArgsTable ([#16975](https://github.com/storybookjs/storybook/pull/16975))
+
+### Bug Fixes
+
+* CLI: Install `lit-html` in new web components project ([#17106](https://github.com/storybookjs/storybook/pull/17106))
+* Angular: Fix runCompodoc for Windows, local Compodoc, and user specified tsconfig ([#16728](https://github.com/storybookjs/storybook/pull/16728))
+
+### Dependency Upgrades
+
+* React: Remove react-dev-utils ([#17022](https://github.com/storybookjs/storybook/pull/17022))
+
 ## 6.5.0-alpha.5 (December 23, 2021)
 
 ### Dependency Upgrades
