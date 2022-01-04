@@ -9411,7 +9411,7 @@ __metadata:
     loader-utils: ^2.0.0
     prettier: ^2.2.1
     prop-types: ^15.7.2
-    react-syntax-highlighter: ^13.5.3
+    react-syntax-highlighter: ^15.4.2
     regenerator-runtime: ^0.13.7
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -10022,7 +10022,7 @@ __metadata:
     prop-types: ^15.7.2
     react-colorful: ^5.1.2
     react-popper-tooltip: ^3.1.1
-    react-syntax-highlighter: ^13.5.3
+    react-syntax-highlighter: ^15.4.2
     react-textarea-autosize: ^8.3.0
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
@@ -27759,10 +27759,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"highlight.js@npm:^10.0.0, highlight.js@npm:^10.1.1, highlight.js@npm:~10.6.0":
+"highlight.js@npm:^10.0.0":
   version: 10.6.0
   resolution: "highlight.js@npm:10.6.0"
   checksum: df0de7c5e03913975a5a64477aa53619159cf9c3f4483e471ce5a41afc3410af6b5fe8d6e37c21d385a90ffae62657bbf89536d6e54fceec7f141f5f306c795a
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^10.4.1, highlight.js@npm:~10.7.0":
+  version: 10.7.3
+  resolution: "highlight.js@npm:10.7.3"
+  checksum: 073837eaf816922427a9005c56c42ad8786473dc042332dfe7901aa065e92bc3d94ebf704975257526482066abb2c8677cc0326559bb8621e046c21c5991c434
   languageName: node
   linkType: hard
 
@@ -33570,13 +33577,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lowlight@npm:^1.14.0":
-  version: 1.19.0
-  resolution: "lowlight@npm:1.19.0"
+"lowlight@npm:^1.17.0":
+  version: 1.20.0
+  resolution: "lowlight@npm:1.20.0"
   dependencies:
     fault: ^1.0.0
-    highlight.js: ~10.6.0
-  checksum: e029852fc655960533cefffdf3d80ceae95ec2d43079d35e5b0f8c6a776b64cf922a16364f9fa038e3eb323bfcfc937b4514360516f8878b5109fa3e01f979b8
+    highlight.js: ~10.7.0
+  checksum: 728bce6f6fe8b157f48d3324e597f452ce0eed2ccff1c0f41a9047380f944e971eb45bceb31f08fbb64d8f338dabb166f10049b35b92c7ec5cf0241d6adb3dea
   languageName: node
   linkType: hard
 
@@ -39570,7 +39577,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prismjs@npm:1.23.0, prismjs@npm:^1.21.0, prismjs@npm:~1.23.0":
+"prismjs@npm:1.23.0":
   version: 1.23.0
   resolution: "prismjs@npm:1.23.0"
   dependencies:
@@ -39579,6 +39586,13 @@ fsevents@^1.2.7:
     clipboard:
       optional: true
   checksum: c40d4d2b9bbd93df03eee11c4a92153543d29e92e0cfd078d13aed2853ad4c2b3f6e529f24ae75972925db60f194d80962841a43975dae8f2ec78995f101b0b9
+  languageName: node
+  linkType: hard
+
+"prismjs@npm:^1.25.0, prismjs@npm:~1.25.0":
+  version: 1.25.0
+  resolution: "prismjs@npm:1.25.0"
+  checksum: 0c3853a6c815b23a07bef77700f60a40b2a12018a383a75cd7d108718717b73927c809e7dd08ac0ae9f16fbe1e005b337262bc95952cf9cfc91914f986b07bd3
   languageName: node
   linkType: hard
 
@@ -41062,18 +41076,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-syntax-highlighter@npm:^13.5.3":
-  version: 13.5.3
-  resolution: "react-syntax-highlighter@npm:13.5.3"
+"react-syntax-highlighter@npm:^15.4.2":
+  version: 15.4.5
+  resolution: "react-syntax-highlighter@npm:15.4.5"
   dependencies:
     "@babel/runtime": ^7.3.1
-    highlight.js: ^10.1.1
-    lowlight: ^1.14.0
-    prismjs: ^1.21.0
-    refractor: ^3.1.0
+    highlight.js: ^10.4.1
+    lowlight: ^1.17.0
+    prismjs: ^1.25.0
+    refractor: ^3.2.0
   peerDependencies:
     react: ">= 0.14.0"
-  checksum: d045ede02cff40d5a80ca7788995844ab52a6ca1e440317364738983e9c295f63db5c5e8a04059315a7ba847575d00e58440eb2c8f6a000bb2deff518c9294a1
+  checksum: d162c65bab7189cae355ec22ab5bc1e4c53dab7f8c739c27c47c3e757d09339ed3cf91160aa9271b3635ab9769f8d0001fe40302115c8d1011701ea284275017
   languageName: node
   linkType: hard
 
@@ -41550,14 +41564,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"refractor@npm:^3.1.0":
-  version: 3.3.1
-  resolution: "refractor@npm:3.3.1"
+"refractor@npm:^3.2.0":
+  version: 3.5.0
+  resolution: "refractor@npm:3.5.0"
   dependencies:
     hastscript: ^6.0.0
     parse-entities: ^2.0.0
-    prismjs: ~1.23.0
-  checksum: d12a747a75e73f0683ba34f01fcce845b89f49d9945b3f57ad1a9989438d9b6e47ff73a510e62aa112cca624942a9416608692409474cf74e6a877b3c422dcf4
+    prismjs: ~1.25.0
+  checksum: 39be64faff7e2485b914f0ef207021674d72476bc7711e92c841a433c73c4edd67954b0b6de0d05c6b1b91aabfe78cea95baab136255c66e7816732f5ff3ab9a
   languageName: node
   linkType: hard
 
