@@ -72,7 +72,7 @@ There are some noteworthy items here:
 <details>
 <summary><h4 id="troubleshooting">Troubleshooting</h4></summary>
 
-Below is a curated list to get you unblocked while adding Storybook to your project.
+Below are some of the most common installation issues and instructions on how to solve them.
 
 <!-- prettier-ignore-start -->
 

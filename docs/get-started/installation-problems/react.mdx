@@ -1,2 +1,15 @@
-- You can also setup Storybook manually through the Storybook CLI. Add the `--type react` flag when you initialize Storybook in your project.
-- If there's an installation problem, check the [README for the React framework](../../app/react/README.md).
+- Add the `--type react` flag to the installation command to set up Storybook manually:
+
+  ```shell
+  npx sb init --type react
+  ```
+
+- Storybook supports Webpack 5 out of the box. If you're upgrading from a previous version, run the following command to enable it:
+
+  ```shell
+  npx sb@next automigrate
+  ```
+
+  Check the [Migration Guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#cra5-upgrade) for more information on how to set up Webpack 5.
+
+- For other installation issues, check the [React README](../../app/react/README.md) for additional instructions.

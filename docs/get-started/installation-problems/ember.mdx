@@ -1,14 +1,17 @@
-- You can also setup Storybook manually through the Storybook CLI. Add the `--type ember` flag when you initialize Storybook in your project.
+- Add the `--type ember` flag to the installation command to set up Storybook manually:
 
-- If you see the following message during the `@storybook/ember-cli-storybook` installation process:
+  ```shell
+  npx sb init --type ember
+  ```
 
-    ```shell
-    The ember generate entity-name command requires an entity name to be specified. 
+- During the install process, if you get the following warning message:
 
-    For more details, use ember help.
-    ```
+  ```shell
+  The ember generate entity-name command requires an entity name to be specified.
 
-    This is just a warning! If you followed the instructions provided, everything should be properly configured.
+  For more details, use ember help.
+  ```
 
+Update the [`@storybook/ember-cli-storybook`](https://www.npmjs.com/package/@storybook/ember-cli-storybook) package to the latest version to fix it.
 
-- If you run into a installation problem, check the [README for the Ember framework](../../app/ember/README.md) for additional instructions.
+- For other installation issues, check the [Ember README](../../app/ember/README.md) for additional instructions.
