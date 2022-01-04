@@ -10995,7 +10995,6 @@ __metadata:
     webpack: 4
     webpack-dev-middleware: ^3.7.3
     window-size: ^1.1.1
-    yarn.lock: ^0.0.1-security
     zx: ^3.0.0
   dependenciesMeta:
     "@compodoc/compodoc":
@@ -50417,13 +50416,6 @@ resolve@1.19.0:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b1dbfefa679848442454b60053a6c95d62f2d2e21dd28def92b647587f415969173c6e99a0f3bab4f1b67ee8283bf735ebe3544013f09491186ba9e8a9a2b651
-  languageName: node
-  linkType: hard
-
-"yarn.lock@npm:^0.0.1-security":
-  version: 0.0.1-security
-  resolution: "yarn.lock@npm:0.0.1-security"
-  checksum: 9da4b94cf4809273501ccf36faa1caa5f6b8f91d6bd15653377819ba2e33ce03bb67e26bca3a7c406413944de4dc2a8f51e930cd74aace5265801ffe37fb8716
   languageName: node
   linkType: hard
 
