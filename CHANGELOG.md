@@ -1,18 +1,32 @@
+## 6.5.0-alpha.7 (January 4, 2022)
+
+### Bug Fixes
+
+- Addon-measure: Update z-index to fit with libraries with also high z-index ([#15860](https://github.com/storybookjs/storybook/pull/15860))
+
+### Maintenance
+
+- Vue: Fix VueLoaderPlugin import to support vue-loader@16.x ([#14624](https://github.com/storybookjs/storybook/pull/14624))
+
+### Dependency Upgrades
+
+- Upgrade react-syntax-highlighter to pick up security patch upstream in highlight.js ([#17100](https://github.com/storybookjs/storybook/pull/17100))
+
 ## 6.5.0-alpha.6 (January 3, 2022)
 
 ### Features
 
-* Vue3: Add default render function CSF3 ([#17068](https://github.com/storybookjs/storybook/pull/17068))
-* Addon-docs/Vue: Include methods in ArgsTable ([#16975](https://github.com/storybookjs/storybook/pull/16975))
+- Vue3: Add default render function CSF3 ([#17068](https://github.com/storybookjs/storybook/pull/17068))
+- Addon-docs/Vue: Include methods in ArgsTable ([#16975](https://github.com/storybookjs/storybook/pull/16975))
 
 ### Bug Fixes
 
-* CLI: Install `lit-html` in new web components project ([#17106](https://github.com/storybookjs/storybook/pull/17106))
-* Angular: Fix runCompodoc for Windows, local Compodoc, and user specified tsconfig ([#16728](https://github.com/storybookjs/storybook/pull/16728))
+- CLI: Install `lit-html` in new web components project ([#17106](https://github.com/storybookjs/storybook/pull/17106))
+- Angular: Fix runCompodoc for Windows, local Compodoc, and user specified tsconfig ([#16728](https://github.com/storybookjs/storybook/pull/16728))
 
 ### Dependency Upgrades
 
-* React: Remove react-dev-utils ([#17022](https://github.com/storybookjs/storybook/pull/17022))
+- React: Remove react-dev-utils ([#17022](https://github.com/storybookjs/storybook/pull/17022))
 
 ## 6.5.0-alpha.5 (December 23, 2021)
 
