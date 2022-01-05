@@ -45,7 +45,11 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
         const legacyDefaultOptions = await getLegacyDefaultBuildOptions(_options);
 
         return getWebpackConfig13_x_x(_baseConfig, {
-          builderOptions: { ...builderOptions, ...legacyDefaultOptions },
+          builderOptions: {
+            watch: options.configType === 'DEVELOPMENT',
+            ...builderOptions,
+            ...legacyDefaultOptions,
+          },
           builderContext,
         });
       },
