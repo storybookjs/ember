@@ -139,7 +139,7 @@ const buildWebpackConfigOptions = async (
     // The dependency of `@angular-devkit/build-angular` to `@angular-devkit/core` is not exactly the same version as the one for storybook (node modules of node modules ^^)
     logger: (createConsoleLogger() as unknown) as WebpackConfigOptions['logger'],
     projectRoot: getSystemPath(projectRootNormalized),
-    sourceRoot: getSystemPath(sourceRootNormalized),
+    sourceRoot: sourceRootNormalized ? getSystemPath(sourceRootNormalized) : undefined,
     buildOptions,
     tsConfig,
     tsConfigPath,

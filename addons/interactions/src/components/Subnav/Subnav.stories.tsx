@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { CallStates } from '@storybook/instrumenter';
 import { Subnav } from './Subnav';
 
@@ -5,11 +6,21 @@ export default {
   title: 'Addons/Interactions/Subnav',
   component: Subnav,
   args: {
-    onPrevious: () => {},
-    onNext: () => {},
-    onReplay: () => {},
-    goToStart: () => {},
-    goToEnd: () => {},
+    controls: {
+      start: action('start'),
+      back: action('back'),
+      goto: action('goto'),
+      next: action('next'),
+      end: action('end'),
+    },
+    controlStates: {
+      debugger: true,
+      start: true,
+      back: true,
+      goto: true,
+      next: false,
+      end: false,
+    },
     storyFileName: 'Subnav.stories.tsx',
     hasNext: true,
     hasPrevious: true,
@@ -34,18 +45,44 @@ export const Runs = {
   },
 };
 
-export const AtTheBeginning = {
-  name: 'at the beginning',
+export const AtStart = {
   args: {
-    status: CallStates.DONE,
-    hasPrevious: false,
+    status: CallStates.WAITING,
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: true,
+      next: true,
+      end: true,
+    },
   },
 };
 
-export const AtTheEnd = {
-  name: 'at the end',
+export const Midway = {
   args: {
-    status: CallStates.DONE,
-    hasNext: false,
+    status: CallStates.WAITING,
+    controlStates: {
+      debugger: true,
+      start: true,
+      back: true,
+      goto: true,
+      next: true,
+      end: true,
+    },
+  },
+};
+
+export const Locked = {
+  args: {
+    status: CallStates.ACTIVE,
+    controlStates: {
+      debugger: true,
+      start: false,
+      back: false,
+      goto: false,
+      next: false,
+      end: false,
+    },
   },
 };

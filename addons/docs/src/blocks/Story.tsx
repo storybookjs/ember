@@ -111,6 +111,14 @@ export const getStoryProps = <TFramework extends AnyFramework>(
   };
 };
 
+function makeGate(): [Promise<void>, () => void] {
+  let open;
+  const gate = new Promise<void>((r) => {
+    open = r;
+  });
+  return [gate, open];
+}
+
 const Story: FunctionComponent<StoryProps> = (props) => {
   const context = useContext(DocsContext);
   const channel = addons.getChannel();
@@ -139,47 +147,63 @@ const Story: FunctionComponent<StoryProps> = (props) => {
         story,
         renderContext,
         element: storyRef.current as HTMLElement,
+        viewMode: 'docs',
       });
       setShowLoader(false);
     }
     return () => cleanup && cleanup();
   }, [story]);
 
+  const [storyFnRan, onStoryFnRan] = makeGate();
+  const [rendered, onRendered] = makeGate();
+  useEffect(onRendered);
+
   if (!story) {
     return <StorySkeleton />;
   }
 
-  // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
-  // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
-  // `Preview.renderStoryToDom()` which itself emits the event.
-  const storyProps = getStoryProps(props, story, context, () =>
-    channel.emit(Events.STORY_RENDERED, storyId)
-  );
+  const storyProps = getStoryProps(props, story, context, onStoryFnRan);
   if (!storyProps) {
     return null;
   }
 
-  if (global?.FEATURES?.modernInlineRender) {
-    // We do this so React doesn't complain when we replace the span in a secondary render
-    const htmlContents = `<span></span>`;
+  if (storyProps.inline) {
+    // If we are rendering a old-style inline Story via `PureStory` below, we want to emit
+    // the `STORY_RENDERED` event when it renders. The modern mode below calls out to
+    // `Preview.renderStoryToDom()` which itself emits the event.
+    if (!global?.FEATURES?.modernInlineRender) {
+      // We need to wait for two things before we can consider the story rendered:
+      //  (a) React's `useEffect` hook needs to fire. This is needed for React stories, as
+      //      decorators of the form `<A><B/></A>` will not actually execute `B` in the first
+      //      call to the story function.
+      //  (b) The story function needs to actually have been called.
+      //      Certain frameworks (i.e.angular) don't actually render the component in the very first
+      //      React render cycle, so we need to wait for the framework to actually do that
+      Promise.all([storyFnRan, rendered]).then(() => {
+        channel.emit(Events.STORY_RENDERED, storyId);
+      });
+    } else {
+      // We do this so React doesn't complain when we replace the span in a secondary render
+      const htmlContents = `<span></span>`;
 
-    // FIXME: height/style/etc. lifted from PureStory
-    const { height } = storyProps;
-    return (
-      <div id={storyBlockIdFromId(story.id)}>
-        <MDXProvider components={resetComponents}>
-          {height ? (
-            <style>{`#story--${story.id} { min-height: ${height}; transform: translateZ(0); overflow: auto }`}</style>
-          ) : null}
-          {showLoader && <StorySkeleton />}
-          <div
-            ref={storyRef}
-            data-name={story.name}
-            dangerouslySetInnerHTML={{ __html: htmlContents }}
-          />
-        </MDXProvider>
-      </div>
-    );
+      // FIXME: height/style/etc. lifted from PureStory
+      const { height } = storyProps;
+      return (
+        <div id={storyBlockIdFromId(story.id)}>
+          <MDXProvider components={resetComponents}>
+            {height ? (
+              <style>{`#story--${story.id} { min-height: ${height}; transform: translateZ(0); overflow: auto }`}</style>
+            ) : null}
+            {showLoader && <StorySkeleton />}
+            <div
+              ref={storyRef}
+              data-name={story.name}
+              dangerouslySetInnerHTML={{ __html: htmlContents }}
+            />
+          </MDXProvider>
+        </div>
+      );
+    }
   }
 
   return (

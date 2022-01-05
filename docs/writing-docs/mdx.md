@@ -4,7 +4,7 @@ title: 'MDX'
 
 <div class="aside">
 
-💡 <strong>NOTE</strong>: Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
+💡 Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
 
 </div>
 
@@ -210,7 +210,7 @@ You can also use anchors to target a specific section of a page:
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+💡 By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
 </div>
 
 ![MDX anchor example](./mdx-anchor.webp)

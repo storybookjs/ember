@@ -104,36 +104,41 @@ function transform({ source }: { source: string }, api: any, options: { parser?:
       return t.objectProperty(t.identifier(_rename(annotation)), val as t.Expression);
     });
 
-    const { init, id } = decl;
-    // only replace arrow function expressions && template
-    // ignore no-arg stories without annotations
-    const template = getTemplateBindVariable(init);
-    if ((!t.isArrowFunctionExpression(init) && !template) || isSimpleCSFStory(init, annotations)) {
-      return;
+    if (t.isVariableDeclarator(decl)) {
+      const { init, id } = decl;
+      // only replace arrow function expressions && template
+      // ignore no-arg stories without annotations
+      const template = getTemplateBindVariable(init);
+      if (
+        (!t.isArrowFunctionExpression(init) && !template) ||
+        isSimpleCSFStory(init, annotations)
+      ) {
+        return;
+      }
+
+      // Remove the render function when we can hoist the template
+      // const Template = (args) => <Cat {...args} />;
+      // export const A = Template.bind({});
+      let storyFn = template && csf._templates[template];
+      if (!storyFn) storyFn = init;
+
+      const keyId = t.identifier(key);
+      // @ts-ignore
+      const { typeAnnotation } = id;
+      if (typeAnnotation) {
+        keyId.typeAnnotation = typeAnnotation;
+      }
+
+      const renderAnnotation = isReactGlobalRenderFn(csf, storyFn)
+        ? []
+        : [t.objectProperty(t.identifier('render'), storyFn)];
+
+      objectExports[key] = t.exportNamedDeclaration(
+        t.variableDeclaration('const', [
+          t.variableDeclarator(keyId, t.objectExpression([...renderAnnotation, ...annotations])),
+        ])
+      );
     }
-
-    // Remove the render function when we can hoist the template
-    // const Template = (args) => <Cat {...args} />;
-    // export const A = Template.bind({});
-    let storyFn = template && csf._templates[template];
-    if (!storyFn) storyFn = init;
-
-    const keyId = t.identifier(key);
-    // @ts-ignore
-    const { typeAnnotation } = id;
-    if (typeAnnotation) {
-      keyId.typeAnnotation = typeAnnotation;
-    }
-
-    const renderAnnotation = isReactGlobalRenderFn(csf, storyFn)
-      ? []
-      : [t.objectProperty(t.identifier('render'), storyFn)];
-
-    objectExports[key] = t.exportNamedDeclaration(
-      t.variableDeclaration('const', [
-        t.variableDeclarator(keyId, t.objectExpression([...renderAnnotation, ...annotations])),
-      ])
-    );
   });
 
   const updatedBody = csf._ast.program.body.reduce((acc, stmt) => {

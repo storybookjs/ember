@@ -1,3 +1,4 @@
+import './addPreview';
 import { configure, addParameters } from '@storybook/react';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs';
 

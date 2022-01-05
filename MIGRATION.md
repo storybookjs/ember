@@ -17,7 +17,10 @@
   - [Emotion11 quasi-compatibility](#emotion11-quasi-compatibility)
   - [Babel mode v7](#babel-mode-v7)
   - [Loader behavior with args changes](#loader-behavior-with-args-changes)
-  - [Angular component parameter removed](#angular-component-parameter-removed)
+  - [6.4 Angular changes](#64-angular-changes)
+    - [SB Angular builder](#sb-angular-builder)
+    - [Angular13](#angular13)
+    - [Angular component parameter removed](#angular-component-parameter-removed)
   - [6.4 deprecations](#64-deprecations)
     - [Deprecated --static-dir CLI flag](#deprecated---static-dir-cli-flag)
 - [From version 6.2.x to 6.3.0](#from-version-62x-to-630)
@@ -214,9 +217,9 @@ npx sb@next automigrate
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
 
 ```shell
-yarn add @storybook/builder-webpack5@next @storybook/manager-webpack5 --dev
+yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
 # Or
-npm install @storybook/builder-webpack5@next @storybook/manager-webpack5 --save-dev
+npm install @storybook/builder-webpack5 @storybook/manager-webpack5 --save-dev
 ```
 
 Then edit your `.storybook/main.js` config:
@@ -267,7 +270,7 @@ export default {
   title: 'Components/Atoms/Button',
 };
 
-// ✅ undefined 6.3 KO / 7.0 OK
+// ✅ undefined 6.3 OK / 7.0 OK
 export default {
   component: Button,
 };
@@ -407,9 +410,11 @@ The Story Store in v7 mode is async, so synchronous story loading APIs no longer
 Storyshots is not currently compatible with the v7 store. However, you can use the following workaround to opt-out of the v7 store when running storyshots; in your `main.js`:
 
 ```js
-features: {
-  storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom');
-}
+module.exports = {
+  features: {
+    storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom'),
+  },
+};
 ```
 
 There are some caveats with the above approach:
@@ -424,9 +429,11 @@ Now that the web is moving to Emotion 11 for styling, popular libraries like MUI
 Unfortunately we're unable to upgrade Storybook to Emotion 11 without a semver major release, and we're not ready for that. So, as a workaround, we've created a feature flag which opts-out of the previous behavior of pinning the Emotion version to v10. To enable this workaround, add the following to your `.storybook/main.js` config:
 
 ```js
-module.exports {
-  emotionAlias: false,
-}
+module.exports = {
+  features: {
+    emotionAlias: false,
+  },
+};
 ```
 
 Setting this should unlock theming for emotion11-based libraries in Storybook 6.4.
@@ -466,7 +473,53 @@ This will create a `.babelrc.json` file. This file includes a bunch of babel plu
 
 In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders do not re-run. Instead the previous value of the loader is passed to the story, irrespective of the new args.
 
-### Angular component parameter removed
+### 6.4 Angular changes
+
+#### SB Angular builder
+
+Since SB6.3, Storybook for Angular supports a builder configuration in your project's `angular.json`. This provides an Angular-style configuration for running and building your Storybook. The full builder documentation will be shown in the [main documentation page](https://storybook.js.org/docs/angular) soon, but for now you can check out an example here:
+
+- `start-storybook`: https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L78
+- `build-storybook`: https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L86
+
+#### Angular13
+
+Angular 13 introduces breaking changes that require updating your Storybook configuration if you are migrating from a previous version of Angular.
+
+Most notably, the documented way of including global styles is no longer supported by Angular13. Previously you could write the following in your `.storybook/preview.js` config:
+
+```
+import '!style-loader!css-loader!sass-loader!./styles.scss';
+```
+
+If you use Angular 13 and above, you should use the builder configuration instead:
+
+```json
+   "my-default-project": {
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "styles": ["src/styles.css", "src/styles.scss"],
+          }
+        }
+      },
+   },
+```
+
+If you need storybook-specific styles separate from your app, you can configure the styles in the [SB Angular builder](#sb-angular-builder), which completely overrides your project's styles:
+
+```json
+      "storybook": {
+        "builder": "@storybook/angular:start-storybook",
+        "options": {
+          "browserTarget": "my-default-project:build",
+          "styles": [".storybook/custom-styles.scss"],
+        },
+      }
+```
+
+#### Angular component parameter removed
 
 In SB6.3 and earlier, the `default.component` metadata was implemented as a parameter, meaning that stories could set `parameters.component` to override the default export. This was an internal implementation that was never documented, but it was mistakenly used in some Angular examples.
 

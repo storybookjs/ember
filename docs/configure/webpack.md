@@ -109,7 +109,7 @@ The following code snippet shows how you can replace the loaders from Storybook 
 <!-- prettier-ignore-end -->
 
 <div class="aside"> 
-💡 <strong>Note:</strong> Projects initialized via generators (e.g, Vue CLI) may require that you import their own webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions. 
+💡 Projects initialized via generators (e.g, Vue CLI) may require that you import their own webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions. 
 </div>
 
 ### Bundle splitting

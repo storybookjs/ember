@@ -8,7 +8,6 @@ import {
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
@@ -19,7 +18,6 @@ import {
   toRequireContextString,
   es6Transpiler,
   stringifyProcessEnvs,
-  nodeModulesPaths,
   handlebars,
   interpolate,
   Options,
@@ -65,6 +63,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     framework,
     frameworkPath,
     presets,
+    previewUrl,
     typescriptOptions,
     modern,
     features,
@@ -192,6 +191,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
             FRAMEWORK_OPTIONS: frameworkOptions,
             CHANNEL_OPTIONS: coreOptions?.channelOptions,
             FEATURES: features,
+            PREVIEW_URL: previewUrl,
             STORIES: stories.map((specifier) => ({
               ...specifier,
               importPathMatcher: specifier.importPathMatcher.source,
@@ -214,8 +214,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
-      new ProvidePlugin({ process: 'process/browser' }),
-      isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),
+      new ProvidePlugin({ process: 'process/browser.js' }),
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
@@ -241,7 +240,9 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         react: path.dirname(require.resolve('react/package.json')),
         'react-dom': path.dirname(require.resolve('react-dom/package.json')),
       },
-      fallback: { path: false },
+      fallback: {
+        path: require.resolve('path-browserify'),
+      },
     },
     optimization: {
       splitChunks: {

@@ -151,7 +151,6 @@ export const vue: Parameters = {
   name: 'vue',
   version: 'latest',
   generator: [
-    `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
     `npx -p @vue/cli@{{version}} vue create {{appName}} --default --packageManager=npm --no-git --force`,
   ].join(' && '),
@@ -163,7 +162,6 @@ export const vue3: Parameters = {
   version: 'next',
   // Vue CLI v4 utilizes webpack 4, and the 5-alpha uses webpack 5 so we force ^4 here
   generator: [
-    `echo '{"useTaobaoRegistry": false}' > ~/.vuerc`,
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
     `npx -p @vue/cli@^4 vue create {{appName}} --preset=__default_vue_3__ --packageManager=npm --no-git --force`,
   ].join(' && '),

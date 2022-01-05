@@ -60,4 +60,4 @@ Storybook will inject these tags into the _preview iframe_ where your components
 
 </div>
 
-Similarly to the preview head HTML, preview body HTML can also be updated programmtically using a preset. See [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates) for more information.
+Similarly to the preview head HTML, preview body HTML can also be updated programmatically using a preset. See [Preview/Manager templates](../addons/writing-presets.md#previewmanager-templates) for more information.
