@@ -10446,6 +10446,7 @@ __metadata:
     "@storybook/addons": 6.5.0-alpha.7
     "@storybook/client-logger": 6.5.0-alpha.7
     "@storybook/core-events": 6.5.0-alpha.7
+    core-js: ^3.8.2
     global: ^4.4.0
   languageName: unknown
   linkType: soft
