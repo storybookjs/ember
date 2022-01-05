@@ -5,6 +5,7 @@ import { Global, CSSObject, styled } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
 import { stringifyQueryParams } from './utils/stringifyQueryParams';
+import { getStoryHref } from './utils/getStoryHref';
 
 const getActive = (refId: FramesRendererProps['refId']) => {
   if (refId) {
@@ -66,7 +67,11 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   }, []);
 
   const [frames, setFrames] = useState<Record<string, string>>({
-    'storybook-preview-iframe': `${baseUrl}?id=${storyId}&viewMode=${viewMode}${stringifiedQueryParams}`,
+    'storybook-preview-iframe': getStoryHref(baseUrl, storyId, {
+      ...queryParams,
+      ...(version && { version }),
+      viewMode,
+    }),
   });
 
   useEffect(() => {

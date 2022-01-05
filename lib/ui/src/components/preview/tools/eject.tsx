@@ -3,7 +3,7 @@ import React from 'react';
 import { IconButton, Icons } from '@storybook/components';
 import { Consumer, Combo } from '@storybook/api';
 import { Addon } from '@storybook/addons';
-import { stringifyQueryParams } from '../utils/stringifyQueryParams';
+import { getStoryHref } from '../utils/getStoryHref';
 
 const { PREVIEW_URL } = global;
 
@@ -29,7 +29,7 @@ export const ejectTool: Addon = {
         storyId ? (
           <IconButton
             key="opener"
-            href={`${baseUrl}?id=${storyId}${stringifyQueryParams(queryParams)}`}
+            href={getStoryHref(baseUrl, storyId, queryParams)}
             target="_blank"
             title="Open canvas in new tab"
           >
