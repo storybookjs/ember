@@ -80,7 +80,7 @@ Create the file `ember/your-component.js.mdx`, similar to the other frameworks, 
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> Code snippets are divided into various file extensions, if you're contributing a TypeScript file use <code>.ts.mdx</code>, or if you're adding MDX files use <code>.mdx.mdx</code> .
+💡 Code snippets are divided into various file extensions, if you're contributing a TypeScript file use <code>.ts.mdx</code>, or if you're adding MDX files use <code>.mdx.mdx</code> .
 </div>
 
 Go through the rest of the documentation and repeat the process.
@@ -110,7 +110,7 @@ yarn start:skip-addons
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> During the start process if there's an issue with the the documentation, the process will stop and you'll get a notification.
+💡 During the start process if there's an issue with the the documentation, the process will stop and you'll get a notification.
 </div>
 
 Open a browser window to `http://localhost:8000`, click the Docs link, and select your framework from the dropdown.
