@@ -61,6 +61,10 @@ const useQueryNavigate = () => {
   const navigate = useNavigate();
 
   return useCallback((to: string | number, options?: ExpandedNavigateOptions) => {
+    if (typeof to === 'string' && to.startsWith('#')) {
+      document.location.hash = to;
+      return undefined;
+    }
     if (typeof to === 'string') {
       const target = options?.plain ? to : `?path=${to}`;
       return navigate(target, options);
