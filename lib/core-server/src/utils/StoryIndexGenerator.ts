@@ -178,7 +178,7 @@ export class StoryIndexGenerator {
   }
 
   invalidate(specifier: NormalizedStoriesSpecifier, importPath: Path, removed: boolean) {
-    const absolutePath = path.resolve(this.options.workingDir, importPath);
+    const absolutePath = slash(path.resolve(this.options.workingDir, importPath));
     const pathToEntries = this.storyIndexEntries.get(specifier);
 
     if (removed) {

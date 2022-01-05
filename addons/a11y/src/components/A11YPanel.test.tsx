@@ -129,11 +129,14 @@ describe('A11YPanel', () => {
     const { getByText } = render(<ThemedA11YPanel />);
     const useChannelArgs = mockedApi.useChannel.mock.calls[0][0];
     act(() => useChannelArgs[EVENTS.RESULT](axeResult));
-    await waitFor(() => {
-      expect(getByText(/Tests completed/)).toBeTruthy();
-      expect(getByText(/Violations/)).toBeTruthy();
-      expect(getByText(/Passes/)).toBeTruthy();
-      expect(getByText(/Incomplete/)).toBeTruthy();
-    });
+    await waitFor(
+      () => {
+        expect(getByText(/Tests completed/)).toBeTruthy();
+        expect(getByText(/Violations/)).toBeTruthy();
+        expect(getByText(/Passes/)).toBeTruthy();
+        expect(getByText(/Incomplete/)).toBeTruthy();
+      },
+      { timeout: 2000 }
+    );
   });
 });

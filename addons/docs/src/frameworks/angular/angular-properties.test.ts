@@ -6,6 +6,8 @@ import { sync as spawnSync } from 'cross-spawn';
 
 import { findComponentByName, extractArgTypesFromData } from './compodoc';
 
+const { SNAPSHOT_OS } = global;
+
 // File hierarchy: __testfixtures__ / some-test-case / input.*
 const inputRegExp = /^input\..*$/;
 
@@ -42,7 +44,9 @@ describe('angular component properties', () => {
           // snapshot the output of compodoc
           const compodocOutput = runCompodoc(inputPath);
           const compodocJson = JSON.parse(compodocOutput);
-          expect(compodocJson).toMatchSpecificSnapshot(path.join(testDir, 'compodoc.snapshot'));
+          expect(compodocJson).toMatchSpecificSnapshot(
+            path.join(testDir, `compodoc-${SNAPSHOT_OS}.snapshot`)
+          );
 
           // snapshot the output of addon-docs angular-properties
           const componentData = findComponentByName('InputComponent', compodocJson);

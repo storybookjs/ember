@@ -3,6 +3,10 @@ module.exports = {
   extends: ['@storybook/eslint-config-storybook', 'plugin:storybook/recommended'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'warn',
+    'jest/no-standalone-expect': [
+      'error',
+      { additionalTestBlockFunctions: ['it.skipWindows', 'it.onWindows'] },
+    ],
   },
   overrides: [
     {

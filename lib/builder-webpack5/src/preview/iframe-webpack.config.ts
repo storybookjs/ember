@@ -8,7 +8,6 @@ import {
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import WatchMissingNodeModulesPlugin from 'react-dev-utils/WatchMissingNodeModulesPlugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
@@ -19,7 +18,6 @@ import {
   toRequireContextString,
   es6Transpiler,
   stringifyProcessEnvs,
-  nodeModulesPaths,
   handlebars,
   interpolate,
   Options,
@@ -217,7 +215,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
       new ProvidePlugin({ process: 'process/browser.js' }),
-      isProd ? null : new WatchMissingNodeModulesPlugin(nodeModulesPaths),
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),
