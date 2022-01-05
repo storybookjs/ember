@@ -1,13 +1,30 @@
 import path from 'path';
+import semver from '@storybook/semver';
 import { ContextReplacementPlugin, Configuration } from 'webpack';
 import autoprefixer from 'autoprefixer';
 import getTsLoaderOptions from './ts_config';
 import createForkTsCheckerInstance from './create-fork-ts-checker-plugin';
 
-export function webpack(
+export async function webpack(
   config: Configuration,
-  { configDir }: { configDir: string }
-): Configuration {
+  { configDir, angularBuilderContext }: { configDir: string; angularBuilderContext: any }
+): Promise<Configuration> {
+  try {
+    // Disable all this webpack stuff if we use angular-cli >= 12
+    // Angular cli is in charge of doing all the necessary for angular. If there is any additional configuration to add, it must be done in the preset angular-cli versioned.
+    const angularCliVersion = await import('@angular/cli').then((m) =>
+      semver.coerce(m.VERSION.full)
+    );
+    if (
+      (semver.satisfies(angularCliVersion, '12.2.x') && angularBuilderContext) ||
+      semver.satisfies(angularCliVersion, '>=13.0.0')
+    ) {
+      return config;
+    }
+  } catch (error) {
+    // do nothing, continue
+  }
+
   const tsLoaderOptions = getTsLoaderOptions(configDir);
   return {
     ...config,
