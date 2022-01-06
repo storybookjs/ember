@@ -4,6 +4,7 @@ import { getStorybookBabelConfig } from './babel';
 const { plugins } = getStorybookBabelConfig();
 
 const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
+  '@storybook[\\\\/]expect',
   '@storybook[\\\\/]node_logger',
   '@testing-library[\\\\/]dom',
   '@testing-library[\\\\/]user-event',
@@ -22,14 +23,18 @@ const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   'find-up',
   'fs-extra',
   'highlight.js',
+  'jest-mock',
   'json5',
   'node-fetch',
   'pkg-dir',
   'prettier',
   'pretty-format',
+  'react-router',
+  'react-router-dom',
   'resolve-from',
   'semver',
   'slash',
+  'strip-ansi',
 ].map((n) => new RegExp(`[\\\\/]node_modules[\\\\/]${n}`));
 
 export const es6Transpiler: () => RuleSetRule = () => {
