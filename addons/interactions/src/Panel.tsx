@@ -121,12 +121,15 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
 
   const endRef = React.useRef();
   React.useEffect(() => {
-    const observer = new global.window.IntersectionObserver(
-      ([end]: any) => setScrollTarget(end.isIntersecting ? undefined : end.target),
-      { root: global.window.document.querySelector('#panel-tab-content') }
-    );
-    if (endRef.current) observer.observe(endRef.current);
-    return () => observer.disconnect();
+    let observer: IntersectionObserver;
+    if (global.window.IntersectionObserver) {
+      observer = new global.window.IntersectionObserver(
+        ([end]: any) => setScrollTarget(end.isIntersecting ? undefined : end.target),
+        { root: global.window.document.querySelector('#panel-tab-content') }
+      );
+      if (endRef.current) observer.observe(endRef.current);
+    }
+    return () => observer?.disconnect();
   }, []);
 
   const emit = useChannel(

@@ -48,7 +48,7 @@ const App = React.memo<AppProps>(
             key: 'settings',
             render: () => <SettingsPages />,
             route: (({ children }) => (
-              <Route path="/settings" startsWith>
+              <Route path="/settings/" startsWith>
                 {children}
               </Route>
             )) as FunctionComponent,

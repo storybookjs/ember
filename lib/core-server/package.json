@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.5.0-alpha.7",
+  "version": "6.5.0-alpha.9",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -41,16 +41,16 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.5.0-alpha.7",
-    "@storybook/core-client": "6.5.0-alpha.7",
-    "@storybook/core-common": "6.5.0-alpha.7",
-    "@storybook/core-events": "6.5.0-alpha.7",
+    "@storybook/builder-webpack4": "6.5.0-alpha.9",
+    "@storybook/core-client": "6.5.0-alpha.9",
+    "@storybook/core-common": "6.5.0-alpha.9",
+    "@storybook/core-events": "6.5.0-alpha.9",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-tools": "6.5.0-alpha.7",
-    "@storybook/manager-webpack4": "6.5.0-alpha.7",
-    "@storybook/node-logger": "6.5.0-alpha.7",
+    "@storybook/csf-tools": "6.5.0-alpha.9",
+    "@storybook/manager-webpack4": "6.5.0-alpha.9",
+    "@storybook/node-logger": "6.5.0-alpha.9",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.7",
+    "@storybook/store": "6.5.0-alpha.9",
     "@types/node": "^14.0.10 || ^16.0.0",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -86,7 +86,7 @@
     "x-default-browser": "^0.4.0"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.5.0-alpha.7",
+    "@storybook/builder-webpack5": "6.5.0-alpha.9",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",
@@ -94,8 +94,8 @@
     "jest-specific-snapshot": "^4.0.0"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.5.0-alpha.7",
-    "@storybook/manager-webpack5": "6.5.0-alpha.7",
+    "@storybook/builder-webpack5": "6.5.0-alpha.9",
+    "@storybook/manager-webpack5": "6.5.0-alpha.9",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
@@ -113,6 +113,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "eb1ec353f7fbdf90d67576d93b9a23809d6cc0e6",
+  "gitHead": "fb124ab94e8b5ed0920bc7954e6f6a70bf79c37a",
   "sbmodern": "dist/modern/index.js"
 }
