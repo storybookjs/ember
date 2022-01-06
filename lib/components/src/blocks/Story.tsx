@@ -7,7 +7,7 @@ import { IFrame } from './IFrame';
 import { EmptyBlock } from './EmptyBlock';
 import { ZoomContext } from './ZoomContext';
 import { Loader } from '..';
-import { getStoryHref } from '../../../ui/src/components/preview/utils/getStoryHref';
+import { getStoryHref } from '../utils/getStoryHref';
 
 const { PREVIEW_URL } = global;
 const BASE_URL = PREVIEW_URL || 'iframe.html';

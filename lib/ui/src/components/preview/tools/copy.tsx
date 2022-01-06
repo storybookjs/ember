@@ -1,10 +1,9 @@
 import global from 'global';
 import React from 'react';
 import copy from 'copy-to-clipboard';
-import { IconButton, Icons } from '@storybook/components';
+import { getStoryHref, IconButton, Icons } from '@storybook/components';
 import { Consumer, Combo } from '@storybook/api';
 import { Addon } from '@storybook/addons';
-import { getStoryHref } from '../utils/getStoryHref';
 
 const { PREVIEW_URL } = global;
 

@@ -1,11 +1,10 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
 import { Consumer, Combo } from '@storybook/api';
-import { Button } from '@storybook/components';
+import { Button, getStoryHref } from '@storybook/components';
 import { Global, CSSObject, styled } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
 import { stringifyQueryParams } from './utils/stringifyQueryParams';
-import { getStoryHref } from './utils/getStoryHref';
 
 const getActive = (refId: FramesRendererProps['refId']) => {
   if (refId) {

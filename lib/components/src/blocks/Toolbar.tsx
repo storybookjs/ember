@@ -5,7 +5,7 @@ import { FlexBar } from '../bar/bar';
 import { Icons } from '../icon/icon';
 import { IconButton, IconButtonSkeleton } from '../bar/button';
 
-import { getStoryHref } from '../../../ui/src/components/preview/utils/getStoryHref';
+import { getStoryHref } from '../utils/getStoryHref';
 
 interface ZoomProps {
   zoom: (val: number) => void;
