@@ -1,4 +1,14 @@
-import { Component, Directive, Input, Output, Pipe, Type } from '@angular/core';
+import {
+  Component,
+  Directive,
+  Input,
+  Output,
+  Pipe,
+  Type,
+  ɵReflectionCapabilities as ReflectionCapabilities,
+} from '@angular/core';
+
+const reflectionCapabilities = new ReflectionCapabilities();
 
 export type ComponentInputsOutputs = {
   inputs: {
@@ -80,10 +90,7 @@ export const isDeclarable = (component: any): boolean => {
     return false;
   }
 
-  const decoratorKey = '__annotations__';
-  const decorators: any[] = Reflect.getOwnPropertyDescriptor(component, decoratorKey)
-    ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
-    : component[decoratorKey];
+  const decorators = reflectionCapabilities.annotations(component);
 
   return !!(decorators || []).find(
     (d) => d instanceof Directive || d instanceof Pipe || d instanceof Component
@@ -95,10 +102,8 @@ export const isComponent = (component: any): component is Type<unknown> => {
     return false;
   }
 
-  const decoratorKey = '__annotations__';
-  const decorators: any[] = Reflect.getOwnPropertyDescriptor(component, decoratorKey)
-    ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
-    : component[decoratorKey];
+  const decorators = reflectionCapabilities.annotations(component);
+
   return (decorators || []).some((d) => d instanceof Component);
 };
 
@@ -107,44 +112,13 @@ export const isComponent = (component: any): component is Type<unknown> => {
  * is used to get all `@Input` and `@Output` Decorator
  */
 export const getComponentPropsDecoratorMetadata = (component: any) => {
-  const decoratorKey = '__prop__metadata__';
-  let propsDecorators: Record<string, (Input | Output)[]> =
-    Reflect &&
-    Reflect.getOwnPropertyDescriptor &&
-    Reflect.getOwnPropertyDescriptor(component, decoratorKey)
-      ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
-      : component[decoratorKey];
-
-  const parent = Reflect && Reflect.getPrototypeOf && Reflect.getPrototypeOf(component);
-
-  if (parent) {
-    const parentPropsDecorators = getComponentPropsDecoratorMetadata(parent);
-    propsDecorators = { ...parentPropsDecorators, ...propsDecorators };
-  }
-
-  return propsDecorators;
+  return reflectionCapabilities.propMetadata(component);
 };
 
 /**
  * Returns component decorator `@Component`
  */
 export const getComponentDecoratorMetadata = (component: any): Component | undefined => {
-  const decoratorKey = '__annotations__';
-  const decorators: any[] =
-    Reflect &&
-    Reflect.getOwnPropertyDescriptor &&
-    Reflect.getOwnPropertyDescriptor(component, decoratorKey)
-      ? Reflect.getOwnPropertyDescriptor(component, decoratorKey).value
-      : component[decoratorKey];
-
-  if (!decorators) {
-    return (
-      component.decorators &&
-      component.decorators[0] &&
-      component.decorators[0].args &&
-      component.decorators[0].args[0]
-    );
-  }
-
+  const decorators: any[] = reflectionCapabilities.annotations(component);
   return decorators.find((d) => d instanceof Component);
 };

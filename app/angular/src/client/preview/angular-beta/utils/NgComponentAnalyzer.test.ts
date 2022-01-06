@@ -137,6 +137,46 @@ describe('getComponentInputsOutputs', () => {
     expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
     expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));
   });
+
+  it('should return I/O with extending classes', () => {
+    @Component({
+      template: '',
+    })
+    class BarComponent {
+      @Input()
+      public a: string;
+
+      @Input()
+      public b: string;
+    }
+
+    @Component({
+      template: '',
+    })
+    class FooComponent extends BarComponent {
+      @Input()
+      public b: string;
+
+      @Input()
+      public c: string;
+    }
+
+    const fooComponentFactory = resolveComponentFactory(FooComponent);
+
+    const { inputs, outputs } = getComponentInputsOutputs(FooComponent);
+
+    expect({ inputs, outputs }).toEqual({
+      inputs: [
+        { propName: 'a', templateName: 'a' },
+        { propName: 'b', templateName: 'b' },
+        { propName: 'c', templateName: 'c' },
+      ],
+      outputs: [],
+    });
+
+    expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
+    expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));
+  });
 });
 
 describe('isDeclarable', () => {
