@@ -14,17 +14,19 @@ export default {
   component: Button,
 };
 
-export const Text = (args) => ({
+export const Text = ({ label, onClick }) => ({
   components: { Button },
   setup() {
     return {
-      label: args.label,
-      onClick: action('clicked'),
+      label,
+      onClick,
     };
   },
   template: '<Button @onClick="onClick" :label="label" />',
 });
+
 Text.args = {
   label: 'Hello',
+  onClick: action('clicked'),
 };
 ```

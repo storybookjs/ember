@@ -19,6 +19,7 @@ export const Text = (args, { argTypes }) => ({
   components: { Button },
   template: '<Button @onClick="onClick" :label="label" />'
 });
+
 Text.args = {
   label: 'Hello',
   onClick: action('clicked'),

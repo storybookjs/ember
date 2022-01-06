@@ -1,0 +1,31 @@
+```js
+// Button.stories.js
+
+import Button from './Button.svelte';
+
+import { action } from '@storybook/addon-actions';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
+  component: Button,
+};
+
+export const Text  = ({ label, click }) => ({
+  Component: Button,
+  props: {
+    label,
+  },
+  on: {
+    click,
+  },
+});
+
+Text.args = {
+  label: 'Hello',
+  click: action('clicked'),
+};
+```
