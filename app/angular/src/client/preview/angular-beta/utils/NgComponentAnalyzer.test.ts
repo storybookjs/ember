@@ -237,10 +237,27 @@ describe('isComponent', () => {
 
 describe('getComponentDecoratorMetadata', () => {
   it('should return Component with a Component', () => {
-    @Component({})
+    @Component({ selector: 'foo' })
     class FooComponent {}
 
     expect(getComponentDecoratorMetadata(FooComponent)).toBeInstanceOf(Component);
+    expect(getComponentDecoratorMetadata(FooComponent)).toEqual({
+      changeDetection: 1,
+      selector: 'foo',
+    });
+  });
+
+  it('should return Component with extending classes', () => {
+    @Component({ selector: 'bar' })
+    class BarComponent {}
+    @Component({ selector: 'foo' })
+    class FooComponent extends BarComponent {}
+
+    expect(getComponentDecoratorMetadata(FooComponent)).toBeInstanceOf(Component);
+    expect(getComponentDecoratorMetadata(FooComponent)).toEqual({
+      changeDetection: 1,
+      selector: 'foo',
+    });
   });
 });
 

@@ -6,6 +6,7 @@ import {
   Pipe,
   Type,
   ɵReflectionCapabilities as ReflectionCapabilities,
+  ɵCodegenComponentFactoryResolver,
 } from '@angular/core';
 
 const reflectionCapabilities = new ReflectionCapabilities();
@@ -119,6 +120,7 @@ export const getComponentPropsDecoratorMetadata = (component: any) => {
  * Returns component decorator `@Component`
  */
 export const getComponentDecoratorMetadata = (component: any): Component | undefined => {
-  const decorators: any[] = reflectionCapabilities.annotations(component);
-  return decorators.find((d) => d instanceof Component);
+  const decorators = reflectionCapabilities.annotations(component);
+
+  return decorators.reverse().find((d) => d instanceof Component);
 };
