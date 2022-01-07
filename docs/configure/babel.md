@@ -162,6 +162,8 @@ BABEL_SHOW_CONFIG_FOR=.storybook/preview.js yarn storybook
 
 When the command finishes running, it will display the available babel configuration for the `.storybook/preview.js` file. You can use this information to debug issues with transpilation.
 
-> NOTE: Due to what appears to be a Babel bug, setting this flag causes Babel transpilation to fail on the file provided. Thus you cannot actually _RUN_ Storybook using this command. However, it will print out the configuration information as advertised, and therefore you can use this to debug your Storybook. You'll need to remove the flag to actually run your Storybook.
+<div class="aside">
+💡 Due to what appears to be a Babel bug, setting this flag causes Babel transpilation to fail on the file provided. Thus you cannot actually <strong>run</strong> Storybook using this command. However, it will print out the configuration information as advertised, and therefore you can use this to debug your Storybook. You'll need to remove the flag to actually run your Storybook.
+</div>
 
 For more info, please refer to the [Babel documentation](https://babeljs.io/docs/en/configuration#print-effective-configs).
