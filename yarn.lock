@@ -9411,7 +9411,7 @@ __metadata:
     loader-utils: ^2.0.0
     prettier: ^2.2.1
     prop-types: ^15.7.2
-    react-syntax-highlighter: ^15.4.2
+    react-syntax-highlighter: ^15.4.5
     regenerator-runtime: ^0.13.7
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -10022,7 +10022,7 @@ __metadata:
     prop-types: ^15.7.2
     react-colorful: ^5.1.2
     react-popper-tooltip: ^3.1.1
-    react-syntax-highlighter: ^15.4.2
+    react-syntax-highlighter: ^15.4.5
     react-textarea-autosize: ^8.3.0
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
@@ -41077,7 +41077,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-syntax-highlighter@npm:^15.4.2":
+"react-syntax-highlighter@npm:^15.4.5":
   version: 15.4.5
   resolution: "react-syntax-highlighter@npm:15.4.5"
   dependencies:
