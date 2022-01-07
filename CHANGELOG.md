@@ -1,3 +1,14 @@
+## 6.5.0-alpha.11 (January 7, 2022)
+
+### Bug Fixes
+
+- Addon-docs: Fix babel-loader resolution based on builder ([#16752](https://github.com/storybookjs/storybook/pull/16752))
+- Angular: Use ɵReflectionCapabilities to find component & module metadata ([#17156](https://github.com/storybookjs/storybook/pull/17156))
+
+### Dependency Upgrades
+
+- Update react-syntax-highlighter to fix transitive vulnerability ([#17127](https://github.com/storybookjs/storybook/pull/17127))
+
 ## 6.5.0-alpha.10 (January 6, 2022)
 
 ### Bug Fixes
