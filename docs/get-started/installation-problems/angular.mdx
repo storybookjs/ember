@@ -1,3 +1,17 @@
-- You can also setup Storybook manually through the Storybook CLI. Add the `--type angular` flag when you initialize Storybook in your project.
-- If there's an installation problem, check the [README for the Angular framework](../../app/angular/README.md).
-- Check if you're running the install command in the root directory of your project, or if you're working with a monorepo from the directory where the `angular.json` is located.
+- Add the `--type angular` flag to the installation command to set up Storybook manually:
+
+  ```shell
+  npx sb init --type angular
+  ```
+
+- Storybook supports Webpack 5 out of the box. If you're upgrading from a previous version, run the following command to enable it:
+
+  ```shell
+  npx sb@next automigrate
+  ```
+
+  Check the [Migration Guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#automigrate) for more information on how to set up Webpack 5.
+
+- When adding Storybook to your Angular project, check if you're running the install command from the root directory. Or in a monorepo environment inside the directory where the `angular.json` file is located.
+
+- For other installation issues, check the [Angular README](../../app/angular/README.md) for additional instructions.
