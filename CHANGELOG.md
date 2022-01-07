@@ -1,3 +1,10 @@
+## 6.5.0-alpha.10 (January 6, 2022)
+
+### Bug Fixes
+
+- Angular: Fix angular 13.1 JIT error and HMR reload ([#17131](https://github.com/storybookjs/storybook/pull/17131))
+- Core: Fix IE support by transpiling more libs to es5 ([#17141](https://github.com/storybookjs/storybook/pull/17141))
+
 ## 6.5.0-alpha.9 (January 6, 2022)
 
 ### Features
