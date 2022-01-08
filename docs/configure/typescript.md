@@ -2,11 +2,11 @@
 title: 'TypeScript'
 ---
 
-Storybook has built-in Typescript support, so your Typescript project should work with zero configuration needed.
+Storybook has built-in TypeScript support, so your TypeScript project should work with zero configuration needed.
 
 ### Default configuration
 
-The base Typescript configuration uses [`babel-loader`](https://webpack.js.org/loaders/babel-loader/) for Typescript transpilation, and optionally <a href="https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/v4.1.6/README.md#options"><code>fork-ts-checker-webpack-plugin</code></a> for checking.
+The base TypeScript configuration uses [`babel-loader`](https://webpack.js.org/loaders/babel-loader/) for TypeScript transpilation, and optionally <a href="https://github.com/TypeStrong/fork-ts-checker-webpack-plugin/blob/v4.1.6/README.md#options"><code>fork-ts-checker-webpack-plugin</code></a> for checking.
 
 Each framework uses the base configuration unless otherwise specified:
 
@@ -16,7 +16,7 @@ Each framework uses the base configuration unless otherwise specified:
 
 ### Main.js configuration
 
-To make it easier to configure Typescript handling, use the `typescript` field in your [`.storybook/main.js`](./overview.md#configure-story-rendering).
+To make it easier to configure TypeScript handling, use the `typescript` field in your [`.storybook/main.js`](./overview.md#configure-story-rendering).
 
 The following code snippets show the fields for you to use with TypeScript:
 
