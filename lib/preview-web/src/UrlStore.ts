@@ -42,6 +42,7 @@ export const setPath = (selection?: Selection) => {
   if (!selection) return;
   const query = getQueryString({ selection });
   const { hash = '' } = document.location;
+  document.title = selection.storyId;
   history.replaceState({}, '', `${document.location.pathname}${query}${hash}`);
 };
 
