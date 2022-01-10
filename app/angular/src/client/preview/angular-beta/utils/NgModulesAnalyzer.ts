@@ -1,4 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ɵReflectionCapabilities as ReflectionCapabilities } from '@angular/core';
+
+const reflectionCapabilities = new ReflectionCapabilities();
 
 /**
  * Avoid component redeclaration
@@ -37,13 +39,7 @@ export const isComponentAlreadyDeclaredInModules = (
 
 const extractNgModuleMetadata = (importItem: any): NgModule => {
   const target = importItem && importItem.ngModule ? importItem.ngModule : importItem;
-  const decoratorKey = '__annotations__';
-  const decorators: any[] =
-    Reflect &&
-    Reflect.getOwnPropertyDescriptor &&
-    Reflect.getOwnPropertyDescriptor(target, decoratorKey)
-      ? Reflect.getOwnPropertyDescriptor(target, decoratorKey).value
-      : target[decoratorKey];
+  const decorators = reflectionCapabilities.annotations(target);
 
   if (!decorators || decorators.length === 0) {
     return null;

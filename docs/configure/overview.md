@@ -74,10 +74,6 @@ Additionally, you can also customize your Storybook configuration to load your s
 
 <!-- prettier-ignore-end -->
 
-<div class="aside">
-💡 If you've enabled <a href="#on-demand-story-loading">on-demand story loading</a>, this option will not work. You must define the story's titles manually.
-</div>
-
 When Storybook starts, it will look for any file containing the `stories` extension inside the `packages/stories` directory and generate the titles for your stories.
 
 ### With a directory
@@ -129,7 +125,6 @@ Once you've restarted your Storybook, you'll see an almost immediate performance
 This feature is experimental, and it has some limitations on what you can and cannot do in your stories files. If you plan to use it, you'll need to take into consideration the following limitations:
 
 - [CSF formats](../api/csf.md) from version 1 to version 3 are supported. The `storiesOf` construct is not.
-- You must manually set the story's titles and names (e.g., `title: 'MyComponent`).
 - Custom`storySort` functions are allowed based on a restricted API.
 
 ## Configure story rendering

@@ -27,6 +27,13 @@ export const StoryNoRender = {
   args: { label: 'magic!' },
 };
 
+export const ProcessEnv = {
+  args: { label: process.env.FOO },
+  play: () => {
+    process.env.BAZ = 'moo';
+  },
+};
+
 export const StoryWithPlay = {
   args: { label: 'play' },
   play: () => {

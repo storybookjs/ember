@@ -109,24 +109,12 @@ Now consider the same example, re-written with args:
     'vue/button-story-click-handler-args.2.js.mdx',
     'vue/button-story-click-handler-args.3.js.mdx',
     'angular/button-story-click-handler-args.ts.mdx',
+    'svelte/button-story-click-handler-args.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-At first blush, this might seem no better than the original example. However, if we add the [Docs addon](https://github.com/storybookjs/storybook/tree/master/addons/docs) and configure the [Actions addon](https://github.com/storybookjs/storybook/tree/master/addons/actions) appropriately, we can write:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'react/button-story-click-handler-simple-docs.js.mdx',
-    'vue/button-story-click-handler-simple-docs.2.js.mdx',
-    'vue/button-story-click-handler-simple-docs.3.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
 
 Or even more simply:
 
@@ -136,6 +124,8 @@ Or even more simply:
   paths={[
     'react/button-story-click-handler-simplificated.js.mdx',
     'angular/button-story-click-handler-simplificated.ts.mdx',
+    'vue/button-story-click-handler-simplificated.js.mdx',
+    'svelte/button-story-click-handler-simplificated.native-format.mdx',
   ]}
 />
 

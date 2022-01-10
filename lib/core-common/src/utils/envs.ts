@@ -59,8 +59,12 @@ export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string
       'process.env.XSTORYBOOK_EXAMPLE_APP': '""',
     }
   );
-  // support destructuring like
+  // FIXME: something like this is necessary to support destructuring like:
+  //
   // const { foo } = process.env;
-  envs['process.env'] = JSON.stringify(raw);
+  //
+  // However, it also means that process.env.foo = 'bar' will fail, so removing this:
+  //
+  // envs['process.env'] = JSON.stringify(raw);
   return envs;
 };
