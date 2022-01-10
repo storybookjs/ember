@@ -141,6 +141,26 @@ const buildTemplate = (
   inputs: string,
   outputs: string
 ) => {
+  // https://www.w3.org/TR/2011/WD-html-markup-20110113/syntax.html#syntax-elements
+  const voidElements = [
+    'area',
+    'base',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
+  ];
+
   const firstSelector = selector.split(',')[0];
   const templateReplacers: [
     string | RegExp,
@@ -153,7 +173,14 @@ const buildTemplate = (
     [/#([\w-]+)/, ` id="$1"`],
     [/((\.[\w-]+)+)/, (_, c) => ` class="${c.split`.`.join` `.trim()}"`],
     [/(\[.+?])/g, (_, a) => ` ${a.slice(1, -1)}`],
-    [/([\S]+)(.*)/, `<$1$2${inputs}${outputs}>${innerTemplate}</$1>`],
+    [
+      /([\S]+)(.*)/,
+      (template, elementSelector) => {
+        return voidElements.some((element) => elementSelector === element)
+          ? template.replace(/([\S]+)(.*)/, `<$1$2${inputs}${outputs} />`)
+          : template.replace(/([\S]+)(.*)/, `<$1$2${inputs}${outputs}>${innerTemplate}</$1>`);
+      },
+    ],
   ];
 
   return templateReplacers.reduce(
