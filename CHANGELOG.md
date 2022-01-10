@@ -1,3 +1,9 @@
+## 6.3.13 (January 10, 2022)
+
+### Dependency Upgrades
+
+- Bump cli-table3 to fix colors bug ([#17180](https://github.com/storybookjs/storybook/pull/17180))
+
 ## 6.4.10 (January 10, 2022)
 
 ### Bug Fixes
