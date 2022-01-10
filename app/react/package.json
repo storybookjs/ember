@@ -69,12 +69,12 @@
     "react-refresh": "^0.11.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-dedent": "^2.0.0",
-    "webpack": "4"
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@storybook/client-api": "6.5.0-alpha.13",
-    "@types/prompts": "^2.0.9"
+    "@types/prompts": "^2.0.9",
+    "@types/webpack": "*"
   },
   "peerDependencies": {
     "@babel/core": "^7.11.5",
