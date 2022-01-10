@@ -10171,7 +10171,7 @@ __metadata:
     better-opn: ^2.1.1
     boxen: ^5.1.2
     chalk: ^4.1.0
-    cli-table3: 0.6.0
+    cli-table3: ^0.6.1
     commander: ^6.2.1
     compression: ^1.7.4
     core-js: ^3.8.2
@@ -19137,7 +19137,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table3@npm:0.6.0, cli-table3@npm:~0.6.0":
+"cli-table3@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "cli-table3@npm:0.6.1"
+  dependencies:
+    colors: 1.4.0
+    string-width: ^4.2.0
+  dependenciesMeta:
+    colors:
+      optional: true
+  checksum: 19ab1bb14bd11b3ca3557ce5ad37ef73e489ea814b99f803171e6ac0a3f2ae5fffb6dbc8864e33cdcf2a3644ebc31b488b8e624fd74af44a1c77cc365c143db4
+  languageName: node
+  linkType: hard
+
+"cli-table3@npm:~0.6.0":
   version: 0.6.0
   resolution: "cli-table3@npm:0.6.0"
   dependencies:
