@@ -5,6 +5,8 @@ import { FlexBar } from '../bar/bar';
 import { Icons } from '../icon/icon';
 import { IconButton, IconButtonSkeleton } from '../bar/button';
 
+import { getStoryHref } from '../utils/getStoryHref';
+
 interface ZoomProps {
   zoom: (val: number) => void;
   resetZoom: () => void;
@@ -63,7 +65,7 @@ const Zoom: FunctionComponent<ZoomProps> = ({ zoom, resetZoom }) => (
 const Eject: FunctionComponent<EjectProps> = ({ baseUrl, storyId }) => (
   <IconButton
     key="opener"
-    href={`${baseUrl}?id=${storyId}`}
+    href={getStoryHref(baseUrl, storyId)}
     target="_blank"
     title="Open canvas in new tab"
   >

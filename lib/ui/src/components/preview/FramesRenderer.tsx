@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
 import { Consumer, Combo } from '@storybook/api';
-import { Button } from '@storybook/components';
+import { Button, getStoryHref } from '@storybook/components';
 import { Global, CSSObject, styled } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
@@ -66,7 +66,11 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   }, []);
 
   const [frames, setFrames] = useState<Record<string, string>>({
-    'storybook-preview-iframe': `${baseUrl}?id=${storyId}&viewMode=${viewMode}${stringifiedQueryParams}`,
+    'storybook-preview-iframe': getStoryHref(baseUrl, storyId, {
+      ...queryParams,
+      ...(version && { version }),
+      viewMode,
+    }),
   });
 
   useEffect(() => {
