@@ -76,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "c79e86424b1828328e12ad66e84f73eb58d70c09",
+  "gitHead": "e1f8050f2461859cd560fc166f2dfe9d5c478a55",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Jest",
