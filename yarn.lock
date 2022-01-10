@@ -10798,7 +10798,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/root@workspace:*, @storybook/root@workspace:.":
+"@storybook/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@storybook/root@workspace:."
   dependencies:
@@ -10871,7 +10871,6 @@ __metadata:
     "@storybook/preact": "workspace:*"
     "@storybook/preview-web": "workspace:*"
     "@storybook/react": "workspace:*"
-    "@storybook/root": "workspace:*"
     "@storybook/router": "workspace:*"
     "@storybook/semver": ^7.3.2
     "@storybook/server": "workspace:*"
