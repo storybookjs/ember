@@ -1,5 +1,4 @@
 import startCase from 'lodash/startCase';
-import path from 'path';
 import slash from 'slash';
 
 // FIXME: types duplicated type from `core-common', to be
@@ -36,7 +35,9 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
 
   if (importPathMatcher.exec(normalizedFileName)) {
     const suffix = normalizedFileName.replace(directory, '');
-    const titleAndSuffix = slash(path.join(titlePrefix, suffix));
+    const slashes = new RegExp('/{1,}', 'g');
+    // Do not use path to join the parts, since this runs in the browser
+    const titleAndSuffix = slash([titlePrefix, suffix].join('/').replace(slashes, '/'));
     return startCaseTitle(stripExtension(titleAndSuffix));
   }
   return undefined;
