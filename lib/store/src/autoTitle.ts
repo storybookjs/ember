@@ -1,5 +1,4 @@
 import startCase from 'lodash/startCase';
-import path from 'path';
 import slash from 'slash';
 
 // FIXME: types duplicated type from `core-common', to be
@@ -28,6 +27,18 @@ const startCaseTitle = (title: string) => {
   return title.split('/').map(startCase).join('/');
 };
 
+/**
+ * Combines path parts together, without duplicating separators (slashes).  Used instead of `path.join`
+ * because this code runs in the browser.
+ *
+ * @param paths array of paths to join together.
+ * @returns joined path string, with single '/' between parts
+ */
+function pathJoin(paths: string[]): string {
+  const slashes = new RegExp('/{1,}', 'g');
+  return paths.join('/').replace(slashes, '/');
+}
+
 export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier) => {
   const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
@@ -36,7 +47,7 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
 
   if (importPathMatcher.exec(normalizedFileName)) {
     const suffix = normalizedFileName.replace(directory, '');
-    const titleAndSuffix = slash(path.join(titlePrefix, suffix));
+    const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
     return startCaseTitle(stripExtension(titleAndSuffix));
   }
   return undefined;
