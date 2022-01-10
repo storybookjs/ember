@@ -10770,6 +10770,7 @@ __metadata:
     "@storybook/store": 6.5.0-alpha.13
     "@types/node": ^14.14.20 || ^16.0.0
     "@types/prompts": ^2.0.9
+    "@types/webpack": "*"
     "@types/webpack-env": ^1.16.0
     babel-plugin-add-react-displayname: ^0.0.5
     babel-plugin-named-asset-import: ^0.3.1
@@ -10782,7 +10783,6 @@ __metadata:
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
-    webpack: 4
   peerDependencies:
     "@babel/core": ^7.11.5
     react: ^16.8.0 || ^17.0.0

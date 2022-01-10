@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import type { Configuration } from 'webpack';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import type { Options } from '@storybook/core-common';
 import * as preset from './framework-preset-react';
@@ -12,7 +12,7 @@ jest.mock('@pmmmwh/react-refresh-webpack-plugin', () => {
 
 describe('framework-preset-react', () => {
   const reactRefreshPath = require.resolve('react-refresh/babel');
-  const webpackConfigMock: webpack.Configuration = {
+  const webpackConfigMock: Configuration = {
     plugins: [],
     module: {
       rules: [],
