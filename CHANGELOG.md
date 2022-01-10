@@ -1,3 +1,17 @@
+## 6.4.10 (January 10, 2022)
+
+### Bug Fixes
+
+- Core: Fix process.env assignment ([#17174](https://github.com/storybookjs/storybook/pull/17174))
+- Angular: Fix angular 13.1 JIT error and HMR reload ([#17131](https://github.com/storybookjs/storybook/pull/17131))
+- Router: Fix navigating to hash links ([#17134](https://github.com/storybookjs/storybook/pull/17134))
+- Source-loader: Fix node.declaration edge case ([#17027](https://github.com/storybookjs/storybook/pull/17027))
+- Core: Fix debug output on webpack failures ([#16988](https://github.com/storybookjs/storybook/pull/16988))
+
+### Dependency Upgrades
+
+- Bump cli-table3 to fix colors bug ([#17180](https://github.com/storybookjs/storybook/pull/17180))
+
 ## 6.5.0-alpha.12 (January 10, 2022)
 
 ### Bug Fixes
