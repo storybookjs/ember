@@ -99,7 +99,9 @@
       "yarn lint:package"
     ]
   },
-  "browserslist": "defaults",
+  "browserslist": [
+    "defaults"
+  ],
   "resolutions": {
     "serialize-javascript": "^3.1.0"
   },
