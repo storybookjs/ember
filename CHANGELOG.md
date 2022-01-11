@@ -1,3 +1,13 @@
+## 6.5.0-alpha.14 (January 11, 2022)
+
+### Bug Fixes
+
+- Angular: Fix void element selectors ([#15495](https://github.com/storybookjs/storybook/pull/15495))
+
+### Dependency Upgrades
+
+- React: Remove webpack from dependencies, types as devDependencies ([#17192](https://github.com/storybookjs/storybook/pull/17192))
+
 ## 6.5.0-alpha.13 (January 11, 2022)
 
 ### Features
