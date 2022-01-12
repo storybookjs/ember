@@ -8233,8 +8233,8 @@ __metadata:
     webpack: 4
   peerDependencies:
     "@babel/core": ^7.11.5
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
+    react: ^16.8.0 || >=17.0.0
+    react-dom: ^16.8.0 || >=17.0.0
   peerDependenciesMeta:
     "@babel/core":
       optional: true

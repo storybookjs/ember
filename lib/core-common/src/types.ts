@@ -373,6 +373,11 @@ export interface StorybookConfig {
      * Will be removed in 7.0.
      */
     warnOnLegacyHierarchySeparator?: boolean;
+    /**
+     * Uses React 18's new root API (ReactDOM.createRoot)
+     * The new root API happens to be the gateway for accessing new features of React 18 and adds out-of-the-box improvements.
+     */
+    newReactRootApi?: boolean;
   };
 
   /**
