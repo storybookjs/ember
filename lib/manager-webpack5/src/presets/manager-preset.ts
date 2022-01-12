@@ -1,6 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
-import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
+import { DefinePlugin, Configuration, WebpackPluginInstance, ProvidePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
@@ -113,7 +113,8 @@ export async function managerWebpack(
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
-      }) as WebpackPluginInstance,
+      }),
+      new ProvidePlugin({ process: 'process/browser.js' }),
       // isProd &&
       //   BundleAnalyzerPlugin &&
       //   new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
