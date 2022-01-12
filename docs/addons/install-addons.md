@@ -40,9 +40,20 @@ Storybook preset addons are grouped collections of specific `babel`,`webpack` an
 
 For example, to use SCSS styling, run the following command to install the addon and the required dependencies:
 
-```sh
-yarn add -D @storybook/preset-scss css-loader sass sass-loader style-loader
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-preset-scss.webpack-4.js.mdx',
+    'common/storybook-preset-scss.webpack-5.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+ 💡 Tip: Use the Webpack 5 snippet only if your framework already includes support for this version. Otherwise, use the Webpack 4 snippet. 
+</div>
 
 Next, update [`.storybook/main.js`](../configure/overview.md#configure-story-rendering) to the following:
 
