@@ -1,3 +1,14 @@
+## 6.5.0-alpha.15 (January 12, 2022)
+
+### Bug Fixes
+
+- Angular: Fix 13.1 and add CI test cases ([#17206](https://github.com/storybookjs/storybook/pull/17206))
+- Webpack5: Fix manager.js process references ([#17213](https://github.com/storybookjs/storybook/pull/17213))
+
+### Dependency Upgrades
+
+- React: Restore webpack as a dependency, updated webpack 5 docs ([#17207](https://github.com/storybookjs/storybook/pull/17207))
+
 ## 6.5.0-alpha.14 (January 11, 2022)
 
 ### Bug Fixes
