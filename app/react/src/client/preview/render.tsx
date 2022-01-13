@@ -13,9 +13,7 @@ import { ArgsStoryFn } from '@storybook/csf';
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
 
-const { FRAMEWORK_OPTIONS, FEATURES } = global;
-
-const isNewReactRootApiEnabled: boolean = FEATURES?.newReactRootApi ?? false;
+const { FRAMEWORK_OPTIONS } = global;
 
 // TODO: Remove IRoot declaration as soon as @types/react v17.x is used
 interface IRoot {
@@ -67,7 +65,7 @@ const unmountElement = (el: Element) => {
 };
 
 const getReactRoot = (el: Element): IRoot | null => {
-  if (isNewReactRootApiEnabled) {
+  if (FRAMEWORK_OPTIONS?.newReactRootApi) {
     if (!(ReactDOM as any).createRoot) {
       throw new Error(
         "Your React version doesn't support the new React Root Api. Please use react and react-dom in version 18.x or set the storybook feature 'newReactRootApi' to false"
