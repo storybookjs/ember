@@ -121,12 +121,12 @@ class ErrorBoundary extends ReactComponent<{
 // the Root API's render function is not possible anymore.
 class CallbackWrapper extends ReactComponent<{ callback: () => void }, { isDivVisible: boolean }> {
   state = {
-    isDivVisible: false,
+    isDivVisible: true,
   };
 
   onMount() {
     this.props.callback();
-    this.setState({ isDivVisible: true });
+    this.setState({ isDivVisible: false });
   }
 
   render() {
