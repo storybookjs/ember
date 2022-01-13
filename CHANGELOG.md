@@ -1,3 +1,9 @@
+## 6.5.0-alpha.16 (January 13, 2022)
+
+### Bug Fixes
+
+* Webpack5: Fix named exports order in production mode ([#17229](https://github.com/storybookjs/storybook/pull/17229))
+
 ## 6.5.0-alpha.15 (January 12, 2022)
 
 ### Bug Fixes
