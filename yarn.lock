@@ -9796,8 +9796,7 @@ __metadata:
     "@types/webpack-hot-middleware": ^2.25.3
     "@types/webpack-virtual-modules": ^0.1.0
     babel-loader: ^8.0.0
-    babel-plugin-macros: ^3.0.1
-    babel-plugin-polyfill-corejs3: ^0.1.0
+    babel-plugin-named-exports-order: ^0.0.2
     case-sensitive-paths-webpack-plugin: ^2.3.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
@@ -16458,6 +16457,13 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.1.0
   checksum: 055428561c92edc6982d4670242e48fbcd3ae7822fc14fab8888a7465a5a591620b459724852882ac85a1333f104f85d8fa22c84570274648431296c7218955e
+  languageName: node
+  linkType: hard
+
+"babel-plugin-named-exports-order@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "babel-plugin-named-exports-order@npm:0.0.2"
+  checksum: e1d001722bddabc296b74f7cd020418a3cce9ca7052d5dd5dbd2870745d9566e286d14707c0bbfc9d4b4b643031052b358124ec735069f214d22b0b6768daf9d
   languageName: node
   linkType: hard
 
