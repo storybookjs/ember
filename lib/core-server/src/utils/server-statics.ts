@@ -25,27 +25,22 @@ export async function useStatics(router: any, options: Options) {
     `);
   }
 
-  if (staticDirs) {
-    staticDirs.forEach(async (dir) => {
-      const staticDirAndTarget = typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`;
-      const { staticPath: from, targetEndpoint: to } = await parseStaticDir(
-        getDirectoryFromWorkingDir({
-          configDir: options.configDir,
-          workingDir: process.cwd(),
-          directory: staticDirAndTarget,
-        })
-      );
+  const statics = staticDirs
+    ? staticDirs.map((dir) => (typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`))
+    : options.staticDir;
 
-      logger.info(chalk`=> Serving static files from {cyan ${from}} at {cyan ${to}}`);
-      router.use(to, express.static(from, { index: false }));
-    });
-  }
-
-  if (options.staticDir && options.staticDir.length > 0) {
+  if (statics && statics.length > 0) {
     await Promise.all(
-      options.staticDir.map(async (dir) => {
+      statics.map(async (dir) => {
         try {
-          const { staticDir, staticPath, targetEndpoint } = await parseStaticDir(dir);
+          const relativeDir = staticDirs
+            ? getDirectoryFromWorkingDir({
+                configDir: options.configDir,
+                workingDir: process.cwd(),
+                directory: dir,
+              })
+            : dir;
+          const { staticDir, staticPath, targetEndpoint } = await parseStaticDir(relativeDir);
           logger.info(
             chalk`=> Serving static files from {cyan ${staticDir}} at {cyan ${targetEndpoint}}`
           );
