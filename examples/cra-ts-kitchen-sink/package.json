@@ -7,7 +7,7 @@
     "build-storybook": "build-storybook",
     "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "storybook": "start-storybook -p 9009 --no-manager-cache",
+    "storybook": "start-storybook -p 9009 --no-manager-cache -s ./public",
     "test": "react-scripts test"
   },
   "browserslist": {
