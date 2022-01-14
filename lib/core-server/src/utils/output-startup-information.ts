@@ -16,15 +16,8 @@ export function outputStartupInformation(options: {
   managerTotalTime?: [number, number];
   previewTotalTime?: [number, number];
 }) {
-  const {
-    updateInfo,
-    version,
-    name,
-    address,
-    networkAddress,
-    managerTotalTime,
-    previewTotalTime,
-  } = options;
+  const { updateInfo, version, name, address, networkAddress, managerTotalTime, previewTotalTime } =
+    options;
 
   const updateMessage = createUpdateMessage(updateInfo, version);
 

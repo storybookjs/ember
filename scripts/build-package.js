@@ -86,8 +86,7 @@ function run() {
         message: 'Select the packages to build',
         name: 'todo',
         min: 1,
-        hint:
-          'You can also run directly with package name like `yarn build core`, or `yarn build --all` for all packages!',
+        hint: 'You can also run directly with package name like `yarn build core`, or `yarn build --all` for all packages!',
         optionsPerPage: terminalSize.height - 3, // 3 lines for extra info
         choices: packages.map((key) => ({
           value: key,

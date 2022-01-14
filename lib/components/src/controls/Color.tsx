@@ -232,11 +232,10 @@ const useColorInput = (
     setColorSpace(ColorSpace.HEX);
   }, [initialValue]);
 
-  const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
-    value,
-    color,
-    colorSpace,
-  ]);
+  const realValue = useMemo(
+    () => getRealValue(value, color, colorSpace).toLowerCase(),
+    [value, color, colorSpace]
+  );
 
   const updateValue = useCallback(
     (update: string) => {

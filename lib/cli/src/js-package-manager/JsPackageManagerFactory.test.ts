@@ -9,7 +9,7 @@ jest.mock('cross-spawn');
 const spawnSyncMock = spawnSync as jest.Mock;
 
 jest.mock('find-up');
-const findUpSyncMock = (findUpSync as unknown) as jest.Mock;
+const findUpSyncMock = findUpSync as unknown as jest.Mock;
 findUpSyncMock.mockReturnValue(undefined);
 
 describe('JsPackageManagerFactory', () => {

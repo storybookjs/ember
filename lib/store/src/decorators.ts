@@ -66,15 +66,15 @@ export function defaultDecorateStory<TFramework extends AnyFramework>(
    * This will override the `foo` property on the `innerContext`, which gets
    * merged in with the default context
    */
-  const bindWithContext = (
-    decoratedStoryFn: LegacyStoryFn<TFramework>
-  ): PartialStoryFn<TFramework> => (update) => {
-    contextStore.value = {
-      ...contextStore.value,
-      ...sanitizeStoryContextUpdate(update),
+  const bindWithContext =
+    (decoratedStoryFn: LegacyStoryFn<TFramework>): PartialStoryFn<TFramework> =>
+    (update) => {
+      contextStore.value = {
+        ...contextStore.value,
+        ...sanitizeStoryContextUpdate(update),
+      };
+      return decoratedStoryFn(contextStore.value);
     };
-    return decoratedStoryFn(contextStore.value);
-  };
 
   const decoratedWithContextStore = decorators.reduce(
     (story, decorator) => decorateStory(story, decorator, bindWithContext),

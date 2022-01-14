@@ -137,9 +137,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     this.setupListeners();
 
-    return this.getProjectAnnotationsOrRenderError(
-      getProjectAnnotations
-    ).then((projectAnnotations) => this.initializeWithProjectAnnotations(projectAnnotations));
+    return this.getProjectAnnotationsOrRenderError(getProjectAnnotations).then(
+      (projectAnnotations) => this.initializeWithProjectAnnotations(projectAnnotations)
+    );
   }
 
   setupListeners() {

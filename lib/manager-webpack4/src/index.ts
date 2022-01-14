@@ -25,11 +25,11 @@ export const WEBPACK_VERSION = '4';
 export const getConfig: WebpackBuilder['getConfig'] = getManagerWebpackConfig;
 
 export const makeStatsFromError = (err: string) =>
-  (({
+  ({
     hasErrors: () => true,
     hasWarnings: () => false,
     toJson: () => ({ warnings: [] as any[], errors: [err] }),
-  } as any) as Stats);
+  } as any as Stats);
 
 export const executor = {
   get: async (options: Options) => {

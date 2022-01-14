@@ -11,7 +11,7 @@ jest.mock('global', () => ({
   window: global,
 }));
 
-const mockAddons = (addons as unknown) as jest.Mocked<typeof addons>;
+const mockAddons = addons as unknown as jest.Mocked<typeof addons>;
 
 describe('preview', () => {
   const channel = { emit: jest.fn() };

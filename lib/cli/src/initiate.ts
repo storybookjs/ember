@@ -106,17 +106,18 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
           .then(end);
 
       case ProjectType.REACT_NATIVE: {
-        return (options.yes
-          ? Promise.resolve({ server: true })
-          : (prompts([
-              {
-                type: 'confirm',
-                name: 'server',
-                message:
-                  'Do you want to install dependencies necessary to run Storybook server? You can manually do it later by install @storybook/react-native-server',
-                initial: false,
-              },
-            ]) as Promise<{ server: boolean }>)
+        return (
+          options.yes
+            ? Promise.resolve({ server: true })
+            : (prompts([
+                {
+                  type: 'confirm',
+                  name: 'server',
+                  message:
+                    'Do you want to install dependencies necessary to run Storybook server? You can manually do it later by install @storybook/react-native-server',
+                  initial: false,
+                },
+              ]) as Promise<{ server: boolean }>)
         )
           .then(({ server }) => reactNativeGenerator(packageManager, npmOptions, server))
           .then(commandLog('Adding Storybook support to your "React Native" app'))

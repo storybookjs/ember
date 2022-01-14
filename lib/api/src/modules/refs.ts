@@ -236,7 +236,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
         } else if (!v) {
           throw new Error('Composition: Missing stories.json version');
         } else {
-          const index = (stories as unknown) as Record<StoryId, StoryIndexStory>;
+          const index = stories as unknown as Record<StoryId, StoryIndexStory>;
           storiesHash = transformStoryIndexToStoriesHash({ v, stories: index }, { provider });
         }
         storiesHash = addRefIds(storiesHash, ref);

@@ -24,6 +24,5 @@ export type Story<TArgs = Args> = StoryObj<TArgs>;
  *   args: { buttonArg1: 'val' },
  * }
  * ```
- */ export type ComponentStory<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = ComponentStoryObj<T>;
+ */ export type ComponentStory<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  ComponentStoryObj<T>;

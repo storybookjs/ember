@@ -157,16 +157,8 @@ class Mobile extends Component<MobileProps, MobileState> {
   }
 
   render() {
-    const {
-      Sidebar,
-      Preview,
-      Panel,
-      Notifications,
-      pages,
-      viewMode,
-      options,
-      docsOnly,
-    } = this.props;
+    const { Sidebar, Preview, Panel, Notifications, pages, viewMode, options, docsOnly } =
+      this.props;
 
     const { active } = this.state;
     return (

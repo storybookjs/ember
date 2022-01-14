@@ -3,9 +3,10 @@ import { nodePathsToArray } from './paths';
 
 // Load environment variables starts with STORYBOOK_ to the client side.
 
-export function loadEnvs(
-  options: { production?: boolean } = {}
-): { stringified: Record<string, string>; raw: Record<string, string> } {
+export function loadEnvs(options: { production?: boolean } = {}): {
+  stringified: Record<string, string>;
+  raw: Record<string, string>;
+} {
   const defaultNodeEnv = options.production ? 'production' : 'development';
 
   const env: Record<string, string> = {

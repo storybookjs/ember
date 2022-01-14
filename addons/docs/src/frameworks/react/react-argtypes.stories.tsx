@@ -11,7 +11,7 @@ import { Component } from '../../blocks';
 const argsTableProps = (component: Component) => {
   const argTypes = extractArgTypes(component);
   const parameters = { __isArgsStory: true };
-  const rows = inferControls(({ argTypes, parameters } as unknown) as StoryContext<any>);
+  const rows = inferControls({ argTypes, parameters } as unknown as StoryContext<any>);
   return { rows };
 };
 

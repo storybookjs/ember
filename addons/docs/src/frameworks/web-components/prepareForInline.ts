@@ -17,5 +17,5 @@ export const prepareForInline = (storyFn: PartialStoryFn<WebComponentsFramework>
     }
   }
 
-  return (React.createElement(Story) as unknown) as React.CElement<{}, React.Component>;
+  return React.createElement(Story) as unknown as React.CElement<{}, React.Component>;
 };

@@ -11,7 +11,7 @@ function preactRender(story: StoryFnPreactReturnType, domElement: HTMLElement): 
     // Preact 10 only:
     preact.render(story, domElement);
   } else {
-    renderedStory = (preact.render(story, domElement, renderedStory) as unknown) as Element;
+    renderedStory = preact.render(story, domElement, renderedStory) as unknown as Element;
   }
 }
 

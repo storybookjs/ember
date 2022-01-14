@@ -54,11 +54,11 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
     return {
       bail,
       totalTime: process.hrtime(startTime),
-      stats: ({
+      stats: {
         hasErrors: () => true,
         hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
-      } as any) as Stats,
+      } as any as Stats,
     };
   }
 

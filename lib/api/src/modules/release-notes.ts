@@ -11,15 +11,13 @@ export interface ReleaseNotes {
   showOnFirstLaunch?: boolean;
 }
 
-const getReleaseNotesData = memoize(1)(
-  (): ReleaseNotes => {
-    try {
-      return { ...(JSON.parse(RELEASE_NOTES_DATA) || {}) };
-    } catch (e) {
-      return {};
-    }
+const getReleaseNotesData = memoize(1)((): ReleaseNotes => {
+  try {
+    return { ...(JSON.parse(RELEASE_NOTES_DATA) || {}) };
+  } catch (e) {
+    return {};
   }
-);
+});
 
 export interface SubAPI {
   releaseNotesVersion: () => string;
