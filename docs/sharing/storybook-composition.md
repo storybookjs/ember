@@ -2,7 +2,7 @@
 title: 'Storybook Composition'
 ---
 
-Composition allows you to browse components from any Storybook accessible via URL inside your local Storybook. You can compose any [Storybook published online](./storybook-publish.md) or running locally no matter the view layer, tech stack, or dependencies.
+Composition allows you to browse components from any Storybook accessible via URL inside your local Storybook. You can compose any [Storybook published online](./publish-storybook.md) or running locally no matter the view layer, tech stack, or dependencies.
 
 ![Storybook reference external](./reference-external-storybooks-composition.jpg)
 
