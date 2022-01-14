@@ -34,6 +34,11 @@ export function start<TFramework extends AnyFramework>(
     render?: ArgsStoryFn<TFramework>;
   } = {}
 ) {
+  if (globalWindow) {
+    // To enable user code to detect if it is running in Storybook
+    globalWindow.IS_STORYBOOK = true;
+  }
+
   if (FEATURES?.storyStoreV7) {
     return {
       forceReRender: removedApi('forceReRender'),
