@@ -167,7 +167,7 @@ export const denormalizeStoryParameters = ({
     parameters: combineParameters(
       globalParameters,
       kindParameters[storyData.kind],
-      (storyData.parameters as unknown) as Parameters
+      storyData.parameters as unknown as Parameters
     ),
   }));
 };

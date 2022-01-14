@@ -444,14 +444,14 @@ export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: string[])
 
   const data = getCurrentStoryData();
   const args = isStory(data) ? data.args : {};
-  const updateArgs = useCallback((newArgs: Args) => updateStoryArgs(data as Story, newArgs), [
-    data,
-    updateStoryArgs,
-  ]);
-  const resetArgs = useCallback((argNames?: string[]) => resetStoryArgs(data as Story, argNames), [
-    data,
-    resetStoryArgs,
-  ]);
+  const updateArgs = useCallback(
+    (newArgs: Args) => updateStoryArgs(data as Story, newArgs),
+    [data, updateStoryArgs]
+  );
+  const resetArgs = useCallback(
+    (argNames?: string[]) => resetStoryArgs(data as Story, argNames),
+    [data, resetStoryArgs]
+  );
 
   return [args, updateArgs, resetArgs];
 }

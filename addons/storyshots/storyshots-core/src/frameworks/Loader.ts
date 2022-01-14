@@ -19,9 +19,7 @@ export interface ClientApi<TFramework extends AnyFramework>
 }
 
 export interface Loader {
-  load: (
-    options: StoryshotsOptions
-  ) => {
+  load: (options: StoryshotsOptions) => {
     framework: SupportedFramework;
     renderTree: RenderTree;
     renderShallowTree: any;

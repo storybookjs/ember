@@ -243,7 +243,11 @@ const testCases = [
 describe('toRequireContext', () => {
   testCases.forEach(({ glob, recursive, validPaths, invalidPaths }) => {
     it(`matches only suitable paths - ${glob}`, () => {
-      const { path: base, recursive: willRecurse, match } = toRequireContext(
+      const {
+        path: base,
+        recursive: willRecurse,
+        match,
+      } = toRequireContext(
         normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
       );
 

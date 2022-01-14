@@ -71,10 +71,10 @@ describe('react component properties', () => {
           // snapshot the output of `extractArgTypes`
           const argTypes = extractArgTypes(component);
           const parameters = { __isArgsStory: true };
-          const rows = inferControls(({
+          const rows = inferControls({
             argTypes,
             parameters,
-          } as unknown) as StoryContext<AnyFramework>);
+          } as unknown as StoryContext<AnyFramework>);
           expect(rows).toMatchSpecificSnapshot(path.join(testDir, 'argTypes.snapshot'));
         });
       }

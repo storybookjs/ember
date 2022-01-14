@@ -26,7 +26,7 @@ function createMockStore() {
 describe('globals API', () => {
   it('sets a sensible initialState', () => {
     const store = createMockStore();
-    const { state } = initModule(({ store } as unknown) as ModuleArgs);
+    const { state } = initModule({ store } as unknown as ModuleArgs);
 
     expect(state).toEqual({
       globals: {},
@@ -37,7 +37,7 @@ describe('globals API', () => {
   it('set global args on SET_GLOBALS', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
-    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    const { state, init } = initModule({ store, fullAPI: api } as unknown as ModuleArgs);
     store.setState(state);
     init();
 
@@ -54,7 +54,7 @@ describe('globals API', () => {
   it('ignores SET_STORIES from other refs', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
-    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    const { state, init } = initModule({ store, fullAPI: api } as unknown as ModuleArgs);
     store.setState(state);
     init();
 
@@ -66,7 +66,7 @@ describe('globals API', () => {
   it('ignores SET_GLOBALS from other refs', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
-    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    const { state, init } = initModule({ store, fullAPI: api } as unknown as ModuleArgs);
     store.setState(state);
     init();
 
@@ -81,7 +81,7 @@ describe('globals API', () => {
   it('updates the state when the preview emits GLOBALS_UPDATED', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
-    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    const { state, init } = initModule({ store, fullAPI: api } as unknown as ModuleArgs);
     store.setState(state);
 
     init();
@@ -100,7 +100,7 @@ describe('globals API', () => {
   it('ignores GLOBALS_UPDATED from other refs', () => {
     const api = Object.assign(new EventEmitter(), { findRef: jest.fn() });
     const store = createMockStore();
-    const { state, init } = initModule(({ store, fullAPI: api } as unknown) as ModuleArgs);
+    const { state, init } = initModule({ store, fullAPI: api } as unknown as ModuleArgs);
     store.setState(state);
 
     init();
@@ -113,9 +113,9 @@ describe('globals API', () => {
   });
 
   it('emits UPDATE_GLOBALS when updateGlobals is called', () => {
-    const fullAPI = ({ emit: jest.fn(), on: jest.fn() } as unknown) as API;
+    const fullAPI = { emit: jest.fn(), on: jest.fn() } as unknown as API;
     const store = createMockStore();
-    const { init, api } = initModule(({ store, fullAPI } as unknown) as ModuleArgs);
+    const { init, api } = initModule({ store, fullAPI } as unknown as ModuleArgs);
 
     init();
 

@@ -121,14 +121,14 @@ const useTools = (
   const toolsFromConfig = useMemo(() => getTools(getElements), [getElements]);
   const toolsExtraFromConfig = useMemo(() => getToolsExtra(getElements), [getElements]);
 
-  const tools = useMemo(() => [...defaultTools, ...toolsFromConfig], [
-    defaultTools,
-    toolsFromConfig,
-  ]);
-  const toolsExtra = useMemo(() => [...defaultToolsExtra, ...toolsExtraFromConfig], [
-    defaultToolsExtra,
-    toolsExtraFromConfig,
-  ]);
+  const tools = useMemo(
+    () => [...defaultTools, ...toolsFromConfig],
+    [defaultTools, toolsFromConfig]
+  );
+  const toolsExtra = useMemo(
+    () => [...defaultToolsExtra, ...toolsExtraFromConfig],
+    [defaultToolsExtra, toolsExtraFromConfig]
+  );
 
   return useMemo(() => {
     return story && story.parameters

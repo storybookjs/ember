@@ -19624,8 +19624,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--did-activate-docs': {
-    id:
-      'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--did-activate-docs',
+    id: 'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--did-activate-docs',
     kind: 'Webapp screens/Marketing/FeaturesScreens/DocumentScreen/ComponentExample',
     name: 'Did Activate Docs',
     story: 'Did Activate Docs',
@@ -19655,8 +19654,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--pure-snapshot-ff': {
-    id:
-      'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--pure-snapshot-ff',
+    id: 'webapp-screens-marketing-featuresscreens-documentscreen-componentexample--pure-snapshot-ff',
     kind: 'Webapp screens/Marketing/FeaturesScreens/DocumentScreen/ComponentExample',
     name: 'Pure, Snapshot View, Firefox',
     story: 'Pure, Snapshot View, Firefox',
@@ -19757,8 +19755,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-marketing-featuresscreens-documentscreen-documentscreenhero--maintenance-mode': {
-    id:
-      'webapp-screens-marketing-featuresscreens-documentscreen-documentscreenhero--maintenance-mode',
+    id: 'webapp-screens-marketing-featuresscreens-documentscreen-documentscreenhero--maintenance-mode',
     kind: 'Webapp screens/Marketing/FeaturesScreens/DocumentScreen/DocumentScreenHero',
     name: 'Maintenance Mode',
     story: 'Maintenance Mode',
@@ -19915,8 +19912,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-marketing-featuresscreens-publishscreen-publishscreenhero--maintenance-mode': {
-    id:
-      'webapp-screens-marketing-featuresscreens-publishscreen-publishscreenhero--maintenance-mode',
+    id: 'webapp-screens-marketing-featuresscreens-publishscreen-publishscreenhero--maintenance-mode',
     kind: 'Webapp screens/Marketing/FeaturesScreens/PublishScreen/PublishScreenHero',
     name: 'Maintenance Mode',
     story: 'Maintenance Mode',
@@ -22680,8 +22676,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-pullrequest-checklist-checklist--paused-exceeded-threshold-in-progress-build': {
-    id:
-      'webapp-screens-pullrequest-checklist-checklist--paused-exceeded-threshold-in-progress-build',
+    id: 'webapp-screens-pullrequest-checklist-checklist--paused-exceeded-threshold-in-progress-build',
     kind: 'Webapp screens/PullRequest/Checklist/Checklist',
     name: 'Paused, Exceeded Threshold, In Progress Build',
     story: 'Paused, Exceeded Threshold, In Progress Build',
@@ -23343,8 +23338,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-pullrequest-checklist-checklistheader--with-build-errors-ui-review-disabled': {
-    id:
-      'webapp-screens-pullrequest-checklist-checklistheader--with-build-errors-ui-review-disabled',
+    id: 'webapp-screens-pullrequest-checklist-checklistheader--with-build-errors-ui-review-disabled',
     kind: 'Webapp screens/PullRequest/Checklist/ChecklistHeader',
     name: 'With Build Errors, UI Review Disabled',
     story: 'With Build Errors, UI Review Disabled',
@@ -23922,25 +23916,24 @@ export const stories = {
     isComponent: false,
     isRoot: false,
   },
-  'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-disabled-for-build-enabled-on-app': {
-    id:
-      'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-disabled-for-build-enabled-on-app',
-    kind: 'Webapp screens/PullRequest/Features/UITestsFeature',
-    name: 'UI Tests Disabled For Build, Enabled On App',
-    story: 'UI Tests Disabled For Build, Enabled On App',
-    args: {},
-    argTypes: {},
-    initialArgs: {},
-    depth: 4,
-    parent: 'webapp-screens-pullrequest-features-uitestsfeature',
-    isLeaf: true,
-    prepared: true,
-    isComponent: false,
-    isRoot: false,
-  },
+  'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-disabled-for-build-enabled-on-app':
+    {
+      id: 'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-disabled-for-build-enabled-on-app',
+      kind: 'Webapp screens/PullRequest/Features/UITestsFeature',
+      name: 'UI Tests Disabled For Build, Enabled On App',
+      story: 'UI Tests Disabled For Build, Enabled On App',
+      args: {},
+      argTypes: {},
+      initialArgs: {},
+      depth: 4,
+      parent: 'webapp-screens-pullrequest-features-uitestsfeature',
+      isLeaf: true,
+      prepared: true,
+      isComponent: false,
+      isRoot: false,
+    },
   'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-paused-for-build-enabled-on-app': {
-    id:
-      'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-paused-for-build-enabled-on-app',
+    id: 'webapp-screens-pullrequest-features-uitestsfeature--ui-tests-paused-for-build-enabled-on-app',
     kind: 'Webapp screens/PullRequest/Features/UITestsFeature',
     name: 'UI Tests Paused For Build, Enabled On App',
     story: 'UI Tests Paused For Build, Enabled On App',
@@ -27632,8 +27625,7 @@ export const stories = {
     isRoot: false,
   },
   'webapp-screens-snapshot-snapshotcomparison--2-up-pure-diff-invisible-diff-focus-diff-strobe': {
-    id:
-      'webapp-screens-snapshot-snapshotcomparison--2-up-pure-diff-invisible-diff-focus-diff-strobe',
+    id: 'webapp-screens-snapshot-snapshotcomparison--2-up-pure-diff-invisible-diff-focus-diff-strobe',
     kind: 'Webapp screens/Snapshot/SnapshotComparison',
     name: '2 up, pure, diff invisible, diffFocus + diffStrobe',
     story: '2 up, pure, diff invisible, diffFocus + diffStrobe',
@@ -27842,22 +27834,22 @@ export const stories = {
     isComponent: false,
     isRoot: false,
   },
-  'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-visible-diff-focus-and-strobe': {
-    id:
-      'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-visible-diff-focus-and-strobe',
-    kind: 'Webapp screens/Snapshot/SnapshotComparison',
-    name: '1 up, pure, switching, diff visible, diff focus and strobe',
-    story: '1 up, pure, switching, diff visible, diff focus and strobe',
-    args: {},
-    argTypes: {},
-    initialArgs: {},
-    depth: 3,
-    parent: 'webapp-screens-snapshot-snapshotcomparison',
-    isLeaf: true,
-    prepared: true,
-    isComponent: false,
-    isRoot: false,
-  },
+  'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-visible-diff-focus-and-strobe':
+    {
+      id: 'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-visible-diff-focus-and-strobe',
+      kind: 'Webapp screens/Snapshot/SnapshotComparison',
+      name: '1 up, pure, switching, diff visible, diff focus and strobe',
+      story: '1 up, pure, switching, diff visible, diff focus and strobe',
+      args: {},
+      argTypes: {},
+      initialArgs: {},
+      depth: 3,
+      parent: 'webapp-screens-snapshot-snapshotcomparison',
+      isLeaf: true,
+      prepared: true,
+      isComponent: false,
+      isRoot: false,
+    },
   'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-invisible': {
     id: 'webapp-screens-snapshot-snapshotcomparison--1-up-pure-switching-diff-invisible',
     kind: 'Webapp screens/Snapshot/SnapshotComparison',

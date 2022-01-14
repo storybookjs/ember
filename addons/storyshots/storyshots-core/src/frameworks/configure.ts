@@ -96,9 +96,12 @@ function configure<TFramework extends AnyFramework>(
     return;
   }
 
-  const { preview, features = {}, stories = [], requireContexts = [] } = getConfigPathParts(
-    configPath
-  );
+  const {
+    preview,
+    features = {},
+    stories = [],
+    requireContexts = [],
+  } = getConfigPathParts(configPath);
 
   global.FEATURES = features;
   global.STORIES = stories.map((specifier) => ({
@@ -108,14 +111,8 @@ function configure<TFramework extends AnyFramework>(
 
   if (preview) {
     // This is essentially the same code as lib/core/src/server/preview/virtualModuleEntry.template
-    const {
-      parameters,
-      decorators,
-      globals,
-      globalTypes,
-      argsEnhancers,
-      argTypesEnhancers,
-    } = jest.requireActual(preview);
+    const { parameters, decorators, globals, globalTypes, argsEnhancers, argTypesEnhancers } =
+      jest.requireActual(preview);
 
     if (decorators) {
       decorators.forEach((decorator: DecoratorFunction<TFramework>) =>

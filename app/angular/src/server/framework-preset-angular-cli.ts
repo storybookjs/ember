@@ -87,13 +87,13 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
 function getBuilderContext(options: PresetOptions): BuilderContext {
   return (
     options.angularBuilderContext ??
-    (({
+    ({
       target: { project: 'noop-project', builder: '', options: {} },
       workspaceRoot: process.cwd(),
       getProjectMetadata: () => ({}),
       getTargetOptions: () => ({}),
       logger: new logging.Logger('Storybook'),
-    } as unknown) as BuilderContext)
+    } as unknown as BuilderContext)
   );
 }
 

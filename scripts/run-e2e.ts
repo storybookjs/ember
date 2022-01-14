@@ -244,8 +244,7 @@ const getConfig = async (): Promise<Parameters[]> => {
         message: 'Select the frameworks to run',
         name: 'frameworks',
         min: 1,
-        hint:
-          'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
+        hint: 'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
         choices: Object.keys(configs).map((key) => {
           // @ts-ignore
           const { name, version } = configs[key];

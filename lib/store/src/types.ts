@@ -29,20 +29,18 @@ export type ModuleExports = Record<string, any>;
 type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 export type ModuleImportFn = (path: Path) => PromiseLike<ModuleExports>;
 
-export type NormalizedProjectAnnotations<
-  TFramework extends AnyFramework = AnyFramework
-> = ProjectAnnotations<TFramework> & {
-  argTypes?: StrictArgTypes;
-  globalTypes?: StrictGlobalTypes;
-};
+export type NormalizedProjectAnnotations<TFramework extends AnyFramework = AnyFramework> =
+  ProjectAnnotations<TFramework> & {
+    argTypes?: StrictArgTypes;
+    globalTypes?: StrictGlobalTypes;
+  };
 
-export type NormalizedComponentAnnotations<
-  TFramework extends AnyFramework = AnyFramework
-> = ComponentAnnotations<TFramework> & {
-  // Useful to guarantee that id exists
-  id: ComponentId;
-  argTypes?: StrictArgTypes;
-};
+export type NormalizedComponentAnnotations<TFramework extends AnyFramework = AnyFramework> =
+  ComponentAnnotations<TFramework> & {
+    // Useful to guarantee that id exists
+    id: ComponentId;
+    argTypes?: StrictArgTypes;
+  };
 
 export type NormalizedStoryAnnotations<TFramework extends AnyFramework = AnyFramework> = Omit<
   StoryAnnotations<TFramework>,
@@ -59,31 +57,31 @@ export type CSFFile<TFramework extends AnyFramework = AnyFramework> = {
   stories: Record<StoryId, NormalizedStoryAnnotations<TFramework>>;
 };
 
-export type Story<
-  TFramework extends AnyFramework = AnyFramework
-> = StoryContextForEnhancers<TFramework> & {
-  originalStoryFn: StoryFn<TFramework>;
-  undecoratedStoryFn: LegacyStoryFn<TFramework>;
-  unboundStoryFn: LegacyStoryFn<TFramework>;
-  applyLoaders: (context: StoryContextForLoaders<TFramework>) => Promise<StoryContext<TFramework>>;
-  playFunction: (context: StoryContext<TFramework>) => Promise<void> | void;
-};
+export type Story<TFramework extends AnyFramework = AnyFramework> =
+  StoryContextForEnhancers<TFramework> & {
+    originalStoryFn: StoryFn<TFramework>;
+    undecoratedStoryFn: LegacyStoryFn<TFramework>;
+    unboundStoryFn: LegacyStoryFn<TFramework>;
+    applyLoaders: (
+      context: StoryContextForLoaders<TFramework>
+    ) => Promise<StoryContext<TFramework>>;
+    playFunction: (context: StoryContext<TFramework>) => Promise<void> | void;
+  };
 
 export type BoundStory<TFramework extends AnyFramework = AnyFramework> = Story<TFramework> & {
   storyFn: PartialStoryFn<TFramework>;
 };
 
-export declare type RenderContext<
-  TFramework extends AnyFramework = AnyFramework
-> = StoryIdentifier & {
-  showMain: () => void;
-  showError: (error: { title: string; description: string }) => void;
-  showException: (err: Error) => void;
-  forceRemount: boolean;
-  storyContext: StoryContext<TFramework>;
-  storyFn: PartialStoryFn<TFramework>;
-  unboundStoryFn: LegacyStoryFn<TFramework>;
-};
+export declare type RenderContext<TFramework extends AnyFramework = AnyFramework> =
+  StoryIdentifier & {
+    showMain: () => void;
+    showError: (error: { title: string; description: string }) => void;
+    showException: (err: Error) => void;
+    forceRemount: boolean;
+    storyContext: StoryContext<TFramework>;
+    storyFn: PartialStoryFn<TFramework>;
+    unboundStoryFn: LegacyStoryFn<TFramework>;
+  };
 
 export interface StoryIndexEntry {
   id: StoryId;

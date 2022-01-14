@@ -9,8 +9,13 @@ export const axeTest = (customConfig: Partial<AxeConfig> = {}) => {
   return puppeteerTest({
     ...extendedConfig,
     async testBody(page, testOptions) {
-      const { element = '#root', exclude, disabledRules, options, config } =
-        testOptions.context.parameters.a11y || {};
+      const {
+        element = '#root',
+        exclude,
+        disabledRules,
+        options,
+        config,
+      } = testOptions.context.parameters.a11y || {};
       await beforeAxeTest(page, options);
       const axe = new AxePuppeteer(page);
       axe.include(element);

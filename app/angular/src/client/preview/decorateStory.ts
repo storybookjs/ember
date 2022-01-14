@@ -9,18 +9,17 @@ export default function decorateStory(
   decorators: DecoratorFunction<AngularFramework>[]
 ): LegacyStoryFn<AngularFramework> {
   const returnDecorators = [cleanArgsDecorator, ...decorators].reduce(
-    (previousStoryFn: LegacyStoryFn<AngularFramework>, decorator) => (
-      context: StoryContext<AngularFramework>
-    ) => {
-      const decoratedStory = decorator((update) => {
-        return previousStoryFn({
-          ...context,
-          ...sanitizeStoryContextUpdate(update),
-        });
-      }, context);
+    (previousStoryFn: LegacyStoryFn<AngularFramework>, decorator) =>
+      (context: StoryContext<AngularFramework>) => {
+        const decoratedStory = decorator((update) => {
+          return previousStoryFn({
+            ...context,
+            ...sanitizeStoryContextUpdate(update),
+          });
+        }, context);
 
-      return decoratedStory;
-    },
+        return decoratedStory;
+      },
     (context) => prepareMain(mainStoryFn(context), context)
   );
 

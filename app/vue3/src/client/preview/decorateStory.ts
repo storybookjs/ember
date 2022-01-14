@@ -45,9 +45,7 @@ export function decorateStory(
   decorators: DecoratorFunction<VueFramework>[]
 ): LegacyStoryFn<VueFramework> {
   return decorators.reduce(
-    (decorated: LegacyStoryFn<VueFramework>, decorator) => (
-      context: StoryContext<VueFramework>
-    ) => {
+    (decorated: LegacyStoryFn<VueFramework>, decorator) => (context: StoryContext<VueFramework>) => {
       let story: VueFramework['storyResult'];
 
       const decoratedStory: VueFramework['storyResult'] = decorator((update) => {
