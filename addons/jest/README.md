@@ -56,7 +56,13 @@ Ensure the generated test-results file exists before you start Storybook. During
 npm run test:generate-output -- --watch
 ```
 
-This change will then be HMR (hot module reloaded) using Webpack and displayed by the addon.
+And in the jest config, add `jest-test-results.json` to `modulePathIgnorePatterns` to avoid an infinite loop.
+
+```js
+modulePathIgnorePatterns: ['node_modules', 'jest-test-results.json'],
+```
+
+This change will then be HMR (hot module reloaded) using webpack and displayed by this addon.
 
 If you want to pre-run Jest automatically during development or a static build, you may need to consider that if your tests fail, the script receives a non-0 exit code and will exit.
 You could create a `prebuild:storybook` npm script, which will never fail by appending `|| true`:
@@ -90,7 +96,7 @@ import results from '../.jest-test-results.json';
 import { withTests } from '@storybook/addon-jest';
 
 export default {
- component: MyComponent,
+  component: MyComponent,
   title: 'MyComponent',
   decorators: [withTests({ results })],
 };
@@ -132,7 +138,7 @@ your [`.storybook/preview.js`](https://storybook.js.org/docs/react/configure/ove
 ```js
 // .storybook/preview.js
 
-import { withTests } from "@storybook/addon-jest";
+import { withTests } from '@storybook/addon-jest';
 
 import results from '../.jest-test-results.json';
 
@@ -185,7 +191,7 @@ const Template = (args) => <MyComponent {...args} />;
 
 export const Default = Template.bind({});
 
-Default.args={
+Default.args = {
   text: 'Jest results in Storybook',
 };
 Default.parameters = {
@@ -207,7 +213,7 @@ import results from '../.jest-test-results.json';
 export const decorators = [
   withTests({
     results,
-    filesExt: "((\\.specs?)|(\\.tests?))?(\\.ts)?$",
+    filesExt: '((\\.specs?)|(\\.tests?))?(\\.ts)?$',
   }),
 ];
 ```
