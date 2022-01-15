@@ -214,7 +214,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       }),
-      new ProvidePlugin({ process: 'process/browser.js' }),
+      new ProvidePlugin({ process: require.resolve('process/browser.js') }),
       isProd ? null : new HotModuleReplacementPlugin(),
       new CaseSensitivePathsPlugin(),
       quiet ? null : new ProgressPlugin({}),

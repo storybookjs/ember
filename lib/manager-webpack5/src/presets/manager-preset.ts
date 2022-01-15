@@ -114,7 +114,7 @@ export async function managerWebpack(
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
       }),
-      new ProvidePlugin({ process: 'process/browser.js' }),
+      new ProvidePlugin({ process: require.resolve('process/browser.js') }),
       // isProd &&
       //   BundleAnalyzerPlugin &&
       //   new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
