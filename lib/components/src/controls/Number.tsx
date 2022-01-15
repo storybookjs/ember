@@ -58,6 +58,13 @@ export const NumberControl: FC<NumberProps> = ({
     if (forceVisible && htmlElRef.current) htmlElRef.current.select();
   }, [forceVisible]);
 
+  useEffect(() => {
+    const newInputValue = typeof value === 'number' ? value : '';
+    if (inputValue !== newInputValue) {
+      setInputValue(value);
+    }
+  }, [value]);
+
   if (!forceVisible && value === undefined) {
     return (
       <Form.Button id={getControlSetterButtonId(name)} onClick={onForceVisible}>
