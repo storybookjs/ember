@@ -1,3 +1,17 @@
+## 6.4.13 (January 15, 2022)
+
+### Bug Fixes
+
+- Core: Fix `staticDirs` favicon handling by refactor ([#17241](https://github.com/storybookjs/storybook/pull/17241))
+- Angular: Fix 13.1 and add CI test cases ([#17206](https://github.com/storybookjs/storybook/pull/17206))
+- Core: Fix `__namedExportsOrder` warning from preview.js ([#17240](https://github.com/storybookjs/storybook/pull/17240))
+- Webpack5: Fix manager.js `process` references ([#17213](https://github.com/storybookjs/storybook/pull/17213))
+
+### Dependency Upgrades
+
+- React: Remove react-dev-utils ([#17022](https://github.com/storybookjs/storybook/pull/17022))
+- Fix prettier transpile problems ([#17239](https://github.com/storybookjs/storybook/pull/17239))
+
 ## 6.5.0-alpha.17 (January 14, 2022)
 
 ### Bug Fixes
