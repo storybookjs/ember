@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { parsePath, createPath } from 'history';
 import { Provider as ManagerProvider, Combo, Consumer } from '@storybook/api';
-import { createMemorySource, createHistory } from '@reach/router';
-import { Location, LocationProvider } from '@storybook/router';
+import { Location, BaseLocationProvider } from '@storybook/router';
+
 import { ThemeProvider, ensure as ensureTheme, themes } from '@storybook/theming';
 
 import { DecoratorFn } from '@storybook/react';
@@ -12,31 +13,69 @@ import { PrettyFakeProvider } from '../../FakeProvider';
 import { previewProps } from './preview.mockdata';
 
 const provider = new PrettyFakeProvider();
+const staticNavigator = {
+  createHref(to) {
+    return typeof to === 'string' ? to : createPath(to);
+  },
+
+  push() {},
+
+  replace() {},
+
+  go() {},
+
+  back() {},
+
+  forward() {},
+};
 
 export default {
   title: 'UI/Preview',
   component: Preview,
   decorators: [
-    ((StoryFn, c) => (
-      <LocationProvider
-        key="location.provider"
-        history={createHistory(createMemorySource('/?path=/story/story--id'))}
-      >
-        <Location key="location.consumer">
-          {(locationData) => (
-            <ManagerProvider key="manager" provider={provider} {...locationData} docsMode={false}>
-              <ThemeProvider key="theme.provider" theme={ensureTheme(themes.light)}>
-                <StoryFn {...c} />
-              </ThemeProvider>
-            </ManagerProvider>
-          )}
-        </Location>
-      </LocationProvider>
-    )) as DecoratorFn,
+    ((StoryFn, c) => {
+      const locationProp = parsePath('/?path=/story/story--id');
+
+      const location = {
+        pathname: locationProp.pathname || '/',
+        search: locationProp.search || '',
+        hash: locationProp.hash || '',
+        state: null,
+        key: 'default',
+      };
+
+      return (
+        <BaseLocationProvider
+          key="location.provider"
+          basename={undefined}
+          location={location}
+          navigator={staticNavigator}
+          static
+        >
+          <Location key="location.consumer">
+            {(locationData) => (
+              <ManagerProvider
+                key="manager"
+                provider={provider}
+                {...locationData}
+                docsMode={false}
+                path="/story/story--id"
+                storyId="story--id"
+                navigate={() => {}}
+              >
+                <ThemeProvider key="theme.provider" theme={ensureTheme(themes.light)}>
+                  <StoryFn {...c} />
+                </ThemeProvider>
+              </ManagerProvider>
+            )}
+          </Location>
+        </BaseLocationProvider>
+      );
+    }) as DecoratorFn,
   ],
 };
 
-export const noTabs = () => (
+export const NoTabs = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -50,7 +89,7 @@ export const noTabs = () => (
   </Consumer>
 );
 
-export const hideFullscreen = () => (
+export const HideFullscreen = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -64,7 +103,7 @@ export const hideFullscreen = () => (
   </Consumer>
 );
 
-export const hideAllDefaultTools = () => (
+export const HideAllDefaultTools = () => (
   <Consumer>
     {({ api }: Combo) => {
       return (
@@ -88,7 +127,7 @@ export const hideAllDefaultTools = () => (
   </Consumer>
 );
 
-export const withCanvasTab = () => (
+export const WithCanvasTab = () => (
   <Consumer>
     {({ api }: Combo) => {
       return <Preview {...previewProps} api={{ ...api, getElements: () => ({}) }} />;
@@ -96,4 +135,4 @@ export const withCanvasTab = () => (
   </Consumer>
 );
 
-export const withTabs = () => <Preview {...previewProps} />;
+export const WithTabs = () => <Preview {...previewProps} />;

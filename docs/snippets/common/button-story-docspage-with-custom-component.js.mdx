@@ -1,20 +1,24 @@
 ```js
-// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+// Button.stories.js|jsx|ts|tsx
 
 import { Button } from './Button';
 
-import ButtonDocumentationComponent from './CustomDocumentationComponent';
+import { CustomDocumentationComponent } from './CustomDocumentationComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Button',
   component: Button,
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-  parameters: { 
-    docs: { 
-      page: ButtonDocumentationComponent, 
-    } 
+  parameters: {
+    docs: {
+      page: CustomDocumentationComponent,
+    },
   },
 };
 ```

@@ -1,21 +1,25 @@
 ```ts
-// MyComponent.stories.ts | MyComponent.stories.tsx
+// MyComponent.stories.ts| tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { MyComponent, MyComponentProps } from './MyComponent';
+import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
   component: MyComponent,
-  title: 'A story using environment variables inside a .env file',
-} as Meta;
+} as ComponentMeta<typeof MyComponent>;
 
-const Template: Story<MyComponentProps> = (args) => <MyComponent {...args} />;
+const Template: ComponentStory<typeof MyComponent> = (args) => <MyComponent {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
   propertyA: process.env.STORYBOOK_DATA_KEY,
 };
 ```

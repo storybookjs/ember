@@ -1,5 +1,5 @@
 import { ComponentProps, JSXElementConstructor } from 'react';
-import type { Story, Meta } from './types-6-0';
+import type { StoryFn, StoryObj, Story, Meta } from './types-6-0';
 
 export * from './types-6-0';
 
@@ -10,17 +10,40 @@ export * from './types-6-0';
  * export default { ... } as ComponentMeta<typeof Button>;
  * ```
  */
-export type ComponentMeta<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = Meta<ComponentProps<T>>;
+export type ComponentMeta<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  Meta<ComponentProps<T>>;
 
 /**
- * For the common case where a story is a simple component that receives args as props:
+ * For the common case where a (CSFv2) story is a simple component that receives args as props:
  *
  * ```tsx
  * const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
  * ```
  */
-export type ComponentStory<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = Story<ComponentProps<T>>;
+export type ComponentStoryFn<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  StoryFn<ComponentProps<T>>;
+
+/**
+ * For the common case where a (CSFv3) story is a simple component that receives args as props:
+ *
+ * ```tsx
+ * const MyStory: ComponentStory<typeof Button> = {
+ *   args: { buttonArg1: 'val' },
+ * }
+ * ```
+ */
+export type ComponentStoryObj<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  StoryObj<ComponentProps<T>>;
+
+/**
+ * For the common case where a (CSFv2) story is a simple component that receives args as props:
+ *
+ * ```tsx
+ * const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
+ * ```
+ *
+ * NOTE: this is an alias for `ComponentStoryFn`.
+ * In Storybook v7, `ComponentStory` will alias `ComponentStoryObj`
+ */
+export type ComponentStory<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  Story<ComponentProps<T>>;

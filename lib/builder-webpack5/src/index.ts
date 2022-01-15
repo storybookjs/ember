@@ -7,8 +7,6 @@ import {
   useProgressReporting,
   checkWebpackVersion,
   Options,
-  normalizeStories,
-  StoriesEntry,
 } from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
@@ -20,14 +18,6 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
   const typescriptOptions = await presets.apply('typescript', {}, options);
   const babelOptions = await presets.apply('babel', {}, { ...options, typescriptOptions });
-  const entries = await presets.apply('entries', [], options);
-  const stories = normalizeStories(
-    (await presets.apply('stories', [], options)) as StoriesEntry[],
-    {
-      configDir: options.configDir,
-      workingDir: process.cwd(),
-    }
-  );
   const frameworkOptions = await presets.apply(`${options.framework}Options`, {}, options);
 
   return presets.apply(
@@ -36,8 +26,6 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
     {
       ...options,
       babelOptions,
-      entries,
-      stories,
       typescriptOptions,
       [`${options.framework}Options`]: frameworkOptions,
     }
@@ -66,11 +54,11 @@ export const start: WebpackBuilder['start'] = async ({ startTime, options, route
     return {
       bail,
       totalTime: process.hrtime(startTime),
-      stats: ({
+      stats: {
         hasErrors: () => true,
         hasWarnings: () => false,
         toJson: () => ({ warnings: [] as any[], errors: [err] }),
-      } as any) as Stats,
+      } as any as Stats,
     };
   }
 
@@ -150,7 +138,11 @@ export const build: WebpackBuilder['build'] = async ({ options, startTime }) => 
           errors.forEach((e) => logger.error(e.message));
           warnings.forEach((e) => logger.error(e.message));
 
-          compiler.close(() => fail(stats));
+          compiler.close(() =>
+            options.debugWebpack
+              ? fail(stats)
+              : fail(new Error('=> Webpack failed, learn more with --debug-webpack'))
+          );
 
           return;
         }

@@ -18,7 +18,7 @@ import {
   SHARED_STATE_SET,
   SET_STORIES,
 } from '@storybook/core-events';
-import { RenderData as RouterData } from '@storybook/router';
+import { RouterData } from '@storybook/router';
 import { Listener } from '@storybook/channels';
 
 import { createContext } from './context';
@@ -354,6 +354,11 @@ export const useChannel = (eventMap: EventMap, deps: any[] = []) => {
   return api.emit;
 };
 
+export function useStoryPrepared(storyId?: StoryId) {
+  const api = useStorybookApi();
+  return api.isPrepared(storyId);
+}
+
 export function useParameter<S>(parameterKey: string, defaultValue?: S) {
   const api = useStorybookApi();
 
@@ -439,31 +444,33 @@ export function useArgs(): [Args, (newArgs: Args) => void, (argNames?: string[])
 
   const data = getCurrentStoryData();
   const args = isStory(data) ? data.args : {};
-  const updateArgs = useCallback((newArgs: Args) => updateStoryArgs(data as Story, newArgs), [
-    data,
-    updateStoryArgs,
-  ]);
-  const resetArgs = useCallback((argNames?: string[]) => resetStoryArgs(data as Story, argNames), [
-    data,
-    resetStoryArgs,
-  ]);
+  const updateArgs = useCallback(
+    (newArgs: Args) => updateStoryArgs(data as Story, newArgs),
+    [data, updateStoryArgs]
+  );
+  const resetArgs = useCallback(
+    (argNames?: string[]) => resetStoryArgs(data as Story, argNames),
+    [data, resetStoryArgs]
+  );
 
   return [args, updateArgs, resetArgs];
 }
 
 export function useGlobals(): [Args, (newGlobals: Args) => void] {
-  const {
-    state: { globals: oldGlobals },
-    api: { updateGlobals },
-  } = useContext(ManagerContext);
-
-  return [oldGlobals, updateGlobals];
-}
-
-export function useArgTypes(): ArgTypes {
-  return useParameter<ArgTypes>('argTypes', {});
+  const api = useStorybookApi();
+  return [api.getGlobals(), api.updateGlobals];
 }
 
 export function useGlobalTypes(): ArgTypes {
-  return useParameter<ArgTypes>('globalTypes', {});
+  return useStorybookApi().getGlobalTypes();
+}
+
+function useCurrentStory(): Story {
+  const { getCurrentStoryData } = useStorybookApi();
+
+  return getCurrentStoryData() as Story;
+}
+
+export function useArgTypes(): ArgTypes {
+  return useCurrentStory()?.argTypes || {};
 }

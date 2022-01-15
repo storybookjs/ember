@@ -1,18 +1,22 @@
 ```js
-// YourPage.stories.js | YourPage.stories.jsx
+// YourPage.stories.js|jsx
 
 import React from 'react';
 
-import DocumentScreen from './YourPage';
+import { DocumentScreen } from './YourPage';
 
 //👇 Imports the required stories
-import PageLayout from './PageLayout.stories';
-import DocumentHeader from './DocumentHeader.stories';
-import DocumentList from './DocumentList.stories';
+import * as PageLayout from './PageLayout.stories';
+import * as DocumentHeader from './DocumentHeader.stories';
+import * as DocumentList from './DocumentList.stories';
 
 export default {
-  component: DocumentScreen,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'DocumentScreen',
+  component: DocumentScreen,
 };
 
 const Template = (args) => <DocumentScreen {...args} />;

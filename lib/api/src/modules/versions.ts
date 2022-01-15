@@ -32,15 +32,13 @@ export interface SubState {
   dismissedVersionNotification: undefined | string;
 }
 
-const getVersionCheckData = memoize(1)(
-  (): Versions => {
-    try {
-      return { ...(JSON.parse(VERSIONCHECK).data || {}) };
-    } catch (e) {
-      return {};
-    }
+const getVersionCheckData = memoize(1)((): Versions => {
+  try {
+    return { ...(JSON.parse(VERSIONCHECK).data || {}) };
+  } catch (e) {
+    return {};
   }
-);
+});
 
 export interface SubAPI {
   getCurrentVersion: () => Version;

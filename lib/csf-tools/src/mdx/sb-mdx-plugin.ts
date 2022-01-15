@@ -39,7 +39,8 @@ type MetaExport = Record<string, any>;
 const STORY_REGEX = /^<Story[\s>]/;
 const CANVAS_REGEX = /^<(Preview|Canvas)[\s>]/;
 const META_REGEX = /^<Meta[\s>]/;
-const RESERVED = /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
+const RESERVED =
+  /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
 
 function getAttr(elt: t.JSXOpeningElement, what: string): t.JSXAttribute['value'] | undefined {
   const attr = (elt.attributes as t.JSXAttribute[]).find((n) => n.name.name === what);
@@ -152,13 +153,18 @@ function genStoryExport(ast: t.JSXElement, context: Context) {
   let sourceCode = null;
   let storyVal = null;
   if (!bodyNodes.length) {
-    // plain text node
-    const { code } = generate(ast.children[0], {});
-    storyCode = `'${code}'`;
-    sourceCode = storyCode;
-    storyVal = `() => (
-      ${storyCode}
-    )`;
+    if (ast.children.length > 0) {
+      // plain text node
+      const { code } = generate(ast.children[0], {});
+      storyCode = `'${code}'`;
+      sourceCode = storyCode;
+      storyVal = `() => (
+        ${storyCode}
+      )`;
+    } else {
+      sourceCode = '{}';
+      storyVal = '{}';
+    }
   } else {
     const bodyParts = bodyNodes.map((bodyNode) => getBodyPart(bodyNode, context));
     // if we have more than two children
@@ -222,6 +228,18 @@ function genStoryExport(ast: t.JSXElement, context: Context) {
     statements.push(`${storyKey}.loaders = ${loaderCode};`);
   }
 
+  const play = expressionOrNull(getAttr(ast.openingElement, 'play'));
+  if (play) {
+    const { code: playCode } = generate(play, {});
+    statements.push(`${storyKey}.play = ${playCode};`);
+  }
+
+  const render = expressionOrNull(getAttr(ast.openingElement, 'render'));
+  if (render) {
+    const { code: renderCode } = generate(render, {});
+    statements.push(`${storyKey}.render = ${renderCode};`);
+  }
+
   context.storyNameToKey[storyName] = storyKey;
 
   return {
@@ -282,6 +300,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
   const subcomponents = genAttribute('subcomponents', ast.openingElement);
   const args = genAttribute('args', ast.openingElement);
   const argTypes = genAttribute('argTypes', ast.openingElement);
+  const render = genAttribute('render', ast.openingElement);
 
   return {
     title,
@@ -293,6 +312,7 @@ function genMeta(ast: t.JSXElement, options: CompilerOptions) {
     subcomponents,
     args,
     argTypes,
+    render,
   };
 }
 
@@ -301,9 +321,9 @@ function getExports(node: Element, context: Context, options: CompilerOptions) {
   if (type === 'jsx') {
     if (STORY_REGEX.exec(value)) {
       // Single story
-      const ast = (parseExpression(value, {
+      const ast = parseExpression(value, {
         plugins: ['jsx'],
-      }) as unknown) as t.JSXElement;
+      }) as unknown as t.JSXElement;
       const storyExport = genStoryExport(ast, context);
       const { code } = generate(ast, {});
       // eslint-disable-next-line no-param-reassign
@@ -339,7 +359,7 @@ const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),
-  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentMeta={componentMeta}><MDXContent /></AddContext>,
+  page: () => <AddContext mdxStoryNameToKey={mdxStoryNameToKey} mdxComponentAnnotations={componentMeta}><MDXContent /></AddContext>,
 };
 `.trim();
 

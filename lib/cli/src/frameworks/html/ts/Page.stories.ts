@@ -16,6 +16,7 @@ const Template: Story<HeaderProps> = (args) => createPage(args);
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {
+  // More on composing args: https://storybook.js.org/docs/html/writing-stories/args#args-composition
   ...HeaderStories.LoggedIn.args,
 };
 

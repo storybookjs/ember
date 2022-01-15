@@ -1,11 +1,15 @@
 ```ts
 // Button.stories.ts
 
-import { Meta } from '@storybook/angular/types-6-0';
+import { Meta } from '@storybook/angular';
 
-import Button from './button.component';
+import { Button } from './button.component';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Button',
   component: Button,
   parameters: {

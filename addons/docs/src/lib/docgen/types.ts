@@ -1,10 +1,10 @@
-import { ArgTypes } from '@storybook/api';
+import { StrictArgTypes } from '@storybook/csf';
 import { PropDef } from './PropDef';
 import { Component } from '../../blocks/types';
 
 export type PropsExtractor = (component: Component) => { rows?: PropDef[] } | null;
 
-export type ArgTypesExtractor = (component: Component) => ArgTypes | null;
+export type ArgTypesExtractor = (component: Component) => StrictArgTypes | null;
 
 export interface DocgenType {
   name: string;

@@ -3,9 +3,10 @@ import { nodePathsToArray } from './paths';
 
 // Load environment variables starts with STORYBOOK_ to the client side.
 
-export function loadEnvs(
-  options: { production?: boolean } = {}
-): { stringified: Record<string, string>; raw: Record<string, string> } {
+export function loadEnvs(options: { production?: boolean } = {}): {
+  stringified: Record<string, string>;
+  raw: Record<string, string>;
+} {
   const defaultNodeEnv = options.production ? 'production' : 'development';
 
   const env: Record<string, string> = {
@@ -47,3 +48,24 @@ export const stringifyEnvs = (raw: Record<string, string>): Record<string, strin
     acc[key] = JSON.stringify(value);
     return acc;
   }, {});
+
+export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string, string> => {
+  const envs = Object.entries(raw).reduce<Record<string, string>>(
+    (acc, [key, value]) => {
+      acc[`process.env.${key}`] = JSON.stringify(value);
+      return acc;
+    },
+    {
+      // Default fallback
+      'process.env.XSTORYBOOK_EXAMPLE_APP': '""',
+    }
+  );
+  // FIXME: something like this is necessary to support destructuring like:
+  //
+  // const { foo } = process.env;
+  //
+  // However, it also means that process.env.foo = 'bar' will fail, so removing this:
+  //
+  // envs['process.env'] = JSON.stringify(raw);
+  return envs;
+};

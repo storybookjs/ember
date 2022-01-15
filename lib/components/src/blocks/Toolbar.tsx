@@ -3,7 +3,9 @@ import { styled } from '@storybook/theming';
 
 import { FlexBar } from '../bar/bar';
 import { Icons } from '../icon/icon';
-import { IconButton } from '../bar/button';
+import { IconButton, IconButtonSkeleton } from '../bar/button';
+
+import { getStoryHref } from '../utils/getStoryHref';
 
 interface ZoomProps {
   zoom: (val: number) => void;
@@ -19,7 +21,11 @@ interface BarProps {
   border?: boolean;
 }
 
-export type ToolbarProps = BarProps & ZoomProps & EjectProps;
+interface LoadingProps {
+  isLoading?: boolean;
+}
+
+export type ToolbarProps = BarProps & ZoomProps & EjectProps & LoadingProps;
 
 const Zoom: FunctionComponent<ZoomProps> = ({ zoom, resetZoom }) => (
   <>
@@ -59,7 +65,7 @@ const Zoom: FunctionComponent<ZoomProps> = ({ zoom, resetZoom }) => (
 const Eject: FunctionComponent<EjectProps> = ({ baseUrl, storyId }) => (
   <IconButton
     key="opener"
-    href={`${baseUrl}?id=${storyId}`}
+    href={getStoryHref(baseUrl, storyId)}
     target="_blank"
     title="Open canvas in new tab"
   >
@@ -76,6 +82,7 @@ const Bar = styled(FlexBar)({
 });
 
 export const Toolbar: FunctionComponent<ToolbarProps> = ({
+  isLoading,
   storyId,
   baseUrl,
   zoom,
@@ -84,8 +91,14 @@ export const Toolbar: FunctionComponent<ToolbarProps> = ({
 }) => (
   <Bar {...rest}>
     <Fragment key="left">
-      <Zoom {...{ zoom, resetZoom }} />
+      {isLoading ? (
+        [1, 2, 3].map((key) => <IconButtonSkeleton key={key} />)
+      ) : (
+        <Zoom {...{ zoom, resetZoom }} />
+      )}
     </Fragment>
-    <Fragment key="right">{storyId && <Eject {...{ storyId, baseUrl }} />}</Fragment>
+    <Fragment key="right">
+      {storyId && (isLoading ? <IconButtonSkeleton /> : <Eject {...{ storyId, baseUrl }} />)}
+    </Fragment>
   </Bar>
 );

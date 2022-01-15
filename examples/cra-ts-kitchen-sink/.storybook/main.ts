@@ -7,6 +7,7 @@ module.exports = {
   logLevel: 'debug',
   addons: [
     '@storybook/preset-create-react-app',
+    '@storybook/addon-ie11',
     '@storybook/addon-docs',
     '@storybook/addon-actions',
     '@storybook/addon-links',
@@ -28,7 +29,5 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
-  features: {
-    previewCsfV3: true,
-  },
+  staticDirs: ['../public'],
 };

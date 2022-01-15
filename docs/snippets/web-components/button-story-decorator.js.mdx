@@ -1,6 +1,15 @@
 ```js
 // demo-button.stories.js
 
-export const Primary = …
+import { html } from 'lit-html';
+
+import './demo-button'; 
+
+export default {
+    title: 'Button',
+};
+
+export const Primary = () => html`<demo-button>Hello World</demo-button>`;
+
 Primary.decorators = [(story) => html`<div style="margin: 3em">${story()}</div>`]
 ```

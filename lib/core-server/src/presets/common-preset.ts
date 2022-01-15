@@ -4,17 +4,20 @@ import {
   getManagerMainTemplate,
   getPreviewMainTemplate,
   loadCustomBabelConfig,
-  babelConfig,
+  getStorybookBabelConfig,
   loadEnvs,
   Options,
 } from '@storybook/core-common';
 
 export const babel = async (_: unknown, options: Options) => {
   const { configDir, presets } = options;
+  if (options.features?.babelModeV7) {
+    return presets.apply('babelDefault', {}, options);
+  }
 
   return loadCustomBabelConfig(
     configDir,
-    () => presets.apply('babelDefault', babelConfig(), options) as any
+    () => presets.apply('babelDefault', getStorybookBabelConfig(), options) as any
   );
 };
 
@@ -61,4 +64,6 @@ export const typescript = () => ({
 export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
+  emotionAlias: true,
+  warnOnLegacyHierarchySeparator: true,
 });

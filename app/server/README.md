@@ -62,7 +62,7 @@ module.exports = {
 
 Notice that the JSON does not specify a rendering function -- `@storybook/server` will instead call your `parameters.server.url` with the story's server id appended.
 
-For example the JSON story above is requivalent to the CSF definition:
+For example the JSON story above is requivalent to the CSF3 definition:
 
 ```javascript
 export default {
@@ -74,11 +74,12 @@ export default {
   },
 };
 
-export const Default = (args) => {};
-Default.storyName = 'Default';
-Default.parameters = {
-  server: {
-    id: 'path/of/your/story"',
+export const Default = {
+  name: 'Default',
+  parameters: {
+    server: {
+      id: 'path/of/your/story"',
+    },
   },
 };
 ```
@@ -129,7 +130,7 @@ Static parameters can be defined using the `params` story parameter. For example
 }
 ```
 
-The Red and Green story HTML will be fetched from the urls `server.url/controls/button?color=red&label=Stopr` and `server.url/controls/button?color=green&label=OK`
+The Red and Green story HTML will be fetched from the urls `server.url/controls/button?color=red&label=Stop` and `server.url/controls/button?color=green&label=OK`
 
 Like all story parameters server params can be defined in the default export and overridden in stories.
 
@@ -201,7 +202,7 @@ Just like CSF stories we can define `argTypes` to specify the controls used in t
 ```json
 {
   "title": "Buttons",
-  "argTypess": {
+  "argTypes": {
     "color": { "control": { "type": "color" } }
   },
   "stories": [

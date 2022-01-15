@@ -1,17 +1,32 @@
 ```js
 // Button.stories.js
 
-export const Text = (args) => ({
+import Button from './Button.vue';
+
+import { action } from '@storybook/addon-actions';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
+  component: Button,
+};
+
+export const Text = ({ label, onClick }) => ({
   components: { Button },
   setup() {
     return {
-      label: args.label,
-      onClick: action('clicked'),
+      label,
+      onClick,
     };
   },
   template: '<Button @onClick="onClick" :label="label" />',
 });
+
 Text.args = {
   label: 'Hello',
+  onClick: action('clicked'),
 };
 ```

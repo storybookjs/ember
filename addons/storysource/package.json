@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.4.0-alpha.18",
+  "version": "6.5.0-alpha.17",
   "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
@@ -26,7 +26,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -41,19 +41,19 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.4.0-alpha.18",
-    "@storybook/api": "6.4.0-alpha.18",
-    "@storybook/client-logger": "6.4.0-alpha.18",
-    "@storybook/components": "6.4.0-alpha.18",
-    "@storybook/router": "6.4.0-alpha.18",
-    "@storybook/source-loader": "6.4.0-alpha.18",
-    "@storybook/theming": "6.4.0-alpha.18",
+    "@storybook/addons": "6.5.0-alpha.17",
+    "@storybook/api": "6.5.0-alpha.17",
+    "@storybook/client-logger": "6.5.0-alpha.17",
+    "@storybook/components": "6.5.0-alpha.17",
+    "@storybook/router": "6.5.0-alpha.17",
+    "@storybook/source-loader": "6.5.0-alpha.17",
+    "@storybook/theming": "6.5.0-alpha.17",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
-    "prettier": "~2.2.1",
+    "prettier": "<=2.3.0",
     "prop-types": "^15.7.2",
-    "react-syntax-highlighter": "^13.5.3",
+    "react-syntax-highlighter": "^15.4.5",
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
@@ -75,7 +75,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "gitHead": "26e445b71ae37aeb97e0207cb5139666e7071c06",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",

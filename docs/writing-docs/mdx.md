@@ -4,11 +4,11 @@ title: 'MDX'
 
 <div class="aside">
 
-💡 <strong>NOTE</strong>: Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
+💡 Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
 
 </div>
 
-MDX is a [standard file format](https://mdxjs.com/) that combines Markdown with JSX. This means you can use Markdown’s terse syntax (such as # heading) for your documentation, write stories that compile to our component story format, and freely embed JSX component blocks at any point in the file. All at once.
+MDX is a [standard file format](https://mdxjs.com/) that combines Markdown with JSX. It means you can use Markdown’s terse syntax (such as # heading) for your documentation, write stories that compile to our component story format, and freely embed JSX component blocks at any point in the file. All at once.
 
 In addition, you can write pure documentation pages in MDX and add them to Storybook alongside your stories.
 
@@ -22,7 +22,11 @@ Let's get started with an example that combines Markdown with a single story:
 
 <CodeSnippets
   paths={[
-    'common/checkbox-story.mdx.mdx',
+    'react/checkbox-story.mdx.mdx',
+    'angular/checkbox-story.mdx.mdx',
+    'vue/checkbox-story.mdx-2.mdx.mdx',
+    'vue/checkbox-story.mdx-3.mdx.mdx',
+    'svelte/checkbox-story.mdx.mdx',
   ]}
 />
 
@@ -32,7 +36,7 @@ And here's how that's rendered in Storybook:
 
 ![MDX simple example result](./mdx-simple.png)
 
-As you can see there's a lot going on here. We're writing Markdown, we're writing JSX, and we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
+As you can see, a lot is going on here. We're writing Markdown, we're writing JSX, and we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
 
 Let's break it down.
 
@@ -62,7 +66,11 @@ Let's look at a more realistic example to see how MDX works:
 
 <CodeSnippets
   paths={[
-    'common/badge-story.mdx.mdx',
+    'react/badge-story.mdx.mdx',
+    'angular/badge-story.mdx.mdx',
+    'vue/badge-story.mdx-2.mdx.mdx',
+    'vue/badge-story.mdx-3.mdx.mdx',
+    'svelte/badge-story.mdx.mdx',
   ]}
 />
 
@@ -88,8 +96,7 @@ Based on this principle, if the Badge story included the following `ArgTypes`:
 
 <!-- prettier-ignore-end -->
 
-
-Transitioning them into MDX format is quite seamless and would only require the following change to the story:
+Transitioning them into MDX format is relatively seamless and would only require the following change to the story:
 
 <!-- prettier-ignore-start -->
 
@@ -150,37 +157,84 @@ Global parameters and decorators work just like before.
 
 ## Documentation-only MDX
 
-Typically, when you use Storybook MDX, you define stories in the MDX and documentation is automatically associated with those stories. But what if you want to write Markdown-style documentation without any stories inside?
+Typically, when you use Storybook MDX, you define stories in the MDX, and documentation is automatically associated with those stories. But what if you want to write Markdown-style documentation without any stories inside?
 
-If you don't define stories in your MDX, you can write MDX documentation and associate it with an existing story, or embed that MDX as its own documentation node in your Storybook's navigation.
+Suppose you don't define stories in your MDX. In that case, you can write MDX documentation and associate it with an existing story or embed that MDX as its own documentation node in your Storybook's navigation.
 
 If you don't define a Meta, you can write Markdown and associate with an existing story. See ["CSF Stories with MDX Docs"](../../addons/docs/docs/recipes.md#csf-stories-with-mdx-docs).
 
-To get a "documentation-only story", in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
+To get a "documentation-only story" in your UI, define a `<Meta>` as you normally would, but don't define any stories. It will show up in your UI as a documentation node:
 
 ![MDX docs only story](./mdx-documentation-only.png)
+
+### Syntax highlighting
+
+When writing your documentation with Storybook and MDX, you get syntax highlighting out of the box for a handful of popular languages (Javascript, Markdown, CSS, HTML, Typescript, GraphQL). For other formats, for instance, SCSS, you'll need to extend the syntax highlighter manually:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-custom-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+💡 For a list of available languages, check <code>react-syntax-highlighter</code>'s <a href="https://github.com/react-syntax-highlighter/react-syntax-highlighter">documentation</a>.
+</div>
+
+Once you've updated your documentation, you'll see the code block properly highlighted. You can also apply the same principle to other unsupported formats (i.e., `diff`, `hbs`).
+
+You can also update your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) and enable syntax highlighting globally. For example, to add support for SCSS, update your configuration to the following:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/storybook-preview-register-language-globally.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Write your documentation as you usually would, and your existing SCSS code blocks will automatically be highlighted when Storybook reloads. For example:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-global-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 ## Linking to other stories and pages
 
 When writing MDX, you may want to provide links to other stories or documentation pages and sections. You can use the `path` query string.
 
 Considering a story with ID `some--id`, this redirects to the **Docs** tab of the story:
+
 ```md
 [Go to specific documentation page](?path=/docs/some--id)
 ```
 
 This redirects to the **Canvas** tab of the story:
+
 ```md
 [Go to specific story canvas](?path=/story/some--id)
 ```
 
 You can also use anchors to target a specific section of a page:
+
 ```md
 [Go to the conclusion of the documentation page](?path=/docs/some--id#conclusion)
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+💡 By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
 </div>
 
 ![MDX anchor example](./mdx-anchor.webp)

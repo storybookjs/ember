@@ -1,44 +1,29 @@
-import ClientApi, {
+import {
+  ClientApi,
   addDecorator,
   addParameters,
   addLoader,
+  addArgs,
+  addArgTypes,
   addArgsEnhancer,
   addArgTypesEnhancer,
-} from './client_api';
-import { defaultDecorateStory } from './decorators';
-import { combineParameters } from './parameters';
-import StoryStore from './story_store';
-import ConfigApi from './config_api';
-import pathToId from './pathToId';
-import { simulatePageLoad, simulateDOMContentLoaded } from './simulate-pageload';
+  setGlobalRender,
+} from './ClientApi';
 
-import { getQueryParams, getQueryParam } from './queryparams';
-
-import { filterArgTypes } from './filterArgTypes';
-
-export * from './hooks';
 export * from './types';
-export * from './parameters';
-// FIXME: for react-argtypes.stories; remove on refactor
-export * from './inferControls';
 
-export type { PropDescriptor } from './filterArgTypes';
+export * from './queryparams';
+
+export * from '@storybook/store';
 
 export {
   addArgsEnhancer,
   addArgTypesEnhancer,
   addDecorator,
   addLoader,
+  addArgs,
+  addArgTypes,
   addParameters,
+  setGlobalRender,
   ClientApi,
-  combineParameters,
-  ConfigApi,
-  defaultDecorateStory,
-  filterArgTypes,
-  getQueryParam,
-  getQueryParams,
-  pathToId,
-  simulateDOMContentLoaded,
-  simulatePageLoad,
-  StoryStore,
 };

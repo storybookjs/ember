@@ -2,24 +2,42 @@
 // List.stories.ts
 
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { ListItemComponent } from './list-item.component';
-import { ListComponent } from './list.component';
+
+import { CommonModule } from '@angular/common';
+
+import { List } from './list.component';
+import { ListItem } from './list-item.component';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'List',
-  component: ListComponent,
-  subcomponents: { ListItemComponent }, //👈 Adds the ListItem component as a subcomponent
+  component: List,
+  subcomponents: { ListItem }, //👈 Adds the ListItem component as a subcomponent
+  decorators: [
+    moduleMetadata({
+      declarations: [List, ListItem],
+      imports: [CommonModule],
+    }),
+  ],
 } as Meta;
 
-const Template: Story<ListComponent> = (args) => ({
-  props: args,
-  moduleMetadata: {
-    declarations: [ListComponent, ListItemComponent],
+export const Empty: Story = () => ({
+  props: {
+    args,
   },
 });
 
-export const OneItem = Template.bind({});
-OneItem.args = {
-  items: [ListItemComponent],
-};
+export const OneItem: Story = () => ({
+  props: {
+    args,
+  },
+  template: `
+    <app-list>
+      <app-list-item></app-list-item>
+    </app-list>
+  `,
+});
 ```

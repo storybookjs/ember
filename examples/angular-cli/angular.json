@@ -79,15 +79,13 @@
           "builder": "@storybook/angular:start-storybook",
           "options": {
             "browserTarget": "angular-cli:build",
-            "port": 4400,
-            "staticDir": ["src/assets"]
+            "port": 4400
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "angular-cli:build",
-            "staticDir": ["src/assets"]
+            "browserTarget": "angular-cli:build"
           }
         }
       }
@@ -101,6 +99,24 @@
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
             "devServerTarget": "angular-cli:serve"
+          }
+        }
+      }
+    },
+    "without-browser-target": {
+      "root": "",
+      "projectType": "library",
+      "architect": {
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "tsConfig": "src/tsconfig.app.json"
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "tsConfig": "src/tsconfig.app.json"
           }
         }
       }

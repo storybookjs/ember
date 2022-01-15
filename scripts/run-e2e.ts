@@ -56,7 +56,7 @@ const serveStorybook = async ({ cwd }: Options, port: string) => {
 const runCypress = async (location: string, name: string) => {
   const cypressCommand = openCypressInUIMode ? 'open' : 'run';
   await exec(
-    `yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,defaultCommandTimeout=4000,integrationFolder="cypress/generated",videosFolder="/tmp/cypress-record/${name}" --env location="${location}"`,
+    `CYPRESS_ENVIRONMENT=${name} yarn cypress ${cypressCommand} --config pageLoadTimeout=4000,execTimeout=4000,taskTimeout=4000,responseTimeout=4000,defaultCommandTimeout=4000,integrationFolder="cypress/generated",videosFolder="/tmp/cypress-record/${name}" --env location="${location}"`,
     { cwd: rootDir },
     {
       startMessage: `🤖 Running Cypress tests`,
@@ -244,8 +244,7 @@ const getConfig = async (): Promise<Parameters[]> => {
         message: 'Select the frameworks to run',
         name: 'frameworks',
         min: 1,
-        hint:
-          'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
+        hint: 'You can also run directly with package name like `test:e2e-framework react`, or `yarn test:e2e-framework --all` for all packages!',
         choices: Object.keys(configs).map((key) => {
           // @ts-ignore
           const { name, version } = configs[key];

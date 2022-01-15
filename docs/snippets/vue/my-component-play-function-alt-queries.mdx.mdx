@@ -1,0 +1,34 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.vue';
+
+<Meta title="QueryMethods" component={MyComponent} />
+
+export const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+<Story
+  name="ExampleWithRole"
+  play={async () => {
+    // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await userEvent.click(screen.getByRole('button', { name: / button label/i }));
+  }}>
+  {Template.bind({})}
+</Story>
+
+<Story
+  name="ExampleWithText"
+  play={async () => {
+    // The play function interacts with the component and looks for the text
+    await screen.findByText('example string');
+  }}>
+  {Template.bind({})}
+</Story>
+```

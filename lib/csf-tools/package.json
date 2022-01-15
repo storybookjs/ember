@@ -1,6 +1,6 @@
 {
   "name": "@storybook/csf-tools",
-  "version": "6.4.0-alpha.18",
+  "version": "6.5.0-alpha.17",
   "description": "",
   "keywords": [
     "storybook"
@@ -25,7 +25,7 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
@@ -40,6 +40,7 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
+    "@babel/core": "^7.12.10",
     "@babel/generator": "^7.12.11",
     "@babel/parser": "^7.12.11",
     "@babel/plugin-transform-react-jsx": "^7.12.12",
@@ -47,23 +48,23 @@
     "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
     "@mdx-js/mdx": "^1.6.22",
-    "@storybook/csf": "^0.0.1",
+    "@storybook/csf": "0.0.2--canary.87bc651.0",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
     "global": "^4.4.0",
     "js-string-escape": "^1.0.1",
-    "lodash": "^4.17.20",
-    "prettier": "~2.2.1",
-    "regenerator-runtime": "^0.13.7"
+    "lodash": "^4.17.21",
+    "prettier": "<=2.3.0",
+    "regenerator-runtime": "^0.13.7",
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.6",
-    "js-yaml": "^3.14.1",
-    "ts-dedent": "^2.0.0"
+    "js-yaml": "^3.14.1"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "285782b4010609c6d6c9f306b8f8a110ae55f035",
+  "gitHead": "26e445b71ae37aeb97e0207cb5139666e7071c06",
   "sbmodern": "dist/modern/index.js"
 }

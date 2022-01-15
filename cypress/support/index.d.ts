@@ -46,6 +46,12 @@ declare namespace Cypress {
     viewAddonPanel(name: string): Chainable<Element>;
 
     /**
+     * Display main tab
+     * @param name of the addon
+     */
+    viewAddonTab(name: string): Chainable<Element>;
+
+    /**
      * Returns the element while logging it.
      */
     console(method: LoggerMethod): Chainable<Element>;

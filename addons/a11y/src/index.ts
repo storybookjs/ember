@@ -1,15 +1,16 @@
-import { DecoratorFunction } from '@storybook/addons';
+import { AnyFramework, DecoratorFunction } from '@storybook/csf';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
 export { PARAM_KEY } from './constants';
 export * from './highlight';
+export * from './params';
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();
 }
 
-export const withA11y: DecoratorFunction = deprecate(
+export const withA11y: DecoratorFunction<AnyFramework> = deprecate(
   (storyFn, storyContext) => {
     return storyFn(storyContext);
   },

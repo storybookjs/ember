@@ -136,7 +136,7 @@ const initStorybook = async ({ cwd, autoDetect = true, name, e2e }: Options) => 
 
 const addRequiredDeps = async ({ cwd, additionalDeps }: Options) => {
   // Remove any lockfile generated without Yarn 2
-  shell.rm(path.join(cwd, 'package-lock.json'), path.join(cwd, 'yarn.lock'));
+  shell.rm('-f', path.join(cwd, 'package-lock.json'), path.join(cwd, 'yarn.lock'));
 
   const command =
     additionalDeps && additionalDeps.length > 0

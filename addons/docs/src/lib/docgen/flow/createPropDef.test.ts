@@ -97,8 +97,7 @@ describe('type', () => {
       flowType: {
         name: 'signature',
         type: 'object',
-        raw:
-          '{ (x: string): void, prop1: string, prop2: string, prop3: string, prop4: string, prop5: string, prop6: string, prop7: string, prop8: string }',
+        raw: '{ (x: string): void, prop1: string, prop2: string, prop3: string, prop4: string, prop5: string, prop6: string, prop7: string, prop8: string }',
         signature: {
           properties: [
             {

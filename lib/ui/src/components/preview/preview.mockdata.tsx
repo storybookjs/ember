@@ -4,7 +4,7 @@ import { PreviewProps } from './utils/types';
 
 export const previewProps: PreviewProps = {
   id: 'string',
-  api: ({
+  api: {
     on: () => {},
     emit: () => {},
     off: () => {},
@@ -21,7 +21,7 @@ export const previewProps: PreviewProps = {
             } as Addon,
           ]
         : []) as API['getElements'],
-  } as any) as API,
+  } as any as API,
   story: {
     id: 'story--id',
     depth: 1,
@@ -41,7 +41,7 @@ export const previewProps: PreviewProps = {
   },
   path: 'string',
   viewMode: 'story',
-  location: ({} as any) as State['location'],
+  location: {} as any as State['location'],
   baseUrl: 'http://example.com',
   queryParams: {},
   options: {

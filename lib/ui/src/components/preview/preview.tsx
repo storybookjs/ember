@@ -54,10 +54,10 @@ const createCanvas = (id: string, baseUrl = 'iframe.html', withLoader = true): A
           storiesFailed,
           active,
         }) => {
-          const wrappers = useMemo(() => [...defaultWrappers, ...getWrappers(getElements)], [
-            getElements,
-            ...defaultWrappers,
-          ]);
+          const wrappers = useMemo(
+            () => [...defaultWrappers, ...getWrappers(getElements)],
+            [getElements, ...defaultWrappers]
+          );
 
           const isLoading = story
             ? !!refs[refId] && !refs[refId].ready

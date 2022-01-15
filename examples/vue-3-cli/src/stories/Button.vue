@@ -6,9 +6,9 @@
 
 <script lang="typescript">
 import './button.css';
-import { reactive, computed } from 'vue';
+import { reactive, computed, defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'my-button',
 
   props: {
@@ -55,5 +55,5 @@ export default {
       }
     }
   },
-};
+});
 </script>

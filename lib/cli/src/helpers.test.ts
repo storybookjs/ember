@@ -2,7 +2,7 @@ import fs from 'fs';
 import fse from 'fs-extra';
 
 import * as helpers from './helpers';
-import { StoryFormat, SupportedLanguage, SupportedFrameworks } from './project_types';
+import { SupportedLanguage, SupportedFrameworks } from './project_types';
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
@@ -25,35 +25,25 @@ describe('Helpers', () => {
   });
 
   describe('copyTemplate', () => {
-    it(`should fall back to ${StoryFormat.CSF} 
-        in case ${StoryFormat.CSF_TYPESCRIPT} is not available`, () => {
-      const csfDirectory = `template-${StoryFormat.CSF}/`;
+    it(`should copy template files when directory is present`, () => {
+      const csfDirectory = `template-csf/`;
       (fs.existsSync as jest.Mock).mockImplementation((filePath) => {
-        return filePath === csfDirectory;
+        return true;
       });
-      helpers.copyTemplate('', StoryFormat.CSF_TYPESCRIPT);
+      helpers.copyTemplate('');
 
       const copySyncSpy = jest.spyOn(fse, 'copySync');
       expect(copySyncSpy).toHaveBeenCalledWith(csfDirectory, expect.anything(), expect.anything());
     });
 
-    it(`should use ${StoryFormat.CSF_TYPESCRIPT} if it is available`, () => {
-      const csfDirectory = `template-${StoryFormat.CSF_TYPESCRIPT}/`;
+    it(`should throw an error if template directory cannot be found`, () => {
       (fs.existsSync as jest.Mock).mockImplementation((filePath) => {
-        return filePath === csfDirectory;
+        return false;
       });
-      helpers.copyTemplate('', StoryFormat.CSF_TYPESCRIPT);
 
-      const copySyncSpy = jest.spyOn(fse, 'copySync');
-      expect(copySyncSpy).toHaveBeenCalledWith(csfDirectory, expect.anything(), expect.anything());
-    });
-
-    it(`should throw an error for unsupported story format`, () => {
-      const storyFormat = 'non-existent-format' as StoryFormat;
-      const expectedMessage = `Unsupported story format: ${storyFormat}`;
       expect(() => {
-        helpers.copyTemplate('', storyFormat);
-      }).toThrowError(expectedMessage);
+        helpers.copyTemplate('');
+      }).toThrowError("Couldn't find template dir");
     });
   });
 

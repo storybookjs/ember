@@ -8,7 +8,7 @@ import { ArgValue } from './ArgValue';
 import { ArgControl, ArgControlProps } from './ArgControl';
 import { codeCommon } from '../../typography/shared';
 
-export interface ArgRowProps {
+interface ArgRowProps {
   row: ArgType;
   arg: any;
   updateArgs?: (args: Args) => void;
@@ -35,11 +35,19 @@ const Description = styled.div(({ theme }) => ({
     },
   },
 
-  code: codeCommon({ theme }),
+  code: {
+    ...codeCommon({ theme }),
+    fontSize: 12,
+    fontFamily: theme.typography.fonts.mono,
+  },
 
   '& code': {
     margin: 0,
     display: 'inline-block',
+  },
+
+  '& pre > code': {
+    whiteSpace: 'pre-wrap',
   },
 }));
 

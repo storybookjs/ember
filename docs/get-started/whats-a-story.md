@@ -18,11 +18,15 @@ Let’s start with the `Button` component. A story is a function that describes 
     'react/button-story.ts.mdx',
     'react/button-story.mdx.mdx',
     'angular/button-story.ts.mdx',
+    'angular/button-story.mdx.mdx',
     'vue/button-story.js.mdx',
+    'vue/button-story.mdx.mdx',
     'svelte/button-story.js.mdx',
     'svelte/button-story.native-format.mdx',
     'svelte/button-story.mdx.mdx',
     'web-components/button-story.js.mdx',
+    'html/button-story.js.mdx',
+    'html/button-story.ts.mdx',
   ]}
 />
 
@@ -32,7 +36,7 @@ Let’s start with the `Button` component. A story is a function that describes 
 
 View the rendered `Button` by clicking on it in the Storybook sidebar.
 
-The above story definition can be further improved to take advantage of [Storybook’s “args”](../writing-stories/args.md) concept. Args describes the arguments to Button in a machine readable way. This unlocks Storybook’s superpower of altering and composing arguments dynamically.
+The above story definition can be further improved to take advantage of [Storybook’s “args”](../writing-stories/args.md) concept. Args describes the arguments to Button in a machine-readable way. It unlocks Storybook’s superpower of altering and composing arguments dynamically.
 
 <!-- prettier-ignore-start -->
 
@@ -40,12 +44,19 @@ The above story definition can be further improved to take advantage of [Storybo
   paths={[
     'react/button-story-with-args.js.mdx',
     'react/button-story-with-args.ts.mdx',
+    'react/button-story-with-args.mdx.mdx',
     'vue/button-story-with-args.2.js.mdx',
+    'vue/button-story-with-args.mdx-2.mdx.mdx',
     'vue/button-story-with-args.3.js.mdx',
+    'vue/button-story-with-args.mdx-3.mdx.mdx',
     'angular/button-story-with-args.ts.mdx',
+    'angular/button-story-with-args.mdx.mdx',
     'web-components/button-story-with-args.js.mdx',
     'svelte/button-story-with-args.js.mdx',
     'svelte/button-story-with-args.native-format.mdx',
+    'svelte/button-story-with-args.mdx.mdx',
+    'html/button-story-with-args.js.mdx',
+    'html/button-story-with-args.ts.mdx',
   ]}
 />
 
@@ -58,17 +69,11 @@ Both story examples render the same thing because Storybook feeds the given `arg
 - `Button`s callbacks are logged into the Actions tab. Click to try it.
 - `Button`s arguments are dynamically editable in the Controls tab. Adjust the controls
 
-<div class="aside">
-
-Note that `Template.bind({})` is a [standard JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) technique for making a copy of a function. We copy the `Template` so each exported story can set its own properties on it.
-
-</div>
-
 ### Edit a story
 
-Storybook makes it easy to work on one component in one state (aka a story) at a time. When you edit the Button code or stories, Storybook will instantly re-render in the browser. No need to manually refresh.
+Storybook makes it easy to work on one component in one state (aka a story) at a time. When you edit the Button code or stories, Storybook will instantly re-render in the browser. No need to refresh manually.
 
-Update the `label` of the `Primary` story then see your change in Storybook.
+Update the `label` of the `Primary` story, then see your change in Storybook.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -77,7 +82,7 @@ Update the `label` of the `Primary` story then see your change in Storybook.
   />
 </video>
 
-Stories are also useful for checking that UI continues to look correct as you make changes. The `Button` component has four stories that show it in different use cases. View those stories now to confirm that your change to `Primary` didn’t introduce unintentional bugs in the other stories.
+Stories are also helpful for checking that UI continues to look correct as you make changes. The `Button` component has four stories that show it in different use cases. View those stories now to confirm that your change to `Primary` didn’t introduce unintentional bugs in the other stories.
 
 <video autoPlay muted playsInline loop>
   <source
@@ -86,6 +91,6 @@ Stories are also useful for checking that UI continues to look correct as you ma
   />
 </video>
 
-Checking component’s stories as you develop helps prevent accidental regressions. Tools that integrate with Storybook can also [automate](../workflows/testing-with-storybook.md) this for you.
+Checking component’s stories as you develop helps prevent accidental regressions. Tools that integrate with Storybook can also [automate](../writing-tests/introduction.md) this for you.
 
-Now we’ve seen the basic anatomy of a story, let’s see how we use Storybook’s UI to develop stories.
+Now that we’ve seen the basic anatomy of a story let’s see how we use Storybook’s UI to develop stories.

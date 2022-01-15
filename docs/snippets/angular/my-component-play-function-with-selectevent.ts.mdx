@@ -1,0 +1,40 @@
+```ts
+// MyComponent.stories.ts
+
+import { Meta, Story } from '@storybook/angular';
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import { MyComponent } from './MyComponent.component';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'WithSelectEvent',
+  component: MyComponent,
+} as Meta;
+
+// Function to emulate pausing between interactions
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const Template: Story = (args) => ({
+  props: args,
+});
+
+export const ExampleChangeEvent: Story = Template.bind({});
+ExampleChangeEvent.play = async () => {
+  const select = screen.getByRole('listbox');
+
+  await userEvent.selectOptions(select, ['One Item']);
+  await sleep(2000);
+
+  await userEvent.selectOptions(select, ['Another Item']);
+  await sleep(2000);
+
+  await userEvent.selectOptions(select, ['Yet another item']);
+};
+```

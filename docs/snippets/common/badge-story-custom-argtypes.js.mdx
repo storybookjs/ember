@@ -1,43 +1,43 @@
 ```js
-// Badge.stories.js | Badge.stories.jsx  | Badge.stories.ts | Badge.stories.tsx
+// Badge.stories.js|jsx|ts|tsx
+
+import { Badge } from './Badge';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Badge',
   component: Badge,
-  title: 'CSF/Badge',
   argTypes: {
     status: {
       name: 'Badge Status',
       description: 'Available options available to the Badge',
-      options: [
-        'positive',
-        'negative',
-        'warning',
-        'error',
-        'neutral'
-      ],
+      options: ['positive', 'negative', 'warning', 'error', 'neutral'],
       table: {
         defaultValue: {
-          summary: 'positive'
+          summary: 'positive',
         },
         type: {
           summary: 'Shows options to the Badge',
-          detail: 'Listing of available options'
-        }
+          detail: 'Listing of available options',
+        },
       },
     },
     label: {
       name: 'Badge Content',
       description: 'Text shown by Badge',
       control: {
-        type: 'text'
+        type: 'text',
       },
       table: {
         type: {
           summary: 'The label contents',
-          detail: 'Text displayed by the Badge'
-        }
-      }
-    }
-  }
+          detail: 'Text displayed by the Badge',
+        },
+      },
+    },
+  },
 };
 ```

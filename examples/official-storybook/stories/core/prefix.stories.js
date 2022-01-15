@@ -7,5 +7,5 @@ export default {
 
 const Template = () => 'Story';
 
-export const prefixAndName = Template.bind({});
-export const prefix = Template.bind({});
+export const PrefixAndName = Template.bind({});
+export const Prefix = Template.bind({});

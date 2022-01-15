@@ -10,12 +10,12 @@ Storybook maintains code snippets for a [variety of frameworks](./../api/framewo
 
 We welcome community contributions to the code snippets. Here's a matrix of the frameworks we have snippets for. Help us add snippets for your favorite framework.
 
-| React                                                                        | Vue                                                                        | Angular                                                                        | Web Components                                                                                   | Svelte                                                                        | Ember | HTML | Mithril | Marko | Riot | Preact | Rax |
-| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ----- | ---- | ------- | ----- | ---- | ------ | --- |
-| [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/react) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/vue) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/angular) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/web-components) (See note) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/svelte) | ❌    | ❌   | ❌      | ❌    | ❌   | ❌     | ❌  |
+| React                                                                        | Vue                                                                        | Angular                                                                        | Web Components                                                                                    | Svelte                                                                        | Ember | HTML | Mithril | Marko | Riot | Preact | Rax |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----- | ---- | ------- | ----- | ---- | ------ | --- |
+| [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/react) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/vue) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/angular) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/web-components) (See below) | [✅](https://github.com/storybookjs/storybook/tree/next/docs/snippets/svelte) | ❌    | ❌   | ❌      | ❌    | ❌   | ❌     | ❌  |
 
 <div class="aside">
-💡 Note: The <code>Web Components</code> snippets are present but not fully documented. If you're willing to help, submit a pull request.
+💡 The <code>Web Components</code> snippets are present but not fully documented. If you're willing to help, submit a pull request.
 </div>
 
 ## Setup
@@ -80,7 +80,7 @@ Create the file `ember/your-component.js.mdx`, similar to the other frameworks, 
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> Code snippets are divided into various file extensions, if you're contributing a TypeScript file use <code>.ts.mdx</code>, or if you're adding MDX files use <code>.mdx.mdx</code> .
+💡 Code snippets are divided into various file extensions, if you're contributing a TypeScript file use <code>.ts.mdx</code>, or if you're adding MDX files use <code>.mdx.mdx</code> .
 </div>
 
 Go through the rest of the documentation and repeat the process.
@@ -110,7 +110,7 @@ yarn start:skip-addons
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> During the start process if there's an issue with the the documentation, the process will stop and you'll get a notification.
+💡 During the start process if there's an issue with the the documentation, the process will stop and you'll get a notification.
 </div>
 
 Open a browser window to `http://localhost:8000`, click the Docs link, and select your framework from the dropdown.

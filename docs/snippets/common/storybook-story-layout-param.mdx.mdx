@@ -1,0 +1,21 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button}/>
+
+export const Template = () => ({
+  //👇 Your template goes here
+});
+
+<Story
+  name="WithLayout"
+  parameters={{
+    layout: 'centered',
+  }}>
+  {Template.bind({})}
+</Story>
+```

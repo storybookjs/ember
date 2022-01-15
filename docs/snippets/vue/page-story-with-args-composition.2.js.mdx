@@ -9,8 +9,12 @@ import * as DocumentHeaderStories from './DocumentHeader.stories';
 import * as DocumentListStories from './DocumentList.stories';
 
 export default {
-  component: DocumentScreen,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'DocumentScreen',
+  component: DocumentScreen,
 };
 
 const Template = (args, { argTypes }) => ({

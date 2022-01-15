@@ -77,8 +77,6 @@ export const CircularPayload = () => {
   return <Button onClick={() => action('circular')(circular)}>Circular Payload</Button>;
 };
 
-CircularPayload.storyName = 'Circular Payload';
-
 export const ReservedKeywordAsName = () => <Button onClick={action('delete')}>Delete</Button>;
 
 ReservedKeywordAsName.storyName = 'Reserved keyword as name';
@@ -186,7 +184,6 @@ export const LimitActionOutput = () => {
     </Fragment>
   );
 };
-LimitActionOutput.storyName = 'Limit Action Output';
 
 export const SkippedViaDisableTrue = () => (
   <Button onClick={action('hello-world')}>Hello World</Button>

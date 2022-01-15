@@ -40,10 +40,10 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
   const updatedOptions = isWebpack5 ? { ...options, builder: CoreBuilder.Webpack5 } : options;
 
   baseGenerator(packageManager, npmOptions, updatedOptions, 'angular', {
-    extraPackages: ['@compodoc/compodoc', '@angular/elements', '@webcomponents/custom-elements'],
+    extraPackages: ['@compodoc/compodoc'],
     addScripts: false,
   });
-  copyTemplate(__dirname, options.storyFormat);
+  copyTemplate(__dirname);
 
   editAngularAppTsConfig();
   editStorybookTsConfig(path.resolve('./.storybook/tsconfig.json'));

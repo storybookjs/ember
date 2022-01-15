@@ -1,0 +1,27 @@
+```js
+// MyComponent.stories.js
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading 
+  * to learn how to generate automatic titles
+  */
+  title: 'Disable a11y addon',
+  component: MyComponent,
+};
+
+const Template = () => ({
+  components: { MyComponent },
+  template: '<MyComponent/>',
+});
+
+export const NonA11yStory = Template.bind({});
+NonA11yStory.parameters = {
+  a11y: {
+    // This option disables all a11y checks on this story
+    disable: true,
+  },
+};
+```

@@ -8,13 +8,13 @@ export default {
 };
 
 const style: CSSProperties = {
-  width: '500px',
+  maxWidth: '700px',
   height: '500px',
   border: '2px solid hotpink',
   position: 'relative',
 };
 
-export const workingStory = () => (
+export const WorkingStory = () => (
   <IFrame
     active
     id="iframe"
@@ -25,11 +25,11 @@ export const workingStory = () => (
     scale={1.0}
   />
 );
-workingStory.parameters = {
+WorkingStory.parameters = {
   chromatic: { disable: true },
 };
 
-export const missingStory = () => (
+export const MissingStory = () => (
   <IFrame
     active
     id="iframe"
@@ -40,3 +40,33 @@ export const missingStory = () => (
     scale={1.0}
   />
 );
+
+export const PreparingStory = () => (
+  <IFrame
+    active
+    id="iframe"
+    title="Preparing Story"
+    src="/iframe.html?__SPECIAL_TEST_PARAMETER__=preparing-story"
+    allowFullScreen
+    style={style}
+    scale={1.0}
+  />
+);
+PreparingStory.parameters = {
+  chromatic: { disable: true },
+};
+
+export const PreparingDocs = () => (
+  <IFrame
+    active
+    id="iframe"
+    title="Preparing Docs"
+    src="/iframe.html?__SPECIAL_TEST_PARAMETER__=preparing-docs"
+    allowFullScreen
+    style={style}
+    scale={1.0}
+  />
+);
+PreparingDocs.parameters = {
+  chromatic: { disable: true },
+};

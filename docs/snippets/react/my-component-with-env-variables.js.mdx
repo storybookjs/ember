@@ -1,20 +1,23 @@
 ```js
-// MyComponent.stories.js | MyComponent.stories.jsx
+// MyComponent.stories.js|jsx
 
 import React from 'react';
 
-import MyComponent from './MyComponent';
+import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
   component: MyComponent,
-  title: 'A story using environment variables inside a .env file',
 };
 
 const Template = (args) => <MyComponent {...args} />;
 
-export const Default = Template.bind({});
-
-Default.args = {
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
   propertyA: process.env.STORYBOOK_DATA_KEY,
 };
 ```

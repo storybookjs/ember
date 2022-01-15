@@ -1,3 +1,4 @@
+import path from 'path';
 import { getPreviewFile, getMainFile } from './configure';
 
 // eslint-disable-next-line global-require, jest/no-mocks-import
@@ -19,9 +20,9 @@ describe('preview files', () => {
     ${'config.js'}
     ${'config.jsx'}
   `('resolves a valid preview file from $filepath', ({ filepath }) => {
-    setupFiles({ [`test/${filepath}`]: 'true' });
+    setupFiles({ [path.join('test', filepath)]: 'true' });
 
-    expect(getPreviewFile('test/')).toEqual(`test/${filepath}`);
+    expect(getPreviewFile('test/')).toEqual(`test${path.sep}${filepath}`);
   });
 
   it('returns false when none of the paths exist', () => {
@@ -39,9 +40,9 @@ describe('main files', () => {
     ${'main.js'}
     ${'main.jsx'}
   `('resolves a valid main file path from $filepath', ({ filepath }) => {
-    setupFiles({ [`test/${filepath}`]: 'true' });
+    setupFiles({ [path.join('test', filepath)]: 'true' });
 
-    expect(getMainFile('test/')).toEqual(`test/${filepath}`);
+    expect(getMainFile('test/')).toEqual(`test${path.sep}${filepath}`);
   });
 
   it('returns false when none of the paths exist', () => {

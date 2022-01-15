@@ -45,7 +45,6 @@ project {
     buildType(Build)
     buildType(E2E)
     buildType(SmokeTests)
-    buildType(Frontpage)
     buildType(Test)
     buildType(Coverage)
 
@@ -56,7 +55,6 @@ project {
             RelativeId("Build"),
             RelativeId("E2E"),
             RelativeId("SmokeTests"),
-            RelativeId("Frontpage"),
             RelativeId("Test"),
             RelativeId("Coverage")
     )
@@ -177,7 +175,7 @@ object ExamplesTemplate : Template({
                 rm -rf built-storybooks
                 mkdir -p built-storybooks
                 
-                yarn build-storybooks
+                yarn build-storybooks --all
             """.trimIndent()
             dockerImage = "buildkite/puppeteer"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
@@ -399,34 +397,6 @@ object SmokeTests : BuildType({
             """.trimIndent()
             dockerImage = "node:12"
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-        }
-    }
-})
-
-object Frontpage : BuildType({
-    name = "Frontpage"
-    type = Type.DEPLOYMENT
-
-    steps {
-        script {
-            scriptContent = """
-                #!/bin/bash
-                set -e -x
-
-                yarn install --immutable
-                yarn bootstrap --install
-                node ./scripts/build-frontpage.js
-            """.trimIndent()
-            dockerImage = "node:12"
-            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
-        }
-    }
-
-    triggers {
-        vcs {
-            quietPeriodMode = VcsTrigger.QuietPeriodMode.USE_DEFAULT
-            triggerRules = "-:.teamcity/**"
-            branchFilter = "+:main"
         }
     }
 })

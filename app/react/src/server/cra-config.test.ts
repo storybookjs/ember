@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { getReactScriptsPath } from './cra-config';
 
 jest.mock('fs', () => ({
@@ -7,33 +8,33 @@ jest.mock('fs', () => ({
   existsSync: jest.fn(() => true),
 }));
 
-const SCRIPT_PATH = '.bin/react-scripts';
+const SCRIPT_PATH = path.join('.bin', 'react-scripts');
 
 describe('cra-config', () => {
   describe('when used with the default react-scripts package', () => {
     beforeEach(() => {
-      ((fs.realpathSync as unknown) as jest.Mock).mockImplementationOnce((filePath) =>
+      (fs.realpathSync as unknown as jest.Mock).mockImplementationOnce((filePath) =>
         filePath.replace(SCRIPT_PATH, `react-scripts/${SCRIPT_PATH}`)
       );
     });
 
     it('should locate the react-scripts package', () => {
       expect(getReactScriptsPath({ noCache: true })).toEqual(
-        '/test-project/node_modules/react-scripts'
+        path.join(path.sep, 'test-project', 'node_modules', 'react-scripts')
       );
     });
   });
 
   describe('when used with a custom react-scripts package', () => {
     beforeEach(() => {
-      ((fs.realpathSync as unknown) as jest.Mock).mockImplementationOnce((filePath) =>
+      (fs.realpathSync as unknown as jest.Mock).mockImplementationOnce((filePath) =>
         filePath.replace(SCRIPT_PATH, `custom-react-scripts/${SCRIPT_PATH}`)
       );
     });
 
     it('should locate the react-scripts package', () => {
       expect(getReactScriptsPath({ noCache: true })).toEqual(
-        '/test-project/node_modules/custom-react-scripts'
+        path.join(path.sep, 'test-project', 'node_modules', 'custom-react-scripts')
       );
     });
   });
@@ -42,9 +43,9 @@ describe('cra-config', () => {
     beforeEach(() => {
       // In case of .bin/react-scripts is not symlink (like it happens on Windows),
       // realpathSync() method does not translate the path.
-      ((fs.realpathSync as unknown) as jest.Mock).mockImplementationOnce((filePath) => filePath);
+      (fs.realpathSync as unknown as jest.Mock).mockImplementationOnce((filePath) => filePath);
 
-      ((fs.readFileSync as unknown) as jest.Mock).mockImplementationOnce(
+      (fs.readFileSync as unknown as jest.Mock).mockImplementationOnce(
         () => `#!/bin/sh
 basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 
@@ -65,7 +66,7 @@ exit $ret`
 
     it('should locate the react-scripts package', () => {
       expect(getReactScriptsPath({ noCache: true })).toEqual(
-        '/test-project/node_modules/custom-react-scripts'
+        path.join(path.sep, 'test-project', 'node_modules', 'custom-react-scripts')
       );
     });
   });

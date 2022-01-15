@@ -13,14 +13,6 @@ describe('preview', () => {
   });
 
   it('should return the client api in a node.js environment', () => {
-    jest.mock(
-      'global',
-      () =>
-        ({
-          document: undefined,
-          window: {},
-        } as any)
-    );
     const api = require('.');
     expect(Object.keys(api).length).toBeGreaterThan(0);
     expect(Object.values(api).every(isFunction)).toEqual(true);

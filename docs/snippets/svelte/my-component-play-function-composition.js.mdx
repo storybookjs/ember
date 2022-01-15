@@ -1,0 +1,39 @@
+```js
+// MyComponent.stories.js
+
+import { screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.svelte';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/svelte/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
+  component: MyComponent,
+};
+
+const Template = (args) => ({
+  Component: MyComponent,
+  props: args,
+});
+
+export const FirstStory = Template.bind({});
+FirstStory.play = async () => {
+  userEvent.type(screen.getByTestId('an-element'), 'example-value');
+};
+
+export const SecondStory = Template.bind({});
+SecondStory.play = async () => {
+  await userEvent.type(screen.getByTestId('other-element'), 'another value');
+};
+
+export const CombinedStories = Template.bind({});
+CombinedStories.play = async () => {
+  // Runs the FirstStory and Second story play function before running this story's play function
+  await FirstStory.play();
+  await SecondStory.play();
+  await userEvent.type(screen.getByTestId('another-element'), 'random value');
+};
+```

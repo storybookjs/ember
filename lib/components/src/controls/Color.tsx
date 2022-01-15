@@ -232,11 +232,10 @@ const useColorInput = (
     setColorSpace(ColorSpace.HEX);
   }, [initialValue]);
 
-  const realValue = useMemo(() => getRealValue(value, color, colorSpace).toLowerCase(), [
-    value,
-    color,
-    colorSpace,
-  ]);
+  const realValue = useMemo(
+    () => getRealValue(value, color, colorSpace).toLowerCase(),
+    [value, color, colorSpace]
+  );
 
   const updateValue = useCallback(
     (update: string) => {
@@ -358,7 +357,7 @@ export const ColorControl: FC<ColorProps> = ({
         onFocus={(e: FocusEvent<HTMLInputElement>) => e.target.select()}
         placeholder="Choose color..."
       />
-      <ToggleIcon icon="markup" onClick={cycleColorSpace} />
+      {value ? <ToggleIcon icon="markup" onClick={cycleColorSpace} /> : null}
     </Wrapper>
   );
 };
