@@ -349,29 +349,4 @@ Applying this small change will enable you to add syntax highlight for SCSS or a
 
 ### How can my code detect if it is running in Storybook?
 
-You can do this by checking the value of `process.env.STORYBOOK`, which will
-equal `'true'` when running in Storybook. Be careful — `process` may be
-undefined when your code runs outside of Storybook.
-
-```javascript
-export function isRunningInStorybook() {
-  try {
-    if (process.env.STORYBOOK) return true;
-  } catch {
-    // A ReferenceError will be thrown if process is undefined
-  }
-
-  return false;
-}
-```
-
-This works because Babel replaces `process.env.STORYBOOK` with the value of the
-`STORYBOOK` environment variable. Because this is done through a Babel plugin,
-the following will **NOT** work:
-
-```javascript
-export function isRunningInStorybook() {
-  return typeof process?.env?.STORYBOOK !== 'undefined';
-  // ReferenceError: process is not defined
-}
-```
+You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook. The environment variable `process.env.STORYBOOK` is also set to `true`.
