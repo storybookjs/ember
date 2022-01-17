@@ -349,4 +349,4 @@ Applying this small change will enable you to add syntax highlight for SCSS or a
 
 ### How can my code detect if it is running in Storybook?
 
-You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook.
+You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook. The environment variable `process.env.STORYBOOK` is also set to `true`.
