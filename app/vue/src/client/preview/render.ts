@@ -1,6 +1,7 @@
 import dedent from 'ts-dedent';
 import Vue from 'vue';
 import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
 import { VueFramework } from './types-6-0';
 
 export const COMPONENT = 'STORYBOOK_COMPONENT';
@@ -18,6 +19,21 @@ const root = new Vue({
     return h('div', { attrs: { id: 'root' } }, children);
   },
 });
+
+export const render: ArgsStoryFn<VueFramework> = (props, context) => {
+  const { id, component: Component } = context;
+  if (!Component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
+    );
+  }
+
+  return {
+    render(h) {
+      return h(Component, { props });
+    },
+  };
+};
 
 export function renderToDOM(
   {
