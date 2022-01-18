@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`cra-ts-essentials preview dev 1`] = `null`;
-
 exports[`cra-ts-essentials preview prod 1`] = `
 Object {
   "entry": Array [
