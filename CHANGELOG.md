@@ -1,3 +1,9 @@
+## 6.5.0-alpha.21 (January 18, 2022)
+
+### Features
+
+* Webpack5: Switch to using `import.meta.webpackHot.accept` ([#17270](https://github.com/storybookjs/storybook/pull/17270))
+
 ## 6.5.0-alpha.20 (January 18, 2022)
 
 ### Dependency Upgrades
