@@ -41,7 +41,8 @@ Private value.",
   },
   "accent": Object {
     "defaultValue": undefined,
-    "description": "Specify the accent-type of the button",
+    "description": "
+Specify the accent-type of the button",
     "name": "accent",
     "table": Object {
       "category": "inputs",
@@ -59,7 +60,8 @@ Private value.",
   },
   "appearance": Object {
     "defaultValue": "secondary",
-    "description": "Appearance style of the button.",
+    "description": "
+Appearance style of the button.",
     "name": "appearance",
     "table": Object {
       "category": "inputs",
@@ -139,7 +141,8 @@ An internal calculation method which adds \`x\` and \`y\` together.
   },
   "inputValue": Object {
     "defaultValue": undefined,
-    "description": "Setter for \`inputValue\` that is also an \`@Input\`.",
+    "description": "
+Setter for \`inputValue\` that is also an \`@Input\`.",
     "name": "inputValue",
     "table": Object {
       "category": "inputs",
@@ -176,7 +179,8 @@ Public value.",
   },
   "isDisabled": Object {
     "defaultValue": false,
-    "description": "Sets the button to a disabled state.",
+    "description": "
+Sets the button to a disabled state.",
     "name": "isDisabled",
     "table": Object {
       "category": "inputs",
@@ -212,7 +216,11 @@ Public value.",
   },
   "label": Object {
     "defaultValue": undefined,
-    "description": "The inner text of the button.",
+    "description": "
+
+The inner text of the button.
+
+",
     "name": "label",
     "table": Object {
       "category": "inputs",
@@ -371,7 +379,8 @@ A public method using an interface.",
   },
   "size": Object {
     "defaultValue": "medium",
-    "description": "Size of the button.",
+    "description": "
+Size of the button.",
     "name": "size",
     "table": Object {
       "category": "inputs",
@@ -389,7 +398,8 @@ A public method using an interface.",
   },
   "someDataObject": Object {
     "defaultValue": undefined,
-    "description": "Specifies some arbitrary object",
+    "description": "
+Specifies some arbitrary object",
     "name": "someDataObject",
     "table": Object {
       "category": "inputs",
@@ -407,7 +417,11 @@ A public method using an interface.",
   },
   "somethingYouShouldNotUse": Object {
     "defaultValue": false,
-    "description": "Some input you shouldn't use.",
+    "description": "
+
+Some input you shouldn't use.
+
+",
     "name": "somethingYouShouldNotUse",
     "table": Object {
       "category": "inputs",

@@ -38,7 +38,7 @@
     "@angular/cli": "^11.2.13",
     "@angular/compiler-cli": "^11.2.14",
     "@angular/elements": "^11.2.14",
-    "@compodoc/compodoc": "^1.1.15",
+    "@compodoc/compodoc": "^1.1.18",
     "@storybook/addon-a11y": "6.5.0-alpha.19",
     "@storybook/addon-actions": "6.5.0-alpha.19",
     "@storybook/addon-backgrounds": "6.5.0-alpha.19",
