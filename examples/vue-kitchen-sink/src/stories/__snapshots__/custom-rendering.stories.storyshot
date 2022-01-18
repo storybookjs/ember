@@ -5,8 +5,7 @@ exports[`Storyshots Custom/Method for rendering Vue JSX 1`] = `
   class="button"
   style="color: rgb(66, 185, 131); border-color: #42b983;"
 >
-  MyButton rendered with JSX!
-
+  MyButton rendered with JSX
 </button>
 `;
 
@@ -39,8 +38,7 @@ exports[`Storyshots Custom/Method for rendering Vue pre-registered component 1`]
     class="button"
     style="color: rgb(66, 185, 131); border-color: #42b983;"
   >
-    MyButton rendered in a template!
-
+    MyButton rendered in a template
   </button>
 </p>
 `;
@@ -50,8 +48,7 @@ exports[`Storyshots Custom/Method for rendering Vue render + component 1`] = `
   class="button"
   style="color: pink; border-color: pink;"
 >
-  renders component: MyButton!
-
+  renders component: MyButton
 </button>
 `;
 
@@ -60,8 +57,7 @@ exports[`Storyshots Custom/Method for rendering Vue template + component 1`] = `
   class="button"
   style="color: rgb(66, 185, 131); border-color: #42b983;"
 >
-  MyButton rendered in a template!
-
+  MyButton rendered in a template
 </button>
 `;
 
@@ -76,8 +72,7 @@ exports[`Storyshots Custom/Method for rendering Vue template + methods 1`] = `
     class="button rounded"
     style="color: rgb(66, 185, 131); border-color: #42b983;"
   >
-    MyButton rendered in a template + props & methods!
-
+    MyButton rendered in a template + props & methods
   </button>
 </p>
 `;
@@ -87,8 +82,7 @@ exports[`Storyshots Custom/Method for rendering Vue vuex + actions 1`] = `
   class="button"
   style="color: rgb(66, 185, 131); border-color: #42b983;"
 >
-  with vuex: 0!
-
+  with vuex: 0
 </button>
 `;
 
@@ -97,7 +91,6 @@ exports[`Storyshots Custom/Method for rendering Vue whatever you want 1`] = `
   class="button"
   style="color: rgb(66, 185, 131); border-color: #42b983;"
 >
-  with awesomeness: 0!
-
+  with awesomeness: 0
 </button>
 `;

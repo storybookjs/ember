@@ -11,8 +11,7 @@ exports[`Storyshots Custom/Decorator for Vue Render 1`] = `
       class="button"
       style="color: pink; border-color: pink;"
     >
-      renders component: MyButton!
-
+      renders component: MyButton
     </button>
   </div>
 </div>
@@ -29,8 +28,7 @@ exports[`Storyshots Custom/Decorator for Vue Template 1`] = `
       class="button"
       style="color: rgb(66, 185, 131); border-color: #42b983;"
     >
-      MyButton with template!
-
+      MyButton with template
     </button>
   </div>
 </div>
