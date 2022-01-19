@@ -126,7 +126,7 @@ describe('Build Storybook Builder', () => {
 
       expect(false).toEqual('Throw expected');
     } catch (error) {
-      // eslint-disable-next-line jest/no-try-expect, jest/no-conditional-expect
+      // eslint-disable-next-line jest/no-try-expect
       expect(error).toEqual(
         'Broken build, fix the error above.\nYou may need to refresh the browser.'
       );

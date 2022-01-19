@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unused-prop-types */
 import React from 'react';
-// @ts-ignore
 import PropTypes, { string, shape } from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { PRESET_SHAPE, SOME_PROP_TYPES } from './ext';
@@ -89,7 +88,6 @@ const SOME_INLINE_DEFAULT_PROPS = {
     return null;
   },
   inlineHtmlElement: <div>Hey!</div>,
-  // eslint-disable-next-line react/prop-types
   inlineFunctionalElementInlineWithProps: ({ foo }) => {
     return <div>{foo}</div>;
   },
