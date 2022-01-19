@@ -17,16 +17,8 @@ export default {
 
 const Template: CSF2Story<ButtonProps> = (args) => <Button {...args} />;
 
-export const Primary: CSF3Story<ButtonProps> = {
-  args: {
-    children: 'foo',
-    size: 'large',
-    primary: true,
-  },
-};
-
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const CSF2Secondary = Template.bind({});
+CSF2Secondary.args = {
   children: 'Children coming from story args!',
   primary: false,
 };
@@ -46,22 +38,30 @@ const getCaptionForLocale = (locale: string) => {
   }
 };
 
-export const StoryWithLocale: CSF2Story = (args, { globals: { locale } }) => {
+export const CSF2StoryWithLocale: CSF2Story = (args, { globals: { locale } }) => {
   const caption = getCaptionForLocale(locale);
   return <Button>{caption}</Button>;
 };
-StoryWithLocale.storyName = 'WithLocale';
+CSF2StoryWithLocale.storyName = 'WithLocale';
 
-export const StoryWithParamsAndDecorator: CSF2Story<ButtonProps> = (args) => {
+export const CSF2StoryWithParamsAndDecorator: CSF2Story<ButtonProps> = (args) => {
   return <Button {...args} />;
 };
-StoryWithParamsAndDecorator.args = {
+CSF2StoryWithParamsAndDecorator.args = {
   children: 'foo',
 };
-StoryWithParamsAndDecorator.parameters = {
+CSF2StoryWithParamsAndDecorator.parameters = {
   layout: 'centered',
 };
-StoryWithParamsAndDecorator.decorators = [(StoryFn) => <StoryFn />];
+CSF2StoryWithParamsAndDecorator.decorators = [(StoryFn) => <StoryFn />];
+
+export const CSF3Primary: CSF3Story<ButtonProps> = {
+  args: {
+    children: 'foo',
+    size: 'large',
+    primary: true,
+  },
+};
 
 export const CSF3Button: CSF3Story<ButtonProps> = {
   args: { children: 'foo' },
@@ -77,7 +77,7 @@ export const CSF3ButtonWithRender: CSF3Story<ButtonProps> = {
   ),
 };
 
-export const InputFieldFilled: CSF3Story = {
+export const CSF3InputFieldFilled: CSF3Story = {
   render: () => {
     return <input />;
   },

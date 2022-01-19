@@ -9,19 +9,19 @@ import * as stories from './Button.stories';
 
 import * as globalConfig from '../../../../.storybook/preview';
 
-const { StoryWithParamsAndDecorator } = composeStories(stories);
+const { CSF2StoryWithParamsAndDecorator } = composeStories(stories);
 
 test('returns composed args including default values from argtypes', () => {
-  expect(StoryWithParamsAndDecorator.args).toEqual({
-    ...stories.StoryWithParamsAndDecorator.args,
-    label: stories.default!.argTypes!.label!.defaultValue,
+  expect(CSF2StoryWithParamsAndDecorator.args).toEqual({
+    ...stories.CSF2StoryWithParamsAndDecorator.args,
+    label: stories.default.argTypes!.label!.defaultValue,
   });
 });
 
 test('returns composed parameters from story', () => {
-  expect(StoryWithParamsAndDecorator.parameters).toEqual(
+  expect(CSF2StoryWithParamsAndDecorator.parameters).toEqual(
     expect.objectContaining({
-      ...stories.StoryWithParamsAndDecorator.parameters,
+      ...stories.CSF2StoryWithParamsAndDecorator.parameters,
       ...globalConfig.parameters,
     })
   );
@@ -30,7 +30,7 @@ test('returns composed parameters from story', () => {
 // common in addons that need to communicate between manager and preview
 test('should pass with decorators that need addons channel', () => {
   // @ts-ignore
-  const PrimaryWithChannels = composeStory(stories.Primary, stories.default, {
+  const PrimaryWithChannels = composeStory(stories.CSF3Primary, stories.default, {
     decorators: [
       (StoryFn: any) => {
         addons.getChannel();

@@ -66,6 +66,7 @@ export function composeStory<
 
   composedStory.storyName = story.storyName || story.name;
   composedStory.args = preparedStory.initialArgs;
+  // @TODO this should be partial play fn that works by just passing canvasElement
   composedStory.play = preparedStory.playFunction;
   composedStory.parameters = preparedStory.parameters;
 

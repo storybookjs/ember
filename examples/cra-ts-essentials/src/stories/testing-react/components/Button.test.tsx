@@ -8,13 +8,13 @@ import { composeStories, composeStory } from '@storybook/react';
 import * as stories from './Button.stories';
 
 // example with composeStories, returns an object with all stories composed with args/decorators
-const { Primary } = composeStories(stories);
+const { CSF3Primary } = composeStories(stories);
 
 // example with composeStory, returns a single story composed with args/decorators
-const Secondary = composeStory(stories.Secondary, stories.default);
+const Secondary = composeStory(stories.CSF2Secondary, stories.default);
 
 test('renders primary button', () => {
-  render(<Primary>Hello world</Primary>);
+  render(<CSF3Primary>Hello world</CSF3Primary>);
   const buttonElement = screen.getByText(/Hello world/i);
   expect(buttonElement).not.toBeNull();
 });
@@ -23,7 +23,7 @@ test('reuses args from composed story', () => {
   render(<Secondary />);
 
   const buttonElement = screen.getByRole('button');
-  expect(buttonElement.textContent).toEqual(Secondary.args!.children);
+  expect(buttonElement.textContent).toEqual(Secondary.args.children);
 });
 
 test('onclick handler is called', async () => {
@@ -35,26 +35,24 @@ test('onclick handler is called', async () => {
 });
 
 test('reuses args from composeStories', () => {
-  const { getByText } = render(<Primary />);
+  const { getByText } = render(<CSF3Primary />);
   const buttonElement = getByText(/foo/i);
   expect(buttonElement).not.toBeNull();
 });
 
 describe('GlobalConfig', () => {
   test('renders with default globalConfig', () => {
-    const WithEnglishText = composeStory(stories.StoryWithLocale, stories.default);
+    const WithEnglishText = composeStory(stories.CSF2StoryWithLocale, stories.default);
     const { getByText } = render(<WithEnglishText />);
     const buttonElement = getByText('Hello!');
     expect(buttonElement).not.toBeNull();
   });
 
   test('renders with custom globalConfig', () => {
-    const WithPortugueseText = composeStory(
-      stories.StoryWithLocale,
-      stories.default,
-      // @ts-ignore
-      { globalTypes: { locale: { defaultValue: 'pt' } } }
-    );
+    const WithPortugueseText = composeStory(stories.CSF2StoryWithLocale, stories.default, {
+      // @TODO globals should be able to get custom stuff like custom globalTypes. Currently there is a type error
+      globalTypes: { locale: { defaultValue: 'pt' } } as any,
+    });
     const { getByText } = render(<WithPortugueseText />);
     const buttonElement = getByText('Olá!');
     expect(buttonElement).not.toBeNull();
@@ -81,12 +79,12 @@ describe('CSF3', () => {
 
   test('renders with play function', async () => {
     // @ts-ignore
-    const InputFieldFilled = composeStory(stories.InputFieldFilled, stories.default);
+    const CSF3InputFieldFilled = composeStory(stories.CSF3InputFieldFilled, stories.default);
 
-    const { container } = render(<InputFieldFilled />);
+    const { container } = render(<CSF3InputFieldFilled />);
 
     // @ts-ignore
-    await InputFieldFilled.play({ canvasElement: container });
+    await CSF3InputFieldFilled.play({ canvasElement: container });
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
     expect(input.value).toEqual('Hello world!');
