@@ -127,3 +127,5 @@ export const Route = ({ path, children, startsWith = false, hideOnly = false }: 
   </Match>
 );
 Route.displayName = 'Route';
+
+export const LocationProvider: typeof R.BrowserRouter = (...args) => R.BrowserRouter(...args);
