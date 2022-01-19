@@ -23326,6 +23326,7 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: d46fdec727a0caed98aa4155d624520d1625068bfce929be67d70a5268b0fd002ae179fafdfe4a1b15d6961c62201bb504e943e9651afc97c231ed134e23a31c
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -23336,6 +23337,7 @@ __metadata:
     bindings: ^1.5.0
     nan: ^2.12.1
   checksum: 4427ff08db9ee7327f2c3ad58ec56f9096a917eed861bfffaa2e2be419479cdf37d00750869ab9ecbf5f59f32ad999bd59577d73fc639193e6c0ce52bb253e02
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -23345,6 +23347,7 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: be78a3efa3e181cda3cf7a4637cb527bcebb0bd0ea0440105a3bb45b86f9245b307dc10a2507e8f4498a7d4ec349d1910f4d73e4d4495b16103106e07eee735b
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -23353,7 +23356,7 @@ __metadata:
   resolution: "fsevents@patch:fsevents@npm%3A2.1.2#~builtin<compat/fsevents>::version=2.1.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
-  checksum: bd593f2030a6afe3cfb0642fc67191ebd69fbff00fa4dc25f1580b10cccddc8fa4680cfc3fb5fc4a79d09099f371b053ecc4402751c3f28fa0e5817e6ec0f579
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -23363,7 +23366,7 @@ __metadata:
   dependencies:
     bindings: ^1.5.0
     nan: ^2.12.1
-  checksum: e3e3389b60217c52126f200fbcfa980de2b84aa705705f5b6a8f8eed3422cc2d36ec3c29fceb2ce95c03cdaa11bbb8a85c91da2d136b3b056a0c4fafed739e7c
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -23372,7 +23375,7 @@ __metadata:
   resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=18f3a7"
   dependencies:
     node-gyp: latest
-  checksum: f9fcd7a9f17027137f4c25aafd18a7eb1b5521a673f8e913b93521693409dc67581517a98b0e4b55bfa0ca45beb90d630e0c4532af465cb26d812f96fd98b7e0
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
