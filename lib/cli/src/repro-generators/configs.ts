@@ -35,21 +35,8 @@ export const cra: Parameters = {
   name: 'cra',
   version: 'latest',
   generator: [
-    // hacky way to get CRA to get booted with yarn berry
-    `npm init -y`,
-    `yarn set version classic`,
-    `yarn install`,
-
-    // just some sanity checks
-    'yarn -v',
-    'pwd',
-
-    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx -p create-react-app@{{version}} create-react-app {{appName}}',
-
-    // cleanup after the hacky work around from above
-    'rm -rf node_modules yarn.lock package.json',
-
+    // Force npm otherwise we have a mess between Yarn 1, Yarn 2 and NPM
+    'npm_config_user_agent=npm npx -p create-react-app@{{version}} create-react-app {{appName}}',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
     'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
@@ -61,8 +48,8 @@ export const cra_typescript: Parameters = {
   name: 'cra_typescript',
   version: 'latest',
   generator: [
-    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx -p create-react-app@{{version}} create-react-app {{appName}} --template typescript --use-npm',
+    // Force npm otherwise we have a mess between Yarn 1, Yarn 2 and NPM
+    'npm_config_user_agent=npm npx -p create-react-app@{{version}} create-react-app {{appName}} --template typescript',
   ].join(' && '),
 };
 
