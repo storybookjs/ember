@@ -468,7 +468,7 @@ describe('PreviewWeb', () => {
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
           expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
             .toMatchInlineSnapshot(`
-            [Error: Expected your framework's preset to export a \\\`renderToDOM\\\` field.
+            [Error: Expected your framework's preset to export a \`renderToDOM\` field.
 
             Perhaps it needs to be upgraded for Storybook 6.4?
 

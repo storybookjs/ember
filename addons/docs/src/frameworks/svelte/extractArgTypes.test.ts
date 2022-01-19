@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { createArgTypes } from './extractArgTypes';
 
 const content = fs.readFileSync(`${__dirname}/sample/MockButton.svelte`, 'utf-8');
-
 describe('Extracting Arguments', () => {
   it('should be svelte', () => {
     expect(content).toMatchInlineSnapshot(`
