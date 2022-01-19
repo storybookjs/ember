@@ -17,8 +17,7 @@ import { SynchronousPromise } from 'synchronous-promise';
 import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
-import { processCSFFile } from './processCSFFile';
-import { prepareStory } from './prepareStory';
+import { processCSFFile, prepareStory, normalizeProjectAnnotations } from './csf';
 import {
   CSFFile,
   ModuleImportFn,
@@ -32,35 +31,10 @@ import {
   V2CompatIndexEntry,
 } from './types';
 import { HooksContext } from './hooks';
-import { normalizeInputTypes } from './normalizeInputTypes';
-import { inferArgTypes } from './inferArgTypes';
-import { inferControls } from './inferControls';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 1000;
 const STORY_CACHE_SIZE = 10000;
-
-function normalizeProjectAnnotations<TFramework extends AnyFramework>({
-  argTypes,
-  globalTypes,
-  argTypesEnhancers,
-  ...annotations
-}: ProjectAnnotations<TFramework>): NormalizedProjectAnnotations<TFramework> {
-  return {
-    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
-    argTypesEnhancers: [
-      ...(argTypesEnhancers || []),
-      inferArgTypes,
-      // inferControls technically should only run if the user is using the controls addon,
-      // and so should be added by a preset there. However, as it seems some code relies on controls
-      // annotations (in particular the angular implementation's `cleanArgsDecorator`), for backwards
-      // compatibility reasons, we will leave this in the store until 7.0
-      inferControls,
-    ],
-    ...annotations,
-  };
-}
 
 export class StoryStore<TFramework extends AnyFramework> {
   storyIndex: StoryIndexStore;
