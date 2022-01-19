@@ -4,6 +4,7 @@ import {
   AnnotatedStoryFn,
   ComponentAnnotations,
   Args,
+  StoryContext,
 } from '@storybook/csf';
 
 import { prepareStory } from '../prepareStory';
@@ -18,14 +19,11 @@ if (process.env.NODE_ENV === 'test') {
   addons.setChannel(mockChannel());
 }
 
-export type StoryFile = { default: any; __esModule?: boolean; __namedExportsOrder?: any };
-
-type Entries<T> = {
-  [K in keyof T]: [K, T[K]];
-}[keyof T];
-export function objectEntries<T extends object>(t: T): Entries<T>[] {
-  return Object.entries(t) as any;
-}
+export type StoryFile = {
+  default: Record<any, any>;
+  __esModule?: boolean;
+  __namedExportsOrder?: string[];
+};
 
 export function composeStory<
   TFramework extends AnyFramework = AnyFramework,
@@ -56,14 +54,14 @@ export function composeStory<
   );
 
   const composedStory = (extraArgs: Partial<TArgs>) => {
-    const context = {
+    const context: Partial<StoryContext> = {
       ...preparedStory,
       hooks: new HooksContext(),
       globals: defaultGlobals,
       args: { ...preparedStory.initialArgs, ...extraArgs },
-    } as any;
+    };
 
-    return preparedStory.unboundStoryFn(context);
+    return preparedStory.unboundStoryFn(context as StoryContext);
   };
 
   composedStory.storyName = story.storyName || story.name;
@@ -80,7 +78,7 @@ export function composeStories<TModule extends StoryFile>(
   composeStoryFn: typeof composeStory
 ) {
   const { default: meta, __esModule, __namedExportsOrder, ...stories } = storiesImport;
-  const composedStories = objectEntries(stories).reduce((storiesMap, [key, _story]) => {
+  const composedStories = Object.entries(stories).reduce((storiesMap, [key, _story]) => {
     if (!isExportStory(key as string, meta)) {
       return storiesMap;
     }
