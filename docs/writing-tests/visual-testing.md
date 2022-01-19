@@ -40,7 +40,6 @@ npx chromatic --project-token <your-project-token>
  
 </div>
 
-
 ```shell
 Build 1 published.
 
