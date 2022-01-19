@@ -18,11 +18,11 @@ import {
   Story,
   NormalizedStoryAnnotations,
   NormalizedProjectAnnotations,
-} from './types';
-import { combineParameters } from './parameters';
-import { applyHooks } from './hooks';
-import { defaultDecorateStory } from './decorators';
-import { groupArgsByTarget, NO_TARGET_NAME } from './args';
+} from '../types';
+import { combineParameters } from '../parameters';
+import { applyHooks } from '../hooks';
+import { defaultDecorateStory } from '../decorators';
+import { groupArgsByTarget, NO_TARGET_NAME } from '../args';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},

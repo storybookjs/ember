@@ -17,8 +17,7 @@ import { SynchronousPromise } from 'synchronous-promise';
 import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
-import { processCSFFile } from './processCSFFile';
-import { prepareStory } from './prepareStory';
+import { normalizeInputTypes, processCSFFile, prepareStory } from './csf';
 import {
   CSFFile,
   ModuleImportFn,
@@ -32,7 +31,6 @@ import {
   V2CompatIndexEntry,
 } from './types';
 import { HooksContext } from './hooks';
-import { normalizeInputTypes } from './normalizeInputTypes';
 import { inferArgTypes } from './inferArgTypes';
 import { inferControls } from './inferControls';
 
