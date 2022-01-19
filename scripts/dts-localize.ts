@@ -182,7 +182,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
 
       const replacementPath = getReplacementPath(currentSourceFile, referencedSourceFile, target);
       // @ts-ignore
-      node.moduleSpecifier = ts.factory.createStringLiteral(replacementPath);
+      node.moduleSpecifier = ts.createStringLiteral(replacementPath);
 
       return true;
     }
@@ -210,7 +210,8 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
       const replacementPath = getReplacementPath(currentSourceFile, referencedSourceFile, target);
 
       // @ts-ignore
-      node.argument = ts.factory.createStringLiteral(replacementPath);
+      node.argument = ts.createStringLiteral(replacementPath);
+      // node.argument = ts.factory.createStringLiteral(replacementPath); // TS4
 
       return true;
     }
@@ -258,24 +259,3 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
     }
   }
 };
-
-// run(
-//   [getAbsolutePath('./dist/ts-tmp/index.d.ts')],
-//   path.join(__dirname, '..', 'dist', 'ts3.9'),
-
-//   {
-//     externals: [
-//       '@storybook/addons',
-//       '@storybook/csf',
-//       '@storybook/theming',
-//       'core-js',
-//       'react-dom',
-//       'prop-types',
-//       'react',
-//     ],
-//   }
-// ).catch((e) => {
-//   console.error(e);
-
-//   process.exit(1);
-// });
