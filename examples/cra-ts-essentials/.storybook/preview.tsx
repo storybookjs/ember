@@ -1,13 +1,24 @@
 import React from 'react';
+import type { DecoratorFn } from '@storybook/react';
+import { ThemeProvider, convert, themes } from '@storybook/theming';
 
-export const decorators = [
-  (StoryFn, { globals: { locale = 'en' } }) => (
+export const decorators: DecoratorFn[] = [
+  (StoryFn, { globals: { locale } }) => (
     <>
-      <div>{locale}</div>
+      <div>Locale: {locale}</div>
       <StoryFn />
     </>
   ),
+  (StoryFn) => (
+    <ThemeProvider theme={convert(themes.light)}>
+      <StoryFn />
+    </ThemeProvider>
+  ),
 ];
+
+export const parameters = {
+  actions: { argTypesRegex: '^on[A-Z].*' },
+};
 
 export const globalTypes = {
   locale: {
