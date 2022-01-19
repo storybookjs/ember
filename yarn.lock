@@ -8415,8 +8415,8 @@ __metadata:
     lodash: ^4.17.21
     memoizerific: ^1.11.3
     qs: ^6.10.0
-    react-router: ^6.0.0
-    react-router-dom: ^6.0.0
+    react-router: 6.0.2
+    react-router-dom: 6.0.2
     ts-dedent: ^2.0.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -24647,7 +24647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"history@npm:^5.2.0":
+"history@npm:^5.1.0, history@npm:^5.2.0":
   version: 5.2.0
   resolution: "history@npm:5.2.0"
   dependencies:
@@ -37315,7 +37315,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.0.0, react-router-dom@npm:^6.0.0-beta.8":
+"react-router-dom@npm:6.0.2":
+  version: 6.0.2
+  resolution: "react-router-dom@npm:6.0.2"
+  dependencies:
+    history: ^5.1.0
+    react-router: 6.0.2
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: f34d30742631813ff5a9bff2dc20adc0ae3932c956cf5b1ecaeeb5287f41c4dcb612e2eb2a98244ee5cc6f6c6827ebc91c771ebb3beb7eca103c5e4b8d251f24
+  languageName: node
+  linkType: hard
+
+"react-router-dom@npm:^6.0.0-beta.8":
   version: 6.2.1
   resolution: "react-router-dom@npm:6.2.1"
   dependencies:
@@ -37328,7 +37341,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:6.2.1, react-router@npm:^6.0.0, react-router@npm:^6.0.0-beta.8":
+"react-router@npm:6.0.2":
+  version: 6.0.2
+  resolution: "react-router@npm:6.0.2"
+  dependencies:
+    history: ^5.1.0
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 60f9b079c03b6d213740cda937ba7265c2b6ce31d3e9cd9155fa64fb5b62fa5b15cfa9a487fb272809d935e4238697833d5910bb9aaed89b948c0071e3e5c399
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.2.1, react-router@npm:^6.0.0-beta.8":
   version: 6.2.1
   resolution: "react-router@npm:6.2.1"
   dependencies:
