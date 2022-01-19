@@ -8522,6 +8522,7 @@ __metadata:
     react-router: 6.0.2
     react-router-dom: 6.0.2
     ts-dedent: ^2.0.0
+    ts-node: ^10.4.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
