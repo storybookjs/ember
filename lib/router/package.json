@@ -64,11 +64,5 @@
   },
   "bundlerEntrypoint": "./src/index.ts",
   "gitHead": "fc1a84084556d61fea8bcaa197f7d85f3a9a107d",
-  "sbmodern": "dist/modern/index.js",
-  "unbundledDependencies": [
-    "react",
-    "react-dom",
-    "core-js",
-    "@storybook/client-logger"
-  ]
+  "sbmodern": "dist/modern/index.js"
 }
