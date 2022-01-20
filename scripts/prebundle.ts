@@ -1,6 +1,7 @@
 import path, { resolve } from 'path';
+import execa from 'execa';
 import { rollup, OutputOptions } from 'rollup';
-import { sync } from 'read-pkg-up';
+import readPkgUp from 'read-pkg-up';
 import fs from 'fs-extra';
 
 import rollupTypescript from '@rollup/plugin-typescript';
@@ -116,7 +117,7 @@ async function buildCJS({ cwd, input, externals }: BuildOptions) {
 
 async function run() {
   const cwd = process.cwd();
-  const pkg = sync({ cwd }).packageJson;
+  const { packageJson: pkg } = await readPkgUp({ cwd });
   const input = path.join(cwd, pkg.bundlerEntrypoint);
   const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
@@ -134,11 +135,19 @@ async function run() {
     { filePath: input, output: { inlineDeclareGlobals: true, sortNodes: true, noBanner: true } },
   ]);
 
-  const bundledDTSfile = path.join(cwd, 'node_modules/.cache/dts-bundle-generator/index.d.ts');
+  const bundledDTSfile = path.join(cwd, 'dist/ts-tmp/index.d.ts');
   const localizedDTSout = path.join(cwd, 'dist/ts3.9');
   await fs.outputFile(bundledDTSfile, out);
 
   await dtsLozalize.run([bundledDTSfile], localizedDTSout, { externals, cwd });
+
+  await fs.remove(path.join(cwd, 'dist/ts-tmp'));
+
+  await execa('node', [
+    path.join(__dirname, '../node_modules/.bin/downlevel-dts'),
+    'dist/ts3.9',
+    'dist/ts3.4',
+  ]);
 }
 
 run().catch((err) => {
