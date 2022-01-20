@@ -5,7 +5,7 @@ import semver from '@storybook/semver';
 import dedent from 'ts-dedent';
 import { VersionCheck, cache } from '@storybook/core-common';
 
-const { STORYBOOK_VERSION_BASE = 'https://storybook.js.org' } = process.env;
+const { STORYBOOK_VERSION_BASE = 'https://storybook.js.org', CI } = process.env;
 
 export const updateCheck = async (version: string): Promise<VersionCheck> => {
   let result;
@@ -14,7 +14,7 @@ export const updateCheck = async (version: string): Promise<VersionCheck> => {
     const fromCache = await cache.get('lastUpdateCheck', { success: false, time: 0 });
 
     // if last check was more then 24h ago
-    if (time - 86400000 > fromCache.time) {
+    if (time - 86400000 > fromCache.time && !CI) {
       const fromFetch: any = await Promise.race([
         fetch(`${STORYBOOK_VERSION_BASE}/versions.json?current=${version}`),
         // if fetch is too slow, we won't wait for it

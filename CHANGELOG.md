@@ -1,8 +1,19 @@
+## 6.5.0-alpha.22 (January 20, 2022)
+
+### Features
+
+- Svelte: Add CSF3 default render function ([#17276](https://github.com/storybookjs/storybook/pull/17276))
+- CLI: Add `--no-manager-cache` to build-storybook ([#17300](https://github.com/storybookjs/storybook/pull/17300))
+
+### Maintenance
+
+- Build: Upgrade yarn to 3.1.1 ([#17281](https://github.com/storybookjs/storybook/pull/17281))
+
 ## 6.5.0-alpha.21 (January 18, 2022)
 
 ### Features
 
-* Webpack5: Switch to using `import.meta.webpackHot.accept` ([#17270](https://github.com/storybookjs/storybook/pull/17270))
+- Webpack5: Switch to using `import.meta.webpackHot.accept` ([#17270](https://github.com/storybookjs/storybook/pull/17270))
 
 ## 6.5.0-alpha.20 (January 18, 2022)
 

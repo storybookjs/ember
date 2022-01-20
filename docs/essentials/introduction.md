@@ -10,8 +10,7 @@ A major strength of Storybook are [addons](/addons/) that extend Storybook’s U
 - [Viewport](./viewport.md)
 - [Backgrounds](./backgrounds.md)
 - [Toolbars & globals](./toolbars-and-globals.md)
-- [Measure](/addons/@storybook/addon-measure)
-- [Outline](/addons/storybook-addon-outline)
+- [Measure & outline](./measure-and-outline.md)
 
 ### Installation
 
