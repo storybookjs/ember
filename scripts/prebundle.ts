@@ -134,11 +134,11 @@ async function run() {
     { filePath: input, output: { inlineDeclareGlobals: true, sortNodes: true, noBanner: true } },
   ]);
 
-  const bundledDTSfile = path.join(cwd, 'dist/ts-tmp/index.d.ts');
-  const bundledDTSout = path.join(cwd, 'dist/ts3.9');
+  const bundledDTSfile = path.join(cwd, 'node_modules/.cache/dts-bundle-generator/index.d.ts');
+  const localizedDTSout = path.join(cwd, 'dist/ts3.9');
   await fs.outputFile(bundledDTSfile, out);
 
-  await dtsLozalize.run([bundledDTSfile], bundledDTSout, { externals, cwd });
+  await dtsLozalize.run([bundledDTSfile], localizedDTSout, { externals, cwd });
 }
 
 run().catch((err) => {
