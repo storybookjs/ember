@@ -118,7 +118,7 @@ async function run() {
   const cwd = process.cwd();
   const pkg = sync({ cwd }).packageJson;
   const input = path.join(cwd, pkg.bundlerEntrypoint);
-  const externals = [].concat(pkg.unbundledDependencies);
+  const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
   const options = {
     cwd,
