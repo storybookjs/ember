@@ -132,7 +132,7 @@ async function run() {
   await buildModern(options);
 
   const [out] = await generateDtsBundle([
-    { filePath: input, output: { inlineDeclareGlobals: true, sortNodes: true, noBanner: true } },
+    { filePath: input, output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true } },
   ]);
 
   const bundledDTSfile = path.join(cwd, 'dist/ts-tmp/index.d.ts');
