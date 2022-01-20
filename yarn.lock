@@ -8737,7 +8737,6 @@ __metadata:
   resolution: "@storybook/ui@workspace:lib/ui"
   dependencies:
     "@babel/core": ^7.12.10
-    "@emotion/core": ^10.3.1
     "@storybook/addons": 6.5.0-alpha.22
     "@storybook/api": 6.5.0-alpha.22
     "@storybook/channels": 6.5.0-alpha.22
@@ -8754,7 +8753,6 @@ __metadata:
     core-js: ^3.8.2
     core-js-pure: ^3.8.2
     downshift: ^6.0.15
-    emotion-theming: ^10.0.27
     enzyme: ^3.11.0
     flush-promises: ^1.0.2
     fuse.js: ^3.6.1
@@ -8771,6 +8769,7 @@ __metadata:
     resolve-from: ^5.0.0
     store2: ^2.12.0
     terser-webpack-plugin: ^5.0.3
+    ts-node: ^10.4.0
     webpack: 4
   peerDependencies:
     react: ^16.8.0 || ^17.0.0

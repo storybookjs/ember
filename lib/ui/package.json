@@ -37,10 +37,9 @@
     "*.d.ts"
   ],
   "scripts": {
-    "prepare": "node ../../scripts/prepare.js"
+    "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@emotion/core": "^10.3.1",
     "@storybook/addons": "6.5.0-alpha.22",
     "@storybook/api": "6.5.0-alpha.22",
     "@storybook/channels": "6.5.0-alpha.22",
@@ -50,11 +49,19 @@
     "@storybook/router": "6.5.0-alpha.22",
     "@storybook/semver": "^7.3.2",
     "@storybook/theming": "6.5.0-alpha.22",
-    "copy-to-clipboard": "^3.3.1",
     "core-js": "^3.8.2",
+    "resolve-from": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@testing-library/react": "^11.2.2",
+    "babel-loader": "^8.0.0",
+    "chromatic": "^6.0.2",
+    "copy-to-clipboard": "^3.3.1",
     "core-js-pure": "^3.8.2",
     "downshift": "^6.0.15",
-    "emotion-theming": "^10.0.27",
+    "enzyme": "^3.11.0",
+    "flush-promises": "^1.0.2",
     "fuse.js": "^3.6.1",
     "global": "^4.4.0",
     "lodash": "^4.17.21",
@@ -66,17 +73,9 @@
     "react-helmet-async": "^1.0.7",
     "react-sizeme": "^3.0.1",
     "regenerator-runtime": "^0.13.7",
-    "resolve-from": "^5.0.0",
-    "store2": "^2.12.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@testing-library/react": "^11.2.2",
-    "babel-loader": "^8.0.0",
-    "chromatic": "^6.0.2",
-    "enzyme": "^3.11.0",
-    "flush-promises": "^1.0.2",
+    "store2": "^2.12.0",
     "terser-webpack-plugin": "^5.0.3",
+    "ts-node": "^10.4.0",
     "webpack": "4"
   },
   "peerDependencies": {
@@ -87,5 +86,6 @@
     "access": "public"
   },
   "gitHead": "fc1a84084556d61fea8bcaa197f7d85f3a9a107d",
+  "bundlerEntrypoint": "./src/index.tsx",
   "sbmodern": "dist/modern/index.js"
 }
