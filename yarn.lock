@@ -8693,9 +8693,9 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-loader: ^8.0.14
     vue: 3.0.0
-    vue-docgen-api: 4.38.0
-    vue-docgen-loader: 1.5.0
-    vue-loader: 16.0.0
+    vue-docgen-api: ^4.38.0
+    vue-docgen-loader: ^1.5.0
+    vue-loader: ^16.0.0
     webpack: 4
   peerDependencies:
     "@babel/core": "*"
@@ -11274,7 +11274,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-dom@npm:3.2.27, @vue/compiler-dom@npm:^3.0.7, @vue/compiler-dom@npm:^3.2.0":
+"@vue/compiler-dom@npm:3.2.27, @vue/compiler-dom@npm:^3.2.0":
   version: 3.2.27
   resolution: "@vue/compiler-dom@npm:3.2.27"
   dependencies:
@@ -11310,7 +11310,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.2.27, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.0.7, @vue/compiler-sfc@npm:^3.2.0":
+"@vue/compiler-sfc@npm:3.2.27, @vue/compiler-sfc@npm:^3.0.0, @vue/compiler-sfc@npm:^3.2.0":
   version: 3.2.27
   resolution: "@vue/compiler-sfc@npm:3.2.27"
   dependencies:
@@ -38088,18 +38088,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recast@npm:0.19.1, recast@npm:^0.19.0":
-  version: 0.19.1
-  resolution: "recast@npm:0.19.1"
-  dependencies:
-    ast-types: 0.13.3
-    esprima: ~4.0.0
-    private: ^0.1.8
-    source-map: ~0.6.1
-  checksum: 2d5b9c43ee1f9a885bd8b98be6cd2fe76a173cf58b454175c6fbbaf3678df52cecabba81fd71cf79d10c52e1c3737743c294977635b72310a782c03a4e4cf567
-  languageName: node
-  linkType: hard
-
 "recast@npm:0.20.5, recast@npm:^0.20.4":
   version: 0.20.5
   resolution: "recast@npm:0.20.5"
@@ -38121,6 +38109,18 @@ __metadata:
     private: ^0.1.8
     source-map: ~0.6.1
   checksum: 385f314ee2cc91ca0e773b458d73955f155a49ca4f25f9a3be11f1115a93f14019f6f28a64c6fd49da2fff92db200d05f2d1183d3f2e3c26a786f0ad67e3801b
+  languageName: node
+  linkType: hard
+
+"recast@npm:^0.19.0":
+  version: 0.19.1
+  resolution: "recast@npm:0.19.1"
+  dependencies:
+    ast-types: 0.13.3
+    esprima: ~4.0.0
+    private: ^0.1.8
+    source-map: ~0.6.1
+  checksum: 2d5b9c43ee1f9a885bd8b98be6cd2fe76a173cf58b454175c6fbbaf3678df52cecabba81fd71cf79d10c52e1c3737743c294977635b72310a782c03a4e4cf567
   languageName: node
   linkType: hard
 
@@ -44919,25 +44919,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"vue-docgen-api@npm:4.38.0":
-  version: 4.38.0
-  resolution: "vue-docgen-api@npm:4.38.0"
-  dependencies:
-    "@babel/parser": ^7.13.12
-    "@babel/types": ^7.13.12
-    "@vue/compiler-dom": ^3.0.7
-    "@vue/compiler-sfc": ^3.0.7
-    ast-types: 0.13.3
-    hash-sum: ^1.0.2
-    lru-cache: ^4.1.5
-    pug: ^3.0.2
-    recast: 0.19.1
-    ts-map: ^1.0.3
-    vue-inbrowser-compiler-utils: ^4.37.0
-  checksum: 84b2e5a50841ee154d0d0c6d524a17dd4780d781748a30018104ec66371e46ba37de91fbfa418b14fd124d2d7173eb9bbbe503523cc76e1301972aee9708e5ed
-  languageName: node
-  linkType: hard
-
 "vue-docgen-api@npm:^4.38.0":
   version: 4.44.2
   resolution: "vue-docgen-api@npm:4.44.2"
@@ -44957,7 +44938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-docgen-loader@npm:1.5.0, vue-docgen-loader@npm:^1.5.0":
+"vue-docgen-loader@npm:^1.5.0":
   version: 1.5.0
   resolution: "vue-docgen-loader@npm:1.5.0"
   dependencies:
@@ -45014,7 +44995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-inbrowser-compiler-utils@npm:^4.37.0, vue-inbrowser-compiler-utils@npm:^4.44.0":
+"vue-inbrowser-compiler-utils@npm:^4.44.0":
   version: 4.44.0
   resolution: "vue-inbrowser-compiler-utils@npm:4.44.0"
   dependencies:
@@ -45049,7 +45030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-loader-v16@npm:vue-loader@^16.1.0, vue-loader@npm:^16.1.2":
+"vue-loader-v16@npm:vue-loader@^16.1.0, vue-loader@npm:^16.0.0, vue-loader@npm:^16.1.2":
   version: 16.8.3
   resolution: "vue-loader@npm:16.8.3"
   dependencies:
@@ -45059,17 +45040,6 @@ __metadata:
   peerDependencies:
     webpack: ^4.1.0 || ^5.0.0-0
   checksum: db793259b61bc719e4501b7682f1d7039f2f60408acb0b6c1deae73853fea74bfb603315fe410b3a63a3261c08122e657f106a06ddf4b1a4d919f34a5c0684a0
-  languageName: node
-  linkType: hard
-
-"vue-loader@npm:16.0.0":
-  version: 16.0.0
-  resolution: "vue-loader@npm:16.0.0"
-  dependencies:
-    chalk: ^4.1.0
-    hash-sum: ^2.0.0
-    loader-utils: ^2.0.0
-  checksum: dad2e6c23959ce8520d155b4745af96889f4d75d2b55237947c6850a7dd3fcab07db55d77cd39beb5d3e71746fc56637c6298f14cb14564bc95fbe4d8d5e2f79
   languageName: node
   linkType: hard
 
