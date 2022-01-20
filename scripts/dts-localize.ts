@@ -66,7 +66,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
   const host = ts.createCompilerHost(compilerOptions);
   const cwd = options.cwd || process.cwd();
   const pkg = sync({ cwd }).packageJson;
-  const externals = [].concat(pkg.unbundledDependencies).concat(options.externals);
+  const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
   // this to make paths for local packages as they are in node_modules because of yarn
   // but it depends on the way you handle "flatting of files"

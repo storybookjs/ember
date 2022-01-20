@@ -1,6 +1,6 @@
 {
   "name": "@storybook/theming",
-  "version": "6.5.0-alpha.21",
+  "version": "6.5.0-alpha.22",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -40,7 +40,7 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.21",
+    "@storybook/client-logger": "6.5.0-alpha.22",
     "core-js": "^3.8.2"
   },
   "devDependencies": {
@@ -65,11 +65,5 @@
   },
   "bundlerEntrypoint": "./src/index.ts",
   "gitHead": "ce3592fc323ede3d33939b532ff7400cfdc1efa1",
-  "sbmodern": "dist/modern/index.js",
-  "unbundledDependencies": [
-    "react",
-    "react-dom",
-    "core-js",
-    "@storybook/client-logger"
-  ]
+  "sbmodern": "dist/modern/index.js"
 }
