@@ -8457,7 +8457,7 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-jest: ^26.4.4
     ts-loader: ^8.0.14
-    ts-node: ^9.1.0
+    ts-node: ^10.4.0
     typescript: ^3.9.7
     verdaccio: ^4.10.0
     verdaccio-auth-memory: ^9.7.2

@@ -290,7 +290,7 @@
     "trash": "^7.0.0",
     "ts-dedent": "^2.0.0",
     "ts-jest": "^26.4.4",
-    "ts-node": "^9.1.0",
+    "ts-node": "^10.4.0",
     "typescript": "^3.9.7",
     "wait-on": "^5.2.1",
     "web-component-analyzer": "^1.1.6",

@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "module": "ESNext",
+    "module": "CommonJS",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -35,5 +35,4 @@
       "module": "CommonJS"
     }
   }
-
 }
