@@ -24,6 +24,7 @@ module.exports = {
   ignore: [
     './lib/codemod/src/transforms/__testfixtures__',
     './lib/postinstall/src/__testfixtures__',
+    '**/typings.d.ts',
   ],
   presets: [
     [

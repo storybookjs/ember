@@ -131,6 +131,7 @@
     "require-from-string": "^2.0.2",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
+    "sveltedoc-parser": "4.1.0",
     "terser-webpack-plugin": "^5.0.3",
     "tmp": "^0.2.1",
     "tslib": "^2.1.0",

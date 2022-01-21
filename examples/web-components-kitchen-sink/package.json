@@ -9,8 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build-storybook": "build-storybook",
-    "storybook": "start-storybook -p 9006 --no-manager-cache",
-    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\""
+    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\"",
+    "storybook": "start-storybook -p 9006 --no-manager-cache"
   },
   "resolutions": {
     "@storybook/addon-a11y": "portal:../../addons/a11y",

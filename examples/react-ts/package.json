@@ -5,8 +5,8 @@
   "scripts": {
     "build-storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true build-storybook",
     "debug": "cross-env NODE_OPTIONS=--inspect-brk STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011",
-    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 --no-manager-cache",
-    "sb": "node ../../lib/cli/bin/index.js"
+    "sb": "node ../../lib/cli/bin/index.js",
+    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 --no-manager-cache"
   },
   "dependencies": {
     "formik": "^2.2.9",

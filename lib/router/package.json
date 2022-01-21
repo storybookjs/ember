@@ -48,8 +48,8 @@
     "lodash": "^4.17.21",
     "memoizerific": "^1.11.3",
     "qs": "^6.10.0",
-    "react-router": "^6.0.0",
-    "react-router-dom": "^6.0.0",
+    "react-router": "6.0.2",
+    "react-router-dom": "6.0.2",
     "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {

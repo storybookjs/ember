@@ -74,7 +74,8 @@
   },
   "devDependencies": {
     "@storybook/client-api": "6.5.0-alpha.22",
-    "@types/prompts": "^2.0.9"
+    "@types/prompts": "^2.0.9",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "^7.11.5",

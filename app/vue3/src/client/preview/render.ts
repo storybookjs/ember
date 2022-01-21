@@ -14,7 +14,8 @@ export const render: ArgsStoryFn<VueFramework> = (props, context) => {
     );
   }
 
-  return h(Component, props);
+  // TODO remove this hack
+  return h(Component as Parameters<typeof h>[0], props);
 };
 
 export const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);

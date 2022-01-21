@@ -8,6 +8,7 @@
     "build-storybook": "yarn storybook-prebuild && build-storybook",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "e2e": "ng e2e",
+    "postinstall": "ngcc --source ../../node_modules",
     "ng": "ng",
     "start": "ng serve",
     "storybook": "yarn storybook-prebuild && start-storybook -p 9008 --no-manager-cache",
@@ -15,8 +16,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:generate-output": "jest --json --config=jest.addon-config.js --outputFile=addon-jest.testresults.json || true",
-    "test:watch": "jest --watch",
-    "postinstall": "ngcc --source ../../node_modules"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@angular/common": "^11.2.14",

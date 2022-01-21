@@ -20,7 +20,7 @@
     "react-scripts": "^4.0.2"
   },
   "devDependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@storybook/addon-a11y": "6.5.0-alpha.22",
     "@storybook/addon-actions": "6.5.0-alpha.22",
     "@storybook/addon-backgrounds": "6.5.0-alpha.22",
