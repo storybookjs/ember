@@ -8447,6 +8447,7 @@ __metadata:
     remark-lint: ^8.0.0
     remark-preset-lint-recommended: ^5.0.0
     rollup: ^2.60.2
+    rollup-plugin-extensions: ^0.1.0
     rollup-plugin-jsx: ^1.0.3
     rollup-plugin-terser: ^7.0.2
     serve-static: ^1.14.1
@@ -39839,6 +39840,15 @@ __metadata:
     "@babel/core": 7 || ^7.0.0-rc.2
     rollup: ">=0.60.0 <3"
   checksum: 404e8006eb5d2c17ce3df2d208d431de513ac270f51c38d735b54e5a85ed6af86f8f146a35d4e6eb79ef7fc2665f047e04b026c1b755bee331b8b88fad193273
+  languageName: node
+  linkType: hard
+
+"rollup-plugin-extensions@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "rollup-plugin-extensions@npm:0.1.0"
+  peerDependencies:
+    rollup: ^1.4.1
+  checksum: 1d08385299b3936074dacb837ba154b7ead4b5612c0fdc6b40e227987f5cdd1ea7652bfd81b867f7a77e5f100638862d1778b4bf6519027d573bf7dbad86f666
   languageName: node
   linkType: hard
 

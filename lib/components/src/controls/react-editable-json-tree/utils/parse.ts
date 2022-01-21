@@ -3,7 +3,7 @@
  * @param string {String} string to parse
  * @returns {*}
  */
-function parse(string) {
+export function parse(string: string) {
   let result = string;
 
   // Check if string contains 'function' and start with it to eval it
@@ -18,5 +18,3 @@ function parse(string) {
   }
   return result;
 }
-
-export default parse;

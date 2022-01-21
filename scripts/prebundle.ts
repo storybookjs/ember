@@ -10,6 +10,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { babel } from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+import extensions from 'rollup-plugin-extensions';
 
 import { generateDtsBundle } from 'dts-bundle-generator';
 import * as dtsLozalize from './dts-localize';
@@ -27,10 +28,24 @@ async function buildESM({ cwd, input, externals }: BuildOptions) {
       nodeResolve({
         browser: true,
         preferBuiltins: true,
+        extensions: ['.tsx', '.ts', '.jsx', 'js'],
       }),
       commonjs(),
       json(),
-      babel({ babelHelpers: 'runtime', skipPreflightCheck: true }),
+      babel({
+        babelHelpers: 'runtime',
+        skipPreflightCheck: true,
+        // presets: ['@babel/typescript', '@babel/react'],
+        extensions: ['.tsx', '.ts', '.jsx', 'js'],
+      }),
+      // extensions({
+      //   // Supporting Typescript files
+      //   // Uses ".mjs, .js" by default
+      //   extensions: ['.tsx', '.ts', '.jsx', '.js'],
+      //   // Resolves index dir files based on supplied extensions
+      //   // This is enable by default
+      //   resolveIndex: true,
+      // }),
       rollupTypescript({ lib: ['es2015', 'dom'], target: 'es6' }),
       terser({ output: { comments: false }, module: true }),
     ],

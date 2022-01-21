@@ -7,7 +7,7 @@ import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/de
 import { getObjectType } from './utils/objectTypes';
 import DATA_TYPES from './types/dataTypes';
 import INPUT_USAGE_TYPES from './types/inputUsageTypes';
-import parse from './utils/parse';
+import { parse } from './utils/parse';
 
 class JsonTree extends Component {
   constructor(props) {
