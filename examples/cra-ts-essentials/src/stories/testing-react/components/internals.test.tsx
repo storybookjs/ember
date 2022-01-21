@@ -29,7 +29,6 @@ test('returns composed parameters from story', () => {
 
 // common in addons that need to communicate between manager and preview
 test('should pass with decorators that need addons channel', () => {
-  // @ts-ignore
   const PrimaryWithChannels = composeStory(stories.CSF3Primary, stories.default, {
     decorators: [
       (StoryFn: any) => {

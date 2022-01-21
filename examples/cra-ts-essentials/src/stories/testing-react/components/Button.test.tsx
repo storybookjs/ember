@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-shadow */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
@@ -50,7 +48,6 @@ describe('GlobalConfig', () => {
 
   test('renders with custom globalConfig', () => {
     const WithPortugueseText = composeStory(stories.CSF2StoryWithLocale, stories.default, {
-      // @TODO globals should be able to get custom stuff like custom globalTypes. Currently there is a type error
       globalTypes: { locale: { defaultValue: 'pt' } } as any,
     });
     const { getByText } = render(<WithPortugueseText />);
@@ -61,7 +58,6 @@ describe('GlobalConfig', () => {
 
 describe('CSF3', () => {
   test('renders with inferred globalRender', () => {
-    // @ts-ignore
     const Primary = composeStory(stories.CSF3Button, stories.default);
 
     render(<Primary>Hello world</Primary>);
@@ -70,7 +66,6 @@ describe('CSF3', () => {
   });
 
   test('renders with custom render function', () => {
-    // @ts-ignore
     const Primary = composeStory(stories.CSF3ButtonWithRender, stories.default);
 
     render(<Primary />);
@@ -78,12 +73,10 @@ describe('CSF3', () => {
   });
 
   test('renders with play function', async () => {
-    // @ts-ignore
     const CSF3InputFieldFilled = composeStory(stories.CSF3InputFieldFilled, stories.default);
 
     const { container } = render(<CSF3InputFieldFilled />);
 
-    // @ts-ignore
     await CSF3InputFieldFilled.play({ canvasElement: container });
 
     const input = screen.getByRole('textbox') as HTMLInputElement;
