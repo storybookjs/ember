@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import dedent from 'ts-dedent';
 import Vue from 'vue';
 import { RenderContext } from '@storybook/store';
@@ -22,16 +23,37 @@ const root = new Vue({
 
 export const render: ArgsStoryFn<VueFramework> = (props, context) => {
   const { id, component: Component } = context;
-  if (!Component) {
+  const component = Component as VueFramework['component'] & {
+    __file?: string;
+    props: Record<string, any>;
+  };
+
+  if (!component) {
     throw new Error(
       `Unable to render story ${id} as the component annotation is missing from the default export`
     );
   }
 
+  let componentName = 'component';
+
+  // if there is a name property, we either use it or preprend with sb- in case it's an invalid name
+  if (component.name) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore isReservedTag is an internal function from Vue, might be changed in future releases
+    componentName = Vue.config.isReservedTag(component.name)
+      ? `sb-${component.name}`
+      : component.name;
+  } else if (component.__file) {
+    // otherwise, we use the file name to make the component name, if present
+    const file = component.__file;
+    // eslint-disable-next-line prefer-destructuring
+    componentName = file.split('/').pop().split('.')[0];
+  }
+
   return {
-    render(h) {
-      return h(Component, { props });
-    },
+    props: component.props,
+    components: { [componentName]: component },
+    template: `<${componentName} v-bind="$props" />`,
   };
 };
 
