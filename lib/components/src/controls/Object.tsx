@@ -11,7 +11,6 @@ import React, {
 } from 'react';
 import { styled, useTheme, Theme } from '@storybook/theming';
 
-// @ts-ignore
 import { JsonTree, getObjectType } from './react-editable-json-tree';
 import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, ObjectValue, ObjectConfig } from './types';

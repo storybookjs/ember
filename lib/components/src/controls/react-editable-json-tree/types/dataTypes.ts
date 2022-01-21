@@ -10,16 +10,4 @@ const UNDEFINED = 'Undefined';
 const FUNCTION = 'Function';
 const SYMBOL = 'Symbol';
 
-export default {
-  ERROR,
-  OBJECT,
-  ARRAY,
-  STRING,
-  NUMBER,
-  BOOLEAN,
-  DATE,
-  NULL,
-  UNDEFINED,
-  FUNCTION,
-  SYMBOL,
-};
+export { ERROR, OBJECT, ARRAY, STRING, NUMBER, BOOLEAN, DATE, NULL, UNDEFINED, FUNCTION, SYMBOL };

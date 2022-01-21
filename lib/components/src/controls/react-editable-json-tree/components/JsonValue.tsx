@@ -1,11 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/sort-comp */
+/* eslint-disable react/button-has-type */
+import React, { Component, ReactElement } from 'react';
 
 import { isComponentWillChange } from '../utils/objectTypes';
-import inputUsageTypes from '../types/inputUsageTypes';
+import * as inputUsageTypes from '../types/inputUsageTypes';
 
-class JsonValue extends Component {
-  constructor(props) {
+interface JsonValueState {
+  value: JsonValueProps['value'];
+  name: JsonValueProps['name'];
+  keyPath: string[];
+  deep: JsonValueProps['deep'];
+  editEnabled: boolean;
+  inputRef: any;
+}
+
+export class JsonValue extends Component<JsonValueProps, JsonValueState> {
+  constructor(props: JsonValueProps) {
     super(props);
     const keyPath = [...props.keyPath, props.name];
     this.state = {
@@ -25,7 +36,7 @@ class JsonValue extends Component {
     this.onKeydown = this.onKeydown.bind(this);
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: JsonValueProps, state: JsonValueState) {
     return props.value !== state.value ? { value: props.value } : null;
   }
 
@@ -47,7 +58,7 @@ class JsonValue extends Component {
     document.removeEventListener('keydown', this.onKeydown);
   }
 
-  onKeydown(event) {
+  onKeydown(event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat) return;
     if (event.code === 'Enter' || event.key === 'Enter') {
       event.preventDefault();
@@ -88,7 +99,8 @@ class JsonValue extends Component {
     });
   }
 
-  refInput(node) {
+  refInput(node: any) {
+    // @ts-ignore
     this.state.inputRef = node;
   }
 
@@ -167,25 +179,26 @@ class JsonValue extends Component {
   }
 }
 
-JsonValue.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired,
-  originalValue: PropTypes.any,
-  keyPath: PropTypes.array,
-  deep: PropTypes.number,
-  handleRemove: PropTypes.func,
-  handleUpdateValue: PropTypes.func,
-  readOnly: PropTypes.func.isRequired,
-  dataType: PropTypes.string,
-  getStyle: PropTypes.func.isRequired,
-  editButtonElement: PropTypes.element,
-  cancelButtonElement: PropTypes.element,
-  inputElementGenerator: PropTypes.func.isRequired,
-  minusMenuElement: PropTypes.element,
-  logger: PropTypes.object.isRequired,
-  onSubmitValueParser: PropTypes.func.isRequired,
-};
+interface JsonValueProps {
+  name: string;
+  value: any;
+  originalValue?: any;
+  keyPath?: string[];
+  deep?: number;
+  handleRemove?: (...args: any) => any;
+  handleUpdateValue?: (...args: any) => any;
+  readOnly: (...args: any) => any;
+  dataType?: string;
+  getStyle: (...args: any) => any;
+  editButtonElement?: ReactElement;
+  cancelButtonElement?: ReactElement;
+  inputElementGenerator: (...args: any) => any;
+  minusMenuElement?: ReactElement;
+  logger: any;
+  onSubmitValueParser: (...args: any) => any;
+}
 
+// @ts-ignore
 JsonValue.defaultProps = {
   keyPath: [],
   deep: 0,
@@ -194,5 +207,3 @@ JsonValue.defaultProps = {
   cancelButtonElement: <button>c</button>,
   minusMenuElement: <span> - </span>,
 };
-
-export default JsonValue;

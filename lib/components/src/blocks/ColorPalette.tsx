@@ -3,7 +3,7 @@ import { styled } from '@storybook/theming';
 import { transparentize } from 'polished';
 
 import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
-import { ResetWrapper } from '../typography/DocumentFormatting';
+import { ResetWrapper } from '../typography/ResetWrapper';
 
 const ItemTitle = styled.div(({ theme }) => ({
   fontWeight: theme.typography.weight.bold,

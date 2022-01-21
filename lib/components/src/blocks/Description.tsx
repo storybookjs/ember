@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import Markdown from 'markdown-to-jsx';
-import { ResetWrapper } from '../typography/DocumentFormatting';
+import { ResetWrapper } from '../typography/ResetWrapper';
 import { components } from '..';
 
 export interface DescriptionProps {

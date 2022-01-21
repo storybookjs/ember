@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { styled, Theme } from '@storybook/theming';
 import { transparentize } from 'polished';
 
-import { withReset } from '../typography/shared';
+import { withReset } from '../typography/lib/common';
 
 const breakpoint = 600;
 

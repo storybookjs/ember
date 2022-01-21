@@ -1,12 +1,22 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { Component, ReactElement } from 'react';
 
-import JsonNode from './JsonNode';
-import JsonAddValue from './JsonAddValue';
+import { JsonNode } from './JsonNode';
+import { JsonAddValue } from './JsonAddValue';
 import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from '../types/deltaTypes';
 
-class JsonArray extends Component {
-  constructor(props) {
+interface JsonArrayState {
+  data: JsonArrayProps['data'];
+  name: JsonArrayProps['name'];
+  keyPath: string[];
+  deep: JsonArrayProps['deep'];
+  nextDeep: JsonArrayProps['deep'];
+  collapsed: any;
+  addFormVisible: boolean;
+}
+export class JsonArray extends Component<JsonArrayProps, JsonArrayState> {
+  constructor(props: JsonArrayProps) {
     super(props);
     const keyPath = [...props.keyPath, props.name];
     this.state = {
@@ -31,13 +41,14 @@ class JsonArray extends Component {
     this.renderNotCollapsed = this.renderNotCollapsed.bind(this);
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: JsonArrayProps, state: JsonArrayState) {
     return props.data !== state.data ? { data: props.data } : null;
   }
 
-  onChildUpdate(childKey, childData) {
+  onChildUpdate(childKey: string, childData: any) {
     const { data, keyPath } = this.state;
     // Update data
+    // @ts-ignore
     data[childKey] = childData;
     // Put new data
     this.setState({
@@ -61,7 +72,7 @@ class JsonArray extends Component {
     }));
   }
 
-  handleRemoveItem(index) {
+  handleRemoveItem(index: number) {
     return () => {
       const { beforeRemoveAction, logger } = this.props;
       const { data, keyPath, nextDeep: deep } = this.state;
@@ -91,7 +102,7 @@ class JsonArray extends Component {
     };
   }
 
-  handleAddValueAdd({ newValue }) {
+  handleAddValueAdd({ newValue }: any) {
     const { data, keyPath, nextDeep: deep } = this.state;
     const { beforeAddAction, logger } = this.props;
 
@@ -125,7 +136,7 @@ class JsonArray extends Component {
     });
   }
 
-  handleEditValue({ key, value }) {
+  handleEditValue({ key, value }: any) {
     return new Promise((resolve, reject) => {
       const { beforeUpdateAction } = this.props;
       const { data, keyPath, nextDeep: deep } = this.state;
@@ -155,7 +166,7 @@ class JsonArray extends Component {
             oldValue,
           });
           // Resolve
-          resolve();
+          resolve(undefined);
         })
         .catch(reject);
     });
@@ -306,37 +317,36 @@ class JsonArray extends Component {
   }
 }
 
-JsonArray.propTypes = {
-  data: PropTypes.array.isRequired,
-  name: PropTypes.string.isRequired,
-  isCollapsed: PropTypes.func.isRequired,
-  keyPath: PropTypes.array,
-  deep: PropTypes.number,
-  handleRemove: PropTypes.func,
-  onUpdate: PropTypes.func.isRequired,
-  onDeltaUpdate: PropTypes.func.isRequired,
-  readOnly: PropTypes.func.isRequired,
-  dataType: PropTypes.string,
-  getStyle: PropTypes.func.isRequired,
-  addButtonElement: PropTypes.element,
-  cancelButtonElement: PropTypes.element,
-  editButtonElement: PropTypes.element,
-  inputElementGenerator: PropTypes.func.isRequired,
-  textareaElementGenerator: PropTypes.func.isRequired,
-  minusMenuElement: PropTypes.element,
-  plusMenuElement: PropTypes.element,
-  beforeRemoveAction: PropTypes.func,
-  beforeAddAction: PropTypes.func,
-  beforeUpdateAction: PropTypes.func,
-  logger: PropTypes.object.isRequired,
-  onSubmitValueParser: PropTypes.func.isRequired,
-};
+interface JsonArrayProps {
+  data: any[];
+  name: string;
+  isCollapsed: (...args: any) => any;
+  keyPath?: string[];
+  deep?: number;
+  handleRemove?: (...args: any) => any;
+  onUpdate: (...args: any) => any;
+  onDeltaUpdate: (...args: any) => any;
+  readOnly: (...args: any) => any;
+  dataType?: string;
+  getStyle: (...args: any) => any;
+  addButtonElement?: ReactElement;
+  cancelButtonElement?: ReactElement;
+  editButtonElement?: ReactElement;
+  inputElementGenerator: (...args: any) => any;
+  textareaElementGenerator: (...args: any) => any;
+  minusMenuElement?: ReactElement;
+  plusMenuElement?: ReactElement;
+  beforeRemoveAction?: (...args: any) => any;
+  beforeAddAction?: (...args: any) => any;
+  beforeUpdateAction?: (...args: any) => any;
+  logger: any;
+  onSubmitValueParser: (...args: any) => any;
+}
 
+// @ts-ignore
 JsonArray.defaultProps = {
   keyPath: [],
   deep: 0,
   minusMenuElement: <span> - </span>,
   plusMenuElement: <span> + </span>,
 };
-
-export default JsonArray;

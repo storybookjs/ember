@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/button-has-type */
+import React, { Component, ReactElement } from 'react';
 
-import inputUsageTypes from '../types/inputUsageTypes';
+import * as inputUsageTypes from '../types/inputUsageTypes';
 
-class JsonAddValue extends Component {
-  constructor(props) {
+interface JsonAddValueState {
+  inputRefKey: any;
+  inputRefValue: any;
+}
+
+export class JsonAddValue extends Component<JsonAddValueProps, JsonAddValueState> {
+  constructor(props: JsonAddValueProps) {
     super(props);
     this.state = {
       inputRefKey: null,
@@ -36,7 +41,7 @@ class JsonAddValue extends Component {
     document.removeEventListener('keydown', this.onKeydown);
   }
 
-  onKeydown(event) {
+  onKeydown(event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat) return;
     if (event.code === 'Enter' || event.key === 'Enter') {
       event.preventDefault();
@@ -51,7 +56,7 @@ class JsonAddValue extends Component {
   onSubmit() {
     const { handleAdd, onlyValue, onSubmitValueParser, keyPath, deep } = this.props;
     const { inputRefKey, inputRefValue } = this.state;
-    const result = {};
+    const result: any = {};
     // Check if we have the key
     if (!onlyValue) {
       // Check that there is a key
@@ -66,11 +71,13 @@ class JsonAddValue extends Component {
     handleAdd(result);
   }
 
-  refInputKey(node) {
+  refInputKey(node: any) {
+    // @ts-ignore
     this.state.inputRefKey = node;
   }
 
   refInputValue(node) {
+    // @ts-ignore
     this.state.inputRefValue = node;
   }
 
@@ -116,22 +123,21 @@ class JsonAddValue extends Component {
   }
 }
 
-JsonAddValue.propTypes = {
-  handleAdd: PropTypes.func.isRequired,
-  handleCancel: PropTypes.func.isRequired,
-  onlyValue: PropTypes.bool,
-  addButtonElement: PropTypes.element,
-  cancelButtonElement: PropTypes.element,
-  inputElementGenerator: PropTypes.func.isRequired,
-  keyPath: PropTypes.array,
-  deep: PropTypes.number,
-  onSubmitValueParser: PropTypes.func.isRequired,
-};
+interface JsonAddValueProps {
+  handleAdd: (...args: any) => any;
+  handleCancel: (...args: any) => any;
+  onlyValue?: boolean;
+  addButtonElement?: ReactElement;
+  cancelButtonElement?: ReactElement;
+  inputElementGenerator: (...args: any) => any;
+  keyPath?: string[];
+  deep?: number;
+  onSubmitValueParser: (...args: any) => any;
+}
 
+// @ts-ignore
 JsonAddValue.defaultProps = {
   onlyValue: false,
   addButtonElement: <button>+</button>,
   cancelButtonElement: <button>c</button>,
 };
-
-export default JsonAddValue;

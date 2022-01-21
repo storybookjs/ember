@@ -2,7 +2,7 @@
 /// <reference path="./typings.d.ts" />
 
 import { createElement, forwardRef, ElementType } from 'react';
-import { components as rawComponents } from './typography/DocumentFormatting';
+import { components as rawComponents } from './typography/components';
 
 export { Badge } from './Badge/Badge';
 

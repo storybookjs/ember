@@ -9,7 +9,7 @@ import DATA_TYPES from './types/dataTypes';
 import INPUT_USAGE_TYPES from './types/inputUsageTypes';
 import { parse } from './utils/parse';
 
-class JsonTree extends Component {
+export class JsonTree extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,10 +165,11 @@ JsonTree.defaultProps = {
   fallback: null,
 };
 
-export { JsonTree };
-export { getObjectType };
-export { ADD_DELTA_TYPE };
-export { REMOVE_DELTA_TYPE };
-export { UPDATE_DELTA_TYPE };
-export { DATA_TYPES };
-export { INPUT_USAGE_TYPES };
+export {
+  getObjectType,
+  ADD_DELTA_TYPE,
+  REMOVE_DELTA_TYPE,
+  UPDATE_DELTA_TYPE,
+  DATA_TYPES,
+  INPUT_USAGE_TYPES,
+};

@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, ReactElement } from 'react';
 
-import JsonValue from './JsonValue';
-import JsonObject from './JsonObject';
-import JsonArray from './JsonArray';
-import JsonFunctionValue from './JsonFunctionValue';
+import { JsonValue } from './JsonValue';
+import { JsonObject } from './JsonObject';
+import { JsonArray } from './JsonArray';
+import { JsonFunctionValue } from './JsonFunctionValue';
 import { getObjectType } from '../utils/objectTypes';
-import dataTypes from '../types/dataTypes';
+import * as dataTypes from '../types/dataTypes';
 
-class JsonNode extends Component {
-  constructor(props) {
+interface JsonNodeState {
+  data: JsonNodeProps['data'];
+  name: JsonNodeProps['name'];
+  keyPath: JsonNodeProps['keyPath'];
+  deep: JsonNodeProps['deep'];
+}
+
+export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
+  constructor(props: JsonNodeProps) {
     super(props);
     this.state = {
       data: props.data,
@@ -19,7 +25,7 @@ class JsonNode extends Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: JsonNodeProps, state: JsonNodeState) {
     return props.data !== state.data ? { data: props.data } : null;
   }
 
@@ -222,8 +228,8 @@ class JsonNode extends Component {
         return (
           <JsonValue
             name={name}
-            value={'null'}
-            originalValue={'null'}
+            value="null"
+            originalValue="null"
             keyPath={keyPath}
             deep={deep}
             handleRemove={handleRemove}
@@ -243,8 +249,8 @@ class JsonNode extends Component {
         return (
           <JsonValue
             name={name}
-            value={'undefined'}
-            originalValue={'undefined'}
+            value="undefined"
+            originalValue="undefined"
             keyPath={keyPath}
             deep={deep}
             handleRemove={handleRemove}
@@ -308,35 +314,34 @@ class JsonNode extends Component {
   }
 }
 
-JsonNode.propTypes = {
-  name: PropTypes.string.isRequired,
-  data: PropTypes.any,
-  isCollapsed: PropTypes.func.isRequired,
-  keyPath: PropTypes.array,
-  deep: PropTypes.number,
-  handleRemove: PropTypes.func,
-  handleUpdateValue: PropTypes.func,
-  onUpdate: PropTypes.func.isRequired,
-  onDeltaUpdate: PropTypes.func.isRequired,
-  readOnly: PropTypes.func.isRequired,
-  getStyle: PropTypes.func.isRequired,
-  addButtonElement: PropTypes.element,
-  cancelButtonElement: PropTypes.element,
-  editButtonElement: PropTypes.element,
-  inputElementGenerator: PropTypes.func.isRequired,
-  textareaElementGenerator: PropTypes.func.isRequired,
-  minusMenuElement: PropTypes.element,
-  plusMenuElement: PropTypes.element,
-  beforeRemoveAction: PropTypes.func,
-  beforeAddAction: PropTypes.func,
-  beforeUpdateAction: PropTypes.func,
-  logger: PropTypes.object.isRequired,
-  onSubmitValueParser: PropTypes.func.isRequired,
-};
+interface JsonNodeProps {
+  name: string;
+  data?: any;
+  isCollapsed: (...args: any) => any;
+  keyPath?: string[];
+  deep?: number;
+  handleRemove?: (...args: any) => any;
+  handleUpdateValue?: (...args: any) => any;
+  onUpdate: (...args: any) => any;
+  onDeltaUpdate: (...args: any) => any;
+  readOnly: (...args: any) => any;
+  getStyle: (...args: any) => any;
+  addButtonElement?: ReactElement;
+  cancelButtonElement?: ReactElement;
+  editButtonElement?: ReactElement;
+  inputElementGenerator: (...args: any) => any;
+  textareaElementGenerator: (...args: any) => any;
+  minusMenuElement?: ReactElement;
+  plusMenuElement?: ReactElement;
+  beforeRemoveAction?: (...args: any) => any;
+  beforeAddAction?: (...args: any) => any;
+  beforeUpdateAction?: (...args: any) => any;
+  logger: object;
+  onSubmitValueParser: (...args: any) => any;
+}
 
+/// @ts-ignore
 JsonNode.defaultProps = {
   keyPath: [],
   deep: 0,
 };
-
-export default JsonNode;
