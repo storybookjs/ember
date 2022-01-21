@@ -2,6 +2,7 @@ import {
   isExportStory,
   AnyFramework,
   AnnotatedStoryFn,
+  StoryAnnotations,
   ComponentAnnotations,
   Args,
   StoryContext,
@@ -25,11 +26,15 @@ export type StoryFile = {
   __namedExportsOrder?: string[];
 };
 
+type PartialPlayFn = (
+  context: Partial<StoryContext> & Pick<StoryContext, 'canvasElement'>
+) => Promise<void> | void;
+
 export function composeStory<
   TFramework extends AnyFramework = AnyFramework,
   TArgs extends Args = Args
 >(
-  story: AnnotatedStoryFn<TFramework, TArgs>,
+  story: AnnotatedStoryFn<TFramework, TArgs> | StoryAnnotations<TFramework, TArgs>,
   meta: ComponentAnnotations<TFramework, TArgs>,
   globalConfig: NormalizedProjectAnnotations<TFramework> = {}
 ) {
@@ -66,8 +71,7 @@ export function composeStory<
 
   composedStory.storyName = story.storyName || story.name;
   composedStory.args = preparedStory.initialArgs;
-  // @TODO this should be partial play fn that works by just passing canvasElement
-  composedStory.play = preparedStory.playFunction;
+  composedStory.play = preparedStory.playFunction as PartialPlayFn;
   composedStory.parameters = preparedStory.parameters;
 
   return composedStory;

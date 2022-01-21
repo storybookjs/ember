@@ -4,11 +4,10 @@ import {
 } from '@storybook/store';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { composeConfigs } from '@storybook/preview-web';
-import type { AnnotatedStoryFn } from '@storybook/csf';
 import { render } from '../preview/render';
 
 import type { Meta, ReactFramework } from '../preview/types-6-0';
-import type { StoriesWithPartialProps, GlobalConfig, StoryFile } from './types';
+import type { StoriesWithPartialProps, GlobalConfig, StoryFile, TestingStory } from './types';
 
 const defaultGlobalConfig: GlobalConfig = {
   render,
@@ -38,7 +37,7 @@ export function setGlobalConfig(config: GlobalConfig) {
 }
 
 export function composeStory<GenericArgs>(
-  story: AnnotatedStoryFn<ReactFramework, GenericArgs>,
+  story: TestingStory<GenericArgs>,
   meta: Meta<GenericArgs | any>,
   globalConfig: GlobalConfig = globalStorybookConfig
 ) {
