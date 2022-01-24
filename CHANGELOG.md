@@ -1,3 +1,23 @@
+## 6.5.0-alpha.23 (January 25, 2022)
+
+### Features
+
+- Vue: Add CSF3 default render function ([#17279](https://github.com/storybookjs/storybook/pull/17279))
+
+### Bug Fixes
+
+- Core: Rename `generated-stories-entry` to `cjs` extension so require works ([#16727](https://github.com/storybookjs/storybook/pull/16727))
+- Addon-docs: Fix `BuilderConfig` can be an object ([#17320](https://github.com/storybookjs/storybook/pull/17320))
+
+### Maintenance
+
+- Core: Remove useless unfetch ([#17306](https://github.com/storybookjs/storybook/pull/17306))
+- Build: Regen lockfile ([#17283](https://github.com/storybookjs/storybook/pull/17283))
+
+### Dependency Upgrades
+
+- Upgrade node-fetch to latest version ([#17317](https://github.com/storybookjs/storybook/pull/17317))
+
 ## 6.4.14 (January 21, 2022)
 
 ### Bug Fixes
