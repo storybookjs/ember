@@ -14,7 +14,7 @@ import { normalizeStory } from '../normalizeStory';
 import { HooksContext } from '../../hooks';
 import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
 import { getValuesFromArgTypes, normalizeProjectAnnotations } from '..';
-import type { CSFExports, TestingStoryPlayFn } from './types';
+import type { CSFExports, TestingStoryPlayFn, TestingStory } from './types';
 
 export * from './types';
 
@@ -80,23 +80,35 @@ export function composeStory<
   return composedStory;
 }
 
+const getStoryName = (story: TestingStory) => {
+  if (story.storyName) {
+    return story.storyName;
+  }
+
+  if (typeof story !== 'function' && story.name) {
+    return story.name;
+  }
+
+  return undefined;
+};
+
 export function composeStories<TModule extends CSFExports>(
   storiesImport: TModule,
   globalConfig: ProjectAnnotations<AnyFramework>,
   composeStoryFn: typeof composeStory
 ) {
   const { default: meta, __esModule, __namedExportsOrder, ...stories } = storiesImport;
-  const composedStories = Object.entries(stories).reduce((storiesMap, [key, _story]) => {
-    if (!isExportStory(key as string, meta)) {
+  const composedStories = Object.entries(stories).reduce((storiesMap, [exportsName, _story]) => {
+    if (!isExportStory(exportsName as string, meta)) {
       return storiesMap;
     }
 
-    const storyName = String(key);
-    const story = _story as any;
-    story.storyName = storyName;
+    const story = _story as TestingStory;
+    // Ensure story name is already set, else use exportsName as fallback. This is important for scenarios like snapshot testing
+    story.storyName = getStoryName(story) || String(exportsName);
 
     const result = Object.assign(storiesMap, {
-      [key]: composeStoryFn(story, meta, globalConfig),
+      [exportsName]: composeStoryFn(story, meta, globalConfig),
     });
     return result;
   }, {});
