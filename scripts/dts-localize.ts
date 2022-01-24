@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-continue */
-/* eslint-disable no-restricted-syntax */
 import path from 'path';
 import fs from 'fs-extra';
 import { sync } from 'read-pkg-up';
@@ -82,26 +80,31 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
   const filesRemapping = new Map<string, string>();
   const replaceRemapping = new Map<string, string[]>();
 
-  for (const sourceFile of sourceFiles) {
-    // skip lib files from the compiler
-    if (program.isSourceFileDefaultLibrary(sourceFile)) {
-      continue;
-    }
-
-    // here you can implement any logic regarding how your new files should be placed
-    // as for this POC I used rough solution to use the same structure but I believe it should be improved
-    filesRemapping.set(sourceFile.fileName, getNewPath(cwd, sourceFile.fileName));
-  }
-
   entrySourceFiles.forEach((file) => {
     const sourceFile = sourceFiles.find((f) => f.fileName === file);
 
     actOnSourceFile(sourceFile);
   });
 
-  function getNewPath(basePath: string, filePath: string) {
+  /**
+   * @param  {string} basePath the path is the directory where the package.json is located
+   * @param  {string} filePath the path of the current file
+   */
+  function getReplacementPathRelativeToBase(basePath: string, filePath: string) {
     const relative = path.relative(basePath, filePath);
     let newPath = '';
+
+    /*
+      first we work out the relative path from the basePath
+      we might get a path like: ../../node_modules/packagename/dist/dir/file.ts
+      Here's a few examples of what the idea is:
+
+      ../../node_modules/packagename/dist/dir/file.ts => _modules/packagename-dist-dir-file.ts
+      ../../node_modules/packagename/node_modules/b/dist/dir/file.ts => _modules/packagename-node_modules-b-dist-dir-file.ts
+      ./node_modules/packagename/dist/dir/file.ts => _modules/packagename-dist-dir-file.ts
+      ./dist/ts-tmp/file.ts => file.ts
+      
+    */
 
     if (relative.includes('node_modules/')) {
       const [, ...parts] = relative.split('node_modules/');
@@ -118,20 +121,25 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
     return newPath;
   }
 
-  function wasReplaceAlready(fileName: string, target: string) {
+  function wasReplacedAlready(fileName: string, target: string) {
+    // skipping this import because is has been previously replaced already
     if (replaceRemapping.has(fileName) && replaceRemapping.get(fileName).includes(target)) {
-      console.log('skipped', target);
       return true;
     }
     return false;
   }
 
-  function getReplacementPath(
+  function getReplacementPathRelativeToFile(
     currentSourceFile: string,
-    referencedSourceFile: string,
-    target: string
+    referencedSourceFile: string
   ) {
-    const targetRelativeToSource2 = path
+    filesRemapping.set(currentSourceFile, getReplacementPathRelativeToBase(cwd, currentSourceFile));
+    filesRemapping.set(
+      referencedSourceFile,
+      getReplacementPathRelativeToBase(cwd, referencedSourceFile)
+    );
+
+    const result = path
       .relative(filesRemapping.get(currentSourceFile), filesRemapping.get(referencedSourceFile))
       .slice(1)
       .replace('.d.ts', '')
@@ -139,17 +147,14 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
 
     replaceRemapping.set(currentSourceFile, [
       ...(replaceRemapping.get(currentSourceFile) || []),
-      targetRelativeToSource2,
+      result,
     ]);
 
-    console.log('renamed', target);
-    return targetRelativeToSource2;
+    return result;
   }
 
   function wasIgnored(target: string) {
     if (externals.includes(target)) {
-      console.log('ignored', target);
-
       return true;
     }
     return false;
@@ -171,7 +176,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
 
       currentSourceFile = node.getSourceFile().fileName;
 
-      if (wasReplaceAlready(currentSourceFile, target)) {
+      if (wasReplacedAlready(currentSourceFile, target)) {
         return true;
       }
 
@@ -180,7 +185,11 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
         typeChecker.getSymbolAtLocation(node.moduleSpecifier).valueDeclaration
       ).fileName;
 
-      const replacementPath = getReplacementPath(currentSourceFile, referencedSourceFile, target);
+      const replacementPath = getReplacementPathRelativeToFile(
+        currentSourceFile,
+        referencedSourceFile
+      );
+
       // @ts-ignore
       node.moduleSpecifier = ts.createStringLiteral(replacementPath);
 
@@ -192,13 +201,15 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
       let currentSourceFile = '';
       let referencedSourceFile = '';
 
+      // check if the import's path is in the ignore-list
       if (wasIgnored(target)) {
         return true;
       }
 
       currentSourceFile = node.getSourceFile().fileName;
 
-      if (wasReplaceAlready(currentSourceFile, target)) {
+      // check if it's already been replaced previously
+      if (wasReplacedAlready(currentSourceFile, target)) {
         return true;
       }
 
@@ -207,7 +218,10 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
         typeChecker.getSymbolAtLocation(node).valueDeclaration
       ).fileName;
 
-      const replacementPath = getReplacementPath(currentSourceFile, referencedSourceFile, target);
+      const replacementPath = getReplacementPathRelativeToFile(
+        currentSourceFile,
+        referencedSourceFile
+      );
 
       // @ts-ignore
       node.argument = ts.createStringLiteral(replacementPath);
@@ -226,24 +240,29 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
     return moduleNode;
   }
 
-  function remapImports(node: ts.Node) {
+  function walkNodeToReplaceImports(node: ts.Node) {
     // it seems that it is unnecessary, but we're sure that it is impossible to have import statement later than we can just skip this node
     if (replaceImport(node)) {
       return;
     }
 
-    ts.forEachChild(node, (n) => remapImports(n));
+    ts.forEachChild(node, (n) => walkNodeToReplaceImports(n));
   }
 
-  function output(sourceFile: ts.SourceFile) {
+  function outputSourceToFile(sourceFile: ts.SourceFile) {
     const newPath = filesRemapping.get(sourceFile.fileName);
     fs.outputFileSync(newPath, printer.printFile(sourceFile).trim());
   }
 
   function actOnSourceFile(sourceFile: ts.SourceFile & { resolvedModules?: Map<any, any> }) {
-    remapImports(sourceFile);
+    filesRemapping.set(
+      sourceFile.fileName,
+      getReplacementPathRelativeToBase(cwd, sourceFile.fileName)
+    );
 
-    output(sourceFile);
+    walkNodeToReplaceImports(sourceFile);
+
+    outputSourceToFile(sourceFile);
 
     // using a internal 'resolvedModules' API to get all the modules that were imported by this source file
     // this seems to be a cache TypeScript uses internally
