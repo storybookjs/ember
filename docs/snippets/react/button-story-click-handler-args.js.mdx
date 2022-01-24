@@ -17,4 +17,9 @@ export default {
 };
 
 export const Text = ({ label, onClick }) => <Button label={label} onClick={onClick} />;
+
+Text.args = {
+  label: 'Hello',
+  onClick: action('clicked'),
+};
 ```

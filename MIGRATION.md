@@ -607,6 +607,17 @@ yarn add webpack@5 --dev
 npm install webpack@5 --save-dev
 ```
 
+Alternatively or additionally you might need to add a resolution to your package.json to ensure that a consistent webpack version is provided across all of storybook packages. Replacing the {app} with the app (react, vue, etc.) that you're using:
+
+```js
+// package.json
+...
+resolutions: {
+  "@storybook/{app}/webpack": "^5"
+}
+...
+```
+
 ### Angular 12 upgrade
 
 Storybook 6.3 supports Angular 12 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to [follow the steps for opting-in to webpack 5](#webpack-5).

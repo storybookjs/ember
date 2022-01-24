@@ -47,7 +47,7 @@ describe('useStoriesJson', () => {
 
   describe('JSON endpoint', () => {
     it('scans and extracts stories', async () => {
-      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
       await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
@@ -151,7 +151,7 @@ describe('useStoriesJson', () => {
     });
 
     it('sends invalidate events', async () => {
-      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
       await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
@@ -174,7 +174,7 @@ describe('useStoriesJson', () => {
     });
 
     it('only sends one invalidation when multiple event listeners are listening', async () => {
-      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
       await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);
@@ -203,7 +203,7 @@ describe('useStoriesJson', () => {
     it('debounces invalidation events', async () => {
       (debounce as jest.Mock).mockImplementation(jest.requireActual('lodash/debounce'));
 
-      const mockServerChannel = ({ emit: jest.fn() } as any) as ServerChannel;
+      const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
       await useStoriesJson(router, mockServerChannel, options, options.configDir);
 
       expect(use).toHaveBeenCalledTimes(1);

@@ -1,6 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
-import { DefinePlugin, Configuration, WebpackPluginInstance } from 'webpack';
+import { DefinePlugin, Configuration, WebpackPluginInstance, ProvidePlugin } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import VirtualModulePlugin from 'webpack-virtual-modules';
@@ -79,14 +79,14 @@ export async function managerWebpack(
     },
     plugins: [
       refs
-        ? ((new VirtualModulePlugin({
+        ? (new VirtualModulePlugin({
             [path.resolve(path.join(configDir, `generated-refs.js`))]: refsTemplate.replace(
               `'{{refs}}'`,
               JSON.stringify(refs)
             ),
-          }) as any) as WebpackPluginInstance)
+          }) as any as WebpackPluginInstance)
         : null,
-      (new HtmlWebpackPlugin({
+      new HtmlWebpackPlugin({
         filename: `index.html`,
         // FIXME: `none` isn't a known option
         chunksSortMode: 'none' as any,
@@ -107,13 +107,14 @@ export async function managerWebpack(
           },
           headHtmlSnippet,
         },
-      }) as any) as WebpackPluginInstance,
-      (new CaseSensitivePathsPlugin() as any) as WebpackPluginInstance,
+      }) as any as WebpackPluginInstance,
+      new CaseSensitivePathsPlugin() as any as WebpackPluginInstance,
       // graphql sources check process variable
       new DefinePlugin({
         ...stringifyProcessEnvs(envs),
         NODE_ENV: JSON.stringify(envs.NODE_ENV),
-      }) as WebpackPluginInstance,
+      }),
+      new ProvidePlugin({ process: require.resolve('process/browser.js') }),
       // isProd &&
       //   BundleAnalyzerPlugin &&
       //   new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),

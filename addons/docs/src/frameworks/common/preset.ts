@@ -4,10 +4,7 @@ import remarkExternalLinks from 'remark-external-links';
 
 // @ts-ignore
 import { createCompiler } from '@storybook/csf-tools/mdx';
-
-const resolvedBabelLoader = require.resolve('babel-loader', {
-  paths: [require.resolve('@storybook/builder-webpack4')], // FIXME!!!
-});
+import type { Options } from '@storybook/core-common';
 
 // for frameworks that are not working with react, we need to configure
 // the jsx to transpile mdx, for now there will be a flag for that
@@ -34,8 +31,23 @@ function createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }: Bab
   };
 }
 
-export function webpack(webpackConfig: any = {}, options: any = {}) {
+export async function webpack(
+  webpackConfig: any = {},
+  options: Options &
+    BabelParams & { sourceLoaderOptions: any; transcludeMarkdown: boolean } & Parameters<
+      typeof createCompiler
+    >[0]
+) {
+  const { builder = 'webpack4' } = await options.presets.apply<{ builder: any }>('core', {} as any);
+
+  const resolvedBabelLoader = require.resolve('babel-loader', {
+    paths: builder.match(/(webpack4|webpack5)/)
+      ? [require.resolve(`@storybook/builder-${builder}`)]
+      : [builder],
+  });
+
   const { module = {} } = webpackConfig;
+
   // it will reuse babel options that are already in use in storybook
   // also, these babel options are chained with other presets.
   const {

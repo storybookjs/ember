@@ -128,9 +128,10 @@ export const Ref: FunctionComponent<RefType & RefProps> = React.memo((props) => 
   const [isExpanded, setExpanded] = useState<boolean>(expanded);
   const handleClick = useCallback(() => setExpanded((value) => !value), [setExpanded]);
 
-  const setHighlightedItemId = useCallback((itemId: string) => setHighlighted({ itemId, refId }), [
-    setHighlighted,
-  ]);
+  const setHighlightedItemId = useCallback(
+    (itemId: string) => setHighlighted({ itemId, refId }),
+    [setHighlighted]
+  );
 
   const onSelectStoryId = useCallback(
     (storyId: string) => api && api.selectStory(storyId, undefined, { ref: !isMain && refId }),

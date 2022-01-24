@@ -25,13 +25,7 @@ export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
 };
 
 export const configure: ClientApi['configure'] = (...args) => api.configure(framework, ...args);
-export const {
-  addDecorator,
-  addParameters,
-  clearDecorators,
-  setAddon,
-  getStorybook,
-  raw,
-} = api.clientApi;
+export const { addDecorator, addParameters, clearDecorators, setAddon, getStorybook, raw } =
+  api.clientApi;
 
 export const { forceReRender } = api;

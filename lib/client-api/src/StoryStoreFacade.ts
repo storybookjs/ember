@@ -49,6 +49,8 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       parameters: {},
       argsEnhancers: [],
       argTypesEnhancers: [],
+      args: {},
+      argTypes: {},
     };
 
     this.stories = {};

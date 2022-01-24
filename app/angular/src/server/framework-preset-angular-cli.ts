@@ -3,6 +3,7 @@ import { logger } from '@storybook/node-logger';
 import { targetFromTargetString, BuilderContext, Target } from '@angular-devkit/architect';
 import { sync as findUpSync } from 'find-up';
 import semver from '@storybook/semver';
+import dedent from 'ts-dedent';
 
 import { logging, JsonObject } from '@angular-devkit/core';
 import { moduleIsAvailable } from './utils/module-is-available';
@@ -44,7 +45,11 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
         const legacyDefaultOptions = await getLegacyDefaultBuildOptions(_options);
 
         return getWebpackConfig13_x_x(_baseConfig, {
-          builderOptions: { ...builderOptions, ...legacyDefaultOptions },
+          builderOptions: {
+            watch: options.configType === 'DEVELOPMENT',
+            ...legacyDefaultOptions,
+            ...builderOptions,
+          },
           builderContext,
         });
       },
@@ -82,13 +87,13 @@ export async function webpackFinal(baseConfig: webpack.Configuration, options: P
 function getBuilderContext(options: PresetOptions): BuilderContext {
   return (
     options.angularBuilderContext ??
-    (({
+    ({
       target: { project: 'noop-project', builder: '', options: {} },
       workspaceRoot: process.cwd(),
       getProjectMetadata: () => ({}),
       getTargetOptions: () => ({}),
       logger: new logging.Logger('Storybook'),
-    } as unknown) as BuilderContext)
+    } as unknown as BuilderContext)
   );
 }
 
@@ -142,8 +147,12 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
     return {};
   }
 
-  // TODO ~ legacy way to get default options
-  // TODO ~ Add deprecation warning and ex for builder use ? `);
+  logger.warn(dedent`Your Storybook startup uses a solution that will not be supported in version 7.0. 
+            You must use angular builder to have an explicit configuration on the project used in angular.json
+            Read more at:
+            - https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#sb-angular-builder)
+            - https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#angular13)
+          `);
   const dirToSearch = process.cwd();
 
   // Read angular workspace
@@ -172,7 +181,9 @@ async function getLegacyDefaultBuildOptions(options: PresetOptions) {
       browserTarget.target
     );
 
-    logger.info(`=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`);
+    logger.info(
+      `=> Using angular project "${browserTarget.project}:${browserTarget.target}" for configuring Storybook`
+    );
     return { ...target.options };
   } catch (error) {
     logger.error(`=> Could not find angular project: ${error.message}`);

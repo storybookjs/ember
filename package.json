@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.5.0-alpha.5",
+  "version": "6.5.0-alpha.22",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -65,13 +65,13 @@
     "dev:babel": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell node \\$LERNA_ROOT_PATH/scripts/utils/watch-babel.js",
     "dev:check-types": "tsc --noEmit",
     "dev:tsc": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell node \\$LERNA_ROOT_PATH/scripts/utils/watch-tsc.js",
-    "github-release": "github-release-from-changelog",
     "generate-repros": "zx scripts/repros-generator/index.mjs",
+    "github-release": "github-release-from-changelog",
+    "linear-export": "ts-node --project=./scripts/tsconfig.json ./scripts/linear-export.ts",
     "lint": "yarn lint:js . && yarn lint:md .",
     "lint:js": "cross-env NODE_ENV=production eslint  --cache --cache-location=.cache/eslint --ext .js,.jsx,.json,.html,.ts,.tsx,.mjs --report-unused-disable-directives",
     "lint:md": "remark -q",
     "lint:package": "sort-package-json",
-    "linear-export": "ts-node --project=./scripts/tsconfig.json ./scripts/linear-export.ts",
     "local-registry": "ts-node --project=./scripts/tsconfig.json ./scripts/run-registry.ts ",
     "publish:debug": "npm run publish:latest -- --npm-tag=debug --no-push",
     "publish:latest": "lerna publish --exact --concurrency 1 --force-publish",
@@ -99,7 +99,9 @@
       "yarn lint:package"
     ]
   },
-  "browserslist": "defaults",
+  "browserslist": [
+    "defaults"
+  ],
   "resolutions": {
     "serialize-javascript": "^3.1.0"
   },
@@ -121,7 +123,7 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@babel/runtime": "^7.12.5",
-    "@compodoc/compodoc": "^1.1.14",
+    "@compodoc/compodoc": "^1.1.18",
     "@emotion/snapshot-serializer": "^0.8.2",
     "@linear/sdk": "^1.21.0",
     "@nicolo-ribaudo/chokidar-2": "^2.1.8",
@@ -171,7 +173,6 @@
     "@storybook/preact": "workspace:*",
     "@storybook/preview-web": "workspace:*",
     "@storybook/react": "workspace:*",
-    "@storybook/root": "workspace:*",
     "@storybook/router": "workspace:*",
     "@storybook/semver": "^7.3.2",
     "@storybook/server": "workspace:*",
@@ -260,7 +261,7 @@
     "npmlog": "^5.0.1",
     "p-limit": "^3.1.0",
     "postcss-loader": "^4.2.0",
-    "prettier": "^2.2.1",
+    "prettier": ">=2.2.1 <=2.3.0",
     "prompts": "^2.4.0",
     "raf": "^3.4.1",
     "regenerator-runtime": "^0.13.7",

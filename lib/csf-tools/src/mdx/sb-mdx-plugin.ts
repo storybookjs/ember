@@ -39,7 +39,8 @@ type MetaExport = Record<string, any>;
 const STORY_REGEX = /^<Story[\s>]/;
 const CANVAS_REGEX = /^<(Preview|Canvas)[\s>]/;
 const META_REGEX = /^<Meta[\s>]/;
-const RESERVED = /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
+const RESERVED =
+  /^(?:do|if|in|for|let|new|try|var|case|else|enum|eval|false|null|this|true|void|with|await|break|catch|class|const|super|throw|while|yield|delete|export|import|public|return|static|switch|typeof|default|extends|finally|package|private|continue|debugger|function|arguments|interface|protected|implements|instanceof)$/;
 
 function getAttr(elt: t.JSXOpeningElement, what: string): t.JSXAttribute['value'] | undefined {
   const attr = (elt.attributes as t.JSXAttribute[]).find((n) => n.name.name === what);
@@ -320,9 +321,9 @@ function getExports(node: Element, context: Context, options: CompilerOptions) {
   if (type === 'jsx') {
     if (STORY_REGEX.exec(value)) {
       // Single story
-      const ast = (parseExpression(value, {
+      const ast = parseExpression(value, {
         plugins: ['jsx'],
-      }) as unknown) as t.JSXElement;
+      }) as unknown as t.JSXElement;
       const storyExport = genStoryExport(ast, context);
       const { code } = generate(ast, {});
       // eslint-disable-next-line no-param-reassign

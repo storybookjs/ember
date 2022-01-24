@@ -31,17 +31,19 @@ const Wrapper = styled.div(({ theme }) => ({
     marginLeft: '1rem',
     fontSize: '13px',
   },
-  '.rejt-value-node, .rejt-object-node > .rejt-collapsed, .rejt-array-node > .rejt-collapsed, .rejt-object-node > .rejt-not-collapsed, .rejt-array-node > .rejt-not-collapsed': {
-    '& > svg': {
-      opacity: 0,
-      transition: 'opacity 0.2s',
+  '.rejt-value-node, .rejt-object-node > .rejt-collapsed, .rejt-array-node > .rejt-collapsed, .rejt-object-node > .rejt-not-collapsed, .rejt-array-node > .rejt-not-collapsed':
+    {
+      '& > svg': {
+        opacity: 0,
+        transition: 'opacity 0.2s',
+      },
     },
-  },
-  '.rejt-value-node:hover, .rejt-object-node:hover > .rejt-collapsed, .rejt-array-node:hover > .rejt-collapsed, .rejt-object-node:hover > .rejt-not-collapsed, .rejt-array-node:hover > .rejt-not-collapsed': {
-    '& > svg': {
-      opacity: 1,
+  '.rejt-value-node:hover, .rejt-object-node:hover > .rejt-collapsed, .rejt-array-node:hover > .rejt-collapsed, .rejt-object-node:hover > .rejt-not-collapsed, .rejt-array-node:hover > .rejt-not-collapsed':
+    {
+      '& > svg': {
+        opacity: 1,
+      },
     },
-  },
   '.rejt-edit-form button': {
     display: 'none',
   },
@@ -68,16 +70,17 @@ const Wrapper = styled.div(({ theme }) => ({
   '.rejt-object-node, .rejt-array-node': {
     position: 'relative',
   },
-  '.rejt-object-node > span:first-of-type::after, .rejt-array-node > span:first-of-type::after, .rejt-collapsed::before, .rejt-not-collapsed::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    display: 'block',
-    width: '100%',
-    marginLeft: '-1rem',
-    padding: '0 4px 0 1rem',
-    height: 22,
-  },
+  '.rejt-object-node > span:first-of-type::after, .rejt-array-node > span:first-of-type::after, .rejt-collapsed::before, .rejt-not-collapsed::before':
+    {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      display: 'block',
+      width: '100%',
+      marginLeft: '-1rem',
+      padding: '0 4px 0 1rem',
+      height: 22,
+    },
   '.rejt-collapsed::before, .rejt-not-collapsed::before': {
     zIndex: 1,
     background: 'transparent',

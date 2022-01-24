@@ -49,6 +49,9 @@ export * from './controls';
 // Loader
 export { Loader } from './Loader/Loader';
 
+// Utils
+export { getStoryHref } from './utils/getStoryHref';
+
 export * from './typography/DocumentFormatting';
 
 export { rawComponents as components };

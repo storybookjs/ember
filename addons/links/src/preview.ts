@@ -37,19 +37,19 @@ export const hrefTo = (title: ComponentTitle, name: StoryName): Promise<string> 
 const valueOrCall = (args: string[]) => (value: string | ((...args: string[]) => string)) =>
   typeof value === 'function' ? value(...args) : value;
 
-export const linkTo = (idOrTitle: string, nameInput?: string | ((...args: any[]) => string)) => (
-  ...args: any[]
-) => {
-  const resolver = valueOrCall(args);
-  const title = resolver(idOrTitle);
-  const name = resolver(nameInput);
+export const linkTo =
+  (idOrTitle: string, nameInput?: string | ((...args: any[]) => string)) =>
+  (...args: any[]) => {
+    const resolver = valueOrCall(args);
+    const title = resolver(idOrTitle);
+    const name = resolver(nameInput);
 
-  if (title?.match(/--/) && !name) {
-    navigate({ storyId: title });
-  } else {
-    navigate({ kind: title, story: name });
-  }
-};
+    if (title?.match(/--/) && !name) {
+      navigate({ storyId: title });
+    } else {
+      navigate({ kind: title, story: name });
+    }
+  };
 
 const linksListener = (e: Event) => {
   const { target } = e;

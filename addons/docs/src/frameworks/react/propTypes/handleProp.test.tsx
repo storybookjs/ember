@@ -107,8 +107,7 @@ describe('enhancePropTypesProp', () => {
           const component = createTestComponent({
             type: {
               name: 'custom',
-              raw:
-                '{\n  text: PropTypes.string.isRequired,\n  value1: PropTypes.string.isRequired,\n  value2: PropTypes.string.isRequired,\n  value3: PropTypes.string.isRequired,\n  value4: PropTypes.string.isRequired,\n}',
+              raw: '{\n  text: PropTypes.string.isRequired,\n  value1: PropTypes.string.isRequired,\n  value2: PropTypes.string.isRequired,\n  value3: PropTypes.string.isRequired,\n  value4: PropTypes.string.isRequired,\n}',
             },
           });
 
@@ -144,8 +143,7 @@ describe('enhancePropTypesProp', () => {
           const component = createTestComponent({
             type: {
               name: 'custom',
-              raw:
-                'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionalComponent!</div>;\n}',
+              raw: 'function InlinedFunctionalComponent() {\n  return <div>Inlined FunctionalComponent!</div>;\n}',
             },
           });
 
@@ -164,8 +162,7 @@ describe('enhancePropTypesProp', () => {
           const component = createTestComponent({
             type: {
               name: 'custom',
-              raw:
-                '<div>Hello world from Montreal, Quebec, Canada!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>',
+              raw: '<div>Hello world from Montreal, Quebec, Canada!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>',
             },
           });
 
@@ -203,8 +200,7 @@ describe('enhancePropTypesProp', () => {
             const component = createTestComponent({
               type: {
                 name: 'custom',
-                raw:
-                  'Symbol("A very very very very very very lonnnngggggggggggggggggggggggggggggggggggg symbol")',
+                raw: 'Symbol("A very very very very very very lonnnngggggggggggggggggggggggggggggggggggg symbol")',
               },
             });
 
@@ -608,8 +604,7 @@ describe('enhancePropTypesProp', () => {
             name: 'objectOf',
             value: {
               name: 'custom',
-              raw:
-                '{\n  foo: PropTypes.string,\n  bar: PropTypes.string,\n  another: PropTypes.string,\n  anotherAnother: PropTypes.string,\n}',
+              raw: '{\n  foo: PropTypes.string,\n  bar: PropTypes.string,\n  another: PropTypes.string,\n  anotherAnother: PropTypes.string,\n}',
             },
           },
         });
@@ -815,8 +810,7 @@ describe('enhancePropTypesProp', () => {
             name: 'arrayOf',
             value: {
               name: 'custom',
-              raw:
-                '{\n  text: PropTypes.string.isRequired,\n  value: PropTypes.string.isRequired,\n  another: PropTypes.string.isRequired,\n  another2: PropTypes.string.isRequired,\n  another3: PropTypes.string.isRequired,\n  another4: PropTypes.string.isRequired,\n}',
+              raw: '{\n  text: PropTypes.string.isRequired,\n  value: PropTypes.string.isRequired,\n  another: PropTypes.string.isRequired,\n  another2: PropTypes.string.isRequired,\n  another3: PropTypes.string.isRequired,\n  another4: PropTypes.string.isRequired,\n}',
             },
           },
         });

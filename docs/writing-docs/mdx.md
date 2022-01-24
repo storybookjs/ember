@@ -4,7 +4,7 @@ title: 'MDX'
 
 <div class="aside">
 
-💡 <strong>NOTE</strong>: Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
+💡 Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [Docs page](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
 
 </div>
 
@@ -187,6 +187,30 @@ When writing your documentation with Storybook and MDX, you get syntax highlight
 
 Once you've updated your documentation, you'll see the code block properly highlighted. You can also apply the same principle to other unsupported formats (i.e., `diff`, `hbs`).
 
+You can also update your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) and enable syntax highlighting globally. For example, to add support for SCSS, update your configuration to the following:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/storybook-preview-register-language-globally.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Write your documentation as you usually would, and your existing SCSS code blocks will automatically be highlighted when Storybook reloads. For example:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-global-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 ## Linking to other stories and pages
 
 When writing MDX, you may want to provide links to other stories or documentation pages and sections. You can use the `path` query string.
@@ -210,7 +234,7 @@ You can also use anchors to target a specific section of a page:
 ```
 
 <div class="aside">
-💡 <strong>Note:</strong> By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
+💡 By applying this pattern with the Controls addon, all anchors will be ignored in Canvas based on how Storybook handles URLs to track the args values.
 </div>
 
 ![MDX anchor example](./mdx-anchor.webp)

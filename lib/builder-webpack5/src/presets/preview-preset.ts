@@ -19,3 +19,9 @@ export const entries = async (_: unknown, options: any) => {
 
   return result;
 };
+
+export const babel = async (config: any, options: any) => {
+  // FIXME: Add this to overrides to only apply to story files
+  config.plugins.push('babel-plugin-named-exports-order');
+  return config;
+};

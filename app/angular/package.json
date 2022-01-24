@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.5.0-alpha.5",
+  "version": "6.5.0-alpha.22",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,15 +45,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.5",
-    "@storybook/api": "6.5.0-alpha.5",
-    "@storybook/core": "6.5.0-alpha.5",
-    "@storybook/core-common": "6.5.0-alpha.5",
-    "@storybook/core-events": "6.5.0-alpha.5",
+    "@storybook/addons": "6.5.0-alpha.22",
+    "@storybook/api": "6.5.0-alpha.22",
+    "@storybook/core": "6.5.0-alpha.22",
+    "@storybook/core-common": "6.5.0-alpha.22",
+    "@storybook/core-events": "6.5.0-alpha.22",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.5.0-alpha.5",
+    "@storybook/node-logger": "6.5.0-alpha.22",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.5",
+    "@storybook/store": "6.5.0-alpha.22",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
     "autoprefixer": "^9.8.6",
@@ -86,14 +86,12 @@
     "@angular/compiler": "^11.2.14",
     "@angular/compiler-cli": "^11.2.14",
     "@angular/core": "^11.2.14",
-    "@angular/elements": "^11.2.14",
     "@angular/forms": "^11.2.14",
     "@angular/platform-browser": "^11.2.14",
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
     "@types/jest": "^26.0.16",
-    "@webcomponents/custom-elements": "^1.4.3",
     "jest": "^26.6.3",
     "jest-preset-angular": "^8.3.2",
     "ts-jest": "^26.4.4"
@@ -107,13 +105,11 @@
     "@angular/compiler": ">=6.0.0",
     "@angular/compiler-cli": ">=6.0.0",
     "@angular/core": ">=6.0.0",
-    "@angular/elements": ">=6.0.0",
     "@angular/forms": ">=6.0.0",
     "@angular/platform-browser": ">=6.0.0",
     "@angular/platform-browser-dynamic": ">=6.0.0",
     "@babel/core": "*",
     "@nrwl/workspace": ">=11.1.0",
-    "@webcomponents/custom-elements": ">=1.4.3",
     "rxjs": "^6.0.0 || ^7.4.0",
     "typescript": "^3.4.0 || >=4.0.0",
     "zone.js": "^0.8.29 || ^0.9.0 || ^0.10.0 || ^0.11.0"
@@ -122,13 +118,7 @@
     "@angular/cli": {
       "optional": true
     },
-    "@angular/elements": {
-      "optional": true
-    },
     "@nrwl/workspace": {
-      "optional": true
-    },
-    "@webcomponents/custom-elements": {
       "optional": true
     }
   },
@@ -139,5 +129,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "df18f2ad3794d61c59c6458f66f73635502b8963"
+  "gitHead": "585e074db08c2e8814c1342214ecf03505e585e2"
 }

@@ -29,7 +29,7 @@ const mockChannel = () => {
     once: jest.fn(),
   };
 };
-const mockAddons = (addons as unknown) as jest.Mocked<typeof addons>;
+const mockAddons = addons as unknown as jest.Mocked<typeof addons>;
 
 describe('LinkTo', () => {
   describe('render', () => {

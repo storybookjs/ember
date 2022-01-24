@@ -3,9 +3,10 @@ import { nodePathsToArray } from './paths';
 
 // Load environment variables starts with STORYBOOK_ to the client side.
 
-export function loadEnvs(
-  options: { production?: boolean } = {}
-): { stringified: Record<string, string>; raw: Record<string, string> } {
+export function loadEnvs(options: { production?: boolean } = {}): {
+  stringified: Record<string, string>;
+  raw: Record<string, string>;
+} {
   const defaultNodeEnv = options.production ? 'production' : 'development';
 
   const env: Record<string, string> = {
@@ -59,8 +60,12 @@ export const stringifyProcessEnvs = (raw: Record<string, string>): Record<string
       'process.env.XSTORYBOOK_EXAMPLE_APP': '""',
     }
   );
-  // support destructuring like
+  // FIXME: something like this is necessary to support destructuring like:
+  //
   // const { foo } = process.env;
-  envs['process.env'] = JSON.stringify(raw);
+  //
+  // However, it also means that process.env.foo = 'bar' will fail, so removing this:
+  //
+  // envs['process.env'] = JSON.stringify(raw);
   return envs;
 };

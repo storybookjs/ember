@@ -16,9 +16,11 @@ export default {
   component: Button,
 } as Meta;
 
-export const Text: Story = (args) => ({
-  props: args,
-  template: `<storybook-button [label]="label" (onClick)="onClick()"></storybook-button>`,
+export const Text: Story = ({ label, onClick }) => ({
+  props: {
+    label,
+    onClick,
+  },
 });
 
 Text.args = {

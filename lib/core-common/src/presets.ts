@@ -30,7 +30,7 @@ function resolvePresetFunction<T = any>(
   framework: T,
   storybookOptions: InterPresetOptions
 ): T[] {
-  const prepend = [(framework as unknown) as T].filter(Boolean);
+  const prepend = [framework as unknown as T].filter(Boolean);
   if (isFunction(input)) {
     return [...prepend, ...input({ ...storybookOptions, ...presetOptions })];
   }
@@ -99,28 +99,30 @@ export const resolveAddonName = (configDir: string, name: string) => {
   };
 };
 
-const map = ({ configDir }: InterPresetOptions) => (item: any) => {
-  try {
-    if (isObject(item)) {
-      const { name } = resolveAddonName(configDir, item.name);
-      return { ...item, name };
+const map =
+  ({ configDir }: InterPresetOptions) =>
+  (item: any) => {
+    try {
+      if (isObject(item)) {
+        const { name } = resolveAddonName(configDir, item.name);
+        return { ...item, name };
+      }
+      const { name, type } = resolveAddonName(configDir, item);
+      if (type === 'managerEntries') {
+        return {
+          name: `${name}_additionalManagerEntries`,
+          type,
+          managerEntries: [name],
+        };
+      }
+      return resolveAddonName(configDir, name);
+    } catch (err) {
+      logger.error(
+        `Addon value should end in /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
+      );
     }
-    const { name, type } = resolveAddonName(configDir, item);
-    if (type === 'managerEntries') {
-      return {
-        name: `${name}_additionalManagerEntries`,
-        type,
-        managerEntries: [name],
-      };
-    }
-    return resolveAddonName(configDir, name);
-  } catch (err) {
-    logger.error(
-      `Addon value should end in /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
-    );
-  }
-  return undefined;
-};
+    return undefined;
+  };
 
 function interopRequireDefault(filePath: string) {
   // eslint-disable-next-line global-require,import/no-dynamic-require

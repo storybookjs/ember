@@ -137,6 +137,46 @@ describe('getComponentInputsOutputs', () => {
     expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
     expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));
   });
+
+  it('should return I/O with extending classes', () => {
+    @Component({
+      template: '',
+    })
+    class BarComponent {
+      @Input()
+      public a: string;
+
+      @Input()
+      public b: string;
+    }
+
+    @Component({
+      template: '',
+    })
+    class FooComponent extends BarComponent {
+      @Input()
+      public b: string;
+
+      @Input()
+      public c: string;
+    }
+
+    const fooComponentFactory = resolveComponentFactory(FooComponent);
+
+    const { inputs, outputs } = getComponentInputsOutputs(FooComponent);
+
+    expect({ inputs, outputs }).toEqual({
+      inputs: [
+        { propName: 'a', templateName: 'a' },
+        { propName: 'b', templateName: 'b' },
+        { propName: 'c', templateName: 'c' },
+      ],
+      outputs: [],
+    });
+
+    expect(sortByPropName(inputs)).toEqual(sortByPropName(fooComponentFactory.inputs));
+    expect(sortByPropName(outputs)).toEqual(sortByPropName(fooComponentFactory.outputs));
+  });
 });
 
 describe('isDeclarable', () => {
@@ -197,10 +237,27 @@ describe('isComponent', () => {
 
 describe('getComponentDecoratorMetadata', () => {
   it('should return Component with a Component', () => {
-    @Component({})
+    @Component({ selector: 'foo' })
     class FooComponent {}
 
     expect(getComponentDecoratorMetadata(FooComponent)).toBeInstanceOf(Component);
+    expect(getComponentDecoratorMetadata(FooComponent)).toEqual({
+      changeDetection: 1,
+      selector: 'foo',
+    });
+  });
+
+  it('should return Component with extending classes', () => {
+    @Component({ selector: 'bar' })
+    class BarComponent {}
+    @Component({ selector: 'foo' })
+    class FooComponent extends BarComponent {}
+
+    expect(getComponentDecoratorMetadata(FooComponent)).toBeInstanceOf(Component);
+    expect(getComponentDecoratorMetadata(FooComponent)).toEqual({
+      changeDetection: 1,
+      selector: 'foo',
+    });
   });
 });
 

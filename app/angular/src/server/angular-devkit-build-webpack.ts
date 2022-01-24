@@ -47,21 +47,24 @@ const importAngularCliWebpackConfigGenerator = (): {
   };
 };
 
-const importAngularCliReadTsconfigUtil = (): typeof import('@angular-devkit/build-angular/src/utils/read-tsconfig') => {
-  // First we look for webpack config according to directory structure of Angular 11
-  if (moduleIsAvailable('@angular-devkit/build-angular/src/utils/read-tsconfig')) {
-    // eslint-disable-next-line global-require
-    return require('@angular-devkit/build-angular/src/utils/read-tsconfig');
-  }
-  // We fallback on directory structure of Angular 10 (and below)
-  if (
-    moduleIsAvailable('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig')
-  ) {
-    // eslint-disable-next-line global-require
-    return require('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig');
-  }
-  throw new Error('ReadTsconfig not found in "@angular-devkit/build-angular"');
-};
+const importAngularCliReadTsconfigUtil =
+  (): typeof import('@angular-devkit/build-angular/src/utils/read-tsconfig') => {
+    // First we look for webpack config according to directory structure of Angular 11
+    if (moduleIsAvailable('@angular-devkit/build-angular/src/utils/read-tsconfig')) {
+      // eslint-disable-next-line global-require
+      return require('@angular-devkit/build-angular/src/utils/read-tsconfig');
+    }
+    // We fallback on directory structure of Angular 10 (and below)
+    if (
+      moduleIsAvailable(
+        '@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig'
+      )
+    ) {
+      // eslint-disable-next-line global-require
+      return require('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig');
+    }
+    throw new Error('ReadTsconfig not found in "@angular-devkit/build-angular"');
+  };
 
 const buildWebpackConfigOptions = async (
   dirToSearch: string,
@@ -137,7 +140,7 @@ const buildWebpackConfigOptions = async (
   return {
     root: getSystemPath(workspaceRootNormalized),
     // The dependency of `@angular-devkit/build-angular` to `@angular-devkit/core` is not exactly the same version as the one for storybook (node modules of node modules ^^)
-    logger: (createConsoleLogger() as unknown) as WebpackConfigOptions['logger'],
+    logger: createConsoleLogger() as unknown as WebpackConfigOptions['logger'],
     projectRoot: getSystemPath(projectRootNormalized),
     sourceRoot: sourceRootNormalized ? getSystemPath(sourceRootNormalized) : undefined,
     buildOptions,

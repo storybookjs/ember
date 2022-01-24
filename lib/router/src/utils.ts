@@ -65,7 +65,8 @@ export const deepDiff = (value: any, update: any): any => {
 const VALIDATION_REGEXP = /^[a-zA-Z0-9 _-]*$/;
 const NUMBER_REGEXP = /^-?[0-9]+(\.[0-9]+)?$/;
 const HEX_REGEXP = /^#([a-f0-9]{3,4}|[a-f0-9]{6}|[a-f0-9]{8})$/i;
-const COLOR_REGEXP = /^(rgba?|hsla?)\(([0-9]{1,3}),\s?([0-9]{1,3})%?,\s?([0-9]{1,3})%?,?\s?([0-9](\.[0-9]{1,2})?)?\)$/i;
+const COLOR_REGEXP =
+  /^(rgba?|hsla?)\(([0-9]{1,3}),\s?([0-9]{1,3})%?,\s?([0-9]{1,3})%?,?\s?([0-9](\.[0-9]{1,2})?)?\)$/i;
 const validateArgs = (key = '', value: unknown): boolean => {
   if (key === null) return false;
   if (key === '' || !VALIDATION_REGEXP.test(key)) return false;

@@ -177,39 +177,38 @@ function hookify<TFramework extends AnyFramework>(fn: AbstractFunction) {
 // Counter to prevent infinite loops.
 let numberOfRenders = 0;
 const RENDER_LIMIT = 25;
-export const applyHooks = <TFramework extends AnyFramework>(
-  applyDecorators: DecoratorApplicator<TFramework>
-): DecoratorApplicator<TFramework> => (
-  storyFn: LegacyStoryFn<TFramework>,
-  decorators: DecoratorFunction<TFramework>[]
-) => {
-  const decorated = applyDecorators(
-    hookify(storyFn),
-    decorators.map((decorator) => hookify(decorator))
-  );
-  return (context) => {
-    const { hooks } = context as { hooks: HooksContext<TFramework> };
-    hooks.prevMountedDecorators = hooks.mountedDecorators;
-    hooks.mountedDecorators = new Set([storyFn, ...decorators]);
-    hooks.currentContext = context;
-    hooks.hasUpdates = false;
-    let result = decorated(context);
-    numberOfRenders = 1;
-    while (hooks.hasUpdates) {
+export const applyHooks =
+  <TFramework extends AnyFramework>(
+    applyDecorators: DecoratorApplicator<TFramework>
+  ): DecoratorApplicator<TFramework> =>
+  (storyFn: LegacyStoryFn<TFramework>, decorators: DecoratorFunction<TFramework>[]) => {
+    const decorated = applyDecorators(
+      hookify(storyFn),
+      decorators.map((decorator) => hookify(decorator))
+    );
+    return (context) => {
+      const { hooks } = context as { hooks: HooksContext<TFramework> };
+      hooks.prevMountedDecorators = hooks.mountedDecorators;
+      hooks.mountedDecorators = new Set([storyFn, ...decorators]);
+      hooks.currentContext = context;
       hooks.hasUpdates = false;
-      hooks.currentEffects = [];
-      result = decorated(context);
-      numberOfRenders += 1;
-      if (numberOfRenders > RENDER_LIMIT) {
-        throw new Error(
-          'Too many re-renders. Storybook limits the number of renders to prevent an infinite loop.'
-        );
+      let result = decorated(context);
+      numberOfRenders = 1;
+      while (hooks.hasUpdates) {
+        hooks.hasUpdates = false;
+        hooks.currentEffects = [];
+        result = decorated(context);
+        numberOfRenders += 1;
+        if (numberOfRenders > RENDER_LIMIT) {
+          throw new Error(
+            'Too many re-renders. Storybook limits the number of renders to prevent an infinite loop.'
+          );
+        }
       }
-    }
-    hooks.addRenderListeners();
-    return result;
+      hooks.addRenderListeners();
+      return result;
+    };
   };
-};
 
 const areDepsEqual = (deps: any[], nextDeps: any[]) =>
   deps.length === nextDeps.length && deps.every((dep, i) => dep === nextDeps[i]);

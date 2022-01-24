@@ -175,8 +175,7 @@ const run = async () => {
         message: 'Select the examples to build',
         name: 'selectedExamples',
         min: 1,
-        hint:
-          'You can also run directly with example name like `yarn build-storybooks official-example`, or `yarn build-storybooks --all` for all examples!',
+        hint: 'You can also run directly with example name like `yarn build-storybooks official-example`, or `yarn build-storybooks --all` for all examples!',
         choices: examplesToBuild.map((exampleName) => {
           return {
             value: exampleName,

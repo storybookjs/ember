@@ -49,7 +49,7 @@ module.exports = {
       ],
     },
     {
-      title: '🖋 Writing stories',
+      title: '🖋 Write stories',
       pathSegment: 'writing-stories',
       type: 'menu',
       children: [
@@ -88,10 +88,20 @@ module.exports = {
           title: 'Naming components and hierarchy',
           type: 'link',
         },
+        {
+          pathSegment: 'build-pages-with-storybook',
+          title: 'Build pages and screens',
+          type: 'link',
+        },
+        {
+          pathSegment: 'stories-for-multiple-components',
+          title: 'Stories for multiple components',
+          type: 'link',
+        },
       ],
     },
     {
-      title: '📖 Writing docs',
+      title: '📖 Write docs',
       pathSegment: 'writing-docs',
       type: 'menu',
       children: [
@@ -123,7 +133,7 @@ module.exports = {
       ],
     },
     {
-      title: '🔬 Writing tests',
+      title: '🔬 Testing',
       pathSegment: 'writing-tests',
       type: 'menu',
       children: [
@@ -155,6 +165,33 @@ module.exports = {
         {
           pathSegment: 'importing-stories-in-tests',
           title: 'Import stories in tests',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🔖 Sharing',
+      pathSegment: 'sharing',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'publish-storybook',
+          title: 'Publish',
+          type: 'link',
+        },
+        {
+          pathSegment: 'embed',
+          title: 'Embed',
+          type: 'link',
+        },
+        {
+          pathSegment: 'storybook-composition',
+          title: 'Composition',
+          type: 'link',
+        },
+        {
+          pathSegment: 'package-composition',
+          title: 'Package Composition',
           type: 'link',
         },
       ],
@@ -199,14 +236,65 @@ module.exports = {
           title: 'Measure & Outline',
           type: 'link',
         },
-         {
+        {
           pathSegment: 'interactions',
           title: 'Interactions',
           type: 'link',
         },
       ],
     },
-
+    {
+      title: '🔧 Addons',
+      pathSegment: 'addons',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'introduction',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'install-addons',
+          title: 'Install',
+          type: 'link',
+        },
+        {
+          pathSegment: 'writing-addons',
+          title: 'Write',
+          type: 'link',
+        },
+        {
+          pathSegment: 'configure-addons',
+          title: 'Configure addons',
+          type: 'link',
+        },
+        {
+          pathSegment: 'writing-presets',
+          title: 'Write a preset',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-catalog',
+          title: 'Add to catalog',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-types',
+          title: 'Types of addons',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addon-knowledge-base',
+          title: 'Knowledge base',
+          type: 'link',
+        },
+        {
+          pathSegment: 'addons-api',
+          title: 'Addon API',
+          type: 'link',
+        },
+      ],
+    },
     {
       title: '⚙️ Configure',
       pathSegment: 'configure',
@@ -299,95 +387,6 @@ module.exports = {
       ],
     },
     {
-      title: '🔄 Workflows',
-      pathSegment: 'workflows',
-      type: 'menu',
-      children: [
-        {
-          pathSegment: 'publish-storybook',
-          title: 'Publish Storybook',
-          type: 'link',
-        },
-        {
-          pathSegment: 'build-pages-with-storybook',
-          title: 'Building pages and screens',
-          type: 'link',
-        },
-        {
-          pathSegment: 'stories-for-multiple-components',
-          title: 'Stories for multiple components',
-          type: 'link',
-        },
-        {
-          pathSegment: 'storybook-composition',
-          title: 'Composition',
-          type: 'link',
-        },
-        {
-          pathSegment: 'package-composition',
-          title: 'Package Composition',
-          type: 'link',
-        },
-        {
-          pathSegment: 'faq',
-          title: 'Frequently Asked Questions',
-          type: 'link',
-        },
-      ],
-    },
-    {
-      title: '🔧 Addons',
-      pathSegment: 'addons',
-      type: 'menu',
-      children: [
-        {
-          pathSegment: 'introduction',
-          title: 'Introduction',
-          type: 'link',
-        },
-        {
-          pathSegment: 'install-addons',
-          title: 'Install',
-          type: 'link',
-        },
-        {
-          pathSegment: 'writing-addons',
-          title: 'Write',
-          type: 'link',
-        },
-        {
-          pathSegment: 'configure-addons',
-          title: 'Configure addons',
-          type: 'link',
-        },
-        {
-          pathSegment: 'writing-presets',
-          title: 'Write a preset',
-          type: 'link',
-        },
-        {
-          pathSegment: 'addon-catalog',
-          title: 'Add to catalog',
-          type: 'link',
-        },
-        {
-          pathSegment: 'addon-types',
-          title: 'Types of addons',
-          type: 'link',
-        },
-        {
-          pathSegment: 'addon-knowledge-base',
-          title: 'Knowledge base',
-          type: 'link',
-        },
-        {
-          pathSegment: 'addons-api',
-          title: 'Addon API',
-          type: 'link',
-        },
-      ],
-    },
-    {
       title: '🔌 API',
       pathSegment: 'api',
       type: 'menu',
@@ -469,6 +468,11 @@ module.exports = {
           type: 'link',
         },
       ],
+    },
+    {
+      title: '❓ FAQ',
+      pathSegment: 'faq',
+      type: 'link',
     },
   ],
 };

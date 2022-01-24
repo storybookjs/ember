@@ -10,9 +10,8 @@ export * from './types-6-0';
  * export default { ... } as ComponentMeta<typeof Button>;
  * ```
  */
-export type ComponentMeta<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = Meta<ComponentProps<T>>;
+export type ComponentMeta<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  Meta<ComponentProps<T>>;
 
 /**
  * For the common case where a (CSFv2) story is a simple component that receives args as props:
@@ -21,9 +20,8 @@ export type ComponentMeta<
  * const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
  * ```
  */
-export type ComponentStoryFn<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = StoryFn<ComponentProps<T>>;
+export type ComponentStoryFn<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  StoryFn<ComponentProps<T>>;
 
 /**
  * For the common case where a (CSFv3) story is a simple component that receives args as props:
@@ -34,9 +32,8 @@ export type ComponentStoryFn<
  * }
  * ```
  */
-export type ComponentStoryObj<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = StoryObj<ComponentProps<T>>;
+export type ComponentStoryObj<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  StoryObj<ComponentProps<T>>;
 
 /**
  * For the common case where a (CSFv2) story is a simple component that receives args as props:
@@ -48,6 +45,5 @@ export type ComponentStoryObj<
  * NOTE: this is an alias for `ComponentStoryFn`.
  * In Storybook v7, `ComponentStory` will alias `ComponentStoryObj`
  */
-export type ComponentStory<
-  T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>
-> = Story<ComponentProps<T>>;
+export type ComponentStory<T extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> =
+  Story<ComponentProps<T>>;

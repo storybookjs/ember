@@ -7,6 +7,7 @@ import { IFrame } from './IFrame';
 import { EmptyBlock } from './EmptyBlock';
 import { ZoomContext } from './ZoomContext';
 import { Loader } from '..';
+import { getStoryHref } from '../utils/getStoryHref';
 
 const { PREVIEW_URL } = global;
 const BASE_URL = PREVIEW_URL || 'iframe.html';
@@ -56,7 +57,7 @@ const IFrameStory: FunctionComponent<IFrameStoryProps> = ({ id, title, height = 
             key="iframe"
             id={`iframe--${id}`}
             title={title}
-            src={`${BASE_URL}?id=${id}&viewMode=story`}
+            src={getStoryHref(BASE_URL, id, { viewMode: 'story' })}
             allowFullScreen
             scale={scale}
             style={{

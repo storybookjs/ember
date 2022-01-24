@@ -3,6 +3,8 @@ import dedent from 'ts-dedent';
 import global from 'global';
 import { logger } from '@storybook/client-logger';
 import {
+  Args,
+  ArgTypes,
   AnyFramework,
   toId,
   DecoratorFunction,
@@ -101,6 +103,16 @@ export const addParameters = (parameters: Parameters, deprecationWarning = true)
 export const addLoader = (loader: LoaderFunction<AnyFramework>, deprecationWarning = true) => {
   checkMethod('addLoader', deprecationWarning);
   singleton.addLoader(loader);
+};
+
+export const addArgs = (args: Args) => {
+  checkMethod('addArgs', false);
+  singleton.addArgs(args);
+};
+
+export const addArgTypes = (argTypes: ArgTypes) => {
+  checkMethod('addArgTypes', false);
+  singleton.addArgTypes(argTypes);
 };
 
 export const addArgsEnhancer = (enhancer: ArgsEnhancer<AnyFramework>) => {
@@ -209,6 +221,20 @@ export class ClientApi<TFramework extends AnyFramework> {
 
   addLoader = (loader: LoaderFunction<TFramework>) => {
     this.facade.projectAnnotations.loaders.push(loader);
+  };
+
+  addArgs = (args: Args) => {
+    this.facade.projectAnnotations.args = {
+      ...this.facade.projectAnnotations.args,
+      ...args,
+    };
+  };
+
+  addArgTypes = (argTypes: ArgTypes) => {
+    this.facade.projectAnnotations.argTypes = {
+      ...this.facade.projectAnnotations.argTypes,
+      ...normalizeInputTypes(argTypes),
+    };
   };
 
   addArgsEnhancer = (enhancer: ArgsEnhancer<TFramework>) => {

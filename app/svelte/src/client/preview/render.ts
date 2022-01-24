@@ -1,4 +1,5 @@
 import global from 'global';
+import { ArgsStoryFn } from '@storybook/csf';
 import { RenderContext } from '@storybook/store';
 import { SvelteFramework } from './types';
 import PreviewRender from './PreviewRender.svelte';
@@ -37,3 +38,14 @@ export function renderToDOM(
 
   showMain();
 }
+
+export const render: ArgsStoryFn<SvelteFramework> = (args, context) => {
+  const { id, component: Component } = context;
+  if (!Component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
+    );
+  }
+
+  return { Component, props: args };
+};

@@ -1,8 +1,22 @@
 import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
 import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
+
 import { StoryFnVueReturnType } from './types';
 import { VueFramework } from './types-6-0';
+
+export const render: ArgsStoryFn<VueFramework> = (props, context) => {
+  const { id, component: Component } = context;
+  if (!Component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
+    );
+  }
+
+  // TODO remove this hack
+  return h(Component as Parameters<typeof h>[0], props);
+};
 
 export const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);
 

@@ -12,6 +12,16 @@ describe('paths - normalizeStoryPath()', () => {
     expect(normalizeStoryPath(filename)).toEqual(filename);
   });
 
+  it('returns a path equal to "." unchanged', () => {
+    const filename = '.';
+    expect(normalizeStoryPath(filename)).toEqual(filename);
+  });
+
+  it('returns a path equal to ".." unchanged', () => {
+    const filename = '..';
+    expect(normalizeStoryPath(filename)).toEqual(filename);
+  });
+
   it('adds "./" to a normalized relative path', () => {
     const filename = path.join('src', 'Comp.story.js');
     expect(normalizeStoryPath(filename)).toEqual(`.${path.sep}${filename}`);

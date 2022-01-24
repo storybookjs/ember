@@ -2,9 +2,9 @@ import { filterPresetsConfig } from './presets';
 
 describe('filterPresetsConfig', () => {
   it('string config', () => {
-    expect(
-      filterPresetsConfig(['@storybook/preset-scss', '@storybook/preset-typescript'])
-    ).toEqual(['@storybook/preset-scss']);
+    expect(filterPresetsConfig(['@storybook/preset-scss', '@storybook/preset-typescript'])).toEqual(
+      ['@storybook/preset-scss']
+    );
   });
 
   it('windows paths', () => {

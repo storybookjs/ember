@@ -7,9 +7,10 @@ export const toRequireContext = (specifier: NormalizedStoriesSpecifier) => {
   // The importPathMatcher is a `./`-prefixed matcher that includes the directory
   // For `require.context()` we want the same thing, relative to directory
   const match = globToRegexp(`./${files}`);
+
   return {
     path: directory,
-    recursive: !!files.match(/^\*{1,2}\//),
+    recursive: files.includes('**') || files.split('/').length > 1,
     match,
   };
 };
