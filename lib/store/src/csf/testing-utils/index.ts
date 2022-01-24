@@ -10,9 +10,9 @@ import {
 
 import { prepareStory } from '../prepareStory';
 import { normalizeStory } from '../normalizeStory';
-import { normalizeProjectAnnotations } from '../normalizeProjectAnnotations';
 import { HooksContext } from '../../hooks';
-import { NormalizedProjectAnnotations } from '../..';
+import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
+import type { NormalizedProjectAnnotations } from '../../types';
 
 if (process.env.NODE_ENV === 'test') {
   // eslint-disable-next-line global-require
@@ -42,7 +42,7 @@ export function composeStory<
     throw new Error('Expected a story but received undefined.');
   }
 
-  const normalizedMeta = normalizeProjectAnnotations(meta);
+  const normalizedMeta = normalizeComponentAnnotations(meta);
 
   const normalizedStory = normalizeStory(story.name, story, normalizedMeta);
 

@@ -4,7 +4,7 @@ import { logger } from '@storybook/client-logger';
 import { ModuleExports, CSFFile, NormalizedComponentAnnotations } from '../types';
 import { normalizeStory } from './normalizeStory';
 import { Path } from '..';
-import { normalizeProjectAnnotations } from './normalizeProjectAnnotations';
+import { normalizeComponentAnnotations } from './normalizeComponentAnnotations';
 
 const checkGlobals = (parameters: Parameters) => {
   const { globals, globalTypes } = parameters;
@@ -40,11 +40,8 @@ export function processCSFFile<TFramework extends AnyFramework>(
 ): CSFFile<TFramework> {
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
 
-  const meta: NormalizedComponentAnnotations<TFramework> = normalizeProjectAnnotations<TFramework>(
-    defaultExport,
-    title,
-    importPath
-  );
+  const meta: NormalizedComponentAnnotations<TFramework> =
+    normalizeComponentAnnotations<TFramework>(defaultExport, title, importPath);
   checkDisallowedParameters(meta.parameters);
 
   const csfFile: CSFFile<TFramework> = { meta, stories: {} };

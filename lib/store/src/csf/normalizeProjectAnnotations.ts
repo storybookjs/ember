@@ -1,22 +1,25 @@
-import { sanitize, AnyFramework } from '@storybook/csf';
+import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
+import { inferControls, NormalizedProjectAnnotations, normalizeInputTypes } from '..';
+import { inferArgTypes } from '../inferArgTypes';
 
-import { ModuleExports, NormalizedComponentAnnotations } from '../types';
-import { normalizeInputTypes } from './normalizeInputTypes';
-
-export function normalizeProjectAnnotations<TFramework extends AnyFramework>(
-  defaultExport: ModuleExports['default'],
-  title: string = defaultExport.title,
-  importPath?: string
-): NormalizedComponentAnnotations<TFramework> {
-  const { id, argTypes } = defaultExport;
+export function normalizeProjectAnnotations<TFramework extends AnyFramework>({
+  argTypes,
+  globalTypes,
+  argTypesEnhancers,
+  ...annotations
+}: ProjectAnnotations<TFramework>): NormalizedProjectAnnotations<TFramework> {
   return {
-    id: sanitize(id || title),
-    ...defaultExport,
-    title,
     ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    parameters: {
-      fileName: importPath,
-      ...defaultExport.parameters,
-    },
+    ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
+    argTypesEnhancers: [
+      ...(argTypesEnhancers || []),
+      inferArgTypes,
+      // inferControls technically should only run if the user is using the controls addon,
+      // and so should be added by a preset there. However, as it seems some code relies on controls
+      // annotations (in particular the angular implementation's `cleanArgsDecorator`), for backwards
+      // compatibility reasons, we will leave this in the store until 7.0
+      inferControls,
+    ],
+    ...annotations,
   };
 }
