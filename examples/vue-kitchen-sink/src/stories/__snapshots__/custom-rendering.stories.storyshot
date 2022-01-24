@@ -30,7 +30,7 @@ exports[`Storyshots Custom/Method for rendering Vue Template 1`] = `
 exports[`Storyshots Custom/Method for rendering Vue pre-registered component 1`] = `
 <p>
   <em>
-    This component was pre-registered in .storybook/config.js
+    This component was pre-registered in .storybook/preview.js
   </em>
   <br />
    
