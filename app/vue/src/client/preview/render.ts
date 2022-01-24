@@ -24,7 +24,7 @@ const root = new Vue({
 export const render: ArgsStoryFn<VueFramework> = (props, context) => {
   const { id, component: Component } = context;
   const component = Component as VueFramework['component'] & {
-    __file?: string;
+    __docgenInfo?: { displayName: string };
     props: Record<string, any>;
   };
 
@@ -40,14 +40,12 @@ export const render: ArgsStoryFn<VueFramework> = (props, context) => {
   if (component.name) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore isReservedTag is an internal function from Vue, might be changed in future releases
-    componentName = Vue.config.isReservedTag(component.name)
-      ? `sb-${component.name}`
-      : component.name;
-  } else if (component.__file) {
-    // otherwise, we use the file name to make the component name, if present
-    const file = component.__file;
-    // eslint-disable-next-line prefer-destructuring
-    componentName = file.split('/').pop().split('.')[0];
+    const isReservedTag = Vue.config.isReservedTag && Vue.config.isReservedTag(component.name);
+
+    componentName = isReservedTag ? `sb-${component.name}` : component.name;
+  } else if (component.__docgenInfo?.displayName) {
+    // otherwise, we use the displayName from docgen, if present
+    componentName = component.__docgenInfo?.displayName;
   }
 
   return {
