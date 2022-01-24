@@ -4,7 +4,7 @@ import remarkExternalLinks from 'remark-external-links';
 
 // @ts-ignore
 import { createCompiler } from '@storybook/csf-tools/mdx';
-import type { Options } from '@storybook/core-common';
+import type { BuilderConfig, Options } from '@storybook/core-common';
 
 // for frameworks that are not working with react, we need to configure
 // the jsx to transpile mdx, for now there will be a flag for that
@@ -38,12 +38,15 @@ export async function webpack(
       typeof createCompiler
     >[0]
 ) {
-  const { builder = 'webpack4' } = await options.presets.apply<{ builder: any }>('core', {} as any);
+  const { builder = 'webpack4' } = await options.presets.apply<{
+    builder: BuilderConfig;
+  }>('core', {} as any);
 
+  const builderName = typeof builder === 'string' ? builder : builder.name;
   const resolvedBabelLoader = require.resolve('babel-loader', {
-    paths: builder.match(/(webpack4|webpack5)/)
+    paths: builderName.match(/(webpack4|webpack5)/)
       ? [require.resolve(`@storybook/builder-${builder}`)]
-      : [builder],
+      : [builderName],
   });
 
   const { module = {} } = webpackConfig;
