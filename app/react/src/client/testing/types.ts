@@ -1,24 +1,11 @@
 import type {
   StoryFn as OriginalStoryFn,
-  StoryObj,
-  Meta,
-  Args,
-  StoryContext,
-  ReactFramework,
-} from '../preview/types-6-0';
+  TestingStory as OriginalTestingStory,
+} from '@storybook/store';
+import type { ReactFramework, Args } from '../preview/types-6-0';
 
-export type StoryFile = { default: Meta<Args>; __esModule?: boolean; __namedExportsOrder?: any };
-
-export type TestingStoryPlayContext<T = Args> = Partial<StoryContext<ReactFramework, T>> &
-  Pick<StoryContext, 'canvasElement'>;
-
-export type TestingStoryPlayFn<TArgs = Args> = (
-  context: TestingStoryPlayContext<TArgs>
-) => Promise<void> | void;
-
-export type StoryFn<TArgs = Args> = OriginalStoryFn<TArgs> & { play: TestingStoryPlayFn<TArgs> };
-
-export type TestingStory<T = Args> = StoryFn<T> | StoryObj<T>;
+export type TestingStory<TArgs = Args> = OriginalTestingStory<ReactFramework, TArgs>;
+export type StoryFn<TArgs = Args> = OriginalStoryFn<ReactFramework, TArgs>;
 
 /**
  * T represents the whole ES module of a stories file. K of T means named exports (basically the Story type)

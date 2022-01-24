@@ -14,18 +14,15 @@ import { normalizeStory } from '../normalizeStory';
 import { HooksContext } from '../../hooks';
 import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
 import { normalizeProjectAnnotations } from '..';
+import type { CSFExports, TestingStoryPlayFn } from './types';
+
+export * from './types';
 
 if (process.env.NODE_ENV === 'test') {
   // eslint-disable-next-line global-require
   const { default: addons, mockChannel } = require('@storybook/addons');
   addons.setChannel(mockChannel());
 }
-
-export type StoryFile = {
-  default: Record<any, any>;
-  __esModule?: boolean;
-  __namedExportsOrder?: string[];
-};
 
 let GLOBAL_STORYBOOK_CONFIG = {};
 
@@ -34,10 +31,6 @@ export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
 ) {
   GLOBAL_STORYBOOK_CONFIG = config;
 }
-
-type PartialPlayFn = (
-  context: Partial<StoryContext> & Pick<StoryContext, 'canvasElement'>
-) => Promise<void> | void;
 
 export function composeStory<
   TFramework extends AnyFramework = AnyFramework,
@@ -89,13 +82,13 @@ export function composeStory<
 
   composedStory.storyName = story.storyName || story.name;
   composedStory.args = preparedStory.initialArgs;
-  composedStory.play = preparedStory.playFunction as PartialPlayFn;
+  composedStory.play = preparedStory.playFunction as TestingStoryPlayFn;
   composedStory.parameters = preparedStory.parameters;
 
   return composedStory;
 }
 
-export function composeStories<TModule extends StoryFile>(
+export function composeStories<TModule extends CSFExports>(
   storiesImport: TModule,
   globalConfig: ProjectAnnotations<AnyFramework>,
   composeStoryFn: typeof composeStory

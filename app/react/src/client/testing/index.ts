@@ -2,12 +2,13 @@ import {
   composeStory as originalComposeStory,
   composeStories as originalComposeStories,
   setGlobalConfig as originalSetGlobalConfig,
+  CSFExports,
 } from '@storybook/store';
-import { ProjectAnnotations } from '@storybook/csf';
+import { ProjectAnnotations, Args } from '@storybook/csf';
 
 import { render } from '../preview/render';
 import type { Meta, ReactFramework } from '../preview/types-6-0';
-import type { StoriesWithPartialProps, StoryFile, TestingStory } from './types';
+import type { StoriesWithPartialProps, TestingStory } from './types';
 
 /** Function that sets the globalConfig of your storybook. The global config is the preview module of your .storybook folder.
  *
@@ -58,12 +59,12 @@ const defaultGlobalConfig: ProjectAnnotations<ReactFramework> = {
  * @param meta - e.g. (import Meta from './Button.stories')
  * @param [globalConfig] - e.g. (import * as globalConfig from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
  */
-export function composeStory<GenericArgs>(
-  story: TestingStory<GenericArgs>,
-  meta: Meta<GenericArgs | any>,
+export function composeStory<TArgs = Args>(
+  story: TestingStory<TArgs>,
+  meta: Meta<TArgs | any>,
   globalConfig?: ProjectAnnotations<ReactFramework>
 ) {
-  return originalComposeStory<ReactFramework, GenericArgs>(
+  return originalComposeStory<ReactFramework, TArgs>(
     story,
     meta,
     globalConfig,
@@ -96,11 +97,11 @@ export function composeStory<GenericArgs>(
  * @param storiesImport - e.g. (import * as stories from './Button.stories')
  * @param [globalConfig] - e.g. (import * as globalConfig from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
  */
-export function composeStories<TModule extends StoryFile>(
+export function composeStories<TModule extends CSFExports<ReactFramework>>(
   storiesImport: TModule,
   globalConfig?: ProjectAnnotations<ReactFramework>
 ) {
   const composedStories = originalComposeStories(storiesImport, globalConfig, composeStory);
 
-  return composedStories as unknown as Omit<StoriesWithPartialProps<TModule>, keyof StoryFile>;
+  return composedStories as unknown as Omit<StoriesWithPartialProps<TModule>, keyof CSFExports>;
 }
