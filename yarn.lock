@@ -7570,7 +7570,7 @@ __metadata:
     ip: ^1.1.5
     jest-specific-snapshot: ^4.0.0
     lodash: ^4.17.21
-    node-fetch: ^2.6.1
+    node-fetch: ^2.6.7
     open: ^8.4.0
     pretty-hrtime: ^1.0.3
     prompts: ^2.4.0
@@ -7910,7 +7910,7 @@ __metadata:
     find-up: ^5.0.0
     fs-extra: ^9.0.1
     html-webpack-plugin: ^4.0.0
-    node-fetch: ^2.6.1
+    node-fetch: ^2.6.7
     pnp-webpack-plugin: 1.6.4
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
@@ -7961,7 +7961,7 @@ __metadata:
     find-up: ^5.0.0
     fs-extra: ^9.0.1
     html-webpack-plugin: ^5.0.0
-    node-fetch: ^2.6.1
+    node-fetch: ^2.6.7
     process: ^0.11.10
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
@@ -32344,7 +32344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.5.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1":
+"node-fetch@npm:^2.5.0, node-fetch@npm:^2.6.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.7":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
