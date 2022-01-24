@@ -1,4 +1,3 @@
-import { NormalizedProjectAnnotations } from '@storybook/store';
 import type {
   StoryFn as OriginalStoryFn,
   StoryObj,
@@ -7,14 +6,6 @@ import type {
   StoryContext,
   ReactFramework,
 } from '../preview/types-6-0';
-
-/**
- * Object representing the preview.ts module
- *
- * Used in storybook testing utilities.
- * @see [Unit testing with Storybook](https://storybook.js.org/docs/react/workflows/unit-testing)
- */
-export type GlobalConfig = NormalizedProjectAnnotations<ReactFramework>;
 
 export type StoryFile = { default: Meta<Args>; __esModule?: boolean; __namedExportsOrder?: any };
 

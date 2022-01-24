@@ -4,6 +4,7 @@ import {
   AnnotatedStoryFn,
   StoryAnnotations,
   ComponentAnnotations,
+  ProjectAnnotations,
   Args,
   StoryContext,
 } from '@storybook/csf';
@@ -12,7 +13,7 @@ import { prepareStory } from '../prepareStory';
 import { normalizeStory } from '../normalizeStory';
 import { HooksContext } from '../../hooks';
 import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
-import type { NormalizedProjectAnnotations } from '../../types';
+import { normalizeProjectAnnotations } from '..';
 
 if (process.env.NODE_ENV === 'test') {
   // eslint-disable-next-line global-require
@@ -26,6 +27,14 @@ export type StoryFile = {
   __namedExportsOrder?: string[];
 };
 
+let GLOBAL_STORYBOOK_CONFIG = {};
+
+export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
+  config: ProjectAnnotations<TFramework>
+) {
+  GLOBAL_STORYBOOK_CONFIG = config;
+}
+
 type PartialPlayFn = (
   context: Partial<StoryContext> & Pick<StoryContext, 'canvasElement'>
 ) => Promise<void> | void;
@@ -36,17 +45,26 @@ export function composeStory<
 >(
   story: AnnotatedStoryFn<TFramework, TArgs> | StoryAnnotations<TFramework, TArgs>,
   meta: ComponentAnnotations<TFramework, TArgs>,
-  globalConfig: NormalizedProjectAnnotations<TFramework> = {}
+  globalConfig: ProjectAnnotations<TFramework> = GLOBAL_STORYBOOK_CONFIG,
+  defaultConfig: ProjectAnnotations<TFramework> = {}
 ) {
   if (story === undefined) {
     throw new Error('Expected a story but received undefined.');
   }
 
+  const projectAnnotations = { ...defaultConfig, ...globalConfig };
+
   const normalizedMeta = normalizeComponentAnnotations(meta);
 
   const normalizedStory = normalizeStory(story.name, story, normalizedMeta);
 
-  const preparedStory = prepareStory<TFramework>(normalizedStory, normalizedMeta, globalConfig);
+  const normalizedProjectAnnotations = normalizeProjectAnnotations(projectAnnotations);
+
+  const preparedStory = prepareStory<TFramework>(
+    normalizedStory,
+    normalizedMeta,
+    normalizedProjectAnnotations
+  );
 
   const defaultGlobals = Object.entries(globalConfig.globalTypes || {}).reduce(
     (acc, [arg, { defaultValue }]) => {
@@ -79,7 +97,7 @@ export function composeStory<
 
 export function composeStories<TModule extends StoryFile>(
   storiesImport: TModule,
-  globalConfig: NormalizedProjectAnnotations<AnyFramework>,
+  globalConfig: ProjectAnnotations<AnyFramework>,
   composeStoryFn: typeof composeStory
 ) {
   const { default: meta, __esModule, __namedExportsOrder, ...stories } = storiesImport;

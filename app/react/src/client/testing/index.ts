@@ -1,21 +1,13 @@
 import {
   composeStory as originalComposeStory,
   composeStories as originalComposeStories,
+  setGlobalConfig as originalSetGlobalConfig,
 } from '@storybook/store';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { composeConfigs } from '@storybook/preview-web';
+import { ProjectAnnotations } from '@storybook/csf';
+
 import { render } from '../preview/render';
-
 import type { Meta, ReactFramework } from '../preview/types-6-0';
-import type { StoriesWithPartialProps, GlobalConfig, StoryFile, TestingStory } from './types';
-
-const defaultGlobalConfig: GlobalConfig = {
-  render,
-};
-
-let globalStorybookConfig = {
-  ...defaultGlobalConfig,
-};
+import type { StoriesWithPartialProps, StoryFile, TestingStory } from './types';
 
 /** Function that sets the globalConfig of your storybook. The global config is the preview module of your .storybook folder.
  *
@@ -32,9 +24,13 @@ let globalStorybookConfig = {
  *
  * @param config - e.g. (import * as globalConfig from '../.storybook/preview')
  */
-export function setGlobalConfig(config: GlobalConfig) {
-  globalStorybookConfig = composeConfigs([defaultGlobalConfig, config]) as GlobalConfig;
+export function setGlobalConfig(config: ProjectAnnotations<ReactFramework>) {
+  originalSetGlobalConfig(config);
 }
+
+const defaultGlobalConfig: ProjectAnnotations<ReactFramework> = {
+  render,
+};
 
 /**
  * Function that will receive a story along with meta (e.g. a default export from a .stories file)
@@ -65,11 +61,14 @@ export function setGlobalConfig(config: GlobalConfig) {
 export function composeStory<GenericArgs>(
   story: TestingStory<GenericArgs>,
   meta: Meta<GenericArgs | any>,
-  globalConfig: GlobalConfig = globalStorybookConfig
+  globalConfig?: ProjectAnnotations<ReactFramework>
 ) {
-  const projectAnnotations = { ...defaultGlobalConfig, ...globalConfig };
-
-  return originalComposeStory<ReactFramework, GenericArgs>(story, meta, projectAnnotations);
+  return originalComposeStory<ReactFramework, GenericArgs>(
+    story,
+    meta,
+    globalConfig,
+    defaultGlobalConfig
+  );
 }
 
 /**
@@ -99,9 +98,9 @@ export function composeStory<GenericArgs>(
  */
 export function composeStories<TModule extends StoryFile>(
   storiesImport: TModule,
-  globalConfig?: GlobalConfig
+  globalConfig?: ProjectAnnotations<ReactFramework>
 ) {
   const composedStories = originalComposeStories(storiesImport, globalConfig, composeStory);
 
-  return (composedStories as unknown) as Omit<StoriesWithPartialProps<TModule>, keyof StoryFile>;
+  return composedStories as unknown as Omit<StoriesWithPartialProps<TModule>, keyof StoryFile>;
 }
