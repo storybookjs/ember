@@ -126,7 +126,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const clientApi = storybookPaths['@storybook/client-api'];
       const clientLogger = storybookPaths['@storybook/client-logger'];
 
-      virtualModuleMapping[`${configFilename}-generated-config-entry.cjs`] = interpolate(
+      virtualModuleMapping[`${configFilename}-generated-config-entry.js`] = interpolate(
         entryTemplate,
         {
           configFilename,
@@ -134,7 +134,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
           clientLogger,
         }
       );
-      entries.push(`${configFilename}-generated-config-entry.cjs`);
+      entries.push(`${configFilename}-generated-config-entry.js`);
     });
     if (stories.length > 0) {
       const storyTemplate = await readTemplate(
