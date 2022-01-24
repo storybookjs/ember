@@ -255,6 +255,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
   }
 
   function actOnSourceFile(sourceFile: ts.SourceFile & { resolvedModules?: Map<any, any> }) {
+    // console.log(sourceFile);
     filesRemapping.set(
       sourceFile.fileName,
       getReplacementPathRelativeToBase(cwd, sourceFile.fileName)
@@ -271,6 +272,10 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
     if (sourceFile.resolvedModules && sourceFile.resolvedModules.size > 0) {
       Array.from(sourceFile.resolvedModules.entries()).forEach(([k, v]) => {
         if (externals.includes(k)) {
+          return;
+        }
+        const x = sourceFiles.find((f) => f.fileName === v.resolvedFileName);
+        if (!x) {
           return;
         }
         actOnSourceFile(sourceFiles.find((f) => f.fileName === v.resolvedFileName));

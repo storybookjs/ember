@@ -72,17 +72,26 @@ const modulePath = path.resolve('./');
 const packageJson = getPackageJson(modulePath);
 const modules = true;
 
-async function prepare() {
+async function prepare({ cwd, flags }) {
   removeDist();
 
-  await babelify({
-    modules,
-    errorCallback: (errorLogs) => logError('js', packageJson, errorLogs),
-  });
-  tscfy({ errorCallback: (errorLogs) => logError('ts', packageJson, errorLogs) });
+  await Promise.all([
+    babelify({
+      modules,
+      watch: flags.includes('--watch'),
+      errorCallback: (errorLogs) => logError('js', packageJson, errorLogs),
+    }),
+    tscfy({
+      watch: flags.includes('--watch'),
+      errorCallback: (errorLogs) => logError('ts', packageJson, errorLogs),
+    }),
+  ]);
 
   cleanup();
   console.log(chalk.gray(`Built: ${chalk.bold(`${packageJson.name}@${packageJson.version}`)}`));
 }
 
-prepare();
+const flags = process.argv.slice(2);
+const cwd = process.cwd();
+
+prepare({ cwd, flags });

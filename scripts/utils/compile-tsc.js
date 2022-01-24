@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const shell = require('shelljs');
 
@@ -21,7 +21,9 @@ function getCommand(watch) {
     args.push('-w', '--preserveWatchOutput');
   }
 
-  return `yarn run -T tsc ${args.join(' ')} && yarn run -T downlevel-dts dist/ts3.9 dist/ts3.4`;
+  return `yarn run -T tsc ${args.join(' ')}${
+    watch ? ' && yarn run -T downlevel-dts dist/ts3.9 dist/ts3.4' : ''
+  }`;
 }
 
 function handleExit(code, stderr, errorCallback) {
@@ -34,19 +36,18 @@ function handleExit(code, stderr, errorCallback) {
   }
 }
 
-function tscfy(options = {}) {
+async function tscfy(options = {}) {
   const { watch = false, silent = false, errorCallback } = options;
   const tsConfigFile = 'tsconfig.json';
 
-  if (!fs.existsSync(tsConfigFile)) {
+  if (!(await fs.pathExists(tsConfigFile))) {
     if (!silent) {
       console.log(`No ${tsConfigFile}`);
     }
     return;
   }
 
-  const content = fs.readFileSync(tsConfigFile);
-  const tsConfig = JSON.parse(content);
+  const tsConfig = await fs.readJSON(tsConfigFile);
 
   if (tsConfig && tsConfig.lerna && tsConfig.lerna.disabled === true) {
     if (!silent) {

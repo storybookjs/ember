@@ -61,7 +61,7 @@
     "changelog:next": "pr-log --sloppy --since-prerelease",
     "coverage": "codecov",
     "danger": "danger",
-    "dev": "concurrently --kill-others \"yarn dev:tsc\" \"yarn dev:babel\"",
+    "dev": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell ts-node \\$LERNA_ROOT_PATH/scripts/utils/watch-both.ts",
     "dev:babel": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell node \\$LERNA_ROOT_PATH/scripts/utils/watch-babel.js",
     "dev:check-types": "tsc --noEmit",
     "dev:tsc": "lerna exec --scope \"@storybook/*\" --parallel -- cross-env-shell node \\$LERNA_ROOT_PATH/scripts/utils/watch-tsc.js",

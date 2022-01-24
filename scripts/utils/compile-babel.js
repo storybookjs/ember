@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const shell = require('shelljs');
 
@@ -80,7 +80,7 @@ async function run({ watch, dir, silent, errorCallback }) {
 async function babelify(options = {}) {
   const { watch = false, silent = true, errorCallback } = options;
 
-  if (!fs.existsSync('src')) {
+  if (!(await fs.pathExists('src'))) {
     if (!silent) {
       console.log('No src dir');
     }

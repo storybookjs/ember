@@ -2,6 +2,7 @@
 
 /* eslint-disable global-require */
 const { resolve } = require('path');
+const execa = require('execa');
 const terminalSize = require('window-size');
 const { checkDependenciesAndRun, spawn } = require('./utils/cli-utils');
 
@@ -129,23 +130,14 @@ function run() {
         );
       }
 
-      if (watchMode) {
-        const runWatchMode = () => {
-          const baseWatchCommand = `lerna exec --scope '${glob}' --parallel -- cross-env-shell node ${resolve(
-            __dirname
-          )}`;
-          const watchTsc = `${baseWatchCommand}/utils/watch-tsc.js`;
-          const watchBabel = `${baseWatchCommand}/utils/watch-babel.js`;
-          const command = `concurrently --kill-others-on-fail "${watchTsc}" "${watchBabel}"`;
-
-          spawn(command);
-        };
-
-        runWatchMode();
-      } else {
-        spawn(`lerna run prepare --scope "${glob}"`);
-      }
-      process.stdout.write('\x07');
+      execa
+        .command(
+          `lerna run prepare --parallel --scope "${glob}"${watchMode ? ' -- --watch' : ''}`,
+          {
+            buffer: false,
+          }
+        )
+        .stdout.pipe(process.stdout);
     })
     .catch((e) => {
       log.aborted(prefix, chalk.red(e.message));
