@@ -13,7 +13,7 @@ import { prepareStory } from '../prepareStory';
 import { normalizeStory } from '../normalizeStory';
 import { HooksContext } from '../../hooks';
 import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
-import { normalizeProjectAnnotations } from '..';
+import { getValuesFromArgTypes, normalizeProjectAnnotations } from '..';
 import type { CSFExports, TestingStoryPlayFn } from './types';
 
 export * from './types';
@@ -59,15 +59,7 @@ export function composeStory<
     normalizedProjectAnnotations
   );
 
-  const defaultGlobals = Object.entries(globalConfig.globalTypes || {}).reduce(
-    (acc, [arg, { defaultValue }]) => {
-      if (defaultValue) {
-        acc[arg] = defaultValue;
-      }
-      return acc;
-    },
-    {} as Record<string, { defaultValue: any }>
-  );
+  const defaultGlobals = getValuesFromArgTypes(globalConfig.globalTypes);
 
   const composedStory = (extraArgs: Partial<TArgs>) => {
     const context: Partial<StoryContext> = {

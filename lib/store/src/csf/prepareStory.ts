@@ -23,6 +23,7 @@ import { combineParameters } from '../parameters';
 import { applyHooks } from '../hooks';
 import { defaultDecorateStory } from '../decorators';
 import { groupArgsByTarget, NO_TARGET_NAME } from '../args';
+import { getValuesFromArgTypes } from '..';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},
@@ -121,15 +122,8 @@ export function prepareStory<TFramework extends AnyFramework>(
 
   // Add argTypes[X].defaultValue to initial args (note this deprecated)
   // We need to do this *after* the argTypesEnhancers as they may add defaultValues
-  const defaultArgs: Args = Object.entries(contextForEnhancers.argTypes).reduce(
-    (acc, [arg, { defaultValue }]) => {
-      if (typeof defaultValue !== 'undefined') {
-        acc[arg] = defaultValue;
-      }
-      return acc;
-    },
-    {} as Args
-  );
+  const defaultArgs = getValuesFromArgTypes(contextForEnhancers.argTypes);
+
   if (Object.keys(defaultArgs).length > 0) {
     argTypeDefaultValueWarning();
   }
