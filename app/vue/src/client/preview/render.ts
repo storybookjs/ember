@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import dedent from 'ts-dedent';
 import Vue from 'vue';
 import { RenderContext } from '@storybook/store';
+import { ArgsStoryFn } from '@storybook/csf';
 import { VueFramework } from './types-6-0';
 
 export const COMPONENT = 'STORYBOOK_COMPONENT';
@@ -18,6 +20,40 @@ const root = new Vue({
     return h('div', { attrs: { id: 'root' } }, children);
   },
 });
+
+export const render: ArgsStoryFn<VueFramework> = (props, context) => {
+  const { id, component: Component } = context;
+  const component = Component as VueFramework['component'] & {
+    __docgenInfo?: { displayName: string };
+    props: Record<string, any>;
+  };
+
+  if (!component) {
+    throw new Error(
+      `Unable to render story ${id} as the component annotation is missing from the default export`
+    );
+  }
+
+  let componentName = 'component';
+
+  // if there is a name property, we either use it or preprend with sb- in case it's an invalid name
+  if (component.name) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore isReservedTag is an internal function from Vue, might be changed in future releases
+    const isReservedTag = Vue.config.isReservedTag && Vue.config.isReservedTag(component.name);
+
+    componentName = isReservedTag ? `sb-${component.name}` : component.name;
+  } else if (component.__docgenInfo?.displayName) {
+    // otherwise, we use the displayName from docgen, if present
+    componentName = component.__docgenInfo?.displayName;
+  }
+
+  return {
+    props: component.props,
+    components: { [componentName]: component },
+    template: `<${componentName} v-bind="$props" />`,
+  };
+};
 
 export function renderToDOM(
   {
