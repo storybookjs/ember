@@ -100,7 +100,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
     virtualModuleMapping[storiesPath] = toImportFn(stories);
     const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
-      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
+      await readTemplate(
+        require.resolve(
+          '@storybook/builder-webpack5/templates/virtualModuleModernEntry.js.handlebars'
+        )
+      ),
       {
         storiesFilename,
         configs,
