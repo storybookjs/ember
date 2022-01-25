@@ -109,9 +109,9 @@ function run() {
       command: () => {
         log.info(prefix, 'prepare');
         spawn(
-          `nx run-many --target=prepare --all --parallel ${
+          `nx run-many --target="prepare" --all --parallel ${
             process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
-          }`
+          } -- --optimized`
         );
       },
       order: 2,
@@ -124,16 +124,6 @@ function run() {
         spawn('yarn build-manager');
       },
       order: 3,
-    }),
-    packs: createTask({
-      name: `Build tarballs of packages ${chalk.gray('(build-packs)')}`,
-      defaultValue: false,
-      option: '--packs',
-      command: () => {
-        spawn('yarn build-packs');
-      },
-      check: () => getDirectories(join(__dirname, '..', 'packs')).length === 0,
-      order: 5,
     }),
     registry: createTask({
       name: `Run local registry ${chalk.gray('(reg)')}`,
@@ -157,7 +147,7 @@ function run() {
 
   const groups = {
     main: ['core'],
-    buildtasks: ['install', 'build', 'manager', 'packs'],
+    buildtasks: ['install', 'build', 'manager'],
     devtasks: ['dev', 'registry', 'reset'],
   };
 
