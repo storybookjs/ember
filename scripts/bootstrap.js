@@ -68,6 +68,20 @@ function run() {
       pre: ['install', 'build', 'manager'],
       order: 1,
     }),
+    retry: createTask({
+      name: `Core & Examples but only build previously failed ${chalk.gray('(core)')}`,
+      defaultValue: true,
+      option: '--retry',
+      command: () => {
+        log.info(prefix, 'prepare');
+        spawn(
+          `nx run-many --target=prepare --all --parallel --only-failed ${
+            process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
+          }`
+        );
+      },
+      order: 1,
+    }),
     reset: createTask({
       name: `Clean repository ${chalk.red('(reset)')}`,
       defaultValue: false,
@@ -135,7 +149,7 @@ function run() {
       defaultValue: false,
       option: '--dev',
       command: () => {
-        spawn('yarn dev');
+        spawn('yarn build');
       },
       order: 9,
     }),

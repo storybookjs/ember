@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const fs = require('fs-extra');
 const path = require('path');
-const shell = require('shelljs');
+const execa = require('execa');
 
 function getCommand(watch, dir) {
   // Compile angular with tsc
@@ -43,7 +43,7 @@ function handleExit(code, stderr, errorCallback) {
       errorCallback(stderr);
     }
 
-    shell.exit(code);
+    process.exit(code);
   }
 }
 
@@ -52,20 +52,24 @@ async function run({ watch, dir, silent, errorCallback }) {
     const command = getCommand(watch, dir);
 
     if (command !== '') {
-      const child = shell.exec(command, {
+      const child = execa.command(command, {
         async: true,
-        silent,
+        silent: true,
         env: { ...process.env, BABEL_MODE: path.basename(dir) },
       });
       let stderr = '';
 
-      child.stderr.on('data', (data) => {
-        stderr += data.toString();
-      });
-
-      child.stdout.on('data', (data) => {
-        console.log(data);
-      });
+      if (watch) {
+        child.stdout.pipe(process.stdout);
+        child.stderr.pipe(process.stderr);
+      } else {
+        child.stderr.on('data', (data) => {
+          stderr += data.toString();
+        });
+        child.stdout.on('data', (data) => {
+          stderr += data.toString();
+        });
+      }
 
       child.on('exit', (code) => {
         resolve();

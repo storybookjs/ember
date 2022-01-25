@@ -1,5 +1,5 @@
 import path, { resolve } from 'path';
-import { greenBright } from 'chalk';
+import { bold, gray, greenBright } from 'chalk';
 import execa from 'execa';
 import { rollup, OutputOptions, watch, RollupOptions } from 'rollup';
 import readPkgUp from 'read-pkg-up';
@@ -125,10 +125,17 @@ async function build(options: Options) {
 
 async function dts({ input, externals, cwd, ...options }: Options) {
   if (options.watch) {
-    const [out] = await generateDtsBundle([
-      { filePath: input, output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true } },
-    ]);
-    await fs.outputFile('dist/ts3.9/index.d.ts', out);
+    try {
+      const [out] = await generateDtsBundle([
+        {
+          filePath: input,
+          output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true },
+        },
+      ]);
+      await fs.outputFile('dist/ts3.9/index.d.ts', out);
+    } catch (e) {
+      console.log(e.message);
+    }
   } else {
     const [out] = await generateDtsBundle([
       { filePath: input, output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true } },
@@ -148,10 +155,13 @@ async function dts({ input, externals, cwd, ...options }: Options) {
       'dist/ts3.4',
     ]);
   }
-  console.log(`${greenBright('definitions written')}`);
 }
+
 export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
   const { packageJson: pkg } = await readPkgUp({ cwd });
+  const message = gray(`Built: ${bold(`${pkg.name}@${pkg.version}`)}`);
+  console.time(message);
+
   const input = path.join(cwd, pkg.bundlerEntrypoint);
   const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
@@ -163,11 +173,11 @@ export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
     watch: flags.includes('--watch'),
   };
 
-  console.log(`${greenBright('started bundling')}`);
-
   await Promise.all([
     //
     build(options),
     dts(options),
   ]);
+
+  console.timeEnd(message);
 }
