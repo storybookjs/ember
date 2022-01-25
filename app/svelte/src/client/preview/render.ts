@@ -1,8 +1,9 @@
 import global from 'global';
 import { ArgsStoryFn } from '@storybook/csf';
-import { RenderContext } from '@storybook/store';
+import type { RenderContext } from '@storybook/store';
+// eslint-disable-next-line import/extensions
+import PreviewRender from '@storybook/vue/templates/PreviewRender.svelte';
 import { SvelteFramework } from './types';
-import PreviewRender from './PreviewRender.svelte';
 
 const { document } = global;
 
