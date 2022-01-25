@@ -4,6 +4,7 @@ import { sync as spawnSync } from 'cross-spawn';
 import { commandLog } from '../helpers';
 import { PackageJson, PackageJsonWithDepsAndDevDeps } from './PackageJson';
 import { readPackageJson, writePackageJson } from './PackageJsonHelper';
+// @ts-ignore
 import storybookPackagesVersions from '../versions';
 
 const logger = console;
