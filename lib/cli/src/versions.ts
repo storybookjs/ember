@@ -1,5 +1,5 @@
 // auto generated file, do not edit
-export default {
+module.exports = {
   '@storybook/addon-a11y': '6.5.0-alpha.23',
   '@storybook/addon-actions': '6.5.0-alpha.23',
   '@storybook/addon-backgrounds': '6.5.0-alpha.23',
