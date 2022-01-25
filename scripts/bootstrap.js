@@ -13,12 +13,6 @@ function run() {
   const chalk = require('chalk');
   const log = require('npmlog');
 
-  const isTgz = (source) => lstatSync(source).isFile() && source.match(/.tgz$/);
-  const getDirectories = (source) =>
-    readdirSync(source)
-      .map((name) => join(source, name))
-      .filter(isTgz);
-
   log.heading = 'storybook';
   const prefix = 'bootstrap';
   log.addLevel('aborted', 3001, { fg: 'red', bold: true });
