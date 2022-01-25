@@ -14,9 +14,9 @@ function getCommand(watch, dir) {
 
   const args = [
     './src',
-    `--out-dir ${dir}`,
-    `--config-file ${path.resolve(__dirname, '../../.babelrc.js')}`,
-    `--copy-files`,
+    `--out-dir=${dir}`,
+    `--config-file=${path.resolve(__dirname, '../../.babelrc.js')}`,
+    // `--copy-files`,
   ];
 
   /*
@@ -25,9 +25,9 @@ function getCommand(watch, dir) {
    * Only transpile .js and let tsc do the job for .ts files
    */
   if (process.cwd().includes(path.join('addons', 'storyshots'))) {
-    args.push(`--extensions ".js"`);
+    args.push(`--extensions=".js"`);
   } else {
-    args.push(`--extensions ".js,.jsx,.ts,.tsx"`);
+    args.push(`--extensions=.js,.jsx,.ts,.tsx`);
   }
 
   if (watch) {
@@ -53,10 +53,10 @@ async function run({ watch, dir, silent, errorCallback }) {
 
     if (command !== '') {
       const child = execa.command(command, {
-        async: true,
-        silent: true,
-        env: { ...process.env, BABEL_MODE: path.basename(dir) },
+        buffer: false,
+        env: { BABEL_MODE: path.basename(dir) },
       });
+
       let stderr = '';
 
       if (watch) {

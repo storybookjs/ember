@@ -43,6 +43,13 @@ module.exports = {
   ],
   plugins: [
     [
+      'module-resolver',
+      {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        root: ['./'],
+      },
+    ],
+    [
       '@babel/plugin-proposal-decorators',
       {
         legacy: true,
