@@ -13,8 +13,13 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "target": "es5",
-    "types": ["jest"],
-    "lib": ["es2019", "dom"]
+    "types": [
+      "jest"
+    ],
+    "lib": [
+      "es2019",
+      "dom"
+    ]
   },
   "exclude": [
     "**/dist",
