@@ -45,6 +45,8 @@ async function build(options: Options) {
     {
       dir: resolve(cwd, './dist/modern'),
       format: 'es',
+      sourcemap: optimized,
+      preferConst: true,
       plugins: [
         getBabelOutputPlugin({
           presets: [
@@ -66,6 +68,7 @@ async function build(options: Options) {
     {
       dir: resolve(cwd, './dist/esm'),
       format: 'es',
+      sourcemap: optimized,
       plugins: [
         getBabelOutputPlugin({
           presets: [
