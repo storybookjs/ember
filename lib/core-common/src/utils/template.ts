@@ -9,7 +9,7 @@ export function getPreviewBodyTemplate(
   interpolations?: Record<string, string>
 ) {
   const base = fs.readFileSync(
-    require.resolve('@storybook/core-server/templates/base-preview-body.html'),
+    require.resolve('@storybook/core-common/templates/base-preview-body.html'),
     'utf8'
   );
 
@@ -28,7 +28,7 @@ export function getPreviewHeadTemplate(
   interpolations?: Record<string, string>
 ) {
   const base = fs.readFileSync(
-    require.resolve('@storybook/core-server/templates/base-preview-head.html'),
+    require.resolve('@storybook/core-common/templates/base-preview-head.html'),
     'utf8'
   );
   const headHtmlPath = path.resolve(configDirPath, 'preview-head.html');
@@ -47,7 +47,7 @@ export function getManagerHeadTemplate(
   interpolations: Record<string, string>
 ) {
   const base = fs.readFileSync(
-    require.resolve('@storybook/core-server/templates/base-manager-head.html'),
+    require.resolve('@storybook/core-common/templates/base-manager-head.html'),
     'utf8'
   );
   const scriptPath = path.resolve(configDirPath, 'manager-head.html');
@@ -62,9 +62,9 @@ export function getManagerHeadTemplate(
 }
 
 export function getManagerMainTemplate() {
-  return require.resolve(`@storybook/core-server/templates/index.ejs`);
+  return require.resolve(`@storybook/core-common/templates/index.ejs`);
 }
 
 export function getPreviewMainTemplate() {
-  return require.resolve(`@storybook/core-server/templates/index.ejs`);
+  return require.resolve(`@storybook/core-common/templates/index.ejs`);
 }
