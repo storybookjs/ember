@@ -18,24 +18,25 @@ import type { StoriesWithPartialProps, TestingStory } from './types';
  *```jsx
  * // setup.js (for jest)
  * import { setGlobalConfig } from '@storybook/react';
- * import * as globalStorybookConfig from './.storybook/preview';
+ * import * as projectAnnotations from './.storybook/preview';
  *
- * setGlobalConfig(globalStorybookConfig);
+ * setGlobalConfig(projectAnnotations);
  *```
  *
- * @param config - e.g. (import * as globalConfig from '../.storybook/preview')
+ * @param projectAnnotations - e.g. (import * as projectAnnotations from '../.storybook/preview')
  */
-export function setGlobalConfig(config: ProjectAnnotations<ReactFramework>) {
-  originalSetGlobalConfig(config);
+export function setGlobalConfig(projectAnnotations: ProjectAnnotations<ReactFramework>) {
+  originalSetGlobalConfig(projectAnnotations);
 }
 
-const defaultGlobalConfig: ProjectAnnotations<ReactFramework> = {
+// This will not be necessary once we have auto preset loading
+const defaultProjectAnnotations: ProjectAnnotations<ReactFramework> = {
   render,
 };
 
 /**
  * Function that will receive a story along with meta (e.g. a default export from a .stories file)
- * and optionally a globalConfig e.g. (import * from '../.storybook/preview)
+ * and optionally projectAnnotations e.g. (import * from '../.storybook/preview)
  * and will return a composed component that has all args/parameters/decorators/etc combined and applied to it.
  *
  *
@@ -56,25 +57,28 @@ const defaultGlobalConfig: ProjectAnnotations<ReactFramework> = {
  *```
  *
  * @param story
- * @param meta - e.g. (import Meta from './Button.stories')
- * @param [globalConfig] - e.g. (import * as globalConfig from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
+ * @param componentAnnotations - e.g. (import Meta from './Button.stories')
+ * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
+ * @param [exportsName] - in case your story does not contain a name and you want it to have a name.
  */
 export function composeStory<TArgs = Args>(
   story: TestingStory<TArgs>,
-  meta: Meta<TArgs | any>,
-  globalConfig?: ProjectAnnotations<ReactFramework>
+  componentAnnotations: Meta<TArgs | any>,
+  projectAnnotations?: ProjectAnnotations<ReactFramework>,
+  exportsName?: string
 ) {
   return originalComposeStory<ReactFramework, TArgs>(
     story,
-    meta,
-    globalConfig,
-    defaultGlobalConfig
+    componentAnnotations,
+    projectAnnotations,
+    defaultProjectAnnotations,
+    exportsName
   );
 }
 
 /**
  * Function that will receive a stories import (e.g. `import * as stories from './Button.stories'`)
- * and optionally a globalConfig (e.g. `import * from '../.storybook/preview`)
+ * and optionally projectAnnotations (e.g. `import * from '../.storybook/preview`)
  * and will return an object containing all the stories passed, but now as a composed component that has all args/parameters/decorators/etc combined and applied to it.
  *
  *
@@ -94,14 +98,14 @@ export function composeStory<TArgs = Args>(
  * });
  *```
  *
- * @param storiesImport - e.g. (import * as stories from './Button.stories')
- * @param [globalConfig] - e.g. (import * as globalConfig from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
+ * @param csfExports - e.g. (import * as stories from './Button.stories')
+ * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
  */
 export function composeStories<TModule extends CSFExports<ReactFramework>>(
-  storiesImport: TModule,
-  globalConfig?: ProjectAnnotations<ReactFramework>
+  csfExports: TModule,
+  projectAnnotations?: ProjectAnnotations<ReactFramework>
 ) {
-  const composedStories = originalComposeStories(storiesImport, globalConfig, composeStory);
+  const composedStories = originalComposeStories(csfExports, projectAnnotations, composeStory);
 
   return composedStories as unknown as Omit<StoriesWithPartialProps<TModule>, keyof CSFExports>;
 }
