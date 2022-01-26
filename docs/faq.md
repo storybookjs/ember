@@ -83,6 +83,27 @@ module.exports = {
 💡 Fast Refresh only works in development mode with React 16.10 or higher.
 </div>
 
+### How do I setup the new React Context Root API with Storybook?
+
+The new React Context Root API which was introduced in React 17/18 is an opt-in feature that can be used in Storybook React.
+
+You can set the following properties in your `.storybook/main.js` files:
+
+```js
+module.exports = {
+  reactOptions: {
+    newReactRootApi: true,
+  },
+};
+```
+
+After enabling it, it is possible to use React's newest [concurrent features](https://reactjs.org/docs/concurrent-mode-intro.html).
+
+
+<div class="aside">
+💡 The new React Context API (React.createRoot) only works with React 17.x and above.
+</div>
+
 ### Why is there no addons channel?
 
 A common error is that an addon tries to access the "channel", but the channel is not set. It can happen in a few different cases:
