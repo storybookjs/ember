@@ -16,7 +16,7 @@ export const runCompodoc = (
   context: BuilderContext
 ): Observable<void> => {
   return new Observable<void>((observer) => {
-    const tsConfigPath = toRelativePath('./tsconfig.json');
+    const tsConfigPath = toRelativePath(tsconfig);
     const finalCompodocArgs = [
       'compodoc',
       // Default options
