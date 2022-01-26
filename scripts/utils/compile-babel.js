@@ -16,8 +16,14 @@ function getCommand(watch, dir) {
     './src',
     `--out-dir=${dir}`,
     `--config-file=${path.resolve(__dirname, '../../.babelrc.js')}`,
-    // `--copy-files`,
   ];
+
+  // babel copying over files it did not parse is a anti-pattern
+  // but in the case of the CLI, it houses generators are are templates
+  // moving all these is a lot of work. We should make different choices when we eventually refactor / rebuild the CLI
+  if (process.cwd().includes(path.join('lib', 'cli'))) {
+    args.push('--copy-files');
+  }
 
   /*
    * angular needs to be compiled with tsc; a compilation with babel is possible but throws
