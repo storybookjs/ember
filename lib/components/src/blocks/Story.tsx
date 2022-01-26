@@ -1,7 +1,7 @@
 import global from 'global';
 import React, { createElement, ElementType, FunctionComponent, Fragment } from 'react';
 
-import type { Parameters } from '@storybook/api';
+import type { Parameters } from '@storybook/csf';
 
 import { IFrame } from './IFrame';
 import { EmptyBlock } from './EmptyBlock';

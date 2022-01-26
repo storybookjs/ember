@@ -31,8 +31,8 @@
   },
   "files": [
     "dist/**/*",
-    "dll/**/*",
     "types/**/*",
+    "templates/**/*",
     "*.js",
     "*.d.ts"
   ],

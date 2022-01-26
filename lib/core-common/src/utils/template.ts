@@ -1,4 +1,5 @@
 import path from 'path';
+import { sync } from 'pkg-dir';
 import fs from 'fs';
 
 const interpolate = (string: string, data: Record<string, string> = {}) =>
@@ -8,10 +9,7 @@ export function getPreviewBodyTemplate(
   configDirPath: string,
   interpolations?: Record<string, string>
 ) {
-  const base = fs.readFileSync(
-    path.resolve(__dirname, '../templates/base-preview-body.html'),
-    'utf8'
-  );
+  const base = fs.readFileSync(`${sync(__dirname)}/templates/base-preview-body.html`, 'utf8');
 
   const bodyHtmlPath = path.resolve(configDirPath, 'preview-body.html');
   let result = base;
@@ -27,10 +25,7 @@ export function getPreviewHeadTemplate(
   configDirPath: string,
   interpolations?: Record<string, string>
 ) {
-  const base = fs.readFileSync(
-    path.resolve(__dirname, '../templates/base-preview-head.html'),
-    'utf8'
-  );
+  const base = fs.readFileSync(`${sync(__dirname)}/templates/base-preview-head.html`, 'utf8');
   const headHtmlPath = path.resolve(configDirPath, 'preview-head.html');
 
   let result = base;
@@ -46,10 +41,7 @@ export function getManagerHeadTemplate(
   configDirPath: string,
   interpolations: Record<string, string>
 ) {
-  const base = fs.readFileSync(
-    path.resolve(__dirname, '../templates/base-manager-head.html'),
-    'utf8'
-  );
+  const base = fs.readFileSync(`${sync(__dirname)}/templates/base-manager-head.html`, 'utf8');
   const scriptPath = path.resolve(configDirPath, 'manager-head.html');
 
   let result = base;
@@ -62,9 +54,9 @@ export function getManagerHeadTemplate(
 }
 
 export function getManagerMainTemplate() {
-  return require.resolve(`../templates/index.ejs`);
+  return `${sync(__dirname)}/templates/index.ejs`;
 }
 
 export function getPreviewMainTemplate() {
-  return require.resolve(`../templates/index.ejs`);
+  return `${sync(__dirname)}/templates/index.ejs`;
 }

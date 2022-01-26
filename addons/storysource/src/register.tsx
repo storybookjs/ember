@@ -2,7 +2,7 @@ import React from 'react';
 import { addons } from '@storybook/addons';
 
 import { StoryPanel } from './StoryPanel';
-import { ADDON_ID, PANEL_ID } from '.';
+import { ADDON_ID, PANEL_ID } from './index';
 
 addons.register(ADDON_ID, (api) => {
   addons.addPanel(PANEL_ID, {
