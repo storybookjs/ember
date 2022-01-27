@@ -196,7 +196,7 @@ Our script leaves the local registry running, for **as long as you keep it runni
 
 If you've made a change to storybook's codebase and would want this change to be reflected in your app:
 
-- Ensure the storybook packages are transpiled, by either having run `yarn build` or `yarn bootstrap --core`.
+- Ensure the storybook packages are transpiled, by either having run `yarn dev` or `yarn bootstrap --core`.
 - Go to the terminal where the local registry is running and press `<Enter>`. This will kick off a new publish.
 - Run the install procedure again in your local repo, (you may need to clean out node_modules first).
 - Restart your storybook.
@@ -288,7 +288,7 @@ If you run into trouble here, make sure your node, npm, and **_yarn_** are on th
 
 This builds the entire project statically, but when you're updating Storybook code it's nice to see those changes show up in the example apps under `examples`. There are two ways to do this:
 
-1.  `yarn build --all --watch`
+1.  `yarn dev`
 2.  OR `yarn build <package1> <package2> --watch`
 
 The former watches ALL packages, which is extremely slow. The latter only watches a fixed list of packages, e.g. `yarn build add-docs components --watch` to build `@storybook/addon-docs` and `@storybook/components`. This is much more practical on slower machines or if you know ahead of time the packages you'll be updating.
@@ -340,7 +340,7 @@ Storybook is broken up into sub-projects that you can install as you need them. 
 **_Note:_** If you aren't seeing addons after linking storybook, you probably have a versioning issue which can be fixed by linking each addon you want to use.
 This applies for the kitchen sink apps as well as your own projects.
 
-_Make sure `yarn build --all --watch` is running_
+_Make sure `yarn dev` is running_
 
 ##### 1. Setup storybook in your project
 
@@ -355,7 +355,7 @@ First we are going to install storybook, then we are going to link `@storybook/r
 **_Note:_** This process is the same for `@storybook/vue`, `@storybook/addon-foo`, etc
 
 1.  Go to your storybook _root_ directory
-2.  `yarn build --all --watch`
+2.  `yarn dev`
 3.  Wait until the output stops (changes you make will be transpiled into dist and logged here)
 4.  Go to your storybook-sandbox-app directory
 5.  `yarn link @storybook/react`
