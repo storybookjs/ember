@@ -14,8 +14,14 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "target": "ES2015",
-    "types": ["jest"],
-    "lib": ["es2019", "dom", "ESNext"]
+    "types": [
+      "jest"
+    ],
+    "lib": [
+      "es2019",
+      "dom",
+      "ESNext"
+    ]
   },
   "exclude": [
     "**/dist",
@@ -31,8 +37,9 @@
     "transpileOnly": true,
     "files": true,
     "compilerOptions": {
-      "types": ["node"],
-      "module": "CommonJS"
+      "types": [
+        "node"
+      ]
     }
   }
 }

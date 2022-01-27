@@ -1,3 +1,39 @@
+## 6.5.0-alpha.23 (January 25, 2022)
+
+### Features
+
+- Vue: Add CSF3 default render function ([#17279](https://github.com/storybookjs/storybook/pull/17279))
+
+### Bug Fixes
+
+- Core: Rename `generated-stories-entry` to `cjs` extension so require works ([#16727](https://github.com/storybookjs/storybook/pull/16727))
+- Addon-docs: Fix `BuilderConfig` can be an object ([#17320](https://github.com/storybookjs/storybook/pull/17320))
+
+### Maintenance
+
+- Core: Remove useless unfetch ([#17306](https://github.com/storybookjs/storybook/pull/17306))
+- Build: Regen lockfile ([#17283](https://github.com/storybookjs/storybook/pull/17283))
+
+### Dependency Upgrades
+
+- Upgrade node-fetch to latest version ([#17317](https://github.com/storybookjs/storybook/pull/17317))
+
+## 6.4.14 (January 21, 2022)
+
+### Bug Fixes
+
+- CLI: Add `--no-manager-cache` to build-storybook ([#17300](https://github.com/storybookjs/storybook/pull/17300))
+- CSF3: Remove `path` from autoTitle browser code ([#17185](https://github.com/storybookjs/storybook/pull/17185))
+- Addon-docs: Fix `docs.disable` parameter on DocsPage ([#17256](https://github.com/storybookjs/storybook/pull/17256))
+- Core: Fix issue with recursive glob with prior special chars ([#17252](https://github.com/storybookjs/storybook/pull/17252))
+- Webpack: Fix for `process` fallback using `require.resolve` ([#17249](https://github.com/storybookjs/storybook/pull/17249))
+
+### Dependency Upgrades
+
+- Upgrade compodoc for colors.js bug ([#17266](https://github.com/storybookjs/storybook/pull/17266))
+- Upgrade jscodeshift dependency for colors.js bug ([#17265](https://github.com/storybookjs/storybook/pull/17265))
+- Restore prettier >= 2.2.1 to satisfy previous constraints ([#17257](https://github.com/storybookjs/storybook/pull/17257))
+
 ## 6.5.0-alpha.22 (January 20, 2022)
 
 ### Features
