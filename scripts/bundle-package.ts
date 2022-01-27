@@ -129,12 +129,15 @@ async function build(options: Options) {
 async function dts({ input, externals, cwd, ...options }: Options) {
   if (options.watch) {
     try {
-      const [out] = await generateDtsBundle([
-        {
-          filePath: input,
-          output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true },
-        },
-      ]);
+      const [out] = await generateDtsBundle(
+        [
+          {
+            filePath: input,
+            output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true },
+          },
+        ],
+        { followSymlinks: false }
+      );
       await fs.outputFile('dist/ts3.9/index.d.ts', out);
     } catch (e) {
       console.log(e.message);
@@ -150,7 +153,7 @@ async function dts({ input, externals, cwd, ...options }: Options) {
 
     await dtsLozalize.run([bundledDTSfile], localizedDTSout, { externals, cwd });
 
-    await fs.remove(path.join(cwd, 'dist/ts-tmp'));
+    // await fs.remove(path.join(cwd, 'dist/ts-tmp'));
 
     await execa('node', [
       path.join(__dirname, '../node_modules/.bin/downlevel-dts'),
