@@ -143,7 +143,7 @@ npx sb@next link --local /path/to/local-repro-directory
 
 <details>
 
-<summary>`yarn dev` watches everything but is resource-intensive</summary>
+<summary>`yarn build --all --watch` watches everything but is resource-intensive</summary>
 
 It's troublesome to know which packages you're going to change ahead of time, and watching all of them can be highly demanding, even on modern machines. If you're working on a powerful enough machine, you can use `yarn dev` instead of `yarn build`.
 

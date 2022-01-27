@@ -81,7 +81,7 @@ module.exports = {
         '**/lib/components/**/*',
       ],
       rules: {
-        'import/no-extraneous-dependencies': 'off',
+        'import/no-extraneous-dependencies': ['error', { bundledDependencies: false }],
       },
     },
   ],

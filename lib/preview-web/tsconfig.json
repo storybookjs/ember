@@ -2,9 +2,13 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "src/**/*.test.*",
     "src/**/tests/**/*",
@@ -13,5 +17,8 @@
     "src/**/*.mockdata.*",
     "src/**/__testfixtures__/**"
   ],
-  "lib": ["es2017", "dom"]
+  "lib": [
+    "es2017",
+    "dom"
+  ]
 }

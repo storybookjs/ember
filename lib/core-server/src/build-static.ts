@@ -48,7 +48,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   options.configDir = path.resolve(options.configDir);
   /* eslint-enable no-param-reassign */
 
-  const defaultFavIcon = require.resolve('./public/favicon.ico');
+  const defaultFavIcon = require.resolve('@storybook/core-server/public/favicon.ico');
 
   logger.info(chalk`=> Cleaning outputDir: {cyan ${options.outputDir}}`);
   if (options.outputDir === '/') {
