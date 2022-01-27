@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable storybook/use-storybook-testing-library */
 // @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
