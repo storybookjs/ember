@@ -583,6 +583,8 @@ module.exports = {
 };
 ```
 
+> NOTE: If you're using `@storybook/preset-create-react-app` make sure to update it to version 4.0.0 as well.
+
 #### Fixing hoisting issues
 
 ##### Webpack 5 manager build

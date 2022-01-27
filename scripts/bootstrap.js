@@ -13,12 +13,6 @@ function run() {
   const chalk = require('chalk');
   const log = require('npmlog');
 
-  const isTgz = (source) => lstatSync(source).isFile() && source.match(/.tgz$/);
-  const getDirectories = (source) =>
-    readdirSync(source)
-      .map((name) => join(source, name))
-      .filter(isTgz);
-
   log.heading = 'storybook';
   const prefix = 'bootstrap';
   log.addLevel('aborted', 3001, { fg: 'red', bold: true });
@@ -68,6 +62,20 @@ function run() {
       pre: ['install', 'build', 'manager'],
       order: 1,
     }),
+    retry: createTask({
+      name: `Core & Examples but only build previously failed ${chalk.gray('(core)')}`,
+      defaultValue: true,
+      option: '--retry',
+      command: () => {
+        log.info(prefix, 'prepare');
+        spawn(
+          `nx run-many --target=prepare --all --parallel --only-failed ${
+            process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
+          }`
+        );
+      },
+      order: 1,
+    }),
     reset: createTask({
       name: `Clean repository ${chalk.red('(reset)')}`,
       defaultValue: false,
@@ -95,9 +103,9 @@ function run() {
       command: () => {
         log.info(prefix, 'prepare');
         spawn(
-          `nx run-many --target=prepare --all --parallel ${
+          `nx run-many --target="prepare" --all --parallel ${
             process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
-          }`
+          } -- --optimized`
         );
       },
       order: 2,
@@ -110,16 +118,6 @@ function run() {
         spawn('yarn build-manager');
       },
       order: 3,
-    }),
-    packs: createTask({
-      name: `Build tarballs of packages ${chalk.gray('(build-packs)')}`,
-      defaultValue: false,
-      option: '--packs',
-      command: () => {
-        spawn('yarn build-packs');
-      },
-      check: () => getDirectories(join(__dirname, '..', 'packs')).length === 0,
-      order: 5,
     }),
     registry: createTask({
       name: `Run local registry ${chalk.gray('(reg)')}`,
@@ -135,7 +133,7 @@ function run() {
       defaultValue: false,
       option: '--dev',
       command: () => {
-        spawn('yarn dev');
+        spawn('yarn build');
       },
       order: 9,
     }),
@@ -143,7 +141,7 @@ function run() {
 
   const groups = {
     main: ['core'],
-    buildtasks: ['install', 'build', 'manager', 'packs'],
+    buildtasks: ['install', 'build', 'manager'],
     devtasks: ['dev', 'registry', 'reset'],
   };
 

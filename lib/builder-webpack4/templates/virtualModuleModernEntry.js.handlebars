@@ -1,4 +1,3 @@
-import fetch from 'unfetch';
 import global from 'global';
 
 import { composeConfigs, PreviewWeb } from '@storybook/preview-web';
@@ -33,12 +32,12 @@ window.__STORYBOOK_CLIENT_API__ = new ClientApi({ storyStore: preview.storyStore
 preview.initialize({ importFn, getProjectAnnotations });
 
 if (module.hot) {
-  import.meta.webpackHot.accept('./{{storiesFilename}}', () => {
+  module.hot.accept('./{{storiesFilename}}', () => {
     // importFn has changed so we need to patch the new one in
     preview.onStoriesChanged({ importFn });
   });
 
-  import.meta.webpackHot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
+  module.hot.accept([{{#each configs}}'{{this}}',{{/each}}], () => {
     // getProjectAnnotations has changed so we need to patch the new one in
     preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
   });
