@@ -1,3 +1,9 @@
+## 6.5.0-alpha.26 (January 28, 2022)
+
+### Bug Fixes
+
+* Revert "Core: Rename `generated-stories-entry` to `cjs` extension so require works" ([#17361](https://github.com/storybookjs/storybook/pull/17361))
+
 ## 6.5.0-alpha.25 (January 28, 2022)
 
 ### Maintenance
