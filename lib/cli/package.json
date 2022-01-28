@@ -38,8 +38,7 @@
     "dist/**/*",
     "README.md",
     "*.js",
-    "*.d.ts",
-    "versions.json"
+    "*.d.ts"
   ],
   "scripts": {
     "prepare": "node ../../scripts/prepare.js",

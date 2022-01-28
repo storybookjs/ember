@@ -56,10 +56,11 @@ const startVerdaccio = (port: number) => {
     }),
   ]);
 };
-const registryUrl = (command: string, url?: string) =>
+
+const registryUrlNPM = (url?: string) =>
   new Promise<string>((res, rej) => {
     const args = url ? ['config', 'set', 'registry', url] : ['config', 'get', 'registry'];
-    exec(`${command} ${args.join(' ')}`, { cwd: path.join(process.cwd(), '..') }, (e, stdout) => {
+    exec(`npm ${args.join(' ')}`, { cwd: path.join(process.cwd(), '..') }, (e, stdout) => {
       if (e) {
         rej(e);
       } else {
@@ -68,8 +69,23 @@ const registryUrl = (command: string, url?: string) =>
     });
   });
 
+const registryUrlYarn = (url?: string) =>
+  new Promise<string>((res, rej) => {
+    const args = url
+      ? ['config', 'set', 'npmRegistryServer', url]
+      : ['config', 'get', 'npmRegistryServer'];
+    exec(`yarn ${args.join(' ')}`, { cwd: path.join(__dirname, '..') }, (e, stdout) => {
+      if (e) {
+        console.log(stdout.toString());
+        rej(e);
+      } else {
+        res(url || stdout.toString().trim());
+      }
+    });
+  });
+
 const registriesUrl = (yarnUrl?: string, npmUrl?: string) =>
-  Promise.all([registryUrl('/usr/local/bin/yarn', yarnUrl), registryUrl('npm', npmUrl || yarnUrl)]);
+  Promise.all([registryUrlYarn(yarnUrl), registryUrlNPM(npmUrl || yarnUrl)]);
 
 const applyRegistriesUrl = (
   yarnUrl: string,
@@ -107,7 +123,12 @@ const publish = (packages: { name: string; location: string }[], url: string) =>
       limit(
         () =>
           new Promise((res, rej) => {
-            logger.log(`🛫 publishing ${name} (${location})`);
+            logger.log(
+              `🛫 publishing ${name} (${location.replace(
+                path.resolve(path.join(__dirname, '..')),
+                '.'
+              )})`
+            );
             const command = `cd ${location} && npm publish --registry ${url} --force --access restricted --ignore-scripts`;
             exec(command, (e) => {
               if (e) {
@@ -123,6 +144,19 @@ const publish = (packages: { name: string; location: string }[], url: string) =>
     )
   );
 };
+
+// const addUser = (url: string) =>
+//   new Promise((res, rej) => {
+//     logger.log(`👤 add temp user to verdaccio`);
+
+//     exec(`npx npm-cli-adduser -r "${url}" -a -u user -p password -e user@example.com`, (e) => {
+//       if (e) {
+//         rej(e);
+//       } else {
+//         res();
+//       }
+//     });
+//   });
 
 const run = async () => {
   const port = await freePort(program.port);
@@ -159,6 +193,7 @@ const run = async () => {
     originalNpmRegistryUrl
   );
 
+  // first time running, you might need to enable this
   // await addUser(verdaccioUrl);
 
   logger.log(`📦 found ${packages.length} storybook packages at version ${chalk.blue(version)}`);
