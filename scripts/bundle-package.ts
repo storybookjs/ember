@@ -138,6 +138,7 @@ async function dts({ input, externals, cwd, ...options }: Options) {
         ],
         { followSymlinks: false }
       );
+
       await fs.outputFile('dist/ts3.9/index.d.ts', out);
     } catch (e) {
       console.log(e.message);
@@ -178,12 +179,12 @@ export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
   const message = gray(`Built: ${bold(`${pkg.name}@${pkg.version}`)}`);
   console.time(message);
 
-  const input = path.join(cwd, pkg.bundlerEntrypoint);
-  const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
-
   if (flags.includes('--reset')) {
     await removeDist();
   }
+
+  const input = path.join(cwd, pkg.bundlerEntrypoint);
+  const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
   const options: Options = {
     cwd,

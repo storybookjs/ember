@@ -282,6 +282,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
         if (replaceRemapping.has(v.resolvedFileName)) {
           return;
         }
+
         actOnSourceFile(sourceFiles.find((f) => f.fileName === v.resolvedFileName));
       });
     }
