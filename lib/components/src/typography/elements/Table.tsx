@@ -1,7 +1,7 @@
 import { styled } from '@storybook/theming';
 import { withReset, withMargin } from '../lib/common';
 
-export const Table = styled.table<{}>(withReset, withMargin, ({ theme }) => ({
+export const Table = styled.table(withReset, withMargin, ({ theme }) => ({
   fontSize: theme.typography.size.s2,
   lineHeight: '24px',
   padding: 0,

@@ -1,4 +1,4 @@
-import React, { forwardRef, FunctionComponent, ComponentProps } from 'react';
+import React, { forwardRef, FunctionComponent, ComponentProps, ReactNode } from 'react';
 import { styled } from '@storybook/theming';
 import { darken, lighten, rgba, transparentize } from 'polished';
 
@@ -13,7 +13,7 @@ export interface ButtonProps {
   small?: boolean;
   outline?: boolean;
   containsIcon?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   href?: string;
 }
 

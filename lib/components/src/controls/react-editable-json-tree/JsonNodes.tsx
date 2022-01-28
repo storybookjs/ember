@@ -6,7 +6,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
 
-import React, { Component, ReactElement } from 'react';
+import React, { cloneElement, Component, ReactElement } from 'react';
 import * as inputUsageTypes from './types/inputUsageTypes';
 
 import * as dataTypes from './types/dataTypes';
@@ -101,14 +101,14 @@ export class JsonAddValue extends Component<JsonAddValueProps, JsonAddValueState
       keyPath,
       deep,
     } = this.props;
-    const addButtonElementLayout = React.cloneElement(addButtonElement, {
+    const addButtonElementLayout = cloneElement(addButtonElement, {
       onClick: this.onSubmit,
     });
-    const cancelButtonElementLayout = React.cloneElement(cancelButtonElement, {
+    const cancelButtonElementLayout = cloneElement(cancelButtonElement, {
       onClick: handleCancel,
     });
     const inputElementValue = inputElementGenerator(inputUsageTypes.VALUE, keyPath, deep);
-    const inputElementValueLayout = React.cloneElement(inputElementValue, {
+    const inputElementValueLayout = cloneElement(inputElementValue, {
       placeholder: 'Value',
       ref: this.refInputValue,
     });
@@ -116,7 +116,7 @@ export class JsonAddValue extends Component<JsonAddValueProps, JsonAddValueState
 
     if (!onlyValue) {
       const inputElementKey = inputElementGenerator(inputUsageTypes.KEY, keyPath, deep);
-      inputElementKeyLayout = React.cloneElement(inputElementKey, {
+      inputElementKeyLayout = cloneElement(inputElementKey, {
         placeholder: 'Key',
         ref: this.refInputKey,
       });
@@ -325,7 +325,7 @@ export class JsonArray extends Component<JsonArrayProps, JsonArrayState> {
 
     const isReadOnly = readOnly(name, data, keyPath, deep, dataType);
 
-    const removeItemButton = React.cloneElement(minusMenuElement, {
+    const removeItemButton = cloneElement(minusMenuElement, {
       onClick: handleRemove,
       className: 'rejt-minus-menu',
       style: minus,
@@ -367,12 +367,12 @@ export class JsonArray extends Component<JsonArrayProps, JsonArrayState> {
 
     const isReadOnly = readOnly(name, data, keyPath, deep, dataType);
 
-    const addItemButton = React.cloneElement(plusMenuElement, {
+    const addItemButton = cloneElement(plusMenuElement, {
       onClick: this.handleAddMode,
       className: 'rejt-plus-menu',
       style: plus,
     });
-    const removeItemButton = React.cloneElement(minusMenuElement, {
+    const removeItemButton = cloneElement(minusMenuElement, {
       onClick: handleRemove,
       className: 'rejt-minus-menu',
       style: minus,
@@ -627,13 +627,13 @@ export class JsonFunctionValue extends Component<JsonFunctionValueProps, JsonFun
         dataType
       );
 
-      const editButtonElementLayout = React.cloneElement(editButtonElement, {
+      const editButtonElementLayout = cloneElement(editButtonElement, {
         onClick: this.handleEdit,
       });
-      const cancelButtonElementLayout = React.cloneElement(cancelButtonElement, {
+      const cancelButtonElementLayout = cloneElement(cancelButtonElement, {
         onClick: this.handleCancelEdit,
       });
-      const textareaElementLayout = React.cloneElement(textareaElement, {
+      const textareaElementLayout = cloneElement(textareaElement, {
         ref: this.refInput,
         defaultValue: originalValue,
       });
@@ -655,7 +655,7 @@ export class JsonFunctionValue extends Component<JsonFunctionValueProps, JsonFun
           {value}
         </span>
       );
-      const minusMenuLayout = React.cloneElement(minusMenuElement, {
+      const minusMenuLayout = cloneElement(minusMenuElement, {
         onClick: handleRemove,
         className: 'rejt-minus-menu',
         style: style.minus,
@@ -1223,7 +1223,7 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
 
     const isReadOnly = readOnly(name, data, keyPath, deep, dataType);
 
-    const removeItemButton = React.cloneElement(minusMenuElement, {
+    const removeItemButton = cloneElement(minusMenuElement, {
       onClick: handleRemove,
       className: 'rejt-minus-menu',
       style: minus,
@@ -1267,12 +1267,12 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
 
     const isReadOnly = readOnly(name, data, keyPath, deep, dataType);
 
-    const addItemButton = React.cloneElement(plusMenuElement, {
+    const addItemButton = cloneElement(plusMenuElement, {
       onClick: this.handleAddMode,
       className: 'rejt-plus-menu',
       style: plus,
     });
-    const removeItemButton = React.cloneElement(minusMenuElement, {
+    const removeItemButton = cloneElement(minusMenuElement, {
       onClick: handleRemove,
       className: 'rejt-minus-menu',
       style: minus,
@@ -1525,17 +1525,17 @@ export class JsonValue extends Component<JsonValueProps, JsonValueState> {
       dataType
     );
 
-    const editButtonElementLayout = React.cloneElement(editButtonElement, {
+    const editButtonElementLayout = cloneElement(editButtonElement, {
       onClick: this.handleEdit,
     });
-    const cancelButtonElementLayout = React.cloneElement(cancelButtonElement, {
+    const cancelButtonElementLayout = cloneElement(cancelButtonElement, {
       onClick: this.handleCancelEdit,
     });
-    const inputElementLayout = React.cloneElement(inputElement, {
+    const inputElementLayout = cloneElement(inputElement, {
       ref: this.refInput,
       defaultValue: JSON.stringify(originalValue),
     });
-    const minusMenuLayout = React.cloneElement(minusMenuElement, {
+    const minusMenuLayout = cloneElement(minusMenuElement, {
       onClick: handleRemove,
       className: 'rejt-minus-menu',
       style: style.minus,

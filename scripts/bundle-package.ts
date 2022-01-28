@@ -143,9 +143,15 @@ async function dts({ input, externals, cwd, ...options }: Options) {
       console.log(e.message);
     }
   } else {
-    const [out] = await generateDtsBundle([
-      { filePath: input, output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true } },
-    ]);
+    const [out] = await generateDtsBundle(
+      [
+        {
+          filePath: input,
+          output: { inlineDeclareGlobals: false, sortNodes: true, noBanner: true },
+        },
+      ],
+      { followSymlinks: false }
+    );
 
     const bundledDTSfile = path.join(cwd, 'dist/ts-tmp/index.d.ts');
     const localizedDTSout = path.join(cwd, 'dist/ts3.9');
@@ -163,6 +169,10 @@ async function dts({ input, externals, cwd, ...options }: Options) {
   }
 }
 
+async function removeDist() {
+  await fs.remove('dist');
+}
+
 export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
   const { packageJson: pkg } = await readPkgUp({ cwd });
   const message = gray(`Built: ${bold(`${pkg.name}@${pkg.version}`)}`);
@@ -170,6 +180,10 @@ export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
 
   const input = path.join(cwd, pkg.bundlerEntrypoint);
   const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
+
+  if (flags.includes('--reset')) {
+    await removeDist();
+  }
 
   const options: Options = {
     cwd,

@@ -1,7 +1,7 @@
 import { styled } from '@storybook/theming';
 import { withReset, withMargin } from '../lib/common';
 
-export const Pre = styled.pre<{}>(withReset, withMargin, ({ theme }) => ({
+export const Pre = styled.pre(withReset, withMargin, ({ theme }) => ({
   // reset
   fontFamily: theme.typography.fonts.mono,
   WebkitFontSmoothing: 'antialiased',

@@ -1,4 +1,4 @@
 import { styled } from '@storybook/theming';
 import { withReset } from '../lib/common';
 
-export const Div = styled.div<{}>(withReset);
+export const Div = styled.div(withReset);

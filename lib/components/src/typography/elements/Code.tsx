@@ -1,12 +1,12 @@
 import { styled } from '@storybook/theming';
-import React from 'react';
+import React, { Children, ComponentProps } from 'react';
 import { StyledSyntaxHighlighter } from '../../blocks/Source';
 import { isReactChildString } from '../lib/isReactChildString';
 import { codeCommon } from '../lib/common';
 
 const isInlineCodeRegex = /[\n\r]/g;
 
-const DefaultCodeBlock = styled.code<{}>(
+const DefaultCodeBlock = styled.code(
   ({ theme }) => ({
     // from reset
     fontFamily: theme.typography.fonts.mono,
@@ -25,9 +25,9 @@ export const Code = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof DefaultCodeBlock>) => {
+}: ComponentProps<typeof DefaultCodeBlock>) => {
   const language = (className || '').match(/lang-(\S+)/);
-  const childrenArray = React.Children.toArray(children);
+  const childrenArray = Children.toArray(children);
   const isInlineCode = !childrenArray
     .filter(isReactChildString)
     .some((child) => child.match(isInlineCodeRegex));

@@ -2,7 +2,7 @@
 /// <reference path="./typings.d.ts" />
 
 import { createElement, forwardRef, ElementType } from 'react';
-import { components as rawComponents } from './typography/components';
+import * as typography from './typography/components';
 
 export { Badge } from './Badge/Badge';
 
@@ -57,11 +57,11 @@ export { getStoryHref } from './utils/getStoryHref';
 
 export * from './typography/DocumentFormatting';
 
-export { rawComponents as components };
+export const component = typography.components;
 
 const resetComponents: Record<string, ElementType> = {};
 
-Object.keys(rawComponents).forEach((key) => {
+Object.keys(typography.components).forEach((key) => {
   resetComponents[key] = forwardRef((props, ref) => createElement(key, { ...props, ref }));
 });
 

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef, useEffect, HTMLAttributes, FC } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
-interface OverlayScrollbarsComponentProps extends React.HTMLAttributes<HTMLDivElement> {
+interface OverlayScrollbarsComponentProps extends HTMLAttributes<HTMLDivElement> {
   children?: any;
   options?: OverlayScrollbars.Options;
   extensions?: OverlayScrollbars.Extensions;
@@ -14,17 +14,17 @@ interface OverlayScrollbarsComponentProps extends React.HTMLAttributes<HTMLDivEl
  * https://github.com/KingSora/OverlayScrollbars/pull/218
  * */
 
-export const OverlayScrollbarsComponent: React.FC<OverlayScrollbarsComponentProps> = ({
+export const OverlayScrollbarsComponent: FC<OverlayScrollbarsComponentProps> = ({
   options = {},
   extensions,
   className,
   children,
   ...rest
 }) => {
-  const osTargetRef = React.useRef<HTMLDivElement>();
-  const osInstance = React.useRef<OverlayScrollbars>();
+  const osTargetRef = useRef<HTMLDivElement>();
+  const osInstance = useRef<OverlayScrollbars>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     osInstance.current = OverlayScrollbars(osTargetRef.current, options, extensions);
     mergeHostClassNames(osInstance.current, className);
     return () => {
@@ -35,13 +35,13 @@ export const OverlayScrollbarsComponent: React.FC<OverlayScrollbarsComponentProp
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (OverlayScrollbars.valid(osInstance.current)) {
       osInstance.current.options(options);
     }
   }, [options]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (OverlayScrollbars.valid(osInstance.current)) {
       mergeHostClassNames(osInstance.current, className);
     }

@@ -1,6 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, AnchorHTMLAttributes } from 'react';
 
-export const Link: FunctionComponent<any> = ({ href: input, children, ...props }) => {
+export const Link: FunctionComponent<AnchorHTMLAttributes<HTMLAnchorElement>> = ({
+  href: input,
+  children,
+  ...props
+}) => {
   const isStorybookPath = /^\//.test(input);
   const isAnchorUrl = /^#.*/.test(input);
   const href = isStorybookPath ? `?path=${input}` : input;

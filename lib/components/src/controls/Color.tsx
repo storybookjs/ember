@@ -297,8 +297,8 @@ const usePresets = (
   return { presets, addPreset };
 };
 
-export type ColorProps = ControlProps<ColorValue> & ColorConfig;
-export const ColorControl: FC<ColorProps> = ({
+export type ColorControlProps = ControlProps<ColorValue> & ColorConfig;
+export const ColorControl: FC<ColorControlProps> = ({
   name,
   value: initialValue,
   onChange,
