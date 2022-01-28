@@ -35,7 +35,6 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
 
   await baseGenerator(packageManager, npmOptions, options, 'svelte', {
     extraPackages: ['svelte', 'svelte-loader'],
-    extraAddons: ['@storybook/addon-svelte-csf'],
     extensions: ['js', 'jsx', 'ts', 'tsx', 'svelte'],
     extraMain,
     commonJs,
