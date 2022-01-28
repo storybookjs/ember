@@ -3,7 +3,10 @@
   "compilerOptions": {
     "rootDir": "./src"
   },
-  "include": ["src/**/*", "typings.d.ts"],
+  "include": [
+    "src/**/*",
+    "typings.d.ts"
+  ],
   "exclude": [
     "src/**/*.test.*",
     "src/**/tests/**/*",
@@ -12,5 +15,7 @@
     "src/**/*.mockdata.*",
     "src/**/__testfixtures__/**"
   ],
-  "files": ["./typings.d.ts"]
+  "files": [
+    "./typings.d.ts"
+  ]
 }
