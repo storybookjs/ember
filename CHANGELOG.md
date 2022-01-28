@@ -1,3 +1,9 @@
+## 6.5.0-alpha.25 (January 28, 2022)
+
+### Maintenance
+
+- Build: Overhaul dev script & compile-babel & compile-tsc ([#17338](https://github.com/storybookjs/storybook/pull/17338))
+
 ## 6.4.15 (January 28, 2022)
 
 ### Bug Fixes
