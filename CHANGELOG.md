@@ -1,3 +1,14 @@
+## 6.5.0-alpha.24 (January 28, 2022)
+
+### Bug Fixes
+
+- Core: Fix negated glob support ([#17328](https://github.com/storybookjs/storybook/pull/17328))
+
+### Maintenance
+
+- CLI/Svelte: Revert template stories from svelte-native to CSF ([#17340](https://github.com/storybookjs/storybook/pull/17340))
+- CLI: Add version update argument to generate-sb-packages-versions utility ([#17356](https://github.com/storybookjs/storybook/pull/17356))
+
 ## 6.5.0-alpha.23 (January 25, 2022)
 
 ### Features
