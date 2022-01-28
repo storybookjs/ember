@@ -109,10 +109,14 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
       if (DOCS_MODE) {
         return Object.keys(refs).reduce((acc: Refs, cur) => {
           const ref = refs[cur];
-          acc[cur] = {
-            ...ref,
-            stories: collapseDocsOnlyStories(ref.stories),
-          };
+          if (ref.stories) {
+            acc[cur] = {
+              ...ref,
+              stories: collapseDocsOnlyStories(ref.stories),
+            };
+          } else {
+            acc[cur] = ref;
+          }
           return acc;
         }, {});
       }
