@@ -170,10 +170,18 @@ async function dts({ input, externals, cwd, ...options }: Options) {
   }
 }
 
+async function removeDist() {
+  await fs.remove('dist');
+}
+
 export async function run({ cwd, flags }: { cwd: string; flags: string[] }) {
   const { packageJson: pkg } = await readPkgUp({ cwd });
   const message = gray(`Built: ${bold(`${pkg.name}@${pkg.version}`)}`);
   console.time(message);
+
+  if (flags.includes('--reset')) {
+    await removeDist();
+  }
 
   const input = path.join(cwd, pkg.bundlerEntrypoint);
   const externals = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
