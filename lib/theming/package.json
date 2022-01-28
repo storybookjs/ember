@@ -40,7 +40,7 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.23",
+    "@storybook/client-logger": "6.5.0-alpha.26",
     "core-js": "^3.8.2"
   },
   "devDependencies": {

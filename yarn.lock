@@ -7443,16 +7443,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/client-logger@npm:6.5.0-alpha.23":
-  version: 6.5.0-alpha.23
-  resolution: "@storybook/client-logger@npm:6.5.0-alpha.23"
-  dependencies:
-    core-js: ^3.8.2
-    global: ^4.4.0
-  checksum: 410330e84bfd8ed2419aa30a43941ea382a3b504f004f0e55d1a83aff37f7c013159cd8500b1c2e40fccef33273e12b9b0b819d0e01e5a3bf8189ee79c277eee
-  languageName: node
-  linkType: hard
-
 "@storybook/codemod@6.5.0-alpha.26, @storybook/codemod@workspace:*, @storybook/codemod@workspace:lib/codemod":
   version: 0.0.0-use.local
   resolution: "@storybook/codemod@workspace:lib/codemod"
@@ -8702,7 +8692,7 @@ __metadata:
     "@emotion/core": ^10.3.1
     "@emotion/is-prop-valid": ^0.8.6
     "@emotion/styled": ^10.0.27
-    "@storybook/client-logger": 6.5.0-alpha.23
+    "@storybook/client-logger": 6.5.0-alpha.26
     "@types/node": ^14.14.20 || ^16.0.0
     core-js: ^3.8.2
     deep-object-diff: ^1.1.0
