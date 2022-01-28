@@ -128,8 +128,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const clientApi = storybookPaths['@storybook/client-api'];
       const clientLogger = storybookPaths['@storybook/client-logger'];
 
-      // NOTE: although this file is also from the `dist/cjs` directory, it is actually a ESM
-      // file, see https://github.com/storybookjs/storybook/pull/16727#issuecomment-986485173
       virtualModuleMapping[`${configFilename}-generated-config-entry.js`] = interpolate(
         entryTemplate,
         {
@@ -144,10 +142,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       const storyTemplate = await readTemplate(
         path.join(__dirname, 'virtualModuleStory.template.js')
       );
-      // NOTE: this file has a `.cjs` extension as it is a CJS file (from `dist/cjs`) and runs
-      // in the user's webpack mode, which may be strict about the use of require/import.
-      // See https://github.com/storybookjs/storybook/issues/14877
-      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.cjs`));
+      const storiesFilename = path.resolve(path.join(workingDir, `generated-stories-entry.js`));
       virtualModuleMapping[storiesFilename] = interpolate(storyTemplate, { frameworkImportPath })
         // Make sure we also replace quotes for this one
         .replace("'{{stories}}'", stories.map(toRequireContextString).join(','));
