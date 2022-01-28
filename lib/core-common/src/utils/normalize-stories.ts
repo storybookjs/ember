@@ -59,34 +59,28 @@ export const normalizeStoriesEntry = (
   let specifierWithoutMatcher: Omit<NormalizedStoriesSpecifier, 'importPathMatcher'>;
 
   if (typeof entry === 'string') {
-    if (!entry.includes('*')) {
-      if (isDirectory(configDir, entry)) {
-        specifierWithoutMatcher = {
-          titlePrefix: DEFAULT_TITLE_PREFIX,
-          directory: entry,
-          files: DEFAULT_FILES,
-        };
-      } else {
-        specifierWithoutMatcher = {
-          titlePrefix: DEFAULT_TITLE_PREFIX,
-          directory: path.dirname(entry),
-          files: path.basename(entry),
-        };
-      }
-    } else {
-      const fixedEntry = detectBadGlob(entry);
-      const globResult = scan(fixedEntry);
-      const directory = globResult.isGlob
-        ? globResult.prefix + globResult.base
-        : path.dirname(fixedEntry);
-      const filesFallback =
-        directory !== '.' ? fixedEntry.substr(directory.length + 1) : fixedEntry;
-      const files = globResult.isGlob ? globResult.glob : filesFallback;
+    const fixedEntry = detectBadGlob(entry);
+    const globResult = scan(fixedEntry);
+    if (globResult.isGlob) {
+      const directory = globResult.prefix + globResult.base;
+      const files = globResult.glob;
 
       specifierWithoutMatcher = {
         titlePrefix: DEFAULT_TITLE_PREFIX,
         directory,
         files,
+      };
+    } else if (isDirectory(configDir, entry)) {
+      specifierWithoutMatcher = {
+        titlePrefix: DEFAULT_TITLE_PREFIX,
+        directory: entry,
+        files: DEFAULT_FILES,
+      };
+    } else {
+      specifierWithoutMatcher = {
+        titlePrefix: DEFAULT_TITLE_PREFIX,
+        directory: path.dirname(entry),
+        files: path.basename(entry),
       };
     }
   } else {
