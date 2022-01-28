@@ -1,3 +1,15 @@
+## 6.4.15 (January 28, 2022)
+
+### Bug Fixes
+
+- Angular: Fix runCompodoc for Windows, local Compodoc, and user specified tsconfig ([#16728](https://github.com/storybookjs/storybook/pull/16728))
+- Core: Fix negated glob support ([#17328](https://github.com/storybookjs/storybook/pull/17328))
+
+### Maintenance
+
+- Build: Upgrade main yarn ([#17323](https://github.com/storybookjs/storybook/pull/17323))
+- CLI: Add version update argument to generate-sb-packages-versions utility ([#17356](https://github.com/storybookjs/storybook/pull/17356))
+
 ## 6.5.0-alpha.24 (January 28, 2022)
 
 ### Bug Fixes
