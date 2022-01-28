@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { Fragment } from 'react';
 import type { DecoratorFn } from '@storybook/react';
 
