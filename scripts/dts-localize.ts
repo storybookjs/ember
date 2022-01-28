@@ -174,7 +174,6 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
         return true;
       }
 
-      console.log(target, 'was imported');
       currentSourceFile = node.getSourceFile().fileName;
 
       if (wasReplacedAlready(currentSourceFile, target)) {

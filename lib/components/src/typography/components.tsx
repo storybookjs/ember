@@ -1,5 +1,4 @@
 import React, {
-  ComponentProps,
   HTMLAttributes,
   DetailedHTMLProps,
   AnchorHTMLAttributes,
