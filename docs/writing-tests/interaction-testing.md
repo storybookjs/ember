@@ -65,16 +65,6 @@ Below is an abridged API for user-event. For more, check out the [official user-
 | `type`            | Writes text inside inputs, or textareas <br/>`userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
 | `unhover`         | Unhovers out of element <br/>`userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
 
-### Debugging
-
-The [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) addon includes a set of UI controls to allow you control over the test execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also, providing you with an easy-to-use debugger for errors.
-
-![Storybook addon interactions preview](./addon-interactions-preview.png)
-
-Open your `Interactions` panel and click on an individual step to jump to the exact state of the component when the interaction was triggered.
-
-![Storybook addon interactions click steps](./addon-interactions-individual-states.gif)
-
 ### Permalinks for reproductions
 
 The `play` function is executed after the story is rendered. If there’s an error, it’ll be shown in the interaction addon panel to help with debugging.

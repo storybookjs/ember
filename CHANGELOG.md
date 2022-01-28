@@ -1,3 +1,38 @@
+## 6.5.0-alpha.26 (January 28, 2022)
+
+### Bug Fixes
+
+* Revert "Core: Rename `generated-stories-entry` to `cjs` extension so require works" ([#17361](https://github.com/storybookjs/storybook/pull/17361))
+
+## 6.5.0-alpha.25 (January 28, 2022)
+
+### Maintenance
+
+- Build: Overhaul dev script & compile-babel & compile-tsc ([#17338](https://github.com/storybookjs/storybook/pull/17338))
+
+## 6.4.15 (January 28, 2022)
+
+### Bug Fixes
+
+- Angular: Fix runCompodoc for Windows, local Compodoc, and user specified tsconfig ([#16728](https://github.com/storybookjs/storybook/pull/16728))
+- Core: Fix negated glob support ([#17328](https://github.com/storybookjs/storybook/pull/17328))
+
+### Maintenance
+
+- Build: Upgrade main yarn ([#17323](https://github.com/storybookjs/storybook/pull/17323))
+- CLI: Add version update argument to generate-sb-packages-versions utility ([#17356](https://github.com/storybookjs/storybook/pull/17356))
+
+## 6.5.0-alpha.24 (January 28, 2022)
+
+### Bug Fixes
+
+- Core: Fix negated glob support ([#17328](https://github.com/storybookjs/storybook/pull/17328))
+
+### Maintenance
+
+- CLI/Svelte: Revert template stories from svelte-native to CSF ([#17340](https://github.com/storybookjs/storybook/pull/17340))
+- CLI: Add version update argument to generate-sb-packages-versions utility ([#17356](https://github.com/storybookjs/storybook/pull/17356))
+
 ## 6.5.0-alpha.23 (January 25, 2022)
 
 ### Features

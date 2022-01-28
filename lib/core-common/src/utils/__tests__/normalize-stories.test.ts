@@ -283,4 +283,27 @@ describe('normalizeStoriesEntry', () => {
       }
     `);
   });
+
+  it('globs with negation', () => {
+    const specifier = normalizeStoriesEntry('../!(negation)/*.stories.mdx', options);
+    expect(specifier).toMatchInlineSnapshot(`
+      {
+        "titlePrefix": "",
+        "directory": ".",
+        "files": "!(negation)/*.stories.mdx",
+        "importPathMatcher": {}
+      }
+    `);
+
+    expect(specifier.importPathMatcher).toMatchPaths([
+      './path/file.stories.mdx',
+      './second-path/file.stories.mdx',
+    ]);
+    expect(specifier.importPathMatcher).not.toMatchPaths([
+      './path/file.stories.js',
+      './path/to/file.stories.mdx',
+      './file.stories.mdx',
+      '../file.stories.mdx',
+    ]);
+  });
 });
