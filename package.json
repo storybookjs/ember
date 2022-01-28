@@ -98,6 +98,8 @@
     "defaults"
   ],
   "resolutions": {
+    "boxen": "^5.1.2",
+    "eslint": "^7.17.0",
     "serialize-javascript": "^3.1.0"
   },
   "devDependencies": {
@@ -205,6 +207,7 @@
     "@types/semver": "^7.3.4",
     "@types/serve-static": "^1.13.8",
     "@types/shelljs": "^0.8.7",
+    "@types/terser-webpack-plugin": "^4.2.0",
     "@types/webpack-dev-middleware": "^3.7.3",
     "@types/webpack-env": "^1.16.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -283,6 +286,7 @@
     "shx": "^0.3.2",
     "sort-package-json": "^1.48.1",
     "teamcity-service-messages": "^0.1.11",
+    "terser-webpack-plugin": "^4.2.3",
     "trash": "^7.0.0",
     "ts-dedent": "^2.0.0",
     "ts-jest": "^26.4.4",
