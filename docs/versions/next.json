@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.26","info":{"plain":"### Bug Fixes\n\n* Revert \"Core: Rename `generated-stories-entry` to `cjs` extension so require works\" ([#17361](https://github.com/storybookjs/storybook/pull/17361))"}}
+{"version":"6.5.0-alpha.27","info":{"plain":"### Bug Fixes\n\n- Angular: Workaround for compodoc on windows machines ([#17334](https://github.com/storybookjs/storybook/pull/17334))\n- Angular: Retrieve version from core package ([#17363](https://github.com/storybookjs/storybook/pull/17363))"}}
