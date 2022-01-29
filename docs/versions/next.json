@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.27","info":{"plain":"### Bug Fixes\n\n- Angular: Workaround for compodoc on windows machines ([#17334](https://github.com/storybookjs/storybook/pull/17334))\n- Angular: Retrieve version from core package ([#17363](https://github.com/storybookjs/storybook/pull/17363))"}}
+{"version":"6.5.0-alpha.28","info":{"plain":"### Bug Fixes\n\n* Svelte: Fix missing templates dir in package.json publish files ([#17367](https://github.com/storybookjs/storybook/pull/17367))"}}
