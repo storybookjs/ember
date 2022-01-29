@@ -6,7 +6,7 @@ import { PropSummaryValue } from './types';
 import { WithTooltipPure } from '../../tooltip/lazy-WithTooltip';
 import { Icons } from '../../icon/icon';
 import { SyntaxHighlighter } from '../../syntaxhighlighter/lazy-syntaxhighlighter';
-import { codeCommon } from '../../typography/shared';
+import { codeCommon } from '../../typography/lib/common';
 
 interface ArgValueProps {
   value?: PropSummaryValue;

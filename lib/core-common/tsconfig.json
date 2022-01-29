@@ -8,8 +8,7 @@
     ]
   },
   "include": [
-    "src/**/*",
-    "typings.d.ts"
+    "src/**/*"
   ],
   "exclude": [
     "src/**.test.ts"

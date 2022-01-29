@@ -1,8 +1,8 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { FunctionComponent, lazy, Suspense } from 'react';
 import { styled } from '@storybook/theming';
 
-const GlobalScrollAreaStyles = React.lazy(() => import('./GlobalScrollAreaStyles'));
-const OverlayScrollbars = React.lazy(() => import('./OverlayScrollbars'));
+const GlobalScrollAreaStyles = lazy(() => import('./GlobalScrollAreaStyles'));
+const OverlayScrollbars = lazy(() => import('./OverlayScrollbars'));
 
 const Scroller: FunctionComponent<ScrollAreaProps> = ({ horizontal, vertical, ...props }) => (
   <Suspense fallback={<div {...props} />}>

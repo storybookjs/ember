@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import { styled } from '@storybook/theming';
 import { browserSupportsCssZoom } from './browserSupportsCssZoom';
 
@@ -21,7 +21,7 @@ type ZoomProps = {
 };
 
 export function ZoomElement({ scale, children }: ZoomProps) {
-  const componentWrapperRef = React.useRef<HTMLDivElement>(null);
+  const componentWrapperRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
 
   useEffect(() => {

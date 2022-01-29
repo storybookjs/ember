@@ -1,7 +1,7 @@
 import React from 'react';
 import { SectionRow } from './SectionRow';
 import { TableWrapper } from './ArgsTable';
-import { ResetWrapper } from '../../typography/DocumentFormatting';
+import { ResetWrapper } from '../../typography/ResetWrapper';
 
 export default {
   component: SectionRow,

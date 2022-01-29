@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { styled } from '@storybook/theming';
 import { JsDocTags } from './types';
-import { codeCommon } from '../../typography/shared';
+import { codeCommon } from '../../typography/lib/common';
 
 interface ArgJsDocArgs {
   tags: JsDocTags;

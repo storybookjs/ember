@@ -7,18 +7,20 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
-    "module": "commonjs",
-    "skipLibCheck": true,
+    "moduleResolution": "Node",
+    "module": "CommonJS",
+    "skipLibCheck": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "target": "es5",
+    "target": "ES2015",
     "types": [
       "jest"
     ],
     "lib": [
       "es2019",
-      "dom"
+      "dom",
+      "ESNext"
     ]
   },
   "exclude": [

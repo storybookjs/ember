@@ -1,5 +1,5 @@
 import { transparentize } from 'polished';
-import { CSSObject, Theme } from '@storybook/theming';
+import type { CSSObject, Theme } from '@storybook/theming';
 
 export const headerCommon = ({ theme }: { theme: Theme }): CSSObject => ({
   margin: '20px 0 8px',
