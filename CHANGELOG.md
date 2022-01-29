@@ -1,3 +1,11 @@
+## 6.4.16 (January 29, 2022)
+
+### Bug Fixes
+
+- Angular: Workaround for compodoc on windows machines ([#17334](https://github.com/storybookjs/storybook/pull/17334))
+- Angular: Use ɵReflectionCapabilities to find component & module metadata ([#17156](https://github.com/storybookjs/storybook/pull/17156))
+- Angular: Retrieve version from core package ([#17363](https://github.com/storybookjs/storybook/pull/17363))
+
 ## 6.5.0-alpha.27 (January 29, 2022)
 
 ### Bug Fixes
