@@ -1,3 +1,9 @@
+## 6.5.0-alpha.29 (January 31, 2022)
+
+### Bug Fixes
+
+* Revert "Angular: Retrieve version from core package" ([#17372](https://github.com/storybookjs/storybook/pull/17372))
+
 ## 6.5.0-alpha.28 (January 29, 2022)
 
 ### Bug Fixes
