@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, ReactElement } from 'react';
 
-import JsonNode from './components/JsonNode';
+import { JsonNode } from './JsonNodes';
 import { value, object, array } from './utils/styles';
 import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/deltaTypes';
 import { getObjectType } from './utils/objectTypes';
-import DATA_TYPES from './types/dataTypes';
-import INPUT_USAGE_TYPES from './types/inputUsageTypes';
-import parse from './utils/parse';
+import * as DATA_TYPES from './types/dataTypes';
+import * as INPUT_USAGE_TYPES from './types/inputUsageTypes';
+import { parse } from './utils/parse';
 
-class JsonTree extends Component {
-  constructor(props) {
+interface JsonTreeState {
+  data: JsonTreeProps['data'];
+  rootName: JsonTreeProps['rootName'];
+}
+export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
+  constructor(props: JsonTreeProps) {
     super(props);
     this.state = {
       data: props.data,
@@ -21,7 +24,7 @@ class JsonTree extends Component {
     this.removeRoot = this.removeRoot.bind(this);
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: JsonTreeProps, state: JsonTreeState) {
     if (props.data !== state.data || props.rootName !== state.rootName) {
       return {
         data: props.data,
@@ -31,7 +34,7 @@ class JsonTree extends Component {
     return null;
   }
 
-  onUpdate(key, data) {
+  onUpdate(key: string, data: any) {
     this.setState({ data });
     this.props.onFullyUpdate(data);
   }
@@ -59,7 +62,7 @@ class JsonTree extends Component {
       beforeUpdateAction,
       logger,
       onSubmitValueParser,
-      fallback,
+      fallback = null,
     } = this.props;
 
     // Node type
@@ -71,10 +74,12 @@ class JsonTree extends Component {
     }
     let inputElementFunction = inputElement;
     if (inputElement && getObjectType(inputElement) !== 'Function') {
+      // @ts-ignore
       inputElementFunction = () => inputElement;
     }
     let textareaElementFunction = textareaElement;
     if (textareaElement && getObjectType(textareaElement) !== 'Function') {
+      // @ts-ignore
       textareaElementFunction = () => textareaElement;
     }
 
@@ -84,18 +89,17 @@ class JsonTree extends Component {
           <JsonNode
             data={data}
             name={rootName}
-            collapsed={false}
             deep={-1}
             isCollapsed={isCollapsed}
             onUpdate={this.onUpdate}
             onDeltaUpdate={onDeltaUpdate}
-            readOnly={readOnlyFunction}
+            readOnly={readOnlyFunction as (...args: any) => any}
             getStyle={getStyle}
             addButtonElement={addButtonElement}
             cancelButtonElement={cancelButtonElement}
             editButtonElement={editButtonElement}
-            inputElementGenerator={inputElementFunction}
-            textareaElementGenerator={textareaElementFunction}
+            inputElementGenerator={inputElementFunction as (...args: any) => any}
+            textareaElementGenerator={textareaElementFunction as (...args: any) => any}
             minusMenuElement={minusMenuElement}
             plusMenuElement={plusMenuElement}
             handleRemove={this.removeRoot}
@@ -113,28 +117,30 @@ class JsonTree extends Component {
   }
 }
 
-JsonTree.propTypes = {
-  data: PropTypes.any.isRequired,
-  rootName: PropTypes.string,
-  isCollapsed: PropTypes.func,
-  onFullyUpdate: PropTypes.func,
-  onDeltaUpdate: PropTypes.func,
-  readOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-  getStyle: PropTypes.func,
-  addButtonElement: PropTypes.element,
-  cancelButtonElement: PropTypes.element,
-  editButtonElement: PropTypes.element,
-  inputElement: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-  textareaElement: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-  minusMenuElement: PropTypes.element,
-  plusMenuElement: PropTypes.element,
-  beforeRemoveAction: PropTypes.func,
-  beforeAddAction: PropTypes.func,
-  beforeUpdateAction: PropTypes.func,
-  logger: PropTypes.object,
-  onSubmitValueParser: PropTypes.func,
-};
+interface JsonTreeProps {
+  data: any;
+  rootName?: string;
+  isCollapsed?: (...args: any) => any;
+  onFullyUpdate?: (...args: any) => any;
+  onDeltaUpdate?: (...args: any) => any;
+  readOnly?: boolean | ((...args: any) => any);
+  getStyle?: (...args: any) => any;
+  addButtonElement?: ReactElement;
+  cancelButtonElement?: ReactElement;
+  editButtonElement?: ReactElement;
+  inputElement?: ReactElement | ((...args: any) => ReactElement);
+  textareaElement?: ReactElement | ((...args: any) => ReactElement);
+  minusMenuElement?: ReactElement;
+  plusMenuElement?: ReactElement;
+  fallback?: ReactElement;
+  beforeRemoveAction?: (...args: any) => Promise<any>;
+  beforeAddAction?: (...args: any) => Promise<any>;
+  beforeUpdateAction?: (...args: any) => any;
+  logger?: object;
+  onSubmitValueParser?: (...args: any) => any;
+}
 
+// @ts-ignore
 JsonTree.defaultProps = {
   rootName: 'root',
   isCollapsed: (keyPath, deep) => deep !== -1,
@@ -149,26 +155,24 @@ JsonTree.defaultProps = {
         return value;
     }
   },
-  /* eslint-disable no-unused-vars */
-  readOnly: (keyName, data, keyPath, deep, dataType) => false,
-  onFullyUpdate: (data) => {},
-  onDeltaUpdate: ({ type, keyPath, deep, key, newValue, oldValue }) => {},
-  beforeRemoveAction: (key, keyPath, deep, oldValue) => new Promise((resolve) => resolve()),
-  beforeAddAction: (key, keyPath, deep, newValue) => new Promise((resolve) => resolve()),
-  beforeUpdateAction: (key, keyPath, deep, oldValue, newValue) =>
-    new Promise((resolve) => resolve()),
+  readOnly: () => false,
+  onFullyUpdate: () => {},
+  onDeltaUpdate: () => {},
+  beforeRemoveAction: () => Promise.resolve(),
+  beforeAddAction: () => Promise.resolve(),
+  beforeUpdateAction: () => Promise.resolve(),
   logger: { error: () => {} },
   onSubmitValueParser: (isEditMode, keyPath, deep, name, rawValue) => parse(rawValue),
-  inputElement: (usage, keyPath, deep, keyName, data, dataType) => <input />,
-  textareaElement: (usage, keyPath, deep, keyName, data, dataType) => <textarea />,
-  /* eslint-enable */
+  inputElement: () => <input />,
+  textareaElement: () => <textarea />,
   fallback: null,
-};
+} as Partial<JsonTreeProps>;
 
-export { JsonTree };
-export { getObjectType };
-export { ADD_DELTA_TYPE };
-export { REMOVE_DELTA_TYPE };
-export { UPDATE_DELTA_TYPE };
-export { DATA_TYPES };
-export { INPUT_USAGE_TYPES };
+export {
+  getObjectType,
+  ADD_DELTA_TYPE,
+  REMOVE_DELTA_TYPE,
+  UPDATE_DELTA_TYPE,
+  DATA_TYPES,
+  INPUT_USAGE_TYPES,
+};

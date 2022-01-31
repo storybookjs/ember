@@ -1,4 +1,4 @@
-const object = {
+export const object = {
   minus: {
     color: 'red',
   },
@@ -19,7 +19,8 @@ const object = {
   },
   addForm: {},
 };
-const array = {
+
+export const array = {
   minus: {
     color: 'red',
   },
@@ -40,7 +41,8 @@ const array = {
   },
   addForm: {},
 };
-const value = {
+
+export const value = {
   minus: {
     color: 'red',
   },
@@ -57,7 +59,3 @@ const value = {
     color: '#2287CD',
   },
 };
-
-export { object };
-export { array };
-export { value };

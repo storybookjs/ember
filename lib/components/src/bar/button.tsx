@@ -3,20 +3,20 @@ import { styled, isPropValid } from '@storybook/theming';
 import { transparentize } from 'polished';
 import { auto } from '@popperjs/core';
 
-interface ButtonProps
+interface BarButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: void;
 }
-interface LinkProps
+interface BarLinkProps
   extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   href: string;
 }
 
-const ButtonOrLink = ({ children, ...restProps }: ButtonProps | LinkProps) =>
+const ButtonOrLink = ({ children, ...restProps }: BarButtonProps | BarLinkProps) =>
   restProps.href != null ? (
-    <a {...(restProps as LinkProps)}>{children}</a>
+    <a {...(restProps as BarLinkProps)}>{children}</a>
   ) : (
-    <button type="button" {...(restProps as ButtonProps)}>
+    <button type="button" {...(restProps as BarButtonProps)}>
       {children}
     </button>
   );

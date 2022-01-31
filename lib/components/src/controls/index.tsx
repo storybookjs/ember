@@ -1,13 +1,15 @@
-import React, { Suspense } from 'react';
+import React, { ComponentProps, lazy, Suspense } from 'react';
+import type { ColorControlProps } from './Color';
 
 export * from './types';
 
 export * from './Boolean';
-export type { ColorProps } from './Color';
 
-const LazyColorControl = React.lazy(() => import('./Color'));
+export type ColorProps = ColorControlProps;
 
-export const ColorControl = (props: React.ComponentProps<typeof LazyColorControl>) => (
+const LazyColorControl = lazy(() => import('./Color'));
+
+export const ColorControl = (props: ComponentProps<typeof LazyColorControl>) => (
   <Suspense fallback={<div />}>
     <LazyColorControl {...props} />
   </Suspense>
