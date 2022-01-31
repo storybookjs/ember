@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 
 export interface SyntaxHighlighterRendererProps {
   rows: any[];
@@ -13,5 +13,5 @@ export interface SyntaxHighlighterProps {
   padded?: boolean;
   format?: boolean;
   className?: string;
-  renderer?: (props: SyntaxHighlighterRendererProps) => React.ReactNode;
+  renderer?: (props: SyntaxHighlighterRendererProps) => ReactNode;
 }

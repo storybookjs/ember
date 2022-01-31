@@ -1,10 +1,10 @@
-import { Component, ReactElement } from 'react';
+import { Component, MutableRefObject, ReactElement } from 'react';
 import { browserSupportsCssZoom } from './browserSupportsCssZoom';
 
 export type IZoomIFrameProps = {
   scale: number;
   children: ReactElement<HTMLIFrameElement>;
-  iFrameRef: React.MutableRefObject<HTMLIFrameElement>;
+  iFrameRef: MutableRefObject<HTMLIFrameElement>;
   active?: boolean;
 };
 

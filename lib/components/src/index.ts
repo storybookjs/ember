@@ -1,5 +1,27 @@
 import { createElement, forwardRef, ElementType } from 'react';
-import { components as rawComponents } from './typography/DocumentFormatting';
+import * as typography from './typography/components';
+
+export { A } from './typography/elements/A';
+export { Blockquote } from './typography/elements/Blockquote';
+export { Code } from './typography/elements/Code';
+export { Div } from './typography/elements/Div';
+export { DL } from './typography/elements/DL';
+export { H1 } from './typography/elements/H1';
+export { H2 } from './typography/elements/H2';
+export { H3 } from './typography/elements/H3';
+export { H4 } from './typography/elements/H4';
+export { H5 } from './typography/elements/H5';
+export { H6 } from './typography/elements/H6';
+export { HR } from './typography/elements/HR';
+export { Img } from './typography/elements/Img';
+export { LI } from './typography/elements/LI';
+export { OL } from './typography/elements/OL';
+export { P } from './typography/elements/P';
+export { Pre } from './typography/elements/Pre';
+export { Span } from './typography/elements/Span';
+export { Table } from './typography/elements/Table';
+export { TT } from './typography/elements/TT';
+export { UL } from './typography/elements/UL';
 
 export { Badge } from './Badge/Badge';
 
@@ -54,11 +76,12 @@ export { getStoryHref } from './utils/getStoryHref';
 
 export * from './typography/DocumentFormatting';
 
-export { rawComponents as components };
+// eslint-disable-next-line prefer-destructuring
+export const components = typography.components;
 
 const resetComponents: Record<string, ElementType> = {};
 
-Object.keys(rawComponents).forEach((key) => {
+Object.keys(typography.components).forEach((key) => {
   resetComponents[key] = forwardRef((props, ref) => createElement(key, { ...props, ref }));
 });
 

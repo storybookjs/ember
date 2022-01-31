@@ -209,7 +209,7 @@ export const init: ModuleFn = ({ store, navigate, state, provider, fullAPI, ...r
       api.setQueryParams({ globals: globalsString });
     });
 
-    fullAPI.on(NAVIGATE_URL, (url: string, options: { [k: string]: any }) => {
+    fullAPI.on(NAVIGATE_URL, (url: string, options: NavigateOptions) => {
       fullAPI.navigateUrl(url, options);
     });
 

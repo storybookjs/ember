@@ -1,5 +1,5 @@
 declare module 'global';
 
 declare module 'vue-loader' {
-  export const VueLoaderPlugin
+  export const VueLoaderPlugin: any
 }
