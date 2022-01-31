@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.28","info":{"plain":"### Bug Fixes\n\n* Svelte: Fix missing templates dir in package.json publish files ([#17367](https://github.com/storybookjs/storybook/pull/17367))"}}
+{"version":"6.5.0-alpha.29","info":{"plain":"### Bug Fixes\n\n* Revert \"Angular: Retrieve version from core package\" ([#17372](https://github.com/storybookjs/storybook/pull/17372))"}}
