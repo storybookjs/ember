@@ -4,8 +4,7 @@ import { mkdtemp as mkdtempCb } from 'fs';
 import os from 'os';
 import { promisify } from 'util';
 import { Configuration } from 'webpack';
-import Cache from 'file-system-cache';
-import { resolvePathInStorybookCache } from '@storybook/core-common';
+import { resolvePathInStorybookCache, createFileSystemCache } from '@storybook/core-common';
 import { executor as previewExecutor } from '@storybook/builder-webpack4';
 import { executor as managerExecutor } from '@storybook/manager-webpack4';
 
@@ -79,7 +78,7 @@ jest.mock('./utils/output-startup-information', () => ({
 
 jest.mock('./utils/output-stats');
 
-const cache = Cache({
+const cache = createFileSystemCache({
   basePath: resolvePathInStorybookCache('dev-server'),
   ns: 'storybook-test', // Optional. A grouping namespace for items.
 });

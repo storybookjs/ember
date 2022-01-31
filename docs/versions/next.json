@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.26","info":{"plain":"### Bug Fixes\n\n* Revert \"Core: Rename `generated-stories-entry` to `cjs` extension so require works\" ([#17361](https://github.com/storybookjs/storybook/pull/17361))"}}
+{"version":"6.5.0-alpha.29","info":{"plain":"### Bug Fixes\n\n* Revert \"Angular: Retrieve version from core package\" ([#17372](https://github.com/storybookjs/storybook/pull/17372))"}}

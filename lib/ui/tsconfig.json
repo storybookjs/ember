@@ -5,7 +5,6 @@
     "types": [
       "webpack-env"
     ],
-    "resolveJsonModule": true,
     "lib": [
       "ESNext",
       "DOM",
@@ -17,8 +16,10 @@
   ],
   "exclude": [
     "src/**/*.test.*",
+    "src/**/tests/**/*",
     "src/**/__tests__/**/*",
     "src/**/*.stories.*",
-    "src/**/*.mockdata.*"
+    "src/**/*.mockdata.*",
+    "src/**/__testfixtures__/**"
   ]
 }

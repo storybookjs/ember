@@ -4,8 +4,8 @@ import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
 import { Router } from 'express';
-import { FileSystemCache } from 'file-system-cache';
 import { Server } from 'http';
+import { FileSystemCache } from './utils/file-cache';
 
 /**
  * ⚠️ This file contains internal WIP types they MUST NOT be exported outside this package for now!

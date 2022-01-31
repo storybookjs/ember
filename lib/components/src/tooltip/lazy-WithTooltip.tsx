@@ -1,20 +1,20 @@
-import React, { Suspense } from 'react';
+import React, { ComponentProps, lazy, Suspense } from 'react';
 
-const LazyWithTooltip = React.lazy(() =>
+const LazyWithTooltip = lazy(() =>
   import('./WithTooltip').then((mod) => ({ default: mod.WithTooltip }))
 );
 
-export const WithTooltip = (props: React.ComponentProps<typeof LazyWithTooltip>) => (
+export const WithTooltip = (props: ComponentProps<typeof LazyWithTooltip>) => (
   <Suspense fallback={<div />}>
     <LazyWithTooltip {...props} />
   </Suspense>
 );
 
-const LazyWithTooltipPure = React.lazy(() =>
+const LazyWithTooltipPure = lazy(() =>
   import('./WithTooltip').then((mod) => ({ default: mod.WithTooltipPure }))
 );
 
-export const WithTooltipPure = (props: React.ComponentProps<typeof LazyWithTooltipPure>) => (
+export const WithTooltipPure = (props: ComponentProps<typeof LazyWithTooltipPure>) => (
   <Suspense fallback={<div />}>
     <LazyWithTooltipPure {...props} />
   </Suspense>

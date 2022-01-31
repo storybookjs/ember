@@ -64,6 +64,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -129,6 +135,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -239,6 +251,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -326,6 +344,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
