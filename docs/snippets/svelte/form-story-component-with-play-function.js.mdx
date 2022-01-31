@@ -11,7 +11,7 @@ export default {
 
 export const FilledForm = {
   play: async ({ args, canvasElement }) => {
-    // Starts querying the component from it's root element
+    // Starts querying the component from its root element
     const canvas = within(canvasElement);
 
     await userEvent.type(canvas.getByTestId('email'), 'email');
