@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.29","info":{"plain":"### Bug Fixes\n\n* Revert \"Angular: Retrieve version from core package\" ([#17372](https://github.com/storybookjs/storybook/pull/17372))"}}
+{"version":"6.5.0-alpha.30","info":{"plain":"### Maintenance\n\n* Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))"}}
