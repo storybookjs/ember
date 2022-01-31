@@ -1,3 +1,9 @@
+## 6.5.0-alpha.30 (January 31, 2022)
+
+### Maintenance
+
+* Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))
+
 ## 6.5.0-alpha.29 (January 31, 2022)
 
 ### Bug Fixes
