@@ -3,7 +3,7 @@
  * @param obj {*} object to get type
  * @returns {*}
  */
-function getObjectType(obj) {
+export function getObjectType(obj: any) {
   if (
     obj !== null &&
     typeof obj === 'object' &&
@@ -21,11 +21,8 @@ function getObjectType(obj) {
  * @param newValue {*} new value
  * @returns {boolean} result
  */
-function isComponentWillChange(oldValue, newValue) {
+export function isComponentWillChange<T extends unknown>(oldValue: T, newValue: T): boolean {
   const oldType = getObjectType(oldValue);
   const newType = getObjectType(newValue);
   return (oldType === 'Function' || newType === 'Function') && newType !== oldType;
 }
-
-export { getObjectType };
-export { isComponentWillChange };

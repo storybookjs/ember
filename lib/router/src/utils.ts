@@ -2,7 +2,7 @@ import { once } from '@storybook/client-logger';
 import deepEqual from 'fast-deep-equal';
 import isPlainObject from 'lodash/isPlainObject';
 import memoize from 'memoizerific';
-import qs from 'qs';
+import qs, { IStringifyOptions } from 'qs';
 import dedent from 'ts-dedent';
 
 export interface StoryData {
@@ -104,7 +104,7 @@ const encodeSpecialValues = (value: unknown): any => {
   return value;
 };
 
-const QS_OPTIONS = {
+const QS_OPTIONS: IStringifyOptions = {
   encode: false, // we handle URL encoding ourselves
   delimiter: ';', // we don't actually create multiple query params
   allowDots: true, // encode objects using dot notation: obj.key=val
