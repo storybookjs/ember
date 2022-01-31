@@ -20,6 +20,7 @@ export const getStorybookBabelConfig = ({ local = false }: { local?: boolean } =
        */
       [r('@babel/plugin-proposal-decorators', local), { legacy: true }],
       [r('@babel/plugin-proposal-class-properties', local), { loose: true }],
+      [r('@babel/plugin-proposal-private-property-in-object', local), { loose: true }],
       [r('@babel/plugin-proposal-private-methods', local), { loose: true }],
       r('@babel/plugin-proposal-export-default-from', local),
       r('@babel/plugin-syntax-dynamic-import', local),
@@ -56,6 +57,7 @@ export const getStorybookBabelDependencies = () => [
   '@babel/preset-env',
   '@babel/preset-typescript',
   '@babel/plugin-transform-shorthand-properties',
+  '@babel/plugin-proposal-private-property-in-object',
   '@babel/plugin-transform-block-scoping',
   '@babel/plugin-proposal-decorators',
   '@babel/plugin-proposal-class-properties',
