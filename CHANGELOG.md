@@ -2,13 +2,19 @@
 
 ### Bug Fixes
 
-* Revert "Angular: Retrieve version from core package" ([#17372](https://github.com/storybookjs/storybook/pull/17372))
+- Revert "Angular: Retrieve version from core package" ([#17372](https://github.com/storybookjs/storybook/pull/17372))
+
+## 6.4.17 (January 31, 2022)
+
+### Bug Fixes
+
+- Revert "Angular: Retrieve version from core package" ([#17372](https://github.com/storybookjs/storybook/pull/17372))
 
 ## 6.5.0-alpha.28 (January 29, 2022)
 
 ### Bug Fixes
 
-* Svelte: Fix missing templates dir in package.json publish files ([#17367](https://github.com/storybookjs/storybook/pull/17367))
+- Svelte: Fix missing templates dir in package.json publish files ([#17367](https://github.com/storybookjs/storybook/pull/17367))
 
 ## 6.4.16 (January 29, 2022)
 
