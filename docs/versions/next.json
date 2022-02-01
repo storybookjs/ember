@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.30","info":{"plain":"### Maintenance\n\n* Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))"}}
+{"version":"6.5.0-alpha.33","info":{"plain":"### Maintenance\n\n- UI: Prebundle `@storybook/ui` ([#17301](https://github.com/storybookjs/storybook/pull/17301))"}}

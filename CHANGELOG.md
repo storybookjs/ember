@@ -1,8 +1,27 @@
+## 6.5.0-alpha.33 (February 1, 2022)
+
+### Maintenance
+
+- UI: Prebundle `@storybook/ui` ([#17301](https://github.com/storybookjs/storybook/pull/17301))
+
+## 6.5.0-alpha.32 (February 1, 2022)
+
+### Maintenance
+
+- Core: Pre-bundle `@storybook/router` to avoid react-router conflict ([#17294](https://github.com/storybookjs/storybook/pull/17294))
+
+## 6.5.0-alpha.31 (February 1, 2022)
+
+### Maintenance
+
+- Web components: add addon-interactions example story ([#17303](https://github.com/storybookjs/storybook/pull/17303))
+- Core: Pre-bundle theming to avoid emotion11 conflicts ([#17000](https://github.com/storybookjs/storybook/pull/17000))
+
 ## 6.5.0-alpha.30 (January 31, 2022)
 
 ### Maintenance
 
-* Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))
+- Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))
 
 ## 6.5.0-alpha.29 (January 31, 2022)
 
