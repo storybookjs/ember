@@ -1,6 +1,6 @@
 {
   "name": "@storybook/theming",
-  "version": "6.5.0-alpha.30",
+  "version": "6.5.0-alpha.33",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -37,21 +37,24 @@
     "*.d.ts"
   ],
   "scripts": {
-    "prepare": "node ../../scripts/prepare.js"
+    "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
+    "@storybook/client-logger": "6.5.0-alpha.33",
+    "core-js": "^3.8.2"
+  },
+  "devDependencies": {
     "@emotion/core": "^10.3.1",
     "@emotion/is-prop-valid": "^0.8.6",
     "@emotion/styled": "^10.0.27",
-    "@storybook/client-logger": "6.5.0-alpha.30",
-    "core-js": "^3.8.2",
+    "@types/node": "^14.14.20 || ^16.0.0",
     "deep-object-diff": "^1.1.0",
     "emotion-theming": "^10.0.27",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3",
     "polished": "^4.0.5",
-    "resolve-from": "^5.0.0",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "ts-node": "^10.4.0"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0",
@@ -60,6 +63,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "4dc5ec5956f3a8cfb07e3c4b3442fb3f6ac95662",
+  "bundlerEntrypoint": "./src/index.ts",
+  "gitHead": "9ea863a7226918e763ec5804c19fe7fa02aa5e59",
   "sbmodern": "dist/modern/index.js"
 }

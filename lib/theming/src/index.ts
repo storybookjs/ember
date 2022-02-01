@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="./typings.d.ts" />
+
 import emotionStyled, { CreateStyled } from '@emotion/styled';
 import { Theme } from './types';
 
