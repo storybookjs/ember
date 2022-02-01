@@ -8224,10 +8224,22 @@ __metadata:
     webpack: 4
   peerDependencies:
     "@babel/core": ^7.11.5
+    "@storybook/builder-webpack4": 6.5.0-alpha.33
+    "@storybook/builder-webpack5": 6.5.0-alpha.33
+    "@storybook/manager-webpack4": 6.5.0-alpha.33
+    "@storybook/manager-webpack5": 6.5.0-alpha.33
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
     "@babel/core":
+      optional: true
+    "@storybook/builder-webpack4":
+      optional: true
+    "@storybook/builder-webpack5":
+      optional: true
+    "@storybook/manager-webpack4":
+      optional: true
+    "@storybook/manager-webpack5":
       optional: true
     typescript:
       optional: true
