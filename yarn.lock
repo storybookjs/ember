@@ -6555,6 +6555,10 @@ __metadata:
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
+    "@storybook/builder-webpack4": 6.5.0-alpha.33
+    "@storybook/builder-webpack5": 6.5.0-alpha.33
+    "@storybook/manager-webpack4": 6.5.0-alpha.33
+    "@storybook/manager-webpack5": 6.5.0-alpha.33
     "@storybook/vue": 6.5.0-alpha.33
     "@storybook/web-components": 6.5.0-alpha.33
     babel-loader: ^8.0.0
@@ -6563,6 +6567,14 @@ __metadata:
     react-dom: ^16.8.0 || ^17.0.0
     webpack: "*"
   peerDependenciesMeta:
+    "@storybook/builder-manager4":
+      optional: true
+    "@storybook/builder-manager5":
+      optional: true
+    "@storybook/builder-webpack4":
+      optional: true
+    "@storybook/builder-webpack5":
+      optional: true
     "@storybook/vue":
       optional: true
     "@storybook/web-components":
