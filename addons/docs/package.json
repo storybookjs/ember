@@ -142,7 +142,11 @@
   },
   "peerDependencies": {
     "@storybook/angular": "6.5.0-alpha.33",
+    "@storybook/builder-webpack4": "6.5.0-alpha.33",
+    "@storybook/builder-webpack5": "6.5.0-alpha.33",
     "@storybook/html": "6.5.0-alpha.33",
+    "@storybook/manager-webpack4": "6.5.0-alpha.33",
+    "@storybook/manager-webpack5": "6.5.0-alpha.33",
     "@storybook/react": "6.5.0-alpha.33",
     "@storybook/vue": "6.5.0-alpha.33",
     "@storybook/vue3": "6.5.0-alpha.33",
@@ -160,7 +164,19 @@
     "@storybook/angular": {
       "optional": true
     },
+    "@storybook/builder-webpack4": {
+      "optional": true
+    },
+    "@storybook/builder-webpack5": {
+      "optional": true
+    },
     "@storybook/html": {
+      "optional": true
+    },
+    "@storybook/manager-webpack4": {
+      "optional": true
+    },
+    "@storybook/manager-webpack5": {
       "optional": true
     },
     "@storybook/react": {
