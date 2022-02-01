@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { actions as makeActions } from '@storybook/addon-actions';
 
