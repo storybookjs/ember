@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.30","info":{"plain":"### Maintenance\n\n* Build: Enforce stricter types ([#17368](https://github.com/storybookjs/storybook/pull/17368))"}}
+{"version":"6.5.0-alpha.32","info":{"plain":"### Maintenance\n\n* Core: Pre-bundle `@storybook/router` to avoid react-router conflict ([#17294](https://github.com/storybookjs/storybook/pull/17294))"}}

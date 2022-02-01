@@ -23,7 +23,7 @@ export const EmptyForm = Template.bind({});
 
 export const FilledForm = Template.bind({});
 FilledForm.play = async ({ canvasElement }) => {
-  // Starts querying the component from it's root element
+  // Starts querying the component from its root element
   const canvas = within(canvasElement);
 
   await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
