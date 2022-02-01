@@ -52,15 +52,17 @@ export const exec = async (
     const defaultOptions: ExecOptions = {
       silent: true,
     };
-    shell.exec(command, { ...defaultOptions, ...options }, (code, stdout, stderr) => {
+    const child = shell.exec(command, { ...defaultOptions, ...options, async: true });
+
+    child.stderr.pipe(process.stderr);
+    child.stdout.pipe(process.stdout);
+
+    child.on('exit', (code) => {
       if (code === 0) {
         resolve(undefined);
       } else {
         logger.error(chalk.red(`An error occurred while executing: \`${command}\``));
-        logger.error(`Command output was:${chalk.yellow(`\n${stdout}\n${stderr}`)}`);
-        if (errorMessage) {
-          logger.error(errorMessage);
-        }
+        logger.log(errorMessage);
         reject(new Error(`command exited with code: ${code}: `));
       }
     });
@@ -104,6 +106,8 @@ const configureYarn2ForE2E = async ({ cwd }: Options) => {
 
 const generate = async ({ cwd, name, appName, version, generator }: Options) => {
   const command = generator.replace(/{{appName}}/g, appName).replace(/{{version}}/g, version);
+
+  console.log('generate', { command, generator });
 
   await exec(
     command,
@@ -205,15 +209,10 @@ export const createAndInit = async (
   logger.log();
   logger.info(`🏃 Starting for ${name} ${version}`);
   logger.log();
-  logger.debug(options);
-  logger.log();
 
   await doTask(generate, { ...options, cwd: options.creationPath });
-
   await doTask(installYarn2, options);
-
   await doTask(configureYarn2ForE2E, options, e2e);
-
   await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);
   await doTask(initStorybook, options);
