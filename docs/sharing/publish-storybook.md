@@ -15,13 +15,17 @@ Teams publish Storybook online to review and collaborate on works in progress. T
 
 First, we'll need to build Storybook as a static web application. The functionality is already built-in and pre-configured. Run the following command inside your project's root directory:
 
-```shell
-# With yarn
-yarn build-storybook
 
-# With npm
-npm run build-storybook
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'angular/build-storybook-production-mode.with-builder.js.mdx',
+    'common/build-storybook-production-mode.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 <div class="aside">
 
