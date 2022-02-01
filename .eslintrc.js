@@ -74,7 +74,7 @@ module.exports = {
     },
     {
       // this package uses pre-bundling, dependencies will be bundled, and will be in devDepenencies
-      files: ['**/lib/theming/**/*'],
+      files: ['**/lib/theming/**/*', '**/lib/router/**/*'],
       rules: {
         'import/no-extraneous-dependencies': ['error', { bundledDependencies: false }],
       },
