@@ -269,10 +269,16 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: run e2e tests
-          command: yarn test:e2e-framework --pnp sfcVue cra
+          command: yarn test:e2e-framework --pnp cra
+      - run:
+          name: run e2e tests
+          command: yarn test:e2e-framework --pnp sfcVue
       - store_artifacts:
           path: /tmp/cypress-record
           destination: cypress
+      - store_artifacts:
+          path: /tmp/storybook-e2e-testing
+          destination: e2e
   e2e-tests-examples:
     executor:
       class: small
