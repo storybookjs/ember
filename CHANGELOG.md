@@ -1,3 +1,9 @@
+## 6.5.0-alpha.32 (February 1, 2022)
+
+### Maintenance
+
+* Core: Pre-bundle `@storybook/router` to avoid react-router conflict ([#17294](https://github.com/storybookjs/storybook/pull/17294))
+
 ## 6.5.0-alpha.31 (February 1, 2022)
 
 ### Maintenance
