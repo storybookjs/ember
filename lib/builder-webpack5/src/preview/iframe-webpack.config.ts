@@ -246,6 +246,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       },
       fallback: {
         path: require.resolve('path-browserify'),
+        assert: false,
       },
     },
     optimization: {
