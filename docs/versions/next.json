@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.32","info":{"plain":"### Maintenance\n\n* Core: Pre-bundle `@storybook/router` to avoid react-router conflict ([#17294](https://github.com/storybookjs/storybook/pull/17294))"}}
+{"version":"6.5.0-alpha.33","info":{"plain":"### Maintenance\n\n- UI: Prebundle `@storybook/ui` ([#17301](https://github.com/storybookjs/storybook/pull/17301))"}}
