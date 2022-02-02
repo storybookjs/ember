@@ -1,3 +1,19 @@
+## 6.4.18 (February 2, 2022)
+
+### Bug Fixes
+
+- CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
+
+## 6.5.0-alpha.34 (February 2, 2022)
+
+### Features
+
+* Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))
+
+### Bug Fixes
+
+* CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
+
 ## 6.5.0-alpha.33 (February 1, 2022)
 
 ### Maintenance

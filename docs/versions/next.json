@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.33","info":{"plain":"### Maintenance\n\n- UI: Prebundle `@storybook/ui` ([#17301](https://github.com/storybookjs/storybook/pull/17301))"}}
+{"version":"6.5.0-alpha.34","info":{"plain":"### Features\n\n* Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))\n\n### Bug Fixes\n\n* CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))"}}

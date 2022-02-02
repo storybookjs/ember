@@ -87,7 +87,7 @@ export async function baseGenerator(
   const addonPackages = [...addons, '@storybook/addon-actions'];
 
   const yarn2Dependencies =
-    packageManager.type === 'yarn2' ? ['@storybook/addon-docs', '@mdx-js/react'] : [];
+    packageManager.type === 'yarn2' ? ['@storybook/addon-docs', '@mdx-js/react@1.x.x'] : [];
 
   const files = await fse.readdir(process.cwd());
   const isNewFolder = !files.some(

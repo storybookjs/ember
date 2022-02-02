@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-interactions",
-  "version": "6.5.0-alpha.33",
+  "version": "6.5.0-alpha.34",
   "description": "Automate, test and debug user interactions",
   "keywords": [
     "storybook-addons",
@@ -41,14 +41,14 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.33",
-    "@storybook/api": "6.5.0-alpha.33",
-    "@storybook/components": "6.5.0-alpha.33",
-    "@storybook/core-common": "6.5.0-alpha.33",
-    "@storybook/core-events": "6.5.0-alpha.33",
+    "@storybook/addons": "6.5.0-alpha.34",
+    "@storybook/api": "6.5.0-alpha.34",
+    "@storybook/components": "6.5.0-alpha.34",
+    "@storybook/core-common": "6.5.0-alpha.34",
+    "@storybook/core-events": "6.5.0-alpha.34",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/instrumenter": "6.5.0-alpha.33",
-    "@storybook/theming": "6.5.0-alpha.33",
+    "@storybook/instrumenter": "6.5.0-alpha.34",
+    "@storybook/theming": "6.5.0-alpha.34",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
     "polished": "^4.0.5",
@@ -74,7 +74,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "9ea863a7226918e763ec5804c19fe7fa02aa5e59",
+  "gitHead": "5eafd588972634b4d76ca2ebf01bd5ca2aaa0119",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Interactions",
