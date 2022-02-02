@@ -7270,6 +7270,7 @@ __metadata:
     "@types/webpack-virtual-modules": ^0.1.0
     babel-loader: ^8.0.0
     babel-plugin-named-exports-order: ^0.0.2
+    browser-assert: ^1.2.1
     case-sensitive-paths-webpack-plugin: ^2.3.0
     core-js: ^3.8.2
     css-loader: ^5.0.1
@@ -15407,6 +15408,13 @@ __metadata:
   dependencies:
     base64-js: ^1.1.2
   checksum: 70b7e62596181448a6234eea63a2a1fc790bdf21551b7679152fa3b099c6a9e66f065445c4523ae66296d665bb4036909d2d2695f17d70467779209ffcba08f8
+  languageName: node
+  linkType: hard
+
+"browser-assert@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "browser-assert@npm:1.2.1"
+  checksum: 902abf999f92c9c951fdb6d7352c09eea9a84706258699655f7e7906e42daa06a1ae286398a755872740e05a6a71c43c5d1a0c0431d67a8cdb66e5d859a3fc0c
   languageName: node
   linkType: hard
 
