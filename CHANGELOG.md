@@ -1,3 +1,9 @@
+## 6.4.18 (February 2, 2022)
+
+### Bug Fixes
+
+- CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
+
 ## 6.5.0-alpha.34 (February 2, 2022)
 
 ### Features
