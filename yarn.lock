@@ -6991,6 +6991,7 @@ __metadata:
     "@types/autoprefixer": ^9.7.2
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
+    "@types/react": 16.14.0
     "@types/webpack-env": ^1.16.0
     autoprefixer: ^9.8.6
     core-js: ^3.8.2
@@ -10140,6 +10141,16 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 6ada83210314222bb783b57cc75b1beeb137740445d5774d2dc8ac18f3ccbb245818d87c693d855247a6efa0515453bc7882a64b28ce5ea69bd37f962cc43ab4
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:16.14.0":
+  version: 16.14.0
+  resolution: "@types/react@npm:16.14.0"
+  dependencies:
+    "@types/prop-types": "*"
+    csstype: ^3.0.2
+  checksum: 351ec530c42a685d417462fae1c799e9fe5e04c6a9a1b42ccf1594a7f4023953d14b7b7e30bc8e5d332a0566859bcc909eddf3b05f959fb997092a42122ff2a5
   languageName: node
   linkType: hard
 
