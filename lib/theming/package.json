@@ -1,6 +1,6 @@
 {
   "name": "@storybook/theming",
-  "version": "6.5.0-alpha.33",
+  "version": "6.5.0-alpha.34",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -40,7 +40,7 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.33",
+    "@storybook/client-logger": "6.5.0-alpha.34",
     "core-js": "^3.8.2"
   },
   "devDependencies": {
