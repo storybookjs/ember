@@ -6853,7 +6853,7 @@ __metadata:
     "@storybook/router": 6.5.0-alpha.34
     "@storybook/source-loader": 6.5.0-alpha.34
     "@storybook/theming": 6.5.0-alpha.34
-    "@types/react": ^16.14.2
+    "@types/react": ^16.14.22
     "@types/react-syntax-highlighter": ^11.0.5
     core-js: ^3.8.2
     estraverse: ^5.2.0
@@ -6991,7 +6991,7 @@ __metadata:
     "@types/autoprefixer": ^9.7.2
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": 16.14.0
+    "@types/react": ^16.14.22
     "@types/webpack-env": ^1.16.0
     autoprefixer: ^9.8.6
     core-js: ^3.8.2
@@ -7449,7 +7449,6 @@ __metadata:
     "@storybook/theming": 6.5.0-alpha.34
     "@types/color-convert": ^2.0.0
     "@types/overlayscrollbars": ^1.12.0
-    "@types/react": ^16
     "@types/react-syntax-highlighter": 11.0.5
     color-convert: ^2.0.1
     core-js: ^3.8.2
@@ -7808,7 +7807,7 @@ __metadata:
     "@storybook/addon-essentials": 6.5.0-alpha.34
     "@storybook/builder-webpack4": 6.5.0-alpha.34
     "@storybook/react": 6.5.0-alpha.34
-    "@types/react": ^16.14.2
+    "@types/react": ^16.14.22
     "@types/react-dom": ^16.9.10
     prop-types: 15.7.2
     react: 16.14.0
@@ -7835,7 +7834,7 @@ __metadata:
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
     "@types/babel__preset-env": ^7
-    "@types/react": ^16.14.2
+    "@types/react": ^16.14.22
     "@types/react-dom": ^16.9.10
     cross-env: ^7.0.3
     formik: ^2.2.9
@@ -8503,6 +8502,7 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-node: ^10.4.0
   peerDependencies:
+    "@types/react": "*"
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   languageName: unknown
@@ -10101,15 +10101,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:16.9.10":
-  version: 16.9.10
-  resolution: "@types/react-dom@npm:16.9.10"
-  dependencies:
-    "@types/react": ^16
-  checksum: a04cb6a9fce8153f12f1f93897fc083c47fe8d7bc0a027c266b12740f2551f215e45b430ddfb42c6ac8aa99591492150bf660dc698f4706e0dd76210d2773080
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:^16, @types/react-dom@npm:^16.9.10":
   version: 16.9.14
   resolution: "@types/react-dom@npm:16.9.14"
@@ -10137,7 +10128,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^16, @types/react@npm:^16.14.2":
+"@types/react@npm:*, @types/react@npm:^16":
   version: 16.14.22
   resolution: "@types/react@npm:16.14.22"
   dependencies:
@@ -10148,23 +10139,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:16.14.0":
-  version: 16.14.0
-  resolution: "@types/react@npm:16.14.0"
+"@types/react@npm:^16.14.22":
+  version: 16.14.23
+  resolution: "@types/react@npm:16.14.23"
   dependencies:
     "@types/prop-types": "*"
+    "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 351ec530c42a685d417462fae1c799e9fe5e04c6a9a1b42ccf1594a7f4023953d14b7b7e30bc8e5d332a0566859bcc909eddf3b05f959fb997092a42122ff2a5
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:16.14.2":
-  version: 16.14.2
-  resolution: "@types/react@npm:16.14.2"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.0.2
-  checksum: cdaa102b305773bc7a55fb2314f9fea65cf4e7155d15e2991fc554e50a0fa966780552b6c65d74b27cf15a021b28191ed58d2a691d4b0c0a1a82b1473d67b4b5
+  checksum: e6e1432980f0904faa1527288f8c2d4c0f36f9398302f7afa906ce3f0d2c6ca5ae06f33b375a307221808a003edbcda62b94b1885cda701855208ff8555b996b
   languageName: node
   linkType: hard
 
@@ -17803,8 +17785,8 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.34
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16.14.2
-    "@types/react-dom": 16.9.10
+    "@types/react": ^16.14.22
+    "@types/react-dom": ^16.9.10
     global: ^4.4.0
     react: 16.14.0
     react-dom: 16.14.0
@@ -17830,8 +17812,8 @@ __metadata:
     "@types/enzyme": ^3.10.8
     "@types/jest": 25.2.3
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": 16.14.2
-    "@types/react-dom": 16.9.10
+    "@types/react": ^16.14.22
+    "@types/react-dom": ^16.9.10
     enzyme: ^3.11.0
     enzyme-adapter-react-16: ^1.9.1
     enzyme-to-json: ^3.6.1

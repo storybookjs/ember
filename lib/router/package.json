@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@storybook/client-logger": "6.5.0-alpha.34",
-    "@types/react": "*",
     "core-js": "^3.8.2"
   },
   "devDependencies": {
@@ -58,6 +57,7 @@
     "ts-node": "^10.4.0"
   },
   "peerDependencies": {
+    "@types/react": "*",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
