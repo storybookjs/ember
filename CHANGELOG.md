@@ -1,3 +1,9 @@
+## 6.5.0-alpha.36 (February 4, 2022)
+
+### Maintenance
+
+- UI: Prebundle `@storybook/components` ([#17304](https://github.com/storybookjs/storybook/pull/17304))
+
 ## 6.5.0-alpha.35 (February 4, 2022)
 
 ### Features
