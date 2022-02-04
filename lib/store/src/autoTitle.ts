@@ -23,11 +23,11 @@ const stripExtension = (path: string[]) => {
   return parts;
 };
 
-// deal with files like "atoms/button/button.stories.js"
-const removeTrailingDuplicate = (paths: string[]) => {
+// deal with files like "atoms/button/{button,index}.stories.js"
+const removeRedundantFilename = (paths: string[]) => {
   let prevVal: string;
   return paths.filter((val, index) => {
-    if (index === paths.length - 1 && val === prevVal) {
+    if (index === paths.length - 1 && (val === prevVal || val === 'Index')) {
       return false;
     }
     prevVal = val;
@@ -58,7 +58,7 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
     const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
     let path = titleAndSuffix.split('/');
     path = stripExtension(path).map(startCase);
-    path = removeTrailingDuplicate(path);
+    path = removeRedundantFilename(path);
     return path.join('/');
   }
   return undefined;

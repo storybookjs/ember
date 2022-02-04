@@ -49,6 +49,15 @@ describe('autoTitle', () => {
       ).toMatchInlineSnapshot(`To/Button`);
     });
 
+    it('match with trailing index', () => {
+      expect(
+        auto(
+          './path/to/button/index.stories.js',
+          normalizeStoriesEntry({ directory: './path' }, options)
+        )
+      ).toMatchInlineSnapshot(`To/Button`);
+    });
+
     it('match with hyphen path', () => {
       expect(
         auto(
