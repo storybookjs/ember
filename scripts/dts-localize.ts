@@ -235,7 +235,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
 
   function getSourceFile(moduleNode: ts.Node) {
     while (!ts.isSourceFile(moduleNode)) {
-      moduleNode = moduleNode.parent;
+      moduleNode = moduleNode.getSourceFile();
     }
     return moduleNode;
   }
@@ -271,6 +271,7 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
     // I could create the dependency graph myself, perhaps that'd be better, but I'm OK with this for now.
     if (sourceFile.resolvedModules && sourceFile.resolvedModules.size > 0) {
       Array.from(sourceFile.resolvedModules.entries()).forEach(([k, v]) => {
+        // console.log({ k }, v.resolvedFileName);
         if (externals.includes(k)) {
           return;
         }

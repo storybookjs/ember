@@ -6853,7 +6853,7 @@ __metadata:
     "@storybook/router": 6.5.0-alpha.35
     "@storybook/source-loader": 6.5.0-alpha.35
     "@storybook/theming": 6.5.0-alpha.35
-    "@types/react": ^16.14.2
+    "@types/react": ^16.14.23
     "@types/react-syntax-highlighter": ^11.0.5
     core-js: ^3.8.2
     estraverse: ^5.2.0
@@ -6991,6 +6991,8 @@ __metadata:
     "@types/autoprefixer": ^9.7.2
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     "@types/webpack-env": ^1.16.0
     autoprefixer: ^9.8.6
     core-js: ^3.8.2
@@ -7002,8 +7004,8 @@ __metadata:
     postcss: ^7.0.36
     postcss-loader: ^4.2.0
     raw-loader: ^4.0.2
-    react: 16.14.0
-    react-dom: 16.14.0
+    react: ^16.14.0
+    react-dom: ^16.14.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     sass-loader: ^10.1.0
@@ -7468,6 +7470,7 @@ __metadata:
     react-textarea-autosize: ^8.3.0
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
+    ts-node: ^10.4.0
     util-deprecate: ^1.0.2
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
@@ -7805,8 +7808,8 @@ __metadata:
     "@storybook/addon-essentials": 6.5.0-alpha.35
     "@storybook/builder-webpack4": 6.5.0-alpha.35
     "@storybook/react": 6.5.0-alpha.35
-    "@types/react": ^16.14.2
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     prop-types: 15.7.2
     react: 16.14.0
     react-dom: 16.14.0
@@ -7832,8 +7835,8 @@ __metadata:
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
     "@types/babel__preset-env": ^7
-    "@types/react": ^16.14.2
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     cross-env: ^7.0.3
     formik: ^2.2.9
     prop-types: 15.7.2
@@ -8340,8 +8343,8 @@ __metadata:
     "@types/node": ^14.14.20 || ^16.0.0
     "@types/node-cleanup": ^2.1.1
     "@types/prompts": 2.0.11
-    "@types/react": ^16
-    "@types/react-dom": ^16
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     "@types/semver": ^7.3.4
     "@types/serve-static": ^1.13.8
     "@types/shelljs": ^0.8.7
@@ -8418,6 +8421,7 @@ __metadata:
     remark-lint: ^8.0.0
     remark-preset-lint-recommended: ^5.0.0
     rollup: ^2.60.2
+    rollup-plugin-extensions: ^0.1.0
     rollup-plugin-jsx: ^1.0.3
     rollup-plugin-terser: ^7.0.2
     serve-static: ^1.14.1
@@ -10094,16 +10098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:16.9.10":
-  version: 16.9.10
-  resolution: "@types/react-dom@npm:16.9.10"
-  dependencies:
-    "@types/react": ^16
-  checksum: a04cb6a9fce8153f12f1f93897fc083c47fe8d7bc0a027c266b12740f2551f215e45b430ddfb42c6ac8aa99591492150bf660dc698f4706e0dd76210d2773080
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^16, @types/react-dom@npm:^16.9.10":
+"@types/react-dom@npm:^16.9.14":
   version: 16.9.14
   resolution: "@types/react-dom@npm:16.9.14"
   dependencies:
@@ -10130,24 +10125,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^16, @types/react@npm:^16.14.2":
-  version: 16.14.22
-  resolution: "@types/react@npm:16.14.22"
+"@types/react@npm:*, @types/react@npm:^16, @types/react@npm:^16.14.23":
+  version: 16.14.23
+  resolution: "@types/react@npm:16.14.23"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 6ada83210314222bb783b57cc75b1beeb137740445d5774d2dc8ac18f3ccbb245818d87c693d855247a6efa0515453bc7882a64b28ce5ea69bd37f962cc43ab4
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:16.14.2":
-  version: 16.14.2
-  resolution: "@types/react@npm:16.14.2"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.0.2
-  checksum: cdaa102b305773bc7a55fb2314f9fea65cf4e7155d15e2991fc554e50a0fa966780552b6c65d74b27cf15a021b28191ed58d2a691d4b0c0a1a82b1473d67b4b5
+  checksum: e6e1432980f0904faa1527288f8c2d4c0f36f9398302f7afa906ce3f0d2c6ca5ae06f33b375a307221808a003edbcda62b94b1885cda701855208ff8555b996b
   languageName: node
   linkType: hard
 
@@ -17786,8 +17771,8 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.35
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16.14.2
-    "@types/react-dom": 16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     global: ^4.4.0
     react: 16.14.0
     react-dom: 16.14.0
@@ -17813,8 +17798,8 @@ __metadata:
     "@types/enzyme": ^3.10.8
     "@types/jest": 25.2.3
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": 16.14.2
-    "@types/react-dom": 16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     enzyme: ^3.11.0
     enzyme-adapter-react-16: ^1.9.1
     enzyme-to-json: ^3.6.1
@@ -37238,7 +37223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:16.14.0":
+"react-dom@npm:16.14.0, react-dom@npm:^16.14.0":
   version: 16.14.0
   resolution: "react-dom@npm:16.14.0"
   dependencies:
@@ -37767,7 +37752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:16.14.0, react@npm:^16.2.0":
+"react@npm:16.14.0, react@npm:^16.14.0, react@npm:^16.2.0":
   version: 16.14.0
   resolution: "react@npm:16.14.0"
   dependencies:
@@ -39524,6 +39509,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-extensions@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "rollup-plugin-extensions@npm:0.1.0"
+  peerDependencies:
+    rollup: ^1.4.1
+  checksum: 1d08385299b3936074dacb837ba154b7ead4b5612c0fdc6b40e227987f5cdd1ea7652bfd81b867f7a77e5f100638862d1778b4bf6519027d573bf7dbad86f666
+  languageName: node
+  linkType: hard
+
 "rollup-plugin-jsx@npm:^1.0.3":
   version: 1.0.3
   resolution: "rollup-plugin-jsx@npm:1.0.3"
@@ -39611,8 +39605,8 @@ __metadata:
   linkType: hard
 
 "rollup@npm:^2.60.2":
-  version: 2.64.0
-  resolution: "rollup@npm:2.64.0"
+  version: 2.66.1
+  resolution: "rollup@npm:2.66.1"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -39620,7 +39614,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 22d8893e359ae9ed0eb599050276805e1b27ed22adfdcf06f6ad0f7a5d0f40e93e888a1dd6053709f1e8338f29ddbc1e6eab2fe0237c81dd1acad1f6bbb463e4
+  checksum: 7b39c30fef30877009e21109fb7da0c4c8b136f61f9268f747b373dc13a53c4878f1c1f78aa5cc4619012af62770c6638b1990fb22f00efe0faad65ccd216247
   languageName: node
   linkType: hard
 
@@ -43735,13 +43729,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3.0.1":
-  version: 4.5.4
-  resolution: "typescript@npm:4.5.4"
+"typescript@npm:>=3.0.1, typescript@npm:^4.0.3, typescript@npm:^4.1.0-dev.20200804, typescript@npm:^4.1.3":
+  version: 4.5.5
+  resolution: "typescript@npm:4.5.5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 4dccd6947e632cc0070653788a3a81051825e9a7acd4c3586124e5a145148bb57b0a401b81d220ac1eb7742a29d5d22fd35af033f839daa60738c3e4fecb5850
+  checksum: ac15b92f3dcd9a4233cab288a913ccbd96729fc488181396fa93c0297ccef3cd3c2f9a7a63340efb0d07bff3d5026028fc81b9c1ef08076029e057081eb5884b
   languageName: node
   linkType: hard
 
@@ -43755,16 +43749,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.0.3, typescript@npm:^4.1.0-dev.20200804, typescript@npm:^4.1.3":
-  version: 4.5.5
-  resolution: "typescript@npm:4.5.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: ac15b92f3dcd9a4233cab288a913ccbd96729fc488181396fa93c0297ccef3cd3c2f9a7a63340efb0d07bff3d5026028fc81b9c1ef08076029e057081eb5884b
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@4.1.5#~builtin<compat/typescript>":
   version: 4.1.5
   resolution: "typescript@patch:typescript@npm%3A4.1.5#~builtin<compat/typescript>::version=4.1.5&hash=493e53"
@@ -43775,13 +43759,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@>=3.0.1#~builtin<compat/typescript>":
-  version: 4.5.4
-  resolution: "typescript@patch:typescript@npm%3A4.5.4#~builtin<compat/typescript>::version=4.5.4&hash=493e53"
+"typescript@patch:typescript@>=3.0.1#~builtin<compat/typescript>, typescript@patch:typescript@^4.0.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.0-dev.20200804#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>":
+  version: 4.5.5
+  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 7e9541c322d8e72164763c5ccb13e6f8534124a5917b697500033c9437e23c81bfdb0e14c9d4dd8cbe9ad78ea605e91eef02f9ee6f94d9f8130ac4846664e31c
+  checksum: 6a8888c9fe41d0a19324125c636b1adb9ec5c984342fc7a26f2a389a432a94639c24b72e6e019ffbbb03cb614c1f008b4c31e48fb560b772e45e6581265c500b
   languageName: node
   linkType: hard
 
@@ -43792,16 +43776,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 9041fb3886e7d6a560f985227b8c941d17a750f2edccb5f9b3a15a2480574654d9be803ad4a14aabcc2f2553c4d272a25fd698a7c42692f03f66b009fb46883c
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.0.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.0-dev.20200804#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>":
-  version: 4.5.5
-  resolution: "typescript@patch:typescript@npm%3A4.5.5#~builtin<compat/typescript>::version=4.5.5&hash=493e53"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 6a8888c9fe41d0a19324125c636b1adb9ec5c984342fc7a26f2a389a432a94639c24b72e6e019ffbbb03cb614c1f008b4c31e48fb560b772e45e6581265c500b
   languageName: node
   linkType: hard
 

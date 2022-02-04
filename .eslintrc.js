@@ -10,6 +10,18 @@ module.exports = {
   },
   overrides: [
     {
+      // this package uses pre-bundling, dependencies will be bundled, and will be in devDepenencies
+      files: [
+        '**/lib/theming/**/*',
+        '**/lib/router/**/*',
+        '**/lib/ui/**/*',
+        '**/lib/components/**/*',
+      ],
+      rules: {
+        'import/no-extraneous-dependencies': ['error', { bundledDependencies: false }],
+      },
+    },
+    {
       files: [
         '**/__tests__/**',
         'scripts/**',
@@ -70,13 +82,6 @@ module.exports = {
       files: ['**/mithril/**/*'],
       rules: {
         'react/no-unknown-property': 'off', // Need to deactivate otherwise eslint replaces some unknown properties with React ones
-      },
-    },
-    {
-      // this package uses pre-bundling, dependencies will be bundled, and will be in devDepenencies
-      files: ['**/lib/theming/**/*', '**/lib/router/**/*', '**/lib/ui/**/*'],
-      rules: {
-        'import/no-extraneous-dependencies': ['error', { bundledDependencies: false }],
       },
     },
   ],
