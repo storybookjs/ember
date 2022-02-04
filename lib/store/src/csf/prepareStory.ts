@@ -23,7 +23,7 @@ import { combineParameters } from '../parameters';
 import { applyHooks } from '../hooks';
 import { defaultDecorateStory } from '../decorators';
 import { groupArgsByTarget, NO_TARGET_NAME } from '../args';
-import { getValuesFromArgTypes } from '..';
+import { getValuesFromArgTypes } from './getValuesFromArgTypes';
 
 const argTypeDefaultValueWarning = deprecate(
   () => {},

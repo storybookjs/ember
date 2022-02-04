@@ -1,6 +1,9 @@
 import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
-import { inferControls, NormalizedProjectAnnotations, normalizeInputTypes } from '..';
+
 import { inferArgTypes } from '../inferArgTypes';
+import { inferControls } from '../inferControls';
+import { NormalizedProjectAnnotations } from '../types';
+import { normalizeInputTypes } from './normalizeInputTypes';
 
 export function normalizeProjectAnnotations<TFramework extends AnyFramework>({
   argTypes,
