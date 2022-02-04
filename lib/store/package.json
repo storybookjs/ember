@@ -1,6 +1,6 @@
 {
   "name": "@storybook/store",
-  "version": "6.5.0-alpha.35",
+  "version": "6.5.0-alpha.36",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,9 +40,9 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.35",
-    "@storybook/client-logger": "6.5.0-alpha.35",
-    "@storybook/core-events": "6.5.0-alpha.35",
+    "@storybook/addons": "6.5.0-alpha.36",
+    "@storybook/client-logger": "6.5.0-alpha.36",
+    "@storybook/core-events": "6.5.0-alpha.36",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",

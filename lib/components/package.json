@@ -1,6 +1,6 @@
 {
   "name": "@storybook/components",
-  "version": "6.5.0-alpha.35",
+  "version": "6.5.0-alpha.36",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -40,9 +40,9 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.35",
+    "@storybook/client-logger": "6.5.0-alpha.36",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/theming": "6.5.0-alpha.35",
+    "@storybook/theming": "6.5.0-alpha.36",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7"
   },

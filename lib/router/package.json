@@ -1,6 +1,6 @@
 {
   "name": "@storybook/router",
-  "version": "6.5.0-alpha.35",
+  "version": "6.5.0-alpha.36",
   "description": "Core Storybook Router",
   "keywords": [
     "storybook"
@@ -40,7 +40,7 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.35",
+    "@storybook/client-logger": "6.5.0-alpha.36",
     "core-js": "^3.8.2"
   },
   "devDependencies": {
