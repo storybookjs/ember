@@ -28,8 +28,8 @@
     "@testing-library/dom": "^7.31.2",
     "@testing-library/user-event": "^13.1.9",
     "@types/babel__preset-env": "^7",
-    "@types/react": "^16.14.22",
-    "@types/react-dom": "^16.9.10",
+    "@types/react": "^16.14.23",
+    "@types/react-dom": "^16.9.14",
     "cross-env": "^7.0.3",
     "typescript": "^3.9.7",
     "webpack": "4"

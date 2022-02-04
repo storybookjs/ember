@@ -6853,7 +6853,7 @@ __metadata:
     "@storybook/router": 6.5.0-alpha.34
     "@storybook/source-loader": 6.5.0-alpha.34
     "@storybook/theming": 6.5.0-alpha.34
-    "@types/react": ^16.14.22
+    "@types/react": ^16.14.23
     "@types/react-syntax-highlighter": ^11.0.5
     core-js: ^3.8.2
     estraverse: ^5.2.0
@@ -6991,7 +6991,8 @@ __metadata:
     "@types/autoprefixer": ^9.7.2
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16.14.22
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     "@types/webpack-env": ^1.16.0
     autoprefixer: ^9.8.6
     core-js: ^3.8.2
@@ -7003,8 +7004,8 @@ __metadata:
     postcss: ^7.0.36
     postcss-loader: ^4.2.0
     raw-loader: ^4.0.2
-    react: 16.14.0
-    react-dom: 16.14.0
+    react: ^16.14.0
+    react-dom: ^16.14.0
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     sass-loader: ^10.1.0
@@ -7807,8 +7808,8 @@ __metadata:
     "@storybook/addon-essentials": 6.5.0-alpha.34
     "@storybook/builder-webpack4": 6.5.0-alpha.34
     "@storybook/react": 6.5.0-alpha.34
-    "@types/react": ^16.14.22
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     prop-types: 15.7.2
     react: 16.14.0
     react-dom: 16.14.0
@@ -7834,8 +7835,8 @@ __metadata:
     "@testing-library/dom": ^7.31.2
     "@testing-library/user-event": ^13.1.9
     "@types/babel__preset-env": ^7
-    "@types/react": ^16.14.22
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     cross-env: ^7.0.3
     formik: ^2.2.9
     prop-types: 15.7.2
@@ -8342,8 +8343,8 @@ __metadata:
     "@types/node": ^14.14.20 || ^16.0.0
     "@types/node-cleanup": ^2.1.1
     "@types/prompts": 2.0.11
-    "@types/react": ^16
-    "@types/react-dom": ^16
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     "@types/semver": ^7.3.4
     "@types/serve-static": ^1.13.8
     "@types/shelljs": ^0.8.7
@@ -8489,7 +8490,6 @@ __metadata:
   resolution: "@storybook/router@workspace:lib/router"
   dependencies:
     "@storybook/client-logger": 6.5.0-alpha.34
-    "@types/react": ^16
     core-js: ^3.8.2
     fast-deep-equal: ^3.1.3
     global: ^4.4.0
@@ -8502,7 +8502,6 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-node: ^10.4.0
   peerDependencies:
-    "@types/react": "*"
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   languageName: unknown
@@ -8673,7 +8672,6 @@ __metadata:
     "@emotion/styled": ^10.0.27
     "@storybook/client-logger": 6.5.0-alpha.34
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16
     core-js: ^3.8.2
     deep-object-diff: ^1.1.0
     emotion-theming: ^10.0.27
@@ -8726,7 +8724,6 @@ __metadata:
     "@storybook/semver": ^7.3.2
     "@storybook/theming": 6.5.0-alpha.34
     "@testing-library/react": ^11.2.2
-    "@types/react": ^16
     copy-to-clipboard: ^3.3.1
     core-js: ^3.8.2
     core-js-pure: ^3.8.2
@@ -10101,7 +10098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^16, @types/react-dom@npm:^16.9.10":
+"@types/react-dom@npm:^16.9.14":
   version: 16.9.14
   resolution: "@types/react-dom@npm:16.9.14"
   dependencies:
@@ -10139,7 +10136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^16.14.22":
+"@types/react@npm:^16.14.23":
   version: 16.14.23
   resolution: "@types/react@npm:16.14.23"
   dependencies:
@@ -17785,8 +17782,8 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.34
     "@types/jest": ^26.0.16
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16.14.22
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     global: ^4.4.0
     react: 16.14.0
     react-dom: 16.14.0
@@ -17812,8 +17809,8 @@ __metadata:
     "@types/enzyme": ^3.10.8
     "@types/jest": 25.2.3
     "@types/node": ^14.14.20 || ^16.0.0
-    "@types/react": ^16.14.22
-    "@types/react-dom": ^16.9.10
+    "@types/react": ^16.14.23
+    "@types/react-dom": ^16.9.14
     enzyme: ^3.11.0
     enzyme-adapter-react-16: ^1.9.1
     enzyme-to-json: ^3.6.1
@@ -37237,7 +37234,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:16.14.0":
+"react-dom@npm:16.14.0, react-dom@npm:^16.14.0":
   version: 16.14.0
   resolution: "react-dom@npm:16.14.0"
   dependencies:
@@ -37766,7 +37763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:16.14.0, react@npm:^16.2.0":
+"react@npm:16.14.0, react@npm:^16.14.0, react@npm:^16.2.0":
   version: 16.14.0
   resolution: "react@npm:16.14.0"
   dependencies:
