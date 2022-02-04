@@ -49,12 +49,14 @@
     "@storybook/router": "6.5.0-alpha.34",
     "@storybook/semver": "^7.3.2",
     "@storybook/theming": "6.5.0-alpha.34",
+    "@types/react": "*",
     "core-js": "^3.8.2",
     "resolve-from": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@testing-library/react": "^11.2.2",
+    "@types/react": "^16",
     "copy-to-clipboard": "^3.3.1",
     "core-js-pure": "^3.8.2",
     "downshift": "^6.0.15",
