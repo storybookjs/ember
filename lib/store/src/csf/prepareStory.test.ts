@@ -7,7 +7,7 @@ import {
   SBScalarType,
   StoryContext,
 } from '@storybook/csf';
-import { NO_TARGET_NAME } from './args';
+import { NO_TARGET_NAME } from '../args';
 import { prepareStory } from './prepareStory';
 
 jest.mock('global', () => ({
