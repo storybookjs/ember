@@ -10,8 +10,8 @@ interface NormalizedStoriesSpecifier {
   importPathMatcher: RegExp;
 }
 
-const stripExtension = (titleWithExtension: string) => {
-  let parts = titleWithExtension.split('/');
+const stripExtension = (path: string[]) => {
+  let parts = [...path];
   const last = parts[parts.length - 1];
   const dotIndex = last.indexOf('.');
   const stripped = dotIndex > 0 ? last.substr(0, dotIndex) : last;
@@ -20,11 +20,19 @@ const stripExtension = (titleWithExtension: string) => {
   if (first === '') {
     parts = rest;
   }
-  return parts.join('/');
+  return parts;
 };
 
-const startCaseTitle = (title: string) => {
-  return title.split('/').map(startCase).join('/');
+// deal with files like "atoms/button/{button,index}.stories.js"
+const removeRedundantFilename = (paths: string[]) => {
+  let prevVal: string;
+  return paths.filter((val, index) => {
+    if (index === paths.length - 1 && (val === prevVal || val === 'Index')) {
+      return false;
+    }
+    prevVal = val;
+    return true;
+  });
 };
 
 /**
@@ -48,7 +56,10 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
   if (importPathMatcher.exec(normalizedFileName)) {
     const suffix = normalizedFileName.replace(directory, '');
     const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
-    return startCaseTitle(stripExtension(titleAndSuffix));
+    let path = titleAndSuffix.split('/');
+    path = stripExtension(path).map(startCase);
+    path = removeRedundantFilename(path);
+    return path.join('/');
   }
   return undefined;
 };

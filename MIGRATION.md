@@ -1,5 +1,7 @@
 <h1>Migration</h1>
 
+- [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [CSF3 auto-title redundant filename](#csf3-auto-title-redundant-filename)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
@@ -187,6 +189,23 @@
   - [Webpack upgrade](#webpack-upgrade)
   - [Packages renaming](#packages-renaming)
   - [Deprecated embedded addons](#deprecated-embedded-addons)
+
+## From version 6.4.x to 6.5.0
+
+### CSF3 auto-title redundant filename
+
+SB 6.4 introduced experimental "auto-title", in which a story's location in the sidebar (aka `title`) can be automatically inferred from its location on disk. For example, the file `atoms/Button.stories.js` might result in the title `Atoms/Button`.
+
+The heuristic failed in the common scenario in which each component gets its own directory, e.g. `atoms/Button/Button.stories.js`, which would result in the redundant title `Atoms/Button/Button`. Alternatively, `atoms/Button/index.stories.js` would result in `Atoms/Button/Index`.
+
+To address this problem, 6.5 introduces a new heuristic to removes the filename if it matches the directory name (case insensitive) or `index`. So `atoms/Button/Button.stories.js` and `atoms/Button/index.stories.js` would both result in the title `Atoms/Button`.
+
+Since CSF3 is experimental, we are introducing this technically breaking change in a minor release. If you desire the old structure, you can manually specify the title in file. For example:
+
+```js
+// atoms/Button/Button.stories.js
+export default { title: 'Atoms/Button/Button' };
+```
 
 ## From version 6.3.x to 6.4.0
 
