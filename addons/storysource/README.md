@@ -2,7 +2,7 @@
 
 This addon is used to show stories source in the addon panel.
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
+[Framework Support](https://storybook.js.org/docs/react/api/frameworks-feature-support)
 
 ![Storysource Demo](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/storysource/docs/demo.gif)
 
