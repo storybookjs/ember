@@ -1,3 +1,20 @@
+## 6.5.0-alpha.35 (February 4, 2022)
+
+### Features
+
+- CLI/React: Add interactions to cli template ([#17345](https://github.com/storybookjs/storybook/pull/17345))
+- CSF3: Handle auto-title redundant filename ([#17421](https://github.com/storybookjs/storybook/pull/17421))
+
+### Bug Fixes
+
+- Addon-docs: Fix typo in ArgsTable tooltip ([#17404](https://github.com/storybookjs/storybook/pull/17404))
+- Core: Apply Docs mode to composed storybooks ([#17292](https://github.com/storybookjs/storybook/pull/17292))
+
+### Maintenance
+
+- Core: Move CSF-related logic to its own folder ([#17381](https://github.com/storybookjs/storybook/pull/17381))
+- Improve style handling in angular example in monorepo ([#17343](https://github.com/storybookjs/storybook/pull/17343))
+
 ## 6.4.18 (February 2, 2022)
 
 ### Bug Fixes
@@ -8,11 +25,11 @@
 
 ### Features
 
-* Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))
+- Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))
 
 ### Bug Fixes
 
-* CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
+- CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
 
 ## 6.5.0-alpha.33 (February 1, 2022)
 
