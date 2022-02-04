@@ -11,7 +11,7 @@ import {
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
 import deprecate from 'util-deprecate';
-import { NormalizedStoryAnnotations } from './types';
+import { NormalizedStoryAnnotations } from '../types';
 import { normalizeInputTypes } from './normalizeInputTypes';
 
 const deprecatedStoryAnnotation = dedent`
