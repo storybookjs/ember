@@ -183,7 +183,7 @@ You can also use Storybook's API to configure your project with TypeScript. Unde
 | `core`                | Sets Storybook's Webpack configuration <br/> `core:{ builder: 'webpack5'}`                                                                                                       |
 | `features`            | Enables Storybook's additional features <br/>. See table below for a list of available features `features: { storyStoreV7: true }`                                               |
 | `refs`                | Configures [Storybook composition](../sharing/storybook-composition.md) <br/> `refs:{ example: { title: 'ExampleStorybook', url:'https://your-url.com' } }`                      |
-| `logLevel`            | Configures Storybook's logs in the terminal. Useful for debugging <br/> `logLevel: 'debug'`                                                                                      |
+| `logLevel`            | Configures Storybook's logs in the browser terminal. Useful for debugging <br/> `logLevel: 'debug'`                                                                                      |
 | `webpackFinal`        | Customize Storybook's [Webpack](./webpack.md) setup <br/> `webpackFinal: async (config:any) => { return config; }`                                                               |
 
 ## Configure story rendering
