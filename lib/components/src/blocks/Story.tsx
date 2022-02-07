@@ -1,12 +1,16 @@
+import global from 'global';
 import React, { createElement, ElementType, FunctionComponent, Fragment } from 'react';
 
-import type { Parameters } from '@storybook/api';
+import type { Parameters } from '@storybook/csf';
 
 import { IFrame } from './IFrame';
 import { EmptyBlock } from './EmptyBlock';
 import { ZoomContext } from './ZoomContext';
+import { Loader } from '../Loader/Loader';
+import { getStoryHref } from '../utils/getStoryHref';
 
-const BASE_URL = 'iframe.html';
+const { PREVIEW_URL } = global;
+const BASE_URL = PREVIEW_URL || 'iframe.html';
 
 export enum StoryError {
   NO_STORY = 'No component or story to display',
@@ -19,7 +23,7 @@ export enum StoryError {
 const MISSING_STORY = (id?: string) => (id ? `Story "${id}" doesn't exist.` : StoryError.NO_STORY);
 
 interface CommonProps {
-  title: string;
+  title?: string;
   height?: string;
   id: string;
 }
@@ -53,7 +57,7 @@ const IFrameStory: FunctionComponent<IFrameStoryProps> = ({ id, title, height = 
             key="iframe"
             id={`iframe--${id}`}
             title={title}
-            src={`${BASE_URL}?id=${id}&viewMode=story`}
+            src={getStoryHref(BASE_URL, id, { viewMode: 'story' })}
             allowFullScreen
             scale={scale}
             style={{
@@ -72,7 +76,7 @@ const IFrameStory: FunctionComponent<IFrameStoryProps> = ({ id, title, height = 
  * A story element, either rendered inline or in an iframe,
  * with configurable height.
  */
-const Story: FunctionComponent<StoryProps & { inline: boolean; error?: StoryError }> = ({
+const Story: FunctionComponent<StoryProps & { inline?: boolean; error?: StoryError }> = ({
   children,
   error,
   inline,
@@ -90,4 +94,6 @@ const Story: FunctionComponent<StoryProps & { inline: boolean; error?: StoryErro
   );
 };
 
-export { Story };
+const StorySkeleton = () => <Loader />;
+
+export { Story, StorySkeleton };

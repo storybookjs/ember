@@ -1,0 +1,17 @@
+```js
+// .storybook/preview.js
+
+import { app } from '@storybook/vue3';
+
+//👇 Storybook Vue app being extended and registering the mixin
+app.mixin({
+  // Your mixin code
+});
+
+export const decorators = [
+  (story) => ({
+    components: { story },
+    template: '<div style="margin: 3em;"><story /></div>',
+  }),
+];
+```

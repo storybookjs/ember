@@ -1,0 +1,27 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.vue';
+
+<Meta title="MyComponent" component={MyComponent}/>
+
+export const Template = (args) => ({
+  components: { MyComponent },
+  setup() {
+    return { args };
+  },
+  template: '<MyComponent v-bind="args" />',
+});
+
+<Canvas>
+  <Story
+    name="ExampleStory"
+    args={{
+      propertyA: process.env.STORYBOOK_DATA_KEY,
+    }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+```

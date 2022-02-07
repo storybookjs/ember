@@ -4,7 +4,7 @@ title: 'Preview and build docs'
 
 <div class="aside">
 
-💡 <strong>NOTE</strong>: Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
+💡 Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
 
 </div>
 
@@ -23,7 +23,7 @@ At any point during your development, you can preview the documentation you've w
 ```
 
 <div class="aside">
-💡 <strong>Note</strong>: The <code>--no-manager-cache</code> flag is required to generate a successful preview of the documentation. But it comes with a cost as you're disabling Storybook's internal caching mechanism which can lead to increased loading times.
+💡 The <code>--no-manager-cache</code> flag is required to generate a successful preview of the documentation. But it comes with a cost as you're disabling Storybook's internal caching mechanism which can lead to increased loading times.
 </div>
 
 Depending on your configuration, when you execute the `storybook-docs` script. Storybook will be put into documentation mode and will generate a different build.
@@ -40,7 +40,7 @@ There's some caveats to this build mode, as to the normal Storybook build:
 
 ## Publish Storybook's documentation
 
-You can also publish your documentation, the same you would [publish](../workflows/publish-storybook.md) your Storybook. You can use the `--docs` flag with `build-storybook` command. We recommend as well including it as a script in your `package.json` file:
+You can also publish your documentation, the same you would [publish](../sharing/publish-storybook.md) your Storybook. You can use the `--docs` flag with `build-storybook` command. We recommend as well including it as a script in your `package.json` file:
 
 ```json
 {

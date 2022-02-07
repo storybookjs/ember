@@ -1,3 +1,4 @@
+/* eslint-disable storybook/default-exports */
 import React from 'react';
 import { Button } from '@storybook/react/demo';
 

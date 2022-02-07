@@ -15,4 +15,4 @@ export default {
   ],
 };
 
-export const basic = () => <SettingsFooter />;
+export const Basic = () => <SettingsFooter />;

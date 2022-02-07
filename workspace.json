@@ -25,6 +25,10 @@
       "root": "addons/essentials",
       "type": "library"
     },
+    "@storybook/addon-interactions": {
+      "root": "addons/interactions",
+      "type": "library"
+    },
     "@storybook/addon-jest": {
       "root": "addons/jest",
       "type": "library"
@@ -257,6 +261,10 @@
       "root": "lib/core-server",
       "type": "library"
     },
+    "@storybook/instrumenter": {
+      "root": "lib/instrumenter",
+      "type": "library"
+    },
     "@storybook/node-logger": {
       "root": "lib/node-logger",
       "type": "library"
@@ -273,6 +281,10 @@
       "root": "lib/source-loader",
       "type": "library"
     },
+    "@storybook/store": {
+      "root": "lib/store",
+      "type": "library"
+    },
     "@storybook/theming": {
       "root": "lib/theming",
       "type": "library"
@@ -283,6 +295,10 @@
     },
     "@storybook/ui": {
       "root": "lib/ui",
+      "type": "library"
+    },
+    "@storybook/preview-web": {
+      "root": "lib/preview-web",
       "type": "library"
     }
   }

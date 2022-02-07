@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import { createArgTypes } from './extractArgTypes';
 
 const content = fs.readFileSync(`${__dirname}/sample/MockButton.svelte`, 'utf-8');
-
 describe('Extracting Arguments', () => {
   it('should be svelte', () => {
     expect(content).toMatchInlineSnapshot(`
@@ -73,7 +72,8 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "event_click": Object {
@@ -83,7 +83,8 @@ describe('Extracting Arguments', () => {
             "category": "events",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "rounded": Object {
@@ -115,7 +116,8 @@ describe('Extracting Arguments', () => {
             "category": "slots",
           },
           "type": Object {
-            "name": "void",
+            "name": "other",
+            "value": "void",
           },
         },
         "text": Object {

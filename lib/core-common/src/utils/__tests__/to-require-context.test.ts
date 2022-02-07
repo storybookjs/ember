@@ -1,5 +1,6 @@
 import path from 'path';
 import { toRequireContext } from '../to-require-context';
+import { normalizeStoriesEntry } from '../normalize-stories';
 
 const testCases = [
   {
@@ -208,6 +209,22 @@ const testCases = [
     ],
   },
   {
+    glob: '../components/*/*/*.stories.js',
+    recursive: true,
+    validPaths: ['../components/basics/icon/Icon.stories.js'],
+    invalidPaths: [
+      '../components/icon/node_modules/icon/Icon.stories.js',
+      './stories.js',
+      './src/stories/Icon.stories.js',
+      './Icon.stories.js',
+      '../src/Icon.stories.mdx',
+      '../components/icon/Icon.stories.js',
+      '../components/basics/simple/icon/Icon.stories.js',
+      '../src/stories/components/Icon/Icon.stories.ts',
+      '../src/stories/components/Icon/Icon.mdx',
+    ],
+  },
+  {
     glob: '../components/*/stories/*.js',
     recursive: true,
     validPaths: ['../components/icon/stories/Icon.js'],
@@ -221,12 +238,33 @@ const testCases = [
       '../src/stories/components/Icon/Icon.mdx',
     ],
   },
+  // Patterns before the **, see:
+  //   - https://github.com/storybookjs/storybook/issues/17038
+  //   - https://github.com/storybookjs/storybook/issues/16964
+  //   - https://github.com/storybookjs/storybook/issues/16924
+  {
+    glob: '../{dir1,dir2}/**/*.stories.js',
+    recursive: true,
+    validPaths: [
+      '../dir1/Icon.stories.js',
+      '../dir1/nested/Icon.stories.js',
+      '../dir2/Icon.stories.js',
+      '../dir2/nested/Icon.stories.js',
+    ],
+    invalidPaths: ['../dir3/Icon.stories.js', '../dir3/nested/Icon.stories.js'],
+  },
 ];
 
 describe('toRequireContext', () => {
   testCases.forEach(({ glob, recursive, validPaths, invalidPaths }) => {
     it(`matches only suitable paths - ${glob}`, () => {
-      const { path: base, recursive: willRecurse, match } = toRequireContext(glob);
+      const {
+        path: base,
+        recursive: willRecurse,
+        match,
+      } = toRequireContext(
+        normalizeStoriesEntry(glob, { configDir: '/path', workingDir: '/path' })
+      );
 
       const regex = new RegExp(match);
 
@@ -235,6 +273,8 @@ describe('toRequireContext', () => {
 
         const baseIncluded = filePath.includes(base);
         const matched = regex.test(relativePath);
+
+        // console.log(filePath, relativePath, regex, matched);
 
         return baseIncluded && matched;
       }

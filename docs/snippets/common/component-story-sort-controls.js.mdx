@@ -1,10 +1,14 @@
 ```js
-// YourComponent.stories.js | YourComponent.stories.jsx | YourComponent.stories.ts | YourComponent.stories.tsx
+// YourComponent.stories.js|jsx|ts|tsx
 
-import { YourComponent } from './your-component'
+import { YourComponent } from './your-component';
 
 export default {
-  title:'My Story',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
   component: YourComponent,
   parameters: { controls: { sort: 'requiredFirst' } },
 };

@@ -78,20 +78,13 @@ export const SUPPORTED_FRAMEWORKS: SupportedFrameworks[] = [
   'aurelia',
 ];
 
-export enum StoryFormat {
-  CSF = 'csf',
-  /** @deprecated only template-csf left for some frameworks */
-  CSF_TYPESCRIPT = 'csf-ts',
-  /** @deprecated only template-csf left for some frameworks */
-  MDX = 'mdx',
-}
-
 export enum CoreBuilder {
   Webpack4 = 'webpack4',
   Webpack5 = 'webpack5',
 }
 
-export type Builder = CoreBuilder | string;
+// The `& {}` bit allows for auto-complete, see: https://github.com/microsoft/TypeScript/issues/29729
+export type Builder = CoreBuilder | (string & {});
 
 export enum SupportedLanguage {
   JAVASCRIPT = 'javascript',
@@ -277,7 +270,7 @@ export const supportedTemplates: TemplateConfiguration[] = [
 ];
 
 // A TemplateConfiguration that matches unsupported frameworks
-// Framework matchers can be added to this object to give
+// AnyFramework matchers can be added to this object to give
 // users an "Unsupported framework" message
 export const unsupportedTemplate: TemplateConfiguration = {
   preset: ProjectType.UNSUPPORTED,

@@ -1,7 +1,6 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
 import { ActiveTabs } from '@storybook/api';
-import { DecoratorFn } from '@storybook/react';
+import type { DecoratorFn } from '@storybook/react';
 
 import { Mobile, MobileProps } from './mobile';
 
@@ -34,7 +33,7 @@ export const InitialAddons = ({ props }: { props: MobileProps }) => (
   <Mobile {...props} options={{ ...props.options, initialActive: ActiveTabs.ADDONS }} />
 );
 
-export const docsOnly = ({ props }: { props: MobileProps }) => <Mobile {...props} docsOnly />;
+export const DocsOnly = ({ props }: { props: MobileProps }) => <Mobile {...props} docsOnly />;
 
 export const Page = ({ props }: { props: MobileProps }) => (
   <Mobile

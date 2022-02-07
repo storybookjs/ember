@@ -8,6 +8,9 @@ Object {
     "name": "_inputValue",
     "table": Object {
       "category": "properties",
+      "defaultValue": Object {
+        "summary": "some value",
+      },
       "type": Object {
         "required": true,
         "summary": "string",
@@ -24,6 +27,9 @@ Private value.",
     "name": "_value",
     "table": Object {
       "category": "properties",
+      "defaultValue": Object {
+        "summary": "Private hello",
+      },
       "type": Object {
         "required": true,
         "summary": "string",
@@ -35,10 +41,14 @@ Private value.",
   },
   "accent": Object {
     "defaultValue": undefined,
-    "description": "Specify the accent-type of the button",
+    "description": "
+Specify the accent-type of the button",
     "name": "accent",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "ButtonAccent",
@@ -50,10 +60,14 @@ Private value.",
   },
   "appearance": Object {
     "defaultValue": "secondary",
-    "description": "Appearance style of the button.",
+    "description": "
+Appearance style of the button.",
     "name": "appearance",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": "secondary",
+      },
       "type": Object {
         "required": true,
         "summary": "\\"primary\\" | \\"secondary\\"",
@@ -73,6 +87,9 @@ Private value.",
     "name": "buttonRef",
     "table": Object {
       "category": "view child",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "ElementRef",
@@ -92,6 +109,9 @@ An internal calculation method which adds \`x\` and \`y\` together.
     "name": "calc",
     "table": Object {
       "category": "methods",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": false,
         "summary": "(x: number, y: string | number) => number",
@@ -107,6 +127,9 @@ An internal calculation method which adds \`x\` and \`y\` together.
     "name": "focus",
     "table": Object {
       "category": "properties",
+      "defaultValue": Object {
+        "summary": false,
+      },
       "type": Object {
         "required": true,
         "summary": "",
@@ -118,10 +141,14 @@ An internal calculation method which adds \`x\` and \`y\` together.
   },
   "inputValue": Object {
     "defaultValue": undefined,
-    "description": "Setter for \`inputValue\` that is also an \`@Input\`.",
+    "description": "
+Setter for \`inputValue\` that is also an \`@Input\`.",
     "name": "inputValue",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "string",
@@ -138,6 +165,9 @@ Public value.",
     "name": "internalProperty",
     "table": Object {
       "category": "properties",
+      "defaultValue": Object {
+        "summary": "Public hello",
+      },
       "type": Object {
         "required": true,
         "summary": "string",
@@ -149,10 +179,14 @@ Public value.",
   },
   "isDisabled": Object {
     "defaultValue": false,
-    "description": "Sets the button to a disabled state.",
+    "description": "
+Sets the button to a disabled state.",
     "name": "isDisabled",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": false,
+      },
       "type": Object {
         "required": true,
         "summary": "boolean",
@@ -168,6 +202,9 @@ Public value.",
     "name": "item",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "[]",
@@ -179,10 +216,17 @@ Public value.",
   },
   "label": Object {
     "defaultValue": undefined,
-    "description": "The inner text of the button.",
+    "description": "
+
+The inner text of the button.
+
+",
     "name": "label",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "string",
@@ -204,6 +248,9 @@ Will also block the emission of the event if \`isDisabled\` is true.
     "name": "onClick",
     "table": Object {
       "category": "outputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "EventEmitter",
@@ -219,6 +266,9 @@ Will also block the emission of the event if \`isDisabled\` is true.
     "name": "onClickListener",
     "table": Object {
       "category": "methods",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": false,
         "summary": "(btn: ) => void",
@@ -238,6 +288,9 @@ A private method.
     "name": "privateMethod",
     "table": Object {
       "category": "methods",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": false,
         "summary": "(password: string) => void",
@@ -253,6 +306,9 @@ A private method.
     "name": "processedItem",
     "table": Object {
       "category": "properties",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "T[]",
@@ -272,6 +328,9 @@ A protected method.
     "name": "protectedMethod",
     "table": Object {
       "category": "methods",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": false,
         "summary": "(id?: number) => void",
@@ -288,6 +347,9 @@ A public method using an interface.",
     "name": "publicMethod",
     "table": Object {
       "category": "methods",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": false,
         "summary": "(things: ISomeInterface) => void",
@@ -303,6 +365,9 @@ A public method using an interface.",
     "name": "showKeyAlias",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "",
@@ -314,10 +379,14 @@ A public method using an interface.",
   },
   "size": Object {
     "defaultValue": "medium",
-    "description": "Size of the button.",
+    "description": "
+Size of the button.",
     "name": "size",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": "medium",
+      },
       "type": Object {
         "required": true,
         "summary": "ButtonSize",
@@ -329,10 +398,14 @@ A public method using an interface.",
   },
   "someDataObject": Object {
     "defaultValue": undefined,
-    "description": "Specifies some arbitrary object",
+    "description": "
+Specifies some arbitrary object",
     "name": "someDataObject",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": undefined,
+      },
       "type": Object {
         "required": true,
         "summary": "ISomeInterface",
@@ -344,10 +417,17 @@ A public method using an interface.",
   },
   "somethingYouShouldNotUse": Object {
     "defaultValue": false,
-    "description": "Some input you shouldn't use.",
+    "description": "
+
+Some input you shouldn't use.
+
+",
     "name": "somethingYouShouldNotUse",
     "table": Object {
       "category": "inputs",
+      "defaultValue": Object {
+        "summary": false,
+      },
       "type": Object {
         "required": true,
         "summary": "boolean",

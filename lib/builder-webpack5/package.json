@@ -1,6 +1,6 @@
 {
   "name": "@storybook/builder-webpack5",
-  "version": "6.4.0-alpha.28",
+  "version": "6.5.0-alpha.36",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -24,15 +24,14 @@
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
-      "*": [
+      "dist/ts3.9/*": [
         "dist/ts3.4/*"
       ]
     }
   },
   "files": [
     "dist/**/*",
-    "dll/**/*",
-    "types/**/*",
+    "templates/**/*",
     "*.js",
     "*.d.ts"
   ],
@@ -60,33 +59,33 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.4.0-alpha.28",
-    "@storybook/api": "6.4.0-alpha.28",
-    "@storybook/channel-postmessage": "6.4.0-alpha.28",
-    "@storybook/channels": "6.4.0-alpha.28",
-    "@storybook/client-api": "6.4.0-alpha.28",
-    "@storybook/client-logger": "6.4.0-alpha.28",
-    "@storybook/components": "6.4.0-alpha.28",
-    "@storybook/core-common": "6.4.0-alpha.28",
-    "@storybook/core-events": "6.4.0-alpha.28",
-    "@storybook/node-logger": "6.4.0-alpha.28",
-    "@storybook/router": "6.4.0-alpha.28",
+    "@storybook/addons": "6.5.0-alpha.36",
+    "@storybook/api": "6.5.0-alpha.36",
+    "@storybook/channel-postmessage": "6.5.0-alpha.36",
+    "@storybook/channels": "6.5.0-alpha.36",
+    "@storybook/client-api": "6.5.0-alpha.36",
+    "@storybook/client-logger": "6.5.0-alpha.36",
+    "@storybook/components": "6.5.0-alpha.36",
+    "@storybook/core-common": "6.5.0-alpha.36",
+    "@storybook/core-events": "6.5.0-alpha.36",
+    "@storybook/node-logger": "6.5.0-alpha.36",
+    "@storybook/preview-web": "6.5.0-alpha.36",
+    "@storybook/router": "6.5.0-alpha.36",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.4.0-alpha.28",
-    "@types/node": "^14.0.10",
+    "@storybook/store": "6.5.0-alpha.36",
+    "@storybook/theming": "6.5.0-alpha.36",
+    "@types/node": "^14.0.10 || ^16.0.0",
     "babel-loader": "^8.0.0",
-    "babel-plugin-macros": "^3.0.1",
-    "babel-plugin-polyfill-corejs3": "^0.1.0",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "core-js": "^3.8.2",
     "css-loader": "^5.0.1",
-    "dotenv-webpack": "^7.0.0",
     "fork-ts-checker-webpack-plugin": "^6.0.4",
-    "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^5.0.0",
-    "react-dev-utils": "^11.0.3",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "stable": "^0.1.8",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
@@ -94,13 +93,11 @@
     "util-deprecate": "^1.0.2",
     "webpack": "^5.9.0",
     "webpack-dev-middleware": "^4.1.0",
-    "webpack-hot-middleware": "^2.25.0",
+    "webpack-hot-middleware": "^2.25.1",
     "webpack-virtual-modules": "^0.4.1"
   },
   "devDependencies": {
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
-    "@types/dotenv-webpack": "^5.0.0",
-    "@types/react-dev-utils": "^9.0.4",
     "@types/terser-webpack-plugin": "^5.0.2",
     "@types/webpack-dev-middleware": "^4.1.0",
     "@types/webpack-hot-middleware": "^2.25.3",
@@ -118,6 +115,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "921d1b75b7bf5876088fd6c5870122474df28190",
+  "gitHead": "7332caf9f83fe7ab1bb1e80fb52747fb4cf4cdf1",
   "sbmodern": "dist/modern/index.js"
 }

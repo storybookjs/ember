@@ -1,15 +1,22 @@
 import global from 'global';
 import { logger } from '@storybook/client-logger';
 import {
+  AnyFramework,
+  DecoratorFunction,
+  DecoratorApplicator,
+  StoryContext,
+  StoryId,
+  Args,
+  LegacyStoryFn,
+} from '@storybook/csf';
+import {
   FORCE_RE_RENDER,
   STORY_RENDERED,
-  DOCS_RENDERED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
   UPDATE_GLOBALS,
 } from '@storybook/core-events';
 import { addons } from './index';
-import { StoryGetter, StoryContext, Args } from './types';
 
 const { window: globalWindow } = global;
 
@@ -24,12 +31,9 @@ interface Effect {
   destroy?: (() => void) | void;
 }
 
-type Decorator = (getStory: StoryGetter, context: StoryContext) => any;
 type AbstractFunction = (...args: any[]) => any;
 
-const RenderEvents = [STORY_RENDERED, DOCS_RENDERED];
-
-export class HooksContext {
+export class HooksContext<TFramework extends AnyFramework> {
   hookListsMap: WeakMap<AbstractFunction, Hook[]>;
 
   mountedDecorators: Set<AbstractFunction>;
@@ -50,9 +54,10 @@ export class HooksContext {
 
   hasUpdates: boolean;
 
-  currentContext: StoryContext | null;
+  currentContext: StoryContext<TFramework> | null;
 
-  renderListener = () => {
+  renderListener = (storyId: StoryId) => {
+    if (storyId !== this.currentContext.id) return;
     this.triggerEffects();
     this.currentContext = null;
     this.removeRenderListeners();
@@ -113,83 +118,97 @@ export class HooksContext {
   addRenderListeners() {
     this.removeRenderListeners();
     const channel = addons.getChannel();
-    RenderEvents.forEach((e) => channel.on(e, this.renderListener));
+    channel.on(STORY_RENDERED, this.renderListener);
   }
 
   removeRenderListeners() {
     const channel = addons.getChannel();
-    RenderEvents.forEach((e) => channel.removeListener(e, this.renderListener));
+    channel.removeListener(STORY_RENDERED, this.renderListener);
   }
 }
 
-const hookify = (fn: AbstractFunction) => (...args: any[]) => {
-  const { hooks }: StoryContext = typeof args[0] === 'function' ? args[1] : args[0];
+function hookify<TFramework extends AnyFramework>(
+  storyFn: LegacyStoryFn<TFramework>
+): LegacyStoryFn<TFramework>;
+function hookify<TFramework extends AnyFramework>(
+  decorator: DecoratorFunction<TFramework>
+): DecoratorFunction<TFramework>;
+function hookify<TFramework extends AnyFramework>(fn: AbstractFunction) {
+  return (...args: any[]) => {
+    const { hooks }: { hooks: HooksContext<TFramework> } =
+      typeof args[0] === 'function' ? args[1] : args[0];
 
-  const prevPhase = hooks.currentPhase;
-  const prevHooks = hooks.currentHooks;
-  const prevNextHookIndex = hooks.nextHookIndex;
-  const prevDecoratorName = hooks.currentDecoratorName;
+    const prevPhase = hooks.currentPhase;
+    const prevHooks = hooks.currentHooks;
+    const prevNextHookIndex = hooks.nextHookIndex;
+    const prevDecoratorName = hooks.currentDecoratorName;
 
-  hooks.currentDecoratorName = fn.name;
-  if (hooks.prevMountedDecorators.has(fn)) {
-    hooks.currentPhase = 'UPDATE';
-    hooks.currentHooks = hooks.hookListsMap.get(fn) || [];
-  } else {
-    hooks.currentPhase = 'MOUNT';
-    hooks.currentHooks = [];
-    hooks.hookListsMap.set(fn, hooks.currentHooks);
-    hooks.prevMountedDecorators.add(fn);
-  }
-  hooks.nextHookIndex = 0;
+    hooks.currentDecoratorName = fn.name;
+    if (hooks.prevMountedDecorators.has(fn)) {
+      hooks.currentPhase = 'UPDATE';
+      hooks.currentHooks = hooks.hookListsMap.get(fn) || [];
+    } else {
+      hooks.currentPhase = 'MOUNT';
+      hooks.currentHooks = [];
+      hooks.hookListsMap.set(fn, hooks.currentHooks);
+      hooks.prevMountedDecorators.add(fn);
+    }
+    hooks.nextHookIndex = 0;
 
-  const prevContext = globalWindow.STORYBOOK_HOOKS_CONTEXT;
-  globalWindow.STORYBOOK_HOOKS_CONTEXT = hooks;
-  const result = fn(...args);
-  globalWindow.STORYBOOK_HOOKS_CONTEXT = prevContext;
+    const prevContext = globalWindow.STORYBOOK_HOOKS_CONTEXT;
+    globalWindow.STORYBOOK_HOOKS_CONTEXT = hooks;
+    const result = fn(...args);
+    globalWindow.STORYBOOK_HOOKS_CONTEXT = prevContext;
 
-  if (hooks.currentPhase === 'UPDATE' && hooks.getNextHook() != null) {
-    throw new Error(
-      'Rendered fewer hooks than expected. This may be caused by an accidental early return statement.'
-    );
-  }
+    if (hooks.currentPhase === 'UPDATE' && hooks.getNextHook() != null) {
+      throw new Error(
+        'Rendered fewer hooks than expected. This may be caused by an accidental early return statement.'
+      );
+    }
 
-  hooks.currentPhase = prevPhase;
-  hooks.currentHooks = prevHooks;
-  hooks.nextHookIndex = prevNextHookIndex;
-  hooks.currentDecoratorName = prevDecoratorName;
-  return result;
-};
+    hooks.currentPhase = prevPhase;
+    hooks.currentHooks = prevHooks;
+    hooks.nextHookIndex = prevNextHookIndex;
+    hooks.currentDecoratorName = prevDecoratorName;
+    return result;
+  };
+}
 
 // Counter to prevent infinite loops.
 let numberOfRenders = 0;
 const RENDER_LIMIT = 25;
-export const applyHooks = (
-  applyDecorators: (getStory: StoryGetter, decorators: Decorator[]) => StoryGetter
-) => (getStory: StoryGetter, decorators: Decorator[]) => {
-  const decorated = applyDecorators(hookify(getStory), decorators.map(hookify));
-  return (context: StoryContext) => {
-    const { hooks } = context;
-    hooks.prevMountedDecorators = hooks.mountedDecorators;
-    hooks.mountedDecorators = new Set([getStory, ...decorators]);
-    hooks.currentContext = context;
-    hooks.hasUpdates = false;
-    let result = decorated(context);
-    numberOfRenders = 1;
-    while (hooks.hasUpdates) {
+export const applyHooks =
+  <TFramework extends AnyFramework>(
+    applyDecorators: DecoratorApplicator<TFramework>
+  ): DecoratorApplicator<TFramework> =>
+  (storyFn: LegacyStoryFn<TFramework>, decorators: DecoratorFunction<TFramework>[]) => {
+    const decorated = applyDecorators(
+      hookify(storyFn),
+      decorators.map((decorator) => hookify(decorator))
+    );
+    return (context) => {
+      const { hooks } = context as { hooks: HooksContext<TFramework> };
+      hooks.prevMountedDecorators = hooks.mountedDecorators;
+      hooks.mountedDecorators = new Set([storyFn, ...decorators]);
+      hooks.currentContext = context;
       hooks.hasUpdates = false;
-      hooks.currentEffects = [];
-      result = decorated(context);
-      numberOfRenders += 1;
-      if (numberOfRenders > RENDER_LIMIT) {
-        throw new Error(
-          'Too many re-renders. Storybook limits the number of renders to prevent an infinite loop.'
-        );
+      let result = decorated(context);
+      numberOfRenders = 1;
+      while (hooks.hasUpdates) {
+        hooks.hasUpdates = false;
+        hooks.currentEffects = [];
+        result = decorated(context);
+        numberOfRenders += 1;
+        if (numberOfRenders > RENDER_LIMIT) {
+          throw new Error(
+            'Too many re-renders. Storybook limits the number of renders to prevent an infinite loop.'
+          );
+        }
       }
-    }
-    hooks.addRenderListeners();
-    return result;
+      hooks.addRenderListeners();
+      return result;
+    };
   };
-};
 
 const areDepsEqual = (deps: any[], nextDeps: any[]) =>
   deps.length === nextDeps.length && deps.every((dep, i) => dep === nextDeps[i]);
@@ -197,12 +216,12 @@ const areDepsEqual = (deps: any[], nextDeps: any[]) =>
 const invalidHooksError = () =>
   new Error('Storybook preview hooks can only be called inside decorators and story functions.');
 
-function getHooksContextOrNull(): HooksContext | null {
+function getHooksContextOrNull<TFramework extends AnyFramework>(): HooksContext<TFramework> | null {
   return globalWindow.STORYBOOK_HOOKS_CONTEXT || null;
 }
 
-function getHooksContextOrThrow(): HooksContext {
-  const hooks = getHooksContextOrNull();
+function getHooksContextOrThrow<TFramework extends AnyFramework>(): HooksContext<TFramework> {
+  const hooks = getHooksContextOrNull<TFramework>();
   if (hooks == null) {
     throw invalidHooksError();
   }
@@ -292,7 +311,7 @@ export function useRef<T>(initialValue: T): { current: T } {
 
 function triggerUpdate() {
   const hooks = getHooksContextOrNull();
-  // Rerun getStory if updates were triggered synchronously, force rerender otherwise
+  // Rerun storyFn if updates were triggered synchronously, force rerender otherwise
   if (hooks != null && hooks.currentPhase !== 'NONE') {
     hooks.hasUpdates = true;
   } else {
@@ -386,7 +405,7 @@ export function useChannel(eventMap: EventMap, deps: any[] = []) {
 }
 
 /* Returns current story context */
-export function useStoryContext(): StoryContext {
+export function useStoryContext<TFramework extends AnyFramework>(): StoryContext<TFramework> {
   const { currentContext } = getHooksContextOrThrow();
   if (currentContext == null) {
     throw invalidHooksError();

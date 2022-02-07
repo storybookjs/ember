@@ -7,6 +7,15 @@ import ListItem from './ListItem.vue';
 //👇 Imports a specific story from ListItem stories
 import { Unchecked } from './ListItem.stories';
 
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'List',
+  component: List,
+};
+
 const ListTemplate = (args) => ({
   components: { List, ListItem },
   setup() {
@@ -18,7 +27,7 @@ const ListTemplate = (args) => ({
         <ListItem :item="item"/>
       </div>
     </List>
-    `,
+  `,
 });
 
 export const Empty = ListTemplate.bind({});

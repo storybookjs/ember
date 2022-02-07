@@ -1,9 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { toRequireContext } from '@storybook/core-common';
-import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
+import {
+  toRequireContext,
+  StoriesEntry,
+  normalizeStoriesEntry,
+  NormalizedStoriesSpecifier,
+} from '@storybook/core-common';
+import registerRequireContextHook from '@storybook/babel-plugin-require-context-hook/register';
 import global from 'global';
-import { ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/client-api';
+import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
 
 import { ClientApi } from './Loader';
 import { StoryshotsOptions } from '../api/StoryshotsOptions';
@@ -19,8 +24,10 @@ const isFile = (file: string): boolean => {
 };
 
 interface Output {
+  features?: Record<string, boolean>;
   preview?: string;
-  stories?: string[];
+  stories?: NormalizedStoriesSpecifier[];
+  requireContexts?: string[];
 }
 
 const supportedExtensions = ['ts', 'tsx', 'js', 'jsx'];
@@ -50,17 +57,25 @@ function getConfigPathParts(input: string): Output {
       output.preview = preview;
     }
     if (main) {
-      const { stories = [] } = jest.requireActual(main);
+      const { stories = [], features = {} } = jest.requireActual(main);
 
-      output.stories = stories.map(
-        (pattern: string | { path: string; recursive: boolean; match: string }) => {
-          const { path: basePath, recursive, match } = toRequireContext(pattern);
-          const regex = new RegExp(match);
+      output.features = features;
 
-          // eslint-disable-next-line no-underscore-dangle
-          return global.__requireContext(configDir, basePath, recursive, regex);
-        }
-      );
+      const workingDir = process.cwd();
+      output.stories = stories.map((entry: StoriesEntry) => {
+        const specifier = normalizeStoriesEntry(entry, {
+          configDir,
+          workingDir,
+        });
+
+        return specifier;
+      });
+      output.requireContexts = output.stories.map((specifier) => {
+        const { path: basePath, recursive, match } = toRequireContext(specifier);
+
+        // eslint-disable-next-line no-underscore-dangle
+        return global.__requireContext(workingDir, basePath, recursive, match);
+      });
     }
 
     return output;
@@ -69,9 +84,9 @@ function getConfigPathParts(input: string): Output {
   return { preview: configDir };
 }
 
-function configure(
+function configure<TFramework extends AnyFramework>(
   options: {
-    storybook: ClientApi;
+    storybook: ClientApi<TFramework>;
   } & StoryshotsOptions
 ): void {
   const { configPath = '.storybook', config, storybook } = options;
@@ -81,37 +96,46 @@ function configure(
     return;
   }
 
-  const { preview, stories } = getConfigPathParts(configPath);
+  const {
+    preview,
+    features = {},
+    stories = [],
+    requireContexts = [],
+  } = getConfigPathParts(configPath);
+
+  global.FEATURES = features;
+  global.STORIES = stories.map((specifier) => ({
+    ...specifier,
+    importPathMatcher: specifier.importPathMatcher.source,
+  }));
 
   if (preview) {
     // This is essentially the same code as lib/core/src/server/preview/virtualModuleEntry.template
-    const {
-      parameters,
-      decorators,
-      globals,
-      globalTypes,
-      argsEnhancers,
-      argTypesEnhancers,
-    } = jest.requireActual(preview);
+    const { parameters, decorators, globals, globalTypes, argsEnhancers, argTypesEnhancers } =
+      jest.requireActual(preview);
 
     if (decorators) {
-      decorators.forEach((decorator: DecoratorFunction) => storybook.addDecorator(decorator));
+      decorators.forEach((decorator: DecoratorFunction<TFramework>) =>
+        storybook.addDecorator(decorator)
+      );
     }
     if (parameters || globals || globalTypes) {
       storybook.addParameters({ ...parameters, globals, globalTypes });
     }
     if (argsEnhancers) {
-      argsEnhancers.forEach((enhancer: ArgsEnhancer) => storybook.addArgsEnhancer(enhancer));
+      argsEnhancers.forEach((enhancer: ArgsEnhancer<TFramework>) =>
+        storybook.addArgsEnhancer(enhancer as any)
+      );
     }
     if (argTypesEnhancers) {
-      argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer) =>
-        storybook.addArgTypesEnhancer(enhancer)
+      argTypesEnhancers.forEach((enhancer: ArgTypesEnhancer<TFramework>) =>
+        storybook.addArgTypesEnhancer(enhancer as any)
       );
     }
   }
 
-  if (stories && stories.length) {
-    storybook.configure(stories, false, false);
+  if (requireContexts && requireContexts.length) {
+    storybook.configure(requireContexts, false, false);
   }
 }
 

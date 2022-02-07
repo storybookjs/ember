@@ -15,6 +15,7 @@ export class FakeProvider extends Provider {
       off: () => {},
       emit: () => {},
       addListener: () => {},
+      removeListener: () => {},
     };
   }
 

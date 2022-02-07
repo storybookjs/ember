@@ -415,15 +415,98 @@ describe('docs-mdx-compiler-plugin', () => {
       generate(dedent`
         import { Button } from '@storybook/react/demo';
         import { Story, Meta } from '@storybook/addon-docs';
-        
+
         <Meta title="Button" />
-        
+
         # Bad story
-        
+
         <Story>
           <Button>One</Button>
         </Story>      
       `)
     ).rejects.toThrow('Expected a Story name, id, or story attribute');
+  });
+
+  describe('csf3', () => {
+    it('auto-title-docs-only.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Meta } from '@storybook/addon-docs';
+  
+          <Meta />
+  
+          # Auto-title Docs Only
+
+          Spme **markdown** here!
+        `)
+      ).toMatchSpecificSnapshot(snap('auto-title-docs-only'));
+    });
+
+    it('auto-title.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Button } from '@storybook/react/demo';
+          import { Story, Meta } from '@storybook/addon-docs';
+
+          <Meta component={Button} />
+
+          <Story name="Basic">
+            <Button>Basic</Button>
+          </Story>
+        `)
+      ).toMatchSpecificSnapshot(snap('auto-title'));
+    });
+
+    it('default-render.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Button } from '@storybook/react/demo';
+          import { Story, Meta } from '@storybook/addon-docs';
+
+          <Meta title="Button" component={Button} />
+
+          <Story name="Basic" />
+        `)
+      ).toMatchSpecificSnapshot(snap('default-render'));
+    });
+
+    it('component-render.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Button } from '@storybook/react/demo';
+          import { Story, Meta } from '@storybook/addon-docs';
+
+          <Meta title="Button" component={Button} render={(args) => <Button {...args} />} />
+
+          <Story name="Basic" />
+        `)
+      ).toMatchSpecificSnapshot(snap('component-render'));
+    });
+
+    it('story-render.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Button } from '@storybook/react/demo';
+          import { Story, Meta } from '@storybook/addon-docs';
+
+          <Meta title="Button" component={Button} />
+
+          <Story name="Basic" render={(args) => <Button {...args} />} />
+        `)
+      ).toMatchSpecificSnapshot(snap('story-render'));
+    });
+
+    it('story-play.mdx', () => {
+      expect(
+        generate(dedent`
+          import { Button } from '@storybook/react/demo';
+          import { Story, Meta } from '@storybook/addon-docs';
+
+          <Meta title="Button" component={Button} />
+
+          <Story name="Basic" play={() => console.log('play')} />
+        `)
+      ).toMatchSpecificSnapshot(snap('story-play'));
+    });
   });
 });

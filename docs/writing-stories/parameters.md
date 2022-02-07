@@ -10,63 +10,55 @@ For example, let’s customize the backgrounds addon via a parameter. We’ll us
 
 We can set a parameter for a single story with the `parameters` key on a CSF export:
 
-```js
-// Button.stories.js | Button.stories.ts | Button.stories.jsx | Button.stories.tsx 
+<!-- prettier-ignore-start -->
 
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-  label: 'Button',
-};
-Primary.parameters = {
-  backgrounds: {
-    values: [
-      { name: 'red', value: '#f00' },
-      { name: 'green', value: '#0f0' },
-    ],
-  },
-};
-```
+<CodeSnippets
+  paths={[
+   'common/component-story-custom-params.js.mdx',
+   'common/component-story-custom-params.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 
 ## Component parameters
 
 We can set the parameters for all stories of a component using the `parameters` key on the default CSF export:
 
-```js
-// Button.stories.js | Button.stories.ts | Button.stories.jsx | Button.stories.tsx 
+<!-- prettier-ignore-start -->
 
-import Button from './Button';
+<CodeSnippets
+  paths={[
+    'react/button-story-with-blue-args.js.mdx',
+    'react/button-story-with-blue-args.ts.mdx',
+    'react/button-story-with-blue-args.mdx.mdx',
+    'vue/button-story-with-blue-args.js.mdx',
+    'vue/button-story-with-blue-args.mdx.mdx',
+    'angular/button-story-with-blue-args.ts.mdx',
+    'angular/button-story-with-blue-args.mdx.mdx',
+    'svelte/button-story-with-blue-args.js.mdx',
+    'svelte/button-story-with-blue-args.native-format.mdx',
+    'svelte/button-story-with-blue-args.mdx.mdx',
+    'web-components/button-story-with-blue-args.js.mdx',
+  ]}
+/>
 
-export default {
-  title: 'Button',
-  component: Button,
-  parameters: {
-    backgrounds: {
-      values: [
-        { name: 'red', value: '#f00' },
-        { name: 'green', value: '#0f0' },
-      ],
-    },
-  },
-};
-```
+<!-- prettier-ignore-end -->
 
 ## Global parameters
 
 We can also set the parameters for **all stories** via the `parameters` export of your [`.storybook/preview.js`](../configure/overview.md#configure-story-rendering) file (this is the file where you configure all stories):
 
-```js
-// .storybook/preview.js
+<!-- prettier-ignore-start -->
 
-export const parameters = {
-  backgrounds: {
-    values: [
-      { name: 'red', value: '#f00' },
-      { name: 'green', value: '#0f0' },
-    ],
-  },
-};
-```
+<CodeSnippets
+  paths={[
+   'common/preview-story-custom-params.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Setting a global parameter is a common way to configure addons. With backgrounds, you configure the list of backgrounds that every story can render in.
 

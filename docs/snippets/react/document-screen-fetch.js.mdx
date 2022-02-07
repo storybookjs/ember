@@ -1,11 +1,11 @@
 ```js
-// YourPage.js | YourPage.jsx | YourPage.ts | YourPage.tsx
+// YourPage.js|jsx|ts|tsx
 
 import React, { useState, useEffect } from 'react';
 
-import PageLayout from './PageLayout';
-import DocumentHeader from './DocumentHeader';
-import DocumentList from './DocumentList';
+import { PageLayout } from './PageLayout';
+import { DocumentHeader } from './DocumentHeader';
+import { DocumentList } from './DocumentList';
 
 // Example hook to retrieve data from an external endpoint
 function useFetchData() {
@@ -34,7 +34,7 @@ function useFetchData() {
     data,
   };
 }
-function DocumentScreen() {
+export function DocumentScreen() {
   const { status, data } = useFetchData();
 
   const { user, document, subdocuments } = data;
@@ -52,6 +52,4 @@ function DocumentScreen() {
     </PageLayout>
   );
 }
-
-export default DocumentScreen;
 ```

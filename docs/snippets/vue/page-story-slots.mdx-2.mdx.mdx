@@ -1,0 +1,29 @@
+```md
+<!-- Page.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import Page from './Page.vue';
+
+<Meta title="Page" component={Page} />
+
+export const Template = (args, { argTypes }) => ({
+  components: { Page },
+  props: Object.keys(argTypes),
+  template: `
+    <page v-bind="$props">
+      <template v-slot:footer>
+        <footer v-if="footer" v-html="footer"/>
+      </template>
+    </page>
+  `,
+});
+
+<Story
+  name="CustomFooter"
+  args={{
+   footer: `<a href="https://storybook.js.org/">Built with Storybook</a>`,
+  }}>
+  {Template.bind({})}
+</Story>
+```

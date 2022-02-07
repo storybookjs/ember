@@ -1,14 +1,14 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_vnode"] }] */
 
-import { addons, StoryContext } from '@storybook/addons';
+import { StoryContext } from '@storybook/csf';
+import { addons } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
-import prettier from 'prettier/standalone';
-import prettierHtml from 'prettier/parser-html';
 import type Vue from 'vue';
+import { VueFramework } from '@storybook/vue';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 
-export const skipSourceRender = (context: StoryContext) => {
+export const skipSourceRender = (context: StoryContext<VueFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
 
@@ -22,7 +22,7 @@ export const skipSourceRender = (context: StoryContext) => {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
-export const sourceDecorator = (storyFn: any, context: StoryContext) => {
+export const sourceDecorator = (storyFn: any, context: StoryContext<VueFramework>) => {
   const story = storyFn();
 
   // See ../react/jsxDecorator.tsx
@@ -52,17 +52,24 @@ export const sourceDecorator = (storyFn: any, context: StoryContext) => {
 
         const code = vnodeToString(storyNode._vnode);
 
-        channel.emit(
-          SNIPPET_RENDERED,
-          (context || {}).id,
-          prettier.format(`<template>${code}</template>`, {
-            parser: 'vue',
-            plugins: [prettierHtml],
-            // Because the parsed vnode missing spaces right before/after the surround tag,
-            // we always get weird wrapped code without this option.
-            htmlWhitespaceSensitivity: 'ignore',
-          })
-        );
+        const emitFormattedTemplate = async () => {
+          const prettier = await import('prettier/standalone');
+          const prettierHtml = await import('prettier/parser-html');
+
+          channel.emit(
+            SNIPPET_RENDERED,
+            (context || {}).id,
+            prettier.format(`<template>${code}</template>`, {
+              parser: 'vue',
+              plugins: [prettierHtml],
+              // Because the parsed vnode missing spaces right before/after the surround tag,
+              // we always get weird wrapped code without this option.
+              htmlWhitespaceSensitivity: 'ignore',
+            })
+          );
+        };
+
+        emitFormattedTemplate();
       } catch (e) {
         logger.warn(`Failed to generate dynamic story source: ${e}`);
       }

@@ -48,9 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
       const componentRef = this.target.createComponent(compFactory);
       const { instance } = componentRef;
       // For some reason, manual change detection ref is only working when getting the ref from the injector (rather than componentRef.changeDetectorRef)
-      const childChangeDetectorRef: ChangeDetectorRef = componentRef.injector.get(
-        ChangeDetectorRef
-      );
+      const childChangeDetectorRef: ChangeDetectorRef =
+        componentRef.injector.get(ChangeDetectorRef);
 
       this.subscription = this.data.subscribe((newData) => {
         this.setProps(instance, newData);

@@ -1,15 +1,20 @@
 ```js
-// MyComponent.story.js | MyComponent.story.jsx | MyComponent.story.ts | MyComponent.story.tsx
+// MyComponent.story.js|jsx
 
 import React from 'react';
 
-import MyComponent from './MyComponent';
+import { MyComponent } from './MyComponent';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Path/To/MyComponent',
   component: MyComponent,
 };
 
 export const Basic = () => <MyComponent />;
+
 export const WithProp = () => <MyComponent prop="value" />;
 ```

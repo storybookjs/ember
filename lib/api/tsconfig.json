@@ -3,7 +3,9 @@
   "compilerOptions": {
     "rootDir": "./src"
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "src/**/*.test.*",
     "src/**/tests/**/*",
@@ -11,5 +13,9 @@
     "src/**/*.stories.*",
     "src/**/*.mockdata.*",
     "src/**/__testfixtures__/**"
+  ],
+  "lib": [
+    "es2017",
+    "dom"
   ]
 }

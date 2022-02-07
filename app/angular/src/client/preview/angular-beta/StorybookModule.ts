@@ -5,7 +5,6 @@ import dedent from 'ts-dedent';
 import { Subject } from 'rxjs';
 import deprecate from 'util-deprecate';
 import { ICollection, StoryFnAngularReturnType } from '../types';
-import { Parameters } from '../types-6-0';
 import { storyPropsProvider } from './StorybookProvider';
 import { isComponentAlreadyDeclaredInModules } from './utils/NgModulesAnalyzer';
 import { isDeclarable } from './utils/NgComponentAnalyzer';
@@ -30,11 +29,11 @@ const deprecatedStoryComponentWarning = deprecate(
 export const getStorybookModuleMetadata = (
   {
     storyFnAngular,
-    parameters,
+    component: annotatedComponent,
     targetSelector,
   }: {
     storyFnAngular: StoryFnAngularReturnType;
-    parameters: Parameters;
+    component?: any;
     targetSelector: string;
   },
   storyProps$: Subject<ICollection>
@@ -45,7 +44,7 @@ export const getStorybookModuleMetadata = (
   if (storyComponent) {
     deprecatedStoryComponentWarning();
   }
-  const component = storyComponent ?? parameters.component;
+  const component = storyComponent ?? annotatedComponent;
 
   if (hasNoTemplate(template) && component) {
     template = computesTemplateFromComponent(component, props, '');

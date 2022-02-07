@@ -1,10 +1,9 @@
 import global from 'global';
 import React from 'react';
 import copy from 'copy-to-clipboard';
-import { IconButton, Icons } from '@storybook/components';
+import { getStoryHref, IconButton, Icons } from '@storybook/components';
 import { Consumer, Combo } from '@storybook/api';
 import { Addon } from '@storybook/addons';
-import { stringifyQueryParams } from '../utils/stringifyQueryParams';
 
 const { PREVIEW_URL } = global;
 
@@ -30,7 +29,7 @@ export const copyTool: Addon = {
         storyId ? (
           <IconButton
             key="copy"
-            onClick={() => copy(`${baseUrl}?id=${storyId}${stringifyQueryParams(queryParams)}`)}
+            onClick={() => copy(getStoryHref(baseUrl, storyId, queryParams))}
             title="Copy canvas link"
           >
             <Icons icon="link" />

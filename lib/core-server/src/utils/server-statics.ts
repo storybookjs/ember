@@ -1,4 +1,6 @@
 import { logger } from '@storybook/node-logger';
+import type { Options, StorybookConfig } from '@storybook/core-common';
+import { getDirectoryFromWorkingDir } from '@storybook/core-common';
 import chalk from 'chalk';
 import express from 'express';
 import { pathExists } from 'fs-extra';
@@ -7,16 +9,38 @@ import favicon from 'serve-favicon';
 
 import dedent from 'ts-dedent';
 
-const defaultFavIcon = require.resolve('../public/favicon.ico');
+const defaultFavIcon = require.resolve('@storybook/core-server/public/favicon.ico');
 
-export async function useStatics(router: any, options: { staticDir?: string[] }) {
+export async function useStatics(router: any, options: Options) {
   let hasCustomFavicon = false;
+  const staticDirs = await options.presets.apply<StorybookConfig['staticDirs']>('staticDirs');
 
-  if (options.staticDir && options.staticDir.length > 0) {
+  if (staticDirs && options.staticDir) {
+    throw new Error(dedent`
+      Conflict when trying to read staticDirs:
+      * Storybook's configuration option: 'staticDirs'
+      * Storybook's CLI flag: '--staticDir' or '-s'
+      
+      Choose one of them, but not both.
+    `);
+  }
+
+  const statics = staticDirs
+    ? staticDirs.map((dir) => (typeof dir === 'string' ? dir : `${dir.from}:${dir.to}`))
+    : options.staticDir;
+
+  if (statics && statics.length > 0) {
     await Promise.all(
-      options.staticDir.map(async (dir) => {
+      statics.map(async (dir) => {
         try {
-          const { staticDir, staticPath, targetEndpoint } = await parseStaticDir(dir);
+          const relativeDir = staticDirs
+            ? getDirectoryFromWorkingDir({
+                configDir: options.configDir,
+                workingDir: process.cwd(),
+                directory: dir,
+              })
+            : dir;
+          const { staticDir, staticPath, targetEndpoint } = await parseStaticDir(relativeDir);
           logger.info(
             chalk`=> Serving static files from {cyan ${staticDir}} at {cyan ${targetEndpoint}}`
           );

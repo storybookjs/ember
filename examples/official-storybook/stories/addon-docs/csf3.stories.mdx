@@ -1,0 +1,28 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import Button from '../../components/TsButton';
+
+<Meta
+  title="csf3"
+  component={Button}
+  play={() => console.log('component play')}
+  render={(args) => (
+    <div style={{ border: '5px solid green' }}>
+      <Button {...args} />
+    </div>
+  )}
+/>
+
+# CSF3 Features
+
+<Story name="Inherited Render" />
+
+<Story
+  name="Story Render"
+  render={(args) => (
+    <div style={{ border: '5px solid red' }}>
+      <Button {...args} />
+    </div>
+  )}
+/>
+
+<Story name="Story Play" play={() => console.log('story play')} />

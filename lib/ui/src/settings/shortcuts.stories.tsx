@@ -1,7 +1,7 @@
 import React from 'react';
 import { actions as makeActions } from '@storybook/addon-actions';
 
-import { DecoratorFn } from '@storybook/react';
+import type { DecoratorFn } from '@storybook/react';
 import { ShortcutsScreen } from './shortcuts';
 
 const defaultShortcuts = {
@@ -50,5 +50,5 @@ export default {
   ],
 };
 
-export const defaults = () => <ShortcutsScreen shortcutKeys={defaultShortcuts} {...actions} />;
-defaults.storyName = 'default shortcuts';
+export const Defaults = () => <ShortcutsScreen shortcutKeys={defaultShortcuts} {...actions} />;
+Defaults.storyName = 'default shortcuts';

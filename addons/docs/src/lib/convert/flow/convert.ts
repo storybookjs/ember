@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { SBType } from '@storybook/client-api';
+import { SBType } from '@storybook/csf';
 import { FlowType, FlowSigType, FlowLiteralType } from './types';
 
 const isLiteral = (type: FlowType) => type.name === 'literal';

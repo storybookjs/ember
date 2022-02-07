@@ -1,1 +1,1 @@
-{"version":"6.4.0-alpha.28","info":{"plain":"Fix bad publish of `6.4.0-alpha.27` to the `latest` tag"}}
+{"version":"6.5.0-alpha.36","info":{"plain":"### Maintenance\n\n- UI: Prebundle `@storybook/components` ([#17304](https://github.com/storybookjs/storybook/pull/17304))"}}

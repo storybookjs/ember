@@ -1,13 +1,26 @@
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { sanitize } from '@storybook/csf';
 import mapValues from 'lodash/mapValues';
+import countBy from 'lodash/countBy';
+import global from 'global';
+import {
+  StoryId,
+  ComponentTitle,
+  StoryKind,
+  StoryName,
+  Args,
+  ArgTypes,
+  Parameters,
+  sanitize,
+} from '@storybook/csf';
 
-import { StoryId, StoryKind, Args, Parameters, combineParameters } from '../index';
+import { combineParameters } from '../index';
 import merge from './merge';
 import { Provider } from '../modules/provider';
 import { ViewMode } from '../modules/addons';
+
+const { FEATURES } = global;
 
 export type { StoryId };
 
@@ -54,6 +67,7 @@ export interface Story {
   isRoot: false;
   isLeaf: true;
   renderLabel?: (item: Story) => React.ReactNode;
+  prepared: boolean;
   parameters?: {
     fileName: string;
     options: {
@@ -63,8 +77,9 @@ export interface Story {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  args: Args;
-  initialArgs: Args;
+  args?: Args;
+  argTypes?: ArgTypes;
+  initialArgs?: Args;
 }
 
 export interface StoryInput {
@@ -72,7 +87,6 @@ export interface StoryInput {
   name: string;
   refId?: string;
   kind: StoryKind;
-  children: string[];
   parameters: {
     fileName: string;
     options: {
@@ -82,9 +96,8 @@ export interface StoryInput {
     viewMode?: ViewMode;
     [parameterName: string]: any;
   };
-  isLeaf: boolean;
-  args: Args;
-  initialArgs: Args;
+  args?: Args;
+  initialArgs?: Args;
 }
 
 export interface StoriesHash {
@@ -97,6 +110,18 @@ export type GroupsList = (Root | Group)[];
 
 export interface StoriesRaw {
   [id: string]: StoryInput;
+}
+
+type Path = string;
+export interface StoryIndexStory {
+  id: StoryId;
+  name: StoryName;
+  title: ComponentTitle;
+  importPath: Path;
+}
+export interface StoryIndex {
+  v: number;
+  stories: Record<StoryId, StoryIndexStory>;
 }
 
 export type SetStoriesPayload =
@@ -142,16 +167,35 @@ export const denormalizeStoryParameters = ({
     parameters: combineParameters(
       globalParameters,
       kindParameters[storyData.kind],
-      (storyData.parameters as unknown) as Parameters
+      storyData.parameters as unknown as Parameters
     ),
   }));
 };
 
 const STORY_KIND_PATH_SEPARATOR = /\s*\/\s*/;
 
+export const transformStoryIndexToStoriesHash = (
+  index: StoryIndex,
+  { provider }: { provider: Provider }
+): StoriesHash => {
+  const countByTitle = countBy(Object.values(index.stories), 'title');
+  const input = Object.entries(index.stories).reduce((acc, [id, { title, name, importPath }]) => {
+    const docsOnly = name === 'Page' && countByTitle[title] === 1;
+    acc[id] = {
+      id,
+      kind: title,
+      name,
+      parameters: { fileName: importPath, options: {}, docsOnly },
+    };
+    return acc;
+  }, {} as StoriesRaw);
+
+  return transformStoriesRawToStoriesHash(input, { provider, prepared: false });
+};
+
 export const transformStoriesRawToStoriesHash = (
   input: StoriesRaw,
-  { provider }: { provider: Provider }
+  { provider, prepared = true }: { provider: Provider; prepared?: Story['prepared'] }
 ): StoriesHash => {
   const values = Object.values(input).filter(Boolean);
   const usesOldHierarchySeparator = values.some(({ kind }) => kind.match(/\.|\|/)); // dot or pipe
@@ -166,7 +210,7 @@ export const transformStoriesRawToStoriesHash = (
     }
 
     const setShowRoots = typeof showRoots !== 'undefined';
-    if (usesOldHierarchySeparator && !setShowRoots) {
+    if (usesOldHierarchySeparator && !setShowRoots && FEATURES?.warnOnLegacyHierarchySeparator) {
       warnChangedDefaultHierarchySeparators();
     }
 
@@ -240,6 +284,7 @@ export const transformStoriesRawToStoriesHash = (
       isComponent: false,
       isRoot: false,
       renderLabel,
+      prepared,
     };
 
     return acc;

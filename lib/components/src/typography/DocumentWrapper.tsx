@@ -109,18 +109,20 @@ export const DocumentWrapper = styled.div<{}>(({ theme }) => ({
     height: 4,
     padding: 0,
   },
-  'body > h1:first-of-type, body > h2:first-of-type, body > h3:first-of-type, body > h4:first-of-type, body > h5:first-of-type, body > h6:first-of-type': {
-    marginTop: 0,
-    paddingTop: 0,
-  },
+  'body > h1:first-of-type, body > h2:first-of-type, body > h3:first-of-type, body > h4:first-of-type, body > h5:first-of-type, body > h6:first-of-type':
+    {
+      marginTop: 0,
+      paddingTop: 0,
+    },
   'body > h1:first-of-type + h2': {
     marginTop: 0,
     paddingTop: 0,
   },
-  'a:first-of-type h1, a:first-of-type h2, a:first-of-type h3, a:first-of-type h4, a:first-of-type h5, a:first-of-type h6': {
-    marginTop: 0,
-    paddingTop: 0,
-  },
+  'a:first-of-type h1, a:first-of-type h2, a:first-of-type h3, a:first-of-type h4, a:first-of-type h5, a:first-of-type h6':
+    {
+      marginTop: 0,
+      paddingTop: 0,
+    },
   'h1 p, h2 p, h3 p, h4 p, h5 p, h6 p': {
     marginTop: 0,
   },

@@ -1,11 +1,12 @@
+/* eslint-disable no-param-reassign */
 import global from 'global';
 import dedent from 'ts-dedent';
-import { Args, ArgTypes } from '@storybook/api';
-import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
-import { RenderContext, FetchStoryHtmlType } from './types';
+import { RenderContext } from '@storybook/store';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
+import { StoryFn, Args, ArgTypes } from '@storybook/csf';
+import { FetchStoryHtmlType, ServerFramework } from './types';
 
-const { document, fetch, Node } = global;
-const rootElement = document.getElementById('root');
+const { fetch, Node } = global;
 
 const defaultFetchStoryHtml: FetchStoryHtmlType = async (url, path, params, storyContext) => {
   const fetchUrl = new URL(`${url}/${path}`);
@@ -39,19 +40,22 @@ const buildStoryArgs = (args: Args, argTypes: ArgTypes) => {
   return storyArgs;
 };
 
-export async function renderMain({
-  id,
-  kind,
-  name,
-  showMain,
-  showError,
-  forceRender,
-  parameters,
-  storyContext,
-  storyFn,
-  args,
-  argTypes,
-}: RenderContext) {
+export const render: StoryFn<ServerFramework> = (args: Args) => {};
+
+export async function renderToDOM(
+  {
+    id,
+    title,
+    name,
+    showMain,
+    showError,
+    forceRemount,
+    storyFn,
+    storyContext,
+    storyContext: { parameters, args, argTypes },
+  }: RenderContext<ServerFramework>,
+  domElement: HTMLElement
+) {
   // Some addons wrap the storyFn so we need to call it even though Server doesn't need the answer
   storyFn();
   const storyArgs = buildStoryArgs(args, argTypes);
@@ -66,20 +70,20 @@ export async function renderMain({
 
   showMain();
   if (typeof element === 'string') {
-    rootElement.innerHTML = element;
-    simulatePageLoad(rootElement);
+    domElement.innerHTML = element;
+    simulatePageLoad(domElement);
   } else if (element instanceof Node) {
     // Don't re-mount the element if it didn't change and neither did the story
-    if (rootElement.firstChild === element && forceRender === true) {
+    if (domElement.firstChild === element && forceRemount === false) {
       return;
     }
 
-    rootElement.innerHTML = '';
-    rootElement.appendChild(element);
+    domElement.innerHTML = '';
+    domElement.appendChild(element);
     simulateDOMContentLoaded();
   } else {
     showError({
-      title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${kind}".`,
+      title: `Expecting an HTML snippet or DOM node from the story: "${name}" of "${title}".`,
       description: dedent`
         Did you forget to return the HTML snippet from the story?
         Use "() => <your snippet or node>" or when defining the story.

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import Markdown from 'markdown-to-jsx';
-import { ResetWrapper } from '../typography/DocumentFormatting';
-import { components } from '..';
+import { ResetWrapper } from '../typography/ResetWrapper';
+import { components } from '../typography/components';
 
 export interface DescriptionProps {
   markdown: string;

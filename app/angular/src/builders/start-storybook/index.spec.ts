@@ -3,15 +3,12 @@ import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { schema } from '@angular-devkit/core';
 import * as path from 'path';
 
-const buildStandaloneMock = jest.fn().mockImplementation((_options: unknown) => Promise.resolve());
+const buildStandaloneMock = jest.fn();
 jest.doMock('@storybook/angular/standalone', () => buildStandaloneMock);
+jest.doMock('find-up', () => ({ sync: () => './storybook/tsconfig.ts' }));
 
 const cpSpawnMock = {
-  spawn: jest.fn().mockImplementation(() => ({
-    stdout: { on: () => {} },
-    stderr: { on: () => {} },
-    on: (_event: string, cb: any) => cb(0),
-  })),
+  spawn: jest.fn(),
 };
 jest.doMock('child_process', () => cpSpawnMock);
 
@@ -51,11 +48,20 @@ describe('Start Storybook Builder', () => {
     await architectHost.addBuilderFromPackage(path.join(__dirname, '../../..'));
   });
 
+  beforeEach(() => {
+    buildStandaloneMock.mockImplementation((_options: unknown) => Promise.resolve());
+    cpSpawnMock.spawn.mockImplementation(() => ({
+      stdout: { on: () => {} },
+      stderr: { on: () => {} },
+      on: (_event: string, cb: any) => cb(0),
+    }));
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should work', async () => {
+  it('should start storybook with angularBrowserTarget', async () => {
     const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
       browserTarget: 'angular-cli:build-2',
       port: 4400,
@@ -70,10 +76,10 @@ describe('Start Storybook Builder', () => {
     expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {},
       ci: false,
       configDir: '.storybook',
-      docsMode: false,
       host: 'localhost',
       https: false,
       port: 4400,
@@ -82,10 +88,60 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      staticDir: [],
-      compodoc: false,
-      compodocArgs: ['-e', 'json'],
+      tsConfig: './storybook/tsconfig.ts',
     });
+  });
+
+  it('should start storybook with tsConfig', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      port: 4400,
+      compodoc: false,
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {},
+      ci: false,
+      configDir: '.storybook',
+      host: 'localhost',
+      https: false,
+      port: 4400,
+      quiet: false,
+      smokeTest: false,
+      sslCa: undefined,
+      sslCert: undefined,
+      sslKey: undefined,
+      tsConfig: 'path/to/tsConfig.json',
+    });
+  });
+
+  it('should throw error', async () => {
+    buildStandaloneMock.mockRejectedValue(new Error());
+
+    const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
+      browserTarget: 'angular-cli:build-2',
+      port: 4400,
+      compodoc: false,
+    });
+
+    try {
+      await run.result;
+
+      expect(false).toEqual('Throw expected');
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toEqual(
+        'Broken build, fix the error above.\nYou may need to refresh the browser.'
+      );
+    }
   });
 
   it('should run compodoc', async () => {
@@ -98,20 +154,21 @@ describe('Start Storybook Builder', () => {
     await run.stop();
 
     expect(output.success).toBeTruthy();
-    expect(cpSpawnMock.spawn).toHaveBeenCalledWith('compodoc', [
-      '-p',
-      'src/tsconfig.app.json',
-      '-d',
-      '',
-      '-e',
-      'json',
-    ]);
+    expect(cpSpawnMock.spawn).toHaveBeenCalledWith(
+      'npx',
+      ['compodoc', '-p', './storybook/tsconfig.ts', '-d', '', '-e', 'json'],
+      {
+        cwd: '',
+        env: process.env,
+        shell: true,
+      }
+    );
     expect(buildStandaloneMock).toHaveBeenCalledWith({
       angularBrowserTarget: 'angular-cli:build-2',
-      browserTarget: 'angular-cli:build-2',
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {},
       ci: false,
       configDir: '.storybook',
-      docsMode: false,
       host: 'localhost',
       https: false,
       port: 9009,
@@ -120,9 +177,41 @@ describe('Start Storybook Builder', () => {
       sslCa: undefined,
       sslCert: undefined,
       sslKey: undefined,
-      staticDir: [],
-      compodoc: true,
-      compodocArgs: ['-e', 'json'],
+      tsConfig: './storybook/tsconfig.ts',
+    });
+  });
+
+  it('should start storybook with styles options', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      port: 4400,
+      compodoc: false,
+      styles: ['src/styles.css'],
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {
+        styles: ['src/styles.css'],
+      },
+      ci: false,
+      configDir: '.storybook',
+      host: 'localhost',
+      https: false,
+      port: 4400,
+      quiet: false,
+      smokeTest: false,
+      sslCa: undefined,
+      sslCert: undefined,
+      sslKey: undefined,
+      tsConfig: 'path/to/tsConfig.json',
     });
   });
 });

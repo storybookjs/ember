@@ -7,6 +7,9 @@ const Box = ({ children, display = 'block', width, height }) => (
 
 export default {
   title: 'Core/Layout',
+  parameters: {
+    layout: 'centered',
+  },
 };
 
 export const Default = () => <Box>padded by default</Box>;
@@ -37,6 +40,9 @@ CenteredWide.parameters = { layout: 'centered' };
 
 export const None = () => <Box>none</Box>;
 None.parameters = { layout: 'none' };
+
+export const Inherited = () => <Box>none</Box>;
+Inherited.parameters = {};
 
 export const Invalid = () => <Box>invalid layout value</Box>;
 Invalid.parameters = { layout: '!invalid!' };

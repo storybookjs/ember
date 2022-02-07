@@ -4,7 +4,6 @@ import {
   StoryName,
   StoryKind,
   ViewMode,
-  StoryIdentifier,
   StoryFn,
   Parameters,
   Args,
@@ -12,11 +11,24 @@ import {
   StoryApi,
   DecoratorFunction,
   LoaderFunction,
-  DecorateStoryFunction,
   StoryContext,
 } from '@storybook/addons';
-import StoryStore from './story_store';
-import { HooksContext } from './hooks';
+import { AnyFramework, StoryIdentifier, ProjectAnnotations } from '@storybook/csf';
+import { StoryStore, HooksContext, RenderContext } from '@storybook/store';
+
+export type {
+  SBType,
+  SBScalarType,
+  SBArrayType,
+  SBObjectType,
+  SBEnumType,
+  SBIntersectionType,
+  SBUnionType,
+  SBOtherType,
+} from '@storybook/csf';
+
+// NOTE: these types are really just here for back-compat. Many of them don't have much meaning
+// Remove in 7.0
 
 export interface ErrorLike {
   message: string;
@@ -32,7 +44,7 @@ export interface StoryMetadata {
 export type ArgTypesEnhancer = (context: StoryContext) => ArgTypes;
 export type ArgsEnhancer = (context: StoryContext) => Args;
 
-export type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
+type StorySpecifier = StoryId | { name: StoryName; kind: StoryKind } | '*';
 
 export interface StoreSelectionSpecifier {
   storySpecifier: StorySpecifier;
@@ -59,10 +71,10 @@ export type StoreItem = StoryIdentifier & {
   getDecorated: () => StoryFn<any>;
   getOriginal: () => StoryFn<any>;
   applyLoaders: () => Promise<StoryContext>;
-  runPlayFunction: () => Promise<any>;
+  playFunction: (context: StoryContext) => Promise<void> | void;
   storyFn: StoryFn<any>;
   unboundStoryFn: StoryFn<any>;
-  hooks: HooksContext;
+  hooks: HooksContext<AnyFramework>;
   args: Args;
   initialArgs: Args;
   argTypes: ArgTypes;
@@ -77,8 +89,8 @@ export interface StoreData {
 }
 
 export interface ClientApiParams {
-  storyStore: StoryStore;
-  decorateStory?: DecorateStoryFunction;
+  storyStore: StoryStore<AnyFramework>;
+  decorateStory?: ProjectAnnotations<AnyFramework>['applyDecorators'];
   noStoryModuleAddMethodHotDispose?: boolean;
 }
 
@@ -105,59 +117,4 @@ export interface GetStorybookKind {
   stories: GetStorybookStory[];
 }
 
-// This really belongs in lib/core, but that depends on lib/ui which (dev) depends on app/react
-// which needs this type. So we put it here to avoid the circular dependency problem.
-export type RenderContextWithoutStoryContext = StoreItem & {
-  forceRender: boolean;
-
-  showMain: () => void;
-  showError: (error: { title: string; description: string }) => void;
-  showException: (err: Error) => void;
-};
-
-export type RenderContext = RenderContextWithoutStoryContext & {
-  storyContext: StoryContext;
-};
-
-interface SBBaseType {
-  required?: boolean;
-  raw?: string;
-}
-
-export type SBScalarType = SBBaseType & {
-  name: 'boolean' | 'string' | 'number' | 'function';
-};
-
-export type SBArrayType = SBBaseType & {
-  name: 'array';
-  value: SBType;
-};
-export type SBObjectType = SBBaseType & {
-  name: 'object';
-  value: Record<string, SBType>;
-};
-export type SBEnumType = SBBaseType & {
-  name: 'enum';
-  value: (string | number)[];
-};
-export type SBIntersectionType = SBBaseType & {
-  name: 'intersection';
-  value: SBType[];
-};
-export type SBUnionType = SBBaseType & {
-  name: 'union';
-  value: SBType[];
-};
-export type SBOtherType = SBBaseType & {
-  name: 'other';
-  value: string;
-};
-
-export type SBType =
-  | SBScalarType
-  | SBEnumType
-  | SBArrayType
-  | SBObjectType
-  | SBIntersectionType
-  | SBUnionType
-  | SBOtherType;
+export type RenderContextWithoutStoryContext = Omit<RenderContext, 'storyContext'>;

@@ -1,0 +1,23 @@
+```md
+<!-- MyComponent.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import MyComponent from './MyComponent.svelte0;
+
+<Meta title="img" component={MyComponent} />
+
+<!-- Assume image.png is located in the "public" directory. -->
+
+<Story name="withAnImage">
+  {() => {
+    return {
+      Component: MyComponent,
+      props: {
+        src: '/image.png',
+        alt: 'my image',
+      },
+    };
+  }}
+</Story>
+```

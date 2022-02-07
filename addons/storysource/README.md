@@ -2,7 +2,7 @@
 
 This addon is used to show stories source in the addon panel.
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
+[Framework Support](https://storybook.js.org/docs/react/api/frameworks-feature-support)
 
 ![Storysource Demo](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/storysource/docs/demo.gif)
 
@@ -52,7 +52,7 @@ module.exports = {
 };
 ```
 
-To customize the `source-loader`, pass `loaderOptions`. Valid configurations are documented in the [`source-loader` README](../../lib/source-loader/README.md#options).
+To customize the `source-loader`, pass `loaderOptions`. Valid configurations are documented in the [`source-loader` README](https://github.com/storybookjs/storybook/tree/main/lib/source-loader/README.md#options).
 
 ## Theming
 

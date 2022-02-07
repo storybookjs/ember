@@ -1,10 +1,26 @@
 module.exports = {
   root: true,
-  extends: ['@storybook/eslint-config-storybook'],
+  extends: ['@storybook/eslint-config-storybook', 'plugin:storybook/recommended'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'warn',
+    'jest/no-standalone-expect': [
+      'error',
+      { additionalTestBlockFunctions: ['it.skipWindows', 'it.onWindows'] },
+    ],
   },
   overrides: [
+    {
+      // this package uses pre-bundling, dependencies will be bundled, and will be in devDepenencies
+      files: [
+        '**/lib/theming/**/*',
+        '**/lib/router/**/*',
+        '**/lib/ui/**/*',
+        '**/lib/components/**/*',
+      ],
+      rules: {
+        'import/no-extraneous-dependencies': ['error', { bundledDependencies: false }],
+      },
+    },
     {
       files: [
         '**/__tests__/**',
@@ -42,6 +58,16 @@ module.exports = {
         'react/prop-types': 'off', // we should use types
         'react/forbid-prop-types': 'off', // we should use types
         'no-dupe-class-members': 'off', // this is called overloads in typescript
+        'react/no-unused-prop-types': 'off', // we should use types
+        'react/default-props-match-prop-types': 'off', // we should use types
+        'import/no-named-as-default': 'warn',
+        'import/no-named-as-default-member': 'warn',
+        'react/destructuring-assignment': 'warn',
+
+        // This warns about importing interfaces and types in a normal import, it's arguably better to import with the `type` prefix separate from the runtime imports,
+        // I leave this as a warning right now because we haven't really decided yet, and the codebase is riddled with errors if I set to 'error'.
+        // It IS set to 'error' for JS files.
+        'import/named': 'warn',
       },
     },
     {

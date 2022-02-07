@@ -1,0 +1,29 @@
+```js
+// Button.stories.js
+
+import Button from './Button.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
+  component: Button,
+  /*
+   * See https://storybook.js.org/docs/vue/essentials/actions#action-argtype-annotation
+   * to learn how to set up argTypes for actions
+   */
+  argTypes: {
+    onClick: {},
+  },
+};
+
+export const Text = (args) => ({
+  components: { Button },
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
+});
+```

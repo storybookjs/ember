@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { styled } from '@storybook/theming';
-import { ResetWrapper } from '../typography/DocumentFormatting';
+import { ResetWrapper } from '../typography/ResetWrapper';
 
 import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
 

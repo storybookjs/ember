@@ -1,20 +1,22 @@
 import React, { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import { styled, isPropValid } from '@storybook/theming';
+import { transparentize } from 'polished';
+import { auto } from '@popperjs/core';
 
-interface ButtonProps
+interface BarButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   href?: void;
 }
-interface LinkProps
+interface BarLinkProps
   extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   href: string;
 }
 
-const ButtonOrLink = ({ children, ...restProps }: ButtonProps | LinkProps) =>
+const ButtonOrLink = ({ children, ...restProps }: BarButtonProps | BarLinkProps) =>
   restProps.href != null ? (
-    <a {...(restProps as LinkProps)}>{children}</a>
+    <a {...(restProps as BarLinkProps)}>{children}</a>
   ) : (
-    <button type="button" {...(restProps as ButtonProps)}>
+    <button type="button" {...(restProps as BarButtonProps)}>
       {children}
     </button>
   );
@@ -72,44 +74,72 @@ TabButton.displayName = 'TabButton';
 
 export interface IconButtonProps {
   active?: boolean;
+  disabled?: boolean;
 }
 
 export const IconButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<IconButtonProps>(
-  ({ theme }) => ({
-    display: 'inline-flex',
-    justifyContent: 'center',
+  () => ({
     alignItems: 'center',
-    height: 40,
-    background: 'none',
+    background: 'transparent',
+    border: 'none',
+    borderRadius: 4,
     color: 'inherit',
-    padding: 0,
     cursor: 'pointer',
-
-    // Icon Buttons may have text depending on user preferences.
-    // While we don't recommend having text for IconButtons, this style ensures that the text is the correct size.
-    fontWeight: 'bold',
+    display: 'inline-flex',
     fontSize: 13,
+    fontWeight: 'bold',
+    height: 28,
+    justifyContent: 'center',
+    marginTop: 6,
+    padding: '8px 7px',
 
-    border: '0 solid transparent',
-    borderTop: '3px solid transparent',
-    borderBottom: '3px solid transparent',
-
-    transition: 'color 0.2s linear, border-bottom-color 0.2s linear',
-
-    '&:hover, &:focus': {
-      outline: '0 none',
-      color: theme.color.secondary,
-    },
     '& > svg': {
-      width: 15,
+      width: 14,
     },
   }),
   ({ active, theme }) =>
     active
       ? {
-          outline: '0 none',
-          borderBottomColor: theme.color.secondary,
+          backgroundColor: theme.background.hoverable,
+          color: theme.color.secondary,
         }
-      : {}
+      : {},
+  ({ disabled, theme }) =>
+    disabled
+      ? {
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        }
+      : {
+          '&:hover, &:focus-visible': {
+            background: transparentize(0.88, theme.color.secondary),
+            color: theme.color.secondary,
+          },
+          '&:focus-visible': {
+            outline: auto, // Ensures links have the same focus style
+          },
+          '&:focus:not(:focus-visible)': {
+            outline: 'none',
+          },
+        }
 );
 IconButton.displayName = 'IconButton';
+
+const IconPlaceholder = styled.div(({ theme }) => ({
+  width: 14,
+  height: 14,
+  backgroundColor: theme.appBorderColor,
+  animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
+}));
+
+const IconButtonSkeletonWrapper = styled.div(() => ({
+  marginTop: 6,
+  padding: 7,
+  height: 28,
+}));
+
+export const IconButtonSkeleton = () => (
+  <IconButtonSkeletonWrapper>
+    <IconPlaceholder />
+  </IconButtonSkeletonWrapper>
+);

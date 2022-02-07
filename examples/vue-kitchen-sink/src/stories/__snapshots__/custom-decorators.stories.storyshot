@@ -11,8 +11,7 @@ exports[`Storyshots Custom/Decorator for Vue Render 1`] = `
       class="button"
       style="color: pink; border-color: pink;"
     >
-      renders component: MyButton!
-
+      renders component: MyButton
     </button>
   </div>
 </div>
@@ -29,8 +28,7 @@ exports[`Storyshots Custom/Decorator for Vue Template 1`] = `
       class="button"
       style="color: rgb(66, 185, 131); border-color: #42b983;"
     >
-      MyButton with template!
-
+      MyButton with template
     </button>
   </div>
 </div>
@@ -45,24 +43,28 @@ exports[`Storyshots Custom/Decorator for Vue With Data 1`] = `
   >
     <pre>
       {
-  "id": "custom-decorator-for-vue--with-data",
+  "componentId": "custom-decorator-for-vue",
+  "title": "Custom/Decorator for Vue",
   "kind": "Custom/Decorator for Vue",
+  "id": "custom-decorator-for-vue--with-data",
   "name": "With Data",
   "story": "With Data",
   "parameters": {
     "docs": {
       "iframeHeight": "60px"
     },
-    "globalParameter": "globalParameter",
     "framework": "vue",
-    "args": {},
-    "argTypes": {},
+    "globalParameter": "globalParameter",
+    "__isArgsStory": true,
     "__id": "custom-decorator-for-vue--with-data",
-    "__isArgsStory": true
+    "args": {},
+    "argTypes": {}
   },
-  "args": {},
+  "initialArgs": {},
   "argTypes": {},
+  "args": {},
   "globals": {},
+  "viewMode": "story",
   "customContext": 52
 }
     </pre>

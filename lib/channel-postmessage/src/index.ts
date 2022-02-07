@@ -19,6 +19,8 @@ interface BufferedEvent {
 
 export const KEY = 'storybook-channel';
 
+const defaultEventOptions = { allowFunction: true, maxDepth: 25 };
+
 // TODO: we should export a method for opening child windows here and keep track of em.
 // that way we can send postMessage to child windows as well, not just iframe
 // https://stackoverflow.com/questions/6340160/how-to-get-the-references-of-all-already-opened-child-windows
@@ -58,18 +60,44 @@ export class PostmsgTransport {
    * @param event
    */
   send(event: ChannelEvent, options?: any): Promise<any> {
-    let depth = 25;
-    let allowFunction = true;
-    let target;
+    const {
+      target,
 
-    if (options && typeof options.allowFunction === 'boolean') {
-      allowFunction = options.allowFunction;
-    }
+      // telejson options
+      allowRegExp,
+      allowFunction,
+      allowSymbol,
+      allowDate,
+      allowUndefined,
+      allowClass,
+      maxDepth,
+      space,
+      lazyEval,
+    } = options || {};
+
+    const eventOptions = Object.fromEntries(
+      Object.entries({
+        allowRegExp,
+        allowFunction,
+        allowSymbol,
+        allowDate,
+        allowUndefined,
+        allowClass,
+        maxDepth,
+        space,
+        lazyEval,
+      }).filter(([k, v]) => typeof v !== 'undefined')
+    );
+
+    const stringifyOptions = {
+      ...defaultEventOptions,
+      ...(global.CHANNEL_OPTIONS || {}),
+      ...eventOptions,
+    };
+
+    // backwards compat: convert depth to maxDepth
     if (options && Number.isInteger(options.depth)) {
-      depth = options.depth;
-    }
-    if (options && typeof options.target === 'string') {
-      target = options.target;
+      stringifyOptions.maxDepth = options.depth;
     }
 
     const frames = this.getFrames(target);
@@ -82,7 +110,7 @@ export class PostmsgTransport {
         event,
         refId: query.refId,
       },
-      { maxDepth: depth, allowFunction }
+      stringifyOptions
     );
 
     if (!frames.length) {

@@ -1,10 +1,14 @@
-import { StoryFn as StoryFunction, StoryContext, useMemo, useEffect } from '@storybook/addons';
+import { useMemo, useEffect } from '@storybook/addons';
+import { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 
 import { clearStyles, addOutlineStyles } from './helpers';
 import { PARAM_KEY } from './constants';
 import outlineCSS from './outlineCSS';
 
-export const withOutline = (StoryFn: StoryFunction, context: StoryContext) => {
+export const withOutline = (
+  StoryFn: StoryFunction<AnyFramework>,
+  context: StoryContext<AnyFramework>
+) => {
   const { globals } = context;
   const isActive = globals[PARAM_KEY] === true;
   const isInDocs = context.viewMode === 'docs';

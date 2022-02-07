@@ -8,7 +8,7 @@ export default {
   component: IconGallery,
 };
 
-export const defaultStyle = () => (
+export const DefaultStyle = () => (
   <IconGallery>
     <IconItem name="add">
       <ExampleIcon icon="add" />

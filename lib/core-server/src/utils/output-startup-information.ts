@@ -10,19 +10,14 @@ import { createUpdateMessage } from './update-check';
 export function outputStartupInformation(options: {
   updateInfo: VersionCheck;
   version: string;
+  name: string;
   address: string;
   networkAddress: string;
   managerTotalTime?: [number, number];
   previewTotalTime?: [number, number];
 }) {
-  const {
-    updateInfo,
-    version,
-    address,
-    networkAddress,
-    managerTotalTime,
-    previewTotalTime,
-  } = options;
+  const { updateInfo, version, name, address, networkAddress, managerTotalTime, previewTotalTime } =
+    options;
 
   const updateMessage = createUpdateMessage(updateInfo, version);
 
@@ -67,7 +62,7 @@ export function outputStartupInformation(options: {
   console.log(
     boxen(
       dedent`
-          ${colors.green(`Storybook ${chalk.bold(version)} started`)}
+          ${colors.green(`Storybook ${chalk.bold(version)} for ${chalk.bold(name)} started`)}
           ${chalk.gray(timeStatement)}
 
           ${serveMessage.toString()}${updateMessage ? `\n\n${updateMessage}` : ''}

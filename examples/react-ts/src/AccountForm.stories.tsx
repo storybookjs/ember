@@ -1,20 +1,26 @@
+/* eslint-disable storybook/await-interactions */
+/* eslint-disable storybook/use-storybook-testing-library */
+// @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStoryObj, ComponentMeta } from '@storybook/react';
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
-import { AccountForm, AccountFormProps } from './AccountForm';
+import { AccountForm } from './AccountForm';
 
 export default {
+  // Title not needed due to CSF3 auto-title
+  // title: 'Demo/AccountForm',
   component: AccountForm,
   parameters: {
     layout: 'centered',
   },
 } as ComponentMeta<typeof AccountForm>;
 
-// export const Standard = (args: AccountFormProps) => <AccountForm {...args} />;
+// export const Standard = (args: any) => <AccountForm {...args} />;
 // Standard.args = { passwordVerification: false };
+// Standard.play = () => userEvent.type(screen.getByTestId('email'), 'michael@chromatic.com');
 
-export const Standard: ComponentStory<typeof AccountForm> = {
+export const Standard: ComponentStoryObj<typeof AccountForm> = {
   // render: (args: AccountFormProps) => <AccountForm {...args} />,
   args: { passwordVerification: false },
 };
@@ -51,7 +57,7 @@ export const StandardFailHover = {
   },
 };
 
-export const Verification: ComponentStory<typeof AccountForm> = {
+export const Verification: ComponentStoryObj<typeof AccountForm> = {
   args: { passwordVerification: true },
 };
 

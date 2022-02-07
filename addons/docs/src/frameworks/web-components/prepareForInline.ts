@@ -1,8 +1,10 @@
-import type { StoryFn } from '@storybook/addons';
+import type { PartialStoryFn } from '@storybook/csf';
+import { WebComponentsFramework } from '@storybook/web-components';
 import React from 'react';
+
 import { render } from 'lit-html';
 
-export const prepareForInline = (storyFn: StoryFn) => {
+export const prepareForInline = (storyFn: PartialStoryFn<WebComponentsFramework>) => {
   class Story extends React.Component {
     wrapperRef = React.createRef<HTMLElement>();
 
@@ -15,5 +17,5 @@ export const prepareForInline = (storyFn: StoryFn) => {
     }
   }
 
-  return (React.createElement(Story) as unknown) as React.CElement<{}, React.Component>;
+  return React.createElement(Story) as unknown as React.CElement<{}, React.Component>;
 };

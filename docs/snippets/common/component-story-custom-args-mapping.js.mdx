@@ -1,14 +1,18 @@
 ```js
-// Button.stories.js | Button.stories.jsx | Button.stories.ts | Button.stories.tsx
+// Button.stories.js|jsx|ts|tsx
 
-import { Button } from './button';
+import { Button } from './Button';
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from './icons';
 
 const arrows = { ArrowUp, ArrowDown, ArrowLeft, ArrowRight };
 
 export default {
-  component: Button,
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'Button',
+  component: Button,
   argTypes: {
     arrow: {
       options: Object.keys(arrows), // An array of serializable values
@@ -21,8 +25,8 @@ export default {
           ArrowDown: 'Down',
           ArrowLeft: 'Left',
           ArrowRight: 'Right',
-        }
-      }
+        },
+      },
     },
   },
 };

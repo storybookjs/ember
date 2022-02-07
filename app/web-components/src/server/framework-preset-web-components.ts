@@ -1,7 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Configuration } from 'webpack';
+import { findDistEsm, Options, StorybookConfig } from '@storybook/core-common';
 
-export function webpack(config: Configuration) {
+export function webpack(config: Configuration, options: Options) {
+  const babelrcOptions = options.features?.babelModeV7 ? null : { babelrc: false };
   config.module.rules.push({
     test: [
       new RegExp(`src(.*)\\.js$`),
@@ -30,10 +32,14 @@ export function webpack(config: Configuration) {
             },
           ],
         ],
-        babelrc: false,
+        ...babelrcOptions,
       },
     },
   });
 
   return config;
 }
+
+export const config: StorybookConfig['config'] = (entry = []) => {
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
+};

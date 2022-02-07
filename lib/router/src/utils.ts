@@ -2,7 +2,7 @@ import { once } from '@storybook/client-logger';
 import deepEqual from 'fast-deep-equal';
 import isPlainObject from 'lodash/isPlainObject';
 import memoize from 'memoizerific';
-import qs from 'qs';
+import qs, { IStringifyOptions } from 'qs';
 import dedent from 'ts-dedent';
 
 export interface StoryData {
@@ -65,7 +65,8 @@ export const deepDiff = (value: any, update: any): any => {
 const VALIDATION_REGEXP = /^[a-zA-Z0-9 _-]*$/;
 const NUMBER_REGEXP = /^-?[0-9]+(\.[0-9]+)?$/;
 const HEX_REGEXP = /^#([a-f0-9]{3,4}|[a-f0-9]{6}|[a-f0-9]{8})$/i;
-const COLOR_REGEXP = /^(rgba?|hsla?)\(([0-9]{1,3}),\s?([0-9]{1,3})%?,\s?([0-9]{1,3})%?,?\s?([0-9](\.[0-9]{1,2})?)?\)$/i;
+const COLOR_REGEXP =
+  /^(rgba?|hsla?)\(([0-9]{1,3}),\s?([0-9]{1,3})%?,\s?([0-9]{1,3})%?,?\s?([0-9](\.[0-9]{1,2})?)?\)$/i;
 const validateArgs = (key = '', value: unknown): boolean => {
   if (key === null) return false;
   if (key === '' || !VALIDATION_REGEXP.test(key)) return false;
@@ -103,7 +104,7 @@ const encodeSpecialValues = (value: unknown): any => {
   return value;
 };
 
-const QS_OPTIONS = {
+const QS_OPTIONS: IStringifyOptions = {
   encode: false, // we handle URL encoding ourselves
   delimiter: ';', // we don't actually create multiple query params
   allowDots: true, // encode objects using dot notation: obj.key=val
@@ -139,7 +140,7 @@ interface Query {
 export const queryFromString = memoize(1000)(
   (s: string): Query => qs.parse(s, { ignoreQueryPrefix: true })
 );
-export const queryFromLocation = (location: { search: string }) => queryFromString(location.search);
+export const queryFromLocation = (location: Partial<Location>) => queryFromString(location.search);
 export const stringifyQuery = (query: Query) =>
   qs.stringify(query, { addQueryPrefix: true, encode: false });
 

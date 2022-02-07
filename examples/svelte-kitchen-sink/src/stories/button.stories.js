@@ -24,3 +24,10 @@ Square.args = {
   rounded: false,
   text: 'Square',
 };
+
+export const WithDefaultRender = {
+  args: {
+    rounded: false,
+    text: 'Magic!',
+  },
+};

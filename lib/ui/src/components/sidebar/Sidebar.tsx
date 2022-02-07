@@ -105,7 +105,24 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
       () => (DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories)(storiesHash),
       [DOCS_MODE, storiesHash]
     );
-    const dataset = useCombination(stories, storiesConfigured, storiesFailed, refs);
+    const adaptedRefs = useMemo(() => {
+      if (DOCS_MODE) {
+        return Object.keys(refs).reduce((acc: Refs, cur) => {
+          const ref = refs[cur];
+          if (ref.stories) {
+            acc[cur] = {
+              ...ref,
+              stories: collapseDocsOnlyStories(ref.stories),
+            };
+          } else {
+            acc[cur] = ref;
+          }
+          return acc;
+        }, {});
+      }
+      return refs;
+    }, [DOCS_MODE, refs]);
+    const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
     const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
     const lastViewedProps = useLastViewed(selected);
 
@@ -113,7 +130,12 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
       <Container className="container sidebar-container">
         <CustomScrollArea vertical>
           <StyledSpaced row={1.6}>
-            <Heading className="sidebar-header" menuHighlighted={menuHighlighted} menu={menu} />
+            <Heading
+              className="sidebar-header"
+              menuHighlighted={menuHighlighted}
+              menu={menu}
+              skipLinkHref="#storybook-preview-wrapper"
+            />
 
             <Search
               dataset={dataset}

@@ -16,9 +16,13 @@
   }}
 />
 
+<!--👇 We create a “template” of how args map to rendering -->
+
 <Template let:args>
   <Button {...args} />
 </Template>
+
+<!-- 👇 Each story then reuses that template -->
 
 <Story
   name='Primary'

@@ -47,32 +47,47 @@ const importAngularCliWebpackConfigGenerator = (): {
   };
 };
 
-const importAngularCliReadTsconfigUtil = (): typeof import('@angular-devkit/build-angular/src/utils/read-tsconfig') => {
-  // First we look for webpack config according to directory structure of Angular 11
-  if (moduleIsAvailable('@angular-devkit/build-angular/src/utils/read-tsconfig')) {
-    // eslint-disable-next-line global-require
-    return require('@angular-devkit/build-angular/src/utils/read-tsconfig');
-  }
-  // We fallback on directory structure of Angular 10 (and below)
-  if (
-    moduleIsAvailable('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig')
-  ) {
-    // eslint-disable-next-line global-require
-    return require('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig');
-  }
-  throw new Error('ReadTsconfig not found in "@angular-devkit/build-angular"');
-};
+const importAngularCliReadTsconfigUtil =
+  (): typeof import('@angular-devkit/build-angular/src/utils/read-tsconfig') => {
+    // First we look for webpack config according to directory structure of Angular 11
+    if (moduleIsAvailable('@angular-devkit/build-angular/src/utils/read-tsconfig')) {
+      // eslint-disable-next-line global-require
+      return require('@angular-devkit/build-angular/src/utils/read-tsconfig');
+    }
+    // We fallback on directory structure of Angular 10 (and below)
+    if (
+      moduleIsAvailable(
+        '@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig'
+      )
+    ) {
+      // eslint-disable-next-line global-require
+      return require('@angular-devkit/build-angular/src/angular-cli-files/utilities/read-tsconfig');
+    }
+    throw new Error('ReadTsconfig not found in "@angular-devkit/build-angular"');
+  };
 
 const buildWebpackConfigOptions = async (
   dirToSearch: string,
   project: workspaces.ProjectDefinition,
-  target: workspaces.TargetDefinition
+  target: workspaces.TargetDefinition,
+  confName?: string
 ): Promise<WebpackConfigOptions> => {
-  const { options: projectBuildOptions = {} } = target;
+  let conf: Record<string, unknown> = {};
 
-  const requiredOptions = ['tsConfig', 'assets', 'optimization'];
+  if (confName) {
+    if (!target.configurations) {
+      throw new Error('Missing "configurations" section in project target');
+    }
+    if (!target.configurations[confName]) {
+      throw new Error(`Missing required configuration in project target. Check "${confName}"`);
+    }
+    conf = target.configurations[confName];
+  }
 
-  if (!requiredOptions.every((key) => key in projectBuildOptions)) {
+  const projectBuildOptions = { ...target.options, ...conf };
+
+  const requiredOptions = ['tsConfig'];
+  if (!requiredOptions.every((key) => !!projectBuildOptions[key])) {
     throw new Error(
       `Missing required options in project target. Check "${requiredOptions.join(', ')}"`
     );
@@ -125,9 +140,9 @@ const buildWebpackConfigOptions = async (
   return {
     root: getSystemPath(workspaceRootNormalized),
     // The dependency of `@angular-devkit/build-angular` to `@angular-devkit/core` is not exactly the same version as the one for storybook (node modules of node modules ^^)
-    logger: (createConsoleLogger() as unknown) as WebpackConfigOptions['logger'],
+    logger: createConsoleLogger() as unknown as WebpackConfigOptions['logger'],
     projectRoot: getSystemPath(projectRootNormalized),
-    sourceRoot: getSystemPath(sourceRootNormalized),
+    sourceRoot: sourceRootNormalized ? getSystemPath(sourceRootNormalized) : undefined,
     buildOptions,
     tsConfig,
     tsConfigPath,
@@ -160,11 +175,17 @@ export type AngularCliWebpackConfig = {
 export async function extractAngularCliWebpackConfig(
   dirToSearch: string,
   project: workspaces.ProjectDefinition,
-  target: workspaces.TargetDefinition
+  target: workspaces.TargetDefinition,
+  confName?: string
 ): Promise<AngularCliWebpackConfig> {
   const { getCommonConfig, getStylesConfig } = importAngularCliWebpackConfigGenerator();
 
-  const webpackConfigOptions = await buildWebpackConfigOptions(dirToSearch, project, target);
+  const webpackConfigOptions = await buildWebpackConfigOptions(
+    dirToSearch,
+    project,
+    target,
+    confName
+  );
 
   const cliCommonConfig = getCommonConfig(webpackConfigOptions);
   const cliStyleConfig = getStylesConfig(webpackConfigOptions);

@@ -3,8 +3,9 @@ import path from 'path';
 import fs from 'fs';
 
 import { transformFileSync, transformSync } from '@babel/core';
-import { inferControls } from '@storybook/client-api';
+import { inferControls } from '@storybook/store';
 import { StoryContext } from '@storybook/react';
+import { AnyFramework } from '@storybook/csf';
 import requireFromString from 'require-from-string';
 
 import { extractProps } from './extractProps';
@@ -51,7 +52,6 @@ describe('react component properties', () => {
       const testDir = path.join(fixturesDir, testEntry.name);
       const testFile = fs.readdirSync(testDir).find((fileName) => inputRegExp.test(fileName));
       if (testFile) {
-        // eslint-disable-next-line jest/valid-title
         it(testEntry.name, () => {
           const inputPath = path.join(testDir, testFile);
 
@@ -69,8 +69,11 @@ describe('react component properties', () => {
 
           // snapshot the output of `extractArgTypes`
           const argTypes = extractArgTypes(component);
-          const parameters = { __isArgsStory: true, argTypes };
-          const rows = inferControls(({ parameters } as unknown) as StoryContext);
+          const parameters = { __isArgsStory: true };
+          const rows = inferControls({
+            argTypes,
+            parameters,
+          } as unknown as StoryContext<AnyFramework>);
           expect(rows).toMatchSpecificSnapshot(path.join(testDir, 'argTypes.snapshot'));
         });
       }

@@ -1,0 +1,29 @@
+```md
+<!-- LoginForm.stories.mdx -->
+
+import { Meta, Story} from '@storybook/addon-docs';
+
+import { userEvent, within } from '@storybook/testing-library';
+
+import { LoginForm } from './LoginForm';
+
+<Meta title="Form" component={LoginForm} />
+
+<!--👇 Queries the DOM and looks for the root element of the component and assigns it for a performance boost -->
+
+<Story 
+  name="Example"
+  play={async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    await userEvent.type(screen.getByTestId('email'), 'emailaddress@provider.com', {
+      delay: 100,
+    });
+    await userEvent.type(screen.getByTestId('password'), 'a-random-password', {
+      delay: 100,
+    });
+    
+    // See https://storybook.js.org/docs/7.0/react/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+    await userEvent.click(canvas.getByRole('button'));
+}} />
+```

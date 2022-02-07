@@ -1,6 +1,6 @@
 {
   "name": "web-components-kitchen-sink",
-  "version": "6.4.0-alpha.28",
+  "version": "6.5.0-alpha.36",
   "private": true,
   "description": "",
   "keywords": [],
@@ -9,8 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build-storybook": "build-storybook",
-    "storybook": "start-storybook -p 9006 --no-manager-cache",
-    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\""
+    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\"",
+    "storybook": "start-storybook -p 9006 --no-manager-cache"
   },
   "resolutions": {
     "@storybook/addon-a11y": "portal:../../addons/a11y",
@@ -18,6 +18,7 @@
     "@storybook/addon-backgrounds": "portal:../../addons/backgrounds",
     "@storybook/addon-controls": "portal:../../addons/controls",
     "@storybook/addon-docs": "portal:../../addons/docs",
+    "@storybook/addon-interactions": "portal:../../addons/interactions",
     "@storybook/addon-links": "portal:../../addons/links",
     "@storybook/addon-storyshots": "portal:../../addons/storyshots/storyshots-core",
     "@storybook/addon-storysource": "portal:../../addons/storysource",
@@ -39,11 +40,15 @@
     "@storybook/core-events": "portal:../../lib/core-events",
     "@storybook/core-server": "portal:../../lib/core-server",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
+    "@storybook/jest": "^0.0.5",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
     "@storybook/node-logger": "portal:../../lib/node-logger",
     "@storybook/postinstall": "portal:../../lib/postinstall",
+    "@storybook/preview-web": "portal:../../lib/preview-web",
     "@storybook/router": "portal:../../lib/router",
     "@storybook/source-loader": "portal:../../lib/source-loader",
+    "@storybook/store": "portal:../../lib/store",
+    "@storybook/testing-library": "^0.0.7",
     "@storybook/theming": "portal:../../lib/theming",
     "@storybook/ui": "portal:../../lib/ui",
     "@storybook/web-components": "portal:../../app/web-components",
@@ -52,10 +57,10 @@
     "typescript": "4.2.4"
   },
   "dependencies": {
-    "lit": "^2.0.0-rc.2"
+    "lit": "^2.0.2"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.3.11",
+    "@custom-elements-manifest/analyzer": "^0.5.7",
     "@storybook/addon-a11y": "*",
     "@storybook/addon-actions": "*",
     "@storybook/addon-backgrounds": "*",
@@ -68,7 +73,7 @@
     "@storybook/addon-viewport": "*",
     "@storybook/web-components": "*",
     "global": "^4.4.0",
-    "jest": "^27.0.1",
+    "jest": "^27.3.1",
     "typescript": "4.2.4"
   },
   "customElements": "custom-elements.json",

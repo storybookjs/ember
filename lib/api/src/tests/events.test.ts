@@ -7,7 +7,7 @@ jest.mock('global', () => ({
 
 describe('getEventMetadata', () => {
   const fullAPIMock = { findRef: jest.fn(), getRefs: jest.fn() };
-  const fullAPI = (fullAPIMock as unknown) as API;
+  const fullAPI = fullAPIMock as unknown as API;
 
   it('returns local if the event source is the same current location', () => {
     expect(

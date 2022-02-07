@@ -1,4 +1,4 @@
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 import { logger } from '@storybook/node-logger';
 import type { Options } from '@storybook/core-common';
 import { isReactScriptsInstalled } from './cra-config';

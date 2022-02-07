@@ -1,11 +1,11 @@
 ```ts
-// Button.stories.ts | Button.stories.tsx
+// Button.stories.ts|tsx
 
 import React from 'react';
 
-import { Story, Meta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button, ButtonProps } from './Button';
+import { Button } from './Button';
 
 //👇 Some function to demonstrate the behavior
 const someFunction = (someValue: String) => {
@@ -13,15 +13,19 @@ const someFunction = (someValue: String) => {
 };
 
 export default {
-  title: 'Example/Button',
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Button',
   component: Button,
   //👇 Creates specific argTypes
   argTypes: {
     backgroundColor: { control: 'color' },
   },
-} as Meta;
+} as ComponentMeta<typeof Button>;
 
-export const ExampleStory: Story<ButtonProps> = (args) => {
+export const ExampleStory: ComponentStory<typeof Button> = (args) => {
   //👇 Destructure the label from the args object
   const { label } = args;
 

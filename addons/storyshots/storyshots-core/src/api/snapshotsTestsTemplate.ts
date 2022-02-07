@@ -1,4 +1,3 @@
-/* eslint-disable jest/valid-title */
 /* eslint-disable jest/no-export */
 /* eslint-disable jest/expect-expect */
 import global from 'global';

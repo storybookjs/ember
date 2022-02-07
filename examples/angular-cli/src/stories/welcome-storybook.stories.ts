@@ -6,7 +6,7 @@ export default {
   title: 'Welcome/ To Storybook',
 } as Meta;
 
-export const toStorybook: Story = () => ({
+export const ToStorybook: Story = () => ({
   component: Welcome,
   props: {
     showApp: linkTo('Button'),

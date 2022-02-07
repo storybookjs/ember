@@ -1,5 +1,6 @@
 import { TransformOptions } from '@babel/core';
 import { precompile } from 'ember-source/dist/ember-template-compiler';
+import { findDistEsm, StorybookConfig, Options } from '@storybook/core-common';
 
 let emberOptions: any;
 
@@ -12,7 +13,7 @@ function precompileWithPlugins(string: string, options: any) {
   return precompile(string, precompileOptions);
 }
 
-export function babel(config: TransformOptions, options: any) {
+export function babel(config: TransformOptions, options: Options): TransformOptions {
   if (options && options.presetsList) {
     options.presetsList.forEach((e: any, index: number) => {
       if (e.preset && e.preset.emberOptions) {
@@ -45,3 +46,7 @@ export function babel(config: TransformOptions, options: any) {
     plugins: [].concat(babelConfigPlugins, extraPlugins),
   };
 }
+
+export const config: StorybookConfig['config'] = (entry = []) => {
+  return [...entry, findDistEsm(__dirname, 'client/preview/config')];
+};

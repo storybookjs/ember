@@ -6,6 +6,11 @@ export default {
   component: Source,
 };
 
+export const Loading = (args) => <Source {...args} />;
+Loading.args = {
+  isLoading: true,
+};
+
 const jsxCode = `
 <MyComponent boolProp scalarProp={1} complexProp={{ foo: 1, bar: '2' }}>
   <SomeOtherComponent funcProp={(a) => a.id} />

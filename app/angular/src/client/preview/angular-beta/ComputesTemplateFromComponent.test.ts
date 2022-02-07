@@ -77,6 +77,22 @@ describe('angular source decorator', () => {
     });
   });
 
+  describe('with component with void element and attribute selector', () => {
+    @Component({
+      selector: 'input[foo]',
+      template: '<button></button>',
+    })
+    class VoidElementWithAttributeComponent {}
+
+    it('should create without separate closing tag', async () => {
+      const component = VoidElementWithAttributeComponent;
+      const props = {};
+      const argTypes: ArgTypes = {};
+      const source = computesTemplateSourceFromComponent(component, props, argTypes);
+      expect(source).toEqual(`<input foo />`);
+    });
+  });
+
   describe('with component with attribute and value only selector', () => {
     @Component({
       selector: '[foo="bar"]',
@@ -90,6 +106,22 @@ describe('angular source decorator', () => {
       const argTypes: ArgTypes = {};
       const source = computesTemplateSourceFromComponent(component, props, argTypes);
       expect(source).toEqual(`<div foo="bar"></div>`);
+    });
+  });
+
+  describe('with component with void element, attribute and value only selector', () => {
+    @Component({
+      selector: 'input[foo="bar"]',
+      template: '<button></button>',
+    })
+    class VoidElementWithAttributeComponent {}
+
+    it('should create and add attribute to template without separate closing tag', async () => {
+      const component = VoidElementWithAttributeComponent;
+      const props = {};
+      const argTypes: ArgTypes = {};
+      const source = computesTemplateSourceFromComponent(component, props, argTypes);
+      expect(source).toEqual(`<input foo="bar" />`);
     });
   });
 
@@ -170,6 +202,22 @@ describe('angular source decorator', () => {
       const argTypes: ArgTypes = {};
       const source = computesTemplateSourceFromComponent(component, props, argTypes);
       expect(source).toEqual(`<doc-button foo="bar"></doc-button>`);
+    });
+  });
+
+  describe('with component with multiple selectors including 2 attributes and a class', () => {
+    @Component({
+      selector: 'doc-button, button[foo], .button[foo], button[baz]',
+      template: '<button></button>',
+    })
+    class WithMultipleSelectorsComponent {}
+
+    it('should use the first selector', async () => {
+      const component = WithMultipleSelectorsComponent;
+      const props = {};
+      const argTypes: ArgTypes = {};
+      const source = computesTemplateSourceFromComponent(component, props, argTypes);
+      expect(source).toEqual(`<doc-button></doc-button>`);
     });
   });
 

@@ -1,15 +1,20 @@
 ```ts
 // TodoItem.stories.ts
 
-import { moduleMetadata, Story, Meta } from '@storybook/angular';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
 
 import fetch from 'node-fetch';
 
 import { CommonModule } from '@angular/common';
 
-import TodoItem from './TodoItem';
+import { TodoItem } from './TodoItem';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'Examples/Loader',
   component: TodoItem,
   decorators: [
     moduleMetadata({
@@ -17,7 +22,6 @@ export default {
       imports: [CommonModule],
     }),
   ],
-  title: 'Examples/Loader',
 } as Meta;
 
 export const Primary = (args, { loaded: { todo } }) => {

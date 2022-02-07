@@ -5,7 +5,6 @@ exports[`Storyshots Addon/Links Go to welcome 1`] = `
   class="button rounded"
   style="color: rgb(66, 185, 131); border-color: #42b983;"
 >
-  This buttons links to Welcome!
-
+  This buttons links to Welcome
 </button>
 `;

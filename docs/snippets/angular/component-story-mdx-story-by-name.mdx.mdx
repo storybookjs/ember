@@ -1,0 +1,15 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './button.component';
+
+<Meta title="Button" component={Button} />
+
+export const Template = (args) => ({ props: args });
+
+<Story name="Basic" args={{ label: 'hello' }}>
+  {Template.bind({})}
+</Story>
+```

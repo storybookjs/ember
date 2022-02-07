@@ -100,12 +100,12 @@ export const WhateverYouWant = () => ({
 WhateverYouWant.storyName = 'whatever you want';
 
 export const PreRegisteredComponent = () => ({
-  /* By pre-registering component in config.js,
+  /* By pre-registering component in preview.js,
    * the need to register all components with each story is removed.
    * You'll only need the template */
   template: `
       <p>
-        <em>This component was pre-registered in .storybook/config.js</em><br/>
+        <em>This component was pre-registered in .storybook/preview.js</em><br/>
         <my-button>MyButton rendered in a template</my-button>
       </p>`,
 });

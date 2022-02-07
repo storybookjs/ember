@@ -1,32 +1,28 @@
+/* eslint-disable no-param-reassign */
 import global from 'global';
 import dedent from 'ts-dedent';
-import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/client-api';
-import { RenderContext } from './types';
+import { simulatePageLoad, simulateDOMContentLoaded } from '@storybook/preview-web';
+import { RenderContext } from '@storybook/store';
+import { HtmlFramework } from './types-6-0';
 
-const { document, Node } = global;
-const rootElement = document.getElementById('root');
+const { Node } = global;
 
-export default function renderMain({
-  storyFn,
-  kind,
-  name,
-  showMain,
-  showError,
-  forceRender,
-}: RenderContext) {
+export function renderToDOM(
+  { storyFn, kind, name, showMain, showError, forceRemount }: RenderContext<HtmlFramework>,
+  domElement: HTMLElement
+) {
   const element = storyFn();
   showMain();
   if (typeof element === 'string') {
-    rootElement.innerHTML = element;
-    simulatePageLoad(rootElement);
+    domElement.innerHTML = element;
+    simulatePageLoad(domElement);
   } else if (element instanceof Node) {
-    // Don't re-mount the element if it didn't change and neither did the story
-    if (rootElement.firstChild === element && forceRender === true) {
+    if (domElement.firstChild === element && forceRemount === false) {
       return;
     }
 
-    rootElement.innerHTML = '';
-    rootElement.appendChild(element);
+    domElement.innerHTML = '';
+    domElement.appendChild(element);
     simulateDOMContentLoaded();
   } else {
     showError({

@@ -1,0 +1,33 @@
+```js
+// MyComponent.stories.js
+
+import { fireEvent, screen, userEvent } from '@storybook/testing-library';
+
+import MyComponent from './MyComponent.vue';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'ClickExamples',
+  component: MyComponent,
+};
+
+const Template = (args) => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+export const ClickExample = Template.bind({});
+ClickExample.play = async () => {
+  // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await userEvent.click(screen.getByRole('button'));
+};
+
+export const FireEventExample = Template.bind({});
+FireEventExample.play = async () => {
+  // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
+  await fireEvent.click(screen.getByTestId('data-testid'));
+};
+```

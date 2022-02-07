@@ -1,21 +1,25 @@
 ```ts
 // MyComponent.stories.ts
 
-import { Story, Meta } from '@storybook/angular/types-6-0';
+import { Meta, Story } from '@storybook/angular';
 
-import MyComponent from './mycomponent.component';
+import { MyComponent } from './MyComponent.component';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/angular/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'MyComponent',
   component: MyComponent,
-  title: 'A story using environment variables inside a .env file',
 } as Meta;
 
-const Template: Story<MyComponent> = (args) => ({
-  props: args
+const Template: Story = (args) => ({
+  props: args,
 });
 
-export const Default = Template.bind({});
-Default.args = {
+export const ExampleStory = Template.bind({});
+ExampleStory.args = {
   propertyA: process.env.STORYBOOK_DATA_KEY
 };
 ```

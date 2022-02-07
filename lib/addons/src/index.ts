@@ -5,6 +5,7 @@ import { API } from '@storybook/api';
 import { RenderData as RouterData } from '@storybook/router';
 import { logger } from '@storybook/client-logger';
 import { ThemeVars } from '@storybook/theming';
+import { mockChannel } from './storybook-channel-mock';
 import { types, Types } from './types';
 
 export { Channel };
@@ -63,28 +64,42 @@ export class AddonStore {
 
   private channel: Channel | undefined;
 
+  private serverChannel: Channel | undefined;
+
   private promise: any;
 
   private resolve: any;
 
   getChannel = (): Channel => {
-    // this.channel should get overwritten by setChannel. If it wasn't called (e.g. in non-browser environment), throw.
+    // this.channel should get overwritten by setChannel. If it wasn't called (e.g. in non-browser environment), set a mock instead.
     if (!this.channel) {
-      throw new Error(
-        'Accessing non-existent addons channel, see https://storybook.js.org/basics/faq/#why-is-there-no-addons-channel'
-      );
+      this.setChannel(mockChannel());
     }
 
     return this.channel;
+  };
+
+  getServerChannel = (): Channel => {
+    if (!this.serverChannel) {
+      throw new Error('Accessing non-existent serverChannel');
+    }
+
+    return this.serverChannel;
   };
 
   ready = (): Promise<Channel> => this.promise;
 
   hasChannel = (): boolean => !!this.channel;
 
+  hasServerChannel = (): boolean => !!this.serverChannel;
+
   setChannel = (channel: Channel): void => {
     this.channel = channel;
     this.resolve();
+  };
+
+  setServerChannel = (channel: Channel): void => {
+    this.serverChannel = channel;
   };
 
   getElements = (type: Types): Collection => {

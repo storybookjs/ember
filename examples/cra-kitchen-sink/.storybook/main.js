@@ -8,6 +8,7 @@ module.exports = {
   },
   addons: [
     '@storybook/preset-create-react-app',
+    '@storybook/addon-ie11',
     {
       name: '@storybook/addon-docs/preset',
       options: {
@@ -32,4 +33,5 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
+  staticDirs: ['../public'],
 };

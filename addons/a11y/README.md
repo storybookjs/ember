@@ -2,7 +2,7 @@
 
 This Storybook addon can be helpful to make your UI components more accessible.
 
-[Framework Support](https://github.com/storybookjs/storybook/blob/main/ADDONS_SUPPORT.md)
+[Framework Support](https://storybook.js.org/docs/react/api/frameworks-feature-support)
 
 ![Screenshot](https://raw.githubusercontent.com/storybookjs/storybook/next/addons/a11y/docs/screenshot.png)
 
@@ -21,6 +21,8 @@ module.exports = {
   addons: ['@storybook/addon-a11y'],
 };
 ```
+
+And here's a sample story file to test the addon:
 
 ```js
 import React from 'react';
@@ -94,7 +96,7 @@ Tip: clearly explain in a comment why a rule was overridden, it’ll help you an
 ```js
 MyStory.parameters = {
   a11y: {
-    options: {
+    config: {
       rules: [
         {
           // Allow `autocomplete="nope"` on form elements,

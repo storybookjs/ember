@@ -110,6 +110,7 @@ export const Ref: FunctionComponent<RefType & RefProps> = React.memo((props) => 
     setHighlighted,
     loginUrl,
     type,
+    expanded = true,
     ready,
     error,
   } = props;
@@ -124,12 +125,13 @@ export const Ref: FunctionComponent<RefType & RefProps> = React.memo((props) => 
   const isAuthRequired = !!loginUrl && length === 0;
 
   const state = getStateType(isLoading, isAuthRequired, isError, isEmpty);
-  const [isExpanded, setExpanded] = useState<boolean>(true);
+  const [isExpanded, setExpanded] = useState<boolean>(expanded);
   const handleClick = useCallback(() => setExpanded((value) => !value), [setExpanded]);
 
-  const setHighlightedItemId = useCallback((itemId: string) => setHighlighted({ itemId, refId }), [
-    setHighlighted,
-  ]);
+  const setHighlightedItemId = useCallback(
+    (itemId: string) => setHighlighted({ itemId, refId }),
+    [setHighlighted]
+  );
 
   const onSelectStoryId = useCallback(
     (storyId: string) => api && api.selectStory(storyId, undefined, { ref: !isMain && refId }),

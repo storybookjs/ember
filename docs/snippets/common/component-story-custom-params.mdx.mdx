@@ -1,0 +1,31 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button} />
+
+export const Template = (args) =>({
+  // 👈 Your template goes here
+});
+
+<Story
+  name="Primary"
+  parameters={{
+    backgrounds: {
+      values: [
+        { name: 'red', value: '#f00' },
+        { name: 'green', value: '#0f0' },
+        { name: 'blue', value: '#00f' },
+      ],
+    },
+  }}
+  args={{
+    primary: true,
+    label: 'Button',
+  }}>
+  {Template.bind({})}
+</Story>
+```

@@ -1,16 +1,21 @@
 ```js
-// ProfilePage.stories.js | ProfilePage.stories.jsx
+// ProfilePage.stories.js|jsx
 
 import React from 'react';
 
-import ProfilePage from './ProfilePage';
-import UserPosts from './UserPosts';
+import { ProfilePage } from './ProfilePage';
+import { UserPosts } from './UserPosts';
 
 //👇 Imports a specific story from a story file
 import { normal as UserFriendsNormal } from './UserFriends.stories';
 
 export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
   title: 'ProfilePage',
+  component: ProfilePage,
 };
 
 const ProfilePageProps = {

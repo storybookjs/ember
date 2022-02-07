@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Story, StoryError } from './Story';
+import { Story, StorySkeleton, StoryError } from './Story';
 import { Button } from '../Button/Button';
 
 export default {
@@ -18,8 +18,10 @@ const buttonHookFn = () => {
   );
 };
 
-export const Inline = () => <Story inline storyFn={buttonFn} title="hello button" />;
+export const Loading = () => <StorySkeleton />;
 
-export const Error = () => <Story error={StoryError.NO_STORY} />;
+export const Inline = () => <Story id="id" inline storyFn={buttonFn} title="hello button" />;
 
-export const ReactHook = () => <Story inline storyFn={buttonHookFn} title="hello button" />;
+export const Error = () => <Story id="id" error={StoryError.NO_STORY} />;
+
+export const ReactHook = () => <Story id="id" inline storyFn={buttonHookFn} title="hello button" />;

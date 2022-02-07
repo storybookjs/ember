@@ -94,9 +94,10 @@ export const A11YPanel: React.FC = () => {
     emit(EVENTS.MANUAL, storyId);
   }, [storyId]);
 
-  const manualActionItems = useMemo(() => [{ title: 'Run test', onClick: handleManual }], [
-    handleManual,
-  ]);
+  const manualActionItems = useMemo(
+    () => [{ title: 'Run test', onClick: handleManual }],
+    [handleManual]
+  );
   const readyActionItems = useMemo(
     () => [
       {
