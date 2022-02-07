@@ -10,6 +10,7 @@ import {
   SET_STORIES,
   STORY_SPECIFIED,
   STORY_INDEX_INVALIDATED,
+  CONFIG_ERROR,
 } from '@storybook/core-events';
 import deprecate from 'util-deprecate';
 import { logger } from '@storybook/client-logger';
@@ -511,6 +512,13 @@ export const init: ModuleFn = ({
         fullAPI.updateStory(storyId, { args }, ref);
       }
     );
+
+    fullAPI.on(CONFIG_ERROR, function handleConfigError(err) {
+      store.setState({
+        storiesConfigured: true,
+        storiesFailed: err,
+      });
+    });
 
     if (FEATURES?.storyStoreV7) {
       provider.serverChannel?.on(STORY_INDEX_INVALIDATED, () => fullAPI.fetchStoryList());
