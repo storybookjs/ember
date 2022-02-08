@@ -1,4 +1,4 @@
-## 6.5.0-alpha.37 (February 8, 2022)
+## 6.5.0-alpha.38 (February 8, 2022)
 
 ### Bug Fixes
 
@@ -9,6 +9,10 @@
 ### Maintenance
 
 - Web-components: Upgrade kitchen sink lockfile ([#17424](https://github.com/storybookjs/storybook/pull/17424))
+
+## 6.5.0-alpha.37 (February 8, 2022)
+
+Failed publish
 
 ## 6.5.0-alpha.36 (February 4, 2022)
 
