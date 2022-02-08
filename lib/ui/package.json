@@ -83,6 +83,6 @@
     "access": "public"
   },
   "bundlerEntrypoint": "./src/index.tsx",
-  "gitHead": "7332caf9f83fe7ab1bb1e80fb52747fb4cf4cdf1",
+  "gitHead": "b0dd637a70b6b24fbd3b8d9f9df7299511f6ba62",
   "sbmodern": "dist/modern/index.js"
 }
