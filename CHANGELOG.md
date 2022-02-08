@@ -1,3 +1,15 @@
+## 6.5.0-alpha.37 (February 8, 2022)
+
+### Bug Fixes
+
+- Addon-links: Fix export statement in react.d.ts ([#17434](https://github.com/storybookjs/storybook/pull/17434))
+- Core: Fix `useParameter` with nullish coalescing ([#17327](https://github.com/storybookjs/storybook/pull/17327))
+- Core: Ensure we show an error when `configure()` throws ([#17435](https://github.com/storybookjs/storybook/pull/17435))
+
+### Maintenance
+
+- Web-components: Upgrade kitchen sink lockfile ([#17424](https://github.com/storybookjs/storybook/pull/17424))
+
 ## 6.5.0-alpha.36 (February 4, 2022)
 
 ### Maintenance
