@@ -12,7 +12,7 @@ const read = async (url: string) => {
   await page.goto(url);
 
   await page.waitForFunction(
-    'window.__STORYBOOK_STORY_STORE__ && window.__STORYBOOK_STORY_STORE__.extract && window.__STORYBOOK_STORY_STORE__.extract()'
+    'window.__STORYBOOK_PREVIEW__ && window.__STORYBOOK_PREVIEW__.extract && window.__STORYBOOK_PREVIEW__.extract()'
   );
   const data = JSON.parse(
     await page.evaluate(async () => {
