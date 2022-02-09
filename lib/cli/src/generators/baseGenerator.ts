@@ -58,7 +58,8 @@ const builderDependencies = (builder: Builder) => {
 
 const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
 
-const hasInteractiveStories = (framework: SupportedFrameworks) => ['react'].includes(framework);
+const hasInteractiveStories = (framework: SupportedFrameworks) =>
+  ['react', 'angular'].includes(framework);
 
 export async function baseGenerator(
   packageManager: JsPackageManager,
