@@ -5,6 +5,9 @@ import React, {
   ReactElement,
   StrictMode,
   Fragment,
+  useState,
+  useCallback,
+  useEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
 import { RenderContext } from '@storybook/store';
@@ -118,24 +121,34 @@ class ErrorBoundary extends ReactComponent<{
 // Will be used to execute a callback function as soon as the React Elements are mounted.
 // This is necessary for the new React Root Api, because passing a callback function to
 // the Root API's render function is not possible anymore.
-class CallbackWrapper extends ReactComponent<{ callback: () => void }, { isDivVisible: boolean }> {
-  state = {
-    isDivVisible: true,
-  };
+function CallbackWrapper({
+  callback,
+  children,
+}: {
+  callback: () => void;
+  children: React.ReactNode;
+}) {
+  const [isRefApplied, setRefApplied] = useState(false);
 
-  onMount() {
-    this.props.callback();
-    this.setState({ isDivVisible: false });
-  }
+  useEffect(() => {
+    if (isRefApplied) {
+      callback();
+    }
+  }, [isRefApplied]);
 
-  render() {
-    return (
-      <>
-        {this.props.children}
-        {this.state.isDivVisible ? <div ref={this.onMount} style={{ display: 'none' }} /> : null}
-      </>
-    );
-  }
+  return (
+    <>
+      {children}
+      {!isRefApplied ? (
+        <div
+          ref={() => {
+            setRefApplied(true);
+          }}
+          style={{ display: 'none' }}
+        />
+      ) : null}
+    </>
+  );
 }
 
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
