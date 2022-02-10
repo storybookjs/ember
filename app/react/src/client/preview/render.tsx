@@ -5,9 +5,6 @@ import React, {
   ReactElement,
   StrictMode,
   Fragment,
-  useState,
-  useCallback,
-  useEffect,
 } from 'react';
 import ReactDOM from 'react-dom';
 import { RenderContext } from '@storybook/store';
@@ -44,15 +41,10 @@ const renderElement = async (node: ReactElement, el: Element) =>
     const root = getReactRoot(el);
 
     if (root) {
-      root.render(
-        <CallbackWrapper
-          callback={() => {
-            resolve(null);
-          }}
-        >
-          {node}
-        </CallbackWrapper>
-      );
+      root.render(node);
+      setTimeout(() => {
+        resolve(null);
+      }, 0);
     } else {
       ReactDOM.render(node, el, () => resolve(null));
     }
@@ -119,39 +111,6 @@ class ErrorBoundary extends ReactComponent<{
 
     return hasError ? null : children;
   }
-}
-
-// Will be used to execute a callback function as soon as the React Elements are mounted.
-// This is necessary for the new React Root Api, because passing a callback function to
-// the Root API's render function is not possible anymore.
-function CallbackWrapper({
-  callback,
-  children,
-}: {
-  callback: () => void;
-  children: React.ReactNode;
-}) {
-  const [isRefApplied, setRefApplied] = useState(false);
-
-  useEffect(() => {
-    if (isRefApplied) {
-      callback();
-    }
-  }, [isRefApplied]);
-
-  return (
-    <>
-      {children}
-      {!isRefApplied ? (
-        <div
-          ref={() => {
-            setRefApplied(true);
-          }}
-          style={{ display: 'none' }}
-        />
-      ) : null}
-    </>
-  );
 }
 
 const Wrapper = FRAMEWORK_OPTIONS?.strictMode ? StrictMode : Fragment;
