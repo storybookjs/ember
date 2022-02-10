@@ -79,7 +79,7 @@ const Label = styled.label(({ theme }) => ({
 }));
 
 const format = (value: BooleanValue): string | null => (value ? String(value) : null);
-const parse = (value: string | null) => value === 'true';
+const parse = (value: string | null): boolean => value === 'true';
 
 export type BooleanProps = ControlProps<BooleanValue> & BooleanConfig;
 export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur, onFocus }) => {
@@ -92,13 +92,15 @@ export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur
     );
   }
 
+  const parsedValue = (typeof value === 'string') ? parse(value) : value
+
   return (
-    <Label htmlFor={name} title={value ? 'Change to false' : 'Change to true'}>
+    <Label htmlFor={name} title={parsedValue ? 'Change to false' : 'Change to true'}>
       <input
         id={getControlId(name)}
         type="checkbox"
         onChange={(e) => onChange(e.target.checked)}
-        checked={value || false}
+        checked={parsedValue}
         {...{ name, onBlur, onFocus }}
       />
       <span>False</span>
