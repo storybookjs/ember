@@ -92,13 +92,12 @@ You can set the following properties in your `.storybook/main.js` files:
 ```js
 module.exports = {
   reactOptions: {
-    newReactRootApi: true,
+    newRootApi: true,
   },
 };
 ```
 
 After enabling it, it is possible to use React's newest [concurrent features](https://reactjs.org/docs/concurrent-mode-intro.html).
-
 
 <div class="aside">
 💡 The new React Root API (React.createRoot) only works with React 18 and above.

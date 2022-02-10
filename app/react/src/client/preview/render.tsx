@@ -65,10 +65,10 @@ const unmountElement = (el: Element) => {
 };
 
 const getReactRoot = (el: Element): IRoot | null => {
-  if (FRAMEWORK_OPTIONS?.newReactRootApi) {
+  if (FRAMEWORK_OPTIONS?.newRootApi) {
     if (!(ReactDOM as any).createRoot) {
       throw new Error(
-        "Your React version doesn't support the new React Root Api. Please use react and react-dom in version 18.x or set the storybook feature 'newReactRootApi' to false"
+        "Your React version doesn't support the new React Root Api. Please use react and react-dom in version 18.x or set the storybook feature 'newRootApi' to false"
       );
     }
     let root = nodes.get(el);
