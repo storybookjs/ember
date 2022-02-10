@@ -4,8 +4,8 @@ import merge from 'lodash/merge';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import addons, { mockChannel as createMockChannel } from '@storybook/addons';
-import { ModuleImportFn } from '@storybook/store';
 import { AnyFramework } from '@storybook/csf';
+import type { ModuleImportFn } from '@storybook/store';
 
 import { PreviewWeb } from './PreviewWeb';
 import {
@@ -2723,6 +2723,161 @@ describe('PreviewWeb', () => {
         Events.PREVIEW_KEYDOWN,
         expect.objectContaining({})
       );
+    });
+  });
+
+  describe('extract', () => {
+    // NOTE: if you are using storyStoreV6, and your `preview.js` throws, we do not currently
+    // detect it (as we do not wrap the import of `preview.js` in a `try/catch`). The net effect
+    // of that is that the `PreviewWeb`/`StoryStore` end up in an uninitalized state.
+    it('throws an error if the preview is uninitialized', async () => {
+      const preview = new PreviewWeb();
+      await expect(preview.extract()).rejects.toThrow(/Failed to initialize/);
+    });
+
+    it('throws an error if preview.js throws', async () => {
+      const err = new Error('meta error');
+      const preview = new PreviewWeb();
+      await expect(
+        preview.initialize({
+          importFn,
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
+
+      await expect(preview.extract()).rejects.toThrow(err);
+    });
+
+    it('shows an error if the stories.json endpoint 500s', async () => {
+      const err = new Error('sort error');
+      mockFetchResult = { status: 500, text: async () => err.toString() };
+
+      const preview = new PreviewWeb();
+      await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+        'sort error'
+      );
+
+      await expect(preview.extract()).rejects.toThrow('sort error');
+    });
+
+    it('waits for stories to be cached', async () => {
+      const [gate, openGate] = createGate();
+
+      const gatedImportFn = async (path) => {
+        await gate;
+        return importFn(path);
+      };
+
+      const preview = await createAndRenderPreview({ importFn: gatedImportFn });
+
+      let extracted = false;
+      preview.extract().then(() => {
+        extracted = true;
+      });
+
+      expect(extracted).toBe(false);
+
+      openGate();
+      await new Promise((r) => setTimeout(r, 0)); // Let the promise resolve
+      expect(extracted).toBe(true);
+
+      expect(await preview.extract()).toMatchInlineSnapshot(`
+        Object {
+          "component-one--a": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "a",
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--a",
+            "initialArgs": Object {
+              "foo": "a",
+            },
+            "kind": "Component One",
+            "name": "A",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "docs": Object {
+                "container": [MockFunction],
+              },
+              "fileName": "./src/ComponentOne.stories.js",
+            },
+            "story": "A",
+            "subcomponents": undefined,
+            "title": "Component One",
+          },
+          "component-one--b": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "b",
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--b",
+            "initialArgs": Object {
+              "foo": "b",
+            },
+            "kind": "Component One",
+            "name": "B",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "docs": Object {
+                "container": [MockFunction],
+              },
+              "fileName": "./src/ComponentOne.stories.js",
+            },
+            "story": "B",
+            "subcomponents": undefined,
+            "title": "Component One",
+          },
+          "component-two--c": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "c",
+            },
+            "component": undefined,
+            "componentId": "component-two",
+            "id": "component-two--c",
+            "initialArgs": Object {
+              "foo": "c",
+            },
+            "kind": "Component Two",
+            "name": "C",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "fileName": "./src/ComponentTwo.stories.js",
+            },
+            "playFunction": undefined,
+            "story": "C",
+            "subcomponents": undefined,
+            "title": "Component Two",
+          },
+        }
+      `);
     });
   });
 });
