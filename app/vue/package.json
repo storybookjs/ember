@@ -60,7 +60,7 @@
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
-    "vue-docgen-api": "^4.38.0",
+    "vue-docgen-api": "^4.44.15",
     "vue-docgen-loader": "^1.5.0",
     "webpack": "4"
   },

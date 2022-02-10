@@ -8772,7 +8772,7 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-loader: ^8.0.14
     vue: 3.0.0
-    vue-docgen-api: ^4.38.0
+    vue-docgen-api: ^4.44.15
     vue-docgen-loader: ^1.5.0
     vue-loader: ^16.0.0
     webpack: 4
@@ -8808,7 +8808,7 @@ __metadata:
     ts-dedent: ^2.0.0
     ts-loader: ^8.0.14
     vue: ^2.6.12
-    vue-docgen-api: ^4.38.0
+    vue-docgen-api: ^4.44.15
     vue-docgen-loader: ^1.5.0
     vue-loader: ^15.9.6
     vue-template-compiler: ^2.6.12
@@ -44952,9 +44952,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"vue-docgen-api@npm:^4.38.0":
-  version: 4.44.2
-  resolution: "vue-docgen-api@npm:4.44.2"
+"vue-docgen-api@npm:^4.44.15":
+  version: 4.44.15
+  resolution: "vue-docgen-api@npm:4.44.15"
   dependencies:
     "@babel/parser": ^7.13.12
     "@babel/types": ^7.13.12
@@ -44966,8 +44966,8 @@ __metadata:
     pug: ^3.0.2
     recast: 0.20.5
     ts-map: ^1.0.3
-    vue-inbrowser-compiler-utils: ^4.44.0
-  checksum: ee41a374a1e5199877897f0f7a096bd9d774081f402cd7b1d375718a6477ac20769f0afdedd700047a78297a087330ac0c4468339c0fc62c6f6f23a320621f57
+    vue-inbrowser-compiler-utils: ^4.44.15
+  checksum: 621d5b32261757e8621098b485a1976a03c45e583e360caa87b11859d589bb80d78d84c6a8cbea3f7a1e0473a8bd08cdcd66c21eb448b6ac4de93b8f251b905a
   languageName: node
   linkType: hard
 
@@ -45028,12 +45028,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-inbrowser-compiler-utils@npm:^4.44.0":
-  version: 4.44.0
-  resolution: "vue-inbrowser-compiler-utils@npm:4.44.0"
+"vue-inbrowser-compiler-utils@npm:^4.44.15":
+  version: 4.44.15
+  resolution: "vue-inbrowser-compiler-utils@npm:4.44.15"
   dependencies:
     camelcase: ^5.3.1
-  checksum: dfab7c5583a47b226f447b8e68db10bc0061aeed6704adcc482b146bb59e11ca1be9601535323962c174a5db535b296ec0508c63daf5a2dd647c606f2eed06b2
+  checksum: a2422d373248fee37768911550a6e438935a46901336f80866d3153359631c52da78983231315ea31ff6946832bc8609ae9a38cabd5f1f6588e6c13451631fe9
   languageName: node
   linkType: hard
 
