@@ -85,7 +85,7 @@ module.exports = {
 
 ### How do I setup the new React Context Root API with Storybook?
 
-The new React Context Root API which was introduced in React 17/18 is an opt-in feature that can be used in Storybook React.
+The new [React Root API](https://reactjs.org/docs/concurrent-mode-reference.html) which was introduced in React 18 is an opt-in feature that can be used in Storybook React.
 
 You can set the following properties in your `.storybook/main.js` files:
 
