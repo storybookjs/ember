@@ -101,7 +101,7 @@ After enabling it, it is possible to use React's newest [concurrent features](ht
 
 
 <div class="aside">
-💡 The new React Context API (React.createRoot) only works with React 17.x and above.
+💡 The new React Root API (React.createRoot) only works with React 18 and above.
 </div>
 
 ### Why is there no addons channel?
