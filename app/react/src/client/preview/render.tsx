@@ -57,8 +57,9 @@ const renderElement = async (node: ReactElement, el: Element) =>
 
 const unmountElement = (el: Element) => {
   const root = nodes.get(el);
-  if (root) {
+  if (root && FRAMEWORK_OPTIONS?.newRootApi) {
     root.unmount();
+    nodes.delete(el);
   } else {
     ReactDOM.unmountComponentAtNode(el);
   }
