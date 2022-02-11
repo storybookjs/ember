@@ -269,9 +269,7 @@ jobs:
           command: yarn wait-on http://localhost:6000
       - run:
           name: run e2e tests cra
-          # disable pnp for now, it's broken
-          # command: yarn test:e2e-framework --pnp cra
-          command: yarn test:e2e-framework cra
+          command: yarn test:e2e-framework --pnp cra
       - run:
           name: run e2e tests vue
           command: yarn test:e2e-framework --pnp sfcVue
