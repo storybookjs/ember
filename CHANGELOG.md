@@ -1,3 +1,23 @@
+## 6.5.0-alpha.39 (February 11, 2022)
+
+### Features
+
+- CLI: Add addon-interactions to angular template ([#17437](https://github.com/storybookjs/storybook/pull/17437))
+
+### Bug Fixes
+
+- Core: Rename `generated-stories-entry` to `cjs` extension so require works ([#17486](https://github.com/storybookjs/storybook/pull/17486))
+- Core/CLI: Add `extract` function to `PreviewWeb` and use it in `sb extract` if available ([#17447](https://github.com/storybookjs/storybook/pull/17447))
+- Controls: Fix Boolean control parsing ([#17456](https://github.com/storybookjs/storybook/pull/17456))
+
+### Maintenance
+
+- Fix `ci:matrix` label in CI ([#17457](https://github.com/storybookjs/storybook/pull/17457))
+
+### Dependency Upgrades
+
+- Bump vue-docgen-api to 4.44.15 ([#17465](https://github.com/storybookjs/storybook/pull/17465))
+
 ## 6.5.0-alpha.38 (February 8, 2022)
 
 ### Bug Fixes
