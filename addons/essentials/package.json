@@ -61,18 +61,7 @@
     "@types/webpack-env": "^1.16.0"
   },
   "peerDependencies": {
-    "@babel/core": "^7.9.6",
-    "@storybook/builder-webpack4": "6.5.0-alpha.39",
-    "@storybook/builder-webpack5": "6.5.0-alpha.39",
-    "@storybook/manager-webpack4": "6.5.0-alpha.39",
-    "@storybook/manager-webpack5": "6.5.0-alpha.39",
-    "@storybook/vue": "6.5.0-alpha.39",
-    "@storybook/web-components": "6.5.0-alpha.39",
-    "babel-loader": "^8.0.0",
-    "lit-html": "^1.4.1 || ^2.0.0-rc.3",
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0",
-    "webpack": "*"
+    "@babel/core": "^7.9.6"
   },
   "peerDependenciesMeta": {
     "@storybook/builder-manager4": {

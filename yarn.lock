@@ -6472,25 +6472,6 @@ __metadata:
     web-component-analyzer: ^1.1.6
     webpack: 4
     zone.js: ^0.11.3
-  peerDependencies:
-    "@storybook/angular": 6.5.0-alpha.39
-    "@storybook/builder-webpack4": 6.5.0-alpha.39
-    "@storybook/builder-webpack5": 6.5.0-alpha.39
-    "@storybook/html": 6.5.0-alpha.39
-    "@storybook/manager-webpack4": 6.5.0-alpha.39
-    "@storybook/manager-webpack5": 6.5.0-alpha.39
-    "@storybook/react": 6.5.0-alpha.39
-    "@storybook/vue": 6.5.0-alpha.39
-    "@storybook/vue3": 6.5.0-alpha.39
-    "@storybook/web-components": 6.5.0-alpha.39
-    lit: ^2.0.0
-    lit-html: ^1.4.1 || ^2.0.0
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-    svelte: ^3.31.2
-    sveltedoc-parser: ^4.1.0
-    vue: ^2.6.10 || ^3.0.0
-    webpack: "*"
   peerDependenciesMeta:
     "@storybook/angular":
       optional: true
@@ -6555,17 +6536,6 @@ __metadata:
     ts-dedent: ^2.0.0
   peerDependencies:
     "@babel/core": ^7.9.6
-    "@storybook/builder-webpack4": 6.5.0-alpha.39
-    "@storybook/builder-webpack5": 6.5.0-alpha.39
-    "@storybook/manager-webpack4": 6.5.0-alpha.39
-    "@storybook/manager-webpack5": 6.5.0-alpha.39
-    "@storybook/vue": 6.5.0-alpha.39
-    "@storybook/web-components": 6.5.0-alpha.39
-    babel-loader: ^8.0.0
-    lit-html: ^1.4.1 || ^2.0.0-rc.3
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-    webpack: "*"
   peerDependenciesMeta:
     "@storybook/builder-manager4":
       optional: true
@@ -8253,10 +8223,6 @@ __metadata:
     webpack: 4
   peerDependencies:
     "@babel/core": ^7.11.5
-    "@storybook/builder-webpack4": 6.5.0-alpha.33
-    "@storybook/builder-webpack5": 6.5.0-alpha.33
-    "@storybook/manager-webpack4": 6.5.0-alpha.33
-    "@storybook/manager-webpack5": 6.5.0-alpha.33
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
