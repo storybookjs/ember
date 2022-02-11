@@ -160,7 +160,7 @@ async function dts({ input, externals, cwd, ...options }: Options) {
 
     await dtsLozalize.run([bundledDTSfile], localizedDTSout, { externals, cwd });
 
-    await fs.remove(path.join(cwd, 'dist/ts-tmp'));
+    // await fs.remove(path.join(cwd, 'dist/ts-tmp'));
 
     await execa('node', [
       path.join(__dirname, '../node_modules/.bin/downlevel-dts'),

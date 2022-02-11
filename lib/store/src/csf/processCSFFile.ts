@@ -1,10 +1,9 @@
-import { isExportStory, sanitize, Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
+import { isExportStory, Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
-import { ModuleExports, CSFFile, NormalizedComponentAnnotations } from './types';
 import { normalizeStory } from './normalizeStory';
-import { normalizeInputTypes } from './normalizeInputTypes';
-import { Path } from '.';
+import { normalizeComponentAnnotations } from './normalizeComponentAnnotations';
+import type { ModuleExports, CSFFile, NormalizedComponentAnnotations, Path } from '../types';
 
 const checkGlobals = (parameters: Parameters) => {
   const { globals, globalTypes } = parameters;
@@ -40,17 +39,8 @@ export function processCSFFile<TFramework extends AnyFramework>(
 ): CSFFile<TFramework> {
   const { default: defaultExport, __namedExportsOrder, ...namedExports } = moduleExports;
 
-  const { id, argTypes } = defaultExport;
-  const meta: NormalizedComponentAnnotations<TFramework> = {
-    id: sanitize(id || title),
-    ...defaultExport,
-    title,
-    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    parameters: {
-      fileName: importPath,
-      ...defaultExport.parameters,
-    },
-  };
+  const meta: NormalizedComponentAnnotations<TFramework> =
+    normalizeComponentAnnotations<TFramework>(defaultExport, title, importPath);
   checkDisallowedParameters(meta.parameters);
 
   const csfFile: CSFFile<TFramework> = { meta, stories: {} };

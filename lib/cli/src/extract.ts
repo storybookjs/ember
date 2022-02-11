@@ -11,9 +11,12 @@ const read = async (url: string) => {
 
   await page.goto(url);
 
-  await page.waitForFunction(
-    'window.__STORYBOOK_STORY_STORE__ && window.__STORYBOOK_STORY_STORE__.extract && window.__STORYBOOK_STORY_STORE__.extract()'
-  );
+  // we don't know whether we are running against a new or old storybook
+  // FIXME: add tests for both
+  await page.waitForFunction(`
+    (window.__STORYBOOK_PREVIEW__ && window.__STORYBOOK_PREVIEW__.extract && window.__STORYBOOK_PREVIEW__.extract()) ||
+    (window.__STORYBOOK_STORY_STORE__ && window.__STORYBOOK_STORY_STORE__.extract && window.__STORYBOOK_STORY_STORE__.extract())
+  `);
   const data = JSON.parse(
     await page.evaluate(async () => {
       // eslint-disable-next-line no-undef

@@ -1,3 +1,62 @@
+## 6.5.0-alpha.39 (February 11, 2022)
+
+### Features
+
+- CLI: Add addon-interactions to angular template ([#17437](https://github.com/storybookjs/storybook/pull/17437))
+
+### Bug Fixes
+
+- Core: Rename `generated-stories-entry` to `cjs` extension so require works ([#17486](https://github.com/storybookjs/storybook/pull/17486))
+- Core/CLI: Add `extract` function to `PreviewWeb` and use it in `sb extract` if available ([#17447](https://github.com/storybookjs/storybook/pull/17447))
+- Controls: Fix Boolean control parsing ([#17456](https://github.com/storybookjs/storybook/pull/17456))
+
+### Maintenance
+
+- Fix `ci:matrix` label in CI ([#17457](https://github.com/storybookjs/storybook/pull/17457))
+
+### Dependency Upgrades
+
+- Bump vue-docgen-api to 4.44.15 ([#17465](https://github.com/storybookjs/storybook/pull/17465))
+
+## 6.5.0-alpha.38 (February 8, 2022)
+
+### Bug Fixes
+
+- Addon-links: Fix export statement in react.d.ts ([#17434](https://github.com/storybookjs/storybook/pull/17434))
+- Core: Fix `useParameter` with nullish coalescing ([#17327](https://github.com/storybookjs/storybook/pull/17327))
+- Core: Ensure we show an error when `configure()` throws ([#17435](https://github.com/storybookjs/storybook/pull/17435))
+
+### Maintenance
+
+- Web-components: Upgrade kitchen sink lockfile ([#17424](https://github.com/storybookjs/storybook/pull/17424))
+
+## 6.5.0-alpha.37 (February 8, 2022)
+
+Failed publish
+
+## 6.5.0-alpha.36 (February 4, 2022)
+
+### Maintenance
+
+- UI: Prebundle `@storybook/components` ([#17304](https://github.com/storybookjs/storybook/pull/17304))
+
+## 6.5.0-alpha.35 (February 4, 2022)
+
+### Features
+
+- CLI/React: Add interactions to cli template ([#17345](https://github.com/storybookjs/storybook/pull/17345))
+- CSF3: Handle auto-title redundant filename ([#17421](https://github.com/storybookjs/storybook/pull/17421))
+
+### Bug Fixes
+
+- Addon-docs: Fix typo in ArgsTable tooltip ([#17404](https://github.com/storybookjs/storybook/pull/17404))
+- Core: Apply Docs mode to composed storybooks ([#17292](https://github.com/storybookjs/storybook/pull/17292))
+
+### Maintenance
+
+- Core: Move CSF-related logic to its own folder ([#17381](https://github.com/storybookjs/storybook/pull/17381))
+- Improve style handling in angular example in monorepo ([#17343](https://github.com/storybookjs/storybook/pull/17343))
+
 ## 6.4.18 (February 2, 2022)
 
 ### Bug Fixes
@@ -8,11 +67,11 @@
 
 ### Features
 
-* Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))
+- Core: Mock channel if not present ([#17382](https://github.com/storybookjs/storybook/pull/17382))
 
 ### Bug Fixes
 
-* CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
+- CLI: Pin version of `@mdx-js/react` to 1.x.x until we are compatible ([#17395](https://github.com/storybookjs/storybook/pull/17395))
 
 ## 6.5.0-alpha.33 (February 1, 2022)
 
