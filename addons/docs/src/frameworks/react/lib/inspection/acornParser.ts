@@ -1,6 +1,5 @@
 import { Parser } from 'acorn';
 import jsx from 'acorn-jsx';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import estree from 'estree';
 import * as acornWalk from 'acorn-walk';
 import {
