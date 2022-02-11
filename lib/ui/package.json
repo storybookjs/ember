@@ -50,6 +50,7 @@
     "@storybook/semver": "^7.3.2",
     "@storybook/theming": "6.5.0-alpha.39",
     "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7",
     "resolve-from": "^5.0.0"
   },
   "devDependencies": {
@@ -70,7 +71,6 @@
     "react-draggable": "^4.4.3",
     "react-helmet-async": "^1.0.7",
     "react-sizeme": "^3.0.1",
-    "regenerator-runtime": "^0.13.7",
     "store2": "^2.12.0",
     "ts-node": "^10.4.0",
     "webpack": "4"

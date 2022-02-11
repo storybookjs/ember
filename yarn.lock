@@ -8506,6 +8506,7 @@ __metadata:
     qs: ^6.10.0
     react-router: 6.0.2
     react-router-dom: 6.0.2
+    regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
     ts-node: ^10.4.0
   peerDependencies:
@@ -8685,6 +8686,7 @@ __metadata:
     global: ^4.4.0
     memoizerific: ^1.11.3
     polished: ^4.0.5
+    regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
     ts-node: ^10.4.0
   peerDependencies:

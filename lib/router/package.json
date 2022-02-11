@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "@storybook/client-logger": "6.5.0-alpha.39",
-    "core-js": "^3.8.2"
+    "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "fast-deep-equal": "^3.1.3",
