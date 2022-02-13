@@ -1,6 +1,6 @@
 import { logger } from '@storybook/node-logger';
 import type { Options, CoreConfig, Webpack5BuilderConfig } from '@storybook/core-common';
-import type { Configuration } from 'webpack';
+import { Configuration, experiments } from 'webpack';
 
 export async function createDefaultWebpackConfig(
   storybookBaseConfig: Configuration,
@@ -45,10 +45,12 @@ export async function createDefaultWebpackConfig(
   const isProd = storybookBaseConfig.mode !== 'development';
 
   const coreOptions = await options.presets.apply<CoreConfig>('core');
-  const cacheConfig = (coreOptions.builder as Webpack5BuilderConfig).options?.fsCache
-    ? {
-        cache: { type: 'filesystem' as 'filesystem' },
-      }
+  const builderOptions = (coreOptions.builder as Webpack5BuilderConfig).options;
+  const cacheConfig = builderOptions?.fsCache
+    ? { cache: { type: 'filesystem' as 'filesystem' } }
+    : {};
+  const lazyCompilationConfig = builderOptions?.lazyCompilation
+    ? { lazyCompilation: { entries: false } }
     : {};
   return {
     ...storybookBaseConfig,
@@ -91,5 +93,6 @@ export async function createDefaultWebpackConfig(
       },
     },
     ...cacheConfig,
+    experiments: lazyCompilationConfig,
   };
 }
