@@ -49,9 +49,8 @@ export async function createDefaultWebpackConfig(
   const cacheConfig = builderOptions?.fsCache
     ? { cache: { type: 'filesystem' as 'filesystem' } }
     : {};
-  const lazyCompilationConfig = builderOptions?.lazyCompilation
-    ? { lazyCompilation: { entries: false } }
-    : {};
+  const lazyCompilationConfig =
+    builderOptions?.lazyCompilation && !isProd ? { lazyCompilation: { entries: false } } : {};
   return {
     ...storybookBaseConfig,
     module: {
