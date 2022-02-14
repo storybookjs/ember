@@ -28,7 +28,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer<AnyFramework> = (contex
   );
 
   return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
-    if (typeof initialArgs[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined' && !(name in initialArgs)) {
       acc[name] = action(name);
     }
     return acc;
@@ -51,7 +51,7 @@ export const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = (context) => {
   const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType.action);
 
   return argTypesWithAction.reduce((acc, [name, argType]) => {
-    if (typeof initialArgs[name] === 'undefined') {
+    if (typeof initialArgs[name] === 'undefined' && !(name in initialArgs)) {
       acc[name] = action(typeof argType.action === 'string' ? argType.action : name);
     }
     return acc;
