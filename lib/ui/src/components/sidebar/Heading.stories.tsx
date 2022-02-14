@@ -120,6 +120,24 @@ export const LongText: Story = () => {
   );
 };
 
+export const CustomTitle: Story = () => {
+  const theme = useTheme() as Theme;
+  return (
+    <ThemeProvider
+      theme={{
+        ...theme,
+        brand: {
+          title: '<span style="color:red">My custom title</span>',
+          url: null,
+          image: null,
+        },
+      }}
+    >
+      <Heading menu={menuItems} />
+    </ThemeProvider>
+  );
+};
+
 export const CustomBrandImage: Story = () => {
   const theme = useTheme() as Theme;
   return (
