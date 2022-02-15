@@ -259,7 +259,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       },
       runtimeChunk: true,
       sideEffects: true,
-      usedExports: true,
+      usedExports: isProd,
       moduleIds: 'named',
       minimizer: isProd
         ? [
