@@ -351,6 +351,10 @@ Applying this small change will enable you to add syntax highlight for SCSS or a
 
 You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook. The environment variable `process.env.STORYBOOK` is also set to `true`.
 
+### Why are my stories not showing up correctly when using certain characters?
+
+Storybook allows you to use most characters while naming your stories. Still, specific characters (e.g., `#`) can lead to issues when Storybook generates the internal identifier for the story, leading to collisions and incorrectly outputting the correct story. We recommend using such characters sparsely.
+
 ### Why are the TypeScript examples and documentation using `as` for type safety?
 
 We're aware that the default Typescript story construct might seem outdated and could potentially introduce a less than ideal way of handling type safety and strictness and could be rewritten as such:
