@@ -1,13 +1,12 @@
 import fs from 'fs-extra';
-import mdx from '@mdx-js/mdx';
+import { compile } from '@storybook/csf-mdx1';
 
 import { loadCsf, CsfOptions } from './CsfFile';
-import { createCompiler } from './mdx';
 
 export const readCsfOrMdx = async (fileName: string, options: CsfOptions) => {
   let code = (await fs.readFile(fileName, 'utf-8')).toString();
   if (fileName.endsWith('.mdx')) {
-    code = await mdx(code, { compilers: [createCompiler({})] });
+    code = await compile(code);
   }
   return loadCsf(code, { ...options, fileName });
 };

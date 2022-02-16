@@ -3,7 +3,7 @@ import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
 
 // @ts-ignore
-import { createCompiler } from '@storybook/csf-tools/mdx';
+import { createCompiler } from '@storybook/csf-mdx1';
 import type { BuilderConfig, Options } from '@storybook/core-common';
 
 // for frameworks that are not working with react, we need to configure

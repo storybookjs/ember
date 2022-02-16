@@ -3,7 +3,7 @@ const mdx = require('@mdx-js/mdx');
 const { ScriptTransformer } = require('@jest/transform');
 const { dedent } = require('ts-dedent');
 
-const { createCompiler } = require('@storybook/csf-tools/mdx');
+const { createCompiler } = require('@storybook/csf-mdx1');
 
 const compilers = [createCompiler({})];
 

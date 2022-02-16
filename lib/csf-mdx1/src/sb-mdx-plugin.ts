@@ -6,7 +6,7 @@ import camelCase from 'lodash/camelCase';
 import jsStringEscape from 'js-string-escape';
 
 // Defined in MDX2.0
-interface MdxOptions {
+export interface MdxOptions {
   filepath?: string;
   skipExport?: boolean;
   wrapExport?: string;
@@ -355,7 +355,7 @@ function getExports(node: Element, context: Context, options: CompilerOptions) {
 
 // insert `mdxStoryNameToKey` and `mdxComponentMeta` into the context so that we
 // can reconstruct the Story ID dynamically from the `name` at render time
-const wrapperJs = `
+export const wrapperJs = `
 componentMeta.parameters = componentMeta.parameters || {};
 componentMeta.parameters.docs = {
   ...(componentMeta.parameters.docs || {}),

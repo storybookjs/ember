@@ -1,18 +1,18 @@
 {
-  "name": "@storybook/csf-tools",
+  "name": "@storybook/csf-mdx1",
   "version": "6.5.0-alpha.39",
   "description": "",
   "keywords": [
     "storybook"
   ],
-  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/csf-tools",
+  "homepage": "https://github.com/storybookjs/storybook/tree/main/lib/csf-mdx1",
   "bugs": {
     "url": "https://github.com/storybookjs/storybook/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/storybookjs/storybook.git",
-    "directory": "lib/csf-tools"
+    "directory": "lib/csf-mdx1"
   },
   "funding": {
     "type": "opencollective",
@@ -43,20 +43,18 @@
     "@babel/core": "^7.12.10",
     "@babel/generator": "^7.12.11",
     "@babel/parser": "^7.12.11",
-    "@babel/plugin-transform-react-jsx": "^7.12.12",
     "@babel/preset-env": "^7.12.11",
-    "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-mdx1": "6.5.0-alpha.39",
+    "@mdx-js/mdx": "^1.6.22",
     "core-js": "^3.8.2",
-    "fs-extra": "^9.0.1",
+    "js-string-escape": "^1.0.1",
+    "lodash": "^4.17.21",
+    "prettier": ">=2.2.1 <=2.3.0",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "^9.0.6",
-    "js-yaml": "^3.14.1"
+    "@types/js-string-escape": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

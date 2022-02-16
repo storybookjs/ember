@@ -163,6 +163,7 @@
     "@storybook/components": "workspace:*",
     "@storybook/core": "workspace:*",
     "@storybook/core-events": "workspace:*",
+    "@storybook/csf-mdx1": "workspace:*",
     "@storybook/csf-tools": "workspace:*",
     "@storybook/ember": "workspace:*",
     "@storybook/eslint-config-storybook": "^2.4.0",

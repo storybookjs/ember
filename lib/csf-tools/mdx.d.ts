@@ -1,1 +1,1 @@
-export * from './dist/ts3.9/mdx/index.d';
+export * from '@storybook/csf-mdx1';
