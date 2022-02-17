@@ -18,7 +18,14 @@ const requireMain = (configDir: string) => {
     // eslint-disable-next-line global-require,import/no-dynamic-require
     main = require(mainFile);
   } catch (err) {
-    logger.warn(`Unable to find main.js: ${mainFile}`);
+    try {
+      // Try finding a .cjs version of the main file
+      const mainFileCjs = path.join(absoluteConfigDir, 'main.cjs');
+      // eslint-disable-next-line global-require,import/no-dynamic-require
+      main = require(mainFileCjs);
+    } catch (cjsErr) {
+      logger.warn(`Unable to find main.js or main.cjs: ${mainFile}`);
+    }
   }
   return main;
 };
