@@ -161,7 +161,8 @@ export const web_components_lit2: Parameters = {
 export const vue: Parameters = {
   framework: 'vue',
   name: 'vue',
-  version: 'latest',
+  // Be careful here, the latest versions of vue cli are bootstrapping a vue 3  project
+  version: '4',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
     `npx -p @vue/cli@{{version}} vue create {{appName}} --default --packageManager=npm --no-git --force`,
@@ -201,7 +202,13 @@ export const sfcVue: Parameters = {
   framework: 'vue',
   name: 'sfcVue',
   version: 'latest',
-  generator: fromDeps('vue', 'vue-loader', 'vue-template-compiler', 'webpack@webpack-4'),
+  //
+  generator: fromDeps(
+    'vue@2.6',
+    'vue-loader@15.9',
+    'vue-template-compiler@2.6',
+    'webpack@webpack-4'
+  ),
 };
 
 export const svelte: Parameters = {
