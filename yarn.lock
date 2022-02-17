@@ -6537,6 +6537,8 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.9.6
   peerDependenciesMeta:
+    "@storybook/angular":
+      optional: true
     "@storybook/builder-manager4":
       optional: true
     "@storybook/builder-manager5":
@@ -6545,15 +6547,27 @@ __metadata:
       optional: true
     "@storybook/builder-webpack5":
       optional: true
+    "@storybook/html":
+      optional: true
     "@storybook/vue":
       optional: true
+    "@storybook/vue3":
+      optional: true
     "@storybook/web-components":
+      optional: true
+    lit:
       optional: true
     lit-html:
       optional: true
     react:
       optional: true
     react-dom:
+      optional: true
+    svelte:
+      optional: true
+    sveltedoc-parser:
+      optional: true
+    vue:
       optional: true
     webpack:
       optional: true
