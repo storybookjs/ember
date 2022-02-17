@@ -1205,7 +1205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-private-property-in-object@npm:^7.12.1, @babel/plugin-proposal-private-property-in-object@npm:^7.16.5, @babel/plugin-proposal-private-property-in-object@npm:^7.16.7":
+"@babel/plugin-proposal-private-property-in-object@npm:^7.12.1, @babel/plugin-proposal-private-property-in-object@npm:^7.16.0, @babel/plugin-proposal-private-property-in-object@npm:^7.16.5, @babel/plugin-proposal-private-property-in-object@npm:^7.16.7":
   version: 7.16.7
   resolution: "@babel/plugin-proposal-private-property-in-object@npm:7.16.7"
   dependencies:
@@ -7648,8 +7648,6 @@ __metadata:
     ws: ^8.2.3
     x-default-browser: ^0.4.0
   peerDependencies:
-    "@storybook/builder-webpack5": 6.5.0-alpha.39
-    "@storybook/manager-webpack5": 6.5.0-alpha.39
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   peerDependenciesMeta:
@@ -7669,8 +7667,6 @@ __metadata:
     "@storybook/core-client": 6.5.0-alpha.39
     "@storybook/core-server": 6.5.0-alpha.39
   peerDependencies:
-    "@storybook/builder-webpack5": 6.5.0-alpha.39
-    "@storybook/manager-webpack5": 6.5.0-alpha.39
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
     webpack: "*"
