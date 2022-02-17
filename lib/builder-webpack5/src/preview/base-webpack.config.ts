@@ -1,6 +1,6 @@
 import { logger } from '@storybook/node-logger';
 import type { Options, CoreConfig, Webpack5BuilderConfig } from '@storybook/core-common';
-import { Configuration, experiments } from 'webpack';
+import { Configuration } from 'webpack';
 
 export async function createDefaultWebpackConfig(
   storybookBaseConfig: Configuration,
@@ -92,6 +92,6 @@ export async function createDefaultWebpackConfig(
       },
     },
     ...cacheConfig,
-    experiments: lazyCompilationConfig,
+    experiments: { ...storybookBaseConfig.experiments, ...lazyCompilationConfig },
   };
 }
