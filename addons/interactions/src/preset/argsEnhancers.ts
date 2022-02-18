@@ -1,8 +1,11 @@
 import { Args, addons } from '@storybook/addons';
+import { window as globalWindow } from 'global';
 import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { instrument } from '@storybook/instrumenter';
-import { fn } from 'jest-mock';
+import { ModuleMocker } from 'jest-mock';
+
+const { fn } = new ModuleMocker(globalWindow);
 
 // Aliasing `fn` to `action` here, so we get a more descriptive label in the UI.
 const { action } = instrument({ action: fn }, { retain: true });
