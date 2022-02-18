@@ -1,5 +1,6 @@
 import path, { join } from 'path';
 import { logger } from '@storybook/node-logger';
+import { serverRequire } from '@storybook/core-common';
 
 interface PresetOptions {
   configDir?: string;
@@ -9,25 +10,12 @@ interface PresetOptions {
 }
 
 const requireMain = (configDir: string) => {
-  let main = {};
   const absoluteConfigDir = path.isAbsolute(configDir)
     ? configDir
     : path.join(process.cwd(), configDir);
   const mainFile = path.join(absoluteConfigDir, 'main');
-  try {
-    // eslint-disable-next-line global-require,import/no-dynamic-require
-    main = require(mainFile);
-  } catch (err) {
-    try {
-      // Try finding a .cjs version of the main file
-      const mainFileCjs = path.join(absoluteConfigDir, 'main.cjs');
-      // eslint-disable-next-line global-require,import/no-dynamic-require
-      main = require(mainFileCjs);
-    } catch (cjsErr) {
-      logger.warn(`Unable to find main.js or main.cjs: ${mainFile}`);
-    }
-  }
-  return main;
+
+  return serverRequire(mainFile) ?? {};
 };
 
 export function addons(options: PresetOptions = {}) {

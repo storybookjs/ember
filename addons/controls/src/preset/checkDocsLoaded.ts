@@ -1,4 +1,4 @@
-import { checkAddonOrder } from '@storybook/core-common';
+import { checkAddonOrder, serverRequire } from '@storybook/core-common';
 import path from 'path';
 
 export const checkDocsLoaded = (configDir: string) => {
@@ -14,6 +14,6 @@ export const checkDocsLoaded = (configDir: string) => {
     configFile: path.isAbsolute(configDir)
       ? path.join(configDir, 'main')
       : path.join(process.cwd(), configDir, 'main'),
-    getConfig: (configFile) => import(configFile),
+    getConfig: (configFile) => serverRequire(configFile),
   });
 };
