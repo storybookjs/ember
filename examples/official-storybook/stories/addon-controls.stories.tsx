@@ -28,6 +28,41 @@ export default {
         ],
       },
     },
+    staticDisable: {
+      name: 'Static disabled',
+      excludeIf: true,
+    },
+    mutuallyExclusiveA: { control: 'text', excludeIf: 'mutuallyExclusiveB' },
+    mutuallyExclusiveB: { control: 'text', excludeIf: 'mutuallyExclusiveA' },
+    colorMode: {
+      control: 'boolean',
+    },
+    dynamicText: {
+      excludeIf: 'colorMode',
+      control: 'text',
+    },
+    dynamicColor: {
+      includeIf: 'colorMode',
+      control: 'color',
+    },
+    advanced: {
+      control: 'boolean',
+    },
+    margin: {
+      control: 'number',
+      includeIf: 'advanced',
+    },
+    padding: {
+      control: 'number',
+      includeIf: 'advanced',
+    },
+    cornerRadius: {
+      control: 'number',
+      includeIf: 'advanced',
+    },
+    someText: { control: 'text' },
+    subText: { control: 'text', includeIf: 'someText' },
+    anotherText: { control: 'text', includeIf: 'someText' },
   },
   parameters: {
     chromatic: { disable: true },
