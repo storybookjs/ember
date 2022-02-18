@@ -164,6 +164,7 @@ export const repro = async ({
     );
   } catch (error) {
     logger.error('🚨 Failed to create repro');
+    throw new Error(error);
   }
 };
 

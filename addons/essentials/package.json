@@ -61,20 +61,37 @@
     "@types/webpack-env": "^1.16.0"
   },
   "peerDependencies": {
-    "@babel/core": "^7.9.6",
-    "@storybook/vue": "6.5.0-alpha.39",
-    "@storybook/web-components": "6.5.0-alpha.39",
-    "babel-loader": "^8.0.0",
-    "lit-html": "^1.4.1 || ^2.0.0-rc.3",
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0",
-    "webpack": "*"
+    "@babel/core": "^7.9.6"
   },
   "peerDependenciesMeta": {
+    "@storybook/angular": {
+      "optional": true
+    },
+    "@storybook/builder-manager4": {
+      "optional": true
+    },
+    "@storybook/builder-manager5": {
+      "optional": true
+    },
+    "@storybook/builder-webpack4": {
+      "optional": true
+    },
+    "@storybook/builder-webpack5": {
+      "optional": true
+    },
+    "@storybook/html": {
+      "optional": true
+    },
     "@storybook/vue": {
       "optional": true
     },
+    "@storybook/vue3": {
+      "optional": true
+    },
     "@storybook/web-components": {
+      "optional": true
+    },
+    "lit": {
       "optional": true
     },
     "lit-html": {
@@ -84,6 +101,15 @@
       "optional": true
     },
     "react-dom": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "sveltedoc-parser": {
+      "optional": true
+    },
+    "vue": {
       "optional": true
     },
     "webpack": {

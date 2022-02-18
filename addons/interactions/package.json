@@ -49,6 +49,7 @@
     "@storybook/csf": "0.0.2--canary.87bc651.0",
     "@storybook/instrumenter": "6.5.0-alpha.39",
     "@storybook/theming": "6.5.0-alpha.39",
+    "core-js": "^3.8.2",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
     "polished": "^4.0.5",

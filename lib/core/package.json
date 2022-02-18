@@ -44,13 +44,15 @@
     "@storybook/core-server": "6.5.0-alpha.39"
   },
   "peerDependencies": {
-    "@storybook/builder-webpack5": "6.5.0-alpha.39",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0",
     "webpack": "*"
   },
   "peerDependenciesMeta": {
     "@storybook/builder-webpack5": {
+      "optional": true
+    },
+    "@storybook/manager-webpack5": {
       "optional": true
     },
     "typescript": {
