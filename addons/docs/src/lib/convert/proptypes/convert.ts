@@ -2,7 +2,7 @@
 import mapValues from 'lodash/mapValues';
 import { SBType } from '@storybook/csf';
 import { PTType } from './types';
-import { trimQuotes } from '../utils';
+import { includesQuotes, trimQuotes } from '../utils';
 
 const SIGNATURE_REGEXP = /^\(.*\) => /;
 
@@ -16,8 +16,7 @@ export const convert = (type: PTType): SBType | any => {
       const values = computed
         ? value
         : value.map((v: PTType) => {
-            const trimmedValue = trimQuotes(v.value);
-            return Number.isNaN(Number(trimmedValue)) ? trimmedValue : Number(trimmedValue);
+            return includesQuotes(v.value) ? trimQuotes(v.value) : Number(v.value);
           });
       return { ...base, name, value: values };
     }
