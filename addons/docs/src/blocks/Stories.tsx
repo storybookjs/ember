@@ -13,6 +13,7 @@ export const Stories: FunctionComponent<StoriesProps> = ({ title, includePrimary
   const { componentStories } = useContext(DocsContext);
 
   let stories: DocsStoryProps[] = componentStories();
+  stories = stories.filter((story) => !story.parameters?.docs?.disable);
   if (!includePrimary) stories = stories.slice(1);
 
   if (!stories || stories.length === 0) {

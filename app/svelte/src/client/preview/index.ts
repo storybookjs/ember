@@ -2,7 +2,7 @@ import { start } from '@storybook/core/client';
 import { decorateStory } from './decorators';
 
 import './globals';
-import { renderToDOM } from './render';
+import { render, renderToDOM } from './render';
 
 const {
   configure: coreConfigure,
@@ -10,6 +10,7 @@ const {
   forceReRender,
 } = start(renderToDOM, {
   decorateStory,
+  render,
 });
 
 export const { setAddon, addDecorator, addParameters, clearDecorators, getStorybook, raw } =

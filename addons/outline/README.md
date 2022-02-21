@@ -20,4 +20,4 @@ module.exports = {
 };
 ```
 
-You can now click on the outline button in the toolbar to toggle the outlines.
+You can now click on the outline button or press the <kbd>o</kbd> key in the toolbar to toggle the outlines.

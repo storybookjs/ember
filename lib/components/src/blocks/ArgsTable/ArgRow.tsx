@@ -6,7 +6,7 @@ import { ArgType, Args, TableAnnotation } from './types';
 import { ArgJsDoc } from './ArgJsDoc';
 import { ArgValue } from './ArgValue';
 import { ArgControl, ArgControlProps } from './ArgControl';
-import { codeCommon } from '../../typography/shared';
+import { codeCommon } from '../../typography/lib/common';
 
 interface ArgRowProps {
   row: ArgType;

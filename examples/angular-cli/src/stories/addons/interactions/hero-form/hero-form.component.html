@@ -36,7 +36,7 @@
 
       <button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">
         Submit
-        <span [hidden]="!submitting" class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>
+        <span *ngIf="submitting" class="spinner-border spinner-border-sm ml-2" role="status" aria-hidden="true"></span>
       </button>
     </form>
   </div>

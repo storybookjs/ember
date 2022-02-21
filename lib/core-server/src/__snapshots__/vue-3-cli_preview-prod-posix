@@ -64,6 +64,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -129,6 +135,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -254,6 +266,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -341,6 +359,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -465,8 +489,6 @@ Object {
         "options": Object {
           "docgenOptions": Object {
             "alias": Object {
-              "@emotion/core": "NODE_MODULES/@emotion/core",
-              "@emotion/styled": "NODE_MODULES/@emotion/styled",
               "@storybook/addons": "ROOT/lib/addons",
               "@storybook/api": "ROOT/lib/api",
               "@storybook/channel-postmessage": "ROOT/lib/channel-postmessage",
@@ -480,7 +502,6 @@ Object {
               "@storybook/semver": "NODE_MODULES/@storybook/semver",
               "@storybook/store": "ROOT/lib/store",
               "@storybook/theming": "ROOT/lib/theming",
-              "emotion-theming": "NODE_MODULES/emotion-theming",
               "react": "NODE_MODULES/react",
               "react-dom": "NODE_MODULES/react-dom",
               "vue$": "NODE_MODULES/vue/dist/vue.esm-bundler.js",

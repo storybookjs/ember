@@ -6,7 +6,9 @@
     @click="onClick"
     @dblclick="onDoubleClick"
   >
-    <slot />!
+    <slot>
+      {{label}}!
+    </slot>
   </button>
 </template>
 
@@ -23,6 +25,9 @@
       color: {
         type: String,
         default: '#42b983'
+      },
+      label: {
+        type: String
       }
     },
 

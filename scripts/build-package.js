@@ -2,40 +2,35 @@
 
 /* eslint-disable global-require */
 const { resolve } = require('path');
+const execa = require('execa');
 const terminalSize = require('window-size');
-const { checkDependenciesAndRun, spawn } = require('./utils/cli-utils');
 
-const getStorybookPackages = () => {
-  const listCommand = spawn(`lerna list`, {
-    stdio: 'pipe',
-  });
+const getStorybookPackages = async () => {
+  const { stdout } = await execa.command(`yarn workspaces list --json`);
 
-  const packages = listCommand.output
+  const packages = stdout
     .toString()
-    .match(/@storybook\/(.)*/g)
+    .split('\n')
+    .map((v) => JSON.parse(v))
+    .filter((v) => v.name.match(/@storybook\/(.)*/g))
     .sort();
 
   return packages;
 };
 
-function run() {
+async function run() {
   const prompts = require('prompts');
   const program = require('commander');
   const chalk = require('chalk');
-  const log = require('npmlog');
 
-  log.heading = 'storybook';
-  const prefix = 'build';
-  log.addLevel('aborted', 3001, { fg: 'red', bold: true });
-
-  const packages = getStorybookPackages();
+  const packages = await getStorybookPackages();
   const packageTasks = packages
     .map((package) => {
       return {
-        name: package,
-        suffix: package.replace('@storybook/', ''),
+        ...package,
+        suffix: package.name.replace('@storybook/', ''),
         defaultValue: false,
-        helpText: `build only the ${package} package`,
+        helpText: `build only the ${package.name} package`,
       };
     })
     .reduce((acc, next) => {
@@ -72,7 +67,7 @@ function run() {
       .map((key) => tasks[key].value)
       .filter(Boolean).length
   ) {
-    selection = prompts([
+    selection = await prompts([
       {
         type: 'toggle',
         name: 'mode',
@@ -88,7 +83,7 @@ function run() {
         min: 1,
         hint: 'You can also run directly with package name like `yarn build core`, or `yarn build --all` for all packages!',
         optionsPerPage: terminalSize.height - 3, // 3 lines for extra info
-        choices: packages.map((key) => ({
+        choices: packages.map(({ name: key }) => ({
           value: key,
           title: tasks[key].name || key,
           selected: (tasks[key] && tasks[key].defaultValue) || false,
@@ -101,57 +96,27 @@ function run() {
   } else {
     // hits here when running yarn build --packagename
     watchMode = process.argv.includes('--watch');
-    selection = Promise.resolve(
-      Object.keys(tasks)
-        .map((key) => tasks[key])
-        .filter((item) => item.name !== 'watch' && item.value === true)
-    );
+    selection = Object.keys(tasks)
+      .map((key) => tasks[key])
+      .filter((item) => item.name !== 'watch' && item.value === true);
   }
 
-  selection
-    .then((list) => {
-      const packageNames = list
-        // filters out watch command if --watch is used
-        .map((key) => key.suffix)
-        .filter(Boolean);
-
-      let glob =
-        packageNames.length > 1
-          ? `@storybook/{${packageNames.join(',')}}`
-          : `@storybook/${packageNames[0]}`;
-
-      const isAllPackages = process.argv.includes('--all');
-      if (isAllPackages) {
-        glob = '@storybook/*';
-
-        log.warn(
-          'You are building a lot of packages on watch mode. This is an expensive action and might slow your computer down.\nIf this is an issue, run yarn build to filter packages and speed things up!'
-        );
-      }
-
-      if (watchMode) {
-        const runWatchMode = () => {
-          const baseWatchCommand = `lerna exec --scope '${glob}' --parallel -- cross-env-shell node ${resolve(
-            __dirname
-          )}`;
-          const watchTsc = `${baseWatchCommand}/utils/watch-tsc.js`;
-          const watchBabel = `${baseWatchCommand}/utils/watch-babel.js`;
-          const command = `concurrently --kill-others-on-fail "${watchTsc}" "${watchBabel}"`;
-
-          spawn(command);
-        };
-
-        runWatchMode();
-      } else {
-        spawn(`lerna run prepare --scope "${glob}"`);
-      }
-      process.stdout.write('\x07');
-    })
-    .catch((e) => {
-      log.aborted(prefix, chalk.red(e.message));
-      log.silly(prefix, e);
-      process.exit(1);
+  selection.filter(Boolean).forEach((v) => {
+    const sub = execa.command(`yarn prepare${watchMode ? ' --watch' : ''}`, {
+      cwd: resolve(__dirname, '..', v.location),
+      buffer: false,
     });
+
+    sub.stdout.on('data', (data) => {
+      process.stdout.write(`${chalk.cyan(v.name)}:\n${data}`);
+    });
+    sub.stderr.on('data', (data) => {
+      process.stderr.write(`${chalk.red(v.name)}:\n${data}`);
+    });
+  });
 }
 
-checkDependenciesAndRun(run);
+run().catch((e) => {
+  console.log(e);
+  process.exit(1);
+});

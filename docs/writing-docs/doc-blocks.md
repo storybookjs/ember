@@ -10,8 +10,6 @@ title: 'Doc Blocks'
 
 Doc Blocks are the building blocks of Storybook documentation pages. By default, [DocsPage](./docs-page.md) uses a combination of the blocks below to build a page for each of your components automatically.
 
-Custom [addons](../addons/writing-addons.md) can also provide their own doc blocks.
-
 ## ArgsTable
 
 Storybook Docs automatically generates component args tables for components in supported frameworks. These tables list the arguments ([args for short](../writing-stories/args.md)) of the component, and even integrate with [controls](../essentials/controls.md) to allow you to change the args of the currently rendered story.

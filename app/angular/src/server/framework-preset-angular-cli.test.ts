@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-interpolation-in-snapshots */
 import path from 'path';
 import { Configuration } from 'webpack';
 import { logger } from '@storybook/node-logger';

@@ -58,4 +58,4 @@ export const animation = {
   jiggle,
   inlineGlow,
   hoverable,
-};
+} as const;

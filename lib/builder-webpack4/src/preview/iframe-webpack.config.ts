@@ -101,7 +101,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
 
     const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
-      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
+      await readTemplate(
+        require.resolve(
+          '@storybook/builder-webpack4/templates/virtualModuleModernEntry.js.handlebars'
+        )
+      ),
       {
         storiesFilename,
         configs,
@@ -254,7 +258,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       },
       runtimeChunk: true,
       sideEffects: true,
-      usedExports: true,
+      usedExports: isProd,
       moduleIds: 'named',
       minimizer: isProd
         ? [

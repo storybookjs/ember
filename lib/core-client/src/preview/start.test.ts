@@ -1,3 +1,4 @@
+/* global window */
 import Events from '@storybook/core-events';
 
 import {
@@ -357,6 +358,8 @@ describe('start', () => {
         }),
         undefined
       );
+
+      expect((window as any).IS_STORYBOOK).toBe(true);
     });
 
     it('supports forceRerender()', async () => {

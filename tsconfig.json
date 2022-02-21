@@ -7,14 +7,21 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "jsx": "react",
-    "module": "commonjs",
-    "skipLibCheck": true,
+    "moduleResolution": "Node",
+    "module": "CommonJS",
+    "skipLibCheck": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "target": "es5",
-    "types": ["jest"],
-    "lib": ["es2019", "dom"]
+    "target": "ES2015",
+    "types": [
+      "jest"
+    ],
+    "lib": [
+      "es2019",
+      "dom",
+      "ESNext"
+    ]
   },
   "exclude": [
     "**/dist",
@@ -25,5 +32,14 @@
     "**/*.test.ts",
     "**/FlowType*",
     "**/setup-jest.ts"
-  ]
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {
+      "types": [
+        "node"
+      ]
+    }
+  }
 }

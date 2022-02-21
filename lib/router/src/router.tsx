@@ -1,14 +1,7 @@
 import global from 'global';
 import React, { ReactNode, useCallback } from 'react';
 
-import {
-  Link,
-  BrowserRouter,
-  useNavigate,
-  useLocation,
-  NavigateOptions,
-  Router,
-} from 'react-router-dom';
+import * as R from 'react-router-dom';
 import { ToggleVisibility } from './visibility';
 import { queryFromString, parsePath, getMatch, StoryData } from './utils';
 
@@ -21,7 +14,7 @@ interface Other extends StoryData {
 
 export type RouterData = {
   location: Partial<Location>;
-  navigate: ReturnType<typeof useQueryNavigate>;
+  navigate: ReturnType<typeof useNavigate>;
 } & Other;
 
 export type RenderData = Pick<RouterData, 'location'> & Other;
@@ -30,10 +23,10 @@ interface MatchingData {
   match: null | { path: string };
 }
 
-interface QueryLocationProps {
+interface LocationProps {
   children: (renderData: RenderData) => ReactNode;
 }
-interface QueryMatchProps {
+interface MatchProps {
   path: string;
   startsWith: boolean;
   children: (matchingData: MatchingData) => ReactNode;
@@ -45,28 +38,28 @@ interface RouteProps {
   children: ReactNode;
 }
 
-export interface QueryLinkProps {
+export interface LinkProps {
   to: string;
   children: ReactNode;
 }
 
 const getBase = () => `${document.location.pathname}?`;
 
-type ExpandedNavigateOptions = NavigateOptions & { plain?: boolean };
+export type NavigateOptions = ReturnType<typeof R.useNavigate> & { plain?: boolean };
 
 // const queryNavigate: NavigateFn = (to: string | number, options?: NavigateOptions<{}>) =>
 //   typeof to === 'number' ? navigate(to) : navigate(`${getBase()}path=${to}`, options);
 
-const useQueryNavigate = () => {
-  const navigate = useNavigate();
+export const useNavigate = () => {
+  const navigate = R.useNavigate();
 
-  return useCallback((to: string | number, options?: ExpandedNavigateOptions) => {
+  return useCallback((to: string | number, { plain, ...options } = {} as NavigateOptions) => {
     if (typeof to === 'string' && to.startsWith('#')) {
       document.location.hash = to;
       return undefined;
     }
     if (typeof to === 'string') {
-      const target = options?.plain ? to : `?path=${to}`;
+      const target = plain ? to : `?path=${to}`;
       return navigate(target, options);
     }
     if (typeof to === 'number') {
@@ -78,17 +71,17 @@ const useQueryNavigate = () => {
 };
 
 // A component that will navigate to a new location/path when clicked
-const QueryLink = ({ to, children, ...rest }: QueryLinkProps) => (
-  <Link to={`${getBase()}path=${to}`} {...rest}>
+export const Link = ({ to, children, ...rest }: LinkProps) => (
+  <R.Link to={`${getBase()}path=${to}`} {...rest}>
     {children}
-  </Link>
+  </R.Link>
 );
-QueryLink.displayName = 'QueryLink';
+Link.displayName = 'QueryLink';
 
 // A render-prop component where children is called with a location
 // and will be called whenever it changes when it changes
-const QueryLocation = ({ children }: QueryLocationProps) => {
-  const location = useLocation();
+export const Location = ({ children }: LocationProps) => {
+  const location = R.useLocation();
   const { path, singleStory } = queryFromString(location.search);
   const { viewMode, storyId, refId } = parsePath(path);
 
@@ -105,44 +98,35 @@ const QueryLocation = ({ children }: QueryLocationProps) => {
     </>
   );
 };
-QueryLocation.displayName = 'QueryLocation';
+Location.displayName = 'QueryLocation';
 
 // A render-prop component for rendering when a certain path is hit.
 // It's immensely similar to `Location` but it receives an addition data property: `match`.
 // match has a truthy value when the path is hit.
-const QueryMatch = ({ children, path: targetPath, startsWith = false }: QueryMatchProps) => (
-  <QueryLocation>
+export const Match = ({ children, path: targetPath, startsWith = false }: MatchProps) => (
+  <Location>
     {({ path: urlPath, ...rest }) =>
       children({
         match: getMatch(urlPath, targetPath, startsWith),
         ...rest,
       })
     }
-  </QueryLocation>
+  </Location>
 );
-QueryMatch.displayName = 'QueryMatch';
+Match.displayName = 'QueryMatch';
 
 // A component to conditionally render children based on matching a target path
-const Route = ({ path, children, startsWith = false, hideOnly = false }: RouteProps) => (
-  <QueryMatch path={path} startsWith={startsWith}>
+export const Route = ({ path, children, startsWith = false, hideOnly = false }: RouteProps) => (
+  <Match path={path} startsWith={startsWith}>
     {({ match }) => {
       if (hideOnly) {
         return <ToggleVisibility hidden={!match}>{children}</ToggleVisibility>;
       }
       return match ? children : null;
     }}
-  </QueryMatch>
+  </Match>
 );
 Route.displayName = 'Route';
 
-export { QueryLink as Link };
-export { QueryMatch as Match };
-export { QueryLocation as Location };
-export { Route };
-export { useQueryNavigate as useNavigate };
-export { BrowserRouter as LocationProvider };
-export { Router as BaseLocationProvider };
-export { useNavigate as usePlainNavigate };
-
-// eslint-disable-next-line no-undef
-export type { ExpandedNavigateOptions as NavigateOptions };
+export const LocationProvider: typeof R.BrowserRouter = (...args) => R.BrowserRouter(...args);
+export const BaseLocationProvider: typeof R.Router = (...args) => R.Router(...args);

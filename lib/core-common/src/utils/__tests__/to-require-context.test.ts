@@ -238,6 +238,21 @@ const testCases = [
       '../src/stories/components/Icon/Icon.mdx',
     ],
   },
+  // Patterns before the **, see:
+  //   - https://github.com/storybookjs/storybook/issues/17038
+  //   - https://github.com/storybookjs/storybook/issues/16964
+  //   - https://github.com/storybookjs/storybook/issues/16924
+  {
+    glob: '../{dir1,dir2}/**/*.stories.js',
+    recursive: true,
+    validPaths: [
+      '../dir1/Icon.stories.js',
+      '../dir1/nested/Icon.stories.js',
+      '../dir2/Icon.stories.js',
+      '../dir2/nested/Icon.stories.js',
+    ],
+    invalidPaths: ['../dir3/Icon.stories.js', '../dir3/nested/Icon.stories.js'],
+  },
 ];
 
 describe('toRequireContext', () => {

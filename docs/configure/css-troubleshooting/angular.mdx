@@ -1,0 +1,42 @@
+With Angular, you'll need to take special care of handling CSS.
+
+### Working with previous versions
+
+If you're working with an older version of Angular, in addition to providing a custom Webpack configuration, you can also use an inline loader to load your CSS safely. For example:
+
+```js
+import '!style-loader!css-loader!./styles.css';
+```
+
+### With Angular 13
+
+With Angular version 13 and above, you should use a builder configuration to import your CSS, for example:
+
+```json
+{
+  "my-project": {
+    "architect": {
+      "build": {
+        "builder": "@angular-devkit/build-angular:browser",
+        "options": {
+          "styles": ["src/styles.css", "src/styles.scss"]
+        }
+      }
+    }
+  }
+}
+```
+
+Additionally, if you need Storybook specific styles that are separate from your application, you can configure the styles with [Storybook's custom builder](../get-started/install.md), which will override the application's styles:
+
+```json
+{
+  "storybook": {
+    "builder": "@storybook/angular:start-storybook",
+    "options": {
+      "browserTarget": "my-default-project:build",
+      "styles": [".storybook/custom-styles.scss"]
+    }
+  }
+}
+```

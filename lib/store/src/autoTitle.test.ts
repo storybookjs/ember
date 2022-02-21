@@ -40,6 +40,24 @@ describe('autoTitle', () => {
       ).toMatchInlineSnapshot(`Atoms/To/File`);
     });
 
+    it('match with trailing duplicate', () => {
+      expect(
+        auto(
+          './path/to/button/button.stories.js',
+          normalizeStoriesEntry({ directory: './path' }, options)
+        )
+      ).toMatchInlineSnapshot(`To/Button`);
+    });
+
+    it('match with trailing index', () => {
+      expect(
+        auto(
+          './path/to/button/index.stories.js',
+          normalizeStoriesEntry({ directory: './path' }, options)
+        )
+      ).toMatchInlineSnapshot(`To/Button`);
+    });
+
     it('match with hyphen path', () => {
       expect(
         auto(

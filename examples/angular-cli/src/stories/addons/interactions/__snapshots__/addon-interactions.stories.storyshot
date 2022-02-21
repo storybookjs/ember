@@ -112,12 +112,7 @@ exports[`Storyshots Addons/Interactions Filled 1`] = `
             type="submit"
           >
              Submit 
-            <span
-              aria-hidden="true"
-              class="spinner-border spinner-border-sm ml-2"
-              hidden=""
-              role="status"
-            />
+            
           </button>
         </form>
       </div>
@@ -296,12 +291,7 @@ exports[`Storyshots Addons/Interactions Invalid Fields 1`] = `
             type="submit"
           >
              Submit 
-            <span
-              aria-hidden="true"
-              class="spinner-border spinner-border-sm ml-2"
-              hidden=""
-              role="status"
-            />
+            
           </button>
         </form>
       </div>
@@ -480,12 +470,7 @@ exports[`Storyshots Addons/Interactions Standard 1`] = `
             type="submit"
           >
              Submit 
-            <span
-              aria-hidden="true"
-              class="spinner-border spinner-border-sm ml-2"
-              hidden=""
-              role="status"
-            />
+            
           </button>
         </form>
       </div>
@@ -664,12 +649,7 @@ exports[`Storyshots Addons/Interactions Submitted 1`] = `
             type="submit"
           >
              Submit 
-            <span
-              aria-hidden="true"
-              class="spinner-border spinner-border-sm ml-2"
-              hidden=""
-              role="status"
-            />
+            
           </button>
         </form>
       </div>
@@ -848,12 +828,7 @@ exports[`Storyshots Addons/Interactions Submitted And Edited After 1`] = `
             type="submit"
           >
              Submit 
-            <span
-              aria-hidden="true"
-              class="spinner-border spinner-border-sm ml-2"
-              hidden=""
-              role="status"
-            />
+            
           </button>
         </form>
       </div>

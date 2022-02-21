@@ -10,7 +10,7 @@ Ideal for verifying what the user sees: layout, color, size, and contrast. Story
 
 There are [many tools](https://github.com/mojoaxel/awesome-regression-testing) for visual testing. We recommend [Chromatic](https://www.chromatic.com) by Storybook maintainers to run visual tests in a lightning-fast cloud browser environment.
 
-For a self-managed alternative to Chromatic, we offer [StoryShots](https://github.com/storybookjs/storybook/tree/master/addons/storyshots). It allows you to run visual tests on stories by integrating with [jest-image-snapshot](https://github.com/storybookjs/storybook/tree/master/addons/storyshots#configure-storyshots-for-image-snapshots).
+For a self-managed alternative to Chromatic, we offer [StoryShots](https://github.com/storybookjs/storybook/tree/main/addons/storyshots). It allows you to run visual tests on stories by integrating with [jest-image-snapshot](https://github.com/storybookjs/storybook/tree/main/addons/storyshots/storyshots-puppeteer#imagesnapshots).
 
 ## Setup Chromatic addon
 
@@ -45,6 +45,10 @@ Build 1 published.
 
 View it online at https://www.chromatic.com/build?appId=...&number=1.
 ```
+
+<div class="aside">
+💡 Before running Chromatic's CLI ensure you have at least two commits added to the repository to prevent build failures, as Chromatic relies on a full Git history graph to establish the baselines. Read more about baselines in Chromatic's <a href="https://www.chromatic.com/docs/branching-and-baselines"> documentation</a>
+</div>
 
 When Chromatic finishes, it should have successfully deployed your Storybook and established the baselines (i.e., starting point) for all your component's stories. Additionally, providing you with a link to the published Storybook that you can share with your team to gather feedback.
 

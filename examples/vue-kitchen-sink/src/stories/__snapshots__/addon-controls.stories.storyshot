@@ -8,8 +8,7 @@ exports[`Storyshots Addon/Controls Rounded 1`] = `
     class="button rounded"
     style="color: rgb(255, 0, 0); border-color: #f00;"
   >
-    A Button with rounded edges!
-
+    A Button with rounded edges
   </button>
 </div>
 `;
@@ -22,8 +21,7 @@ exports[`Storyshots Addon/Controls Square 1`] = `
     class="button"
     style="color: rgb(0, 0, 255); border-color: #00f;"
   >
-    A Button with square edges!
-
+    A Button with square edges
   </button>
 </div>
 `;

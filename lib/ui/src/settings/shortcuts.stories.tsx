@@ -1,7 +1,7 @@
 import React from 'react';
 import { actions as makeActions } from '@storybook/addon-actions';
 
-import { DecoratorFn } from '@storybook/react';
+import type { DecoratorFn } from '@storybook/react';
 import { ShortcutsScreen } from './shortcuts';
 
 const defaultShortcuts = {

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/builder-webpack5",
-  "version": "6.5.0-alpha.17",
+  "version": "6.5.0-alpha.40",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -31,8 +31,7 @@
   },
   "files": [
     "dist/**/*",
-    "dll/**/*",
-    "types/**/*",
+    "templates/**/*",
     "*.js",
     "*.d.ts"
   ],
@@ -60,24 +59,25 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
-    "@storybook/addons": "6.5.0-alpha.17",
-    "@storybook/api": "6.5.0-alpha.17",
-    "@storybook/channel-postmessage": "6.5.0-alpha.17",
-    "@storybook/channels": "6.5.0-alpha.17",
-    "@storybook/client-api": "6.5.0-alpha.17",
-    "@storybook/client-logger": "6.5.0-alpha.17",
-    "@storybook/components": "6.5.0-alpha.17",
-    "@storybook/core-common": "6.5.0-alpha.17",
-    "@storybook/core-events": "6.5.0-alpha.17",
-    "@storybook/node-logger": "6.5.0-alpha.17",
-    "@storybook/preview-web": "6.5.0-alpha.17",
-    "@storybook/router": "6.5.0-alpha.17",
+    "@storybook/addons": "6.5.0-alpha.40",
+    "@storybook/api": "6.5.0-alpha.40",
+    "@storybook/channel-postmessage": "6.5.0-alpha.40",
+    "@storybook/channels": "6.5.0-alpha.40",
+    "@storybook/client-api": "6.5.0-alpha.40",
+    "@storybook/client-logger": "6.5.0-alpha.40",
+    "@storybook/components": "6.5.0-alpha.40",
+    "@storybook/core-common": "6.5.0-alpha.40",
+    "@storybook/core-events": "6.5.0-alpha.40",
+    "@storybook/node-logger": "6.5.0-alpha.40",
+    "@storybook/preview-web": "6.5.0-alpha.40",
+    "@storybook/router": "6.5.0-alpha.40",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.17",
-    "@storybook/theming": "6.5.0-alpha.17",
+    "@storybook/store": "6.5.0-alpha.40",
+    "@storybook/theming": "6.5.0-alpha.40",
     "@types/node": "^14.0.10 || ^16.0.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "browser-assert": "^1.2.1",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "core-js": "^3.8.2",
     "css-loader": "^5.0.1",
@@ -86,6 +86,7 @@
     "glob-promise": "^3.4.0",
     "html-webpack-plugin": "^5.0.0",
     "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "stable": "^0.1.8",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
@@ -115,6 +116,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "26e445b71ae37aeb97e0207cb5139666e7071c06",
+  "gitHead": "ffb3402ee40562579d45dbcf7870a1a8372ac0dd",
   "sbmodern": "dist/modern/index.js"
 }

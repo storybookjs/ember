@@ -38,7 +38,6 @@ describe('web-components component properties', () => {
       const testDir = path.join(fixturesDir, testEntry.name);
       const testFile = fs.readdirSync(testDir).find((fileName) => inputRegExp.test(fileName));
       if (testFile) {
-        // eslint-disable-next-line jest/valid-title
         it(testEntry.name, () => {
           const inputPath = path.join(testDir, testFile);
 

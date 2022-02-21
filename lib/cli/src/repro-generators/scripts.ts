@@ -2,6 +2,7 @@ import path from 'path';
 import { writeJSON } from 'fs-extra';
 import shell, { ExecOptions } from 'shelljs';
 import chalk from 'chalk';
+import { cra, cra_typescript } from './configs';
 
 const logger = console;
 
@@ -52,30 +53,41 @@ export const exec = async (
     const defaultOptions: ExecOptions = {
       silent: true,
     };
-    shell.exec(command, { ...defaultOptions, ...options }, (code, stdout, stderr) => {
+    const child = shell.exec(command, { ...defaultOptions, ...options, async: true });
+
+    child.stderr.pipe(process.stderr);
+    child.stdout.pipe(process.stdout);
+
+    child.on('exit', (code) => {
       if (code === 0) {
         resolve(undefined);
       } else {
         logger.error(chalk.red(`An error occurred while executing: \`${command}\``));
-        logger.error(`Command output was:${chalk.yellow(`\n${stdout}\n${stderr}`)}`);
-        if (errorMessage) {
-          logger.error(errorMessage);
-        }
+        logger.log(errorMessage);
         reject(new Error(`command exited with code: ${code}: `));
       }
     });
   });
 };
 
-const installYarn2 = async ({ cwd, pnp }: Options) => {
+const installYarn2 = async ({ cwd, pnp, name }: Options) => {
   const command = [
     `yarn set version berry`,
     `yarn config set enableGlobalCache true`,
     `yarn config set nodeLinker ${pnp ? 'pnp' : 'node-modules'}`,
-  ].join(' && ');
+  ];
+
+  // FIXME: Some dependencies used by CRA aren't listed in its package.json
+  // Next line is a hack to remove as soon as CRA will have added these missing deps
+  // for details see https://github.com/facebook/create-react-app/pull/11751
+  if ([cra.name, cra_typescript.name].includes(name)) {
+    command.push(
+      `yarn config set packageExtensions --json '{ "babel-preset-react-app@10.0.x": { "dependencies": { "@babel/plugin-proposal-private-property-in-object": "^7.16.0" } } }'`
+    );
+  }
 
   await exec(
-    command,
+    command.join(' && '),
     { cwd },
     { startMessage: `🧶 Installing Yarn 2`, errorMessage: `🚨 Installing Yarn 2 failed` }
   );
@@ -205,15 +217,10 @@ export const createAndInit = async (
   logger.log();
   logger.info(`🏃 Starting for ${name} ${version}`);
   logger.log();
-  logger.debug(options);
-  logger.log();
 
   await doTask(generate, { ...options, cwd: options.creationPath });
-
   await doTask(installYarn2, options);
-
   await doTask(configureYarn2ForE2E, options, e2e);
-
   await doTask(addTypescript, options, !!options.typescript);
   await doTask(addRequiredDeps, options);
   await doTask(initStorybook, options);

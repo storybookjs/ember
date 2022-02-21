@@ -349,29 +349,32 @@ Applying this small change will enable you to add syntax highlight for SCSS or a
 
 ### How can my code detect if it is running in Storybook?
 
-You can do this by checking the value of `process.env.STORYBOOK`, which will
-equal `'true'` when running in Storybook. Be careful — `process` may be
-undefined when your code runs outside of Storybook.
+You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook. The environment variable `process.env.STORYBOOK` is also set to `true`.
 
-```javascript
-export function isRunningInStorybook() {
-  try {
-    if (process.env.STORYBOOK) return true;
-  } catch {
-    // A ReferenceError will be thrown if process is undefined
-  }
+### Why are my stories not showing up correctly when using certain characters?
 
-  return false;
-}
+Storybook allows you to use most characters while naming your stories. Still, specific characters (e.g., `#`) can lead to issues when Storybook generates the internal identifier for the story, leading to collisions and incorrectly outputting the correct story. We recommend using such characters sparsely.
+
+### Why are the TypeScript examples and documentation using `as` for type safety?
+
+We're aware that the default Typescript story construct might seem outdated and could potentially introduce a less than ideal way of handling type safety and strictness and could be rewritten as such:
+
+```ts
+// Button.stories.ts | tsx
+
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+const StoryMeta: ComponentMeta<typeof Button> = {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
+  component: Button,
+};
+
+export default meta;
 ```
 
-This works because Babel replaces `process.env.STORYBOOK` with the value of the
-`STORYBOOK` environment variable. Because this is done through a Babel plugin,
-the following will **NOT** work:
-
-```javascript
-export function isRunningInStorybook() {
-  return typeof process?.env?.STORYBOOK !== 'undefined';
-  // ReferenceError: process is not defined
-}
-```
+Although valid, it introduces additional boilerplate code to the story definition. Instead, we're working towards implementing a safer mechanism based on what's currently being discussed in the following [issue](https://github.com/microsoft/TypeScript/issues/7481). Once the feature is released, we'll migrate our existing examples and documentation accordingly.

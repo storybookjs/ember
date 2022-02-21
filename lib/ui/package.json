@@ -1,6 +1,6 @@
 {
   "name": "@storybook/ui",
-  "version": "6.5.0-alpha.17",
+  "version": "6.5.0-alpha.40",
   "description": "Core Storybook UI",
   "keywords": [
     "storybook"
@@ -37,24 +37,30 @@
     "*.d.ts"
   ],
   "scripts": {
-    "prepare": "node ../../scripts/prepare.js"
+    "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@emotion/core": "^10.3.1",
-    "@storybook/addons": "6.5.0-alpha.17",
-    "@storybook/api": "6.5.0-alpha.17",
-    "@storybook/channels": "6.5.0-alpha.17",
-    "@storybook/client-logger": "6.5.0-alpha.17",
-    "@storybook/components": "6.5.0-alpha.17",
-    "@storybook/core-events": "6.5.0-alpha.17",
-    "@storybook/router": "6.5.0-alpha.17",
+    "@storybook/addons": "6.5.0-alpha.40",
+    "@storybook/api": "6.5.0-alpha.40",
+    "@storybook/channels": "6.5.0-alpha.40",
+    "@storybook/client-logger": "6.5.0-alpha.40",
+    "@storybook/components": "6.5.0-alpha.40",
+    "@storybook/core-events": "6.5.0-alpha.40",
+    "@storybook/router": "6.5.0-alpha.40",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.5.0-alpha.17",
-    "copy-to-clipboard": "^3.3.1",
+    "@storybook/theming": "6.5.0-alpha.40",
     "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7",
+    "resolve-from": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@testing-library/react": "^11.2.2",
+    "copy-to-clipboard": "^3.3.1",
     "core-js-pure": "^3.8.2",
     "downshift": "^6.0.15",
-    "emotion-theming": "^10.0.27",
+    "enzyme": "^3.11.0",
+    "flush-promises": "^1.0.2",
     "fuse.js": "^3.6.1",
     "global": "^4.4.0",
     "lodash": "^4.17.21",
@@ -65,18 +71,8 @@
     "react-draggable": "^4.4.3",
     "react-helmet-async": "^1.0.7",
     "react-sizeme": "^3.0.1",
-    "regenerator-runtime": "^0.13.7",
-    "resolve-from": "^5.0.0",
-    "store2": "^2.12.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@testing-library/react": "^11.2.2",
-    "babel-loader": "^8.0.0",
-    "chromatic": "^6.0.2",
-    "enzyme": "^3.11.0",
-    "flush-promises": "^1.0.2",
-    "terser-webpack-plugin": "^5.0.3",
+    "store2": "^2.12.0",
+    "ts-node": "^10.4.0",
     "webpack": "4"
   },
   "peerDependencies": {
@@ -86,6 +82,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "26e445b71ae37aeb97e0207cb5139666e7071c06",
+  "bundlerEntrypoint": "./src/index.tsx",
+  "gitHead": "ffb3402ee40562579d45dbcf7870a1a8372ac0dd",
   "sbmodern": "dist/modern/index.js"
 }

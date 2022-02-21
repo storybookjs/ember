@@ -85,3 +85,23 @@ exports[`Storyshots Button Square 1`] = `
   </p>
 </section>
 `;
+
+exports[`Storyshots Button With Default Render 1`] = `
+<section
+  class="storybook-snapshot-container"
+>
+  <button
+    class="button svelte-n2tx93"
+  >
+    <strong>
+      Square
+       corners
+    </strong>
+     
+    <br />
+     
+    Magic!
+     
+  </button>
+</section>
+`;
