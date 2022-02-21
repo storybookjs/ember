@@ -16,7 +16,11 @@ export const convert = (type: PTType): SBType | any => {
       const values = computed
         ? value
         : value.map((v: PTType) => {
-            return includesQuotes(v.value) ? trimQuotes(v.value) : Number(v.value);
+            const trimmedValue = trimQuotes(v.value);
+
+            return includesQuotes(v.value) || Number.isNaN(Number(trimmedValue))
+              ? trimmedValue
+              : Number(trimmedValue);
           });
       return { ...base, name, value: values };
     }
