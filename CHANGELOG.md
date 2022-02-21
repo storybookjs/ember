@@ -1,3 +1,14 @@
+## 6.5.0-alpha.40 (February 19, 2022)
+
+### Features
+
+* Webpack5: Add lazy compilation ([#17501](https://github.com/storybookjs/storybook/pull/17501))
+
+### Maintenance
+
+* Build: Fix CRA repro generator and e2e test in PnP mode ([#17375](https://github.com/storybookjs/storybook/pull/17375))
+* UI: Add a custom title story for heading component ([#17487](https://github.com/storybookjs/storybook/pull/17487))
+
 ## 6.5.0-alpha.39 (February 11, 2022)
 
 ### Features
