@@ -1,11 +1,13 @@
-import { Args } from '@storybook/addons';
-import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
+import type { Args, AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { action } from '../index';
 
 // interface ActionsParameter {
 //   disable?: boolean;
 //   argTypesRegex?: RegExp;
 // }
+
+const isInInitialArgs = (name: string, initialArgs: Args) =>
+  typeof initialArgs[name] === 'undefined' && !(name in initialArgs);
 
 /**
  * Automatically add action args for argTypes whose name
@@ -28,7 +30,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer<AnyFramework> = (contex
   );
 
   return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
-    if (typeof initialArgs[name] === 'undefined') {
+    if (isInInitialArgs(name, initialArgs)) {
       acc[name] = action(name);
     }
     return acc;
@@ -51,7 +53,7 @@ export const addActionsFromArgTypes: ArgsEnhancer<AnyFramework> = (context) => {
   const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType.action);
 
   return argTypesWithAction.reduce((acc, [name, argType]) => {
-    if (typeof initialArgs[name] === 'undefined') {
+    if (isInInitialArgs(name, initialArgs)) {
       acc[name] = action(typeof argType.action === 'string' ? argType.action : name);
     }
     return acc;
