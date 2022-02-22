@@ -1,3 +1,15 @@
+## 6.5.0-alpha.41 (February 22, 2022)
+
+### Features
+
+* Addon-Outline: add 'o' keyboard shortcut to toggle the outline addon ([#17530](https://github.com/storybookjs/storybook/pull/17530))
+
+### Bug Fixes
+
+* Addon-docs: Ensure that __DOCS_CONTEXT__ cannot be undefined ([#17251](https://github.com/storybookjs/storybook/pull/17251))
+* Addon-docs: Account for non-string types when converting enums ([#15822](https://github.com/storybookjs/storybook/pull/15822))
+* Addon-actions: Don't override undefined args ([#17505](https://github.com/storybookjs/storybook/pull/17505))
+
 ## 6.5.0-alpha.40 (February 19, 2022)
 
 ### Features
