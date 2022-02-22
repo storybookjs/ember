@@ -1,0 +1,24 @@
+```js
+// my-list.stories.js|jsx
+
+import { html } from 'lit';
+
+import './my-list';
+
+//👇 Instead of importing my-list-item, we import the stories
+import { Unchecked } from './my-list-item.stories';
+
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/web-components/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'my-list',
+};
+
+export const OneItem = () => html`
+  <List>
+    ${Unchecked({ ...Unchecked.args })}
+  </List>
+`;
+```

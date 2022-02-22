@@ -325,6 +325,7 @@ export async function initiate(options: CommandOptions, pkg: Package): Promise<v
   } catch (ex) {
     done(ex.message);
     process.exit(1);
+    return;
   }
   done();
 
@@ -333,5 +334,5 @@ export async function initiate(options: CommandOptions, pkg: Package): Promise<v
     ...(isEsm ? { commonJs: true } : undefined),
   });
 
-  return automigrate();
+  await automigrate();
 }

@@ -32,6 +32,7 @@ export interface Webpack5BuilderConfig extends BuilderConfigObject {
   name: 'webpack5';
   options?: {
     fsCache?: boolean;
+    lazyCompilation?: boolean;
   };
 }
 
