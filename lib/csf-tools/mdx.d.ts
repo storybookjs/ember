@@ -1,1 +1,2 @@
-export * from '@storybook/csf-mdx1';
+declare module '@mdx-js/loader';
+export * from '@storybook/mdx1-csf';

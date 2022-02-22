@@ -289,10 +289,6 @@
       "root": "lib/theming",
       "type": "library"
     },
-    "@storybook/csf-mdx1": {
-      "root": "lib/csf-mdx1",
-      "type": "library"
-    },
     "@storybook/csf-tools": {
       "root": "lib/csf-tools",
       "type": "library"

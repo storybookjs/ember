@@ -61,8 +61,6 @@
     "@babel/plugin-transform-react-jsx": "^7.12.12",
     "@babel/preset-env": "^7.12.11",
     "@jest/transform": "^26.6.2",
-    "@mdx-js/loader": "^1.6.22",
-    "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@storybook/addons": "6.5.0-alpha.39",
     "@storybook/api": "6.5.0-alpha.39",
@@ -72,7 +70,7 @@
     "@storybook/core": "6.5.0-alpha.39",
     "@storybook/core-events": "6.5.0-alpha.39",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/csf-mdx1": "6.5.0-alpha.39",
+    "@storybook/mdx1-csf": "0.0.1-canary.1.8dbf866.0",
     "@storybook/node-logger": "6.5.0-alpha.39",
     "@storybook/postinstall": "6.5.0-alpha.39",
     "@storybook/preview-web": "6.5.0-alpha.39",
@@ -108,6 +106,7 @@
     "@emotion/styled": "^10.0.27",
     "@storybook/angular": "6.5.0-alpha.39",
     "@storybook/html": "6.5.0-alpha.39",
+    "@storybook/mdx2-csf": "0.0.1-canary.1.838a6ca.0",
     "@storybook/react": "6.5.0-alpha.39",
     "@storybook/vue": "6.5.0-alpha.39",
     "@storybook/web-components": "6.5.0-alpha.39",
@@ -137,6 +136,7 @@
   "peerDependencies": {
     "@storybook/angular": "6.5.0-alpha.39",
     "@storybook/html": "6.5.0-alpha.39",
+    "@storybook/mdx2-csf": "0.0.1-canary.1.838a6ca.0",
     "@storybook/react": "6.5.0-alpha.39",
     "@storybook/vue": "6.5.0-alpha.39",
     "@storybook/vue3": "6.5.0-alpha.39",
@@ -155,6 +155,9 @@
       "optional": true
     },
     "@storybook/html": {
+      "optional": true
+    },
+    "@storybook/mdx2-csf": {
       "optional": true
     },
     "@storybook/react": {
