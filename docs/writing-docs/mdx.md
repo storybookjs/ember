@@ -42,7 +42,7 @@ Let's break it down.
 
 ## MDX-flavored CSF
 
-MDX-flavored [Component Story Format (CSF)](../api/csf.md) includes a collection of components called ["Doc Blocks"](./doc-blocks.md), that allow Storybook to translate MDX files into Storybook stories. MDX-defined stories are identical to regular Storybook stories, so they can be used with Storybook's entire ecosystem of addons and view layers.
+MDX-flavored [Component Story Format (CSF)](../api/csf.md) includes a collection of components called "Doc Blocks", that allow Storybook to translate MDX files into Storybook stories. MDX-defined stories are identical to regular Storybook stories, so they can be used with Storybook's entire ecosystem of addons and view layers.
 
 For example, here's the first story from the Checkbox example above, rewritten in CSF:
 

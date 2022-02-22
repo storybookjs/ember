@@ -8,7 +8,7 @@ title: 'DocsPage'
 
 </div>
 
-When you install [Storybook Docs](https://storybook.js.org/addons/@storybook/addon-docs), DocsPage is the zero-config default documentation that all stories get out of the box. It aggregates your [stories](../get-started/whats-a-story.md), text descriptions, docgen comments, [args tables](./doc-blocks.md#argstable), and code examples into a single page for each component.
+When you install [Storybook Docs](https://storybook.js.org/addons/@storybook/addon-docs), DocsPage is the zero-config default documentation that all stories get out of the box. It aggregates your [stories](../get-started/whats-a-story.md), text descriptions, docgen comments, [args tables](./doc-block-argstable.md), and code examples into a single page for each component.
 
 The best practice for docs is for each component to have its own set of documentation and stories.
 
@@ -158,7 +158,7 @@ Here's an example of rebuilding DocsPage for the Button component using doc bloc
 
 <!-- prettier-ignore-end -->
 
-In addition, you can interleave your own components to customize the auto-generated contents of the page or pass in different options to the blocks to customize their appearance. Read more about [Doc Blocks](./doc-blocks.md).
+In addition, you can interleave your own components to customize the auto-generated contents of the page or pass in different options to the blocks to customize their appearance.
 
 ## Story file names
 
