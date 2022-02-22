@@ -63,6 +63,7 @@ export async function webpack(
   } = options;
 
   const mdxLoaderOptions = {
+    skipCsf: true,
     remarkPlugins: [remarkSlug, remarkExternalLinks],
   };
 
@@ -132,10 +133,6 @@ export async function webpack(
             },
             {
               loader: mdxLoader,
-              // options: {
-              //   compilers: [createCompiler(options)],
-              //   ...mdxLoaderOptions,
-              // },
             },
           ],
         },
