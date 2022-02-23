@@ -40,14 +40,6 @@ If everything is working as it should, you should see the `example/cra-ts-essent
 
 ![Example Storybook running](./storybook-cra-examples-optimized.png)
 
-### End-to-end tests (e2e)
-
-In order to test key parts of storybook functionality, end-to-end tests using [cypress](https://www.cypress.io/) are run during CI. If you would like to also run these tests on your own machine, there are a few steps to take:
-
-1. Make sure that you have built storybook on your branch with `yarn bootstrap --core`.
-2. Publish storybook packages to a local registry in one terminal: `yarn local-registry --port 6000 --open --publish`
-3. In a second terminal, create a repro against the local registry and run cypress against it: `yarn test:e2e-framework`.
-
 ## Start developing
 
 Now that you've [verified your setup](#sanity-check), it's time to jump into code. The simplest way to do this is to run one of the examples in one terminal window and the interactive build process in a separate terminal.
@@ -99,6 +91,14 @@ Unit tests ensure that Storybook doesn't break accidentally. If your code can re
 |   +-- [filename].ts
 |   +-- [filename].test.ts
 ```
+
+### End-to-end tests (e2e)
+
+Storybook's monorepo is set up to rely on end-to-end testing with [Cypress](https://www.cypress.io/) during CI. To help with testing, we encourage running this test suite before submitting your contribution. Detailed below are some steps you can take:
+
+1. Ensure you have Storybook successfully built in your local branch (i.e., run `yarn bootstrap --core`)
+2. Open a terminal and run `yarn local-registry --port 6000 --open --publish` to publish Storybook's packages into a local registry.
+3. In a second terminal, set up a reproduction using the local registry and run the Cypress tests with `yarn test:e2e-framework`.
 
 ## Submit a pull request
 
