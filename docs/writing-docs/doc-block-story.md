@@ -2,13 +2,6 @@
 title: 'Story'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Stories (component tests) are Storybook's fundamental building blocks.
 In Storybook Docs, stories are rendered in the `Story` block.
 

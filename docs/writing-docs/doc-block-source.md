@@ -2,13 +2,6 @@
 title: 'Source'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `Source` Doc Block displays the story's source code. It supports syntax highlighting for most languages (e.g., `javascript`, `jsx`, `json`, `yml`, `md`, `bash`, `css`, `html`) and can be copied with the click of a button.
 
 ![Docs blocks with source](./docblock-source.png)

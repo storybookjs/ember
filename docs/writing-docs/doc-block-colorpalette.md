@@ -2,13 +2,6 @@
 title: 'ColorPalette'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `ColorPalette` Doc block allows you to document all color-related items (e.g., swatches) used throughout your project.
 
 ![Storybook color palette doc block](./doc-block-colorpalette-optimized.png)

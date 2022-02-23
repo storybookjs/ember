@@ -2,13 +2,6 @@
 title: 'Canvas'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `Canvas` Doc Block is a wrapper featuring a toolbar that allows you to interact with its content while automatically providing the required [Source](./doc-block-source.md) snippets.
 
 ![Docs block with a story preview](./docblock-preview.png)

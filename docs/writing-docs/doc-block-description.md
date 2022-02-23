@@ -2,13 +2,6 @@
 title: 'Description'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `Description` Doc Block displays the component's description obtained from its source code or user-generated content.
 
 ![Docs blocks with description](./docblock-description.png)

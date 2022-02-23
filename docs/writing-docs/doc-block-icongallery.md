@@ -2,13 +2,6 @@
 title: 'IconGallery'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `IconGallery` Doc Block enables you easily document all icons associated with your project.
 
 ![Storybook gallery icon doc block](./doc-block-icon-gallery-optimized.png)

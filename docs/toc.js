@@ -122,7 +122,7 @@ module.exports = {
           children: [
             {
               pathSegment: 'doc-block-argstable',
-              title: 'Argstable',
+              title: 'ArgsTable',
               type: 'link',
             },
             {

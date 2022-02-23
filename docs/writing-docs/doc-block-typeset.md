@@ -2,13 +2,6 @@
 title: 'Typeset'
 ---
 
-<div class="aside">
-
-💡 Currently, there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./docs-page.md). If you're interested in helping us fix this issue, read our
-[Contribution guidelines](../contribute/how-to-contribute.md) and submit a pull request.
-
-</div>
-
 Storybook's `Typeset` Doc Block helps document the fonts used throughout your project.
 
 ![Docs blocks with typography](./doc-block-typeset-optimized.png)
