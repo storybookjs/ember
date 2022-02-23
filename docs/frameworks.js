@@ -79,7 +79,7 @@ module.exports = {
         },
         {
           name: 'links',
-          unsupported: ['marko'],
+          unsupported: [],
         },
         {
           name: 'queryparams',
@@ -87,7 +87,7 @@ module.exports = {
         },
         {
           name: 'Storyshots',
-          unsupported: ['ember', 'mithril', 'marko'],
+          unsupported: ['ember'],
           path: 'workflows/unit-testing',
         },
         {
