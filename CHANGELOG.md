@@ -1,25 +1,32 @@
+## 6.5.0-alpha.42 (February 25, 2022)
+
+### Bug Fixes
+
+- Controls/Essentials/Interactions: Add support for main.cjs/mjs/tsx files ([#17524](https://github.com/storybookjs/storybook/pull/17524))
+- Addon-docs: Fix preset handling for builder with options ([#17544](https://github.com/storybookjs/storybook/pull/17544))
+
 ## 6.5.0-alpha.41 (February 22, 2022)
 
 ### Features
 
-* Addon-Outline: add 'o' keyboard shortcut to toggle the outline addon ([#17530](https://github.com/storybookjs/storybook/pull/17530))
+- Addon-Outline: add 'o' keyboard shortcut to toggle the outline addon ([#17530](https://github.com/storybookjs/storybook/pull/17530))
 
 ### Bug Fixes
 
-* Addon-docs: Ensure that __DOCS_CONTEXT__ cannot be undefined ([#17251](https://github.com/storybookjs/storybook/pull/17251))
-* Addon-docs: Account for non-string types when converting enums ([#15822](https://github.com/storybookjs/storybook/pull/15822))
-* Addon-actions: Don't override undefined args ([#17505](https://github.com/storybookjs/storybook/pull/17505))
+- Addon-docs: Ensure that **DOCS_CONTEXT** cannot be undefined ([#17251](https://github.com/storybookjs/storybook/pull/17251))
+- Addon-docs: Account for non-string types when converting enums ([#15822](https://github.com/storybookjs/storybook/pull/15822))
+- Addon-actions: Don't override undefined args ([#17505](https://github.com/storybookjs/storybook/pull/17505))
 
 ## 6.5.0-alpha.40 (February 19, 2022)
 
 ### Features
 
-* Webpack5: Add lazy compilation ([#17501](https://github.com/storybookjs/storybook/pull/17501))
+- Webpack5: Add lazy compilation ([#17501](https://github.com/storybookjs/storybook/pull/17501))
 
 ### Maintenance
 
-* Build: Fix CRA repro generator and e2e test in PnP mode ([#17375](https://github.com/storybookjs/storybook/pull/17375))
-* UI: Add a custom title story for heading component ([#17487](https://github.com/storybookjs/storybook/pull/17487))
+- Build: Fix CRA repro generator and e2e test in PnP mode ([#17375](https://github.com/storybookjs/storybook/pull/17375))
+- UI: Add a custom title story for heading component ([#17487](https://github.com/storybookjs/storybook/pull/17487))
 
 ## 6.5.0-alpha.39 (February 11, 2022)
 
