@@ -92,6 +92,14 @@ Unit tests ensure that Storybook doesn't break accidentally. If your code can re
 |   +-- [filename].test.ts
 ```
 
+### End-to-end tests (e2e)
+
+Storybook's monorepo is set up to rely on end-to-end testing with [Cypress](https://www.cypress.io/) during CI. To help with testing, we encourage running this test suite before submitting your contribution. Detailed below are some steps you can take:
+
+1. Ensure you have Storybook successfully built in your local branch (i.e., run `yarn bootstrap --core`)
+2. Open a terminal and run `yarn local-registry --port 6000 --open --publish` to publish Storybook's packages into a local registry.
+3. In a second terminal, set up a reproduction using the local registry and run the Cypress tests with `yarn test:e2e-framework`.
+
 ## Submit a pull request
 
 Before submitting your contribution, run the test suite one last time with:
