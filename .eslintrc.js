@@ -10,6 +10,13 @@ module.exports = {
   },
   overrides: [
     {
+      // this package depends on a lot of peerDependencies we don't want to specify, because npm would install them
+      files: ['**/addons/docs/**/*'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+    {
       // this package uses pre-bundling, dependencies will be bundled, and will be in devDepenencies
       files: [
         '**/lib/theming/**/*',

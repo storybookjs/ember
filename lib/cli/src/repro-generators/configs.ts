@@ -35,8 +35,8 @@ export const cra: Parameters = {
   name: 'cra',
   version: 'latest',
   generator: [
-    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}} --use-npm',
+    // Force npm otherwise we have a mess between Yarn 1, Yarn 2 and NPM
+    'npm_config_user_agent=npm npx -p create-react-app@{{version}} create-react-app {{appName}}',
     'cd {{appName}}',
     'echo "FAST_REFRESH=true" > .env',
     'echo "SKIP_PREFLIGHT_CHECK=true" > .env',
@@ -48,8 +48,8 @@ export const cra_typescript: Parameters = {
   name: 'cra_typescript',
   version: 'latest',
   generator: [
-    // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
-    'npx create-react-app@{{version}} {{appName}} --template typescript --use-npm',
+    // Force npm otherwise we have a mess between Yarn 1, Yarn 2 and NPM
+    'npm_config_user_agent=npm npx -p create-react-app@{{version}} create-react-app {{appName}} --template typescript',
   ].join(' && '),
 };
 
@@ -96,7 +96,7 @@ const baseAngular: Parameters = {
   framework: 'angular',
   name: 'angular',
   version: 'latest',
-  generator: `npx --package @angular/cli@{{version}} ng new {{appName}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
+  generator: `npx -p @angular/cli@{{version}} ng new {{appName}} --routing=true --minimal=true --style=scss --skipInstall=true --strict`,
 };
 
 export const angular10: Parameters = {
@@ -161,7 +161,8 @@ export const web_components_lit2: Parameters = {
 export const vue: Parameters = {
   framework: 'vue',
   name: 'vue',
-  version: 'latest',
+  // Be careful here, the latest versions of vue cli are bootstrapping a vue 3  project
+  version: '4',
   generator: [
     // Force npm otherwise we have a mess between Yarn 1 and Yarn 2
     `npx -p @vue/cli@{{version}} vue create {{appName}} --default --packageManager=npm --no-git --force`,
@@ -201,7 +202,13 @@ export const sfcVue: Parameters = {
   framework: 'vue',
   name: 'sfcVue',
   version: 'latest',
-  generator: fromDeps('vue', 'vue-loader', 'vue-template-compiler', 'webpack@webpack-4'),
+  //
+  generator: fromDeps(
+    'vue@2.6',
+    'vue-loader@15.9',
+    'vue-template-compiler@2.6',
+    'webpack@webpack-4'
+  ),
 };
 
 export const svelte: Parameters = {

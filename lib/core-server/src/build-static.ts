@@ -120,7 +120,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   const builderName = typeof core?.builder === 'string' ? core.builder : core?.builder?.name;
   const { getPrebuiltDir } =
     builderName === 'webpack5'
-      ? await import('@storybook/manager-webpack5/prebuilt-manager')
+      ? // eslint-disable-next-line import/no-extraneous-dependencies
+        await import('@storybook/manager-webpack5/prebuilt-manager')
       : await import('@storybook/manager-webpack4/prebuilt-manager');
 
   const prebuiltDir = await getPrebuiltDir(fullOptions);

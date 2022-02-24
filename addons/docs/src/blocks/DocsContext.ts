@@ -12,9 +12,11 @@ export type { DocsContextProps };
 // the React component tree.
 // This was specifically a problem with the Vite builder.
 /* eslint-disable no-underscore-dangle */
-if (globalWindow.__DOCS_CONTEXT__ === undefined) {
+if (globalWindow && globalWindow.__DOCS_CONTEXT__ === undefined) {
   globalWindow.__DOCS_CONTEXT__ = createContext({});
   globalWindow.__DOCS_CONTEXT__.displayName = 'DocsContext';
 }
 
-export const DocsContext: Context<DocsContextProps<AnyFramework>> = globalWindow.__DOCS_CONTEXT__;
+export const DocsContext: Context<DocsContextProps<AnyFramework>> = globalWindow
+  ? globalWindow.__DOCS_CONTEXT__
+  : createContext({});

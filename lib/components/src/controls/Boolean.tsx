@@ -92,7 +92,7 @@ export const BooleanControl: FC<BooleanProps> = ({ name, value, onChange, onBlur
     );
   }
 
-  const parsedValue = (typeof value === 'string') ? parse(value) : value
+  const parsedValue = typeof value === 'string' ? parse(value) : value;
 
   return (
     <Label htmlFor={name} title={parsedValue ? 'Change to false' : 'Change to true'}>

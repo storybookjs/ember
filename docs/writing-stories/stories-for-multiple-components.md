@@ -42,6 +42,8 @@ The simplest change we can make to the above is to reuse the stories of the `Lis
     'vue/list-story-unchecked.2.js.mdx',
     'vue/list-story-unchecked.3.js.mdx',
     'angular/list-story-unchecked.ts.mdx',
+    'web-components/list-story-unchecked.js.mdx',
+    'web-components/list-story-unchecked.ts.mdx',
   ]}
 />
 
