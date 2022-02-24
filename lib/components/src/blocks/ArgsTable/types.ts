@@ -32,8 +32,8 @@ export interface ArgType {
   name?: string;
   description?: string;
   defaultValue?: any;
-  includeIf?: boolean | string;
-  excludeIf?: boolean | string;
+  addIf?: string;
+  removeIf?: string;
   [key: string]: any;
 }
 

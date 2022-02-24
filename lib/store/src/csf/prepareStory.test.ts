@@ -504,6 +504,30 @@ describe('prepareStory', () => {
       );
     });
 
+    it('filters out conditional args', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+          args: { a: 1, b: 2 },
+          argTypes: { b: { name: 'b', removeIf: 'a' } },
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith(
+        { a: 1 },
+        expect.objectContaining({ args: { a: 1 }, allArgs: { a: 1, b: 2 } })
+      );
+    });
+
     it('adds argsByTarget to context', () => {
       const renderMock = jest.fn();
       const firstStory = prepareStory(

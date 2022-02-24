@@ -6,10 +6,10 @@ export default {
   title: 'Button',
   argTypes: {
     // button can be passed a label or an image, not both
-    label: { control: 'text', excludeIf: 'image' },
+    label: { control: 'text', removeIf: 'image' },
     image: {
       control: { type: 'select', options: ['foo.jpg', 'bar.jpg'] },
-      excludeIf: 'label',
+      removeIf: 'label',
     },
   },
 };

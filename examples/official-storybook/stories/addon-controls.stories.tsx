@@ -28,21 +28,17 @@ export default {
         ],
       },
     },
-    staticDisable: {
-      name: 'Static disabled',
-      excludeIf: true,
-    },
-    mutuallyExclusiveA: { control: 'text', excludeIf: 'mutuallyExclusiveB' },
-    mutuallyExclusiveB: { control: 'text', excludeIf: 'mutuallyExclusiveA' },
+    mutuallyExclusiveA: { control: 'text', removeIf: 'mutuallyExclusiveB' },
+    mutuallyExclusiveB: { control: 'text', removeIf: 'mutuallyExclusiveA' },
     colorMode: {
       control: 'boolean',
     },
     dynamicText: {
-      excludeIf: 'colorMode',
+      removeIf: 'colorMode',
       control: 'text',
     },
     dynamicColor: {
-      includeIf: 'colorMode',
+      addIf: 'colorMode',
       control: 'color',
     },
     advanced: {
@@ -50,19 +46,19 @@ export default {
     },
     margin: {
       control: 'number',
-      includeIf: 'advanced',
+      addIf: 'advanced',
     },
     padding: {
       control: 'number',
-      includeIf: 'advanced',
+      addIf: 'advanced',
     },
     cornerRadius: {
       control: 'number',
-      includeIf: 'advanced',
+      addIf: 'advanced',
     },
     someText: { control: 'text' },
-    subText: { control: 'text', includeIf: 'someText' },
-    anotherText: { control: 'text', includeIf: 'someText' },
+    subText: { control: 'text', addIf: 'someText' },
+    anotherText: { control: 'text', addIf: 'someText' },
   },
   parameters: {
     chromatic: { disable: true },

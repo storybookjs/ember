@@ -53,8 +53,8 @@ export interface ArgType {
   name?: string;
   description?: string;
   defaultValue?: any;
-  includeIf?: string | boolean;
-  excludeIf?: string | boolean;
+  addIf?: string;
+  removeIf?: string;
   [key: string]: any;
 }
 

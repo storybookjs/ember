@@ -2,8 +2,6 @@
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
   - [CSF3 auto-title redundant filename](#csf3-auto-title-redundant-filename)
-  - [6.5 Deprecations](#65-deprecations)
-    - [Improved args disabling](#improved-args-disabling)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
@@ -208,21 +206,6 @@ Since CSF3 is experimental, we are introducing this technically breaking change 
 // atoms/Button/Button.stories.js
 export default { title: 'Atoms/Button/Button' };
 ```
-
-### 6.5 Deprecations
-
-#### Improved args disabling
-
-We've simplified disabling arg display in 6.5 by replacing the `table.disable` property with `includeIf`/`excludeIf` property:
-
-```js
-// before
-const argTypes = { foo: { table: { disable: true } } };
-// after
-const argTypes = { foo: { includeIf: false } };
-```
-
-In addition to being one less level of nesting in the ArgType declaration, `includeIf`/`excludeIf` can also accept the name of another arg (a string) can conditionally include/exclude the arg based on the runtime value of the other arg.
 
 ## From version 6.3.x to 6.4.0
 

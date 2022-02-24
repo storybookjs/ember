@@ -167,7 +167,7 @@ export default {
 
 export const CustomControls = (args) => <Button {...args} />;
 CustomControls.argTypes = {
-  borderWidth: { excludeIf: true } },
+  borderWidth: { removeIf: true } },
   label: { control: { disable: true } },
 };
 ```
