@@ -101,7 +101,7 @@ describe('useStoriesJson', () => {
             "first-nested-deeply-f--story-one": Object {
               "id": "first-nested-deeply-f--story-one",
               "importPath": "./src/first-nested/deeply/F.stories.js",
-              "kind": "First Nested/Deeply/F",
+              "kind": "first-nested/deeply/F",
               "name": "Story One",
               "parameters": Object {
                 "__id": "first-nested-deeply-f--story-one",
@@ -109,12 +109,12 @@ describe('useStoriesJson', () => {
                 "fileName": "./src/first-nested/deeply/F.stories.js",
               },
               "story": "Story One",
-              "title": "First Nested/Deeply/F",
+              "title": "first-nested/deeply/F",
             },
             "nested-button--story-one": Object {
               "id": "nested-button--story-one",
               "importPath": "./src/nested/Button.stories.ts",
-              "kind": "Nested/Button",
+              "kind": "nested/Button",
               "name": "Story One",
               "parameters": Object {
                 "__id": "nested-button--story-one",
@@ -122,12 +122,12 @@ describe('useStoriesJson', () => {
                 "fileName": "./src/nested/Button.stories.ts",
               },
               "story": "Story One",
-              "title": "Nested/Button",
+              "title": "nested/Button",
             },
             "second-nested-g--story-one": Object {
               "id": "second-nested-g--story-one",
               "importPath": "./src/second-nested/G.stories.ts",
-              "kind": "Second Nested/G",
+              "kind": "second-nested/G",
               "name": "Story One",
               "parameters": Object {
                 "__id": "second-nested-g--story-one",
@@ -135,7 +135,7 @@ describe('useStoriesJson', () => {
                 "fileName": "./src/second-nested/G.stories.ts",
               },
               "story": "Story One",
-              "title": "Second Nested/G",
+              "title": "second-nested/G",
             },
           },
           "v": 3,
