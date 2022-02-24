@@ -57,7 +57,7 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
     const suffix = normalizedFileName.replace(directory, '');
     const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
     let path = titleAndSuffix.split('/');
-    path = stripExtension(path).map(startCase);
+    path = stripExtension(path);
     path = removeRedundantFilename(path);
     return path.join('/');
   }
