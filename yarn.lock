@@ -6527,6 +6527,7 @@ __metadata:
     "@storybook/addon-viewport": 6.5.0-alpha.41
     "@storybook/addons": 6.5.0-alpha.41
     "@storybook/api": 6.5.0-alpha.41
+    "@storybook/core-common": 6.5.0-alpha.41
     "@storybook/node-logger": 6.5.0-alpha.41
     "@storybook/vue": 6.5.0-alpha.41
     "@types/jest": ^26.0.16

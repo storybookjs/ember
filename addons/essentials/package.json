@@ -49,6 +49,7 @@
     "@storybook/addon-viewport": "6.5.0-alpha.41",
     "@storybook/addons": "6.5.0-alpha.41",
     "@storybook/api": "6.5.0-alpha.41",
+    "@storybook/core-common": "6.5.0-alpha.41",
     "@storybook/node-logger": "6.5.0-alpha.41",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
