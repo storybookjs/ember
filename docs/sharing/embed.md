@@ -45,7 +45,7 @@ https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=/story/
   src="https://5ccbc373887ca40020446347-bysekhynzd.chromatic.com/iframe.html?id=shadowboxcta--default&viewMode=story&shortcuts=false&singleStory=true"
   width="800"
   height="200"
-></iframe>;
+></iframe>
 ```
 <!-- prettier-ignore-end -->
 

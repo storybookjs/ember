@@ -97,31 +97,6 @@ A common error is that an addon tries to access the "channel", but the channel i
 
 2.  In React Native, it's a special case documented in [#1192](https://github.com/storybookjs/storybook/issues/1192)
 
-### Can I modify React component state in stories?
-
-Not directly. If you control the component source, you can do something like this:
-
-```js
-import React, { Component } from 'react';
-
-export default {
-  title: 'MyComponent',
-};
-
-class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      someVar: 'defaultValue',
-      ...props.initialState,
-    };
-  }
-  // ...
-}
-
-export const defaultView = () => <MyComponent initialState={} />;
-```
 
 ### Why aren't Controls visible in the Canvas panel but visible in the Docs panel?
 
@@ -384,3 +359,8 @@ export default meta;
 ```
 
 Although valid, it introduces additional boilerplate code to the story definition. Instead, we're working towards implementing a safer mechanism based on what's currently being discussed in the following [issue](https://github.com/microsoft/TypeScript/issues/7481). Once the feature is released, we'll migrate our existing examples and documentation accordingly.
+
+
+## Why is Storybook's source loader returning undefined with curried functions?
+
+This is a known issue with Storybook. If you're interested in getting it fixed, open an issue with a [working reproduction](./contribute/how-to-reproduce) so that it can be triaged and fixed in future releases.
