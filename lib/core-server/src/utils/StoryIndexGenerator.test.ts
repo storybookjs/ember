@@ -149,7 +149,7 @@ describe('StoryIndexGenerator', () => {
       await generator.initialize();
 
       (getStorySortParameter as jest.Mock).mockReturnValueOnce({
-        order: ['D', 'B', 'Nested', 'A', 'Second Nested', 'First Nested/Deeply'],
+        order: ['D', 'B', 'nested', 'A', 'second-nested', 'first-nested/deeply'],
       });
 
       expect(Object.keys((await generator.getIndex()).stories)).toEqual([
