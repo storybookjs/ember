@@ -1,4 +1,3 @@
-import startCase from 'lodash/startCase';
 import slash from 'slash';
 
 // FIXME: types duplicated type from `core-common', to be
