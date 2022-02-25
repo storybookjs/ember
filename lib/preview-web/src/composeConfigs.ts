@@ -37,7 +37,6 @@ export function composeConfigs<TFramework extends AnyFramework>(
     globalTypes: getObjectField(moduleExportList, 'globalTypes'),
     loaders: getArrayField(moduleExportList, 'loaders'),
     render: getSingletonField(moduleExportList, 'render'),
-    play: getSingletonField(moduleExportList, 'play'),
     renderToDOM: getSingletonField(moduleExportList, 'renderToDOM'),
     applyDecorators: getSingletonField(moduleExportList, 'applyDecorators'),
   };
