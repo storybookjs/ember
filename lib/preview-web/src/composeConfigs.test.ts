@@ -124,13 +124,11 @@ describe('composeConfigs', () => {
     expect(
       composeConfigs([
         {
-          play: 'play-1',
           render: 'render-1',
           renderToDOM: 'renderToDOM-1',
           applyDecorators: 'applyDecorators-1',
         },
         {
-          play: 'play-2',
           render: 'render-2',
           renderToDOM: 'renderToDOM-2',
           applyDecorators: 'applyDecorators-2',
@@ -146,10 +144,9 @@ describe('composeConfigs', () => {
       globals: {},
       globalTypes: {},
       loaders: [],
-      play: 'play-1',
-      render: 'render-1',
-      renderToDOM: 'renderToDOM-1',
-      applyDecorators: 'applyDecorators-1',
+      render: 'render-2',
+      renderToDOM: 'renderToDOM-2',
+      applyDecorators: 'applyDecorators-2',
     });
   });
 });

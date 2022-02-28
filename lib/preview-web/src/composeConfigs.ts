@@ -15,7 +15,7 @@ function getObjectField(moduleExportList: ModuleExports[], field: string): Recor
 }
 
 function getSingletonField(moduleExportList: ModuleExports[], field: string): any {
-  return getField(moduleExportList, field)[0];
+  return getField(moduleExportList, field).pop();
 }
 
 export function composeConfigs<TFramework extends AnyFramework>(
