@@ -1,3 +1,9 @@
+## 6.5.0-alpha.44 (February 28, 2022)
+
+### Dependency Upgrades
+
+* Fix mdx-csf dependencies to canary dist-tag ([#17592](https://github.com/storybookjs/storybook/pull/17592))
+
 ## 6.5.0-alpha.43 (February 28, 2022)
 
 ### Features
