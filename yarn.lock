@@ -6424,7 +6424,7 @@ __metadata:
     "@storybook/core": 6.5.0-alpha.42
     "@storybook/core-events": 6.5.0-alpha.42
     "@storybook/csf": 0.0.2--canary.87bc651.0
-    "@storybook/csf-tools": 6.5.0-alpha.41
+    "@storybook/csf-tools": 6.5.0-alpha.42
     "@storybook/html": 6.5.0-alpha.42
     "@storybook/mdx1-csf": 0.0.1-canary.1.0025c94.0
     "@storybook/mdx2-csf": 0.0.1-canary.1.357011b.0
@@ -6485,9 +6485,9 @@ __metadata:
     "@storybook/html": 6.5.0-alpha.42
     "@storybook/mdx2-csf": 0.0.1-canary.1.357011b.0
     "@storybook/react": 6.5.0-alpha.42
-    "@storybook/vue": 6.5.0-alpha.41
-    "@storybook/vue3": 6.5.0-alpha.41
-    "@storybook/web-components": 6.5.0-alpha.41
+    "@storybook/vue": 6.5.0-alpha.42
+    "@storybook/vue3": 6.5.0-alpha.42
+    "@storybook/web-components": 6.5.0-alpha.42
     lit: ^2.0.0
     lit-html: ^1.4.1 || ^2.0.0
     react: ^16.8.0 || ^17.0.0
@@ -7750,31 +7750,6 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
-
-"@storybook/csf-tools@npm:6.5.0-alpha.41":
-  version: 6.5.0-alpha.41
-  resolution: "@storybook/csf-tools@npm:6.5.0-alpha.41"
-  dependencies:
-    "@babel/core": ^7.12.10
-    "@babel/generator": ^7.12.11
-    "@babel/parser": ^7.12.11
-    "@babel/plugin-transform-react-jsx": ^7.12.12
-    "@babel/preset-env": ^7.12.11
-    "@babel/traverse": ^7.12.11
-    "@babel/types": ^7.12.11
-    "@mdx-js/mdx": ^1.6.22
-    "@storybook/csf": 0.0.2--canary.87bc651.0
-    core-js: ^3.8.2
-    fs-extra: ^9.0.1
-    global: ^4.4.0
-    js-string-escape: ^1.0.1
-    lodash: ^4.17.21
-    prettier: ">=2.2.1 <=2.3.0"
-    regenerator-runtime: ^0.13.7
-    ts-dedent: ^2.0.0
-  checksum: 47a88487667b95a5d1cf5122e1777a784d947813137c80fe882f94e633c1d64b664c4d95877598b176c802e37f3b79572aeb17cd0b96483e1e6d5a0ea6e147f1
-  languageName: node
-  linkType: hard
 
 "@storybook/csf@npm:0.0.2--canary.87bc651.0":
   version: 0.0.2--canary.87bc651.0
