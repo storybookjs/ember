@@ -90,7 +90,7 @@ const baseOptions = {
   managerOnly, // production
   docsMode: false,
   cache,
-  configDir: path.resolve(`${__dirname}/../../../examples/react-ts/.storybook`),
+  configDir: path.resolve(`${__dirname}/../../../examples/cra-ts-essentials/.storybook`),
   ci: true,
   managerCache: false,
 };
@@ -254,10 +254,13 @@ describe('build cli flags', () => {
     outputDir: `${__dirname}/storybook-static`,
   };
 
-  it('--webpack-stats-json calls output-stats', async () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('does not call output-stats', async () => {
     await buildStaticStandalone(cliOptions);
     expect(outputStats).not.toHaveBeenCalled();
+  });
 
+  it('--webpack-stats-json calls output-stats', async () => {
     await buildStaticStandalone({ ...cliOptions, webpackStatsJson: '/tmp/dir' });
     expect(outputStats).toHaveBeenCalledWith(
       '/tmp/dir',

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-toolbars",
-  "version": "6.5.0-alpha.41",
+  "version": "6.5.0-alpha.44",
   "description": "Create your own toolbar items that control story rendering",
   "keywords": [
     "addon",
@@ -45,10 +45,10 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.41",
-    "@storybook/api": "6.5.0-alpha.41",
-    "@storybook/components": "6.5.0-alpha.41",
-    "@storybook/theming": "6.5.0-alpha.41",
+    "@storybook/addons": "6.5.0-alpha.44",
+    "@storybook/api": "6.5.0-alpha.44",
+    "@storybook/components": "6.5.0-alpha.44",
+    "@storybook/theming": "6.5.0-alpha.44",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7"
   },
@@ -67,7 +67,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "10663a4c9ea6c04a04047b5bb22254d6b64201c2",
+  "gitHead": "0125cb2b688dc1acca71a7fbf2795466fd55c0e3",
   "sbmodern": "dist/modern/register.js",
   "storybook": {
     "displayName": "Toolbars",

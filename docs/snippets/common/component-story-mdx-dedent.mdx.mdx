@@ -5,12 +5,20 @@ import { Source } from '@storybook/addon-docs';
 
 import dedent from 'ts-dedent';
 
+## With code snippet
+
 <Source
   language='css'
+  dark
+  format={false},
   code={dedent`
      .container {
        display: grid | inline-grid;
      }
   `}
 />
+
+## With Story Id
+
+<Source id="example-mycomponent--starter" />
 ```

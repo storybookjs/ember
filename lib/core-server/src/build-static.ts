@@ -3,6 +3,7 @@ import cpy from 'cpy';
 import fs from 'fs-extra';
 import path from 'path';
 import dedent from 'ts-dedent';
+import global from 'global';
 
 import { logger } from '@storybook/node-logger';
 
@@ -92,6 +93,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   }
 
   const features = await presets.apply<StorybookConfig['features']>('features');
+  global.FEATURES = features;
+
   if (features?.buildStoriesJson || features?.storyStoreV7) {
     const directories = {
       configDir: options.configDir,

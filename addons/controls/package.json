@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-controls",
-  "version": "6.5.0-alpha.41",
+  "version": "6.5.0-alpha.44",
   "description": "Interact with component inputs dynamically in the Storybook UI",
   "keywords": [
     "addon",
@@ -45,15 +45,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.41",
-    "@storybook/api": "6.5.0-alpha.41",
-    "@storybook/client-logger": "6.5.0-alpha.41",
-    "@storybook/components": "6.5.0-alpha.41",
-    "@storybook/core-common": "6.5.0-alpha.41",
+    "@storybook/addons": "6.5.0-alpha.44",
+    "@storybook/api": "6.5.0-alpha.44",
+    "@storybook/client-logger": "6.5.0-alpha.44",
+    "@storybook/components": "6.5.0-alpha.44",
+    "@storybook/core-common": "6.5.0-alpha.44",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.5.0-alpha.41",
-    "@storybook/store": "6.5.0-alpha.41",
-    "@storybook/theming": "6.5.0-alpha.41",
+    "@storybook/node-logger": "6.5.0-alpha.44",
+    "@storybook/store": "6.5.0-alpha.44",
+    "@storybook/theming": "6.5.0-alpha.44",
     "core-js": "^3.8.2",
     "lodash": "^4.17.21",
     "ts-dedent": "^2.0.0"
@@ -73,7 +73,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "10663a4c9ea6c04a04047b5bb22254d6b64201c2",
+  "gitHead": "0125cb2b688dc1acca71a7fbf2795466fd55c0e3",
   "sbmodern": "dist/modern/register.js",
   "storybook": {
     "displayName": "Controls",
