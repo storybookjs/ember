@@ -14,8 +14,6 @@
 | vue            | vue                       |       |      |     |
 | vue3           | vue3                      |       |      |     |
 | html           | html                      |       |      |     |
-| mithril        | mithril                   |       |      |     |
 | preact         | preact                    |       |      |     |
-| rax            | rax                       |       |      |     |
 | vue            | sfcVue                    |       |      |     |
 | svelte         | svelte                    |       |      |     |
