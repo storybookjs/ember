@@ -48,7 +48,7 @@
     "@babel/traverse": "^7.12.11",
     "@babel/types": "^7.12.11",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/mdx1-csf": "0.0.1-canary.1.0025c94.0",
+    "@storybook/mdx1-csf": "canary",
     "core-js": "^3.8.2",
     "fs-extra": "^9.0.1",
     "global": "^4.4.0",
@@ -56,12 +56,12 @@
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
-    "@storybook/mdx2-csf": "0.0.1-canary.1.357011b.0",
+    "@storybook/mdx2-csf": "canary",
     "@types/fs-extra": "^9.0.6",
     "js-yaml": "^3.14.1"
   },
   "peerDependencies": {
-    "@storybook/mdx2-csf": "0.0.1-canary.1.357011b.0"
+    "@storybook/mdx2-csf": "*"
   },
   "peerDependenciesMeta": {
     "@storybook/mdx2-csf": {
