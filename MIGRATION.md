@@ -517,8 +517,8 @@ In 6.4 the behavior of loaders when arg changes occurred was tweaked so loaders 
 
 Since SB6.3, Storybook for Angular supports a builder configuration in your project's `angular.json`. This provides an Angular-style configuration for running and building your Storybook. The full builder documentation will be shown in the [main documentation page](https://storybook.js.org/docs/angular) soon, but for now you can check out an example here:
 
-- `start-storybook`: https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L78
-- `build-storybook`: https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L86
+- `start-storybook`: [example](https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L78) [schema](https://github.com/storybookjs/storybook/blob/next/app/angular/src/builders/start-storybook/schema.json)
+- `build-storybook`: [example](https://github.com/storybookjs/storybook/blob/next/examples/angular-cli/angular.json#L86) [schema](https://github.com/storybookjs/storybook/blob/next/app/angular/src/builders/build-storybook/schema.json)
 
 #### Angular13
 
@@ -555,6 +555,13 @@ If you need storybook-specific styles separate from your app, you can configure 
           "styles": [".storybook/custom-styles.scss"],
         },
       }
+```
+
+Then, once you've set this up, you should run Storybook through the builder:
+
+```sh
+ng run my-default-project:storybook
+ng run my-default-project:build-storybook
 ```
 
 #### Angular component parameter removed
