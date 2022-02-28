@@ -388,16 +388,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
-            "options": Object {
-              "compilers": Array [
-                [Function],
-              ],
-              "remarkPlugins": Array [
-                [Function],
-                [Function],
-              ],
-            },
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
           },
         ],
       },
@@ -447,12 +438,13 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
             "options": Object {
               "remarkPlugins": Array [
                 [Function],
                 [Function],
               ],
+              "skipCsf": true,
             },
           },
         ],

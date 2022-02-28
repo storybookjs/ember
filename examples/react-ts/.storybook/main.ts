@@ -32,6 +32,7 @@ const config: StorybookConfig = {
     buildStoriesJson: true,
     babelModeV7: true,
     warnOnLegacyHierarchySeparator: false,
+    previewMdx2: true,
   },
   framework: '@storybook/react',
 };

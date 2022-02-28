@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [Opt-in MDX2 support](#opt-in-mdx2-support)
   - [CSF3 auto-title redundant filename](#csf3-auto-title-redundant-filename)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
@@ -191,6 +192,24 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.4.x to 6.5.0
+
+### Opt-in MDX2 support
+
+SB6.5 adds experimental opt-in support for MDXv2. To install:
+
+```sh
+yarn add @storybook/mdx2-csf -D
+```
+
+Then add the `previewMdx2` feature flag to your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  features: {
+    previewMdx2: true,
+  },
+};
+```
 
 ### CSF3 auto-title redundant filename
 
