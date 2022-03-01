@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.44","info":{"plain":"### Dependency Upgrades\n\n* Fix mdx-csf dependencies to canary dist-tag ([#17592](https://github.com/storybookjs/storybook/pull/17592))"}}
+{"version":"6.5.0-alpha.45","info":{"plain":"### Bug Fixes\n\n- CSF3: Fix Auto-title to respect file system capitalization ([#17574](https://github.com/storybookjs/storybook/pull/17574))\n\n### Maintenance\n\n- Core: Remove unused babel dependencies ([#17425](https://github.com/storybookjs/storybook/pull/17425))"}}
