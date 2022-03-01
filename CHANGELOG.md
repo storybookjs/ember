@@ -1,8 +1,18 @@
+## 6.5.0-alpha.45 (March 2, 2022)
+
+### Bug Fixes
+
+- CSF3: Fix Auto-title to respect file system capitalization ([#17574](https://github.com/storybookjs/storybook/pull/17574))
+
+### Maintenance
+
+- Core: Remove unused babel dependencies ([#17425](https://github.com/storybookjs/storybook/pull/17425))
+
 ## 6.5.0-alpha.44 (February 28, 2022)
 
 ### Dependency Upgrades
 
-* Fix mdx-csf dependencies to canary dist-tag ([#17592](https://github.com/storybookjs/storybook/pull/17592))
+- Fix mdx-csf dependencies to canary dist-tag ([#17592](https://github.com/storybookjs/storybook/pull/17592))
 
 ## 6.5.0-alpha.43 (February 28, 2022)
 
