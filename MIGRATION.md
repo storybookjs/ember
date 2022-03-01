@@ -2,7 +2,9 @@
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
   - [Opt-in MDX2 support](#opt-in-mdx2-support)
-  - [CSF3 auto-title redundant filename](#csf3-auto-title-redundant-filename)
+  - [CSF3 auto-title improvements](#csf3-auto-title-improvements)
+    - [Auto-title filename case](#auto-title-filename-case)
+    - [Auto-title redundant filename](#auto-title-redundant-filename)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
@@ -211,13 +213,31 @@ module.exports = {
 };
 ```
 
-### CSF3 auto-title redundant filename
+### CSF3 auto-title improvements
 
 SB 6.4 introduced experimental "auto-title", in which a story's location in the sidebar (aka `title`) can be automatically inferred from its location on disk. For example, the file `atoms/Button.stories.js` might result in the title `Atoms/Button`.
 
+We've made two improvements to Auto-title based on user feedback:
+
+- Auto-title preserves filename case
+- Auto-title removes redundant filenames from the path
+
+#### Auto-title filename case
+
+SB 6.4's implementation of auto-title ran `startCase` on each path component. For example, the file `atoms/MyButton` would be transformed to `Atoms/My Button`.
+
+We've changed this in SB 6.5 to preserve the filename case, so that instead it the same file would result in the title `atoms/MyButton`. The rationale is that this gives more control to users about what their auto-title will be.
+
+This might be considered a breaking change. However, we feel justified to release this in 6.5 because:
+
+1. We consider it a bug in the initial auto-title implementation
+2. CSF3 and the auto-title feature are experimental, and we reserve the right to make breaking changes outside of semver (tho we try to avoid it)
+
+#### Auto-title redundant filename
+
 The heuristic failed in the common scenario in which each component gets its own directory, e.g. `atoms/Button/Button.stories.js`, which would result in the redundant title `Atoms/Button/Button`. Alternatively, `atoms/Button/index.stories.js` would result in `Atoms/Button/Index`.
 
-To address this problem, 6.5 introduces a new heuristic to removes the filename if it matches the directory name (case insensitive) or `index`. So `atoms/Button/Button.stories.js` and `atoms/Button/index.stories.js` would both result in the title `Atoms/Button`.
+To address this problem, 6.5 introduces a new heuristic to removes the filename if it matches the directory name or `index`. So `atoms/Button/Button.stories.js` and `atoms/Button/index.stories.js` would both result in the title `Atoms/Button` (or `atoms/Button` if `autoTitleFilenameCase` is set, see above).
 
 Since CSF3 is experimental, we are introducing this technically breaking change in a minor release. If you desire the old structure, you can manually specify the title in file. For example:
 

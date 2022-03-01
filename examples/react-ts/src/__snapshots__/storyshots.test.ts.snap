@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Storyshots Demo/Account Form Standard 1`] = `
+exports[`Storyshots Demo/AccountForm Standard 1`] = `
 .emotion-15 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -368,7 +368,7 @@ exports[`Storyshots Demo/Account Form Standard 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Standard Email Failed 1`] = `
+exports[`Storyshots Demo/AccountForm Standard Email Failed 1`] = `
 .emotion-15 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -736,7 +736,7 @@ exports[`Storyshots Demo/Account Form Standard Email Failed 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Standard Email Filled 1`] = `
+exports[`Storyshots Demo/AccountForm Standard Email Filled 1`] = `
 .emotion-15 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -1104,7 +1104,7 @@ exports[`Storyshots Demo/Account Form Standard Email Filled 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Standard Fail Hover 1`] = `
+exports[`Storyshots Demo/AccountForm Standard Fail Hover 1`] = `
 .emotion-15 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -1472,7 +1472,7 @@ exports[`Storyshots Demo/Account Form Standard Fail Hover 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Standard Password Failed 1`] = `
+exports[`Storyshots Demo/AccountForm Standard Password Failed 1`] = `
 .emotion-15 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -1840,7 +1840,7 @@ exports[`Storyshots Demo/Account Form Standard Password Failed 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Verification 1`] = `
+exports[`Storyshots Demo/AccountForm Verification 1`] = `
 .emotion-18 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -2231,7 +2231,7 @@ exports[`Storyshots Demo/Account Form Verification 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Verification Passsword 1 1`] = `
+exports[`Storyshots Demo/AccountForm Verification Passsword 1 1`] = `
 .emotion-18 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -2622,7 +2622,7 @@ exports[`Storyshots Demo/Account Form Verification Passsword 1 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Verification Password Mismatch 1`] = `
+exports[`Storyshots Demo/AccountForm Verification Password Mismatch 1`] = `
 .emotion-18 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
@@ -3013,7 +3013,7 @@ exports[`Storyshots Demo/Account Form Verification Password Mismatch 1`] = `
 </section>
 `;
 
-exports[`Storyshots Demo/Account Form Verification Success 1`] = `
+exports[`Storyshots Demo/AccountForm Verification Success 1`] = `
 .emotion-18 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
