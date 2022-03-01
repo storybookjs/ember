@@ -219,7 +219,7 @@ SB 6.4 introduced experimental "auto-title", in which a story's location in the 
 
 We've made two improvements to Auto-title based on user feedback:
 
-- Auto-title preserves filename case if you set a feature flag (opt-in)
+- Auto-title preserves filename case
 - Auto-title removes redundant filenames from the path
 
 #### Auto-title filename case
@@ -228,16 +228,10 @@ SB 6.4's implementation of auto-title ran `startCase` on each path component. Fo
 
 We've changed this in SB 6.5 to preserve the filename case, so that instead it the same file would result in the title `atoms/MyButton`. The rationale is that this gives more control to users about what their auto-title will be.
 
-Because this is a breaking change, it's currently behind a feature flag `autoTitleFilenameCase`. This behavior will become the default/only behavior in SB 7.0:
+This might be considered a breaking change. However, we feel justified to release this in 6.5 because:
 
-```js
-// .storybook/main.js
-module.exports = {
-  features: {
-    autoTitleFilenameCase: true,
-  },
-};
-```
+1. We consider it a bug in the initial auto-title implementation
+2. CSF3 and the auto-title feature are experimental, and we reserve the right to make breaking changes outside of semver (tho we try to avoid it)
 
 #### Auto-title redundant filename
 

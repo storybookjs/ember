@@ -33,7 +33,6 @@ const config: StorybookConfig = {
     babelModeV7: true,
     warnOnLegacyHierarchySeparator: false,
     previewMdx2: true,
-    autoTitleFilenameCase: true,
   },
   framework: '@storybook/react',
 };

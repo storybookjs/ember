@@ -1,6 +1,4 @@
-import startCase from 'lodash/startCase';
 import slash from 'slash';
-import global from 'global';
 
 // FIXME: types duplicated type from `core-common', to be
 // removed when we remove v6 back-compat.
@@ -61,10 +59,6 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
     const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
     let path = titleAndSuffix.split('/');
     path = stripExtension(path);
-    const { autoTitleFilenameCase, breakingChangesV7 } = global.FEATURES || {};
-    if (!autoTitleFilenameCase && !breakingChangesV7) {
-      path = path.map(startCase);
-    }
     path = removeRedundantFilename(path);
     return path.join('/');
   }
