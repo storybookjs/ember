@@ -207,7 +207,7 @@ Sets the button to a disabled state.",
       },
       "type": Object {
         "required": true,
-        "summary": "[]",
+        "summary": "T[]",
       },
     },
     "type": Object {

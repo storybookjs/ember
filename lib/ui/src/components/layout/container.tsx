@@ -1,5 +1,3 @@
-/* eslint-disable react/no-did-update-set-state */
-
 import React, { Component, Fragment, FunctionComponent, CSSProperties, ReactNode } from 'react';
 import { styled, withTheme, Theme } from '@storybook/theming';
 import { State } from '@storybook/api';
