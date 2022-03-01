@@ -1,4 +1,6 @@
+import startCase from 'lodash/startCase';
 import slash from 'slash';
+import global from 'global';
 
 // FIXME: types duplicated type from `core-common', to be
 // removed when we remove v6 back-compat.
@@ -22,11 +24,13 @@ const stripExtension = (path: string[]) => {
   return parts;
 };
 
+const indexRe = /^index$/i;
+
 // deal with files like "atoms/button/{button,index}.stories.js"
 const removeRedundantFilename = (paths: string[]) => {
   let prevVal: string;
   return paths.filter((val, index) => {
-    if (index === paths.length - 1 && (val === prevVal || val === 'Index')) {
+    if (index === paths.length - 1 && (val === prevVal || indexRe.test(val))) {
       return false;
     }
     prevVal = val;
@@ -57,6 +61,10 @@ export const autoTitleFromSpecifier = (fileName: string, entry: NormalizedStorie
     const titleAndSuffix = slash(pathJoin([titlePrefix, suffix]));
     let path = titleAndSuffix.split('/');
     path = stripExtension(path);
+    const { autoTitleFilenameCase, breakingChangesV7 } = global.FEATURES || {};
+    if (!autoTitleFilenameCase && !breakingChangesV7) {
+      path = path.map(startCase);
+    }
     path = removeRedundantFilename(path);
     return path.join('/');
   }

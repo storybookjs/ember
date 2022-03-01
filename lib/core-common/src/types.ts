@@ -378,6 +378,12 @@ export interface StorybookConfig {
      * Preview MDX2 support, will become default in 7.0
      */
     previewMdx2?: boolean;
+
+    /**
+     * Use the natural file system casing for autoTitle, i.e. do not automatically convert to StartCase.
+     * Will become default in 7.0.
+     */
+    autoTitleFilenameCase?: boolean;
   };
 
   /**
