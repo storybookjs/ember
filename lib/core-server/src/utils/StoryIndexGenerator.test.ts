@@ -1,5 +1,4 @@
 import path from 'path';
-import global from 'global';
 import { normalizeStoriesEntry, NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
 
@@ -18,9 +17,6 @@ const options = {
   storiesV2Compatibility: false,
   storyStoreV7: true,
 };
-
-global.FEATURES = global.FEATURES || {};
-global.FEATURES.autoTitleFilenameCase = true;
 
 describe('StoryIndexGenerator', () => {
   beforeEach(() => {
