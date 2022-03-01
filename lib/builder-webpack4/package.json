@@ -91,7 +91,7 @@
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
     "@types/terser-webpack-plugin": "^4.2.0",
     "@types/webpack-dev-middleware": "^3.7.3",
-    "@types/webpack-hot-middleware": "^2.25.3",
+    "@types/webpack-hot-middleware": "<=2.25.5",
     "@types/webpack-virtual-modules": "^0.1.0"
   },
   "peerDependencies": {

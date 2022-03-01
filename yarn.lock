@@ -7124,7 +7124,7 @@ __metadata:
     "@types/terser-webpack-plugin": ^4.2.0
     "@types/webpack": ^4.41.26
     "@types/webpack-dev-middleware": ^3.7.3
-    "@types/webpack-hot-middleware": ^2.25.3
+    "@types/webpack-hot-middleware": <=2.25.5
     "@types/webpack-virtual-modules": ^0.1.0
     autoprefixer: ^9.8.6
     babel-loader: ^8.0.0
@@ -7187,7 +7187,7 @@ __metadata:
     "@types/node": ^14.0.10 || ^16.0.0
     "@types/terser-webpack-plugin": ^5.0.2
     "@types/webpack-dev-middleware": ^4.1.0
-    "@types/webpack-hot-middleware": ^2.25.3
+    "@types/webpack-hot-middleware": ^2.25.6
     "@types/webpack-virtual-modules": ^0.1.0
     babel-loader: ^8.0.0
     babel-plugin-named-exports-order: ^0.0.2
@@ -10488,7 +10488,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-hot-middleware@npm:^2.25.3":
+"@types/webpack-hot-middleware@npm:<=2.25.5":
+  version: 2.25.5
+  resolution: "@types/webpack-hot-middleware@npm:2.25.5"
+  dependencies:
+    "@types/connect": "*"
+    "@types/webpack": ^4
+  checksum: d308539da763986a0e7b666e8a71a7347e24a36ecf895188d2a59b42f9047480a9110b05951a01b80b50a59f90704b538ec0cd55a94ec4cad42eccaa25f000e5
+  languageName: node
+  linkType: hard
+
+"@types/webpack-hot-middleware@npm:^2.25.6":
   version: 2.25.6
   resolution: "@types/webpack-hot-middleware@npm:2.25.6"
   dependencies:
