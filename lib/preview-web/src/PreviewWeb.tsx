@@ -435,6 +435,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.view.showPreparingDocs();
     }
 
+    const { currentSelection, currentRender } = this;
+
     const storyRender: PreviewWeb<TFramework>['currentRender'] = new StoryRender<
       HTMLElement,
       TFramework
@@ -446,32 +448,37 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       storyId,
       'story'
     );
+    // We need to store this right away, so if the story changes during
+    // the async `.prepare()` below, we can (potentially) cancel it
+    this.currentSelection = selection;
+    // Note this may be replaced by a docsRender after preparing
+    this.currentRender = storyRender;
 
     try {
       await storyRender.prepare();
     } catch (err) {
-      await this.teardownRender(this.currentRender);
+      await this.teardownRender(currentRender);
       this.currentRender = null;
       this.renderStoryLoadingException(storyId, err);
       return;
     }
-    const implementationChanged = !storyIdChanged && !storyRender.isEqual(this.currentRender);
+    const implementationChanged = !storyIdChanged && !storyRender.isEqual(currentRender);
 
     if (persistedArgs) this.storyStore.args.updateFromPersisted(storyRender.story, persistedArgs);
 
     const { parameters, initialArgs, argTypes, args } = storyRender.context();
 
     // Don't re-render the story if nothing has changed to justify it
-    if (this.currentRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
+    if (currentRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
       this.view.showMain();
       return;
     }
 
-    await this.teardownRender(this.currentRender, { viewModeChanged });
+    await this.teardownRender(currentRender, { viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
-    if (this.currentSelection && (storyIdChanged || viewModeChanged)) {
+    if (currentSelection && (storyIdChanged || viewModeChanged)) {
       this.channel.emit(Events.STORY_CHANGED, storyId);
     }
 
@@ -491,10 +498,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     if (implementationChanged || persistedArgs) {
       this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args });
     }
-
-    // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
-    this.currentSelection = selection;
-    this.currentRender = storyRender; // may be replaced immedately below
 
     if (selection.viewMode === 'docs' || parameters.docsOnly) {
       this.currentRender = storyRender.toDocsRender();

@@ -95,8 +95,10 @@ export class StoryRender<
       this.story = await this.store.loadStory({ storyId: this.id });
     });
 
-    if (this.abortController.signal.aborted)
+    if (this.abortController.signal.aborted) {
+      this.store.cleanupStory(this.story);
       throw new Error('Story render aborted during preparation');
+    }
   }
 
   // The two story "renders" are equal and have both loaded the same story
@@ -225,7 +227,8 @@ export class StoryRender<
   async teardown(options: {} = {}) {
     this.cancelRender();
 
-    this.store.cleanupStory(this.story);
+    // If the story has loaded, we need to cleanup
+    if (this.story) this.store.cleanupStory(this.story);
 
     // Check if we're done rendering/playing. If not, we may have to reload the page.
     // Wait several ticks that may be needed to handle the abort, then try again.
