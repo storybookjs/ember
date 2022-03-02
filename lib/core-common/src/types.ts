@@ -4,8 +4,8 @@ import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
 import { Configuration, Stats } from 'webpack';
 import { TransformOptions } from '@babel/core';
 import { Router } from 'express';
-import { FileSystemCache } from 'file-system-cache';
 import { Server } from 'http';
+import { FileSystemCache } from './utils/file-cache';
 
 /**
  * ⚠️ This file contains internal WIP types they MUST NOT be exported outside this package for now!
@@ -32,6 +32,7 @@ export interface Webpack5BuilderConfig extends BuilderConfigObject {
   name: 'webpack5';
   options?: {
     fsCache?: boolean;
+    lazyCompilation?: boolean;
   };
 }
 
@@ -372,6 +373,11 @@ export interface StorybookConfig {
      * Will be removed in 7.0.
      */
     warnOnLegacyHierarchySeparator?: boolean;
+
+    /**
+     * Preview MDX2 support, will become default in 7.0
+     */
+    previewMdx2?: boolean;
   };
 
   /**

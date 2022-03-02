@@ -1,10 +1,11 @@
-import React, { memo, useCallback } from 'react';
-import { useGlobals } from '@storybook/api';
+import React, { memo, useCallback, useEffect } from 'react';
+import { useGlobals, useStorybookApi } from '@storybook/api';
 import { Icons, IconButton } from '@storybook/components';
-import { PARAM_KEY } from './constants';
+import { ADDON_ID, PARAM_KEY } from './constants';
 
 export const OutlineSelector = memo(() => {
   const [globals, updateGlobals] = useGlobals();
+  const api = useStorybookApi();
 
   const isActive = globals[PARAM_KEY] || false;
 
@@ -15,6 +16,16 @@ export const OutlineSelector = memo(() => {
       }),
     [isActive]
   );
+
+  useEffect(() => {
+    api.setAddonShortcut(ADDON_ID, {
+      label: 'Toggle Measure [O]',
+      defaultShortcut: ['O'],
+      actionName: 'outline',
+      showInMenu: false,
+      action: toggleOutline,
+    });
+  }, [toggleOutline, api]);
 
   return (
     <IconButton

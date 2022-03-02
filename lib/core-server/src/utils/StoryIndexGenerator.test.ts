@@ -66,13 +66,13 @@ describe('StoryIndexGenerator', () => {
                 "id": "nested-button--story-one",
                 "importPath": "./src/nested/Button.stories.ts",
                 "name": "Story One",
-                "title": "Nested/Button",
+                "title": "nested/Button",
               },
               "second-nested-g--story-one": Object {
                 "id": "second-nested-g--story-one",
                 "importPath": "./src/second-nested/G.stories.ts",
                 "name": "Story One",
-                "title": "Second Nested/G",
+                "title": "second-nested/G",
               },
             },
             "v": 3,
@@ -116,19 +116,19 @@ describe('StoryIndexGenerator', () => {
                 "id": "first-nested-deeply-f--story-one",
                 "importPath": "./src/first-nested/deeply/F.stories.js",
                 "name": "Story One",
-                "title": "First Nested/Deeply/F",
+                "title": "first-nested/deeply/F",
               },
               "nested-button--story-one": Object {
                 "id": "nested-button--story-one",
                 "importPath": "./src/nested/Button.stories.ts",
                 "name": "Story One",
-                "title": "Nested/Button",
+                "title": "nested/Button",
               },
               "second-nested-g--story-one": Object {
                 "id": "second-nested-g--story-one",
                 "importPath": "./src/second-nested/G.stories.ts",
                 "name": "Story One",
-                "title": "Second Nested/G",
+                "title": "second-nested/G",
               },
             },
             "v": 3,
@@ -149,7 +149,7 @@ describe('StoryIndexGenerator', () => {
       await generator.initialize();
 
       (getStorySortParameter as jest.Mock).mockReturnValueOnce({
-        order: ['D', 'B', 'Nested', 'A', 'Second Nested', 'First Nested/Deeply'],
+        order: ['D', 'B', 'nested', 'A', 'second-nested', 'first-nested/deeply'],
       });
 
       expect(Object.keys((await generator.getIndex()).stories)).toEqual([

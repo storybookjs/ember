@@ -63,6 +63,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -128,6 +134,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -238,6 +250,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -291,16 +309,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
-            "options": Object {
-              "compilers": Array [
-                [Function],
-              ],
-              "remarkPlugins": Array [
-                [Function],
-                [Function],
-              ],
-            },
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
           },
         ],
       },
@@ -330,6 +339,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -383,12 +398,13 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
             "options": Object {
               "remarkPlugins": Array [
                 [Function],
                 [Function],
               ],
+              "skipCsf": true,
             },
           },
         ],

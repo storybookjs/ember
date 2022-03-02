@@ -1,0 +1,30 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { useState } from 'react';
+
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta title="Button" component={Button} />
+
+<Canvas>
+  <Story name="Primary">
+    {() => {
+      const [value, setValue] = useState('Secondary');
+      const [isPrimary, setIsPrimary] = useState(false);
+      // Sets a click handler to change the label's value
+      const handleOnChange = () => {
+        if (!isPrimary) {
+          setIsPrimary(true);
+          setValue("Primary");
+        }
+      };
+      return (
+        <Button primary={isPrimary} onClick={handleOnChange} label={value} />
+      );
+    }}
+  </Story>
+</Canvas>
+```

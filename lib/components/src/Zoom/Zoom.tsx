@@ -1,6 +1,6 @@
 import global from 'global';
-import { ZoomElement as Element } from './ZoomElement';
-import { ZoomIFrame as IFrame } from './ZoomIFrame';
+import { ZoomElement } from './ZoomElement';
+import { ZoomIFrame } from './ZoomIFrame';
 
 const { window: globalWindow } = global;
 
@@ -15,6 +15,6 @@ export const browserSupportsCssZoom = (): boolean => {
 };
 
 export const Zoom = {
-  Element,
-  IFrame,
+  Element: ZoomElement,
+  IFrame: ZoomIFrame,
 };

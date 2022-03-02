@@ -14,9 +14,14 @@ In the interest of fostering an open and welcoming environment, we as contributo
 - [**Docs**](./documentation-updates.md): Typos, clarifications
 - [**Integrations**](./../api/new-frameworks): Integrate Storybook with your favorite library
 - [**Addons**](./../addons/introduction): Build an addon and share it with the community
+- [**Examples**](https://github.com/storybookjs/storybook/tree/next/examples/official-storybook): Add an example/test for a feature
 
 ## Not sure how to get started?
 
 - [Chat in Discord #contributing](https://discord.gg/storybook)
 - [Browse "good first issues" to fix](https://github.com/storybookjs/storybook/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 - [Submit a bug report or feature request](https://github.com/storybookjs/storybook/issues)
+
+## Additional resources
+
+- [**Official Storybook**](https://next--storybookjs.netlify.app/official-storybook/): The Storybook we use to build Storybook

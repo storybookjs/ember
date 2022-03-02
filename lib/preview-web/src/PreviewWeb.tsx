@@ -80,6 +80,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   renderToDOM: WebProjectAnnotations<TFramework>['renderToDOM'];
 
+  previewEntryError?: Error;
+
   previousSelection: Selection;
 
   previousStory: Story<TFramework>;
@@ -294,6 +296,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }: {
     getProjectAnnotations: () => MaybePromise<ProjectAnnotations<TFramework>>;
   }) {
+    delete this.previewEntryError;
+
     const projectAnnotations = await this.getProjectAnnotationsOrRenderError(getProjectAnnotations);
     if (!this.storyStore.projectAnnotations) {
       await this.initializeWithProjectAnnotations(projectAnnotations);
@@ -306,6 +310,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async onStoryIndexChanged() {
+    delete this.previewEntryError;
+
     if (!this.storyStore.projectAnnotations) {
       // We haven't successfully set project annotations yet,
       // we need to do that before we can do anything else.
@@ -709,6 +715,28 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     };
   }
 
+  // API
+  async extract(options?: { includeDocsOnly: boolean }) {
+    if (this.previewEntryError) {
+      throw this.previewEntryError;
+    }
+
+    if (!this.storyStore.projectAnnotations) {
+      // In v6 mode, if your preview.js throws, we never get a chance to initialize the preview
+      // or store, and the error is simply logged to the browser console. This is the best we can do
+      throw new Error(dedent`Failed to initialize Storybook.
+      
+      Do you have an error in your \`preview.js\`? Check your Storybook's browser console for errors.`);
+    }
+
+    if (global.FEATURES?.storyStoreV7) {
+      await this.storyStore.cacheAllCSFFiles();
+    }
+
+    return this.storyStore.extract(options);
+  }
+
+  // UTILITIES
   async cleanupPreviousRender({ unmountDocs = true }: { unmountDocs?: boolean } = {}) {
     const previousViewMode = this.previousStory?.parameters?.docsOnly
       ? 'docs'
@@ -724,6 +752,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   renderPreviewEntryError(reason: string, err: Error) {
+    this.previewEntryError = err;
     logger.error(reason);
     logger.error(err);
     this.view.showErrorDisplay(err);

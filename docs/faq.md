@@ -97,31 +97,6 @@ A common error is that an addon tries to access the "channel", but the channel i
 
 2.  In React Native, it's a special case documented in [#1192](https://github.com/storybookjs/storybook/issues/1192)
 
-### Can I modify React component state in stories?
-
-Not directly. If you control the component source, you can do something like this:
-
-```js
-import React, { Component } from 'react';
-
-export default {
-  title: 'MyComponent',
-};
-
-class MyComponent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      someVar: 'defaultValue',
-      ...props.initialState,
-    };
-  }
-  // ...
-}
-
-export const defaultView = () => <MyComponent initialState={} />;
-```
 
 ### Why aren't Controls visible in the Canvas panel but visible in the Docs panel?
 
@@ -158,7 +133,7 @@ With the release of version 6.0, we updated our documentation as well. That does
 We're only covering versions 5.3 and 5.0 as they were important milestones for Storybook. If you want to go back in time a little more, you'll have to check the specific release in the monorepo.
 
 | Section          | Page                                      | Current Location                                                                   | Version 5.3 location                                                                                                                                                                                                                                                 | Version 5.0 location                                                                                                                                     |
-| ---------------- | ----------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------|-------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Get started      | Install                                   | [See current documentation](../get-started/install.md)                             | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/guides/quick-start-guide)                                                                                                                                     | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.0/docs/src/pages/guides/quick-start-guide)                         |
 |                  | What's a story                            | [See current documentation](../get-started/whats-a-story.md)                       | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.3/docs/src/pages/guides)                                                                                                                                    | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.0/docs/src/pages/guides)                        |
 |                  | Browse Stories                            | [See current documentation](../get-started/browse-stories.md)                      | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.3/docs/src/pages/guides)                                                                                                                                    | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.0/docs/src/pages/guides)                        |
@@ -171,7 +146,14 @@ We're only covering versions 5.3 and 5.0 as they were important milestones for S
 |                  | Stories for multiple components           | [See current documentation](../writing-stories/stories-for-multiple-components.md) | Non existing feature or undocumented                                                                                                                                                                                                                                 | Non existing feature or undocumented                                                                                                                     |
 | Write docs       | DocsPage                                  | [See current documentation](../writing-docs/docs-page.md)                          | See versioned addon documentation                                                                                                                                                                                                                                    | Non existing feature or undocumented                                                                                                                     |
 |                  | MDX                                       | [See current documentation](../writing-docs/mdx.md)                                | See versioned addon documentation                                                                                                                                                                                                                                    | Non existing feature or undocumented                                                                                                                     |
-|                  | Doc Blocks                                | [See current documentation](../writing-docs/doc-blocks.md)                         | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Argstable                      | [See current documentation](../writing-docs/doc-block-argstable.md)                | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Canvas                         | [See current documentation](../writing-docs/doc-block-canvas.md)                   | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Color Palette                  | [See current documentation](../doc-block-colorpalette.md)                          | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Description                    | [See current documentation](../writing-docs/doc-block-description.md)              | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Icon Gallery                   | [See current documentation](../writing-docs/doc-block-icongallery.md)              | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Source                         | [See current documentation](../writing-docs/doc-block-source.md)                   | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Story                          | [See current documentation](../writing-docs/doc-block-story.md)                    | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
+|                  | Doc Blocks/Typeset                        | [See current documentation](../writing-docs/doc-block-typeset.md)                  | [See versioned addon documentation](https://github.com/storybookjs/storybook/tree/release/5.3/addons/docs/)                                                                                                                                                          | Non existing feature or undocumented                                                                                                                     |
 |                  | Preview and build docs                    | [See current documentation](../writing-docs/build-documentation.md)                | Non existing feature or undocumented                                                                                                                                                                                                                                 | Non existing feature or undocumented                                                                                                                     |
 | Testing          | Visual tests                              | [See current documentation](../writing-tests/visual-testing.md)                    | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/testing/automated-visual-testing)                                                                                                                             | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.0/docs/src/pages/testing/automated-visual-testing)                 |
 |                  | Accessibility tests                       | [See current documentation](../writing-tests/accessibility-testing.md)             | Non existing feature or undocumented                                                                                                                                                                                                                                 | Non existing feature or undocumented                                                                                                                     |
@@ -211,7 +193,6 @@ We're only covering versions 5.3 and 5.0 as they were important milestones for S
 |                  | Stories/StoriesOF format (see note below) | [See current documentation](../../lib/core/docs/storiesOf.md)                      | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/formats/storiesof-api)                                                                                                                                        | Non existing feature or undocumented                                                                                                                     |
 |                  | Frameworks                                | [See current documentation](../api/new-frameworks.md)                              | Non existing feature or undocumented                                                                                                                                                                                                                                 | Non existing feature or undocumented                                                                                                                     |
 |                  | CLI options                               | [See current documentation](../api/cli-options.md)                                 | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/configurations/cli-options)                                                                                                                                   | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.0/docs/src/pages/configurations/cli-options)                       |
-
 <div class="aside">
 With the release of version 5.3, we've updated how you can write your stories more compactly and easily. It doesn't mean that the <code>storiesOf</code> format has been removed. For the time being, we're still supporting it, and we have documentation for it. But be advised that this is bound to change in the future.
 </div>
@@ -350,3 +331,36 @@ Applying this small change will enable you to add syntax highlight for SCSS or a
 ### How can my code detect if it is running in Storybook?
 
 You can do this by checking for the `IS_STORYBOOK` global variable, which will equal `true` when running in Storybook. The environment variable `process.env.STORYBOOK` is also set to `true`.
+
+### Why are my stories not showing up correctly when using certain characters?
+
+Storybook allows you to use most characters while naming your stories. Still, specific characters (e.g., `#`) can lead to issues when Storybook generates the internal identifier for the story, leading to collisions and incorrectly outputting the correct story. We recommend using such characters sparsely.
+
+### Why are the TypeScript examples and documentation using `as` for type safety?
+
+We're aware that the default Typescript story construct might seem outdated and could potentially introduce a less than ideal way of handling type safety and strictness and could be rewritten as such:
+
+```ts
+// Button.stories.ts | tsx
+
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+const StoryMeta: ComponentMeta<typeof Button> = {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'Button',
+  component: Button,
+};
+
+export default meta;
+```
+
+Although valid, it introduces additional boilerplate code to the story definition. Instead, we're working towards implementing a safer mechanism based on what's currently being discussed in the following [issue](https://github.com/microsoft/TypeScript/issues/7481). Once the feature is released, we'll migrate our existing examples and documentation accordingly.
+
+
+## Why is Storybook's source loader returning undefined with curried functions?
+
+This is a known issue with Storybook. If you're interested in getting it fixed, open an issue with a [working reproduction](./contribute/how-to-reproduce) so that it can be triaged and fixed in future releases.

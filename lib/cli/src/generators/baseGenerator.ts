@@ -58,6 +58,9 @@ const builderDependencies = (builder: Builder) => {
 
 const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
 
+const hasInteractiveStories = (framework: SupportedFrameworks) =>
+  ['react', 'angular'].includes(framework);
+
 export async function baseGenerator(
   packageManager: JsPackageManager,
   npmOptions: NpmOptions,
@@ -86,8 +89,13 @@ export async function baseGenerator(
   // added to package.json
   const addonPackages = [...addons, '@storybook/addon-actions'];
 
+  if (hasInteractiveStories(framework)) {
+    addons.push('@storybook/addon-interactions');
+    addonPackages.push('@storybook/addon-interactions', '@storybook/testing-library');
+  }
+
   const yarn2Dependencies =
-    packageManager.type === 'yarn2' ? ['@storybook/addon-docs', '@mdx-js/react'] : [];
+    packageManager.type === 'yarn2' ? ['@storybook/addon-docs', '@mdx-js/react@1.x.x'] : [];
 
   const files = await fse.readdir(process.cwd());
   const isNewFolder = !files.some(

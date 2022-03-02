@@ -418,7 +418,7 @@ export function useStoryContext<TFramework extends AnyFramework>(): StoryContext
 export function useParameter<S>(parameterKey: string, defaultValue?: S): S | undefined {
   const { parameters } = useStoryContext();
   if (parameterKey) {
-    return parameters[parameterKey] || (defaultValue as S);
+    return parameters[parameterKey] ?? (defaultValue as S);
   }
   return undefined;
 }

@@ -2,18 +2,14 @@
 const path = require('path');
 const shell = require('shelljs');
 const chalk = require('chalk');
-const fs = require('fs');
+const fs = require('fs-extra');
 const log = require('npmlog');
+const readPkgUp = require('read-pkg-up');
 const { babelify } = require('./utils/compile-babel');
 const { tscfy } = require('./utils/compile-tsc');
 
-function getPackageJson(modulePath) {
-  // eslint-disable-next-line global-require,import/no-dynamic-require
-  return require(path.join(modulePath, 'package.json'));
-}
-
-function removeDist() {
-  shell.rm('-rf', 'dist');
+async function removeDist() {
+  await fs.remove('dist');
 }
 
 const ignore = [
@@ -25,11 +21,11 @@ const ignore = [
   /.+\.test\..+/,
 ];
 
-function cleanup() {
+async function cleanup() {
   // remove files after babel --copy-files output
   // --copy-files option doesn't work with --ignore
   // https://github.com/babel/babel/issues/6226
-  if (fs.existsSync(path.join(process.cwd(), 'dist'))) {
+  if (await fs.pathExists(path.join(process.cwd(), 'dist'))) {
     const isInStorybookCLIPackage = process.cwd().includes(path.join('lib', 'cli'));
     const filesToRemove = shell.find('dist').filter((filePath) => {
       // Do not remove folder
@@ -68,21 +64,34 @@ function logError(type, packageJson, errorLogs) {
   );
 }
 
-const modulePath = path.resolve('./');
-const packageJson = getPackageJson(modulePath);
 const modules = true;
 
-async function prepare() {
-  removeDist();
+async function prepare({ cwd, flags }) {
+  const { packageJson } = await readPkgUp(cwd);
+  const message = chalk.gray(`Built: ${chalk.bold(`${packageJson.name}@${packageJson.version}`)}`);
+  console.time(message);
 
-  await babelify({
-    modules,
-    errorCallback: (errorLogs) => logError('js', packageJson, errorLogs),
-  });
-  tscfy({ errorCallback: (errorLogs) => logError('ts', packageJson, errorLogs) });
+  if (flags.includes('--reset')) {
+    await removeDist();
+  }
 
-  cleanup();
-  console.log(chalk.gray(`Built: ${chalk.bold(`${packageJson.name}@${packageJson.version}`)}`));
+  await Promise.all([
+    babelify({
+      modules,
+      watch: flags.includes('--watch'),
+      errorCallback: (errorLogs) => logError('js', packageJson, errorLogs),
+    }),
+    tscfy({
+      watch: flags.includes('--watch'),
+      errorCallback: (errorLogs) => logError('ts', packageJson, errorLogs),
+    }),
+  ]);
+
+  await cleanup();
+  console.timeEnd(message);
 }
 
-prepare();
+const flags = process.argv.slice(2);
+const cwd = process.cwd();
+
+prepare({ cwd, flags });

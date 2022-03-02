@@ -22,7 +22,6 @@ export const getProjectRoot = () => {
   return result || process.cwd();
 };
 
-export const nodeModulesPaths = path.resolve('./node_modules');
 export const nodePathsToArray = (nodePath: string) =>
   nodePath
     .split(process.platform === 'win32' ? ';' : ':')

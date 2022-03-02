@@ -25,9 +25,7 @@ const rootDir = path.join(__dirname, '..');
 const siblingDir = path.join(__dirname, '..', '..', 'storybook-e2e-testing');
 
 const prepareDirectory = async ({ cwd }: Options): Promise<boolean> => {
-  const siblingExists = await pathExists(siblingDir);
-
-  if (!siblingExists) {
+  if (!(await pathExists(siblingDir))) {
     await ensureDir(siblingDir);
   }
 
@@ -41,7 +39,7 @@ const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
 const buildStorybook = async ({ cwd }: Options) => {
   await exec(
     `yarn build-storybook --quiet`,
-    { cwd, silent: false },
+    { cwd },
     { startMessage: `👷 Building Storybook`, errorMessage: `🚨 Storybook build failed` }
   );
 };
@@ -81,7 +79,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   if (!(await prepareDirectory(options))) {
     // Call repro cli
     const sbCLICommand = useLocalSbCli
-      ? 'node ../storybook/lib/cli/bin repro'
+      ? `node ${__dirname}/../lib/cli/bin/index.js repro`
       : // Need to use npx because at this time we don't have Yarn 2 installed
         'npx -p @storybook/cli sb repro';
 
@@ -98,9 +96,10 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     }
 
     const command = `${sbCLICommand} ${commandArgs.join(' ')}`;
+
     await exec(
       command,
-      { cwd: siblingDir, silent: false },
+      { cwd: siblingDir },
       {
         startMessage: `👷 Bootstrapping ${options.framework} project`,
         errorMessage: `🚨 Unable to bootstrap project`,

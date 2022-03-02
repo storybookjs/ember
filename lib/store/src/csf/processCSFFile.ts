@@ -1,10 +1,9 @@
 import { isExportStory, Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
-import { ModuleExports, CSFFile, NormalizedComponentAnnotations } from '../types';
 import { normalizeStory } from './normalizeStory';
-import { Path } from '..';
 import { normalizeComponentAnnotations } from './normalizeComponentAnnotations';
+import type { ModuleExports, CSFFile, NormalizedComponentAnnotations, Path } from '../types';
 
 const checkGlobals = (parameters: Parameters) => {
   const { globals, globalTypes } = parameters;

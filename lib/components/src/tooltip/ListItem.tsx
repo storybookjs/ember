@@ -182,7 +182,7 @@ const getItemProps = memoize(100)((onClick, href, LinkWrapper) => {
   return result;
 });
 
-export type LinkWrapperType = FunctionComponent;
+export type LinkWrapperType = FunctionComponent<any>;
 
 export interface ListItemProps extends Omit<ComponentProps<typeof Item>, 'href' | 'title'> {
   loading?: boolean;

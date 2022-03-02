@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="./typings.d.ts" />
+
 import global from 'global';
 import React, { FC, FunctionComponent } from 'react';
 import ReactDOM from 'react-dom';
@@ -80,7 +83,7 @@ const Main: FC<{ provider: Provider }> = ({ provider }) => {
   );
 };
 
-function renderStorybookUI(domNode: HTMLElement, provider: Provider) {
+export default function renderStorybookUI(domNode: HTMLElement, provider: Provider) {
   if (!(provider instanceof Provider)) {
     throw new Error('provider is not extended from the base Provider');
   }
@@ -89,4 +92,3 @@ function renderStorybookUI(domNode: HTMLElement, provider: Provider) {
 }
 
 export { Provider };
-export { renderStorybookUI as default };

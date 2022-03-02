@@ -227,7 +227,7 @@ Sets the button to a disabled state.",
           "deprecationMessage": "",
           "line": 195,
           "name": "item",
-          "type": "[]",
+          "type": "T[]",
         },
         Object {
           "decorators": Array [],
