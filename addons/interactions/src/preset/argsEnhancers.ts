@@ -1,10 +1,12 @@
-import { Args, addons } from '@storybook/addons';
+import { addons } from '@storybook/addons';
+import type { Args } from '@storybook/addons';
+import { window as globalWindow } from 'global';
 import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
 import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { instrument } from '@storybook/instrumenter';
 import { ModuleMocker } from 'jest-mock';
 
-const JestMock = new ModuleMocker(global);
+const JestMock = new ModuleMocker(globalWindow);
 const fn = JestMock.fn.bind(JestMock);
 
 // Aliasing `fn` to `action` here, so we get a more descriptive label in the UI.
