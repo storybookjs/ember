@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.45","info":{"plain":"### Bug Fixes\n\n- CSF3: Fix Auto-title to respect file system capitalization ([#17574](https://github.com/storybookjs/storybook/pull/17574))\n\n### Maintenance\n\n- Core: Remove unused babel dependencies ([#17425](https://github.com/storybookjs/storybook/pull/17425))"}}
+{"version":"6.5.0-alpha.46","info":{"plain":"### Bug Fixes\n\n- Addon-interactions: Use 'global' package instead of `global` ([#17614](https://github.com/storybookjs/storybook/pull/17614))"}}
