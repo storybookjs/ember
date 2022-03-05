@@ -435,7 +435,17 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.view.showPreparingDocs();
     }
 
-    const { currentSelection, currentRender } = this;
+    const { currentSelection: lastSelection, currentRender: lastRender } = this;
+
+    // If the last render is still preparing, let's drop it right now. Either
+    //   (a) it is a different story, which means we would drop it later, OR
+    //   (b) it is the *same* story, in which case we will resolve our own .prepare() at the
+    //       same moment anyway, and we should just "take over" the rendering.
+    // (We can't tell which it is yet, because it is possible that an HMR is going on and
+    //  even though the storyId is the same, the story itself is not).
+    if (lastRender?.isPreparing()) {
+      await this.teardownRender(lastRender);
+    }
 
     const storyRender: PreviewWeb<TFramework>['currentRender'] = new StoryRender<
       HTMLElement,
@@ -457,28 +467,30 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       await storyRender.prepare();
     } catch (err) {
-      await this.teardownRender(currentRender);
-      this.currentRender = null;
+      await this.teardownRender(lastRender);
       this.renderStoryLoadingException(storyId, err);
       return;
     }
-    const implementationChanged = !storyIdChanged && !storyRender.isEqual(currentRender);
+    const implementationChanged = !storyIdChanged && !storyRender.isEqual(lastRender);
 
     if (persistedArgs) this.storyStore.args.updateFromPersisted(storyRender.story, persistedArgs);
 
     const { parameters, initialArgs, argTypes, args } = storyRender.context();
 
     // Don't re-render the story if nothing has changed to justify it
-    if (currentRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
+    if (lastRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
+      this.currentRender = lastRender;
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
       this.view.showMain();
       return;
     }
 
-    await this.teardownRender(currentRender, { viewModeChanged });
+    // Wait for the previous render to leave the page. NOTE: this will wait to ensure anything async
+    // is properly aborted, which (in some cases) can lead to the whole screen being refreshed.
+    await this.teardownRender(lastRender, { viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
-    if (currentSelection && (storyIdChanged || viewModeChanged)) {
+    if (lastSelection && (storyIdChanged || viewModeChanged)) {
       this.channel.emit(Events.STORY_CHANGED, storyId);
     }
 

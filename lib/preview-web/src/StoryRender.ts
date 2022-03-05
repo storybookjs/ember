@@ -106,6 +106,10 @@ export class StoryRender<
     return other && this.id === other.id && this.story && this.story === other.story;
   }
 
+  isPreparing() {
+    return ['preparing'].includes(this.phase);
+  }
+
   isPending() {
     return ['rendering', 'playing'].includes(this.phase);
   }
