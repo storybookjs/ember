@@ -1,3 +1,9 @@
+## 6.5.0-alpha.46 (March 5, 2022)
+
+### Bug Fixes
+
+- Addon-interactions: Use 'global' package instead of `global` ([#17614](https://github.com/storybookjs/storybook/pull/17614))
+
 ## 6.5.0-alpha.45 (March 2, 2022)
 
 ### Bug Fixes
