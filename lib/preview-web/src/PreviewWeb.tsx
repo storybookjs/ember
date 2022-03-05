@@ -57,6 +57,9 @@ type StoryCleanupFn = () => MaybePromise<void>;
 
 const STORY_INDEX_PATH = './stories.json';
 
+type HTMLStoryRender<TFramework extends AnyFramework> = StoryRender<HTMLElement, TFramework>;
+type HTMLDocsRender<TFramework extends AnyFramework> = DocsRender<HTMLElement, TFramework>;
+
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
 
@@ -78,9 +81,9 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   currentSelection: Selection;
 
-  currentRender: StoryRender<HTMLElement, TFramework> | DocsRender<HTMLElement, TFramework>;
+  currentRender: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>;
 
-  storyRenders: StoryRender<HTMLElement, TFramework>[] = [];
+  storyRenders: HTMLStoryRender<TFramework>[] = [];
 
   previousCleanup: StoryCleanupFn;
 
@@ -422,11 +425,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   // ForceReRender does not include a story id, so we simply must
   // re-render all stories in case they are relevant
   async onForceReRender() {
-    await this.storyRenders.map((r) => r.rerender());
+    await Promise.all(this.storyRenders.map((r) => r.rerender()));
   }
 
   async onForceRemount({ storyId }: { storyId: StoryId }) {
-    await this.storyRenders.filter((r) => r.id === storyId).map((r) => r.remount());
+    await Promise.all(this.storyRenders.filter((r) => r.id === storyId).map((r) => r.remount()));
   }
 
   // RENDERING
@@ -461,11 +464,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.channel,
       this.storyStore,
       this.renderToDOM,
-      {
-        showMain: () => this.view.showMain(),
-        showError: (err: { title: string; description: string }) => this.renderError(storyId, err),
-        showException: (err: Error) => this.renderException(storyId, err),
-      },
+      this.mainStoryCallbacks(storyId),
       storyId,
       'story'
     );
@@ -473,7 +472,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       await storyRender.prepare();
     } catch (err) {
-      await this.currentRender?.teardown();
+      await this.teardownRender(this.currentRender);
       this.currentRender = null;
       this.renderStoryLoadingException(storyId, err);
       return;
@@ -491,7 +490,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       return;
     }
 
-    await this.currentRender?.teardown({ viewModeChanged });
+    await this.teardownRender(this.currentRender, { viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
     if (this.currentSelection && (storyIdChanged || viewModeChanged)) {
@@ -538,12 +537,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.channel,
       this.storyStore,
       this.renderToDOM,
-      {
-        showMain: () => {},
-        showError: (err: { title: string; description: string }) =>
-          logger.error('Error rendering docs story', err),
-        showException: (err: Error) => logger.error('Error rendering docs story', err),
-      },
+      this.inlineStoryCallbacks(story.id),
       story.id,
       'docs',
       story
@@ -553,9 +547,16 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.storyRenders.push(render);
 
     return async () => {
-      this.storyRenders = this.storyRenders.filter((r) => r !== render);
-      await render.teardown();
+      await this.teardownRender(render);
     };
+  }
+
+  async teardownRender(
+    render: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>,
+    { viewModeChanged }: { viewModeChanged?: boolean } = {}
+  ) {
+    this.storyRenders = this.storyRenders.filter((r) => r !== render);
+    await render?.teardown({ viewModeChanged });
   }
 
   // API
@@ -580,6 +581,23 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   // UTILITIES
+  mainStoryCallbacks(storyId: StoryId) {
+    return {
+      showMain: () => this.view.showMain(),
+      showError: (err: { title: string; description: string }) => this.renderError(storyId, err),
+      showException: (err: Error) => this.renderException(storyId, err),
+    };
+  }
+
+  inlineStoryCallbacks(storyId: StoryId) {
+    return {
+      showMain: () => {},
+      showError: (err: { title: string; description: string }) =>
+        logger.error(`Error rendering docs story (${storyId})`, err),
+      showException: (err: Error) => logger.error(`Error rendering docs story (${storyId})`, err),
+    };
+  }
+
   renderPreviewEntryError(reason: string, err: Error) {
     this.previewEntryError = err;
     logger.error(reason);
