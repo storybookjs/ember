@@ -39,6 +39,8 @@ export type RenderContextCallbacks<TFramework extends AnyFramework> = Pick<
   'showMain' | 'showError' | 'showException'
 >;
 
+export const PREPARE_ABORTED = new Error('prepareAborted');
+
 export class StoryRender<
   CanvasElement extends HTMLElement | void,
   TFramework extends AnyFramework
@@ -97,7 +99,7 @@ export class StoryRender<
 
     if (this.abortController.signal.aborted) {
       this.store.cleanupStory(this.story);
-      throw new Error('Story render aborted during preparation');
+      throw PREPARE_ABORTED;
     }
   }
 

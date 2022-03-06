@@ -1326,12 +1326,20 @@ describe('PreviewWeb', () => {
         document.location.search = '?id=component-one--a';
 
         const [gate, openGate] = createGate();
-        importFn.mockImplementationOnce(async (...args) => {
-          await gate;
-          return importFn(...args);
-        });
-        const preview = new PreviewWeb();
+        const [importedGate, openImportedGate] = createGate();
+        importFn
+          .mockImplementationOnce(async (...args) => {
+            await gate;
+            return importFn(...args);
+          })
+          .mockImplementationOnce(async (...args) => {
+            // The second time we `import()` we open the "imported" gate
+            openImportedGate();
+            await gate;
+            return importFn(...args);
+          });
 
+        const preview = new PreviewWeb();
         // We can't wait for the initialize function, as it waits for `renderSelection()`
         // which prepares, but it does emit `CURRENT_STORY_WAS_SET` right before that
         preview.initialize({ importFn, getProjectAnnotations });
@@ -1343,15 +1351,19 @@ describe('PreviewWeb', () => {
           storyId: 'component-one--a',
           viewMode: 'story',
         });
-        await waitForRender();
-        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+        await importedGate;
+        // We are blocking import so this won't render yet
+        expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
 
         mockChannel.emit.mockClear();
-        projectAnnotations.renderToDOM.mockClear();
         openGate();
-        // The renderToDOM would have been async so we need to wait a tick.
-        await waitForQuiescence();
-        expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
+        await waitForRender();
+
+        // We should only render *once*
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+
+        // We should not show an error either
+        expect(preview.view.showErrorDisplay).not.toHaveBeenCalled();
       });
     });
 

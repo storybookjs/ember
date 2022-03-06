@@ -19,7 +19,7 @@ import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { StoryRender } from './StoryRender';
+import { PREPARE_ABORTED, StoryRender } from './StoryRender';
 import { DocsRender } from './DocsRender';
 
 const { window: globalWindow, fetch } = global;
@@ -36,7 +36,6 @@ type StoryCleanupFn = () => MaybePromise<void>;
 const STORY_INDEX_PATH = './stories.json';
 
 type HTMLStoryRender<TFramework extends AnyFramework> = StoryRender<HTMLElement, TFramework>;
-type HTMLDocsRender<TFramework extends AnyFramework> = DocsRender<TFramework>;
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
@@ -59,7 +58,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   currentSelection: Selection;
 
-  currentRender: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>;
+  currentRender: HTMLStoryRender<TFramework> | DocsRender<TFramework>;
 
   storyRenders: HTMLStoryRender<TFramework>[] = [];
 
@@ -435,7 +434,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.view.showPreparingDocs();
     }
 
-    const { currentSelection: lastSelection, currentRender: lastRender } = this;
+    const lastSelection = this.currentSelection;
+    let lastRender = this.currentRender;
 
     // If the last render is still preparing, let's drop it right now. Either
     //   (a) it is a different story, which means we would drop it later, OR
@@ -445,6 +445,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     //  even though the storyId is the same, the story itself is not).
     if (lastRender?.isPreparing()) {
       await this.teardownRender(lastRender);
+      lastRender = null;
     }
 
     const storyRender: PreviewWeb<TFramework>['currentRender'] = new StoryRender<
@@ -467,8 +468,12 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     try {
       await storyRender.prepare();
     } catch (err) {
-      await this.teardownRender(lastRender);
-      this.renderStoryLoadingException(storyId, err);
+      if (err !== PREPARE_ABORTED) {
+        // We are about to render an error so make sure the previous story is
+        // no longer rendered.
+        await this.teardownRender(lastRender);
+        this.renderStoryLoadingException(storyId, err);
+      }
       return;
     }
     const implementationChanged = !storyIdChanged && !storyRender.isEqual(lastRender);
@@ -545,7 +550,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async teardownRender(
-    render: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>,
+    render: HTMLStoryRender<TFramework> | DocsRender<TFramework>,
     { viewModeChanged }: { viewModeChanged?: boolean } = {}
   ) {
     this.storyRenders = this.storyRenders.filter((r) => r !== render);
