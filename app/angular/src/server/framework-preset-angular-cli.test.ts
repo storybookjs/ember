@@ -797,9 +797,6 @@ const newWebpackConfiguration = (
       modules: ['node_modules'],
       mainFields: ['browser', 'main'],
       alias: {
-        '@emotion/core': '/Users/joe/storybook/node_modules/@emotion/core',
-        '@emotion/styled': '/Users/joe/storybook/node_modules/@emotion/styled',
-        'emotion-theming': '/Users/joe/storybook/node_modules/emotion-theming',
         '@storybook/addons': '/Users/joe/storybook/lib/addons',
         '@storybook/api': '/Users/joe/storybook/lib/api',
         '@storybook/channels': '/Users/joe/storybook/lib/channels',
