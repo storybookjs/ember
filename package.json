@@ -281,7 +281,7 @@
     "rollup-plugin-jsx": "^1.0.3",
     "rollup-plugin-terser": "^7.0.2",
     "serve-static": "^1.14.1",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "shx": "^0.3.2",
     "sort-package-json": "^1.48.1",
     "teamcity-service-messages": "^0.1.11",

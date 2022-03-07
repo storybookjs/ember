@@ -7301,7 +7301,7 @@ __metadata:
     prompts: ^2.4.0
     puppeteer-core: ^2.1.1
     read-pkg-up: ^7.0.1
-    shelljs: ^0.8.4
+    shelljs: ^0.8.5
     strip-json-comments: ^3.1.1
     ts-dedent: ^2.0.0
     update-notifier: ^5.0.1
@@ -8417,7 +8417,7 @@ __metadata:
     rollup-plugin-jsx: ^1.0.3
     rollup-plugin-terser: ^7.0.2
     serve-static: ^1.14.1
-    shelljs: ^0.8.4
+    shelljs: ^0.8.5
     shx: ^0.3.2
     sort-package-json: ^1.48.1
     teamcity-service-messages: ^0.1.11
@@ -41141,7 +41141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shelljs@npm:^0.8.3, shelljs@npm:^0.8.4, shelljs@npm:^0.8.5":
+"shelljs@npm:^0.8.3, shelljs@npm:^0.8.5":
   version: 0.8.5
   resolution: "shelljs@npm:0.8.5"
   dependencies:
