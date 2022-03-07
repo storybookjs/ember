@@ -6,7 +6,7 @@ export async function getPreviewBuilder(configDir: Options['configDir']) {
   const mainFile = getInterpretedFile(main);
   const { core } = mainFile ? serverRequire(mainFile) : { core: null };
   let builderPackage: string;
-  if (core) {
+  if (core?.builder) {
     const builderName = typeof core.builder === 'string' ? core.builder : core.builder?.name;
     builderPackage = require.resolve(
       ['webpack4', 'webpack5'].includes(builderName)
