@@ -206,7 +206,7 @@ export const ObjectNode = ({ value, nested = false }: { value: object; nested?: 
   }
   const nodelist = interleave(
     Object.entries(value)
-      .slice(0, 1)
+      .slice(0, 2)
       .map(([k, v]) => (
         <Fragment key={k}>
           <span style={{ color: colors.objectkey }}>{k}: </span>
