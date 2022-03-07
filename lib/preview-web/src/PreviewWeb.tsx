@@ -5,22 +5,11 @@ import { SynchronousPromise } from 'synchronous-promise';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { addons, Channel } from '@storybook/addons';
-import {
-  AnyFramework,
-  StoryId,
-  ProjectAnnotations,
-  Args,
-  Globals,
-  ViewMode,
-  StoryContextForLoaders,
-  StoryContext,
-} from '@storybook/csf';
+import { AnyFramework, StoryId, ProjectAnnotations, Args, Globals } from '@storybook/csf';
 import {
   ModuleImportFn,
   Selection,
   Story,
-  RenderContext,
-  CSFFile,
   StoryStore,
   StorySpecifier,
   StoryIndex,
@@ -33,22 +22,11 @@ import { WebView } from './WebView';
 import { StoryRender } from './StoryRender';
 import { DocsRender } from './DocsRender';
 
-const { window: globalWindow, AbortController, fetch } = global;
+const { window: globalWindow, fetch } = global;
 
 function focusInInput(event: Event) {
   const target = event.target as Element;
   return /input|textarea/i.test(target.tagName) || target.getAttribute('contenteditable') !== null;
-}
-
-function createController(): AbortController {
-  if (AbortController) return new AbortController();
-  // Polyfill for IE11
-  return {
-    signal: { aborted: false },
-    abort() {
-      this.signal.aborted = true;
-    },
-  } as AbortController;
 }
 
 type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
@@ -58,7 +36,7 @@ type StoryCleanupFn = () => MaybePromise<void>;
 const STORY_INDEX_PATH = './stories.json';
 
 type HTMLStoryRender<TFramework extends AnyFramework> = StoryRender<HTMLElement, TFramework>;
-type HTMLDocsRender<TFramework extends AnyFramework> = DocsRender<HTMLElement, TFramework>;
+type HTMLDocsRender<TFramework extends AnyFramework> = DocsRender<TFramework>;
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;

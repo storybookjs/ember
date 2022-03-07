@@ -100,7 +100,7 @@ export class StoryRender<
   }
 
   // The two story "renders" are equal and have both loaded the same story
-  isEqual(other?: StoryRender<CanvasElement, TFramework> | DocsRender<CanvasElement, TFramework>) {
+  isEqual(other?: StoryRender<CanvasElement, TFramework> | DocsRender<TFramework>) {
     return other && this.id === other.id && this.story && this.story === other.story;
   }
 
@@ -109,7 +109,7 @@ export class StoryRender<
   }
 
   toDocsRender() {
-    return new DocsRender<CanvasElement, TFramework>(this.channel, this.store, this.id, this.story);
+    return new DocsRender<TFramework>(this.channel, this.store, this.id, this.story);
   }
 
   context() {

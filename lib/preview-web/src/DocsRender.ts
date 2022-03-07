@@ -1,21 +1,15 @@
 import global from 'global';
-import {
-  AnyFramework,
-  StoryId,
-  ViewMode,
-  StoryContextForLoaders,
-  StoryContext,
-} from '@storybook/csf';
+import { AnyFramework, StoryId, ViewMode, StoryContextForLoaders } from '@storybook/csf';
 import { Story, StoryStore, CSFFile } from '@storybook/store';
 import { Channel } from '@storybook/addons';
 import { DOCS_RENDERED } from '@storybook/core-events';
 
 import { DocsContextProps } from './types';
 
-export class DocsRender<CanvasElement extends HTMLElement | void, TFramework extends AnyFramework> {
+export class DocsRender<TFramework extends AnyFramework> {
   public story?: Story<TFramework>;
 
-  private canvasElement?: CanvasElement;
+  private canvasElement?: HTMLElement;
 
   private context?: DocsContextProps;
 
@@ -35,7 +29,7 @@ export class DocsRender<CanvasElement extends HTMLElement | void, TFramework ext
   }
 
   async renderToElement(
-    canvasElement: CanvasElement,
+    canvasElement: HTMLElement,
     renderStoryToElement: DocsContextProps['renderStoryToElement']
   ) {
     this.canvasElement = canvasElement;
