@@ -47,13 +47,3 @@ CSF2StoryWithPlay.play = () => {
   console.log('play!!');
   userEvent.click(screen.getByRole('button'));
 };
-
-// eslint-disable-next-line no-underscore-dangle
-export const __namedExportsOrder = [
-  'Basic',
-  'WithArgs',
-  'StoryObject',
-  'StoryNoRender',
-  'StoryWithPlay',
-  'CSF2StoryWithPlay',
-];

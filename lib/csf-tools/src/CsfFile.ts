@@ -388,8 +388,18 @@ export class CsfFile {
     });
 
     if (self._namedExportsOrder) {
+      const unsortedExports = Object.keys(self._storyExports);
       self._storyExports = sortExports(self._storyExports, self._namedExportsOrder);
       self._stories = sortExports(self._stories, self._namedExportsOrder);
+
+      const sortedExports = Object.keys(self._storyExports);
+      if (unsortedExports.length !== sortedExports.length) {
+        throw new Error(
+          `Missing exports after sort: ${unsortedExports.filter(
+            (key) => !sortedExports.includes(key)
+          )}`
+        );
+      }
     }
 
     return self;
