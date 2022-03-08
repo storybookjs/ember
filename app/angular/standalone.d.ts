@@ -1,5 +1,5 @@
-import { CLIOptions, LoadOptions, BuilderOptions } from '@storybook/core-common';
-import { BuilderContext } from '@angular-devkit/architect';
+import type { CLIOptions, LoadOptions, BuilderOptions } from '@storybook/core-common';
+import type { BuilderContext } from '@angular-devkit/architect';
 
 export type StandaloneOptions = Partial<
   CLIOptions &

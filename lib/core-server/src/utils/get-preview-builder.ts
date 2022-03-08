@@ -1,12 +1,13 @@
 import path from 'path';
-import { getInterpretedFile, serverRequire, Options } from '@storybook/core-common';
+import { getInterpretedFile, serverRequire } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 
 export async function getPreviewBuilder(configDir: Options['configDir']) {
   const main = path.resolve(configDir, 'main');
   const mainFile = getInterpretedFile(main);
   const { core } = mainFile ? serverRequire(mainFile) : { core: null };
   let builderPackage: string;
-  if (core?.builder) {
+  if (core) {
     const builderName = typeof core.builder === 'string' ? core.builder : core.builder?.name;
     builderPackage = require.resolve(
       ['webpack4', 'webpack5'].includes(builderName)

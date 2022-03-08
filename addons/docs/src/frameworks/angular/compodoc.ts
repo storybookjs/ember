@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* global window */
 
-import { ArgType, ArgTypes } from '@storybook/api';
+import type { ArgType, ArgTypes } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
-import {
+import type {
   Argument,
   Class,
   CompodocJson,

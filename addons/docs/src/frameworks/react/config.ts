@@ -1,5 +1,5 @@
-import { PartialStoryFn } from '@storybook/csf';
-import { ReactFramework } from '@storybook/react';
+import type { PartialStoryFn } from '@storybook/csf';
+import type { ReactFramework } from '@storybook/react';
 
 import { extractArgTypes } from './extractArgTypes';
 import { extractComponentDescription } from '../../lib/docgen';

@@ -1,7 +1,7 @@
 import React from 'react';
 import Vue from 'vue';
-import { StoryContext, PartialStoryFn } from '@storybook/csf';
-import { VueFramework } from '@storybook/vue';
+import type { StoryContext, PartialStoryFn } from '@storybook/csf';
+import type { VueFramework } from '@storybook/vue';
 
 // Inspired by https://github.com/egoist/vue-to-react,
 // modified to store args as props in the root store

@@ -1,9 +1,9 @@
 import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { renderToDOM, render } from './render';
-import { IStorybookSection, ServerFramework } from './types';
+import type { IStorybookSection, ServerFramework } from './types';
 
 const framework = 'server';
 

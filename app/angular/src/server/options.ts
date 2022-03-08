@@ -1,5 +1,5 @@
 import { sync } from 'read-pkg-up';
-import { LoadOptions, Options as CoreOptions } from '@storybook/core-common';
+import type { LoadOptions, Options as CoreOptions } from '@storybook/core-common';
 
 import { BuilderContext } from '@angular-devkit/architect';
 import { ExtraEntryPoint, StylePreprocessorOptions } from '@angular-devkit/build-angular';

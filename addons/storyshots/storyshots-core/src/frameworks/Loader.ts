@@ -1,8 +1,8 @@
-import { AnyFramework } from '@storybook/csf';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import type { AnyFramework } from '@storybook/csf';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 import { ClientApi as ClientApiClass } from '@storybook/client-api';
-import { StoryshotsOptions } from '../api/StoryshotsOptions';
-import { SupportedFramework } from './SupportedFramework';
+import type { StoryshotsOptions } from '../api/StoryshotsOptions';
+import type { SupportedFramework } from './SupportedFramework';
 
 export type RenderTree = (story: any, context?: any, options?: any) => any;
 

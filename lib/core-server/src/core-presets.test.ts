@@ -3,7 +3,7 @@ import path from 'path';
 import { mkdtemp as mkdtempCb } from 'fs';
 import os from 'os';
 import { promisify } from 'util';
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 import { resolvePathInStorybookCache, createFileSystemCache } from '@storybook/core-common';
 import { executor as previewExecutor } from '@storybook/builder-webpack4';
 import { executor as managerExecutor } from '@storybook/manager-webpack4';

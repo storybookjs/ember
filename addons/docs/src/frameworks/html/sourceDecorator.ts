@@ -1,8 +1,8 @@
 /* global window */
 import { addons, useEffect } from '@storybook/addons';
-import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
+import type { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import dedent from 'ts-dedent';
-import { HtmlFramework } from '@storybook/html';
+import type { HtmlFramework } from '@storybook/html';
 
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 

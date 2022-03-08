@@ -1,5 +1,5 @@
 import memoize from 'memoizerific';
-import {
+import type {
   Parameters,
   StoryId,
   StoryContextForLoaders,
@@ -18,7 +18,7 @@ import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
 import { processCSFFile, prepareStory, normalizeProjectAnnotations } from './csf';
-import {
+import type {
   CSFFile,
   ModuleImportFn,
   Story,

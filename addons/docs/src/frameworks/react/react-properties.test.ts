@@ -4,8 +4,8 @@ import fs from 'fs';
 
 import { transformFileSync, transformSync } from '@babel/core';
 import { inferControls } from '@storybook/store';
-import { StoryContext } from '@storybook/react';
-import { AnyFramework } from '@storybook/csf';
+import type { StoryContext } from '@storybook/react';
+import type { AnyFramework } from '@storybook/csf';
 import requireFromString from 'require-from-string';
 
 import { extractProps } from './extractProps';

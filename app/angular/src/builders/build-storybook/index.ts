@@ -7,7 +7,7 @@ import {
 } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
 import { from, Observable, of, throwError } from 'rxjs';
-import { CLIOptions } from '@storybook/core-common';
+import type { CLIOptions } from '@storybook/core-common';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 import { sync as findUpSync } from 'find-up';
 

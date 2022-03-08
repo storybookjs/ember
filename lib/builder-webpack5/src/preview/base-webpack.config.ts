@@ -1,6 +1,6 @@
 import { logger } from '@storybook/node-logger';
 import type { Options, CoreConfig, Webpack5BuilderConfig } from '@storybook/core-common';
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 
 export async function createDefaultWebpackConfig(
   storybookBaseConfig: Configuration,

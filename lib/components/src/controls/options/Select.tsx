@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent } from 'react';
-import { styled, CSSObject } from '@storybook/theming';
+import { styled } from '@storybook/theming';
+import type { CSSObject } from '@storybook/theming';
 import { logger } from '@storybook/client-logger';
 import { ControlProps, OptionsSelection, NormalizedOptionsConfig } from '../types';
 import { selectedKey, selectedKeys, selectedValues } from './helpers';

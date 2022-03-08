@@ -1,7 +1,9 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
-import { Consumer, Combo } from '@storybook/api';
+import type { Combo } from '@storybook/api';
+import { Consumer } from '@storybook/api';
 import { Button, getStoryHref } from '@storybook/components';
-import { Global, CSSObject, styled } from '@storybook/theming';
+import { Global, styled } from '@storybook/theming';
+import type { CSSObject } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
 import { stringifyQueryParams } from './utils/stringifyQueryParams';

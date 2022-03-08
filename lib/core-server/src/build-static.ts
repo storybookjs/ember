@@ -7,19 +7,16 @@ import global from 'global';
 
 import { logger } from '@storybook/node-logger';
 
-import {
-  loadAllPresets,
+import type {
   LoadOptions,
   CLIOptions,
   BuilderOptions,
   Options,
   Builder,
   StorybookConfig,
-  cache,
-  normalizeStories,
-  logConfig,
   CoreConfig,
 } from '@storybook/core-common';
+import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
