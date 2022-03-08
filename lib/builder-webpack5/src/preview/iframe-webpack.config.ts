@@ -1,11 +1,6 @@
 import path from 'path';
-import {
-  Configuration,
-  DefinePlugin,
-  HotModuleReplacementPlugin,
-  ProgressPlugin,
-  ProvidePlugin,
-} from 'webpack';
+import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, ProvidePlugin } from 'webpack';
+import type { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
@@ -14,18 +9,17 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 import themingPaths from '@storybook/theming/paths';
 
+import type { Options, CoreConfig } from '@storybook/core-common';
 import {
   toRequireContextString,
   es6Transpiler,
   stringifyProcessEnvs,
   handlebars,
   interpolate,
-  Options,
   toImportFn,
   normalizeStories,
   readTemplate,
   loadPreviewOrConfigFile,
-  CoreConfig,
 } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 

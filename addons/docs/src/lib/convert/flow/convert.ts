@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
-import { SBType } from '@storybook/csf';
-import { FlowType, FlowSigType, FlowLiteralType } from './types';
+import type { SBType } from '@storybook/csf';
+import type { FlowType, FlowSigType, FlowLiteralType } from './types';
 
 const isLiteral = (type: FlowType) => type.name === 'literal';
 const toEnumOption = (element: FlowLiteralType) => element.value.replace(/['|"]/g, '');

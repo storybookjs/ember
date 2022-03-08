@@ -1,5 +1,5 @@
 import { getCustomElements, isValidComponent, isValidMetaData } from '@storybook/web-components';
-import { ArgType, ArgTypes } from '@storybook/api';
+import type { ArgType, ArgTypes } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
 
 interface TagItem {

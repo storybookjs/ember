@@ -1,6 +1,7 @@
 import { VueLoaderPlugin } from 'vue-loader';
 import { Configuration, DefinePlugin } from 'webpack';
-import { findDistEsm, StorybookConfig } from '@storybook/core-common';
+import { findDistEsm } from '@storybook/core-common';
+import type { StorybookConfig } from '@storybook/core-common';
 
 export function webpack(config: Configuration): Configuration {
   return {

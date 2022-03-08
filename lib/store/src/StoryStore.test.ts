@@ -1,9 +1,9 @@
-import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
+import type { AnyFramework, ProjectAnnotations } from '@storybook/csf';
 import global from 'global';
 
 import { prepareStory, processCSFFile } from './csf';
 import { StoryStore } from './StoryStore';
-import { StoryIndex } from './types';
+import type { StoryIndex } from './types';
 import { HooksContext } from './hooks';
 
 // Spy on prepareStory/processCSFFile

@@ -1,6 +1,6 @@
 import global from 'global';
-import addons, { HooksContext } from '@storybook/addons';
-import {
+import { addons, HooksContext } from '@storybook/addons';
+import type {
   AnyFramework,
   ArgsEnhancer,
   SBObjectType,

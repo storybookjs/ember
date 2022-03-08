@@ -1,6 +1,6 @@
 import { addons, useEffect } from '@storybook/addons';
-import { PartialStoryFn } from '@storybook/csf';
-import { StoryContext, AngularFramework } from '@storybook/angular';
+import type { PartialStoryFn } from '@storybook/csf';
+import type { StoryContext, AngularFramework } from '@storybook/angular';
 import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 

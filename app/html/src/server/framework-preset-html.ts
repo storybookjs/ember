@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Configuration } from 'webpack';
-import { findDistEsm, StorybookConfig } from '@storybook/core-common';
+import { findDistEsm } from '@storybook/core-common';
+import type { Configuration } from 'webpack';
+import type { StorybookConfig } from '@storybook/core-common';
 
 export function webpack(config: Configuration) {
   config.module.rules.push({

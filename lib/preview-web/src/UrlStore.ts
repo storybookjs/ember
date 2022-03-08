@@ -1,9 +1,9 @@
-import { SelectionSpecifier, Selection } from '@storybook/store';
+import type { SelectionSpecifier, Selection } from '@storybook/store';
 
 import global from 'global';
 import qs from 'qs';
 import deprecate from 'util-deprecate';
-import { ViewMode } from '@storybook/addons';
+import type { ViewMode } from '@storybook/addons';
 
 import { parseArgsParam } from './parseArgsParam';
 

@@ -1,10 +1,10 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_vnode"] }] */
 
-import { StoryContext } from '@storybook/csf';
+import type { StoryContext } from '@storybook/csf';
 import { addons } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
 import type Vue from 'vue';
-import { VueFramework } from '@storybook/vue';
+import type { VueFramework } from '@storybook/vue';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 

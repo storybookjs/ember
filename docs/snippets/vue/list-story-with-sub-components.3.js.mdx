@@ -19,7 +19,7 @@ export const Empty = (args) => ({
   setup() {
     //👇 The args will now be passed down to the template
     return { args };
-  },
+  }
   template: '<List v-bind="args"/>',
 });
 
@@ -28,7 +28,7 @@ export const OneItem = (args) => ({
   setup() {
     //👇 The args will now be passed down to the template
     return { args };
-  },
+  }
   template: '<List v-bind="args"><ListItem /></List>',
 });
 ```

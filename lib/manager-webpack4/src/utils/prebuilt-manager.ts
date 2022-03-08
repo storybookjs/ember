@@ -1,11 +1,7 @@
 import { pathExists } from 'fs-extra';
 import path from 'path';
-import {
-  getInterpretedFile,
-  loadManagerOrAddonsFile,
-  serverRequire,
-  Options,
-} from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
+import { getInterpretedFile, loadManagerOrAddonsFile, serverRequire } from '@storybook/core-common';
 
 import { getAutoRefs } from '../manager-config';
 

@@ -1,6 +1,7 @@
-import { AnyFramework } from '@storybook/csf';
-import { combineParameters, ModuleExports } from '@storybook/store';
-import { WebProjectAnnotations } from './types';
+import type { AnyFramework } from '@storybook/csf';
+import { combineParameters } from '@storybook/store';
+import type { ModuleExports } from '@storybook/store';
+import type { WebProjectAnnotations } from './types';
 
 function getField(moduleExportList: ModuleExports[], field: string): any[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);

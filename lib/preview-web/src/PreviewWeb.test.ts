@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 import merge from 'lodash/merge';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import addons, { mockChannel as createMockChannel } from '@storybook/addons';
-import { AnyFramework } from '@storybook/csf';
+import { addons, mockChannel as createMockChannel } from '@storybook/addons';
+import type { AnyFramework } from '@storybook/csf';
 import type { ModuleImportFn } from '@storybook/store';
 
 import { PreviewWeb } from './PreviewWeb';
@@ -22,7 +22,7 @@ import {
   waitForQuiescence,
   waitForRenderPhase,
 } from './PreviewWeb.mockdata';
-import { WebProjectAnnotations } from './types';
+import type { WebProjectAnnotations } from './types';
 
 jest.mock('./WebView');
 const { history, document } = global;

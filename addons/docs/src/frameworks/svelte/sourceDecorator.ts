@@ -1,5 +1,5 @@
 import { addons, useEffect } from '@storybook/addons';
-import { ArgTypes, Args, StoryContext, AnyFramework } from '@storybook/csf';
+import type { ArgTypes, Args, StoryContext, AnyFramework } from '@storybook/csf';
 
 import { SourceType, SNIPPET_RENDERED } from '../../shared';
 

@@ -1,6 +1,7 @@
-import { sanitize, AnyFramework } from '@storybook/csf';
+import { sanitize } from '@storybook/csf';
+import type { AnyFramework } from '@storybook/csf';
 
-import { ModuleExports, NormalizedComponentAnnotations } from '../types';
+import type { ModuleExports, NormalizedComponentAnnotations } from '../types';
 import { normalizeInputTypes } from './normalizeInputTypes';
 
 export function normalizeComponentAnnotations<TFramework extends AnyFramework>(

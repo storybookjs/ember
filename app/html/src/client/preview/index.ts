@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
 import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 import { HtmlFramework } from './types-6-0';
 
 import './globals';
 import { renderToDOM } from './render';
-import { IStorybookSection } from './types';
+import type { IStorybookSection } from './types';
 
 const framework = 'html';
 

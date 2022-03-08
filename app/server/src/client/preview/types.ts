@@ -1,4 +1,4 @@
-import { StoryContext } from '@storybook/csf';
+import type { StoryContext } from '@storybook/csf';
 
 export type { RenderContext } from '@storybook/core';
 

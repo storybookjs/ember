@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 import mapValues from 'lodash/mapValues';
-import { SBType } from '@storybook/csf';
-import { PTType } from './types';
+import type { SBType } from '@storybook/csf';
+import type { PTType } from './types';
 import { includesQuotes, trimQuotes } from '../utils';
 
 const SIGNATURE_REGEXP = /^\(.*\) => /;

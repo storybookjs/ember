@@ -1,4 +1,5 @@
-import { addons, StoryContext, useEffect } from '@storybook/addons';
+import { addons, useEffect } from '@storybook/addons';
+import type { StoryContext } from '@storybook/addons';
 import { sourceDecorator } from './sourceDecorator';
 import { SNIPPET_RENDERED } from '../../shared';
 

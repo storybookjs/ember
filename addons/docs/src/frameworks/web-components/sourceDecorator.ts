@@ -1,8 +1,8 @@
 /* global window */
 import { render } from 'lit-html';
-import { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
+import type { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import { addons, useEffect } from '@storybook/addons';
-import { WebComponentsFramework } from '@storybook/web-components';
+import type { WebComponentsFramework } from '@storybook/web-components';
 
 import { SNIPPET_RENDERED, SourceType } from '../../shared';
 
