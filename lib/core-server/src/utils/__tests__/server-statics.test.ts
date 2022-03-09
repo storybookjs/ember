@@ -72,6 +72,13 @@ describe('parseStaticDir', () => {
       targetDir: './custom-endpoint',
       targetEndpoint: '/custom-endpoint',
     });
+
+    await expect(parseStaticDir('C:\\foo\\bar:\\custom-endpoint')).resolves.toEqual({
+      staticDir: expect.any(String), // can't test this properly on unix
+      staticPath: path.resolve('C:\\foo\\bar'),
+      targetDir: './custom-endpoint',
+      targetEndpoint: '/custom-endpoint',
+    });
   });
 
   it('pins relative endpoint at root', async () => {
