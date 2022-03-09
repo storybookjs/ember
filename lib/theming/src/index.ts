@@ -2,8 +2,12 @@
 /// <reference path="./typings.d.ts" />
 
 import emotionStyled from '@emotion/styled';
+import type { CreateStyled } from './emotion10types';
 
-export type { StyledComponent } from '@emotion/styled';
+import { Theme } from './types';
+
+export type { StyledComponent } from './emotion10types';
+
 export {
   Global,
   keyframes,
@@ -16,7 +20,7 @@ export {
 } from '@emotion/react';
 export type { CSSObject, Keyframes } from '@emotion/react';
 
-export const styled = emotionStyled;
+export const styled = emotionStyled as CreateStyled<Theme>;
 
 export * from './base';
 export * from './types';
