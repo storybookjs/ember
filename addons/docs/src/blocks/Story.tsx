@@ -130,25 +130,8 @@ const Story: FunctionComponent<StoryProps> = (props) => {
   useEffect(() => {
     let cleanup: () => void;
     if (story && storyRef.current) {
-      const { componentId, id, title, name } = story;
-      const renderContext = {
-        componentId,
-        title,
-        kind: title,
-        id,
-        name,
-        story: name,
-        // TODO what to do when these fail?
-        showMain: () => {},
-        showError: () => {},
-        showException: () => {},
-      };
-      cleanup = context.renderStoryToElement({
-        story,
-        renderContext,
-        element: storyRef.current as HTMLElement,
-        viewMode: 'docs',
-      });
+      const element = storyRef.current as HTMLElement;
+      cleanup = context.renderStoryToElement(story, element);
       setShowLoader(false);
     }
     return () => cleanup && cleanup();

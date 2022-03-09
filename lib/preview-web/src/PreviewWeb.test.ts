@@ -79,6 +79,9 @@ async function createAndRenderPreview({
   getProjectAnnotations?: () => WebProjectAnnotations<AnyFramework>;
 } = {}) {
   const preview = new PreviewWeb();
+  (
+    preview.view.prepareForDocs as jest.MockedFunction<typeof preview.view.prepareForDocs>
+  ).mockReturnValue('docs-element' as any);
   await preview.initialize({
     importFn: inputImportFn,
     getProjectAnnotations: inputGetProjectAnnotations,
@@ -595,7 +598,7 @@ describe('PreviewWeb', () => {
               }),
             }),
           }),
-          undefined,
+          'docs-element',
           expect.any(Function)
         );
       });
@@ -617,6 +620,7 @@ describe('PreviewWeb', () => {
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
+      await waitForEvents([Events.GLOBALS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.GLOBALS_UPDATED, {
         globals: { a: 'b', foo: 'bar' },
         initialGlobals: { a: 'b' },
@@ -688,6 +692,7 @@ describe('PreviewWeb', () => {
         updatedArgs: { new: 'arg' },
       });
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a', new: 'arg' },
@@ -935,12 +940,13 @@ describe('PreviewWeb', () => {
       });
     });
 
-    describe('in docs mode', () => {
+    describe('in docs mode, old inline render', () => {
       it('re-renders the docs container', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
         await createAndRenderPreview();
 
+        (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
         mockChannel.emit.mockClear();
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -948,7 +954,71 @@ describe('PreviewWeb', () => {
         });
         await waitForRender();
 
-        expect(ReactDOM.render).toHaveBeenCalledTimes(2);
+        expect(ReactDOM.render).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('in docs mode, modern inline render', () => {
+      beforeEach(() => {
+        global.FEATURES.modernInlineRender = true;
+      });
+      afterEach(() => {
+        global.FEATURES.modernInlineRender = true;
+      });
+      it('does not re-render the docs container', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+
+        await createAndRenderPreview();
+
+        (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { new: 'arg' },
+        });
+        await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+        expect(ReactDOM.render).not.toHaveBeenCalled();
+      });
+
+      describe('when renderStoryToElement was called', () => {
+        it('re-renders the story', async () => {
+          document.location.search = '?id=component-one--a&viewMode=docs';
+
+          const preview = await createAndRenderPreview();
+          await waitForRender();
+
+          mockChannel.emit.mockClear();
+          const story = await preview.storyStore.loadStory({ storyId: 'component-one--a' });
+          preview.renderStoryToElement(story, 'story-element' as any);
+          await waitForRender();
+
+          expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              storyContext: expect.objectContaining({
+                args: { foo: 'a' },
+              }),
+            }),
+            'story-element'
+          );
+
+          (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
+          mockChannel.emit.mockClear();
+          emitter.emit(Events.UPDATE_STORY_ARGS, {
+            storyId: 'component-one--a',
+            updatedArgs: { new: 'arg' },
+          });
+          await waitForRender();
+
+          expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              storyContext: expect.objectContaining({
+                args: { foo: 'a', new: 'arg' },
+              }),
+            }),
+            'story-element'
+          );
+        });
       });
     });
   });
@@ -964,6 +1034,7 @@ describe('PreviewWeb', () => {
         updatedArgs: { foo: 'new' },
       });
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'new' },
@@ -992,6 +1063,7 @@ describe('PreviewWeb', () => {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
       });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
 
       mockChannel.emit.mockClear();
       emitter.emit(Events.RESET_STORY_ARGS, {
@@ -1012,6 +1084,7 @@ describe('PreviewWeb', () => {
         undefined // this is coming from view.prepareForStory, not super important
       );
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a', new: 'value' },
@@ -1026,6 +1099,7 @@ describe('PreviewWeb', () => {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
       });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
 
       mockChannel.emit.mockClear();
       emitter.emit(Events.RESET_STORY_ARGS, {
@@ -1044,6 +1118,8 @@ describe('PreviewWeb', () => {
         }),
         undefined // this is coming from view.prepareForStory, not super important
       );
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a' },
@@ -1766,7 +1842,7 @@ describe('PreviewWeb', () => {
               }),
             }),
           }),
-          undefined,
+          'docs-element',
           expect.any(Function)
         );
       });
