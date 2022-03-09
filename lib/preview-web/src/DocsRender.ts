@@ -7,25 +7,23 @@ import { DOCS_RENDERED } from '@storybook/core-events';
 import { DocsContextProps } from './types';
 
 export class DocsRender<TFramework extends AnyFramework> {
-  public story?: Story<TFramework>;
-
   private canvasElement?: HTMLElement;
 
   private context?: DocsContextProps;
 
   public disableKeyListeners = false;
 
+  // eslint-disable-next-line no-useless-constructor
   constructor(
     private channel: Channel,
     private store: StoryStore<TFramework>,
     public id: StoryId,
-    story?: Story<TFramework>
-  ) {
-    if (story) this.story = story;
-  }
+    public story: Story<TFramework>
+  ) {}
 
-  async prepare() {
-    this.story = await this.store.loadStory({ storyId: this.id });
+  // DocsRender doesn't prepare, it is created *from* a prepared StoryRender
+  isPreparing() {
+    return false;
   }
 
   async renderToElement(

@@ -19,7 +19,7 @@ import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
-import { StoryRender } from './StoryRender';
+import { PREPARE_ABORTED, StoryRender } from './StoryRender';
 import { DocsRender } from './DocsRender';
 
 const { window: globalWindow, fetch } = global;
@@ -36,7 +36,6 @@ type StoryCleanupFn = () => MaybePromise<void>;
 const STORY_INDEX_PATH = './stories.json';
 
 type HTMLStoryRender<TFramework extends AnyFramework> = StoryRender<HTMLElement, TFramework>;
-type HTMLDocsRender<TFramework extends AnyFramework> = DocsRender<TFramework>;
 
 export class PreviewWeb<TFramework extends AnyFramework> {
   channel: Channel;
@@ -59,7 +58,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
   currentSelection: Selection;
 
-  currentRender: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>;
+  currentRender: HTMLStoryRender<TFramework> | DocsRender<TFramework>;
 
   storyRenders: HTMLStoryRender<TFramework>[] = [];
 
@@ -435,6 +434,20 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       this.view.showPreparingDocs();
     }
 
+    const lastSelection = this.currentSelection;
+    let lastRender = this.currentRender;
+
+    // If the last render is still preparing, let's drop it right now. Either
+    //   (a) it is a different story, which means we would drop it later, OR
+    //   (b) it is the *same* story, in which case we will resolve our own .prepare() at the
+    //       same moment anyway, and we should just "take over" the rendering.
+    // (We can't tell which it is yet, because it is possible that an HMR is going on and
+    //  even though the storyId is the same, the story itself is not).
+    if (lastRender?.isPreparing()) {
+      await this.teardownRender(lastRender);
+      lastRender = null;
+    }
+
     const storyRender: PreviewWeb<TFramework>['currentRender'] = new StoryRender<
       HTMLElement,
       TFramework
@@ -446,32 +459,43 @@ export class PreviewWeb<TFramework extends AnyFramework> {
       storyId,
       'story'
     );
+    // We need to store this right away, so if the story changes during
+    // the async `.prepare()` below, we can (potentially) cancel it
+    this.currentSelection = selection;
+    // Note this may be replaced by a docsRender after preparing
+    this.currentRender = storyRender;
 
     try {
       await storyRender.prepare();
     } catch (err) {
-      await this.teardownRender(this.currentRender);
-      this.currentRender = null;
-      this.renderStoryLoadingException(storyId, err);
+      if (err !== PREPARE_ABORTED) {
+        // We are about to render an error so make sure the previous story is
+        // no longer rendered.
+        await this.teardownRender(lastRender);
+        this.renderStoryLoadingException(storyId, err);
+      }
       return;
     }
-    const implementationChanged = !storyIdChanged && !storyRender.isEqual(this.currentRender);
+    const implementationChanged = !storyIdChanged && !storyRender.isEqual(lastRender);
 
     if (persistedArgs) this.storyStore.args.updateFromPersisted(storyRender.story, persistedArgs);
 
     const { parameters, initialArgs, argTypes, args } = storyRender.context();
 
     // Don't re-render the story if nothing has changed to justify it
-    if (this.currentRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
+    if (lastRender && !storyIdChanged && !implementationChanged && !viewModeChanged) {
+      this.currentRender = lastRender;
       this.channel.emit(Events.STORY_UNCHANGED, storyId);
       this.view.showMain();
       return;
     }
 
-    await this.teardownRender(this.currentRender, { viewModeChanged });
+    // Wait for the previous render to leave the page. NOTE: this will wait to ensure anything async
+    // is properly aborted, which (in some cases) can lead to the whole screen being refreshed.
+    await this.teardownRender(lastRender, { viewModeChanged });
 
     // If we are rendering something new (as opposed to re-rendering the same or first story), emit
-    if (this.currentSelection && (storyIdChanged || viewModeChanged)) {
+    if (lastSelection && (storyIdChanged || viewModeChanged)) {
       this.channel.emit(Events.STORY_CHANGED, storyId);
     }
 
@@ -491,10 +515,6 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     if (implementationChanged || persistedArgs) {
       this.channel.emit(Events.STORY_ARGS_UPDATED, { storyId, args });
     }
-
-    // Record the previous selection *before* awaiting the rendering, in cases things change before it is done.
-    this.currentSelection = selection;
-    this.currentRender = storyRender; // may be replaced immedately below
 
     if (selection.viewMode === 'docs' || parameters.docsOnly) {
       this.currentRender = storyRender.toDocsRender();
@@ -530,7 +550,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
   }
 
   async teardownRender(
-    render: HTMLStoryRender<TFramework> | HTMLDocsRender<TFramework>,
+    render: HTMLStoryRender<TFramework> | DocsRender<TFramework>,
     { viewModeChanged }: { viewModeChanged?: boolean } = {}
   ) {
     this.storyRenders = this.storyRenders.filter((r) => r !== render);

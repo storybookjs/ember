@@ -39,6 +39,8 @@ export type RenderContextCallbacks<TFramework extends AnyFramework> = Pick<
   'showMain' | 'showError' | 'showException'
 >;
 
+export const PREPARE_ABORTED = new Error('prepareAborted');
+
 export class StoryRender<
   CanvasElement extends HTMLElement | void,
   TFramework extends AnyFramework
@@ -95,13 +97,19 @@ export class StoryRender<
       this.story = await this.store.loadStory({ storyId: this.id });
     });
 
-    if (this.abortController.signal.aborted)
-      throw new Error('Story render aborted during preparation');
+    if (this.abortController.signal.aborted) {
+      this.store.cleanupStory(this.story);
+      throw PREPARE_ABORTED;
+    }
   }
 
   // The two story "renders" are equal and have both loaded the same story
   isEqual(other?: StoryRender<CanvasElement, TFramework> | DocsRender<TFramework>) {
     return other && this.id === other.id && this.story && this.story === other.story;
+  }
+
+  isPreparing() {
+    return ['preparing'].includes(this.phase);
   }
 
   isPending() {
@@ -225,7 +233,8 @@ export class StoryRender<
   async teardown(options: {} = {}) {
     this.cancelRender();
 
-    this.store.cleanupStory(this.story);
+    // If the story has loaded, we need to cleanup
+    if (this.story) this.store.cleanupStory(this.story);
 
     // Check if we're done rendering/playing. If not, we may have to reload the page.
     // Wait several ticks that may be needed to handle the abort, then try again.

@@ -1320,6 +1320,51 @@ describe('PreviewWeb', () => {
         await waitForQuiescence();
         expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
       });
+
+      // For https://github.com/storybookjs/storybook/issues/17214
+      it('does NOT render a second time if preparing', async () => {
+        document.location.search = '?id=component-one--a';
+
+        const [gate, openGate] = createGate();
+        const [importedGate, openImportedGate] = createGate();
+        importFn
+          .mockImplementationOnce(async (...args) => {
+            await gate;
+            return importFn(...args);
+          })
+          .mockImplementationOnce(async (...args) => {
+            // The second time we `import()` we open the "imported" gate
+            openImportedGate();
+            await gate;
+            return importFn(...args);
+          });
+
+        const preview = new PreviewWeb();
+        // We can't wait for the initialize function, as it waits for `renderSelection()`
+        // which prepares, but it does emit `CURRENT_STORY_WAS_SET` right before that
+        preview.initialize({ importFn, getProjectAnnotations });
+        await waitForEvents([Events.CURRENT_STORY_WAS_SET]);
+
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+        await importedGate;
+        // We are blocking import so this won't render yet
+        expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
+
+        mockChannel.emit.mockClear();
+        openGate();
+        await waitForRender();
+
+        // We should only render *once*
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+
+        // We should not show an error either
+        expect(preview.view.showErrorDisplay).not.toHaveBeenCalled();
+      });
     });
 
     describe('when changing story in story viewMode', () => {
