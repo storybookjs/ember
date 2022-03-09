@@ -4,13 +4,17 @@ import Events from '@storybook/core-events';
 import {
   waitForRender,
   waitForEvents,
+  waitForQuiescence,
   emitter,
   mockChannel,
 } from '@storybook/preview-web/dist/cjs/PreviewWeb.mockdata';
+// @ts-ignore
+import { WebView } from '@storybook/preview-web/dist/cjs/WebView';
 
 import { start } from './start';
 
 jest.mock('@storybook/preview-web/dist/cjs/WebView');
+jest.spyOn(WebView.prototype, 'prepareForDocs').mockReturnValue('docs-root');
 
 jest.mock('global', () => ({
   // @ts-ignore
@@ -202,6 +206,9 @@ describe('start', () => {
           "v": 2,
         }
       `);
+
+      // Wait a second to let the docs "render" finish (and maybe throw)
+      await waitForQuiescence();
     });
 
     it('deals with stories with "default" name', async () => {

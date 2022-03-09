@@ -190,9 +190,9 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   // If we have a CSF file we can get all the stories from it synchronously
   componentStoriesFromCSFFile({ csfFile }: { csfFile: CSFFile<TFramework> }): Story<TFramework>[] {
-    return Object.keys(csfFile.stories).map((storyId: StoryId) =>
-      this.storyFromCSFFile({ storyId, csfFile })
-    );
+    return Object.keys(this.storyIndex.stories)
+      .filter((storyId: StoryId) => !!csfFile.stories[storyId])
+      .map((storyId: StoryId) => this.storyFromCSFFile({ storyId, csfFile }));
   }
 
   // A prepared story does not include args, globals or hooks. These are stored in the story store
