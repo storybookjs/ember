@@ -39,6 +39,12 @@ jest.mock('@storybook/builder-webpack4', () => {
   return actualBuilder;
 });
 
+jest.mock('./utils/stories-json', () => {
+  const actualStoriesJson = jest.requireActual('./utils/stories-json');
+  actualStoriesJson.extractStoriesJson = () => Promise.resolve();
+  return actualStoriesJson;
+});
+
 jest.mock('@storybook/manager-webpack4', () => {
   const value = jest.fn();
   const actualBuilder = jest.requireActual('@storybook/manager-webpack4');
@@ -163,7 +169,6 @@ describe.each([
         ignorePreview: component === 'manager',
         managerCache: component === 'preview',
       };
-
       await builder(options);
       const config = prepareSnap(executor.get, component);
       expect(config).toMatchSpecificSnapshot(
