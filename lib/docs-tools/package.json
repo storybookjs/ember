@@ -42,6 +42,7 @@
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/node-logger": "6.5.0-alpha.47",
     "@storybook/store": "6.5.0-alpha.47",
     "core-js": "^3.8.2",
     "doctrine": "^3.0.0",
