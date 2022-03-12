@@ -1,6 +1,10 @@
-import { findDistEsm, Options, StorybookConfig } from '@storybook/core-common';
+import type { Options, StorybookConfig } from '@storybook/core-common';
+import { findDistEsm } from '@storybook/core-common';
+import { hasDocsOrControls } from '@storybook/docs-tools';
 
 export function webpackFinal(webpackConfig: any = {}, options: Options) {
+  if (!hasDocsOrControls(options)) return webpackConfig;
+
   let vueDocgenOptions = {};
 
   options.presetsList?.forEach((preset) => {
@@ -27,6 +31,7 @@ export function webpackFinal(webpackConfig: any = {}, options: Options) {
   return webpackConfig;
 }
 
-export const config: StorybookConfig['config'] = (entry = []) => {
+export const config: StorybookConfig['config'] = (entry = [], options) => {
+  if (!hasDocsOrControls(options)) return entry;
   return [...entry, findDistEsm(__dirname, 'client/docs/config')];
 };

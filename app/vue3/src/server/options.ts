@@ -4,8 +4,5 @@ import type { LoadOptions } from '@storybook/core-common';
 export default {
   packageJson: sync({ cwd: __dirname }).packageJson,
   framework: 'vue3',
-  frameworkPresets: [
-    require.resolve('./framework-preset-vue3'),
-    require.resolve('./framework-preset-vue3-docs'),
-  ],
+  frameworkPresets: [require.resolve('./preset')],
 } as LoadOptions;
