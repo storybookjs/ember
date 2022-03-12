@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-svelte');
+module.exports = require('./dist/cjs/server/preset');
