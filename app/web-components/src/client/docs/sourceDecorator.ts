@@ -2,9 +2,9 @@
 import { render } from 'lit-html';
 import type { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import { addons, useEffect } from '@storybook/addons';
-import type { WebComponentsFramework } from '@storybook/web-components';
+import { SNIPPET_RENDERED, SourceType } from '@storybook/docs-tools';
 
-import { SNIPPET_RENDERED, SourceType } from '../../shared';
+import type { WebComponentsFramework } from '..';
 
 function skipSourceRender(context: StoryContext<WebComponentsFramework>) {
   const sourceParams = context?.parameters.docs?.source;

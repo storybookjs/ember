@@ -1,6 +1,6 @@
-import { getCustomElements, isValidComponent, isValidMetaData } from '@storybook/web-components';
 import type { ArgType, ArgTypes } from '@storybook/api';
 import { logger } from '@storybook/client-logger';
+import { getCustomElements, isValidComponent, isValidMetaData } from '..';
 
 interface TagItem {
   name: string;

@@ -2,8 +2,8 @@ import { html } from 'lit-html';
 import { styleMap } from 'lit-html/directives/style-map';
 import { addons, useEffect } from '@storybook/addons';
 import type { StoryContext } from '@storybook/addons';
+import { SNIPPET_RENDERED } from '@storybook/docs-tools';
 import { sourceDecorator } from './sourceDecorator';
-import { SNIPPET_RENDERED } from '../../shared';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;
