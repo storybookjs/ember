@@ -70,7 +70,7 @@
       "type": "library"
     },
     "@storybook/docs-tools": {
-      "root": "app/docs-tools",
+      "root": "lib/docs-tools",
       "type": "library"
     },
     "@storybook/ember": {
