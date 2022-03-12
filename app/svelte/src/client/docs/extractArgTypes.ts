@@ -7,7 +7,7 @@ import type {
   JSDocTypeConst,
 } from 'sveltedoc-parser/typings';
 
-import type { ArgTypesExtractor } from '../../lib/docgen';
+import type { ArgTypesExtractor } from '@storybook/docs-tools';
 
 type ComponentWithDocgen = {
   __docgen: SvelteComponentDoc;

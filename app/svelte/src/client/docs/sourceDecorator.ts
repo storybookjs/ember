@@ -1,7 +1,7 @@
 import { addons, useEffect } from '@storybook/addons';
 import type { ArgTypes, Args, StoryContext, AnyFramework } from '@storybook/csf';
 
-import { SourceType, SNIPPET_RENDERED } from '../../shared';
+import { SourceType, SNIPPET_RENDERED } from '@storybook/docs-tools';
 
 /**
  * Check if the sourcecode should be generated.

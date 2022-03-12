@@ -1,4 +1,4 @@
-import { Component } from '../../blocks/types';
+type Component = any;
 
 export function extractComponentDescription(component?: Component): string {
   if (!component) {

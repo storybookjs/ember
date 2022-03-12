@@ -69,6 +69,8 @@ export default async function svelteDocgen(source: string) {
   let docgen = '';
 
   try {
+    // FIXME
+    // @ts-ignore
     const componentDoc = await svelteDoc.parse(options);
 
     // get filename for source content

@@ -1,7 +1,8 @@
 import path from 'path';
 
-import { Configuration } from 'webpack';
-import type { Options } from '@storybook/core-common';
+import { findDistEsm, Options, StorybookConfig } from '@storybook/core-common';
+
+type Configuration = any;
 
 export async function webpackFinal(webpackConfig: Configuration, options: Options) {
   const svelteOptions = await options.presets.apply('svelteOptions', {} as any, options);
@@ -15,3 +16,7 @@ export async function webpackFinal(webpackConfig: Configuration, options: Option
 
   return webpackConfig;
 }
+
+export const config: StorybookConfig['config'] = (entry = []) => {
+  return [...entry, findDistEsm(__dirname, 'client/docs/config')];
+};
