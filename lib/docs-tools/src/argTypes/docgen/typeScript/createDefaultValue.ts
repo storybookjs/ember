@@ -1,4 +1,4 @@
-import { PropDefaultValue } from '@storybook/components';
+import { PropDefaultValue } from '../PropDef';
 import { DocgenInfo } from '../types';
 import { createSummaryValue } from '../../utils';
 import { isDefaultValueBlacklisted } from '../utils/defaultValue';

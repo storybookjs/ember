@@ -1,6 +1,6 @@
 import type { StrictArgTypes } from '@storybook/csf';
 import type { PropDef } from './PropDef';
-import type { Component } from '../../blocks/types';
+import type { Component } from '../types';
 
 export type PropsExtractor = (component: Component) => { rows?: PropDef[] } | null;
 

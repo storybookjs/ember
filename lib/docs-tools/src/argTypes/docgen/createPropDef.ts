@@ -1,4 +1,4 @@
-import { PropDefaultValue } from '@storybook/components';
+import { PropDefaultValue } from './PropDef';
 import { PropDef, TypeSystem, DocgenInfo, DocgenType, DocgenPropDefaultValue } from './types';
 import { JsDocParsingResult } from '../jsdocParser';
 import { createSummaryValue } from '../utils';

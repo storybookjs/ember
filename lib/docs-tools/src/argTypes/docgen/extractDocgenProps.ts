@@ -1,4 +1,4 @@
-import { Component } from '../../blocks/types';
+import { Component } from '../types';
 import { ExtractedJsDoc, parseJsDoc } from '../jsdocParser';
 import { PropDef, DocgenInfo, TypeSystem } from './types';
 import { getDocgenSection, isValidDocgenSection, getDocgenDescription } from './utils';

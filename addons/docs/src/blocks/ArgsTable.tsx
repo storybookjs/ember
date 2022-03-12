@@ -7,6 +7,7 @@ import {
   SortType,
   TabbedArgsTable,
 } from '@storybook/components';
+import { ArgTypesExtractor } from '@storybook/docs-tools';
 import { addons } from '@storybook/addons';
 import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
@@ -15,7 +16,6 @@ import { StrictArgTypes, Args } from '@storybook/csf';
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
 import { getComponentName } from './utils';
-import { ArgTypesExtractor } from '../lib/docgen/types';
 import { lookupStoryId } from './Story';
 import { useStory } from './useStory';
 

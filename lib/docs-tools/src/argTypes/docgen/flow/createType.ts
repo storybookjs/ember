@@ -1,4 +1,4 @@
-import { PropType } from '@storybook/components';
+import { PropType } from '../PropDef';
 import { DocgenFlowType } from '../types';
 import { createSummaryValue, isTooLongForTypeSummary } from '../../utils';
 
