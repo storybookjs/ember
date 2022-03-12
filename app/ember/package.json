@@ -42,9 +42,9 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@ember/test-helpers": "^2.1.4",
     "@storybook/core": "6.5.0-alpha.47",
     "@storybook/core-common": "6.5.0-alpha.47",
+    "@storybook/docs-tools": "6.5.0-alpha.47",
     "@storybook/store": "6.5.0-alpha.47",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
