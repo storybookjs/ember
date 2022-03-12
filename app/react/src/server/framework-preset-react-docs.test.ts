@@ -1,6 +1,6 @@
 import ReactDocgenTypescriptPlugin from '@storybook/react-docgen-typescript-plugin';
 import type { TypescriptConfig } from '@storybook/core-common';
-import * as preset from './framework-preset-react-docgen';
+import * as preset from './framework-preset-react-docs';
 
 describe('framework-preset-react-docgen', () => {
   const babelPluginReactDocgenPath = require.resolve('babel-plugin-react-docgen');
