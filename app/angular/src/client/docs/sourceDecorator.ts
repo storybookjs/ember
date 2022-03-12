@@ -1,8 +1,8 @@
 import { addons, useEffect } from '@storybook/addons';
 import type { PartialStoryFn } from '@storybook/csf';
-import type { StoryContext, AngularFramework } from '@storybook/angular';
-import { computesTemplateSourceFromComponent } from '@storybook/angular/renderer';
-import { SNIPPET_RENDERED, SourceType } from '../../shared';
+import { SNIPPET_RENDERED, SourceType } from '@storybook/docs-tools';
+import { StoryContext, AngularFramework } from '..';
+import { computesTemplateSourceFromComponent } from '../../renderer';
 
 export const skipSourceRender = (context: StoryContext) => {
   const sourceParams = context?.parameters.docs?.source;

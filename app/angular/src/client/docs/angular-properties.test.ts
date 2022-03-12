@@ -6,6 +6,7 @@ import { sync as spawnSync } from 'cross-spawn';
 
 import { findComponentByName, extractArgTypesFromData } from './compodoc';
 
+// @ts-ignore
 const { SNAPSHOT_OS } = global;
 
 // File hierarchy: __testfixtures__ / some-test-case / input.*

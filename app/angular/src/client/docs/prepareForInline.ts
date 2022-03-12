@@ -2,9 +2,9 @@ import React from 'react';
 import pLimit from 'p-limit';
 import { nanoid } from 'nanoid';
 
-import { AngularFramework, StoryContext } from '@storybook/angular';
-import { rendererFactory } from '@storybook/angular/renderer';
 import { PartialStoryFn } from '@storybook/csf';
+import { AngularFramework, StoryContext } from '..';
+import { rendererFactory } from '../../renderer';
 
 const limit = pLimit(1);
 
