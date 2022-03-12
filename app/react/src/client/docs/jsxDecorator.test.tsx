@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { addons, StoryContext, useEffect } from '@storybook/addons';
+import { SNIPPET_RENDERED } from '@storybook/docs-tools';
 import { renderJsx, jsxDecorator } from './jsxDecorator';
-import { SNIPPET_RENDERED } from '../../shared';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;

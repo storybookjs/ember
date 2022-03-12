@@ -5,11 +5,11 @@ import deprecate from 'util-deprecate';
 
 import { addons, useEffect } from '@storybook/addons';
 import { StoryContext, ArgsStoryFn, PartialStoryFn } from '@storybook/csf';
+import { SourceType, SNIPPET_RENDERED, getDocgenSection } from '@storybook/docs-tools';
 import { logger } from '@storybook/client-logger';
-import { ReactFramework } from '@storybook/react';
 
-import { SourceType, SNIPPET_RENDERED } from '../../shared';
-import { getDocgenSection } from '../../lib/docgen';
+import { ReactFramework } from '..';
+
 import { isMemo, isForwardRef } from './lib';
 
 type JSXOptions = Options & {

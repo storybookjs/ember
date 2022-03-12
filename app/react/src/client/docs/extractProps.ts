@@ -5,11 +5,13 @@ import {
   extractComponentProps,
   PropsExtractor,
   TypeSystem,
-} from '../../lib/docgen';
-import { Component } from '../../blocks/types';
+} from '@storybook/docs-tools';
 import { enhancePropTypesProps } from './propTypes/handleProp';
 import { enhanceTypeScriptProps } from './typeScript/handleProp';
 import { isMemo } from './lib';
+
+// FIXME
+type Component = any;
 
 export interface PropDefMap {
   [p: string]: PropDef;

@@ -1,5 +1,5 @@
+import { createSummaryValue } from '@storybook/docs-tools';
 import { TypeResolver, extractFunctionName, createTypeResolvers } from '../lib/defaultValues';
-import { createSummaryValue } from '../../../lib';
 import { FUNCTION_CAPTION, ELEMENT_CAPTION } from '../lib';
 import {
   getPrettyElementIdentifier,

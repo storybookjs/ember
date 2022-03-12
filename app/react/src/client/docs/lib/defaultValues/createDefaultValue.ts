@@ -1,4 +1,9 @@
-import { PropDefaultValue } from '@storybook/components';
+import {
+  createSummaryValue,
+  isTooLongForDefaultValueSummary,
+  PropDefaultValue,
+} from '@storybook/docs-tools';
+
 import { FUNCTION_CAPTION, ELEMENT_CAPTION } from '../captions';
 import {
   InspectionFunction,
@@ -9,7 +14,6 @@ import {
   inspectValue,
 } from '../inspection';
 import { isHtmlTag } from '../isHtmlTag';
-import { createSummaryValue, isTooLongForDefaultValueSummary } from '../../../../lib';
 import { generateCode } from '../generateCode';
 import { generateObject } from './generateObject';
 import { generateArray } from './generateArray';

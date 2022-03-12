@@ -1,8 +1,8 @@
 import type { PartialStoryFn } from '@storybook/csf';
-import type { ReactFramework } from '@storybook/react';
+import { extractComponentDescription, enhanceArgTypes } from '@storybook/docs-tools';
 
+import { ReactFramework } from '..';
 import { extractArgTypes } from './extractArgTypes';
-import { extractComponentDescription } from '../../lib/docgen';
 import { jsxDecorator } from './jsxDecorator';
 
 export const parameters = {
@@ -16,3 +16,5 @@ export const parameters = {
 };
 
 export const decorators = [jsxDecorator];
+
+export const argTypesEnhancers = [enhanceArgTypes];

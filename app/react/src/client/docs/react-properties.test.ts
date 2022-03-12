@@ -1,16 +1,16 @@
 import 'jest-specific-snapshot';
 import path from 'path';
 import fs from 'fs';
-
-import { transformFileSync, transformSync } from '@babel/core';
-import { inferControls } from '@storybook/store';
-import type { StoryContext } from '@storybook/react';
-import type { AnyFramework } from '@storybook/csf';
 import requireFromString from 'require-from-string';
+import { transformFileSync, transformSync } from '@babel/core';
 
+import { inferControls } from '@storybook/store';
+import type { AnyFramework } from '@storybook/csf';
+import { normalizeNewlines } from '@storybook/docs-tools';
+
+import type { StoryContext } from '..';
 import { extractProps } from './extractProps';
 import { extractArgTypes } from './extractArgTypes';
-import { normalizeNewlines } from '../../lib/utils';
 
 // jest.mock('../imported', () => () => ({ imported: 'imported-value' }), { virtual: true });
 

@@ -1,7 +1,11 @@
-import { PropDefaultValue } from '@storybook/components';
+import {
+  createSummaryValue,
+  isTooLongForDefaultValueSummary,
+  PropDefaultValue,
+} from '@storybook/docs-tools';
+
 import { OBJECT_CAPTION } from '../captions';
 import { InspectionResult, InspectionArray } from '../inspection';
-import { createSummaryValue, isTooLongForDefaultValueSummary } from '../../../../lib';
 import { generateObjectCode } from '../generateCode';
 
 export function generateObject({ inferredType, ast }: InspectionResult): PropDefaultValue {

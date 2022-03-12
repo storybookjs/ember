@@ -2,15 +2,15 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Component } from '../../../blocks/types';
 import {
   PropDef,
   extractComponentProps,
   DocgenInfo,
   DocgenPropDefaultValue,
-} from '../../../lib/docgen';
+} from '@storybook/docs-tools';
 import { enhancePropTypesProp, enhancePropTypesProps } from './handleProp';
 
+type Component = any;
 const DOCGEN_SECTION = 'props';
 
 function ReactComponent() {

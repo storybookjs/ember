@@ -1,5 +1,5 @@
 import { generateFuncSignature, generateShortFuncSignature } from './generateFuncSignature';
-import { parseJsDoc } from '../../../lib/jsdocParser';
+import { parseJsDoc } from '@storybook/docs-tools';
 
 describe('generateFuncSignature', () => {
   it('should return an empty string when there is no @params and @returns tags', () => {

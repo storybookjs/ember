@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
-import { Component } from '../../../blocks/types';
 import {
   PropDef,
   extractComponentProps,
   DocgenInfo,
   DocgenPropDefaultValue,
-} from '../../../lib/docgen';
+} from '@storybook/docs-tools';
 import { enhanceTypeScriptProp } from './handleProp';
+
+type Component = any;
 
 const DOCGEN_SECTION = 'props';
 

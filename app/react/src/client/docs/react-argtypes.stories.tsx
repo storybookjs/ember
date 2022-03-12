@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import mapValues from 'lodash/mapValues';
-import { storiesOf, StoryContext } from '@storybook/react';
 import { ArgsTable } from '@storybook/components';
 import { Args } from '@storybook/api';
 import { inferControls } from '@storybook/store';
 
+import { storiesOf, StoryContext } from '..';
 import { extractArgTypes } from './extractArgTypes';
-import { Component } from '../../blocks';
+
+// FIXME
+type Component = any;
 
 const argsTableProps = (component: Component) => {
   const argTypes = extractArgTypes(component);

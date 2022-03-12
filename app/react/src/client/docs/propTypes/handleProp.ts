@@ -1,9 +1,10 @@
-import { PropDef, ExtractedProp } from '../../../lib/docgen';
+import { PropDef, ExtractedProp } from '@storybook/docs-tools';
 import { createType } from './createType';
 import { createDefaultValue, createDefaultValueFromRawDefaultProp } from '../lib/defaultValues';
-import { Component } from '../../../blocks/types';
 import { keepOriginalDefinitionOrder } from './sortProps';
 import { rawDefaultPropTypeResolvers } from './rawDefaultPropResolvers';
+
+type Component = any;
 
 export function enhancePropTypesProp(extractedProp: ExtractedProp, rawDefaultProp?: any): PropDef {
   const { propDef } = extractedProp;
