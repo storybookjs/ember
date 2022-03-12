@@ -1,7 +1,6 @@
-import { addons, useEffect } from '@storybook/addons';
-import type { StoryContext } from '@storybook/addons';
+import { SNIPPET_RENDERED } from '@storybook/docs-tools';
+import { addons, StoryContext, useEffect } from '@storybook/addons';
 import { sourceDecorator } from './sourceDecorator';
-import { SNIPPET_RENDERED } from '../../shared';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;

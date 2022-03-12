@@ -1,6 +1,6 @@
+import { SourceType } from '@storybook/docs-tools';
 import { sourceDecorator } from './sourceDecorator';
 import { prepareForInline } from './prepareForInline';
-import { SourceType } from '../../shared';
 
 export const decorators = [sourceDecorator];
 

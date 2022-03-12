@@ -1,10 +1,9 @@
 /* global window */
+import { SNIPPET_RENDERED, SourceType } from '@storybook/docs-tools';
 import { addons, useEffect } from '@storybook/addons';
 import type { ArgsStoryFn, PartialStoryFn, StoryContext } from '@storybook/csf';
 import dedent from 'ts-dedent';
-import type { HtmlFramework } from '@storybook/html';
-
-import { SNIPPET_RENDERED, SourceType } from '../../shared';
+import type { HtmlFramework } from '..';
 
 function skipSourceRender(context: StoryContext<HtmlFramework>) {
   const sourceParams = context?.parameters.docs?.source;

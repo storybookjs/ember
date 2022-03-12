@@ -4,5 +4,8 @@ import type { LoadOptions } from '@storybook/core-common';
 export default {
   packageJson: sync({ cwd: __dirname }).packageJson,
   framework: 'html',
-  frameworkPresets: [require.resolve('./framework-preset-html')],
+  frameworkPresets: [
+    require.resolve('./framework-preset-html'),
+    require.resolve('./framework-preset-html-docs'),
+  ],
 } as LoadOptions;
