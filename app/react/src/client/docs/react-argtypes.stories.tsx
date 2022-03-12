@@ -53,36 +53,6 @@ const ArgsStory = ({ component }: any) => {
   );
 };
 
-const typescriptFixtures = [
-  'aliases',
-  'arrays',
-  'enums',
-  'functions',
-  'interfaces',
-  'intersections',
-  'records',
-  'scalars',
-  'tuples',
-  'unions',
-  'optionals',
-];
-
-const typescriptStories = storiesOf('ArgTypes/TypeScript', module);
-typescriptFixtures.forEach((fixture) => {
-  // eslint-disable-next-line import/no-dynamic-require, global-require, no-shadow
-  const { Component } = require(`../../lib/convert/__testfixtures__/typescript/${fixture}`);
-  typescriptStories.add(fixture, () => <ArgsStory component={Component} />);
-});
-
-const proptypesFixtures = ['arrays', 'enums', 'misc', 'objects', 'react', 'scalars'];
-
-const proptypesStories = storiesOf('ArgTypes/PropTypes', module);
-proptypesFixtures.forEach((fixture) => {
-  // eslint-disable-next-line import/no-dynamic-require, global-require, no-shadow
-  const { Component } = require(`../../lib/convert/__testfixtures__/proptypes/${fixture}`);
-  proptypesStories.add(fixture, () => <ArgsStory component={Component} />);
-});
-
 const issuesFixtures = [
   'js-class-component',
   'js-function-component',

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import global from 'global';
 import { LitElement, html, css } from 'lit-element';
 
