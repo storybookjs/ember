@@ -4,9 +4,9 @@ import type { StoryContext } from '@storybook/csf';
 import { addons } from '@storybook/addons';
 import { logger } from '@storybook/client-logger';
 import type Vue from 'vue';
-import type { VueFramework } from '@storybook/vue';
 
-import { SourceType, SNIPPET_RENDERED } from '../../shared';
+import { SourceType, SNIPPET_RENDERED } from '@storybook/docs-tools';
+import type { VueFramework } from '../types-6-0';
 
 export const skipSourceRender = (context: StoryContext<VueFramework>) => {
   const sourceParams = context?.parameters.docs?.source;
@@ -24,6 +24,7 @@ export const skipSourceRender = (context: StoryContext<VueFramework>) => {
 
 export const sourceDecorator = (storyFn: any, context: StoryContext<VueFramework>) => {
   const story = storyFn();
+  console.log({ story });
 
   // See ../react/jsxDecorator.tsx
   if (skipSourceRender(context)) {

@@ -1,4 +1,4 @@
-import type { Options } from '@storybook/core-common';
+import { findDistEsm, Options, StorybookConfig } from '@storybook/core-common';
 
 export function webpackFinal(webpackConfig: any = {}, options: Options) {
   let vueDocgenOptions = {};
@@ -26,3 +26,7 @@ export function webpackFinal(webpackConfig: any = {}, options: Options) {
   });
   return webpackConfig;
 }
+
+export const config: StorybookConfig['config'] = (entry = []) => {
+  return [...entry, findDistEsm(__dirname, 'client/docs/config')];
+};
