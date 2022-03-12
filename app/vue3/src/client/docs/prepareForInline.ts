@@ -1,8 +1,7 @@
 import React from 'react';
 import * as Vue from 'vue';
-import { app } from '@storybook/vue3';
-import type { StoryContext, PartialStoryFn } from '@storybook/csf';
-import type { VueFramework } from '@storybook/vue3';
+import { StoryContext, PartialStoryFn } from '@storybook/csf';
+import { app, VueFramework } from '../index';
 
 // This is cast as `any` to workaround type errors caused by Vue 2 types
 const { render, h } = Vue as any;

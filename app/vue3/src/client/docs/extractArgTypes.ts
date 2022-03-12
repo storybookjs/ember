@@ -1,7 +1,6 @@
 import type { StrictArgTypes } from '@storybook/csf';
-import { hasDocgen, extractComponentProps } from '../../lib/docgen';
-import type { ArgTypesExtractor } from '../../lib/docgen';
-import { convert } from '../../lib/convert';
+import type { ArgTypesExtractor } from '@storybook/docs-tools';
+import { hasDocgen, extractComponentProps, convert } from '@storybook/docs-tools';
 
 const SECTIONS = ['props', 'events', 'slots'];
 
