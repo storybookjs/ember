@@ -97,6 +97,7 @@
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
+    "@types/tmp": "^0.2.3",
     "cross-spawn": "^7.0.3",
     "jest": "^26.6.3",
     "jest-preset-angular": "^8.3.2",

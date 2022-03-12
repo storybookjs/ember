@@ -16,7 +16,8 @@ import {
   StylePreprocessorOptions,
 } from '@angular-devkit/build-angular';
 
-import buildStandalone, { StandaloneOptions } from '../../../standalone';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import { runCompodoc } from '../utils/run-compodoc';
 import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 

@@ -11,4 +11,4 @@ export default {
 export const Default = () => ({
   render: (h) => h(App),
 });
-// Default.storyName = 'App';
+Default.storyName = 'App';

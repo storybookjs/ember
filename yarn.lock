@@ -6864,6 +6864,7 @@ __metadata:
     "@types/node": ^14.14.20 || ^16.0.0
     "@types/react": ^16.14.23
     "@types/react-dom": ^16.9.14
+    "@types/tmp": ^0.2.3
     "@types/webpack-env": ^1.16.0
     autoprefixer: ^9.8.6
     core-js: ^3.8.2
@@ -10319,6 +10320,13 @@ __metadata:
   dependencies:
     "@types/jest": "*"
   checksum: 775b5fb3dd26dfff1a17dc7f404c9b06c7aeb388e55802607ba6e08593deaa585fb1ed5e6809090cfe13707667bf413cbf56036952a26b383ac7d7efadac6e30
+  languageName: node
+  linkType: hard
+
+"@types/tmp@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@types/tmp@npm:0.2.3"
+  checksum: a9a32d723b483713ef537af31caddfcc2129ba21a0d56f5e4eef39508e07d415b1ec7327486d15b2cd4ac277deaaef0f8368ed1a0f4029e5ef5c393f9c15856b
   languageName: node
   linkType: hard
 
