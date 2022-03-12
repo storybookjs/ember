@@ -4,9 +4,14 @@ import { serverRequire } from '@storybook/core-common';
 
 interface PresetOptions {
   configDir?: string;
-  backgrounds?: any;
-  viewport?: any;
-  docs?: any;
+  docs?: boolean;
+  controls?: boolean;
+  actions?: boolean;
+  backgrounds?: boolean;
+  viewport?: boolean;
+  toolbars?: boolean;
+  measure?: boolean;
+  outline?: boolean;
 }
 
 const requireMain = (configDir: string) => {
