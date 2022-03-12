@@ -3,9 +3,12 @@ import { findDistEsm } from '@storybook/core-common';
 import type { TransformOptions } from '@babel/core';
 import type { Configuration } from 'webpack';
 import ReactDocgenTypescriptPlugin from '@storybook/react-docgen-typescript-plugin';
+import { hasDocsOrControls } from '@storybook/docs-tools';
 
-export async function babel(config: TransformOptions, { presets }: Options) {
-  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+export async function babel(config: TransformOptions, options: Options) {
+  if (!hasDocsOrControls(options)) return config;
+
+  const typescriptOptions = await options.presets.apply<TypescriptConfig>('typescript', {} as any);
 
   const { reactDocgen } = typescriptOptions;
 
@@ -31,8 +34,10 @@ export async function babel(config: TransformOptions, { presets }: Options) {
   };
 }
 
-export async function webpackFinal(config: Configuration, { presets }: Options) {
-  const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);
+export async function webpackFinal(config: Configuration, options: Options) {
+  if (!hasDocsOrControls(options)) return config;
+
+  const typescriptOptions = await options.presets.apply<TypescriptConfig>('typescript', {} as any);
 
   const { reactDocgen, reactDocgenTypescriptOptions } = typescriptOptions;
 
@@ -54,5 +59,6 @@ export async function webpackFinal(config: Configuration, { presets }: Options) 
 }
 
 export const config: StorybookConfig['config'] = (entry = [], options) => {
+  if (!hasDocsOrControls(options)) return entry;
   return [...entry, findDistEsm(__dirname, 'client/docs/config')];
 };
