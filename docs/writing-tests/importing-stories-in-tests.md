@@ -165,7 +165,7 @@ With Playwright, you can write a test to check if the inputs are filled and matc
 
 <!-- prettier-ignore-end -->
 
-Once you execute Playwright, it opens a new browser window, load Storybook's isolated iframe, asserts if the inputs contain the specified values, and displays the test results in the terminal.
+Once you execute Playwright, it opens a new browser window, loads Storybook's isolated iframe, asserts if the inputs contain the specified values, and displays the test results in the terminal.
 
 ---
 
