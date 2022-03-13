@@ -4,7 +4,6 @@ import { prepareForInline } from './prepareForInline';
 import { sourceDecorator } from './sourceDecorator';
 
 export const parameters = {
-  foobar: 'baz',
   docs: {
     inlineStories: true,
     iframeHeight: 120,
