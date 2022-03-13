@@ -3,6 +3,6 @@ export const parameters = {
     inlineStories: false,
     getContainer: async () => (await import('../../blocks')).DocsContainer,
     getPage: async () => (await import('../../blocks')).DocsPage,
-    iframeHeight: 110,
+    iframeHeight: 100,
   },
 };
