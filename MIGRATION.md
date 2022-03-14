@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [Docs framework refactor for React](#docs-framework-refactor-for-react)
   - [Opt-in MDX2 support](#opt-in-mdx2-support)
   - [CSF3 auto-title improvements](#csf3-auto-title-improvements)
     - [Auto-title filename case](#auto-title-filename-case)
@@ -194,6 +195,14 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.4.x to 6.5.0
+
+### Docs framework refactor for React
+
+SB6.5 moves framework specializations (e.g. ArgType inference, dynamic snippet rendering) out of `@storybook/addon-docs` and into the specific framework packages to which they apply (e.g. `@storybook/react`).
+
+This change should not require any specific migrations on your part if you are using the docs addon as described in the documentation. However, if you are using `react-docgen` or `react-docgen-typescript` information in some custom way outside of `addon-docs`, you should be aware of this change.
+
+In SB6.4, `@storybook/react` added `react-docgen` to its babel settings and `react-docgen-typescript` to its webpack settings. In SB6.5, this only happens if you are using `addon-docs` or `addon-controls`, either directly or indirectly through `addon-essentials`. If you're not using either of those addons, but require that information for some other addon, please configure that manually in your `.storybook/main.js` configuration. You can see the docs configuration here: https://github.com/storybookjs/storybook/blob/next/app/react/src/server/framework-preset-react-docs.ts
 
 ### Opt-in MDX2 support
 
