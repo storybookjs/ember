@@ -1,3 +1,17 @@
+## 6.5.0-alpha.48 (March 14, 2022)
+
+### Features
+
+- Addon-docs: Auto-disable docs presets if docs/controls unused ([#17697](https://github.com/storybookjs/storybook/pull/17697))
+
+### Bug Fixes
+
+- Web-components: Fix CSS class usage in CLI template ([#17702](https://github.com/storybookjs/storybook/pull/17702))
+
+### Maintenance
+
+- Addon-docs: Refactor docs support into individual framework packages ([#17695](https://github.com/storybookjs/storybook/pull/17695))
+
 ## 6.5.0-alpha.47 (March 10, 2022)
 
 ### Bug Fixes
