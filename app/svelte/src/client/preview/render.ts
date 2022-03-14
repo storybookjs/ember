@@ -1,5 +1,5 @@
 import global from 'global';
-import { ArgsStoryFn } from '@storybook/csf';
+import type { ArgsStoryFn } from '@storybook/csf';
 import type { RenderContext } from '@storybook/store';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PreviewRender from '@storybook/svelte/templates/PreviewRender.svelte';

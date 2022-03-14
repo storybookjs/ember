@@ -1,6 +1,11 @@
-import { Component, AsyncComponent } from 'vue';
-import { Args, ComponentAnnotations, StoryAnnotations, AnnotatedStoryFn } from '@storybook/csf';
-import { StoryFnVueReturnType } from './types';
+import type { Component, AsyncComponent } from 'vue';
+import type {
+  Args,
+  ComponentAnnotations,
+  StoryAnnotations,
+  AnnotatedStoryFn,
+} from '@storybook/csf';
+import type { StoryFnVueReturnType } from './types';
 
 export type { Args, ArgTypes, Parameters, StoryContext } from '@storybook/csf';
 

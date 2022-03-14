@@ -1,6 +1,6 @@
 {
   "name": "web-components-kitchen-sink",
-  "version": "6.5.0-alpha.42",
+  "version": "6.5.0-alpha.48",
   "private": true,
   "description": "",
   "keywords": [],
@@ -40,6 +40,7 @@
     "@storybook/core-events": "portal:../../lib/core-events",
     "@storybook/core-server": "portal:../../lib/core-server",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
+    "@storybook/docs-tools": "portal:../../lib/docs-tools",
     "@storybook/jest": "^0.0.5",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
     "@storybook/node-logger": "portal:../../lib/node-logger",

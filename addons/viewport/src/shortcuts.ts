@@ -1,4 +1,4 @@
-import { API } from '@storybook/api';
+import type { API } from '@storybook/api';
 import { ADDON_ID } from './constants';
 
 const getCurrentViewportIndex = (viewportsKeys: string[], current: string): number =>

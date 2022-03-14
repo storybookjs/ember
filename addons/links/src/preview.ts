@@ -2,7 +2,8 @@ import global from 'global';
 import qs from 'qs';
 import { addons, makeDecorator } from '@storybook/addons';
 import { STORY_CHANGED, SELECT_STORY } from '@storybook/core-events';
-import { toId, StoryId, StoryName, ComponentTitle } from '@storybook/csf';
+import type { StoryId, StoryName, ComponentTitle } from '@storybook/csf';
+import { toId } from '@storybook/csf';
 import { PARAM_KEY } from './constants';
 
 const { document, HTMLElement } = global;

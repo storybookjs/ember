@@ -1,10 +1,10 @@
 import path from 'path';
 import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
+import global from 'global';
 
-// @ts-ignore
-import { createCompiler } from '@storybook/csf-tools/mdx';
 import type { BuilderConfig, Options } from '@storybook/core-common';
+import { logger } from '@storybook/node-logger';
 
 // for frameworks that are not working with react, we need to configure
 // the jsx to transpile mdx, for now there will be a flag for that
@@ -34,9 +34,9 @@ function createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }: Bab
 export async function webpack(
   webpackConfig: any = {},
   options: Options &
-    BabelParams & { sourceLoaderOptions: any; transcludeMarkdown: boolean } & Parameters<
+    BabelParams & { sourceLoaderOptions: any; transcludeMarkdown: boolean } /* & Parameters<
       typeof createCompiler
-    >[0]
+    >[0] */
 ) {
   const { builder = 'webpack4' } = await options.presets.apply<{
     builder: BuilderConfig;
@@ -62,8 +62,16 @@ export async function webpack(
   } = options;
 
   const mdxLoaderOptions = {
+    skipCsf: true,
     remarkPlugins: [remarkSlug, remarkExternalLinks],
   };
+
+  const mdxVersion = global.FEATURES?.previewMdx2 ? 'MDX2' : 'MDX1';
+  logger.info(`Addon-docs: using ${mdxVersion}`);
+
+  const mdxLoader = global.FEATURES?.previewMdx2
+    ? require.resolve('@storybook/mdx2-csf/loader')
+    : require.resolve('@storybook/mdx1-csf/loader');
 
   // set `sourceLoaderOptions` to `null` to disable for manual configuration
   const sourceLoader = sourceLoaderOptions
@@ -89,7 +97,7 @@ export async function webpack(
             options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
           },
           {
-            loader: require.resolve('@mdx-js/loader'),
+            loader: mdxLoader,
             options: mdxLoaderOptions,
           },
         ],
@@ -123,11 +131,7 @@ export async function webpack(
               options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
             },
             {
-              loader: require.resolve('@mdx-js/loader'),
-              options: {
-                compilers: [createCompiler(options)],
-                ...mdxLoaderOptions,
-              },
+              loader: mdxLoader,
             },
           ],
         },
@@ -140,7 +144,7 @@ export async function webpack(
               options: createBabelOptions({ babelOptions, mdxBabelOptions, configureJSX }),
             },
             {
-              loader: require.resolve('@mdx-js/loader'),
+              loader: mdxLoader,
               options: mdxLoaderOptions,
             },
           ],

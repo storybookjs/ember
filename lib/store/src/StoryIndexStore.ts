@@ -1,8 +1,8 @@
 import dedent from 'ts-dedent';
 import { Channel } from '@storybook/addons';
-import { StoryId } from '@storybook/csf';
+import type { StoryId } from '@storybook/csf';
 
-import { StorySpecifier, StoryIndex, StoryIndexEntry } from './types';
+import type { StorySpecifier, StoryIndex, StoryIndexEntry } from './types';
 
 export class StoryIndexStore {
   channel: Channel;

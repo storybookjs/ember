@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues';
-import {
+import type {
   ArgTypes,
   GlobalTypes,
   InputType,

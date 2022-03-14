@@ -8,7 +8,7 @@ export default function (tsLoaderOptions: Partial<Options>) {
   if (tsLoaderOptions && tsLoaderOptions.configFile) {
     return new ForkTsCheckerWebpackPlugin({
       tsconfig: tsLoaderOptions.configFile,
-      async: false,
+      async: true,
     });
   }
 

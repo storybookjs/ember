@@ -220,7 +220,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
     this.api = api;
   }
 
-  static getDerivedStateFromProps = (props: ManagerProviderProps, state: State) => {
+  static getDerivedStateFromProps(props: ManagerProviderProps, state: State) {
     if (state.path !== props.path) {
       return {
         ...state,
@@ -233,7 +233,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
       };
     }
     return null;
-  };
+  }
 
   shouldComponentUpdate(nextProps: ManagerProviderProps, nextState: State) {
     const prevState = this.state;

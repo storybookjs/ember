@@ -9,7 +9,7 @@ import {
 import global from 'global';
 
 import { EVENTS, Instrumenter } from './instrumenter';
-import { Options } from './types';
+import type { Options } from './types';
 
 const callSpy = jest.fn();
 const syncSpy = jest.fn();

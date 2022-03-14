@@ -1,5 +1,6 @@
-import { Parameters } from '@storybook/addons';
-import { Story, combineParameters } from '@storybook/store';
+import type { Parameters } from '@storybook/addons';
+import type { Story } from '@storybook/store';
+import { combineParameters } from '@storybook/store';
 
 // ============================================================
 // START @storybook/source-loader/extract-source

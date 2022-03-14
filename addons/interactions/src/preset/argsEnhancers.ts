@@ -1,6 +1,7 @@
-import { Args, addons } from '@storybook/addons';
+import { addons } from '@storybook/addons';
+import type { Args } from '@storybook/addons';
 import { FORCE_REMOUNT, STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
-import { AnyFramework, ArgsEnhancer } from '@storybook/csf';
+import type { AnyFramework, ArgsEnhancer } from '@storybook/csf';
 import { instrument } from '@storybook/instrumenter';
 import { ModuleMocker } from 'jest-mock';
 

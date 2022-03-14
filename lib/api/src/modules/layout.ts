@@ -1,10 +1,11 @@
 import global from 'global';
 import pick from 'lodash/pick';
 import deepEqual from 'fast-deep-equal';
-import { themes, ThemeVars } from '@storybook/theming';
+import { themes } from '@storybook/theming';
+import type { ThemeVars } from '@storybook/theming';
 
 import merge from '../lib/merge';
-import { State, ModuleFn } from '../index';
+import type { State, ModuleFn } from '../index';
 
 const { DOCS_MODE, document } = global;
 

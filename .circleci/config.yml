@@ -86,7 +86,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn cache
           keys:
-            - build-yarn-2-cache-v2--{{ checksum "yarn.lock" }}
+            - build-yarn-2-cache-v3--{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install --immutable
@@ -95,7 +95,7 @@ jobs:
           command: yarn bootstrap --core
       - save_cache:
           name: Save Yarn cache
-          key: build-yarn-2-cache-v2--{{ checksum "yarn.lock" }}
+          key: build-yarn-2-cache-v3--{{ checksum "yarn.lock" }}
           paths:
             - ~/.yarn/berry/cache
       - persist_to_workspace:
@@ -136,7 +136,7 @@ jobs:
     executor:
       class: medium
       name: sb_node_14_browsers
-    parallelism: 4
+    parallelism: 17
     steps:
       - git-shallow-clone/checkout_advanced:
           clone_options: '--depth 1 --verbose'

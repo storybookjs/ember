@@ -2,7 +2,7 @@ import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 import global from 'global';
 
-import {
+import type {
   Parameters,
   Args,
   LegacyStoryFn,
@@ -14,7 +14,7 @@ import {
   includeConditionalArg,
 } from '@storybook/csf';
 
-import {
+import type {
   NormalizedComponentAnnotations,
   Story,
   NormalizedStoryAnnotations,

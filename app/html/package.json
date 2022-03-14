@@ -1,6 +1,6 @@
 {
   "name": "@storybook/html",
-  "version": "6.5.0-alpha.42",
+  "version": "6.5.0-alpha.48",
   "description": "Storybook for HTML: View HTML snippets in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,13 +45,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.42",
-    "@storybook/client-api": "6.5.0-alpha.42",
-    "@storybook/core": "6.5.0-alpha.42",
-    "@storybook/core-common": "6.5.0-alpha.42",
+    "@storybook/addons": "6.5.0-alpha.48",
+    "@storybook/core": "6.5.0-alpha.48",
+    "@storybook/core-common": "6.5.0-alpha.48",
     "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/preview-web": "6.5.0-alpha.42",
-    "@storybook/store": "6.5.0-alpha.42",
+    "@storybook/docs-tools": "6.5.0-alpha.48",
+    "@storybook/preview-web": "6.5.0-alpha.48",
+    "@storybook/store": "6.5.0-alpha.48",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
@@ -61,7 +61,8 @@
     "react-dom": "16.14.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*"
@@ -72,6 +73,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "1477954e18494e721ae8d3c99bc710381eab1351",
+  "gitHead": "5f3afb8cf4389c16be11a6e5099e902d16a82762",
   "sbmodern": "dist/modern/client/index.js"
 }

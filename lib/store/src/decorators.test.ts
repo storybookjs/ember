@@ -1,4 +1,4 @@
-import { AnyFramework, StoryContext } from '@storybook/csf';
+import type { AnyFramework, StoryContext } from '@storybook/csf';
 
 import { defaultDecorateStory } from './decorators';
 

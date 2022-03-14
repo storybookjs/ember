@@ -1,5 +1,5 @@
-import { JSXElementConstructor } from 'react';
-import { Args } from '@storybook/csf';
+import type { JSXElementConstructor } from 'react';
+import type { Args } from '@storybook/csf';
 
 import type { StoryObj } from './types-6-0';
 import type { ComponentStoryObj } from './types-6-3';
