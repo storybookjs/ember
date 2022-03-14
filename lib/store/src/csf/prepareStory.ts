@@ -11,8 +11,8 @@ import type {
   StoryContext,
   AnyFramework,
   StrictArgTypes,
-  includeConditionalArg,
 } from '@storybook/csf';
+import { includeConditionalArg } from '@storybook/csf';
 
 import type {
   NormalizedComponentAnnotations,
