@@ -1,16 +1,16 @@
-const getFrameworkPresets = (framework) => {
-  try {
-    return [require.resolve(`./dist/cjs/frameworks/${framework}/preset`)];
-  } catch (err) {
-    // there is no custom config for the user's framework, do nothing
-    return [];
-  }
-};
+const { findDistEsm } = require('@storybook/core-common');
+const { webpack } = require('./dist/cjs/frameworks/common/preset');
 
-module.exports = (storybookOptions, presetOptions) => {
-  return [
-    { name: require.resolve('./common-preset'), options: presetOptions },
-    { name: require.resolve('./dist/cjs/frameworks/common/preset'), options: presetOptions },
-    ...getFrameworkPresets(storybookOptions.framework),
-  ];
+function managerEntries(entry = [], options) {
+  return [...entry, findDistEsm(__dirname, 'register')];
+}
+
+function config(entry = [], options = {}) {
+  return [findDistEsm(__dirname, 'frameworks/common/config'), ...entry];
+}
+
+module.exports = {
+  webpack,
+  managerEntries,
+  config,
 };

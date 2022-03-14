@@ -70,6 +70,9 @@
     "@storybook/angular": {
       "implicitDependencies": []
     },
+    "@storybook/docs-tools": {
+      "implicitDependencies": []
+    },
     "@storybook/ember": {
       "implicitDependencies": []
     },

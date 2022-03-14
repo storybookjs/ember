@@ -46,10 +46,10 @@
   },
   "dependencies": {
     "@storybook/addons": "6.5.0-alpha.47",
-    "@storybook/client-api": "6.5.0-alpha.47",
     "@storybook/core": "6.5.0-alpha.47",
     "@storybook/core-common": "6.5.0-alpha.47",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/docs-tools": "6.5.0-alpha.47",
     "@storybook/preview-web": "6.5.0-alpha.47",
     "@storybook/store": "6.5.0-alpha.47",
     "@types/node": "^14.14.20 || ^16.0.0",
@@ -61,7 +61,8 @@
     "react-dom": "16.14.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*"
