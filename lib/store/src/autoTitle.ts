@@ -72,3 +72,27 @@ export const autoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpe
   }
   return undefined;
 };
+
+export const customTitleFromSpecifier = (title: string, fileName: string, entry: NormalizedStoriesSpecifier) => {
+  const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
+  // On Windows, backslashes are used in paths, which can cause problems here
+  // slash makes sure we always handle paths with unix-style forward slash
+  const normalizedFileName = slash(fileName);
+
+  if (importPathMatcher.exec(normalizedFileName)) {
+    return slash(pathJoin([titlePrefix, title]));
+  }
+
+  return undefined;
+};
+
+export const customTitle = (title: string, fileName: string, storiesEntries: NormalizedStoriesSpecifier[]) => {
+  if (!title) return undefined;
+
+  for (let i = 0; i < storiesEntries.length; i += 1) {
+    const customTitle = customTitleFromSpecifier(title, fileName, storiesEntries[i]);
+    if (customTitle) return customTitle;
+  }
+
+  return title;
+};
