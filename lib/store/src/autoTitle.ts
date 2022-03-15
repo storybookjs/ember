@@ -74,7 +74,7 @@ export const autoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpe
 };
 
 export const customTitleFromSpecifier = (title: string, fileName: string, entry: NormalizedStoriesSpecifier) => {
-  const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
+  const { importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
   const normalizedFileName = slash(fileName);
