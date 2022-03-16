@@ -80,6 +80,9 @@ export const customTitleFromSpecifier = (title: string, fileName: string, entry:
   const normalizedFileName = slash(fileName);
 
   if (importPathMatcher.exec(normalizedFileName)) {
+    if (!titlePrefix) {
+      return title;
+    }
     return slash(pathJoin([titlePrefix, title]));
   }
 
