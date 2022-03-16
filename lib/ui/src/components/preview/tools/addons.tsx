@@ -11,8 +11,8 @@ const menuMapper = ({ api, state }: Combo) => ({
 });
 
 export const addonsTool: Addon = {
-  title: 'menu',
-  id: 'menu',
+  title: 'addons',
+  id: 'addons',
   match: ({ viewMode }) => viewMode === 'story',
   render: () => (
     <Consumer filter={menuMapper}>
