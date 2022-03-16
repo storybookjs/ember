@@ -105,23 +105,21 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
       () => (DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories)(storiesHash),
       [DOCS_MODE, storiesHash]
     );
+
     const adaptedRefs = useMemo(() => {
-      if (DOCS_MODE) {
-        return Object.keys(refs).reduce((acc: Refs, cur) => {
-          const ref = refs[cur];
-          if (ref.stories) {
-            acc[cur] = {
-              ...ref,
-              stories: collapseDocsOnlyStories(ref.stories),
-            };
-          } else {
-            acc[cur] = ref;
-          }
-          return acc;
-        }, {});
-      }
-      return refs;
+      return Object.entries(refs).reduce((acc: Refs, [id, ref]: [string, ComposedRef]) => {
+        if (ref.stories) {
+          acc[id] = {
+            ...ref,
+            stories: collapseFn(ref.stories),
+          };
+        } else {
+          acc[id] = ref;
+        }
+        return acc;
+      }, {});
     }, [DOCS_MODE, refs]);
+
     const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
     const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
     const lastViewedProps = useLastViewed(selected);
