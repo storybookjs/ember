@@ -88,8 +88,8 @@ export interface SidebarProps {
   enableShortcuts?: boolean;
 }
 
-export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
-  ({
+export const Sidebar: FunctionComponent<SidebarProps> = React.memo((props) => {
+  const {
     storyId = null,
     refId = DEFAULT_REF_ID,
     stories: storiesHash,
@@ -99,78 +99,78 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
     menuHighlighted = false,
     enableShortcuts = true,
     refs = {},
-  }) => {
-    const collapseFn = DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories;
-    const selected: Selection = useMemo(() => storyId && { storyId, refId }, [storyId, refId]);
-    const stories = useMemo(() => collapseFn(storiesHash), [DOCS_MODE, storiesHash]);
+  } = props;
 
-    const adaptedRefs = useMemo(() => {
-      return Object.entries(refs).reduce((acc: Refs, [id, ref]: [string, ComposedRef]) => {
-        if (ref.stories) {
-          acc[id] = {
-            ...ref,
-            stories: collapseFn(ref.stories),
-          };
-        } else {
-          acc[id] = ref;
-        }
-        return acc;
-      }, {});
-    }, [DOCS_MODE, refs]);
+  const collapseFn = DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories;
+  const selected: Selection = useMemo(() => storyId && { storyId, refId }, [storyId, refId]);
+  const stories = useMemo(() => collapseFn(storiesHash), [DOCS_MODE, storiesHash]);
 
-    const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
-    const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
-    const lastViewedProps = useLastViewed(selected);
+  const adaptedRefs = useMemo(() => {
+    return Object.entries(refs).reduce((acc: Refs, [id, ref]: [string, ComposedRef]) => {
+      if (ref.stories) {
+        acc[id] = {
+          ...ref,
+          stories: collapseFn(ref.stories),
+        };
+      } else {
+        acc[id] = ref;
+      }
+      return acc;
+    }, {});
+  }, [DOCS_MODE, refs]);
 
-    return (
-      <Container className="container sidebar-container">
-        <CustomScrollArea vertical>
-          <StyledSpaced row={1.6}>
-            <Heading
-              className="sidebar-header"
-              menuHighlighted={menuHighlighted}
-              menu={menu}
-              skipLinkHref="#storybook-preview-wrapper"
-            />
+  const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
+  const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
+  const lastViewedProps = useLastViewed(selected);
 
-            <Search
-              dataset={dataset}
-              isLoading={isLoading}
-              enableShortcuts={enableShortcuts}
-              {...lastViewedProps}
-            >
-              {({
-                query,
-                results,
-                isBrowsing,
-                closeMenu,
-                getMenuProps,
-                getItemProps,
-                highlightedIndex,
-              }) => (
-                <Swap condition={isBrowsing}>
-                  <Explorer
-                    dataset={dataset}
-                    selected={selected}
-                    isLoading={isLoading}
-                    isBrowsing={isBrowsing}
-                  />
-                  <SearchResults
-                    query={query}
-                    results={results}
-                    closeMenu={closeMenu}
-                    getMenuProps={getMenuProps}
-                    getItemProps={getItemProps}
-                    highlightedIndex={highlightedIndex}
-                    enableShortcuts={enableShortcuts}
-                    isLoading={isLoading}
-                  />
-                </Swap>
-              )}
-            </Search>
-          </StyledSpaced>
-        </CustomScrollArea>
-      </Container>
-    );
-  }
-);
+  return (
+    <Container className="container sidebar-container">
+      <CustomScrollArea vertical>
+        <StyledSpaced row={1.6}>
+          <Heading
+            className="sidebar-header"
+            menuHighlighted={menuHighlighted}
+            menu={menu}
+            skipLinkHref="#storybook-preview-wrapper"
+          />
+
+          <Search
+            dataset={dataset}
+            isLoading={isLoading}
+            enableShortcuts={enableShortcuts}
+            {...lastViewedProps}
+          >
+            {({
+              query,
+              results,
+              isBrowsing,
+              closeMenu,
+              getMenuProps,
+              getItemProps,
+              highlightedIndex,
+            }) => (
+              <Swap condition={isBrowsing}>
+                <Explorer
+                  dataset={dataset}
+                  selected={selected}
+                  isLoading={isLoading}
+                  isBrowsing={isBrowsing}
+                />
+                <SearchResults
+                  query={query}
+                  results={results}
+                  closeMenu={closeMenu}
+                  getMenuProps={getMenuProps}
+                  getItemProps={getItemProps}
+                  highlightedIndex={highlightedIndex}
+                  enableShortcuts={enableShortcuts}
+                  isLoading={isLoading}
+                />
+              </Swap>
+            )}
+          </Search>
+        </StyledSpaced>
+      </CustomScrollArea>
+    </Container>
+  );
+});
