@@ -5,8 +5,8 @@ import { ThemeProvider, ensure, themes } from '@storybook/theming';
 import type { Story, StoriesHash, Refs } from '@storybook/api';
 import type { Theme } from '@storybook/theming';
 import type { RenderResult } from '@testing-library/react';
-import type { SidebarProps } from '../Sidebar';
 import { Sidebar } from '../Sidebar';
+import type { SidebarProps } from '../Sidebar';
 
 global.DOCS_MODE = false;
 
