@@ -84,6 +84,12 @@ Additionally, you can extend your Storybook configuration file (i.e., [`.storybo
 
 <!-- prettier-ignore-end -->
 
+<div class="aside">
+
+💡 `STORYBOOK` prefixed environment variables provided via a `.env` file or script will be **filtered out** using this approach. It's is a known limitation that will be solved with a future release.
+
+</div>
+
 When Storybook loads, it will enable you to access them in your stories similar as you would do if you were working with an `env` file:
 
 <!-- prettier-ignore-start -->
