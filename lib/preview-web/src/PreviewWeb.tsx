@@ -518,7 +518,10 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     if (selection.viewMode === 'docs' || parameters.docsOnly) {
       this.currentRender = storyRender.toDocsRender();
-      this.currentRender.renderToElement(this.view.prepareForDocs(), this.renderStoryToElement);
+      this.currentRender.renderToElement(
+        this.view.prepareForDocs(),
+        this.renderStoryToElement.bind(this)
+      );
     } else {
       this.storyRenders.push(storyRender);
       this.currentRender.renderToElement(this.view.prepareForStory(storyRender.story));
