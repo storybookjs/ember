@@ -88,8 +88,8 @@ export interface SidebarProps {
   enableShortcuts?: boolean;
 }
 
-export const Sidebar: FunctionComponent<SidebarProps> = React.memo((props) => {
-  const {
+export const Sidebar: FunctionComponent<SidebarProps> = React.memo(
+  ({
     storyId = null,
     refId = DEFAULT_REF_ID,
     stories: storiesHash,
@@ -99,78 +99,78 @@ export const Sidebar: FunctionComponent<SidebarProps> = React.memo((props) => {
     menuHighlighted = false,
     enableShortcuts = true,
     refs = {},
-  } = props;
+  }) => {
+    const collapseFn = DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories;
+    const selected: Selection = useMemo(() => storyId && { storyId, refId }, [storyId, refId]);
+    const stories = useMemo(() => collapseFn(storiesHash), [DOCS_MODE, storiesHash]);
 
-  const collapseFn = DOCS_MODE ? collapseAllStories : collapseDocsOnlyStories;
-  const selected: Selection = useMemo(() => storyId && { storyId, refId }, [storyId, refId]);
-  const stories = useMemo(() => collapseFn(storiesHash), [DOCS_MODE, storiesHash]);
+    const adaptedRefs = useMemo(() => {
+      return Object.entries(refs).reduce((acc: Refs, [id, ref]: [string, ComposedRef]) => {
+        if (ref.stories) {
+          acc[id] = {
+            ...ref,
+            stories: collapseFn(ref.stories),
+          };
+        } else {
+          acc[id] = ref;
+        }
+        return acc;
+      }, {});
+    }, [DOCS_MODE, refs]);
 
-  const adaptedRefs = useMemo(() => {
-    return Object.entries(refs).reduce((acc: Refs, [id, ref]: [string, ComposedRef]) => {
-      if (ref.stories) {
-        acc[id] = {
-          ...ref,
-          stories: collapseFn(ref.stories),
-        };
-      } else {
-        acc[id] = ref;
-      }
-      return acc;
-    }, {});
-  }, [DOCS_MODE, refs]);
+    const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
+    const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
+    const lastViewedProps = useLastViewed(selected);
 
-  const dataset = useCombination(stories, storiesConfigured, storiesFailed, adaptedRefs);
-  const isLoading = !dataset.hash[DEFAULT_REF_ID].ready;
-  const lastViewedProps = useLastViewed(selected);
+    return (
+      <Container className="container sidebar-container">
+        <CustomScrollArea vertical>
+          <StyledSpaced row={1.6}>
+            <Heading
+              className="sidebar-header"
+              menuHighlighted={menuHighlighted}
+              menu={menu}
+              skipLinkHref="#storybook-preview-wrapper"
+            />
 
-  return (
-    <Container className="container sidebar-container">
-      <CustomScrollArea vertical>
-        <StyledSpaced row={1.6}>
-          <Heading
-            className="sidebar-header"
-            menuHighlighted={menuHighlighted}
-            menu={menu}
-            skipLinkHref="#storybook-preview-wrapper"
-          />
-
-          <Search
-            dataset={dataset}
-            isLoading={isLoading}
-            enableShortcuts={enableShortcuts}
-            {...lastViewedProps}
-          >
-            {({
-              query,
-              results,
-              isBrowsing,
-              closeMenu,
-              getMenuProps,
-              getItemProps,
-              highlightedIndex,
-            }) => (
-              <Swap condition={isBrowsing}>
-                <Explorer
-                  dataset={dataset}
-                  selected={selected}
-                  isLoading={isLoading}
-                  isBrowsing={isBrowsing}
-                />
-                <SearchResults
-                  query={query}
-                  results={results}
-                  closeMenu={closeMenu}
-                  getMenuProps={getMenuProps}
-                  getItemProps={getItemProps}
-                  highlightedIndex={highlightedIndex}
-                  enableShortcuts={enableShortcuts}
-                  isLoading={isLoading}
-                />
-              </Swap>
-            )}
-          </Search>
-        </StyledSpaced>
-      </CustomScrollArea>
-    </Container>
-  );
-});
+            <Search
+              dataset={dataset}
+              isLoading={isLoading}
+              enableShortcuts={enableShortcuts}
+              {...lastViewedProps}
+            >
+              {({
+                query,
+                results,
+                isBrowsing,
+                closeMenu,
+                getMenuProps,
+                getItemProps,
+                highlightedIndex,
+              }) => (
+                <Swap condition={isBrowsing}>
+                  <Explorer
+                    dataset={dataset}
+                    selected={selected}
+                    isLoading={isLoading}
+                    isBrowsing={isBrowsing}
+                  />
+                  <SearchResults
+                    query={query}
+                    results={results}
+                    closeMenu={closeMenu}
+                    getMenuProps={getMenuProps}
+                    getItemProps={getItemProps}
+                    highlightedIndex={highlightedIndex}
+                    enableShortcuts={enableShortcuts}
+                    isLoading={isLoading}
+                  />
+                </Swap>
+              )}
+            </Search>
+          </StyledSpaced>
+        </CustomScrollArea>
+      </Container>
+    );
+  }
+);
