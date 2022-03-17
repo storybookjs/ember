@@ -54,27 +54,30 @@ const generateStories = ({ kind, refId }: { kind: string; refId?: string }): Sto
     },
   ];
 
-  return storyBase.reduce((accumulator: StoriesHash, current: Partial<Story>, index: number) => {
-    const { id, name } = current;
-    const isRoot: boolean = index === 0;
+  return storyBase.reduce(
+    (accumulator: StoriesHash, current: Partial<Story>, index: number): StoriesHash => {
+      const { id, name } = current;
+      const isRoot: boolean = index === 0;
 
-    const story: Story = {
-      ...current,
-      depth: index,
-      isRoot,
-      isLeaf: name === PAGE_NAME,
-      refId,
-    };
+      const story: Story = {
+        ...current,
+        depth: index,
+        isRoot,
+        isLeaf: name === PAGE_NAME,
+        refId,
+      };
 
-    if (!isRoot) {
-      story.parameters = {};
-      story.parameters.docsOnly = true;
-    }
+      if (!isRoot) {
+        story.parameters = {};
+        story.parameters.docsOnly = true;
+      }
 
-    accumulator[id] = story;
+      accumulator[id] = story;
 
-    return accumulator;
-  }, {});
+      return accumulator;
+    },
+    {}
+  );
 };
 
 describe('Sidebar', () => {
