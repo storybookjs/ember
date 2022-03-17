@@ -23,7 +23,7 @@ export const collapseAllStories = (stories: StoriesHash) => {
 
     const nonLeafChildren: string[] = [];
     const leafChildren: string[] = [];
-    children.forEach((child: Story) =>
+    children.forEach((child: string) =>
       (stories[child].isLeaf ? leafChildren : nonLeafChildren).push(child)
     );
 
