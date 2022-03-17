@@ -1,14 +1,10 @@
-import React, { FC, useContext } from 'react';
-import {
-  Source as PureSource,
-  SourceError,
-  SourceProps as PureSourceProps,
-} from '@storybook/components';
-import { StoryId } from '@storybook/api';
-import { Story } from '@storybook/store';
+import React, { ComponentProps, FC, useContext } from 'react';
+import { Source as PureSource, SourceError } from '@storybook/components';
+import type { StoryId } from '@storybook/api';
+import type { Story } from '@storybook/store';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
-import { SourceContext, SourceContextProps } from './SourceContainer';
+import { SourceContext, SourceContextProps, SourceItem } from './SourceContainer';
 import { CURRENT_SELECTION } from './types';
 import { SourceType } from '../shared';
 
@@ -24,6 +20,7 @@ export enum SourceState {
 interface CommonProps {
   language?: string;
   dark?: boolean;
+  format?: PureSourceProps['format'];
   code?: string;
 }
 
@@ -50,11 +47,11 @@ const getSourceState = (stories: Story[]) => {
   return states[0];
 };
 
-const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): string => {
+const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): SourceItem => {
   const { sources } = sourceContext;
   // source rendering is async so source is unavailable at the start of the render cycle,
   // so we fail gracefully here without warning
-  return sources?.[storyId] || '';
+  return sources?.[storyId] || ['', false];
 };
 
 const getSnippet = (snippet: string, story?: Story<any>): string => {
@@ -89,6 +86,7 @@ const getSnippet = (snippet: string, story?: Story<any>): string => {
 };
 
 type SourceStateProps = { state: SourceState };
+type PureSourceProps = ComponentProps<typeof PureSource>;
 
 export const getSourceProps = (
   props: SourceProps,
@@ -103,6 +101,7 @@ export const getSourceProps = (
   const multiProps = props as MultiSourceProps;
 
   let source = codeProps.code; // prefer user-specified code
+  let { format } = codeProps; // prefer user-specified code
 
   const targetIds = multiProps.ids || [singleProps.id || currentId];
   const storyIds = targetIds.map((targetId) =>
@@ -115,9 +114,13 @@ export const getSourceProps = (
   }
 
   if (!source) {
+    format = storyIds.find((storyId, idx) => {
+      const [_, f] = getStorySource(storyId, sourceContext);
+      return f;
+    }) as PureSourceProps['format'];
     source = storyIds
       .map((storyId, idx) => {
-        const storySource = getStorySource(storyId, sourceContext);
+        const [storySource] = getStorySource(storyId, sourceContext);
         const storyObj = stories[idx] as Story;
         return getSnippet(storySource, storyObj);
       })
@@ -134,6 +137,7 @@ export const getSourceProps = (
     ? {
         code: source,
         state,
+        format,
         language: props.language || docsLanguage || 'jsx',
         dark: props.dark || false,
       }
@@ -145,7 +149,7 @@ export const getSourceProps = (
  * or the source for a story if `storyId` is provided, or
  * the source for the current story if nothing is provided.
  */
-export const Source: FC<SourceProps> = (props) => {
+export const Source: FC<PureSourceProps> = (props) => {
   const sourceContext = useContext(SourceContext);
   const docsContext = useContext(DocsContext);
   const sourceProps = getSourceProps(props, docsContext, sourceContext);

@@ -6728,7 +6728,6 @@ __metadata:
     core-js: ^3.8.2
     estraverse: ^5.2.0
     loader-utils: ^2.0.0
-    prettier: ">=2.2.1 <=2.3.0"
     prop-types: ^15.7.2
     react-syntax-highlighter: ^15.4.5
     regenerator-runtime: ^0.13.7
@@ -6879,7 +6878,6 @@ __metadata:
     p-limit: ^3.1.0
     postcss: ^7.0.36
     postcss-loader: ^4.2.0
-    prettier: ">=2.2.1 <=2.3.0"
     raw-loader: ^4.0.2
     react: ^16.14.0
     react-dom: ^16.14.0
@@ -7298,6 +7296,7 @@ __metadata:
     memoizerific: ^1.11.3
     overlayscrollbars: ^1.13.1
     polished: ^4.0.5
+    prettier: ">=2.2.1 <=2.3.0"
     prop-types: ^15.7.2
     qs: ^6.10.0
     react-colorful: ^5.1.2
@@ -8724,7 +8723,6 @@ __metadata:
     "@types/webpack-env": ^1.16.0
     core-js: ^3.8.2
     global: ^4.4.0
-    prettier: ">=2.2.1 <=2.3.0"
     react: 16.14.0
     react-dom: 16.14.0
     read-pkg-up: ^7.0.1

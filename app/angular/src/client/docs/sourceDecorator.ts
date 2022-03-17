@@ -16,26 +16,6 @@ export const skipSourceRender = (context: StoryContext) => {
   return sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
-let prettyUpInternal: (source: string) => string | undefined;
-
-const makePrettyUp = async () => {
-  if (prettyUpInternal) {
-    return prettyUpInternal;
-  }
-
-  const prettierHtml = await import('prettier/parser-html');
-  const prettier = await import('prettier/standalone');
-
-  prettyUpInternal = (source: string) => {
-    return prettier.format(source, {
-      parser: 'angular',
-      plugins: [prettierHtml],
-      htmlWhitespaceSensitivity: 'ignore',
-    });
-  };
-  return prettyUpInternal;
-};
-
 /**
  * Angular source decorator.
  * @param storyFn Fn
@@ -55,27 +35,24 @@ export const sourceDecorator = (
   const { component, argTypes } = context;
 
   let toEmit: string;
-  const prettyUpPromise = makePrettyUp();
 
   useEffect(() => {
-    prettyUpPromise.then((prettyUp) => {
-      if (toEmit) channel.emit(SNIPPET_RENDERED, context.id, prettyUp(toEmit));
-    });
-  });
-
-  prettyUpPromise.then((prettyUp) => {
-    if (component && !userDefinedTemplate) {
-      const source = computesTemplateSourceFromComponent(component, props, argTypes);
-
-      // We might have a story with a Directive or Service defined as the component
-      // In these cases there might exist a template, even if we aren't able to create source from component
-      if (source || template) {
-        toEmit = prettyUp(source || template);
-      }
-    } else if (template) {
-      toEmit = prettyUp(template);
+    if (toEmit) {
+      channel.emit(SNIPPET_RENDERED, context.id, toEmit);
     }
   });
+
+  if (component && !userDefinedTemplate) {
+    const source = computesTemplateSourceFromComponent(component, props, argTypes);
+
+    // We might have a story with a Directive or Service defined as the component
+    // In these cases there might exist a template, even if we aren't able to create source from component
+    if (source || template) {
+      toEmit = source || template;
+    }
+  } else if (template) {
+    toEmit = template;
+  }
 
   return story;
 };

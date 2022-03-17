@@ -61,6 +61,7 @@
     "memoizerific": "^1.11.3",
     "overlayscrollbars": "^1.13.1",
     "polished": "^4.0.5",
+    "prettier": ">=2.2.1 <=2.3.0",
     "prop-types": "^15.7.2",
     "qs": "^6.10.0",
     "react-colorful": "^5.1.2",
