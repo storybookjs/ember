@@ -10,7 +10,7 @@ Learn how and why to write stories in [the introduction](./introduction.md#using
 
 ## Args object
 
-The `args` object can be defined at the [story](#story-args), [component](#component-args) and [project level](#project-args). It is a JSON serializable object composed of string keys with matching valid value types that can be passed into a component for your framework.
+The `args` object can be defined at the [story](#story-args), [component](#component-args) and [global level](#global-args). It is a JSON serializable object composed of string keys with matching valid value types that can be passed into a component for your framework.
 
 ## Story args
 
