@@ -29,7 +29,7 @@ const generateStories = ({ kind, refId }: { kind: string; refId?: string }): Sto
   const storyId = `${rootId}-${hypenatedstoryName}`;
   const pageId = `${rootId}-${hypenatedstoryName}--page`;
 
-  const storyBase: Partial<StoriesHash>[] = [
+  const storyBase: Partial<Story>[] = [
     {
       id: rootId,
       name: root,
