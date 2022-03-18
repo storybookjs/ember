@@ -1,0 +1,26 @@
+```js
+// YourComponent.stories.js|jsx
+
+/** @jsx h */
+import { h } from 'preact';
+
+import { YourComponent } from './YourComponent';
+
+//👇 This default export determines where your story goes in the story list
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/preact/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  title: 'YourComponent',
+  component: YourComponent,
+}
+
+//👇 We create a “template” of how args map to rendering
+const Template = (args) => <YourComponent {...args} />;
+
+export const FirstStory = Template.bind({});
+FirstStory.args = {
+  //👇 The args you need here will depend on your component
+};
+```

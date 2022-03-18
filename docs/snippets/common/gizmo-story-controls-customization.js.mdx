@@ -5,14 +5,58 @@ import { Gizmo } from './Gizmo';
 
 export default {
   /* 👇 The title prop is optional.
-  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-  * to learn how to generate automatic titles
-  */
+   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
   title: 'Gizmo',
   component: Gizmo,
   argTypes: {
+    canRotate: {
+      control: 'boolean',
+    },
     width: {
-      control: { type: 'range', min: 400, max: 1200, step: 50 },
+      control: { type: 'number', min: 400, max: 1200, step: 50 },
+    },
+    height: {
+      control: { type: 'range', min: 200, max: 1500, step: 50 },
+    },
+    rawData: {
+      control: 'object',
+    },
+    coordinates: {
+      control: 'object',
+    },
+    texture: {
+      control: {
+        type: 'file',
+        accept: '.png',
+      },
+    },
+    position: {
+      control: 'radio',
+      options: ['left', 'right', 'center'],
+    },
+    rotationAxis: {
+      control: {
+        type: 'check',
+        options: ['x', 'y', 'z'],
+      },
+    },
+    scaling: {
+      control: 'select',
+      options: [10, 50, 75, 100, 200],
+    },
+    label: {
+      control: 'text',
+    },
+    meshColors: {
+      control: {
+        type: 'color',
+        presetsColors: ['#ff0000', '#00ff00', '#0000ff'],
+      },
+    },
+    revisionDate: {
+      control: 'date',
     },
   },
 };

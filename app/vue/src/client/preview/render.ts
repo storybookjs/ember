@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import dedent from 'ts-dedent';
 import Vue from 'vue';
-import { RenderContext } from '@storybook/store';
-import { ArgsStoryFn } from '@storybook/csf';
-import { VueFramework } from './types-6-0';
+import type { RenderContext } from '@storybook/store';
+import type { ArgsStoryFn } from '@storybook/csf';
+import type { VueFramework } from './types-6-0';
 
 export const COMPONENT = 'STORYBOOK_COMPONENT';
 export const VALUES = 'STORYBOOK_VALUES';

@@ -40,4 +40,7 @@ module.exports = {
     },
   },
   staticDirs: ['../src/assets'],
+  features: {
+    buildStoriesJson: true,
+  },
 };

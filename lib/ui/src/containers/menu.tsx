@@ -1,7 +1,7 @@
 import React, { useMemo, FunctionComponent } from 'react';
 
 import { Badge } from '@storybook/components';
-import { API } from '@storybook/api';
+import type { API } from '@storybook/api';
 import { styled, useTheme } from '@storybook/theming';
 
 import { shortcutToHumanString } from '@storybook/api/shortcut';

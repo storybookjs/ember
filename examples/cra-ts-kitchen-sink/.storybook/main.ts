@@ -1,4 +1,4 @@
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 
 const path = require('path');
 
@@ -30,4 +30,7 @@ module.exports = {
     builder: 'webpack4',
   },
   staticDirs: ['../public'],
+  features: {
+    buildStoriesJson: true,
+  },
 };

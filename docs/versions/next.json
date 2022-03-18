@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.46","info":{"plain":"### Bug Fixes\n\n- Addon-interactions: Use 'global' package instead of `global` ([#17614](https://github.com/storybookjs/storybook/pull/17614))"}}
+{"version":"6.5.0-alpha.49","info":{"plain":"### Bug Fixes\n\n- Addon-docs/Svelte: Fix `HOC.svelte` reference ([#17731](https://github.com/storybookjs/storybook/pull/17731))\n- UI: Fix composition support in safari ([#17679](https://github.com/storybookjs/storybook/pull/17679))"}}

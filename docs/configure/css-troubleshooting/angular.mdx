@@ -40,3 +40,27 @@ Additionally, if you need Storybook specific styles that are separate from your 
   }
 }
 ```
+
+### Nx with Angular 13
+If you're working with Storybook and [NX libraries](https://nx.dev/structure/library-types), you can extend your project's configuration (i.e., `project.json`) and provide the application's styles. For example: 
+
+```json
+ "build-storybook": {
+    "executor": "@nrwl/storybook:build",
+    "outputs": ["{options.outputPath}"],
+    "options": {
+      "uiFramework": "@storybook/angular",
+      "outputPath": "dist/storybook/example-lib",
+      "config": {
+        "configFolder": "libs/example-lib/storybook/.storybook"
+      },
+      "projectBuildConfig": "example-lib:build-storybook",
+      "styles": ["apps/example-app/src/styles.scss"]
+    },
+    "configurations": {
+      "ci": {
+        "quiet": true
+      }
+    }
+  }  
+```

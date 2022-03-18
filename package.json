@@ -1,6 +1,6 @@
 {
   "name": "@storybook/root",
-  "version": "6.5.0-alpha.46",
+  "version": "6.5.0-alpha.49",
   "private": true,
   "description": "Storybook is an open source tool for developing UI components in isolation for React, Vue and Angular. It makes building stunning UIs organized and efficient.",
   "keywords": [
@@ -62,9 +62,10 @@
     "generate-repros": "zx scripts/repros-generator/index.mjs",
     "github-release": "github-release-from-changelog",
     "linear-export": "ts-node --project=./scripts/tsconfig.json ./scripts/linear-export.ts",
-    "lint": "yarn lint:js . && yarn lint:md .",
-    "lint:js": "cross-env NODE_ENV=production eslint  --cache --cache-location=.cache/eslint --ext .js,.jsx,.json,.html,.ts,.tsx,.mjs --report-unused-disable-directives",
-    "lint:md": "remark -q",
+    "lint": "yarn lint:js && yarn lint:md",
+    "lint:js": "yarn lint:js:cmd .",
+    "lint:js:cmd": "cross-env NODE_ENV=production eslint --cache --cache-location=.cache/eslint --ext .js,.jsx,.json,.html,.ts,.tsx,.mjs --report-unused-disable-directives",
+    "lint:md": "remark -q .",
     "lint:package": "sort-package-json",
     "local-registry": "ts-node --project=./scripts/tsconfig.json ./scripts/run-registry.ts ",
     "publish:debug": "npm run publish:latest -- --npm-tag=debug --no-push",
@@ -87,7 +88,7 @@
   },
   "lint-staged": {
     "*.{html,js,json,jsx,mjs,ts,tsx}": [
-      "yarn lint:js --fix"
+      "yarn lint:js:cmd --fix"
     ],
     "package.json": [
       "yarn lint:package"
@@ -164,6 +165,7 @@
     "@storybook/core": "workspace:*",
     "@storybook/core-events": "workspace:*",
     "@storybook/csf-tools": "workspace:*",
+    "@storybook/docs-tools": "workspace:*",
     "@storybook/ember": "workspace:*",
     "@storybook/eslint-config-storybook": "^2.4.0",
     "@storybook/html": "workspace:*",
@@ -280,7 +282,7 @@
     "rollup-plugin-jsx": "^1.0.3",
     "rollup-plugin-terser": "^7.0.2",
     "serve-static": "^1.14.1",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "shx": "^0.3.2",
     "sort-package-json": "^1.48.1",
     "teamcity-service-messages": "^0.1.11",

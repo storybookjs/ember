@@ -1,5 +1,3 @@
-import { enhanceArgTypes } from './enhanceArgTypes';
-
 export const parameters = {
   docs: {
     inlineStories: false,
@@ -8,5 +6,3 @@ export const parameters = {
     iframeHeight: 100,
   },
 };
-
-export const argTypesEnhancers = [enhanceArgTypes];

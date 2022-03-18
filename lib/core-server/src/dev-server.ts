@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
 import compression from 'compression';
 
-import { Builder, logConfig, Options, StorybookConfig } from '@storybook/core-common';
+import type { Builder, Options, StorybookConfig } from '@storybook/core-common';
+import { logConfig } from '@storybook/core-common';
 
 import { getMiddleware } from './utils/middleware';
 import { getServerAddresses } from './utils/server-address';

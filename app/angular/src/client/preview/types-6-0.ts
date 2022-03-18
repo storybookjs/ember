@@ -1,4 +1,4 @@
-import {
+import type {
   Args,
   Parameters as DefaultParameters,
   StoryContext as DefaultStoryContext,
@@ -7,7 +7,7 @@ import {
   AnnotatedStoryFn,
 } from '@storybook/csf';
 
-import { StoryFnAngularReturnType } from './types';
+import type { StoryFnAngularReturnType } from './types';
 
 export type { Args, ArgTypes } from '@storybook/csf';
 

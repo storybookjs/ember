@@ -7,17 +7,17 @@ import {
 } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
 import { from, Observable, of, throwError } from 'rxjs';
-import { CLIOptions } from '@storybook/core-common';
+import type { CLIOptions } from '@storybook/core-common';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 import { sync as findUpSync } from 'find-up';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import {
   BrowserBuilderOptions,
   ExtraEntryPoint,
   StylePreprocessorOptions,
 } from '@angular-devkit/build-angular';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import buildStandalone, { StandaloneOptions } from '@storybook/angular/standalone';
 import { runCompodoc } from '../utils/run-compodoc';
 import { buildStandaloneErrorHandler } from '../utils/build-standalone-errors-handler';
 

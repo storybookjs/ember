@@ -30,4 +30,7 @@ module.exports = {
     builder: 'webpack4',
   },
   staticDirs: ['../ember-output'],
+  features: {
+    buildStoriesJson: true,
+  },
 };

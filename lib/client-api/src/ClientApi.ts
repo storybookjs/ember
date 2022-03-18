@@ -2,32 +2,25 @@ import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import global from 'global';
 import { logger } from '@storybook/client-logger';
-import {
+import { toId, sanitize } from '@storybook/csf';
+import type {
   Args,
   ArgTypes,
   AnyFramework,
-  toId,
   DecoratorFunction,
   Parameters,
   ArgTypesEnhancer,
   ArgsEnhancer,
   LoaderFunction,
   StoryFn,
-  sanitize,
   ComponentTitle,
   Globals,
   GlobalTypes,
   LegacyStoryFn,
 } from '@storybook/csf';
-import {
-  NormalizedComponentAnnotations,
-  Path,
-  ModuleImportFn,
-  combineParameters,
-  StoryStore,
-  normalizeInputTypes,
-} from '@storybook/store';
-import { ClientApiAddons, StoryApi } from '@storybook/addons';
+import { combineParameters, StoryStore, normalizeInputTypes } from '@storybook/store';
+import type { NormalizedComponentAnnotations, Path, ModuleImportFn } from '@storybook/store';
+import type { ClientApiAddons, StoryApi } from '@storybook/addons';
 
 import { StoryStoreFacade } from './StoryStoreFacade';
 

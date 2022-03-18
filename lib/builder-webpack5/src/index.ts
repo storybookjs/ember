@@ -2,12 +2,8 @@ import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import { logger } from '@storybook/node-logger';
-import {
-  Builder,
-  useProgressReporting,
-  checkWebpackVersion,
-  Options,
-} from '@storybook/core-common';
+import { useProgressReporting, checkWebpackVersion } from '@storybook/core-common';
+import type { Builder, Options } from '@storybook/core-common';
 
 let compilation: ReturnType<typeof webpackDevMiddleware>;
 let reject: (reason?: any) => void;

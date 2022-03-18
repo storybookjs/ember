@@ -1,10 +1,10 @@
-import { StoryContext, StoryGetter } from './types';
+import { StoryContext } from './types';
 import { makeDecorator } from './make-decorator';
 
 // Copy & paste from internal api: client-api/src/client_api
-type DecoratorFn = (fn: StoryGetter, context: StoryContext) => any;
+type DecoratorFn = (fn: any, context: StoryContext) => any;
 
-const defaultDecorateStory = (getStory: StoryGetter, decorators: DecoratorFn[]) =>
+const defaultDecorateStory = (getStory: any, decorators: DecoratorFn[]) =>
   decorators.reduce(
     (decorated, decorator) => (context: StoryContext) =>
       decorator(() => decorated(context), context),

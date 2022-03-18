@@ -1,9 +1,9 @@
 import Vue, { VueConstructor, ComponentOptions } from 'vue';
-import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
+import type { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 
-import { StoryFnVueReturnType } from './types';
-import { VueFramework } from './types-6-0';
+import type { StoryFnVueReturnType } from './types';
+import type { VueFramework } from './types-6-0';
 import { extractProps } from './util';
 import { VALUES } from './render';
 

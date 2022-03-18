@@ -1,6 +1,11 @@
-import { AnyComponent } from 'preact';
-import { Args, ComponentAnnotations, StoryAnnotations, AnnotatedStoryFn } from '@storybook/csf';
-import { StoryFnPreactReturnType } from './types';
+import type { AnyComponent } from 'preact';
+import type {
+  Args,
+  ComponentAnnotations,
+  StoryAnnotations,
+  AnnotatedStoryFn,
+} from '@storybook/csf';
+import type { StoryFnPreactReturnType } from './types';
 
 export type { Args, ArgTypes, Parameters, StoryContext } from '@storybook/csf';
 

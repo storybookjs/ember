@@ -1,17 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import {
-  toRequireContext,
-  StoriesEntry,
-  normalizeStoriesEntry,
-  NormalizedStoriesSpecifier,
-} from '@storybook/core-common';
+import type { NormalizedStoriesSpecifier, StoriesEntry } from '@storybook/core-common';
+import { toRequireContext, normalizeStoriesEntry } from '@storybook/core-common';
 import registerRequireContextHook from '@storybook/babel-plugin-require-context-hook/register';
 import global from 'global';
-import { AnyFramework, ArgsEnhancer, ArgTypesEnhancer, DecoratorFunction } from '@storybook/csf';
+import type {
+  AnyFramework,
+  ArgsEnhancer,
+  ArgTypesEnhancer,
+  DecoratorFunction,
+} from '@storybook/csf';
 
 import { ClientApi } from './Loader';
-import { StoryshotsOptions } from '../api/StoryshotsOptions';
+import type { StoryshotsOptions } from '../api/StoryshotsOptions';
 
 registerRequireContextHook();
 

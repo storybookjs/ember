@@ -9,4 +9,5 @@ export const addons: StorybookConfig['addons'] = [
   require.resolve('./framework-preset-angular'),
   require.resolve('./framework-preset-angular-cli'),
   require.resolve('./framework-preset-angular-ivy'),
+  require.resolve('./framework-preset-angular-docs'),
 ];

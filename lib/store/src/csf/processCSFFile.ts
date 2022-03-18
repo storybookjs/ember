@@ -1,4 +1,5 @@
-import { isExportStory, Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
+import type { Parameters, AnyFramework, ComponentTitle } from '@storybook/csf';
+import { isExportStory } from '@storybook/csf';
 import { logger } from '@storybook/client-logger';
 
 import { normalizeStory } from './normalizeStory';
