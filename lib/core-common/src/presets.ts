@@ -45,7 +45,7 @@ function resolvePresetFunction<T = any>(
  * Parse an addon into either a managerEntries or a preset. Throw on invalid input.
  *
  * Valid inputs:
- * - '@storybook/addon-actions/register'
+ * - '@storybook/addon-actions/manager'
  *   =>  { type: 'managerEntries', item }
  *
  * - '@storybook/addon-docs/preset'
@@ -64,7 +64,7 @@ export const resolveAddonName = (configDir: string, name: string) => {
     path = resolveFrom(configDir, name);
   } else if (name.startsWith('/')) {
     path = name;
-  } else if (name.match(/\/(preset|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
+  } else if (name.match(/\/(preset|manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
     path = name;
   }
 
@@ -72,8 +72,10 @@ export const resolveAddonName = (configDir: string, name: string) => {
   if (path) {
     return {
       name: path,
-      // Accept `register`, `register.js`, `require.resolve('foo/register'), `register-panel`
-      type: path.match(/register(-panel)?(\.(js|ts|tsx|jsx))?$/) ? 'managerEntries' : 'presets',
+      // Accept `manager`, `register`, `register.js`, `require.resolve('foo/manager'), `register-panel`
+      type: path.match(/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)
+        ? 'managerEntries'
+        : 'presets',
     };
   }
 
@@ -81,6 +83,14 @@ export const resolveAddonName = (configDir: string, name: string) => {
     return {
       name: resolveFrom(configDir, `${name}/preset`),
       type: 'presets',
+    };
+    // eslint-disable-next-line no-empty
+  } catch (err) {}
+
+  try {
+    return {
+      name: resolveFrom(configDir, `${name}/manager`),
+      type: 'managerEntries',
     };
     // eslint-disable-next-line no-empty
   } catch (err) {}
@@ -118,7 +128,7 @@ const map =
       return resolveAddonName(configDir, name);
     } catch (err) {
       logger.error(
-        `Addon value should end in /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
+        `Addon value should end in /manager or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
       );
     }
     return undefined;

@@ -1,2 +1,2 @@
 /* eslint-disable import/extensions */
-require('./dist/esm/register.js');
+require('./dist/esm/manager.js');

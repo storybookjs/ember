@@ -19,6 +19,7 @@ jest.mock('@storybook/node-logger', () => ({
 
 jest.mock('resolve-from', () => (l: any, name: string) => {
   const KNOWN_FILES = [
+    '@storybook/addon-actions/manager',
     '@storybook/addon-actions/register',
     './local/preset',
     './local/addons',
@@ -26,6 +27,7 @@ jest.mock('resolve-from', () => (l: any, name: string) => {
     '/absolute/addons',
     '@storybook/addon-docs/preset',
     '@storybook/addon-essentials',
+    '@storybook/addon-knobs/manager',
     '@storybook/addon-knobs/register',
     '@storybook/addon-notes/register-panel',
     '@storybook/preset-create-react-app',
@@ -388,6 +390,13 @@ describe('resolveAddonName', () => {
   it('should resolve managerEntries', () => {
     expect(resolveAddonName({}, '@storybook/addon-actions/register')).toEqual({
       name: '@storybook/addon-actions/register',
+      type: 'managerEntries',
+    });
+  });
+
+  it('should resolve managerEntries from new /manager path', () => {
+    expect(resolveAddonName({}, '@storybook/addon-actions/manager')).toEqual({
+      name: '@storybook/addon-actions/manager',
       type: 'managerEntries',
     });
   });

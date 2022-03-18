@@ -1,1 +1,1 @@
-require('./dist/esm/register');
+require('./dist/esm/manager');
