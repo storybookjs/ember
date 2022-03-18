@@ -1,5 +1,5 @@
-import { withMeasure } from '../withMeasure';
-import { PARAM_KEY } from '../constants';
+import { withMeasure } from './withMeasure';
+import { PARAM_KEY } from './constants';
 
 export const decorators = [withMeasure];
 
