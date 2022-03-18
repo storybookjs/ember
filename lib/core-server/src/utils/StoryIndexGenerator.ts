@@ -4,7 +4,7 @@ import glob from 'globby';
 import slash from 'slash';
 
 import type { Path, StoryIndex, V2CompatIndexEntry, StoryId } from '@storybook/store';
-import { customOrAutoTitleFromSpecifier, sortStoriesV7 } from '@storybook/store';
+import { userOrAutoTitleFromSpecifier, sortStoriesV7 } from '@storybook/store';
 import type { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { normalizeStoryPath } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
@@ -87,7 +87,7 @@ export class StoryIndexGenerator {
     try {
       const importPath = slash(normalizeStoryPath(relativePath));
       const makeTitle = (userTitle?: string) => {
-        return customOrAutoTitleFromSpecifier(importPath, specifier, userTitle);
+        return userOrAutoTitleFromSpecifier(importPath, specifier, userTitle);
       }
       const csf = (await readCsfOrMdx(absolutePath, { makeTitle })).parse();
       csf.stories.forEach(({ id, name }) => {

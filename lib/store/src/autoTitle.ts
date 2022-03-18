@@ -48,7 +48,7 @@ function pathJoin(paths: string[]): string {
   return paths.join('/').replace(slashes, '/');
 }
 
-export const customOrAutoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier, userTitle?: string) => {
+export const userOrAutoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier, userTitle?: string) => {
   const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
@@ -74,9 +74,9 @@ export const customOrAutoTitleFromSpecifier = (fileName: string, entry: Normaliz
   return undefined;
 };
 
-export const customOrAutoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpecifier[], userTitle?: string) => {
+export const userOrAutoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpecifier[], userTitle?: string) => {
   for (let i = 0; i < storiesEntries.length; i += 1) {
-    const title = customOrAutoTitleFromSpecifier(fileName, storiesEntries[i], userTitle);
+    const title = userOrAutoTitleFromSpecifier(fileName, storiesEntries[i], userTitle);
     if (title) return title;
   }
 
