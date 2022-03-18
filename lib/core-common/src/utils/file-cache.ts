@@ -31,7 +31,7 @@ export class FileSystemCache {
   }
 
   getSync(key: string, defaultValue?: any): any | typeof defaultValue {
-    this.internal.getSync(key, defaultValue);
+    return this.internal.getSync(key, defaultValue);
   }
 
   set(key: string, value: any): Promise<{ path: string }> {
