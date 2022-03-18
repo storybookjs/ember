@@ -1,2 +1,5 @@
-// TODO add deprecation warning
-module.exports = require('./preview');
+require('@storybook/client-logger').once.warn(
+  'register.js is deprecated see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-registerjs'
+);
+
+module.exports = require('./manager');
