@@ -31,6 +31,13 @@ const safeResolveFrom = (path: string, file: string) => {
     return false;
   }
 };
+const safeResolve = (file: string) => {
+  try {
+    return require.resolve(file);
+  } catch (e) {
+    return false;
+  }
+};
 
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
@@ -78,6 +85,18 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
   // when user provides full path, we don't need to do anything
   if (path) {
+    const managerEntry = safeResolve(`${path}/manager`) || safeResolve(`${path}/register`);
+    const previewAnnotation = safeResolve(`${path}/preview`);
+
+    if (managerEntry || previewAnnotation) {
+      return {
+        name: `${path}_virtual`,
+        managerEntries: [managerEntry],
+        previewAnnotations: [previewAnnotation],
+        type: 'virtual',
+      };
+    }
+
     // Accept `manager`, `manager.js`, `register`, `register.js`, `require.resolve('foo/manager'), `register-panel`
     if (path.match(/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
       return {
@@ -86,6 +105,15 @@ export const resolveAddonName = (configDir: string, name: string) => {
         type: 'virtual',
       };
     }
+
+    try {
+      return {
+        name: safeResolve(`${name}/preset`),
+        type: 'presets',
+      };
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+
     return {
       name: path,
       type: 'presets',

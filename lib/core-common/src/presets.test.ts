@@ -390,14 +390,16 @@ describe('resolveAddonName', () => {
   it('should resolve managerEntries', () => {
     expect(resolveAddonName({}, '@storybook/addon-actions/register')).toEqual({
       name: '@storybook/addon-actions/register',
-      type: 'managerEntries',
+      managerEntries: ['@storybook/addon-actions/register'],
+      type: 'virtual',
     });
   });
 
   it('should resolve managerEntries from new /manager path', () => {
     expect(resolveAddonName({}, '@storybook/addon-actions/manager')).toEqual({
       name: '@storybook/addon-actions/manager',
-      type: 'managerEntries',
+      managerEntries: ['@storybook/addon-actions/manager'],
+      type: 'virtual',
     });
   });
 
@@ -451,7 +453,7 @@ describe('loadPreset', () => {
     const loaded = loadPreset(
       {
         name: '',
-        type: 'managerEntries',
+        type: 'virtual',
         presets: ['@storybook/preset-typescript'],
         addons: [
           '@storybook/addon-docs',
@@ -477,14 +479,14 @@ describe('loadPreset', () => {
         preset: {},
       },
       {
-        name: '@storybook/addon-actions/register_additionalManagerEntries',
+        name: '@storybook/addon-actions/register',
         options: {},
         preset: {
           managerEntries: ['@storybook/addon-actions/register'],
         },
       },
       {
-        name: 'addon-foo/register.js_additionalManagerEntries',
+        name: 'addon-foo/register.js',
         options: {},
         preset: {
           managerEntries: ['addon-foo/register.js'],
@@ -497,14 +499,14 @@ describe('loadPreset', () => {
       //   preset: {},
       // },
       {
-        name: 'addon-baz/register.tsx_additionalManagerEntries',
+        name: 'addon-baz/register.tsx',
         options: {},
         preset: {
           managerEntries: ['addon-baz/register.tsx'],
         },
       },
       {
-        name: '@storybook/addon-notes/register-panel_additionalManagerEntries',
+        name: '@storybook/addon-notes/register-panel',
         options: {},
         preset: {
           managerEntries: ['@storybook/addon-notes/register-panel'],
@@ -522,7 +524,7 @@ describe('loadPreset', () => {
             '@storybook/addon-notes/register-panel',
           ],
           name: '',
-          type: 'managerEntries',
+          type: 'virtual',
         },
         options: {},
         preset: {},
