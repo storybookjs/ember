@@ -77,6 +77,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
 
   const configs = [
     ...(await presets.apply('config', [], options)),
+    ...(await presets.apply('previewAnnotations', [], options)),
     loadPreviewOrConfigFile(options),
   ].filter(Boolean);
   const entries = (await presets.apply('entries', [], options)) as string[];

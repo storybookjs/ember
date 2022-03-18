@@ -24,6 +24,14 @@ export function filterPresetsConfig(presetsConfig: PresetConfig[]): PresetConfig
   });
 }
 
+const safeResolveFrom = (path: string, file: string) => {
+  try {
+    return resolveFrom(path, file);
+  } catch (e) {
+    return false;
+  }
+};
+
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
   presetOptions: any,
@@ -70,12 +78,17 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
   // when user provides full path, we don't need to do anything
   if (path) {
+    // Accept `manager`, `manager.js`, `register`, `register.js`, `require.resolve('foo/manager'), `register-panel`
+    if (path.match(/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
+      return {
+        name: path,
+        managerEntries: [path],
+        type: 'virtual',
+      };
+    }
     return {
       name: path,
-      // Accept `manager`, `register`, `register.js`, `require.resolve('foo/manager'), `register-panel`
-      type: path.match(/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)
-        ? 'managerEntries'
-        : 'presets',
+      type: 'presets',
     };
   }
 
@@ -87,21 +100,17 @@ export const resolveAddonName = (configDir: string, name: string) => {
     // eslint-disable-next-line no-empty
   } catch (err) {}
 
-  try {
+  const managerEntry =
+    safeResolveFrom(configDir, `${name}/manager`) || safeResolveFrom(configDir, `${name}/register`);
+  const previewAnnotation = safeResolveFrom(configDir, `${name}/preview`);
+  if (managerEntry || previewAnnotation) {
     return {
-      name: resolveFrom(configDir, `${name}/manager`),
-      type: 'managerEntries',
+      name: `${name}_virtual`,
+      managerEntries: [managerEntry],
+      previewAnnotations: [previewAnnotation],
+      type: 'virtual',
     };
-    // eslint-disable-next-line no-empty
-  } catch (err) {}
-
-  try {
-    return {
-      name: resolveFrom(configDir, `${name}/register`),
-      type: 'managerEntries',
-    };
-    // eslint-disable-next-line no-empty
-  } catch (err) {}
+  }
 
   return {
     name: resolveFrom(configDir, name),
@@ -117,12 +126,13 @@ const map =
         const { name } = resolveAddonName(configDir, item.name);
         return { ...item, name };
       }
-      const { name, type } = resolveAddonName(configDir, item);
-      if (type === 'managerEntries') {
+      const { name, managerEntries, previewAnnotations, type } = resolveAddonName(configDir, item);
+      if (type === 'virtual') {
         return {
-          name: `${name}_additionalManagerEntries`,
+          name,
           type,
-          managerEntries: [name],
+          ...(managerEntries ? { managerEntries } : {}),
+          ...(previewAnnotations ? { previewAnnotations } : {}),
         };
       }
       return resolveAddonName(configDir, name);
@@ -145,7 +155,7 @@ function interopRequireDefault(filePath: string) {
 }
 
 function getContent(input: any) {
-  if (input.type === 'managerEntries') {
+  if (input.type === 'virtual') {
     const { type, name, ...rest } = input;
     return rest;
   }
