@@ -1,6 +1,6 @@
 import { normalizeStoriesEntry } from '@storybook/core-common';
 
-import { autoTitleFromSpecifier as auto, customTitleFromSpecifier as custom } from './autoTitle';
+import { customOrAutoTitleFromSpecifier as customOrAuto } from './autoTitle';
 
 expect.addSnapshotSerializer({
   print: (val: any) => val,
@@ -17,229 +17,369 @@ const winOptions = {
   workingDir: '\\path',
 };
 
-describe('autoTitle', () => {
-  it('no match', () => {
-    expect(
-      auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './other' }, options))
-    ).toBeFalsy();
-  });
+describe('customOrAutoTitleFromSpecifier', () => {
 
-  describe('no trailing slash', () => {
-    it('match with no titlePrefix', () => {
+  describe('custom title', () => {
+    it('no match', () => {
       expect(
-        auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options))
-      ).toMatchInlineSnapshot(`to/file`);
+        customOrAuto('./ path / to / file.stories.js', normalizeStoriesEntry({ directory: './ other' }, options), 'title')
+      ).toBeFalsy();
     });
 
-    it('match with titlePrefix', () => {
-      expect(
-        auto(
-          './path/to/file.stories.js',
-          normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/to/file`);
+    describe('no trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options), 'title')
+        ).toMatchInlineSnapshot(`title`);
+      });
+
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
+
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
+
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
+
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path', titlePrefix: 'atoms' }, winOptions),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
     });
 
-    it('match with trailing duplicate', () => {
-      expect(
-        auto(
-          './path/to/button/button.stories.js',
-          normalizeStoriesEntry({ directory: './path' }, options)
-        )
-      ).toMatchInlineSnapshot(`to/button`);
-    });
+    describe('trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options), 'title')
+        ).toMatchInlineSnapshot(`title`);
+      });
 
-    it('match with trailing index', () => {
-      expect(
-        auto(
-          './path/to/button/index.stories.js',
-          normalizeStoriesEntry({ directory: './path' }, options)
-        )
-      ).toMatchInlineSnapshot(`to/button`);
-    });
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
 
-    it('match with hyphen path', () => {
-      expect(
-        auto(
-          './path/to-my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path' }, options)
-        )
-      ).toMatchInlineSnapshot(`to-my/file`);
-    });
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
 
-    it('match with underscore path', () => {
-      expect(
-        auto(
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path' }, options)
-        )
-      ).toMatchInlineSnapshot(`to_my/file`);
-    });
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
 
-    it('match with windows path', () => {
-      expect(
-        auto(
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path' }, winOptions)
-        )
-      ).toMatchInlineSnapshot(`to_my/file`);
-    });
-  });
-
-  describe('trailing slash', () => {
-    it('match with no titlePrefix', () => {
-      expect(
-        auto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options))
-      ).toMatchInlineSnapshot(`to/file`);
-    });
-
-    it('match with titlePrefix', () => {
-      expect(
-        auto(
-          './path/to/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/to/file`);
-    });
-
-    it('match with hyphen path', () => {
-      expect(
-        auto(
-          './path/to-my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/' }, options)
-        )
-      ).toMatchInlineSnapshot(`to-my/file`);
-    });
-
-    it('match with underscore path', () => {
-      expect(
-        auto(
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/' }, options)
-        )
-      ).toMatchInlineSnapshot(`to_my/file`);
-    });
-
-    it('match with windows path', () => {
-      expect(
-        auto(
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path\\' }, winOptions)
-        )
-      ).toMatchInlineSnapshot(`to_my/file`);
-    });
-
-    it('camel-case file', () => {
-      expect(
-        auto(
-          './path/to_my/MyButton.stories.js',
-          normalizeStoriesEntry({ directory: './path' }, options)
-        )
-      ).toMatchInlineSnapshot(`to_my/MyButton`);
-    });
-  });
-});
-
-describe('customTitle', () => {
-  it('no match', () => {
-    expect(
-      custom(undefined, './path/to/file.stories.js', normalizeStoriesEntry({ directory: './other' }, options))
-    ).toBeFalsy();
-  });
-
-  describe('no trailing slash', () => {
-    it('match with no titlePrefix', () => {
-      expect(
-        custom('title', './path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options))
-      ).toMatchInlineSnapshot(`title`);
-    });
-
-    it('match with titlePrefix', () => {
-      expect(
-        custom(
-          'title',
-          './path/to/file.stories.js',
-          normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
-    });
-
-    it('match with hyphen path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to-my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
-    });
-
-    it('match with underscore path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
-    });
-
-    it('match with windows path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path', titlePrefix: 'atoms' }, winOptions)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path\\', titlePrefix: 'atoms' }, winOptions),
+            'title'
+          )
+        ).toMatchInlineSnapshot(`atoms/title`);
+      });
     });
   });
 
-  describe('trailing slash', () => {
-    it('match with no titlePrefix', () => {
+  describe('auto title', () => {
+    it('no match', () => {
       expect(
-        custom('title', './path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options))
-      ).toMatchInlineSnapshot(`title`);
+        customOrAuto('./ path / to / file.stories.js', normalizeStoriesEntry({ directory: './ other' }, options), undefined)
+      ).toBeFalsy();
     });
 
-    it('match with titlePrefix', () => {
-      expect(
-        custom(
-          'title',
-          './path/to/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
+    describe('no trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options), undefined)
+        ).toMatchInlineSnapshot(`to/file`);
+      });
+
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`atoms/to/file`);
+      });
+
+      it('match with trailing duplicate', () => {
+        expect(
+          customOrAuto(
+            './path/to/button/button.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to/button`);
+      });
+
+      it('match with trailing index', () => {
+        expect(
+          customOrAuto(
+            './path/to/button/index.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to/button`);
+      });
+
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to-my/file`);
+      });
+
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path' }, winOptions),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
     });
 
-    it('match with hyphen path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to-my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
+    describe('trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options), undefined)
+        ).toMatchInlineSnapshot(`to/file`);
+      });
+
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`atoms/to/file`);
+      });
+
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to-my/file`);
+      });
+
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path\\' }, winOptions),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('camel-case file', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/MyButton.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/MyButton`);
+      });
     });
 
-    it('match with underscore path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
+    describe('no trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path' }, options), undefined)
+        ).toMatchInlineSnapshot(`to/file`);
+      });
+
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path', titlePrefix: 'atoms' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`atoms/to/file`);
+      });
+
+      it('match with trailing duplicate', () => {
+        expect(
+          customOrAuto(
+            './path/to/button/button.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to/button`);
+      });
+
+      it('match with trailing index', () => {
+        expect(
+          customOrAuto(
+            './path/to/button/index.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to/button`);
+      });
+
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to-my/file`);
+      });
+
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path' }, winOptions),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
     });
 
-    it('match with windows path', () => {
-      expect(
-        custom(
-          'title',
-          './path/to_my/file.stories.js',
-          normalizeStoriesEntry({ directory: '.\\path\\', titlePrefix: 'atoms' }, winOptions)
-        )
-      ).toMatchInlineSnapshot(`atoms/title`);
+    describe('trailing slash', () => {
+      it('match with no titlePrefix', () => {
+        expect(
+          customOrAuto('./path/to/file.stories.js', normalizeStoriesEntry({ directory: './path/' }, options), undefined)
+        ).toMatchInlineSnapshot(`to/file`);
+      });
+
+      it('match with titlePrefix', () => {
+        expect(
+          customOrAuto(
+            './path/to/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/', titlePrefix: 'atoms' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`atoms/to/file`);
+      });
+
+      it('match with hyphen path', () => {
+        expect(
+          customOrAuto(
+            './path/to-my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to-my/file`);
+      });
+
+      it('match with underscore path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: './path/' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('match with windows path', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/file.stories.js',
+            normalizeStoriesEntry({ directory: '.\\path\\' }, winOptions),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/file`);
+      });
+
+      it('camel-case file', () => {
+        expect(
+          customOrAuto(
+            './path/to_my/MyButton.stories.js',
+            normalizeStoriesEntry({ directory: './path' }, options),
+            undefined
+          )
+        ).toMatchInlineSnapshot(`to_my/MyButton`);
+      });
     });
   });
 });

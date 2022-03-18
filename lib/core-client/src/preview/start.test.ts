@@ -39,7 +39,7 @@ jest.mock('@storybook/store', () => {
   const actualStore = jest.requireActual('@storybook/store');
   return {
     ...actualStore,
-    autoTitle: () => 'auto-title',
+    customOrAutoTitle: (userTitle?: string) => userTitle || 'auto-title',
   };
 });
 
@@ -1160,7 +1160,7 @@ describe('start', () => {
     it('should transform the storybook to an array with filenames, empty', () => {
       const { configure, clientApi } = start(jest.fn());
 
-      configure('test', () => {});
+      configure('test', () => { });
       expect(clientApi.getStorybook()).toEqual([]);
     });
 

@@ -3,7 +3,7 @@ import dedent from 'ts-dedent';
 import { SynchronousPromise } from 'synchronous-promise';
 import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
 import type { StoryId, AnyFramework, Parameters, StoryFn } from '@storybook/csf';
-import { StoryStore, autoTitle, customTitle, sortStoriesV6 } from '@storybook/store';
+import { StoryStore, customOrAutoTitle, sortStoriesV6 } from '@storybook/store';
 import type {
   NormalizedProjectAnnotations,
   NormalizedStoriesSpecifier,
@@ -149,9 +149,8 @@ export class StoryStoreFacade<TFramework extends AnyFramework> {
       })
     );
 
-    title =
-      customTitle(title, fileName, specifiers) ||
-      autoTitle(fileName, specifiers);
+    title = customOrAutoTitle(fileName, specifiers, title);
+
     if (!title) {
       logger.info(
         `Unexpected default export without title in '${fileName}': ${JSON.stringify(
