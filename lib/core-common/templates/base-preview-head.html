@@ -151,6 +151,9 @@
   .sb-preparing-story,
   .sb-preparing-docs {
     background-color: white;
+    /* Maximum possible z-index. It would be better to use stacking contexts to ensure it's always
+    on top, but this isn't possible as it would require making CSS changes that could affect user code */
+    z-index: 2147483647;
   }
 
   .sb-loader {
