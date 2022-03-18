@@ -1,1 +1,2 @@
-require('./dist/esm/manager');
+// TODO add deprecation warning
+module.exports = require('./preview');
