@@ -6358,10 +6358,6 @@ __metadata:
     react-dom: ^16.8.0 || ^17.0.0
     webpack: "*"
   peerDependenciesMeta:
-    "@storybook/builder-webpack4":
-      optional: true
-    "@storybook/builder-webpack5":
-      optional: true
     "@storybook/mdx2-csf":
       optional: true
     react:

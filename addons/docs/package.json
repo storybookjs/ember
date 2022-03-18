@@ -73,6 +73,7 @@
     "@storybook/source-loader": "6.5.0-alpha.48",
     "@storybook/store": "6.5.0-alpha.48",
     "@storybook/theming": "6.5.0-alpha.48",
+    "babel-loader": "^8.0.0",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",
     "global": "^4.4.0",
@@ -86,23 +87,14 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@storybook/mdx2-csf": "canary",
-    "@types/util-deprecate": "^1.0.0",
-    "babel-loader": "^8.0.0",
-    "webpack": "4"
+    "@types/util-deprecate": "^1.0.0"
   },
   "peerDependencies": {
     "@storybook/mdx2-csf": "*",
     "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0",
-    "webpack": "*"
+    "react-dom": "^16.8.0 || ^17.0.0"
   },
   "peerDependenciesMeta": {
-    "@storybook/builder-webpack4": {
-      "optional": true
-    },
-    "@storybook/builder-webpack5": {
-      "optional": true
-    },
     "@storybook/mdx2-csf": {
       "optional": true
     },
@@ -110,9 +102,6 @@
       "optional": true
     },
     "react-dom": {
-      "optional": true
-    },
-    "webpack": {
       "optional": true
     }
   },

@@ -38,16 +38,7 @@ export async function webpack(
       typeof createCompiler
     >[0] */
 ) {
-  const { builder = 'webpack4' } = await options.presets.apply<{
-    builder: BuilderConfig;
-  }>('core', {} as any);
-
-  const builderName = typeof builder === 'string' ? builder : builder.name;
-  const resolvedBabelLoader = require.resolve('babel-loader', {
-    paths: builderName.match(/^webpack(4|5)$/)
-      ? [require.resolve(`@storybook/builder-${builderName}`)]
-      : [builderName],
-  });
+  const resolvedBabelLoader = require.resolve('babel-loader');
 
   const { module = {} } = webpackConfig;
 
