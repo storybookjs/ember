@@ -6231,6 +6231,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.5.0-alpha.49
     "@storybook/api": 6.5.0-alpha.49
+    "@storybook/client-logger": 6.5.0-alpha.49
     "@storybook/components": 6.5.0-alpha.49
     "@storybook/core-events": 6.5.0-alpha.49
     "@storybook/csf": 0.0.2--canary.87bc651.0
@@ -6489,6 +6490,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.5.0-alpha.49
     "@storybook/api": 6.5.0-alpha.49
+    "@storybook/client-logger": 6.5.0-alpha.49
     "@storybook/components": 6.5.0-alpha.49
     "@storybook/core-events": 6.5.0-alpha.49
     "@storybook/theming": 6.5.0-alpha.49
@@ -6749,6 +6751,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.5.0-alpha.49
     "@storybook/api": 6.5.0-alpha.49
+    "@storybook/client-logger": 6.5.0-alpha.49
     "@storybook/components": 6.5.0-alpha.49
     "@storybook/theming": 6.5.0-alpha.49
     core-js: ^3.8.2
