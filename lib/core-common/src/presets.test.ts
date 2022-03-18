@@ -438,7 +438,7 @@ describe('loadPreset', () => {
     const loaded = loadPreset(
       {
         name: '',
-        type: 'managerEntries',
+        type: 'virtual',
         framework: '@storybook/react',
         presets: ['@storybook/preset-typescript'],
         addons: ['@storybook/addon-docs'],
@@ -446,7 +446,40 @@ describe('loadPreset', () => {
       0,
       {}
     );
-    expect(loaded).toMatchInlineSnapshot(`Array []`);
+    expect(loaded).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "@storybook/react",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": "@storybook/preset-typescript",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": "@storybook/addon-docs/preset",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
+          "name": Object {
+            "addons": Array [
+              "@storybook/addon-docs",
+            ],
+            "framework": "@storybook/react",
+            "name": "",
+            "presets": Array [
+              "@storybook/preset-typescript",
+            ],
+            "type": "virtual",
+          },
+          "options": Object {},
+          "preset": Object {},
+        },
+      ]
+    `);
   });
 
   it('should resolve all addons & presets in correct order', () => {
