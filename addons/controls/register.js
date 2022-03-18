@@ -1,2 +1,5 @@
-// @deprecated - please remove in 7.0
-import './dist/esm/manager';
+require('@storybook/client-logger').once.warn(
+  'register.js is deprecated see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-registerjs'
+);
+
+require('./manager');
