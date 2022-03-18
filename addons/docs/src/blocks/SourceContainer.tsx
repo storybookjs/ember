@@ -20,17 +20,27 @@ export const SourceContainer: FC<{}> = ({ children }) => {
   const channel = addons.getChannel();
 
   useEffect(() => {
-    const handleSnippetRendered = (id: StoryId, newItem: SourceItem) => {
-      if (newItem !== sources[id]) {
-        setSources((current) => {
-          const newSources = { ...current, [id]: newItem };
-
-          if (!deepEqual(current, newSources)) {
-            return newSources;
-          }
-          return current;
-        });
+    const handleSnippetRendered = (
+      id: StoryId,
+      newSource: string,
+      format: SyntaxHighlighterFormatTypes = false
+    ) => {
+      // optimization: if the source is the same, ignore the incoming event
+      if (sources[id] && sources[id][0] === newSource) {
+        return;
       }
+
+      setSources((current) => {
+        const newSources = {
+          ...current,
+          [id]: [newSource, format] as SourceItem,
+        };
+
+        if (!deepEqual(current, newSources)) {
+          return newSources;
+        }
+        return current;
+      });
     };
 
     channel.on(SNIPPET_RENDERED, handleSnippetRendered);

@@ -52,7 +52,7 @@ export const sourceDecorator = (storyFn: any, context: StoryContext<VueFramework
 
         const code = vnodeToString(storyNode._vnode);
 
-        channel.emit(SNIPPET_RENDERED, (context || {}).id, `<template>${code}</template>`);
+        channel.emit(SNIPPET_RENDERED, (context || {}).id, `<template>${code}</template>`, 'vue');
       } catch (e) {
         logger.warn(`Failed to generate dynamic story source: ${e}`);
       }

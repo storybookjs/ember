@@ -114,10 +114,9 @@ export const getSourceProps = (
   }
 
   if (!source) {
-    format = storyIds.find((storyId, idx) => {
-      const [_, f] = getStorySource(storyId, sourceContext);
-      return f;
-    }) as PureSourceProps['format'];
+    // just take the format from the first story, given how they're all concatinated together...
+    // TODO: we should consider sending an event with all the sources separately, instead of concatenating them here
+    [, format] = getStorySource(storyIds[0], sourceContext);
     source = storyIds
       .map((storyId, idx) => {
         const [storySource] = getStorySource(storyId, sourceContext);
