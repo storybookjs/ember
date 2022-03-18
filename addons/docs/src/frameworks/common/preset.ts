@@ -3,7 +3,7 @@ import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
 import global from 'global';
 
-import type { BuilderConfig, Options } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 
 // for frameworks that are not working with react, we need to configure
