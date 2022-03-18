@@ -165,5 +165,12 @@ export class WebView {
   showStory() {
     this.docsRoot().setAttribute('hidden', 'true');
     this.storyRoot().removeAttribute('hidden');
+
+    // When 'showStory' is called (at the start of rendering) we get rid of our display:none
+    // from all children of the root (but keep the preparing spinner visible). This may mean
+    // that very weird and high z-index stories are briefly visible.
+    // See https://github.com/storybookjs/storybook/issues/16847 and
+    //   http://localhost:9011/?path=/story/core-rendering--auto-focus (official SB)
+    document.body.classList.add(classes.MAIN);
   }
 }
