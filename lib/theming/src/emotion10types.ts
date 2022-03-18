@@ -1,9 +1,11 @@
 import { Interpolation } from '@emotion/react';
 
-type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
+export type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
   JSX.LibraryManagedAttributes<C, React.ComponentPropsWithRef<C>>;
 
-type Omit<T, U> = T extends any ? Pick<T, Exclude<keyof T, U>> : never;
+export type AddOptionalTo<T, U> = DistributiveOmit<T, U> & Partial<Pick<T, Extract<keyof T, U>>>;
+
+type DistributiveOmit<T, U> = T extends any ? Pick<T, Exclude<keyof T, U>> : never;
 type Overwrapped<T, U> = Pick<T, Extract<keyof T, keyof U>>;
 
 type JSXInEl = JSX.IntrinsicElements;
@@ -24,7 +26,7 @@ interface ComponentSelector {
 }
 
 export interface StyledComponent<InnerProps, StyleProps, Theme extends object>
-  extends React.FC<InnerProps & Omit<StyleProps, 'theme'> & { theme?: Theme }>,
+  extends React.FC<InnerProps & DistributiveOmit<StyleProps, 'theme'> & { theme?: Theme }>,
     ComponentSelector {
   /**
    * @desc this method is type-unsafe
@@ -39,19 +41,19 @@ export interface StyledComponent<InnerProps, StyleProps, Theme extends object>
 
 interface CreateStyledComponentBaseThemeless<InnerProps, ExtraProps> {
   <
-    StyleProps extends Omit<Overwrapped<InnerProps, StyleProps>, ReactClassPropKeys> = Omit<
-      InnerProps & ExtraProps,
+    StyleProps extends DistributiveOmit<
+      Overwrapped<InnerProps, StyleProps>,
       ReactClassPropKeys
-    >,
+    > = DistributiveOmit<InnerProps & ExtraProps, ReactClassPropKeys>,
     Theme extends object = object
   >(
     ...styles: Array<Interpolation<WithTheme<StyleProps, Theme>>>
   ): StyledComponent<InnerProps, StyleProps, Theme>;
   <
-    StyleProps extends Omit<Overwrapped<InnerProps, StyleProps>, ReactClassPropKeys> = Omit<
-      InnerProps & ExtraProps,
+    StyleProps extends DistributiveOmit<
+      Overwrapped<InnerProps, StyleProps>,
       ReactClassPropKeys
-    >,
+    > = DistributiveOmit<InnerProps & ExtraProps, ReactClassPropKeys>,
     Theme extends object = object
   >(
     template: TemplateStringsArray,
@@ -65,18 +67,18 @@ interface CreateStyledComponentBaseThemed<
   StyledInstanceTheme extends object
 > {
   <
-    StyleProps extends Omit<Overwrapped<InnerProps, StyleProps>, ReactClassPropKeys> = Omit<
-      InnerProps & ExtraProps,
+    StyleProps extends DistributiveOmit<
+      Overwrapped<InnerProps, StyleProps>,
       ReactClassPropKeys
-    >
+    > = DistributiveOmit<InnerProps & ExtraProps, ReactClassPropKeys>
   >(
     ...styles: Array<Interpolation<WithTheme<StyleProps, StyledInstanceTheme>>>
   ): StyledComponent<InnerProps, StyleProps, StyledInstanceTheme>;
   <
-    StyleProps extends Omit<Overwrapped<InnerProps, StyleProps>, ReactClassPropKeys> = Omit<
-      InnerProps & ExtraProps,
+    StyleProps extends DistributiveOmit<
+      Overwrapped<InnerProps, StyleProps>,
       ReactClassPropKeys
-    >
+    > = DistributiveOmit<InnerProps & ExtraProps, ReactClassPropKeys>
   >(
     template: TemplateStringsArray,
     ...styles: Array<Interpolation<WithTheme<StyleProps, StyledInstanceTheme>>>

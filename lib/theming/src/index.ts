@@ -2,23 +2,24 @@
 /// <reference path="./typings.d.ts" />
 
 import emotionStyled from '@emotion/styled';
-import type { CreateStyled } from './emotion10types';
+import * as emotionReact from '@emotion/react';
+import type { CreateStyled, PropsOf, AddOptionalTo } from './emotion10types';
 
 import { Theme } from './types';
 
 export type { StyledComponent } from './emotion10types';
 
-export {
-  Global,
-  keyframes,
-  css,
-  jsx,
-  ClassNames,
-  withTheme,
-  useTheme,
-  ThemeProvider,
-} from '@emotion/react';
+export { keyframes, css, jsx, ClassNames, ThemeProvider } from '@emotion/react';
 export type { CSSObject, Keyframes } from '@emotion/react';
+
+export const useTheme = emotionReact.useTheme as () => Theme;
+export const withTheme = emotionReact.withTheme as <C extends React.ComponentType<any>>(
+  component: C
+) => React.FC<AddOptionalTo<PropsOf<C>, 'theme'>>;
+
+export const Global = emotionReact.Global as (props: {
+  styles: emotionReact.Interpolation<Theme>;
+}) => React.ReactElement;
 
 export const styled = emotionStyled as CreateStyled<Theme>;
 
