@@ -43,7 +43,7 @@ export class DocsRender<TFramework extends AnyFramework> {
       storyById: (storyId: StoryId) => this.store.storyFromCSFFile({ storyId, csfFile }),
       componentStories: () => this.store.componentStoriesFromCSFFile({ csfFile }),
       loadStory: (storyId: StoryId) => this.store.loadStory({ storyId }),
-      renderStoryToElement: renderStoryToElement.bind(this),
+      renderStoryToElement,
       getStoryContext: (renderedStory: Story<TFramework>) =>
         ({
           ...this.store.getStoryContext(renderedStory),
