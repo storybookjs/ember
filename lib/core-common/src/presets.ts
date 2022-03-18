@@ -85,6 +85,14 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
   // when user provides full path, we don't need to do anything
   if (path) {
+    try {
+      return {
+        name: require.resolve(`${name}/preset`),
+        type: 'presets',
+      };
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+
     const managerEntry = safeResolve(`${path}/manager`) || safeResolve(`${path}/register`);
     const previewAnnotation = safeResolve(`${path}/preview`);
 
@@ -105,14 +113,6 @@ export const resolveAddonName = (configDir: string, name: string) => {
         type: 'virtual',
       };
     }
-
-    try {
-      return {
-        name: require.resolve(`${name}/preset`),
-        type: 'presets',
-      };
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
 
     return {
       name: path,

@@ -2,7 +2,7 @@ const { findDistEsm } = require('@storybook/core-common');
 const { webpack } = require('./dist/cjs/frameworks/common/preset');
 
 function managerEntries(entry = [], options) {
-  return [...entry, findDistEsm(__dirname, 'register')];
+  return [...entry, findDistEsm(__dirname, 'manager')];
 }
 
 function config(entry = [], options = {}) {
