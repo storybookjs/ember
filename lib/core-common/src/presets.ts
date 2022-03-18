@@ -108,7 +108,7 @@ export const resolveAddonName = (configDir: string, name: string) => {
 
     try {
       return {
-        name: safeResolve(`${name}/preset`),
+        name: require.resolve(`${name}/preset`),
         type: 'presets',
       };
       // eslint-disable-next-line no-empty
