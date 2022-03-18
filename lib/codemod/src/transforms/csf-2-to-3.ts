@@ -12,14 +12,14 @@ const _rename = (annotation: string) => {
 
 const getTemplateBindVariable = (init: t.Expression) =>
   t.isCallExpression(init) &&
-    t.isMemberExpression(init.callee) &&
-    t.isIdentifier(init.callee.object) &&
-    t.isIdentifier(init.callee.property) &&
-    init.callee.property.name === 'bind' &&
-    (init.arguments.length === 0 ||
-      (init.arguments.length === 1 &&
-        t.isObjectExpression(init.arguments[0]) &&
-        init.arguments[0].properties.length === 0))
+  t.isMemberExpression(init.callee) &&
+  t.isIdentifier(init.callee.object) &&
+  t.isIdentifier(init.callee.property) &&
+  init.callee.property.name === 'bind' &&
+  (init.arguments.length === 0 ||
+    (init.arguments.length === 1 &&
+      t.isObjectExpression(init.arguments[0]) &&
+      init.arguments[0].properties.length === 0))
     ? init.callee.object.name
     : null;
 

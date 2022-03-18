@@ -1160,7 +1160,7 @@ describe('start', () => {
     it('should transform the storybook to an array with filenames, empty', () => {
       const { configure, clientApi } = start(jest.fn());
 
-      configure('test', () => { });
+      configure('test', () => {});
       expect(clientApi.getStorybook()).toEqual([]);
     });
 

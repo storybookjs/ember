@@ -162,8 +162,8 @@ export class CsfFile {
 
   constructor(ast: t.File, { fileName, makeTitle }: CsfOptions) {
     this._ast = ast;
-    this._makeTitle = makeTitle;
     this._fileName = fileName;
+    this._makeTitle = makeTitle;
   }
 
   _parseTitle(value: t.Node) {
