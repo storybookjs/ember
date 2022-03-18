@@ -454,7 +454,11 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     >(
       this.channel,
       this.storyStore,
-      this.renderToDOM,
+      (...args) => {
+        // At the start of renderToDOM we make the story visible (see note in WebView)
+        this.view.showStoryDuringRender();
+        return this.renderToDOM(...args);
+      },
       this.mainStoryCallbacks(storyId),
       storyId,
       'story'

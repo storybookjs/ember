@@ -165,7 +165,9 @@ export class WebView {
   showStory() {
     this.docsRoot().setAttribute('hidden', 'true');
     this.storyRoot().removeAttribute('hidden');
+  }
 
+  showStoryDuringRender() {
     // When 'showStory' is called (at the start of rendering) we get rid of our display:none
     // from all children of the root (but keep the preparing spinner visible). This may mean
     // that very weird and high z-index stories are briefly visible.
