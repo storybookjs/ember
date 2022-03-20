@@ -72,7 +72,6 @@ export const DateControl: FC<DateProps> = ({ name, value, onChange, onFocus, onB
   }, [value]);
 
   const onDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     const parsed = parseDate(e.target.value);
     const result = new Date(value);
     result.setFullYear(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
