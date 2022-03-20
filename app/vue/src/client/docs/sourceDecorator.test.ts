@@ -174,7 +174,7 @@ describe('vnodeToString', () => {
   it('component element with children', () => {
     const MyComponent: ComponentOptions<any, any, any> = {
       props: ['propA'],
-      template: '<div/>',
+      template: '<div><slot /></div>',
     };
 
     expect(
