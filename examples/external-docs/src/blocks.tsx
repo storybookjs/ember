@@ -6,6 +6,8 @@ import { toId, AnyFramework, ComponentTitle, StoryId } from '@storybook/csf';
 
 // @ts-ignore
 import * as reactAnnotations from '@storybook/react/dist/esm/client/preview/config';
+// @ts-ignore
+import * as previewAnnotations from './.storybook/preview';
 
 type StoryExport = any;
 type MetaExport = any;
@@ -13,6 +15,7 @@ type ExportName = string;
 
 const projectAnnotations = {
   ...reactAnnotations,
+  ...previewAnnotations,
 };
 
 const DocsContext = createContext<{

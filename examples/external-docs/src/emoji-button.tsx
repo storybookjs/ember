@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const EmojiButton = ({ label, ...props }) => (
+export const EmojiButton = ({ label, ...props }: { label: string }) => (
   <button type="button" {...props}>
     ⚠️ {label}
   </button>

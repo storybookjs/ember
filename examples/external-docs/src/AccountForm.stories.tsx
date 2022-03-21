@@ -48,6 +48,8 @@ export const StandardPasswordFailed = {
   },
 };
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export const StandardFailHover = {
   ...StandardPasswordFailed,
   play: async () => {
@@ -79,8 +81,6 @@ export const VerificationPasswordMismatch = {
     await userEvent.click(screen.getByTestId('submit'));
   },
 };
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const VerificationSuccess = {
   ...Verification,
