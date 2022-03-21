@@ -1,6 +1,11 @@
-import { ComponentType } from 'react';
-import { Args, ComponentAnnotations, StoryAnnotations, AnnotatedStoryFn } from '@storybook/csf';
-import { StoryFnReactReturnType } from './types';
+import type { ComponentType } from 'react';
+import type {
+  Args,
+  ComponentAnnotations,
+  StoryAnnotations,
+  AnnotatedStoryFn,
+} from '@storybook/csf';
+import type { StoryFnReactReturnType } from './types';
 
 export type { Args, ArgTypes, Parameters, StoryContext } from '@storybook/csf';
 

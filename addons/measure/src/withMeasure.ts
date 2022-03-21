@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import { useEffect } from '@storybook/addons';
-import { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
+import type { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 import { drawSelectedElement } from './box-model/visualizer';
 import { init, rescale, destroy } from './box-model/canvas';
 import { deepElementFromPoint } from './util';

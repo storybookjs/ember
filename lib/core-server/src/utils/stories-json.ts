@@ -1,11 +1,7 @@
 import { Router, Request, Response } from 'express';
 import fs from 'fs-extra';
-import {
-  Options,
-  normalizeStories,
-  NormalizedStoriesSpecifier,
-  StorybookConfig,
-} from '@storybook/core-common';
+import type { Options, NormalizedStoriesSpecifier, StorybookConfig } from '@storybook/core-common';
+import { normalizeStories } from '@storybook/core-common';
 import Events from '@storybook/core-events';
 import debounce from 'lodash/debounce';
 

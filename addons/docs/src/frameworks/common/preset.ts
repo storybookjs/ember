@@ -4,8 +4,7 @@ import remarkExternalLinks from 'remark-external-links';
 import global from 'global';
 
 import type { BuilderConfig, Options } from '@storybook/core-common';
-
-const { log } = console;
+import { logger } from '@storybook/node-logger';
 
 // for frameworks that are not working with react, we need to configure
 // the jsx to transpile mdx, for now there will be a flag for that
@@ -68,7 +67,7 @@ export async function webpack(
   };
 
   const mdxVersion = global.FEATURES?.previewMdx2 ? 'MDX2' : 'MDX1';
-  log(`Addon-docs: using ${mdxVersion}`);
+  logger.info(`Addon-docs: using ${mdxVersion}`);
 
   const mdxLoader = global.FEATURES?.previewMdx2
     ? require.resolve('@storybook/mdx2-csf/loader')

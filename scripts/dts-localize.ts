@@ -275,6 +275,9 @@ export const run = async (entrySourceFiles: string[], outputPath: string, option
         if (externals.includes(k)) {
           return;
         }
+        if (!v) {
+          return;
+        }
         const x = sourceFiles.find((f) => f.fileName === v.resolvedFileName);
         if (!x) {
           return;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { StoryId, AnyFramework } from '@storybook/csf';
-import { Story } from '@storybook/store';
+import type { StoryId, AnyFramework } from '@storybook/csf';
+import type { Story } from '@storybook/store';
 
 import { DocsContextProps } from './DocsContext';
 

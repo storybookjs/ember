@@ -1,4 +1,5 @@
-import { styled, Color, Theme } from '@storybook/theming';
+import { styled } from '@storybook/theming';
+import type { Color, Theme } from '@storybook/theming';
 import { Icons } from '@storybook/components';
 import global from 'global';
 import { transparentize } from 'polished';

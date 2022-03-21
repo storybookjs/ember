@@ -1,4 +1,4 @@
-import { StoryId } from '@storybook/addons';
+import type { StoryId } from '@storybook/addons';
 
 export interface Call {
   id: string;

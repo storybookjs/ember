@@ -5,7 +5,7 @@ Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
-    "ROOT/addons/docs/dist/esm/register.js",
+    "ROOT/addons/docs/dist/esm/register",
     "ROOT/addons/controls/dist/esm/register.js",
     "ROOT/addons/a11y/dist/esm/register.js",
     "ROOT/addons/actions/dist/esm/register.js",

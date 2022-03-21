@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.5.0-alpha.45",
+  "version": "6.5.0-alpha.49",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,15 +45,17 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.45",
-    "@storybook/api": "6.5.0-alpha.45",
-    "@storybook/core": "6.5.0-alpha.45",
-    "@storybook/core-common": "6.5.0-alpha.45",
-    "@storybook/core-events": "6.5.0-alpha.45",
+    "@storybook/addons": "6.5.0-alpha.49",
+    "@storybook/api": "6.5.0-alpha.49",
+    "@storybook/client-logger": "6.5.0-alpha.49",
+    "@storybook/core": "6.5.0-alpha.49",
+    "@storybook/core-common": "6.5.0-alpha.49",
+    "@storybook/core-events": "6.5.0-alpha.49",
     "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.5.0-alpha.45",
+    "@storybook/docs-tools": "6.5.0-alpha.49",
+    "@storybook/node-logger": "6.5.0-alpha.49",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.45",
+    "@storybook/store": "6.5.0-alpha.49",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/react": "^16.14.23",
     "@types/react-dom": "^16.9.14",
@@ -63,15 +65,17 @@
     "find-up": "^5.0.0",
     "fork-ts-checker-webpack-plugin": "^4.1.6",
     "global": "^4.4.0",
+    "nanoid": "^3.1.23",
+    "p-limit": "^3.1.0",
     "postcss": "^7.0.36",
     "postcss-loader": "^4.2.0",
+    "prettier": ">=2.2.1 <=2.3.0",
     "raw-loader": "^4.0.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
     "sass-loader": "^10.1.0",
-    "strip-json-comments": "3.1.1",
     "telejson": "^5.3.3",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
@@ -93,10 +97,12 @@
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@nrwl/workspace": "^11.6.3",
     "@types/autoprefixer": "^9.7.2",
-    "@types/jest": "^26.0.16",
+    "@types/tmp": "^0.2.3",
+    "cross-spawn": "^7.0.3",
     "jest": "^26.6.3",
     "jest-preset-angular": "^8.3.2",
-    "ts-jest": "^26.4.4"
+    "jest-specific-snapshot": "^4.0.0",
+    "tmp": "^0.2.1"
   },
   "peerDependencies": {
     "@angular-devkit/architect": ">=0.8.9",
@@ -131,5 +137,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "af457c20c773f57bea0504bf525a2f74852fe94a"
+  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee"
 }

@@ -10,8 +10,8 @@ const List = styled.div({
   paddingBottom: 4,
   paddingRight: 4,
   paddingTop: 4,
-  fontWeight: '400',
-} as any);
+  fontWeight: 400,
+});
 
 const Item = styled.div<{ elementWidth: number }>(({ elementWidth }) => {
   const maxWidthBeforeBreak = 407;

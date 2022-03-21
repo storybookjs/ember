@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-html');
+module.exports = require('./dist/cjs/server/preset');
