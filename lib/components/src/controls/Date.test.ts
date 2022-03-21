@@ -13,7 +13,8 @@ describe('Date control', () => {
   it.each([
     // name, input, expected
     ['same time', '12:00', '12:00'],
-    ['hours not padded with zeros', '1:00', '01:00'],
+    ['hours not padded with a zero', '1:00', '01:00'],
+    ['minutes not padded with a zero', '01:0', '01:00'],
     ['different minutes', '01:30', '01:30'],
   ])('parse and format time: %s', (name, input, expected) => {
     expect(formatTime(parseTime(input))).toBe(expected);
