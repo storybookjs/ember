@@ -19,6 +19,7 @@ jest.mock('@storybook/node-logger', () => ({
 
 jest.mock('./utils/safeResolve', () => {
   const KNOWN_FILES = [
+    '@storybook/react',
     '@storybook/addon-actions/manager',
     '@storybook/addon-actions/register',
     './local/preset',
@@ -50,11 +51,7 @@ jest.mock('./utils/safeResolve', () => {
       if (KNOWN_FILES.includes(name)) {
         return name;
       }
-      try {
-        return require.resolve(name);
-      } catch (e) {
-        return undefined;
-      }
+      return undefined;
     }),
   };
 });
@@ -473,38 +470,6 @@ describe('loadPreset', () => {
           "name": "@storybook/preset-typescript",
           "options": Object {},
           "preset": Object {},
-        },
-        Object {
-          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-react.js",
-          "options": Object {},
-          "preset": Object {
-            "babel": [Function],
-            "babelDefault": [Function],
-            "webpackFinal": [Function],
-          },
-        },
-        Object {
-          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-cra.js",
-          "options": Object {},
-          "preset": Object {
-            "webpackFinal": [Function],
-          },
-        },
-        Object {
-          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-react-docs.js",
-          "options": Object {},
-          "preset": Object {
-            "babel": [Function],
-            "config": [Function],
-            "webpackFinal": [Function],
-          },
-        },
-        Object {
-          "name": "/Users/me/Projects/Storybook/core/app/react/preset.js",
-          "options": Object {},
-          "preset": Object {
-            "config": [Function],
-          },
         },
         Object {
           "name": "@storybook/react",
