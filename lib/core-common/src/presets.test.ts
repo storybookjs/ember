@@ -17,7 +17,7 @@ jest.mock('@storybook/node-logger', () => ({
   },
 }));
 
-jest.mock('resolve-from', () => (l: any, name: string) => {
+jest.mock('./utils/safeResolve', () => {
   const KNOWN_FILES = [
     '@storybook/addon-actions/manager',
     '@storybook/addon-actions/register',
@@ -25,6 +25,7 @@ jest.mock('resolve-from', () => (l: any, name: string) => {
     './local/addons',
     '/absolute/preset',
     '/absolute/addons',
+    '@storybook/addon-docs',
     '@storybook/addon-docs/preset',
     '@storybook/addon-essentials',
     '@storybook/addon-knobs/manager',
@@ -33,14 +34,29 @@ jest.mock('resolve-from', () => (l: any, name: string) => {
     '@storybook/preset-create-react-app',
     '@storybook/preset-typescript',
     'addon-bar/preset.js',
+    'addon-bar',
     'addon-baz/register.js',
     'addon-foo/register.js',
   ];
 
-  if (KNOWN_FILES.includes(name)) {
-    return name;
-  }
-  throw new Error(`cannot resolve ${name}`);
+  return {
+    safeResolveFrom: jest.fn((l: any, name: string) => {
+      if (KNOWN_FILES.includes(name)) {
+        return name;
+      }
+      return undefined;
+    }),
+    safeResolve: jest.fn((name: string) => {
+      if (KNOWN_FILES.includes(name)) {
+        return name;
+      }
+      try {
+        return require.resolve(name);
+      } catch (e) {
+        return undefined;
+      }
+    }),
+  };
 });
 
 describe('presets', () => {
@@ -404,7 +420,7 @@ describe('resolveAddonName', () => {
   });
 
   it('should resolve presets', () => {
-    expect(resolveAddonName({}, '@storybook/addon-docs')).toEqual({
+    expect(resolveAddonName({}, '@storybook/addon-docs/preset')).toEqual({
       name: '@storybook/addon-docs/preset',
       type: 'presets',
     });
@@ -428,7 +444,7 @@ describe('loadPreset', () => {
   mockPreset('@storybook/addon-docs/preset', {});
   mockPreset('@storybook/addon-actions/register', {});
   mockPreset('addon-foo/register.js', {});
-  mockPreset('addon-bar/preset', {});
+  mockPreset('addon-bar', {});
   mockPreset('addon-baz/register.js', {});
   mockPreset('@storybook/addon-notes/register-panel', {});
 
@@ -441,7 +457,7 @@ describe('loadPreset', () => {
         type: 'virtual',
         framework: '@storybook/react',
         presets: ['@storybook/preset-typescript'],
-        addons: ['@storybook/addon-docs'],
+        addons: ['@storybook/addon-docs/preset'],
       },
       0,
       {}
@@ -459,6 +475,43 @@ describe('loadPreset', () => {
           "preset": Object {},
         },
         Object {
+          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-react.js",
+          "options": Object {},
+          "preset": Object {
+            "babel": [Function],
+            "babelDefault": [Function],
+            "webpackFinal": [Function],
+          },
+        },
+        Object {
+          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-cra.js",
+          "options": Object {},
+          "preset": Object {
+            "webpackFinal": [Function],
+          },
+        },
+        Object {
+          "name": "/Users/me/Projects/Storybook/core/app/react/dist/cjs/server/framework-preset-react-docs.js",
+          "options": Object {},
+          "preset": Object {
+            "babel": [Function],
+            "config": [Function],
+            "webpackFinal": [Function],
+          },
+        },
+        Object {
+          "name": "/Users/me/Projects/Storybook/core/app/react/preset.js",
+          "options": Object {},
+          "preset": Object {
+            "config": [Function],
+          },
+        },
+        Object {
+          "name": "@storybook/react",
+          "options": Object {},
+          "preset": Object {},
+        },
+        Object {
           "name": "@storybook/addon-docs/preset",
           "options": Object {},
           "preset": Object {},
@@ -466,7 +519,7 @@ describe('loadPreset', () => {
         Object {
           "name": Object {
             "addons": Array [
-              "@storybook/addon-docs",
+              "@storybook/addon-docs/preset",
             ],
             "framework": "@storybook/react",
             "name": "",
@@ -489,11 +542,11 @@ describe('loadPreset', () => {
         type: 'virtual',
         presets: ['@storybook/preset-typescript'],
         addons: [
-          '@storybook/addon-docs',
+          '@storybook/addon-docs/preset',
           '@storybook/addon-actions/register',
           'addon-foo/register.js',
           'addon-bar',
-          'addon-baz/register.tsx',
+          'addon-baz/register.js',
           '@storybook/addon-notes/register-panel',
         ],
       },
@@ -525,17 +578,16 @@ describe('loadPreset', () => {
           managerEntries: ['addon-foo/register.js'],
         },
       },
-      // should be there, but some file mocking problem is causing it to not resolve
-      // {
-      //   name: 'addon-bar',
-      //   options: {},
-      //   preset: {},
-      // },
       {
-        name: 'addon-baz/register.tsx',
+        name: 'addon-bar',
+        options: {},
+        preset: {},
+      },
+      {
+        name: 'addon-baz/register.js',
         options: {},
         preset: {
-          managerEntries: ['addon-baz/register.tsx'],
+          managerEntries: ['addon-baz/register.js'],
         },
       },
       {
@@ -549,11 +601,11 @@ describe('loadPreset', () => {
         name: {
           presets: ['@storybook/preset-typescript'],
           addons: [
-            '@storybook/addon-docs',
+            '@storybook/addon-docs/preset',
             '@storybook/addon-actions/register',
             'addon-foo/register.js',
             'addon-bar',
-            'addon-baz/register.tsx',
+            'addon-baz/register.js',
             '@storybook/addon-notes/register-panel',
           ],
           name: '',

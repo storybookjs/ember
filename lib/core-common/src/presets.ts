@@ -1,7 +1,6 @@
 import dedent from 'ts-dedent';
 import { resolve } from 'path';
 import { logger } from '@storybook/node-logger';
-import resolveFrom from 'resolve-from';
 import {
   CLIOptions,
   LoadedPreset,
@@ -12,6 +11,7 @@ import {
 } from './types';
 import { loadCustomPresets } from './utils/load-custom-presets';
 import { serverRequire } from './utils/interpret-require';
+import { safeResolve, safeResolveFrom } from './utils/safeResolve';
 
 const isObject = (val: unknown): val is Record<string, any> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
@@ -23,21 +23,6 @@ export function filterPresetsConfig(presetsConfig: PresetConfig[]): PresetConfig
     return !/@storybook[\\\\/]preset-typescript/.test(presetName);
   });
 }
-
-const safeResolveFrom = (path: string, file: string) => {
-  try {
-    return resolveFrom(path, file);
-  } catch (e) {
-    return false;
-  }
-};
-const safeResolve = (file: string) => {
-  try {
-    return require.resolve(file);
-  } catch (e) {
-    return false;
-  }
-};
 
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
@@ -72,77 +57,62 @@ function resolvePresetFunction<T = any>(
  * - { name: '@storybook/addon-docs(/preset)?', options: { ... } }
  *   =>  { type: 'presets', item: { name: '@storybook/addon-docs/preset', options } }
  */
-export const resolveAddonName = (configDir: string, name: string) => {
-  let path;
+interface ResolvedAddonPreset {
+  type: 'presets';
+  name: string;
+}
+interface ResolvedAddonVirtual {
+  type: 'virtual';
+  name: string;
+  managerEntries?: string[];
+  previewAnnotations?: string[];
+  presets?: string[];
+}
 
-  if (name.startsWith('.')) {
-    path = resolveFrom(configDir, name);
-  } else if (name.startsWith('/')) {
-    path = name;
-  } else if (name.match(/\/(preset|manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
-    path = name;
-  }
+export const resolveAddonName = (
+  configDir: string,
+  name: string
+): ResolvedAddonPreset | ResolvedAddonVirtual => {
+  const r = name.startsWith('/') ? safeResolve : safeResolveFrom.bind(null, configDir);
+  const resolved = r(name);
 
-  // when user provides full path, we don't need to do anything
-  if (path) {
-    try {
-      return {
-        name: require.resolve(`${name}/preset`),
-        type: 'presets',
-      };
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
-
-    const managerEntry = safeResolve(`${path}/manager`) || safeResolve(`${path}/register`);
-    const previewAnnotation = safeResolve(`${path}/preview`);
-
-    if (managerEntry || previewAnnotation) {
-      return {
-        name: `${path}_virtual`,
-        managerEntries: [managerEntry],
-        previewAnnotations: [previewAnnotation],
-        type: 'virtual',
-      };
-    }
-
-    // Accept `manager`, `manager.js`, `register`, `register.js`, `require.resolve('foo/manager'), `register-panel`
-    if (path.match(/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
-      return {
-        name: path,
-        managerEntries: [path],
-        type: 'virtual',
-      };
-    }
-
+  if (name.match(/\/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
     return {
-      name: path,
-      type: 'presets',
-    };
-  }
-
-  try {
-    return {
-      name: resolveFrom(configDir, `${name}/preset`),
-      type: 'presets',
-    };
-    // eslint-disable-next-line no-empty
-  } catch (err) {}
-
-  const managerEntry =
-    safeResolveFrom(configDir, `${name}/manager`) || safeResolveFrom(configDir, `${name}/register`);
-  const previewAnnotation = safeResolveFrom(configDir, `${name}/preview`);
-  if (managerEntry || previewAnnotation) {
-    return {
-      name: `${name}_virtual`,
-      managerEntries: [managerEntry],
-      previewAnnotations: [previewAnnotation],
       type: 'virtual',
+      name,
+      managerEntries: [resolved],
+    };
+  }
+  if (name.match(/\/(preset)(\.(js|ts|tsx|jsx))?$/)) {
+    return {
+      type: 'presets',
+      name: resolved,
+    };
+  }
+
+  const path = name;
+  // when user provides full path, we don't need to do anything
+  const managerFile = safeResolve(`${path}/manager`);
+  const registerFile = safeResolve(`${path}/register`) || safeResolve(`${path}/register-panel`);
+  const previewFile = safeResolve(`${path}/preview`);
+  const presetFile = safeResolve(`${path}/preset`);
+
+  if (managerFile || registerFile || previewFile || presetFile) {
+    return {
+      type: 'virtual',
+      name: path,
+      // register file is the old way of registering addons
+      ...(managerFile || registerFile
+        ? { managerEntries: [managerFile, !presetFile && registerFile].filter(Boolean) }
+        : {}),
+      ...(previewFile ? { previewAnnotations: [previewFile] } : {}),
+      ...(presetFile ? { presets: [presetFile] } : {}),
     };
   }
 
   return {
-    name: resolveFrom(configDir, name),
     type: 'presets',
+    name: resolved,
   };
 };
 
@@ -154,19 +124,10 @@ const map =
         const { name } = resolveAddonName(configDir, item.name);
         return { ...item, name };
       }
-      const { name, managerEntries, previewAnnotations, type } = resolveAddonName(configDir, item);
-      if (type === 'virtual') {
-        return {
-          name,
-          type,
-          ...(managerEntries ? { managerEntries } : {}),
-          ...(previewAnnotations ? { previewAnnotations } : {}),
-        };
-      }
-      return resolveAddonName(configDir, name);
+      return resolveAddonName(configDir, item);
     } catch (err) {
       logger.error(
-        `Addon value should end in /manager or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
+        `Addon value should end in /manager or /preview or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
       );
     }
     return undefined;
