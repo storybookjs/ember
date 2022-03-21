@@ -95,19 +95,37 @@ export const DocsProvider: React.FC = ({ children }) => {
 
   let previewPromise: Promise<PreviewWeb<AnyFramework>>;
   const getPreview = () => {
+    const importFn = (importPath: Path) => {
+      console.log(knownCsfFiles, importPath);
+      return Promise.resolve(knownCsfFiles[importPath]);
+    };
+
     if (!previewPromise) {
       previewPromise = (async () => {
-        const preview = new PreviewWeb();
-        await preview.initialize({
-          getStoryIndex: () => storyIndex,
-          importFn: (importPath) => {
-            console.log(knownCsfFiles, importPath);
-            return Promise.resolve(knownCsfFiles[importPath]);
-          },
-          getProjectAnnotations: () => projectAnnotations,
-        });
+        // @ts-ignore
+        // eslint-disable-next-line no-undef
+        if (window.preview) {
+          // @ts-ignore
+          // eslint-disable-next-line no-undef
+          (window.preview as PreviewWeb<AnyFramework>).onStoriesChanged({
+            importFn,
+            storyIndex,
+          });
+        } else {
+          const preview = new PreviewWeb();
+          await preview.initialize({
+            getStoryIndex: () => storyIndex,
+            importFn,
+            getProjectAnnotations: () => projectAnnotations,
+          });
+          // @ts-ignore
+          // eslint-disable-next-line no-undef
+          window.preview = preview;
+        }
 
-        return preview;
+        // @ts-ignore
+        // eslint-disable-next-line no-undef
+        return window.preview;
       })();
     }
 
