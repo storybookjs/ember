@@ -5,14 +5,14 @@ import { Form } from '../form';
 import { ControlProps, DateValue, DateConfig } from './types';
 import { getControlId } from './helpers';
 
-const parseDate = (value: string) => {
+export const parseDate = (value: string) => {
   const [year, month, day] = value.split('-');
   const result = new Date();
   result.setFullYear(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
   return result;
 };
 
-const parseTime = (value: string) => {
+export const parseTime = (value: string) => {
   const [hours, minutes] = value.split(':');
   const result = new Date();
   result.setHours(parseInt(hours, 10));
@@ -20,7 +20,7 @@ const parseTime = (value: string) => {
   return result;
 };
 
-const formatDate = (value: Date | number) => {
+export const formatDate = (value: Date | number) => {
   const date = new Date(value);
   const year = `000${date.getFullYear()}`.slice(-4);
   const month = `0${date.getMonth() + 1}`.slice(-2);
@@ -28,7 +28,7 @@ const formatDate = (value: Date | number) => {
   return `${year}-${month}-${day}`;
 };
 
-const formatTime = (value: Date | number) => {
+export const formatTime = (value: Date | number) => {
   const date = new Date(value);
   const hours = `0${date.getHours()}`.slice(-2);
   const minutes = `0${date.getMinutes()}`.slice(-2);

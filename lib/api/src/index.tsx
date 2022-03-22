@@ -25,6 +25,7 @@ import { createContext } from './context';
 import Store, { Options } from './store';
 import getInitialState from './initial-state';
 import type { StoriesHash, Story, Root, Group } from './lib/stories';
+import type { ComposedRef, Refs } from './modules/refs';
 import { isGroup, isRoot, isStory } from './lib/stories';
 
 import * as provider from './modules/provider';
@@ -328,7 +329,7 @@ export function useStorybookApi(): API {
   return api;
 }
 
-export type { StoriesHash, Story, Root, Group };
+export type { StoriesHash, Story, Root, Group, ComposedRef, Refs };
 export { ManagerConsumer as Consumer, ManagerProvider as Provider, isGroup, isRoot, isStory };
 
 export interface EventMap {
