@@ -135,7 +135,7 @@ export const angular13: Parameters = {
 export const angular_modern_inline_rendering: Parameters = {
   ...baseAngular,
   name: 'angular_modern_inline_rendering',
-  additionalDeps: ['jest', 'expect', '@storybook/test-runner'],
+  additionalDeps: ['jest', '@storybook/test-runner'],
   mainOverrides: {
     features: {
       storyStoreV7: true,

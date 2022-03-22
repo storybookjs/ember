@@ -244,7 +244,7 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Run E2E tests
+          name: Run smoke tests
           command: yarn test:e2e-framework angular_modern_inline_rendering --test-runner --docs-mode
           no_output_timeout: 5m
   cra-bench:
