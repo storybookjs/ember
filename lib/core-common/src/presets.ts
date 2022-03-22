@@ -119,12 +119,10 @@ export const resolveAddonName = (
 const map =
   ({ configDir }: InterPresetOptions) =>
   (item: any) => {
+    const options = isObject(item) ? item.options || {} : {};
+    const name = isObject(item) ? item.name : item;
     try {
-      if (isObject(item)) {
-        const { name } = resolveAddonName(configDir, item.name);
-        return { ...item, name };
-      }
-      return resolveAddonName(configDir, item);
+      return { options, ...resolveAddonName(configDir, name) };
     } catch (err) {
       logger.error(
         `Addon value should end in /manager or /preview or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
