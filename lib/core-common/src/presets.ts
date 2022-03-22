@@ -97,6 +97,13 @@ export const resolveAddonName = (
   const previewFile = safeResolve(`${path}/preview`);
   const presetFile = safeResolve(`${path}/preset`);
 
+  if (!(managerFile || previewFile) && presetFile) {
+    return {
+      type: 'presets',
+      name: presetFile,
+    };
+  }
+
   if (managerFile || registerFile || previewFile || presetFile) {
     return {
       type: 'virtual',
@@ -119,10 +126,13 @@ export const resolveAddonName = (
 const map =
   ({ configDir }: InterPresetOptions) =>
   (item: any) => {
-    const options = isObject(item) ? item.options || {} : {};
+    const options = isObject(item) ? item.options || undefined : undefined;
     const name = isObject(item) ? item.name : item;
     try {
-      return { options, ...resolveAddonName(configDir, name) };
+      return {
+        ...(options ? { options } : {}),
+        ...resolveAddonName(configDir, name),
+      };
     } catch (err) {
       logger.error(
         `Addon value should end in /manager or /preview or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
