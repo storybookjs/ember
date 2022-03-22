@@ -5,7 +5,7 @@ Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
-    "ROOT/addons/docs/dist/esm/manager",
+    "ROOT/addons/docs/manager.js",
     "ROOT/addons/controls/manager.js",
     "ROOT/addons/controls/register.js",
     "ROOT/addons/a11y/manager.js",
@@ -14,7 +14,7 @@ Object {
     "ROOT/addons/actions/register.js",
     "ROOT/addons/backgrounds/manager.js",
     "ROOT/addons/backgrounds/register.js",
-    "ROOT/addons/interactions/dist/esm/manager.js",
+    "ROOT/addons/interactions/manager.js",
     "ROOT/addons/links/manager.js",
     "ROOT/addons/links/register.js",
     "ROOT/addons/storysource/dist/esm/manager.js",

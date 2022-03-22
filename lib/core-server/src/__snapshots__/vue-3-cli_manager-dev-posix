@@ -7,7 +7,7 @@ Object {
     "ROOT/lib/core-client/dist/esm/manager/index.js",
     "ROOT/addons/links/manager.js",
     "ROOT/addons/links/register.js",
-    "ROOT/addons/docs/dist/esm/manager",
+    "ROOT/addons/docs/manager.js",
     "ROOT/addons/controls/manager.js",
     "ROOT/addons/controls/register.js",
     "ROOT/addons/actions/manager.js",
@@ -22,7 +22,7 @@ Object {
     "ROOT/addons/measure/register.js",
     "ROOT/addons/outline/manager.js",
     "ROOT/addons/outline/register.js",
-    "ROOT/addons/interactions/dist/esm/manager.js",
+    "ROOT/addons/interactions/manager.js",
   ],
   "keys": Array [
     "name",
