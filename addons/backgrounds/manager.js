@@ -1,1 +1,1 @@
-module.exports = require('./dist/esm/manager');
+import './dist/esm/manager';
