@@ -80,7 +80,6 @@ export default async (options: Options & Record<string, any>): Promise<Configura
   const isProd = configType === 'PRODUCTION';
 
   const configs = [
-    ...(await presets.apply('previewAnnotations', [], options)),
     ...(await presets.apply('config', [], options)),
     loadPreviewOrConfigFile(options),
   ].filter(Boolean);
