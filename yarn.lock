@@ -6459,6 +6459,7 @@ __metadata:
   dependencies:
     "@storybook/addons": 6.5.0-alpha.49
     "@storybook/api": 6.5.0-alpha.49
+    "@storybook/client-logger": 6.5.0-alpha.49
     "@storybook/components": 6.5.0-alpha.49
     "@storybook/core-common": 6.5.0-alpha.49
     "@storybook/core-events": 6.5.0-alpha.49
