@@ -1,6 +1,6 @@
 {
   "name": "@storybook/channel-websocket",
-  "version": "6.5.0-alpha.48",
+  "version": "6.5.0-alpha.49",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,8 +40,8 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/channels": "6.5.0-alpha.48",
-    "@storybook/client-logger": "6.5.0-alpha.48",
+    "@storybook/channels": "6.5.0-alpha.49",
+    "@storybook/client-logger": "6.5.0-alpha.49",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "telejson": "^5.3.3"
@@ -49,6 +49,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5f3afb8cf4389c16be11a6e5099e902d16a82762",
+  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
   "sbmodern": "dist/modern/index.js"
 }

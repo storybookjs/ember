@@ -26,21 +26,47 @@ If you’d prefer to show top-level nodes as folders rather than roots, you can 
 
 <!-- prettier-ignore-end -->
 
-## Generating titles based on `__dirname`
+## Automatically generate titles
 
-As a CSF file is a JavaScript file, all exports (including the default export) can be generated dynamically. In particular you can use the `__dirname` variable to create the title based on the path name (this example uses the paths.macro):
+With CSF 3.0 files, you can choose to leave out a title and let it be inferred from the story's path on disk instead:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'common/component-story-dynamic-title.js.mdx',
+    'common/component-story-auto-title.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-If you need, you can also generate automatic titles for all your stories using a configuration object. See the [story loading](./overview.md#with-a-configuration-object) documentation to learn how you can use this feature.
+This is controlled by the way your stories are configured:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-configuration.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Given this configuration, the stories file `../src/components/MyComponent.stories.tsx` will get the title `components/MyComponent`.
+
+You can further customize the generated title by modifying the stories configuration.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-configuration-custom.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+This configuration would match a custom file pattern, and add a custom prefix of Foo to each generated title.
 
 ## Permalinking to stories
 

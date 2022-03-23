@@ -3,8 +3,7 @@ import { AnyFramework, StoryFn } from '@storybook/csf';
 
 import React from 'react';
 
-// @ts-ignore
-import HOC from '@storybook/svelte/src/client/docs/HOC.svelte';
+import HOC from '@storybook/svelte/templates/HOC.svelte';
 
 export const prepareForInline = (storyFn: StoryFn<AnyFramework>) => {
   const el = React.useRef(null);

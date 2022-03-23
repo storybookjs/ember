@@ -1,3 +1,10 @@
+## 6.5.0-alpha.49 (March 17, 2022)
+
+### Bug Fixes
+
+- Addon-docs/Svelte: Fix `HOC.svelte` reference ([#17731](https://github.com/storybookjs/storybook/pull/17731))
+- UI: Fix composition support in safari ([#17679](https://github.com/storybookjs/storybook/pull/17679))
+
 ## 6.5.0-alpha.48 (March 14, 2022)
 
 ### Features

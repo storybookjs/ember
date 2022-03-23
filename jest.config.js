@@ -77,6 +77,8 @@ module.exports = {
     '/generators/',
     '/dll/',
     '/__mocks__ /',
+    '/__mockdata__/',
+    '/__mocks-ng-workspace__/',
     '/__testfixtures__/',
     '^.*\\.stories\\.[jt]sx?$',
   ],
