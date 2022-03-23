@@ -66,12 +66,13 @@ interface ResolvedAddonVirtual {
   name: string;
   managerEntries?: string[];
   previewAnnotations?: string[];
-  presets?: string[];
+  presets?: (string | { name: string; options?: any })[];
 }
 
 export const resolveAddonName = (
   configDir: string,
-  name: string
+  name: string,
+  options: any
 ): ResolvedAddonPreset | ResolvedAddonVirtual => {
   const r = name.startsWith('/') ? safeResolve : safeResolveFrom.bind(null, configDir);
   const resolved = r(name);
@@ -113,7 +114,7 @@ export const resolveAddonName = (
         ? { managerEntries: [managerFile, !presetFile && registerFile].filter(Boolean) }
         : {}),
       ...(previewFile ? { previewAnnotations: [previewFile] } : {}),
-      ...(presetFile ? { presets: [presetFile] } : {}),
+      ...(presetFile ? { presets: [{ name: presetFile, options }] } : {}),
     };
   }
 
@@ -129,9 +130,10 @@ const map =
     const options = isObject(item) ? item.options || undefined : undefined;
     const name = isObject(item) ? item.name : item;
     try {
+      const resolved = resolveAddonName(configDir, name, options);
       return {
         ...(options ? { options } : {}),
-        ...resolveAddonName(configDir, name),
+        ...resolved,
       };
     } catch (err) {
       logger.error(
