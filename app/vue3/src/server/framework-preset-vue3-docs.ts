@@ -31,7 +31,7 @@ export function webpackFinal(webpackConfig: any = {}, options: Options) {
   return webpackConfig;
 }
 
-export const config: StorybookConfig['config'] = (entry = [], options) => {
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entry = [], options) => {
   if (!hasDocsOrControls(options)) return entry;
   return [...entry, findDistEsm(__dirname, 'client/docs/config')];
 };

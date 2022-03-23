@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/core-common';
 
-export const config: StorybookConfig['config'] = (entries = []) => [
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entries = []) => [
   ...entries,
   require.resolve('../client/preview/config'),
 ];
