@@ -28,6 +28,37 @@ export default {
         ],
       },
     },
+    mutuallyExclusiveA: { control: 'text', removeIf: 'mutuallyExclusiveB' },
+    mutuallyExclusiveB: { control: 'text', removeIf: 'mutuallyExclusiveA' },
+    colorMode: {
+      control: 'boolean',
+    },
+    dynamicText: {
+      removeIf: 'colorMode',
+      control: 'text',
+    },
+    dynamicColor: {
+      addIf: 'colorMode',
+      control: 'color',
+    },
+    advanced: {
+      control: 'boolean',
+    },
+    margin: {
+      control: 'number',
+      addIf: 'advanced',
+    },
+    padding: {
+      control: 'number',
+      addIf: 'advanced',
+    },
+    cornerRadius: {
+      control: 'number',
+      addIf: 'advanced',
+    },
+    someText: { control: 'text' },
+    subText: { control: 'text', addIf: 'someText' },
+    anotherText: { control: 'text', addIf: 'someText' },
   },
   parameters: {
     chromatic: { disable: true },

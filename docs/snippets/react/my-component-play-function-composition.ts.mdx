@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof MyComponent> = (args) => <MyComponent {...
 
 export const FirstStory = Template.bind({});
 FirstStory.play = async () => {
-  userEvent.type(screen.getByTestId('an-element'), 'example-value');
+  await userEvent.type(screen.getByTestId('an-element'), 'example-value');
 };
 
 export const SecondStory = Template.bind({});

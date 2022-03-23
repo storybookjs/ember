@@ -1,6 +1,6 @@
 {
   "name": "@storybook/server",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.50",
   "description": "Storybook for Server: View HTML snippets from a server in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,15 +45,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/api": "6.5.0-alpha.49",
-    "@storybook/client-api": "6.5.0-alpha.49",
-    "@storybook/core": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/node-logger": "6.5.0-alpha.49",
-    "@storybook/preview-web": "6.5.0-alpha.49",
-    "@storybook/store": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.50",
+    "@storybook/api": "6.5.0-alpha.50",
+    "@storybook/client-api": "6.5.0-alpha.50",
+    "@storybook/core": "6.5.0-alpha.50",
+    "@storybook/core-common": "6.5.0-alpha.50",
+    "@storybook/csf": "0.0.2--canary.507502b.0",
+    "@storybook/node-logger": "6.5.0-alpha.50",
+    "@storybook/preview-web": "6.5.0-alpha.50",
+    "@storybook/store": "6.5.0-alpha.50",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
@@ -76,6 +76,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "6cf4571e5a1200613de94aa066fe93f75aec6ad1",
   "sbmodern": "dist/modern/client/index.js"
 }
