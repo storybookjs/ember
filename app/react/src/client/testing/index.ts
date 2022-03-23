@@ -25,7 +25,9 @@ import type { StoriesWithPartialProps, TestingStory } from './types';
  *
  * @param projectAnnotations - e.g. (import * as projectAnnotations from '../.storybook/preview')
  */
-export function setGlobalConfig(projectAnnotations: ProjectAnnotations<ReactFramework>) {
+export function setGlobalConfig(
+  projectAnnotations: ProjectAnnotations<ReactFramework> | ProjectAnnotations<ReactFramework>[]
+) {
   originalSetGlobalConfig(projectAnnotations);
 }
 

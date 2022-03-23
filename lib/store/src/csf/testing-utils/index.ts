@@ -9,6 +9,7 @@ import {
   StoryContext,
   Parameters,
 } from '@storybook/csf';
+import { composeConfigs } from '@storybook/preview-web';
 
 import { prepareStory } from '../prepareStory';
 import { normalizeStory } from '../normalizeStory';
@@ -28,9 +29,11 @@ if (process.env.NODE_ENV === 'test') {
 let GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = {};
 
 export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
-  projectAnnotations: ProjectAnnotations<TFramework>
+  projectAnnotations: ProjectAnnotations<TFramework> | ProjectAnnotations<TFramework>[]
 ) {
-  GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = projectAnnotations;
+  GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = Array.isArray(projectAnnotations)
+    ? composeConfigs(projectAnnotations)
+    : projectAnnotations;
 }
 
 interface ComposeStory<TFramework extends AnyFramework = AnyFramework, TArgs extends Args = Args> {

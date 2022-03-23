@@ -1,5 +1,6 @@
 import { composeStory, composeStories } from '.';
 
+// Most integration tests for this functionality are located under examples/cra-ts-essentials
 describe('composeStory', () => {
   const meta = {
     title: 'Button',
@@ -24,7 +25,6 @@ describe('composeStory', () => {
     const composedStory = composeStory(Story, meta);
     expect(composedStory.args).toEqual({ ...Story.args, ...meta.args });
     expect(composedStory.parameters).toEqual(
-      // why is this erroring in TS?
       expect.objectContaining({ ...Story.parameters, ...meta.parameters })
     );
   });
@@ -48,8 +48,18 @@ describe('composeStories', () => {
     };
     const globalConfig = {};
     composeStories(module, globalConfig, composeConfigFn);
-    expect(composeConfigFn).toHaveBeenCalledWith(module.StoryOne, module.default, globalConfig);
-    expect(composeConfigFn).toHaveBeenCalledWith(module.StoryTwo, module.default, globalConfig);
+    expect(composeConfigFn).toHaveBeenCalledWith(
+      module.StoryOne,
+      module.default,
+      globalConfig,
+      'StoryOne'
+    );
+    expect(composeConfigFn).toHaveBeenCalledWith(
+      module.StoryTwo,
+      module.default,
+      globalConfig,
+      'StoryTwo'
+    );
   });
 
   test('should not call composeStoryFn for non-story exports', () => {
