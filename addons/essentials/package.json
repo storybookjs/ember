@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-essentials",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.50",
   "description": "Curated addons to bring out the best of Storybook",
   "keywords": [
     "addon",
@@ -39,25 +39,25 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addon-actions": "6.5.0-alpha.49",
-    "@storybook/addon-backgrounds": "6.5.0-alpha.49",
-    "@storybook/addon-controls": "6.5.0-alpha.49",
-    "@storybook/addon-docs": "6.5.0-alpha.49",
-    "@storybook/addon-measure": "6.5.0-alpha.49",
-    "@storybook/addon-outline": "6.5.0-alpha.49",
-    "@storybook/addon-toolbars": "6.5.0-alpha.49",
-    "@storybook/addon-viewport": "6.5.0-alpha.49",
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/api": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/node-logger": "6.5.0-alpha.49",
+    "@storybook/addon-actions": "6.5.0-alpha.50",
+    "@storybook/addon-backgrounds": "6.5.0-alpha.50",
+    "@storybook/addon-controls": "6.5.0-alpha.50",
+    "@storybook/addon-docs": "6.5.0-alpha.50",
+    "@storybook/addon-measure": "6.5.0-alpha.50",
+    "@storybook/addon-outline": "6.5.0-alpha.50",
+    "@storybook/addon-toolbars": "6.5.0-alpha.50",
+    "@storybook/addon-viewport": "6.5.0-alpha.50",
+    "@storybook/addons": "6.5.0-alpha.50",
+    "@storybook/api": "6.5.0-alpha.50",
+    "@storybook/core-common": "6.5.0-alpha.50",
+    "@storybook/node-logger": "6.5.0-alpha.50",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/vue": "6.5.0-alpha.49",
+    "@storybook/vue": "6.5.0-alpha.50",
     "@types/jest": "^26.0.16",
     "@types/webpack-env": "^1.16.0"
   },
@@ -120,6 +120,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "6cf4571e5a1200613de94aa066fe93f75aec6ad1",
   "sbmodern": "dist/modern/index.js"
 }
