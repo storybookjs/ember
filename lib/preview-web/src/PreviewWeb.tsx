@@ -429,7 +429,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
 
     // Show a spinner while we load the next story
     if (selection.viewMode === 'story') {
-      this.view.showPreparingStory();
+      this.view.showPreparingStory({ immediate: viewModeChanged });
     } else {
       this.view.showPreparingDocs();
     }

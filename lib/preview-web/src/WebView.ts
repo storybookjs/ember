@@ -150,9 +150,17 @@ export class WebView {
     this.docsRoot()?.setAttribute('hidden', 'true');
   }
 
-  showPreparingStory() {
+  showPreparingStory({ immediate = false }) {
     clearTimeout(this.preparingTimeout);
-    this.preparingTimeout = setTimeout(() => this.showMode(Mode.PREPARING_STORY), PREPARING_DELAY);
+
+    if (immediate) {
+      this.showMode(Mode.PREPARING_STORY);
+    } else {
+      this.preparingTimeout = setTimeout(
+        () => this.showMode(Mode.PREPARING_STORY),
+        PREPARING_DELAY
+      );
+    }
   }
 
   showPreparingDocs() {
