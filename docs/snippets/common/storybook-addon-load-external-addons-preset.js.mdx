@@ -2,7 +2,7 @@
 // my-preset/index.js
 
 function managerEntries(entry = []) {
-  return [...entry, require.resolve('my-other-addon/manager')];
+  return [...entry, require.resolve('my-other-addon/register')];
 }
 
 const config = (entry = [], options) => {

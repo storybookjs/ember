@@ -106,13 +106,20 @@ export const resolveAddonName = (
   }
 
   if (managerFile || registerFile || previewFile || presetFile) {
+    const managerEntries = [];
+
+    if (managerFile) {
+      managerEntries.push(managerFile);
+    }
+    // register file is the old way of registering addons
+    if (!managerFile && registerFile && !presetFile) {
+      managerEntries.push(registerFile);
+    }
+
     return {
       type: 'virtual',
       name: path,
-      // register file is the old way of registering addons
-      ...(managerFile || registerFile
-        ? { managerEntries: [managerFile, !presetFile && registerFile].filter(Boolean) }
-        : {}),
+      ...(managerEntries.length ? { managerEntries } : {}),
       ...(previewFile ? { previewAnnotations: [previewFile] } : {}),
       ...(presetFile ? { presets: [{ name: presetFile, options }] } : {}),
     };
