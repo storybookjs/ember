@@ -1,3 +1,13 @@
+## 6.5.0-alpha.51 (March 25, 2022)
+
+### Features
+
+- SyntaxHighlighter: Add prettier for code formatting ([#17746](https://github.com/storybookjs/storybook/pull/17746))
+
+### Maintenance
+
+- Build: Add main overrides to e2e config and possibility to run test runner ([#17778](https://github.com/storybookjs/storybook/pull/17778))
+
 ## 6.5.0-alpha.50 (March 23, 2022)
 
 ### Features
