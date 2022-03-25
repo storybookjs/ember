@@ -16,7 +16,7 @@ const LazySyntaxHighlighterWithFormatter = lazy(async () => {
 
 export const SyntaxHighlighter = (props: ComponentProps<typeof LazySyntaxHighlighter>) => (
   <Suspense fallback={<div />}>
-    {props.format ? (
+    {props.format !== false ? (
       <LazySyntaxHighlighterWithFormatter {...props} />
     ) : (
       <LazySyntaxHighlighter {...props} />

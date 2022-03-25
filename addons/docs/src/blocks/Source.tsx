@@ -51,7 +51,7 @@ const getStorySource = (storyId: StoryId, sourceContext: SourceContextProps): So
   const { sources } = sourceContext;
   // source rendering is async so source is unavailable at the start of the render cycle,
   // so we fail gracefully here without warning
-  return sources?.[storyId] || ['', false];
+  return sources?.[storyId] || { code: '', format: false };
 };
 
 const getSnippet = (snippet: string, story?: Story<any>): string => {
@@ -116,10 +116,10 @@ export const getSourceProps = (
   if (!source) {
     // just take the format from the first story, given how they're all concatinated together...
     // TODO: we should consider sending an event with all the sources separately, instead of concatenating them here
-    [, format] = getStorySource(storyIds[0], sourceContext);
+    ({ format } = getStorySource(storyIds[0], sourceContext));
     source = storyIds
       .map((storyId, idx) => {
-        const [storySource] = getStorySource(storyId, sourceContext);
+        const { code: storySource } = getStorySource(storyId, sourceContext);
         const storyObj = stories[idx] as Story;
         return getSnippet(storySource, storyObj);
       })

@@ -5,7 +5,10 @@ import type { SyntaxHighlighterFormatTypes } from '@storybook/components';
 import type { StoryId } from '@storybook/api';
 import { SNIPPET_RENDERED } from '../shared';
 
-export type SourceItem = [string, SyntaxHighlighterFormatTypes];
+export interface SourceItem {
+  code: string;
+  format: SyntaxHighlighterFormatTypes;
+}
 export type StorySources = Record<StoryId, SourceItem>;
 
 export interface SourceContextProps {
@@ -26,14 +29,14 @@ export const SourceContainer: FC<{}> = ({ children }) => {
       format: SyntaxHighlighterFormatTypes = false
     ) => {
       // optimization: if the source is the same, ignore the incoming event
-      if (sources[id] && sources[id][0] === newSource) {
+      if (sources[id] && sources[id].code === newSource) {
         return;
       }
 
       setSources((current) => {
         const newSources = {
           ...current,
-          [id]: [newSource, format] as SourceItem,
+          [id]: { code: newSource, format },
         };
 
         if (!deepEqual(current, newSources)) {
