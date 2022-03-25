@@ -64,6 +64,19 @@ export const react: Parameters = {
   additionalDeps: ['prop-types'],
 };
 
+export const react_18: Parameters = {
+  framework: 'react',
+  name: 'react_18',
+  version: 'rc',
+  generator: fromDeps('react@rc', 'react-dom@rc'),
+  additionalDeps: ['prop-types'],
+  mainOverrides: {
+    reactOptions: {
+      newRootApi: true,
+    },
+  },
+};
+
 export const react_typescript: Parameters = {
   framework: 'react',
   name: 'react_typescript',
