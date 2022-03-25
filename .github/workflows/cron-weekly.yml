@@ -1,0 +1,30 @@
+name: Markdown Links Check
+# runs every monday at 9 am
+on:
+  push:
+  # TODO: Change from push to schedule once the testing is done
+  # schedule:
+  #   - cron: "0 9 * * 1"
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        # checks all markdown files from important folders including all subfolders
+        with:
+          # only show errors that occur instead of successful links + errors
+          use-quiet-mode: 'yes'
+          # output full HTTP info for broken links
+          use-verbose-mode: 'yes'
+          config-file: '.github/workflows/markdown-link-check-config.json'
+          folder-path: 'addons, app, docs, lib'
+      - uses: actions/checkout@v2
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        # checks all markdown files from root but ignores subfolders
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.github/workflows/markdown-link-check-config.json'
+          max-depth: 0
