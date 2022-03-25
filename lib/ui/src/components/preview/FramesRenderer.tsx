@@ -1,7 +1,9 @@
 import React, { Fragment, FunctionComponent, useMemo, useEffect, useState } from 'react';
-import { Consumer, Combo } from '@storybook/api';
+import type { Combo } from '@storybook/api';
+import { Consumer } from '@storybook/api';
 import { Button, getStoryHref } from '@storybook/components';
-import { Global, CSSObject, styled } from '@storybook/theming';
+import { Global, styled } from '@storybook/theming';
+import type { CSSObject } from '@storybook/theming';
 import { IFrame } from './iframe';
 import { FramesRendererProps } from './utils/types';
 import { stringifyQueryParams } from './utils/stringifyQueryParams';
@@ -17,7 +19,6 @@ const getActive = (refId: FramesRendererProps['refId']) => {
 const SkipToSidebarLink = styled(Button)(({ theme }) => ({
   display: 'none',
   '@media (min-width: 600px)': {
-    display: 'block',
     position: 'absolute',
     top: 10,
     right: 15,
@@ -55,12 +56,13 @@ export const FramesRenderer: FunctionComponent<FramesRendererProps> = ({
   const active = getActive(refId);
 
   const styles = useMemo<CSSObject>(() => {
+    // add #root to make the selector high enough in specificity
     return {
-      '[data-is-storybook="false"]': {
-        visibility: 'hidden',
+      '#root [data-is-storybook="false"]': {
+        display: 'none',
       },
-      '[data-is-storybook="true"]': {
-        visibility: 'visible',
+      '#root [data-is-storybook="true"]': {
+        display: 'block',
       },
     };
   }, []);

@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { VueLoaderPlugin } from 'vue-loader';
-import type { Configuration } from 'webpack';
+import { findDistEsm } from '@storybook/core-common';
 
-import { findDistEsm, Options, TypescriptConfig, StorybookConfig } from '@storybook/core-common';
+import type { Configuration } from 'webpack';
+import type { Options, TypescriptConfig, StorybookConfig } from '@storybook/core-common';
 
 export async function webpack(config: Configuration, { presets }: Options) {
   const typescriptOptions = await presets.apply<TypescriptConfig>('typescript', {} as any);

@@ -18,5 +18,6 @@ module.exports = {
   },
   features: {
     interactionsDebugger: true,
+    buildStoriesJson: true,
   },
 };

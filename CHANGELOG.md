@@ -1,25 +1,145 @@
+## 6.5.0-alpha.51 (March 25, 2022)
+
+### Features
+
+- SyntaxHighlighter: Add prettier for code formatting ([#17746](https://github.com/storybookjs/storybook/pull/17746))
+
+### Maintenance
+
+- Build: Add main overrides to e2e config and possibility to run test runner ([#17778](https://github.com/storybookjs/storybook/pull/17778))
+
+## 6.5.0-alpha.50 (March 23, 2022)
+
+### Features
+
+- Controls: Add conditional controls ([#17536](https://github.com/storybookjs/storybook/pull/17536))
+- Core: Add headers to enable SharedArrayBuffer in stories ([#16970](https://github.com/storybookjs/storybook/pull/16970))
+- UI: Button for toggling addons panel ([#17714](https://github.com/storybookjs/storybook/pull/17714))
+
+### Bug Fixes
+
+- Core: Ensure simultaneous first access to stories.json waits ([#17785](https://github.com/storybookjs/storybook/pull/17785))
+- Reload iframe when the url changes ([#17644](https://github.com/storybookjs/storybook/pull/17644))
+- UI: Fix brand logo layout shift ([#16467](https://github.com/storybookjs/storybook/pull/16467))
+- UI: Fix nesting issue for refs in sidebar component ([#17726](https://github.com/storybookjs/storybook/pull/17726))
+- Core: Fix filesystem cache missing return ([#17748](https://github.com/storybookjs/storybook/pull/17748))
+- Addon-docs: Fix binding of the `renderStoryToElement` passed to `DocsRender` ([#17742](https://github.com/storybookjs/storybook/pull/17742))
+
+### Maintenance
+
+- Addon-docs/Vue: Add tests for sourceDecorator vnodeToString ([#17764](https://github.com/storybookjs/storybook/pull/17764))
+- Controls: Date control tests ([#17765](https://github.com/storybookjs/storybook/pull/17765))
+- Remove mock directories from Jest test coverage ([#17771](https://github.com/storybookjs/storybook/pull/17771))
+- fix dts-localize script ([#17747](https://github.com/storybookjs/storybook/pull/17747))
+
+## 6.5.0-alpha.49 (March 17, 2022)
+
+### Bug Fixes
+
+- Addon-docs/Svelte: Fix `HOC.svelte` reference ([#17731](https://github.com/storybookjs/storybook/pull/17731))
+- UI: Fix composition support in safari ([#17679](https://github.com/storybookjs/storybook/pull/17679))
+
+## 6.5.0-alpha.48 (March 14, 2022)
+
+### Features
+
+- Addon-docs: Auto-disable docs presets if docs/controls unused ([#17697](https://github.com/storybookjs/storybook/pull/17697))
+
+### Bug Fixes
+
+- Web-components: Fix CSS class usage in CLI template ([#17702](https://github.com/storybookjs/storybook/pull/17702))
+
+### Maintenance
+
+- Addon-docs: Refactor docs support into individual framework packages ([#17695](https://github.com/storybookjs/storybook/pull/17695))
+
+## 6.5.0-alpha.47 (March 10, 2022)
+
+### Bug Fixes
+
+- Webpack4: Fix useExports for angular-cli ([#17674](https://github.com/storybookjs/storybook/pull/17674))
+- Core: Ensure that we do not render a story twice if re-rendered during preparing ([#17599](https://github.com/storybookjs/storybook/pull/17599))
+- Addon-docs: DocsPage story order should match the index ([#17669](https://github.com/storybookjs/storybook/pull/17669))
+- Core: Fix staticDirs path issue on Windows ([#17641](https://github.com/storybookjs/storybook/pull/17641))
+- Angular: Set ForkTsCheckerWebpackPlugin to async ([#17389](https://github.com/storybookjs/storybook/pull/17389))
+- Core: Fix core.builder check ([#17606](https://github.com/storybookjs/storybook/pull/17606))
+
+### Maintenance
+
+- Examples: Build stories.json for examples that support it ([#17670](https://github.com/storybookjs/storybook/pull/17670))
+- Core: Refactor preview rendering out of `PreviewWeb` ([#17598](https://github.com/storybookjs/storybook/pull/17598))
+- Prevent lint hook from running on all files ([#17662](https://github.com/storybookjs/storybook/pull/17662))
+- TypeScript: Change imports of types to be prefixed ([#17627](https://github.com/storybookjs/storybook/pull/17627))
+- Build: Give linting sub-commands a directory to run against ([#17545](https://github.com/storybookjs/storybook/pull/17545))
+- TypeScript: remove unnecessary 'as any' ([#17595](https://github.com/storybookjs/storybook/pull/17595))
+
+### Dependency Upgrades
+
+- Update shelljs dependency version ([#17602](https://github.com/storybookjs/storybook/pull/17602))
+- Remove unused `uuid` that's also deprecated ([#17615](https://github.com/storybookjs/storybook/pull/17615))
+
+## 6.5.0-alpha.46 (March 5, 2022)
+
+### Bug Fixes
+
+- Addon-interactions: Use 'global' package instead of `global` ([#17614](https://github.com/storybookjs/storybook/pull/17614))
+
+## 6.5.0-alpha.45 (March 2, 2022)
+
+### Bug Fixes
+
+- CSF3: Fix Auto-title to respect file system capitalization ([#17574](https://github.com/storybookjs/storybook/pull/17574))
+
+### Maintenance
+
+- Core: Remove unused babel dependencies ([#17425](https://github.com/storybookjs/storybook/pull/17425))
+
+## 6.5.0-alpha.44 (February 28, 2022)
+
+### Dependency Upgrades
+
+- Fix mdx-csf dependencies to canary dist-tag ([#17592](https://github.com/storybookjs/storybook/pull/17592))
+
+## 6.5.0-alpha.43 (February 28, 2022)
+
+### Features
+
+- Addon-docs: MDX2 support ([#17515](https://github.com/storybookjs/storybook/pull/17515))
+
+### Bug Fixes
+
+- Core: Fix global render fn ([#17577](https://github.com/storybookjs/storybook/pull/17577))
+- Addon-interactions: Mock window in browser environments ([#17535](https://github.com/storybookjs/storybook/pull/17535))
+
+## 6.5.0-alpha.42 (February 25, 2022)
+
+### Bug Fixes
+
+- Controls/Essentials/Interactions: Add support for main.cjs/mjs/tsx files ([#17524](https://github.com/storybookjs/storybook/pull/17524))
+- Addon-docs: Fix preset handling for builder with options ([#17544](https://github.com/storybookjs/storybook/pull/17544))
+
 ## 6.5.0-alpha.41 (February 22, 2022)
 
 ### Features
 
-* Addon-Outline: add 'o' keyboard shortcut to toggle the outline addon ([#17530](https://github.com/storybookjs/storybook/pull/17530))
+- Addon-Outline: add 'o' keyboard shortcut to toggle the outline addon ([#17530](https://github.com/storybookjs/storybook/pull/17530))
 
 ### Bug Fixes
 
-* Addon-docs: Ensure that __DOCS_CONTEXT__ cannot be undefined ([#17251](https://github.com/storybookjs/storybook/pull/17251))
-* Addon-docs: Account for non-string types when converting enums ([#15822](https://github.com/storybookjs/storybook/pull/15822))
-* Addon-actions: Don't override undefined args ([#17505](https://github.com/storybookjs/storybook/pull/17505))
+- Addon-docs: Ensure that **DOCS_CONTEXT** cannot be undefined ([#17251](https://github.com/storybookjs/storybook/pull/17251))
+- Addon-docs: Account for non-string types when converting enums ([#15822](https://github.com/storybookjs/storybook/pull/15822))
+- Addon-actions: Don't override undefined args ([#17505](https://github.com/storybookjs/storybook/pull/17505))
 
 ## 6.5.0-alpha.40 (February 19, 2022)
 
 ### Features
 
-* Webpack5: Add lazy compilation ([#17501](https://github.com/storybookjs/storybook/pull/17501))
+- Webpack5: Add lazy compilation ([#17501](https://github.com/storybookjs/storybook/pull/17501))
 
 ### Maintenance
 
-* Build: Fix CRA repro generator and e2e test in PnP mode ([#17375](https://github.com/storybookjs/storybook/pull/17375))
-* UI: Add a custom title story for heading component ([#17487](https://github.com/storybookjs/storybook/pull/17487))
+- Build: Fix CRA repro generator and e2e test in PnP mode ([#17375](https://github.com/storybookjs/storybook/pull/17375))
+- UI: Add a custom title story for heading component ([#17487](https://github.com/storybookjs/storybook/pull/17487))
 
 ## 6.5.0-alpha.39 (February 11, 2022)
 

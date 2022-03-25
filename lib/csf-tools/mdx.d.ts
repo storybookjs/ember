@@ -1,1 +1,2 @@
-export * from './dist/ts3.9/mdx/index.d';
+declare module '@mdx-js/loader';
+export * from '@storybook/mdx1-csf';

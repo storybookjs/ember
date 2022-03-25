@@ -66,12 +66,20 @@ export async function useStatics(router: any, options: Options) {
 }
 
 export const parseStaticDir = async (arg: string) => {
-  // Split on ':' only if not followed by '\', for Windows compatibility (e.g. 'C:\some\dir')
-  const [rawDir, target = '/'] = arg.split(/:(?!\\)/);
+  // Split on last index of ':', for Windows compatibility (e.g. 'C:\some\dir:\foo')
+  const lastColonIndex = arg.lastIndexOf(':');
+  const isWindowsAbsolute = path.win32.isAbsolute(arg);
+  const isWindowsRawDirOnly = isWindowsAbsolute && lastColonIndex === 1; // e.g. 'C:\some\dir'
+  const splitIndex = lastColonIndex !== -1 && !isWindowsRawDirOnly ? lastColonIndex : arg.length;
+
+  const targetRaw = arg.substring(splitIndex + 1) || '/';
+  const target = targetRaw.split(path.sep).join(path.posix.sep); // Ensure target has forward-slash path
+
+  const rawDir = arg.substring(0, splitIndex);
   const staticDir = path.isAbsolute(rawDir) ? rawDir : `./${rawDir}`;
   const staticPath = path.resolve(staticDir);
   const targetDir = target.replace(/^\/?/, './');
-  const targetEndpoint = targetDir.substr(1);
+  const targetEndpoint = targetDir.substring(1);
 
   if (!(await pathExists(staticPath))) {
     throw new Error(

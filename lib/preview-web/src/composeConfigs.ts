@@ -1,6 +1,7 @@
-import { AnyFramework } from '@storybook/csf';
-import { combineParameters, ModuleExports } from '@storybook/store';
-import { WebProjectAnnotations } from './types';
+import type { AnyFramework } from '@storybook/csf';
+import { combineParameters } from '@storybook/store';
+import type { ModuleExports } from '@storybook/store';
+import type { WebProjectAnnotations } from './types';
 
 function getField(moduleExportList: ModuleExports[], field: string): any[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);
@@ -15,7 +16,7 @@ function getObjectField(moduleExportList: ModuleExports[], field: string): Recor
 }
 
 function getSingletonField(moduleExportList: ModuleExports[], field: string): any {
-  return getField(moduleExportList, field)[0];
+  return getField(moduleExportList, field).pop();
 }
 
 export function composeConfigs<TFramework extends AnyFramework>(
@@ -37,7 +38,6 @@ export function composeConfigs<TFramework extends AnyFramework>(
     globalTypes: getObjectField(moduleExportList, 'globalTypes'),
     loaders: getArrayField(moduleExportList, 'loaders'),
     render: getSingletonField(moduleExportList, 'render'),
-    play: getSingletonField(moduleExportList, 'play'),
     renderToDOM: getSingletonField(moduleExportList, 'renderToDOM'),
     applyDecorators: getSingletonField(moduleExportList, 'applyDecorators'),
   };

@@ -1,5 +1,6 @@
 import path from 'path';
-import { getInterpretedFile, serverRequire, Options } from '@storybook/core-common';
+import { getInterpretedFile, serverRequire } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 
 export async function getPreviewBuilder(configDir: Options['configDir']) {
   const main = path.resolve(configDir, 'main');

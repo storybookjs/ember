@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
 import compression from 'compression';
 
-import { Builder, logConfig, Options, StorybookConfig } from '@storybook/core-common';
+import type { Builder, Options, StorybookConfig } from '@storybook/core-common';
+import { logConfig } from '@storybook/core-common';
 
 import { getMiddleware } from './utils/middleware';
 import { getServerAddresses } from './utils/server-address';
@@ -32,6 +33,10 @@ export async function storybookDevServer(options: Options) {
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    // These headers are required to enable SharedArrayBuffer
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
+    res.header('Cross-Origin-Opener-Policy', 'same-origin');
+    res.header('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
   });
 

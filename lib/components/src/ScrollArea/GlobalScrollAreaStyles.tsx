@@ -1,5 +1,6 @@
 import React from 'react';
-import { Global, Theme, CSSObject, keyframes } from '@storybook/theming';
+import { Global, keyframes } from '@storybook/theming';
+import type { Theme, CSSObject } from '@storybook/theming';
 
 const hsResizeObserverDummyAnimation = keyframes`0%{z-index:0}to{z-index:-1}`;
 

@@ -69,6 +69,34 @@ You can also pass these environment variables when you are [building your Storyb
 
 Then they'll be hardcoded to the static version of your Storybook.
 
+
+### Using Storybook configuration
+
+Additionally, you can extend your Storybook configuration file (i.e., [`.storybook/main.js`](../configure/overview.md#configure-story-rendering)) and provide a configuration field that you can use to define specific variables (e.g., API URLs). For example:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-env-field-config.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+When Storybook loads, it will enable you to access them in your stories similar as you would do if you were working with an `env` file:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/my-component-env-var-config.js.mdx',
+    'common/my-component-env-var-config.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 ### Using environment variables to choose the browser
 
 Storybook allows you to choose the browser you want to preview your stories. Either through a `.env` file entry or directly in your `storybook` script.

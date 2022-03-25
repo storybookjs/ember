@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.5.0-alpha.41",
+  "version": "6.5.0-alpha.51",
   "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
@@ -41,17 +41,16 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.41",
-    "@storybook/api": "6.5.0-alpha.41",
-    "@storybook/client-logger": "6.5.0-alpha.41",
-    "@storybook/components": "6.5.0-alpha.41",
-    "@storybook/router": "6.5.0-alpha.41",
-    "@storybook/source-loader": "6.5.0-alpha.41",
-    "@storybook/theming": "6.5.0-alpha.41",
+    "@storybook/addons": "6.5.0-alpha.51",
+    "@storybook/api": "6.5.0-alpha.51",
+    "@storybook/client-logger": "6.5.0-alpha.51",
+    "@storybook/components": "6.5.0-alpha.51",
+    "@storybook/router": "6.5.0-alpha.51",
+    "@storybook/source-loader": "6.5.0-alpha.51",
+    "@storybook/theming": "6.5.0-alpha.51",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
-    "prettier": ">=2.2.1 <=2.3.0",
     "prop-types": "^15.7.2",
     "react-syntax-highlighter": "^15.4.5",
     "regenerator-runtime": "^0.13.7"
@@ -75,7 +74,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "10663a4c9ea6c04a04047b5bb22254d6b64201c2",
+  "gitHead": "cfcdc7fb74d3cf60eae8dd0b5a626d67ed180d42",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",

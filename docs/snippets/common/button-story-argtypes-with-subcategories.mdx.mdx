@@ -1,0 +1,45 @@
+```md
+<!-- Button.stories.mdx -->
+
+import { ArgsTable, Meta, Story } from '@storybook/addon-docs';
+
+import { Button } from './Button';
+
+<Meta
+  title="Button"
+  component={Button}
+  argTypes={{
+    backgroundColor: {
+      control: 'color',
+      table: {
+        category: 'Colors',
+        // Assigns the argTypes to a specific subcategory
+        subcategory: 'Button colors',
+      },
+    },
+    primary: {
+      table: {
+        category: 'Colors',
+        subcategory: 'Button style',
+      },
+    },
+    label: {
+      table: {
+        category: 'Text',
+        subcategory: 'Button contents',
+      },
+    },
+    onClick: {
+      table: {
+        category: 'Events',
+        subcategory: 'Button Events',
+      },
+    },
+    size: {
+      table: {
+        category: 'Sizes',
+      },
+    },
+  }}
+/>
+```

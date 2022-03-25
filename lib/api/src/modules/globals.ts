@@ -1,9 +1,9 @@
 import { SET_GLOBALS, UPDATE_GLOBALS, GLOBALS_UPDATED } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import deepEqual from 'fast-deep-equal';
-import { Globals, GlobalTypes } from '@storybook/csf';
+import type { Globals, GlobalTypes } from '@storybook/csf';
 
-import { ModuleFn } from '../index';
+import type { ModuleFn } from '../index';
 
 import { getEventMetadata } from '../lib/events';
 

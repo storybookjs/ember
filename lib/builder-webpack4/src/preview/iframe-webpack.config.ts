@@ -18,13 +18,12 @@ import {
   es6Transpiler,
   handlebars,
   interpolate,
-  Options,
   toImportFn,
   normalizeStories,
   loadPreviewOrConfigFile,
   readTemplate,
-  CoreConfig,
 } from '@storybook/core-common';
+import type { Options, CoreConfig } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
 import { useBaseTsSupport } from './useBaseTsSupport';
@@ -258,7 +257,7 @@ export default async (options: Options & Record<string, any>): Promise<Configura
       },
       runtimeChunk: true,
       sideEffects: true,
-      usedExports: isProd,
+      usedExports: true,
       moduleIds: 'named',
       minimizer: isProd
         ? [

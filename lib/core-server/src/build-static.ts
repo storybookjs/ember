@@ -3,22 +3,20 @@ import cpy from 'cpy';
 import fs from 'fs-extra';
 import path from 'path';
 import dedent from 'ts-dedent';
+import global from 'global';
 
 import { logger } from '@storybook/node-logger';
 
-import {
-  loadAllPresets,
+import type {
   LoadOptions,
   CLIOptions,
   BuilderOptions,
   Options,
   Builder,
   StorybookConfig,
-  cache,
-  normalizeStories,
-  logConfig,
   CoreConfig,
 } from '@storybook/core-common';
+import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
@@ -92,6 +90,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   }
 
   const features = await presets.apply<StorybookConfig['features']>('features');
+  global.FEATURES = features;
+
   if (features?.buildStoriesJson || features?.storyStoreV7) {
     const directories = {
       configDir: options.configDir,

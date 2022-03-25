@@ -96,7 +96,7 @@ By default, Storyshots detects your project's framework. If you run into a situa
 
 <!-- prettier-ignore-end -->
 
-These are the frameworks currently supported by Storyshots: `angular`, `html`, `preact`, `rax`, `react`, `react-native`, `riot`, `svelte`, `vue`, `vue3`, and `web-components`.
+These are the frameworks currently supported by Storyshots: `angular`, `html`, `preact`, `react`, `react-native`, `svelte`, `vue`, `vue3`, and `web-components`.
 
 ### Additional customization
 

@@ -1,8 +1,8 @@
 import stable from 'stable';
 import dedent from 'ts-dedent';
-import { Comparator, StorySortParameter, StorySortParameterV7 } from '@storybook/addons';
+import type { Comparator, StorySortParameter, StorySortParameterV7 } from '@storybook/addons';
 import { storySort } from './storySort';
-import { Story, StoryIndexEntry, Path, Parameters } from './types';
+import type { Story, StoryIndexEntry, Path, Parameters } from './types';
 
 const sortStoriesCommon = (
   stories: StoryIndexEntry[],

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import { logger } from '@storybook/node-logger';
-import { Stats } from 'webpack';
+import type { Stats } from 'webpack';
 
 import fs from 'fs-extra';
 
