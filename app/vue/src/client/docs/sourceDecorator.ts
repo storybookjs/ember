@@ -24,7 +24,6 @@ export const skipSourceRender = (context: StoryContext<VueFramework>) => {
 
 export const sourceDecorator = (storyFn: any, context: StoryContext<VueFramework>) => {
   const story = storyFn();
-  console.log({ story });
 
   // See ../react/jsxDecorator.tsx
   if (skipSourceRender(context)) {
@@ -53,24 +52,7 @@ export const sourceDecorator = (storyFn: any, context: StoryContext<VueFramework
 
         const code = vnodeToString(storyNode._vnode);
 
-        const emitFormattedTemplate = async () => {
-          const prettier = await import('prettier/standalone');
-          const prettierHtml = await import('prettier/parser-html');
-
-          channel.emit(
-            SNIPPET_RENDERED,
-            (context || {}).id,
-            prettier.format(`<template>${code}</template>`, {
-              parser: 'vue',
-              plugins: [prettierHtml],
-              // Because the parsed vnode missing spaces right before/after the surround tag,
-              // we always get weird wrapped code without this option.
-              htmlWhitespaceSensitivity: 'ignore',
-            })
-          );
-        };
-
-        emitFormattedTemplate();
+        channel.emit(SNIPPET_RENDERED, (context || {}).id, `<template>${code}</template>`, 'vue');
       } catch (e) {
         logger.warn(`Failed to generate dynamic story source: ${e}`);
       }
