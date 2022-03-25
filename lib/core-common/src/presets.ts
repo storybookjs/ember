@@ -92,7 +92,8 @@ export const resolveAddonName = (
   }
 
   const path = name;
-  // when user provides full path, we don't need to do anything
+
+  // when user provides full path, we don't need to do anything!
   const managerFile = safeResolve(`${path}/manager`);
   const registerFile = safeResolve(`${path}/register`) || safeResolve(`${path}/register-panel`);
   const previewFile = safeResolve(`${path}/preview`);
