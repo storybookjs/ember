@@ -18,6 +18,7 @@ import type {
 } from '@storybook/core-common';
 import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
 
+import prompts from 'prompts';
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
 import {
@@ -143,7 +144,16 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
         options: fullOptions,
       });
 
-  const [managerStats, previewStats] = await Promise.all([manager, preview]);
+  const [managerStats, previewStats] = await Promise.all([
+    manager.catch(async (err) => {
+      await previewBuilder.bail();
+      throw err;
+    }),
+    preview.catch(async (err) => {
+      await managerBuilder.bail();
+      throw err;
+    }),
+  ]);
 
   if (options.webpackStatsJson) {
     const target = options.webpackStatsJson === true ? options.outputDir : options.webpackStatsJson;
