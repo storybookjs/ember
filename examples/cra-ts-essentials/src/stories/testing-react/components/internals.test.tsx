@@ -43,24 +43,13 @@ test('should pass with decorators that need addons channel', () => {
 });
 
 describe('Unsupported formats', () => {
-  test('should throw error StoryFn.story notation', () => {
+  test('should throw error if story is undefined', () => {
     const UnsupportedStory = () => <div>hello world</div>;
     UnsupportedStory.story = { parameters: {} };
 
     const UnsupportedStoryModule: any = {
       default: {},
-      UnsupportedStory,
-    };
-
-    expect(() => {
-      composeStories(UnsupportedStoryModule);
-    }).toThrow();
-  });
-
-  test('should throw error with non component stories', () => {
-    const UnsupportedStoryModule: any = {
-      default: {},
-      UnsupportedStory: 123,
+      UnsupportedStory: undefined,
     };
 
     expect(() => {

@@ -69,14 +69,14 @@ export function composeStory<
 
   const normalizedComponentAnnotations = normalizeComponentAnnotations(componentAnnotations);
 
-  const storyExportsName =
+  const storyName =
     exportsName ||
     storyAnnotations.storyName ||
     storyAnnotations.story?.name ||
     storyAnnotations.name;
 
   const normalizedStory = normalizeStory(
-    storyExportsName,
+    storyName,
     storyAnnotations,
     normalizedComponentAnnotations
   );
@@ -105,7 +105,7 @@ export function composeStory<
     return story.unboundStoryFn(context as StoryContext);
   };
 
-  composedStory.storyName = storyAnnotations.storyName || storyAnnotations.name;
+  composedStory.storyName = storyName;
   composedStory.args = story.initialArgs;
   composedStory.play = story.playFunction as ComposedStoryPlayFn;
   composedStory.parameters = story.parameters;
