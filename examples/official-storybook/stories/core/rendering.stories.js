@@ -53,3 +53,8 @@ ArgsChange.decorators = [
     return <StoryFn />;
   },
 ];
+
+// Ensure that this story gets focus when browsed to
+//   see https://github.com/storybookjs/storybook/issues/16847
+// eslint-disable-next-line jsx-a11y/no-autofocus
+export const AutoFocus = () => <input autoFocus />;

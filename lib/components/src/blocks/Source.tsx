@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { ComponentProps, FunctionComponent } from 'react';
 import { styled, ThemeProvider, convert, themes } from '@storybook/theming';
 import { EmptyBlock } from './EmptyBlock';
 
@@ -31,7 +31,7 @@ interface SourceErrorProps {
 interface SourceCodeProps {
   language?: string;
   code?: string;
-  format?: boolean;
+  format?: ComponentProps<typeof SyntaxHighlighter>['format'];
   dark?: boolean;
 }
 
