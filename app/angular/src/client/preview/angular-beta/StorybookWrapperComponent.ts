@@ -98,39 +98,13 @@ export const createStorybookWrapperComponent = (
         this.storyComponentViewContainerRef.injector.get(ChangeDetectorRef).markForCheck();
         this.changeDetectorRef.detectChanges();
 
-        // Once target component has been initialized, the storyProps$ observable keeps target component inputs up to date
+        // Once target component has been initialized, the storyProps$ observable keeps target component properties than are not Input|Output up to date
         this.storyComponentPropsSubscription = this.storyProps$
           .pipe(
             skip(1),
             map((props) => {
-              // removes component output in props
-              const outputsKeyToRemove = ngComponentInputsOutputs.outputs.map(
-                (o) => o.templateName
-              );
-              return Object.entries(props).reduce(
-                (prev, [key, value]) => ({
-                  ...prev,
-                  ...(!outputsKeyToRemove.includes(key) && {
-                    [key]: value,
-                  }),
-                }),
-                {} as ICollection
-              );
-            }),
-            map((props) => {
-              // In case a component uses an input with `bindingPropertyName` (ex: @Input('name'))
-              // find the value of the local propName in the component Inputs
-              // otherwise use the input key
-              return Object.entries(props).reduce((prev, [propKey, value]) => {
-                const input = ngComponentInputsOutputs.inputs.find(
-                  (o) => o.templateName === propKey
-                );
-
-                return {
-                  ...prev,
-                  ...(input ? { [input.propName]: value } : { [propKey]: value }),
-                };
-              }, {} as ICollection);
+              const propsKeyToKeep = getNonInputsOutputsProps(ngComponentInputsOutputs, props);
+              return propsKeyToKeep.reduce((acc, p) => ({ ...acc, [p]: props[p] }), {});
             })
           )
           .subscribe((props) => {
