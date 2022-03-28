@@ -67,6 +67,9 @@ export function composeStory<
     throw new Error('Expected a story but received undefined.');
   }
 
+  // @TODO: Support auto title
+  // eslint-disable-next-line no-param-reassign
+  componentAnnotations.title = componentAnnotations.title ?? 'ComposedStory';
   const normalizedComponentAnnotations = normalizeComponentAnnotations(componentAnnotations);
 
   const storyName =
