@@ -1,4 +1,4 @@
-import { composeStory, composeStories } from '.';
+import { composeStory, composeStories } from './index';
 
 // Most integration tests for this functionality are located under examples/cra-ts-essentials
 describe('composeStory', () => {
