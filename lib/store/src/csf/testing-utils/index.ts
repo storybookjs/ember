@@ -20,12 +20,6 @@ import type { CSFExports, TestingStoryPlayFn } from './types';
 
 export * from './types';
 
-if (process.env.NODE_ENV === 'test') {
-  // eslint-disable-next-line global-require
-  const { default: addons, mockChannel } = require('@storybook/addons');
-  addons.setChannel(mockChannel());
-}
-
 let GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = {};
 
 export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
