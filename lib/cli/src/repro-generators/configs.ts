@@ -1,4 +1,5 @@
-import { SupportedFrameworks } from '../project_types';
+import type { StorybookConfig } from '@storybook/core-common';
+import type { SupportedFrameworks } from '../project_types';
 
 export interface Parameters {
   framework: SupportedFrameworks;
@@ -14,6 +15,8 @@ export interface Parameters {
   additionalDeps?: string[];
   /** Add typescript dependency and creates a tsconfig.json file */
   typescript?: boolean;
+  /** Merge configurations to main.js before running the tests */
+  mainOverrides?: Partial<StorybookConfig> & Record<string, any>;
 }
 
 const fromDeps = (...args: string[]): string =>
@@ -127,6 +130,18 @@ export const angular13: Parameters = {
   ...baseAngular,
   name: 'angular13',
   version: '13.1.x',
+};
+
+export const angular_modern_inline_rendering: Parameters = {
+  ...baseAngular,
+  name: 'angular_modern_inline_rendering',
+  additionalDeps: ['jest', '@storybook/test-runner'],
+  mainOverrides: {
+    features: {
+      storyStoreV7: true,
+      modernInlineRender: true,
+    },
+  },
 };
 
 export const angular: Parameters = baseAngular;
