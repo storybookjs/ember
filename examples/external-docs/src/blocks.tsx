@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 
-import { PreviewWeb } from '@storybook/preview-web';
+import { Preview } from '@storybook/preview-web';
 import { Path, ModuleExports, StoryIndex } from '@storybook/store';
 import { toId, AnyFramework, ComponentTitle, StoryId } from '@storybook/csf';
 
@@ -93,7 +93,7 @@ export const DocsProvider: React.FC = ({ children }) => {
     };
   };
 
-  let previewPromise: Promise<PreviewWeb<AnyFramework>>;
+  let previewPromise: Promise<Preview<AnyFramework>>;
   const getPreview = () => {
     const importFn = (importPath: Path) => {
       console.log(knownCsfFiles, importPath);
@@ -112,7 +112,7 @@ export const DocsProvider: React.FC = ({ children }) => {
             storyIndex,
           });
         } else {
-          const preview = new PreviewWeb();
+          const preview = new Preview();
           await preview.initialize({
             getStoryIndex: () => storyIndex,
             importFn,

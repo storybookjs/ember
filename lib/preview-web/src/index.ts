@@ -1,3 +1,4 @@
+export { Preview } from './Preview';
 export { PreviewWeb } from './PreviewWeb';
 
 export { composeConfigs } from './composeConfigs';
