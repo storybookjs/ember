@@ -9,20 +9,28 @@ import {
   StoryContext,
   Parameters,
 } from '@storybook/csf';
-import { composeConfigs } from '@storybook/preview-web';
 
+import { composeConfigs } from '../composeConfigs';
 import { prepareStory } from '../prepareStory';
 import { normalizeStory } from '../normalizeStory';
 import { HooksContext } from '../../hooks';
 import { normalizeComponentAnnotations } from '../normalizeComponentAnnotations';
-import { getValuesFromArgTypes, normalizeProjectAnnotations } from '..';
-import type { CSFExports, TestingStoryPlayFn } from './types';
+import { getValuesFromArgTypes } from '../getValuesFromArgTypes';
+import { normalizeProjectAnnotations } from '../normalizeProjectAnnotations';
+import type { CSFExports, ComposedStoryPlayFn } from './types';
 
 export * from './types';
 
 let GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = {};
 
 export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
+  projectAnnotations: ProjectAnnotations<TFramework> | ProjectAnnotations<TFramework>[]
+) {
+  // deprecate this
+  setProjectAnnotations(projectAnnotations);
+}
+
+export function setProjectAnnotations<TFramework extends AnyFramework = AnyFramework>(
   projectAnnotations: ProjectAnnotations<TFramework> | ProjectAnnotations<TFramework>[]
 ) {
   GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = Array.isArray(projectAnnotations)
@@ -40,7 +48,7 @@ interface ComposeStory<TFramework extends AnyFramework = AnyFramework, TArgs ext
     (extraArgs: Partial<TArgs>): TFramework['storyResult'];
     storyName: string;
     args: Args;
-    play: TestingStoryPlayFn;
+    play: ComposedStoryPlayFn;
     parameters: Parameters;
   };
 }
@@ -99,7 +107,7 @@ export function composeStory<
 
   composedStory.storyName = storyAnnotations.storyName || storyAnnotations.name;
   composedStory.args = story.initialArgs;
-  composedStory.play = story.playFunction as TestingStoryPlayFn;
+  composedStory.play = story.playFunction as ComposedStoryPlayFn;
   composedStory.parameters = story.parameters;
 
   return composedStory;

@@ -3,12 +3,13 @@ import {
   composeStories as originalComposeStories,
   setGlobalConfig as originalSetGlobalConfig,
   CSFExports,
+  ComposedStory,
+  StoriesWithPartialProps,
 } from '@storybook/store';
 import { ProjectAnnotations, Args } from '@storybook/csf';
 
 import { render } from '../preview/render';
 import type { Meta, ReactFramework } from '../preview/types-6-0';
-import type { StoriesWithPartialProps, TestingStory } from './types';
 
 /** Function that sets the globalConfig of your storybook. The global config is the preview module of your .storybook folder.
  *
@@ -64,7 +65,7 @@ const defaultProjectAnnotations: ProjectAnnotations<ReactFramework> = {
  * @param [exportsName] - in case your story does not contain a name and you want it to have a name.
  */
 export function composeStory<TArgs = Args>(
-  story: TestingStory<TArgs>,
+  story: ComposedStory<ReactFramework, TArgs>,
   componentAnnotations: Meta<TArgs | any>,
   projectAnnotations?: ProjectAnnotations<ReactFramework>,
   exportsName?: string
@@ -109,5 +110,8 @@ export function composeStories<TModule extends CSFExports<ReactFramework>>(
 ) {
   const composedStories = originalComposeStories(csfExports, projectAnnotations, composeStory);
 
-  return composedStories as unknown as Omit<StoriesWithPartialProps<TModule>, keyof CSFExports>;
+  return composedStories as unknown as Omit<
+    StoriesWithPartialProps<ReactFramework, TModule>,
+    keyof CSFExports
+  >;
 }
