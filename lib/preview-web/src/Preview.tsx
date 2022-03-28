@@ -1,12 +1,3 @@
-// - [ ] Superclass of PreviewWeb that doesn’t:
-// - [ ] Handle selection + render selected story
-// - [ ] Emit SET_STORIES
-// - [ ] Render docs
-// - [ ] Render errors
-// - [ ] Has no WEB VIEW
-// - [ ] Deal with the URL
-// - [ ] StoryRender should not import from DocsRender
-
 import dedent from 'ts-dedent';
 import global from 'global';
 import { SynchronousPromise } from 'synchronous-promise';
