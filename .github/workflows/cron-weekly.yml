@@ -20,6 +20,9 @@ jobs:
           use-verbose-mode: 'yes'
           config-file: '.github/workflows/markdown-link-check-config.json'
           folder-path: 'addons, app, docs, lib'
+  check-root-links:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v2
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
         # checks all markdown files from root but ignores subfolders
