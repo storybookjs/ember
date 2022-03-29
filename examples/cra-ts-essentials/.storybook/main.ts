@@ -1,6 +1,8 @@
+import type { StorybookConfig } from '@storybook/react/types';
+
 const path = require('path');
 
-module.exports = {
+const mainConfig: StorybookConfig = {
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
     '@storybook/preset-create-react-app',
@@ -13,9 +15,9 @@ module.exports = {
     },
   ],
   logLevel: 'debug',
-  webpackFinal: (config) => {
+  webpackFinal: async (config) => {
     // add monorepo root as a valid directory to import modules from
-    config.resolve.plugins.forEach((p) => {
+    config.resolve?.plugins?.forEach((p: any) => {
       if (Array.isArray(p.appSrcs)) {
         p.appSrcs.push(path.join(__dirname, '..', '..', '..'));
       }
@@ -30,3 +32,5 @@ module.exports = {
     buildStoriesJson: true,
   },
 };
+
+module.exports = mainConfig;

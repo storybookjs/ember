@@ -1,4 +1,4 @@
-/* eslint-disable storybook/await-interactions */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import type { ComponentMeta, ComponentStoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
@@ -14,6 +14,8 @@ export default {
 } as ComponentMeta<typeof AccountForm>;
 
 type Story = ComponentStoryObj<typeof AccountForm>;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const Standard: Story = {
   args: { passwordVerification: false },
@@ -81,8 +83,6 @@ export const VerificationPasswordMismatch: Story = {
     await userEvent.click(canvas.getByTestId('submit'));
   },
 };
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const VerificationSuccess: Story = {
   ...Verification,

@@ -1,8 +1,6 @@
-/* eslint-disable storybook/use-storybook-testing-library */
 import React from 'react';
-import { StoryFn as CSF2Story, StoryObj as CSF3Story, Meta } from '@storybook/react';
-import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import type { StoryFn as CSF2Story, StoryObj as CSF3Story, Meta } from '@storybook/react';
+import { within, userEvent } from '@storybook/testing-library';
 
 import { Button, ButtonProps } from './Button';
 
@@ -69,7 +67,7 @@ export const CSF3Button: CSF3Story<ButtonProps> = {
 
 export const CSF3ButtonWithRender: CSF3Story<ButtonProps> = {
   ...CSF3Button,
-  render: (args: ButtonProps) => (
+  render: (args: any) => (
     <div>
       <p data-testid="custom-render">I am a custom render function</p>
       <Button {...args} />
@@ -79,9 +77,10 @@ export const CSF3ButtonWithRender: CSF3Story<ButtonProps> = {
 
 export const CSF3InputFieldFilled: CSF3Story = {
   render: () => {
-    return <input />;
+    return <input data-testid="input" />;
   },
-  play: async (context) => {
-    await userEvent.type(screen.getByRole('textbox'), 'Hello world!');
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByTestId('input'), 'Hello world!');
   },
 };
