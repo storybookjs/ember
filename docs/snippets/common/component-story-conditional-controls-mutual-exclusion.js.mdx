@@ -1,0 +1,16 @@
+```js
+// Button.stories.js
+import { Button } from './Button';
+export default {
+  component: Button,
+  title: 'Button',
+  argTypes: {
+    // button can be passed a label or an image, not both
+    label: { control: 'text', removeIf: 'image' },
+    image: {
+      control: { type: 'select', options: ['foo.jpg', 'bar.jpg'] },
+      removeIf: 'label',
+    },
+  },
+};
+```
