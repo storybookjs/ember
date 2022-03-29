@@ -1,4 +1,3 @@
-/* eslint-disable storybook/await-interactions */
 import React from 'react';
 import type { ComponentMeta, ComponentStoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';

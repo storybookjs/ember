@@ -1,12 +1,13 @@
 import {
   composeStory as originalComposeStory,
   composeStories as originalComposeStories,
-  setGlobalConfig as originalSetGlobalConfig,
+  setProjectAnnotations as originalSetProjectAnnotations,
   CSFExports,
   ComposedStory,
   StoriesWithPartialProps,
 } from '@storybook/store';
 import { ProjectAnnotations, Args } from '@storybook/csf';
+import { once } from '@storybook/client-logger';
 
 import { render } from '../preview/render';
 import type { Meta, ReactFramework } from '../preview/types-6-0';
@@ -18,18 +19,29 @@ import type { Meta, ReactFramework } from '../preview/types-6-0';
  * Example:
  *```jsx
  * // setup.js (for jest)
- * import { setGlobalConfig } from '@storybook/react';
+ * import { setProjectAnnotations } from '@storybook/react';
  * import * as projectAnnotations from './.storybook/preview';
  *
- * setGlobalConfig(projectAnnotations);
+ * setProjectAnnotations(projectAnnotations);
  *```
  *
  * @param projectAnnotations - e.g. (import * as projectAnnotations from '../.storybook/preview')
  */
+export function setProjectAnnotations(
+  projectAnnotations: ProjectAnnotations<ReactFramework> | ProjectAnnotations<ReactFramework>[]
+) {
+  originalSetProjectAnnotations(projectAnnotations);
+}
+
+/** Preserved for users migrating from `@storybook/testing-react`.
+ *
+ * @deprecated Use setProjectAnnotations instead
+ */
 export function setGlobalConfig(
   projectAnnotations: ProjectAnnotations<ReactFramework> | ProjectAnnotations<ReactFramework>[]
 ) {
-  originalSetGlobalConfig(projectAnnotations);
+  once.warn(`setGlobalConfig is deprecated. Use setProjectAnnotations instead.`);
+  setProjectAnnotations(projectAnnotations);
 }
 
 // This will not be necessary once we have auto preset loading
@@ -61,7 +73,7 @@ const defaultProjectAnnotations: ProjectAnnotations<ReactFramework> = {
  *
  * @param story
  * @param componentAnnotations - e.g. (import Meta from './Button.stories')
- * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
+ * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setProjectAnnotations` in your setup files.
  * @param [exportsName] - in case your story does not contain a name and you want it to have a name.
  */
 export function composeStory<TArgs = Args>(
@@ -102,7 +114,7 @@ export function composeStory<TArgs = Args>(
  *```
  *
  * @param csfExports - e.g. (import * as stories from './Button.stories')
- * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setGlobalConfig` in your setup files.
+ * @param [projectAnnotations] - e.g. (import * as projectAnnotations from '../.storybook/preview') this can be applied automatically if you use `setProjectAnnotations` in your setup files.
  */
 export function composeStories<TModule extends CSFExports<ReactFramework>>(
   csfExports: TModule,

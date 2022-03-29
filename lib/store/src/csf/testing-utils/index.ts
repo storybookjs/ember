@@ -23,13 +23,6 @@ export * from './types';
 
 let GLOBAL_STORYBOOK_PROJECT_ANNOTATIONS = {};
 
-export function setGlobalConfig<TFramework extends AnyFramework = AnyFramework>(
-  projectAnnotations: ProjectAnnotations<TFramework> | ProjectAnnotations<TFramework>[]
-) {
-  // deprecate this
-  setProjectAnnotations(projectAnnotations);
-}
-
 export function setProjectAnnotations<TFramework extends AnyFramework = AnyFramework>(
   projectAnnotations: ProjectAnnotations<TFramework> | ProjectAnnotations<TFramework>[]
 ) {
