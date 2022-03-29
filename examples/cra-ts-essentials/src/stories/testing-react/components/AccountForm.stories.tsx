@@ -14,6 +14,8 @@ export default {
 
 type Story = ComponentStoryObj<typeof AccountForm>;
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export const Standard: Story = {
   args: { passwordVerification: false },
 };
@@ -80,8 +82,6 @@ export const VerificationPasswordMismatch: Story = {
     await userEvent.click(canvas.getByTestId('submit'));
   },
 };
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const VerificationSuccess: Story = {
   ...Verification,
