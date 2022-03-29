@@ -3,11 +3,11 @@
   "version": "6.5.0-alpha.51",
   "private": true,
   "scripts": {
-    "build-storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true build-storybook",
+    "build-storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true build-storybook -c src/.storybook",
     "debug": "cross-env NODE_OPTIONS=--inspect-brk STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011",
     "sb": "node ../../lib/cli/bin/index.js",
     "start": "SKIP_PREFLIGHT_CHECK=true react-scripts start",
-    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 --no-manager-cache"
+    "storybook": "cross-env STORYBOOK_DISPLAY_WARNING=true DISPLAY_WARNING=true start-storybook -p 9011 --no-manager-cache -c src/.storybook"
   },
   "dependencies": {
     "@storybook/components": "6.5.0-alpha.51",
