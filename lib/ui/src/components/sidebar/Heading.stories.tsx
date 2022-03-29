@@ -41,6 +41,7 @@ export const Standard: Story = () => {
           title: undefined,
           url: undefined,
           image: undefined,
+          target: undefined,
         },
       }}
     >
@@ -59,6 +60,7 @@ export const StandardNoLink: Story = () => {
           title: undefined,
           url: null,
           image: undefined,
+          target: undefined,
         },
       }}
     >
@@ -77,6 +79,7 @@ export const LinkAndText: Story = () => {
           title: 'My title',
           url: 'https://example.com',
           image: null,
+          target: '_blank',
         },
       }}
     >
@@ -95,6 +98,7 @@ export const OnlyText: Story = () => {
           title: 'My title',
           url: null,
           image: null,
+          target: null,
         },
       }}
     >
@@ -113,6 +117,7 @@ export const LongText: Story = () => {
           title: 'My title is way to long to actually fit',
           url: null,
           image: null,
+          target: null,
         },
       }}
     >
@@ -131,6 +136,7 @@ export const CustomTitle: Story = () => {
           title: '<span style="color:red">My custom title</span>',
           url: null,
           image: null,
+          target: null,
         },
       }}
     >
@@ -149,6 +155,7 @@ export const CustomBrandImage: Story = () => {
           title: 'My Title',
           url: 'https://example.com',
           image: 'https://via.placeholder.com/150x22',
+          target: '_blank',
         },
       }}
     >
@@ -167,6 +174,7 @@ export const CustomBrandImageTall: Story = () => {
           title: 'My Title',
           url: 'https://example.com',
           image: 'https://via.placeholder.com/100x150',
+          target: '_blank',
         },
       }}
     >
@@ -185,6 +193,7 @@ export const CustomBrandImageUnsizedSVG: Story = () => {
           title: 'My Title',
           url: 'https://example.com',
           image: 'https://s.cdpn.io/91525/potofgold.svg',
+          target: '_blank',
         },
       }}
     >
@@ -203,6 +212,7 @@ export const NoBrand: Story = () => {
           title: null,
           url: null,
           image: null,
+          target: null,
         },
       }}
     >
