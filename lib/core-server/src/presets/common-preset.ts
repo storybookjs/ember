@@ -66,5 +66,4 @@ export const features = async (existing: Record<string, boolean>) => ({
   postcss: true,
   emotionAlias: false, // TODO remove in 7.0, this no longer does anything
   warnOnLegacyHierarchySeparator: true,
-  crossOriginIsolated: false,
 });

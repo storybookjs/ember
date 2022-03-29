@@ -27,6 +27,7 @@ export async function storybookDevServer(options: Options) {
   app.use(compression({ level: 1 }));
 
   const features = await options.presets.apply<StorybookConfig['features']>('features');
+  const core = await options.presets.apply<StorybookConfig['core']>('core');
 
   if (typeof options.extendServer === 'function') {
     options.extendServer(server);
@@ -40,7 +41,7 @@ export async function storybookDevServer(options: Options) {
     next();
   });
 
-  if (features?.crossOriginIsolated) {
+  if (core?.crossOriginIsolated) {
     app.use((req, res, next) => {
       // These headers are required to enable SharedArrayBuffer
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
