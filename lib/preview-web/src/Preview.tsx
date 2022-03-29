@@ -245,11 +245,11 @@ export class Preview<TFramework extends AnyFramework> {
     // render the story in the same tick.
     // However, we can do that safely as the current story is available in `this.storyRenders`
     const render = this.storyRenders.find((r) => r.id === storyId);
-    const { initialArgs } = render?.story || (await this.storyStore.loadStory({ storyId }));
+    const story = render?.story || (await this.storyStore.loadStory({ storyId }));
 
     const argNamesToReset = argNames || Object.keys(this.storyStore.args.get(storyId));
     const updatedArgs = argNamesToReset.reduce((acc, argName) => {
-      acc[argName] = initialArgs[argName];
+      acc[argName] = story.initialArgs[argName];
       return acc;
     }, {} as Partial<Args>);
 
