@@ -79,7 +79,7 @@ describe('CSF3', () => {
 
     await CSF3InputFieldFilled.play({ canvasElement: container });
 
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByTestId('input') as HTMLInputElement;
     expect(input.value).toEqual('Hello world!');
   });
 });
