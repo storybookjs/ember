@@ -1,6 +1,6 @@
 /* eslint-disable storybook/use-storybook-testing-library */
 import React from 'react';
-import { StoryFn as CSF2Story, StoryObj as CSF3Story, Meta } from '@storybook/react';
+import type { StoryFn as CSF2Story, StoryObj as CSF3Story, Meta } from '@storybook/react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -69,7 +69,7 @@ export const CSF3Button: CSF3Story<ButtonProps> = {
 
 export const CSF3ButtonWithRender: CSF3Story<ButtonProps> = {
   ...CSF3Button,
-  render: (args: ButtonProps) => (
+  render: (args: any) => (
     <div>
       <p data-testid="custom-render">I am a custom render function</p>
       <Button {...args} />
