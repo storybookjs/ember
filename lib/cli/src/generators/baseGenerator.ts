@@ -1,4 +1,5 @@
 import fse from 'fs-extra';
+import dedent from 'ts-dedent';
 import { getStorybookBabelDependencies } from '@storybook/core-common';
 import { NpmOptions } from '../NpmOptions';
 import { SupportedLanguage, SupportedFrameworks, Builder, CoreBuilder } from '../project_types';
@@ -145,6 +146,16 @@ export async function baseGenerator(
   });
   if (addComponents) {
     copyComponents(framework, language);
+  }
+
+  // FIXME: temporary workaround for https://github.com/storybookjs/storybook/issues/17516
+  if (expandedBuilder === '@storybook/builder-vite') {
+    const previewHead = dedent`
+      <script>
+        window.global = window;
+      </script>
+    `;
+    await fse.writeFile(`.storybook/preview-head.html`, previewHead, { encoding: 'utf8' });
   }
 
   const babelDependencies = addBabel ? await getBabelDependencies(packageManager, packageJson) : [];
