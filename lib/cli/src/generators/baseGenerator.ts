@@ -51,6 +51,8 @@ const builderDependencies = (builder: Builder) => {
       return [];
     case CoreBuilder.Webpack5:
       return ['@storybook/builder-webpack5', '@storybook/manager-webpack5'];
+    case CoreBuilder.Vite:
+      return ['@storybook/builder-vite'];
     default:
       return [builder];
   }
@@ -121,11 +123,15 @@ export async function baseGenerator(
 
   const versionedPackages = await packageManager.getVersionedPackages(...packages);
 
+  const coreBuilders = [CoreBuilder.Webpack4, CoreBuilder.Webpack5, CoreBuilder.Vite] as string[];
+  const expandedBuilder = coreBuilders.includes(builder)
+    ? `@storybook/builder-${builder}`
+    : builder;
   const mainOptions =
     builder !== CoreBuilder.Webpack4
       ? {
           core: {
-            builder,
+            builder: expandedBuilder,
           },
           ...extraMain,
         }
