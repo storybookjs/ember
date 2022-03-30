@@ -58,6 +58,10 @@ export const StandardFailHover: Story = {
     await userEvent.hover(canvas.getByTestId('password-error-info'));
   },
 };
+StandardFailHover.parameters = {
+  // IE fails with userEvent.hover
+  chromatic: { disableSnapshot: true },
+};
 
 export const Verification: Story = {
   args: { passwordVerification: true },
@@ -95,6 +99,12 @@ export const VerificationSuccess: Story = {
     await userEvent.type(canvas.getByTestId('password2'), 'asdfasdf', { delay: 50 });
     await sleep(1000);
     await userEvent.click(canvas.getByTestId('submit'));
+  },
+};
+// IE fails with this interaction
+VerificationSuccess.parameters = {
+  chromatic: {
+    disableSnapshot: true,
   },
 };
 
