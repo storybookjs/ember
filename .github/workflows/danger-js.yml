@@ -13,7 +13,7 @@ jobs:
           node-version: '14'
       - uses: actions/checkout@master
       - name: Danger JS
-        uses: danger/danger-js@main
+        uses: danger/danger-js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
