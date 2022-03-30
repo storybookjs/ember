@@ -18,7 +18,6 @@ import type {
 } from '@storybook/core-common';
 import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
 
-import prompts from 'prompts';
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
 import {
