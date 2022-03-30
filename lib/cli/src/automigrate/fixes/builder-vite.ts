@@ -22,7 +22,7 @@ interface BuilderViteOptions {
  *
  * - Add '@storybook/builder-vite' as dev dependency
  * - Remove 'storybook-builder-vite' dependency
- * - Add core.builder = 'vite' to main.js
+ * - Add core.builder = '@storybook/builder-vite' to main.js
  */
 export const builderVite: Fix<BuilderViteOptions> = {
   id: 'builder-vite',
