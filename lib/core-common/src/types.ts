@@ -50,6 +50,14 @@ export interface CoreConfig {
   builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
+  /**
+   * enable CORS headings to run document in a "secure context"
+   * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements
+   * This enables these headers in development-mode:
+   *   Cross-Origin-Opener-Policy: same-origin
+   *   Cross-Origin-Embedder-Policy: require-corp
+   */
+  crossOriginIsolated?: boolean;
 }
 
 interface DirectoryMapping {
