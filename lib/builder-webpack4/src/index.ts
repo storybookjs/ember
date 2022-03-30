@@ -61,12 +61,16 @@ export const makeStatsFromError: (err: string) => Stats = (err) =>
     toJson: () => ({ warnings: [] as any[], errors: [err] }),
   } as any);
 
-let asyncIterator: ReturnType<StarterFunction> | ReturnType<BuilderFunction>;
+let asyncIterator: ReturnType<BuilderFunction> | ReturnType<StarterFunction>;
 
 export const bail: WebpackBuilder['bail'] = async () => {
   if (asyncIterator) {
-    // we tell the builder (that started) to stop ASAP and wait
-    await asyncIterator.throw(new Error()).catch(() => {});
+    try {
+      // we tell the builder (that started) to stop ASAP and wait
+      await asyncIterator.throw(new Error());
+    } catch (e) {
+      //
+    }
   }
   if (reject) {
     reject();
@@ -177,7 +181,7 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
   }
   yield;
 
-  return new Promise((succeed, fail) => {
+  return new Promise<Stats>((succeed, fail) => {
     compiler.run((error, stats) => {
       if (error || !stats || stats.hasErrors()) {
         logger.error('=> Failed to build the preview');
@@ -189,11 +193,22 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
         }
 
         if (stats && (stats.hasErrors() || stats.hasWarnings())) {
-          const { warnings, errors } = stats.toJson(config.stats);
+          const { warnings = [], errors = [] } = stats.toJson(
+            typeof config.stats === 'string'
+              ? config.stats
+              : {
+                  warnings: true,
+                  errors: true,
+                  ...(config.stats as Stats.ToStringOptionsObject),
+                }
+          );
 
           errors.forEach((e: string) => logger.error(e));
           warnings.forEach((e: string) => logger.error(e));
-          return fail(stats);
+
+          return options.debugWebpack
+            ? fail(stats)
+            : fail(new Error('=> Webpack failed, learn more with --debug-webpack'));
         }
       }
 
@@ -202,7 +217,7 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
         stats.toJson(config.stats).warnings.forEach((e: string) => logger.warn(e));
       }
 
-      return succeed(stats);
+      return succeed(stats as webpackReal.Stats);
     });
   });
 };

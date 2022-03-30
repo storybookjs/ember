@@ -56,8 +56,12 @@ let asyncIterator: ReturnType<StarterFunction> | ReturnType<BuilderFunction>;
 
 export const bail: WebpackBuilder['bail'] = async () => {
   if (asyncIterator) {
-    // we tell the builder (that started) to stop ASAP and wait
-    await asyncIterator.throw(new Error()).catch(() => {});
+    try {
+      // we tell the builder (that started) to stop ASAP and wait
+      await asyncIterator.throw(new Error());
+    } catch (e) {
+      //
+    }
   }
   if (reject) {
     reject();
@@ -206,7 +210,7 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
   }
   yield;
 
-  return new Promise((succeed, fail) => {
+  return new Promise<Stats>((succeed, fail) => {
     compiler.run((error, stats) => {
       if (error || !stats || stats.hasErrors()) {
         logger.error('=> Failed to build the manager');

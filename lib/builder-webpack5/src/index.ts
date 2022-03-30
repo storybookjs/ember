@@ -1,4 +1,4 @@
-import webpack, { Stats, Configuration, ProgressPlugin } from 'webpack';
+import webpack, { Stats, Configuration, ProgressPlugin, StatsOptions } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import { logger } from '@storybook/node-logger';
@@ -21,7 +21,18 @@ type BuilderBuildOptions = Partial<Parameters<WebpackBuilder['build']>['0']>;
 type BuilderBuildResult = Unpromise<ReturnType<WebpackBuilder['build']>>;
 type BuilderFunction = (
   options: BuilderBuildOptions
-) => AsyncGenerator<unknown, BuilderBuildResult, void>;
+) => AsyncGenerator<Stats, BuilderBuildResult, void>;
+
+export const executor = {
+  get: async (options: Options) => {
+    const version = ((await options.presets.apply('webpackVersion')) || '5') as string;
+    const webpackInstance =
+      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
+      webpack;
+    checkWebpackVersion({ version }, '5', 'builder-webpack5');
+    return webpackInstance;
+  },
+};
 
 export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   const { presets } = options;
@@ -41,23 +52,16 @@ export const getConfig: WebpackBuilder['getConfig'] = async (options) => {
   ) as any;
 };
 
-export const executor = {
-  get: async (options: Options) => {
-    const version = ((await options.presets.apply('webpackVersion')) || '5') as string;
-    const webpackInstance =
-      (await options.presets.apply<{ default: typeof webpack }>('webpackInstance'))?.default ||
-      webpack;
-    checkWebpackVersion({ version }, '5', 'builder-webpack5');
-    return webpackInstance;
-  },
-};
-
 let asyncIterator: ReturnType<StarterFunction> | ReturnType<BuilderFunction>;
 
 export const bail: WebpackBuilder['bail'] = async () => {
   if (asyncIterator) {
-    // we tell the builder (that started) to stop ASAP and wait
-    await asyncIterator.throw(new Error()).catch(() => {});
+    try {
+      // we tell the builder (that started) to stop ASAP and wait
+      await asyncIterator.throw(new Error());
+    } catch (e) {
+      //
+    }
   }
 
   if (reject) {
@@ -146,18 +150,6 @@ const starter: StarterFunction = async function* starterGeneratorFn({
   };
 };
 
-export const start = async (options: BuilderStartOptions) => {
-  asyncIterator = starter(options);
-  let result;
-
-  do {
-    // eslint-disable-next-line no-await-in-loop
-    result = await asyncIterator.next();
-  } while (!result.done);
-
-  return result.value;
-};
-
 /**
  * This function is a generator so that we can abort it mid process
  * in case of failure coming from other processes e.g. manager builder
@@ -171,7 +163,7 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
   const config = await getConfig(options);
   yield;
 
-  return new Promise((succeed, fail) => {
+  return new Promise<Stats>((succeed, fail) => {
     const compiler = webpackInstance(config);
 
     compiler.run((error, stats) => {
@@ -188,7 +180,15 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
         }
 
         if (stats && (stats.hasErrors() || stats.hasWarnings())) {
-          const { warnings = [], errors = [] } = stats.toJson({ warnings: true, errors: true });
+          const { warnings = [], errors = [] } = stats.toJson(
+            typeof config.stats === 'string'
+              ? config.stats
+              : {
+                  warnings: true,
+                  errors: true,
+                  ...(config.stats as StatsOptions),
+                }
+          );
 
           errors.forEach((e) => logger.error(e.message));
           warnings.forEach((e) => logger.error(e.message));
@@ -219,6 +219,18 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
       });
     });
   });
+};
+
+export const start = async (options: BuilderStartOptions) => {
+  asyncIterator = starter(options);
+  let result;
+
+  do {
+    // eslint-disable-next-line no-await-in-loop
+    result = await asyncIterator.next();
+  } while (!result.done);
+
+  return result.value;
 };
 
 export const build = async (options: BuilderStartOptions) => {
