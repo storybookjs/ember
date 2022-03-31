@@ -59,15 +59,16 @@
     "react-dom": "16.14.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
-    "preact": "^10.5.13"
+    "preact": "^10.5.13",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*",
-    "preact": "^8.0.0||^10.0.0",
-    "webpack": "*"
+    "preact": "^8.0.0||^10.0.0"
   },
   "engines": {
     "node": ">=10.13.0"
