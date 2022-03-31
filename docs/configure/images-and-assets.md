@@ -127,4 +127,4 @@ In this case, you need to have all your images and media files with relative pat
 
 If you load static content via importing, this is automatic, and you do not have to do anything.
 
-Suppose you are serving assets in a [static directory](#serving-static-files-via-storybook) along with your Storybook. In that case, you need to use relative paths to load images or use the base element.
+Suppose you are serving assets in a [static directory](#serving-static-files-via-storybook-configuration) along with your Storybook. In that case, you need to use relative paths to load images or use the base element.

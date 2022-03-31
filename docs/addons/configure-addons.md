@@ -10,9 +10,9 @@ Presets offload the burden of configuration from user to the addon. Preset optio
 
 For example, many libraries require that the app be wrapped by a `Provider` which _provides_ data to components down the tree. Presets can describe behavior like adding wrappers automatically, without users having to do any manual configuration. If a user installs an addon that has Presets, the addon can instruct Storybook to wrap all stories in `Provider`. This allows folks to start using your library with Storybook, with just 1 line of config!
 
-For more on presets, see: [Write a preset addon](./writing-presets)
+For more on presets, see: [Write a preset addon](./writing-presets.md)
 
-The mechanism for wrapping each story is referred to as a Storybook [decorator](../writing-stories/decorators). They allow you to augment stories with extra rendering functionality or by providing data.
+The mechanism for wrapping each story is referred to as a Storybook [decorator](../writing-stories/decorators.md). They allow you to augment stories with extra rendering functionality or by providing data.
 
 ## Parameters
 
@@ -20,7 +20,7 @@ Parameters are available in the browser and are great for configuring addon beha
 
 For example, the [Pseudo States addon](https://storybook.js.org/addons/storybook-addon-pseudo-states) uses parameters to enable the various pseudo-states. Users can provide global defaults and then override them at the story level.
 
-Use the [`useParameter`](./addons-api#useparameter) hook to access the parameter values within your addon.
+Use the [`useParameter`](./addons-api.md#useparameter) hook to access the parameter values within your addon.
 
 ```js
 export const Hover = () => <Button>Label</Button>;
@@ -33,6 +33,6 @@ Channels enable two-way communication between the manager and the preview pane, 
 
 For example, the [Actions addon](https://storybook.js.org/addons/@storybook/addon-actions) captures user events and displays their data in a panel.
 
-Use the [`useChannel`](./addons-api#usechannel) hook to access the channel data within your addon.
+Use the [`useChannel`](./addons-api.md#usechannel) hook to access the channel data within your addon.
 
 For a complete example, check out [storybookjs/addon-kit/withRoundTrip.ts](https://github.com/storybookjs/addon-kit/blob/main/src/withRoundTrip.ts)

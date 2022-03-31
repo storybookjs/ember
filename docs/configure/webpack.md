@@ -2,7 +2,7 @@
 title: 'Webpack'
 ---
 
-Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](/addons) are also available that extend the configuration for other everyday use cases.
+Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](https://storybook.js.org/addons/) are also available that extend the configuration for other everyday use cases.
 
 You can customize Storybook's webpack setup by providing a `webpackFinal` field in [`.storybook/main.js`](./overview.md#configure-your-storybook-project) file.
 

@@ -195,7 +195,7 @@ Addons can enhance args. For instance, [Actions](../essentials/actions.md) auto-
 
 ### Using the play function
 
-Storybook's `play` function and the [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) are convenient helper methods to test component scenarios that otherwise require user intervention. They're small code snippets that execute once your story renders. For example, suppose you wanted to validate a form component, you could write the following story using the `play` function to check how the component responds when filling in the inputs with information:
+Storybook's `play` function and the [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions) are convenient helper methods to test component scenarios that otherwise require user intervention. They're small code snippets that execute once your story renders. For example, suppose you wanted to validate a form component, you could write the following story using the `play` function to check how the component responds when filling in the inputs with information:
 
 <!-- prettier-ignore-start -->
 
