@@ -6,7 +6,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -134,7 +134,7 @@ jobs:
             yarn packtracker
   examples:
     executor:
-      class: large
+      class: medium+
       name: sb_node_14_browsers
     parallelism: 17
     steps:
