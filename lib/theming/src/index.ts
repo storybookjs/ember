@@ -9,7 +9,7 @@ import { Theme } from './types';
 
 export type { StyledComponent } from './emotion10types';
 
-export { keyframes, css, jsx, ClassNames, ThemeProvider } from '@emotion/react';
+export { keyframes, css, jsx, ClassNames, ThemeProvider, CacheProvider } from '@emotion/react';
 export type { CSSObject, Keyframes } from '@emotion/react';
 
 export const useTheme = emotionReact.useTheme as () => Theme;

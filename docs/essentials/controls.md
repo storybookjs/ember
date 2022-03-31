@@ -300,6 +300,34 @@ paths={[
 
 </div>
 
+### Conditional controls
+
+In some cases, it's useful to be able to conditionally exclude a control based on the value of another control. Controls supports basic versions of these use cases with the `addIf` and `removeIf` options, which can take a boolean value, or a string which can refer to the value of another arg.
+
+Consider a collection of "advanced" settings that are only visible when the user toggles an "advanced" toggle.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-conditional-controls-toggle.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Or consider a constraint where if the user sets one control value, it doesn't make sense for the user to be able to set another value.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-conditional-controls-mutual-exclusion.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 ## Hide NoControls warning
 
 If you don't plan to handle the control args inside your Story, you can remove the warning with:

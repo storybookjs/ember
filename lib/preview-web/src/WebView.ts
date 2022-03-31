@@ -8,6 +8,8 @@ import { Story } from '@storybook/store';
 
 const { document } = global;
 
+const PREPARING_DELAY = 100;
+
 const layoutClassMap = {
   centered: 'sb-main-centered',
   fullscreen: 'sb-main-fullscreen',
@@ -38,6 +40,8 @@ export class WebView {
   currentLayoutClass?: typeof layoutClassMap[keyof typeof layoutClassMap] | null;
 
   testing = false;
+
+  preparingTimeout: ReturnType<typeof setTimeout> = null;
 
   constructor() {
     // Special code for testing situations
@@ -111,6 +115,7 @@ export class WebView {
   }
 
   showMode(mode: Mode) {
+    clearTimeout(this.preparingTimeout);
     Object.keys(Mode).forEach((otherMode) => {
       if (otherMode === mode) {
         document.body.classList.add(classes[otherMode]);
@@ -145,12 +150,22 @@ export class WebView {
     this.docsRoot()?.setAttribute('hidden', 'true');
   }
 
-  showPreparingStory() {
-    this.showMode(Mode.PREPARING_STORY);
+  showPreparingStory({ immediate = false } = {}) {
+    clearTimeout(this.preparingTimeout);
+
+    if (immediate) {
+      this.showMode(Mode.PREPARING_STORY);
+    } else {
+      this.preparingTimeout = setTimeout(
+        () => this.showMode(Mode.PREPARING_STORY),
+        PREPARING_DELAY
+      );
+    }
   }
 
   showPreparingDocs() {
-    this.showMode(Mode.PREPARING_DOCS);
+    clearTimeout(this.preparingTimeout);
+    this.preparingTimeout = setTimeout(() => this.showMode(Mode.PREPARING_DOCS), PREPARING_DELAY);
   }
 
   showMain() {
@@ -165,5 +180,14 @@ export class WebView {
   showStory() {
     this.docsRoot().setAttribute('hidden', 'true');
     this.storyRoot().removeAttribute('hidden');
+  }
+
+  showStoryDuringRender() {
+    // When 'showStory' is called (at the start of rendering) we get rid of our display:none
+    // from all children of the root (but keep the preparing spinner visible). This may mean
+    // that very weird and high z-index stories are briefly visible.
+    // See https://github.com/storybookjs/storybook/issues/16847 and
+    //   http://localhost:9011/?path=/story/core-rendering--auto-focus (official SB)
+    document.body.classList.add(classes.MAIN);
   }
 }

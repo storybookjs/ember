@@ -1,6 +1,6 @@
 {
   "name": "@storybook/manager-webpack5",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.51",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -45,12 +45,12 @@
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-template-literals": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/core-client": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/node-logger": "6.5.0-alpha.49",
-    "@storybook/theming": "6.5.0-alpha.49",
-    "@storybook/ui": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.51",
+    "@storybook/core-client": "6.5.0-alpha.51",
+    "@storybook/core-common": "6.5.0-alpha.51",
+    "@storybook/node-logger": "6.5.0-alpha.51",
+    "@storybook/theming": "6.5.0-alpha.51",
+    "@storybook/ui": "6.5.0-alpha.51",
     "@types/node": "^14.0.10 || ^16.0.0",
     "babel-loader": "^8.0.0",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
@@ -93,6 +93,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "cfcdc7fb74d3cf60eae8dd0b5a626d67ed180d42",
   "sbmodern": "dist/modern/index.js"
 }
