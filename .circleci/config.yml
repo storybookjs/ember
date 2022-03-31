@@ -134,7 +134,7 @@ jobs:
             yarn packtracker
   examples:
     executor:
-      class: medium
+      class: large
       name: sb_node_14_browsers
     parallelism: 17
     steps:
