@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [Vite builder renamed](#vite-builder-renamed)
   - [Docs framework refactor for React](#docs-framework-refactor-for-react)
   - [Opt-in MDX2 support](#opt-in-mdx2-support)
   - [CSF3 auto-title improvements](#csf3-auto-title-improvements)
@@ -195,6 +196,16 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.4.x to 6.5.0
+
+### Vite builder renamed
+
+SB6.5 renames Storybook's [Vite builder](https://github.com/storybookjs/builder-vite) from `storybook-builder-vite` to `@storybook/builder-vite`. This move is part of a larger effort to improve Vite support in Storybook.
+
+Storybook's `automigrate` command can migrate for you. To manually migrate:
+
+1. Remove `storybook-builder-vite` from your `package.json` dependencies
+2. Install `@storybook/builder-vite`
+3. Update your `core.builder` setting in `.storybook/main.js` to `@storybook/builder-vite`.
 
 ### Docs framework refactor for React
 
