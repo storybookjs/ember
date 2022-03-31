@@ -63,13 +63,14 @@
     "regenerator-runtime": "^0.13.7",
     "sveltedoc-parser": "4.1.0",
     "ts-dedent": "^2.0.0",
-    "webpack": "4"
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.0",
     "@types/webpack-env": "^1.16.0",
     "svelte": "^3.31.2",
-    "svelte-loader": "^3.0.0"
+    "svelte-loader": "^3.0.0",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*",
