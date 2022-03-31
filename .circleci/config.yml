@@ -19,7 +19,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -32,7 +32,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
