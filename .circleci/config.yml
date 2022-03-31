@@ -10,7 +10,7 @@ executors:
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
-      - image: circleci/node:14
+      - image: cimg/node:14
         environment:
           NODE_OPTIONS: --max_old_space_size=3076
     resource_class: <<parameters.class>>
@@ -23,7 +23,7 @@ executors:
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
-      - image: circleci/node:14-browsers
+      - image: cimg/node:14-browsers
         environment:
           NODE_OPTIONS: --max_old_space_size=3076
     resource_class: <<parameters.class>>
