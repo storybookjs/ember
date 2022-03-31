@@ -5194,23 +5194,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@packtracker/webpack-plugin@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@packtracker/webpack-plugin@npm:2.3.0"
-  dependencies:
-    lodash: ^4.17.15
-    minimist: ^1.2.0
-    omit-deep: ^0.3.0
-    tiny-json-http: ^7.1.2
-    webpack-bundle-analyzer: ^3.4.1
-  peerDependencies:
-    webpack: ">= 2.0.0"
-  bin:
-    packtracker-upload: ./bin.js
-  checksum: 82cf47599f734b60043c87badf4150c3a0927d525e994bed86226db197aa20ea8927b430508090ce6ced12f92e2d2b6c5ee01b3edc5d77eed99804be74022af7
-  languageName: node
-  linkType: hard
-
 "@parcel/bundler-default@npm:2.3.2":
   version: 2.3.2
   resolution: "@parcel/bundler-default@npm:2.3.2"
@@ -33567,7 +33550,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "official-storybook@workspace:examples/official-storybook"
   dependencies:
-    "@packtracker/webpack-plugin": ^2.3.0
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.3
     "@storybook/addon-a11y": 6.5.0-alpha.52
     "@storybook/addon-actions": 6.5.0-alpha.52
@@ -33617,16 +33599,6 @@ __metadata:
     puppeteer: ^2.0.0 || ^3.0.0
   languageName: unknown
   linkType: soft
-
-"omit-deep@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "omit-deep@npm:0.3.0"
-  dependencies:
-    is-plain-object: ^2.0.1
-    unset-value: ^0.1.1
-  checksum: 90babbcbbc94ebbb2e65b2a9b5e4720df6f71991cdf0176e65a07359bf732517bba62b53fd2b4cfb3e48536d0d6dc91b50356e731b9392a1dd26eeb78e317652
-  languageName: node
-  linkType: hard
 
 "on-finished@npm:~2.3.0":
   version: 2.3.0
@@ -43239,13 +43211,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-json-http@npm:^7.1.2":
-  version: 7.3.1
-  resolution: "tiny-json-http@npm:7.3.1"
-  checksum: a8f53cfb1d3a21ef1bc86886a7a1abdae12d4ce089ab01d60db619dc192c17764445dfdba98db90d9f32126cc950b4a2fab0000c65b71cc2d09319fbd4acbe19
-  languageName: node
-  linkType: hard
-
 "tiny-lr@npm:^2.0.0":
   version: 2.0.0
   resolution: "tiny-lr@npm:2.0.0"
@@ -44743,16 +44708,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unset-value@npm:^0.1.1":
-  version: 0.1.2
-  resolution: "unset-value@npm:0.1.2"
-  dependencies:
-    has-value: ^0.3.1
-    isobject: ^3.0.0
-  checksum: ab471119a16c5a9a86d228d715fa7b59c28008e5ed4891e7f8c50a5a30de2e0171019f4d19e161ca4695100b8642d1d704a4f98472ac94ffee6a3c9842c99caa
-  languageName: node
-  linkType: hard
-
 "unset-value@npm:^1.0.0":
   version: 1.0.0
   resolution: "unset-value@npm:1.0.0"
@@ -45956,7 +45911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-bundle-analyzer@npm:^3.4.1, webpack-bundle-analyzer@npm:^3.6.1, webpack-bundle-analyzer@npm:^3.8.0":
+"webpack-bundle-analyzer@npm:^3.6.1, webpack-bundle-analyzer@npm:^3.8.0":
   version: 3.9.0
   resolution: "webpack-bundle-analyzer@npm:3.9.0"
   dependencies:
