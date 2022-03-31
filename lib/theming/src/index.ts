@@ -3,6 +3,7 @@
 
 import emotionStyled from '@emotion/styled';
 import * as emotionReact from '@emotion/react';
+// TODO: when releasing 7.0 this should be removed and code should be upgraded to use Emotion 11 types
 import type { CreateStyled, PropsOf, AddOptionalTo } from './emotion10types';
 
 import { Theme } from './types';
