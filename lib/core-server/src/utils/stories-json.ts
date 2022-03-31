@@ -48,22 +48,24 @@ export async function useStoriesJson(
 
   // Wait until someone actually requests `stories.json` before we start generating/watching.
   // This is mainly for testing purposes.
-  let started = false;
   const maybeInvalidate = debounce(
     () => serverChannel.emit(Events.STORY_INDEX_INVALIDATED),
     DEBOUNCE,
     { leading: true }
   );
+  let startedPromise: Promise<void>;
   async function ensureStarted() {
-    if (started) return;
-    started = true;
+    if (!startedPromise) {
+      startedPromise = (async () => {
+        watchStorySpecifiers(normalizedStories, { workingDir }, (specifier, path, removed) => {
+          generator.invalidate(specifier, path, removed);
+          maybeInvalidate();
+        });
 
-    watchStorySpecifiers(normalizedStories, { workingDir }, (specifier, path, removed) => {
-      generator.invalidate(specifier, path, removed);
-      maybeInvalidate();
-    });
-
-    await generator.initialize();
+        await generator.initialize();
+      })();
+    }
+    return startedPromise;
   }
 
   router.use('/stories.json', async (req: Request, res: Response) => {

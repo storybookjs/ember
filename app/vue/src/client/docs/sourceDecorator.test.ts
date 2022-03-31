@@ -141,4 +141,56 @@ describe('vnodeToString', () => {
       )
     ).toMatchInlineSnapshot(`<div ><form ><button >Button</button></form></div>`);
   });
+
+  it('empty tag', () => {
+    expect(
+      vnodeToString(
+        getVNode({
+          template: `
+          <div>
+          </div>`,
+        })
+      )
+    ).toMatchInlineSnapshot(`<div />`);
+  });
+
+  it('tag in text', () => {
+    expect(
+      vnodeToString(
+        getVNode({
+          template: `
+          <div>
+          <>
+          </div>`,
+        })
+      )
+    ).toMatchInlineSnapshot(`
+      <div >{{\`
+                <>
+                \`}}</div>
+    `);
+  });
+
+  it('component element with children', () => {
+    const MyComponent: ComponentOptions<any, any, any> = {
+      props: ['propA'],
+      template: '<div><slot /></div>',
+    };
+
+    expect(
+      vnodeToString(
+        getVNode({
+          components: { MyComponent },
+          data(): { props: Record<string, any> } {
+            return {
+              props: {
+                propA: 'propA',
+              },
+            };
+          },
+          template: `<my-component v-bind="props"><div /></my-component>`,
+        })
+      )
+    ).toMatchInlineSnapshot(`<my-component propA="propA"><div /></my-component>`);
+  });
 });

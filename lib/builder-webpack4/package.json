@@ -1,6 +1,6 @@
 {
   "name": "@storybook/builder-webpack4",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.52",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,22 +40,22 @@
   },
   "dependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/api": "6.5.0-alpha.49",
-    "@storybook/channel-postmessage": "6.5.0-alpha.49",
-    "@storybook/channels": "6.5.0-alpha.49",
-    "@storybook/client-api": "6.5.0-alpha.49",
-    "@storybook/client-logger": "6.5.0-alpha.49",
-    "@storybook/components": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/core-events": "6.5.0-alpha.49",
-    "@storybook/node-logger": "6.5.0-alpha.49",
-    "@storybook/preview-web": "6.5.0-alpha.49",
-    "@storybook/router": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.52",
+    "@storybook/api": "6.5.0-alpha.52",
+    "@storybook/channel-postmessage": "6.5.0-alpha.52",
+    "@storybook/channels": "6.5.0-alpha.52",
+    "@storybook/client-api": "6.5.0-alpha.52",
+    "@storybook/client-logger": "6.5.0-alpha.52",
+    "@storybook/components": "6.5.0-alpha.52",
+    "@storybook/core-common": "6.5.0-alpha.52",
+    "@storybook/core-events": "6.5.0-alpha.52",
+    "@storybook/node-logger": "6.5.0-alpha.52",
+    "@storybook/preview-web": "6.5.0-alpha.52",
+    "@storybook/router": "6.5.0-alpha.52",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.49",
-    "@storybook/theming": "6.5.0-alpha.49",
-    "@storybook/ui": "6.5.0-alpha.49",
+    "@storybook/store": "6.5.0-alpha.52",
+    "@storybook/theming": "6.5.0-alpha.52",
+    "@storybook/ui": "6.5.0-alpha.52",
     "@types/node": "^14.0.10 || ^16.0.0",
     "@types/webpack": "^4.41.26",
     "autoprefixer": "^9.8.6",
@@ -106,6 +106,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "863b3811b24a4703645a09286059bc6d95bd2e65",
   "sbmodern": "dist/modern/index.js"
 }

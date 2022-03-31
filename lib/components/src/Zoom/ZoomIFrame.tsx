@@ -29,7 +29,8 @@ export class ZoomIFrame extends Component<IZoomIFrameProps> {
 
     // this component renders an iframe, which gets updates via post-messages
     // never update this component, it will cause the iframe to refresh
-    return false;
+    // the only exception is when the url changes, which happens when the version changes
+    return nextProps.children.props.src !== this.props.children.props.src;
   }
 
   setIframeInnerZoom(scale: number) {
