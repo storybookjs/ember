@@ -97,6 +97,7 @@ Cypress.Commands.add('navigateToStory', (kind, name) => {
   const storyLinkId = `#${kindId}--${storyId}`;
   cy.log(`navigateToStory ${kind} ${name}`);
 
+  // docs-only stories
   if (name !== 'page') {
     // Section might be collapsed
     cy.get(`#${kindId}`).then(($item) => {
