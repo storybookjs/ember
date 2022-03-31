@@ -6347,6 +6347,7 @@ __metadata:
     fast-deep-equal: ^3.1.3
     global: ^4.4.0
     lodash: ^4.17.21
+    regenerator-runtime: ^0.13.7
     remark-external-links: ^8.0.0
     remark-slug: ^6.0.0
     ts-dedent: ^2.0.0
@@ -8010,10 +8011,10 @@ __metadata:
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
+    webpack: 4
   peerDependencies:
     "@babel/core": "*"
     preact: ^8.0.0||^10.0.0
-    webpack: "*"
   bin:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
