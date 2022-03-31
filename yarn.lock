@@ -7999,10 +7999,10 @@ __metadata:
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
+    webpack: 4
   peerDependencies:
     "@babel/core": "*"
     preact: ^8.0.0||^10.0.0
-    webpack: "*"
   bin:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
