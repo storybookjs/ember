@@ -14,10 +14,9 @@ export async function getManagerBuilder(configDir: Options['configDir']) {
   // - Everything else builds with `manager-webpack4`
   //
   // Unlike preview builders, manager building is not pluggable!
-  const builderPackage =
-    builderName === 'webpack5'
-      ? require.resolve('@storybook/manager-webpack5', { paths: [main] })
-      : '@storybook/manager-webpack4';
+  const builderPackage = ['webpack5', '@storybook/builder-webpack5'].includes(builderName)
+    ? require.resolve('@storybook/manager-webpack5', { paths: [main] })
+    : '@storybook/manager-webpack4';
 
   const managerBuilder = await import(builderPackage);
   return managerBuilder;
