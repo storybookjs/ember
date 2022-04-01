@@ -1,3 +1,7 @@
+import { withBackground } from './decorators/withBackground';
+import { withGrid } from './decorators/withGrid';
+
+export const decorators = [withGrid, withBackground];
 export const parameters = {
   backgrounds: {
     grid: {
