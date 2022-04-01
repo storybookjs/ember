@@ -1,21 +1,33 @@
 import type { AnyFramework } from '@storybook/csf';
-import { combineParameters } from '@storybook/store';
-import type { ModuleExports } from '@storybook/store';
-import type { WebProjectAnnotations } from './types';
 
-function getField(moduleExportList: ModuleExports[], field: string): any[] {
+import { combineParameters } from '../parameters';
+import type { ModuleExports, WebProjectAnnotations } from '../types';
+
+export function getField<TFieldType = any>(
+  moduleExportList: ModuleExports[],
+  field: string
+): TFieldType | TFieldType[] {
   return moduleExportList.map((xs) => xs[field]).filter(Boolean);
 }
 
-function getArrayField(moduleExportList: ModuleExports[], field: string): any[] {
-  return getField(moduleExportList, field).reduce((a, b) => [...a, ...b], []);
+export function getArrayField<TFieldType = any>(
+  moduleExportList: ModuleExports[],
+  field: string
+): TFieldType[] {
+  return getField(moduleExportList, field).reduce((a: any, b: any) => [...a, ...b], []);
 }
 
-function getObjectField(moduleExportList: ModuleExports[], field: string): Record<string, any> {
+export function getObjectField<TFieldType = Record<string, any>>(
+  moduleExportList: ModuleExports[],
+  field: string
+): TFieldType {
   return Object.assign({}, ...getField(moduleExportList, field));
 }
 
-function getSingletonField(moduleExportList: ModuleExports[], field: string): any {
+export function getSingletonField<TFieldType = any>(
+  moduleExportList: ModuleExports[],
+  field: string
+): TFieldType {
   return getField(moduleExportList, field).pop();
 }
 
