@@ -1,3 +1,23 @@
+## 6.5.0-alpha.53 (April 1, 2022)
+
+### Features
+
+- Core: Add simplified manager.js/preview.js API for addons ([#17755](https://github.com/storybookjs/storybook/pull/17755))
+- Core/React: Add testing utilities ([#17282](https://github.com/storybookjs/storybook/pull/17282))
+
+### Bug Fixes
+
+- Addon-docs: Fix dependencies for yarn pnp ([#17705](https://github.com/storybookjs/storybook/pull/17705))
+- Webpack: Expand version ranges of webpack in the apps ([#17834](https://github.com/storybookjs/storybook/pull/17834))
+- CLI: Fix vite/jest issue with mocked global ([#17830](https://github.com/storybookjs/storybook/pull/17830))
+
+### Maintenance
+
+- Build: Remove packtracker ([#17841](https://github.com/storybookjs/storybook/pull/17841))
+- Build: Swap order of e2e tests around ([#17840](https://github.com/storybookjs/storybook/pull/17840))
+- Build: Add weekly check for broken markdown links ([#17799](https://github.com/storybookjs/storybook/pull/17799))
+- Build: Switch to use medium+ ([#17837](https://github.com/storybookjs/storybook/pull/17837))
+
 ## 6.5.0-alpha.52 (March 31, 2022)
 
 ### Bug Fixes
