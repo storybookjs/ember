@@ -6,9 +6,11 @@ import React, {
   StrictMode,
   Fragment,
 } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { version as reactDomVersion } from 'react-dom';
+
 import { RenderContext } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
+import { gte, coerce } from '@storybook/semver';
 
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
@@ -60,12 +62,15 @@ const unmountElement = (el: Element) => {
   }
 };
 
+const canUseReactRoot =
+  gte(reactDomVersion, '18.0.0') || coerce(reactDomVersion)?.version === '18.0.0';
+
 const getReactRoot = (el: Element): IRoot | null => {
   if (!FRAMEWORK_OPTIONS?.newRootApi) {
     return null;
   }
 
-  if (!(ReactDOM as any).createRoot) {
+  if (!canUseReactRoot) {
     throw new Error(
       "Your React version doesn't support the new React Root Api. Please use react and react-dom in version 18.x or set the storybook feature 'newRootApi' to false"
     );
@@ -74,7 +79,8 @@ const getReactRoot = (el: Element): IRoot | null => {
   let root = nodes.get(el);
 
   if (!root) {
-    root = (ReactDOM as any).createRoot(el) as IRoot;
+    // eslint-disable-next-line global-require
+    root = require('react-dom/client').createRoot(el) as IRoot;
     nodes.set(el, root);
   }
 
