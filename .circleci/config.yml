@@ -6,7 +6,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -19,7 +19,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -32,7 +32,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -118,23 +118,9 @@ jobs:
           name: examples
           command: |
             yarn run-chromatics
-  packtracker:
-    executor:
-      class: medium
-      name: sb_node_14_browsers
-    steps:
-      - git-shallow-clone/checkout_advanced:
-          clone_options: '--depth 1 --verbose'
-      - attach_workspace:
-          at: .
-      - run:
-          name: Report webpack stats for manager of official storybook
-          command: |
-            cd examples/official-storybook
-            yarn packtracker
   examples:
     executor:
-      class: medium
+      class: medium+
       name: sb_node_14_browsers
     parallelism: 17
     steps:
@@ -437,9 +423,6 @@ workflows:
           requires:
             - examples
       - smoke-tests:
-          requires:
-            - build
-      - packtracker:
           requires:
             - build
       - unit-tests:

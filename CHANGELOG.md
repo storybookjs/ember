@@ -1,3 +1,18 @@
+## 6.5.0-alpha.52 (March 31, 2022)
+
+### Bug Fixes
+
+- UI: Add back CacheProvider from emotion to lib/theming ([#17820](https://github.com/storybookjs/storybook/pull/17820))
+- Core: Add a feature flag for enabling crossOriginIsolated ([#17815](https://github.com/storybookjs/storybook/pull/17815))
+- Angular: Fix multiple calls of Input setter ([#17633](https://github.com/storybookjs/storybook/pull/17633))
+- UI: Wait 100ms before showing spinner and fix story overlaying it ([#17753](https://github.com/storybookjs/storybook/pull/17753))
+
+### Maintenance
+
+- CLI: Add automigration to `@storybook/builder-vite` ([#17829](https://github.com/storybookjs/storybook/pull/17829))
+- Build: Add setup-node version for danger ([#17826](https://github.com/storybookjs/storybook/pull/17826))
+- Add contributing instructions to PULL_REQUEST_TEMPLATE ([#17713](https://github.com/storybookjs/storybook/pull/17713))
+
 ## 6.5.0-alpha.51 (March 25, 2022)
 
 ### Features

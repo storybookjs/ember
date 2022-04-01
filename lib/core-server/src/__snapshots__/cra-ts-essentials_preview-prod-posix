@@ -16,7 +16,7 @@ Object {
     "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
     "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-config-entry.js",
     "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/examples/cra-ts-essentials/.storybook/preview.js-generated-config-entry.js",
+    "ROOT/examples/cra-ts-essentials/.storybook/preview.tsx-generated-config-entry.js",
     "ROOT/generated-stories-entry.js",
   ],
   "keys": Array [
