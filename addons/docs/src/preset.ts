@@ -3,7 +3,7 @@ import remarkSlug from 'remark-slug';
 import remarkExternalLinks from 'remark-external-links';
 import global from 'global';
 
-import type { BuilderConfig, Options } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 
 // for frameworks that are not working with react, we need to configure
@@ -38,16 +38,7 @@ export async function webpack(
       typeof createCompiler
     >[0] */
 ) {
-  const { builder = 'webpack4' } = await options.presets.apply<{
-    builder: BuilderConfig;
-  }>('core', {} as any);
-
-  const builderName = typeof builder === 'string' ? builder : builder.name;
-  const resolvedBabelLoader = require.resolve('babel-loader', {
-    paths: builderName.match(/^webpack(4|5)$/)
-      ? [require.resolve(`@storybook/builder-${builderName}`)]
-      : [builderName],
-  });
+  const resolvedBabelLoader = require.resolve('babel-loader');
 
   const { module = {} } = webpackConfig;
 

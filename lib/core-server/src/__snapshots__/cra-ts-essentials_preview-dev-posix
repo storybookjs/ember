@@ -15,7 +15,7 @@ Object {
     "ROOT/addons/backgrounds/preview.js-generated-config-entry.js",
     "ROOT/addons/measure/preview.js-generated-config-entry.js",
     "ROOT/addons/outline/preview.js-generated-config-entry.js",
-    "ROOT/examples/cra-ts-essentials/.storybook/preview.js-generated-config-entry.js",
+    "ROOT/examples/cra-ts-essentials/.storybook/preview.tsx-generated-config-entry.js",
     "ROOT/generated-stories-entry.js",
   ],
   "keys": Array [
