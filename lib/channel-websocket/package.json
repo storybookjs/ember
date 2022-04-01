@@ -1,6 +1,6 @@
 {
   "name": "@storybook/channel-websocket",
-  "version": "6.5.0-alpha.52",
+  "version": "6.5.0-alpha.53",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,8 +40,8 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/channels": "6.5.0-alpha.52",
-    "@storybook/client-logger": "6.5.0-alpha.52",
+    "@storybook/channels": "6.5.0-alpha.53",
+    "@storybook/client-logger": "6.5.0-alpha.53",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "telejson": "^5.3.3"
