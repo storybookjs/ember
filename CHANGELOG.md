@@ -1,3 +1,9 @@
+## 6.5.0-alpha.54 (April 1, 2022)
+
+### Dependency Upgrades
+
+* React: Update react and react-dom peerDeps for React18 ([#17853](https://github.com/storybookjs/storybook/pull/17853))
+
 ## 6.5.0-alpha.53 (April 1, 2022)
 
 ### Features
