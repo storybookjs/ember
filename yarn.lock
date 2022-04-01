@@ -6334,24 +6334,16 @@ __metadata:
     remark-slug: ^6.0.0
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
-    webpack: 4
   peerDependencies:
     "@storybook/mdx2-csf": "*"
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
-    webpack: "*"
   peerDependenciesMeta:
-    "@storybook/builder-webpack4":
-      optional: true
-    "@storybook/builder-webpack5":
-      optional: true
     "@storybook/mdx2-csf":
       optional: true
     react:
       optional: true
     react-dom:
-      optional: true
-    webpack:
       optional: true
   languageName: unknown
   linkType: soft
