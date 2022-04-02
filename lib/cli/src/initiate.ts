@@ -1,8 +1,8 @@
 import { UpdateNotifier, Package } from 'update-notifier';
 import chalk from 'chalk';
 import prompts from 'prompts';
-import { detect, isStorybookInstalled, detectLanguage } from './detect';
-import { installableProjectTypes, ProjectType, Builder, CoreBuilder } from './project_types';
+import { detect, isStorybookInstalled, detectLanguage, detectBuilder } from './detect';
+import { installableProjectTypes, ProjectType, Builder } from './project_types';
 import { commandLog, codeLog, paddedLog } from './helpers';
 import angularGenerator from './generators/ANGULAR';
 import aureliaGenerator from './generators/AURELIA';
@@ -57,7 +57,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
 
   const generatorOptions = {
     language,
-    builder: options.builder || CoreBuilder.Webpack4,
+    builder: options.builder || detectBuilder(),
     linkable: !!options.linkable,
     commonJs: options.commonJs,
   };
