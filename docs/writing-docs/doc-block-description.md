@@ -25,7 +25,7 @@ Storybook extracts the component's description and renders it at the top of the 
 | `component` | Overrides the default component description. <br/> `description: { component:'An example component description' }`                                                |
 | `markdown`  | Provides custom Markdown for the component description. <br/> `<Description markdown={dedent'# Custom Description'} />` <br/> Only applicable to MDX.             |
 | `story`     | Overrides the story description. <br/> `description: { story: 'An example story description' }`                                                                   |
-| `of`        | Sets the description based either on a component or story. <br/> `<Description of={Commponent} />` <br/> `<Description of={'.'} />` <br/> Only applicable to MDX. |
+| `of`        | Sets the description based either on a component or story. <br/> `<Description of={Component} />` <br/> `<Description of={'.'} />` <br/> Only applicable to MDX. |
 
 ## Working with MDX
 
