@@ -9,13 +9,13 @@ import {
 describe('addStorybookAddonToFile should correctly register an Storybook addon', () => {
   test('to an empty array', () => {
     expect(addStorybookAddonToFile('addon-name', [], true)).toEqual([
-      `import '${storybookAddonScope}addon-name/register';`,
+      `import '${storybookAddonScope}addon-name/manager';`,
     ]);
   });
 
   test('to an empty file', () => {
     expect(addStorybookAddonToFile('addon-name', [''], true)).toEqual([
-      `import '${storybookAddonScope}addon-name/register';`,
+      `import '${storybookAddonScope}addon-name/manager';`,
       '',
     ]);
   });
@@ -25,16 +25,16 @@ describe('addStorybookAddonToFile should correctly register an Storybook addon',
       addStorybookAddonToFile(
         'addon-name',
         [
-          "import '@storybook/addon-actions/register';",
-          "import '@storybook/addon-links/register';",
+          "import '@storybook/addon-actions/manager';",
+          "import '@storybook/addon-links/manager';",
           '',
         ],
         true
       )
     ).toEqual([
-      "import '@storybook/addon-actions/register';",
-      "import '@storybook/addon-links/register';",
-      `import '${storybookAddonScope}addon-name/register';`,
+      `import '${storybookAddonScope}addon-name/manager';`,
+      "import '@storybook/addon-actions/manager';",
+      "import '@storybook/addon-links/manager';",
       '',
     ]);
   });
@@ -44,8 +44,8 @@ describe('addStorybookAddonToFile should correctly register an Storybook addon',
       addStorybookAddonToFile(
         'addon-name',
         [
-          "import '@storybook/addon-links/register';",
-          "import '@storybook/addon-actions/register';",
+          "import '@storybook/addon-links/manager';",
+          "import '@storybook/addon-actions/manager';",
           '',
           '//some other stuff',
           '',
@@ -55,9 +55,9 @@ describe('addStorybookAddonToFile should correctly register an Storybook addon',
         true
       )
     ).toEqual([
-      "import '@storybook/addon-links/register';",
-      "import '@storybook/addon-actions/register';",
-      `import '${storybookAddonScope}addon-name/register';`,
+      `import '${storybookAddonScope}addon-name/manager';`,
+      "import '@storybook/addon-links/manager';",
+      "import '@storybook/addon-actions/manager';",
       '',
       '//some other stuff',
       '',
@@ -71,17 +71,17 @@ describe('addStorybookAddonToFile should correctly register an Storybook addon',
       addStorybookAddonToFile(
         'addon-name',
         [
-          "import '@storybook/addon-actions/register';",
-          "import '@storybook/addon-links/register';",
-          `import '${storybookAddonScope}addon-name/register';`,
+          "import '@storybook/addon-actions/manager';",
+          "import '@storybook/addon-links/manager';",
+          `import '${storybookAddonScope}addon-name/manager';`,
           '',
         ],
         true
       )
     ).toEqual([
-      "import '@storybook/addon-actions/register';",
-      "import '@storybook/addon-links/register';",
-      `import '${storybookAddonScope}addon-name/register';`,
+      "import '@storybook/addon-actions/manager';",
+      "import '@storybook/addon-links/manager';",
+      `import '${storybookAddonScope}addon-name/manager';`,
       '',
     ]);
   });
@@ -91,16 +91,16 @@ describe('addStorybookAddonToFile should correctly register an Storybook addon',
       addStorybookAddonToFile(
         'addon-name',
         [
-          "import '@storybook/addon-actions/register';",
-          "import '@storybook/addon-links/register';",
+          "import '@storybook/addon-actions/manager';",
+          "import '@storybook/addon-links/manager';",
           '',
         ],
         false
       )
     ).toEqual([
-      "import '@storybook/addon-actions/register';",
-      "import '@storybook/addon-links/register';",
-      `import 'addon-name/register';`,
+      `import 'addon-name/manager';`,
+      "import '@storybook/addon-actions/manager';",
+      "import '@storybook/addon-links/manager';",
       '',
     ]);
   });

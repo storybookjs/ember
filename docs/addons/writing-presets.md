@@ -196,7 +196,7 @@ If it doesn't exist yet, create a file `.storybook/main.js`:
 
 It's also possible to programmatically modify the preview head/body HTML using a preset, similar to the way `preview-head.html`/`preview-body.html` can be used to [configure story rendering](../configure/story-rendering.md). The `previewHead` and `previewBody` functions accept a string, which is the existing head/body, and return a modified string.
 
-For example, the following snippet adds a style tag to the preview head programatically:
+For example, the following snippet adds a style tag to the preview head programmatically:
 
 <!-- prettier-ignore-start -->
 

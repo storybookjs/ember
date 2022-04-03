@@ -1,7 +1,6 @@
 import dedent from 'ts-dedent';
 import { resolve } from 'path';
 import { logger } from '@storybook/node-logger';
-import resolveFrom from 'resolve-from';
 import {
   CLIOptions,
   LoadedPreset,
@@ -12,6 +11,7 @@ import {
 } from './types';
 import { loadCustomPresets } from './utils/load-custom-presets';
 import { serverRequire } from './utils/interpret-require';
+import { safeResolve, safeResolveFrom } from './utils/safeResolve';
 
 const isObject = (val: unknown): val is Record<string, any> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
@@ -45,8 +45,8 @@ function resolvePresetFunction<T = any>(
  * Parse an addon into either a managerEntries or a preset. Throw on invalid input.
  *
  * Valid inputs:
- * - '@storybook/addon-actions/register'
- *   =>  { type: 'managerEntries', item }
+ * - '@storybook/addon-actions/manager'
+ *   =>  { type: 'virtual', item }
  *
  * - '@storybook/addon-docs/preset'
  *   =>  { type: 'presets', item }
@@ -57,68 +57,95 @@ function resolvePresetFunction<T = any>(
  * - { name: '@storybook/addon-docs(/preset)?', options: { ... } }
  *   =>  { type: 'presets', item: { name: '@storybook/addon-docs/preset', options } }
  */
-export const resolveAddonName = (configDir: string, name: string) => {
-  let path;
+interface ResolvedAddonPreset {
+  type: 'presets';
+  name: string;
+}
+interface ResolvedAddonVirtual {
+  type: 'virtual';
+  name: string;
+  managerEntries?: string[];
+  previewAnnotations?: string[];
+  presets?: (string | { name: string; options?: any })[];
+}
 
-  if (name.startsWith('.')) {
-    path = resolveFrom(configDir, name);
-  } else if (name.startsWith('/')) {
-    path = name;
-  } else if (name.match(/\/(preset|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
-    path = name;
-  }
+export const resolveAddonName = (
+  configDir: string,
+  name: string,
+  options: any
+): ResolvedAddonPreset | ResolvedAddonVirtual => {
+  const r = name.startsWith('/') ? safeResolve : safeResolveFrom.bind(null, configDir);
+  const resolved = r(name);
 
-  // when user provides full path, we don't need to do anything
-  if (path) {
+  if (name.match(/\/(manager|register(-panel)?)(\.(js|ts|tsx|jsx))?$/)) {
     return {
-      name: path,
-      // Accept `register`, `register.js`, `require.resolve('foo/register'), `register-panel`
-      type: path.match(/register(-panel)?(\.(js|ts|tsx|jsx))?$/) ? 'managerEntries' : 'presets',
+      type: 'virtual',
+      name,
+      managerEntries: [resolved],
     };
   }
-
-  try {
+  if (name.match(/\/(preset)(\.(js|ts|tsx|jsx))?$/)) {
     return {
-      name: resolveFrom(configDir, `${name}/preset`),
       type: 'presets',
+      name: resolved,
     };
-    // eslint-disable-next-line no-empty
-  } catch (err) {}
+  }
 
-  try {
+  const path = name;
+
+  // when user provides full path, we don't need to do anything!
+  const managerFile = safeResolve(`${path}/manager`);
+  const registerFile = safeResolve(`${path}/register`) || safeResolve(`${path}/register-panel`);
+  const previewFile = safeResolve(`${path}/preview`);
+  const presetFile = safeResolve(`${path}/preset`);
+
+  if (!(managerFile || previewFile) && presetFile) {
     return {
-      name: resolveFrom(configDir, `${name}/register`),
-      type: 'managerEntries',
+      type: 'presets',
+      name: presetFile,
     };
-    // eslint-disable-next-line no-empty
-  } catch (err) {}
+  }
+
+  if (managerFile || registerFile || previewFile || presetFile) {
+    const managerEntries = [];
+
+    if (managerFile) {
+      managerEntries.push(managerFile);
+    }
+    // register file is the old way of registering addons
+    if (!managerFile && registerFile && !presetFile) {
+      managerEntries.push(registerFile);
+    }
+
+    return {
+      type: 'virtual',
+      name: path,
+      ...(managerEntries.length ? { managerEntries } : {}),
+      ...(previewFile ? { previewAnnotations: [previewFile] } : {}),
+      ...(presetFile ? { presets: [{ name: presetFile, options }] } : {}),
+    };
+  }
 
   return {
-    name: resolveFrom(configDir, name),
     type: 'presets',
+    name: resolved,
   };
 };
 
 const map =
   ({ configDir }: InterPresetOptions) =>
   (item: any) => {
+    const options = isObject(item) ? item.options || undefined : undefined;
+    const name = isObject(item) ? item.name : item;
     try {
-      if (isObject(item)) {
-        const { name } = resolveAddonName(configDir, item.name);
-        return { ...item, name };
-      }
-      const { name, type } = resolveAddonName(configDir, item);
-      if (type === 'managerEntries') {
-        return {
-          name: `${name}_additionalManagerEntries`,
-          type,
-          managerEntries: [name],
-        };
-      }
-      return resolveAddonName(configDir, name);
+      const resolved = resolveAddonName(configDir, name, options);
+      return {
+        ...(options ? { options } : {}),
+        ...resolved,
+      };
     } catch (err) {
       logger.error(
-        `Addon value should end in /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
+        `Addon value should end in /manager or /preview or /register OR it should be a valid preset https://storybook.js.org/docs/react/addons/writing-presets/\n${item}`
       );
     }
     return undefined;
@@ -135,7 +162,7 @@ function interopRequireDefault(filePath: string) {
 }
 
 function getContent(input: any) {
-  if (input.type === 'managerEntries') {
+  if (input.type === 'virtual') {
     const { type, name, ...rest } = input;
     return rest;
   }
