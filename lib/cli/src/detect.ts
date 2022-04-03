@@ -100,7 +100,7 @@ export function detectFrameworkPreset(packageJson = {}) {
 
 /**
  * Attempts to detect which builder to use, by searching for a vite config file.  If one is found, the vite builder
- * will be used, otherwise, webpack 4 is the default.
+ * will be used, otherwise, webpack4 is the default.
  *
  * @returns CoreBuilder
  */
@@ -112,7 +112,7 @@ export function detectBuilder() {
     return CoreBuilder.Vite;
   }
 
-  // Fallback to webpack 4
+  // Fallback to webpack4
   return CoreBuilder.Webpack4;
 }
 
