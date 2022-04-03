@@ -160,12 +160,12 @@ export const sourceDecorator = (storyFn: any, context: StoryContext<AnyFramework
     return story;
   }
 
-  const { parameters = {}, args = {} } = context || {};
+  const { parameters = {}, args = {}, component: ctxtComponent } = context || {};
   let { Component: component = {} } = story;
 
   const { wrapper, slotProperty } = getWrapperProperties(component);
   if (wrapper) {
-    component = parameters.component;
+    component = parameters.component ?? ctxtComponent;
   }
 
   source = generateSvelteSource(component, args, context?.argTypes, slotProperty);
