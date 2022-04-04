@@ -2160,7 +2160,6 @@ addParameters({
       base: 'light',
       brandTitle: 'Storybook',
       brandUrl: 'https://storybook.js.org',
-      brandTarget: '_self',
       // To control appearance:
       // brandImage: 'http://url.of/some.svg',
     }),
