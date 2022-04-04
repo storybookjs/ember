@@ -1,7 +1,7 @@
 import React from 'react';
 import { DocsProvider, Meta, Story } from './blocks';
 
-import meta, { Standard } from './AccountForm.stories';
+import meta, { Standard } from './components/AccountForm.stories';
 
 export default () => (
   <DocsProvider>

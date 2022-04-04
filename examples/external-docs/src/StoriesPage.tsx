@@ -1,8 +1,8 @@
 import React from 'react';
 import { DocsProvider, Meta, Story } from './blocks';
 
-import meta, { WithArgs, Basic } from './button.stories';
-import EmojiMeta, { WithArgs as EmojiWithArgs } from './emoji-button.stories';
+import meta, { WithArgs, Basic } from './components/button.stories';
+import EmojiMeta, { WithArgs as EmojiWithArgs } from './components/emoji-button.stories';
 
 export default () => (
   <DocsProvider>

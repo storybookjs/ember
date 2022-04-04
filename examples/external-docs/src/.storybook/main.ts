@@ -3,17 +3,12 @@ import type { StorybookConfig } from '@storybook/react/types';
 const config: StorybookConfig = {
   stories: [
     {
-      directory: '../src',
+      directory: '../components',
       titlePrefix: 'Demo',
     },
   ],
   logLevel: 'debug',
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-storysource',
-    '@storybook/addon-storyshots',
-    '@storybook/addon-a11y',
-  ],
+  addons: ['@storybook/addon-essentials'],
   typescript: {
     check: true,
     checkOptions: {},

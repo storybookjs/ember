@@ -20,8 +20,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src/*",
-    "src/.storybook/main.ts"
-  ]
+  "include": [ "src/*"]
 }
