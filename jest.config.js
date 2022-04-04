@@ -97,4 +97,5 @@ module.exports = {
   modulePathIgnorePatterns: ['/dist/.*/__mocks__/'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  reporters: ['default', 'jest-junit'],
 };
