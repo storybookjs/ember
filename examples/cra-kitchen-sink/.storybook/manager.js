@@ -9,7 +9,6 @@ addons.setConfig({
     base: 'light',
     brandTitle: 'CRA Kitchen Sink',
     brandUrl: 'https://github.com/storybookjs/storybook/tree/master/examples/cra-kitchen-sink',
-    brandTarget: '_self',
     gridCellSize: 12,
   }),
 });
