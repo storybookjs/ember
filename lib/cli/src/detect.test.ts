@@ -15,6 +15,9 @@ jest.mock('./js-package-manager', () => ({
 
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
+  stat: jest.fn(),
+  lstat: jest.fn(),
+  access: jest.fn(),
 }));
 
 jest.mock('path', () => ({

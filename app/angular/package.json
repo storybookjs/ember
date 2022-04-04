@@ -1,6 +1,6 @@
 {
   "name": "@storybook/angular",
-  "version": "6.5.0-alpha.51",
+  "version": "6.5.0-alpha.55",
   "description": "Storybook for Angular: Develop Angular Components in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,17 +45,17 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.51",
-    "@storybook/api": "6.5.0-alpha.51",
-    "@storybook/client-logger": "6.5.0-alpha.51",
-    "@storybook/core": "6.5.0-alpha.51",
-    "@storybook/core-common": "6.5.0-alpha.51",
-    "@storybook/core-events": "6.5.0-alpha.51",
+    "@storybook/addons": "6.5.0-alpha.55",
+    "@storybook/api": "6.5.0-alpha.55",
+    "@storybook/client-logger": "6.5.0-alpha.55",
+    "@storybook/core": "6.5.0-alpha.55",
+    "@storybook/core-common": "6.5.0-alpha.55",
+    "@storybook/core-events": "6.5.0-alpha.55",
     "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/docs-tools": "6.5.0-alpha.51",
-    "@storybook/node-logger": "6.5.0-alpha.51",
+    "@storybook/docs-tools": "6.5.0-alpha.55",
+    "@storybook/node-logger": "6.5.0-alpha.55",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.51",
+    "@storybook/store": "6.5.0-alpha.55",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/react": "^16.14.23",
     "@types/react-dom": "^16.9.14",
@@ -80,7 +80,7 @@
     "ts-loader": "^8.0.14",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
     "util-deprecate": "^1.0.2",
-    "webpack": "4"
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.1102.0",
@@ -101,7 +101,8 @@
     "jest": "^26.6.3",
     "jest-preset-angular": "^8.3.2",
     "jest-specific-snapshot": "^4.0.0",
-    "tmp": "^0.2.1"
+    "tmp": "^0.2.1",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@angular-devkit/architect": ">=0.8.9",
@@ -136,5 +137,5 @@
     "access": "public"
   },
   "builders": "dist/ts3.9/builders/builders.json",
-  "gitHead": "cfcdc7fb74d3cf60eae8dd0b5a626d67ed180d42"
+  "gitHead": "0d051c3d8efb90e15d8734e6e6914b2439420953"
 }

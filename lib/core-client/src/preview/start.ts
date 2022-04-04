@@ -2,12 +2,11 @@ import global from 'global';
 import deprecate from 'util-deprecate';
 import { ClientApi } from '@storybook/client-api';
 import { PreviewWeb } from '@storybook/preview-web';
-import type { WebProjectAnnotations } from '@storybook/preview-web';
 import type { AnyFramework, ArgsStoryFn } from '@storybook/csf';
 import createChannel from '@storybook/channel-postmessage';
 import { addons } from '@storybook/addons';
 import Events from '@storybook/core-events';
-import type { Path } from '@storybook/store';
+import type { Path, WebProjectAnnotations } from '@storybook/store';
 
 import { Loadable } from './types';
 import { executeLoadableForChanges } from './executeLoadable';

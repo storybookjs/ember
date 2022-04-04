@@ -5,9 +5,14 @@ import Events from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { addons, Channel } from '@storybook/addons';
 import { AnyFramework, StoryId, ProjectAnnotations, Args, Globals } from '@storybook/csf';
-import { ModuleImportFn, Story, StoryStore, StoryIndex, PromiseLike } from '@storybook/store';
-
-import { WebProjectAnnotations } from './types';
+import {
+  ModuleImportFn,
+  Story,
+  StoryStore,
+  StoryIndex,
+  PromiseLike,
+  WebProjectAnnotations,
+} from '@storybook/store';
 
 import { StoryRender } from './StoryRender';
 import { DocsRender } from './DocsRender';

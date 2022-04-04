@@ -5,7 +5,7 @@ import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { addons, mockChannel as createMockChannel } from '@storybook/addons';
 import type { AnyFramework } from '@storybook/csf';
-import type { ModuleImportFn } from '@storybook/store';
+import type { ModuleImportFn, WebProjectAnnotations } from '@storybook/store';
 
 import { PreviewWeb } from './PreviewWeb';
 import {
@@ -22,7 +22,6 @@ import {
   waitForQuiescence,
   waitForRenderPhase,
 } from './PreviewWeb.mockdata';
-import type { WebProjectAnnotations } from './types';
 
 jest.mock('./WebView');
 const { history, document } = global;

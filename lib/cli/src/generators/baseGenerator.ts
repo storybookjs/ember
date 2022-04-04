@@ -1,4 +1,5 @@
 import fse from 'fs-extra';
+import dedent from 'ts-dedent';
 import { getStorybookBabelDependencies } from '@storybook/core-common';
 import { NpmOptions } from '../NpmOptions';
 import { SupportedLanguage, SupportedFrameworks, Builder, CoreBuilder } from '../project_types';
@@ -51,6 +52,8 @@ const builderDependencies = (builder: Builder) => {
       return [];
     case CoreBuilder.Webpack5:
       return ['@storybook/builder-webpack5', '@storybook/manager-webpack5'];
+    case CoreBuilder.Vite:
+      return ['@storybook/builder-vite'];
     default:
       return [builder];
   }
@@ -121,15 +124,28 @@ export async function baseGenerator(
 
   const versionedPackages = await packageManager.getVersionedPackages(...packages);
 
+  const coreBuilders = [CoreBuilder.Webpack4, CoreBuilder.Webpack5, CoreBuilder.Vite] as string[];
+  const expandedBuilder = coreBuilders.includes(builder)
+    ? `@storybook/builder-${builder}`
+    : builder;
   const mainOptions =
     builder !== CoreBuilder.Webpack4
       ? {
           core: {
-            builder,
+            builder: expandedBuilder,
           },
           ...extraMain,
         }
       : extraMain;
+
+  // Default vite builder to storyStoreV7
+  if (expandedBuilder === '@storybook/builder-vite') {
+    mainOptions.features = {
+      ...mainOptions.features,
+      storyStoreV7: true,
+    };
+  }
+
   configure(framework, {
     framework: frameworkPackage,
     addons: [...addons, ...stripVersions(extraAddons)],
@@ -139,6 +155,16 @@ export async function baseGenerator(
   });
   if (addComponents) {
     copyComponents(framework, language);
+  }
+
+  // FIXME: temporary workaround for https://github.com/storybookjs/storybook/issues/17516
+  if (expandedBuilder === '@storybook/builder-vite') {
+    const previewHead = dedent`
+      <script>
+        window.global = window;
+      </script>
+    `;
+    await fse.writeFile(`.storybook/preview-head.html`, previewHead, { encoding: 'utf8' });
   }
 
   const babelDependencies = addBabel ? await getBabelDependencies(packageManager, packageJson) : [];

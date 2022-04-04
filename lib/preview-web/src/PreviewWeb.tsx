@@ -11,10 +11,10 @@ import {
   StorySpecifier,
   StoryIndex,
   PromiseLike,
+  WebProjectAnnotations,
 } from '@storybook/store';
 
 import { Preview } from './Preview';
-import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
