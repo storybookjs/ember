@@ -13,9 +13,8 @@ import {
   StoryStore,
   StorySpecifier,
   StoryIndex,
+  WebProjectAnnotations,
 } from '@storybook/store';
-
-import { WebProjectAnnotations } from './types';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';

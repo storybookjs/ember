@@ -1,6 +1,8 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [Deprecated register.js](#deprecated-registerjs)
+  - [Dropped support for addon-actions addDecorators](#dropped-support-for-addon-actions-adddecorators)
   - [Vite builder renamed](#vite-builder-renamed)
   - [Docs framework refactor for React](#docs-framework-refactor-for-react)
   - [Opt-in MDX2 support](#opt-in-mdx2-support)
@@ -196,6 +198,26 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.4.x to 6.5.0
+
+### Deprecated register.js
+
+In ancient versions of Storybook, addons were registered by referring to `addon-name/register.js`. This is going away in SB7.0. Instead you should just add `addon-name` to the `addons` array in `.storybook/main.js`.
+
+Before: 
+
+```js
+module.exports = { addons: ['my-addon/register.js'] }
+```
+
+After:
+
+```js
+module.exports = { addons: ['my-addon'] }
+```
+
+### Dropped support for addon-actions addDecorators
+
+Prior to SB6.5, `addon-actions` provided an option called `addDecorators`. In SB6.5, decorators are applied always. This is technically a breaking change, so if this affects you please file an issue in Github and we can consider reverting this in a patch release.
 
 ### Vite builder renamed
 
