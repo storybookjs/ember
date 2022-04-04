@@ -103,21 +103,21 @@ const PanelsContainer = styled.div({
   height: 'calc(100% - 40px)',
 });
 
-const Bar = styled.nav(
+const Bar = styled.nav<{ isFullscreen: boolean }>(
   {
     position: 'fixed',
     bottom: 0,
     left: 0,
     width: '100vw',
     height: 40,
-    display: 'flex',
     boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1)',
 
     '& > *': {
       flex: 1,
     },
   },
-  ({ theme }) => ({
+  ({ theme, isFullscreen }) => ({
+    display: isFullscreen ? 'none' : 'flex',
     background: theme.barBg,
   })
 );
@@ -132,6 +132,7 @@ export interface MobileProps {
   options: {
     initialActive: ActiveTabsType;
     isToolshown: boolean;
+    isFullscreen: boolean;
   };
   Sidebar: ComponentType<any>;
   Preview: ComponentType<any>;
@@ -186,7 +187,7 @@ class Mobile extends Component<MobileProps, MobileState> {
           </div>
           <Panel hidden={!viewMode} />
         </Panels>
-        <Bar>
+        <Bar isFullscreen={options.isFullscreen}>
           <TabButton onClick={() => this.setState({ active: SIDEBAR })} active={active === SIDEBAR}>
             Sidebar
           </TabButton>
