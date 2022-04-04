@@ -1,8 +1,20 @@
+## 6.5.0-alpha.55 (April 3, 2022)
+
+### Features
+
+- CLI: Detect vite project, use vite builder automatically ([#17860](https://github.com/storybookjs/storybook/pull/17860))
+- CLI: Default new vite projects to storyStoreV7 ([#17859](https://github.com/storybookjs/storybook/pull/17859))
+
+### Bug Fixes
+
+- Core: Restore preview-web composeConfigs export ([#17861](https://github.com/storybookjs/storybook/pull/17861))
+- CLI: Preserve quote style in automigrate ([#17858](https://github.com/storybookjs/storybook/pull/17858))
+
 ## 6.5.0-alpha.54 (April 1, 2022)
 
 ### Dependency Upgrades
 
-* React: Update react and react-dom peerDeps for React18 ([#17853](https://github.com/storybookjs/storybook/pull/17853))
+- React: Update react and react-dom peerDeps for React18 ([#17853](https://github.com/storybookjs/storybook/pull/17853))
 
 ## 6.5.0-alpha.53 (April 1, 2022)
 

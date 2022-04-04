@@ -39,7 +39,6 @@ export const builderVite: Fix<BuilderViteOptions> = {
     const builderName = typeof builder === 'string' ? builder : builder?.name;
 
     if (builderName !== 'storybook-builder-vite') {
-      logger.info(`Not using community vite builder, skipping`);
       return null;
     }
 

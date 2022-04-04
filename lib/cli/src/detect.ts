@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import findUp from 'find-up';
 
 import {
   ProjectType,
@@ -9,9 +10,12 @@ import {
   TemplateConfiguration,
   TemplateMatcher,
   unsupportedTemplate,
+  CoreBuilder,
 } from './project_types';
-import { getBowerJson } from './helpers';
+import { getBowerJson, paddedLog } from './helpers';
 import { PackageJson, readPackageJson } from './js-package-manager';
+
+const viteConfigFiles = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
 
 const hasDependency = (
   packageJson: PackageJson,
@@ -92,6 +96,24 @@ export function detectFrameworkPreset(packageJson = {}) {
   });
 
   return result ? result.preset : ProjectType.UNDETECTED;
+}
+
+/**
+ * Attempts to detect which builder to use, by searching for a vite config file.  If one is found, the vite builder
+ * will be used, otherwise, webpack4 is the default.
+ *
+ * @returns CoreBuilder
+ */
+export function detectBuilder() {
+  const viteConfig = findUp.sync(viteConfigFiles);
+
+  if (viteConfig) {
+    paddedLog('Detected vite project, setting builder to @storybook/builder-vite');
+    return CoreBuilder.Vite;
+  }
+
+  // Fallback to webpack4
+  return CoreBuilder.Webpack4;
 }
 
 export function isStorybookInstalled(dependencies: PackageJson | false, force?: boolean) {
