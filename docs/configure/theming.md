@@ -86,6 +86,8 @@ Above, we're creating a new theme that will:
 - Replace Storybook's logo in the sidebar with our own (defined in the brandImage variable).
 - Add custom branding information.
 
+You could also use <code>brandTarget</code> to define a custom target of the brand link, if you need to differentiate it from the default <code>_blank</code> behaviour.
+
 Finally, we'll need to import the theme into Storybook. Create a new file called `manager.js` in your `.storybook` directory and add the following:
 
 <!-- prettier-ignore-start -->
