@@ -39,7 +39,7 @@
     "@storybook/core-common": "portal:../../lib/core-common",
     "@storybook/core-events": "portal:../../lib/core-events",
     "@storybook/core-server": "portal:../../lib/core-server",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
     "@storybook/docs-tools": "portal:../../lib/docs-tools",
     "@storybook/jest": "^0.0.5",

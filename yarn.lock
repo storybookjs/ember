@@ -6217,7 +6217,7 @@ __metadata:
     "@storybook/client-logger": 6.5.0-alpha.56
     "@storybook/components": 6.5.0-alpha.56
     "@storybook/core-events": 6.5.0-alpha.56
-    "@storybook/csf": 0.0.2--canary.87bc651.0
+    "@storybook/csf": 0.0.2--canary.7c6c115.0
     "@storybook/theming": 6.5.0-alpha.56
     "@types/lodash": ^4.14.167
     "@types/webpack-env": ^1.16.0
@@ -6439,7 +6439,7 @@ __metadata:
     "@storybook/components": 6.5.0-alpha.56
     "@storybook/core-common": 6.5.0-alpha.56
     "@storybook/core-events": 6.5.0-alpha.56
-    "@storybook/csf": 0.0.2--canary.87bc651.0
+    "@storybook/csf": 0.0.2--canary.7c6c115.0
     "@storybook/instrumenter": 6.5.0-alpha.56
     "@storybook/jest": ^0.0.5
     "@storybook/testing-library": ^0.0.7
