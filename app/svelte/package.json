@@ -1,6 +1,6 @@
 {
   "name": "@storybook/svelte",
-  "version": "6.5.0-alpha.51",
+  "version": "6.5.0-alpha.55",
   "description": "Storybook for Svelte: Develop Svelte Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -46,14 +46,14 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.51",
-    "@storybook/client-logger": "6.5.0-alpha.51",
-    "@storybook/core": "6.5.0-alpha.51",
-    "@storybook/core-common": "6.5.0-alpha.51",
+    "@storybook/addons": "6.5.0-alpha.55",
+    "@storybook/client-logger": "6.5.0-alpha.55",
+    "@storybook/core": "6.5.0-alpha.55",
+    "@storybook/core-common": "6.5.0-alpha.55",
     "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/docs-tools": "6.5.0-alpha.51",
-    "@storybook/node-logger": "6.5.0-alpha.51",
-    "@storybook/store": "6.5.0-alpha.51",
+    "@storybook/docs-tools": "6.5.0-alpha.55",
+    "@storybook/node-logger": "6.5.0-alpha.55",
+    "@storybook/store": "6.5.0-alpha.55",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "loader-utils": "^2.0.0",
@@ -63,13 +63,14 @@
     "regenerator-runtime": "^0.13.7",
     "sveltedoc-parser": "4.1.0",
     "ts-dedent": "^2.0.0",
-    "webpack": "4"
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.0",
     "@types/webpack-env": "^1.16.0",
     "svelte": "^3.31.2",
-    "svelte-loader": "^3.0.0"
+    "svelte-loader": "^3.0.0",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*",
@@ -82,6 +83,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "cfcdc7fb74d3cf60eae8dd0b5a626d67ed180d42",
+  "gitHead": "0d051c3d8efb90e15d8734e6e6914b2439420953",
   "sbmodern": "dist/modern/client/index.js"
 }

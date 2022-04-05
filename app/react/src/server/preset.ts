@@ -1,7 +1,7 @@
 import { findDistEsm } from '@storybook/core-common';
 import type { StorybookConfig } from '@storybook/core-common';
 
-export const config: StorybookConfig['config'] = (entries = []) => [
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entries = []) => [
   ...entries,
   findDistEsm(__dirname, 'client/preview/config'),
 ];

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-controls",
-  "version": "6.5.0-alpha.51",
+  "version": "6.5.0-alpha.55",
   "description": "Interact with component inputs dynamically in the Storybook UI",
   "keywords": [
     "addon",
@@ -25,8 +25,8 @@
     "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
-  "main": "dist/cjs/register.js",
-  "module": "dist/esm/register.js",
+  "main": "dist/cjs/manager.js",
+  "module": "dist/esm/manager.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
@@ -45,22 +45,22 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.51",
-    "@storybook/api": "6.5.0-alpha.51",
-    "@storybook/client-logger": "6.5.0-alpha.51",
-    "@storybook/components": "6.5.0-alpha.51",
-    "@storybook/core-common": "6.5.0-alpha.51",
+    "@storybook/addons": "6.5.0-alpha.55",
+    "@storybook/api": "6.5.0-alpha.55",
+    "@storybook/client-logger": "6.5.0-alpha.55",
+    "@storybook/components": "6.5.0-alpha.55",
+    "@storybook/core-common": "6.5.0-alpha.55",
     "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/node-logger": "6.5.0-alpha.51",
-    "@storybook/store": "6.5.0-alpha.51",
-    "@storybook/theming": "6.5.0-alpha.51",
+    "@storybook/node-logger": "6.5.0-alpha.55",
+    "@storybook/store": "6.5.0-alpha.55",
+    "@storybook/theming": "6.5.0-alpha.55",
     "core-js": "^3.8.2",
     "lodash": "^4.17.21",
     "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -73,8 +73,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "cfcdc7fb74d3cf60eae8dd0b5a626d67ed180d42",
-  "sbmodern": "dist/modern/register.js",
+  "gitHead": "0d051c3d8efb90e15d8734e6e6914b2439420953",
+  "sbmodern": "dist/modern/manager.js",
   "storybook": {
     "displayName": "Controls",
     "icon": "https://user-images.githubusercontent.com/263385/101991669-479cc600-3c7c-11eb-93d9-38b67e8371f2.png",
