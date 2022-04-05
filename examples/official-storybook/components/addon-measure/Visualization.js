@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { drawSelectedElement } from '@storybook/addon-measure/dist/cjs/box-model/visualizer';
+import { drawSelectedElement } from '@storybook/addon-measure/dist/esm/box-model/visualizer';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { init, destroy } from '@storybook/addon-measure/dist/cjs/box-model/canvas';
+import { init, destroy } from '@storybook/addon-measure/dist/esm/box-model/canvas';
 
 export const Visualization = ({ render }) => {
   const element = useRef(null);
