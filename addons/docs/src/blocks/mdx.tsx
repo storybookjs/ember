@@ -111,7 +111,7 @@ export const AnchorMdx: FC<AnchorMdxProps> = (props) => {
   }
 
   // External URL dont need any modification.
-  return <A target="_blank" {...props} />;
+  return <A {...props} />;
 };
 
 const SUPPORTED_MDX_HEADERS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
