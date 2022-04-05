@@ -221,7 +221,12 @@ export function filterTools(
     toolbarExclusions: string[];
   }
 ) {
-  const filteredTabs = tabs.filter((t) => !toolbarExclusions.includes(t.id));
+  const isToolIncluded = (id: string) =>
+    toolbarExclusions.filter((exclusionKey) => id.match(new RegExp(`^${exclusionKey}.*`)))
+      .length === 0;
+
+  const filteredTabs = tabs.filter((tab) => isToolIncluded(tab.id));
+
   const toolsLeft = [
     menuTool,
     filteredTabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(filteredTabs),
@@ -240,7 +245,7 @@ export function filterTools(
         path,
       })) &&
     !toolbarItemHasBeenExcluded(item, story) &&
-    !toolbarExclusions.includes(item.id);
+    isToolIncluded(item.id);
 
   const left = toolsLeft.filter(filter);
   const right = toolsRight.filter(filter);
