@@ -7710,8 +7710,8 @@ __metadata:
     cross-env: ^7.0.3
     formik: ^2.2.9
     prop-types: 15.7.2
-    react: 18
-    react-dom: 18
+    react: 16.14.0
+    react-dom: 16.14.0
     typescript: ^3.9.7
     webpack: 4
   languageName: unknown
@@ -8343,8 +8343,6 @@ __metadata:
     prompts: ^2.4.0
     puppeteer: ^2.1.1
     raf: ^3.4.1
-    react: 18
-    react-dom: 18
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     remark: ^13.0.0
@@ -37705,18 +37703,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18":
-  version: 18.0.0
-  resolution: "react-dom@npm:18.0.0"
-  dependencies:
-    loose-envify: ^1.1.0
-    scheduler: ^0.21.0
-  peerDependencies:
-    react: ^18.0.0
-  checksum: 78aa393ab4ae35f7266ba5cd761ebd35cab8375f63051bda2bb97a27be2622dbd661b24b32b8e55f9365aa027e732251e7d0d754c755f8efb6bd38a72ba03df8
-  languageName: node
-  linkType: hard
-
 "react-dom@npm:^15.7.0":
   version: 15.7.0
   resolution: "react-dom@npm:15.7.0"
@@ -38240,15 +38226,6 @@ __metadata:
     object-assign: ^4.1.1
     prop-types: ^15.6.2
   checksum: df8faae43e01387013900e8f8fb3c4ce9935b7edbcbaa77e12999c913eb958000a0a8750bf9a0886dae0ad768dd4a4ee983752d5bade8d840adbe0ce890a2438
-  languageName: node
-  linkType: hard
-
-"react@npm:18":
-  version: 18.0.0
-  resolution: "react@npm:18.0.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: cf55bc7b4315f54321d04cb0b69241c4973a5182d679551b3e6c3f57b312a4fdeac05038ca9502d48ea4d040d7550b0b7f07b3872a19589a5995ee899cc19d2b
   languageName: node
   linkType: hard
 
@@ -40494,15 +40471,6 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "scheduler@npm:0.21.0"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: 083a9a0c83f4923f7f5bb28d8bcf13cff42c90f4303bc187166520fcfc576c97e946d426c707d5a9c0aa0a655819605dd0c741467c626824bbf191251c126f1b
   languageName: node
   linkType: hard
 
