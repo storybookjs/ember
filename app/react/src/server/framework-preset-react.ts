@@ -1,7 +1,8 @@
 import path from 'path';
+import { readJSON } from 'fs-extra';
 import { TransformOptions } from '@babel/core';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import type { Configuration } from 'webpack';
+import { Configuration, IgnorePlugin } from 'webpack';
 
 import { logger } from '@storybook/node-logger';
 import type { Options } from '@storybook/core-common';
@@ -82,11 +83,19 @@ export async function webpackFinal(config: Configuration, options: Options) {
   }
 
   logger.info('=> Using React fast refresh');
+  const reactDomPkg = await readJSON(require.resolve('react-dom/package.json'));
 
   return {
     ...config,
     plugins: [
       ...config.plugins,
+      reactDomPkg.version.startsWith('18')
+        ? null
+        : new IgnorePlugin({
+            resourceRegExp: /react-dom\/client$/,
+            contextRegExp: /@storybook\/react/,
+          }),
+
       // Storybook uses webpack-hot-middleware https://github.com/storybookjs/storybook/issues/14114
       new ReactRefreshWebpackPlugin({
         overlay: {

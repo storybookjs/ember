@@ -1,5 +1,11 @@
 import path from 'path';
-import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, ProvidePlugin } from 'webpack';
+import {
+  DefinePlugin,
+  HotModuleReplacementPlugin,
+  ProgressPlugin,
+  ProvidePlugin,
+  IgnorePlugin,
+} from 'webpack';
 import type { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
