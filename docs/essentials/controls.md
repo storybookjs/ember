@@ -328,6 +328,24 @@ Or consider a constraint where if the user sets one control value, it doesn't ma
 
 <!-- prettier-ignore-end -->
 
+The query object must contain either an `arg` or `global` target:
+
+| field  | type   | meaning                       |
+| ------ | ------ | ----------------------------- |
+| arg    | string | The ID of the arg to test.    |
+| global | string | The ID of the global to test. |
+
+It may also contain at most one of the following operators:
+
+| operator | type    | meaning                                              |
+| -------- | ------- | ---------------------------------------------------- |
+| truthy   | boolean | Is the target value truthy?                          |
+| exists   | boolean | Is the target value defined?                         |
+| eq       | any     | Is the target value equal to the provided value?     |
+| neq      | any     | Is the target value NOT equal to the provided value? |
+
+If no operator is provided, that is equivalent to `{ truthy: true }`.
+
 ## Hide NoControls warning
 
 If you don't plan to handle the control args inside your Story, you can remove the warning with:
