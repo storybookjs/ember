@@ -106,21 +106,21 @@ const PanelsContainer = styled.div<{ isFullscreen: boolean }>(
   })
 );
 
-const Bar = styled.nav<{ isFullscreen: boolean }>(
+const Bar = styled.nav(
   {
     position: 'fixed',
     bottom: 0,
     left: 0,
     width: '100vw',
     height: 40,
+    display: 'flex',
     boxShadow: '0 1px 5px 0 rgba(0, 0, 0, 0.1)',
 
     '& > *': {
       flex: 1,
     },
   },
-  ({ theme, isFullscreen }) => ({
-    display: isFullscreen ? 'none' : 'flex',
+  ({ theme }) => ({
     background: theme.barBg,
   })
 );
@@ -190,22 +190,24 @@ class Mobile extends Component<MobileProps, MobileState> {
           </div>
           <Panel hidden={!viewMode} />
         </Panels>
-        <Bar isFullscreen={options.isFullscreen}>
-          <TabButton onClick={() => this.setState({ active: SIDEBAR })} active={active === SIDEBAR}>
-            Sidebar
-          </TabButton>
-          <TabButton onClick={() => this.setState({ active: CANVAS })} active={active === CANVAS}>
-            {viewMode ? 'Canvas' : null}
-            {pages.map(({ key, route: Route }) => (
-              <Route key={key}>{key}</Route>
-            ))}
-          </TabButton>
-          {viewMode && !docsOnly ? (
-            <TabButton onClick={() => this.setState({ active: ADDONS })} active={active === ADDONS}>
-              Addons
+        {!options.isFullscreen && (
+          <Bar>
+            <TabButton onClick={() => this.setState({ active: SIDEBAR })} active={active === SIDEBAR}>
+              Sidebar
             </TabButton>
-          ) : null}
-        </Bar>
+            <TabButton onClick={() => this.setState({ active: CANVAS })} active={active === CANVAS}>
+              {viewMode ? 'Canvas' : null}
+              {pages.map(({ key, route: Route }) => (
+                <Route key={key}>{key}</Route>
+              ))}
+            </TabButton>
+            {viewMode && !docsOnly ? (
+              <TabButton onClick={() => this.setState({ active: ADDONS })} active={active === ADDONS}>
+                Addons
+              </TabButton>
+            ) : null}
+          </Bar>
+        )}
       </Root>
     );
   }
