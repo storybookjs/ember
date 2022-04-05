@@ -73,7 +73,9 @@ const getReactRoot = async (el: Element): Promise<ReactRoot | null> => {
   let root = nodes.get(el);
 
   if (!root) {
-    const reactDomClient = await import('react-dom/client');
+    // Skipping webpack's static analysis of import paths by defining the path value outside the import statement.
+    const reactDOMClientPath = 'react-dom/client';
+    const reactDomClient = await import(reactDOMClientPath);
     root = reactDomClient.createRoot(el);
 
     nodes.set(el, root);
