@@ -79,7 +79,7 @@ export const addStorybookAddonToFile = (
   isOfficialAddon: boolean
 ) => {
   const addonNameNoTag = addonName.split('@')[0];
-  const alreadyRegistered = addonsFile.find((line) => line.includes(`${addonNameNoTag}/register`));
+  const alreadyRegistered = addonsFile.find((line) => line.includes(`${addonNameNoTag}/manager`));
 
   if (alreadyRegistered) {
     return addonsFile;
@@ -93,7 +93,7 @@ export const addStorybookAddonToFile = (
 
   return [
     ...addonsFile.slice(0, latestImportIndex + 1),
-    `import '${getPackageName(addonNameNoTag, isOfficialAddon)}/register';`,
+    `import '${getPackageName(addonNameNoTag, isOfficialAddon)}/manager';`,
     ...addonsFile.slice(latestImportIndex + 1),
   ];
 };

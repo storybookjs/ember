@@ -137,6 +137,15 @@ export async function baseGenerator(
           ...extraMain,
         }
       : extraMain;
+
+  // Default vite builder to storyStoreV7
+  if (expandedBuilder === '@storybook/builder-vite') {
+    mainOptions.features = {
+      ...mainOptions.features,
+      storyStoreV7: true,
+    };
+  }
+
   configure(framework, {
     framework: frameworkPackage,
     addons: [...addons, ...stripVersions(extraAddons)],
