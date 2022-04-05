@@ -511,7 +511,7 @@ describe('prepareStory', () => {
           id,
           name,
           args: { a: 1, b: 2 },
-          argTypes: { b: { name: 'b', removeIf: 'a' } },
+          argTypes: { b: { name: 'b', if: { arg: 'a', truthy: false } } },
         },
         { id, title },
         { render: renderMock }
