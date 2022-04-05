@@ -83,8 +83,8 @@ const Pane = styled.div<{ index: number; active: ActiveTabsType }>(
   }
 );
 
-const Panels = React.memo((({ children, active }) => (
-  <PanelsContainer>
+const Panels = React.memo((({ children, active, isFullscreen }) => (
+  <PanelsContainer isFullscreen={isFullscreen}>
     {Children.toArray(children).map((item, index) => (
       // eslint-disable-next-line react/no-array-index-key
       <Pane key={index} index={index} active={active}>
@@ -92,16 +92,19 @@ const Panels = React.memo((({ children, active }) => (
       </Pane>
     ))}
   </PanelsContainer>
-)) as FunctionComponent<{ active: ActiveTabsType; children: ReactNode }>);
+)) as FunctionComponent<{ active: ActiveTabsType; children: ReactNode, isFullscreen: boolean }>);
 Panels.displayName = 'Panels';
 
-const PanelsContainer = styled.div({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: 'calc(100% - 40px)',
-});
+const PanelsContainer = styled.div<{ isFullscreen: boolean }>(
+  {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100vw',
+  }, ({ isFullscreen }) => ({
+    height: isFullscreen ? '100vh' : 'calc(100% - 40px)',
+  })
+);
 
 const Bar = styled.nav<{ isFullscreen: boolean }>(
   {
@@ -173,7 +176,7 @@ class Mobile extends Component<MobileProps, MobileState> {
           }}
         />
 
-        <Panels active={active}>
+        <Panels active={active} isFullscreen={options.isFullscreen}>
           <Sidebar />
           <div>
             <div hidden={!viewMode}>
