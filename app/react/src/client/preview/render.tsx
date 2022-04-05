@@ -7,6 +7,7 @@ import React, {
   Fragment,
 } from 'react';
 import ReactDOM, { version as reactDomVersion } from 'react-dom';
+import type { Root as ReactRoot } from 'react-dom/client';
 
 import { RenderContext } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
@@ -17,14 +18,8 @@ import { ReactFramework } from './types-6-0';
 
 const { FRAMEWORK_OPTIONS } = global;
 
-// TODO: Remove IRoot declaration as soon as @types/react v17.x is used
-interface IRoot {
-  render(children: React.ReactChild | Iterable<React.ReactNode>): void;
-  unmount(): void;
-}
-
 // A map of all rendered React 18 nodes
-const nodes = new Map<Element, IRoot>();
+const nodes = new Map<Element, ReactRoot>();
 
 export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   const { id, component: Component } = context;
@@ -37,11 +32,11 @@ export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   return <Component {...args} />;
 };
 
-const renderElement = async (node: ReactElement, el: Element) =>
-  new Promise((resolve) => {
-    // Create Root Element conditionally for new React 18 Root Api
-    const root = getReactRoot(el);
+const renderElement = async (node: ReactElement, el: Element) => {
+  // Create Root Element conditionally for new React 18 Root Api
+  const root = await getReactRoot(el);
 
+  return new Promise((resolve) => {
     if (root) {
       root.render(node);
       setTimeout(() => {
@@ -51,10 +46,18 @@ const renderElement = async (node: ReactElement, el: Element) =>
       ReactDOM.render(node, el, () => resolve(null));
     }
   });
+};
+
+const canUseNewReactRootApi =
+  gte(reactDomVersion, '18.0.0') || coerce(reactDomVersion)?.version === '18.0.0';
+
+const shouldUseNewRootApi = FRAMEWORK_OPTIONS?.legacyRootApi !== true;
+
+const isUsingNewReactRootApi = shouldUseNewRootApi && canUseNewReactRootApi;
 
 const unmountElement = (el: Element) => {
   const root = nodes.get(el);
-  if (root && FRAMEWORK_OPTIONS?.newRootApi) {
+  if (root && isUsingNewReactRootApi) {
     root.unmount();
     nodes.delete(el);
   } else {
@@ -62,25 +65,17 @@ const unmountElement = (el: Element) => {
   }
 };
 
-const canUseReactRoot =
-  gte(reactDomVersion, '18.0.0') || coerce(reactDomVersion)?.version === '18.0.0';
-
-const getReactRoot = (el: Element): IRoot | null => {
-  if (!FRAMEWORK_OPTIONS?.newRootApi) {
+const getReactRoot = async (el: Element): Promise<ReactRoot | null> => {
+  if (!isUsingNewReactRootApi) {
     return null;
-  }
-
-  if (!canUseReactRoot) {
-    throw new Error(
-      "Your React version doesn't support the new React Root Api. Please use react and react-dom in version 18.x or set the storybook feature 'newRootApi' to false"
-    );
   }
 
   let root = nodes.get(el);
 
   if (!root) {
-    // eslint-disable-next-line global-require
-    root = require('react-dom/client').createRoot(el) as IRoot;
+    const reactDomClient = await import('react-dom/client');
+    root = reactDomClient.createRoot(el);
+
     nodes.set(el, root);
   }
 

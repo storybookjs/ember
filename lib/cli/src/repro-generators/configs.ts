@@ -64,15 +64,15 @@ export const react: Parameters = {
   additionalDeps: ['prop-types'],
 };
 
-export const react_new_root_api: Parameters = {
+export const react_legacy_root_api: Parameters = {
   framework: 'react',
-  name: 'react_new_root_api',
+  name: 'react_legacy_root_api',
   version: 'latest',
   generator: fromDeps('react', 'react-dom'),
   additionalDeps: ['prop-types'],
   mainOverrides: {
     reactOptions: {
-      newRootApi: true,
+      legacyRootApi: true,
     },
   },
 };
