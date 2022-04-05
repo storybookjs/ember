@@ -49,7 +49,7 @@
     "@storybook/client-logger": "6.5.0-alpha.55",
     "@storybook/components": "6.5.0-alpha.55",
     "@storybook/core-events": "6.5.0-alpha.55",
-    "@storybook/csf": "0.0.2--canary.507502b.0",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
     "core-js": "^3.8.2",
     "global": "^4.4.0"
   },
