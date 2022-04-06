@@ -79,6 +79,13 @@ export const webpack_react: Parameters = {
   generator: fromDeps('react', 'react-dom', 'webpack@webpack-4'),
 };
 
+export const vite_react: Parameters = {
+  framework: 'react',
+  name: 'vite_react',
+  version: 'latest',
+  generator: 'npx -p create-vite@{{version}} create-vite {{appName}} --template react-ts',
+};
+
 export const react_in_yarn_workspace: Parameters = {
   framework: 'react',
   name: 'react_in_yarn_workspace',
