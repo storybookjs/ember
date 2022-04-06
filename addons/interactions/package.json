@@ -47,7 +47,7 @@
     "@storybook/components": "6.5.0-alpha.56",
     "@storybook/core-common": "6.5.0-alpha.56",
     "@storybook/core-events": "6.5.0-alpha.56",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
     "@storybook/instrumenter": "6.5.0-alpha.56",
     "@storybook/theming": "6.5.0-alpha.56",
     "core-js": "^3.8.2",
