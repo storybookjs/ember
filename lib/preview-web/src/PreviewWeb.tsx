@@ -127,7 +127,7 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     this.channel.on(Events.RESET_STORY_ARGS, this.onResetArgs.bind(this));
     this.channel.on(Events.FORCE_RE_RENDER, this.onForceReRender.bind(this));
     this.channel.on(Events.FORCE_REMOUNT, this.onForceRemount.bind(this));
-    this.channel.on(Events.PRELOAD_STORY, this.onPreloadStory.bind(this));
+    this.channel.on(Events.STORY_PRELOAD, this.onPreloadStory.bind(this));
   }
 
   getProjectAnnotationsOrRenderError(
