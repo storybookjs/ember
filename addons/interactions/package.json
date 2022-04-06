@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-interactions",
-  "version": "6.5.0-alpha.56",
+  "version": "6.5.0-alpha.57",
   "description": "Automate, test and debug user interactions",
   "keywords": [
     "storybook-addons",
@@ -41,15 +41,15 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.56",
-    "@storybook/api": "6.5.0-alpha.56",
-    "@storybook/client-logger": "6.5.0-alpha.56",
-    "@storybook/components": "6.5.0-alpha.56",
-    "@storybook/core-common": "6.5.0-alpha.56",
-    "@storybook/core-events": "6.5.0-alpha.56",
+    "@storybook/addons": "6.5.0-alpha.57",
+    "@storybook/api": "6.5.0-alpha.57",
+    "@storybook/client-logger": "6.5.0-alpha.57",
+    "@storybook/components": "6.5.0-alpha.57",
+    "@storybook/core-common": "6.5.0-alpha.57",
+    "@storybook/core-events": "6.5.0-alpha.57",
     "@storybook/csf": "0.0.2--canary.7c6c115.0",
-    "@storybook/instrumenter": "6.5.0-alpha.56",
-    "@storybook/theming": "6.5.0-alpha.56",
+    "@storybook/instrumenter": "6.5.0-alpha.57",
+    "@storybook/theming": "6.5.0-alpha.57",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
