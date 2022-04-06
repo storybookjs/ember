@@ -6,15 +6,15 @@ import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { addons, Channel } from '@storybook/addons';
 import { AnyFramework, StoryId, ProjectAnnotations, Args, Globals } from '@storybook/csf';
-import {
+import type {
   ModuleImportFn,
   Selection,
   Story,
-  StoryStore,
   StorySpecifier,
   StoryIndex,
   WebProjectAnnotations,
 } from '@storybook/store';
+import { StoryStore } from '@storybook/store';
 
 import { UrlStore } from './UrlStore';
 import { WebView } from './WebView';
