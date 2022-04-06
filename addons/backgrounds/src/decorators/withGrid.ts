@@ -1,7 +1,7 @@
 import dedent from 'ts-dedent';
 import deprecate from 'util-deprecate';
 import { useMemo, useEffect } from '@storybook/addons';
-import { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
+import type { AnyFramework, PartialStoryFn as StoryFunction, StoryContext } from '@storybook/csf';
 
 import { clearStyles, addGridStyle } from '../helpers';
 import { PARAM_KEY as BACKGROUNDS_PARAM_KEY } from '../constants';

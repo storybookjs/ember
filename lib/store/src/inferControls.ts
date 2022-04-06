@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues';
 import { logger } from '@storybook/client-logger';
-import { AnyFramework, SBEnumType, StrictInputType, ArgTypesEnhancer } from '@storybook/csf';
+import type { AnyFramework, SBEnumType, StrictInputType, ArgTypesEnhancer } from '@storybook/csf';
 import { filterArgTypes } from './filterArgTypes';
 import { combineParameters } from './parameters';
 

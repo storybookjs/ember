@@ -1,9 +1,9 @@
 import type { ConcreteComponent, Component, ComponentOptions } from 'vue';
 import { h } from 'vue';
-import { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
+import type { DecoratorFunction, StoryContext, LegacyStoryFn } from '@storybook/csf';
 import { sanitizeStoryContextUpdate } from '@storybook/store';
 
-import { VueFramework } from './types-6-0';
+import type { VueFramework } from './types-6-0';
 
 /*
   This normalizes a functional component into a render method in ComponentOptions.

@@ -1,6 +1,6 @@
 import global from 'global';
-import addons, { HooksContext } from '@storybook/addons';
-import {
+import { addons, HooksContext } from '@storybook/addons';
+import type {
   AnyFramework,
   ArgsEnhancer,
   SBObjectType,
@@ -488,6 +488,30 @@ describe('prepareStory', () => {
           name,
           args: { a: 1, b: 2 },
           argTypes: { b: { name: 'b', target: 'foo' } },
+        },
+        { id, title },
+        { render: renderMock }
+      );
+
+      firstStory.unboundStoryFn({
+        args: firstStory.initialArgs,
+        hooks: new HooksContext(),
+        ...firstStory,
+      } as any);
+      expect(renderMock).toHaveBeenCalledWith(
+        { a: 1 },
+        expect.objectContaining({ args: { a: 1 }, allArgs: { a: 1, b: 2 } })
+      );
+    });
+
+    it('filters out conditional args', () => {
+      const renderMock = jest.fn();
+      const firstStory = prepareStory(
+        {
+          id,
+          name,
+          args: { a: 1, b: 2 },
+          argTypes: { b: { name: 'b', if: { arg: 'a', truthy: false } } },
         },
         { id, title },
         { render: renderMock }

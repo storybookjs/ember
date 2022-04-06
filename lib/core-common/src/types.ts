@@ -1,8 +1,8 @@
 import type ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import type { Options as TelejsonOptions } from 'telejson';
 import type { PluginOptions } from '@storybook/react-docgen-typescript-plugin';
-import { Configuration, Stats } from 'webpack';
-import { TransformOptions } from '@babel/core';
+import type { Configuration, Stats } from 'webpack';
+import type { TransformOptions } from '@babel/core';
 import { Router } from 'express';
 import { Server } from 'http';
 import { FileSystemCache } from './utils/file-cache';
@@ -50,6 +50,14 @@ export interface CoreConfig {
   builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
+  /**
+   * enable CORS headings to run document in a "secure context"
+   * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements
+   * This enables these headers in development-mode:
+   *   Cross-Origin-Opener-Policy: same-origin
+   *   Cross-Origin-Embedder-Policy: require-corp
+   */
+  crossOriginIsolated?: boolean;
 }
 
 interface DirectoryMapping {
@@ -317,12 +325,12 @@ export interface StorybookConfig {
   logLevel?: string;
   features?: {
     /**
-     * Allows to disable deprecated implicit PostCSS loader.
+     * Allows to disable deprecated implicit PostCSS loader. (will be removed in 7.0)
      */
     postcss?: boolean;
 
     /**
-     * Allows to disable deprecated implicit PostCSS loader.
+     * Allows to disable emotion webpack alias for emotion packages. (will be removed in 7.0)
      */
     emotionAlias?: boolean;
 
@@ -412,6 +420,13 @@ export interface StorybookConfig {
 
   /**
    * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   *
+   * @deprecated use `previewAnnotations` or `/preview.js` file instead
    */
   config?: (entries: Entry[], options: Options) => Entry[];
+
+  /**
+   * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   */
+  previewAnnotations?: (entries: Entry[], options: Options) => Entry[];
 }

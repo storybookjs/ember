@@ -1,5 +1,5 @@
 import { SynchronousPromise } from 'synchronous-promise';
-import {
+import type {
   DecoratorFunction,
   Args,
   StoryContextForEnhancers,
@@ -28,6 +28,11 @@ export type Path = string;
 export type ModuleExports = Record<string, any>;
 type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 export type ModuleImportFn = (path: Path) => PromiseLike<ModuleExports>;
+
+export type WebProjectAnnotations<TFramework extends AnyFramework> =
+  ProjectAnnotations<TFramework> & {
+    renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
+  };
 
 export type NormalizedProjectAnnotations<TFramework extends AnyFramework = AnyFramework> =
   ProjectAnnotations<TFramework> & {

@@ -1,6 +1,7 @@
-import { findDistEsm, StorybookConfig } from '@storybook/core-common';
+import { findDistEsm } from '@storybook/core-common';
+import type { StorybookConfig } from '@storybook/core-common';
 
-export const config: StorybookConfig['config'] = (entries = []) => [
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entries = []) => [
   ...entries,
   findDistEsm(__dirname, 'client/preview/config'),
 ];
@@ -8,5 +9,5 @@ export const config: StorybookConfig['config'] = (entries = []) => [
 export const addons: StorybookConfig['addons'] = [
   require.resolve('./framework-preset-react'),
   require.resolve('./framework-preset-cra'),
-  require.resolve('./framework-preset-react-docgen'),
+  require.resolve('./framework-preset-react-docs'),
 ];

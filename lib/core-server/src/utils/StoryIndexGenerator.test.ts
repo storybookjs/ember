@@ -1,5 +1,6 @@
 import path from 'path';
-import { normalizeStoriesEntry, NormalizedStoriesSpecifier } from '@storybook/core-common';
+import { normalizeStoriesEntry } from '@storybook/core-common';
+import type { NormalizedStoriesSpecifier } from '@storybook/core-common';
 import { readCsfOrMdx, getStorySortParameter } from '@storybook/csf-tools';
 
 import { StoryIndexGenerator } from './StoryIndexGenerator';

@@ -1,4 +1,4 @@
-import {
+import type {
   Addon,
   StoryId,
   StoryName,
@@ -14,7 +14,8 @@ import {
   StoryContext,
 } from '@storybook/addons';
 import { AnyFramework, StoryIdentifier, ProjectAnnotations } from '@storybook/csf';
-import { StoryStore, HooksContext, RenderContext } from '@storybook/store';
+import type { RenderContext } from '@storybook/store';
+import { StoryStore, HooksContext } from '@storybook/store';
 
 export type {
   SBType,

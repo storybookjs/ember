@@ -1,1 +1,1 @@
-module.exports = require('./dist/cjs/server/framework-preset-vue3');
+module.exports = require('./dist/cjs/server/preset');

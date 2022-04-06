@@ -1,25 +1,16 @@
 import global from 'global';
 import dedent from 'ts-dedent';
 import { SynchronousPromise } from 'synchronous-promise';
-import {
-  StoryId,
-  AnyFramework,
-  toId,
-  isExportStory,
-  Parameters,
-  StoryFn,
-  storyNameFromExport,
-} from '@storybook/csf';
-import {
+import { toId, isExportStory, storyNameFromExport } from '@storybook/csf';
+import type { StoryId, AnyFramework, Parameters, StoryFn } from '@storybook/csf';
+import { StoryStore, autoTitle, sortStoriesV6 } from '@storybook/store';
+import type {
   NormalizedProjectAnnotations,
   NormalizedStoriesSpecifier,
   Path,
   StoryIndex,
   ModuleExports,
-  StoryStore,
   Story,
-  autoTitle,
-  sortStoriesV6,
   StoryIndexEntry,
 } from '@storybook/store';
 import { logger } from '@storybook/client-logger';
