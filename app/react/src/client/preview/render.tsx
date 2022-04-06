@@ -9,9 +9,8 @@ import React, {
 import ReactDOM, { version as reactDomVersion } from 'react-dom';
 import type { Root as ReactRoot } from 'react-dom/client';
 
-import { RenderContext } from '@storybook/store';
+import type { RenderContext } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
-import { gte, coerce } from '@storybook/semver';
 
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
