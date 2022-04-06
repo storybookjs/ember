@@ -22,7 +22,10 @@ import {
   isStory,
   isRoot,
   transformStoryIndexToStoriesHash,
+  getComponentLookupList,
+  getStoriesLookupList,
 } from '../lib/stories';
+
 import type {
   StoriesHash,
   Story,
@@ -77,6 +80,12 @@ export interface SubAPI {
   updateStoryArgs(story: Story, newArgs: Args): void;
   resetStoryArgs: (story: Story, argNames?: string[]) => void;
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
+  findSiblingStoryId(
+    storyId: StoryId,
+    hash: StoriesHash,
+    direction: Direction,
+    toSiblingGroup: boolean // when true, skip over leafs within the same group
+  ): StoryId;
   fetchStoryList: () => Promise<void>;
   setStoryList: (storyList: StoryIndex) => Promise<void>;
   updateStory: (storyId: StoryId, update: StoryUpdate, ref?: ComposedRef) => Promise<void>;
@@ -187,26 +196,7 @@ export const init: ModuleFn = ({
       }
 
       const hash = refId ? refs[refId].stories || {} : storiesHash;
-
-      const lookupList = Object.entries(hash).reduce((acc, i) => {
-        const value = i[1];
-        if (value.isComponent) {
-          acc.push([...i[1].children]);
-        }
-        return acc;
-      }, []);
-
-      const index = lookupList.findIndex((i) => i.includes(storyId));
-
-      // cannot navigate beyond fist or last
-      if (index === lookupList.length - 1 && direction > 0) {
-        return;
-      }
-      if (index === 0 && direction < 0) {
-        return;
-      }
-
-      const result = lookupList[index + direction][0];
+      const result = api.findSiblingStoryId(storyId, hash, direction, true);
 
       if (result) {
         api.selectStory(result, undefined, { ref: refId });
@@ -227,21 +217,7 @@ export const init: ModuleFn = ({
       }
 
       const hash = story.refId ? refs[story.refId].stories : storiesHash;
-
-      const lookupList = Object.keys(hash).filter(
-        (k) => !(hash[k].children || Array.isArray(hash[k]))
-      );
-      const index = lookupList.indexOf(storyId);
-
-      // cannot navigate beyond fist or last
-      if (index === lookupList.length - 1 && direction > 0) {
-        return;
-      }
-      if (index === 0 && direction < 0) {
-        return;
-      }
-
-      const result = lookupList[index + direction];
+      const result = api.findSiblingStoryId(storyId, hash, direction, true);
 
       if (result) {
         api.selectStory(result, undefined, { ref: refId });
@@ -331,6 +307,36 @@ export const init: ModuleFn = ({
 
       const childStoryId = storiesHash[storyId].children[0];
       return api.findLeafStoryId(storiesHash, childStoryId);
+    },
+    findSiblingStoryId(storyId, hash, direction, toSiblingGroup) {
+      if (toSiblingGroup) {
+        const lookupList = getComponentLookupList(hash);
+        const index = lookupList.findIndex((i) => i.includes(storyId));
+
+        // cannot navigate beyond fist or last
+        if (index === lookupList.length - 1 && direction > 0) {
+          return;
+        }
+        if (index === 0 && direction < 0) {
+          return;
+        }
+
+        // eslint-disable-next-line consistent-return
+        return lookupList[index + direction][0];
+      }
+      const lookupList = getStoriesLookupList(hash);
+      const index = lookupList.indexOf(storyId);
+
+      // cannot navigate beyond fist or last
+      if (index === lookupList.length - 1 && direction > 0) {
+        return;
+      }
+      if (index === 0 && direction < 0) {
+        return;
+      }
+
+      // eslint-disable-next-line consistent-return
+      return lookupList[index + direction];
     },
     updateStoryArgs: (story, updatedArgs) => {
       const { id: storyId, refId } = story;
