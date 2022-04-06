@@ -132,6 +132,7 @@ export interface MobileProps {
   options: {
     initialActive: ActiveTabsType;
     isToolshown: boolean;
+    isFullscreen: boolean;
   };
   Sidebar: ComponentType<any>;
   Preview: ComponentType<any>;
@@ -152,7 +153,7 @@ class Mobile extends Component<MobileProps, MobileState> {
 
     const { options } = props;
     this.state = {
-      active: options.initialActive || SIDEBAR,
+      active: options.isFullscreen ? CANVAS : options.initialActive || SIDEBAR,
     };
   }
 
