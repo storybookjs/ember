@@ -180,7 +180,7 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Run E2E tests
+          name: Run E2E (extended) tests
           command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip angular12 --skip vue3 --skip web_components_typescript --skip cra --skip react
           no_output_timeout: 5m
       - store_artifacts:
@@ -190,7 +190,7 @@ jobs:
     executor:
       class: large
       name: sb_cypress_8_node_14
-    parallelism: 2
+    parallelism: 8
     steps:
       - git-shallow-clone/checkout_advanced:
           clone_options: '--depth 1 --verbose'
@@ -204,7 +204,7 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Run E2E tests
+          name: Run E2E (core) tests
           # Do not test CRA here because it's done in PnP part
           # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
           command: yarn test:e2e-framework vue3 angular130 angular13 angular12 angular11 web_components_typescript web_components_lit2 react react_legacy_root_api
