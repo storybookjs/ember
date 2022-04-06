@@ -73,6 +73,7 @@ const getReactRoot = async (el: Element): Promise<ReactRoot | null> => {
 
   if (!root) {
     // Skipping webpack's static analysis of import paths by defining the path value outside the import statement.
+    // eslint-disable-next-line import/no-unresolved
     const reactDomClient = await import('react-dom/client');
     root = reactDomClient.createRoot(el);
 
