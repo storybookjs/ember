@@ -217,7 +217,7 @@ export const init: ModuleFn = ({
       }
 
       const hash = story.refId ? refs[story.refId].stories : storiesHash;
-      const result = api.findSiblingStoryId(storyId, hash, direction, true);
+      const result = api.findSiblingStoryId(storyId, hash, direction, false);
 
       if (result) {
         api.selectStory(result, undefined, { ref: refId });
