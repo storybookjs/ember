@@ -52,6 +52,10 @@ const FlexSpaced = styled.div(({ theme }) => ({
   },
   'input:first-of-type': {
     marginLeft: 0,
+    flexGrow: 4,
+  },
+  'input:last-of-type': {
+    flexGrow: 3,
   },
 }));
 

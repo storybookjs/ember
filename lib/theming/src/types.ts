@@ -37,6 +37,7 @@ export interface ThemeVars {
   brandTitle?: string;
   brandUrl?: string;
   brandImage?: string;
+  brandTarget?: string;
 
   gridCellSize?: number;
 }
@@ -52,6 +53,7 @@ export interface Brand {
   title: string | undefined;
   url: string | null | undefined;
   image: string | null | undefined;
+  target: string | null | undefined;
 }
 
 export interface Theme {

@@ -1,3 +1,21 @@
+## 6.5.0-alpha.56 (April 5, 2022)
+
+### Features
+
+- Controls: Rework conditional controls with globals, queries ([#17883](https://github.com/storybookjs/storybook/pull/17883))
+- UI: Add Brand target config option ([#17814](https://github.com/storybookjs/storybook/pull/17814))
+
+### Bug Fixes
+
+- Controls: Fix date control width in addons panel ([#17780](https://github.com/storybookjs/storybook/pull/17780))
+
+### Maintenance
+
+- Core: Update some references to use ESM rather than CJS ([#17868](https://github.com/storybookjs/storybook/pull/17868))
+- Build: Upgrade from deprecated circleci docker img ([#17832](https://github.com/storybookjs/storybook/pull/17832))
+- Build: Parallel e2e (this might be expensive) ([#17842](https://github.com/storybookjs/storybook/pull/17842))
+- Build: Add junit summary for CircleCI ([#17867](https://github.com/storybookjs/storybook/pull/17867))
+
 ## 6.5.0-alpha.55 (April 3, 2022)
 
 ### Features

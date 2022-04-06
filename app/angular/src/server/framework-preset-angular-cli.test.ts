@@ -766,8 +766,8 @@ const newWebpackConfiguration = (
     bail: false,
     devtool: 'cheap-module-source-map',
     entry: [
-      '/Users/joe/storybook/lib/core-server/dist/cjs/globals/polyfills.js',
-      '/Users/joe/storybook/lib/core-server/dist/cjs/globals/globals.js',
+      '/Users/joe/storybook/lib/core-server/dist/esm/globals/polyfills.js',
+      '/Users/joe/storybook/lib/core-server/dist/esm/globals/globals.js',
       '/Users/joe/storybook/examples/angular-cli/.storybook/storybook-init-framework-entry.js',
       '/Users/joe/storybook/addons/docs/dist/esm/frameworks/common/config.js-generated-other-entry.js',
       '/Users/joe/storybook/addons/docs/dist/esm/frameworks/angular/config.js-generated-other-entry.js',
