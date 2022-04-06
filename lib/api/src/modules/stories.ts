@@ -1,6 +1,7 @@
 import global from 'global';
 import { toId, sanitize } from '@storybook/csf';
 import {
+  STORY_PRELOAD,
   STORY_PREPARED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
@@ -445,12 +446,25 @@ export const init: ModuleFn = ({
       const { sourceType } = getEventMetadata(this, fullAPI);
 
       if (sourceType === 'local') {
+        const { storyId, storiesHash } = store.getState();
         const options = fullAPI.getCurrentParameter('options');
 
         if (options) {
           checkDeprecatedOptionParameters(options);
           fullAPI.setOptions(options);
         }
+
+        // create a list of related stories to be preloaded
+        const toBePreloaded = Array.from(
+          new Set([
+            api.findSiblingStoryId(storyId, storiesHash, 1, false),
+            api.findSiblingStoryId(storyId, storiesHash, -1, false),
+            api.findSiblingStoryId(storyId, storiesHash, 1, true),
+            api.findSiblingStoryId(storyId, storiesHash, -1, true),
+          ])
+        );
+
+        fullAPI.emit(STORY_PRELOAD, toBePreloaded);
       }
     });
 

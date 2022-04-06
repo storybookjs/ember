@@ -399,8 +399,8 @@ export class PreviewWeb<TFramework extends AnyFramework> {
     await this.onUpdateArgs({ storyId, updatedArgs });
   }
 
-  async onPreloadStory({ storyId }: { storyId: string }) {
-    await this.storyStore.loadStory({ storyId });
+  async onPreloadStory(ids: string[]) {
+    await Promise.all(ids.map((id) => this.storyStore.loadStory({ storyId: id })));
   }
 
   // ForceReRender does not include a story id, so we simply must
