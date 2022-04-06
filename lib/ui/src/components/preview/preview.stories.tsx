@@ -115,6 +115,7 @@ export const HideAllDefaultTools = () => (
             parameters: {
               toolbar: {
                 title: { hidden: true },
+                remount: { hidden: true },
                 zoom: { hidden: true },
                 eject: { hidden: true },
                 copy: { hidden: true },
