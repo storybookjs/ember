@@ -61,7 +61,13 @@ const App = React.memo<AppProps>(
     if (!width || !height) {
       content = <div />;
     } else if (width < 600) {
-      content = <Mobile {...props} viewMode={viewMode} options={layout} docsOnly={docsOnly} />;
+      content =
+        <Mobile
+          {...props}
+          viewMode={viewMode}
+          options={layout}
+          docsOnly={docsOnly}
+        />;
     } else {
       content = (
         <Desktop
