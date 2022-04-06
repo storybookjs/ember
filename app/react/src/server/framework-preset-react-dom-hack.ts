@@ -17,6 +17,6 @@ export async function webpackFinal(config: Configuration) {
             resourceRegExp: /react-dom\/client$/,
             contextRegExp: /(app\/react|@storybook\/react)/, // TODO this needs to work for both in our MONOREPO and in the user's NODE_MODULES
           }),
-    ],
+    ].filter(Boolean),
   };
 }
