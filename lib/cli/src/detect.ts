@@ -112,7 +112,7 @@ export function detectBuilder(packageManager: JsPackageManager) {
     return CoreBuilder.Vite;
   }
 
-  const out = packageManager.executeCommand(packageManager.type, ['why']);
+  const out = packageManager.executeCommand(packageManager.type, ['why', 'webpack']);
 
   // if the user has BOTH webpack 4 and 5 installed already, we'll pick the safest options (4)
   if (out.includes('webpack@4') || out.includes('webpack@npm:4')) {
