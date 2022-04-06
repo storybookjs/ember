@@ -1,8 +1,7 @@
 import path from 'path';
-import { readJSON } from 'fs-extra';
 import { TransformOptions } from '@babel/core';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import { Configuration, IgnorePlugin } from 'webpack';
+import type { Configuration } from 'webpack';
 
 import { logger } from '@storybook/node-logger';
 import type { Options } from '@storybook/core-common';
