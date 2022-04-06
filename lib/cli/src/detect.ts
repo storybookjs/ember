@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import findUp from 'find-up';
 
-import e from 'express';
 import {
   ProjectType,
   supportedTemplates,
