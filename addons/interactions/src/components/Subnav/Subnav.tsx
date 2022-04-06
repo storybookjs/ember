@@ -160,9 +160,7 @@ export const Subnav: React.FC<SubnavProps> = ({
                 onClick={controls.rerun}
                 onAnimationEnd={() => setIsRerunAnimating(false)}
                 animating={isRerunAnimating}
-                disabled={
-                  isRerunAnimating || status === CallStates.WAITING || status === CallStates.ACTIVE
-                }
+                disabled={isRerunAnimating}
               >
                 <Icons icon="sync" />
               </RerunButton>
