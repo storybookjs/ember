@@ -1,5 +1,5 @@
 import path from 'path';
-import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, IgnorePlugin } from 'webpack';
+import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin } from 'webpack';
 // @ts-ignore
 import type { Configuration, RuleSetRule } from '@types/webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
