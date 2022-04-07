@@ -83,6 +83,20 @@ module.exports = {
 💡 Fast Refresh only works in development mode with React 16.10 or higher.
 </div>
 
+### How do I setup the new React Context Root API with Storybook?
+
+If your installed React Version equals or is higher than 18.0.0, the new React Root API is automatically used and the newest React [concurrent features](https://reactjs.org/docs/concurrent-mode-intro.html) can be used.
+
+You can opt-out from the new React Root API by setting the following property in your `.storybook/main.js` file:
+
+```js
+module.exports = {
+  reactOptions: {
+    legacyRootApi: true,
+  },
+};
+```
+
 ### Why is there no addons channel?
 
 A common error is that an addon tries to access the "channel", but the channel is not set. It can happen in a few different cases:
@@ -96,7 +110,6 @@ A common error is that an addon tries to access the "channel", but the channel i
     ```
 
 2.  In React Native, it's a special case documented in [#1192](https://github.com/storybookjs/storybook/issues/1192)
-
 
 ### Why aren't Controls visible in the Canvas panel but visible in the Docs panel?
 
@@ -133,7 +146,7 @@ With the release of version 6.0, we updated our documentation as well. That does
 We're only covering versions 5.3 and 5.0 as they were important milestones for Storybook. If you want to go back in time a little more, you'll have to check the specific release in the monorepo.
 
 | Section          | Page                                      | Current Location                                                                   | Version 5.3 location                                                                                                                                                                                                                                                 | Version 5.0 location                                                                                                                                     |
-|------------------|-------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------- | ----------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Get started      | Install                                   | [See current documentation](../get-started/install.md)                             | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/guides/quick-start-guide)                                                                                                                                     | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.0/docs/src/pages/guides/quick-start-guide)                         |
 |                  | What's a story                            | [See current documentation](../get-started/whats-a-story.md)                       | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.3/docs/src/pages/guides)                                                                                                                                    | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.0/docs/src/pages/guides)                        |
 |                  | Browse Stories                            | [See current documentation](../get-started/browse-stories.md)                      | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.3/docs/src/pages/guides)                                                                                                                                    | [See versioned documentation for your framework](https://github.com/storybookjs/storybook/blob/release/5.0/docs/src/pages/guides)                        |
@@ -193,6 +206,7 @@ We're only covering versions 5.3 and 5.0 as they were important milestones for S
 |                  | Stories/StoriesOF format (see note below) | [See current documentation](../../lib/core/docs/storiesOf.md)                      | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/formats/storiesof-api)                                                                                                                                        | Non existing feature or undocumented                                                                                                                     |
 |                  | Frameworks                                | [See current documentation](../api/new-frameworks.md)                              | Non existing feature or undocumented                                                                                                                                                                                                                                 | Non existing feature or undocumented                                                                                                                     |
 |                  | CLI options                               | [See current documentation](../api/cli-options.md)                                 | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.3/docs/src/pages/configurations/cli-options)                                                                                                                                   | [See versioned documentation](https://github.com/storybookjs/storybook/tree/release/5.0/docs/src/pages/configurations/cli-options)                       |
+
 <div class="aside">
 With the release of version 5.3, we've updated how you can write your stories more compactly and easily. It doesn't mean that the <code>storiesOf</code> format has been removed. For the time being, we're still supporting it, and we have documentation for it. But be advised that this is bound to change in the future.
 </div>
@@ -360,11 +374,9 @@ export default meta;
 
 Although valid, it introduces additional boilerplate code to the story definition. Instead, we're working towards implementing a safer mechanism based on what's currently being discussed in the following [issue](https://github.com/microsoft/TypeScript/issues/7481). Once the feature is released, we'll migrate our existing examples and documentation accordingly.
 
-
 ## Why is Storybook's source loader returning undefined with curried functions?
 
 This is a known issue with Storybook. If you're interested in getting it fixed, open an issue with a [working reproduction](./contribute/how-to-reproduce) so that it can be triaged and fixed in future releases.
-
 
 ## Why are my args no longer displaying the default values?
 

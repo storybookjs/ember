@@ -1,3 +1,24 @@
+## 6.5.0-alpha.58 (April 7, 2022)
+
+### Features
+
+- CLI: Add webpack4/5 auto-detection ([#17908](https://github.com/storybookjs/storybook/pull/17908))
+
+* React: Add support for react18's new root API ([#17215](https://github.com/storybookjs/storybook/pull/17215))
+
+### Bug Fixes
+
+- UI: Fix canvas as initialActive for fullscreen mode in mobile ([#17906](https://github.com/storybookjs/storybook/pull/17906))
+- UI: Fix mobile fullscreen UI ([#17873](https://github.com/storybookjs/storybook/pull/17873))
+
+### Maintenance
+
+- Core: Avoid framework imports from core/client ([#17875](https://github.com/storybookjs/storybook/pull/17875))
+- Webpack: Make manager and preview build processes cancelable ([#17809](https://github.com/storybookjs/storybook/pull/17809))
+- Build: Add vite-react to e2e tests ([#17871](https://github.com/storybookjs/storybook/pull/17871))
+- CLI: Upgrade vue3 template to use webpack5 builder ([#17896](https://github.com/storybookjs/storybook/pull/17896))
+- Build: Exclude @storybook/builder-vite from verdaccio ([#17897](https://github.com/storybookjs/storybook/pull/17897))
+
 ## 6.5.0-alpha.57 (April 6, 2022)
 
 ### Bug Fixes

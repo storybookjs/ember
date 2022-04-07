@@ -64,6 +64,19 @@ export const react: Parameters = {
   additionalDeps: ['prop-types'],
 };
 
+export const react_legacy_root_api: Parameters = {
+  framework: 'react',
+  name: 'react_legacy_root_api',
+  version: 'latest',
+  generator: fromDeps('react', 'react-dom'),
+  additionalDeps: ['prop-types'],
+  mainOverrides: {
+    reactOptions: {
+      legacyRootApi: true,
+    },
+  },
+};
+
 export const react_typescript: Parameters = {
   framework: 'react',
   name: 'react_typescript',
