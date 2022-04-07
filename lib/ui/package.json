@@ -1,6 +1,6 @@
 {
   "name": "@storybook/ui",
-  "version": "6.5.0-alpha.50",
+  "version": "6.5.0-alpha.59",
   "description": "Core Storybook UI",
   "keywords": [
     "storybook"
@@ -40,15 +40,15 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.50",
-    "@storybook/api": "6.5.0-alpha.50",
-    "@storybook/channels": "6.5.0-alpha.50",
-    "@storybook/client-logger": "6.5.0-alpha.50",
-    "@storybook/components": "6.5.0-alpha.50",
-    "@storybook/core-events": "6.5.0-alpha.50",
-    "@storybook/router": "6.5.0-alpha.50",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/api": "6.5.0-alpha.59",
+    "@storybook/channels": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/components": "6.5.0-alpha.59",
+    "@storybook/core-events": "6.5.0-alpha.59",
+    "@storybook/router": "6.5.0-alpha.59",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.5.0-alpha.50",
+    "@storybook/theming": "6.5.0-alpha.59",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "resolve-from": "^5.0.0"
@@ -76,13 +76,13 @@
     "webpack": "4"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "bundlerEntrypoint": "./src/index.tsx",
-  "gitHead": "6cf4571e5a1200613de94aa066fe93f75aec6ad1",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/preact",
-  "version": "6.5.0-alpha.50",
+  "version": "6.5.0-alpha.59",
   "description": "Storybook for Preact: Develop Preact Component in isolation.",
   "keywords": [
     "storybook"
@@ -46,11 +46,11 @@
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.12",
-    "@storybook/addons": "6.5.0-alpha.50",
-    "@storybook/core": "6.5.0-alpha.50",
-    "@storybook/core-common": "6.5.0-alpha.50",
-    "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/store": "6.5.0-alpha.50",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/core": "6.5.0-alpha.59",
+    "@storybook/core-common": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/store": "6.5.0-alpha.59",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
@@ -59,15 +59,16 @@
     "react-dom": "16.14.0",
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-dedent": "^2.0.0"
+    "ts-dedent": "^2.0.0",
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
-    "preact": "^10.5.13"
+    "preact": "^10.5.13",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*",
-    "preact": "^8.0.0||^10.0.0",
-    "webpack": "*"
+    "preact": "^8.0.0||^10.0.0"
   },
   "engines": {
     "node": ">=10.13.0"
@@ -75,6 +76,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "6cf4571e5a1200613de94aa066fe93f75aec6ad1",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/client/index.js"
 }

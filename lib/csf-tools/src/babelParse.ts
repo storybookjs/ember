@@ -10,4 +10,5 @@ export const babelParse = (code: string) =>
       ['decorators', { decoratorsBeforeExport: true }],
       'classProperties',
     ],
+    tokens: true,
   });

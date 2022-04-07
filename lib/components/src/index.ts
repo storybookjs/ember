@@ -32,6 +32,7 @@ export { Badge } from './Badge/Badge';
 export { Link } from './typography/link/link';
 export { DocumentWrapper } from './typography/DocumentWrapper';
 export type {
+  SyntaxHighlighterFormatTypes,
   SyntaxHighlighterProps,
   SyntaxHighlighterRendererProps,
 } from './syntaxhighlighter/syntaxhighlighter-types';

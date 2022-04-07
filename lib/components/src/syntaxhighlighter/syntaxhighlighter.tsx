@@ -1,10 +1,4 @@
-import React, {
-  ClipboardEvent,
-  ComponentProps,
-  FunctionComponent,
-  MouseEvent,
-  useState,
-} from 'react';
+import React, { ClipboardEvent, FunctionComponent, MouseEvent, useCallback, useState } from 'react';
 import { logger } from '@storybook/client-logger';
 import { styled } from '@storybook/theming';
 import global from 'global';
@@ -39,7 +33,6 @@ import ReactSyntaxHighlighter from 'react-syntax-highlighter/dist/esm/prism-ligh
 import { ActionBar } from '../ActionBar/ActionBar';
 import { ScrollArea } from '../ScrollArea/ScrollArea';
 
-import { formatter } from './formatter';
 import type { SyntaxHighlighterProps } from './syntaxhighlighter-types';
 
 const { navigator, document, window: globalWindow } = global;
@@ -138,17 +131,16 @@ export interface SyntaxHighlighterState {
   copied: boolean;
 }
 
-type ReactSyntaxHighlighterProps = ComponentProps<typeof ReactSyntaxHighlighter>;
+// copied from @types/react-syntax-highlighter/index.d.ts
 
-type Props = SyntaxHighlighterProps & ReactSyntaxHighlighterProps;
-
-export const SyntaxHighlighter: FunctionComponent<Props> = ({
+export const SyntaxHighlighter: FunctionComponent<SyntaxHighlighterProps> = ({
   children,
   language = 'jsx',
   copyable = false,
   bordered = false,
   padded = false,
   format = true,
+  formatter = null,
   className = null,
   showLineNumbers = false,
   ...rest
@@ -157,22 +149,25 @@ export const SyntaxHighlighter: FunctionComponent<Props> = ({
     return null;
   }
 
-  const highlightableCode = format ? formatter(children) : children.trim();
+  const highlightableCode = formatter ? formatter(format, children) : children.trim();
   const [copied, setCopied] = useState(false);
 
-  const onClick = (e: MouseEvent<HTMLButtonElement> | ClipboardEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const onClick = useCallback(
+    (e: MouseEvent<HTMLButtonElement> | ClipboardEvent<HTMLDivElement>) => {
+      e.preventDefault();
 
-    const selectedText = globalWindow.getSelection().toString();
-    const textToCopy = e.type !== 'click' && selectedText ? selectedText : highlightableCode;
+      const selectedText = globalWindow.getSelection().toString();
+      const textToCopy = e.type !== 'click' && selectedText ? selectedText : highlightableCode;
 
-    copyToClipboard(textToCopy)
-      .then(() => {
-        setCopied(true);
-        globalWindow.setTimeout(() => setCopied(false), 1500);
-      })
-      .catch(logger.error);
-  };
+      copyToClipboard(textToCopy)
+        .then(() => {
+          setCopied(true);
+          globalWindow.setTimeout(() => setCopied(false), 1500);
+        })
+        .catch(logger.error);
+    },
+    []
+  );
 
   return (
     <Wrapper bordered={bordered} padded={padded} className={className} onCopyCapture={onClick}>

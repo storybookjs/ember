@@ -41,6 +41,7 @@ export const Standard: Story = () => {
           title: undefined,
           url: undefined,
           image: undefined,
+          target: undefined,
         },
       }}
     >
@@ -59,6 +60,7 @@ export const StandardNoLink: Story = () => {
           title: undefined,
           url: null,
           image: undefined,
+          target: undefined,
         },
       }}
     >

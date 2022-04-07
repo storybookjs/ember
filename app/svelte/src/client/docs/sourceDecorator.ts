@@ -1,4 +1,5 @@
 import { addons, useEffect } from '@storybook/addons';
+import { once } from '@storybook/client-logger';
 import type { ArgTypes, Args, StoryContext, AnyFramework } from '@storybook/csf';
 
 import { SourceType, SNIPPET_RENDERED } from '@storybook/docs-tools';
@@ -160,12 +161,16 @@ export const sourceDecorator = (storyFn: any, context: StoryContext<AnyFramework
     return story;
   }
 
-  const { parameters = {}, args = {} } = context || {};
+  const { parameters = {}, args = {}, component: ctxtComponent } = context || {};
   let { Component: component = {} } = story;
 
   const { wrapper, slotProperty } = getWrapperProperties(component);
   if (wrapper) {
-    component = parameters.component;
+    if (parameters.component) {
+      once.warn('parameters.component is deprecated. Using context.component instead.');
+    }
+
+    component = ctxtComponent;
   }
 
   source = generateSvelteSource(component, args, context?.argTypes, slotProperty);

@@ -4,14 +4,20 @@ import { Story, StoryStore, CSFFile } from '@storybook/store';
 import { Channel } from '@storybook/addons';
 import { DOCS_RENDERED } from '@storybook/core-events';
 
-import { DocsContextProps } from './types';
+import { Render, StoryRender } from './StoryRender';
+import type { DocsContextProps } from './types';
 
-export class DocsRender<TFramework extends AnyFramework> {
+export class DocsRender<TFramework extends AnyFramework> implements Render<TFramework> {
   private canvasElement?: HTMLElement;
 
   private context?: DocsContextProps;
 
   public disableKeyListeners = false;
+
+  static fromStoryRender<TFramework extends AnyFramework>(storyRender: StoryRender<TFramework>) {
+    const { channel, store, id, story } = storyRender;
+    return new DocsRender<TFramework>(channel, store, id, story);
+  }
 
   // eslint-disable-next-line no-useless-constructor
   constructor(
