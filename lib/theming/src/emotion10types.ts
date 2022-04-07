@@ -1,3 +1,8 @@
+/*
+ * We added these types so we can be fairly confident that we introduce no breaking changes
+ * We should remove this file in 7.0
+ */
+
 import { Interpolation } from '@emotion/react';
 
 export type PropsOf<C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>> =
