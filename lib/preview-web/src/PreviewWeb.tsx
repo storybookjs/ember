@@ -13,7 +13,6 @@ import type {
   PromiseLike,
   WebProjectAnnotations,
 } from '@storybook/store';
-import { StoryStore } from '@storybook/store';
 
 import { Preview } from './Preview';
 
@@ -67,7 +66,7 @@ export class PreviewWeb<TFramework extends AnyFramework> extends Preview<TFramew
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
     this.channel.on(Events.UPDATE_QUERY_PARAMS, this.onUpdateQueryParams.bind(this));
-    this.channel.on(Events.STORY_PRELOAD, this.onPreloadStory.bind(this));
+    this.channel.on(Events.PRELOAD_STORIES, this.onPreloadStories.bind(this));
   }
 
   initializeWithProjectAnnotations(projectAnnotations: WebProjectAnnotations<TFramework>) {
@@ -210,7 +209,7 @@ export class PreviewWeb<TFramework extends AnyFramework> extends Preview<TFramew
     if (this.currentRender instanceof DocsRender) await this.currentRender.rerender();
   }
 
-  async onPreloadStory(ids: string[]) {
+  async onPreloadStories(ids: string[]) {
     await Promise.all(ids.map((id) => this.storyStore.loadStory({ storyId: id })));
   }
 

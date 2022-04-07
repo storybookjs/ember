@@ -1,7 +1,7 @@
 import global from 'global';
 import { toId, sanitize } from '@storybook/csf';
 import {
-  STORY_PRELOAD,
+  PRELOAD_STORIES,
   STORY_PREPARED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
@@ -457,14 +457,12 @@ export const init: ModuleFn = ({
         // create a list of related stories to be preloaded
         const toBePreloaded = Array.from(
           new Set([
-            api.findSiblingStoryId(storyId, storiesHash, 1, false),
-            api.findSiblingStoryId(storyId, storiesHash, -1, false),
             api.findSiblingStoryId(storyId, storiesHash, 1, true),
             api.findSiblingStoryId(storyId, storiesHash, -1, true),
           ])
         );
 
-        fullAPI.emit(STORY_PRELOAD, toBePreloaded);
+        fullAPI.emit(PRELOAD_STORIES, toBePreloaded);
       }
     });
 

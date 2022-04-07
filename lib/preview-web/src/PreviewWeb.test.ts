@@ -1022,6 +1022,23 @@ describe('PreviewWeb', () => {
     });
   });
 
+  describe('onPreloadStories', () => {
+    it('loads stories', async () => {
+      document.location.search = '?id=component-one--a&viewMode=docs';
+      const mockedImportFn = jest.fn(() =>
+        Promise.resolve({ default: { title: 'Component Two' }, C: () => {} } as any)
+      );
+      const preview = await createAndRenderPreview({
+        importFn: mockedImportFn,
+      });
+      await preview.onPreloadStories(['component-two--c']);
+
+      await waitForRender();
+
+      expect(mockedImportFn).toHaveBeenCalledWith('./src/ComponentTwo.stories.js');
+    });
+  });
+
   describe('onResetArgs', () => {
     it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
