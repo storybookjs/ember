@@ -52,7 +52,7 @@ const SourceSkeletonPlaceholder = styled.div<{}>(({ theme }) => ({
   marginTop: 1,
   width: '60%',
 
-  [`:first-child${ignoreSsrWarning}`]: {
+  [`&:first-child${ignoreSsrWarning}`]: {
     margin: 0,
   },
 }));
