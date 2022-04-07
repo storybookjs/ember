@@ -53,7 +53,7 @@
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
-    "polished": "^4.0.5",
+    "polished": "^4.2.2",
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {
