@@ -446,13 +446,20 @@ export const init: ModuleFn = ({
       const { sourceType } = getEventMetadata(this, fullAPI);
 
       if (sourceType === 'local') {
-        const { storyId, storiesHash } = store.getState();
         const options = fullAPI.getCurrentParameter('options');
 
         if (options) {
           checkDeprecatedOptionParameters(options);
           fullAPI.setOptions(options);
         }
+      }
+    });
+
+    fullAPI.on(STORY_PREPARED, function handler() {
+      const { sourceType } = getEventMetadata(this, fullAPI);
+
+      if (sourceType === 'local') {
+        const { storyId, storiesHash } = store.getState();
 
         // create a list of related stories to be preloaded
         const toBePreloaded = Array.from(
@@ -460,7 +467,7 @@ export const init: ModuleFn = ({
             api.findSiblingStoryId(storyId, storiesHash, 1, true),
             api.findSiblingStoryId(storyId, storiesHash, -1, true),
           ])
-        );
+        ).filter(Boolean);
 
         fullAPI.emit(PRELOAD_STORIES, toBePreloaded);
       }
