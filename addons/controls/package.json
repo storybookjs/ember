@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-controls",
-  "version": "6.5.0-alpha.52",
+  "version": "6.5.0-alpha.58",
   "description": "Interact with component inputs dynamically in the Storybook UI",
   "keywords": [
     "addon",
@@ -25,8 +25,8 @@
     "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
-  "main": "dist/cjs/register.js",
-  "module": "dist/esm/register.js",
+  "main": "dist/cjs/manager.js",
+  "module": "dist/esm/manager.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
@@ -45,22 +45,22 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.52",
-    "@storybook/api": "6.5.0-alpha.52",
-    "@storybook/client-logger": "6.5.0-alpha.52",
-    "@storybook/components": "6.5.0-alpha.52",
-    "@storybook/core-common": "6.5.0-alpha.52",
-    "@storybook/csf": "0.0.2--canary.507502b.0",
-    "@storybook/node-logger": "6.5.0-alpha.52",
-    "@storybook/store": "6.5.0-alpha.52",
-    "@storybook/theming": "6.5.0-alpha.52",
+    "@storybook/addons": "6.5.0-alpha.58",
+    "@storybook/api": "6.5.0-alpha.58",
+    "@storybook/client-logger": "6.5.0-alpha.58",
+    "@storybook/components": "6.5.0-alpha.58",
+    "@storybook/core-common": "6.5.0-alpha.58",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/node-logger": "6.5.0-alpha.58",
+    "@storybook/store": "6.5.0-alpha.58",
+    "@storybook/theming": "6.5.0-alpha.58",
     "core-js": "^3.8.2",
     "lodash": "^4.17.21",
     "ts-dedent": "^2.0.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -73,8 +73,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "863b3811b24a4703645a09286059bc6d95bd2e65",
-  "sbmodern": "dist/modern/register.js",
+  "gitHead": "bf25496b2d3d2daa91ab211a9b73b1f4d5b0b52d",
+  "sbmodern": "dist/modern/manager.js",
   "storybook": {
     "displayName": "Controls",
     "icon": "https://user-images.githubusercontent.com/263385/101991669-479cc600-3c7c-11eb-93d9-38b67e8371f2.png",

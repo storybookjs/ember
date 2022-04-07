@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import type { ClientStoryApi, Loadable } from '@storybook/addons';
-import { start } from '@storybook/core/client';
+import { start } from '@storybook/core';
 import './globals';
 import { renderToDOM, render } from './render';
 import decorateStory from './decorateStory';

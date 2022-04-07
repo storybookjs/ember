@@ -9,7 +9,6 @@ import {
 import { Story, RenderContext, StoryStore } from '@storybook/store';
 import { Channel } from '@storybook/addons';
 import { STORY_RENDER_PHASE_CHANGED, STORY_RENDERED } from '@storybook/core-events';
-import { DocsRender } from './DocsRender';
 
 const { AbortController } = global;
 
@@ -41,28 +40,34 @@ export type RenderContextCallbacks<TFramework extends AnyFramework> = Pick<
 
 export const PREPARE_ABORTED = new Error('prepareAborted');
 
-export class StoryRender<
-  CanvasElement extends HTMLElement | void,
-  TFramework extends AnyFramework
-> {
+export interface Render<TFramework extends AnyFramework> {
+  id: StoryId;
+  story?: Story<TFramework>;
+  isPreparing: () => boolean;
+  disableKeyListeners: boolean;
+  teardown: (options: { viewModeChanged: boolean }) => Promise<void>;
+  renderToElement: (canvasElement: HTMLElement, renderStoryToElement?: any) => Promise<void>;
+}
+
+export class StoryRender<TFramework extends AnyFramework> implements Render<TFramework> {
   public story?: Story<TFramework>;
 
   public phase?: RenderPhase;
 
   private abortController?: AbortController;
 
-  private canvasElement?: CanvasElement;
+  private canvasElement?: HTMLElement;
 
   private notYetRendered = true;
 
   public disableKeyListeners = false;
 
   constructor(
-    private channel: Channel,
-    private store: StoryStore<TFramework>,
+    public channel: Channel,
+    public store: StoryStore<TFramework>,
     private renderToScreen: (
       renderContext: RenderContext<TFramework>,
-      canvasElement: CanvasElement
+      canvasElement: HTMLElement
     ) => void | Promise<void>,
     private callbacks: RenderContextCallbacks<TFramework>,
     public id: StoryId,
@@ -104,7 +109,7 @@ export class StoryRender<
   }
 
   // The two story "renders" are equal and have both loaded the same story
-  isEqual(other?: StoryRender<CanvasElement, TFramework> | DocsRender<TFramework>) {
+  isEqual(other?: Render<TFramework>) {
     return other && this.id === other.id && this.story && this.story === other.story;
   }
 
@@ -116,15 +121,11 @@ export class StoryRender<
     return ['rendering', 'playing'].includes(this.phase);
   }
 
-  toDocsRender() {
-    return new DocsRender<TFramework>(this.channel, this.store, this.id, this.story);
-  }
-
   context() {
     return this.store.getStoryContext(this.story);
   }
 
-  async renderToElement(canvasElement: CanvasElement) {
+  async renderToElement(canvasElement: HTMLElement) {
     this.canvasElement = canvasElement;
 
     // FIXME: this comment

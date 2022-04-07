@@ -32,8 +32,8 @@ export const LogoLink = styled.a(({ theme }) => ({
 }));
 
 export const Brand = withTheme(({ theme }) => {
-  const { title = 'Storybook', url = './', image } = theme.brand;
-  const targetValue = url === './' ? '' : '_blank';
+  const { title = 'Storybook', url = './', image, target } = theme.brand;
+  const targetValue = target || (url === './' ? '' : '_blank');
 
   // When image is explicitly set to null, enable custom HTML support
   if (image === null) {

@@ -64,6 +64,19 @@ export const react: Parameters = {
   additionalDeps: ['prop-types'],
 };
 
+export const react_legacy_root_api: Parameters = {
+  framework: 'react',
+  name: 'react_legacy_root_api',
+  version: 'latest',
+  generator: fromDeps('react', 'react-dom'),
+  additionalDeps: ['prop-types'],
+  mainOverrides: {
+    reactOptions: {
+      legacyRootApi: true,
+    },
+  },
+};
+
 export const react_typescript: Parameters = {
   framework: 'react',
   name: 'react_typescript',
@@ -77,6 +90,13 @@ export const webpack_react: Parameters = {
   name: 'webpack_react',
   version: 'latest',
   generator: fromDeps('react', 'react-dom', 'webpack@webpack-4'),
+};
+
+export const vite_react: Parameters = {
+  framework: 'react',
+  name: 'vite_react',
+  version: 'latest',
+  generator: 'npx -p create-vite@{{version}} create-vite {{appName}} --template react-ts',
 };
 
 export const react_in_yarn_workspace: Parameters = {

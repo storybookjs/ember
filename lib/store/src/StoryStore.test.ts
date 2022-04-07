@@ -1,21 +1,19 @@
 import type { AnyFramework, ProjectAnnotations } from '@storybook/csf';
 import global from 'global';
 
-import { prepareStory, processCSFFile } from './csf';
+import { prepareStory } from './csf/prepareStory';
+import { processCSFFile } from './csf/processCSFFile';
 import { StoryStore } from './StoryStore';
 import type { StoryIndex } from './types';
 import { HooksContext } from './hooks';
 
 // Spy on prepareStory/processCSFFile
-jest.mock('./csf', () => {
-  const actualModule = jest.requireActual('./csf');
-
-  return {
-    ...actualModule,
-    prepareStory: jest.fn(actualModule.prepareStory),
-    processCSFFile: jest.fn(actualModule.processCSFFile),
-  };
-});
+jest.mock('./csf/prepareStory', () => ({
+  prepareStory: jest.fn(jest.requireActual('./csf/prepareStory').prepareStory),
+}));
+jest.mock('./csf/processCSFFile', () => ({
+  processCSFFile: jest.fn(jest.requireActual('./csf/processCSFFile').processCSFFile),
+}));
 
 jest.mock('global', () => ({
   ...(jest.requireActual('global') as any),

@@ -91,7 +91,7 @@ export const AnchorMdx: FC<AnchorMdxProps> = (props) => {
     }
 
     // Links to other pages of SB should use the base URL of the top level iframe instead of the base URL of the preview iframe.
-    if (target !== '_blank') {
+    if (target !== '_blank' && !href.startsWith('https://')) {
       return (
         <A
           href={href}

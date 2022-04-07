@@ -53,8 +53,6 @@ export interface ArgType {
   name?: string;
   description?: string;
   defaultValue?: any;
-  addIf?: string;
-  removeIf?: string;
   [key: string]: any;
 }
 

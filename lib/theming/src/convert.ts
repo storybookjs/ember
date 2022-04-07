@@ -95,6 +95,7 @@ export const convert = (inherit: ThemeVars = themes[getPreferredColorScheme()]):
     brandTitle,
     brandUrl,
     brandImage,
+    brandTarget,
     gridCellSize,
     ...rest
   } = inherit;
@@ -148,6 +149,7 @@ export const convert = (inherit: ThemeVars = themes[getPreferredColorScheme()]):
       title: brandTitle,
       url: brandUrl,
       image: brandImage || (brandTitle ? null : undefined),
+      target: brandTarget,
     },
 
     code: createSyntax({
