@@ -474,6 +474,7 @@ Object {
     "IgnorePlugin",
     "ForkTsCheckerWebpackPlugin",
     "ESLintWebpackPlugin",
+    "IgnorePlugin",
     "DocgenPlugin",
   ],
 }

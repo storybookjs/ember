@@ -49,7 +49,7 @@ const defaultOptions: FrameworkOptions = {
 const builderDependencies = (builder: Builder) => {
   switch (builder) {
     case CoreBuilder.Webpack4:
-      return [];
+      return ['@storybook/builder-webpack4', '@storybook/manager-webpack4'];
     case CoreBuilder.Webpack5:
       return ['@storybook/builder-webpack5', '@storybook/manager-webpack5'];
     case CoreBuilder.Vite:

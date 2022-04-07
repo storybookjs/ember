@@ -56,15 +56,13 @@ export const fullScreenTool: Addon = {
     <Consumer filter={fullScreenMapper}>
       {({ toggle, value, shortcut, hasPanel, singleStory }) =>
         (!singleStory || (singleStory && hasPanel)) && (
-          <S.DesktopOnly>
-            <IconButton
-              key="full"
-              onClick={toggle as any}
-              title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
-            >
-              <Icons icon={value ? 'close' : 'expand'} />
-            </IconButton>
-          </S.DesktopOnly>
+          <IconButton
+            key="full"
+            onClick={toggle as any}
+            title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
+          >
+            <Icons icon={value ? 'close' : 'expand'} />
+          </IconButton>
         )
       }
     </Consumer>

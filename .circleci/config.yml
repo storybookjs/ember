@@ -207,7 +207,7 @@ jobs:
           name: Run E2E (core) tests
           # Do not test CRA here because it's done in PnP part
           # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
-          command: yarn test:e2e-framework vue3 angular130 angular13 angular12 angular11 web_components_typescript web_components_lit2 react
+          command: yarn test:e2e-framework vue3 angular130 angular13 angular12 angular11 web_components_typescript web_components_lit2 react react_legacy_root_api vite_react
           no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/cypress-record
