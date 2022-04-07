@@ -1,4 +1,4 @@
-import { start } from '@storybook/core/client';
+import { start } from '@storybook/core';
 
 import './globals';
 import { renderToDOM } from './render';
