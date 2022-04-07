@@ -117,8 +117,8 @@ export function start<TFramework extends AnyFramework>(
         );
 
         return {
-          ...clientApi.facade.projectAnnotations,
           render,
+          ...clientApi.facade.projectAnnotations,
           renderToDOM,
           applyDecorators: decorateStory,
         };
