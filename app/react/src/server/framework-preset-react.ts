@@ -87,6 +87,7 @@ export async function webpackFinal(config: Configuration, options: Options) {
     ...config,
     plugins: [
       ...config.plugins,
+
       // Storybook uses webpack-hot-middleware https://github.com/storybookjs/storybook/issues/14114
       new ReactRefreshWebpackPlugin({
         overlay: {
