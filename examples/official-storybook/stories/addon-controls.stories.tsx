@@ -28,17 +28,17 @@ export default {
         ],
       },
     },
-    mutuallyExclusiveA: { control: 'text', removeIf: 'mutuallyExclusiveB' },
-    mutuallyExclusiveB: { control: 'text', removeIf: 'mutuallyExclusiveA' },
+    mutuallyExclusiveA: { control: 'text', if: { arg: 'mutuallyExclusiveB', truthy: false } },
+    mutuallyExclusiveB: { control: 'text', if: { arg: 'mutuallyExclusiveA', truthy: false } },
     colorMode: {
       control: 'boolean',
     },
     dynamicText: {
-      removeIf: 'colorMode',
+      if: { arg: 'colorMode', truthy: false },
       control: 'text',
     },
     dynamicColor: {
-      addIf: 'colorMode',
+      if: { arg: 'colorMode' },
       control: 'color',
     },
     advanced: {
@@ -46,19 +46,22 @@ export default {
     },
     margin: {
       control: 'number',
-      addIf: 'advanced',
+      if: { arg: 'advanced' },
     },
     padding: {
       control: 'number',
-      addIf: 'advanced',
+      if: { arg: 'advanced' },
     },
     cornerRadius: {
       control: 'number',
-      addIf: 'advanced',
+      if: { arg: 'advanced' },
     },
     someText: { control: 'text' },
-    subText: { control: 'text', addIf: 'someText' },
-    anotherText: { control: 'text', addIf: 'someText' },
+    subText: { control: 'text', if: { arg: 'someText' } },
+    ifThemeExists: { control: 'text', if: { global: 'theme' } },
+    ifThemeNotExists: { control: 'text', if: { global: 'theme', exists: false } },
+    ifLightTheme: { control: 'text', if: { global: 'theme', eq: 'light' } },
+    ifNotLightTheme: { control: 'text', if: { global: 'theme', neq: 'light' } },
   },
   parameters: {
     chromatic: { disable: true },

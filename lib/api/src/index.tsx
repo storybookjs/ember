@@ -11,6 +11,7 @@ import React, {
   useRef,
 } from 'react';
 import mergeWith from 'lodash/mergeWith';
+import { Conditional } from '@storybook/csf';
 
 import {
   STORY_CHANGED,
@@ -117,8 +118,7 @@ export interface ArgType {
   name?: string;
   description?: string;
   defaultValue?: any;
-  addIf?: string;
-  removeIf?: string;
+  if?: Conditional;
   [key: string]: any;
 }
 

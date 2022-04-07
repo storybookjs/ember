@@ -6,7 +6,7 @@ import { includeConditionalArg } from '@storybook/csf';
 import { Icons } from '../../icon/icon';
 import { ArgRow } from './ArgRow';
 import { SectionRow } from './SectionRow';
-import { ArgType, ArgTypes, Args } from './types';
+import { ArgType, ArgTypes, Args, Globals } from './types';
 import { EmptyBlock } from '../EmptyBlock';
 import { Link } from '../../typography/link/link';
 import { ResetWrapper } from '../../typography/ResetWrapper';
@@ -271,6 +271,7 @@ export interface ArgsTableOptionProps {
 export interface ArgsTableDataProps {
   rows: ArgTypes;
   args?: Args;
+  globals?: Globals;
 }
 
 export interface ArgsTableErrorProps {
@@ -396,10 +397,13 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     sort = 'none',
   } = props;
   const isLoading = 'isLoading' in props;
-  const { rows, args } = 'rows' in props ? props : argsTableLoadingData;
+  const { rows, args, globals } = 'rows' in props ? props : argsTableLoadingData;
 
   const groups = groupRows(
-    pickBy(rows, (row) => !row?.table?.disable && includeConditionalArg(row, args)),
+    pickBy(
+      rows,
+      (row) => !row?.table?.disable && includeConditionalArg(row, args || {}, globals || {})
+    ),
     sort
   );
 
