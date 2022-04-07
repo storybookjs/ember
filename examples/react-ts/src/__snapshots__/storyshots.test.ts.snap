@@ -1851,7 +1851,7 @@ exports[`Storyshots Demo/AccountForm Standard Password Failed 1`] = `
 `;
 
 exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
-.emotion-15 {
+.emotion-0 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1870,7 +1870,7 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   border-radius: 7px;
 }
 
-.emotion-2 {
+.emotion-1 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1880,30 +1880,30 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   -ms-flex-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
-.emotion-0 {
+.emotion-2 {
   height: 40px;
   z-index: 10;
   margin-left: 32px;
 }
 
-.emotion-1 {
+.emotion-3 {
   height: 40px;
   z-index: 1;
   left: -32px;
   position: relative;
 }
 
-.emotion-3 {
+.emotion-4 {
   margin-top: 20px;
   text-align: center;
 }
 
-.emotion-14 {
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1913,26 +1913,26 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   -ms-flex-align: flex-start;
   align-items: flex-start;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
   -ms-flex-pack: center;
+  -webkit-justify-content: center;
   justify-content: center;
   width: 350px;
   min-height: 189px;
   margin-top: 8px;
 }
 
-.emotion-13 {
+.emotion-6 {
   width: 100%;
   -webkit-align-self: flex-start;
-  -ms-flex-item-align: start;
+  -ms-flex-item-align: flex-start;
   align-self: flex-start;
 }
 
-.emotion-13[aria-disabled="true"] {
+.emotion-6[aria-disabled="true"] {
   opacity: 0.6;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1941,44 +1941,45 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   -ms-flex-direction: column;
   flex-direction: column;
   -webkit-box-pack: stretch;
-  -webkit-justify-content: stretch;
   -ms-flex-pack: stretch;
+  -webkit-justify-content: stretch;
   justify-content: stretch;
   margin-bottom: 10px;
 }
 
-.emotion-4 {
+.emotion-8 {
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 6px;
 }
 
-.emotion-5 {
+.emotion-9 {
   font-size: 14px;
   color: #333333;
   padding: 10px 15px;
   border-radius: 4px;
   -webkit-appearance: none;
   -moz-appearance: none;
+  -ms-appearance: none;
   appearance: none;
   outline: none;
   border: 0 none;
   box-shadow: rgb(0 0 0 / 10%) 0px 0px 0px 1px inset;
 }
 
-.emotion-5:focus {
+.emotion-9:focus {
   box-shadow: rgb(30 167 253) 0px 0px 0px 1px inset;
 }
 
-.emotion-5:active {
+.emotion-9:active {
   box-shadow: rgb(30 167 253) 0px 0px 0px 1px inset;
 }
 
-.emotion-5[aria-invalid="true"] {
+.emotion-9[aria-invalid="true"] {
   box-shadow: rgb(255 68 0) 0px 0px 0px 1px inset;
 }
 
-.emotion-12 {
+.emotion-13 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -1988,17 +1989,17 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-top: 24px;
 }
 
-.emotion-10 {
+.emotion-14 {
   background-color: transparent;
   border: 0 none;
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  -ms-appearance: none;
   appearance: none;
   font-weight: 500;
   font-size: 12px;
@@ -2016,28 +2017,29 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   box-shadow: rgb(30 167 253 / 10%) 0 0 0 1px inset;
 }
 
-.emotion-10:focus {
+.emotion-14:focus {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   font-weight: 700;
 }
 
-.emotion-10:active {
+.emotion-14:active {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   font-weight: 700;
 }
 
-.emotion-10[aria-disabled="true"] {
+.emotion-14[aria-disabled="true"] {
   cursor: default;
 }
 
-.emotion-11 {
+.emotion-15 {
   background-color: transparent;
   border: 0 none;
   outline: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  -ms-appearance: none;
   appearance: none;
   font-weight: 500;
   font-size: 12px;
@@ -2053,19 +2055,19 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
   color: #1EA7FD;
 }
 
-.emotion-11:focus {
+.emotion-15:focus {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   font-weight: 700;
 }
 
-.emotion-11:active {
+.emotion-15:active {
   -webkit-text-decoration: underline;
   text-decoration: underline;
   font-weight: 700;
 }
 
-.emotion-11[aria-disabled="true"] {
+.emotion-15[aria-disabled="true"] {
   cursor: default;
 }
 
@@ -2074,14 +2076,14 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
     This uses a custom render
   </p>
   <section
-    className="emotion-15"
+    className="emotion-0"
   >
     <div
-      className="emotion-2"
+      className="emotion-1"
     >
       <svg
         aria-label="Storybook Logo"
-        className="emotion-0"
+        className="emotion-2"
         role="img"
         viewBox="0 0 64 64"
       >
@@ -2116,7 +2118,7 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
       </svg>
       <svg
         aria-label="Storybook"
-        className="emotion-1"
+        className="emotion-3"
         role="img"
         viewBox="0 0 200 40"
       >
@@ -2135,26 +2137,26 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
       </svg>
     </div>
     <p
-      className="emotion-3"
+      className="emotion-4"
     >
       Create an account to join the Storybook community
     </p>
     <div
-      className="emotion-14"
+      className="emotion-5"
     >
       <form
         action="#"
         aria-disabled="false"
-        className="emotion-13"
+        className="emotion-6"
         noValidate={true}
         onReset={[Function]}
         onSubmit={[Function]}
       >
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <label
-            className="emotion-4"
+            className="emotion-8"
             htmlFor="email"
           >
             Email
@@ -2163,7 +2165,7 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
             aria-disabled="false"
             aria-invalid="false"
             aria-required="true"
-            className="emotion-5"
+            className="emotion-9"
             data-testid="email"
             disabled={false}
             name="email"
@@ -2174,10 +2176,10 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
           />
         </div>
         <div
-          className="emotion-6"
+          className="emotion-7"
         >
           <label
-            className="emotion-4"
+            className="emotion-8"
             htmlFor="password"
           >
             Password
@@ -2186,7 +2188,7 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
             aria-disabled="false"
             aria-invalid="false"
             aria-required="true"
-            className="emotion-5"
+            className="emotion-9"
             data-testid="password1"
             disabled={false}
             name="password"
@@ -2197,11 +2199,11 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
           />
         </div>
         <div
-          className="emotion-12"
+          className="emotion-13"
         >
           <button
             aria-disabled="true"
-            className="emotion-10"
+            className="emotion-14"
             data-testid="submit"
             disabled={true}
             type="submit"
@@ -2210,7 +2212,7 @@ exports[`Storyshots Demo/AccountForm Standard With Render Function 1`] = `
           </button>
           <button
             aria-disabled="false"
-            className="emotion-11"
+            className="emotion-15"
             disabled={false}
             type="reset"
           >

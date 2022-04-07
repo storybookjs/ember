@@ -13,7 +13,7 @@ export type { StyledComponent } from './emotion10types';
 export { keyframes, css, jsx, ClassNames, ThemeProvider, CacheProvider } from '@emotion/react';
 export type { CSSObject, Keyframes } from '@emotion/react';
 
-export const useTheme = emotionReact.useTheme as () => Theme;
+export const useTheme = emotionReact.useTheme as <TTheme = Theme>() => TTheme;
 export const withTheme = emotionReact.withTheme as <C extends React.ComponentType<any>>(
   component: C
 ) => React.FC<AddOptionalTo<PropsOf<C>, 'theme'>>;
