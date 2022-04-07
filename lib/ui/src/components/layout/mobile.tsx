@@ -92,7 +92,7 @@ const Panels = React.memo((({ children, active, isFullscreen }) => (
       </Pane>
     ))}
   </PanelsContainer>
-)) as FunctionComponent<{ active: ActiveTabsType; children: ReactNode, isFullscreen: boolean }>);
+)) as FunctionComponent<{ active: ActiveTabsType; children: ReactNode; isFullscreen: boolean }>);
 Panels.displayName = 'Panels';
 
 const PanelsContainer = styled.div<{ isFullscreen: boolean }>(
@@ -101,7 +101,8 @@ const PanelsContainer = styled.div<{ isFullscreen: boolean }>(
     top: 0,
     left: 0,
     width: '100vw',
-  }, ({ isFullscreen }) => ({
+  },
+  ({ isFullscreen }) => ({
     height: isFullscreen ? '100vh' : 'calc(100% - 40px)',
   })
 );
@@ -192,7 +193,10 @@ class Mobile extends Component<MobileProps, MobileState> {
         </Panels>
         {!options.isFullscreen && (
           <Bar>
-            <TabButton onClick={() => this.setState({ active: SIDEBAR })} active={active === SIDEBAR}>
+            <TabButton
+              onClick={() => this.setState({ active: SIDEBAR })}
+              active={active === SIDEBAR}
+            >
               Sidebar
             </TabButton>
             <TabButton onClick={() => this.setState({ active: CANVAS })} active={active === CANVAS}>
@@ -202,7 +206,10 @@ class Mobile extends Component<MobileProps, MobileState> {
               ))}
             </TabButton>
             {viewMode && !docsOnly ? (
-              <TabButton onClick={() => this.setState({ active: ADDONS })} active={active === ADDONS}>
+              <TabButton
+                onClick={() => this.setState({ active: ADDONS })}
+                active={active === ADDONS}
+              >
                 Addons
               </TabButton>
             ) : null}
