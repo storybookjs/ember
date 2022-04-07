@@ -156,7 +156,7 @@ class Mobile extends Component<MobileProps, MobileState> {
 
     const { options } = props;
     this.state = {
-      active: options.initialActive || SIDEBAR,
+      active: options.isFullscreen ? CANVAS : options.initialActive || SIDEBAR,
     };
   }
 
