@@ -1,10 +1,20 @@
+## 6.5.0-alpha.59 (April 7, 2022)
+
+### Maintenance
+
+- CLI: Update the exclude list for upgrade warnings ([#17909](https://github.com/storybookjs/storybook/pull/17909))
+- Examples: Added an external-docs example to show the basic use case ([#17807](https://github.com/storybookjs/storybook/pull/17807))
+
+### Dependency Upgrades
+
+- Migration to Emotion 11 ([#17640](https://github.com/storybookjs/storybook/pull/17640))
+
 ## 6.5.0-alpha.58 (April 7, 2022)
 
 ### Features
 
 - CLI: Add webpack4/5 auto-detection ([#17908](https://github.com/storybookjs/storybook/pull/17908))
-
-* React: Add support for react18's new root API ([#17215](https://github.com/storybookjs/storybook/pull/17215))
+- React: Add support for react18's new root API ([#17215](https://github.com/storybookjs/storybook/pull/17215))
 
 ### Bug Fixes
 
