@@ -1,3 +1,19 @@
+## 6.5.0-alpha.60 (April 9, 2022)
+
+### Features
+
+- Core: Add story preloading to optimize lazy compilation ([#17903](https://github.com/storybookjs/storybook/pull/17903))
+
+### Bug Fixes
+
+- UI: Fix pseudo class potential unsafe warning ([#17911](https://github.com/storybookjs/storybook/pull/17911))
+- Core: Fix user-supplied project-level `render` in v6 store ([#17885](https://github.com/storybookjs/storybook/pull/17885))
+
+### Dependency Upgrades
+
+- Upgrade polished to 4.2.2 ([#17913](https://github.com/storybookjs/storybook/pull/17913))
+- Bump min vue-loader dependency version ([#17912](https://github.com/storybookjs/storybook/pull/17912))
+
 ## 6.5.0-alpha.59 (April 7, 2022)
 
 ### Maintenance
