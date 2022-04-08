@@ -1,3 +1,154 @@
+## 6.5.0-alpha.59 (April 7, 2022)
+
+### Maintenance
+
+- CLI: Update the exclude list for upgrade warnings ([#17909](https://github.com/storybookjs/storybook/pull/17909))
+- Examples: Added an external-docs example to show the basic use case ([#17807](https://github.com/storybookjs/storybook/pull/17807))
+
+### Dependency Upgrades
+
+- Migration to Emotion 11 ([#17640](https://github.com/storybookjs/storybook/pull/17640))
+
+## 6.5.0-alpha.58 (April 7, 2022)
+
+### Features
+
+- CLI: Add webpack4/5 auto-detection ([#17908](https://github.com/storybookjs/storybook/pull/17908))
+- React: Add support for react18's new root API ([#17215](https://github.com/storybookjs/storybook/pull/17215))
+
+### Bug Fixes
+
+- UI: Fix canvas as initialActive for fullscreen mode in mobile ([#17906](https://github.com/storybookjs/storybook/pull/17906))
+- UI: Fix mobile fullscreen UI ([#17873](https://github.com/storybookjs/storybook/pull/17873))
+
+### Maintenance
+
+- Core: Avoid framework imports from core/client ([#17875](https://github.com/storybookjs/storybook/pull/17875))
+- Webpack: Make manager and preview build processes cancelable ([#17809](https://github.com/storybookjs/storybook/pull/17809))
+- Build: Add vite-react to e2e tests ([#17871](https://github.com/storybookjs/storybook/pull/17871))
+- CLI: Upgrade vue3 template to use webpack5 builder ([#17896](https://github.com/storybookjs/storybook/pull/17896))
+- Build: Exclude @storybook/builder-vite from verdaccio ([#17897](https://github.com/storybookjs/storybook/pull/17897))
+
+## 6.5.0-alpha.57 (April 6, 2022)
+
+### Bug Fixes
+
+- Svelte: Fix dynamic source snippets ([#17866](https://github.com/storybookjs/storybook/pull/17866))
+- Angular: Do not use default for includePaths ([#17876](https://github.com/storybookjs/storybook/pull/17876))
+
+### Maintenance
+
+- Addon-docs: assume links starting with "https://" are external ([#17819](https://github.com/storybookjs/storybook/pull/17819))
+
+### Dependency Upgrades
+
+- Unify CSF version ([#17895](https://github.com/storybookjs/storybook/pull/17895))
+
+## 6.5.0-alpha.56 (April 5, 2022)
+
+### Features
+
+- Controls: Rework conditional controls with globals, queries ([#17883](https://github.com/storybookjs/storybook/pull/17883))
+- UI: Add Brand target config option ([#17814](https://github.com/storybookjs/storybook/pull/17814))
+
+### Bug Fixes
+
+- Controls: Fix date control width in addons panel ([#17780](https://github.com/storybookjs/storybook/pull/17780))
+
+### Maintenance
+
+- Core: Update some references to use ESM rather than CJS ([#17868](https://github.com/storybookjs/storybook/pull/17868))
+- Build: Upgrade from deprecated circleci docker img ([#17832](https://github.com/storybookjs/storybook/pull/17832))
+- Build: Parallel e2e (this might be expensive) ([#17842](https://github.com/storybookjs/storybook/pull/17842))
+- Build: Add junit summary for CircleCI ([#17867](https://github.com/storybookjs/storybook/pull/17867))
+
+## 6.5.0-alpha.55 (April 3, 2022)
+
+### Features
+
+- CLI: Detect vite project, use vite builder automatically ([#17860](https://github.com/storybookjs/storybook/pull/17860))
+- CLI: Default new vite projects to storyStoreV7 ([#17859](https://github.com/storybookjs/storybook/pull/17859))
+
+### Bug Fixes
+
+- Core: Restore preview-web composeConfigs export ([#17861](https://github.com/storybookjs/storybook/pull/17861))
+- CLI: Preserve quote style in automigrate ([#17858](https://github.com/storybookjs/storybook/pull/17858))
+
+## 6.5.0-alpha.54 (April 1, 2022)
+
+### Dependency Upgrades
+
+- React: Update react and react-dom peerDeps for React18 ([#17853](https://github.com/storybookjs/storybook/pull/17853))
+
+## 6.5.0-alpha.53 (April 1, 2022)
+
+### Features
+
+- Core: Add simplified manager.js/preview.js API for addons ([#17755](https://github.com/storybookjs/storybook/pull/17755))
+- Core/React: Add testing utilities ([#17282](https://github.com/storybookjs/storybook/pull/17282))
+
+### Bug Fixes
+
+- Addon-docs: Fix dependencies for yarn pnp ([#17705](https://github.com/storybookjs/storybook/pull/17705))
+- Webpack: Expand version ranges of webpack in the apps ([#17834](https://github.com/storybookjs/storybook/pull/17834))
+- CLI: Fix vite/jest issue with mocked global ([#17830](https://github.com/storybookjs/storybook/pull/17830))
+
+### Maintenance
+
+- Build: Remove packtracker ([#17841](https://github.com/storybookjs/storybook/pull/17841))
+- Build: Swap order of e2e tests around ([#17840](https://github.com/storybookjs/storybook/pull/17840))
+- Build: Add weekly check for broken markdown links ([#17799](https://github.com/storybookjs/storybook/pull/17799))
+- Build: Switch to use medium+ ([#17837](https://github.com/storybookjs/storybook/pull/17837))
+
+## 6.5.0-alpha.52 (March 31, 2022)
+
+### Bug Fixes
+
+- UI: Add back CacheProvider from emotion to lib/theming ([#17820](https://github.com/storybookjs/storybook/pull/17820))
+- Core: Add a feature flag for enabling crossOriginIsolated ([#17815](https://github.com/storybookjs/storybook/pull/17815))
+- Angular: Fix multiple calls of Input setter ([#17633](https://github.com/storybookjs/storybook/pull/17633))
+- UI: Wait 100ms before showing spinner and fix story overlaying it ([#17753](https://github.com/storybookjs/storybook/pull/17753))
+
+### Maintenance
+
+- CLI: Add automigration to `@storybook/builder-vite` ([#17829](https://github.com/storybookjs/storybook/pull/17829))
+- Build: Add setup-node version for danger ([#17826](https://github.com/storybookjs/storybook/pull/17826))
+- Add contributing instructions to PULL_REQUEST_TEMPLATE ([#17713](https://github.com/storybookjs/storybook/pull/17713))
+
+## 6.5.0-alpha.51 (March 25, 2022)
+
+### Features
+
+- SyntaxHighlighter: Add prettier for code formatting ([#17746](https://github.com/storybookjs/storybook/pull/17746))
+
+### Maintenance
+
+- Build: Add main overrides to e2e config and possibility to run test runner ([#17778](https://github.com/storybookjs/storybook/pull/17778))
+
+## 6.5.0-alpha.50 (March 23, 2022)
+
+### Features
+
+- Controls: Add conditional controls ([#17536](https://github.com/storybookjs/storybook/pull/17536))
+- Core: Add headers to enable SharedArrayBuffer in stories ([#16970](https://github.com/storybookjs/storybook/pull/16970))
+- UI: Button for toggling addons panel ([#17714](https://github.com/storybookjs/storybook/pull/17714))
+
+### Bug Fixes
+
+- Core: Ensure simultaneous first access to stories.json waits ([#17785](https://github.com/storybookjs/storybook/pull/17785))
+- Reload iframe when the url changes ([#17644](https://github.com/storybookjs/storybook/pull/17644))
+- UI: Fix brand logo layout shift ([#16467](https://github.com/storybookjs/storybook/pull/16467))
+- UI: Fix nesting issue for refs in sidebar component ([#17726](https://github.com/storybookjs/storybook/pull/17726))
+- Core: Fix filesystem cache missing return ([#17748](https://github.com/storybookjs/storybook/pull/17748))
+- Addon-docs: Fix binding of the `renderStoryToElement` passed to `DocsRender` ([#17742](https://github.com/storybookjs/storybook/pull/17742))
+
+### Maintenance
+
+- Addon-docs/Vue: Add tests for sourceDecorator vnodeToString ([#17764](https://github.com/storybookjs/storybook/pull/17764))
+- Controls: Date control tests ([#17765](https://github.com/storybookjs/storybook/pull/17765))
+- Remove mock directories from Jest test coverage ([#17771](https://github.com/storybookjs/storybook/pull/17771))
+- fix dts-localize script ([#17747](https://github.com/storybookjs/storybook/pull/17747))
+
 ## 6.5.0-alpha.49 (March 17, 2022)
 
 ### Bug Fixes

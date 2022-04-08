@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-client",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.59",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,16 +40,16 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/channel-postmessage": "6.5.0-alpha.49",
-    "@storybook/channel-websocket": "6.5.0-alpha.49",
-    "@storybook/client-api": "6.5.0-alpha.49",
-    "@storybook/client-logger": "6.5.0-alpha.49",
-    "@storybook/core-events": "6.5.0-alpha.49",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/preview-web": "6.5.0-alpha.49",
-    "@storybook/store": "6.5.0-alpha.49",
-    "@storybook/ui": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/channel-postmessage": "6.5.0-alpha.59",
+    "@storybook/channel-websocket": "6.5.0-alpha.59",
+    "@storybook/client-api": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/core-events": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/preview-web": "6.5.0-alpha.59",
+    "@storybook/store": "6.5.0-alpha.59",
+    "@storybook/ui": "6.5.0-alpha.59",
     "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
@@ -62,8 +62,8 @@
     "util-deprecate": "^1.0.2"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "webpack": "*"
   },
   "peerDependenciesMeta": {
@@ -74,6 +74,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js"
 }

@@ -12,6 +12,7 @@ import type {
   AnyFramework,
   StrictArgTypes,
 } from '@storybook/csf';
+import { includeConditionalArg } from '@storybook/csf';
 
 import type {
   NormalizedComponentAnnotations,
@@ -165,12 +166,18 @@ export function prepareStory<TFramework extends AnyFramework>(
       acc[key] = mapping && val in mapping ? mapping[val] : val;
       return acc;
     }, {} as Args);
-    const mappedContext = { ...context, args: mappedArgs };
 
+    const includedArgs = Object.entries(mappedArgs).reduce((acc, [key, val]) => {
+      const argType = context.argTypes[key] || {};
+      if (includeConditionalArg(argType, mappedArgs, context.globals)) acc[key] = val;
+      return acc;
+    }, {} as Args);
+
+    const includedContext = { ...context, args: includedArgs };
     const { passArgsFirst: renderTimePassArgsFirst = true } = context.parameters;
     return renderTimePassArgsFirst
-      ? (render as ArgsStoryFn<TFramework>)(mappedContext.args, mappedContext)
-      : (render as LegacyStoryFn<TFramework>)(mappedContext);
+      ? (render as ArgsStoryFn<TFramework>)(includedContext.args, includedContext)
+      : (render as LegacyStoryFn<TFramework>)(includedContext);
   };
   const decoratedStoryFn = applyHooks<TFramework>(applyDecorators)(undecoratedStoryFn, decorators);
   const unboundStoryFn = (context: StoryContext<TFramework>) => {

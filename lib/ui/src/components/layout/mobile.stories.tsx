@@ -33,6 +33,13 @@ export const InitialAddons = ({ props }: { props: MobileProps }) => (
   <Mobile {...props} options={{ ...props.options, initialActive: ActiveTabs.ADDONS }} />
 );
 
+export const Fullscreen = ({ props }: { props: MobileProps }) => (
+  <Mobile
+    {...props}
+    options={{ ...props.options, initialActive: ActiveTabs.SIDEBAR, isFullscreen: true }}
+  />
+);
+
 export const DocsOnly = ({ props }: { props: MobileProps }) => <Mobile {...props} docsOnly />;
 
 export const Page = ({ props }: { props: MobileProps }) => (

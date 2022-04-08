@@ -1,6 +1,6 @@
 {
   "name": "@storybook/router",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.59",
   "description": "Core Storybook Router",
   "keywords": [
     "storybook"
@@ -40,7 +40,7 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/client-logger": "6.5.0-alpha.49",
+    "@storybook/client-logger": "6.5.0-alpha.59",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7"
   },
@@ -57,13 +57,13 @@
     "ts-node": "^10.4.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "bundlerEntrypoint": "./src/index.ts",
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js"
 }

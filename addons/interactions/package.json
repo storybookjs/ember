@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-interactions",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.59",
   "description": "Automate, test and debug user interactions",
   "keywords": [
     "storybook-addons",
@@ -21,8 +21,8 @@
     "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
-  "main": "dist/cjs/register.js",
-  "module": "dist/esm/register.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/ts3.9/index.d.ts",
   "typesVersions": {
     "<3.8": {
@@ -41,18 +41,19 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/api": "6.5.0-alpha.49",
-    "@storybook/components": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/core-events": "6.5.0-alpha.49",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/instrumenter": "6.5.0-alpha.49",
-    "@storybook/theming": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/api": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/components": "6.5.0-alpha.59",
+    "@storybook/core-common": "6.5.0-alpha.59",
+    "@storybook/core-events": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/instrumenter": "6.5.0-alpha.59",
+    "@storybook/theming": "6.5.0-alpha.59",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "jest-mock": "^27.0.6",
-    "polished": "^4.0.5",
+    "polished": "^4.2.2",
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {
@@ -61,8 +62,8 @@
     "formik": "^2.2.9"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -75,7 +76,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Interactions",

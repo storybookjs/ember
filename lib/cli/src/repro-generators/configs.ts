@@ -1,4 +1,5 @@
-import { SupportedFrameworks } from '../project_types';
+import type { StorybookConfig } from '@storybook/core-common';
+import type { SupportedFrameworks } from '../project_types';
 
 export interface Parameters {
   framework: SupportedFrameworks;
@@ -14,6 +15,8 @@ export interface Parameters {
   additionalDeps?: string[];
   /** Add typescript dependency and creates a tsconfig.json file */
   typescript?: boolean;
+  /** Merge configurations to main.js before running the tests */
+  mainOverrides?: Partial<StorybookConfig> & Record<string, any>;
 }
 
 const fromDeps = (...args: string[]): string =>
@@ -61,6 +64,19 @@ export const react: Parameters = {
   additionalDeps: ['prop-types'],
 };
 
+export const react_legacy_root_api: Parameters = {
+  framework: 'react',
+  name: 'react_legacy_root_api',
+  version: 'latest',
+  generator: fromDeps('react', 'react-dom'),
+  additionalDeps: ['prop-types'],
+  mainOverrides: {
+    reactOptions: {
+      legacyRootApi: true,
+    },
+  },
+};
+
 export const react_typescript: Parameters = {
   framework: 'react',
   name: 'react_typescript',
@@ -74,6 +90,13 @@ export const webpack_react: Parameters = {
   name: 'webpack_react',
   version: 'latest',
   generator: fromDeps('react', 'react-dom', 'webpack@webpack-4'),
+};
+
+export const vite_react: Parameters = {
+  framework: 'react',
+  name: 'vite_react',
+  version: 'latest',
+  generator: 'npx -p create-vite@{{version}} create-vite {{appName}} --template react-ts',
 };
 
 export const react_in_yarn_workspace: Parameters = {
@@ -127,6 +150,18 @@ export const angular13: Parameters = {
   ...baseAngular,
   name: 'angular13',
   version: '13.1.x',
+};
+
+export const angular_modern_inline_rendering: Parameters = {
+  ...baseAngular,
+  name: 'angular_modern_inline_rendering',
+  additionalDeps: ['jest', '@storybook/test-runner'],
+  mainOverrides: {
+    features: {
+      storyStoreV7: true,
+      modernInlineRender: true,
+    },
+  },
 };
 
 export const angular: Parameters = baseAngular;

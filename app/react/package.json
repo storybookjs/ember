@@ -1,6 +1,6 @@
 {
   "name": "@storybook/react",
-  "version": "6.5.0-alpha.49",
+  "version": "6.5.0-alpha.59",
   "description": "Storybook for React: Develop React Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -49,16 +49,16 @@
     "@babel/preset-flow": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
-    "@storybook/addons": "6.5.0-alpha.49",
-    "@storybook/client-logger": "6.5.0-alpha.49",
-    "@storybook/core": "6.5.0-alpha.49",
-    "@storybook/core-common": "6.5.0-alpha.49",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/docs-tools": "6.5.0-alpha.49",
-    "@storybook/node-logger": "6.5.0-alpha.49",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/core": "6.5.0-alpha.59",
+    "@storybook/core-common": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/docs-tools": "6.5.0-alpha.59",
+    "@storybook/node-logger": "6.5.0-alpha.59",
     "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.49",
+    "@storybook/store": "6.5.0-alpha.59",
     "@types/estree": "^0.0.51",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
@@ -69,6 +69,7 @@
     "babel-plugin-react-docgen": "^4.2.1",
     "core-js": "^3.8.2",
     "escodegen": "^2.0.0",
+    "fs-extra": "^9.0.1",
     "global": "^4.4.0",
     "html-tags": "^3.1.0",
     "lodash": "^4.17.21",
@@ -88,8 +89,8 @@
   "peerDependencies": {
     "@babel/core": "^7.11.5",
     "jest-specific-snapshot": "^4.0.0",
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "require-from-string": "^2.0.2"
   },
   "peerDependenciesMeta": {
@@ -118,6 +119,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "5cd3cd92ff4ab3dce81726f0d3913d7077926bee",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/client/index.js"
 }

@@ -61,6 +61,10 @@ export const typescript = () => ({
   },
 });
 
+export const config = async (base: any, options: Options) => {
+  return [...(await options.presets.apply('previewAnnotations', [], options)), ...base];
+};
+
 export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,

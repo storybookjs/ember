@@ -1,0 +1,19 @@
+{
+  "replacementPatterns": [
+    {
+      "pattern": "^/",
+      "replacement": "./"
+    }
+  ],
+  "ignorePatterns": [
+    {
+      "pattern": "localhost"
+    },
+    {
+      "pattern": "https://github.com/storybookjs/storybook/pull/*"
+    },
+    {
+      "pattern": "https://stackblitz.com/*"
+    }
+  ]
+}

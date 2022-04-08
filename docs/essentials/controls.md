@@ -300,6 +300,52 @@ paths={[
 
 </div>
 
+### Conditional controls
+
+In some cases, it's useful to be able to conditionally exclude a control based on the value of another control. Controls supports basic versions of these use cases with the `if`, which can takes a simple query object to determine whether to include the control.
+
+Consider a collection of "advanced" settings that are only visible when the user toggles an "advanced" toggle.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-conditional-controls-toggle.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Or consider a constraint where if the user sets one control value, it doesn't make sense for the user to be able to set another value.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/component-story-conditional-controls-mutual-exclusion.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+The query object must contain either an `arg` or `global` target:
+
+| field  | type   | meaning                       |
+| ------ | ------ | ----------------------------- |
+| arg    | string | The ID of the arg to test.    |
+| global | string | The ID of the global to test. |
+
+It may also contain at most one of the following operators:
+
+| operator | type    | meaning                                              |
+| -------- | ------- | ---------------------------------------------------- |
+| truthy   | boolean | Is the target value truthy?                          |
+| exists   | boolean | Is the target value defined?                         |
+| eq       | any     | Is the target value equal to the provided value?     |
+| neq      | any     | Is the target value NOT equal to the provided value? |
+
+If no operator is provided, that is equivalent to `{ truthy: true }`.
+
 ## Hide NoControls warning
 
 If you don't plan to handle the control args inside your Story, you can remove the warning with:

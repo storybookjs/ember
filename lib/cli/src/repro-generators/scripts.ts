@@ -1,8 +1,9 @@
 import path from 'path';
-import { writeJSON } from 'fs-extra';
+import { readJSON, writeJSON } from 'fs-extra';
 import shell, { ExecOptions } from 'shelljs';
 import chalk from 'chalk';
 import { cra, cra_typescript } from './configs';
+import storybookVersions from '../versions';
 
 const logger = console;
 
@@ -68,6 +69,14 @@ export const exec = async (
       }
     });
   });
+};
+
+const addPackageResolutions = async ({ cwd }: Options) => {
+  logger.info(`🔢 Adding package resolutions:`);
+  const packageJsonPath = path.join(cwd, 'package.json');
+  const packageJson = await readJSON(packageJsonPath);
+  packageJson.resolutions = storybookVersions;
+  await writeJSON(packageJsonPath, packageJson, { spaces: 2 });
 };
 
 const installYarn2 = async ({ cwd, pnp, name }: Options) => {
@@ -219,6 +228,9 @@ export const createAndInit = async (
   logger.log();
 
   await doTask(generate, { ...options, cwd: options.creationPath });
+  if (e2e) {
+    await doTask(addPackageResolutions, options);
+  }
   await doTask(installYarn2, options);
   await doTask(configureYarn2ForE2E, options, e2e);
   await doTask(addTypescript, options, !!options.typescript);

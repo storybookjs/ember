@@ -81,14 +81,19 @@ const _updateExportNode = (path: string[], expr: t.Expression, existing: t.Objec
 export class ConfigFile {
   _ast: t.File;
 
+  _code: string;
+
   _exports: Record<string, t.Expression> = {};
 
   _exportsObject: t.ObjectExpression;
 
+  _quotes: 'single' | 'double' | undefined;
+
   fileName?: string;
 
-  constructor(ast: t.File, fileName?: string) {
+  constructor(ast: t.File, code: string, fileName?: string) {
     this._ast = ast;
+    this._code = code;
     this.fileName = fileName;
   }
 
@@ -190,24 +195,49 @@ export class ConfigFile {
     }
   }
 
-  setFieldValue(path: string[], value: any) {
-    const stringified = JSON.stringify(value);
-    const program = babelParse(`const __x = ${stringified}`);
-    let valueNode;
-    traverse(program, {
-      VariableDeclaration: {
-        enter({ node }) {
-          if (
-            node.declarations.length === 1 &&
-            t.isVariableDeclarator(node.declarations[0]) &&
-            t.isIdentifier(node.declarations[0].id) &&
-            node.declarations[0].id.name === '__x'
-          ) {
-            valueNode = node.declarations[0].init;
+  _inferQuotes() {
+    if (!this._quotes) {
+      // first 500 tokens for efficiency
+      const occurrences = (this._ast.tokens || []).slice(0, 500).reduce(
+        (acc, token) => {
+          if (token.type.label === 'string') {
+            acc[this._code[token.start]] += 1;
           }
+          return acc;
         },
-      },
-    });
+        { "'": 0, '"': 0 }
+      );
+      this._quotes = occurrences["'"] > occurrences['"'] ? 'single' : 'double';
+    }
+    return this._quotes;
+  }
+
+  setFieldValue(path: string[], value: any) {
+    const quotes = this._inferQuotes();
+    let valueNode;
+    // we do this rather than t.valueToNode because apparently
+    // babel only preserves quotes if they are parsed from the original code.
+    if (quotes === 'single') {
+      const { code } = generate(t.valueToNode(value), { jsescOption: { quotes } });
+      const program = babelParse(`const __x = ${code}`);
+      traverse(program, {
+        VariableDeclaration: {
+          enter({ node }) {
+            if (
+              node.declarations.length === 1 &&
+              t.isVariableDeclarator(node.declarations[0]) &&
+              t.isIdentifier(node.declarations[0].id) &&
+              node.declarations[0].id.name === '__x'
+            ) {
+              valueNode = node.declarations[0].init;
+            }
+          },
+        },
+      });
+    } else {
+      // double quotes is the default so we can skip all that
+      valueNode = t.valueToNode(value);
+    }
     if (!valueNode) {
       throw new Error(`Unexpected value ${JSON.stringify(value)}`);
     }
@@ -217,7 +247,7 @@ export class ConfigFile {
 
 export const loadConfig = (code: string, fileName?: string) => {
   const ast = babelParse(code);
-  return new ConfigFile(ast, fileName);
+  return new ConfigFile(ast, code, fileName);
 };
 
 export const formatConfig = (config: ConfigFile) => {

@@ -33,6 +33,6 @@ export async function webpack(config: Configuration, options: Options): Promise<
   };
 }
 
-export const config: StorybookConfig['config'] = (entry = []) => {
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entry = []) => {
   return [...entry, findDistEsm(__dirname, 'client/preview/config')];
 };

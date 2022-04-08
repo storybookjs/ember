@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { styled, ThemeProvider, convert, themes } from '@storybook/theming';
+import React, { ComponentProps, FunctionComponent } from 'react';
+import { styled, ThemeProvider, convert, themes, ignoreSsrWarning } from '@storybook/theming';
 import { EmptyBlock } from './EmptyBlock';
 
 import { SyntaxHighlighter } from '../syntaxhighlighter/lazy-syntaxhighlighter';
@@ -31,7 +31,7 @@ interface SourceErrorProps {
 interface SourceCodeProps {
   language?: string;
   code?: string;
-  format?: boolean;
+  format?: ComponentProps<typeof SyntaxHighlighter>['format'];
   dark?: boolean;
 }
 
@@ -52,7 +52,7 @@ const SourceSkeletonPlaceholder = styled.div<{}>(({ theme }) => ({
   marginTop: 1,
   width: '60%',
 
-  '&:first-child': {
+  [`&:first-child${ignoreSsrWarning}`]: {
     margin: 0,
   },
 }));
