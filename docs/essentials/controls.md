@@ -11,7 +11,7 @@ Storybook Controls gives you a graphical UI to interact with a component's argum
   />
 </video>
 
-Controls does not require any modification to your components. Stories for controls are:
+Controls do not require any modification to your components. Stories for controls are:
 
 - Convenient. Auto-generate controls based on React/Vue/Angular/etc. components.
 - Portable. Reuse your interactive stories in documentation, tests, and even in designs.
