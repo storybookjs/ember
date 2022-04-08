@@ -1,6 +1,6 @@
 {
   "name": "@storybook/preview-web",
-  "version": "6.5.0-alpha.59",
+  "version": "6.5.0-alpha.60",
   "description": "",
   "keywords": [
     "storybook"
@@ -40,12 +40,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.59",
-    "@storybook/channel-postmessage": "6.5.0-alpha.59",
-    "@storybook/client-logger": "6.5.0-alpha.59",
-    "@storybook/core-events": "6.5.0-alpha.59",
+    "@storybook/addons": "6.5.0-alpha.60",
+    "@storybook/channel-postmessage": "6.5.0-alpha.60",
+    "@storybook/client-logger": "6.5.0-alpha.60",
+    "@storybook/core-events": "6.5.0-alpha.60",
     "@storybook/csf": "0.0.2--canary.7c6c115.0",
-    "@storybook/store": "6.5.0-alpha.59",
+    "@storybook/store": "6.5.0-alpha.60",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
