@@ -1,10 +1,11 @@
 import global from 'global';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { Channel } from '@storybook/channels';
-import { API } from '@storybook/api';
-import { RenderData as RouterData } from '@storybook/router';
+import type { API } from '@storybook/api';
+import type { RenderData as RouterData } from '@storybook/router';
 import { logger } from '@storybook/client-logger';
-import { ThemeVars } from '@storybook/theming';
+import type { ThemeVars } from '@storybook/theming';
+import { mockChannel } from './storybook-channel-mock';
 import { types, Types } from './types';
 
 export { Channel };
@@ -70,11 +71,9 @@ export class AddonStore {
   private resolve: any;
 
   getChannel = (): Channel => {
-    // this.channel should get overwritten by setChannel. If it wasn't called (e.g. in non-browser environment), throw.
+    // this.channel should get overwritten by setChannel. If it wasn't called (e.g. in non-browser environment), set a mock instead.
     if (!this.channel) {
-      throw new Error(
-        'Accessing non-existent addons channel, see https://storybook.js.org/basics/faq/#why-is-there-no-addons-channel'
-      );
+      this.setChannel(mockChannel());
     }
 
     return this.channel;

@@ -14,6 +14,7 @@ export const colors = {
 };
 
 export const logger = {
+  verbose: (message: string): void => npmLog.verbose('', message),
   info: (message: string): void => npmLog.info('', message),
   plain: (message: string): void => console.log(message),
   line: (count = 1): void => console.log(`${Array(count - 1).fill('\n')}`),
@@ -29,13 +30,14 @@ export const logger = {
 export { npmLog as instance };
 
 const logged = new Set();
-export const once = (type: 'info' | 'warn' | 'error') => (message: string) => {
+export const once = (type: 'verbose' | 'info' | 'warn' | 'error') => (message: string) => {
   if (logged.has(message)) return undefined;
   logged.add(message);
   return logger[type](message);
 };
 
 once.clear = () => logged.clear();
+once.verbose = once('verbose');
 once.info = once('info');
 once.warn = once('warn');
 once.error = once('error');

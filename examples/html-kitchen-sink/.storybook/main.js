@@ -24,6 +24,9 @@ module.exports = {
   core: {
     builder: 'webpack4',
   },
+  features: {
+    buildStoriesJson: true,
+  },
   // Test code for built-in stories.json extraction
   //
   // refs: {

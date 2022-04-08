@@ -1,6 +1,6 @@
 {
   "name": "@storybook/channels",
-  "version": "6.5.0-alpha.19",
+  "version": "6.5.0-alpha.59",
   "description": "",
   "keywords": [
     "storybook"
@@ -47,6 +47,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ce3592fc323ede3d33939b532ff7400cfdc1efa1",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js"
 }

@@ -6,8 +6,8 @@ import fetch from 'node-fetch';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 
-import { Configuration } from 'webpack';
-import { Ref, Options } from '@storybook/core-common';
+import type { Configuration } from 'webpack';
+import type { Ref, Options } from '@storybook/core-common';
 
 export const getAutoRefs = async (
   options: Options,

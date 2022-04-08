@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-storysource",
-  "version": "6.5.0-alpha.19",
+  "version": "6.5.0-alpha.59",
   "description": "View a story’s source code to see how it works and paste into your app",
   "keywords": [
     "addon",
@@ -41,28 +41,27 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.19",
-    "@storybook/api": "6.5.0-alpha.19",
-    "@storybook/client-logger": "6.5.0-alpha.19",
-    "@storybook/components": "6.5.0-alpha.19",
-    "@storybook/router": "6.5.0-alpha.19",
-    "@storybook/source-loader": "6.5.0-alpha.19",
-    "@storybook/theming": "6.5.0-alpha.19",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/api": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/components": "6.5.0-alpha.59",
+    "@storybook/router": "6.5.0-alpha.59",
+    "@storybook/source-loader": "6.5.0-alpha.59",
+    "@storybook/theming": "6.5.0-alpha.59",
     "core-js": "^3.8.2",
     "estraverse": "^5.2.0",
     "loader-utils": "^2.0.0",
-    "prettier": ">=2.2.1 <=2.3.0",
     "prop-types": "^15.7.2",
     "react-syntax-highlighter": "^15.4.5",
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
-    "@types/react": "^16.14.2",
+    "@types/react": "^16.14.23",
     "@types/react-syntax-highlighter": "^11.0.5"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -75,7 +74,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ce3592fc323ede3d33939b532ff7400cfdc1efa1",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Storysource",

@@ -1,16 +1,15 @@
 import { logger, instance as npmLog } from '@storybook/node-logger';
-import {
+import type {
   CLIOptions,
   LoadOptions,
   BuilderOptions,
-  resolvePathInStorybookCache,
-  loadAllPresets,
   Options,
-  cache,
   StorybookConfig,
 } from '@storybook/core-common';
+import { resolvePathInStorybookCache, loadAllPresets, cache } from '@storybook/core-common';
 import dedent from 'ts-dedent';
 import prompts from 'prompts';
+import global from 'global';
 
 import path from 'path';
 import { storybookDevServer } from './dev-server';
@@ -75,6 +74,7 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
   });
 
   const features = await presets.apply<StorybookConfig['features']>('features');
+  global.FEATURES = features;
 
   const fullOptions: Options = {
     ...options,

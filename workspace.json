@@ -69,6 +69,10 @@
       "root": "app/angular",
       "type": "library"
     },
+    "@storybook/docs-tools": {
+      "root": "lib/docs-tools",
+      "type": "library"
+    },
     "@storybook/ember": {
       "root": "app/ember",
       "type": "library"
@@ -155,6 +159,10 @@
     },
     "@storybook/example-react-ts-webpack4": {
       "root": "examples/react-ts-webpack4",
+      "type": "library"
+    },
+    "@storybook/external-docs": {
+      "root": "examples/external-docs",
       "type": "library"
     },
     "server-kitchen-sink": {

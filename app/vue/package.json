@@ -1,6 +1,6 @@
 {
   "name": "@storybook/vue",
-  "version": "6.5.0-alpha.19",
+  "version": "6.5.0-alpha.59",
   "description": "Storybook for Vue: Develop Vue Component in isolation with Hot Reloading.",
   "keywords": [
     "storybook"
@@ -45,11 +45,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.19",
-    "@storybook/core": "6.5.0-alpha.19",
-    "@storybook/core-common": "6.5.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/store": "6.5.0-alpha.19",
+    "@storybook/addons": "6.5.0-alpha.59",
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/core": "6.5.0-alpha.59",
+    "@storybook/core-common": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/docs-tools": "6.5.0-alpha.59",
+    "@storybook/store": "6.5.0-alpha.59",
     "@types/node": "^14.14.20 || ^16.0.0",
     "@types/webpack-env": "^1.16.0",
     "core-js": "^3.8.2",
@@ -60,14 +62,15 @@
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
-    "vue-docgen-api": "^4.38.0",
+    "vue-docgen-api": "^4.44.15",
     "vue-docgen-loader": "^1.5.0",
-    "webpack": "4"
+    "webpack": ">=4.0.0 <6.0.0"
   },
   "devDependencies": {
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "*",
@@ -83,6 +86,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ce3592fc323ede3d33939b532ff7400cfdc1efa1",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/client/index.js"
 }

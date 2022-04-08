@@ -1,10 +1,16 @@
 /* eslint-disable no-console */
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
-const shell = require('shelljs');
+const execa = require('execa');
 
 function getCommand(watch) {
-  const args = ['--outDir ./dist/ts3.9', '--listEmittedFiles true', '--declaration true'];
+  const args = [
+    '--outDir ./dist/ts3.9',
+    '--listEmittedFiles false',
+    '--declaration true',
+    '--noErrorTruncation',
+    '--pretty',
+  ];
 
   /**
    * Only emit declarations if it does not need to be compiled with tsc
@@ -21,7 +27,7 @@ function getCommand(watch) {
     args.push('-w', '--preserveWatchOutput');
   }
 
-  return `yarn run -T tsc ${args.join(' ')} && yarn run -T downlevel-dts dist/ts3.9 dist/ts3.4`;
+  return `yarn run -T tsc ${args.join(' ')}`;
 }
 
 function handleExit(code, stderr, errorCallback) {
@@ -30,35 +36,58 @@ function handleExit(code, stderr, errorCallback) {
       errorCallback(stderr);
     }
 
-    shell.exit(code);
+    process.exit(code);
   }
 }
 
-function tscfy(options = {}) {
+async function run({ watch, silent, errorCallback }) {
+  return new Promise((resolve, reject) => {
+    const command = getCommand(watch);
+
+    const child = execa.command(command, {
+      buffer: false,
+    });
+    let stderr = '';
+
+    if (watch) {
+      child.stdout.pipe(process.stdout);
+      child.stderr.pipe(process.stderr);
+    } else {
+      child.stderr.on('data', (data) => {
+        stderr += data.toString();
+      });
+      child.stdout.on('data', (data) => {
+        stderr += data.toString();
+      });
+    }
+
+    child.on('exit', (code) => {
+      resolve();
+      handleExit(code, stderr, errorCallback);
+    });
+  });
+}
+
+async function tscfy(options = {}) {
   const { watch = false, silent = false, errorCallback } = options;
   const tsConfigFile = 'tsconfig.json';
 
-  if (!fs.existsSync(tsConfigFile)) {
+  if (!(await fs.pathExists(tsConfigFile))) {
     if (!silent) {
       console.log(`No ${tsConfigFile}`);
     }
     return;
   }
 
-  const content = fs.readFileSync(tsConfigFile);
-  const tsConfig = JSON.parse(content);
+  const tsConfig = await fs.readJSON(tsConfigFile);
 
-  if (tsConfig && tsConfig.lerna && tsConfig.lerna.disabled === true) {
-    if (!silent) {
-      console.log('Lerna disabled');
-    }
-    return;
+  if (!(tsConfig && tsConfig.lerna && tsConfig.lerna.disabled === true)) {
+    await run({ watch, silent, errorCallback });
   }
 
-  const command = getCommand(watch);
-  const { code, stderr } = shell.exec(command, { silent });
-
-  handleExit(code, stderr, errorCallback);
+  if (!watch) {
+    await execa.command('yarn run -T downlevel-dts dist/ts3.9 dist/ts3.4');
+  }
 }
 
 module.exports = {

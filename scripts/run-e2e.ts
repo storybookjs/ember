@@ -1,8 +1,9 @@
 import path from 'path';
 import { ensureDir, pathExists, remove } from 'fs-extra';
 import prompts from 'prompts';
-
 import program from 'commander';
+import { readConfig, writeConfig } from '@storybook/csf-tools';
+import { getInterpretedFile } from '@storybook/core-common';
 import { serve } from './utils/serve';
 // @ts-ignore
 import { filterDataForCurrentCircleCINode } from './utils/concurrency';
@@ -16,6 +17,7 @@ const logger = console;
 export interface Options {
   /** CLI repro template to use  */
   name: string;
+  mainOverrides?: Parameters['mainOverrides'];
   /** Pre-build hook */
   ensureDir?: boolean;
   cwd?: string;
@@ -25,9 +27,7 @@ const rootDir = path.join(__dirname, '..');
 const siblingDir = path.join(__dirname, '..', '..', 'storybook-e2e-testing');
 
 const prepareDirectory = async ({ cwd }: Options): Promise<boolean> => {
-  const siblingExists = await pathExists(siblingDir);
-
-  if (!siblingExists) {
+  if (!(await pathExists(siblingDir))) {
     await ensureDir(siblingDir);
   }
 
@@ -38,10 +38,24 @@ const cleanDirectory = async ({ cwd }: Options): Promise<void> => {
   await remove(cwd);
 };
 
+const overrideMainConfig = async ({ cwd, mainOverrides }: Options) => {
+  logger.info(`📝 Overwriting main.js with the following configuration:`);
+  const configDir = path.join(cwd, '.storybook');
+  const mainConfigPath = getInterpretedFile(path.resolve(configDir, 'main'));
+  logger.debug(mainOverrides);
+  const mainConfig = await readConfig(mainConfigPath);
+
+  Object.keys(mainOverrides).forEach((field) => {
+    mainConfig.setFieldValue([field], mainOverrides[field]);
+  });
+
+  await writeConfig(mainConfig);
+};
+
 const buildStorybook = async ({ cwd }: Options) => {
   await exec(
     `yarn build-storybook --quiet`,
-    { cwd, silent: false },
+    { cwd },
     { startMessage: `👷 Building Storybook`, errorMessage: `🚨 Storybook build failed` }
   );
 };
@@ -65,6 +79,18 @@ const runCypress = async (location: string, name: string) => {
   );
 };
 
+const runStorybookTestRunner = async (options: Options) => {
+  const viewMode = runTestsInDocsMode ? 'docs' : 'story';
+  await exec(
+    `VIEW_MODE=${viewMode} yarn test-storybook --url http://localhost:4000`,
+    { cwd: options.cwd },
+    {
+      startMessage: `🤖 Running Storybook tests`,
+      errorMessage: `🚨 Storybook tests fails`,
+    }
+  );
+};
+
 const runTests = async ({ name, ...rest }: Parameters) => {
   const options = {
     name,
@@ -81,7 +107,7 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   if (!(await prepareDirectory(options))) {
     // Call repro cli
     const sbCLICommand = useLocalSbCli
-      ? 'node ../storybook/lib/cli/bin repro'
+      ? `node ${__dirname}/../lib/cli/bin/index.js repro`
       : // Need to use npx because at this time we don't have Yarn 2 installed
         'npx -p @storybook/cli sb repro';
 
@@ -98,14 +124,19 @@ const runTests = async ({ name, ...rest }: Parameters) => {
     }
 
     const command = `${sbCLICommand} ${commandArgs.join(' ')}`;
+
     await exec(
       command,
-      { cwd: siblingDir, silent: false },
+      { cwd: siblingDir },
       {
         startMessage: `👷 Bootstrapping ${options.framework} project`,
         errorMessage: `🚨 Unable to bootstrap project`,
       }
     );
+
+    if (options.mainOverrides) {
+      await overrideMainConfig(options);
+    }
 
     await buildStorybook(options);
     logger.log();
@@ -115,7 +146,12 @@ const runTests = async ({ name, ...rest }: Parameters) => {
   logger.log();
 
   try {
-    await runCypress('http://localhost:4000', name);
+    if (shouldUseTestRunner) {
+      await runStorybookTestRunner(options);
+    } else {
+      await runCypress('http://localhost:4000', name);
+    }
+
     logger.info(`🎉 Storybook is working great with ${name}!`);
   } catch (e) {
     logger.info(`🥺 Storybook has some issues with ${name}!`);
@@ -190,6 +226,8 @@ program
     (value, previous) => previous.concat([value]),
     []
   )
+  .option('--test-runner', 'Run Storybook test runner instead of cypress', false)
+  .option('--docs-mode', 'Run Storybook test runner in docs mode', false)
   .option('--all', `run e2e tests for every framework`, false);
 program.parse(process.argv);
 
@@ -200,12 +238,16 @@ type ProgramOptions = {
   clean?: boolean;
   args?: string[];
   skip?: string[];
+  testRunner?: boolean;
+  docsMode?: boolean;
 };
 
 const {
   all: shouldRunAllFrameworks,
   args: frameworkArgs,
   skip: frameworksToSkip,
+  testRunner: shouldUseTestRunner,
+  docsMode: runTestsInDocsMode,
 }: ProgramOptions = program;
 
 let { pnp, useLocalSbCli, clean: startWithCleanSlate }: ProgramOptions = program;

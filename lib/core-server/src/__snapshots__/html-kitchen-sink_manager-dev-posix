@@ -5,15 +5,15 @@ Object {
   "entry": Array [
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/manager/index.js",
-    "ROOT/addons/docs/dist/esm/register.js",
-    "ROOT/addons/a11y/dist/esm/register.js",
-    "ROOT/addons/actions/dist/esm/register.js",
-    "ROOT/addons/backgrounds/dist/esm/register.js",
-    "ROOT/addons/controls/dist/esm/register.js",
-    "ROOT/addons/jest/register.js",
-    "ROOT/addons/links/dist/esm/register.js",
-    "ROOT/addons/storysource/dist/esm/register.js",
-    "ROOT/addons/viewport/dist/esm/register.js",
+    "ROOT/addons/docs/manager.js",
+    "ROOT/addons/a11y/manager.js",
+    "ROOT/addons/actions/manager.js",
+    "ROOT/addons/backgrounds/manager.js",
+    "ROOT/addons/controls/manager.js",
+    "ROOT/addons/jest/manager.js",
+    "ROOT/addons/links/manager.js",
+    "ROOT/addons/storysource/dist/esm/manager.js",
+    "ROOT/addons/viewport/manager.js",
   ],
   "keys": Array [
     "name",
@@ -59,6 +59,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -131,6 +137,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },

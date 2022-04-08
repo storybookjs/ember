@@ -16,6 +16,7 @@ import { PreviewProps } from './utils/types';
 import { copyTool } from './tools/copy';
 import { ejectTool } from './tools/eject';
 import { menuTool } from './tools/menu';
+import { addonsTool } from './tools/addons';
 
 const TOOLBAR_EXCLUSION_PARAM = 'toolbarExclude';
 
@@ -57,15 +58,13 @@ export const fullScreenTool: Addon = {
     <Consumer filter={fullScreenMapper}>
       {({ toggle, value, shortcut, hasPanel, singleStory }) =>
         (!singleStory || (singleStory && hasPanel)) && (
-          <S.DesktopOnly>
-            <IconButton
-              key="full"
-              onClick={toggle as any}
-              title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
-            >
-              <Icons icon={value ? 'close' : 'expand'} />
-            </IconButton>
-          </S.DesktopOnly>
+          <IconButton
+            key="full"
+            onClick={toggle as any}
+            title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
+          >
+            <Icons icon={value ? 'close' : 'expand'} />
+          </IconButton>
         )
       }
     </Consumer>
@@ -110,7 +109,7 @@ export const createTabsTool = (tabs: Addon[]): Addon => ({
 });
 
 export const defaultTools: Addon[] = [zoomTool];
-export const defaultToolsExtra: Addon[] = [fullScreenTool, ejectTool, copyTool];
+export const defaultToolsExtra: Addon[] = [addonsTool, fullScreenTool, ejectTool, copyTool];
 
 const useTools = (
   getElements: API['getElements'],

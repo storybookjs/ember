@@ -1,8 +1,9 @@
 /* eslint-disable storybook/use-storybook-testing-library */
 // @TODO: use addon-interactions and remove the rule disable above
 import React from 'react';
-import { ComponentStory, ComponentMeta, ComponentStoryObj } from '@storybook/react';
-import { ThemeProvider, useTheme, Theme } from '@storybook/theming';
+import type { ComponentStory, ComponentMeta, ComponentStoryObj } from '@storybook/react';
+import { ThemeProvider, useTheme } from '@storybook/theming';
+import type { Theme } from '@storybook/theming';
 import { action } from '@storybook/addon-actions';
 import { screen } from '@testing-library/dom';
 
@@ -40,6 +41,7 @@ export const Standard: Story = () => {
           title: undefined,
           url: undefined,
           image: undefined,
+          target: undefined,
         },
       }}
     >
@@ -58,6 +60,7 @@ export const StandardNoLink: Story = () => {
           title: undefined,
           url: null,
           image: undefined,
+          target: undefined,
         },
       }}
     >
@@ -110,6 +113,24 @@ export const LongText: Story = () => {
         ...theme,
         brand: {
           title: 'My title is way to long to actually fit',
+          url: null,
+          image: null,
+        },
+      }}
+    >
+      <Heading menu={menuItems} />
+    </ThemeProvider>
+  );
+};
+
+export const CustomTitle: Story = () => {
+  const theme = useTheme() as Theme;
+  return (
+    <ThemeProvider
+      theme={{
+        ...theme,
+        brand: {
+          title: '<span style="color:red">My custom title</span>',
           url: null,
           image: null,
         },

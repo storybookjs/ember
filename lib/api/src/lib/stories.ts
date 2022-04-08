@@ -1,10 +1,11 @@
+import memoize from 'memoizerific';
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
 import mapValues from 'lodash/mapValues';
 import countBy from 'lodash/countBy';
 import global from 'global';
-import {
+import type {
   StoryId,
   ComponentTitle,
   StoryKind,
@@ -12,13 +13,13 @@ import {
   Args,
   ArgTypes,
   Parameters,
-  sanitize,
 } from '@storybook/csf';
+import { sanitize } from '@storybook/csf';
 
 import { combineParameters } from '../index';
 import merge from './merge';
-import { Provider } from '../modules/provider';
-import { ViewMode } from '../modules/addons';
+import type { Provider } from '../modules/provider';
+import type { ViewMode } from '../modules/addons';
 
 const { FEATURES } = global;
 
@@ -327,3 +328,17 @@ export function isStory(item: Item): item is Story {
   }
   return false;
 }
+
+export const getComponentLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.entries(hash).reduce((acc, i) => {
+    const value = i[1];
+    if (value.isComponent) {
+      acc.push([...i[1].children]);
+    }
+    return acc;
+  }, [] as StoryId[][]);
+});
+
+export const getStoriesLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.keys(hash).filter((k) => !(hash[k].children || Array.isArray(hash[k])));
+});

@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
-import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { start } from '@storybook/core';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
-import { IStorybookSection } from './types';
-import { VueFramework } from './types-6-0';
-import { renderToDOM } from './render';
+import type { IStorybookSection } from './types';
+import type { VueFramework } from './types-6-0';
+import { renderToDOM, render } from './render';
 import { decorateStory } from './decorateStory';
 
 const framework = 'vue';
@@ -20,7 +20,7 @@ interface ClientApi extends ClientStoryApi<VueFramework['storyResult']> {
   load: (...args: any[]) => void;
 }
 
-const api = start(renderToDOM, { decorateStory });
+const api = start(renderToDOM, { decorateStory, render });
 
 export const storiesOf: ClientApi['storiesOf'] = (kind, m) => {
   return (api.clientApi.storiesOf(kind, m) as ReturnType<ClientApi['storiesOf']>).addParameters({

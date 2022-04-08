@@ -12,7 +12,7 @@ ArgTypes are a first-class feature in Storybook for specifying the behaviour of 
 
 You can also use argTypes to “annotate” args with information used by addons that make use of those args. For instance, to instruct the controls addon to render a color, you could choose a string-valued arg.
 
-The most concrete realization of argTypes is the [Args Table](../writing-docs/doc-blocks.md#argstable) doc block. Each row in the table corresponds to a single argType and the current value of that arg.
+The most concrete realization of argTypes is the [Args Table](../writing-docs/doc-block-argstable.md) doc block. Each row in the table corresponds to a single argType and the current value of that arg.
 
 ![Storybook inferring automatically the argType](./argstable.png)
 
@@ -87,6 +87,24 @@ In particular, this would render a row with a modified description, a type displ
 
 <div class="aside">
 💡 As with other Storybook properties (e.g., args, decorators), you can also override ArgTypes per story basis.
+</div>
+
+#### Global `argTypes`
+
+You can also define arg types at the global level; they will apply to every component's stories unless you overwrite them. To do so, export the `argTypes` key in your `preview.js`:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/button-story-project-args-theme.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+💡 If you define a global arg type for a story that does not have that arg (e.g. if there is no corresponding global arg definition), then the arg type will have no effect.
 </div>
 
 #### Using argTypes in addons

@@ -1,6 +1,6 @@
 {
   "name": "@storybook/components",
-  "version": "6.5.0-alpha.19",
+  "version": "6.5.0-alpha.59",
   "description": "Core Storybook Components",
   "keywords": [
     "storybook"
@@ -37,46 +37,49 @@
     "*.d.ts"
   ],
   "scripts": {
-    "prepare": "node ../../scripts/prepare.js"
+    "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
+    "@storybook/client-logger": "6.5.0-alpha.59",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/theming": "6.5.0-alpha.59",
+    "core-js": "^3.8.2",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
     "@popperjs/core": "^2.6.0",
-    "@storybook/client-logger": "6.5.0-alpha.19",
-    "@storybook/csf": "0.0.2--canary.87bc651.0",
-    "@storybook/theming": "6.5.0-alpha.19",
     "@types/color-convert": "^2.0.0",
     "@types/overlayscrollbars": "^1.12.0",
     "@types/react-syntax-highlighter": "11.0.5",
     "color-convert": "^2.0.1",
-    "core-js": "^3.8.2",
+    "css": "^3.0.0",
     "fast-deep-equal": "^3.1.3",
     "global": "^4.4.0",
+    "jest": "^26.6.3",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.1.3",
     "memoizerific": "^1.11.3",
     "overlayscrollbars": "^1.13.1",
-    "polished": "^4.0.5",
+    "polished": "^4.2.2",
+    "prettier": ">=2.2.1 <=2.3.0",
     "prop-types": "^15.7.2",
     "qs": "^6.10.0",
     "react-colorful": "^5.1.2",
     "react-popper-tooltip": "^3.1.1",
     "react-syntax-highlighter": "^15.4.5",
     "react-textarea-autosize": "^8.3.0",
-    "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0",
+    "ts-node": "^10.4.0",
     "util-deprecate": "^1.0.2"
   },
-  "devDependencies": {
-    "css": "^3.0.0",
-    "jest": "^26.6.3"
-  },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "ce3592fc323ede3d33939b532ff7400cfdc1efa1",
+  "bundlerEntrypoint": "./src/index.ts",
+  "gitHead": "5c572a448ca6dee4e486944b7e1e3cb17b09d9a0",
   "sbmodern": "dist/modern/index.js"
 }

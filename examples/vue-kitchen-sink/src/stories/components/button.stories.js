@@ -27,3 +27,11 @@ Square.args = {
   color: '#00f',
   label: 'A Button with square edges',
 };
+
+export const WithDefaultRender = {
+  args: {
+    rounded: true,
+    color: '#fba',
+    label: 'Button with default render',
+  },
+};

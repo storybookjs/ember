@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { parsePath, createPath } from 'history';
-import { Provider as ManagerProvider, Combo, Consumer } from '@storybook/api';
+import type { Combo } from '@storybook/api';
+import { Provider as ManagerProvider, Consumer } from '@storybook/api';
 import { Location, BaseLocationProvider } from '@storybook/router';
 
 import { ThemeProvider, ensure as ensureTheme, themes } from '@storybook/theming';
 
-import { DecoratorFn } from '@storybook/react';
+import type { DecoratorFn } from '@storybook/react';
 import { Preview } from './preview';
 
 import { PrettyFakeProvider } from '../../FakeProvider';

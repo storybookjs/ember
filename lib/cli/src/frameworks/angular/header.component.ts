@@ -25,25 +25,36 @@ import { User } from './User';
         <h1>Acme</h1>
       </div>
       <div>
-        <storybook-button
-          *ngIf="user"
-          size="small"
-          (onClick)="onLogout.emit($event)"
-          label="Log out"
-        ></storybook-button>
-        <storybook-button
-          *ngIf="!user"
-          size="small"
-          (onClick)="onLogin.emit($event)"
-          label="Log in"
-        ></storybook-button>
-        <storybook-button
-          *ngIf="!user"
-          primary
-          size="small"
-          (onClick)="onCreateAccount.emit($event)"
-          label="Sign up"
-        ></storybook-button>
+        <div *ngIf="user">
+          <span class="welcome">
+            Welcome, <b>{{ user.name }}</b
+            >!
+          </span>
+          <storybook-button
+            *ngIf="user"
+            size="small"
+            (onClick)="onLogout.emit($event)"
+            label="Log out"
+          ></storybook-button>
+        </div>
+        <div *ngIf="!user">
+          <storybook-button
+            *ngIf="!user"
+            size="small"
+            class="margin-left"
+            (onClick)="onLogin.emit($event)"
+            label="Log in"
+          ></storybook-button>
+          <storybook-button
+            *ngIf="!user"
+            primary
+            size="small"
+            primary="true"
+            class="margin-left"
+            (onClick)="onCreateAccount.emit($event)"
+            label="Sign up"
+          ></storybook-button>
+        </div>
       </div>
     </div>
   </header>`,

@@ -5,6 +5,7 @@ import React, {
   FunctionComponent,
   memo,
   MouseEvent,
+  ReactElement,
   ReactNode,
 } from 'react';
 import { styled } from '@storybook/theming';
@@ -121,7 +122,7 @@ export const panelProps = {};
 
 const childrenToList = (children: any, selected: string) =>
   Children.toArray(children).map(
-    ({ props: { title, id, color, children: childrenOfChild } }: React.ReactElement, index) => {
+    ({ props: { title, id, color, children: childrenOfChild } }: ReactElement, index) => {
       const content = Array.isArray(childrenOfChild) ? childrenOfChild[0] : childrenOfChild;
       return {
         active: selected ? id === selected : index === 0,

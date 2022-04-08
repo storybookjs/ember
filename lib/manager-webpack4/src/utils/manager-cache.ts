@@ -1,4 +1,4 @@
-import { Options } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 import { logger } from '@storybook/node-logger';
 import fs from 'fs-extra';
 import path from 'path';

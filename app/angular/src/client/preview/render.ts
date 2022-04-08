@@ -1,8 +1,8 @@
-import { RenderContext } from '@storybook/store';
-import { ArgsStoryFn } from '@storybook/csf';
+import type { RenderContext } from '@storybook/store';
+import type { ArgsStoryFn } from '@storybook/csf';
 
 import { renderNgApp } from './angular/helpers';
-import { AngularFramework } from './types-6-0';
+import type { AngularFramework } from './types-6-0';
 
 import { RendererFactory } from './angular-beta/RendererFactory';
 

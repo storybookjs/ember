@@ -70,6 +70,9 @@
     "@storybook/angular": {
       "implicitDependencies": []
     },
+    "@storybook/docs-tools": {
+      "implicitDependencies": []
+    },
     "@storybook/ember": {
       "implicitDependencies": []
     },
@@ -136,6 +139,10 @@
     "@storybook/example-react-ts-webpack4": {
       "implicitDependencies": []
     },
+    "@storybook/external-docs": {
+      "implicitDependencies": []
+    },
+
     "server-kitchen-sink": {
       "implicitDependencies": []
     },

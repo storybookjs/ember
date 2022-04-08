@@ -6,17 +6,14 @@ Object {
     "ROOT/lib/core-client/dist/esm/globals/polyfills.js",
     "ROOT/lib/core-client/dist/esm/globals/globals.js",
     "ROOT/storybook-init-framework-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/web-components/config.js-generated-config-entry.js",
     "ROOT/app/web-components/dist/esm/client/preview/config-generated-config-entry.js",
-    "ROOT/addons/a11y/dist/esm/a11yRunner.js-generated-config-entry.js",
-    "ROOT/addons/a11y/dist/esm/a11yHighlight.js-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
-    "ROOT/addons/interactions/dist/esm/preset/argsEnhancers.js-generated-config-entry.js",
-    "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-config-entry.js",
+    "ROOT/app/web-components/dist/esm/client/docs/config-generated-config-entry.js",
+    "ROOT/addons/docs/preview.js-generated-config-entry.js",
+    "ROOT/addons/a11y/preview.js-generated-config-entry.js",
+    "ROOT/addons/actions/preview.js-generated-config-entry.js",
+    "ROOT/addons/backgrounds/preview.js-generated-config-entry.js",
+    "ROOT/addons/interactions/preview.js-generated-config-entry.js",
+    "ROOT/addons/links/preview.js-generated-config-entry.js",
     "ROOT/examples/web-components-kitchen-sink/.storybook/preview.js-generated-config-entry.js",
     "ROOT/generated-stories-entry.js",
   ],
@@ -59,6 +56,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -129,6 +132,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -271,6 +280,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -324,16 +339,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
-            "options": Object {
-              "compilers": Array [
-                [Function],
-              ],
-              "remarkPlugins": Array [
-                [Function],
-                [Function],
-              ],
-            },
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
           },
         ],
       },
@@ -363,6 +369,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -416,12 +428,13 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
             "options": Object {
               "remarkPlugins": Array [
                 [Function],
                 [Function],
               ],
+              "skipCsf": true,
             },
           },
         ],

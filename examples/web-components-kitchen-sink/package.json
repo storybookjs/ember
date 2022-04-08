@@ -1,6 +1,6 @@
 {
   "name": "web-components-kitchen-sink",
-  "version": "6.5.0-alpha.19",
+  "version": "6.5.0-alpha.59",
   "private": true,
   "description": "",
   "keywords": [],
@@ -9,8 +9,8 @@
   "main": "index.js",
   "scripts": {
     "build-storybook": "build-storybook",
-    "storybook": "start-storybook -p 9006 --no-manager-cache",
-    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\""
+    "generate-custom-elements-manifest": "yarn custom-elements-manifest analyze --litelement --dev --exclude \"./**/*.stories.ts\" --exclude \"./storybook-static\"",
+    "storybook": "start-storybook -p 9006 --no-manager-cache"
   },
   "resolutions": {
     "@storybook/addon-a11y": "portal:../../addons/a11y",
@@ -39,7 +39,9 @@
     "@storybook/core-common": "portal:../../lib/core-common",
     "@storybook/core-events": "portal:../../lib/core-events",
     "@storybook/core-server": "portal:../../lib/core-server",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
     "@storybook/csf-tools": "portal:../../lib/csf-tools",
+    "@storybook/docs-tools": "portal:../../lib/docs-tools",
     "@storybook/jest": "^0.0.5",
     "@storybook/manager-webpack4": "portal:../../lib/manager-webpack4",
     "@storybook/node-logger": "portal:../../lib/node-logger",

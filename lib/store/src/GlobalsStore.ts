@@ -1,8 +1,9 @@
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
-import { Globals, GlobalTypes } from '@storybook/csf';
+import type { Globals, GlobalTypes } from '@storybook/csf';
 
 import { deepDiff, DEEPLY_EQUAL } from './args';
+import { getValuesFromArgTypes } from './csf/getValuesFromArgTypes';
 
 const setUndeclaredWarning = deprecate(
   () => {},
@@ -24,10 +25,7 @@ export class GlobalsStore {
 
     this.allowedGlobalNames = new Set([...Object.keys(globals), ...Object.keys(globalTypes)]);
 
-    const defaultGlobals = Object.entries(globalTypes).reduce((acc, [key, { defaultValue }]) => {
-      if (defaultValue) acc[key] = defaultValue;
-      return acc;
-    }, {} as Globals);
+    const defaultGlobals: Globals = getValuesFromArgTypes(globalTypes);
     this.initialGlobals = { ...defaultGlobals, ...globals };
 
     this.globals = this.initialGlobals;

@@ -7,15 +7,15 @@ import {
   SortType,
   TabbedArgsTable,
 } from '@storybook/components';
+import { ArgTypesExtractor } from '@storybook/docs-tools';
 import { addons } from '@storybook/addons';
 import { filterArgTypes, PropDescriptor } from '@storybook/store';
 import Events from '@storybook/core-events';
-import { StrictArgTypes, Args } from '@storybook/csf';
+import { StrictArgTypes, Args, Globals } from '@storybook/csf';
 
 import { DocsContext, DocsContextProps } from './DocsContext';
 import { Component, CURRENT_SELECTION, PRIMARY_STORY } from './types';
 import { getComponentName } from './utils';
-import { ArgTypesExtractor } from '../lib/docgen/types';
 import { lookupStoryId } from './Story';
 import { useStory } from './useStory';
 
@@ -42,18 +42,20 @@ type StoryProps = BaseProps & {
 
 type ArgsTableProps = BaseProps | OfProps | ComponentsProps | StoryProps;
 
+const getContext = (storyId: string, context: DocsContextProps) => {
+  const story = context.storyById(storyId);
+  if (!story) {
+    throw new Error(`Unknown story: ${storyId}`);
+  }
+  return context.getStoryContext(story);
+};
+
 const useArgs = (
   storyId: string,
   context: DocsContextProps
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
   const channel = addons.getChannel();
-
-  const story = context.storyById(storyId);
-  if (!story) {
-    throw new Error(`Unknown story: ${storyId}`);
-  }
-
-  const storyContext = context.getStoryContext(story);
+  const storyContext = getContext(storyId, context);
 
   const [args, setArgs] = useState(storyContext.args);
   useEffect(() => {
@@ -74,6 +76,22 @@ const useArgs = (
     [storyId]
   );
   return [args, updateArgs, resetArgs];
+};
+
+const useGlobals = (storyId: string, context: DocsContextProps): [Globals] => {
+  const channel = addons.getChannel();
+  const storyContext = getContext(storyId, context);
+  const [globals, setGlobals] = useState(storyContext.globals);
+
+  useEffect(() => {
+    const cb = (changed: { globals: Globals }) => {
+      setGlobals(changed.globals);
+    };
+    channel.on(Events.GLOBALS_UPDATED, cb);
+    return () => channel.off(Events.GLOBALS_UPDATED, cb);
+  }, []);
+
+  return [globals];
 };
 
 export const extractComponentArgTypes = (
@@ -162,13 +180,14 @@ export const StoryTable: FC<
     const story = useStory(storyId, context);
     // eslint-disable-next-line prefer-const
     let [args, updateArgs, resetArgs] = useArgs(storyId, context);
+    const [globals] = useGlobals(storyId, context);
     if (!story) return <PureArgsTable isLoading updateArgs={updateArgs} resetArgs={resetArgs} />;
 
     const argTypes = filterArgTypes(story.argTypes, include, exclude);
 
     const mainLabel = getComponentName(component) || 'Story';
 
-    let tabs = { [mainLabel]: { rows: argTypes, args, updateArgs, resetArgs } } as Record<
+    let tabs = { [mainLabel]: { rows: argTypes, args, globals, updateArgs, resetArgs } } as Record<
       string,
       PureArgsTableProps
     >;

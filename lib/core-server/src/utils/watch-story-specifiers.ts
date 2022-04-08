@@ -4,8 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'globby';
 
-import { NormalizedStoriesSpecifier } from '@storybook/core-common';
-import { Path } from '@storybook/store';
+import type { NormalizedStoriesSpecifier } from '@storybook/core-common';
+import type { Path } from '@storybook/store';
 
 const isDirectory = (directory: Path) => {
   try {

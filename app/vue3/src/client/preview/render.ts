@@ -1,7 +1,7 @@
 import dedent from 'ts-dedent';
 import { createApp, h, shallowRef, ComponentPublicInstance } from 'vue';
-import { RenderContext } from '@storybook/store';
-import { ArgsStoryFn } from '@storybook/csf';
+import type { RenderContext } from '@storybook/store';
+import type { ArgsStoryFn } from '@storybook/csf';
 
 import { StoryFnVueReturnType } from './types';
 import { VueFramework } from './types-6-0';
@@ -14,7 +14,8 @@ export const render: ArgsStoryFn<VueFramework> = (props, context) => {
     );
   }
 
-  return h(Component, props);
+  // TODO remove this hack
+  return h(Component as Parameters<typeof h>[0], props);
 };
 
 export const activeStoryComponent = shallowRef<StoryFnVueReturnType | null>(null);

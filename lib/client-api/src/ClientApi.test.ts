@@ -1,4 +1,4 @@
-import addons, { mockChannel } from '@storybook/addons';
+import { addons, mockChannel } from '@storybook/addons';
 import { ClientApi } from './ClientApi';
 
 beforeEach(() => {

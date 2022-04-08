@@ -18,13 +18,12 @@ import {
   es6Transpiler,
   handlebars,
   interpolate,
-  Options,
   toImportFn,
   normalizeStories,
   loadPreviewOrConfigFile,
   readTemplate,
-  CoreConfig,
 } from '@storybook/core-common';
+import type { Options, CoreConfig } from '@storybook/core-common';
 import { createBabelLoader } from './babel-loader-preview';
 
 import { useBaseTsSupport } from './useBaseTsSupport';
@@ -101,7 +100,11 @@ export default async (options: Options & Record<string, any>): Promise<Configura
 
     const configEntryPath = path.resolve(path.join(workingDir, 'storybook-config-entry.js'));
     virtualModuleMapping[configEntryPath] = handlebars(
-      await readTemplate(path.join(__dirname, 'virtualModuleModernEntry.js.handlebars')),
+      await readTemplate(
+        require.resolve(
+          '@storybook/builder-webpack4/templates/virtualModuleModernEntry.js.handlebars'
+        )
+      ),
       {
         storiesFilename,
         configs,

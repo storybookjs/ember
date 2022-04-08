@@ -1,4 +1,4 @@
-import { StoryContext } from '@storybook/addons';
+import type { StoryContext } from '@storybook/addons';
 import { inferActionsFromArgTypesRegex, addActionsFromArgTypes } from './addArgsHelpers';
 
 describe('actions parameter enhancers', () => {
@@ -38,11 +38,20 @@ describe('actions parameter enhancers', () => {
 
     it('should override pre-existing args, if undefined', () => {
       const args = inferActionsFromArgTypesRegex({
-        initialArgs: { onClick: undefined },
+        initialArgs: {},
         argTypes,
         parameters,
       } as unknown as StoryContext);
       expect(args).toEqual({ onClick: expect.any(Function), onFocus: expect.any(Function) });
+    });
+
+    it('should NOT override pre-existing args, if set undefined on purpose', () => {
+      const args = inferActionsFromArgTypesRegex({
+        initialArgs: { onClick: undefined },
+        argTypes,
+        parameters,
+      } as unknown as StoryContext);
+      expect(args).toEqual({ onClick: undefined, onFocus: expect.any(Function) });
     });
 
     it('should do nothing if actions are disabled', () => {
@@ -100,10 +109,20 @@ describe('actions parameter enhancers', () => {
       expect(
         addActionsFromArgTypes({
           argTypes: { onClick: { action: 'clicked!' } },
-          initialArgs: { onClick: undefined },
+          initialArgs: {},
           parameters: {},
         } as unknown as StoryContext)
       ).toEqual({ onClick: expect.any(Function) });
+    });
+
+    it('should NOT override pre-existing args, if set undefined on purpose', () => {
+      expect(
+        addActionsFromArgTypes({
+          argTypes: { onClick: { action: 'clicked!' } },
+          initialArgs: { onClick: undefined },
+          parameters: {},
+        } as unknown as StoryContext)
+      ).toEqual({ onClick: undefined });
     });
 
     it('should do nothing if actions are disabled', () => {

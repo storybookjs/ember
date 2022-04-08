@@ -1,1 +1,1 @@
-module.exports = require('@storybook/csf-tools/mdx').createCompiler;
+module.exports = require('@storybook/mdx1-csf').createCompiler;

@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom';
 import merge from 'lodash/merge';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
-import addons, { mockChannel as createMockChannel } from '@storybook/addons';
-import { ModuleImportFn } from '@storybook/store';
-import { AnyFramework } from '@storybook/csf';
+import { addons, mockChannel as createMockChannel } from '@storybook/addons';
+import type { AnyFramework } from '@storybook/csf';
+import type { ModuleImportFn, WebProjectAnnotations } from '@storybook/store';
 
 import { PreviewWeb } from './PreviewWeb';
 import {
@@ -22,7 +22,6 @@ import {
   waitForQuiescence,
   waitForRenderPhase,
 } from './PreviewWeb.mockdata';
-import { WebProjectAnnotations } from './types';
 
 jest.mock('./WebView');
 const { history, document } = global;
@@ -79,6 +78,9 @@ async function createAndRenderPreview({
   getProjectAnnotations?: () => WebProjectAnnotations<AnyFramework>;
 } = {}) {
   const preview = new PreviewWeb();
+  (
+    preview.view.prepareForDocs as jest.MockedFunction<typeof preview.view.prepareForDocs>
+  ).mockReturnValue('docs-element' as any);
   await preview.initialize({
     importFn: inputImportFn,
     getProjectAnnotations: inputGetProjectAnnotations,
@@ -468,7 +470,7 @@ describe('PreviewWeb', () => {
           expect(preview.view.showErrorDisplay).toHaveBeenCalled();
           expect((preview.view.showErrorDisplay as jest.Mock).mock.calls[0][0])
             .toMatchInlineSnapshot(`
-            [Error: Expected your framework's preset to export a \\\`renderToDOM\\\` field.
+            [Error: Expected your framework's preset to export a \`renderToDOM\` field.
 
             Perhaps it needs to be upgraded for Storybook 6.4?
 
@@ -595,7 +597,7 @@ describe('PreviewWeb', () => {
               }),
             }),
           }),
-          undefined,
+          'docs-element',
           expect.any(Function)
         );
       });
@@ -617,6 +619,7 @@ describe('PreviewWeb', () => {
 
       emitter.emit(Events.UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
+      await waitForEvents([Events.GLOBALS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.GLOBALS_UPDATED, {
         globals: { a: 'b', foo: 'bar' },
         initialGlobals: { a: 'b' },
@@ -688,6 +691,7 @@ describe('PreviewWeb', () => {
         updatedArgs: { new: 'arg' },
       });
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a', new: 'arg' },
@@ -935,12 +939,13 @@ describe('PreviewWeb', () => {
       });
     });
 
-    describe('in docs mode', () => {
+    describe('in docs mode, old inline render', () => {
       it('re-renders the docs container', async () => {
         document.location.search = '?id=component-one--a&viewMode=docs';
 
         await createAndRenderPreview();
 
+        (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
         mockChannel.emit.mockClear();
         emitter.emit(Events.UPDATE_STORY_ARGS, {
           storyId: 'component-one--a',
@@ -948,8 +953,84 @@ describe('PreviewWeb', () => {
         });
         await waitForRender();
 
-        expect(ReactDOM.render).toHaveBeenCalledTimes(2);
+        expect(ReactDOM.render).toHaveBeenCalledTimes(1);
       });
+    });
+
+    describe('in docs mode, modern inline render', () => {
+      beforeEach(() => {
+        global.FEATURES.modernInlineRender = true;
+      });
+      afterEach(() => {
+        global.FEATURES.modernInlineRender = true;
+      });
+      it('does not re-render the docs container', async () => {
+        document.location.search = '?id=component-one--a&viewMode=docs';
+
+        await createAndRenderPreview();
+
+        (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
+        mockChannel.emit.mockClear();
+        emitter.emit(Events.UPDATE_STORY_ARGS, {
+          storyId: 'component-one--a',
+          updatedArgs: { new: 'arg' },
+        });
+        await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+        expect(ReactDOM.render).not.toHaveBeenCalled();
+      });
+
+      describe('when renderStoryToElement was called', () => {
+        it('re-renders the story', async () => {
+          document.location.search = '?id=component-one--a&viewMode=docs';
+
+          const preview = await createAndRenderPreview();
+          await waitForRender();
+
+          mockChannel.emit.mockClear();
+          const story = await preview.storyStore.loadStory({ storyId: 'component-one--a' });
+          preview.renderStoryToElement(story, 'story-element' as any);
+          await waitForRender();
+
+          expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              storyContext: expect.objectContaining({
+                args: { foo: 'a' },
+              }),
+            }),
+            'story-element'
+          );
+
+          (ReactDOM.render as jest.MockedFunction<typeof ReactDOM.render>).mockClear();
+          mockChannel.emit.mockClear();
+          emitter.emit(Events.UPDATE_STORY_ARGS, {
+            storyId: 'component-one--a',
+            updatedArgs: { new: 'arg' },
+          });
+          await waitForRender();
+
+          expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+            expect.objectContaining({
+              storyContext: expect.objectContaining({
+                args: { foo: 'a', new: 'arg' },
+              }),
+            }),
+            'story-element'
+          );
+        });
+      });
+    });
+  });
+
+  describe('onPreloadStories', () => {
+    it('loads stories', async () => {
+      document.location.search = '?id=component-one--a&viewMode=docs';
+      const preview = await createAndRenderPreview();
+      await waitForRender();
+
+      importFn.mockClear();
+      await preview.onPreloadStories(['component-two--c']);
+      expect(importFn).toHaveBeenCalledWith('./src/ComponentTwo.stories.js');
     });
   });
 
@@ -964,6 +1045,7 @@ describe('PreviewWeb', () => {
         updatedArgs: { foo: 'new' },
       });
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'new' },
@@ -992,6 +1074,7 @@ describe('PreviewWeb', () => {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
       });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
 
       mockChannel.emit.mockClear();
       emitter.emit(Events.RESET_STORY_ARGS, {
@@ -1012,6 +1095,7 @@ describe('PreviewWeb', () => {
         undefined // this is coming from view.prepareForStory, not super important
       );
 
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a', new: 'value' },
@@ -1026,6 +1110,7 @@ describe('PreviewWeb', () => {
         storyId: 'component-one--a',
         updatedArgs: { foo: 'new', new: 'value' },
       });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
 
       mockChannel.emit.mockClear();
       emitter.emit(Events.RESET_STORY_ARGS, {
@@ -1044,6 +1129,8 @@ describe('PreviewWeb', () => {
         }),
         undefined // this is coming from view.prepareForStory, not super important
       );
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a' },
@@ -1243,6 +1330,51 @@ describe('PreviewWeb', () => {
         // The renderToDOM would have been async so we need to wait a tick.
         await waitForQuiescence();
         expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
+      });
+
+      // For https://github.com/storybookjs/storybook/issues/17214
+      it('does NOT render a second time if preparing', async () => {
+        document.location.search = '?id=component-one--a';
+
+        const [gate, openGate] = createGate();
+        const [importedGate, openImportedGate] = createGate();
+        importFn
+          .mockImplementationOnce(async (...args) => {
+            await gate;
+            return importFn(...args);
+          })
+          .mockImplementationOnce(async (...args) => {
+            // The second time we `import()` we open the "imported" gate
+            openImportedGate();
+            await gate;
+            return importFn(...args);
+          });
+
+        const preview = new PreviewWeb();
+        // We can't wait for the initialize function, as it waits for `renderSelection()`
+        // which prepares, but it does emit `CURRENT_STORY_WAS_SET` right before that
+        preview.initialize({ importFn, getProjectAnnotations });
+        await waitForEvents([Events.CURRENT_STORY_WAS_SET]);
+
+        mockChannel.emit.mockClear();
+        projectAnnotations.renderToDOM.mockClear();
+        emitter.emit(Events.SET_CURRENT_STORY, {
+          storyId: 'component-one--a',
+          viewMode: 'story',
+        });
+        await importedGate;
+        // We are blocking import so this won't render yet
+        expect(projectAnnotations.renderToDOM).not.toHaveBeenCalled();
+
+        mockChannel.emit.mockClear();
+        openGate();
+        await waitForRender();
+
+        // We should only render *once*
+        expect(projectAnnotations.renderToDOM).toHaveBeenCalledTimes(1);
+
+        // We should not show an error either
+        expect(preview.view.showErrorDisplay).not.toHaveBeenCalled();
       });
     });
 
@@ -1766,7 +1898,7 @@ describe('PreviewWeb', () => {
               }),
             }),
           }),
-          undefined,
+          'docs-element',
           expect.any(Function)
         );
       });
@@ -2723,6 +2855,161 @@ describe('PreviewWeb', () => {
         Events.PREVIEW_KEYDOWN,
         expect.objectContaining({})
       );
+    });
+  });
+
+  describe('extract', () => {
+    // NOTE: if you are using storyStoreV6, and your `preview.js` throws, we do not currently
+    // detect it (as we do not wrap the import of `preview.js` in a `try/catch`). The net effect
+    // of that is that the `PreviewWeb`/`StoryStore` end up in an uninitalized state.
+    it('throws an error if the preview is uninitialized', async () => {
+      const preview = new PreviewWeb();
+      await expect(preview.extract()).rejects.toThrow(/Failed to initialize/);
+    });
+
+    it('throws an error if preview.js throws', async () => {
+      const err = new Error('meta error');
+      const preview = new PreviewWeb();
+      await expect(
+        preview.initialize({
+          importFn,
+          getProjectAnnotations: () => {
+            throw err;
+          },
+        })
+      ).rejects.toThrow(err);
+
+      await expect(preview.extract()).rejects.toThrow(err);
+    });
+
+    it('shows an error if the stories.json endpoint 500s', async () => {
+      const err = new Error('sort error');
+      mockFetchResult = { status: 500, text: async () => err.toString() };
+
+      const preview = new PreviewWeb();
+      await expect(preview.initialize({ importFn, getProjectAnnotations })).rejects.toThrow(
+        'sort error'
+      );
+
+      await expect(preview.extract()).rejects.toThrow('sort error');
+    });
+
+    it('waits for stories to be cached', async () => {
+      const [gate, openGate] = createGate();
+
+      const gatedImportFn = async (path) => {
+        await gate;
+        return importFn(path);
+      };
+
+      const preview = await createAndRenderPreview({ importFn: gatedImportFn });
+
+      let extracted = false;
+      preview.extract().then(() => {
+        extracted = true;
+      });
+
+      expect(extracted).toBe(false);
+
+      openGate();
+      await new Promise((r) => setTimeout(r, 0)); // Let the promise resolve
+      expect(extracted).toBe(true);
+
+      expect(await preview.extract()).toMatchInlineSnapshot(`
+        Object {
+          "component-one--a": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "a",
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--a",
+            "initialArgs": Object {
+              "foo": "a",
+            },
+            "kind": "Component One",
+            "name": "A",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "docs": Object {
+                "container": [MockFunction],
+              },
+              "fileName": "./src/ComponentOne.stories.js",
+            },
+            "story": "A",
+            "subcomponents": undefined,
+            "title": "Component One",
+          },
+          "component-one--b": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "b",
+            },
+            "component": undefined,
+            "componentId": "component-one",
+            "id": "component-one--b",
+            "initialArgs": Object {
+              "foo": "b",
+            },
+            "kind": "Component One",
+            "name": "B",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "docs": Object {
+                "container": [MockFunction],
+              },
+              "fileName": "./src/ComponentOne.stories.js",
+            },
+            "story": "B",
+            "subcomponents": undefined,
+            "title": "Component One",
+          },
+          "component-two--c": Object {
+            "argTypes": Object {
+              "foo": Object {
+                "name": "foo",
+                "type": Object {
+                  "name": "string",
+                },
+              },
+            },
+            "args": Object {
+              "foo": "c",
+            },
+            "component": undefined,
+            "componentId": "component-two",
+            "id": "component-two--c",
+            "initialArgs": Object {
+              "foo": "c",
+            },
+            "kind": "Component Two",
+            "name": "C",
+            "parameters": Object {
+              "__isArgsStory": false,
+              "fileName": "./src/ComponentTwo.stories.js",
+            },
+            "playFunction": undefined,
+            "story": "C",
+            "subcomponents": undefined,
+            "title": "Component Two",
+          },
+        }
+      `);
     });
   });
 });

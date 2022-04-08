@@ -2,9 +2,9 @@
 title: 'Interaction tests'
 ---
 
-As you build more complex UIs like pages, components become responsible for more than just rendering the UI. They fetch data and manage state. Interaction tests allow you to verify these functional aspects of UI.
+As you build more complex UIs like pages, components become responsible for more than just rendering the UI. They fetch data and manage state. Interaction tests allow you to verify these functional aspects of UIs.
 
-In a nutshell, you start by supplying the appropriate props for the initial state of a component. Then simulate user behavior such as clicks and form entries. Finally, test expectations to check whether the UI and component state update correctly.
+In a nutshell, you start by supplying the appropriate props for the initial state of a component. Then simulate user behavior such as clicks and form entries. Finally, check whether the UI and component state update correctly.
 
 ![Storybook interaction testing](./storybook-interaction-tests.gif)
 
@@ -12,7 +12,7 @@ In a nutshell, you start by supplying the appropriate props for the initial stat
 
 You can set up interaction testing in Storybook using the `play` function and [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/).
 
-- [`play`](../writing-stories/play-function.md) function is a convenient helper method to help test use cases that would otherwise require manual interaction from a user. They are small snippets of code that run after the story finishes rendering.
+- The [`play`](../writing-stories/play-function.md) function is a small snippet of code that runs after a story finishes rendering. You can use this to test user workflows.
 
 - [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) includes helper utilities and a playback interface that simulates user behavior in the browser. It’s powered Testing Library and includes convenient instrumentation for debugging.
 
@@ -64,16 +64,6 @@ Below is an abridged API for user-event. For more, check out the [official user-
 | `selectOptions`   | Selects the specified option, or options of a select element <br/>`userEvent.selectOptions(await within(canvasElement).getByRole('listbox'),['1','2']);` |
 | `type`            | Writes text inside inputs, or textareas <br/>`userEvent.type(await within(canvasElement).getByRole('my-input'),'Some text');`                            |
 | `unhover`         | Unhovers out of element <br/>`userEvent.unhover(await within(canvasElement).getByLabelText(/Example/i));`                                                |
-
-### Debugging
-
-The [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) addon includes a set of UI controls to allow you control over the test execution flow. At any time, you can pause, resume, rewind, and step through each interaction. Also, providing you with an easy-to-use debugger for errors.
-
-![Storybook addon interactions preview](./addon-interactions-preview.png)
-
-Open your `Interactions` panel and click on an individual step to jump to the exact state of the component when the interaction was triggered.
-
-![Storybook addon interactions click steps](./addon-interactions-individual-states.gif)
 
 ### Permalinks for reproductions
 

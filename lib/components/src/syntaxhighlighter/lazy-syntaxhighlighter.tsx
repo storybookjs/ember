@@ -1,9 +1,25 @@
-import React, { Suspense } from 'react';
+import React, { ComponentProps, Suspense, lazy } from 'react';
 
-const LazySyntaxHighlighter = React.lazy(() => import('./syntaxhighlighter'));
+const LazySyntaxHighlighter = lazy(() => import('./syntaxhighlighter'));
+const LazySyntaxHighlighterWithFormatter = lazy(async () => {
+  const [{ SyntaxHighlighter }, { formatter }] = await Promise.all([
+    import('./syntaxhighlighter'),
+    import('./formatter'),
+  ]);
 
-export const SyntaxHighlighter = (props: React.ComponentProps<typeof LazySyntaxHighlighter>) => (
+  return {
+    default: (props: ComponentProps<typeof LazySyntaxHighlighter>) => (
+      <SyntaxHighlighter {...props} formatter={formatter} />
+    ),
+  };
+});
+
+export const SyntaxHighlighter = (props: ComponentProps<typeof LazySyntaxHighlighter>) => (
   <Suspense fallback={<div />}>
-    <LazySyntaxHighlighter {...props} />
+    {props.format !== false ? (
+      <LazySyntaxHighlighterWithFormatter {...props} />
+    ) : (
+      <LazySyntaxHighlighter {...props} />
+    )}
   </Suspense>
 );

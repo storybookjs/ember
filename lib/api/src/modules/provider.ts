@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Channel } from '@storybook/channels';
-import { ThemeVars } from '@storybook/theming';
+import type { ThemeVars } from '@storybook/theming';
 
-import { API, State, ModuleFn, Root, Group, Story } from '../index';
-import { StoryMapper, Refs } from './refs';
-import { UIOptions } from './layout';
+import type { API, State, ModuleFn, Root, Group, Story } from '../index';
+import type { StoryMapper, Refs } from './refs';
+import type { UIOptions } from './layout';
 
 interface SidebarOptions {
   showRoots?: boolean;

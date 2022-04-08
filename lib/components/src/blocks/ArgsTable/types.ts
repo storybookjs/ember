@@ -1,3 +1,5 @@
+import type { Conditional } from '@storybook/csf';
+
 export interface JsDocParam {
   name: string;
   description?: string;
@@ -32,6 +34,7 @@ export interface ArgType {
   name?: string;
   description?: string;
   defaultValue?: any;
+  if?: Conditional;
   [key: string]: any;
 }
 
@@ -42,3 +45,5 @@ export interface ArgTypes {
 export interface Args {
   [key: string]: any;
 }
+
+export type Globals = { [name: string]: any };

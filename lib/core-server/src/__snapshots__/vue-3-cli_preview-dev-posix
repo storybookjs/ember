@@ -7,17 +7,15 @@ Object {
     "ROOT/lib/core-client/dist/esm/globals/globals.js",
     "NODE_MODULES/webpack-hot-middleware/client.js?reload=true&quiet=false&noInfo=undefined",
     "ROOT/storybook-init-framework-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/common/config.js-generated-config-entry.js",
-    "ROOT/addons/docs/dist/esm/frameworks/vue3/config.js-generated-config-entry.js",
     "ROOT/app/vue3/dist/esm/client/preview/config-generated-config-entry.js",
-    "ROOT/addons/links/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/actions/dist/esm/preset/addArgs.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/backgrounds/dist/esm/preset/addParameter.js-generated-config-entry.js",
-    "ROOT/addons/measure/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/outline/dist/esm/preset/addDecorator.js-generated-config-entry.js",
-    "ROOT/addons/interactions/dist/esm/preset/argsEnhancers.js-generated-config-entry.js",
+    "ROOT/app/vue3/dist/esm/client/docs/config-generated-config-entry.js",
+    "ROOT/addons/links/preview.js-generated-config-entry.js",
+    "ROOT/addons/docs/preview.js-generated-config-entry.js",
+    "ROOT/addons/actions/preview.js-generated-config-entry.js",
+    "ROOT/addons/backgrounds/preview.js-generated-config-entry.js",
+    "ROOT/addons/measure/preview.js-generated-config-entry.js",
+    "ROOT/addons/outline/preview.js-generated-config-entry.js",
+    "ROOT/addons/interactions/preview.js-generated-config-entry.js",
     "ROOT/examples/vue-3-cli/.storybook/preview.ts-generated-config-entry.js",
     "ROOT/generated-stories-entry.js",
   ],
@@ -60,6 +58,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -130,6 +134,12 @@ Object {
                 ],
                 Array [
                   "NODE_MODULES/@babel/plugin-proposal-class-properties/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
                   Object {
                     "loose": true,
                   },
@@ -255,6 +265,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -308,16 +324,7 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
-            "options": Object {
-              "compilers": Array [
-                [Function],
-              ],
-              "remarkPlugins": Array [
-                [Function],
-                [Function],
-              ],
-            },
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
           },
         ],
       },
@@ -347,6 +354,12 @@ Object {
                   },
                 ],
                 Array [
+                  "NODE_MODULES/@babel/plugin-proposal-private-property-in-object/lib/index.js",
+                  Object {
+                    "loose": true,
+                  },
+                ],
+                Array [
                   "NODE_MODULES/@babel/plugin-proposal-private-methods/lib/index.js",
                   Object {
                     "loose": true,
@@ -400,12 +413,13 @@ Object {
             },
           },
           Object {
-            "loader": "NODE_MODULES/@mdx-js/loader/index.js",
+            "loader": "NODE_MODULES/@storybook/mdx1-csf/loader.js",
             "options": Object {
               "remarkPlugins": Array [
                 [Function],
                 [Function],
               ],
+              "skipCsf": true,
             },
           },
         ],
@@ -466,8 +480,6 @@ Object {
         "options": Object {
           "docgenOptions": Object {
             "alias": Object {
-              "@emotion/core": "NODE_MODULES/@emotion/core",
-              "@emotion/styled": "NODE_MODULES/@emotion/styled",
               "@storybook/addons": "ROOT/lib/addons",
               "@storybook/api": "ROOT/lib/api",
               "@storybook/channel-postmessage": "ROOT/lib/channel-postmessage",
@@ -481,7 +493,6 @@ Object {
               "@storybook/semver": "NODE_MODULES/@storybook/semver",
               "@storybook/store": "ROOT/lib/store",
               "@storybook/theming": "ROOT/lib/theming",
-              "emotion-theming": "NODE_MODULES/emotion-theming",
               "react": "NODE_MODULES/react",
               "react-dom": "NODE_MODULES/react-dom",
               "vue$": "NODE_MODULES/vue/dist/vue.esm-bundler.js",

@@ -1,18 +1,18 @@
-import { AnyFramework, ProjectAnnotations } from '@storybook/csf';
+import type { AnyFramework, ProjectAnnotations } from '@storybook/csf';
 import global from 'global';
 
-import { prepareStory } from './prepareStory';
-import { processCSFFile } from './processCSFFile';
+import { prepareStory } from './csf/prepareStory';
+import { processCSFFile } from './csf/processCSFFile';
 import { StoryStore } from './StoryStore';
-import { StoryIndex } from './types';
+import type { StoryIndex } from './types';
 import { HooksContext } from './hooks';
 
 // Spy on prepareStory/processCSFFile
-jest.mock('./prepareStory', () => ({
-  prepareStory: jest.fn(jest.requireActual('./prepareStory').prepareStory),
+jest.mock('./csf/prepareStory', () => ({
+  prepareStory: jest.fn(jest.requireActual('./csf/prepareStory').prepareStory),
 }));
-jest.mock('./processCSFFile', () => ({
-  processCSFFile: jest.fn(jest.requireActual('./processCSFFile').processCSFFile),
+jest.mock('./csf/processCSFFile', () => ({
+  processCSFFile: jest.fn(jest.requireActual('./csf/processCSFFile').processCSFFile),
 }));
 
 jest.mock('global', () => ({
@@ -356,6 +356,25 @@ describe('StoryStore', () => {
 
       expect(stories).toHaveLength(2);
       expect(stories.map((s) => s.id)).toEqual(['component-one--a', 'component-one--b']);
+    });
+
+    it('returns them in the order they are in the index, not the file', async () => {
+      const store = new StoryStore();
+      store.setProjectAnnotations(projectAnnotations);
+      const reversedIndex = {
+        v: 3,
+        stories: {
+          'component-one--b': storyIndex.stories['component-one--b'],
+          'component-one--a': storyIndex.stories['component-one--a'],
+        },
+      };
+      store.initialize({ storyIndex: reversedIndex, importFn, cache: false });
+
+      const csfFile = await store.loadCSFFileByStoryId('component-one--a');
+      const stories = store.componentStoriesFromCSFFile({ csfFile });
+
+      expect(stories).toHaveLength(2);
+      expect(stories.map((s) => s.id)).toEqual(['component-one--b', 'component-one--a']);
     });
   });
 

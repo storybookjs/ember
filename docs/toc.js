@@ -41,11 +41,6 @@ module.exports = {
           type: 'bullet-link',
           description: 'Take your Storybook skills to the next level',
         },
-        {
-          title: '📚 Examples',
-          pathSegment: 'examples',
-          type: 'link',
-        },
       ],
     },
     {
@@ -121,9 +116,51 @@ module.exports = {
           type: 'link',
         },
         {
-          pathSegment: 'doc-blocks',
+          pathSegment: '',
           title: 'Doc Blocks',
-          type: 'link',
+          type: 'menu',
+          children: [
+            {
+              pathSegment: 'doc-block-argstable',
+              title: 'ArgsTable',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-canvas',
+              title: 'Canvas',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-colorpalette',
+              title: 'ColorPalette',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-description',
+              title: 'Description',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-icongallery',
+              title: 'IconGallery',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-source',
+              title: 'Source',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-story',
+              title: 'Story',
+              type: 'link',
+            },
+            {
+              pathSegment: 'doc-block-typeset',
+              title: 'Typeset',
+              type: 'link',
+            },
+          ],
         },
         {
           pathSegment: 'build-documentation',

@@ -8,6 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es5",
-    "lib": ["es2017", "dom"]
+    "lib": [
+      "es2017",
+      "dom"
+    ]
   }
 }

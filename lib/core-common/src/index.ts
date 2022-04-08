@@ -29,3 +29,5 @@ export * from './utils/readTemplate';
 export * from './utils/findDistEsm';
 
 export * from './types';
+
+export { createFileSystemCache } from './utils/file-cache';

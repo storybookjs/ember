@@ -6,8 +6,8 @@ import {
   loadCustomBabelConfig,
   getStorybookBabelConfig,
   loadEnvs,
-  Options,
 } from '@storybook/core-common';
+import type { Options } from '@storybook/core-common';
 
 export const babel = async (_: unknown, options: Options) => {
   const { configDir, presets } = options;
@@ -61,9 +61,13 @@ export const typescript = () => ({
   },
 });
 
+export const config = async (base: any, options: Options) => {
+  return [...(await options.presets.apply('previewAnnotations', [], options)), ...base];
+};
+
 export const features = async (existing: Record<string, boolean>) => ({
   ...existing,
   postcss: true,
-  emotionAlias: true,
+  emotionAlias: false, // TODO remove in 7.0, this no longer does anything
   warnOnLegacyHierarchySeparator: true,
 });

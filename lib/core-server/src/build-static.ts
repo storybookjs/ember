@@ -3,22 +3,20 @@ import cpy from 'cpy';
 import fs from 'fs-extra';
 import path from 'path';
 import dedent from 'ts-dedent';
+import global from 'global';
 
 import { logger } from '@storybook/node-logger';
 
-import {
-  loadAllPresets,
+import type {
   LoadOptions,
   CLIOptions,
   BuilderOptions,
   Options,
   Builder,
   StorybookConfig,
-  cache,
-  normalizeStories,
-  logConfig,
   CoreConfig,
 } from '@storybook/core-common';
+import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
@@ -48,7 +46,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   options.configDir = path.resolve(options.configDir);
   /* eslint-enable no-param-reassign */
 
-  const defaultFavIcon = require.resolve('./public/favicon.ico');
+  const defaultFavIcon = require.resolve('@storybook/core-server/public/favicon.ico');
 
   logger.info(chalk`=> Cleaning outputDir: {cyan ${options.outputDir}}`);
   if (options.outputDir === '/') {
@@ -92,6 +90,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   }
 
   const features = await presets.apply<StorybookConfig['features']>('features');
+  global.FEATURES = features;
+
   if (features?.buildStoriesJson || features?.storyStoreV7) {
     const directories = {
       configDir: options.configDir,
@@ -120,7 +120,8 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   const builderName = typeof core?.builder === 'string' ? core.builder : core?.builder?.name;
   const { getPrebuiltDir } =
     builderName === 'webpack5'
-      ? await import('@storybook/manager-webpack5/prebuilt-manager')
+      ? // eslint-disable-next-line import/no-extraneous-dependencies
+        await import('@storybook/manager-webpack5/prebuilt-manager')
       : await import('@storybook/manager-webpack4/prebuilt-manager');
 
   const prebuiltDir = await getPrebuiltDir(fullOptions);
@@ -142,7 +143,16 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
         options: fullOptions,
       });
 
-  const [managerStats, previewStats] = await Promise.all([manager, preview]);
+  const [managerStats, previewStats] = await Promise.all([
+    manager.catch(async (err) => {
+      await previewBuilder.bail();
+      throw err;
+    }),
+    preview.catch(async (err) => {
+      await managerBuilder.bail();
+      throw err;
+    }),
+  ]);
 
   if (options.webpackStatsJson) {
     const target = options.webpackStatsJson === true ? options.outputDir : options.webpackStatsJson;

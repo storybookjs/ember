@@ -1,5 +1,5 @@
 import memoize from 'memoizerific';
-import {
+import type {
   Parameters,
   StoryId,
   StoryContextForLoaders,
@@ -17,9 +17,8 @@ import { SynchronousPromise } from 'synchronous-promise';
 import { StoryIndexStore } from './StoryIndexStore';
 import { ArgsStore } from './ArgsStore';
 import { GlobalsStore } from './GlobalsStore';
-import { processCSFFile } from './processCSFFile';
-import { prepareStory } from './prepareStory';
-import {
+import { processCSFFile, prepareStory, normalizeProjectAnnotations } from './csf';
+import type {
   CSFFile,
   ModuleImportFn,
   Story,
@@ -27,40 +26,16 @@ import {
   Path,
   ExtractOptions,
   BoundStory,
+  PromiseLike,
   StoryIndex,
   StoryIndexEntry,
   V2CompatIndexEntry,
 } from './types';
 import { HooksContext } from './hooks';
-import { normalizeInputTypes } from './normalizeInputTypes';
-import { inferArgTypes } from './inferArgTypes';
-import { inferControls } from './inferControls';
 
 // TODO -- what are reasonable values for these?
 const CSF_CACHE_SIZE = 1000;
 const STORY_CACHE_SIZE = 10000;
-
-function normalizeProjectAnnotations<TFramework extends AnyFramework>({
-  argTypes,
-  globalTypes,
-  argTypesEnhancers,
-  ...annotations
-}: ProjectAnnotations<TFramework>): NormalizedProjectAnnotations<TFramework> {
-  return {
-    ...(argTypes && { argTypes: normalizeInputTypes(argTypes) }),
-    ...(globalTypes && { globalTypes: normalizeInputTypes(globalTypes) }),
-    argTypesEnhancers: [
-      ...(argTypesEnhancers || []),
-      inferArgTypes,
-      // inferControls technically should only run if the user is using the controls addon,
-      // and so should be added by a preset there. However, as it seems some code relies on controls
-      // annotations (in particular the angular implementation's `cleanArgsDecorator`), for backwards
-      // compatibility reasons, we will leave this in the store until 7.0
-      inferControls,
-    ],
-    ...annotations,
-  };
-}
 
 export class StoryStore<TFramework extends AnyFramework> {
   storyIndex: StoryIndexStore;
@@ -216,9 +191,9 @@ export class StoryStore<TFramework extends AnyFramework> {
 
   // If we have a CSF file we can get all the stories from it synchronously
   componentStoriesFromCSFFile({ csfFile }: { csfFile: CSFFile<TFramework> }): Story<TFramework>[] {
-    return Object.keys(csfFile.stories).map((storyId: StoryId) =>
-      this.storyFromCSFFile({ storyId, csfFile })
-    );
+    return Object.keys(this.storyIndex.stories)
+      .filter((storyId: StoryId) => !!csfFile.stories[storyId])
+      .map((storyId: StoryId) => this.storyFromCSFFile({ storyId, csfFile }));
   }
 
   // A prepared story does not include args, globals or hooks. These are stored in the story store
