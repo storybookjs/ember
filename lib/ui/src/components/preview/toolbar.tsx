@@ -132,9 +132,10 @@ const useTools = (
     [defaultToolsExtra, toolsExtraFromConfig]
   );
 
-  const toolbarExclusions = getQueryParam(TOOLBAR_EXCLUSION_PARAM)
-    ? getQueryParam(TOOLBAR_EXCLUSION_PARAM).split(',')
-    : [];
+  const toolbarExclusions: string[] =
+    getQueryParam && getQueryParam(TOOLBAR_EXCLUSION_PARAM)
+      ? getQueryParam(TOOLBAR_EXCLUSION_PARAM).split(',')
+      : [];
 
   return useMemo(() => {
     return story && story.parameters

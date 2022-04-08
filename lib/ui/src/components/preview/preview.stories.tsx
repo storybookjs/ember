@@ -144,22 +144,7 @@ export const WithCanvasTab = () => (
   </Consumer>
 );
 
-export const WithTabs = () => (
-  <Consumer>
-    {({ api }: Combo) => {
-      return (
-        <Preview
-          {...previewProps}
-          api={{
-            ...api,
-            getElements: () => ({}),
-            getQueryParam: () => '',
-          }}
-        />
-      );
-    }}
-  </Consumer>
-);
+export const WithTabs = () => <Preview {...previewProps} />;
 
 export const WithToolbarExclusions = () => (
   <Consumer>
