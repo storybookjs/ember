@@ -1,6 +1,7 @@
 import global from 'global';
 import { toId, sanitize } from '@storybook/csf';
 import {
+  PRELOAD_STORIES,
   STORY_PREPARED,
   UPDATE_STORY_ARGS,
   RESET_STORY_ARGS,
@@ -22,7 +23,10 @@ import {
   isStory,
   isRoot,
   transformStoryIndexToStoriesHash,
+  getComponentLookupList,
+  getStoriesLookupList,
 } from '../lib/stories';
+
 import type {
   StoriesHash,
   Story,
@@ -77,6 +81,12 @@ export interface SubAPI {
   updateStoryArgs(story: Story, newArgs: Args): void;
   resetStoryArgs: (story: Story, argNames?: string[]) => void;
   findLeafStoryId(StoriesHash: StoriesHash, storyId: StoryId): StoryId;
+  findSiblingStoryId(
+    storyId: StoryId,
+    hash: StoriesHash,
+    direction: Direction,
+    toSiblingGroup: boolean // when true, skip over leafs within the same group
+  ): StoryId;
   fetchStoryList: () => Promise<void>;
   setStoryList: (storyList: StoryIndex) => Promise<void>;
   updateStory: (storyId: StoryId, update: StoryUpdate, ref?: ComposedRef) => Promise<void>;
@@ -187,26 +197,7 @@ export const init: ModuleFn = ({
       }
 
       const hash = refId ? refs[refId].stories || {} : storiesHash;
-
-      const lookupList = Object.entries(hash).reduce((acc, i) => {
-        const value = i[1];
-        if (value.isComponent) {
-          acc.push([...i[1].children]);
-        }
-        return acc;
-      }, []);
-
-      const index = lookupList.findIndex((i) => i.includes(storyId));
-
-      // cannot navigate beyond fist or last
-      if (index === lookupList.length - 1 && direction > 0) {
-        return;
-      }
-      if (index === 0 && direction < 0) {
-        return;
-      }
-
-      const result = lookupList[index + direction][0];
+      const result = api.findSiblingStoryId(storyId, hash, direction, true);
 
       if (result) {
         api.selectStory(result, undefined, { ref: refId });
@@ -227,21 +218,7 @@ export const init: ModuleFn = ({
       }
 
       const hash = story.refId ? refs[story.refId].stories : storiesHash;
-
-      const lookupList = Object.keys(hash).filter(
-        (k) => !(hash[k].children || Array.isArray(hash[k]))
-      );
-      const index = lookupList.indexOf(storyId);
-
-      // cannot navigate beyond fist or last
-      if (index === lookupList.length - 1 && direction > 0) {
-        return;
-      }
-      if (index === 0 && direction < 0) {
-        return;
-      }
-
-      const result = lookupList[index + direction];
+      const result = api.findSiblingStoryId(storyId, hash, direction, false);
 
       if (result) {
         api.selectStory(result, undefined, { ref: refId });
@@ -331,6 +308,39 @@ export const init: ModuleFn = ({
 
       const childStoryId = storiesHash[storyId].children[0];
       return api.findLeafStoryId(storiesHash, childStoryId);
+    },
+    findSiblingStoryId(storyId, hash, direction, toSiblingGroup) {
+      if (toSiblingGroup) {
+        const lookupList = getComponentLookupList(hash);
+        const index = lookupList.findIndex((i) => i.includes(storyId));
+
+        // cannot navigate beyond fist or last
+        if (index === lookupList.length - 1 && direction > 0) {
+          return;
+        }
+        if (index === 0 && direction < 0) {
+          return;
+        }
+
+        if (lookupList[index + direction]) {
+          // eslint-disable-next-line consistent-return
+          return lookupList[index + direction][0];
+        }
+        return;
+      }
+      const lookupList = getStoriesLookupList(hash);
+      const index = lookupList.indexOf(storyId);
+
+      // cannot navigate beyond fist or last
+      if (index === lookupList.length - 1 && direction > 0) {
+        return;
+      }
+      if (index === 0 && direction < 0) {
+        return;
+      }
+
+      // eslint-disable-next-line consistent-return
+      return lookupList[index + direction];
     },
     updateStoryArgs: (story, updatedArgs) => {
       const { id: storyId, refId } = story;
@@ -448,6 +458,36 @@ export const init: ModuleFn = ({
       }
     });
 
+    fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
+      const { ref, sourceType } = getEventMetadata(this, fullAPI);
+      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
+
+      if (!ref) {
+        if (!store.getState().hasCalledSetOptions) {
+          const { options } = update.parameters;
+          checkDeprecatedOptionParameters(options);
+          fullAPI.setOptions(options);
+          store.setState({ hasCalledSetOptions: true });
+        }
+      } else {
+        fullAPI.updateRef(ref.id, { ready: true });
+      }
+
+      if (sourceType === 'local') {
+        const { storyId, storiesHash } = store.getState();
+
+        // create a list of related stories to be preloaded
+        const toBePreloaded = Array.from(
+          new Set([
+            api.findSiblingStoryId(storyId, storiesHash, 1, true),
+            api.findSiblingStoryId(storyId, storiesHash, -1, true),
+          ])
+        ).filter(Boolean);
+
+        fullAPI.emit(PRELOAD_STORIES, toBePreloaded);
+      }
+    });
+
     fullAPI.on(SET_STORIES, function handler(data: SetStoriesPayload) {
       const { ref } = getEventMetadata(this, fullAPI);
       const stories = data.v ? denormalizeStoryParameters(data) : data.stories;
@@ -488,22 +528,6 @@ export const init: ModuleFn = ({
         }
       }
     );
-
-    fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
-      const { ref } = getEventMetadata(this, fullAPI);
-      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
-
-      if (!ref) {
-        if (!store.getState().hasCalledSetOptions) {
-          const { options } = update.parameters;
-          checkDeprecatedOptionParameters(options);
-          fullAPI.setOptions(options);
-          store.setState({ hasCalledSetOptions: true });
-        }
-      } else {
-        fullAPI.updateRef(ref.id, { ready: true });
-      }
-    });
 
     fullAPI.on(
       STORY_ARGS_UPDATED,
