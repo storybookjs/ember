@@ -322,8 +322,11 @@ export const init: ModuleFn = ({
           return;
         }
 
-        // eslint-disable-next-line consistent-return
-        return lookupList[index + direction][0];
+        if (lookupList[index + direction]) {
+          // eslint-disable-next-line consistent-return
+          return lookupList[index + direction][0];
+        }
+        return;
       }
       const lookupList = getStoriesLookupList(hash);
       const index = lookupList.indexOf(storyId);
@@ -455,8 +458,20 @@ export const init: ModuleFn = ({
       }
     });
 
-    fullAPI.on(STORY_PREPARED, function handler() {
-      const { sourceType } = getEventMetadata(this, fullAPI);
+    fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
+      const { ref, sourceType } = getEventMetadata(this, fullAPI);
+      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
+
+      if (!ref) {
+        if (!store.getState().hasCalledSetOptions) {
+          const { options } = update.parameters;
+          checkDeprecatedOptionParameters(options);
+          fullAPI.setOptions(options);
+          store.setState({ hasCalledSetOptions: true });
+        }
+      } else {
+        fullAPI.updateRef(ref.id, { ready: true });
+      }
 
       if (sourceType === 'local') {
         const { storyId, storiesHash } = store.getState();
@@ -513,22 +528,6 @@ export const init: ModuleFn = ({
         }
       }
     );
-
-    fullAPI.on(STORY_PREPARED, function handler({ id, ...update }) {
-      const { ref } = getEventMetadata(this, fullAPI);
-      fullAPI.updateStory(id, { ...update, prepared: true }, ref);
-
-      if (!ref) {
-        if (!store.getState().hasCalledSetOptions) {
-          const { options } = update.parameters;
-          checkDeprecatedOptionParameters(options);
-          fullAPI.setOptions(options);
-          store.setState({ hasCalledSetOptions: true });
-        }
-      } else {
-        fullAPI.updateRef(ref.id, { ready: true });
-      }
-    });
 
     fullAPI.on(
       STORY_ARGS_UPDATED,
