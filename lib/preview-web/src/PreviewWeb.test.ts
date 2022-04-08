@@ -1025,17 +1025,12 @@ describe('PreviewWeb', () => {
   describe('onPreloadStories', () => {
     it('loads stories', async () => {
       document.location.search = '?id=component-one--a&viewMode=docs';
-      const mockedImportFn = jest.fn(() =>
-        Promise.resolve({ default: { title: 'Component Two' }, C: () => {} } as any)
-      );
-      const preview = await createAndRenderPreview({
-        importFn: mockedImportFn,
-      });
-      await preview.onPreloadStories(['component-two--c']);
-
+      const preview = await createAndRenderPreview();
       await waitForRender();
 
-      expect(mockedImportFn).toHaveBeenCalledWith('./src/ComponentTwo.stories.js');
+      importFn.mockClear();
+      await preview.onPreloadStories(['component-two--c']);
+      expect(importFn).toHaveBeenCalledWith('./src/ComponentTwo.stories.js');
     });
   });
 
