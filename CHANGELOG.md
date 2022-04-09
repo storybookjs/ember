@@ -1,3 +1,12 @@
+## 6.4.21 (April 9, 2022)
+
+### Bug Fixes
+
+- Angular: Do not use default for includePaths ([#17876](https://github.com/storybookjs/storybook/pull/17876))
+- Controls: Fix date control width in addons panel ([#17780](https://github.com/storybookjs/storybook/pull/17780))
+- CLI: Preserve quote style in automigrate ([#17858](https://github.com/storybookjs/storybook/pull/17858))
+- CLI: Update the exclude list for upgrade warnings ([#17909](https://github.com/storybookjs/storybook/pull/17909))
+ 
 ## 6.5.0-alpha.60 (April 9, 2022)
 
 ### Features
