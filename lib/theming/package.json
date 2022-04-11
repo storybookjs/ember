@@ -45,6 +45,7 @@
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
+    "@emotion/cache": "^11.7.1",
     "@emotion/is-prop-valid": "^1.1.2",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
