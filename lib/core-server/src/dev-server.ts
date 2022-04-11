@@ -96,14 +96,20 @@ export async function storybookDevServer(options: Options) {
   });
 
   const [previewResult, managerResult] = await Promise.all([
-    preview,
+    preview.catch(async (err) => {
+      await managerBuilder.bail();
+      throw err;
+    }),
     manager
       // TODO #13083 Restore this when compiling the preview is fast enough
       // .then((result) => {
       //   if (!options.ci && !options.smokeTest) openInBrowser(address);
       //   return result;
       // })
-      .catch(previewBuilder.bail),
+      .catch(async (err) => {
+        await previewBuilder.bail();
+        throw err;
+      }),
   ]);
 
   // TODO #13083 Remove this when compiling the preview is fast enough

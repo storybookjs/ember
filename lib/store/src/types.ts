@@ -26,7 +26,7 @@ import type {
 export type { StoryId, Parameters };
 export type Path = string;
 export type ModuleExports = Record<string, any>;
-type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
+export type PromiseLike<T> = Promise<T> | SynchronousPromise<T>;
 export type ModuleImportFn = (path: Path) => PromiseLike<ModuleExports>;
 
 export type WebProjectAnnotations<TFramework extends AnyFramework> =

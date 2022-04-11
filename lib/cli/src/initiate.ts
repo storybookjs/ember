@@ -57,7 +57,7 @@ const installStorybook = (projectType: ProjectType, options: CommandOptions): Pr
 
   const generatorOptions = {
     language,
-    builder: options.builder || detectBuilder(),
+    builder: options.builder || detectBuilder(packageManager),
     linkable: !!options.linkable,
     commonJs: options.commonJs,
   };

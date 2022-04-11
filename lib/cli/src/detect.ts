@@ -13,7 +13,7 @@ import {
   CoreBuilder,
 } from './project_types';
 import { getBowerJson, paddedLog } from './helpers';
-import { PackageJson, readPackageJson } from './js-package-manager';
+import { PackageJson, readPackageJson, JsPackageManager } from './js-package-manager';
 
 const viteConfigFiles = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
 
@@ -104,12 +104,39 @@ export function detectFrameworkPreset(packageJson = {}) {
  *
  * @returns CoreBuilder
  */
-export function detectBuilder() {
+export function detectBuilder(packageManager: JsPackageManager) {
   const viteConfig = findUp.sync(viteConfigFiles);
 
   if (viteConfig) {
     paddedLog('Detected vite project, setting builder to @storybook/builder-vite');
     return CoreBuilder.Vite;
+  }
+
+  try {
+    let out = '';
+    if (packageManager.type === 'npm') {
+      try {
+        // npm <= v7
+        out = packageManager.executeCommand('npm', ['ls', 'webpack']);
+      } catch (e2) {
+        // npm >= v8
+        out = packageManager.executeCommand('npm', ['why', 'webpack']);
+      }
+    } else {
+      out = packageManager.executeCommand('yarn', ['why', 'webpack']);
+    }
+
+    // if the user has BOTH webpack 4 and 5 installed already, we'll pick the safest options (4)
+    if (out.includes('webpack@4') || out.includes('webpack@npm:4')) {
+      return CoreBuilder.Webpack5;
+    }
+
+    // the user has webpack 4 installed, but not 5
+    if (out.includes('webpack@5') || out.includes('webpack@npm:5')) {
+      return CoreBuilder.Webpack5;
+    }
+  } catch (err) {
+    //
   }
 
   // Fallback to webpack4

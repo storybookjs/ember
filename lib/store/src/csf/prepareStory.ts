@@ -169,7 +169,7 @@ export function prepareStory<TFramework extends AnyFramework>(
 
     const includedArgs = Object.entries(mappedArgs).reduce((acc, [key, val]) => {
       const argType = context.argTypes[key] || {};
-      if (includeConditionalArg(argType, mappedArgs)) acc[key] = val;
+      if (includeConditionalArg(argType, mappedArgs, context.globals)) acc[key] = val;
       return acc;
     }, {} as Args);
 

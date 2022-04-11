@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [React18 new root API](#react18-new-root-api)
   - [Deprecated register.js](#deprecated-registerjs)
   - [Dropped support for addon-actions addDecorators](#dropped-support-for-addon-actions-adddecorators)
   - [Vite builder renamed](#vite-builder-renamed)
@@ -199,20 +200,32 @@
 
 ## From version 6.4.x to 6.5.0
 
+### React18 new root API
+
+React 18 introduces a [new root API](https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis). Starting in 6.5, Storybook for React will auto-detect your react version and use the new root API automatically if you're on React18.
+
+If you wish to opt out of the new root API, set the `reactOptions.legacyRootApi` flag in your `.storybook/main.js` config:
+
+```js
+module.exports = {
+  reactOptions: { legacyRootApi: true },
+};
+```
+
 ### Deprecated register.js
 
 In ancient versions of Storybook, addons were registered by referring to `addon-name/register.js`. This is going away in SB7.0. Instead you should just add `addon-name` to the `addons` array in `.storybook/main.js`.
 
-Before: 
+Before:
 
 ```js
-module.exports = { addons: ['my-addon/register.js'] }
+module.exports = { addons: ['my-addon/register.js'] };
 ```
 
 After:
 
 ```js
-module.exports = { addons: ['my-addon'] }
+module.exports = { addons: ['my-addon'] };
 ```
 
 ### Dropped support for addon-actions addDecorators

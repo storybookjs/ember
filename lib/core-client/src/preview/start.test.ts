@@ -10,6 +10,7 @@ import {
 } from '@storybook/preview-web/dist/cjs/PreviewWeb.mockdata';
 // @ts-ignore
 import { WebView } from '@storybook/preview-web/dist/cjs/WebView';
+import { setGlobalRender } from '@storybook/client-api';
 
 import { start } from './start';
 
@@ -52,9 +53,9 @@ beforeEach(() => {
 describe('start', () => {
   describe('when configure is called with storiesOf only', () => {
     it('loads and renders the first story correctly', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi
@@ -150,7 +151,7 @@ describe('start', () => {
         'component-a--story-one'
       );
 
-      expect(render).toHaveBeenCalledWith(
+      expect(renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           id: 'component-a--story-one',
         }),
@@ -159,9 +160,9 @@ describe('start', () => {
     });
 
     it('sends over docs only stories', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi
@@ -212,9 +213,9 @@ describe('start', () => {
     });
 
     it('deals with stories with "default" name', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
@@ -226,9 +227,9 @@ describe('start', () => {
     });
 
     it('deals with stories with camel-cased names', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi
@@ -242,9 +243,9 @@ describe('start', () => {
     });
 
     it('deals with stories with spaces in the name', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi
@@ -262,9 +263,9 @@ describe('start', () => {
 
     // https://github.com/storybookjs/storybook/issues/16303
     it('deals with stories with numeric names', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('story0', jest.fn());
@@ -276,9 +277,9 @@ describe('start', () => {
     });
 
     it('deals with storiesOf from the same file twice', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       configure('test', () => {
         clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
@@ -300,9 +301,9 @@ describe('start', () => {
     });
 
     it('allows global metadata via client-api', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       const loader = jest.fn(async () => ({ val: 'loaded' }));
       const decorator = jest.fn();
@@ -317,7 +318,7 @@ describe('start', () => {
 
       expect(loader).toHaveBeenCalled();
       expect(decorator).toHaveBeenCalled();
-      expect(render).toHaveBeenCalledWith(
+      expect(renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           storyContext: expect.objectContaining({
             parameters: expect.objectContaining({
@@ -331,9 +332,9 @@ describe('start', () => {
     });
 
     it('allows setting compomnent/args/argTypes via a parameter', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
 
       const component = {};
       configure('test', () => {
@@ -352,7 +353,7 @@ describe('start', () => {
 
       await waitForRender();
 
-      expect(render).toHaveBeenCalledWith(
+      expect(renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           storyContext: expect.objectContaining({
             component,
@@ -370,9 +371,9 @@ describe('start', () => {
     });
 
     it('supports forceRerender()', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi, forceReRender } = start(render);
+      const { configure, clientApi, forceReRender } = start(renderToDOM);
 
       configure('test', () => {
         clientApi.storiesOf('Component A', { id: 'file1' } as NodeModule).add('default', jest.fn());
@@ -389,9 +390,9 @@ describe('start', () => {
     });
 
     it('supports HMR when a story file changes', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi, forceReRender } = start(render);
+      const { configure, clientApi, forceReRender } = start(renderToDOM);
 
       let disposeCallback: () => void;
       const module = {
@@ -425,9 +426,9 @@ describe('start', () => {
     });
 
     it('re-emits SET_STORIES when a story is added', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi, forceReRender } = start(render);
+      const { configure, clientApi, forceReRender } = start(renderToDOM);
 
       let disposeCallback: () => void;
       const module = {
@@ -510,9 +511,9 @@ describe('start', () => {
     });
 
     it('re-emits SET_STORIES when a story file is removed', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
-      const { configure, clientApi, forceReRender } = start(render);
+      const { configure, clientApi, forceReRender } = start(renderToDOM);
 
       let disposeCallback: () => void;
       const moduleB = {
@@ -636,9 +637,9 @@ describe('start', () => {
 
   describe('when configure is called with CSF only', () => {
     it('loads and renders the first story correctly', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure } = start(render);
+      const { configure } = start(renderToDOM);
       configure('test', () => [componentCExports]);
 
       await waitForRender();
@@ -701,7 +702,7 @@ describe('start', () => {
         'component-c--story-one'
       );
 
-      expect(render).toHaveBeenCalledWith(
+      expect(renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           id: 'component-c--story-one',
         }),
@@ -710,7 +711,7 @@ describe('start', () => {
     });
 
     it('supports HMR when a story file changes', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
       let disposeCallback: (data: object) => void;
       const module = {
@@ -724,7 +725,7 @@ describe('start', () => {
         },
       };
 
-      const { configure } = start(render);
+      const { configure } = start(renderToDOM);
       configure('test', () => [componentCExports], module as any);
 
       await waitForRender();
@@ -754,7 +755,7 @@ describe('start', () => {
     });
 
     it('re-emits SET_STORIES when a story is added', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
       let disposeCallback: (data: object) => void;
       const module = {
@@ -767,7 +768,7 @@ describe('start', () => {
           },
         },
       };
-      const { configure } = start(render);
+      const { configure } = start(renderToDOM);
       configure('test', () => [componentCExports], module as any);
 
       await waitForRender();
@@ -851,7 +852,7 @@ describe('start', () => {
     });
 
     it('re-emits SET_STORIES when a story file is removed', async () => {
-      const render = jest.fn(({ storyFn }) => storyFn());
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
 
       let disposeCallback: (data: object) => void;
       const module = {
@@ -864,7 +865,7 @@ describe('start', () => {
           },
         },
       };
-      const { configure } = start(render);
+      const { configure } = start(renderToDOM);
       configure(
         'test',
         () => [componentCExports, { default: { title: 'Component D' }, StoryFour: jest.fn() }],
@@ -1002,14 +1003,46 @@ describe('start', () => {
           "v": 2,
         }
       `);
+
+      await waitForRender();
+    });
+
+    it('allows you to override the render function in project annotations', async () => {
+      const renderToDOM = jest.fn(({ storyFn }) => storyFn());
+      const frameworkRender = jest.fn();
+
+      const { configure } = start(renderToDOM, { render: frameworkRender });
+
+      const projectRender = jest.fn();
+      setGlobalRender(projectRender);
+      configure('test', () => {
+        return [
+          {
+            default: {
+              title: 'Component A',
+              component: jest.fn(),
+            },
+            StoryOne: {},
+          },
+        ];
+      });
+
+      await waitForRender();
+      expect(mockChannel.emit).toHaveBeenCalledWith(
+        Events.STORY_RENDERED,
+        'component-a--story-one'
+      );
+
+      expect(frameworkRender).not.toHaveBeenCalled();
+      expect(projectRender).toHaveBeenCalled();
     });
   });
 
   describe('when configure is called with a combination', () => {
     it('loads and renders the first story correctly', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure, clientApi } = start(render);
+      const { configure, clientApi } = start(renderToDOM);
       configure('test', () => {
         clientApi
           .storiesOf('Component A', { id: 'file1' } as NodeModule)
@@ -1145,7 +1178,7 @@ describe('start', () => {
         'component-a--story-one'
       );
 
-      expect(render).toHaveBeenCalledWith(
+      expect(renderToDOM).toHaveBeenCalledWith(
         expect.objectContaining({
           id: 'component-a--story-one',
         }),
@@ -1268,9 +1301,9 @@ describe('start', () => {
       StoryOne: jest.fn(),
     };
     it('loads and renders the first story correctly', async () => {
-      const render = jest.fn();
+      const renderToDOM = jest.fn();
 
-      const { configure } = start(render);
+      const { configure } = start(renderToDOM);
       configure('test', () => [componentDExports]);
 
       await waitForEvents([Events.SET_STORIES]);

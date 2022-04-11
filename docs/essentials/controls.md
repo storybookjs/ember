@@ -11,7 +11,7 @@ Storybook Controls gives you a graphical UI to interact with a component's argum
   />
 </video>
 
-Controls does not require any modification to your components. Stories for controls are:
+Controls do not require any modification to your components. Stories for controls are:
 
 - Convenient. Auto-generate controls based on React/Vue/Angular/etc. components.
 - Portable. Reuse your interactive stories in documentation, tests, and even in designs.
@@ -302,7 +302,7 @@ paths={[
 
 ### Conditional controls
 
-In some cases, it's useful to be able to conditionally exclude a control based on the value of another control. Controls supports basic versions of these use cases with the `addIf` and `removeIf` options, which can take a boolean value, or a string which can refer to the value of another arg.
+In some cases, it's useful to be able to conditionally exclude a control based on the value of another control. Controls supports basic versions of these use cases with the `if`, which can takes a simple query object to determine whether to include the control.
 
 Consider a collection of "advanced" settings that are only visible when the user toggles an "advanced" toggle.
 
@@ -327,6 +327,24 @@ Or consider a constraint where if the user sets one control value, it doesn't ma
 />
 
 <!-- prettier-ignore-end -->
+
+The query object must contain either an `arg` or `global` target:
+
+| field  | type   | meaning                       |
+| ------ | ------ | ----------------------------- |
+| arg    | string | The ID of the arg to test.    |
+| global | string | The ID of the global to test. |
+
+It may also contain at most one of the following operators:
+
+| operator | type    | meaning                                              |
+| -------- | ------- | ---------------------------------------------------- |
+| truthy   | boolean | Is the target value truthy?                          |
+| exists   | boolean | Is the target value defined?                         |
+| eq       | any     | Is the target value equal to the provided value?     |
+| neq      | any     | Is the target value NOT equal to the provided value? |
+
+If no operator is provided, that is equivalent to `{ truthy: true }`.
 
 ## Hide NoControls warning
 

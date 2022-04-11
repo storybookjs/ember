@@ -13,7 +13,7 @@ const { Accessible } = composeStories(MyComponentStories);
 
 expect.extend(toHaveNoViolations);
 
-test('Example accessiblity test', async () => {
+test('Example accessibility test', async () => {
   const { container } = render(Accessible());
 
   const AxeResults = await axe(container);

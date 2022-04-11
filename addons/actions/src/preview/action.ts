@@ -25,7 +25,7 @@ const serializeArg = <T>(a: T) => {
     );
     e.persist();
     const viewDescriptor = Object.getOwnPropertyDescriptor(e, 'view');
-    // dont send the entire window object over.
+    // don't send the entire window object over.
     const view: unknown = viewDescriptor?.value;
     if (typeof view === 'object' && view?.constructor.name === 'Window') {
       Object.defineProperty(e, 'view', {
