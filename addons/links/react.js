@@ -1,1 +1,3 @@
-module.exports = require('./dist/esm/react');
+import LinkTo from './dist/esm/react';
+
+export default LinkTo;
