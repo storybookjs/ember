@@ -1,3 +1,17 @@
+## 6.5.0-alpha.61 (April 11, 2022)
+
+### Features
+
+- UI: Add URL parameters to SB to tweak visible UI ([#17891](https://github.com/storybookjs/storybook/pull/17891))
+
+### Maintenance
+
+- Core: Followup changing CJS entrypoints to ESM ([#17927](https://github.com/storybookjs/storybook/pull/17927))
+
+### Dependency Upgrades
+
+- Export `createCache` from `@storybook/theming` ([#17929](https://github.com/storybookjs/storybook/pull/17929))
+
 ## 6.4.21 (April 9, 2022)
 
 ### Bug Fixes
@@ -6,7 +20,7 @@
 - Controls: Fix date control width in addons panel ([#17780](https://github.com/storybookjs/storybook/pull/17780))
 - CLI: Preserve quote style in automigrate ([#17858](https://github.com/storybookjs/storybook/pull/17858))
 - CLI: Update the exclude list for upgrade warnings ([#17909](https://github.com/storybookjs/storybook/pull/17909))
- 
+
 ## 6.5.0-alpha.60 (April 9, 2022)
 
 ### Features
