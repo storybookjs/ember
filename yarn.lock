@@ -8773,6 +8773,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/theming@workspace:lib/theming"
   dependencies:
+    "@emotion/cache": ^11.7.1
     "@emotion/is-prop-valid": ^1.1.2
     "@emotion/react": ^11.8.1
     "@emotion/styled": ^11.8.1
