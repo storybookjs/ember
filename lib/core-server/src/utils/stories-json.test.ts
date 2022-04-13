@@ -142,6 +142,25 @@ describe('useStoriesJson', () => {
         }
       `);
     });
+
+    it('can handle simultaneous access', async () => {
+      const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
+      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+
+      expect(use).toHaveBeenCalledTimes(1);
+      const route = use.mock.calls[0][1];
+
+      const firstPromise = route(request, response);
+      const secondResponse = { ...response, send: jest.fn(), status: jest.fn() };
+      const secondPromise = route(request, secondResponse);
+
+      await Promise.all([firstPromise, secondPromise]);
+
+      expect(send).toHaveBeenCalledTimes(1);
+      expect(response.status).not.toEqual(500);
+      expect(secondResponse.send).toHaveBeenCalledTimes(1);
+      expect(secondResponse.status).not.toEqual(500);
+    });
   });
 
   describe('SSE endpoint', () => {

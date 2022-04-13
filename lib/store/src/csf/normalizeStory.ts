@@ -1,6 +1,4 @@
-import {
-  storyNameFromExport,
-  toId,
+import type {
   ComponentAnnotations,
   AnyFramework,
   LegacyStoryAnnotationsOrFn,
@@ -8,10 +6,11 @@ import {
   StoryAnnotations,
   StoryFn,
 } from '@storybook/csf';
+import { storyNameFromExport, toId } from '@storybook/csf';
 import dedent from 'ts-dedent';
 import { logger } from '@storybook/client-logger';
 import deprecate from 'util-deprecate';
-import { NormalizedStoryAnnotations } from '../types';
+import type { NormalizedStoryAnnotations } from '../types';
 import { normalizeInputTypes } from './normalizeInputTypes';
 
 const deprecatedStoryAnnotation = dedent`

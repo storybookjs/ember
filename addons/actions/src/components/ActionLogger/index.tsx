@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { styled, withTheme, Theme } from '@storybook/theming';
+import { styled, withTheme } from '@storybook/theming';
+import type { Theme } from '@storybook/theming';
 
 import Inspector from 'react-inspector';
 import { ActionBar, ScrollArea } from '@storybook/components';

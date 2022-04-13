@@ -1,6 +1,11 @@
-import { Args, ComponentAnnotations, StoryAnnotations, AnnotatedStoryFn } from '@storybook/csf';
+import type {
+  Args,
+  ComponentAnnotations,
+  StoryAnnotations,
+  AnnotatedStoryFn,
+} from '@storybook/csf';
 
-import { StoryFnHtmlReturnType } from './types';
+import type { StoryFnHtmlReturnType } from './types';
 
 export type { Args, ArgTypes, Parameters, StoryContext } from '@storybook/addons';
 

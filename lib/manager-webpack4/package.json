@@ -1,6 +1,6 @@
 {
   "name": "@storybook/manager-webpack4",
-  "version": "6.5.0-alpha.45",
+  "version": "6.5.0-alpha.62",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -45,12 +45,12 @@
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-template-literals": "^7.12.1",
     "@babel/preset-react": "^7.12.10",
-    "@storybook/addons": "6.5.0-alpha.45",
-    "@storybook/core-client": "6.5.0-alpha.45",
-    "@storybook/core-common": "6.5.0-alpha.45",
-    "@storybook/node-logger": "6.5.0-alpha.45",
-    "@storybook/theming": "6.5.0-alpha.45",
-    "@storybook/ui": "6.5.0-alpha.45",
+    "@storybook/addons": "6.5.0-alpha.62",
+    "@storybook/core-client": "6.5.0-alpha.62",
+    "@storybook/core-common": "6.5.0-alpha.62",
+    "@storybook/node-logger": "6.5.0-alpha.62",
+    "@storybook/theming": "6.5.0-alpha.62",
+    "@storybook/ui": "6.5.0-alpha.62",
     "@types/node": "^14.0.10 || ^16.0.0",
     "@types/webpack": "^4.41.26",
     "babel-loader": "^8.0.0",
@@ -85,8 +85,8 @@
     "@types/webpack-virtual-modules": "^0.1.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {
@@ -96,6 +96,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "af457c20c773f57bea0504bf525a2f74852fe94a",
+  "gitHead": "e6025078374acd23cb15d3480c882229742a7ac1",
   "sbmodern": "dist/modern/index.js"
 }

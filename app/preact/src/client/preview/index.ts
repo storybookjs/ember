@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
-import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { start } from '@storybook/core';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { renderToDOM } from './render';
-import { IStorybookSection } from './types';
-import { PreactFramework } from './types-6-0';
+import type { IStorybookSection } from './types';
+import type { PreactFramework } from './types-6-0';
 
 export interface ClientApi extends ClientStoryApi<PreactFramework['storyResult']> {
   setAddon(addon: any): void;

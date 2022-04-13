@@ -119,7 +119,7 @@ Then, update your `tsconfig.json` to include the following:
 }
 ```
 
-Finally write your custom React component and and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
+Finally write your custom React component and update the `docs.page` [parameter](../writing-stories/parameters.md) to render the custom documentation.
 
 <!-- prettier-ignore-start -->
 

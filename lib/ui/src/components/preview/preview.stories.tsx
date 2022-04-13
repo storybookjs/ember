@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { parsePath, createPath } from 'history';
-import { Provider as ManagerProvider, Combo, Consumer } from '@storybook/api';
+import type { Combo } from '@storybook/api';
+import { Provider as ManagerProvider, Consumer } from '@storybook/api';
 import { Location, BaseLocationProvider } from '@storybook/router';
 
 import { ThemeProvider, ensure as ensureTheme, themes } from '@storybook/theming';
@@ -130,9 +131,37 @@ export const HideAllDefaultTools = () => (
 export const WithCanvasTab = () => (
   <Consumer>
     {({ api }: Combo) => {
-      return <Preview {...previewProps} api={{ ...api, getElements: () => ({}) }} />;
+      return (
+        <Preview
+          {...previewProps}
+          api={{
+            ...api,
+            getElements: () => ({}),
+          }}
+        />
+      );
     }}
   </Consumer>
 );
 
 export const WithTabs = () => <Preview {...previewProps} />;
+
+export const WithToolbarExclusions = () => (
+  <Consumer>
+    {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          api={{
+            ...api,
+            getElements: () => ({}),
+            getQueryParam: (key) => {
+              const params = { toolbarExclude: 'canvas,fullscreen' };
+              return params[key];
+            },
+          }}
+        />
+      );
+    }}
+  </Consumer>
+);

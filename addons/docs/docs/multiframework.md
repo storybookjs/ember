@@ -106,7 +106,7 @@ The input is the story function and the story context (id, parameters, args, etc
 
 ## Dynamic source rendering
 
-With the release of Storybook 6.0, we've improved how stories are rendered in the [Source doc block](https://storybook.js.org/docs/react/writing-docs/doc-blocks#source). One of such improvements is the `dynamic` source type, which renders a snippet based on the output the story function. 
+With the release of Storybook 6.0, we've improved how stories are rendered in the [Source doc block](https://storybook.js.org/docs/react/writing-docs/doc-blocks#source). One of such improvements is the `dynamic` source type, which renders a snippet based on the output the story function.
 
 This dynamic rendering is framework-specific, meaning it needs a custom implementation for each framework.
 
@@ -151,7 +151,7 @@ import { jsxDecorator } from './jsxDecorator';
 export const decorators = [jsxDecorator];
 ```
 
-This configures the `jsxDecorator` to be run on every story. 
+This configures the `jsxDecorator` to be run on every story.
 
 <div class="aside">
  To learn more and see how it's implemented in context, check out <a href="https://github.com/storybookjs/storybook/blob/next/addons/docs/src/frameworks/react/jsxDecorator.tsx">the code</a> .

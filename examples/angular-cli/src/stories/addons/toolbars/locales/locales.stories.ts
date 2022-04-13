@@ -1,6 +1,7 @@
-import { DecoratorFunction } from '@storybook/addons';
-import { Meta, moduleMetadata } from '@storybook/angular';
-import { Story } from '@storybook/angular/types-6-0';
+import type { DecoratorFunction } from '@storybook/addons';
+import { moduleMetadata } from '@storybook/angular';
+import type { Meta } from '@storybook/angular';
+import type { Story } from '@storybook/angular/types-6-0';
 
 import { TranslatePipe } from './translate.pipe';
 import { DEFAULT_LOCALE } from './translate.service';

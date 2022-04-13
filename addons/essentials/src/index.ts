@@ -1,12 +1,17 @@
-import path, { join } from 'path';
+import path, { dirname, join } from 'path';
 import { logger } from '@storybook/node-logger';
 import { serverRequire } from '@storybook/core-common';
 
 interface PresetOptions {
   configDir?: string;
-  backgrounds?: any;
-  viewport?: any;
-  docs?: any;
+  docs?: boolean;
+  controls?: boolean;
+  actions?: boolean;
+  backgrounds?: boolean;
+  viewport?: boolean;
+  toolbars?: boolean;
+  measure?: boolean;
+  outline?: boolean;
 }
 
 const requireMain = (configDir: string) => {
@@ -45,12 +50,7 @@ export function addons(options: PresetOptions = {}) {
       // as it's done in `lib/core/src/server/presets.js`.
       .map((addon) => {
         try {
-          return require.resolve(join(addon, 'preset'));
-          // eslint-disable-next-line no-empty
-        } catch (err) {}
-
-        try {
-          return require.resolve(join(addon, 'register'));
+          return dirname(require.resolve(join(addon, 'package.json')));
           // eslint-disable-next-line no-empty
         } catch (err) {}
 

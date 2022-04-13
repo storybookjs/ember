@@ -1,5 +1,5 @@
 import deepEqual from 'fast-deep-equal';
-import { SBType, Args, ArgTypes, StoryContext, AnyFramework } from '@storybook/csf';
+import type { SBType, Args, ArgTypes, StoryContext, AnyFramework } from '@storybook/csf';
 import { once } from '@storybook/client-logger';
 import isPlainObject from 'lodash/isPlainObject';
 import dedent from 'ts-dedent';

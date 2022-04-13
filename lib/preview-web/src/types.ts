@@ -1,20 +1,14 @@
-import {
+import type {
   StoryId,
   StoryName,
   AnyFramework,
-  ProjectAnnotations,
   StoryContextForLoaders,
   ComponentTitle,
   Args,
   Globals,
 } from '@storybook/csf';
-import { RenderContext, Story } from '@storybook/store';
+import type { Story } from '@storybook/store';
 import { PreviewWeb } from './PreviewWeb';
-
-export type WebProjectAnnotations<TFramework extends AnyFramework> =
-  ProjectAnnotations<TFramework> & {
-    renderToDOM?: (context: RenderContext<TFramework>, element: Element) => Promise<void> | void;
-  };
 
 export interface DocsContextProps<TFramework extends AnyFramework = AnyFramework> {
   id: StoryId;

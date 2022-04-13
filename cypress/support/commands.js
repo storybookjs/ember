@@ -97,12 +97,18 @@ Cypress.Commands.add('navigateToStory', (kind, name) => {
   const storyLinkId = `#${kindId}--${storyId}`;
   cy.log(`navigateToStory ${kind} ${name}`);
 
+  // docs-only stories
   if (name !== 'page') {
     // Section might be collapsed
-    cy.get(`#${kindId}`).then(($item) => {
-      if ($item.attr('aria-expanded') === 'false') $item.click();
+    cy.get(`#${kindId}`).then(async ($item) => {
+      if ($item.attr('aria-expanded') === 'false') {
+        await $item.click();
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(300);
+      }
     });
   }
+
   cy.get(storyLinkId).click({ force: true });
 
   // FIXME: Find a way to not wait like this but check for an element in the UI

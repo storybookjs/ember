@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
-import { ClientStoryApi, Loadable } from '@storybook/addons';
-import { start } from '@storybook/core/client';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
+import { start } from '@storybook/core';
 import './globals';
 import { renderToDOM, render } from './render';
 import decorateStory from './decorateStory';
-import { IStorybookSection } from './types';
-import { AngularFramework } from './types-6-0';
+import type { IStorybookSection } from './types';
+import type { AngularFramework } from './types-6-0';
 
 const framework = 'angular';
 

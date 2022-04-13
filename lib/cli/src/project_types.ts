@@ -81,6 +81,7 @@ export const SUPPORTED_FRAMEWORKS: SupportedFrameworks[] = [
 export enum CoreBuilder {
   Webpack4 = 'webpack4',
   Webpack5 = 'webpack5',
+  Vite = 'vite',
 }
 
 // The `& {}` bit allows for auto-complete, see: https://github.com/microsoft/TypeScript/issues/29729

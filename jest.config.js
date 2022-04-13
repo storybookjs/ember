@@ -77,6 +77,8 @@ module.exports = {
     '/generators/',
     '/dll/',
     '/__mocks__ /',
+    '/__mockdata__/',
+    '/__mocks-ng-workspace__/',
     '/__testfixtures__/',
     '^.*\\.stories\\.[jt]sx?$',
   ],
@@ -85,7 +87,11 @@ module.exports = {
     PREVIEW_URL: undefined,
     SNAPSHOT_OS: os.platform() === 'win32' ? 'windows' : 'posix',
   },
-  snapshotSerializers: ['jest-emotion', 'enzyme-to-json/serializer', 'jest-serializer-html'],
+  snapshotSerializers: [
+    '@emotion/jest/serializer',
+    'enzyme-to-json/serializer',
+    'jest-serializer-html',
+  ],
   coverageDirectory: 'coverage',
   setupFilesAfterEnv: ['./scripts/jest.init.ts'],
   coverageReporters: ['lcov'],
@@ -95,4 +101,5 @@ module.exports = {
   modulePathIgnorePatterns: ['/dist/.*/__mocks__/'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  reporters: ['default', 'jest-junit'],
 };

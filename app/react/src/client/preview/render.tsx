@@ -6,14 +6,19 @@ import React, {
   StrictMode,
   Fragment,
 } from 'react';
-import ReactDOM from 'react-dom';
-import { RenderContext } from '@storybook/store';
+import ReactDOM, { version as reactDomVersion } from 'react-dom';
+import type { Root as ReactRoot } from 'react-dom/client';
+
+import type { RenderContext } from '@storybook/store';
 import { ArgsStoryFn } from '@storybook/csf';
 
 import { StoryContext } from './types';
 import { ReactFramework } from './types-6-0';
 
 const { FRAMEWORK_OPTIONS } = global;
+
+// A map of all rendered React 18 nodes
+const nodes = new Map<Element, ReactRoot>();
 
 export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   const { id, component: Component } = context;
@@ -26,10 +31,57 @@ export const render: ArgsStoryFn<ReactFramework> = (args, context) => {
   return <Component {...args} />;
 };
 
-const renderElement = async (node: ReactElement, el: Element) =>
-  new Promise((resolve) => {
-    ReactDOM.render(node, el, () => resolve(null));
+const renderElement = async (node: ReactElement, el: Element) => {
+  // Create Root Element conditionally for new React 18 Root Api
+  const root = await getReactRoot(el);
+
+  return new Promise((resolve) => {
+    if (root) {
+      root.render(node);
+      setTimeout(() => {
+        resolve(null);
+      }, 0);
+    } else {
+      ReactDOM.render(node, el, () => resolve(null));
+    }
   });
+};
+
+const canUseNewReactRootApi =
+  reactDomVersion.startsWith('18') || reactDomVersion.startsWith('0.0.0');
+
+const shouldUseNewRootApi = FRAMEWORK_OPTIONS?.legacyRootApi !== true;
+
+const isUsingNewReactRootApi = shouldUseNewRootApi && canUseNewReactRootApi;
+
+const unmountElement = (el: Element) => {
+  const root = nodes.get(el);
+  if (root && isUsingNewReactRootApi) {
+    root.unmount();
+    nodes.delete(el);
+  } else {
+    ReactDOM.unmountComponentAtNode(el);
+  }
+};
+
+const getReactRoot = async (el: Element): Promise<ReactRoot | null> => {
+  if (!isUsingNewReactRootApi) {
+    return null;
+  }
+
+  let root = nodes.get(el);
+
+  if (!root) {
+    // Skipping webpack's static analysis of import paths by defining the path value outside the import statement.
+    // eslint-disable-next-line import/no-unresolved
+    const reactDomClient = await import('react-dom/client');
+    root = reactDomClient.createRoot(el);
+
+    nodes.set(el, root);
+  }
+
+  return root;
+};
 
 class ErrorBoundary extends ReactComponent<{
   showException: (err: Error) => void;
@@ -92,7 +144,7 @@ export async function renderToDOM(
   // https://github.com/storybookjs/react-storybook/issues/81
   // (This is not the case when we change args or globals to the story however)
   if (forceRemount) {
-    ReactDOM.unmountComponentAtNode(domElement);
+    unmountElement(domElement);
   }
 
   await renderElement(element, domElement);

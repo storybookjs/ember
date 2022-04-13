@@ -22,7 +22,7 @@ export const DelayedStory = Template.bind({});
 DelayedStory.play = async () => {
   const exampleElement= screen.getByLabelText('example-element');
 
-  // The delay option set the ammount of milliseconds between characters being typed
+  // The delay option set the amount of milliseconds between characters being typed
   await userEvent.type(exampleElement, 'random string', {
     delay: 100,
   });

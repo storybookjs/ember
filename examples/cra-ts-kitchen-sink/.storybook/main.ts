@@ -1,4 +1,4 @@
-import { Configuration } from 'webpack';
+import type { Configuration } from 'webpack';
 
 const path = require('path');
 
@@ -12,7 +12,7 @@ module.exports = {
     '@storybook/addon-actions',
     '@storybook/addon-links',
     '@storybook/addon-a11y',
-    './localAddon/register.tsx',
+    './localAddon/manager.tsx',
     './localAddon/preset.ts',
   ],
   webpackFinal: (config: Configuration) => {
@@ -30,4 +30,7 @@ module.exports = {
     builder: 'webpack4',
   },
   staticDirs: ['../public'],
+  features: {
+    buildStoriesJson: true,
+  },
 };

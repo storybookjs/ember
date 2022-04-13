@@ -1,11 +1,11 @@
 /* eslint-disable prefer-destructuring */
-import { start } from '@storybook/core/client';
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import { start } from '@storybook/core';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 
 import './globals';
 import { renderToDOM } from './render';
-import { IStorybookSection } from './types';
-import { WebComponentsFramework } from './types-6-0';
+import type { IStorybookSection } from './types';
+import type { WebComponentsFramework } from './types-6-0';
 
 const framework = 'web-components';
 

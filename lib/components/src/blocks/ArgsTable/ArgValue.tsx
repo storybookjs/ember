@@ -77,7 +77,7 @@ const Detail = styled.div<{ width: string }>(({ theme, width }) => ({
   minWidth: 200,
   maxWidth: 800,
   padding: 15,
-  // Dont remove the mono fontFamily here even if it seem useless, this is used by the browser to calculate the length of a "ch" unit.
+  // Don't remove the mono fontFamily here even if it seems useless, this is used by the browser to calculate the length of a "ch" unit.
   fontFamily: theme.typography.fonts.mono,
   fontSize: theme.typography.size.s1,
   // Most custom stylesheet will reset the box-sizing to "border-box" and will break the tooltip.
