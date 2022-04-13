@@ -29,15 +29,17 @@ const StyledReceived = styled.span(({ theme }) => ({
 
 export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
   parsed ? (
-    <Node value={value} style={{ color: '#D43900' }} />
+    <Node showObjectInspector value={value} style={{ color: '#D43900' }} />
   ) : (
     <StyledReceived>{value}</StyledReceived>
   );
 
 export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
   if (parsed) {
-    if (typeof value === 'string' && value.startsWith('called with')) return <>{value}</>;
-    return <Node value={value} style={{ color: '#16B242' }} />;
+    if (typeof value === 'string' && value.startsWith('called with')) {
+      return <>{value}</>;
+    }
+    return <Node showObjectInspector value={value} style={{ color: '#16B242' }} />;
   }
   return <StyledExpected>{value}</StyledExpected>;
 };
