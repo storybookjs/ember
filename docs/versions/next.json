@@ -1,1 +1,1 @@
-{"version":"6.5.0-alpha.61","info":{"plain":"### Features\n\n- UI: Add URL parameters to SB to tweak visible UI ([#17891](https://github.com/storybookjs/storybook/pull/17891))\n\n### Maintenance\n\n- Core: Followup changing CJS entrypoints to ESM ([#17927](https://github.com/storybookjs/storybook/pull/17927))\n\n### Dependency Upgrades\n\n- Export `createCache` from `@storybook/theming` ([#17929](https://github.com/storybookjs/storybook/pull/17929))"}}
+{"version":"6.5.0-alpha.62","info":{"plain":"Test publish with npm 2FA enabled for addon-jest"}}
