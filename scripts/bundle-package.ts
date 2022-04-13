@@ -28,7 +28,6 @@ async function build(options: Options) {
     external: externals,
     plugins: [
       nodeResolve({
-        browser: true,
         preferBuiltins: true,
       }),
       commonjs(),
