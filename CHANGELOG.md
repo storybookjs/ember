@@ -1,3 +1,7 @@
+## 6.5.0-alpha.62 (April 13, 2022)
+
+Test publish with npm 2FA enabled for addon-jest
+
 ## 6.5.0-alpha.61 (April 11, 2022)
 
 ### Features
