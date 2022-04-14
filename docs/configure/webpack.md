@@ -69,7 +69,7 @@ When you start your Storybook, you'll see an improvement in loading times. Read 
 
 ### Webpack 5
 
-Storybook builds your project with Webpack 4 by default. If your project uses Webpack 5, you can opt into the Webpack 5 builder by installing the `@storybook/builder-webpack5` package, and opting in in your `main.js`:
+Storybook builds your project with Webpack 4 by default. If your project uses Webpack 5, you can opt into the Webpack 5 builder by installing the required dependencies (i.e., `@storybook/builder-webpack5`, `@storybook/manager-webpack5`) and update your Storybook configuration as follows:
 
 <!-- prettier-ignore-start -->
 
