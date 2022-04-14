@@ -103,7 +103,7 @@ function run() {
       command: () => {
         log.info(prefix, 'prepare');
         spawn(
-          `nx run-many --target="prepare" --all --parallel ${
+          `nx run-many --target="prepare" --all --parallel=2 ${
             process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
           } -- --optimized`
         );
