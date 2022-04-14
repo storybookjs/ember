@@ -42,7 +42,20 @@ export const Args = () => (
     <Node value={['foo', 1, { hello: 'world' }]} />
     <Node value={[...Array(23)].map((_, i) => i)} />
     <Node value={{ hello: 'world' }} />
-    <Node value={{ hello: 'world', arr: [1, 2, 3], more: 1 }} />
+    <Node value={{ hello: 'world', arr: [1, 2, 3], more: true }} />
+    <Node value={{ hello: 'world', arr: [1, 2, 3], more: true }} showObjectInspector />
+    <Node
+      value={{
+        hello: 'world',
+        arr: [1, 2, 3],
+        more: true,
+        regex: /regex/,
+        class: class DummyClass {},
+        fn: () => 123,
+        asyncFn: async () => 'hello',
+      }}
+      showObjectInspector
+    />
     <Node value={new FooBar()} />
     <Node value={function goFaster() {}} />
     <Node value={{ __element__: { localName: 'hr' } }} />
