@@ -32,7 +32,7 @@ Update your Storybook configuration (in [`.storybook/main.js`](../configure/over
 
 <CodeSnippets
   paths={[
-    'common/storybook-main-register-individual-actions-addon.js.mdx',
+    'common/storybook-main-register-essentials-addon.js.mdx',
   ]}
 />
 
