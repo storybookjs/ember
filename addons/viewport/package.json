@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-viewport",
-  "version": "6.5.0-alpha.62",
+  "version": "6.5.0-alpha.63",
   "description": "Build responsive components by adjusting Storybook’s viewport size and orientation",
   "keywords": [
     "addon",
@@ -42,12 +42,12 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.62",
-    "@storybook/api": "6.5.0-alpha.62",
-    "@storybook/client-logger": "6.5.0-alpha.62",
-    "@storybook/components": "6.5.0-alpha.62",
-    "@storybook/core-events": "6.5.0-alpha.62",
-    "@storybook/theming": "6.5.0-alpha.62",
+    "@storybook/addons": "6.5.0-alpha.63",
+    "@storybook/api": "6.5.0-alpha.63",
+    "@storybook/client-logger": "6.5.0-alpha.63",
+    "@storybook/components": "6.5.0-alpha.63",
+    "@storybook/core-events": "6.5.0-alpha.63",
+    "@storybook/theming": "6.5.0-alpha.63",
     "core-js": "^3.8.2",
     "global": "^4.4.0",
     "memoizerific": "^1.11.3",
