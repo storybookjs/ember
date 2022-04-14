@@ -74,6 +74,7 @@ Snapshot tests compare the rendered markup of every story against known baseline
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - Visual tests for appearance
 - [Accessibility tests](./accessibility-testing.md) for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation

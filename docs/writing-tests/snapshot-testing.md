@@ -110,6 +110,7 @@ Visual tests capture images of stories and compare them against image baselines.
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - [Visual tests](./visual-testing.md) for appearance
 - [Accessibility tests](./accessibility-testing.md) for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation

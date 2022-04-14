@@ -21,13 +21,22 @@ Storybook has test addons for core frameworks React, Vue (2,3), and Angular. Thi
 
 Run the following command to add Storybook's testing addon into your environment:
 
-```shell
-# With npm, don't forget to select only your framework
-npm install --save-dev @storybook/testing-( react | vue | vue3 | angular)
+<!-- prettier-ignore-start -->
 
-# With yarn, don't forget to select only your framework
-yarn add --dev @storybook/testing-( react | vue | vue3 | angular )
-```
+<CodeSnippets
+  paths={[
+    'common/storybook-testing-addon-install.yarn.js.mdx',
+    'common/storybook-testing-addon-install.npm.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+
+💡 When running the command to install the addon, don't forget to select **only** your framework.
+
+</div>
 
 ### Optional configuration
 
@@ -171,6 +180,7 @@ Once you execute Playwright, it opens a new browser window, loads Storybook's is
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - [Visual tests](./visual-testing.md) for appearance
 - [Accessibility tests](./accessibility-testing.md) for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation
