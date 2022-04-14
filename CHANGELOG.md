@@ -1,3 +1,9 @@
+## 6.4.22 (April 14, 2022)
+
+### Maintenance
+
+- Core: Avoid framework imports from core/client ([#17875](https://github.com/storybookjs/storybook/pull/17875))
+
 ## 6.5.0-alpha.62 (April 13, 2022)
 
 Test publish with npm 2FA enabled for addon-jest
