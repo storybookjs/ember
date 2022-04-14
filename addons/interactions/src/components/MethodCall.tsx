@@ -215,6 +215,7 @@ export const ObjectNode = ({
   value: object;
   nested?: boolean;
 }) => {
+  const isDarkMode = useTheme().base === 'dark';
   const colors = useThemeColors();
 
   if (showInspector) {
@@ -224,7 +225,7 @@ export const ObjectNode = ({
           id="interactions-object-inspector"
           data={value}
           includePrototypes={false}
-          colorScheme={colors.base === 'dark' ? 'dark' : 'light'}
+          colorScheme={isDarkMode ? 'dark' : 'light'}
         />
       </>
     );
