@@ -1,3 +1,24 @@
+## 6.5.0-alpha.63 (April 14, 2022)
+
+### Bug Fixes
+
+- Theming: Re-export correct bundled file ([#17956](https://github.com/storybookjs/storybook/pull/17956))
+- Core: Support react-dom/client dom hack on Windows machines ([#17946](https://github.com/storybookjs/storybook/pull/17946))
+
+### Maintenance
+
+- CI: set parallelism of nx to 2 ([#17878](https://github.com/storybookjs/storybook/pull/17878))
+
+### Dependency Upgrades
+
+- Run `prebundle` script without `browser: true` in Rollup config ([#17947](https://github.com/storybookjs/storybook/pull/17947))
+
+## 6.4.22 (April 14, 2022)
+
+### Maintenance
+
+- Core: Avoid framework imports from core/client ([#17875](https://github.com/storybookjs/storybook/pull/17875))
+
 ## 6.5.0-alpha.62 (April 13, 2022)
 
 Test publish with npm 2FA enabled for addon-jest

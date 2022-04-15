@@ -1,6 +1,6 @@
 {
   "name": "@storybook/node-logger",
-  "version": "6.5.0-alpha.62",
+  "version": "6.5.0-alpha.63",
   "description": "",
   "keywords": [
     "storybook"
@@ -52,6 +52,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "e6025078374acd23cb15d3480c882229742a7ac1",
+  "gitHead": "416f87dc715cae299c7b4f37f1c9db7f686d4d21",
   "sbmodern": "dist/modern/index.js"
 }
