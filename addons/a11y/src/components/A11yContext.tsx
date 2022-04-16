@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { themes, convert } from '@storybook/theming';
 import { Result } from 'axe-core';
-import { useChannel, useStorybookState } from '@storybook/api';
+import { useAddonState, useChannel, useStorybookState } from '@storybook/api';
 import { STORY_CHANGED, STORY_RENDERED } from '@storybook/core-events';
-import { EVENTS } from '../constants';
+import { PANEL_ID, EVENTS } from '../constants';
 
 interface Results {
   passes: Result[];
@@ -52,7 +52,7 @@ const defaultResult = {
 };
 
 export const A11yContextProvider: React.FC<A11yContextProviderProps> = ({ active, ...props }) => {
-  const [results, setResults] = React.useState<Results>(defaultResult);
+  const [results, setResults] = useAddonState<Results>(PANEL_ID, defaultResult);
   const [tab, setTab] = React.useState(0);
   const [highlighted, setHighlighted] = React.useState<string[]>([]);
   const { storyId } = useStorybookState();

@@ -14,7 +14,13 @@ addons.register(ADDON_ID, () => {
   });
 
   addons.add(PANEL_ID, {
-    title: 'Accessibility',
+    title(state) {
+      const violations = (state && state.violations.length) || 0;
+      const incomplete = (state && state.incomplete.length) || 0;
+      const issues = violations + incomplete;
+      const suffix = issues === 0 ? '' : ` (${issues})`;
+      return `Accessibility${suffix}`;
+    },
     type: types.PANEL,
     render: ({ active = true, key }) => (
       <A11yContextProvider key={key} active={active}>

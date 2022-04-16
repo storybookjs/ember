@@ -16,7 +16,7 @@ export interface RenderOptions {
 }
 
 export interface Addon {
-  title: (() => string) | string;
+  title: ((addonState?: any) => string) | string;
   type?: Types;
   id?: string;
   route?: (routeOptions: RouterData) => string;
@@ -128,7 +128,7 @@ export class AddonStore {
 
   getConfig = () => this.config;
 
-  register = (name: string, registerCallback: (api: API) => void): void => {
+  register = (name: string, registerCallback: (api?: API) => void): void => {
     if (this.loaders[name]) {
       logger.warn(`${name} was loaded twice, this could have bad side-effects`);
     }

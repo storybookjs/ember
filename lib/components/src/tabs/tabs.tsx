@@ -165,7 +165,7 @@ export const Tabs: FunctionComponent<TabsProps> = memo(
               const tabTitle = typeof title === 'function' ? title() : title;
               return (
                 <TabButton
-                  id={`tabbutton-${sanitize(tabTitle)}`}
+                  id={`tabbutton-${sanitize(id)}`}
                   className={`tabbutton ${active ? 'tabbutton-active' : ''}`}
                   type="button"
                   key={id}
