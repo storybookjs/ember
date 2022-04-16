@@ -34,4 +34,8 @@ describe('addon-interactions', () => {
   onlyOn('vite_react', () => {
     it('should have interactions', test);
   });
+
+  onlyOn('preact', () => {
+    it('should have interactions', test);
+  });
 });
