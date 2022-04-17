@@ -1,10 +1,9 @@
 import React from 'react';
 import { addons, types } from '@storybook/addons';
-import { AxeResults } from 'axe-core';
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from './constants';
 import { VisionSimulator } from './components/VisionSimulator';
 import { A11YPanel } from './components/A11YPanel';
-import { A11yContextProvider } from './components/A11yContext';
+import { A11yContextProvider, Results } from './components/A11yContext';
 
 addons.register(ADDON_ID, (api) => {
   addons.add(PANEL_ID, {
@@ -16,7 +15,7 @@ addons.register(ADDON_ID, (api) => {
 
   addons.add(PANEL_ID, {
     title() {
-      const addonState = api?.getAddonState<AxeResults>(ADDON_ID);
+      const addonState = api?.getAddonState<Results>(ADDON_ID);
       const violationsNb = addonState?.violations?.length || 0;
       const incompleteNb = addonState?.incomplete?.length || 0;
       const totalNb = violationsNb + incompleteNb;

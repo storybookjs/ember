@@ -5,7 +5,7 @@ import { useChannel, useStorybookState, useAddonState } from '@storybook/api';
 import { STORY_CHANGED, STORY_RENDERED } from '@storybook/core-events';
 import { ADDON_ID, EVENTS } from '../constants';
 
-interface Results {
+export interface Results {
   passes: Result[];
   violations: Result[];
   incomplete: Result[];
