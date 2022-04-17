@@ -1,11 +1,12 @@
 import React from 'react';
 import { addons, types } from '@storybook/addons';
+import { AxeResults } from 'axe-core';
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from './constants';
 import { VisionSimulator } from './components/VisionSimulator';
 import { A11YPanel } from './components/A11YPanel';
 import { A11yContextProvider } from './components/A11yContext';
 
-addons.register(ADDON_ID, () => {
+addons.register(ADDON_ID, (api) => {
   addons.add(PANEL_ID, {
     title: '',
     type: types.TOOL,
@@ -14,12 +15,12 @@ addons.register(ADDON_ID, () => {
   });
 
   addons.add(PANEL_ID, {
-    title(state) {
-      const violations = (state && state.violations.length) || 0;
-      const incomplete = (state && state.incomplete.length) || 0;
-      const issues = violations + incomplete;
-      const suffix = issues === 0 ? '' : ` (${issues})`;
-      return `Accessibility${suffix}`;
+    title() {
+      const addonState = api?.getAddonState<AxeResults>(PANEL_ID);
+      const violationsNb = addonState?.violations?.length || 0;
+      const incompleteNb = addonState?.incomplete?.length || 0;
+      const totalNb = violationsNb + incompleteNb;
+      return totalNb !== 0 ? `Accessibility (${totalNb})` : 'Accessibility';
     },
     type: types.PANEL,
     render: ({ active = true, key }) => (

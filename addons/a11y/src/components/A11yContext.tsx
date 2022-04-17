@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { themes, convert } from '@storybook/theming';
 import { Result } from 'axe-core';
-import { useAddonState, useChannel, useStorybookState } from '@storybook/api';
+import { useChannel, useStorybookState, useAddonState } from '@storybook/api';
 import { STORY_CHANGED, STORY_RENDERED } from '@storybook/core-events';
-import { PANEL_ID, EVENTS } from '../constants';
+import { EVENTS, PANEL_ID } from '../constants';
 
 interface Results {
   passes: Result[];
