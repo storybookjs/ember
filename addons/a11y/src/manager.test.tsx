@@ -1,6 +1,6 @@
 import { addons } from '@storybook/addons';
 import * as api from '@storybook/api';
-import { PANEL_ID } from './constants';
+import { ADDON_ID } from './constants';
 import './manager';
 
 jest.mock('@storybook/api');
@@ -16,7 +16,7 @@ describe('A11yManager', () => {
 
     // then
     expect(mockedAddons.add.mock.calls).toHaveLength(2);
-    expect(mockedAddons.add).toHaveBeenCalledWith(PANEL_ID, expect.anything());
+    expect(mockedAddons.add).toHaveBeenCalledWith(ADDON_ID, expect.anything());
 
     const panel = mockedAddons.add.mock.calls
       .map(([_, def]) => def)
@@ -42,7 +42,7 @@ describe('A11yManager', () => {
 
   it('should compute title with issues', () => {
     // given
-    mockedApi.useAddonState.mockImplementation((_, defaultState) => [
+    mockedApi.useAddonState.mockImplementation(() => [
       { violations: [{}], incomplete: [{}, {}] },
       jest.fn(),
     ]);

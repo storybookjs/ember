@@ -16,7 +16,7 @@ addons.register(ADDON_ID, (api) => {
 
   addons.add(PANEL_ID, {
     title() {
-      const addonState = api?.getAddonState<AxeResults>(PANEL_ID);
+      const addonState = api?.getAddonState<AxeResults>(ADDON_ID);
       const violationsNb = addonState?.violations?.length || 0;
       const incompleteNb = addonState?.incomplete?.length || 0;
       const totalNb = violationsNb + incompleteNb;

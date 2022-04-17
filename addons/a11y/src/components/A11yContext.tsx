@@ -3,7 +3,7 @@ import { themes, convert } from '@storybook/theming';
 import { Result } from 'axe-core';
 import { useChannel, useStorybookState, useAddonState } from '@storybook/api';
 import { STORY_CHANGED, STORY_RENDERED } from '@storybook/core-events';
-import { EVENTS, PANEL_ID } from '../constants';
+import { ADDON_ID, EVENTS } from '../constants';
 
 interface Results {
   passes: Result[];
@@ -52,7 +52,7 @@ const defaultResult = {
 };
 
 export const A11yContextProvider: React.FC<A11yContextProviderProps> = ({ active, ...props }) => {
-  const [results, setResults] = useAddonState<Results>(PANEL_ID, defaultResult);
+  const [results, setResults] = useAddonState<Results>(ADDON_ID, defaultResult);
   const [tab, setTab] = React.useState(0);
   const [highlighted, setHighlighted] = React.useState<string[]>([]);
   const { storyId } = useStorybookState();
