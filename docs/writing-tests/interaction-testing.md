@@ -6,7 +6,7 @@ As you build more complex UIs like pages, components become responsible for more
 
 In a nutshell, you start by supplying the appropriate props for the initial state of a component. Then simulate user behavior such as clicks and form entries. Finally, check whether the UI and component state update correctly.
 
-In Storybook, this familiar workflow happens in your browser. That makes it easier to debug failures because you're running tests in the same environment as you develop components—the browser.
+In Storybook, this familiar workflow happens in your browser. That makes it easier to debug failures because you're running tests in the same environment as you develop components: the browser.
 
 ![Storybook interaction testing](./storybook-interaction-tests.gif)
 
@@ -16,8 +16,8 @@ You start by writing a [**story**](../writing-stories/introduction.md) to set up
 
 - The [`play`](../writing-stories/play-function.md) function is a small snippet of code that runs after a story finishes rendering. You can use this to test user workflows.
 - The test is written using Storybook-instrumented versions of [Jest](https://jestjs.io/) and [Testing Library](https://testing-library.com/).
-- [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/) visualizes the test in Storybook and playback interface for convenient browser-based debugging.
-- [`@storybook/test-runner`](https://github.com/storybookjs/test-runner) is a standalone utility—powered by [Playwright](https://playwright.dev/)—that executes all your interactions tests and catches broken stories.
+- [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/) visualizes the test in Storybook and provides a playback interface for convenient browser-based debugging.
+- [`@storybook/test-runner`](https://github.com/storybookjs/test-runner) is a standalone utility—powered by [Playwright](https://playwright.dev/)—that executes all of your interactions tests and catches broken stories.
 
 ## Set up the interactions addon
 
@@ -84,7 +84,7 @@ Once the story loads in the UI, it simulates the user's behavior and verifies th
 
 ## API for user-events
 
-Under the hood, Storybook’s interaction addon mirrors Testing Library’s `user-events` API. If you’re familiar with [Testing Library](https://testing-library.com/), you should be at home in Storybook.
+Under the hood, Storybook’s interaction addon mirrors Testing Library’s [`user-events`](https://testing-library.com/docs/user-event/intro/) API. If you’re familiar with [Testing Library](https://testing-library.com/), you should be at home in Storybook.
 
 Below is an abridged API for user-event. For more, check out the [official user-event docs](https://testing-library.com/docs/ecosystem-user-event/).
 

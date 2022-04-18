@@ -5,15 +5,15 @@ title: 'Test runner'
 Storybook test runner turns all of your stories into executable tests. It is powered by [Jest](https://jestjs.io/) and [Playwright](https://playwright.dev/).
 
 - For those [without a play function](../writing-stories/introduction.md): it verifies whether the story renders without any errors.
-- For those [with a play function](../writing-stories/play-function.md): it also checks for errors in the play function and all assertions passed.
+- For those [with a play function](../writing-stories/play-function.md): it also checks for errors in the play function and that all assertions passed.
 
 These tests run in a live browser and can be executed via the [command line](#cli-options) or your [CI server](#set-up-ci-to-run-tests).
 
 ## Setup
 
-The test runner is a standalone, framework-agnostic addon that runs parallel to your Storybook. You will need to take some additional steps to set it up properly. Detailed below is our recommendation to configure and execute it.
+The test-runner is a standalone, framework-agnostic utility that runs parallel to your Storybook. You will need to take some additional steps to set it up properly. Detailed below is our recommendation to configure and execute it.
 
-Run the following command to install the addon and the required dependencies.
+Run the following command to install it and the required dependencies.
 
 <!-- prettier-ignore-start -->
 
@@ -51,10 +51,10 @@ Start your Storybook with:
 <!-- prettier-ignore-end -->
 
 <div class="aside">
-💡 Storybook's test runner requires a running Storybook instance to run all the existing tests.
+💡 Storybook's test runner requires either a locally running Storybook instance or a published Storybook to run all the existing tests.
 </div>
 
-Finally, open a new terminal window and run the test runner with:
+Finally, open a new terminal window and run the test-runner with:
 
 <!-- prettier-ignore-start -->
 
@@ -73,8 +73,8 @@ Test runner offers zero-config support for Storybook. However, you can run `test
 
 ### CLI Options
 
-The test runner is powered by [Jest](https://jestjs.io/) and accepts all its [CLI options](https://jestjs.io/docs/cli) (e.g., `--watch`, `--maxWorkers`).
-If you're already using any of those flags in your project, you should be able to migrate them into Storybook's test runner without any issues. Listed below are all the available flags and examples of using them.
+The test-runner is powered by [Jest](https://jestjs.io/) and accepts a subset of its [CLI options](https://jestjs.io/docs/cli) (for example, `--watch`, `--maxWorkers`).
+If you're already using any of those flags in your project, you should be able to migrate them into Storybook's test-runner without any issues. Listed below are all the available flags and examples of using them.
 
 | Options                         | Description                                                                                                                      |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -105,7 +105,7 @@ If you're already using any of those flags in your project, you should be able t
 
 ### Run tests against a deployed Storybook
 
-By default, the test runner assumes that you're running it against a locally served Storybook on port `6006`. If you want to define a target URL to run against deployed Storybooks, you can use the `--url` flag or set the `TARGET_URL` environment variable. For example:
+By default, the test-runner assumes that you're running it against a locally served Storybook on port `6006`. If you want to define a target URL to run against deployed Storybooks, you can use the `--url` flag or set the `TARGET_URL` environment variable. For example:
 
 <!-- prettier-ignore-start -->
 
@@ -121,21 +121,7 @@ By default, the test runner assumes that you're running it against a locally ser
 
 ## Set up CI to run tests
 
-You can also configure the test runner to run tests on a CI environment. Documented below are some recipes to help you get started.
-
-### Run against deployed Storybooks
-
-If you're already using a CI provider (e.g., [GitHub Actions](https://github.com/features/actions), [GitLab Pipelines](https://docs.gitlab.com/ee/ci/pipelines/), [CircleCI](https://circleci.com/)) to build and publish your Storybook, you can configure your environment and run the test runner against the deployed version. Here's a recipe that uses third-party libraries (i.e., [concurrently](https://www.npmjs.com/package/concurrently), [http-server](https://www.npmjs.com/package/http-server), and [wait-on](https://www.npmjs.com/package/wait-on)).
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/storybook-test-runner-local-build-workflow.yml.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
+You can also configure the test-runner to run tests on a CI environment. Documented below are some recipes to help you get started.
 
 ### Run against deployed Storybooks via Github Actions deployment
 
@@ -153,13 +139,27 @@ If you're publishing your Storybook with services such as [Vercel](https://verce
 
 <div class="aside">
 
-💡 The published Storybook must be publicly available for this example to work. We recommend running the test server using the recipe [above](#run-against-locally-built-storybooks) if it requires authentication.
+💡 The published Storybook must be publicly available for this example to work. We recommend running the test server using the recipe [below](#run-against-non-deployed-storybooks) if it requires authentication.
 
 </div>
 
+### Run against non-deployed Storybooks
+
+You can use your CI provider (for example, [GitHub Actions](https://github.com/features/actions), [GitLab Pipelines](https://docs.gitlab.com/ee/ci/pipelines/), [CircleCI](https://circleci.com/)) to build and run the test runner against your built Storybook. Here's a recipe that relies on third-party libraries, that is to say, [concurrently](https://www.npmjs.com/package/concurrently), [http-server](https://www.npmjs.com/package/http-server), and [wait-on](https://www.npmjs.com/package/wait-on) to build Storybook and run tests with the test-runner.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-test-runner-local-build-workflow.yml.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
 ### What's the difference between Chromatic and Test runner?
 
-Test Runner is a generic testing tool that can run locally or on CI and be configured or extended to run all kinds of tests.
+The test-runner is a generic testing tool that can run locally or on CI and be configured or extended to run all kinds of tests.
 
 [Chromatic](https://www.chromatic.com/) is a cloud-based service that runs [visual](./visual-testing.md) and [interaction tests](./interaction-testing.md) (and soon accessibility tests) without setting up the test runner. It also syncs with your git provider and manages access control for private projects.
 
@@ -172,9 +172,9 @@ However, you might want to pair the test runner and Chromatic in some cases.
 
 ### Test hook API (experimental)
 
-The test runner renders a story and executes its [play function](writing-stories/play-function.md) if one exists. However, certain behaviors are impossible to achieve via the play function, which executes in the browser. For example, if you want the test runner to take visual snapshots for you, this is possible via Playwright/Jest but must be executed in Node.
+The test-runner renders a story and executes its [play function](writing-stories/play-function.md) if one exists. However, certain behaviors are impossible to achieve via the play function, which executes in the browser. For example, if you want the test-runner to take visual snapshots for you, this is possible via Playwright/Jest but must be executed in Node.
 
-The test runner exports test hooks that can be overridden globally to enable use cases like visual or DOM snapshots. These hooks give you access to the test lifecycle before and after the story is rendered.
+The test-runner exports test hooks that can be overridden globally to enable use cases like visual or DOM snapshots. These hooks give you access to the test lifecycle before and after the story is rendered.
 Listed below are the available hooks and an overview of how to use them.
 
 | Hook         | Description                                                                   |
@@ -208,7 +208,7 @@ To enable the hooks API, you'll need to add a new configuration file inside your
 
 </div>
 
-When the test runner executes, your existing tests will go through the following lifecycle:
+When the test-runner executes, your existing tests will go through the following lifecycle:
 
 - The `setup` function is executed before all the tests run.
 - The context object is generated containing the required information.
@@ -219,7 +219,11 @@ When the test runner executes, your existing tests will go through the following
 
 ### Stories.json mode
 
-When testing a local Storybook, the test runner transforms your story files into tests. For a remote Storybook, it uses the Storybook's [stories.json](../configure/overview.md#feature-flags) file (a static index of all the stories) to run the tests. Suppose you run into a situation where the local and remote Storybooks appear out of sync, or you might not even have access to the code. In that case, the `stories.json` file is guaranteed to be the most accurate representation of the deployed Storybook you are testing. To test a local Storybook using this feature, use the `--stories-json` flag as follows:
+The test-runner transforms your story files into tests when testing a local Storybook. For a remote Storybook, it uses the Storybook's [stories.json](../configure/overview.md#feature-flags) file (a static index of all the stories) to run the tests.
+
+#### Why?
+
+Suppose you run into a situation where the local and remote Storybooks appear out of sync, or you might not even have access to the code. In that case, the `stories.json` file is guaranteed to be the most accurate representation of the deployed Storybook you are testing. To test a local Storybook using this feature, use the `--stories-json` flag as follows:
 
 <!-- prettier-ignore-start -->
 
@@ -238,7 +242,7 @@ When testing a local Storybook, the test runner transforms your story files into
 
 </div>
 
-To disable it, use the `--no-stories-json` flag:
+If you need to disable it, use the `--no-stories-json` flag:
 
 <!-- prettier-ignore-start -->
 
@@ -250,6 +254,10 @@ To disable it, use the `--no-stories-json` flag:
 />
 
 <!-- prettier-ignore-end -->
+
+#### How do I check if Storybook has a `stories.json` file?
+
+Stories.json mode requires a `stories.json` file. Open a browser window and navigate to your deployed Storybook instance (for example, `https://your-storybook-url-here.com/stories.json`). You'll see a JSON file that starts with a `"v": 3` key, immediately followed by another key called "stories", which contains a map of story IDs to JSON objects.
 
 ---
 
@@ -274,7 +282,7 @@ It might be that Playwright couldn't handle testing the number of stories you ha
 ```json
 {
   "scripts": {
-    "test-storybook:ci": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"yarn build-storybook --quiet && npx http-server storybook-static --port 6006 --silent\" \"wait-on tcp:6006 && yarn test-storybook --maxWorkers=2\""
+    "test-storybook:ci": "yarn test-storybook --maxWorkers=2"
   }
 }
 ```

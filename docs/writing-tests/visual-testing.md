@@ -50,7 +50,7 @@ View it online at https://www.chromatic.com/build?appId=...&number=1.
 💡 Before running Chromatic's CLI ensure you have at least two commits added to the repository to prevent build failures, as Chromatic relies on a full Git history graph to establish the baselines. Read more about baselines in Chromatic's <a href="https://www.chromatic.com/docs/branching-and-baselines"> documentation</a>
 </div>
 
-When Chromatic finishes, it should have successfully deployed your Storybook and established the baselines (i.e., starting point) for all your component's stories. Additionally, providing you with a link to the published Storybook that you can share with your team to gather feedback.
+When Chromatic finishes, it should have successfully deployed your Storybook and established the baselines, that is to say, the starting point for all your component's stories. Additionally, providing you with a link to the published Storybook that you can share with your team to gather feedback.
 
 ![Chromatic project first build](./chromatic-first-build-optimized.png)
 

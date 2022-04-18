@@ -64,7 +64,7 @@ npm i -D @storybook/addon-storyshots-puppeteer puppeteer
 yarn add @storybook/addon-storyshots-puppeteer puppeteer
 ```
 
-Next, update your test file (e.g., `storybook.test.js`) to the following:
+Next, update your test file (for example, `storybook.test.js`) to the following:
 
 <!-- prettier-ignore-start -->
 

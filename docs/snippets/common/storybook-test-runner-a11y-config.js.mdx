@@ -3,18 +3,14 @@
 
 const { injectAxe, checkA11y } = require('axe-playwright');
 
+/*
+* See https://storybook.js.org/docs/react/writing-tests/test-runner#test-hook-api-experimental
+* to learn more about the test-runner hooks API.
+*/
 module.exports = {
-  /* Hook to execute before a story is rendered.
-   * The page argument is the Playwright's page object for the story.
-   * The context argument is a Storybook object containing the story's id, title, and name.
-   */
   async preRender(page, context) {
     await injectAxe(page);
   },
-  /* Hook to execute after a story is rendered.
-   * The page argument is the Playwright's page object for the story
-   * The context argument is a Storybook object containing the story's id, title, and name.
-   */
   async postRender(page, context) {
     await checkA11y(page, context.title.includes('Page') ? undefined : '#root');
   },

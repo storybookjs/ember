@@ -8,13 +8,13 @@ Accessibility tests audit the rendered DOM against a set of heuristics based on 
 
 ![Accessibility testing](./accessibility-testing-storybook.gif)
 
-## Accessibility testing with a11y addon
+## Accessibility checks with a11y addon
 
 Storybook provides an official [a11y addon](https://storybook.js.org/addons/@storybook/addon-a11y). Powered by Deque's [axe-core](https://github.com/dequelabs/axe-core), which automatically catches up to [57% of WCAG issues](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/).
 
 ### Set up the a11y addon
 
-If you want to run accessibility tests using the [addon](https://storybook.js.org/addons/@storybook/addon-a11y/), you'll need additional steps to set it up. Documented below is our recommendation.
+If you want to check accessibility for your stories using the [addon](https://storybook.js.org/addons/@storybook/addon-a11y/), you'll need to install it and add it to your Storybook.
 
 Run the following command to install the addon.
 
@@ -158,7 +158,9 @@ Disable accessibility testing for stories or components by adding the following 
 
 ## Automate accessibility tests with test runner
 
-Accessibility testing with Storybook shortens the feedback loop, which means you fix issues faster. You can then integrate these accessibility tests into your test automation pipeline using the Storybook [test runner](./test-runner.md#test-hook-api-experimental) and [axe-playwright](https://github.com/abhinaba-ghosh/axe-playwright).
+The most accurate way to check accessibility is manually on real devices. However, you can use automated tools to catch common accessibility issues. For example, [Axe](https://www.deque.com/axe/), on average, catches upwards to [57% of WCAG issues](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/) automatically.
+
+These tools work by auditing the rendered DOM against heuristics based on [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) rules and other industry-accepted best practices. You can then integrate these tools into your test automation pipeline using the Storybook [test runner](./test-runner.md#test-hook-api-experimental) and [axe-playwright](https://github.com/abhinaba-ghosh/axe-playwright).
 
 ### Setup
 
@@ -196,9 +198,9 @@ Add a new [configuration file](./test-runner.md#test-hook-api-experimental) insi
 
 </div>
 
-By default, Axe assumes that you're testing a page and checks whether you've specified an `<h1>` and `<main>`. However, most of your stories are for components and not pages. That's why we use the `context.title.includes('Page')` check to [enable/disable](https://github.com/abhinaba-ghosh/axe-playwright#context-optional) Axe's page-level rules.
+By default, Axe assumes that you're testing a page and checks whether you've specified an `<h1>` and `<main>`. However, not allof your stories are for page-level components. That's why we use the `context.title.includes('Page')` check to [enable/disable](https://github.com/abhinaba-ghosh/axe-playwright#context-optional) Axe's page-level rules.
 
-When you execute the test runner (i.e., `yarn test-storybook`), it will run the accessibility audit and any [interaction tests](./interaction-testing.md) you might have configured for each component story.
+When you execute the test runner (for example, with `yarn test-storybook`), it will run the accessibility audit and any [interaction tests](./interaction-testing.md) you might have configured for each component story.
 
 ![Accessibility testing with the test runner](./test-runner-a11y-optimized.png)
 
