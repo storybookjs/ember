@@ -1,3 +1,20 @@
+## 6.5.0-alpha.64 (April 18, 2022)
+
+### Features
+
+- CLI/Preact: add interactions to cli template ([#17984](https://github.com/storybookjs/storybook/pull/17984))
+
+### Bug Fixes
+
+- Interactions: Fix show length of object value on MethodCall ([#17649](https://github.com/storybookjs/storybook/pull/17649))
+- React: Fix React 18 react-dom/client dynamic import syntax ([#17987](https://github.com/storybookjs/storybook/pull/17987))
+- Svelte: Fix webpack5/babelModeV7 ([#17939](https://github.com/storybookjs/storybook/pull/17939))
+
+### Maintenance
+
+- Examples: Remove stories from deprecated `options`/`queryparams` addons ([#17977](https://github.com/storybookjs/storybook/pull/17977))
+- Chore: Format versions.ts file using repo config ([#17963](https://github.com/storybookjs/storybook/pull/17963))
+
 ## 6.5.0-alpha.63 (April 14, 2022)
 
 ### Bug Fixes
