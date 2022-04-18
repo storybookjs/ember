@@ -38,4 +38,8 @@ describe('addon-interactions', () => {
   onlyOn('preact', () => {
     it('should have interactions', test);
   });
+
+  onlyOn('svelte', () => {
+    it('should have interactions', test);
+  });
 });
