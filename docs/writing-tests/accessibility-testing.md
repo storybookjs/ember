@@ -198,7 +198,7 @@ Add a new [configuration file](./test-runner.md#test-hook-api-experimental) insi
 
 </div>
 
-By default, Axe assumes that you're testing a page and checks whether you've specified an `<h1>` and `<main>`. However, not allof your stories are for page-level components. That's why we use the `context.title.includes('Page')` check to [enable/disable](https://github.com/abhinaba-ghosh/axe-playwright#context-optional) Axe's page-level rules.
+By default, Axe assumes that you're testing a page and checks whether you've specified an `<h1>` and `<main>`. However, not all of your stories are for page-level components. That's why we use the `context.title.includes('Page')` check to [enable/disable](https://github.com/abhinaba-ghosh/axe-playwright#context-optional) Axe's page-level rules.
 
 When you execute the test runner (for example, with `yarn test-storybook`), it will run the accessibility audit and any [interaction tests](./interaction-testing.md) you might have configured for each component story.
 
