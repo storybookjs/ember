@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core",
-  "version": "6.5.0-alpha.63",
+  "version": "6.5.0-alpha.64",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,8 +40,8 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/core-client": "6.5.0-alpha.63",
-    "@storybook/core-server": "6.5.0-alpha.63"
+    "@storybook/core-client": "6.5.0-alpha.64",
+    "@storybook/core-server": "6.5.0-alpha.64"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",

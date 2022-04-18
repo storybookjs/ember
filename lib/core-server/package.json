@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-server",
-  "version": "6.5.0-alpha.63",
+  "version": "6.5.0-alpha.64",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,16 +40,16 @@
   },
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.3",
-    "@storybook/builder-webpack4": "6.5.0-alpha.63",
-    "@storybook/core-client": "6.5.0-alpha.63",
-    "@storybook/core-common": "6.5.0-alpha.63",
-    "@storybook/core-events": "6.5.0-alpha.63",
+    "@storybook/builder-webpack4": "6.5.0-alpha.64",
+    "@storybook/core-client": "6.5.0-alpha.64",
+    "@storybook/core-common": "6.5.0-alpha.64",
+    "@storybook/core-events": "6.5.0-alpha.64",
     "@storybook/csf": "0.0.2--canary.7c6c115.0",
-    "@storybook/csf-tools": "6.5.0-alpha.63",
-    "@storybook/manager-webpack4": "6.5.0-alpha.63",
-    "@storybook/node-logger": "6.5.0-alpha.63",
+    "@storybook/csf-tools": "6.5.0-alpha.64",
+    "@storybook/manager-webpack4": "6.5.0-alpha.64",
+    "@storybook/node-logger": "6.5.0-alpha.64",
     "@storybook/semver": "^7.3.2",
-    "@storybook/store": "6.5.0-alpha.63",
+    "@storybook/store": "6.5.0-alpha.64",
     "@types/node": "^14.0.10 || ^16.0.0",
     "@types/node-fetch": "^2.5.7",
     "@types/pretty-hrtime": "^1.0.0",
@@ -85,7 +85,7 @@
     "x-default-browser": "^0.4.0"
   },
   "devDependencies": {
-    "@storybook/builder-webpack5": "6.5.0-alpha.63",
+    "@storybook/builder-webpack5": "6.5.0-alpha.64",
     "@types/compression": "^1.7.0",
     "@types/ip": "^1.1.0",
     "@types/serve-favicon": "^2.5.2",

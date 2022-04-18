@@ -1,6 +1,6 @@
 {
   "name": "@storybook/core-client",
-  "version": "6.5.0-alpha.63",
+  "version": "6.5.0-alpha.64",
   "description": "Storybook framework-agnostic API",
   "keywords": [
     "storybook"
@@ -40,16 +40,16 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.63",
-    "@storybook/channel-postmessage": "6.5.0-alpha.63",
-    "@storybook/channel-websocket": "6.5.0-alpha.63",
-    "@storybook/client-api": "6.5.0-alpha.63",
-    "@storybook/client-logger": "6.5.0-alpha.63",
-    "@storybook/core-events": "6.5.0-alpha.63",
+    "@storybook/addons": "6.5.0-alpha.64",
+    "@storybook/channel-postmessage": "6.5.0-alpha.64",
+    "@storybook/channel-websocket": "6.5.0-alpha.64",
+    "@storybook/client-api": "6.5.0-alpha.64",
+    "@storybook/client-logger": "6.5.0-alpha.64",
+    "@storybook/core-events": "6.5.0-alpha.64",
     "@storybook/csf": "0.0.2--canary.7c6c115.0",
-    "@storybook/preview-web": "6.5.0-alpha.63",
-    "@storybook/store": "6.5.0-alpha.63",
-    "@storybook/ui": "6.5.0-alpha.63",
+    "@storybook/preview-web": "6.5.0-alpha.64",
+    "@storybook/store": "6.5.0-alpha.64",
+    "@storybook/ui": "6.5.0-alpha.64",
     "airbnb-js-shims": "^2.2.1",
     "ansi-to-html": "^0.6.11",
     "core-js": "^3.8.2",
