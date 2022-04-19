@@ -8,13 +8,13 @@ Add the following modules into your app.
 npm install @storybook/addon-storyshots-puppeteer puppeteer --save-dev
 ```
 
-⚠️ As of Storybook 5.3 `puppeteer` is no more included in addon dependencies and must be added to your project directly.
+⚠️ As of Storybook 5.3 `puppeteer` is no longer included in the addon dependencies and must be added to your project directly.
 
 ## Configure Storyshots for Puppeteer tests
 
 ⚠️ **React-native** is **not supported** by this test function.
 
-When willing to run Puppeteer tests for your stories, you have two options:
+When running Puppeteer tests for your stories, you have two options:
 
 - Have a storybook running (ie. accessible via http(s), for instance using `npm run storybook`)
 - Have a static build of the storybook (for instance, using `npm run build-storybook`)
