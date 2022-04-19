@@ -150,7 +150,7 @@ Disable accessibility testing for stories or components by adding the following 
 
 ## Automate accessibility tests with Jest
 
-Accessibility testing with Storybook shortens the feedback loop which means you fix issues faster. Reuse stories in a Jest test and run an accessibility audit on them using the the [jest-axe integration](https://github.com/nickcolley/jest-axe). That also unlocks the ability to integrate accessibility tests into your functional testing pipeline.
+Accessibility testing with Storybook shortens the feedback loop which means you fix issues faster. Reuse stories in a Jest test and run an accessibility audit on them using the [jest-axe integration](https://github.com/nickcolley/jest-axe). That also unlocks the ability to integrate accessibility tests into your functional testing pipeline.
 
 For example, include the following test file to run an accessibility test on a story:
 

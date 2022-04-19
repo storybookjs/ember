@@ -27,6 +27,7 @@ export const styled = emotionStyled as CreateStyled<Theme>;
 export * from './base';
 export * from './types';
 
+export { default as createCache } from '@emotion/cache';
 export { default as isPropValid } from '@emotion/is-prop-valid';
 
 export { createGlobal, createReset } from './global';

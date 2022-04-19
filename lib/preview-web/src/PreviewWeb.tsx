@@ -4,7 +4,7 @@ import global from 'global';
 import Events, { IGNORED_EXCEPTION } from '@storybook/core-events';
 import { logger } from '@storybook/client-logger';
 import { AnyFramework, StoryId, ProjectAnnotations, Args, Globals } from '@storybook/csf';
-import {
+import type {
   ModuleImportFn,
   Selection,
   Story,
@@ -66,6 +66,7 @@ export class PreviewWeb<TFramework extends AnyFramework> extends Preview<TFramew
 
     this.channel.on(Events.SET_CURRENT_STORY, this.onSetCurrentStory.bind(this));
     this.channel.on(Events.UPDATE_QUERY_PARAMS, this.onUpdateQueryParams.bind(this));
+    this.channel.on(Events.PRELOAD_STORIES, this.onPreloadStories.bind(this));
   }
 
   initializeWithProjectAnnotations(projectAnnotations: WebProjectAnnotations<TFramework>) {
@@ -206,6 +207,10 @@ export class PreviewWeb<TFramework extends AnyFramework> extends Preview<TFramew
     // However, in `modernInlineRender`, the individual stories track their own events as they
     // each call `renderStoryToElement` below.
     if (this.currentRender instanceof DocsRender) await this.currentRender.rerender();
+  }
+
+  async onPreloadStories(ids: string[]) {
+    await Promise.all(ids.map((id) => this.storyStore.loadStory({ storyId: id })));
   }
 
   // RENDERING

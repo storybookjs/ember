@@ -1022,6 +1022,18 @@ describe('PreviewWeb', () => {
     });
   });
 
+  describe('onPreloadStories', () => {
+    it('loads stories', async () => {
+      document.location.search = '?id=component-one--a&viewMode=docs';
+      const preview = await createAndRenderPreview();
+      await waitForRender();
+
+      importFn.mockClear();
+      await preview.onPreloadStories(['component-two--c']);
+      expect(importFn).toHaveBeenCalledWith('./src/ComponentTwo.stories.js');
+    });
+  });
+
   describe('onResetArgs', () => {
     it('emits STORY_ARGS_UPDATED', async () => {
       document.location.search = '?id=component-one--a';
