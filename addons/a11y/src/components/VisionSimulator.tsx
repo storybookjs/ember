@@ -145,16 +145,13 @@ export const VisionSimulator = () => {
         closeOnClick
         onDoubleClick={() => setFilter(null)}
       >
-        <div id="lol">
-          coucou
-          {/* <IconButton key="filter" active={!!filter} title="Vision simulator">
-            <Icons icon="accessibility" />
-          </IconButton> */}
-        </div>
+        <IconButton key="filter" active={!!filter} title="Vision simulator">
+          <Icons icon="accessibility" />
+        </IconButton>
       </WithTooltip>
-      {/* <Hidden>
+      <Hidden>
         <Filters />
-      </Hidden> */}
+      </Hidden>
     </>
   );
 };
