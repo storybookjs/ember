@@ -8,7 +8,7 @@ const List = styled.div<{}>(
     minWidth: 180,
     overflow: 'hidden',
     overflowY: 'auto',
-    maxHeight: 10 * 50, // 10 items with description
+    maxHeight: 13.5 * 32, // 11.5 items
   },
   ({ theme }) => ({
     borderRadius: theme.appBorderRadius * 2,
@@ -28,6 +28,7 @@ export interface TooltipLinkListProps {
 
 const Item: FunctionComponent<TooltipLinkListProps['links'][number]> = (props) => {
   const { LinkWrapper, onClick: onClickFromProps, ...rest } = props;
+  const { title, href, active } = rest;
   const onClick = useCallback(
     (event: SyntheticEvent) => {
       onClickFromProps(event, rest);
@@ -37,7 +38,16 @@ const Item: FunctionComponent<TooltipLinkListProps['links'][number]> = (props) =
 
   const hasOnClick = !!onClickFromProps;
 
-  return <ListItem LinkWrapper={LinkWrapper} {...rest} {...(hasOnClick ? { onClick } : {})} />;
+  return (
+    <ListItem
+      title={title}
+      active={active}
+      href={href}
+      LinkWrapper={LinkWrapper}
+      {...rest}
+      {...(hasOnClick ? { onClick } : {})}
+    />
+  );
 };
 
 export const TooltipLinkList: FunctionComponent<TooltipLinkListProps> = ({

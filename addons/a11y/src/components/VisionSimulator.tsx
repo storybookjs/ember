@@ -71,6 +71,20 @@ export interface Link {
   onClick: () => void;
 }
 
+const Column = styled.span({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const Title = styled.span({
+  textTransform: 'capitalize',
+});
+
+const Description = styled.span({
+  fontSize: '0.9em',
+  color: 'gray',
+});
+
 const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
   ...(active !== null
     ? [
@@ -85,19 +99,26 @@ const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
         },
       ]
     : []),
-  ...baseList.map((i) => ({
-    id: i.name,
-    title: i.name.charAt(0).toUpperCase() + i.name.slice(1),
-    description: i.percentage !== undefined ? `${i.percentage}% of users` : undefined,
-    onClick: () => {
-      set(i);
-    },
-    right: <ColorIcon filter={i} />,
-    active: active === i,
-  })),
+  ...baseList.map((i) => {
+    const description = i.percentage !== undefined ? `${i.percentage}% of users` : undefined;
+    return {
+      id: i.name,
+      title: (
+        <Column>
+          <Title>{i.name}</Title>
+          {description && <Description>{description}</Description>}
+        </Column>
+      ),
+      onClick: () => {
+        set(i);
+      },
+      right: <ColorIcon filter={i} />,
+      active: active === i,
+    };
+  }),
 ];
 
-export const VisionSimulator: FunctionComponent = () => {
+export const VisionSimulator = () => {
   const [filter, setFilter] = useState<Filter>(null);
 
   return (
@@ -124,13 +145,16 @@ export const VisionSimulator: FunctionComponent = () => {
         closeOnClick
         onDoubleClick={() => setFilter(null)}
       >
-        <IconButton key="filter" active={!!filter} title="Vision simulator">
-          <Icons icon="accessibility" />
-        </IconButton>
+        <div id="lol">
+          coucou
+          {/* <IconButton key="filter" active={!!filter} title="Vision simulator">
+            <Icons icon="accessibility" />
+          </IconButton> */}
+        </div>
       </WithTooltip>
-      <Hidden>
+      {/* <Hidden>
         <Filters />
-      </Hidden>
+      </Hidden> */}
     </>
   );
 };

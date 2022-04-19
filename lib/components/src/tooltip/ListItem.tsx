@@ -73,24 +73,13 @@ const Right = styled.span<RightProps>(
 );
 
 const Center = styled.span({
+  flex: 1,
   textAlign: 'left',
   display: 'inline-flex',
 
   '& > * + *': {
     paddingLeft: 10,
   },
-});
-
-const Column = styled.span({
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'stretch',
-});
-
-const Description = styled.span({
-  fontSize: '0.85em',
-  color: 'gray',
 });
 
 export interface CenterTextProps {
@@ -199,7 +188,6 @@ export interface ListItemProps extends Omit<ComponentProps<typeof Item>, 'href' 
   loading?: boolean;
   left?: ReactNode;
   title?: ReactNode;
-  description?: ReactNode;
   center?: ReactNode;
   right?: ReactNode;
   active?: boolean;
@@ -212,7 +200,6 @@ const ListItem: FunctionComponent<ListItemProps> = ({
   loading,
   left,
   title,
-  description,
   center,
   right,
   active,
@@ -229,17 +216,14 @@ const ListItem: FunctionComponent<ListItemProps> = ({
     <Item {...commonProps} {...rest} {...itemProps}>
       {left && <Left {...commonProps}>{left}</Left>}
       {title || center ? (
-        <Column>
-          <Center>
-            {title && (
-              <Title {...commonProps} loading={loading}>
-                {title}
-              </Title>
-            )}
-            {center && <CenterText {...commonProps}>{center}</CenterText>}
-          </Center>
-          {description && <Description>{description}</Description>}
-        </Column>
+        <Center>
+          {title && (
+            <Title {...commonProps} loading={loading}>
+              {title}
+            </Title>
+          )}
+          {center && <CenterText {...commonProps}>{center}</CenterText>}
+        </Center>
       ) : null}
       {right && <Right {...commonProps}>{right}</Right>}
     </Item>
