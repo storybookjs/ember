@@ -28,13 +28,9 @@ export const Template = (args) => ({
       const canvas = within(canvasElement);
 
       // 👇 Simulate interactions
-      await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
-        delay: 100,
-      });
-
-      await userEvent.type(canvas.getByTestId('password'), 'a-random-password', {
-        delay: 100,
-      });
+      await userEvent.type(canvas.getByTestId('email'), 'email@provider.com');
+      
+      await userEvent.type(canvas.getByTestId('password'), 'a-random-password');
 
       // See https://storybook.js.org/docs/svelte/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
       await userEvent.click(canvas.getByRole('button'));

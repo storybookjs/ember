@@ -157,6 +157,12 @@ You can use your CI provider (for example, [GitHub Actions](https://github.com/f
 
 <!-- prettier-ignore-end -->
 
+<div class="aside">
+
+💡 By default Storybook outputs the [build](../sharing/publish-storybook.md#build-storybook-as-a-static-web-application) to the `storybook-static` directory. If you're using a different build directory, you'll need to adjust the recipe accordingly.
+
+</div>
+
 ### What's the difference between Chromatic and Test runner?
 
 The test-runner is a generic testing tool that can run locally or on CI and be configured or extended to run all kinds of tests.
@@ -174,7 +180,7 @@ However, you might want to pair the test runner and Chromatic in some cases.
 
 The test-runner renders a story and executes its [play function](writing-stories/play-function.md) if one exists. However, certain behaviors are impossible to achieve via the play function, which executes in the browser. For example, if you want the test-runner to take visual snapshots for you, this is possible via Playwright/Jest but must be executed in Node.
 
-The test-runner exports test hooks that can be overridden globally to enable use cases like visual or DOM snapshots. These hooks give you access to the test lifecycle before and after the story is rendered.
+The test-runner exports test hooks that can be overridden globally to enable use cases like visual or DOM snapshots. These hooks give you access to the test lifecycle _before_ and _after_ the story is rendered.
 Listed below are the available hooks and an overview of how to use them.
 
 | Hook         | Description                                                                   |
@@ -255,9 +261,9 @@ If you need to disable it, use the `--no-stories-json` flag:
 
 <!-- prettier-ignore-end -->
 
-#### How do I check if Storybook has a `stories.json` file?
+#### How do I check if my Storybook has a `stories.json` file?
 
-Stories.json mode requires a `stories.json` file. Open a browser window and navigate to your deployed Storybook instance (for example, `https://your-storybook-url-here.com/stories.json`). You'll see a JSON file that starts with a `"v": 3` key, immediately followed by another key called "stories", which contains a map of story IDs to JSON objects.
+Stories.json mode requires a `stories.json` file. Open a browser window and navigate to your deployed Storybook instance (for example, `https://your-storybook-url-here.com/stories.json`). You should see a JSON file that starts with a `"v": 3` key, immediately followed by another key called "stories", which contains a map of story IDs to JSON objects. If that is the case, your Storybook supports [stories.json mode](../configure/overview.md#feature-flags).
 
 ---
 

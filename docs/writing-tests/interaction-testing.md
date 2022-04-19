@@ -17,7 +17,7 @@ You start by writing a [**story**](../writing-stories/introduction.md) to set up
 - The [`play`](../writing-stories/play-function.md) function is a small snippet of code that runs after a story finishes rendering. You can use this to test user workflows.
 - The test is written using Storybook-instrumented versions of [Jest](https://jestjs.io/) and [Testing Library](https://testing-library.com/).
 - [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions/) visualizes the test in Storybook and provides a playback interface for convenient browser-based debugging.
-- [`@storybook/test-runner`](https://github.com/storybookjs/test-runner) is a standalone utility—powered by [Playwright](https://playwright.dev/)—that executes all of your interactions tests and catches broken stories.
+- [`@storybook/test-runner`](https://github.com/storybookjs/test-runner) is a standalone utility—powered by [Jest](https://jestjs.io/) and [Playwright](https://playwright.dev/)—that executes all of your interactions tests and catches broken stories.
 
 ## Set up the interactions addon
 
