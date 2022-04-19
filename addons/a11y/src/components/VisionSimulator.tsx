@@ -6,29 +6,34 @@ import { Filters } from './ColorFilters';
 
 const iframeId = 'storybook-preview-iframe';
 
-const baseList = [
-  'blurred vision',
-  'deuteranomaly',
-  'deuteranopia',
-  'protanomaly',
-  'protanopia',
-  'tritanomaly',
-  'tritanopia',
-  'achromatomaly',
-  'achromatopsia',
-  'grayscale',
-] as const;
+interface Option {
+  name: string;
+  percentage?: number;
+}
 
-type Filter = typeof baseList[number] | null;
+const baseList = [
+  { name: 'blurred vision', percentage: 22.9 },
+  { name: 'deuteranomaly', percentage: 2.7 },
+  { name: 'deuteranopia', percentage: 0.56 },
+  { name: 'protanomaly', percentage: 0.66 },
+  { name: 'protanopia', percentage: 0.59 },
+  { name: 'tritanomaly', percentage: 0.01 },
+  { name: 'tritanopia', percentage: 0.016 },
+  { name: 'achromatomaly', percentage: 0.00001 },
+  { name: 'achromatopsia', percentage: 0.0001 },
+  { name: 'grayscale' },
+] as Option[];
+
+type Filter = Option | null;
 
 const getFilter = (filter: Filter) => {
   if (!filter) {
     return 'none';
   }
-  if (filter === 'blurred vision') {
+  if (filter.name === 'blurred vision') {
     return 'blur(2px)';
   }
-  if (filter === 'grayscale') {
+  if (filter.name === 'grayscale') {
     return 'grayscale(100%)';
   }
   return `url('#${filter}')`;
@@ -81,8 +86,9 @@ const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
       ]
     : []),
   ...baseList.map((i) => ({
-    id: i,
-    title: i.charAt(0).toUpperCase() + i.slice(1),
+    id: i.name,
+    title: i.name.charAt(0).toUpperCase() + i.name.slice(1),
+    description: i.percentage !== undefined ? `${i.percentage}% of users` : undefined,
     onClick: () => {
       set(i);
     },
