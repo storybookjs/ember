@@ -2,9 +2,9 @@
   <article>
     <my-header
       :user="user"
-      @onLogin="onLogin"
-      @onLogout="onLogout"
-      @onCreateAccount="onCreateAccount"
+      @login="user = { name: 'Jane Doe' }"
+      @logout="user = null"
+      @createAccount="user = { name: 'Jane Doe' }"
     />
 
     <section>
@@ -67,22 +67,10 @@ export default {
 
   components: { MyHeader },
 
-  props: {
-    user: {
-      type: Object,
-    },
-  },
-
-  methods: {
-    onLogin() {
-      this.$emit('onLogin');
-    },
-    onLogout() {
-      this.$emit('onLogout');
-    },
-    onCreateAccount() {
-      this.$emit('onCreateAccount');
-    },
+  data() {
+    return {
+      user: null,
+    };
   },
 };
 </script>
