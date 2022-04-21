@@ -55,7 +55,8 @@ With that, you can link an event in a component to any story in the Storybook.
 You can also pass a function instead for any of above parameter. That function accepts arguments emitted by the event and it should return a string:
 
 ```js
-import { LinkTo, linkTo } from '@storybook/addon-links';
+import { linkTo } from '@storybook/addon-links';
+import LinkTo from '@storybook/addon-links/react';
 
 export default {
   title: 'Select',
