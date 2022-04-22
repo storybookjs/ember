@@ -293,6 +293,10 @@ It might be that Playwright couldn't handle testing the number of stories you ha
 }
 ```
 
+### The error output in the CLI is too short
+
+By default, the test runner truncates error outputs at 1000 characters, and you can check the full output directly in Storybook in the browser. However, if you want to change that limit, you can do so by setting the `DEBUG_PRINT_LIMIT` environment variable to a number of your choosing, for example, `DEBUG_PRINT_LIMIT=5000 yarn test-storybook`.
+
 ### Run the test runner in other CI environments
 
 As the test runner is based on Playwright, you might need to use specific docker images or other configurations depending on your CI setup. In that case, you can refer to the [Playwright CI docs](https://playwright.dev/docs/ci) for more information.
