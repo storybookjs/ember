@@ -17,6 +17,6 @@ export async function webpackFinal(webpackConfig: Configuration, options: Option
   return webpackConfig;
 }
 
-export const config: StorybookConfig['config'] = (entry = []) => {
+export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entry = []) => {
   return [...entry, findDistEsm(__dirname, 'client/docs/config')];
 };

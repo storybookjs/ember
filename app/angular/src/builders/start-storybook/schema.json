@@ -96,8 +96,7 @@
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         }
       },
       "additionalProperties": false,

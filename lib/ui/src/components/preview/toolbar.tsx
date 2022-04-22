@@ -17,6 +17,9 @@ import { copyTool } from './tools/copy';
 import { ejectTool } from './tools/eject';
 import { menuTool } from './tools/menu';
 import { addonsTool } from './tools/addons';
+import { remountTool } from './tools/remount';
+
+const TOOLBAR_EXCLUSION_PARAM = 'toolbarExclude';
 
 export const getTools = (getFn: API['getElements']) => Object.values(getFn<Addon>(types.TOOL));
 
@@ -56,15 +59,13 @@ export const fullScreenTool: Addon = {
     <Consumer filter={fullScreenMapper}>
       {({ toggle, value, shortcut, hasPanel, singleStory }) =>
         (!singleStory || (singleStory && hasPanel)) && (
-          <S.DesktopOnly>
-            <IconButton
-              key="full"
-              onClick={toggle as any}
-              title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
-            >
-              <Icons icon={value ? 'close' : 'expand'} />
-            </IconButton>
-          </S.DesktopOnly>
+          <IconButton
+            key="full"
+            onClick={toggle as any}
+            title={`${value ? 'Exit full screen' : 'Go full screen'} [${shortcut}]`}
+          >
+            <Icons icon={value ? 'close' : 'expand'} />
+          </IconButton>
         )
       }
     </Consumer>
@@ -108,7 +109,7 @@ export const createTabsTool = (tabs: Addon[]): Addon => ({
   ),
 });
 
-export const defaultTools: Addon[] = [zoomTool];
+export const defaultTools: Addon[] = [remountTool, zoomTool];
 export const defaultToolsExtra: Addon[] = [addonsTool, fullScreenTool, ejectTool, copyTool];
 
 const useTools = (
@@ -117,7 +118,8 @@ const useTools = (
   viewMode: PreviewProps['viewMode'],
   story: PreviewProps['story'],
   location: PreviewProps['location'],
-  path: PreviewProps['path']
+  path: PreviewProps['path'],
+  getQueryParam: API['getQueryParam']
 ) => {
   const toolsFromConfig = useMemo(() => getTools(getElements), [getElements]);
   const toolsExtraFromConfig = useMemo(() => getToolsExtra(getElements), [getElements]);
@@ -131,9 +133,20 @@ const useTools = (
     [defaultToolsExtra, toolsExtraFromConfig]
   );
 
+  const toolbarExclusions: string[] =
+    getQueryParam && getQueryParam(TOOLBAR_EXCLUSION_PARAM)
+      ? getQueryParam(TOOLBAR_EXCLUSION_PARAM).split(',')
+      : [];
+
   return useMemo(() => {
     return story && story.parameters
-      ? filterTools(tools, toolsExtra, tabs, { viewMode, story, location, path })
+      ? filterTools(tools, toolsExtra, tabs, {
+          viewMode,
+          story,
+          location,
+          path,
+          toolbarExclusions,
+        })
       : { left: tools, right: toolsExtra };
   }, [viewMode, story, location, path, tools, toolsExtra, tabs]);
 };
@@ -147,7 +160,15 @@ export interface ToolData {
 
 export const ToolRes: FunctionComponent<ToolData & RenderData> = React.memo<ToolData & RenderData>(
   ({ api, story, tabs, isShown, location, path, viewMode }) => {
-    const { left, right } = useTools(api.getElements, tabs, viewMode, story, location, path);
+    const { left, right } = useTools(
+      api.getElements,
+      tabs,
+      viewMode,
+      story,
+      location,
+      path,
+      api.getQueryParam
+    );
 
     return left || right ? (
       <Toolbar key="toolbar" shown={isShown} border>
@@ -192,16 +213,24 @@ export function filterTools(
     story,
     location,
     path,
+    toolbarExclusions,
   }: {
     viewMode: State['viewMode'];
     story: PreviewProps['story'];
     location: State['location'];
     path: State['path'];
+    toolbarExclusions: string[];
   }
 ) {
+  const isToolIncluded = (id: string) =>
+    toolbarExclusions.filter((exclusionKey) => id.match(new RegExp(`^${exclusionKey}.*`)))
+      .length === 0;
+
+  const filteredTabs = tabs.filter((tab) => isToolIncluded(tab.id));
+
   const toolsLeft = [
     menuTool,
-    tabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(tabs),
+    filteredTabs.filter((p) => !p.hidden).length >= 1 && createTabsTool(filteredTabs),
     ...tools,
   ];
   const toolsRight = [...toolsExtra];
@@ -216,7 +245,8 @@ export function filterTools(
         location,
         path,
       })) &&
-    !toolbarItemHasBeenExcluded(item, story);
+    !toolbarItemHasBeenExcluded(item, story) &&
+    isToolIncluded(item.id);
 
   const left = toolsLeft.filter(filter);
   const right = toolsRight.filter(filter);

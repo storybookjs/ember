@@ -8,7 +8,7 @@ Storybook's `IconGallery` Doc Block enables you easily document all icons associ
 
 ## Working with MDX
 
-Similar to other documentation-oriented Doc Blocks such as [`TypeSet`](./doc-block-typeset.md), or [`ColorPallete`](./doc-block-colorpalette.md), the `IconGallery` is also typically used with MDX. It allows you to provide additional customization via options. Below is a condensed example and table featuring all the available options.
+Similar to other documentation-oriented Doc Blocks such as [`TypeSet`](./doc-block-typeset.md), or [`ColorPalette`](./doc-block-colorpalette.md), the `IconGallery` is also typically used with MDX. It allows you to provide additional customization via options. Below is a condensed example and table featuring all the available options.
 
 <!-- prettier-ignore-start -->
 

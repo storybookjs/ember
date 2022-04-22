@@ -50,6 +50,14 @@ export interface CoreConfig {
   builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
+  /**
+   * enable CORS headings to run document in a "secure context"
+   * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements
+   * This enables these headers in development-mode:
+   *   Cross-Origin-Opener-Policy: same-origin
+   *   Cross-Origin-Embedder-Policy: require-corp
+   */
+  crossOriginIsolated?: boolean;
 }
 
 interface DirectoryMapping {
@@ -412,6 +420,13 @@ export interface StorybookConfig {
 
   /**
    * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   *
+   * @deprecated use `previewAnnotations` or `/preview.js` file instead
    */
   config?: (entries: Entry[], options: Options) => Entry[];
+
+  /**
+   * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   */
+  previewAnnotations?: (entries: Entry[], options: Options) => Entry[];
 }

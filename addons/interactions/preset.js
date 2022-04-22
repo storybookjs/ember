@@ -1,15 +1,10 @@
-function config(entry = []) {
-  return [...entry, require.resolve('./dist/esm/preset/argsEnhancers')];
-}
+const { checkActionsLoaded } = require('./dist/cjs/preset/checkActionsLoaded');
 
-function managerEntries(entry = [], options) {
-  // eslint-disable-next-line global-require
-  const { checkActionsLoaded } = require('./dist/cjs/preset/checkActionsLoaded');
+function previewAnnotations(entry = [], options) {
   checkActionsLoaded(options.configDir);
-  return [...entry, require.resolve('./dist/esm/register')];
+  return entry;
 }
 
 module.exports = {
-  config,
-  managerEntries,
+  previewAnnotations,
 };

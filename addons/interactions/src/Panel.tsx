@@ -2,7 +2,7 @@ import global from 'global';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { useChannel, useParameter, StoryId } from '@storybook/api';
-import { STORY_RENDER_PHASE_CHANGED } from '@storybook/core-events';
+import { STORY_RENDER_PHASE_CHANGED, FORCE_REMOUNT } from '@storybook/core-events';
 import { AddonPanel, Link, Placeholder } from '@storybook/components';
 import { EVENTS, Call, CallStates, ControlStates, LogItem } from '@storybook/instrumenter';
 import { styled } from '@storybook/theming';
@@ -17,6 +17,7 @@ export interface Controls {
   goto: (args: any) => void;
   next: (args: any) => void;
   end: (args: any) => void;
+  rerun: (args: any) => void;
 }
 
 interface AddonPanelProps {
@@ -34,6 +35,8 @@ interface InteractionsPanelProps {
   calls: Map<string, any>;
   endRef?: React.Ref<HTMLDivElement>;
   onScrollToEnd?: () => void;
+  isRerunAnimating: boolean;
+  setIsRerunAnimating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const INITIAL_CONTROL_STATES = {
@@ -65,6 +68,8 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
     isPlaying,
     onScrollToEnd,
     endRef,
+    isRerunAnimating,
+    setIsRerunAnimating,
     ...panelProps
   }) => (
     <AddonPanel {...panelProps}>
@@ -78,6 +83,8 @@ export const AddonPanelPure: React.FC<InteractionsPanelProps> = React.memo(
           }
           storyFileName={fileName}
           onScrollToEnd={onScrollToEnd}
+          isRerunAnimating={isRerunAnimating}
+          setIsRerunAnimating={setIsRerunAnimating}
         />
       )}
       {interactions.map((call) => (
@@ -110,6 +117,7 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
   const [storyId, setStoryId] = React.useState<StoryId>();
   const [controlStates, setControlStates] = React.useState<ControlStates>(INITIAL_CONTROL_STATES);
   const [isPlaying, setPlaying] = React.useState(false);
+  const [isRerunAnimating, setIsRerunAnimating] = React.useState(false);
   const [scrollTarget, setScrollTarget] = React.useState<HTMLElement>();
 
   // Calls are tracked in a ref so we don't needlessly rerender.
@@ -154,6 +162,10 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
       goto: (callId: string) => emit(EVENTS.GOTO, { storyId, callId }),
       next: () => emit(EVENTS.NEXT, { storyId }),
       end: () => emit(EVENTS.END, { storyId }),
+      rerun: () => {
+        setIsRerunAnimating(true);
+        emit(FORCE_REMOUNT, { storyId });
+      },
     }),
     [storyId]
   );
@@ -181,6 +193,8 @@ export const Panel: React.FC<AddonPanelProps> = (props) => {
         isPlaying={isPlaying}
         endRef={endRef}
         onScrollToEnd={scrollTarget && scrollToTarget}
+        isRerunAnimating={isRerunAnimating}
+        setIsRerunAnimating={setIsRerunAnimating}
         {...props}
       />
     </React.Fragment>

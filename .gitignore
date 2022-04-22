@@ -35,6 +35,7 @@ tsconfig.tsbuildinfo
 lib/manager-webpack4/prebuilt
 lib/manager-webpack5/prebuilt
 examples/angular-cli/addon-jest.testresults.json
+junit.xml
 
 # Yarn stuff
 /**/.yarn/*

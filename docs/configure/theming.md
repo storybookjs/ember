@@ -85,6 +85,7 @@ Above, we're creating a new theme that will:
 - Use Storybook's `light` theme as a baseline.
 - Replace Storybook's logo in the sidebar with our own (defined in the brandImage variable).
 - Add custom branding information.
+- Set the brand link to open in the same window (as opposed to a new one), via the `target` attribute.
 
 Finally, we'll need to import the theme into Storybook. Create a new file called `manager.js` in your `.storybook` directory and add the following:
 

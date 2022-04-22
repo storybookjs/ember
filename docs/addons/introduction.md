@@ -22,7 +22,7 @@ The **Preview** area is an `iframe` where your stories are rendered.
 
 ![Storybook detailed window](./manager-preview.jpg)
 
-Because both elements run in their own separate `iframes`, they use a communication channel to keep in synch. For example when you select a story in the Manager a event is dispatched across the channel notifying the Preview to render the story.
+Because both elements run in their own separate `iframes`, they use a communication channel to keep in sync. For example when you select a story in the Manager an event is dispatched across the channel notifying the Preview to render the story.
 
 ## Anatomy of an addon
 

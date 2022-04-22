@@ -1,3 +1,4 @@
+import memoize from 'memoizerific';
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
@@ -327,3 +328,17 @@ export function isStory(item: Item): item is Story {
   }
   return false;
 }
+
+export const getComponentLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.entries(hash).reduce((acc, i) => {
+    const value = i[1];
+    if (value.isComponent) {
+      acc.push([...i[1].children]);
+    }
+    return acc;
+  }, [] as StoryId[][]);
+});
+
+export const getStoriesLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.keys(hash).filter((k) => !(hash[k].children || Array.isArray(hash[k])));
+});

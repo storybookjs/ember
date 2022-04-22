@@ -26,6 +26,9 @@ export async function storybookDevServer(options: Options) {
 
   app.use(compression({ level: 1 }));
 
+  const features = await options.presets.apply<StorybookConfig['features']>('features');
+  const core = await options.presets.apply<StorybookConfig['core']>('core');
+
   if (typeof options.extendServer === 'function') {
     options.extendServer(server);
   }
@@ -35,18 +38,25 @@ export async function storybookDevServer(options: Options) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     // These headers are required to enable SharedArrayBuffer
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
-    res.header('Cross-Origin-Opener-Policy', 'same-origin');
-    res.header('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
   });
 
-  // User's own static files
-  await useStatics(router, options);
+  if (core?.crossOriginIsolated) {
+    app.use((req, res, next) => {
+      // These headers are required to enable SharedArrayBuffer
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
+      res.header('Cross-Origin-Opener-Policy', 'same-origin');
+      res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+      next();
+    });
+  }
 
-  const features = await options.presets.apply<StorybookConfig['features']>('features');
   if (features?.buildStoriesJson || features?.storyStoreV7) {
     await useStoriesJson(router, serverChannel, options);
   }
+
+  // User's own static files
+  await useStatics(router, options);
 
   getMiddleware(options.configDir)(router);
   app.use(router);
@@ -86,14 +96,20 @@ export async function storybookDevServer(options: Options) {
   });
 
   const [previewResult, managerResult] = await Promise.all([
-    preview,
+    preview.catch(async (err) => {
+      await managerBuilder.bail();
+      throw err;
+    }),
     manager
       // TODO #13083 Restore this when compiling the preview is fast enough
       // .then((result) => {
       //   if (!options.ci && !options.smokeTest) openInBrowser(address);
       //   return result;
       // })
-      .catch(previewBuilder.bail),
+      .catch(async (err) => {
+        await previewBuilder.bail();
+        throw err;
+      }),
   ]);
 
   // TODO #13083 Remove this when compiling the preview is fast enough
