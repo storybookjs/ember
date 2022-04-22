@@ -42,4 +42,8 @@ describe('addon-interactions', () => {
   onlyOn('vue', () => {
     it('should have interactions', test);
   });
+
+  onlyOn('svelte', () => {
+    it('should have interactions', test);
+  });
 });

@@ -17,6 +17,7 @@ import { copyTool } from './tools/copy';
 import { ejectTool } from './tools/eject';
 import { menuTool } from './tools/menu';
 import { addonsTool } from './tools/addons';
+import { remountTool } from './tools/remount';
 
 const TOOLBAR_EXCLUSION_PARAM = 'toolbarExclude';
 
@@ -108,7 +109,7 @@ export const createTabsTool = (tabs: Addon[]): Addon => ({
   ),
 });
 
-export const defaultTools: Addon[] = [zoomTool];
+export const defaultTools: Addon[] = [remountTool, zoomTool];
 export const defaultToolsExtra: Addon[] = [addonsTool, fullScreenTool, ejectTool, copyTool];
 
 const useTools = (

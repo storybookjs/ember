@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import {
   Button,
   IconButton,
@@ -37,6 +37,8 @@ export interface SubnavProps {
   status: Call['status'];
   storyFileName?: string;
   onScrollToEnd?: () => void;
+  isRerunAnimating: boolean;
+  setIsRerunAnimating: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -90,12 +92,27 @@ const JumpToEndButton = styled(StyledButton)({
   lineHeight: '12px',
 });
 
+interface AnimatedButtonProps {
+  animating?: boolean;
+}
+
+const RerunButton = styled(StyledIconButton)<
+  AnimatedButtonProps & ComponentProps<typeof StyledIconButton>
+>(({ theme, animating, disabled }) => ({
+  opacity: disabled ? 0.5 : 1,
+  svg: {
+    animation: animating && `${theme.animation.rotate360} 200ms ease-out`,
+  },
+}));
+
 export const Subnav: React.FC<SubnavProps> = ({
   controls,
   controlStates,
   status,
   storyFileName,
   onScrollToEnd,
+  isRerunAnimating,
+  setIsRerunAnimating,
 }) => {
   const buttonText = status === CallStates.ERROR ? 'Scroll to error' : 'Scroll to end';
 
@@ -134,6 +151,19 @@ export const Subnav: React.FC<SubnavProps> = ({
               <StyledIconButton containsIcon onClick={controls.end} disabled={!controlStates.end}>
                 <Icons icon="fastforward" />
               </StyledIconButton>
+            </WithTooltip>
+
+            <WithTooltip hasChrome={false} tooltip={<Note note="Rerun" />}>
+              <RerunButton
+                title="Rerun interactions"
+                containsIcon
+                onClick={controls.rerun}
+                onAnimationEnd={() => setIsRerunAnimating(false)}
+                animating={isRerunAnimating}
+                disabled={isRerunAnimating}
+              >
+                <Icons icon="sync" />
+              </RerunButton>
             </WithTooltip>
           </Group>
           {storyFileName && (
