@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Global, styled } from '@storybook/theming';
 import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/components';
 
@@ -11,7 +11,7 @@ interface Option {
   percentage?: number;
 }
 
-const baseList = [
+export const baseList = [
   { name: 'blurred vision', percentage: 22.9 },
   { name: 'deuteranomaly', percentage: 2.7 },
   { name: 'deuteranopia', percentage: 0.56 },
@@ -120,7 +120,6 @@ const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
 
 export const VisionSimulator = () => {
   const [filter, setFilter] = useState<Filter>(null);
-
   return (
     <>
       {filter && (
