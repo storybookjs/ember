@@ -21,7 +21,7 @@ title: 'Install Storybook'
 
 <details>
 
-<summary><code>sb init</code> is not made for empty projects</summary>
+<summary><code>storybook init</code> is not made for empty projects</summary>
 
 Storybook needs to be installed into a project that is already set up with a framework. It will not work on an empty project. There are many ways to bootstrap an app in a given framework, including:
 
