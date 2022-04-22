@@ -18,7 +18,7 @@ It has three different modes:
 
 Storybook works with evergreen browsers by default.
 
-If you want to run Storybook in IE11, make sure to [disable](../essentials/introduction#disabling-addons) the docs-addon that is part of `@storybook/addon-essentials`, as this currently [causes issues in IE11](https://github.com/storybookjs/storybook/issues/8884).
+If you want to run Storybook in IE11, make sure to [disable](../essentials/introduction.md#disabling-addons) the docs-addon that is part of `@storybook/addon-essentials`, as this currently [causes issues in IE11](https://github.com/storybookjs/storybook/issues/8884).
 
 Here are some key features of Storybook's Babel configurations.
 
@@ -38,7 +38,7 @@ You can also place a `.storybook/.babelrc` file to use a unique configuration fo
 
 ### Custom configuration
 
-If you need, you can customize the default Babel configuration used by Storybook. Update your [`.storybook/main.js`](./overview#configure-your-storybook-project) and add the `babel` field with the options you want to use:
+If you need, you can customize the default Babel configuration used by Storybook. Update your [`.storybook/main.js`](./overview.md#configure-your-storybook-project) and add the `babel` field with the options you want to use:
 
 <!-- prettier-ignore-start -->
 

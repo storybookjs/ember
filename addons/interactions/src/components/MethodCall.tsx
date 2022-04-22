@@ -1,3 +1,4 @@
+import { ObjectInspector } from '@devtools-ds/object-inspector';
 import { Call, CallRef, ElementRef } from '@storybook/instrumenter';
 import { useTheme } from '@storybook/theming';
 import React, { Fragment, ReactElement } from 'react';
@@ -91,11 +92,17 @@ const interleave = (nodes: ReactElement[], separator: ReactElement) =>
 export const Node = ({
   value,
   nested,
+  showObjectInspector,
   callsById,
   ...props
 }: {
   value: any;
   nested?: boolean;
+  /**
+   * Shows an object inspector instead of just printing the object.
+   * Only available for Objects
+   */
+  showObjectInspector?: boolean;
   callsById?: Map<Call['id'], Call>;
   [props: string]: any;
 }) => {
@@ -131,7 +138,7 @@ export const Node = ({
       value.constructor?.name !== 'Object':
       return <ClassNode value={value} {...props} />;
     case Object.prototype.toString.call(value) === '[object Object]':
-      return <ObjectNode value={value} {...props} />;
+      return <ObjectNode value={value} showInspector={showObjectInspector} {...props} />;
     default:
       return <OtherNode value={value} {...props} />;
   }
@@ -199,14 +206,37 @@ export const ArrayNode = ({ value, nested = false }: { value: any[]; nested?: bo
   );
 };
 
-export const ObjectNode = ({ value, nested = false }: { value: object; nested?: boolean }) => {
+export const ObjectNode = ({
+  showInspector,
+  value,
+  nested = false,
+}: {
+  showInspector?: boolean;
+  value: object;
+  nested?: boolean;
+}) => {
+  const isDarkMode = useTheme().base === 'dark';
   const colors = useThemeColors();
+
+  if (showInspector) {
+    return (
+      <>
+        <ObjectInspector
+          id="interactions-object-inspector"
+          data={value}
+          includePrototypes={false}
+          colorScheme={isDarkMode ? 'dark' : 'light'}
+        />
+      </>
+    );
+  }
+
   if (nested) {
     return <span style={{ color: colors.base }}>{'{…}'}</span>;
   }
   const nodelist = interleave(
     Object.entries(value)
-      .slice(0, 1)
+      .slice(0, 2)
       .map(([k, v]) => (
         <Fragment key={k}>
           <span style={{ color: colors.objectkey }}>{k}: </span>
