@@ -2,9 +2,9 @@
   <article>
     <my-header
       :user="user"
-      @login="user = { name: 'Jane Doe' }"
-      @logout="user = null"
-      @createAccount="user = { name: 'Jane Doe' }"
+      @onLogin="onLogin"
+      @onLogout="onLogout"
+      @onCreateAccount="onCreateAccount"
     />
 
     <section>
@@ -71,6 +71,18 @@ export default {
     return {
       user: null,
     };
+  },
+
+  methods: {
+    onLogin() {
+      this.user = { name: 'Jane Doe' };
+    },
+    onLogout() {
+      this.user = null;
+    },
+    onCreateAccount() {
+      this.user = { name: 'Jane Doe' };
+    },
   },
 };
 </script>
