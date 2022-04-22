@@ -179,7 +179,7 @@ export const Verification: CSF3Story = {
   argTypes: { onSubmit: { action: 'clicked' } },
 };
 
-export const VerificationPasssword1: CSF3Story = {
+export const VerificationPassword: CSF3Story = {
   ...Verification,
   play: async (context) => {
     const canvas = within(context.canvasElement);

@@ -2,25 +2,11 @@
   import './page.css';
   import Header from './Header.svelte';
 
-  import { createEventDispatcher } from 'svelte';
-
-  export let user = null;
-
-  const dispatch = createEventDispatcher();
-
-  function onLogin(event) {
-    dispatch('login', event);
-  }
-  function onLogout(event) {
-    dispatch('logout', event);
-  }
-  function onCreateAccount(event) {
-    dispatch('createAccount', event);
-  }
+  let user = null;
 </script>
 
 <article>
-  <Header {user} on:login={onLogin} on:logout={onLogout} on:createAccount={onCreateAccount} />
+  <Header {user} on:login={() => user = { name: 'Jane Doe' }} on:logout={() => user = null} on:createAccount={() => user = { name: 'Jane Doe' }} />
 
   <section>
     <h2>Pages in Storybook</h2>
