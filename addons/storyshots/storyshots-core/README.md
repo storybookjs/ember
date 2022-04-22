@@ -66,7 +66,7 @@ If you still need to configure jest you can use the resources mentioned below:
 
 **NOTE**: if you are using Storybook 5.3's `main.js` to list story files, this is no longer needed.
 
-Sometimes it's useful to configure Storybook with Webpack's require.context feature. You could be loading stories [one of two ways](https://storybook.js.org/docs/react/writing-stories/loading-stories).
+Sometimes it's useful to configure Storybook with Webpack's require.context feature. You could be loading stories [one of two ways](https://github.com/storybookjs/storybook/blob/release/5.3/docs/src/pages/basics/writing-stories/index.md#loading-stories).
 
 1. If you're using the `storiesOf` API, you can integrate it this way:
 

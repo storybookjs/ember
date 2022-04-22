@@ -48,7 +48,7 @@ If you are somehow tied to knobs or prefer the knobs interface, we are happy to 
 
 ### How do I migrate from addon-knobs?
 
-If you're already using [Storybook Knobs](https://github.com/storybookjs/storybook/tree/main/addons/knobs) you should consider migrating to Controls.
+If you're already using [Storybook Knobs](https://github.com/storybookjs/addon-knobs) you should consider migrating to Controls.
 
 You're probably using it for something that can be satisfied by one of the cases [described above](#writing-stories).
 
