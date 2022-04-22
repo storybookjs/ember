@@ -39,7 +39,7 @@ const run = async (storyId: string) => {
     if (!active) {
       active = true;
       channel.emit(EVENTS.RUNNING);
-      const axe = await import('axe-core');
+      const axe = (await import('axe-core')).default;
 
       const { element = getElement(), config, options = {} } = input;
       axe.reset();
