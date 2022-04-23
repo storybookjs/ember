@@ -136,7 +136,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
               panelPosition: position,
             },
           }),
-          { persistence: 'session' }
+          { persistence: 'permanent' }
         );
       }
 
