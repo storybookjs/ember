@@ -3,7 +3,7 @@
 
 import ButtonGroup from './ButtonGroup.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue3';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 //👇 Imports the Button stories
 import * as ButtonStories from './Button.stories';
@@ -15,9 +15,9 @@ export default {
    */
   title: 'ButtonGroup',
   component: ButtonGroup,
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => ({
+const Template: StoryFn<typeof Button> = (args) => ({
   components: { ButtonGroup },
   setup() {
     return { args };

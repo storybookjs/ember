@@ -3,7 +3,7 @@
 
 import Button from './Button.vue';
 
-import { ComponentMeta } from '@storybook/vue3';
+import { Meta } from '@storybook/vue3';
 
 export default {
   /* 👇 The title prop is optional.
@@ -13,5 +13,5 @@ export default {
   title: 'Button',
   component: Button,
   decorators: [() => ({ template: '<div style="margin: 3em;"><story /></div>' })],
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 ```

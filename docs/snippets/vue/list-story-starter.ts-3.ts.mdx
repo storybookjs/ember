@@ -3,7 +3,7 @@
 
 import List from './ListComponent.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
   /* 👇 The title prop is optional.
@@ -12,12 +12,14 @@ export default {
    */
   title: 'List',
   component: List,
-} as ComponentMeta<typeof List>;
+} as Meta<typeof LoginForm>;
 
 // Always an empty list, not super interesting
-const Template: ComponentStory<typeof List> = (args, { argTypes }) => ({
+const Template: StoryFn<typeof LoginForm> = (args) => ({
   components: { List },
-  props: Object.keys(argTypes),
-  template: '<list v-bind="$props"/>',
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"/>',
 });
 ```

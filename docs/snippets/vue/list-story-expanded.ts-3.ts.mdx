@@ -4,7 +4,7 @@
 import List from './ListComponent.vue';
 import ListItem from './ListItem.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue3';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
   /* 👇 The title prop is optional.
@@ -13,9 +13,9 @@ export default {
    */
   title: 'List',
   component: List,
-} as ComponentMeta<typeof List>;
+} as Meta<typeof List>;
 
-export const Empty: ComponentStory<typeof List> = (args) => ({
+export const Empty: StoryFn<typeof List> = (args) => ({
   components: { List },
   setup() {
     return { args };
@@ -23,7 +23,7 @@ export const Empty: ComponentStory<typeof List> = (args) => ({
   template: '<list v-bind="args"/>',
 });
 
-export const OneItem: ComponentStory<typeof List> = (args) => ({
+export const OneItem: StoryFn<typeof List> = (args) => ({
   components: { List, ListItem },
   setup() {
     return { args };
@@ -31,7 +31,7 @@ export const OneItem: ComponentStory<typeof List> = (args) => ({
   template: '<list v-bind="args"><list-item/></list>',
 });
 
-export const ManyItems: ComponentStory<typeof List> = (args) => ({
+export const ManyItems: StoryFn<typeof List> = (args) => ({
   components: { List, ListItem },
   setup() {
     return { args };

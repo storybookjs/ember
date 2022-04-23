@@ -4,7 +4,7 @@
 import List from './ListComponent.vue';
 import ListItem from './ListItem.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue3';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 //👇 We're importing the necessary stories from ListItem
 import { Selected, Unselected } from './ListItem.stories';
@@ -16,9 +16,9 @@ export default {
    */
   title: 'List',
   component: List,
-} as ComponentMeta<typeof List>;
+} as Meta<typeof List>;
 
-export const ManyItems: ComponentStory<typeof List> = (args) => ({
+export const ManyItems: StoryFn<typeof List> = (args) => ({
   components: { List, ListItem },
   setup() {
     return { ...args };

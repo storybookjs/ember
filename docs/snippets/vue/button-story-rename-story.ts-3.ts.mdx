@@ -3,7 +3,7 @@
 
 import Button from './Button.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue3';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
   /* 👇 The title prop is optional.
@@ -12,10 +12,11 @@ export default {
    */
   title: 'Button',
   component: Button,
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
-export const Primary: ComponentStory<typeof Button> = () => ({
+export const Primary: StoryFn<typeof Button> = () => ({
   components: { Button },
   template: '<Button primary label="Button" />',
 });
+Primary.storyName = 'I am the primary';
 ```

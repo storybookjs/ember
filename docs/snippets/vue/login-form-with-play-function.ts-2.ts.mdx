@@ -5,7 +5,7 @@ import { userEvent, within } from '@storybook/testing-library';
 
 import LoginForm from './LoginForm.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue';
+import { Meta, StoryFn } from '@storybook/vue';
 
 export default {
   /* 👇 The title prop is optional.
@@ -14,9 +14,9 @@ export default {
    */
   title: 'Form',
   component: LoginForm,
-} as ComponentMeta<typeof LoginForm>;
+} as Meta<typeof LoginForm>;
 
-export const Template: ComponentStory<typeof LoginForm> = (args, { argTypes }) => ({
+export const Template: StoryFn<typeof LoginForm> = (args, { argTypes }) => ({
   components: { LoginForm },
   props: Object.keys(argTypes),
   template: `<LoginForm v-bind="$props" v-on="$props" />`,

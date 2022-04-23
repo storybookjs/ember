@@ -3,7 +3,7 @@
 
 import Button from './Button.vue';
 
-import { ComponentMeta, ComponentStory } from '@storybook/vue';
+import { Meta, StoryFn } from '@storybook/vue3';
 
 export default {
   /* 👇 The title prop is optional.
@@ -12,13 +12,15 @@ export default {
    */
   title: 'Button',
   component: Button,
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof Button> = (args, { argTypes }) => ({
+const Template: StoryFn<typeof Button> = (args) => ({
   components: { Button },
-  props: Object.keys(argTypes),
-  template: '<Button v-bind="$props" />',
+  setup() {
+    return { args };
+  },
+  template: '<Button v-bind="args" />',
 });
 
 //👇 Each story then reuses that template
