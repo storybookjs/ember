@@ -14,7 +14,7 @@ You can set up interaction testing in Storybook using the `play` function and [`
 
 - The [`play`](../writing-stories/play-function.md) function is a small snippet of code that runs after a story finishes rendering. You can use this to test user workflows.
 
-- [`@storybook/addon-interactions`](/addons/@storybook/addon-interactions/) includes helper utilities and a playback interface that simulates user behavior in the browser. It’s powered Testing Library and includes convenient instrumentation for debugging.
+- [`@storybook/addon-interactions`](https://storybook.js.org/addons/@storybook/addon-interactions) includes helper utilities and a playback interface that simulates user behavior in the browser. It’s powered Testing Library and includes convenient instrumentation for debugging.
 
 Here's an example of how to set up interaction testing in Storybook with the `play` function:
 
