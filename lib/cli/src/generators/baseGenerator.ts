@@ -62,7 +62,7 @@ const builderDependencies = (builder: Builder) => {
 const stripVersions = (addons: string[]) => addons.map((addon) => getPackageDetails(addon)[0]);
 
 const hasInteractiveStories = (framework: SupportedFrameworks) =>
-  ['react', 'angular', 'preact', 'svelte'].includes(framework);
+  ['react', 'angular', 'preact', 'svelte', 'vue3'].includes(framework);
 
 export async function baseGenerator(
   packageManager: JsPackageManager,
