@@ -1,3 +1,11 @@
+## 6.5.0-beta.0 (April 24, 2022)
+
+### Features
+
+- CLI/Vue3: add interactions to vue3 cli template ([#18031](https://github.com/storybookjs/storybook/pull/18031))
+- CLI/Svelte: add interactions to cli template ([#17993](https://github.com/storybookjs/storybook/pull/17993))
+- UI: Move the "Rerun interactions" button to Subnav ([#17647](https://github.com/storybookjs/storybook/pull/17647))
+
 ## 6.5.0-alpha.64 (April 18, 2022)
 
 ### Features
