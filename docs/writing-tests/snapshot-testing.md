@@ -64,7 +64,7 @@ npm i -D @storybook/addon-storyshots-puppeteer puppeteer
 yarn add @storybook/addon-storyshots-puppeteer puppeteer
 ```
 
-Next, update your test file (e.g., `storybook.test.js`) to the following:
+Next, update your test file (for example, `storybook.test.js`) to the following:
 
 <!-- prettier-ignore-start -->
 
@@ -110,6 +110,7 @@ Visual tests capture images of stories and compare them against image baselines.
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - [Visual tests](./visual-testing.md) for appearance
 - [Accessibility tests](./accessibility-testing.md) for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation
