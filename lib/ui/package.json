@@ -1,6 +1,6 @@
 {
   "name": "@storybook/ui",
-  "version": "6.5.0-alpha.64",
+  "version": "6.5.0-beta.0",
   "description": "Core Storybook UI",
   "keywords": [
     "storybook"
@@ -40,15 +40,15 @@
     "prepare": "ts-node ../../scripts/prebundle.ts"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-alpha.64",
-    "@storybook/api": "6.5.0-alpha.64",
-    "@storybook/channels": "6.5.0-alpha.64",
-    "@storybook/client-logger": "6.5.0-alpha.64",
-    "@storybook/components": "6.5.0-alpha.64",
-    "@storybook/core-events": "6.5.0-alpha.64",
-    "@storybook/router": "6.5.0-alpha.64",
+    "@storybook/addons": "6.5.0-beta.0",
+    "@storybook/api": "6.5.0-beta.0",
+    "@storybook/channels": "6.5.0-beta.0",
+    "@storybook/client-logger": "6.5.0-beta.0",
+    "@storybook/components": "6.5.0-beta.0",
+    "@storybook/core-events": "6.5.0-beta.0",
+    "@storybook/router": "6.5.0-beta.0",
     "@storybook/semver": "^7.3.2",
-    "@storybook/theming": "6.5.0-alpha.64",
+    "@storybook/theming": "6.5.0-beta.0",
     "core-js": "^3.8.2",
     "regenerator-runtime": "^0.13.7",
     "resolve-from": "^5.0.0"
@@ -83,6 +83,6 @@
     "access": "public"
   },
   "bundlerEntrypoint": "./src/index.tsx",
-  "gitHead": "7417a230d67b54d65caedcfb584f924b879ac9f5",
+  "gitHead": "b2e85f3599c043815b18bbfc5ca563bf1c6e4add",
   "sbmodern": "dist/modern/index.js"
 }

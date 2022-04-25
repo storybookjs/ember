@@ -50,7 +50,7 @@ If everything worked as it should, you should have a fully functional Storybook 
 
 Before adding code, install and configure any necessary packages. For example, if you run into a problem with a CSS framework (e.g., [Tailwind](https://tailwindcss.com/)), you should install and configure it.
 
-Install and configure any Storybook [addons](/addons) that relate to the issue (e.g.,`@storybook/addon-a11y`).
+Install and configure any Storybook [addons](https://storybook.js.org/addons/) that relate to the issue (e.g.,`@storybook/addon-a11y`).
 
 ## Add stories
 
