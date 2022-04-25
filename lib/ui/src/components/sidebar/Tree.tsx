@@ -15,7 +15,13 @@ import {
 } from './TreeNode';
 import { useExpanded, ExpandAction, ExpandedState } from './useExpanded';
 import { Highlight, Item } from './types';
-import { createId, getAncestorIds, getDescendantIds, getLink } from './utils';
+import {
+  isStoryAndComponentNameEqual,
+  createId,
+  getAncestorIds,
+  getDescendantIds,
+  getLink,
+} from './utils';
 
 export const Action = styled.button(({ theme }) => ({
   display: 'inline-flex',
@@ -331,12 +337,13 @@ export const Tree = React.memo<{
     const singleStoryComponentIds = useMemo(() => {
       return orphansFirst.filter((nodeId) => {
         const { children = [], isComponent, isLeaf, name } = data[nodeId];
+
         return (
           !isLeaf &&
           isComponent &&
           children.length === 1 &&
           isStory(data[children[0]]) &&
-          data[children[0]].name === name
+          isStoryAndComponentNameEqual(data[children[0]].name, name)
         );
       });
     }, [data, orphansFirst]);
