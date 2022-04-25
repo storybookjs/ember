@@ -15,13 +15,7 @@ import {
 } from './TreeNode';
 import { useExpanded, ExpandAction, ExpandedState } from './useExpanded';
 import { Highlight, Item } from './types';
-import {
-  isStoryAndComponentNameEqual,
-  createId,
-  getAncestorIds,
-  getDescendantIds,
-  getLink,
-} from './utils';
+import { isStoryHoistable, createId, getAncestorIds, getDescendantIds, getLink } from './utils';
 
 export const Action = styled.button(({ theme }) => ({
   display: 'inline-flex',
@@ -343,7 +337,7 @@ export const Tree = React.memo<{
           isComponent &&
           children.length === 1 &&
           isStory(data[children[0]]) &&
-          isStoryAndComponentNameEqual(data[children[0]].name, name)
+          isStoryHoistable(data[children[0]].name, name)
         );
       });
     }, [data, orphansFirst]);
