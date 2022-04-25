@@ -7387,6 +7387,7 @@ __metadata:
     "@storybook/csf-tools": 6.5.0-beta.0
     "@storybook/node-logger": 6.5.0-beta.0
     "@storybook/semver": ^7.3.2
+    "@storybook/telemetry": 6.5.0-beta.0
     "@types/cross-spawn": ^6.0.2
     "@types/prompts": ^2.0.9
     "@types/puppeteer-core": ^2.1.0
@@ -7668,6 +7669,7 @@ __metadata:
     "@storybook/node-logger": 6.5.0-beta.0
     "@storybook/semver": ^7.3.2
     "@storybook/store": 6.5.0-beta.0
+    "@storybook/telemetry": 6.5.0-beta.0
     "@types/compression": ^1.7.0
     "@types/ip": ^1.1.0
     "@types/node": ^14.0.10 || ^16.0.0
@@ -8494,6 +8496,7 @@ __metadata:
     "@storybook/source-loader": "workspace:*"
     "@storybook/store": "workspace:*"
     "@storybook/svelte": "workspace:*"
+    "@storybook/telemetry": "workspace:*"
     "@storybook/testing-library": ^0.0.7
     "@storybook/theming": "workspace:*"
     "@storybook/ui": "workspace:*"
@@ -8825,6 +8828,24 @@ __metadata:
     build-storybook: ./bin/build.js
     start-storybook: ./bin/index.js
     storybook-server: ./bin/index.js
+  languageName: unknown
+  linkType: soft
+
+"@storybook/telemetry@6.5.0-beta.0, @storybook/telemetry@workspace:*, @storybook/telemetry@workspace:lib/telemetry":
+  version: 0.0.0-use.local
+  resolution: "@storybook/telemetry@workspace:lib/telemetry"
+  dependencies:
+    "@storybook/client-logger": 6.5.0-beta.0
+    "@storybook/core-common": 6.5.0-beta.0
+    chalk: ^4.1.0
+    core-js: ^3.8.2
+    detect-package-manager: ^2.0.1
+    fetch-retry: ^5.0.2
+    fs-extra: ^9.0.1
+    global: ^4.4.0
+    isomorphic-unfetch: ^3.1.0
+    nanoid: ^3.3.1
+    read-pkg-up: ^7.0.1
   languageName: unknown
   linkType: soft
 
@@ -19520,6 +19541,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"detect-package-manager@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "detect-package-manager@npm:2.0.1"
+  dependencies:
+    execa: ^5.1.1
+  checksum: 56ffd65228d1ff3ead5ea7f8ab951a517a29270de27510b790c9a8b77d4f36efbd61493e170ca77ee3dc13cbb5218583ce65b78ad14a59dc48565c9bcbbf3c71
+  languageName: node
+  linkType: hard
+
 "detect-port-alt@npm:1.1.6":
   version: 1.1.6
   resolution: "detect-port-alt@npm:1.1.6"
@@ -22283,7 +22313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0":
+"execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -22762,6 +22792,13 @@ __metadata:
   dependencies:
     pend: ~1.2.0
   checksum: 304dd70270298e3ffe3bcc05e6f7ade2511acc278bc52d025f8918b48b6aa3b77f10361bddfadfe2a28163f7af7adbdce96f4d22c31b2f648ba2901f0c5fc20e
+  languageName: node
+  linkType: hard
+
+"fetch-retry@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "fetch-retry@npm:5.0.2"
+  checksum: 694fae18ceec4c88c508daf682fccbf1e0736fa679e95daad50946e003df7e261d9a4d36388f6f9eab2426d1796b4ee054ced904794f1edad3ffdc55b2d4b785
   languageName: node
   linkType: hard
 

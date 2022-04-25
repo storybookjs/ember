@@ -1,7 +1,7 @@
 import path from 'path';
 import fse from 'fs-extra';
-import { PackageJsonWithDepsAndDevDeps } from '../../js-package-manager';
-import { getStorybookConfiguration } from './getStorybookConfiguration';
+import { getStorybookConfiguration } from './get-storybook-configuration';
+import { PackageJson } from '../types';
 
 interface StorybookInfo {
   framework: string;
@@ -32,7 +32,7 @@ const viewLayers: Record<string, string> = {
 const logger = console;
 
 const findDependency = (
-  { dependencies, devDependencies, peerDependencies }: PackageJsonWithDepsAndDevDeps,
+  { dependencies, devDependencies, peerDependencies }: PackageJson,
   predicate: (entry: [string, string]) => string
 ) => [
   Object.entries(dependencies || {}).find(predicate),
@@ -40,7 +40,7 @@ const findDependency = (
   Object.entries(peerDependencies || {}).find(predicate),
 ];
 
-const getFrameworkInfo = (packageJson: PackageJsonWithDepsAndDevDeps) => {
+const getFrameworkInfo = (packageJson: PackageJson) => {
   // Pull the viewlayer from dependencies in package.json
   const [dep, devDep, peerDep] = findDependency(packageJson, ([key]) => viewLayers[key]);
   const [pkg, version] = dep || devDep || peerDep || [];
@@ -70,7 +70,7 @@ const findConfigFile = (prefix: string, configDir: string) => {
   return extension ? `${filePrefix}.${extension}` : null;
 };
 
-const getConfigInfo = (packageJson: PackageJsonWithDepsAndDevDeps) => {
+const getConfigInfo = (packageJson: PackageJson) => {
   let configDir = '.storybook';
   const storybookScript = packageJson.scripts?.storybook;
   if (storybookScript) {
@@ -86,7 +86,7 @@ const getConfigInfo = (packageJson: PackageJsonWithDepsAndDevDeps) => {
   };
 };
 
-export const getStorybookInfo = (packageJson: PackageJsonWithDepsAndDevDeps) => {
+export const getStorybookInfo = (packageJson: PackageJson) => {
   const frameworkInfo = getFrameworkInfo(packageJson);
   const configInfo = getConfigInfo(packageJson);
 

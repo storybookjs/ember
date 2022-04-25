@@ -239,6 +239,9 @@
     "@storybook/source-loader": {
       "implicitDependencies": []
     },
+    "@storybook/telemetry": {
+      "implicitDependencies": []
+    },
     "@storybook/theming": {
       "implicitDependencies": []
     },

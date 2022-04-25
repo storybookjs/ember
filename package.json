@@ -183,6 +183,7 @@
     "@storybook/source-loader": "workspace:*",
     "@storybook/store": "workspace:*",
     "@storybook/svelte": "workspace:*",
+    "@storybook/telemetry": "workspace:*",
     "@storybook/testing-library": "^0.0.7",
     "@storybook/theming": "workspace:*",
     "@storybook/ui": "workspace:*",

@@ -1,4 +1,5 @@
 import { sync as spawnSync } from 'cross-spawn';
+import { telemetry } from '@storybook/telemetry';
 import semver from '@storybook/semver';
 import { logger } from '@storybook/node-logger';
 import {
@@ -135,12 +136,23 @@ interface UpgradeOptions {
   useNpm: boolean;
   dryRun: boolean;
   yes: boolean;
+  disableTelemetry: boolean;
 }
 
-export const upgrade = async ({ prerelease, skipCheck, useNpm, dryRun, yes }: UpgradeOptions) => {
+export const upgrade = async ({
+  prerelease,
+  skipCheck,
+  useNpm,
+  dryRun,
+  yes,
+  ...options
+}: UpgradeOptions) => {
   const packageManager = JsPackageManagerFactory.getPackageManager(useNpm);
 
   commandLog(`Checking for latest versions of '@storybook/*' packages`);
+  if (!options.disableTelemetry) {
+    telemetry('upgrade', { prerelease });
+  }
 
   let flags = [];
   if (!dryRun) flags.push('--upgrade');

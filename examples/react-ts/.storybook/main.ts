@@ -24,6 +24,7 @@ const config: StorybookConfig = {
   core: {
     builder: { name: 'webpack4' },
     channelOptions: { allowFunction: false, maxDepth: 10 },
+    disableTelemetry: true,
   },
   features: {
     postcss: false,

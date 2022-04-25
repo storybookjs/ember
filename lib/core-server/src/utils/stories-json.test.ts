@@ -6,16 +6,32 @@ import Events from '@storybook/core-events';
 
 import { useStoriesJson, DEBOUNCE } from './stories-json';
 import { ServerChannel } from './get-server-channel';
+import { StoryIndexGenerator } from './StoryIndexGenerator';
 
 jest.mock('watchpack');
 jest.mock('lodash/debounce');
 
-const options: Parameters<typeof useStoriesJson>[2] = {
-  configDir: path.join(__dirname, '__mockdata__'),
-  presets: {
-    apply: async () => ['./src/**/*.stories.(ts|js|jsx)'] as any,
+const workingDir = path.join(__dirname, '__mockdata__');
+const normalizedStories = [
+  {
+    titlePrefix: '',
+    directory: './src',
+    files: '**/*.stories.@(ts|js|jsx)',
+    importPathMatcher:
+      /^\.[\\/](?:src(?:\/(?!\.)(?:(?:(?!(?:^|\/)\.).)*?)\/|\/|$)(?!\.)(?=.)[^/]*?\.stories\.(ts|js|jsx))$/,
   },
-} as any;
+];
+
+const getInitializedStoryIndexGenerator = async () => {
+  const generator = new StoryIndexGenerator(normalizedStories, {
+    configDir: workingDir,
+    workingDir,
+    storiesV2Compatibility: true,
+    storyStoreV7: true,
+  });
+  await generator.initialize();
+  return generator;
+};
 
 describe('useStoriesJson', () => {
   const use = jest.fn();
@@ -34,7 +50,7 @@ describe('useStoriesJson', () => {
     on: jest.fn(),
   } as any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     use.mockClear();
     send.mockClear();
     write.mockClear();
@@ -48,7 +64,13 @@ describe('useStoriesJson', () => {
   describe('JSON endpoint', () => {
     it('scans and extracts stories', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+      await useStoriesJson({
+        router,
+        serverChannel: mockServerChannel,
+        workingDir,
+        normalizedStories,
+        initializedStoryIndexGenerator: getInitializedStoryIndexGenerator(),
+      });
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -145,7 +167,14 @@ describe('useStoriesJson', () => {
 
     it('can handle simultaneous access', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+
+      await useStoriesJson({
+        router,
+        serverChannel: mockServerChannel,
+        workingDir,
+        normalizedStories,
+        initializedStoryIndexGenerator: getInitializedStoryIndexGenerator(),
+      });
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -171,7 +200,13 @@ describe('useStoriesJson', () => {
 
     it('sends invalidate events', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+      await useStoriesJson({
+        router,
+        serverChannel: mockServerChannel,
+        workingDir,
+        normalizedStories,
+        initializedStoryIndexGenerator: getInitializedStoryIndexGenerator(),
+      });
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -194,7 +229,13 @@ describe('useStoriesJson', () => {
 
     it('only sends one invalidation when multiple event listeners are listening', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+      await useStoriesJson({
+        router,
+        serverChannel: mockServerChannel,
+        workingDir,
+        normalizedStories,
+        initializedStoryIndexGenerator: getInitializedStoryIndexGenerator(),
+      });
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];
@@ -223,7 +264,13 @@ describe('useStoriesJson', () => {
       (debounce as jest.Mock).mockImplementation(jest.requireActual('lodash/debounce'));
 
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson(router, mockServerChannel, options, options.configDir);
+      await useStoriesJson({
+        router,
+        serverChannel: mockServerChannel,
+        workingDir,
+        normalizedStories,
+        initializedStoryIndexGenerator: getInitializedStoryIndexGenerator(),
+      });
 
       expect(use).toHaveBeenCalledTimes(1);
       const route = use.mock.calls[0][1];

@@ -39,6 +39,28 @@ jest.mock('@storybook/builder-webpack4', () => {
   return actualBuilder;
 });
 
+jest.mock('@storybook/telemetry', () => {
+  return {
+    getStorybookMetadata: jest.fn(() => ({})),
+    telemetry: jest.fn(() => ({})),
+  };
+});
+
+jest.mock('./utils/StoryIndexGenerator', () => {
+  const { StoryIndexGenerator } = jest.requireActual('./utils/StoryIndexGenerator');
+  return {
+    StoryIndexGenerator: class extends StoryIndexGenerator {
+      initialize() {
+        return Promise.resolve(undefined);
+      }
+
+      getIndex() {
+        return { stories: {}, v: 3 };
+      }
+    },
+  };
+});
+
 jest.mock('./utils/stories-json', () => {
   const actualStoriesJson = jest.requireActual('./utils/stories-json');
   actualStoriesJson.extractStoriesJson = () => Promise.resolve();
@@ -159,6 +181,7 @@ describe.each([
       ['prod', buildStaticStandalone],
       ['dev', buildDevStandalone],
     ])('%s', async (mode, builder) => {
+      console.log('running for ', mode, builder);
       const options = {
         ...baseOptions,
         ...frameworkOptions,
