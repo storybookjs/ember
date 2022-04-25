@@ -216,6 +216,29 @@ describe('CsfFile', () => {
       `);
     });
 
+    it('typescript meta var', () => {
+      expect(
+        parse(
+          dedent`
+          import { Meta, Story } from '@storybook/react';
+          type PropTypes = {};
+          const meta = { title: 'foo/bar/baz' } as Meta<PropTypes>;
+          export default meta;
+          export const A: Story<PropTypes> = () => <>A</>;
+          export const B: Story<PropTypes> = () => <>B</>;
+        `
+        )
+      ).toMatchInlineSnapshot(`
+        meta:
+          title: foo/bar/baz
+        stories:
+          - id: foo-bar-baz--a
+            name: A
+          - id: foo-bar-baz--b
+            name: B
+      `);
+    });
+
     it('component object', () => {
       expect(
         parse(

@@ -224,6 +224,8 @@ export class CsfFile {
             const init = findVarInitialization(node.declaration.name, parent);
             if (t.isObjectExpression(init)) {
               metaNode = init;
+            } else if (t.isTSAsExpression(init) && t.isObjectExpression(init.expression)) {
+              metaNode = init.expression;
             }
           }
 
