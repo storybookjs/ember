@@ -208,7 +208,7 @@ It starts checking for issues by traversing the DOM tree starting from the story
 
 #### What’s the difference between browser-based and linter-based accessibility tests?
 
-Browser-based accessibility tests, like found in Storybook, evaluate the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing, so you won't catch everything the user might experience.
+Browser-based accessibility tests, like those found in Storybook, evaluate the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing, so you won't catch everything the user might experience.
 
 #### Learn about other UI tests
 

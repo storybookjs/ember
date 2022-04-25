@@ -12,7 +12,7 @@ The simplest testing method is manual “spot checking”. You run Storybook loc
 
 To test a component in isolation, you often have to mock data, dependencies, or even network requests. Check out our guide on [mocking in Storybook](../writing-stories/build-pages-with-storybook.md#mocking-connected-components) for more info.
 
-Storybook also comes with tools, [test runners](./test-runner.md), and [handy integrations](./importing-stories-in-tests.md) with the larger JavaScript ecosystem to expand your UI test coverage. These docs detail how you can use Storybook for UI testing.
+Storybook also comes with tools, [a test runner](./test-runner.md), and [handy integrations](./importing-stories-in-tests.md) with the larger JavaScript ecosystem to expand your UI test coverage. These docs detail how you can use Storybook for UI testing.
 
 - [**Test runner**](./test-runner.md) to automatically test your entire Storybook and catch broken stories.
 - [**Visual tests**](./visual-testing.md) capture a screenshot of every story then compare it against baselines to detect appearance and integration issues

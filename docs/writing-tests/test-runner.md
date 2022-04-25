@@ -273,15 +273,9 @@ Stories.json mode requires a `stories.json` file. Open a browser window and navi
 
 If your tests time out with the following message:
 
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/storybook-test-runner-error.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
+```shell
+Timeout - Async callback was not invoked within the 15000 ms timeout specified by jest.setTimeout
+```
 
 It might be that Playwright couldn't handle testing the number of stories you have in your project. Perhaps you have a large number of stories, or your CI environment has a really low RAM configuration. In such cases, you should limit the number of workers that run in parallel by adjusting your command as follows:
 

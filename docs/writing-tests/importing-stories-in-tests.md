@@ -69,7 +69,7 @@ Update your test script to include the configuration file:
 
 ## Example with Testing Library
 
-[Testing Library](https://testing-library.com/) is a suite of helper libraries for browser-based interaction tests. With [Component Story Format](../api/csf.md), your stories are reusable with Testing Library. Each named export (in other words, a story) is renderable within your testing setup.
+[Testing Library](https://testing-library.com/) is a suite of helper libraries for browser-based interaction tests. With [Component Story Format](../api/csf.md), your stories are reusable with Testing Library. Each named export (story) is renderable within your testing setup.
 
 <div class="aside">
 
