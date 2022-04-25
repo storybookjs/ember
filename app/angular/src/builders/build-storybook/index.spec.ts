@@ -84,6 +84,7 @@ describe('Build Storybook Builder', () => {
       outputDir: 'storybook-static',
       mode: 'static',
       tsConfig: './storybook/tsconfig.ts',
+      webpackStatsJson: false,
     });
   });
 
@@ -109,6 +110,34 @@ describe('Build Storybook Builder', () => {
       outputDir: 'storybook-static',
       mode: 'static',
       tsConfig: 'path/to/tsConfig.json',
+      webpackStatsJson: false,
+    });
+  });
+
+  it('should build storybook with webpack stats.json', async () => {
+    const run = await architect.scheduleBuilder('@storybook/angular:build-storybook', {
+      tsConfig: 'path/to/tsConfig.json',
+      compodoc: false,
+      webpackStatsJson: true,
+    });
+
+    const output = await run.result;
+
+    await run.stop();
+
+    expect(output.success).toBeTruthy();
+    expect(cpSpawnMock.spawn).not.toHaveBeenCalledWith();
+    expect(buildStandaloneMock).toHaveBeenCalledWith({
+      angularBrowserTarget: null,
+      angularBuilderContext: expect.any(Object),
+      angularBuilderOptions: {},
+      configDir: '.storybook',
+      loglevel: undefined,
+      quiet: false,
+      outputDir: 'storybook-static',
+      mode: 'static',
+      tsConfig: 'path/to/tsConfig.json',
+      webpackStatsJson: true,
     });
   });
 
@@ -162,6 +191,7 @@ describe('Build Storybook Builder', () => {
       outputDir: 'storybook-static',
       mode: 'static',
       tsConfig: './storybook/tsconfig.ts',
+      webpackStatsJson: false,
     });
   });
 
@@ -188,6 +218,7 @@ describe('Build Storybook Builder', () => {
       outputDir: 'storybook-static',
       mode: 'static',
       tsConfig: 'path/to/tsConfig.json',
+      webpackStatsJson: false,
     });
   });
 });
