@@ -39,6 +39,10 @@ describe('addon-interactions', () => {
     it('should have interactions', test);
   });
 
+  onlyOn('html', () => {
+    it('should have interactions', test);
+  });
+
   onlyOn('svelte', () => {
     it('should have interactions', test);
   });
