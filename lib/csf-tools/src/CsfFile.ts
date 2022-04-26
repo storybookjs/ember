@@ -211,20 +211,20 @@ export class CsfFile {
       ExportDefaultDeclaration: {
         enter({ node, parent }) {
           let metaNode: t.ObjectExpression;
-          if (t.isObjectExpression(node.declaration)) {
+          const decl =
+            t.isIdentifier(node.declaration) && t.isProgram(parent)
+              ? findVarInitialization(node.declaration.name, parent)
+              : node.declaration;
+
+          if (t.isObjectExpression(decl)) {
             // export default { ... };
-            metaNode = node.declaration;
+            metaNode = decl;
           } else if (
             // export default { ... } as Meta<...>
-            t.isTSAsExpression(node.declaration) &&
-            t.isObjectExpression(node.declaration.expression)
+            t.isTSAsExpression(decl) &&
+            t.isObjectExpression(decl.expression)
           ) {
-            metaNode = node.declaration.expression;
-          } else if (t.isIdentifier(node.declaration) && t.isProgram(parent)) {
-            const init = findVarInitialization(node.declaration.name, parent);
-            if (t.isObjectExpression(init)) {
-              metaNode = init;
-            }
+            metaNode = decl.expression;
           }
 
           if (!self._meta && metaNode && t.isProgram(parent)) {
