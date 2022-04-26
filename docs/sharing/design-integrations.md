@@ -6,17 +6,17 @@ Storybook supports first-class integrations with well-known design tools, speedi
 
 ![Storybook design integrations](./storybook-design-integrations.jpeg)
 
-For development teams, Storybook provides the necessary tools to build, [test](../writing-tests/introduction.md), and [document](../writing-docs/introduction.md) UI components. [Integrating](https://storybook.js.org/addons/tag/design/) your Storybook with popular design tools (for example, [Figma](https://www.figma.com/), [Zeplin](https://zeplin.io/)) unlocks new workflows for you and your team. You prototype the UI in a design tool, build and test it in Storybook, allowing you to surface issues and ensure consistent and reliable UIs.
+For development teams, Storybook provides the necessary tools to build, [test](../writing-tests/introduction.md), and [document](../writing-docs/introduction.md) UI components. Integrating your Storybook with popular design tools (for example, [Figma](https://www.figma.com/), [Zeplin](https://zeplin.io/), and [more](https://storybook.js.org/addons/tag/design/)) unlocks new workflows for you and your team. You prototype the UI in a design tool, build and test it in Storybook, allowing you to surface issues and ensure consistent and reliable UIs.
 
 ## Figma
 
 [Figma](https://www.figma.com/) is a popular collaborative UI design tool used by [Slack](https://slack.com/), [Twitter](https://twitter.com/), and [Dropbox](https://www.dropbox.com/) teams. It allows multiple people to work on the same design simultaneously in the browser.
 
-If you're working with Figma, you have two options for connecting your Storybook. You can use the [Storybook addon designs](https://storybook.js.org/addons/storybook-addon-designs), which allows you to preview your designs alongside the currently selected story.
+If you're working with Figma, you have two options for connecting your Storybook. You can use the [Storybook addon designs](https://storybook.js.org/addons/storybook-addon-designs), which allows you to view your designs alongside the currently selected story.
 
 ![Storybook addon figma](./storybook-figma-addon.png)
 
-Or via a plugin developed by the Storybook maintainers. [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) is the official Figma plugin that lets you link stories to your Figma components. You can preview your existing stories in the Figma design workspace when configured. Below is an overview of how to get started with the plugin.
+Or use [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) to embed stories into your Figma design workspace. Below is an overview of how to get started with the plugin.
 
 ### Setup
 
@@ -32,9 +32,9 @@ Follow the instructions to connect and authenticate with Chromatic.
 
 The core feature of the [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) Figma plugin is the ability to connect your existing components, variants, and instances to Storybook stories.
 
-To link your components with Storybook stories, navigate to the story published on Chromatic, ensure that you're using the correct branch, and copy the link.
+To link your components with Storybook stories, navigate to the story published on Chromatic (be sure that you're using the correct branch) and copy the link.
 
-In Figma, open the plugin and paste the URL.
+In Figma, select the component, open the plugin, and paste the URL.
 
 ![Story linked in Figma](./figma-plugin-paste-url.png)
 
@@ -56,7 +56,7 @@ Another essential feature of the plugin is the ability to preview the story dire
 
 [Adobe XD](https://www.adobe.com/products/xd.html) is a vector-based UI and UX design tool, enabling design teams to create wireframes, interactive designs, prototypes, or hi-fidelity web or application designs.
 
-Adobe XD integrates with Storybook via [addon](https://storybook.js.org/addons/storybook-addon-xd-designs), enabling you to embed your design specs alongside your Storybook stories.
+Adobe XD integrates with Storybook via [addon](https://storybook.js.org/addons/storybook-addon-designs/), enabling you to [embed](https://helpx.adobe.com/xd/help/publish-design-specs.html) your design specs alongside your Storybook [stories](https://pocka.github.io/storybook-addon-designs/?path=/story/docs-iframe-readme--page).
 
 ## Zeplin
 
