@@ -14,6 +14,7 @@ module.exports = {
   ],
   core: {
     builder: 'webpack4',
+    channelOptions: { allowFunction: false, maxDepth: 10 },
   },
   staticDirs: ['../public'],
   features: {
