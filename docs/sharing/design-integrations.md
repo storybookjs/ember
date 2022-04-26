@@ -2,55 +2,75 @@
 title: 'Design integrations'
 ---
 
-Storybook supports first-class integrations with well-known design tools, speeding up the development cycle by enabling you to cross-reference designs with your existing stories.
+Storybook integrates with design tools to speed up your development workflow. That helps you debug inconsistencies earlier in the design process, discover existing components to reuse, reference designs alongside existing stories.
 
 ![Storybook design integrations](./storybook-design-integrations.jpeg)
 
-For development teams, Storybook provides the necessary tools to build, [test](../writing-tests/introduction.md), and [document](../writing-docs/introduction.md) UI components. Integrating your Storybook with popular design tools (for example, [Figma](https://www.figma.com/), [Zeplin](https://zeplin.io/), and [more](https://storybook.js.org/addons/tag/design/)) unlocks new workflows for you and your team. You prototype the UI in a design tool, build and test it in Storybook, allowing you to surface issues and ensure consistent and reliable UIs.
-
 ## Figma
 
-[Figma](https://www.figma.com/) is a popular collaborative UI design tool used by [Slack](https://slack.com/), [Twitter](https://twitter.com/), and [Dropbox](https://www.dropbox.com/) teams. It allows multiple people to work on the same design simultaneously in the browser.
+[Figma](https://www.figma.com/) is a collaborative UI design tool that allows multiple people to work on the same design simultaneously in the browser. There are two ways to integrate Storybook and Figma.
 
-If you're working with Figma, you have two options for connecting your Storybook. You can use the [Storybook addon designs](https://storybook.js.org/addons/storybook-addon-designs), which allows you to view your designs alongside the currently selected story.
+- [**Embed Storybook in Figma**](#embed-storybook-in-figma-with-the-plugin)
+- [**Embed Figma in Storybook**](#embed-figma-in-storybook-with-the-addon)
 
-![Storybook addon figma](./storybook-figma-addon.png)
+### Embed Storybook in Figma with the plugin
 
-Or use [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) to embed stories into your Figma design workspace. Below is an overview of how to get started with the plugin.
+[Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) is a Figma plugin that allows you to embed component stories in Figma. It’s powered by [Storybook embeds](./embed.md) and [Chromatic](https://www.chromatic.com/), a publishing tool created by the Storybook team.
 
-### Setup
+<!-- TODO add image of Figma plugin, take it from the website  -->
 
-To use the plugin, you must have a Storybook [published in Chromatic](./publish-storybook.md#publish-storybook-with-chromatic), a free publishing service made for Storybook that documents, versions, and indexes your UI components securely in the cloud. You'll be using the URL of your published Storybook to connect to the plugin.
+#### Install plugin
 
-Navigate to [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) to install the plugin. In Figma, open the command palette (in Mac OS, use `Command + /`, in Windows use `Control + /`) and type `Storybook Connect` to enable it.
+Before we begin, you must have a Storybook [published to Chromatic](./publish-storybook.md#publish-storybook-with-chromatic). It provides the index, versions, and access control that back the plugin.
+
+Go to [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) to install the plugin.
+
+In Figma, open the command palette (in Mac OS, use `Command + /`, in Windows use `Control + /`) and type `Storybook Connect` to enable it.
 
 ![Figma palette Storybook connect](./figma-plugin-open-in-figma.png)
 
 Follow the instructions to connect and authenticate with Chromatic.
 
-### Link stories to Figma components
+#### Link stories to Figma components
 
-The core feature of the [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) Figma plugin is the ability to connect your existing components, variants, and instances to Storybook stories.
+Link stories to Figma components, variants, and instances.
 
-To link your components with Storybook stories, navigate to the story published on Chromatic (be sure that you're using the correct branch) and copy the link.
+Go to a story in a Storybook published on Chromatic. Make sure it’s on the branch you want to link. Then copy the URL to the story.
 
 In Figma, select the component, open the plugin, and paste the URL.
 
 ![Story linked in Figma](./figma-plugin-paste-url.png)
 
-Once they're connected, you'll be able to preview the story by clicking the link in the sidebar.
+Chromatic will automatically update your linked stories to reflect the most recent Storybook published on the branch you linked. That means the link persists even as you push new code.
 
 <div class="aside">
 💡 The plugin does not support linking stories to Figma layers.
 </div>
 
-### Preview stories in Figma
+#### View stories in Figma
 
-Another essential feature of the plugin is the ability to preview the story directly in your Figma workspace. To preview the story connected to your existing component, open Figma's design sidebar and click the "View story" action.
+Once they're connected, you'll be able to view the story by clicking the link in the sidebar. Click "View story". Alternatively, open the plugin by using the command palette (in Mac OS, use `Command + /`, in Windows use `Control + /`) then type `Storybook Connect`.
 
 <video autoPlay muted playsInline loop>
   <source src="figma-plugin-open-story.mp4" type="video/mp4" />
 </video>
+
+### Setup Figma in Storybook with the addon
+
+[Design addon] allows you to embed Figma files and prototypes in Storybook. It’s powered by Figma Live Embeds. You can embed Figma files in Storybook, regardless of the file's sharing settings. Share private files within a team, or public files with the world.
+Collaborators can interact with embeds based on their team or Organization permissions.
+
+![Storybook addon figma](./storybook-figma-addon.png)
+
+#### Install design addon
+
+https://storybook.js.org/addons/storybook-addon-designs
+
+#### Link Figma components to stories
+
+Copy the Figma URL
+
+#### TODO
 
 ## Adobe XD
 
