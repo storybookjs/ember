@@ -4,20 +4,16 @@ title: 'Design integrations'
 
 Storybook integrates with design tools to speed up your development workflow. That helps you debug inconsistencies earlier in the design process, discover existing components to reuse, reference designs alongside existing stories.
 
-![Storybook design integrations](./storybook-design-integrations.jpeg)
-
 ## Figma
 
 [Figma](https://www.figma.com/) is a collaborative UI design tool that allows multiple people to work on the same design simultaneously in the browser. There are two ways to integrate Storybook and Figma.
 
 - [**Embed Storybook in Figma**](#embed-storybook-in-figma-with-the-plugin)
-- [**Embed Figma in Storybook**](#embed-figma-in-storybook-with-the-addon)
+- [**Embed Figma in Storybook**](#setup-figma-in-storybook-with-the-addon)
 
 ### Embed Storybook in Figma with the plugin
 
 [Storybook Connect](https://www.figma.com/community/plugin/1056265616080331589/Storybook-Connect) is a Figma plugin that allows you to embed component stories in Figma. It’s powered by [Storybook embeds](./embed.md) and [Chromatic](https://www.chromatic.com/), a publishing tool created by the Storybook team.
-
-<!-- TODO add image of Figma plugin, take it from the website  -->
 
 #### Install plugin
 
@@ -49,7 +45,7 @@ Chromatic will automatically update your linked stories to reflect the most rece
 
 #### View stories in Figma
 
-Once they're connected, you'll be able to view the story by clicking the link in the sidebar. Click "View story". Alternatively, open the plugin by using the command palette (in Mac OS, use `Command + /`, in Windows use `Control + /`) then type `Storybook Connect`.
+Once they're connected, you'll be able to view the story by clicking the link in the sidebar. Click "View story". Alternatively, open the plugin by using the command palette (in Mac OS, use `Command + /`, in Windows, use `Control + /`), then type `Storybook Connect`.
 
 <video autoPlay muted playsInline loop>
   <source src="figma-plugin-open-story.mp4" type="video/mp4" />
@@ -57,26 +53,66 @@ Once they're connected, you'll be able to view the story by clicking the link in
 
 ### Setup Figma in Storybook with the addon
 
-[Design addon] allows you to embed Figma files and prototypes in Storybook. It’s powered by Figma Live Embeds. You can embed Figma files in Storybook, regardless of the file's sharing settings. Share private files within a team, or public files with the world.
-Collaborators can interact with embeds based on their team or Organization permissions.
+[Design addon](https://storybook.js.org/addons/storybook-addon-designs) allows you to embed Figma files and prototypes in Storybook. It’s powered by [Figma Live Embeds](https://help.figma.com/hc/en-us/articles/360040531773). You can embed Figma files in Storybook, regardless of the file's sharing settings. Share private files within a team, or public files with the world.
 
-![Storybook addon figma](./storybook-figma-addon.png)
+Collaborators can also interact with embeds based on their [team](https://help.figma.com/hc/en-us/articles/360039970673) or [role](https://help.figma.com/hc/en-us/articles/360039960434).
 
 #### Install design addon
 
-https://storybook.js.org/addons/storybook-addon-designs
+To connect Storybook to Figma, you'll need to take additional steps to set it up properly. Detailed below is our recommendation on how to get started with the addon.
+
+Run the following command to install the addon.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-figma-addon-install.yarn.js.mdx',
+    'common/storybook-figma-addon-install.npm.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Update your Storybook configuration (in `.storybook/main.js|ts`) to include the addon.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-figma-addon-register.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 #### Link Figma components to stories
 
-Copy the Figma URL
+In Figma, select the file you want to embed in Storybook. Click the `Share` button to generate a unique URL for the file and save it with the `Copy link` button (if you're using the Figma web app, you can copy the URL from the browser's address bar).
 
-#### TODO
+<div class="aside">
 
-## Adobe XD
+💡 You also have the option to select a specific Frame to embed. From the share modal, check `Link to selected frame`.
 
-[Adobe XD](https://www.adobe.com/products/xd.html) is a vector-based UI and UX design tool, enabling design teams to create wireframes, interactive designs, prototypes, or hi-fidelity web or application designs.
+</div>
 
-Adobe XD integrates with Storybook via [addon](https://storybook.js.org/addons/storybook-addon-designs/), enabling you to [embed](https://helpx.adobe.com/xd/help/publish-design-specs.html) your design specs alongside your Storybook [stories](https://pocka.github.io/storybook-addon-designs/?path=/story/docs-iframe-readme--page).
+In Storybook, update your story and add a new [parameter](../writing-stories/parameters.md) named `design` with the required configuration for the Figma file. For example:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'react/component-story-figma-integration.js.mdx',
+    'react/component-story-figma-integration.ts.mdx',
+    'react/component-story-figma-integration.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Click the `Design` addon panel to view the embedded Figma design.
+
+![Storybook addon figma](./storybook-figma-addon.png)
 
 ## Zeplin
 
@@ -112,6 +148,12 @@ Zeroheight integrates with [Storybook](https://zeroheight.com/3xlwst8/p/507ba7-s
 Invision also provides a [Storybook integration](https://support.invisionapp.com/hc/en-us/articles/360028388192-Publishing-Storybook-to-DSM), enabling you to view your Storybook stories in the application alongside the designs.
 
 ![Invision DSM Storybook integration](./storybook-invision-dsm.gif)
+
+## Adobe XD
+
+[Adobe XD](https://www.adobe.com/products/xd.html) is a vector-based UI and UX design tool, enabling design teams to create wireframes, interactive designs, prototypes, or hi-fidelity web or application designs.
+
+Adobe XD integrates with Storybook via [addon](https://storybook.js.org/addons/storybook-addon-designs/), enabling you to [embed](https://helpx.adobe.com/xd/help/publish-design-specs.html) your design specs alongside your Storybook [stories](https://pocka.github.io/storybook-addon-designs/?path=/story/docs-iframe-readme--page).
 
 ### Build an integration
 
