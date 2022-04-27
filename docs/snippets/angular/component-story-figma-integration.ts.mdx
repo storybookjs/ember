@@ -1,0 +1,29 @@
+```ts
+// MyComponent.stories.ts
+
+import { Story, Meta } from '@storybook/angular/';
+
+import { withDesign } from 'storybook-addon-designs';
+
+import { MyComponent } from './MyComponent.component';
+
+// More on default export: https://storybook.js.org/docs/angular/writing-stories/introduction#default-export
+export default {
+  title: 'FigmaExample',
+  component: MyComponent,
+  decorators: [withDesign],
+} as Meta;
+
+// More on component templates: https://storybook.js.org/docs/angular/writing-stories/introduction#using-args
+const Template: Story = () => ({
+  props: {},
+});
+
+export const Example = Template.bind({});
+Example.parameters = {
+  design: {
+    type: 'iframe',
+    url: 'https://www.figma.com/file/Sample-File',
+  },
+};
+```
