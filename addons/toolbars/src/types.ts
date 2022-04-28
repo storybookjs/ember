@@ -33,6 +33,8 @@ export interface NormalizedToolbarConfig {
   shortcuts?: ToolbarShortcuts;
   /** @deprecated "name" no longer dual purposes as title - use "title" if a title is wanted */
   showName?: boolean;
+  /** Change title based on selected value */
+  dynamicTitle?: boolean;
 }
 
 export type NormalizedToolbarArgType = ArgType & {
