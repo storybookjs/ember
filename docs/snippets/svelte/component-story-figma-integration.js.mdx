@@ -1,0 +1,28 @@
+```js
+// MyComponent.stories.js
+
+import { withDesign } from 'storybook-addon-designs';
+
+import MyComponent from './MyComponent.svelte';
+
+// More on default export: https://storybook.js.org/docs/svelte/writing-stories/introduction#default-export
+export default {
+  title: 'FigmaExample',
+  component: { MyComponent },
+  decorators: [withDesign],
+};
+
+// More on component templates: https://storybook.js.org/docs/svelte/writing-stories/introduction#using-args
+const Template = () => ({
+  props: {},
+  Component: MyComponent,
+});
+
+export const Example = Template.bind({});
+Example.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/Sample-File',
+  },
+};
+```

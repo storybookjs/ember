@@ -67,21 +67,21 @@ export default {
 
   components: { MyHeader },
 
-  props: {
-    user: {
-      type: Object,
-    },
+  data() {
+    return {
+      user: null,
+    };
   },
 
   methods: {
     onLogin() {
-      this.$emit('onLogin');
+      this.user = { name: 'Jane Doe' };
     },
     onLogout() {
-      this.$emit('onLogout');
+      this.user = null;
     },
     onCreateAccount() {
-      this.$emit('onCreateAccount');
+      this.user = { name: 'Jane Doe' };
     },
   },
 };

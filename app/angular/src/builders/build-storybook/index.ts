@@ -31,7 +31,7 @@ export type StorybookBuilderOptions = JsonObject & {
 } & Pick<
     // makes sure the option exists
     CLIOptions,
-    'outputDir' | 'configDir' | 'loglevel' | 'quiet' | 'docs'
+    'outputDir' | 'configDir' | 'loglevel' | 'quiet' | 'docs' | 'webpackStatsJson'
   >;
 
 export type StorybookBuilderOutput = JsonObject & BuilderOutput & {};
@@ -62,6 +62,7 @@ function commandBuilder(
         loglevel,
         outputDir,
         quiet,
+        webpackStatsJson,
       } = options;
 
       const standaloneOptions: StandaloneOptions = {
@@ -77,6 +78,7 @@ function commandBuilder(
           ...(styles ? { styles } : {}),
         },
         tsConfig,
+        webpackStatsJson,
       };
       return standaloneOptions;
     }),

@@ -18,7 +18,7 @@ const generator: Generator = async (packageManager, npmOptions, options) => {
 
   writePackageJson(packageJson);
 
-  baseGenerator(packageManager, npmOptions, options, 'rax', {
+  await baseGenerator(packageManager, npmOptions, options, 'rax', {
     extraPackages: ['rax'],
   });
 };

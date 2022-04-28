@@ -1,6 +1,6 @@
 {
   "name": "@storybook/addon-actions",
-  "version": "6.5.0-beta.0",
+  "version": "6.5.0-beta.1",
   "description": "Get UI feedback when an action is performed on an interactive element",
   "keywords": [
     "storybook",
@@ -41,13 +41,13 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@storybook/addons": "6.5.0-beta.0",
-    "@storybook/api": "6.5.0-beta.0",
-    "@storybook/client-logger": "6.5.0-beta.0",
-    "@storybook/components": "6.5.0-beta.0",
-    "@storybook/core-events": "6.5.0-beta.0",
-    "@storybook/csf": "0.0.2--canary.7c6c115.0",
-    "@storybook/theming": "6.5.0-beta.0",
+    "@storybook/addons": "6.5.0-beta.1",
+    "@storybook/api": "6.5.0-beta.1",
+    "@storybook/client-logger": "6.5.0-beta.1",
+    "@storybook/components": "6.5.0-beta.1",
+    "@storybook/core-events": "6.5.0-beta.1",
+    "@storybook/csf": "0.0.2--canary.4566f4d.1",
+    "@storybook/theming": "6.5.0-beta.1",
     "core-js": "^3.8.2",
     "fast-deep-equal": "^3.1.3",
     "global": "^4.4.0",
@@ -80,7 +80,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "b2e85f3599c043815b18bbfc5ca563bf1c6e4add",
+  "gitHead": "85bcae3041a0664d7c0ee4756241e29ad1063a9a",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Actions",

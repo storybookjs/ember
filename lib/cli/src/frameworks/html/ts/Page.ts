@@ -1,18 +1,42 @@
 import './page.css';
 import { createHeader } from './Header';
 
-export interface PageProps {
-  user?: {};
-  onLogin: () => void;
-  onLogout: () => void;
-  onCreateAccount: () => void;
-}
+type User = {
+  name: string;
+};
 
-export const createPage = ({ user, onLogout, onLogin, onCreateAccount }: PageProps) => {
+export const createPage = () => {
   const article = document.createElement('article');
+  let user: User = null;
+  let header = null;
 
-  const header = createHeader({ onLogin, onLogout, onCreateAccount, user });
+  const rerenderHeader = () => {
+    const wrapper = document.getElementsByTagName('article')[0];
+    wrapper.replaceChild(createHeaderElement(), wrapper.firstChild);
+  };
+
+  const onLogin = () => {
+    user = { name: 'Jane Doe' };
+    rerenderHeader();
+  };
+
+  const onLogout = () => {
+    user = null;
+    rerenderHeader();
+  };
+
+  const onCreateAccount = () => {
+    user = { name: 'Jane Doe' };
+    rerenderHeader();
+  };
+
+  const createHeaderElement = () => {
+    return createHeader({ onLogin, onLogout, onCreateAccount, user });
+  };
+
+  header = createHeaderElement();
   article.appendChild(header);
+
   const section = `
   <section>
     <h2>Pages in Storybook</h2>

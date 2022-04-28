@@ -1,0 +1,27 @@
+```js
+// MyComponent.stories.js|jsx
+
+import React from 'react';
+
+import { withDesign } from 'storybook-addon-designs';
+
+import { MyComponent } from './MyComponent';
+
+// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+export default {
+  title: 'FigmaExample',
+  component: MyComponent,
+  decorators: [withDesign],
+};
+
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+const Template = () => <MyComponent />;
+
+export const Example = Template.bind({});
+Example.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/Sample-File',
+  },
+};
+```

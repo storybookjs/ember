@@ -180,6 +180,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'test-runner',
+          title: 'Test runner',
+          type: 'link',
+        },
+        {
           pathSegment: 'visual-testing',
           title: 'Visual tests',
           type: 'link',
@@ -219,6 +224,11 @@ module.exports = {
         {
           pathSegment: 'embed',
           title: 'Embed',
+          type: 'link',
+        },
+        {
+          pathSegment: 'design-integrations',
+          title: 'Design integrations',
           type: 'link',
         },
         {
