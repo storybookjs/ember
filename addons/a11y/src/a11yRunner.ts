@@ -36,8 +36,8 @@ const run = async (storyId: string) => {
       channel.emit(EVENTS.RUNNING);
       const axe = await import('axe-core');
 
-      const { element = 'root', config, options = {} } = input;
-      const htmlElement = document.querySelector(`#${element}`);
+      const { element = '#root', config, options = {} } = input;
+      const htmlElement = document.querySelector(element);
       axe.reset();
       if (config) {
         axe.configure(config);
