@@ -1,3 +1,19 @@
+## 6.5.0-beta.1 (April 28, 2022)
+
+### Features
+
+- Toolbars: Add dynamicTitle option ([#17789](https://github.com/storybookjs/storybook/pull/17789))
+- Angular: Add webpackStatsJson to angular-builder ([#18001](https://github.com/storybookjs/storybook/pull/18001))
+- CLI/Vue: add interactions to vue cli template ([#18021](https://github.com/storybookjs/storybook/pull/18021))
+- CLI/HTML: Add interactions to cli template ([#18014](https://github.com/storybookjs/storybook/pull/18014))
+
+### Bug Fixes
+
+- CSF: Re-apply TArgs to render type ([#18075](https://github.com/storybookjs/storybook/pull/18075))
+- CLI: await generators for proper install ([#18053](https://github.com/storybookjs/storybook/pull/18053))
+- Core: Fix story index for CSF default exports as TS vars ([#18054](https://github.com/storybookjs/storybook/pull/18054))
+- Core: Fix single-story hoisting regression for auto-title changes ([#18052](https://github.com/storybookjs/storybook/pull/18052))
+
 ## 6.5.0-beta.0 (April 24, 2022)
 
 ### Features
