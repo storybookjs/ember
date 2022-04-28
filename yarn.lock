@@ -8373,6 +8373,7 @@ __metadata:
     fs-extra: ^9.0.1
     global: ^4.4.0
     html-tags: ^3.1.0
+    jest-specific-snapshot: ^4.0.0
     lodash: ^4.17.21
     prop-types: ^15.7.2
     react-element-to-jsx-string: ^14.3.4
@@ -8384,7 +8385,6 @@ __metadata:
     webpack: 4
   peerDependencies:
     "@babel/core": ^7.11.5
-    jest-specific-snapshot: ^4.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     require-from-string: ^2.0.2
