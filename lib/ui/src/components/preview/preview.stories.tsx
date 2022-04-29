@@ -166,3 +166,23 @@ export const WithToolbarExclusions = () => (
     }}
   </Consumer>
 );
+
+export const WithToolbarTabExclusions = () => (
+  <Consumer>
+    {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          api={{
+            ...api,
+            getElements: () => ({}),
+            getQueryParam: (key) => {
+              const params = { toolbarExclude: 'storybook/tabs' };
+              return params[key];
+            },
+          }}
+        />
+      );
+    }}
+  </Consumer>
+);

@@ -226,7 +226,8 @@ export function filterTools(
     toolbarExclusions.filter((exclusionKey) => id.match(new RegExp(`^${exclusionKey}.*`)))
       .length === 0;
 
-  const filteredTabs = tabs.filter((tab) => isToolIncluded(tab.id));
+  const excludeAllTabs = toolbarExclusions.includes('storybook/tabs')
+  const filteredTabs = excludeAllTabs ? [] : tabs.filter((tab) => isToolIncluded(tab.id));
 
   const toolsLeft = [
     menuTool,
