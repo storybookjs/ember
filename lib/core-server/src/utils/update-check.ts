@@ -48,7 +48,7 @@ export function createUpdateMessage(updateInfo: VersionCheck, version: string): 
 
           ${chalk.gray('Upgrade now:')} ${colors.green(upgradeCommand)}
 
-          ${chalk.gray('Read full changelog:')} ${chalk.gray.underline('https://git.io/fhFYe')}
+          ${chalk.gray('Read full changelog:')} ${chalk.gray.underline('https://github.com/storybookjs/storybook/blob/next/CHANGELOG.md')}
         `
         : '';
   } catch (e) {
