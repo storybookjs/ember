@@ -33,7 +33,7 @@ Usage: start-storybook [options]
 | `--webpack-stats-json`          | Write Webpack Stats JSON to disk<br/>`start-storybook --webpack-stats-json /tmp/webpack-stats`                                                                              |
 | `--docs`                        | Starts Storybook in documentation mode. Learn more about it in [here](../writing-docs/build-documentation.md#preview-storybooks-documentation)<br/>`start-storybook --docs` |
 | `--no-manager-cache`            | Disables Storybook's manager caching mechanism. See note below<br/>`start-storybook --no-manager-cache`                                                                     |
-| `--disableTelemetry`            | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md)<br/>`start-storybook --disableTelemetry`                                              |
+| `--disable-telemetry`           | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md)<br/>`start-storybook --disable-telemetry`                                             |
 
 <div class="aside">
 💡 The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
@@ -64,7 +64,7 @@ Usage: build-storybook [options]
 | `--debug-webpack`               | Display final webpack configurations for debugging purposes<br/>`build-storybook --debug-webpack`                                                                           |
 | `--webpack-stats-json`          | Write Webpack Stats JSON to disk<br/>`build-storybook --webpack-stats-json /my-storybook/webpack-stats`                                                                     |
 | `--docs`                        | Builds Storybook in documentation mode. Learn more about it in [here](../writing-docs/build-documentation.md#publish-storybooks-documentation)<br/>`build-storybook --docs` |
-| `--disableTelemetry`            | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md).<br/>`build-storybook --disableTelemetry`                                             |
+| `--disable-telemetry`           | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md).<br/>`build-storybook --disable-telemetry`                                            |
 
 <div class="aside">
 💡  If you're using npm instead of yarn to publish Storybook, the commands work slightly different. For example, <code>npm run build-storybook -- -o ./path/to/build</code>.

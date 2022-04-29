@@ -127,7 +127,7 @@ In the future, we plan to share relevant data with the community through public 
 
 ## How to opt-out
 
-You may opt-out of the telemetry by setting Storybook's configuration element `disableTelemetry` to `true`, using the `--disableTelemetry` flag, or setting the environment variable`STORYBOOK_DISABLE_TELEMETRY` to `1`. For example:
+You may opt-out of the telemetry by setting Storybook's configuration element `disableTelemetry` to `true`, using the `--disable-telemetry` flag, or setting the environment variable`STORYBOOK_DISABLE_TELEMETRY` to `1`. For example:
 
 <!-- prettier-ignore-start -->
 
