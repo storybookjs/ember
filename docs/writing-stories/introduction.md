@@ -11,7 +11,7 @@ Storybook uses the generic term arguments (args for short) when talking about Re
 A component’s stories are defined in a story file that lives alongside the component file. The story file is for development-only, and it won't be included in your production bundle.
 
 ```
-Button.vue | js | ts | jsx | tsx 
+Button.js | ts | jsx | tsx | vue | svelte
 Button.stories.js | ts | jsx | tsx | mdx
 ```
 
