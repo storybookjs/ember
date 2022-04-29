@@ -84,11 +84,11 @@
   },
   "devDependencies": {
     "@types/util-deprecate": "^1.0.0",
+    "jest-specific-snapshot": "^4.0.0",
     "webpack": "4"
   },
   "peerDependencies": {
     "@babel/core": "^7.11.5",
-    "jest-specific-snapshot": "^4.0.0",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "require-from-string": "^2.0.2"
