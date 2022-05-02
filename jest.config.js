@@ -81,6 +81,7 @@ module.exports = {
     '/__mocks-ng-workspace__/',
     '/__testfixtures__/',
     '^.*\\.stories\\.[jt]sx?$',
+    'typings.d.ts$',
   ],
   globals: {
     DOCS_MODE: false,
