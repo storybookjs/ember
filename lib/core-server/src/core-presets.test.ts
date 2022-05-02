@@ -39,12 +39,10 @@ jest.mock('@storybook/builder-webpack4', () => {
   return actualBuilder;
 });
 
-jest.mock('@storybook/telemetry', () => {
-  return {
-    getStorybookMetadata: jest.fn(() => ({})),
-    telemetry: jest.fn(() => ({})),
-  };
-});
+jest.mock('@storybook/telemetry', () => ({
+  getStorybookMetadata: jest.fn(() => ({})),
+  telemetry: jest.fn(() => ({})),
+}));
 
 jest.mock('./utils/StoryIndexGenerator', () => {
   const { StoryIndexGenerator } = jest.requireActual('./utils/StoryIndexGenerator');
@@ -61,11 +59,10 @@ jest.mock('./utils/StoryIndexGenerator', () => {
   };
 });
 
-jest.mock('./utils/stories-json', () => {
-  const actualStoriesJson = jest.requireActual('./utils/stories-json');
-  actualStoriesJson.extractStoriesJson = () => Promise.resolve();
-  return actualStoriesJson;
-});
+jest.mock('./utils/stories-json', () => ({
+  extractStoriesJson: () => Promise.resolve(),
+  useStoriesJson: () => {},
+}));
 
 jest.mock('@storybook/manager-webpack4', () => {
   const value = jest.fn();
