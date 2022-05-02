@@ -132,57 +132,9 @@ export const HideAllDefaultTools = () => (
 export const WithCanvasTab = () => (
   <Consumer>
     {({ api }: Combo) => {
-      return (
-        <Preview
-          {...previewProps}
-          api={{
-            ...api,
-            getElements: () => ({}),
-          }}
-        />
-      );
+      return <Preview {...previewProps} api={{ ...api, getElements: () => ({}) }} />;
     }}
   </Consumer>
 );
 
 export const WithTabs = () => <Preview {...previewProps} />;
-
-export const WithToolbarExclusions = () => (
-  <Consumer>
-    {({ api }: Combo) => {
-      return (
-        <Preview
-          {...previewProps}
-          api={{
-            ...api,
-            getElements: () => ({}),
-            getQueryParam: (key) => {
-              const params = { toolbarExclude: 'canvas,fullscreen' };
-              return params[key];
-            },
-          }}
-        />
-      );
-    }}
-  </Consumer>
-);
-
-export const WithToolbarTabExclusions = () => (
-  <Consumer>
-    {({ api }: Combo) => {
-      return (
-        <Preview
-          {...previewProps}
-          api={{
-            ...api,
-            getElements: () => ({}),
-            getQueryParam: (key) => {
-              const params = { toolbarExclude: 'storybook/tabs' };
-              return params[key];
-            },
-          }}
-        />
-      );
-    }}
-  </Consumer>
-);
