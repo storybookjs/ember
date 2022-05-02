@@ -64,7 +64,7 @@ describe('useStoriesJson', () => {
   describe('JSON endpoint', () => {
     it('scans and extracts stories', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson({
+      useStoriesJson({
         router,
         serverChannel: mockServerChannel,
         workingDir,
@@ -168,7 +168,7 @@ describe('useStoriesJson', () => {
     it('can handle simultaneous access', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
 
-      await useStoriesJson({
+      useStoriesJson({
         router,
         serverChannel: mockServerChannel,
         workingDir,
@@ -200,7 +200,7 @@ describe('useStoriesJson', () => {
 
     it('sends invalidate events', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson({
+      useStoriesJson({
         router,
         serverChannel: mockServerChannel,
         workingDir,
@@ -229,7 +229,7 @@ describe('useStoriesJson', () => {
 
     it('only sends one invalidation when multiple event listeners are listening', async () => {
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson({
+      useStoriesJson({
         router,
         serverChannel: mockServerChannel,
         workingDir,
@@ -264,7 +264,7 @@ describe('useStoriesJson', () => {
       (debounce as jest.Mock).mockImplementation(jest.requireActual('lodash/debounce'));
 
       const mockServerChannel = { emit: jest.fn() } as any as ServerChannel;
-      await useStoriesJson({
+      useStoriesJson({
         router,
         serverChannel: mockServerChannel,
         workingDir,

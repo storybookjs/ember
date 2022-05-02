@@ -140,7 +140,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     });
   }
 
-  if (!core.disableProjectJson) {
+  if (!core?.disableProjectJson) {
     extractTasks.push(
       extractStorybookMetadata(path.join(options.outputDir, 'project.json'), options.configDir)
     );
