@@ -47,6 +47,13 @@ export function getProdCli(packageJson: {
     .option('--docs', 'Build a documentation-only site using addon-docs')
     .option('--modern', 'Use modern browser modules')
     .option('--no-manager-cache', 'Do not cache the manager UI')
+    .option(
+      '--disable-telemetry',
+      'Disable sending telemetry',
+      // default value is false, but if the user sets STORYBOOK_DISABLE_TELEMETRY, it can be true
+      process.env.STORYBOOK_DISABLE_TELEMETRY && process.env.STORYBOOK_DISABLE_TELEMETRY !== 'false'
+    )
+    .option('--enable-crash-reports', 'enable sending crash reports to telemetry data')
     .parse(process.argv);
 
   logger.setLevel(program.loglevel);

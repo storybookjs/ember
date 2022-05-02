@@ -3,8 +3,8 @@ import dedent from 'ts-dedent';
 
 import semver from '@storybook/semver';
 import { ConfigFile, readConfig, writeConfig } from '@storybook/csf-tools';
+import { getStorybookInfo } from '@storybook/core-common';
 
-import { getStorybookInfo } from '../helpers/getStorybookInfo';
 import { Fix } from '../types';
 
 const logger = console;

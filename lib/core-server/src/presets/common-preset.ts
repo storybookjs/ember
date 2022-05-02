@@ -6,6 +6,8 @@ import {
   loadCustomBabelConfig,
   getStorybookBabelConfig,
   loadEnvs,
+  CoreConfig,
+  StorybookConfig,
 } from '@storybook/core-common';
 import type { Options } from '@storybook/core-common';
 
@@ -61,13 +63,52 @@ export const typescript = () => ({
   },
 });
 
+const optionalEnvToBoolean = (input: string | undefined): boolean | undefined => {
+  if (input === undefined) {
+    return undefined;
+  }
+  if (input.toUpperCase() === 'FALSE') {
+    return false;
+  }
+  if (input.toUpperCase() === 'TRUE') {
+    return true;
+  }
+  if (typeof input === 'string') {
+    return true;
+  }
+  return undefined;
+};
+
+/**
+ * If for some reason this config is not applied, the reason is that
+ * likely there is an addon that does `export core = () => ({ someConfig })`,
+ * instead of `export core = (existing) => ({ ...existing, someConfig })`,
+ * just overwriting everything and not merging with the existing values.
+ */
+export const core = async (existing: CoreConfig, options: Options): Promise<CoreConfig> => ({
+  ...existing,
+  disableTelemetry: options.disableTelemetry === true,
+  enableCrashReports:
+    options.enableCrashReports || optionalEnvToBoolean(process.env.STORYBOOK_ENABLE_CRASH_REPORTS),
+});
+
 export const config = async (base: any, options: Options) => {
   return [...(await options.presets.apply('previewAnnotations', [], options)), ...base];
 };
 
-export const features = async (existing: Record<string, boolean>) => ({
+export const features = async (
+  existing: StorybookConfig['features']
+): Promise<StorybookConfig['features']> => ({
   ...existing,
   postcss: true,
   emotionAlias: false, // TODO remove in 7.0, this no longer does anything
   warnOnLegacyHierarchySeparator: true,
+  buildStoriesJson: false,
+  storyStoreV7: false,
+  modernInlineRender: false,
+  breakingChangesV7: false,
+  interactionsDebugger: false,
+  babelModeV7: false,
+  argTypeTargetsV7: false,
+  previewMdx2: false,
 });

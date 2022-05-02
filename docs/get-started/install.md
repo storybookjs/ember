@@ -41,6 +41,7 @@ The command above will make the following changes to your local environment:
 - 🛠 Setup the necessary scripts to run and build Storybook.
 - 🛠 Add the default Storybook configuration.
 - 📝 Add some boilerplate stories to get you started.
+- 📡 Set up telemetry to help us improve Storybook. Read more about it [here](../configure/telemetry.md).
 
 Depending on your framework, first, build your app and then check that everything worked by running:
 

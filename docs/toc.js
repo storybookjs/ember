@@ -358,6 +358,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'telemetry',
+          title: 'Telemetry',
+          type: 'link',
+        },
+        {
           pathSegment: '',
           title: 'Integration',
           type: 'menu',

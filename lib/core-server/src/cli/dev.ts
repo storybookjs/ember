@@ -34,6 +34,13 @@ export async function getDevCli(packageJson: {
     .option('--quiet', 'Suppress verbose build output')
     .option('--no-version-updates', 'Suppress update check', true)
     .option(
+      '--disable-telemetry',
+      'Disable sending telemetry',
+      // default value is false, but if the user sets STORYBOOK_DISABLE_TELEMETRY, it can be true
+      process.env.STORYBOOK_DISABLE_TELEMETRY && process.env.STORYBOOK_DISABLE_TELEMETRY !== 'false'
+    )
+    .option('--enable-crash-reports', 'enable sending crash reports to telemetry data')
+    .option(
       '--no-release-notes',
       'Suppress automatic redirects to the release notes after upgrading',
       true

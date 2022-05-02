@@ -26,6 +26,7 @@ const mainConfig: StorybookConfig = {
   },
   core: {
     builder: 'webpack4',
+    disableTelemetry: true,
   },
   staticDirs: ['../public'],
   features: {

@@ -1,4 +1,4 @@
-import { getStorybookConfiguration } from './getStorybookConfiguration';
+import { getStorybookConfiguration } from './get-storybook-configuration';
 
 describe('getStorybookConfiguration', () => {
   it('handles short names', () => {

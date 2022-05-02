@@ -28,6 +28,7 @@ module.exports = {
   },
   core: {
     builder: 'webpack4',
+    disableTelemetry: true,
   },
   staticDirs: ['../ember-output'],
   features: {
