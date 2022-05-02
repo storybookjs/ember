@@ -145,10 +145,10 @@ const Preview = React.memo<PreviewProps>((props) => {
   const { getElements } = api;
 
   const tabs = useTabs(previewId, baseUrl, withLoader, getElements, story);
-  const visibleTabsInToolbar = options.showTabs ? tabs : [];
 
   const shouldScale = viewMode === 'story';
-  const { isToolshown } = options;
+  const { isToolshown, showTabs = true } = options;
+  const visibleTabsInToolbar = showTabs ? tabs : [];
 
   const previousStoryId = useRef(storyId);
   const previousViewMode = useRef(viewMode);
