@@ -5,6 +5,7 @@ type Item = StoriesHash[keyof StoriesHash];
 
 const docsOnly = { parameters: { docsOnly: true } };
 const root: Item = {
+  type: 'root',
   id: 'root',
   name: 'root',
   depth: 0,
@@ -14,6 +15,7 @@ const root: Item = {
   isLeaf: false,
 };
 const a: Item = {
+  type: 'component',
   id: 'a',
   name: 'a',
   depth: 1,
@@ -24,6 +26,7 @@ const a: Item = {
   children: ['a1'],
 };
 const a1: Item = {
+  type: 'story',
   id: 'a1',
   name: 'a1',
   kind: 'a',
@@ -35,6 +38,7 @@ const a1: Item = {
   args: {},
 };
 const b: Item = {
+  type: 'component',
   id: 'b',
   name: 'b',
   depth: 1,
@@ -45,6 +49,7 @@ const b: Item = {
   children: ['b1', 'b2'],
 };
 const b1: Item = {
+  type: 'story',
   id: 'b1',
   name: 'b1',
   kind: 'b',
@@ -56,6 +61,7 @@ const b1: Item = {
   args: {},
 };
 const b2: Item = {
+  type: 'story',
   id: 'b2',
   name: 'b2',
   kind: 'b',
@@ -97,6 +103,7 @@ describe('collapse all stories', () => {
 
     const expected: StoriesHash = {
       a1: {
+        type: 'component',
         id: 'a1',
         depth: 1,
         name: 'a',
@@ -109,6 +116,7 @@ describe('collapse all stories', () => {
         args: {},
       },
       b1: {
+        type: 'component',
         id: 'b1',
         depth: 1,
         name: 'b',
@@ -121,6 +129,7 @@ describe('collapse all stories', () => {
         args: {},
       },
       root: {
+        type: 'root',
         id: 'root',
         name: 'root',
         depth: 0,
@@ -143,6 +152,7 @@ describe('collapse all stories', () => {
     const collapsed = collapseAllStories(hasDocsOnly);
 
     expect(collapsed.a1).toEqual({
+      type: 'component',
       id: 'a1',
       name: 'a',
       kind: 'a',
@@ -158,6 +168,7 @@ describe('collapse all stories', () => {
 
   it('collapses mixtures of leaf and non-leaf children', () => {
     const mixedRoot: Item = {
+      type: 'root',
       id: 'root',
       name: 'root',
       depth: 0,
@@ -177,6 +188,7 @@ describe('collapse all stories', () => {
 
     expect(collapsed).toEqual({
       a1: {
+        type: 'component',
         id: 'a1',
         depth: 1,
         name: 'a',
@@ -189,6 +201,7 @@ describe('collapse all stories', () => {
         args: {},
       },
       b1: {
+        type: 'story',
         id: 'b1',
         name: 'b1',
         kind: 'b',
@@ -200,6 +213,7 @@ describe('collapse all stories', () => {
         args: {},
       },
       root: {
+        type: 'root',
         id: 'root',
         name: 'root',
         depth: 0,
