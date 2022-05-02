@@ -296,7 +296,7 @@ import startCase from 'lodash/startCase';
 
 addons.setConfig({
   sidebar: {
-    renderLabel: ({ name, isLeaf }) => (isLeaf ? name : startCase(name)),
+    renderLabel: ({ name, type }) => (type === 'story' ? name : startCase(name)),
   },
 });
 ```
