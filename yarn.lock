@@ -7910,6 +7910,7 @@ __metadata:
     "@storybook/addon-essentials": 6.5.0-beta.1
     "@storybook/addon-storyshots": 6.5.0-beta.1
     "@storybook/addon-storysource": 6.5.0-beta.1
+    "@storybook/addons": 6.5.0-beta.1
     "@storybook/cli": 6.5.0-beta.1
     "@storybook/components": 6.5.0-beta.1
     "@storybook/react": 6.5.0-beta.1
@@ -7922,6 +7923,7 @@ __metadata:
     "@types/react-dom": ^16.9.14
     cross-env: ^7.0.3
     formik: ^2.2.9
+    lodash: ^4.17.21
     prop-types: 15.7.2
     react: 16.14.0
     react-dom: 16.14.0
