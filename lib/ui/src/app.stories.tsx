@@ -43,6 +43,7 @@ export const Default = () => (
         panelPosition: 'right',
         showNav: true,
         showPanel: true,
+        showTabs: true,
       }}
       panelCount={0}
       docsOnly={false}
@@ -70,6 +71,7 @@ export const LoadingState = () => (
         panelPosition: 'right',
         showNav: true,
         showPanel: true,
+        showTabs: true,
       }}
       panelCount={0}
       docsOnly={false}
