@@ -26,7 +26,7 @@ Specifically, we track the following information in our telemetry events:
 - Timestamp of the occurrence.
 - Command invoked (e.g., `init`, `upgrade`, `start-storybook`).
 - Storybook unique identifier: One-way hash generated during Storybook installation process.
-- One way hash of the IP address where the event occurred.
+- One way hash of the IP address where the event occurred for spam detection.
 - Story count.
 - Storybook version.
 - Storybook metadata:
@@ -38,7 +38,7 @@ Specifically, we track the following information in our telemetry events:
   - [Feature flags](./overview.md#feature-flags) (e.g., `buildStoriesJson`).
 - Whether the command was invoked on CI or not.
 
-The access to the raw data is highly controlled, and we cannot identify individual users from the dataset. It is anonymized and untraceable back to the user.
+Access to the raw data is highly controlled, limited to select members of Storybook's core team who maintain the telemetry. We cannot identify individual users from the dataset: it is anonymized and untraceable back to the user.
 
 ## What about sensitive information?
 
