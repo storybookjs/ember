@@ -80,10 +80,10 @@ const Title = styled.span({
   textTransform: 'capitalize',
 });
 
-const Description = styled.span({
-  fontSize: '0.9em',
-  color: 'gray',
-});
+const Description = styled.span(({ theme }) => ({
+  fontSize: 11,
+  color: theme.textMutedColor,
+}));
 
 const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
   ...(active !== null
