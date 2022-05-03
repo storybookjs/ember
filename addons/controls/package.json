@@ -73,7 +73,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "85bcae3041a0664d7c0ee4756241e29ad1063a9a",
+  "gitHead": "b42ccab2b3f9d4f1f8f862242a5e4af0d3306061",
   "sbmodern": "dist/modern/manager.js",
   "storybook": {
     "displayName": "Controls",
