@@ -138,3 +138,17 @@ export const WithCanvasTab = () => (
 );
 
 export const WithTabs = () => <Preview {...previewProps} />;
+
+export const WithTabsHidden = () => (
+  <Consumer>
+    {({ api }: Combo) => {
+      return (
+        <Preview
+          {...previewProps}
+          options={{ ...previewProps.options, showTabs: false }}
+          api={{ ...api, getElements: () => ({}) }}
+        />
+      );
+    }}
+  </Consumer>
+);

@@ -78,31 +78,3 @@ export const LoadingState = () => (
     />
   </ManagerProvider>
 );
-
-export const TabsHidden = () => (
-  <ManagerProvider
-    key="manager"
-    provider={new FakeProvider()}
-    path="/story/ui-app--loading-state"
-    storyId="ui-app--loading-state"
-    location={{ search: '' }}
-    navigate={() => {}}
-    docsMode={false}
-  >
-    <App
-      key="app"
-      viewMode="story"
-      layout={{
-        initialActive: 'addons',
-        isFullscreen: false,
-        isToolshown: true,
-        panelPosition: 'right',
-        showNav: true,
-        showPanel: true,
-        showTabs: false,
-      }}
-      panelCount={0}
-      docsOnly={false}
-    />
-  </ManagerProvider>
-);
