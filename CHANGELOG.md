@@ -6,6 +6,8 @@
 
 ### Bug Fixes
 
+- Controls: Fix URL deserialization for argTypes with mapping ([#18124](https://github.com/storybookjs/storybook/pull/18124))
+- Core: Fix telemetry project root detection ([#18125](https://github.com/storybookjs/storybook/pull/18125))
 - React: Fix version detection for older versions of `react-dom` ([#18105](https://github.com/storybookjs/storybook/pull/18105))
 - CLI: Add non-monorepo testing tools to exclude lists ([#18092](https://github.com/storybookjs/storybook/pull/18092))
 
