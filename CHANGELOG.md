@@ -1,3 +1,9 @@
+## 6.5.0-beta.3 (May 4, 2022)
+
+### Bug Fixes
+
+- UI: Externalize `react-syntax-highlighter` from components ([#18127](https://github.com/storybookjs/storybook/pull/18127))
+
 ## 6.5.0-beta.2 (May 2, 2022)
 
 ### Features
