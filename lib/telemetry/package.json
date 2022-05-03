@@ -50,7 +50,8 @@
     "global": "^4.4.0",
     "isomorphic-unfetch": "^3.1.0",
     "nanoid": "^3.3.1",
-    "read-pkg-up": "^7.0.1"
+    "read-pkg-up": "^7.0.1",
+    "regenerator-runtime": "^0.13.7"
   },
   "publishConfig": {
     "access": "public"
