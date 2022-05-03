@@ -12,23 +12,27 @@ export default {
 export const ElementId = () => (
   <>
     <p>
-      The a11y story <strong>element</strong> parameter is set to the invalid contrast div only{' '}
+      The <code>a11y.element</code> parameter is set to the <strong>Insufficient contrast</strong>{' '}
+      section.{' '}
     </p>
 
     <div id="no-text" style={{ border: '1px solid gray', padding: '1rem', marginBottom: '1rem' }}>
-      <h1>Missing text div</h1>
-      <p>The a11y issue on alt text should not appear as this is not scanned</p>
+      <strong>No discernable button text</strong>
+      <p>This a11y violation should not be reported, as this section is not scanned.</p>
       <BaseButton label="" />
     </div>
-    <div id="invalid-contrast" style={{ border: '1px solid gray', padding: '1rem' }}>
-      <h1>Invalid contrast div</h1>
-      <p>The a11y issue on invalid contract should appear</p>
-      <BaseButton style={{ color: 'black', backgroundColor: 'black' }} label="Invalid contrast" />
+    <div id="insufficient-contrast" style={{ border: '1px solid gray', padding: '1rem' }}>
+      <strong>Insufficient contrast</strong>
+      <p>This a11y issue (incomplete) should be reported.</p>
+      <BaseButton
+        style={{ color: 'black', backgroundColor: 'black' }}
+        label="Insufficient contrast"
+      />
     </div>
   </>
 );
 ElementId.parameters = {
   a11y: {
-    element: 'invalid-contrast',
+    element: '#insufficient-contrast',
   },
 };
