@@ -1,12 +1,16 @@
 import deepEqual from 'fast-deep-equal';
-import type { SBType, Args, ArgTypes, StoryContext, AnyFramework } from '@storybook/csf';
+import type { SBType, Args, InputType, ArgTypes, StoryContext, AnyFramework } from '@storybook/csf';
 import { once } from '@storybook/client-logger';
 import isPlainObject from 'lodash/isPlainObject';
 import dedent from 'ts-dedent';
 
 const INCOMPATIBLE = Symbol('incompatible');
-const map = (arg: unknown, type: SBType): any => {
+const map = (arg: unknown, argType: InputType): any => {
+  const type = argType.type as SBType;
   if (arg === undefined || arg === null || !type) return arg;
+  if (argType.mapping) {
+    return arg;
+  }
   switch (type.name) {
     case 'string':
       return String(arg);
@@ -19,7 +23,7 @@ const map = (arg: unknown, type: SBType): any => {
     case 'array':
       if (!type.value || !Array.isArray(arg)) return INCOMPATIBLE;
       return arg.reduce((acc, item, index) => {
-        const mapped = map(item, type.value);
+        const mapped = map(item, { type: type.value });
         if (mapped !== INCOMPATIBLE) acc[index] = mapped;
         return acc;
       }, new Array(arg.length));
@@ -27,7 +31,7 @@ const map = (arg: unknown, type: SBType): any => {
       if (typeof arg === 'string' || typeof arg === 'number') return arg;
       if (!type.value || typeof arg !== 'object') return INCOMPATIBLE;
       return Object.entries(arg).reduce((acc, [key, val]) => {
-        const mapped = map(val, type.value[key]);
+        const mapped = map(val, { type: type.value[key] });
         return mapped === INCOMPATIBLE ? acc : Object.assign(acc, { [key]: mapped });
       }, {} as Args);
     default:
@@ -38,7 +42,7 @@ const map = (arg: unknown, type: SBType): any => {
 export const mapArgsToTypes = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(args).reduce((acc, [key, value]) => {
     if (!argTypes[key]) return acc;
-    const mapped = map(value, argTypes[key].type as SBType);
+    const mapped = map(value, argTypes[key]);
     return mapped === INCOMPATIBLE ? acc : Object.assign(acc, { [key]: mapped });
   }, {});
 };

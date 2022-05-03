@@ -1,14 +1,19 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ReactElement, ButtonHTMLAttributes } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * A label to show on the button
    */
   label: string;
+
+  /**
+   * An icon to show on the left of the label
+   */
+  icon: ReactElement;
 }
 
-export const Button = ({ label = 'Hello', ...props }: ButtonProps) => (
+export const Button = ({ label = 'Hello', icon: Icon, ...props }: ButtonProps) => (
   <button type="button" {...props}>
-    {label}
+    {Icon ? <Icon /> : null} {label}
   </button>
 );
