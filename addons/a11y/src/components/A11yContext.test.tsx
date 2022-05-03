@@ -53,11 +53,13 @@ describe('A11YPanel', () => {
   beforeEach(() => {
     mockedApi.useChannel.mockReset();
     mockedApi.useStorybookState.mockReset();
+    mockedApi.useAddonState.mockReset();
 
+    mockedApi.useAddonState.mockImplementation((_, defaultState) => React.useState(defaultState));
     mockedApi.useChannel.mockReturnValue(jest.fn());
-    const state: Partial<api.State> = { storyId };
+    const storyState: Partial<api.State> = { storyId };
     // Lazy to mock entire state
-    mockedApi.useStorybookState.mockReturnValue(state as any);
+    mockedApi.useStorybookState.mockReturnValue(storyState as any);
   });
 
   it('should render children', () => {
