@@ -147,7 +147,7 @@ const Preview = React.memo<PreviewProps>((props) => {
   const tabs = useTabs(previewId, baseUrl, withLoader, getElements, story);
 
   const shouldScale = viewMode === 'story';
-  const { isToolshown, showTabs = true } = options;
+  const { showToolbar, showTabs = true } = options;
   const visibleTabsInToolbar = showTabs ? tabs : [];
 
   const previousStoryId = useRef(storyId);
@@ -186,10 +186,10 @@ const Preview = React.memo<PreviewProps>((props) => {
           key="tools"
           story={story}
           api={api}
-          isShown={isToolshown}
+          isShown={showToolbar}
           tabs={visibleTabsInToolbar}
         />
-        <S.FrameWrap key="frame" offset={isToolshown ? 40 : 0}>
+        <S.FrameWrap key="frame" offset={showToolbar ? 40 : 0}>
           {tabs.map(({ render: Render, match, ...t }, i) => {
             // @ts-ignore
             const key = t.id || t.key || i;

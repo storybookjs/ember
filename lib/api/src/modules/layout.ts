@@ -23,8 +23,9 @@ export interface Layout {
   showPanel: boolean;
   panelPosition: PanelPositions;
   showNav: boolean;
-  isToolshown: boolean;
   showTabs: boolean;
+  showToolbar: boolean;
+  isToolshown?: boolean; // deprecated
 }
 
 export interface UI {
@@ -70,7 +71,7 @@ const defaultState: SubState = {
   },
   layout: {
     initialActive: ActiveTabs.CANVAS,
-    isToolshown: !DOCS_MODE,
+    showToolbar: !DOCS_MODE,
     isFullscreen: false,
     showPanel: true,
     showNav: true,
@@ -177,12 +178,12 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
     toggleToolbar(toggled?: boolean) {
       return store.setState(
         (state: State) => {
-          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.isToolshown;
+          const value = typeof toggled !== 'undefined' ? toggled : !state.layout.showToolbar;
 
           return {
             layout: {
               ...state.layout,
-              isToolshown: value,
+              showToolbar: value,
             },
           };
         },
@@ -219,6 +220,11 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
 
     getInitialOptions() {
       const { theme, selectedPanel, ...options } = provider.getConfig();
+
+      // TODO: remove this when we deprecate isToolshown
+      if (options.layout.isToolshown !== undefined) {
+        options.layout.showToolbar = options.layout.isToolshown;
+      }
 
       return {
         ...defaultState,
