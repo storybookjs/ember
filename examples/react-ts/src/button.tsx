@@ -9,7 +9,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * An icon to show on the left of the label
    */
-  icon: ReactElement;
+  icon?: ReactElement;
 }
 
 export const Button = ({ label = 'Hello', icon: Icon, ...props }: ButtonProps) => (
