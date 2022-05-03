@@ -1,4 +1,4 @@
-import React, { ReactElement, ButtonHTMLAttributes } from 'react';
+import React, { ComponentType, ButtonHTMLAttributes } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -9,7 +9,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * An icon to show on the left of the label
    */
-  icon?: ReactElement;
+  icon?: ComponentType;
 }
 
 export const Button = ({ label = 'Hello', icon: Icon, ...props }: ButtonProps) => (
