@@ -6,9 +6,13 @@ import { getMonorepoType, monorepoConfigs } from './get-monorepo-type';
 // eslint-disable-next-line global-require, jest/no-mocks-import
 jest.mock('fs-extra', () => require('../../../__mocks__/fs-extra'));
 
-jest.mock('./anonymous-id', () => ({
-  getProjectRoot: () => 'root',
-}));
+jest.mock('@storybook/core-common', () => {
+  const coreCommon = jest.requireActual('@storybook/core-common');
+  return {
+    ...coreCommon,
+    getProjectRoot: () => 'root',
+  };
+});
 
 const checkMonorepoType = ({ monorepoConfigFile, isYarnWorkspace = false }) => {
   const mockFiles = {
