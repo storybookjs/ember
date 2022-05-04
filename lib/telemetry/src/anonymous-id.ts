@@ -23,9 +23,11 @@ export const getAnonymousProjectId = () => {
     // we use a combination of remoteUrl and working directory
     // to separate multiple storybooks from the same project (e.g. monorepo)
     unhashedProjectId = `${String(originBuffer).trim()}${projectRootPath}`;
-    // eslint-disable-next-line no-empty
-  } catch (_) {}
 
-  anonymousProjectId = oneWayHash(unhashedProjectId);
+    anonymousProjectId = oneWayHash(unhashedProjectId);
+  } catch (_) {
+    //
+  }
+
   return anonymousProjectId;
 };
