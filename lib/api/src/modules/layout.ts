@@ -24,6 +24,7 @@ export interface Layout {
   panelPosition: PanelPositions;
   showNav: boolean;
   isToolshown: boolean;
+  showTabs: boolean;
 }
 
 export interface UI {
@@ -74,6 +75,7 @@ const defaultState: SubState = {
     showPanel: true,
     showNav: true,
     panelPosition: 'bottom',
+    showTabs: true,
   },
   selectedPanel: undefined,
   theme: themes.light,
