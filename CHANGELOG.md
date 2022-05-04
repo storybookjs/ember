@@ -1,3 +1,9 @@
+## 6.5.0-beta.5 (May 4, 2022)
+
+### Bug Fixes
+
+- Core: Fix anonymous ID generation ([#18133](https://github.com/storybookjs/storybook/pull/18133))
+
 ## 6.5.0-beta.4 (May 4, 2022)
 
 ### Features
