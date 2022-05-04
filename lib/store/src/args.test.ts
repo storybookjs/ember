@@ -83,6 +83,25 @@ describe('mapArgsToTypes', () => {
     expect(mapArgsToTypes({ a: 'something' }, { a: { type: functionType } })).toStrictEqual({});
   });
 
+  it('includes functions if there is a mapping', () => {
+    expect(
+      mapArgsToTypes(
+        { a: 'something' },
+        { a: { type: functionType, mapping: { something: () => 'foo' } } }
+      )
+    ).toStrictEqual({
+      a: 'something',
+    });
+  });
+
+  it('skips default mapping if there is a user-specified mapping', () => {
+    expect(
+      mapArgsToTypes({ a: 'something' }, { a: { type: numberType, mapping: { something: 10 } } })
+    ).toStrictEqual({
+      a: 'something',
+    });
+  });
+
   it('omits unknown keys', () => {
     expect(mapArgsToTypes({ a: 'string' }, { b: { type: stringType } })).toStrictEqual({});
   });

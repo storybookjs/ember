@@ -1,1 +1,1 @@
-{"version":"6.5.0-beta.0","info":{"plain":"### Features\n\n- CLI/Vue3: add interactions to vue3 cli template ([#18031](https://github.com/storybookjs/storybook/pull/18031))\n- CLI/Svelte: add interactions to cli template ([#17993](https://github.com/storybookjs/storybook/pull/17993))\n- UI: Move the \"Rerun interactions\" button to Subnav ([#17647](https://github.com/storybookjs/storybook/pull/17647))"}}
+{"version":"6.5.0-beta.5","info":{"plain":"### Bug Fixes\n\n- Core: Fix anonymous ID generation ([#18133](https://github.com/storybookjs/storybook/pull/18133))"}}

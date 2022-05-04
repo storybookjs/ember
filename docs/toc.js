@@ -227,6 +227,11 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'design-integrations',
+          title: 'Design integrations',
+          type: 'link',
+        },
+        {
           pathSegment: 'storybook-composition',
           title: 'Composition',
           type: 'link',
@@ -350,6 +355,11 @@ module.exports = {
         {
           pathSegment: 'upgrading',
           title: 'Upgrading',
+          type: 'link',
+        },
+        {
+          pathSegment: 'telemetry',
+          title: 'Telemetry',
           type: 'link',
         },
         {

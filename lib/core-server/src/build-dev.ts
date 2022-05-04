@@ -1,14 +1,18 @@
 import { logger, instance as npmLog } from '@storybook/node-logger';
-import type {
+import prompts from 'prompts';
+import {
   CLIOptions,
   LoadOptions,
   BuilderOptions,
   Options,
   StorybookConfig,
+  CoreConfig,
+  resolvePathInStorybookCache,
+  loadAllPresets,
+  cache,
 } from '@storybook/core-common';
-import { resolvePathInStorybookCache, loadAllPresets, cache } from '@storybook/core-common';
+import { telemetry } from '@storybook/telemetry';
 import dedent from 'ts-dedent';
-import prompts from 'prompts';
 import global from 'global';
 
 import path from 'path';
@@ -130,17 +134,18 @@ export async function buildDevStandalone(options: CLIOptions & LoadOptions & Bui
 
 export async function buildDev(loadOptions: LoadOptions) {
   const cliOptions = await getDevCli(loadOptions.packageJson);
+  const options: CLIOptions & LoadOptions & BuilderOptions = {
+    ...cliOptions,
+    ...loadOptions,
+    configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
+    configType: 'DEVELOPMENT',
+    ignorePreview: !!cliOptions.previewUrl && !cliOptions.forceBuildPreview,
+    docsMode: !!cliOptions.docs,
+    cache,
+  };
 
   try {
-    await buildDevStandalone({
-      ...cliOptions,
-      ...loadOptions,
-      configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
-      configType: 'DEVELOPMENT',
-      ignorePreview: !!cliOptions.previewUrl && !cliOptions.forceBuildPreview,
-      docsMode: !!cliOptions.docs,
-      cache,
-    });
+    await buildDevStandalone(options);
   } catch (error) {
     // this is a weird bugfix, somehow 'node-pre-gyp' is polluting the npmLog header
     npmLog.heading = '';
@@ -171,6 +176,56 @@ export async function buildDev(loadOptions: LoadOptions) {
     );
     logger.line();
 
+    const presets = loadAllPresets({
+      corePresets: [require.resolve('./presets/common-preset')],
+      overridePresets: [],
+      ...options,
+    });
+
+    const core = await presets.apply<CoreConfig>('core');
+    if (!core?.disableTelemetry) {
+      let enableCrashReports;
+      if (core.enableCrashReports !== undefined) {
+        enableCrashReports = core.enableCrashReports;
+      } else {
+        const valueFromCache = await cache.get('enableCrashreports');
+        if (valueFromCache !== undefined) {
+          enableCrashReports = valueFromCache;
+        } else {
+          const valueFromPrompt = await promptCrashReports(options);
+          if (valueFromPrompt !== undefined) {
+            enableCrashReports = valueFromPrompt;
+          }
+        }
+      }
+
+      await telemetry(
+        'error-dev',
+        { error },
+        {
+          immediate: true,
+          configDir: options.configDir,
+          enableCrashReports,
+        }
+      );
+    }
     process.exit(1);
   }
 }
+
+const promptCrashReports = async ({ packageJson }: CLIOptions & LoadOptions & BuilderOptions) => {
+  if (process.env.CI) {
+    return undefined;
+  }
+
+  const { enableCrashReports } = await prompts({
+    type: 'confirm',
+    name: 'enableCrashReports',
+    message: `Would you like to send crash reports to Storybook?`,
+    initial: true,
+  });
+
+  await cache.set('enableCrashreports', enableCrashReports);
+
+  return enableCrashReports;
+};

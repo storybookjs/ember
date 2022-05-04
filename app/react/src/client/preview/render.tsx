@@ -48,7 +48,7 @@ const renderElement = async (node: ReactElement, el: Element) => {
 };
 
 const canUseNewReactRootApi =
-  reactDomVersion.startsWith('18') || reactDomVersion.startsWith('0.0.0');
+  reactDomVersion && (reactDomVersion.startsWith('18') || reactDomVersion.startsWith('0.0.0'));
 
 const shouldUseNewRootApi = FRAMEWORK_OPTIONS?.legacyRootApi !== true;
 

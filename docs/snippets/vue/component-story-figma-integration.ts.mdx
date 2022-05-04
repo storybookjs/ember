@@ -1,0 +1,30 @@
+```ts
+// MyComponent.stories.ts
+
+import { Meta, StoryFn } from '@storybook/vue'; // For Vue 3 use import { Meta, Story } from '@storybook/vue3';
+
+import { withDesign } from 'storybook-addon-designs';
+
+import MyComponent from './MyComponent.vue';
+
+// More on default export: https://storybook.js.org/docs/vue/writing-stories/introduction#default-export
+export default {
+  title: 'FigmaExample',
+  component: MyComponent,
+  decorators: [withDesign],
+} as Meta<typeof MyComponent>;
+
+// More on component templates: https://storybook.js.org/docs/vue/writing-stories/introduction#using-args
+const Template: StoryFn<typeof MyComponent> = () => ({
+  components: { MyComponent },
+  template: '<MyComponent />',
+});
+
+export const Example = Template.bind({});
+Example.parameters = {
+  design: {
+    type: 'figma',
+    url: 'https://www.figma.com/file/Sample-File',
+  },
+};
+```

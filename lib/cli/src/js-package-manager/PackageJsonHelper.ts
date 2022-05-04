@@ -1,11 +1,11 @@
 import path from 'path';
 import fs from 'fs';
-import { PackageJson } from './PackageJson';
+import type { PackageJson } from '@storybook/core-common';
 
-export function readPackageJson(): PackageJson | false {
+export function readPackageJson(): PackageJson {
   const packageJsonPath = path.resolve('package.json');
   if (!fs.existsSync(packageJsonPath)) {
-    return false;
+    throw new Error(`Could not read package.json file at ${packageJsonPath}`);
   }
 
   const jsonContent = fs.readFileSync(packageJsonPath, 'utf8');
