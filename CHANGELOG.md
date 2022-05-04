@@ -1,3 +1,16 @@
+## 6.5.0-beta.4 (May 4, 2022)
+
+### Features
+
+- UI: Add a parent level toolbar exclusion key for tabs ([#18106](https://github.com/storybookjs/storybook/pull/18106))
+- Addon-a11y: Display a11y issues number in addon tab title ([#17983](https://github.com/storybookjs/storybook/pull/17983))
+
+### Bug Fixes
+
+- Addon-docs: Fix Canvas block CURRENT_SELECTION handling ([#18130](https://github.com/storybookjs/storybook/pull/18130))
+- Telemetry: Add safecheck for crash reports ([#18129](https://github.com/storybookjs/storybook/pull/18129))
+- Addon-a11y: Fix a11y params > element use ([#17989](https://github.com/storybookjs/storybook/pull/17989))
+
 ## 6.5.0-beta.3 (May 4, 2022)
 
 ### Bug Fixes
