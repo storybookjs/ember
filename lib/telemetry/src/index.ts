@@ -28,7 +28,7 @@ export const telemetry = async (
       telemetryData.payload.error = sanitizeError(error);
     }
 
-    if (!telemetryData.payload.error || options.enableCrashReports) {
+    if (!telemetryData.payload.error || options?.enableCrashReports) {
       if (process.env?.STORYBOOK_DEBUG_TELEMETRY) {
         logger.info('\n[telemetry]');
         logger.info(JSON.stringify(telemetryData, null, 2));
