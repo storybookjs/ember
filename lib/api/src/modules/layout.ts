@@ -221,8 +221,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
     getInitialOptions() {
       const { theme, selectedPanel, ...options } = provider.getConfig();
 
-      // TODO: remove this when we deprecate isToolshown
-      if (options.layout.isToolshown !== undefined) {
+      if (options?.layout?.isToolshown !== undefined) {
         options.layout.showToolbar = options.layout.isToolshown;
       }
 
