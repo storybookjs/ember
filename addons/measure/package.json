@@ -71,7 +71,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "77cd38edc2aa4728c360467c5418bb2ef2d8817a",
+  "gitHead": "e86538e2acb3fbbf207d9113f58c1d1bb56138fd",
   "sbmodern": "dist/modern/index.js",
   "storybook": {
     "displayName": "Measure",
