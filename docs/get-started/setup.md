@@ -48,7 +48,7 @@ If you see errors on the CLI when you run the `yarn storybook` command, you like
 
 - [Presets](../addons/addon-types.md) bundle common configurations for various technologies into Storybook. In particular, presets exist for Create React App, SCSS and Ant Design.
 - Specify a custom [Babel configuration](../configure/babel.md#custom-babel-config) for Storybook. Storybook automatically tries to use your project’s config if it can.
-- Adjust the [webpack configuration](../configure/webpack.md) that Storybook uses. Try patching in your own configuration if needed.
+- Adjust the [webpack configuration](../builders/webpack.md) that Storybook uses. Try patching in your own configuration if needed.
 
 </details>
 
@@ -104,7 +104,7 @@ If you are using CSS-in-JS, chances are your styles are working because they’r
 <details>
   <summary>@import CSS into components</summary>
 
-Storybook allows you to import CSS files in your components directly. But in some cases you may need to [tweak its webpack configuration](../configure/webpack.md#extendingstorybooks-webpack-config). Angular components require [a special import](../configure/styling-and-css.md#importing-css-files).
+Storybook allows you to import CSS files in your components directly. But in some cases you may need to [tweak its webpack configuration](../builders/webpack.md#extendingstorybooks-webpack-config). Angular components require [a special import](../configure/styling-and-css.md#importing-css-files).
 
 </details>
 
