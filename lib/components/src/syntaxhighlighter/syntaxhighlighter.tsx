@@ -121,7 +121,7 @@ const Pre = styled.pre<PreProps>(({ theme, padded }) => ({
   padding: padded ? theme.layoutMargin : 0,
 }));
 
-const Code = styled.code({
+const Code = styled.div({
   flex: 1,
   paddingRight: 0,
   opacity: 1,
