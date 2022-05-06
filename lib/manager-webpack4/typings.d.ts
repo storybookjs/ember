@@ -7,5 +7,4 @@ declare module '@storybook/theming/paths';
 declare module '@storybook/ui/paths';
 declare module 'better-opn';
 declare module 'open';
-declare module 'x-default-browser';
 declare module '@storybook/ui';

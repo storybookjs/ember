@@ -7,4 +7,3 @@ declare module '@storybook/ui/paths';
 declare module 'better-opn';
 declare module 'open';
 declare module '@storybook/ui';
-
