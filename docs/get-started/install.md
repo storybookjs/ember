@@ -89,6 +89,10 @@ Below are some of the most common installation issues and instructions on how to
 
 <!-- prettier-ignore-end -->
 
+<div class="aside">
+Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+</div>
+
 If all else fails, try asking for [help](https://storybook.js.org/support)
 
 </details>
