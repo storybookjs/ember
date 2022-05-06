@@ -375,6 +375,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aw-web-design/x-default-browser@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@aw-web-design/x-default-browser@npm:1.2.0"
+  dependencies:
+    default-browser-id: 3.0.0
+  bin:
+    xdb: dist/esm/bin/x-default-browser.js
+  checksum: deacfedfe90b63bd31f9d835d90504b8d1af68728e3594b7a1011b3253689343073b0b855bf19a301eda7ee87d6706f7802c7293051c1d366e4457b86dcb0490
+  languageName: node
+  linkType: hard
+
 "@axe-core/puppeteer@npm:^4.2.0":
   version: 4.4.0
   resolution: "@axe-core/puppeteer@npm:4.4.0"
@@ -7655,6 +7666,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storybook/core-server@workspace:lib/core-server"
   dependencies:
+    "@aw-web-design/x-default-browser": 1.2.0
     "@discoveryjs/json-ext": ^0.5.3
     "@storybook/builder-webpack4": 6.5.0-beta.6
     "@storybook/builder-webpack5": 6.5.0-beta.6
@@ -7705,7 +7717,6 @@ __metadata:
     watchpack: ^2.2.0
     webpack: 4
     ws: ^8.2.3
-    x-default-browser: ^0.4.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -14763,7 +14774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big-integer@npm:^1.6.7":
+"big-integer@npm:^1.6.44":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
   checksum: c8139662d57f8833a44802f4b65be911679c569535ea73c5cfd3c1c8994eaead1b84b6f63e1db63833e4d4cacb6b6a9e5522178113dfdc8e4c81ed8436f1e8cc
@@ -14993,12 +15004,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bplist-parser@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "bplist-parser@npm:0.1.1"
+"bplist-parser@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "bplist-parser@npm:0.2.0"
   dependencies:
-    big-integer: ^1.6.7
-  checksum: cd50206f956e74f6e46cb5ed14be5eb00b2e14676ea3dd36703470715177a2770fc22032eca63a36adb3b56a1e51138a95bb0fc6849a78c21e92caeedf219ea7
+    big-integer: ^1.6.44
+  checksum: ce79c69e0f6efe506281e7c84e3712f7d12978991675b6e3a58a295b16f13ca81aa9b845c335614a545e0af728c8311b6aa3142af76ba1cb616af9bbac5c4a9f
   languageName: node
   linkType: hard
 
@@ -19254,16 +19265,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"default-browser-id@npm:^1.0.4":
-  version: 1.0.4
-  resolution: "default-browser-id@npm:1.0.4"
+"default-browser-id@npm:3.0.0":
+  version: 3.0.0
+  resolution: "default-browser-id@npm:3.0.0"
   dependencies:
-    bplist-parser: ^0.1.0
-    meow: ^3.1.0
-    untildify: ^2.0.0
-  bin:
-    default-browser-id: cli.js
-  checksum: a00a2ab66beab70490b4d76258a1f2eadfadca6414bf67ab78aa25b33dc3de0c4c813bb8f204271aa7a08281c39474487db0229e325112456464fb97a0522a8a
+    bplist-parser: ^0.2.0
+    untildify: ^4.0.0
+  checksum: 8db3ab882eb3e1e8b59d84c8641320e6c66d8eeb17eb4bb848b7dd549b1e6fd313988e4a13542e95fbaeff03f6e9dedc5ad191ad4df7996187753eb0d45c00b7
   languageName: node
   linkType: hard
 
@@ -31675,7 +31683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meow@npm:^3.1.0, meow@npm:^3.3.0":
+"meow@npm:^3.3.0":
   version: 3.7.0
   resolution: "meow@npm:3.7.0"
   dependencies:
@@ -45110,7 +45118,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"untildify@npm:^2.0.0, untildify@npm:^2.1.0":
+"untildify@npm:^2.1.0":
   version: 2.1.0
   resolution: "untildify@npm:2.1.0"
   dependencies:
@@ -47669,20 +47677,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 5ef0f81cc5b8776fb5dd5504c83b4f49be5aa610f9319ff774158bba7db495127e69763d73085288223061e7a5d104d022e2e264346b36b046322f50057e7945
-  languageName: node
-  linkType: hard
-
-"x-default-browser@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "x-default-browser@npm:0.4.0"
-  dependencies:
-    default-browser-id: ^1.0.4
-  dependenciesMeta:
-    default-browser-id:
-      optional: true
-  bin:
-    x-default-browser: bin/x-default-browser.js
-  checksum: a19e42ffeab19560ea05a423561f5b3b82bb3a5878dc932cfd0847fadc5890b8b685d6b39e2356c8304b3943f5a7120ba4b233365d686ff8f9bf2499ce11f052
   languageName: node
   linkType: hard
 
