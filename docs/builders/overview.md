@@ -2,7 +2,7 @@
 title: 'Builders'
 ---
 
-Storybook, at its core, is a build tool. It provides pluggable builders to help match the application's development environment, making it easy to compile your code—Javascript, CSS, and MDX into an executable bundle, updating in the browser in real-time.
+Storybook, at its core, is powered by builders such as Webpack and Vite. These builders spin up a development environment,  compile your code—Javascript, CSS, and MDX—into an executable bundle and update the browser in real-time.
 
 ![Storybook builder overview](./storybook-builder-workflow.png)
 
