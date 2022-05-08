@@ -4,13 +4,13 @@ title: 'Webpack'
 
 Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](https://storybook.js.org/addons/) are also available that extend the configuration for other everyday use cases.
 
-You can customize Storybook's webpack setup by providing a `webpackFinal` field in [`.storybook/main.js`](../configure/overview.md#configure-your-storybook-project) file.
+You can customize Storybook's Webpack setup by providing a `webpackFinal` field in [`.storybook/main.js`](../configure/overview.md#configure-your-storybook-project) file.
 
-The value should be an async function that receives a webpack config and eventually returns a webpack config.
+The value should be an async function that receives a Webpack config and eventually returns a Webpack config.
 
 ### Default configuration
 
-By default, Storybook's webpack configuration will allow you to:
+By default, Storybook's Webpack configuration will allow you to:
 
 #### Import images and other static files
 
@@ -40,7 +40,7 @@ You can import `.json` files and have them expanded to a JavaScript object:
 
 <!-- prettier-ignore-end -->
 
-If you want to know the exact details of the webpack config, the best way is to run either of the following:
+If you want to know the exact details of the Webpack config, the best way is to run either of the following:
 
 ```shell
 
@@ -51,9 +51,9 @@ yarn start-storybook --debug-webpack
 yarn build-storybook --debug-webpack
 ```
 
-### Bundle splitting
+### Code splitting
 
-Starting with Storybook 6.4, [bundle splitting](https://v4.webpack.js.org/guides/code-splitting/) is supported through a configuration flag. Update your Storybook configuration and add the `storyStoreV7` flag:
+Starting with Storybook 6.4, [code splitting](https://v4.webpack.js.org/guides/code-splitting/) is supported through a configuration flag. Update your Storybook configuration and add the `storyStoreV7` flag:
 
 <!-- prettier-ignore-start -->
 
@@ -115,7 +115,7 @@ Storybook supports Webpack's [filesystem caching](https://webpack.js.org/configu
 
 This feature will mean build output is cached between runs of Storybook, speeding up subsequent startup times.
 
-### Extending Storybook’s webpack config
+### Extending Storybook’s Webpack config
 
 To extend the above configuration, use the `webpackFinal` field of [`.storybook/main.js`](../configure/overview.md#configure-your-storybook-project).
 
@@ -133,7 +133,7 @@ For example, if you wanted to add [Sass](https://sass-lang.com/) support, you ca
 
 <!-- prettier-ignore-end -->
 
-Storybook uses the config returned from the above function to render your components in Storybook's "preview" iframe. Note that Storybook has an entirely separate webpack config for its UI (also referred to as the "manager"), so the customizations you make only apply to the rendering of your stories, i.e., you can completely replace `config.module.rules` if you want.
+Storybook uses the config returned from the above function to render your components in Storybook's "preview" iframe. Note that Storybook has an entirely separate Webpack config for its UI (also referred to as the "manager"), so the customizations you make only apply to the rendering of your stories, i.e., you can completely replace `config.module.rules` if you want.
 
 Nevertheless, edit `config` with care. Make sure to preserve the following config options:
 
@@ -152,13 +152,13 @@ Furthermore, `config` requires the `HtmlWebpackplugin` to generate the preview p
 
 <!-- prettier-ignore-end -->
 
-Finally, if your custom webpack config uses a loader that does not explicitly include specific file extensions via the `test` property, in that case, it is necessary to `exclude` the `.ejs` file extension from that loader.
+Finally, if your custom Webpack config uses a loader that does not explicitly include specific file extensions via the `test` property, in that case, it is necessary to `exclude` the `.ejs` file extension from that loader.
 
 If you're using a non-standard Storybook config directory, you should put `main.js` there instead of `.storybook` and update the `include` path to ensure it resolves to your project root.
 
 ### Using your existing config
 
-Suppose you have an existing webpack config for your project and want to reuse this app's configuration. In that case, you can import your main webpack config into Storybook's [`.storybook/main.js`](../configure/overview.md#configure-your-storybook-project) and merge both:
+Suppose you have an existing Webpack config for your project and want to reuse this app's configuration. In that case, you can import your main Webpack config into Storybook's [`.storybook/main.js`](../configure/overview.md#configure-your-storybook-project) and merge both:
 
 The following code snippet shows how you can replace the loaders from Storybook with the ones from your app's `webpack.config.js`:
 
@@ -172,8 +172,10 @@ The following code snippet shows how you can replace the loaders from Storybook 
 
 <!-- prettier-ignore-end -->
 
-<div class="aside"> 
-💡 Projects initialized via generators (e.g, Vue CLI) may require that you import their own webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions. 
+<div class="aside">
+
+💡 Projects initialized via generators (e.g, Vue CLI) may require that you import their own Webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions.
+
 </div>
 
 ### TypeScript Module Resolution
