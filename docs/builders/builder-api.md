@@ -2,7 +2,7 @@
 title: 'Builder API'
 ---
 
-Storybook is architected to support multiple builders, including [Webpack](https://webpack.js.org/), [Vite](https://vitejs.dev/), and [ESBuild](https://esbuild.github.io/). The builder API is the set of interfaces to add a new builder to Storybook.
+Storybook is architected to support multiple builders, including [Webpack](https://webpack.js.org/), [Vite](https://vitejs.dev/), and [ESBuild](https://esbuild.github.io/). The builder API is the set of interfaces you can use to add a new builder to Storybook.
 
 ![Storybook builders](./storybook-builders.png)
 
