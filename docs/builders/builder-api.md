@@ -47,7 +47,7 @@ In Storybook, every builder must implement the following [API](https://github.co
 
 <!-- prettier-ignore-end -->
 
-In development mode, the `start` API call is responsible for initializing the development server to monitor the file system for changes (for example, components, stories) and execute a hot module reload in the browser.
+In development mode, the `start` API call is responsible for initializing the development server to monitor the file system for changes (for example, components and stories) then execute a hot module reload in the browser.
 It also provides a **bail** function to allow the running process to end gracefully, either via user input or error.
 
 In production, the `build` API call is responsible for generating a static Storybook build, storing it by default in the `storybook-static` directory if no additional configuration is provided. The generated output should contain everything the user needs to view its Storybook by opening either the `index.html` or `iframe.html` in a browser with no other processes running.
