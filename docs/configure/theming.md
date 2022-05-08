@@ -32,7 +32,7 @@ When setting a theme, set a complete theme object. The theme is replaced, not co
 
 ## Theming docs
 
-[Storybook Docs](../writing-docs/introduction) uses the same theme system as Storybook’s UI but is themed independently from the main UI.
+[Storybook Docs](../writing-docs/introduction.md) uses the same theme system as Storybook’s UI but is themed independently from the main UI.
 
 Supposing you have a Storybook theme defined for the main UI in [`.storybook/manager.js`](./overview.md#configure-story-rendering):
 
@@ -85,6 +85,7 @@ Above, we're creating a new theme that will:
 - Use Storybook's `light` theme as a baseline.
 - Replace Storybook's logo in the sidebar with our own (defined in the brandImage variable).
 - Add custom branding information.
+- Set the brand link to open in the same window (as opposed to a new one), via the `target` attribute.
 
 Finally, we'll need to import the theme into Storybook. Create a new file called `manager.js` in your `.storybook` directory and add the following:
 

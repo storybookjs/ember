@@ -95,3 +95,8 @@ export const isAncestor = (element?: Element, maybeAncestor?: Element): boolean 
   if (element === maybeAncestor) return true;
   return isAncestor(element.parentElement, maybeAncestor);
 };
+
+export const removeNoiseFromName = (storyName: string) => storyName.replaceAll(/(\s|-|_)/gi, '');
+
+export const isStoryHoistable = (storyName: string, componentName: string) =>
+  removeNoiseFromName(storyName) === removeNoiseFromName(componentName);

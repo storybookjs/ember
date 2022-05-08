@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import findUp from 'find-up';
 
 import {
   ProjectType,
@@ -9,9 +10,12 @@ import {
   TemplateConfiguration,
   TemplateMatcher,
   unsupportedTemplate,
+  CoreBuilder,
 } from './project_types';
-import { getBowerJson } from './helpers';
-import { PackageJson, readPackageJson } from './js-package-manager';
+import { getBowerJson, paddedLog } from './helpers';
+import { PackageJson, readPackageJson, JsPackageManager } from './js-package-manager';
+
+const viteConfigFiles = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
 
 const hasDependency = (
   packageJson: PackageJson,
@@ -86,12 +90,57 @@ const getFrameworkPreset = (
   return matcherFunction(matcher) ? preset : null;
 };
 
-export function detectFrameworkPreset(packageJson = {}) {
+export function detectFrameworkPreset(packageJson = {} as PackageJson) {
   const result = [...supportedTemplates, unsupportedTemplate].find((framework) => {
     return getFrameworkPreset(packageJson, framework) !== null;
   });
 
   return result ? result.preset : ProjectType.UNDETECTED;
+}
+
+/**
+ * Attempts to detect which builder to use, by searching for a vite config file.  If one is found, the vite builder
+ * will be used, otherwise, webpack4 is the default.
+ *
+ * @returns CoreBuilder
+ */
+export function detectBuilder(packageManager: JsPackageManager) {
+  const viteConfig = findUp.sync(viteConfigFiles);
+
+  if (viteConfig) {
+    paddedLog('Detected vite project, setting builder to @storybook/builder-vite');
+    return CoreBuilder.Vite;
+  }
+
+  try {
+    let out = '';
+    if (packageManager.type === 'npm') {
+      try {
+        // npm <= v7
+        out = packageManager.executeCommand('npm', ['ls', 'webpack']);
+      } catch (e2) {
+        // npm >= v8
+        out = packageManager.executeCommand('npm', ['why', 'webpack']);
+      }
+    } else {
+      out = packageManager.executeCommand('yarn', ['why', 'webpack']);
+    }
+
+    // if the user has BOTH webpack 4 and 5 installed already, we'll pick the safest options (4)
+    if (out.includes('webpack@4') || out.includes('webpack@npm:4')) {
+      return CoreBuilder.Webpack5;
+    }
+
+    // the user has webpack 4 installed, but not 5
+    if (out.includes('webpack@5') || out.includes('webpack@npm:5')) {
+      return CoreBuilder.Webpack5;
+    }
+  } catch (err) {
+    //
+  }
+
+  // Fallback to webpack4
+  return CoreBuilder.Webpack4;
 }
 
 export function isStorybookInstalled(dependencies: PackageJson | false, force?: boolean) {
@@ -122,7 +171,12 @@ export function isStorybookInstalled(dependencies: PackageJson | false, force?: 
 
 export function detectLanguage() {
   let language = SupportedLanguage.JAVASCRIPT;
-  const packageJson = readPackageJson();
+  let packageJson;
+  try {
+    packageJson = readPackageJson();
+  } catch (err) {
+    //
+  }
   const bowerJson = getBowerJson();
   if (!packageJson && !bowerJson) {
     return language;
@@ -136,7 +190,12 @@ export function detectLanguage() {
 }
 
 export function detect(options: { force?: boolean; html?: boolean } = {}) {
-  const packageJson = readPackageJson();
+  let packageJson;
+  try {
+    packageJson = readPackageJson();
+  } catch (err) {
+    //
+  }
   const bowerJson = getBowerJson();
 
   if (!packageJson && !bowerJson) {

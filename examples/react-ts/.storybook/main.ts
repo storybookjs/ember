@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     {
       directory: '../src',
       titlePrefix: 'Demo',
-      files: '*.stories.(js|ts|tsx|mdx)'
+      files: '*.stories.(js|ts|tsx|mdx)',
     },
   ],
   logLevel: 'debug',
@@ -29,6 +29,7 @@ const config: StorybookConfig = {
   core: {
     builder: { name: 'webpack4' },
     channelOptions: { allowFunction: false, maxDepth: 10 },
+    disableTelemetry: true,
   },
   features: {
     postcss: false,

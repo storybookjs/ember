@@ -16,6 +16,7 @@ module.exports = {
   ],
   core: {
     builder: 'webpack4',
+    disableTelemetry: true,
   },
   angularOptions: {
     enableIvy: true,

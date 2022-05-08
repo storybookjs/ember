@@ -1,7 +1,7 @@
 import { baseGenerator, Generator } from '../baseGenerator';
 
 const generator: Generator = async (packageManager, npmOptions, options) => {
-  baseGenerator(packageManager, npmOptions, options, 'ember', {
+  await baseGenerator(packageManager, npmOptions, options, 'ember', {
     extraPackages: [
       // babel-plugin-ember-modules-api-polyfill is a peerDep of @storybook/ember
       'babel-plugin-ember-modules-api-polyfill',

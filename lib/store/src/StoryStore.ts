@@ -26,6 +26,7 @@ import type {
   Path,
   ExtractOptions,
   BoundStory,
+  PromiseLike,
   StoryIndex,
   StoryIndexEntry,
   V2CompatIndexEntry,

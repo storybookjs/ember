@@ -47,7 +47,7 @@ When you are building screens in this way, it is typical that the inputs of a co
 
 <!-- prettier-ignore-end -->
 
-In such cases it is natural to use [args composition](../writing-stories/args.md#args-composition) to build the stories for the page based on the stories of the sub-components:
+In such cases it is natural to use [args composition](./args.md#args-composition) to build the stories for the page based on the stories of the sub-components:
 
 <!-- prettier-ignore-start -->
 
@@ -116,7 +116,7 @@ To test your screen with the mocked data, you could write a similar set of stori
 💡 This example details how you can mock the REST request with fetch. Similar HTTP clients such as <a href="https://axios-http.com/">axios</a> can be used as well.
 </div>
 
-The mocked data (i.e., `TestData`) will be injected via [parameters](./writing-stories/parameters), enabling you to configure it per-story basis.
+The mocked data (i.e., `TestData`) will be injected via [parameters](./parameters.md), enabling you to configure it per-story basis.
 
 #### Mocking GraphQL queries with MSW addon
 
@@ -172,7 +172,7 @@ Inside a directory called `__mocks__`, create a new file called
 
 <!-- prettier-ignore-end -->
 
-The code above creates a decorator which reads story-specific data off the story's [parameters](../writing-stories/parameters), enabling you to configure the mock on a per-story basis.
+The code above creates a decorator which reads story-specific data off the story's [parameters](./parameters.md), enabling you to configure the mock on a per-story basis.
 
 To use the mock in place of the real import, we use [webpack aliasing](https://webpack.js.org/configuration/resolve/#resolvealias):
 
@@ -217,7 +217,7 @@ Finally, we can set the mock values in a specific story. Let's borrow an example
 
 Another mocking approach is to use libraries that intercept calls at a lower level. For instance, you can use [`fetch-mock`](https://www.npmjs.com/package/fetch-mock) to mock fetch requests specifically.
 
-Like the [import mocking](##mocking-imports) above, once you have a mock, you’ll still want to set the return value of the mock per-story basis. Do this in Storybook with a [decorator](../writing-stories/decorators.md) that reads the story's [parameters](../writing-stories/parameters.md).
+Like the [import mocking](##mocking-imports) above, once you have a mock, you’ll still want to set the return value of the mock per-story basis. Do this in Storybook with a [decorator](./decorators.md) that reads the story's [parameters](./parameters.md).
 
 ### Avoiding mocking dependencies
 
@@ -284,7 +284,7 @@ In the context of Storybook, instead of providing container components through c
 
 <div class="aside">
 
-If the same context applies to all `ProfilePage` stories, we can also use a [decorator](../writing-stories/decorators.md).
+If the same context applies to all `ProfilePage` stories, we can also use a [decorator](./decorators.md).
 
 </div>
 

@@ -55,3 +55,4 @@ You can use URL parameters to configure some of the available features:
 | **showNav**         |    `nav`     |          `false`           |
 | **showPanel**       |   `panel`    | `false`, `right`, `bottom` |
 | **selectedPanel**   | `addonPanel` |        Any panel ID        |
+| **showTabs**        |    `tabs`    |           `true`           |

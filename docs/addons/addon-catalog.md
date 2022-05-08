@@ -2,9 +2,9 @@
 title: 'Add to the addon catalog'
 ---
 
-Storybook addons are listed in the [catalog](/addons) and distributed via npm. The catalog is populated by querying npm's registry for Storybook-specific metadata in `package.json`.
+Storybook addons are listed in the [catalog](https://storybook.js.org/addons/) and distributed via npm. The catalog is populated by querying npm's registry for Storybook-specific metadata in `package.json`.
 
-Add your addon to the catalog by publishing an npm package that follows these requirements:
+Add your addon to the catalog by publishing a npm package that follows these requirements:
 
 - `package.json` with [module information](./writing-addons.md#get-started) and [addon metadata](#addon-metadata)
 - `README.md` file with installation and configuration instructions

@@ -59,7 +59,9 @@ yarn build
 When asked if you want to start the build in `watch` mode, answer **yes** to develop in interactive mode. Afterward, choose which packages you want to build. For example, if you're going to work on a feature for `@storybook/addon-docs`, you might want to select `@storybook/addon-docs` and `@storybook/components`.
 
 <div class="aside">
-💡 Build's `watch' mode is great for interactive development. However, for performance reasons it only transpiles your code and doesn't execute the TypeScript compiler. If something isn't working as expected, try running `build` <b>WITHOUT</b> watch mode: it will re-generate TypeScript types and also perform type checking for you.
+
+💡 Build's `watch` mode is great for interactive development. However, for performance reasons it only transpiles your code and doesn't execute the TypeScript compiler. If something isn't working as expected, try running `build` <b>WITHOUT</b> watch mode: it will re-generate TypeScript types and also perform type checking for you.
+
 </div>
 
 ![Storybook package selector](./storybook-build-packages-selection-optimized.png)
@@ -144,14 +146,14 @@ npx sb@next link --local /path/to/local-repro-directory
 ```
 
 <div class="aside">
-💡  The `sb link` command relies on `yarn 2` linking under the hood. It requires that the local repro is using `yarn 2`, which will be the case if you're using the [`sb repro` command](./how-to-reproduce) per our contributing guidelines. If you are trying to link to a non-`yarn 2` project, linking will fail.
+💡  The <code>sb link</code> command relies on <code>yarn 2</code> linking under the hood. It requires that the local repro is using <code>yarn 2</code>, which will be the case if you're using the [<code>sb repro</code> command](./how-to-reproduce) per our contributing guidelines. If you are trying to link to a non-<code>yarn 2</code> project, linking will fail.
 </div>
 
 ## Troubleshooting
 
 <details>
 
-<summary>`yarn build --all --watch` watches everything but is resource-intensive</summary>
+<summary><code>yarn build --all --watch</code> watches everything but is resource-intensive</summary>
 
 It's troublesome to know which packages you're going to change ahead of time, and watching all of them can be highly demanding, even on modern machines. If you're working on a powerful enough machine, you can use `yarn build --all --watch` instead of `yarn build`.
 

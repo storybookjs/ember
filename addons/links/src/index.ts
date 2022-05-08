@@ -14,7 +14,7 @@ export function LinkTo(): null {
   return null;
 }
 
-export { linkTo, hrefTo, withLinks, navigate } from './preview';
+export { linkTo, hrefTo, withLinks, navigate } from './utils';
 
 if (module && module.hot && module.hot.decline) {
   module.hot.decline();

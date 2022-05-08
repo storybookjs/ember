@@ -28,7 +28,7 @@ With MDX, the `Story` block is not only a way of rendering stories, but how you 
 | `loaders`    | (Experimental) Asynchronous function for data fetching with stories. <br/> `<Story loaders={[async () => ({ data: await (await fetch('your-endpoint'))}) ]}/>` <br/> Read the [documentation](../writing-stories/loaders.md) to learn more.                   |
 | `name`       | Adds a name to the component story. <br/> `<Story name="Example"/>` .                                                                                                                                                                                         |
 | `parameters` | Provides the necessary static named metadata related to the story. <br/> `Story parameters={{ backgrounds: { values: [{ name:'red', value:'#f00' }] } }} />` <br/> Read the [documentation](../writing-stories/parameters.md) to learn more.                  |
-| `play`       | Generate component interactions. <br/> `<Story play={async () => { await userEvent.click(screen.getByRole('button')) }}/>` <br/> Read the [documentation](../writing-stories/play.md) to learn more.                                                          |
+| `play`       | Generate component interactions. <br/> `<Story play={async () => { await userEvent.click(screen.getByRole('button')) }}/>` <br/> Read the [documentation](../writing-stories/play-function.md) to learn more.                                                          |
 
 <!-- prettier-ignore-start -->
 

@@ -25,6 +25,7 @@ Pick a simple component from your project, like a Button, and write a `.stories.
     'web-components/your-component.js.mdx',
     'html/your-component.js.mdx',
     'html/your-component.ts.mdx',
+    'preact/your-component.js.mdx',
   ]}
 />
 
@@ -124,7 +125,7 @@ Alternatively, if you want to inject a CSS link tag to the `<head>` directly (or
 <details>
   <summary>Load fonts or images from a local directory</summary>
 
-If you're referencing fonts or images from a local directory, you'll need to configure the Storybook script to [serve the static files](../configure/images-and-assets).
+If you're referencing fonts or images from a local directory, you'll need to configure the Storybook script to [serve the static files](../configure/images-and-assets.md).
 
 </details>
 

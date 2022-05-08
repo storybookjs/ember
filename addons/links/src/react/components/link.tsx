@@ -1,6 +1,6 @@
 import React, { MouseEvent, PureComponent, ReactNode } from 'react';
 
-import { navigate, hrefTo } from '../../preview';
+import { navigate, hrefTo } from '../../utils';
 
 // FIXME: copied from Typography.Link. Code is duplicated to
 // avoid emotion dependency which breaks React 15.x back-compat

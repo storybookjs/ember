@@ -19,7 +19,7 @@ function addStorybookExcludeGlobToTsConfig() {
 
 const generator: Generator = async (packageManager, npmOptions, options) => {
   addStorybookExcludeGlobToTsConfig();
-  baseGenerator(packageManager, npmOptions, options, 'aurelia', {
+  await baseGenerator(packageManager, npmOptions, options, 'aurelia', {
     extraPackages: ['aurelia'],
   });
   copyTemplate(__dirname);

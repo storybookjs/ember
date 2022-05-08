@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import dedent from 'ts-dedent';
 import { ConfigFile, readConfig, writeConfig } from '@storybook/csf-tools';
+import { getStorybookInfo } from '@storybook/core-common';
 
 import { findEslintFile, SUPPORTED_ESLINT_EXTENSIONS } from '../helpers/getEslintInfo';
-import { getStorybookInfo } from '../helpers/getStorybookInfo';
 
 import type { Fix } from '../types';
 

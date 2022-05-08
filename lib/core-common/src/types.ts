@@ -50,6 +50,28 @@ export interface CoreConfig {
   builder: BuilderConfig;
   disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions>;
+  /**
+   * Disables the generation of project.json, a file containing Storybook metadata
+   */
+  disableProjectJson?: boolean;
+  /**
+   * Disables Storybook telemetry
+   * @see https://storybook.js.org/telemetry
+   */
+  disableTelemetry?: boolean;
+  /**
+   * Enable crash reports to be sent to Storybook telemetry
+   * @see https://storybook.js.org/telemetry
+   */
+  enableCrashReports?: boolean;
+  /**
+   * enable CORS headings to run document in a "secure context"
+   * see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements
+   * This enables these headers in development-mode:
+   *   Cross-Origin-Opener-Policy: same-origin
+   *   Cross-Origin-Embedder-Policy: require-corp
+   */
+  crossOriginIsolated?: boolean;
 }
 
 interface DirectoryMapping {
@@ -133,6 +155,11 @@ export interface PackageJson {
   version: string;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  scripts?: Record<string, string>;
+  eslintConfig?: Record<string, any>;
+  type?: 'module';
+  [key: string]: any;
 }
 
 // TODO: This could be exported to the outside world and used in `options.ts` file of each `@storybook/APP`
@@ -157,6 +184,8 @@ export interface CLIOptions {
   ignorePreview?: boolean;
   previewUrl?: string;
   forceBuildPreview?: boolean;
+  disableTelemetry?: boolean;
+  enableCrashReports?: boolean;
   host?: string;
   /**
    * @deprecated Use 'staticDirs' Storybook Configuration option instead
@@ -412,6 +441,13 @@ export interface StorybookConfig {
 
   /**
    * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   *
+   * @deprecated use `previewAnnotations` or `/preview.js` file instead
    */
   config?: (entries: Entry[], options: Options) => Entry[];
+
+  /**
+   * Add additional scripts to run in the preview a la `.storybook/preview.js`
+   */
+  previewAnnotations?: (entries: Entry[], options: Options) => Entry[];
 }

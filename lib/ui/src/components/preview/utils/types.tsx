@@ -13,6 +13,7 @@ export interface PreviewProps {
   options: {
     isFullscreen: boolean;
     isToolshown: boolean;
+    showTabs: boolean;
   };
   id: string;
   path: string;

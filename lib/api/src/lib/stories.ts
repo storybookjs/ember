@@ -1,3 +1,4 @@
+import memoize from 'memoizerific';
 import React from 'react';
 import deprecate from 'util-deprecate';
 import dedent from 'ts-dedent';
@@ -25,6 +26,7 @@ const { FEATURES } = global;
 export type { StoryId };
 
 export interface Root {
+  type: 'root';
   id: StoryId;
   depth: 0;
   name: string;
@@ -38,6 +40,7 @@ export interface Root {
 }
 
 export interface Group {
+  type: 'group' | 'component';
   id: StoryId;
   depth: number;
   name: string;
@@ -56,6 +59,7 @@ export interface Group {
 }
 
 export interface Story {
+  type: 'story' | 'docs';
   id: StoryId;
   depth: number;
   parent: StoryId;
@@ -233,6 +237,7 @@ export const transformStoriesRawToStoriesHash = (
 
       if (root.length && index === 0) {
         list.push({
+          type: 'root',
           id,
           name,
           depth: index,
@@ -245,6 +250,7 @@ export const transformStoriesRawToStoriesHash = (
         });
       } else {
         list.push({
+          type: 'group',
           id,
           name,
           parent,
@@ -277,6 +283,7 @@ export const transformStoriesRawToStoriesHash = (
     });
 
     acc[item.id] = {
+      type: item.parameters?.docsOnly ? 'docs' : 'story',
       ...item,
       depth: rootAndGroups.length,
       parent: rootAndGroups[rootAndGroups.length - 1].id,
@@ -297,7 +304,10 @@ export const transformStoriesRawToStoriesHash = (
       const { children } = item;
       if (children) {
         const childNodes = children.map((id) => storiesHashOutOfOrder[id]) as (Story | Group)[];
-        acc[item.id].isComponent = childNodes.every((childNode) => childNode.isLeaf);
+        if (childNodes.every((childNode) => childNode.isLeaf)) {
+          acc[item.id].isComponent = true;
+          acc[item.id].type = 'component';
+        }
         childNodes.forEach((childNode) => addItem(acc, childNode));
       }
     }
@@ -327,3 +337,17 @@ export function isStory(item: Item): item is Story {
   }
   return false;
 }
+
+export const getComponentLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.entries(hash).reduce((acc, i) => {
+    const value = i[1];
+    if (value.isComponent) {
+      acc.push([...i[1].children]);
+    }
+    return acc;
+  }, [] as StoryId[][]);
+});
+
+export const getStoriesLookupList = memoize(1)((hash: StoriesHash) => {
+  return Object.keys(hash).filter((k) => !(hash[k].children || Array.isArray(hash[k])));
+});

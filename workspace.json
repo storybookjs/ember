@@ -161,6 +161,10 @@
       "root": "examples/react-ts-webpack4",
       "type": "library"
     },
+    "@storybook/external-docs": {
+      "root": "examples/external-docs",
+      "type": "library"
+    },
     "server-kitchen-sink": {
       "root": "examples/server-kitchen-sink",
       "type": "library"
@@ -287,6 +291,10 @@
     },
     "@storybook/store": {
       "root": "lib/store",
+      "type": "library"
+    },
+    "@storybook/telemetry": {
+      "root": "lib/telemetry",
       "type": "library"
     },
     "@storybook/theming": {

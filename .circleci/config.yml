@@ -6,7 +6,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -19,7 +19,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -32,7 +32,7 @@ executors:
       class:
         description: The Resource class
         type: enum
-        enum: ['small', 'medium', 'large', 'xlarge']
+        enum: ['small', 'medium', 'medium+', 'large', 'xlarge']
         default: 'medium'
     working_directory: /tmp/storybook
     docker:
@@ -92,7 +92,7 @@ jobs:
           command: yarn install --immutable
       - run:
           name: Bootstrap
-          command: yarn bootstrap --core
+          command: yarn bootstrap --build --manager
       - save_cache:
           name: Save Yarn cache
           key: build-yarn-2-cache-v3--{{ checksum "yarn.lock" }}
@@ -118,23 +118,9 @@ jobs:
           name: examples
           command: |
             yarn run-chromatics
-  packtracker:
-    executor:
-      class: medium
-      name: sb_node_14_browsers
-    steps:
-      - git-shallow-clone/checkout_advanced:
-          clone_options: '--depth 1 --verbose'
-      - attach_workspace:
-          at: .
-      - run:
-          name: Report webpack stats for manager of official storybook
-          command: |
-            cd examples/official-storybook
-            yarn packtracker
   examples:
     executor:
-      class: medium
+      class: medium+
       name: sb_node_14_browsers
     parallelism: 17
     steps:
@@ -194,13 +180,39 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Run E2E tests
+          name: Run E2E (extended) tests
           command: yarn test:e2e-framework --clean --all --skip angular11 --skip angular --skip angular12 --skip vue3 --skip web_components_typescript --skip cra --skip react
           no_output_timeout: 5m
       - store_artifacts:
           path: /tmp/cypress-record
           destination: cypress
   e2e-tests-core:
+    executor:
+      class: large
+      name: sb_cypress_8_node_14
+    parallelism: 8
+    steps:
+      - git-shallow-clone/checkout_advanced:
+          clone_options: '--depth 1 --verbose'
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running local registry
+          command: yarn local-registry --port 6000 --open
+          background: true
+      - run:
+          name: Wait for registry
+          command: yarn wait-on http://localhost:6000
+      - run:
+          name: Run E2E (core) tests
+          # Do not test CRA here because it's done in PnP part
+          # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
+          command: yarn test:e2e-framework vue3 angular130 angular13 angular12 angular11 web_components_typescript web_components_lit2 react react_legacy_root_api vite_react
+          no_output_timeout: 5m
+      - store_artifacts:
+          path: /tmp/cypress-record
+          destination: cypress
+  e2e-tests-sb-docs:
     executor:
       class: large
       name: sb_cypress_8_node_14
@@ -218,14 +230,9 @@ jobs:
           name: Wait for registry
           command: yarn wait-on http://localhost:6000
       - run:
-          name: Run E2E tests
-          # Do not test CRA here because it's done in PnP part
-          # TODO: Remove `web_components_typescript` as soon as Lit 2 stable is released
-          command: yarn test:e2e-framework vue3 angular130 angular13 angular12 angular11 web_components_typescript web_components_lit2 react
+          name: Run smoke tests
+          command: yarn test:e2e-framework angular_modern_inline_rendering --test-runner --docs-mode
           no_output_timeout: 5m
-      - store_artifacts:
-          path: /tmp/cypress-record
-          destination: cypress
   cra-bench:
     executor:
       class: medium
@@ -385,6 +392,8 @@ jobs:
       - run:
           name: Test
           command: yarn test --coverage --runInBand --ci
+      - store_test_results:
+          path: junit.xml
       - persist_to_workspace:
           root: .
           paths:
@@ -418,9 +427,6 @@ workflows:
       - smoke-tests:
           requires:
             - build
-      - packtracker:
-          requires:
-            - build
       - unit-tests:
           requires:
             - build
@@ -437,6 +443,9 @@ workflows:
           requires:
             - publish
       - e2e-tests-core:
+          requires:
+            - publish
+      - e2e-tests-sb-docs:
           requires:
             - publish
       - e2e-tests-pnp:

@@ -103,7 +103,7 @@ function run() {
       command: () => {
         log.info(prefix, 'prepare');
         spawn(
-          `nx run-many --target="prepare" --all --parallel ${
+          `nx run-many --target="prepare" --all --parallel=2 ${
             process.env.CI ? `--max-parallel=${maxConcurrentTasks}` : ''
           } -- --optimized`
         );
@@ -124,7 +124,7 @@ function run() {
       defaultValue: false,
       option: '--reg',
       command: () => {
-        spawn('yarn local-registry --publish --open');
+        spawn('yarn local-registry --publish --open --port 6000');
       },
       order: 11,
     }),

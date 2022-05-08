@@ -23,7 +23,7 @@ It includes additional customization via parameters. Below is a condensed exampl
 
 <div class="aside">
 
-💡 The pattern demonstrated here applies only to the story. If you need, you can it this to all the component stories, introducing a [component parameter](../writing-stories/parameters.md#component-parameters).
+💡 The pattern demonstrated here applies only to the story. If you need, you can apply this to all the component stories, introducing a [component parameter](../writing-stories/parameters.md#component-parameters).
 
 </div>
 
@@ -38,8 +38,8 @@ It includes additional customization via parameters. Below is a condensed exampl
 
 | Value              | Description                                                                                                                                                   | Support                                      |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **auto** (default) | Use `dynamic` snippets if the story is written using [Args](../writing-stories/args) and the framework supports it.<br/> `docs: { source: { type: 'auto' } }` | All                                          |
-| **dynamic**        | Dynamically generated code snippet based on the output of the story function (e.g, JSX code for React). <br/> `docs: { source: { type: 'dynamic' } }`         | [Limited](../api/frameworks-feature-support) |
+| **auto** (default) | Use `dynamic` snippets if the story is written using [Args](../writing-stories/args.md) and the framework supports it.<br/> `docs: { source: { type: 'auto' } }` | All                                          |
+| **dynamic**        | Dynamically generated code snippet based on the output of the story function (e.g, JSX code for React). <br/> `docs: { source: { type: 'dynamic' } }`         | [Limited](../api/frameworks-feature-support.md) |
 | **code**           | Use the raw story source as written in the story file. <br/> `docs: { source: { type: 'code' } }`                                                             | All                                          |
 
 ## Working with MDX

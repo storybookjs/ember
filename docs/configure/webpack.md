@@ -2,7 +2,7 @@
 title: 'Webpack'
 ---
 
-Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](/addons) are also available that extend the configuration for other everyday use cases.
+Storybook displays your components in a custom web application built using [Webpack](https://webpack.js.org/). Webpack is a complex tool, but our default configuration is intended to cover most use cases. [Addons](https://storybook.js.org/addons/) are also available that extend the configuration for other everyday use cases.
 
 You can customize Storybook's webpack setup by providing a `webpackFinal` field in [`.storybook/main.js`](./overview.md#configure-your-storybook-project) file.
 
@@ -50,6 +50,70 @@ yarn start-storybook --debug-webpack
 ## Production mode
 yarn build-storybook --debug-webpack
 ```
+
+### Bundle splitting
+
+Starting with Storybook 6.4, [bundle splitting](https://v4.webpack.js.org/guides/code-splitting/) is supported through a configuration flag. Update your Storybook configuration and add the `storyStoreV7` flag:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-on-demand-story-loading.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+When you start your Storybook, you'll see an improvement in loading times. Read more about it in the [announcement post](https://storybook.js.org/blog/storybook-on-demand-architecture/) and the [configuration documentation](./overview.md#on-demand-story-loading).
+
+### Webpack 5
+
+Storybook builds your project with Webpack 4 by default. If your project uses Webpack 5, you can opt into the Webpack 5 builder by installing the required dependencies (i.e., `@storybook/builder-webpack5`, `@storybook/manager-webpack5`) and update your Storybook configuration as follows:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-webpack5.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Once you are using Webpack 5, you can further opt into some features to optimize your build:
+
+#### Lazy Compilation
+
+Storybook supports Webpack's experimental [lazy compilation](https://webpack.js.org/configuration/experiments/#experimentslazycompilation) feature, via the `lazyCompilation` builder flag:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-webpack5-lazyCompilation.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+This feature applies in development mode, and will mean your Storybook will start up faster, at the cost of slightly slower browsing time when you change stories.
+
+#### Filesystem Caching
+
+Storybook supports Webpack's [filesystem caching](https://webpack.js.org/configuration/cache/#cachetype) feature, via the `fsCache` builder flag:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-webpack5-fsCache.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+This feature will mean build output is cached between runs of Storybook, speeding up subsequent startup times.
 
 ### Extending Storybook’s webpack config
 
@@ -111,22 +175,6 @@ The following code snippet shows how you can replace the loaders from Storybook 
 <div class="aside"> 
 💡 Projects initialized via generators (e.g, Vue CLI) may require that you import their own webpack config file (i.e., <code>/projectRoot/node_modules/@vue/cli-service/webpack.config.js</code>) to use a certain feature with Storybook. For other generators, make sure to check the documentation for instructions. 
 </div>
-
-### Bundle splitting
-
-Starting with Storybook 6.4, [bundle splitting](https://v4.webpack.js.org/guides/code-splitting/) is supported through a configuration flag. Update your Storybook configuration and add the `storyStoreV7` flag:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/storybook-on-demand-story-loading.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-When you start your Storybook, you'll see an improvement in loading times. Read more about it in the [announcement post](https://storybook.js.org/blog/storybook-on-demand-architecture/) and the [configuration documentation](./overview.md#on-demand-story-loading).
 
 ### TypeScript Module Resolution
 

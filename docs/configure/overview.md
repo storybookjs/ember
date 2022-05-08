@@ -27,7 +27,7 @@ The main configuration file is `main.js`. This file controls the Storybook serve
 The `main.js` configuration file is a [preset](../addons/addon-types.md) and, as such, has a powerful interface, but the key fields within it are:
 
 - `stories` - an array of globs that indicates the [location of your story files](#configure-story-loading), relative to `main.js`.
-- `addons` - a list of the [addons](/addons) you are using.
+- `addons` - a list of the [addons](https://storybook.js.org/addons/) you are using.
 - `webpackFinal` - custom [webpack configuration](./webpack.md#extending-storybooks-webpack-config).
 - `babel` - custom [babel configuration](./babel.md).
 - `framework` - framework specific configurations to help the loading and building process.

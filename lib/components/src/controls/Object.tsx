@@ -244,7 +244,7 @@ const getCustomStyleFunction: (theme: Theme) => JsonTreeProps['getStyle'] = (the
 });
 
 export const ObjectControl: FC<ObjectProps> = ({ name, value, onChange }) => {
-  const theme = useTheme<Theme>();
+  const theme = useTheme();
   const data = useMemo(() => value && cloneDeep(value), [value]);
   const hasData = data !== null && data !== undefined;
 

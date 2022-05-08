@@ -47,7 +47,7 @@ When Axe reports accessibility violations in stories, there are multiple ways to
 At the Story level, override rules using `parameters.a11y.config.rules`.
 
 ```js
-export const InputWithoutAutofill = () => <input type="text" autofill="nope" />;
+export const InputWithoutAutofill = () => <input type="text" autocomplete="nope" />;
 
 InputWithoutAutofill.parameters = {
   a11y: {

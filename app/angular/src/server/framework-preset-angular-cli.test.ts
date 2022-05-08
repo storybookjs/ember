@@ -766,8 +766,8 @@ const newWebpackConfiguration = (
     bail: false,
     devtool: 'cheap-module-source-map',
     entry: [
-      '/Users/joe/storybook/lib/core-server/dist/cjs/globals/polyfills.js',
-      '/Users/joe/storybook/lib/core-server/dist/cjs/globals/globals.js',
+      '/Users/joe/storybook/lib/core-server/dist/esm/globals/polyfills.js',
+      '/Users/joe/storybook/lib/core-server/dist/esm/globals/globals.js',
       '/Users/joe/storybook/examples/angular-cli/.storybook/storybook-init-framework-entry.js',
       '/Users/joe/storybook/addons/docs/dist/esm/frameworks/common/config.js-generated-other-entry.js',
       '/Users/joe/storybook/addons/docs/dist/esm/frameworks/angular/config.js-generated-other-entry.js',
@@ -797,9 +797,6 @@ const newWebpackConfiguration = (
       modules: ['node_modules'],
       mainFields: ['browser', 'main'],
       alias: {
-        '@emotion/core': '/Users/joe/storybook/node_modules/@emotion/core',
-        '@emotion/styled': '/Users/joe/storybook/node_modules/@emotion/styled',
-        'emotion-theming': '/Users/joe/storybook/node_modules/emotion-theming',
         '@storybook/addons': '/Users/joe/storybook/lib/addons',
         '@storybook/api': '/Users/joe/storybook/lib/api',
         '@storybook/channels': '/Users/joe/storybook/lib/channels',

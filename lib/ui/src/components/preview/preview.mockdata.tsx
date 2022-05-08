@@ -47,6 +47,7 @@ export const previewProps: PreviewProps = {
   options: {
     isFullscreen: false,
     isToolshown: true,
+    showTabs: true,
   },
   withLoader: false,
   docsOnly: false,

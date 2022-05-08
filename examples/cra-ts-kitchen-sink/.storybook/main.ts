@@ -12,7 +12,7 @@ module.exports = {
     '@storybook/addon-actions',
     '@storybook/addon-links',
     '@storybook/addon-a11y',
-    './localAddon/register.tsx',
+    './localAddon/manager.tsx',
     './localAddon/preset.ts',
   ],
   webpackFinal: (config: Configuration) => {
@@ -28,6 +28,7 @@ module.exports = {
   },
   core: {
     builder: 'webpack4',
+    disableTelemetry: true,
   },
   staticDirs: ['../public'],
   features: {

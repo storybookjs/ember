@@ -12,8 +12,8 @@ In the interest of fostering an open and welcoming environment, we as contributo
 
 - [**Code**](./code.md): Features, bug fixes, dependency updates
 - [**Docs**](./documentation-updates.md): Typos, clarifications
-- [**Integrations**](./../api/new-frameworks): Integrate Storybook with your favorite library
-- [**Addons**](./../addons/introduction): Build an addon and share it with the community
+- [**Integrations**](./../api/new-frameworks.md): Integrate Storybook with your favorite library
+- [**Addons**](./../addons/introduction.md): Build an addon and share it with the community
 - [**Examples**](https://github.com/storybookjs/storybook/tree/next/examples/official-storybook): Add an example/test for a feature
 
 ## Not sure how to get started?

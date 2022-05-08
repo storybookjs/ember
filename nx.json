@@ -139,6 +139,10 @@
     "@storybook/example-react-ts-webpack4": {
       "implicitDependencies": []
     },
+    "@storybook/external-docs": {
+      "implicitDependencies": []
+    },
+
     "server-kitchen-sink": {
       "implicitDependencies": []
     },
@@ -233,6 +237,9 @@
       "implicitDependencies": []
     },
     "@storybook/source-loader": {
+      "implicitDependencies": []
+    },
+    "@storybook/telemetry": {
       "implicitDependencies": []
     },
     "@storybook/theming": {
