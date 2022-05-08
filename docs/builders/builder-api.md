@@ -108,7 +108,7 @@ Storybook annotates components and stories with additional metadata related to t
 
 ### Generate a static build
 
-One of Storybook's core features it's the ability to generate a static build that can be [published](../sharing/publish-storybook.md) into any hosting service. The builder must also be able to provide a similar mechanism. For example:
+One of Storybook's core features it's the ability to generate a static build that can be [published](../sharing/publish-storybook.md) to a web hosting service. The builder must also be able to provide a similar mechanism. For example:
 
 <!-- prettier-ignore-start -->
 
