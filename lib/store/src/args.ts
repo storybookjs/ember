@@ -73,12 +73,17 @@ export const combineArgs = (value: any, update: any): Args => {
 
 export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(argTypes).reduce((acc, [key, { options }]) => {
-    if (!options) {
+    // Don't set args that are not defined in `args` (they can be undefined in there)
+    // see https://github.com/storybookjs/storybook/issues/15630 and
+    //   https://github.com/storybookjs/storybook/issues/17063
+    function allowArg() {
       if (key in args) {
         acc[key] = args[key];
       }
       return acc;
     }
+
+    if (!options) return allowArg();
 
     if (!Array.isArray(options)) {
       once.error(dedent`
@@ -86,8 +91,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
 
         More info: https://storybook.js.org/docs/react/api/argtypes
       `);
-      acc[key] = args[key];
-      return acc;
+      return allowArg();
     }
 
     if (options.some((opt) => opt && ['object', 'function'].includes(typeof opt))) {
@@ -96,8 +100,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
 
         More info: https://storybook.js.org/docs/react/writing-stories/args#mapping-to-complex-arg-values
       `);
-      acc[key] = args[key];
-      return acc;
+      return allowArg();
     }
 
     const isArray = Array.isArray(args[key]);
@@ -105,8 +108,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
     const isValidArray = isArray && invalidIndex === -1;
 
     if (args[key] === undefined || options.includes(args[key]) || isValidArray) {
-      acc[key] = args[key];
-      return acc;
+      return allowArg();
     }
 
     const field = isArray ? `${key}[${invalidIndex}]` : key;

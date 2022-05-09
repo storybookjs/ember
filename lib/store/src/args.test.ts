@@ -226,6 +226,11 @@ describe('validateOptions', () => {
     expect(validateOptions({ a: 1 }, { a: { options: [1, 2] } })).toStrictEqual({ a: 1 });
   });
 
+  // https://github.com/storybookjs/storybook/issues/17063
+  it('does not set args to `undefined` if they are unset and there are options', () => {
+    expect(validateOptions({}, { a: { options: [2, 3] } })).toStrictEqual({});
+  });
+
   it('includes arg if value is undefined', () => {
     expect(validateOptions({ a: undefined }, { a: { options: [1, 2] } })).toStrictEqual({
       a: undefined,
