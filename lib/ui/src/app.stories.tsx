@@ -39,7 +39,7 @@ export const Default = () => (
       layout={{
         initialActive: 'addons',
         isFullscreen: false,
-        isToolshown: true,
+        showToolbar: true,
         panelPosition: 'right',
         showNav: true,
         showPanel: true,
@@ -67,7 +67,7 @@ export const LoadingState = () => (
       layout={{
         initialActive: 'addons',
         isFullscreen: false,
-        isToolshown: true,
+        showToolbar: true,
         panelPosition: 'right',
         showNav: true,
         showPanel: true,

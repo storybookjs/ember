@@ -3,8 +3,13 @@ import type { StorybookConfig } from '@storybook/react/types';
 const config: StorybookConfig = {
   stories: [
     {
+      directory: '../src/title',
+      titlePrefix: 'Custom Prefix',
+    },
+    {
       directory: '../src',
       titlePrefix: 'Demo',
+      files: '*.stories.(js|ts|tsx|mdx)',
     },
   ],
   logLevel: 'debug',

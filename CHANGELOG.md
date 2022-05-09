@@ -1,3 +1,17 @@
+## 6.5.0-beta.7 (May 9, 2022)
+
+### Features
+
+- CSF3: Add title prefix support for stories with custom titles ([#17724](https://github.com/storybookjs/storybook/pull/17724))
+
+### Bug Fixes
+
+- Components: Fix race conditions in SyntaxHighlighter ([#18158](https://github.com/storybookjs/storybook/pull/18158))
+
+### Maintenance
+
+- API: Deprecate isToolshown, rename to showToolbar ([#18131](https://github.com/storybookjs/storybook/pull/18131))
+
 ## 6.5.0-beta.6 (May 6, 2022)
 
 ### Bug Fixes

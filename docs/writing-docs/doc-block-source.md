@@ -23,7 +23,7 @@ It includes additional customization via parameters. Below is a condensed exampl
 
 <div class="aside">
 
-💡 The pattern demonstrated here applies only to the story. If you need, you can it this to all the component stories, introducing a [component parameter](../writing-stories/parameters.md#component-parameters).
+💡 The pattern demonstrated here applies only to the story. If you need, you can apply this to all the component stories, introducing a [component parameter](../writing-stories/parameters.md#component-parameters).
 
 </div>
 
