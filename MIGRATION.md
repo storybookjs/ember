@@ -10,6 +10,7 @@
   - [CSF3 auto-title improvements](#csf3-auto-title-improvements)
     - [Auto-title filename case](#auto-title-filename-case)
     - [Auto-title redundant filename](#auto-title-redundant-filename)
+    - [Auto-title always prefixes](#auto-title-always-prefixes)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
@@ -314,6 +315,35 @@ Since CSF3 is experimental, we are introducing this technically breaking change 
 export default { title: 'Atoms/Button/Button' };
 ```
 
+#### Auto-title always prefixes
+
+When the user provides a `prefix` in their `main.js` `stories` field, it now prefixes all titles to matching stories, whereas in 6.4 and earlier it only prefixed auto-titles.
+
+Consider the following example:
+
+```js
+// main.js
+module.exports = {
+  stories: [{ directory: '../src', titlePrefix: 'Custom' }]
+}
+
+// ../src/NoTitle.stories.js
+export default { component: Foo };
+
+// ../src/Title.stories.js
+export default { component: Bar, title: 'Bar' }
+```
+
+In 6.4, the final titles would be:
+
+- `NoTitle.stories.js` => `Custom/NoTitle`
+- `Title.stories.js` => `Bar`
+
+In 6.5, the final titles would be:
+
+- `NoTitle.stories.js` => `Custom/NoTitle`
+- `Title.stories.js` => `Custom/Bar`
+
 ## From version 6.3.x to 6.4.0
 
 ### Automigrate
@@ -327,7 +357,9 @@ For example, if you're in a webpack5 project but still use Storybook's default w
 You can run the existing suite of automigrations to see which ones apply to your project. This won't update any files unless you accept the changes:
 
 ```
+
 npx sb@next automigrate
+
 ```
 
 The automigration suite also runs when you create a new project (`sb init`) or when you update storybook (`sb upgrade`).
@@ -337,7 +369,9 @@ The automigration suite also runs when you create a new project (`sb init`) or w
 Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to upgrade the configuration. You can do this automatically by running:
 
 ```
+
 npx sb@next automigrate
+
 ```
 
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:

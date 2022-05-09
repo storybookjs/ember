@@ -40,7 +40,8 @@ jest.mock('@storybook/store', () => {
   const actualStore = jest.requireActual('@storybook/store');
   return {
     ...actualStore,
-    autoTitle: () => 'auto-title',
+    userOrAutoTitle: (importPath: string, specifier: any, userTitle?: string) =>
+      userTitle || 'auto-title',
   };
 });
 
