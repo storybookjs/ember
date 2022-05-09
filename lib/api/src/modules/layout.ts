@@ -3,6 +3,8 @@ import pick from 'lodash/pick';
 import deepEqual from 'fast-deep-equal';
 import { themes } from '@storybook/theming';
 import type { ThemeVars } from '@storybook/theming';
+import { once } from '@storybook/client-logger';
+import dedent from 'ts-dedent';
 
 import merge from '../lib/merge';
 import type { State, ModuleFn } from '../index';
@@ -25,7 +27,10 @@ export interface Layout {
   showNav: boolean;
   showTabs: boolean;
   showToolbar: boolean;
-  isToolshown?: boolean; // deprecated
+  /**
+   * @deprecated
+   */
+  isToolshown?: boolean;
 }
 
 export interface UI {
@@ -222,6 +227,11 @@ export const init: ModuleFn = ({ store, provider, singleStory }) => {
       const { theme, selectedPanel, ...options } = provider.getConfig();
 
       if (options?.layout?.isToolshown !== undefined) {
+        once.warn(dedent`
+          The "isToolshown" option is deprecated. Please use "showToolbar" instead.
+
+          See https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#renamed-istoolshown-to-showtoolbar
+        `);
         options.layout.showToolbar = options.layout.isToolshown;
       }
 

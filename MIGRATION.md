@@ -2,6 +2,7 @@
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
   - [React18 new root API](#react18-new-root-api)
+  - [Renamed isToolshown to showToolbar](#renamed-istoolshown-to-showtoolbar)
   - [Deprecated register.js](#deprecated-registerjs)
   - [Dropped support for addon-actions addDecorators](#dropped-support-for-addon-actions-adddecorators)
   - [Vite builder renamed](#vite-builder-renamed)
@@ -211,6 +212,21 @@ If you wish to opt out of the new root API, set the `reactOptions.legacyRootApi`
 module.exports = {
   reactOptions: { legacyRootApi: true },
 };
+```
+
+### Renamed isToolshown to showToolbar
+
+Storybook's [manager API](docs/addons/addons-api.md) has deprecated the `isToolshown` option (to show/hide the toolbar) and renamed it to `showToolbar` for consistency with other similar UI options.
+
+Example:
+
+```js
+// .storybook/manager.js
+import { addons } from '@storybook/addons';
+
+addons.setConfig({
+  showToolbar: false,
+});
 ```
 
 ### Deprecated register.js
