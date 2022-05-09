@@ -35,6 +35,7 @@ const nodeModulesThatNeedToBeParsedBecauseTheyExposeES6 = [
   'semver',
   'slash',
   'strip-ansi',
+  'telejson',
 ].map((n) => new RegExp(`[\\\\/]node_modules[\\\\/]${n}`));
 
 export const es6Transpiler: () => RuleSetRule = () => {
