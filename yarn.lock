@@ -6467,7 +6467,7 @@ __metadata:
     prop-types: ^15.7.2
     react-inspector: ^5.1.0
     regenerator-runtime: ^0.13.7
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
     uuid-browser: ^3.1.0
@@ -7103,7 +7103,7 @@ __metadata:
     read-pkg-up: ^7.0.1
     regenerator-runtime: ^0.13.7
     sass-loader: ^10.1.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     tmp: ^0.2.1
     ts-dedent: ^2.0.0
     ts-loader: ^8.0.14
@@ -7163,7 +7163,7 @@ __metadata:
     qs: ^6.10.1
     regenerator-runtime: ^0.13.7
     store2: ^2.12.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   peerDependencies:
@@ -7338,7 +7338,7 @@ __metadata:
     core-js: ^3.8.2
     global: ^4.4.0
     qs: ^6.10.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
   languageName: unknown
   linkType: soft
 
@@ -7350,7 +7350,7 @@ __metadata:
     "@storybook/client-logger": 6.5.0-beta.6
     core-js: ^3.8.2
     global: ^4.4.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
   languageName: unknown
   linkType: soft
 
@@ -7621,7 +7621,7 @@ __metadata:
     pretty-hrtime: ^1.0.3
     resolve-from: ^5.0.0
     slash: ^3.0.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
     webpack: 4
@@ -7699,7 +7699,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     serve-favicon: ^2.5.0
     slash: ^3.0.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
     watchpack: ^2.2.0
@@ -8100,7 +8100,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     resolve-from: ^5.0.0
     style-loader: ^1.3.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     terser-webpack-plugin: ^4.2.3
     ts-dedent: ^2.0.0
     url-loader: ^4.1.1
@@ -8150,7 +8150,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     resolve-from: ^5.0.0
     style-loader: ^2.0.0
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     terser-webpack-plugin: ^5.0.3
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
@@ -12975,7 +12975,7 @@ __metadata:
     rxjs: ^6.6.3
     sass: ^1.43.4
     storybook-addon-angular-ivy: ^0.0.1
-    telejson: ^6.0.6
+    telejson: ^6.0.7
     ts-jest: ^26.4.4
     ts-node: ^9.1.0
     typescript: ^4.1.3
@@ -43191,9 +43191,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"telejson@npm:^6.0.6":
-  version: 6.0.6
-  resolution: "telejson@npm:6.0.6"
+"telejson@npm:^6.0.7":
+  version: 6.0.7
+  resolution: "telejson@npm:6.0.7"
   dependencies:
     "@types/is-function": ^1.0.0
     global: ^4.4.0
@@ -43201,8 +43201,9 @@ __metadata:
     is-regex: ^1.1.2
     is-symbol: ^1.0.3
     isobject: ^4.0.0
+    lodash: ^4.17.21
     memoizerific: ^1.11.3
-  checksum: 8b9f4d122c119de9b0c7dbf800e031c958df57bd545be9273eda8b74a24f0c7b162c570eceeb13ca605649f03331db31b216c112d8276490f7444d5cf8f14b8d
+  checksum: 0d088256a741fd340301beedbf4c1bab260e20021a992528839ecd1b2cf84fa172929d57056b5fd67dbafc3406a82347d7218c5431df56bff5ffff0e4e295101
   languageName: node
   linkType: hard
 
