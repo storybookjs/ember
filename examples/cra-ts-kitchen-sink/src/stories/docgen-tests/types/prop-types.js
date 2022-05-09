@@ -215,7 +215,7 @@ PropTypesProps.propTypes = {
   oneOfComponents: PropTypes.oneOf([FunctionalComponent, ClassComponent]),
   oneOfEval: PropTypes.oneOf((() => ['News', 'Photos'])()),
   oneOfVar: PropTypes.oneOf(POSITIONS),
-  oneOfNested: PropTypes.oneOf(['News', ['bottom-left', 'botton-center', 'bottom-right']]),
+  oneOfNested: PropTypes.oneOf(['News', ['bottom-left', 'bottom-center', 'bottom-right']]),
   oneOfNestedSimpleInlineObject: PropTypes.oneOf(['News', [{ foo: PropTypes.string }]]),
   oneOfNestedComplexInlineObject: PropTypes.oneOf([
     'News',

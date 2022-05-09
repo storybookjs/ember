@@ -148,7 +148,7 @@ describe('parse', () => {
     });
 
     it('support array', () => {
-      const result = parse("['bottom-left', 'botton-center', 'bottom-right']");
+      const result = parse("['bottom-left', 'bottom-center', 'bottom-right']");
       const inferredType = result.inferredType as InspectionArray;
 
       expect(inferredType.type).toBe(InspectionType.ARRAY);

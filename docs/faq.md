@@ -304,7 +304,7 @@ export default {
   plugins: [
     // Other plugins
 
-    // Configures the replace plugin to allow Grapqhl Queries to work properly
+    // Configures the replace plugin to allow Graphql Queries to work properly
     replace({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
