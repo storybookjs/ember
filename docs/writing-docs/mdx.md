@@ -241,7 +241,7 @@ You can also use anchors to target a specific section of a page:
 
 ## MDX file names
 
-Unless you use a custom [webpack configuration](../configure/webpack.md#extending-storybooks-webpack-config), all of your MDX files should have the suffix `*.stories.mdx`. This tells Storybook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
+Unless you use a custom [Webpack configuration](../builders/webpack.md#extending-storybooks-webpack-config), all of your MDX files should have the suffix `*.stories.mdx`. This tells Storybook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
 
 <div class="aside">
 

@@ -42,20 +42,20 @@ Storybook comes with a permissive [default configuration](../configure/overview.
 Your project may have additional requirements before components can be rendered in isolation. This warrants customizing configuration further. There are three broad categories of configuration you might need.
 
 <details>
-<summary>Build configuration like webpack and Babel</summary>
+<summary>Build configuration like Webpack and Babel</summary>
 
 If you see errors on the CLI when you run the `yarn storybook` command, you likely need to make changes to Storybook’s build configuration. Here are some things to try:
 
 - [Presets](../addons/addon-types.md) bundle common configurations for various technologies into Storybook. In particular, presets exist for Create React App, SCSS and Ant Design.
 - Specify a custom [Babel configuration](../configure/babel.md#custom-babel-config) for Storybook. Storybook automatically tries to use your project’s config if it can.
-- Adjust the [webpack configuration](../configure/webpack.md) that Storybook uses. Try patching in your own configuration if needed.
+- Adjust the [Webpack configuration](../builders/webpack.md) that Storybook uses. Try patching in your own configuration if needed.
 
 </details>
 
 <details>
 <summary>Runtime configuration</summary>
 
-If Storybook builds but you see an error immediately when connecting to it in the browser, in that case, chances are one of your input files is not compiling/transpiling correctly to be interpreted by the browser. Storybook supports modern browsers and IE11, but you may need to check the Babel and webpack settings (see above) to ensure your component code works correctly.
+If Storybook builds but you see an error immediately when connecting to it in the browser, in that case, chances are one of your input files is not compiling/transpiling correctly to be interpreted by the browser. Storybook supports modern browsers and IE11, but you may need to check the Babel and Webpack settings (see above) to ensure your component code works correctly.
 
 </details>
 
@@ -104,7 +104,7 @@ If you are using CSS-in-JS, chances are your styles are working because they’r
 <details>
   <summary>@import CSS into components</summary>
 
-Storybook allows you to import CSS files in your components directly. But in some cases you may need to [tweak its webpack configuration](../configure/webpack.md#extendingstorybooks-webpack-config). Angular components require [a special import](../configure/styling-and-css.md#importing-css-files).
+Storybook allows you to import CSS files in your components directly. But in some cases you may need to [tweak its Webpack configuration](../builders/webpack.md#extendingstorybooks-webpack-config). Angular components require [a special import](../configure/styling-and-css.md#importing-css-files).
 
 </details>
 

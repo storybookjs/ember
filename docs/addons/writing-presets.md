@@ -2,7 +2,7 @@
 title: 'Write a preset addon'
 ---
 
-[Storybook preset addons](./addon-types.md#preset-addons) are grouped collections of `babel`, `webpack`, and `addons` configurations that support specific use cases in Storybook, such as typescript or MDX support.
+[Storybook preset addons](./addon-types.md#preset-addons) are grouped collections of `babel`, `webpack`, and `addons` configurations that support specific use cases in Storybook, such as TypeScript or MDX support.
 
 This doc covers the [presets API](#presets-api) and how to use the presets mechanism for [advanced configuration](#advanced-configuration).
 
@@ -10,7 +10,7 @@ This doc covers the [presets API](#presets-api) and how to use the presets mecha
 
 A preset is a set of hooks that is called by Storybook on initialization and can override configurations for `babel`, `webpack`, `addons`, and `entries`.
 
-Each configuration has a similar signature, accepting a base configuration object and options, as in this webpack example:
+Each configuration has a similar signature, accepting a base configuration object and options, as in this Webpack example:
 
 <!-- prettier-ignore-start -->
 
@@ -46,7 +46,7 @@ For example, Storybook's Mihtril support uses plugins internally and here's how 
 
 ### Webpack
 
-The webpack functions `webpack`, `webpackFinal`, and `managerWebpack` configure webpack.
+The Webpack functions `webpack`, `webpackFinal`, and `managerWebpack` configure Webpack.
 
 All functions take a [webpack4 configuration object](https://webpack.js.org/configuration/).
 
@@ -62,11 +62,11 @@ For example, here is how Storybook automatically adopts `create-react-app`'s con
 
 <!-- prettier-ignore-end -->
 
-- `webpack` is applied to the preview config after it has been initialized by storybook
+- `webpack` is applied to the preview config after it has been initialized by Storybook
 - `webpackFinal` is applied to the preview config after all user presets have been applied
 - `managerWebpack` is applied to the manager config
 
-As of Storybook 6.3, Storybook can run with either `webpack4` or `webpack5` builder. If your addon needs to know which version of Webpack it's running inside, the version and the actual webpack instance itself are both available inside your preset:
+As of Storybook 6.3, Storybook can run with either `webpack4` or `webpack5` builder. If your addon needs to know which version of Webpack it's running inside, the version and the actual Webpack instance itself are both available inside your preset:
 
 <!-- prettier-ignore-start -->
 
@@ -81,7 +81,7 @@ As of Storybook 6.3, Storybook can run with either `webpack4` or `webpack5` buil
 
 ### Manager entries
 
-The addon config `managerEntries` allows you to add addons to Storybook from within a preset. For addons that require custom webpack/babel configuration, it is easier to install the preset, and it will take care of everything.
+The addon config `managerEntries` allows you to add addons to Storybook from within a preset. For addons that require custom Webpack/Babel configuration, it is easier to install the preset, and it will take care of everything.
 
 For example, the Storysource preset contains the following code:
 
@@ -176,9 +176,9 @@ Entries are the place to register entry points for the preview. For example it c
 
 ## Advanced Configuration
 
-The presets API is also more powerful than the [standard configuration options](../configure/webpack.md#extending-storybooks-webpack-config) available in Storybook, so it's also possible to use presets for more advanced configuration without actually publishing a preset yourself.
+The presets API is also more powerful than the [standard configuration options](../builders/webpack.md#extending-storybooks-webpack-config) available in Storybook, so it's also possible to use presets for more advanced configuration without actually publishing a preset yourself.
 
-For example, some users want to configure the webpack for Storybook's UI and addons ([issue](https://github.com/storybookjs/storybook/issues/4995)), but this is not possible using [standard webpack configuration](../configure/webpack.md#default-configuration) (it used to be possible before SB4.1). However, you can achieve this with a private preset.
+For example, some users want to configure the Webpack for Storybook's UI and addons ([issue](https://github.com/storybookjs/storybook/issues/4995)), but this is not possible using [standard Webpack configuration](../builders/webpack.md#default-configuration) (it used to be possible before SB4.1). However, you can achieve this with a private preset.
 
 If it doesn't exist yet, create a file `.storybook/main.js`:
 
