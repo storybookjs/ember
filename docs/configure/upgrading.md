@@ -18,7 +18,7 @@ This upgrades all of the Storybook packages in your project to the latest stable
 
 <div class="aside">
 
-In addition to running the command, we also recommend checking the  [MIGRATION.md file](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md), for the detailed log of relevant changes and deprecations that might affect your upgrade.
+In addition to running the command, we also recommend checking the [MIGRATION.md file](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md), for the detailed log of relevant changes and deprecations that might affect your upgrade.
 
 </div>
 
@@ -43,3 +43,7 @@ npx sb@next upgrade --prerelease
 ```
 
 If you'd like to downgrade to a stable version, manually edit the package version numbers in your `package.json` and re-install.
+
+<div class="aside">
+Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+</div>

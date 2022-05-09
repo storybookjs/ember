@@ -89,7 +89,8 @@ const isSimpleCSFStory = (init: t.Expression, annotations: t.ObjectProperty[]) =
   annotations.length === 0 && t.isArrowFunctionExpression(init) && init.params.length === 0;
 
 function transform({ source }: { source: string }, api: any, options: { parser?: string }) {
-  const csf = loadCsf(source, { defaultTitle: 'FIXME' });
+  const makeTitle = (userTitle?: string) => { return userTitle || 'FIXME' }
+  const csf = loadCsf(source, { makeTitle });
 
   try {
     csf.parse();

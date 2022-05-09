@@ -102,11 +102,6 @@ const Scroller = styled(({ children, className }) => (
   {
     position: 'relative',
   },
-  ({ theme }) => ({
-    '& code': {
-      paddingRight: theme.layoutMargin,
-    },
-  }),
   ({ theme }) => themedSyntax(theme)
 );
 
@@ -121,11 +116,16 @@ const Pre = styled.pre<PreProps>(({ theme, padded }) => ({
   padding: padded ? theme.layoutMargin : 0,
 }));
 
-const Code = styled.code({
+/*
+We can't use `code` since PrismJS races for it.
+See https://github.com/storybookjs/storybook/issues/18090
+ */
+const Code = styled.div(({ theme }) => ({
   flex: 1,
-  paddingRight: 0,
+  paddingLeft: 2, // TODO: To match theming/global.ts for now
+  paddingRight: theme.layoutMargin,
   opacity: 1,
-});
+}));
 
 export interface SyntaxHighlighterState {
   copied: boolean;

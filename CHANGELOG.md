@@ -1,3 +1,17 @@
+## 6.5.0-beta.6 (May 6, 2022)
+
+### Bug Fixes
+
+- Controls: Fix undefined args handling ([#18135](https://github.com/storybookjs/storybook/pull/18135))
+
+### Maintenance
+
+- CLI: Update Introduction.stories.mdx template to be MDX2-friendly ([#18141](https://github.com/storybookjs/storybook/pull/18141))
+
+### Dependency Upgrades
+
+- Remove jest from cli peerDependencies ([#18149](https://github.com/storybookjs/storybook/pull/18149))
+
 ## 6.5.0-beta.5 (May 4, 2022)
 
 ### Bug Fixes
