@@ -135,7 +135,7 @@ export interface Page {
 export interface MobileProps {
   options: {
     initialActive: ActiveTabsType;
-    isToolshown: boolean;
+    showToolbar: boolean;
     isFullscreen: boolean;
   };
   Sidebar: ComponentType<any>;
@@ -181,7 +181,7 @@ class Mobile extends Component<MobileProps, MobileState> {
           <Sidebar />
           <div>
             <div hidden={!viewMode}>
-              <Preview isToolshown={options.isToolshown} id="main" viewMode={viewMode} />
+              <Preview showToolbar={options.showToolbar} id="main" viewMode={viewMode} />
             </div>
             {pages.map(({ key, route: Route, render: Content }) => (
               <Route key={key}>

@@ -178,7 +178,7 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
     // This gives the modules the chance to read the persisted state, apply their defaults
     // and override if necessary
     const docsModeState = {
-      layout: { isToolshown: false, showPanel: false },
+      layout: { showToolbar: false, showPanel: false },
       ui: { docsMode: true },
     };
 
