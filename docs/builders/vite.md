@@ -96,38 +96,24 @@ If you need, you can also configure Storybook's Vite builder using TypeScript. R
 
 ## Troubleshooting
 
-### Prebundle errors
-
-Vite automatically restarts and begins the prebundling process if it detects a new dependency. This pattern breaks with Storybook and throws confusing error messages. If you see the following message in your terminal:
-
-```shell
-[vite] new dependencies found:
-```
-
-Update your `viteFinal` configuration and include the new dependencies as follows:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-    'common/storybook-vite-builder-error-optimized.js.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
 ### Working directory not being detected
 
 By default, the Vite builder enables Vite's [`server.fs.strict`](https://vitejs.dev/config/#server-fs-strict) option for increased security, defining the project's `root` to Storybook's configuration directory
 If you need to override it, you can use the `viteFinal` function and adjust it.
 
-### HMR seems flaky
-
-Saving a component story does not initiate a hot module replacement. Instead, a complete reload happens. You can update your component file or save it to see the changes in effect.
-
 ### ArgTypes are not generated automatically
 
-Storybook’s [automatic argType inference](https://storybook.js.org/docs/react/api/argtypes#automatic-argtype-inference) is currently only available for React TypeScript projects. The builder will include additional framework support in future releases.
+Storybook’s [automatic argType inference](https://storybook.js.org/docs/react/api/argtypes#automatic-argtype-inference) is currently only available for React and Vue3 projects. In react projects, if typescript is found in the project's package.json, we assume the components are written in typescript, and use `react-docgen-typescript`. If this causes problems, you can use `react-docgen` by configuring the `typescript` option in your `.storybook/main.js`:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-vite-builder-react-docgen.ts.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 #### Learn more about builders
 
