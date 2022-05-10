@@ -160,7 +160,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
       //
       // then we fetch metadata if the above fetch succeeded
 
-      const loadedData: { error?: Error; v?: number; stories?: StoriesRaw; loginUrl?: string } = {};
+      const loadedData: SetRefData = {};
       const query = version ? `?version=${version}` : '';
       const credentials = isPublic ? 'omit' : 'include';
 
@@ -210,6 +210,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
         id,
         url,
         ...loadedData,
+        versions: Object.keys(loadedData.versions).length ? loadedData.versions : ref.versions,
         error: loadedData.error,
         type: !loadedData.stories ? 'auto-inject' : 'lazy',
       });
