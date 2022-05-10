@@ -206,11 +206,14 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
         Object.assign(loadedData, { ...stories, ...metadata });
       }
 
+      const versions =
+        ref.versions && Object.keys(ref.versions).length ? ref.versions : loadedData.versions;
+
       await api.setRef(id, {
         id,
         url,
         ...loadedData,
-        versions: Object.keys(ref.versions).length ? ref.versions : loadedData.versions,
+        ...(versions ? { versions } : {}),
         error: loadedData.error,
         type: !loadedData.stories ? 'auto-inject' : 'lazy',
       });
