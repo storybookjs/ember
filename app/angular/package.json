@@ -75,7 +75,7 @@
     "read-pkg-up": "^7.0.1",
     "regenerator-runtime": "^0.13.7",
     "sass-loader": "^10.1.0",
-    "telejson": "^5.3.3",
+    "telejson": "^6.0.8",
     "ts-dedent": "^2.0.0",
     "ts-loader": "^8.0.14",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
