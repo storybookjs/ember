@@ -1,5 +1,5 @@
 ```js
-// .storybook/main.js|ts
+// .storybook/main.js
 
 module.exports = {
   stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -7,12 +7,8 @@ module.exports = {
   core: {
     builder: '@storybook/builder-vite',
   },
-  async viteFinal(config, { configType }) {
-    config.optimizeDeps.include = [
-      ...(config.optimizeDeps?.include ?? []),
-      // Other dependencies go here
-    ];
-    return config;
+  typescript: {
+    reactDocgen: 'react-docgen', // 👈 react-docgen configured here.
   },
 };
 ```

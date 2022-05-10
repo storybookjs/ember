@@ -1,5 +1,7 @@
 ```js
-// .storybook/main.js|ts
+// .storybook/main.js|cjs|ts
+
+const { mergeConfig } = require('vite');
 
 module.exports = {
   stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
@@ -7,12 +9,14 @@ module.exports = {
   core: {
     builder: '@storybook/builder-vite',
   },
-  async viteFinal(config, { configType }) {
-    // Return the updated configuration
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
     return mergeConfig(config, {
-      // Adds a new alias
-      resolve: {
-        alias: { exampleAlias: 'something' },
+      // Use the same "resolve" configuration as your app
+      resolve: (await import('../vite.config.js')).default.resolve
+      // Add dependencies to pre-optimization
+      optimizeDeps: {
+        include: ['storybook-dark-mode'],
       },
     });
   },
