@@ -106,4 +106,21 @@ describe('sourceDecorator', () => {
     sourceDecorator(storyFn, context);
     expect(transformSource).toHaveBeenCalledWith('<div>args story</div>', context);
   });
+
+  it('should clean lit expression comments', async () => {
+    const storyFn = (args: any) => html`<div>${args.slot}</div>`;
+    const context = makeContext(
+      'args',
+      { __isArgsStory: true },
+      { slot: 'some content' },
+      { originalStoryFn: storyFn }
+    );
+    sourceDecorator(storyFn, context);
+    await tick();
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'lit-test--args',
+      '<div>some content</div>'
+    );
+  });
 });
