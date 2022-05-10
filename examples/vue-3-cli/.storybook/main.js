@@ -11,5 +11,6 @@ module.exports = {
   },
   features: {
     buildStoriesJson: true,
+    channelOptions: { allowFunction: false, maxDepth: 10 },
   },
 };

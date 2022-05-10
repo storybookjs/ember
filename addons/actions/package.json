@@ -56,7 +56,7 @@
     "prop-types": "^15.7.2",
     "react-inspector": "^5.1.0",
     "regenerator-runtime": "^0.13.7",
-    "telejson": "^5.3.3",
+    "telejson": "^6.0.8",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2",
     "uuid-browser": "^3.1.0"

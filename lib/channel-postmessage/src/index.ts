@@ -195,7 +195,7 @@ export class PostmsgTransport {
   private handleEvent(rawEvent: MessageEvent): void {
     try {
       const { data } = rawEvent;
-      const { key, event, refId } = typeof data === 'string' && isJSON(data) ? parse(data) : data;
+      const { key, event, refId } = typeof data === 'string' && isJSON(data) ? parse(data, global.CHANNEL_OPTIONS || {}) : data;
 
       if (key === KEY) {
         const pageString =

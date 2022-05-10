@@ -29,7 +29,7 @@
     "core-js": "^3.8.2",
     "rxjs": "^6.6.3",
     "sass": "^1.43.4",
-    "telejson": "^5.3.3",
+    "telejson": "^6.0.8",
     "zone.js": "^0.11.3"
   },
   "devDependencies": {

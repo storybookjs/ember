@@ -52,7 +52,7 @@
     "memoizerific": "^1.11.3",
     "regenerator-runtime": "^0.13.7",
     "store2": "^2.12.0",
-    "telejson": "^5.3.3",
+    "telejson": "^6.0.8",
     "ts-dedent": "^2.0.0",
     "util-deprecate": "^1.0.2"
   },
