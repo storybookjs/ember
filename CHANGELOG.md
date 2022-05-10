@@ -1,3 +1,17 @@
+## 6.5.0-beta.8 (May 11, 2022)
+
+### Bug Fixes
+
+- Composition: Fix metadata.json incorrectly overriding main.js refs versions ([#18185](https://github.com/storybookjs/storybook/pull/18185))
+
+### Maintenance
+
+- Examples: Set channelOptions to disallow function serialization ([#18071](https://github.com/storybookjs/storybook/pull/18071))
+
+### Dependency Upgrades
+
+- Upgrade to telejson 6 ([#18164](https://github.com/storybookjs/storybook/pull/18164))
+
 ## 6.5.0-beta.7 (May 9, 2022)
 
 ### Features
