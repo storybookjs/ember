@@ -103,13 +103,13 @@ If you need to override it, you can use the `viteFinal` function and adjust it.
 
 ### ArgTypes are not generated automatically
 
-Storybook’s [automatic argType inference](https://storybook.js.org/docs/react/api/argtypes#automatic-argtype-inference) is currently only available for React and Vue3 projects. In react projects, if typescript is found in the project's package.json, we assume the components are written in typescript, and use `react-docgen-typescript`. If this causes problems, you can use `react-docgen` by configuring the `typescript` option in your `.storybook/main.js`:
+Currently, [automatic argType inference](../api/argtypes.md#automatic-argtype-inference) is only available for React and Vue3. With React, the Vite builder defaults to `react-docgen-typescript` if TypeScript is listed as a dependency. If you run into any issues, you can revert to `react-docgen` by updating your Storybook configuration file as follows:
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'common/storybook-vite-builder-react-docgen.ts.mdx',
+    'common/storybook-vite-builder-react-docgen.js.mdx',
   ]}
 />
 
