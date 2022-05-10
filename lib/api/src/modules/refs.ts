@@ -210,7 +210,7 @@ export const init: ModuleFn = ({ store, provider, singleStory }, { runCheck = tr
         id,
         url,
         ...loadedData,
-        versions: Object.keys(loadedData.versions).length ? loadedData.versions : ref.versions,
+        versions: Object.keys(ref.versions).length ? ref.versions : loadedData.versions,
         error: loadedData.error,
         type: !loadedData.stories ? 'auto-inject' : 'lazy',
       });
