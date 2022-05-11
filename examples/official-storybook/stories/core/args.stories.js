@@ -64,3 +64,23 @@ DifferentSet.args = {
   foo: 'bar',
   bar: 2,
 };
+
+export const TestUndefinedArgs = Template.bind({});
+TestUndefinedArgs.args = {
+  first: 'Bob',
+  last: 'Miller',
+  foo: 'bar',
+};
+TestUndefinedArgs.argTypes = {
+  first: {
+    control: { type: 'select' },
+    options: ['Bob', 'Alice'],
+  },
+  last: {
+    control: { type: 'select' },
+    options: ['Miller', 'Meyer'],
+  },
+  foo: {
+    control: { type: 'text' },
+  },
+};

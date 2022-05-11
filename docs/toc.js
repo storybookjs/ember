@@ -358,15 +358,15 @@ module.exports = {
           type: 'link',
         },
         {
+          pathSegment: 'telemetry',
+          title: 'Telemetry',
+          type: 'link',
+        },
+        {
           pathSegment: '',
           title: 'Integration',
           type: 'menu',
           children: [
-            {
-              pathSegment: 'webpack',
-              title: 'Webpack',
-              type: 'link',
-            },
             {
               pathSegment: 'babel',
               title: 'Babel',
@@ -429,6 +429,33 @@ module.exports = {
         {
           pathSegment: 'environment-variables',
           title: 'Environment variables',
+          type: 'link',
+        },
+      ],
+    },
+    {
+      title: '🧰 Builders',
+      pathSegment: 'builders',
+      type: 'menu',
+      children: [
+        {
+          pathSegment: 'overview',
+          title: 'Introduction',
+          type: 'link',
+        },
+        {
+          pathSegment: 'vite',
+          title: 'Vite',
+          type: 'link',
+        },
+        {
+          pathSegment: 'webpack',
+          title: 'Webpack',
+          type: 'link',
+        },
+        {
+          pathSegment: 'builder-api',
+          title: 'API',
           type: 'link',
         },
       ],

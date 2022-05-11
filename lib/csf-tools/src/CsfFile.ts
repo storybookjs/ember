@@ -125,8 +125,8 @@ const sortExports = (exportByName: Record<string, any>, order: string[]) => {
 };
 
 export interface CsfOptions {
-  defaultTitle: string;
   fileName?: string;
+  makeTitle: (userTitle: string) => string;
 }
 
 export class NoMetaError extends Error {
@@ -142,9 +142,9 @@ export class NoMetaError extends Error {
 export class CsfFile {
   _ast: t.File;
 
-  _defaultTitle: string;
-
   _fileName: string;
+
+  _makeTitle: (title: string) => string;
 
   _meta?: Meta;
 
@@ -160,10 +160,10 @@ export class CsfFile {
 
   _namedExportsOrder?: string[];
 
-  constructor(ast: t.File, { defaultTitle, fileName }: CsfOptions) {
+  constructor(ast: t.File, { fileName, makeTitle }: CsfOptions) {
     this._ast = ast;
-    this._defaultTitle = defaultTitle;
     this._fileName = fileName;
+    this._makeTitle = makeTitle;
   }
 
   _parseTitle(value: t.Node) {
@@ -367,7 +367,7 @@ export class CsfFile {
 
     // default export can come at any point in the file, so we do this post processing last
     const entries = Object.entries(self._stories);
-    self._meta.title = self._meta.title || this._defaultTitle;
+    self._meta.title = this._makeTitle(self._meta.title);
     self._stories = entries.reduce((acc, [key, story]) => {
       if (isExportStory(key, self._meta)) {
         const id = toId(self._meta.id || self._meta.title, storyNameFromExport(key));

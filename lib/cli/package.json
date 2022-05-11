@@ -1,6 +1,6 @@
 {
   "name": "@storybook/cli",
-  "version": "6.5.0-beta.1",
+  "version": "6.5.0-beta.8",
   "description": "Storybook's CLI - easiest method of adding storybook to your projects",
   "keywords": [
     "cli",
@@ -47,11 +47,12 @@
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "@storybook/codemod": "6.5.0-beta.1",
-    "@storybook/core-common": "6.5.0-beta.1",
-    "@storybook/csf-tools": "6.5.0-beta.1",
-    "@storybook/node-logger": "6.5.0-beta.1",
+    "@storybook/codemod": "6.5.0-beta.8",
+    "@storybook/core-common": "6.5.0-beta.8",
+    "@storybook/csf-tools": "6.5.0-beta.8",
+    "@storybook/node-logger": "6.5.0-beta.8",
     "@storybook/semver": "^7.3.2",
+    "@storybook/telemetry": "6.5.0-beta.8",
     "boxen": "^5.1.2",
     "chalk": "^4.1.0",
     "commander": "^6.2.1",
@@ -75,7 +76,7 @@
     "update-notifier": "^5.0.1"
   },
   "devDependencies": {
-    "@storybook/client-api": "6.5.0-beta.1",
+    "@storybook/client-api": "6.5.0-beta.8",
     "@types/cross-spawn": "^6.0.2",
     "@types/prompts": "^2.0.9",
     "@types/puppeteer-core": "^2.1.0",
@@ -85,11 +86,8 @@
     "strip-json-comments": "^3.1.1",
     "update-notifier": "^5.0.1"
   },
-  "peerDependencies": {
-    "jest": "*"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "85bcae3041a0664d7c0ee4756241e29ad1063a9a"
+  "gitHead": "9b9d570d753341bfd69ae649df3c7fb3cadf11b2"
 }

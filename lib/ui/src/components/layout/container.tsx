@@ -300,7 +300,7 @@ export interface LayoutRenderProps {
   mainProps: BasePanelRenderProps;
   previewProps: BasePanelRenderProps & {
     docsOnly: boolean;
-    isToolshown: boolean;
+    showToolbar: boolean;
   };
   navProps: BasePanelRenderProps & {
     hidden: boolean;
@@ -330,7 +330,7 @@ export interface LayoutProps {
     showNav: boolean;
     showPanel: boolean;
     panelPosition: 'bottom' | 'right';
-    isToolshown: boolean;
+    showToolbar: boolean;
   };
   viewMode: State['viewMode'];
   docsOnly: boolean;
@@ -504,7 +504,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
       viewMode !== 'story' ||
       panelCount === 0;
     const isFullscreen = options.isFullscreen || (isNavHidden && isPanelHidden);
-    const { isToolshown } = options;
+    const { showToolbar } = options;
 
     const { panelPosition } = options;
     const isPanelBottom = panelPosition === 'bottom';
@@ -590,7 +590,7 @@ class Layout extends Component<LayoutProps, LayoutState> {
             docsOnly,
             animate: !isDragging,
             isFullscreen,
-            isToolshown,
+            showToolbar,
             position: getPreviewPosition({
               isFullscreen,
               isNavHidden,

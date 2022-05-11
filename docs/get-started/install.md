@@ -41,6 +41,7 @@ The command above will make the following changes to your local environment:
 - 🛠 Setup the necessary scripts to run and build Storybook.
 - 🛠 Add the default Storybook configuration.
 - 📝 Add some boilerplate stories to get you started.
+- 📡 Set up telemetry to help us improve Storybook. Read more about it [here](../configure/telemetry.md).
 
 Depending on your framework, first, build your app and then check that everything worked by running:
 
@@ -87,6 +88,10 @@ Below are some of the most common installation issues and instructions on how to
 />
 
 <!-- prettier-ignore-end -->
+
+<div class="aside">
+Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+</div>
 
 If all else fails, try asking for [help](https://storybook.js.org/support)
 

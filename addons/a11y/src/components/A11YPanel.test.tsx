@@ -63,6 +63,7 @@ describe('A11YPanel', () => {
     mockedApi.useStorybookState.mockReset();
     mockedApi.useAddonState.mockReset();
 
+    mockedApi.useAddonState.mockImplementation((_, defaultState) => React.useState(defaultState));
     mockedApi.useChannel.mockReturnValue(jest.fn());
     mockedApi.useParameter.mockReturnValue({ manual: false });
     const state: Partial<api.State> = { storyId: 'jest' };

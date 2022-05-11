@@ -4,6 +4,10 @@ title: 'CLI options'
 
 Storybook comes with two CLI utilities: `start-storybook` and `build-storybook`.
 
+<div class="aside">
+Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+</div>
+
 Pass these commands the following options to alter Storybook's behavior.
 
 ## start-storybook
@@ -18,10 +22,10 @@ Usage: start-storybook [options]
 | `-V`, `--version`               | Output the version number <br/>`start-storybook -V`                                                                                                                         |
 | `-p`, `--port [number]`         | Port to run Storybook <br/>`start-storybook -p 9009`                                                                                                                        |
 | `-h`, `--host [string]`         | Host to run Storybook <br/>`start-storybook -h my-host.com`                                                                                                                 |
-| `-s`, `--static-dir`            | **Deprecated** [see note](#static-dir-deprecation). Directory where to load static files from, comma-separated list <br/>`start-storybook -s public`                        |
+| `-s`, `--static-dir`            | **Deprecated** [see note](#static-dir-deprecation). Directory where to load static files from, comma-separated list<br/>`start-storybook -s public`                         |
 | `-c`, `--config-dir [dir-name]` | Directory where to load Storybook configurations from <br/>`start-storybook -c .storybook`                                                                                  |
-| `--https`                       | Serve Storybook over HTTPS. Note: You must provide your own certificate information. <br/>`start-storybook --https`                                                         |
-| `--ssl-ca`                      | Provide an SSL certificate authority. (Optional with --https, required if using a self-signed certificate) <br/>`start-storybook --ssl-ca my-certificate`                   |
+| `--https`                       | Serve Storybook over HTTPS. Note: You must provide your own certificate information<br/>`start-storybook --https`                                                           |
+| `--ssl-ca`                      | Provide an SSL certificate authority. (Optional with --https, required if using a self-signed certificate)<br/>`start-storybook --ssl-ca my-certificate`                    |
 | `--ssl-cert`                    | Provide an SSL certificate. (Required with --https)<br/>`start-storybook --ssl-cert my-ssl-certificate`                                                                     |
 | `--ssl-key`                     | Provide an SSL key. (Required with --https)<br/>`start-storybook --ssl-key my-ssl-key`                                                                                      |
 | `--smoke-test`                  | Exit after successful start<br/>`start-storybook --smoke-test`                                                                                                              |
@@ -32,7 +36,8 @@ Usage: start-storybook [options]
 | `--debug-webpack`               | Display final webpack configurations for debugging purposes<br/>`start-storybook --debug-webpack`                                                                           |
 | `--webpack-stats-json`          | Write Webpack Stats JSON to disk<br/>`start-storybook --webpack-stats-json /tmp/webpack-stats`                                                                              |
 | `--docs`                        | Starts Storybook in documentation mode. Learn more about it in [here](../writing-docs/build-documentation.md#preview-storybooks-documentation)<br/>`start-storybook --docs` |
-| `--no-manager-cache`            | Disables Storybook's manager caching mechanism. See note below.<br/>`start-storybook --no-manager-cache`                                                                    |
+| `--no-manager-cache`            | Disables Storybook's manager caching mechanism. See note below<br/>`start-storybook --no-manager-cache`                                                                     |
+| `--disable-telemetry`           | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md)<br/>`start-storybook --disable-telemetry`                                             |
 
 <div class="aside">
 💡 The flag <code>--no-manager-cache</code> disables the internal caching of Storybook and can severely impact your Storybook loading time, so only use it when you need to refresh Storybook's UI, such as when editing themes.
@@ -54,15 +59,16 @@ Usage: build-storybook [options]
 | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `-h`, `--help`                  | Output usage information<br/>`build-storybook --help`                                                                                                                       |
 | `-V`, `--version`               | Output the version number<br/>`build-storybook -V`                                                                                                                          |
-| `-s`, `--static-dir`            | **Deprecated** [see note](#static-dir-deprecation). Directory where to load static files from, comma-separated list<br/>`build-storybook -s public`                         |
+| `-s`, `--static-dir`            | **Deprecated** [see note](#static-dir-deprecation).<br/> Directory where to load static files from, comma-separated list<br/>`build-storybook -s public`                    |
 | `-o`, `--output-dir [dir-name]` | Directory where to store built files<br/>`build-storybook -o /my-deployed-storybook`                                                                                        |
 | `-c`, `--config-dir [dir-name]` | Directory where to load Storybook configurations from<br/>`build-storybook -c .storybook`                                                                                   |
-| `--loglevel [level]`            | Controls level of logging during build. Can be one of: [silly, verbose, info (default), warn, error, silent]<br/>`build-storybook --loglevel warn`                          |
+| `--loglevel [level]`            | Controls level of logging during build.<br/> Available options: `silly`, `verbose`, `info` (default), `warn`, `error`, `silent`<br/>`build-storybook --loglevel warn`       |
 | `--quiet`                       | Suppress verbose build output<br/>`build-storybook --quiet`                                                                                                                 |
 | `--no-dll`                      | Do not use dll reference (no-op)<br/>`build-storybook --no-dll`                                                                                                             |
 | `--debug-webpack`               | Display final webpack configurations for debugging purposes<br/>`build-storybook --debug-webpack`                                                                           |
 | `--webpack-stats-json`          | Write Webpack Stats JSON to disk<br/>`build-storybook --webpack-stats-json /my-storybook/webpack-stats`                                                                     |
 | `--docs`                        | Builds Storybook in documentation mode. Learn more about it in [here](../writing-docs/build-documentation.md#publish-storybooks-documentation)<br/>`build-storybook --docs` |
+| `--disable-telemetry`           | Disables Storybook's telemetry. Learn more about it [here](../configure/telemetry.md).<br/>`build-storybook --disable-telemetry`                                            |
 
 <div class="aside">
 💡  If you're using npm instead of yarn to publish Storybook, the commands work slightly different. For example, <code>npm run build-storybook -- -o ./path/to/build</code>.

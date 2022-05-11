@@ -293,6 +293,10 @@
       "root": "lib/store",
       "type": "library"
     },
+    "@storybook/telemetry": {
+      "root": "lib/telemetry",
+      "type": "library"
+    },
     "@storybook/theming": {
       "root": "lib/theming",
       "type": "library"

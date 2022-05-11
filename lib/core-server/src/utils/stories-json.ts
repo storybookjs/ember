@@ -1,10 +1,8 @@
 import { Router, Request, Response } from 'express';
 import fs from 'fs-extra';
-import type { Options, NormalizedStoriesSpecifier, StorybookConfig } from '@storybook/core-common';
-import { normalizeStories } from '@storybook/core-common';
-import Events from '@storybook/core-events';
-import debounce from 'lodash/debounce';
-
+import type { NormalizedStoriesSpecifier } from '@storybook/core-common';
+import { debounce } from 'lodash';
+import { STORY_INDEX_INVALIDATED } from '@storybook/core-events';
 import { StoryIndexGenerator } from './StoryIndexGenerator';
 import { watchStorySpecifiers } from './watch-story-specifiers';
 import { ServerChannel } from './get-server-channel';
@@ -13,65 +11,38 @@ export const DEBOUNCE = 100;
 
 export async function extractStoriesJson(
   outputFile: string,
-  normalizedStories: NormalizedStoriesSpecifier[],
-  options: {
-    configDir: string;
-    workingDir: string;
-    storiesV2Compatibility: boolean;
-    storyStoreV7: boolean;
-  }
+  initializedStoryIndexGenerator: Promise<StoryIndexGenerator>
 ) {
-  const generator = new StoryIndexGenerator(normalizedStories, options);
-  await generator.initialize();
-
-  const index = await generator.getIndex();
-  await fs.writeJson(outputFile, index);
+  const generator = await initializedStoryIndexGenerator;
+  const storyIndex = await generator.getIndex();
+  await fs.writeJson(outputFile, storyIndex);
 }
 
-export async function useStoriesJson(
-  router: Router,
-  serverChannel: ServerChannel,
-  options: Options,
-  workingDir: string = process.cwd()
-) {
-  const normalizedStories = normalizeStories(await options.presets.apply('stories'), {
-    configDir: options.configDir,
-    workingDir,
+export function useStoriesJson({
+  router,
+  initializedStoryIndexGenerator,
+  workingDir = process.cwd(),
+  serverChannel,
+  normalizedStories,
+}: {
+  router: Router;
+  initializedStoryIndexGenerator: Promise<StoryIndexGenerator>;
+  serverChannel: ServerChannel;
+  workingDir?: string;
+  normalizedStories: NormalizedStoriesSpecifier[];
+}) {
+  const maybeInvalidate = debounce(() => serverChannel.emit(STORY_INDEX_INVALIDATED), DEBOUNCE, {
+    leading: true,
   });
-  const features = await options.presets.apply<StorybookConfig['features']>('features');
-  const generator = new StoryIndexGenerator(normalizedStories, {
-    configDir: options.configDir,
-    workingDir,
-    storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
-    storyStoreV7: features?.storyStoreV7,
+  watchStorySpecifiers(normalizedStories, { workingDir }, async (specifier, path, removed) => {
+    const generator = await initializedStoryIndexGenerator;
+    generator.invalidate(specifier, path, removed);
+    maybeInvalidate();
   });
-
-  // Wait until someone actually requests `stories.json` before we start generating/watching.
-  // This is mainly for testing purposes.
-  const maybeInvalidate = debounce(
-    () => serverChannel.emit(Events.STORY_INDEX_INVALIDATED),
-    DEBOUNCE,
-    { leading: true }
-  );
-  let startedPromise: Promise<void>;
-  async function ensureStarted() {
-    if (!startedPromise) {
-      startedPromise = (async () => {
-        watchStorySpecifiers(normalizedStories, { workingDir }, (specifier, path, removed) => {
-          generator.invalidate(specifier, path, removed);
-          maybeInvalidate();
-        });
-
-        await generator.initialize();
-      })();
-    }
-    return startedPromise;
-  }
 
   router.use('/stories.json', async (req: Request, res: Response) => {
-    await ensureStarted();
-
     try {
+      const generator = await initializedStoryIndexGenerator;
       const index = await generator.getIndex();
       res.header('Content-Type', 'application/json');
       res.send(JSON.stringify(index));

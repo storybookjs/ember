@@ -9,6 +9,10 @@ export function getStorybookConfiguration(
   shortName: string,
   longName: string
 ) {
+  if (!storybookScript) {
+    return null;
+  }
+
   const parts = storybookScript.split(/[\s='"]+/);
   let index = parts.indexOf(longName);
   if (index === -1) {

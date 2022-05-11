@@ -11,6 +11,7 @@ import { DocsContext, DocsContextProps } from './DocsContext';
 import { SourceContext, SourceContextProps } from './SourceContainer';
 import { getSourceProps, SourceState } from './Source';
 import { useStories } from './useStory';
+import { CURRENT_SELECTION } from './types';
 
 export { SourceState };
 
@@ -53,7 +54,10 @@ const getPreviewProps = (
   );
   const sourceProps = getSourceProps({ ids: targetIds }, docsContext, sourceContext);
   if (!sourceState) sourceState = sourceProps.state;
-  const stories = useStories(targetIds, docsContext);
+  const storyIds = targetIds.map((targetId) =>
+    targetId === CURRENT_SELECTION ? docsContext.id : targetId
+  );
+  const stories = useStories(storyIds, docsContext);
   isLoading = stories.some((s) => !s);
 
   return {

@@ -16,7 +16,7 @@ export default {
   component: LoginForm,
 };
 
-export const Template = (args, { argTypes }) => ({
+const Template = (args, { argTypes }) => ({
   components: { LoginForm },
   props: Object.keys(argTypes),
   template: `<LoginForm v-bind="$props" v-on="$props" />`,

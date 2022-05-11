@@ -2,6 +2,7 @@
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
   - [React18 new root API](#react18-new-root-api)
+  - [Renamed isToolshown to showToolbar](#renamed-istoolshown-to-showtoolbar)
   - [Deprecated register.js](#deprecated-registerjs)
   - [Dropped support for addon-actions addDecorators](#dropped-support-for-addon-actions-adddecorators)
   - [Vite builder renamed](#vite-builder-renamed)
@@ -10,6 +11,7 @@
   - [CSF3 auto-title improvements](#csf3-auto-title-improvements)
     - [Auto-title filename case](#auto-title-filename-case)
     - [Auto-title redundant filename](#auto-title-redundant-filename)
+    - [Auto-title always prefixes](#auto-title-always-prefixes)
 - [From version 6.3.x to 6.4.0](#from-version-63x-to-640)
   - [Automigrate](#automigrate)
   - [CRA5 upgrade](#cra5-upgrade)
@@ -212,6 +214,21 @@ module.exports = {
 };
 ```
 
+### Renamed isToolshown to showToolbar
+
+Storybook's [manager API](docs/addons/addons-api.md) has deprecated the `isToolshown` option (to show/hide the toolbar) and renamed it to `showToolbar` for consistency with other similar UI options.
+
+Example:
+
+```js
+// .storybook/manager.js
+import { addons } from '@storybook/addons';
+
+addons.setConfig({
+  showToolbar: false,
+});
+```
+
 ### Deprecated register.js
 
 In ancient versions of Storybook, addons were registered by referring to `addon-name/register.js`. This is going away in SB7.0. Instead you should just add `addon-name` to the `addons` array in `.storybook/main.js`.
@@ -288,6 +305,19 @@ This might be considered a breaking change. However, we feel justified to releas
 1. We consider it a bug in the initial auto-title implementation
 2. CSF3 and the auto-title feature are experimental, and we reserve the right to make breaking changes outside of semver (tho we try to avoid it)
 
+If you want to restore the old titles in the UI, you can customize your sidebar with the following code snippet in `.storybook/manager.js`:
+
+```js
+import { addons } from '@storybook/addons';
+import startCase from 'lodash/startCase';
+
+addons.setConfig({
+  sidebar: {
+    renderLabel: ({ name, type }) => (type === 'story' ? name : startCase(name)),
+  },
+});
+```
+
 #### Auto-title redundant filename
 
 The heuristic failed in the common scenario in which each component gets its own directory, e.g. `atoms/Button/Button.stories.js`, which would result in the redundant title `Atoms/Button/Button`. Alternatively, `atoms/Button/index.stories.js` would result in `Atoms/Button/Index`.
@@ -300,6 +330,35 @@ Since CSF3 is experimental, we are introducing this technically breaking change 
 // atoms/Button/Button.stories.js
 export default { title: 'Atoms/Button/Button' };
 ```
+
+#### Auto-title always prefixes
+
+When the user provides a `prefix` in their `main.js` `stories` field, it now prefixes all titles to matching stories, whereas in 6.4 and earlier it only prefixed auto-titles.
+
+Consider the following example:
+
+```js
+// main.js
+module.exports = {
+  stories: [{ directory: '../src', titlePrefix: 'Custom' }]
+}
+
+// ../src/NoTitle.stories.js
+export default { component: Foo };
+
+// ../src/Title.stories.js
+export default { component: Bar, title: 'Bar' }
+```
+
+In 6.4, the final titles would be:
+
+- `NoTitle.stories.js` => `Custom/NoTitle`
+- `Title.stories.js` => `Bar`
+
+In 6.5, the final titles would be:
+
+- `NoTitle.stories.js` => `Custom/NoTitle`
+- `Title.stories.js` => `Custom/Bar`
 
 ## From version 6.3.x to 6.4.0
 
@@ -314,7 +373,9 @@ For example, if you're in a webpack5 project but still use Storybook's default w
 You can run the existing suite of automigrations to see which ones apply to your project. This won't update any files unless you accept the changes:
 
 ```
+
 npx sb@next automigrate
+
 ```
 
 The automigration suite also runs when you create a new project (`sb init`) or when you update storybook (`sb upgrade`).
@@ -324,7 +385,9 @@ The automigration suite also runs when you create a new project (`sb init`) or w
 Storybook 6.3 supports CRA5 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to upgrade the configuration. You can do this automatically by running:
 
 ```
+
 npx sb@next automigrate
+
 ```
 
 Or you can do the following steps manually to force Storybook to use webpack 5 for building your project:
