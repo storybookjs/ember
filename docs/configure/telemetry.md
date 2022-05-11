@@ -36,6 +36,8 @@ Specifically, we track the following information in our telemetry events:
   - Meta framework (e.g., [Next](https://nextjs.org/), [Gatsby](https://www.gatsbyjs.com/), [CRA](https://create-react-app.dev/)).
   - [Addons](/addons) (e.g., [Essentials](../essentials/introduction), [Accessibility](https://storybook.js.org/addons/@storybook/addon-a11y/)).
   - [Feature flags](./overview.md#feature-flags) (e.g., `buildStoriesJson`).
+- Package manager information (e.g., `npm`, `yarn`).
+- Monorepo information (e.g., [NX](https://nx.dev/), [Turborepo](https://turborepo.org/)).
 - Whether the command was invoked on CI or not.
 
 Access to the raw data is highly controlled, limited to select members of Storybook's core team who maintain the telemetry. We cannot identify individual users from the dataset: it is anonymized and untraceable back to the user.
@@ -83,6 +85,11 @@ Will generate the following output:
       "packageName": "react-scripts",
       "version": "4.0.3"
     },
+    "packageManager": {
+      "name": "yarn",
+      "version": "3.1.1",
+    },
+    "monorepo": "Nx",
     "features": {
       "buildStoriesJson": true
     },
