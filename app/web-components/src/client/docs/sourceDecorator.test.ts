@@ -121,7 +121,9 @@ describe('sourceDecorator', () => {
       { slot: 'some content' },
       { originalStoryFn: storyFn }
     );
-    sourceDecorator(storyFn, context);
+    // bind args to storyFn, as it's done in Storybook
+    const boundStoryFn = storyFn.bind(null, context.args);
+    sourceDecorator(boundStoryFn, context);
     await tick();
     expect(mockChannel.emit).toHaveBeenCalledWith(
       SNIPPET_RENDERED,
