@@ -25,7 +25,7 @@ const errorMap = {
   password: {
     required: {
       normal: 'Please enter a password',
-      tooltip: 'A password is requried to create an account',
+      tooltip: 'A password is required to create an account',
     },
     length: {
       normal: 'Please enter a password of minimum 6 characters',
