@@ -49,7 +49,7 @@ export const render: ArgsStoryFn<VueFramework> = (props, context) => {
   }
 
   return {
-    props: component.props,
+    props,
     components: { [componentName]: component },
     template: `<${componentName} v-bind="$props" />`,
   };
