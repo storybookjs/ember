@@ -73,7 +73,7 @@ Storybook 6.4 introduced CSF 3.0 as an experimental feature, allowing you to wri
 
 <!-- prettier-ignore-end -->
 
-When Storybook loads, the story can show up in the sidebar as `components/My Component`. While accurate for most cases, it could lead to naming issues when loaded. Documented below are some improvements that were recently introduced.
+When Storybook loads, the story can show up in the sidebar as `components/My Component`. While accurate for most cases, it could lead to naming issues when loaded.
 
 ### Auto-title filename case
 
