@@ -94,7 +94,7 @@ If you need, you can revert to the previous pattern by adding the following conf
 
 ### Auto-title redundant filenames
 
-In addition to improvements to the story file name casing, a new heuristic was introduced, removing the filename if it matches an existing directory name or an `index.stories.js|ts` file. For example, `components/MyComponent/MyComponent.stories.js` is defined as `MyComponent/MyComponent` in the sidebar.
+In addition to improvements to the story file name casing, a new heuristic was introduced, removing redundant names in case the filename has the same name as the directory name, or if it's called `index.stories.js|ts`. For example, before `components/MyComponent/MyComponent.stories.js` was defined as `Components/MyComponent/MyComponent` in the sidebar. Now it will be defined as `Components/MyComponent`.
 
 If you need to preserve the naming scheme, you can add the `title` element to the default export. For example:
 
