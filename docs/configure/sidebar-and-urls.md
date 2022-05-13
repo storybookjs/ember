@@ -60,7 +60,7 @@ Storybook will prioritize the `id` over the title for ID generation if provided 
 
 ## CSF 3.0 auto-titles
 
-Storybook 6.4 introduced CSF 3.0 as an experimental feature, allowing you to write stories more compactly. Suppose you're already using this format to write your stories. In that case, you can omit the `title` element from the default export and allow Storybook automatically infer it based on the file's physical location. For example, given the following configuration and story:
+Storybook 6.4 introduced [CSF 3.0](https://storybook.js.org/blog/component-story-format-3-0/) as an experimental feature, allowing you to write stories more compactly. Suppose you're already using this format to write your stories. In that case, you can omit the `title` element from the default export and allow Storybook automatically infer it based on the file's physical location. For example, given the following configuration and story:
 
 <!-- prettier-ignore-start -->
 
@@ -73,7 +73,7 @@ Storybook 6.4 introduced CSF 3.0 as an experimental feature, allowing you to wri
 
 <!-- prettier-ignore-end -->
 
-When Storybook loads, the story can show up in the sidebar as `components/My Component`. While accurate for most cases, it could lead to naming issues when loaded.
+When Storybook loads, the story can show up in the sidebar as `components/My Component`.
 
 ### Auto-title filename case
 
