@@ -2216,7 +2216,7 @@ Theming has been rewritten in v5. If you used theming in v4, please consult the 
 
 ### Story hierarchy defaults
 
-Storybook's UI contains a hierarchical tree of stories that can be configured by `hierarchySeparator` and `hierarchyRootSeparator` [options](./addons/options/README.md).
+Storybook's UI contains a hierarchical tree of stories that can be configured by `hierarchySeparator` and `hierarchyRootSeparator` [options](https://github.com/storybookjs/deprecated-addons/blob/master/MIGRATION.md#options-addon-deprecated).
 
 In Storybook 4.x the values defaulted to `null` for both of these options, so that there would be no hierarchy by default.
 

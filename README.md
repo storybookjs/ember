@@ -80,7 +80,7 @@ Documentation can be found [Storybook's docs site](https://storybook.js.org/docs
 
 ### Examples
 
-Here are some featured examples that you can reference to see how Storybook works: <https://storybook.js.org/docs/react/get-started/examples>
+Here are some featured examples that you can reference to see how Storybook works: <https://storybook.js.org/showcase>
 
 Storybook comes with a lot of [addons](https://storybook.js.org/docs/react/configure/storybook-addons) for component design, documentation, testing, interactivity, and so on. Storybook's API makes it possible to configure and extend in various ways. It has even been extended to support React Native, Android, iOS, and Flutter development for mobile.
 
@@ -98,12 +98,12 @@ For additional help, join us in the [Storybook Discord](https://discord.gg/story
 | [Vue](app/vue)                                                 | [v6.4.x](https://storybookjs.netlify.com/vue-kitchen-sink/)                                 | [![Vue](https://img.shields.io/npm/dm/@storybook/vue.svg)](app/vue)                                     |
 | [Angular](app/angular)                                         | [v6.4.x](https://storybookjs.netlify.com/angular-cli/)                                      | [![Angular](https://img.shields.io/npm/dm/@storybook/angular.svg)](app/angular)                         |
 | [Web components](app/web-components)                           | [v6.4.x](https://storybookjs.netlify.com/web-components-kitchen-sink/)                      | [![Svelte](https://img.shields.io/npm/dm/@storybook/web-components.svg)](app/web-components)            |
-| [React Native](https://github.com/storybookjs/react-native)    | -                                                                                           | [![React Native](https://img.shields.io/npm/dm/@storybook/react-native.svg)](app/react-native)          |
+| [React Native](https://github.com/storybookjs/react-native)    | -                                                                                           | [![React Native](https://img.shields.io/npm/dm/@storybook/react-native.svg)](https://github.com/storybookjs/react-native)          |
 | [HTML](app/html)                                               | [v6.4.x](https://storybookjs.netlify.com/html-kitchen-sink/)                                | [![HTML](https://img.shields.io/npm/dm/@storybook/html.svg)](app/html)                                  |
 | [Ember](app/ember)                                             | [v6.4.x](https://storybookjs.netlify.com/ember-cli/)                                        | [![Ember](https://img.shields.io/npm/dm/@storybook/ember.svg)](app/ember)                               |
 | [Svelte](app/svelte)                                           | [v6.4.x](https://storybookjs.netlify.com/svelte-kitchen-sink/)                              | [![Svelte](https://img.shields.io/npm/dm/@storybook/svelte.svg)](app/svelte)                            |
 | [Preact](app/preact)                                           | [v6.4.x](https://storybookjs.netlify.com/preact-kitchen-sink/)                              | [![Preact](https://img.shields.io/npm/dm/@storybook/preact.svg)](app/preact)                            |
-| [Marionette.js](https://github.com/storybookjs/marionette)     | -                                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](app/marionette)             |
+| [Marionette.js](https://github.com/storybookjs/marionette)     | -                                                                                           | [![Marionette.js](https://img.shields.io/npm/dm/@storybook/marionette.svg)](https://github.com/storybookjs/marionette)             |
 | [Android, iOS, Flutter](https://github.com/storybookjs/native) | [v6.4.x](https://storybookjs.github.io/native/@storybook/native-flutter-example/index.html) | [![Native](https://img.shields.io/npm/dm/@storybook/native.svg)](https://github.com/storybookjs/native) |
 
 ### Sub Projects

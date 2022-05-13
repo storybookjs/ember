@@ -470,7 +470,7 @@ Whenever you change your data requirements by adding (and rendering) or (acciden
 
 ## Using a custom directory
 
-Depending on your project's needs, you can configure the `@storybook/addon-storyshots` to use a custom directory for the snapshots. You can read more about it in the [official docs](https://storybook.js.org/docs/react/workflows/snapshot-testing).
+Depending on your project's needs, you can configure the `@storybook/addon-storyshots` to use a custom directory for the snapshots. You can read more about it in the [official docs](https://storybook.js.org/docs/react/writing-tests/snapshot-testing).
 
 ## Options
 
@@ -654,7 +654,7 @@ This option needs to be set if either:
 
 ### `serializer` (deprecated)
 
-Pass a custom serializer (such as enzyme-to-json) to serialize components to snapshot-comparable data. The functionality of this option is completely covered by [snapshotSerializers](`snapshotSerializers`) which should be used instead.
+Pass a custom serializer (such as enzyme-to-json) to serialize components to snapshot-comparable data. The functionality of this option is completely covered by [snapshotSerializers](#snapshotserializers) which should be used instead.
 
 ```js
 import initStoryshots from '@storybook/addon-storyshots';
