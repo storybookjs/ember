@@ -26,17 +26,17 @@ export const baseList = [
 
 type Filter = Option | null;
 
-const getFilter = (filter: Filter) => {
-  if (!filter) {
+const getFilter = (filterName: string) => {
+  if (!filterName) {
     return 'none';
   }
-  if (filter.name === 'blurred vision') {
+  if (filterName === 'blurred vision') {
     return 'blur(2px)';
   }
-  if (filter.name === 'grayscale') {
+  if (filterName === 'grayscale') {
     return 'grayscale(100%)';
   }
-  return `url('#${filter}')`;
+  return `url('#${filterName}')`;
 };
 
 const Hidden = styled.div(() => ({
@@ -47,7 +47,7 @@ const Hidden = styled.div(() => ({
   },
 }));
 
-const ColorIcon = styled.span<{ filter: Filter }>(
+const ColorIcon = styled.span<{ filter: string }>(
   {
     background: 'linear-gradient(to right, #F44336, #FF9800, #FFEB3B, #8BC34A, #2196F3, #9C27B0)',
     borderRadius: '1rem',
@@ -112,7 +112,7 @@ const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
       onClick: () => {
         set(i);
       },
-      right: <ColorIcon filter={i} />,
+      right: <ColorIcon filter={i.name} />,
       active: active === i,
     };
   }),
@@ -126,7 +126,7 @@ export const VisionSimulator = () => {
         <Global
           styles={{
             [`#${iframeId}`]: {
-              filter: getFilter(filter),
+              filter: getFilter(filter.name),
             },
           }}
         />
