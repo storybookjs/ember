@@ -1124,7 +1124,7 @@ describe('PreviewWeb', () => {
           forceRemount: false,
           storyContext: expect.objectContaining({
             initialArgs: { foo: 'a' },
-            args: { foo: 'a' },
+            args: { foo: 'a', new: 'value' },
           }),
         }),
         undefined // this is coming from view.prepareForStory, not super important
@@ -1133,7 +1133,7 @@ describe('PreviewWeb', () => {
       await waitForEvents([Events.STORY_ARGS_UPDATED]);
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
-        args: { foo: 'a' },
+        args: { foo: 'a', new: 'value' },
       });
     });
   });

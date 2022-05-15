@@ -252,7 +252,7 @@ export class Preview<TFramework extends AnyFramework> {
     const render = this.storyRenders.find((r) => r.id === storyId);
     const story = render?.story || (await this.storyStore.loadStory({ storyId }));
 
-    const argNamesToReset = argNames || Object.keys(this.storyStore.args.get(storyId));
+    const argNamesToReset = argNames || Object.keys(story.initialArgs);
     const updatedArgs = argNamesToReset.reduce((acc, argName) => {
       acc[argName] = story.initialArgs[argName];
       return acc;
