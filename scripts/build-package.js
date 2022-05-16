@@ -91,7 +91,7 @@ async function run() {
       },
     ]).then(({ mode, todo }) => {
       watchMode = mode;
-      return todo.map((key) => tasks[key]);
+      return todo?.map((key) => tasks[key]);
     });
   } else {
     // hits here when running yarn build --packagename
@@ -101,7 +101,7 @@ async function run() {
       .filter((item) => item.name !== 'watch' && item.value === true);
   }
 
-  selection.filter(Boolean).forEach((v) => {
+  selection?.filter(Boolean).forEach((v) => {
     const sub = execa.command(`yarn prepare${watchMode ? ' --watch' : ''}`, {
       cwd: resolve(__dirname, '..', v.location),
       buffer: false,

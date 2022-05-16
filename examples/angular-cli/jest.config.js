@@ -7,7 +7,7 @@ module.exports = {
   preset: 'jest-preset-angular',
   globals: {
     'ts-jest': {
-      tsConfig: path.join(__dirname, 'src/tsconfig.spec.json'),
+      tsconfig: path.join(__dirname, 'src/tsconfig.spec.json'),
       stringifyContentPathRegex: '\\.html$',
       astTransformers: {
         before: [
@@ -26,9 +26,9 @@ module.exports = {
   },
   moduleFileExtensions: [...config.moduleFileExtensions, 'html'],
   snapshotSerializers: [
-    'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
-    'jest-preset-angular/build/AngularSnapshotSerializer.js',
-    'jest-preset-angular/build/HTMLCommentSerializer.js',
+    'jest-preset-angular/build/serializers/html-comment',
+    'jest-preset-angular/build/serializers/ng-snapshot',
+    'jest-preset-angular/build/serializers/no-ng-attributes',
   ],
   setupFilesAfterEnv: ['./jest-config/setup.ts'],
   testPathIgnorePatterns: ['app.component.spec.ts'],

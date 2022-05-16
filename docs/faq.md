@@ -279,7 +279,7 @@ Yes, with the release of version 6.2, the [`Storyshots addon`](https://www.npmjs
 
 If you run into a situation where this is not the case, you can adjust the `config` object and manually specify the framework (e.g., `vue3`).
 
-See our documentation on how to customize the [Storyshots configuration](./snapshot-testing.md).
+See our documentation on how to customize the [Storyshots configuration](./writing-tests/snapshot-testing.md).
 
 ### Why are my MDX stories not working in IE11?
 
@@ -310,7 +310,7 @@ export default {
   plugins: [
     // Other plugins
 
-    // Configures the replace plugin to allow Grapqhl Queries to work properly
+    // Configures the replace plugin to allow GraphQL Queries to work properly
     replace({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),

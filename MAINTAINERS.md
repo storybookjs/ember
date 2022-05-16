@@ -15,7 +15,7 @@ This document outlines some of the processes that the maintainers should adhere 
 | api:(name)                     | Issue, bug, or pull request related to Storybook's API (e.g.,[makeDecorator](/docs/addons/addons-api.md#makeDecorator-API))                         |
 | args                           | Issue, bug, or pull request related to Storybook's [args](/docs/writing-stories/args.md)                                                            |
 | babel/webpack                  | Issue, bug, or pull request related to Storybook's build system (e.g., Webpack or Babel), for Webpack 5 issues see below                            |
-| block:(name)                   | Issue or bug within a certain surface are of Storybook (e.g., [argsTable](/docs/writing-docs/doc-blocks.md#argstable))                              |
+| block:(name)                   | Issue or bug within a certain surface are of Storybook (e.g., [argsTable](/docs/writing-docs/doc-block-argstable.md))                              |
 | BREAKING CHANGE                | Issue or pull request that introduces a breaking change within Storybook's ecosystem.                                                               |
 | BREAKING PRERELASE             | Breaking, but only for prerelease users (not relative to the stable release)                                                                        |
 | build-storybook                | Issue, bug, or pull request related to Storybook's production build                                                                                 |
@@ -24,7 +24,7 @@ This document outlines some of the processes that the maintainers should adhere 
 | cli                            | Issue, bug, or pull request that affects the Storybook's CLI                                                                                        |
 | compatibility with other tools | Issue, bug, or pull request between Storybook and other tools (e.g., [Nuxt](https://nuxtjs.org/))                                                   |
 | components                     | Issue, bug, or pull request related to Storybook's internal components                                                                              |
-| composition                    | Issue, bug, or pull request related to Storybook [Composition](/docs/workflows/storybook-composition.md)                                            |
+| composition                    | Issue, bug, or pull request related to Storybook [Composition](/docs/sharing/storybook-composition.md)                                            |
 | configuration                  | Issue, bug, or pull request related to Storybook [configuration](/docs/configure/overview.md)                                                       |
 | core                           | Issue, bug, or pull request related to Storybook's Core                                                                                             |
 | cra                            | Issue, bug, or pull request that affects Storybook's compatibility with Create React APP ([CRA](https://create-react-app.dev/docs/getting-started/))|

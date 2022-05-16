@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Global, styled } from '@storybook/theming';
 import { Icons, IconButton, WithTooltip, TooltipLinkList } from '@storybook/components';
 
@@ -6,32 +6,37 @@ import { Filters } from './ColorFilters';
 
 const iframeId = 'storybook-preview-iframe';
 
-const baseList = [
-  'blurred vision',
-  'deuteranomaly',
-  'deuteranopia',
-  'protanomaly',
-  'protanopia',
-  'tritanomaly',
-  'tritanopia',
-  'achromatomaly',
-  'achromatopsia',
-  'grayscale',
-] as const;
+interface Option {
+  name: string;
+  percentage?: number;
+}
 
-type Filter = typeof baseList[number] | null;
+export const baseList = [
+  { name: 'blurred vision', percentage: 22.9 },
+  { name: 'deuteranomaly', percentage: 2.7 },
+  { name: 'deuteranopia', percentage: 0.56 },
+  { name: 'protanomaly', percentage: 0.66 },
+  { name: 'protanopia', percentage: 0.59 },
+  { name: 'tritanomaly', percentage: 0.01 },
+  { name: 'tritanopia', percentage: 0.016 },
+  { name: 'achromatomaly', percentage: 0.00001 },
+  { name: 'achromatopsia', percentage: 0.0001 },
+  { name: 'grayscale' },
+] as Option[];
 
-const getFilter = (filter: Filter) => {
-  if (!filter) {
+type Filter = Option | null;
+
+const getFilter = (filterName: string) => {
+  if (!filterName) {
     return 'none';
   }
-  if (filter === 'blurred vision') {
+  if (filterName === 'blurred vision') {
     return 'blur(2px)';
   }
-  if (filter === 'grayscale') {
+  if (filterName === 'grayscale') {
     return 'grayscale(100%)';
   }
-  return `url('#${filter}')`;
+  return `url('#${filterName}')`;
 };
 
 const Hidden = styled.div(() => ({
@@ -42,7 +47,7 @@ const Hidden = styled.div(() => ({
   },
 }));
 
-const ColorIcon = styled.span<{ filter: Filter }>(
+const ColorIcon = styled.span<{ filter: string }>(
   {
     background: 'linear-gradient(to right, #F44336, #FF9800, #FFEB3B, #8BC34A, #2196F3, #9C27B0)',
     borderRadius: '1rem',
@@ -66,6 +71,20 @@ export interface Link {
   onClick: () => void;
 }
 
+const Column = styled.span({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const Title = styled.span({
+  textTransform: 'capitalize',
+});
+
+const Description = styled.span(({ theme }) => ({
+  fontSize: 11,
+  color: theme.textMutedColor,
+}));
+
 const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
   ...(active !== null
     ? [
@@ -80,27 +99,34 @@ const getColorList = (active: Filter, set: (i: Filter) => void): Link[] => [
         },
       ]
     : []),
-  ...baseList.map((i) => ({
-    id: i,
-    title: i.charAt(0).toUpperCase() + i.slice(1),
-    onClick: () => {
-      set(i);
-    },
-    right: <ColorIcon filter={i} />,
-    active: active === i,
-  })),
+  ...baseList.map((i) => {
+    const description = i.percentage !== undefined ? `${i.percentage}% of users` : undefined;
+    return {
+      id: i.name,
+      title: (
+        <Column>
+          <Title>{i.name}</Title>
+          {description && <Description>{description}</Description>}
+        </Column>
+      ),
+      onClick: () => {
+        set(i);
+      },
+      right: <ColorIcon filter={i.name} />,
+      active: active === i,
+    };
+  }),
 ];
 
-export const VisionSimulator: FunctionComponent = () => {
+export const VisionSimulator = () => {
   const [filter, setFilter] = useState<Filter>(null);
-
   return (
     <>
       {filter && (
         <Global
           styles={{
             [`#${iframeId}`]: {
-              filter: getFilter(filter),
+              filter: getFilter(filter.name),
             },
           }}
         />
