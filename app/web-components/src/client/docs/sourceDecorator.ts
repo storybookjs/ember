@@ -6,6 +6,9 @@ import { SNIPPET_RENDERED, SourceType } from '@storybook/docs-tools';
 
 import type { WebComponentsFramework } from '..';
 
+// Taken from https://github.com/lit/lit/blob/main/packages/lit-html/src/test/test-utils/strip-markers.ts
+const LIT_EXPRESSION_COMMENTS = /<!--\?lit\$[0-9]+\$-->|<!--\??-->/g;
+
 function skipSourceRender(context: StoryContext<WebComponentsFramework>) {
   const sourceParams = context?.parameters.docs?.source;
   const isArgsStory = context?.parameters.__isArgsStory;
@@ -44,7 +47,10 @@ export function sourceDecorator(
   if (!skipSourceRender(context)) {
     const container = window.document.createElement('div');
     render(story, container);
-    source = applyTransformSource(container.innerHTML.replace(/<!---->/g, ''), context);
+    source = applyTransformSource(
+      container.innerHTML.replace(LIT_EXPRESSION_COMMENTS, ''),
+      context
+    );
   }
 
   return story;

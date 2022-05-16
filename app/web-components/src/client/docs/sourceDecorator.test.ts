@@ -1,13 +1,13 @@
 import { html } from 'lit-html';
 import { styleMap } from 'lit-html/directives/style-map';
 import { addons, useEffect } from '@storybook/addons';
-import type { StoryContext } from '@storybook/addons';
 import { SNIPPET_RENDERED } from '@storybook/docs-tools';
+import type { StoryContext, WebComponentsFramework } from '..';
 import { sourceDecorator } from './sourceDecorator';
 
 jest.mock('@storybook/addons');
 const mockedAddons = addons as jest.Mocked<typeof addons>;
-const mockedUseEffect = useEffect as jest.Mocked<typeof useEffect>;
+const mockedUseEffect = useEffect as jest.Mock;
 
 expect.addSnapshotSerializer({
   print: (val: any) => val,
@@ -16,16 +16,22 @@ expect.addSnapshotSerializer({
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
-const makeContext = (name: string, parameters: any, args: any, extra?: object): StoryContext => ({
-  id: `lit-test--${name}`,
-  kind: 'js-text',
-  name,
-  parameters,
-  args,
-  argTypes: {},
-  globals: {},
-  ...extra,
-});
+const makeContext = (
+  name: string,
+  parameters: any,
+  args: any,
+  extra?: Partial<StoryContext<WebComponentsFramework>>
+) =>
+  ({
+    id: `lit-test--${name}`,
+    kind: 'js-text',
+    name,
+    parameters,
+    args,
+    argTypes: {},
+    globals: {},
+    ...extra,
+  } as StoryContext<WebComponentsFramework>);
 
 describe('sourceDecorator', () => {
   let mockChannel: { on: jest.Mock; emit?: jest.Mock };
@@ -105,5 +111,24 @@ describe('sourceDecorator', () => {
     const context = makeContext('args', { __isArgsStory: true, docs }, {});
     sourceDecorator(storyFn, context);
     expect(transformSource).toHaveBeenCalledWith('<div>args story</div>', context);
+  });
+
+  it('should clean lit expression comments', async () => {
+    const storyFn = (args: any) => html`<div>${args.slot}</div>`;
+    const context = makeContext(
+      'args',
+      { __isArgsStory: true },
+      { slot: 'some content' },
+      { originalStoryFn: storyFn }
+    );
+    // bind args to storyFn, as it's done in Storybook
+    const boundStoryFn = storyFn.bind(null, context.args);
+    sourceDecorator(boundStoryFn, context);
+    await tick();
+    expect(mockChannel.emit).toHaveBeenCalledWith(
+      SNIPPET_RENDERED,
+      'lit-test--args',
+      '<div>some content</div>'
+    );
   });
 });
