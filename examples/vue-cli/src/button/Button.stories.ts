@@ -19,3 +19,10 @@ export const ButtonWithProps: Story = (args, { argTypes }) => ({
 ButtonWithProps.args = {
   size: 'big',
 };
+
+export const WithDefaultRender = {
+  args: {
+    size: 'small',
+    label: 'Button with default render',
+  },
+};
