@@ -2,7 +2,7 @@ import './header.css';
 import { createButton } from './Button';
 
 export interface HeaderProps {
-  user?: {};
+  user?: { name: string };
   onLogin: () => void;
   onLogout: () => void;
   onCreateAccount: () => void;
@@ -33,6 +33,8 @@ export const createHeader = ({ user, onLogout, onLogin, onCreateAccount }: Heade
 
   const account = document.createElement('div');
   if (user) {
+    const welcomeMessage = `<span class="welcome">Welcome, <b>${user.name}</b>!</span>`;
+    account.innerHTML = welcomeMessage;
     account.appendChild(createButton({ size: 'small', label: 'Log out', onClick: onLogout }));
   } else {
     account.appendChild(createButton({ size: 'small', label: 'Log in', onClick: onLogin }));

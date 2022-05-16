@@ -15,11 +15,6 @@ let active = false;
 // Holds latest story we requested a run
 let activeStoryId: string | undefined;
 
-const getElement = () => {
-  const storyRoot = document.getElementById('story-root');
-  return storyRoot ? storyRoot.childNodes : document.getElementById('root');
-};
-
 /**
  * Handle A11yContext events.
  * Because the event are sent without manual check, we split calls
@@ -41,13 +36,14 @@ const run = async (storyId: string) => {
       channel.emit(EVENTS.RUNNING);
       const axe = (await import('axe-core')).default;
 
-      const { element = getElement(), config, options = {} } = input;
+      const { element = '#root', config, options = {} } = input;
+      const htmlElement = document.querySelector(element);
       axe.reset();
       if (config) {
         axe.configure(config);
       }
 
-      const result = await axe.run(element, options);
+      const result = await axe.run(htmlElement, options);
       // It's possible that we requested a new run on a different story.
       // Unfortunately, axe doesn't support a cancel method to abort current run.
       // We check if the story we run against is still the current one,

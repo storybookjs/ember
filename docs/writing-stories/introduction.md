@@ -11,7 +11,7 @@ Storybook uses the generic term arguments (args for short) when talking about Re
 A component’s stories are defined in a story file that lives alongside the component file. The story file is for development-only, and it won't be included in your production bundle.
 
 ```
-Button.js | ts | jsx | tsx
+Button.js | ts | jsx | tsx | vue | svelte
 Button.stories.js | ts | jsx | tsx | mdx
 ```
 
@@ -32,6 +32,8 @@ The _default_ export metadata controls how Storybook lists your stories and prov
     'react/button-story-default-export-with-component.js.mdx',
     'react/button-story-default-export-with-component.ts.mdx',
     'vue/button-story-default-export-with-component.js.mdx',
+    'vue/button-story-default-export-with-component.ts-2.ts.mdx',
+    'vue/button-story-default-export-with-component.ts-3.ts.mdx',
     'angular/button-story-default-export-with-component.ts.mdx',
     'svelte/button-story-default-export-with-component.js.mdx',
     'web-components/button-story-default-export-with-component.js.mdx',
@@ -51,6 +53,8 @@ Use the _named_ exports of a CSF file to define your component’s stories. We r
     'react/button-story.js.mdx',
     'react/button-story.ts.mdx',
     'vue/button-story.js.mdx',
+    'vue/button-story.ts-2.ts.mdx',
+    'vue/button-story.ts-3.ts.mdx',
     'angular/button-story.ts.mdx',
     'svelte/button-story.js.mdx',
     'svelte/button-story.native-format.mdx',
@@ -90,6 +94,8 @@ You can rename any particular story you need. For instance, to give it a more ac
     'react/button-story-rename-story.js.mdx',
     'react/button-story-rename-story.ts.mdx',
     'vue/button-story-rename-story.js.mdx',
+    'vue/button-story-rename-story.ts-2.ts.mdx',
+    'vue/button-story-rename-story.ts-3.ts.mdx',
     'angular/button-story-rename-story.ts.mdx',
     'svelte/button-story-rename-story.js.mdx',
     'web-components/button-story-rename-story.js.mdx',
@@ -112,6 +118,8 @@ A story is a function that describes how to render a component. You can have mul
     'react/button-story-with-emojis.ts.mdx',
     'react/button-story-with-emojis.mdx.mdx',
     'vue/button-story-with-emojis.js.mdx',
+    'vue/button-story-with-emojis.ts-2.ts.mdx',
+    'vue/button-story-with-emojis.ts-3.ts.mdx',
     'vue/button-story-with-emojis.mdx.mdx',
     'angular/button-story-with-emojis.ts.mdx',
     'angular/button-story-with-emojis.mdx.mdx',
@@ -138,6 +146,8 @@ Refine this pattern by introducing `args` for your component's stories. It reduc
     'react/button-story-using-args.ts.mdx',
     'vue/button-story-using-args.2.js.mdx',
     'vue/button-story-using-args.3.js.mdx',
+    'vue/button-story-using-args.ts-2.ts.mdx',
+    'vue/button-story-using-args.ts-3.ts.mdx',
     'angular/button-story-using-args.ts.mdx',
     'svelte/button-story-using-args.js.mdx',
     'svelte/button-story-using-args.native-format.mdx',
@@ -166,6 +176,8 @@ What’s more, you can import `args` to reuse when writing stories for other com
     'angular/button-group-story.ts.mdx',
     'vue/button-group-story.2.js.mdx',
     'vue/button-group-story.3.js.mdx',
+    'vue/button-group-story.ts-2.ts.mdx',
+    'vue/button-group-story.ts-3.ts.mdx',
     'svelte/button-group-story.js.mdx',
     'web-components/button-group-story.js.mdx',
   ]}
@@ -207,8 +219,10 @@ Storybook's `play` function and the [`@storybook/addon-interactions`](https://st
     'angular/login-form-with-play-function.ts.mdx',
     'angular/login-form-with-play-function.mdx.mdx',
     'vue/login-form-with-play-function.2.js.mdx',
+    'vue/login-form-with-play-function.ts-2.ts.mdx',
     'vue/login-form-with-play-function.mdx-2.mdx',
     'vue/login-form-with-play-function.3.js.mdx',
+    'vue/login-form-with-play-function.ts-3.ts.mdx',
     'vue/login-form-with-play-function.mdx-3.mdx',
     'svelte/login-form-with-play-function.js.mdx',
     'svelte/login-form-with-play-function.mdx.mdx',
@@ -231,6 +245,8 @@ For instance, suppose you wanted to test your Button component against a differe
     'react/button-story-with-blue-args.ts.mdx',
     'react/button-story-with-blue-args.mdx.mdx',
     'vue/button-story-with-blue-args.js.mdx',
+    'vue/button-story-with-blue-args.ts-2.ts.mdx',
+    'vue/button-story-with-blue-args.ts-3.ts.mdx',
     'vue/button-story-with-blue-args.mdx.mdx',
     'angular/button-story-with-blue-args.ts.mdx',
     'angular/button-story-with-blue-args.mdx.mdx',
@@ -261,6 +277,8 @@ A simple example is adding padding to a component’s stories. Accomplish this u
     'react/button-story-component-decorator.ts.mdx',
     'react/button-story-component-decorator.mdx.mdx',
     'vue/button-story-component-decorator.js.mdx',
+    'vue/button-story-component-decorator.ts-2.ts.mdx',
+    'vue/button-story-component-decorator.ts-3.ts.mdx',
     'vue/button-story-component-decorator.mdx.mdx',
     'angular/button-story-component-decorator.ts.mdx',
     'angular/button-story-component-decorator.mdx.mdx',
@@ -287,7 +305,9 @@ When building design systems or component libraries, you may have two or more co
     'react/list-story-starter.ts.mdx',
     'angular/list-story-starter.ts.mdx',
     'vue/list-story-starter.2.js.mdx',
+    'vue/list-story-starter.ts-2.ts.mdx',
     'vue/list-story-starter.3.js.mdx',
+    'vue/list-story-starter.ts-3.ts.mdx',
     'svelte/list-story-starter.native-format.mdx',
     'web-components/list-story-starter.js.mdx',
   ]}
@@ -305,7 +325,9 @@ In such cases, it makes sense to render a different function for each story:
     'react/list-story-expanded.ts.mdx',
     'angular/list-story-expanded.ts.mdx',
     'vue/list-story-expanded.2.js.mdx',
+    'vue/list-story-expanded.ts-2.ts.mdx',
     'vue/list-story-expanded.3.js.mdx',
+    'vue/list-story-expanded.ts-3.ts.mdx',
     'svelte/list-story-expanded.native-format.mdx',
     'web-components/list-story-expanded.js.mdx',
   ]}
@@ -323,7 +345,9 @@ You can also reuse stories from the child `ListItem` in your `List` component. T
     'react/list-story-reuse-data.ts.mdx',
     'angular/list-story-reuse-data.ts.mdx',
     'vue/list-story-reuse-data.2.js.mdx',
+    'vue/list-story-reuse-data.ts-2.ts.mdx',
     'vue/list-story-reuse-data.3.js.mdx',
+    'vue/list-story-reuse-data.ts-3.ts.mdx',
     'web-components/list-story-reuse-data.js.mdx',
   ]}
 />

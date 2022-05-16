@@ -46,7 +46,8 @@ export const previewProps: PreviewProps = {
   queryParams: {},
   options: {
     isFullscreen: false,
-    isToolshown: true,
+    showTabs: true,
+    showToolbar: true,
   },
   withLoader: false,
   docsOnly: false,

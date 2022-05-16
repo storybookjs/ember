@@ -147,7 +147,8 @@ const Preview = React.memo<PreviewProps>((props) => {
   const tabs = useTabs(previewId, baseUrl, withLoader, getElements, story);
 
   const shouldScale = viewMode === 'story';
-  const { isToolshown } = options;
+  const { showToolbar, showTabs = true } = options;
+  const visibleTabsInToolbar = showTabs ? tabs : [];
 
   const previousStoryId = useRef(storyId);
   const previousViewMode = useRef(viewMode);
@@ -181,8 +182,14 @@ const Preview = React.memo<PreviewProps>((props) => {
         </Helmet>
       )}
       <ZoomProvider shouldScale={shouldScale}>
-        <ToolbarComp key="tools" story={story} api={api} isShown={isToolshown} tabs={tabs} />
-        <S.FrameWrap key="frame" offset={isToolshown ? 40 : 0}>
+        <ToolbarComp
+          key="tools"
+          story={story}
+          api={api}
+          isShown={showToolbar}
+          tabs={visibleTabsInToolbar}
+        />
+        <S.FrameWrap key="frame" offset={showToolbar ? 40 : 0}>
           {tabs.map(({ render: Render, match, ...t }, i) => {
             // @ts-ignore
             const key = t.id || t.key || i;

@@ -1,5 +1,175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Custom Prefix/AutoTitle Basic 1`] = `
+.emotion-0 {
+  border: 0;
+  border-radius: 3em;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 8px 16px;
+  position: relative;
+  text-align: center;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-transition: all 150ms ease-out;
+  transition: all 150ms ease-out;
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -ms-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  vertical-align: top;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 1;
+  margin: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  background: #fafafa;
+  color: #333333;
+  box-shadow: rgba(0,0,0,.1) 0 0 0 1px inset;
+  border-radius: 4px;
+  padding: 10px 16px;
+  display: inline;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.emotion-0 svg {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  vertical-align: top;
+  margin-right: 4px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  pointer-events: none;
+}
+
+.emotion-0 svg path {
+  fill: currentColor;
+}
+
+.emotion-0:hover {
+  background: #f2f2f2;
+}
+
+.emotion-0:active {
+  background: #FFFFFF;
+}
+
+.emotion-0:focus {
+  box-shadow: rgba(30,167,253,1) 0 0 0 1px inset;
+  outline: none;
+}
+
+.emotion-0:hover {
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  transform: none;
+}
+
+<button
+  className="emotion-0"
+  label="Click me"
+/>
+`;
+
+exports[`Storyshots Custom Prefix/CustomTitle Basic 1`] = `
+.emotion-0 {
+  border: 0;
+  border-radius: 3em;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 8px 16px;
+  position: relative;
+  text-align: center;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  -webkit-transition: all 150ms ease-out;
+  transition: all 150ms ease-out;
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -ms-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  vertical-align: top;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 1;
+  margin: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  background: #fafafa;
+  color: #333333;
+  box-shadow: rgba(0,0,0,.1) 0 0 0 1px inset;
+  border-radius: 4px;
+  padding: 10px 16px;
+  display: inline;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.emotion-0 svg {
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  vertical-align: top;
+  margin-right: 4px;
+  margin-top: -1px;
+  margin-bottom: -1px;
+  pointer-events: none;
+}
+
+.emotion-0 svg path {
+  fill: currentColor;
+}
+
+.emotion-0:hover {
+  background: #f2f2f2;
+}
+
+.emotion-0:active {
+  background: #FFFFFF;
+}
+
+.emotion-0:focus {
+  box-shadow: rgba(30,167,253,1) 0 0 0 1px inset;
+  outline: none;
+}
+
+.emotion-0:hover {
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  transform: none;
+}
+
+<button
+  className="emotion-0"
+  label="Click me"
+/>
+`;
+
 exports[`Storyshots Demo/AccountForm Standard 1`] = `
 .emotion-0 {
   font-family: "Nunito Sans",-apple-system,".SFNSText-Regular","San Francisco",BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -3797,73 +3967,63 @@ exports[`Storyshots Demo/AccountForm Verification Success 1`] = `
 </section>
 `;
 
-exports[`Storyshots Docs/ButtonMdx Basic 1`] = `
+exports[`Storyshots Demo/Examples / Button Basic 1`] = `
 <button
   type="button"
 >
+   
   Click me
 </button>
 `;
 
-exports[`Storyshots Docs/ButtonMdx Controls 1`] = `
+exports[`Storyshots Demo/Examples / Button CSF 2 Story With Play 1`] = `
 <button
   type="button"
 >
+   
   Hello
 </button>
 `;
 
-exports[`Storyshots Examples / Button Basic 1`] = `
+exports[`Storyshots Demo/Examples / Button Process Env 1`] = `
 <button
   type="button"
 >
-  Click me
-</button>
-`;
-
-exports[`Storyshots Examples / Button CSF 2 Story With Play 1`] = `
-<button
-  type="button"
->
+   
   Hello
 </button>
 `;
 
-exports[`Storyshots Examples / Button Process Env 1`] = `
+exports[`Storyshots Demo/Examples / Button Story No Render 1`] = `
 <button
   type="button"
 >
-  Hello
-</button>
-`;
-
-exports[`Storyshots Examples / Button Story No Render 1`] = `
-<button
-  type="button"
->
+   
   magic!
 </button>
 `;
 
-exports[`Storyshots Examples / Button Story Object 1`] = `"hahaha"`;
+exports[`Storyshots Demo/Examples / Button Story Object 1`] = `"hahaha"`;
 
-exports[`Storyshots Examples / Button Story With Play 1`] = `
+exports[`Storyshots Demo/Examples / Button Story With Play 1`] = `
 <button
   type="button"
 >
+   
   play
 </button>
 `;
 
-exports[`Storyshots Examples / Button With Args 1`] = `
+exports[`Storyshots Demo/Examples / Button With Args 1`] = `
 <button
   type="button"
 >
+   
   With args
 </button>
 `;
 
-exports[`Storyshots Examples / Emoji Button Basic 1`] = `
+exports[`Storyshots Demo/Examples / Emoji Button Basic 1`] = `
 <button
   type="button"
 >
@@ -3872,7 +4032,7 @@ exports[`Storyshots Examples / Emoji Button Basic 1`] = `
 </button>
 `;
 
-exports[`Storyshots Examples / Emoji Button With Args 1`] = `
+exports[`Storyshots Demo/Examples / Emoji Button With Args 1`] = `
 <button
   type="button"
 >

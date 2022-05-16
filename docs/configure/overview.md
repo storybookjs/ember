@@ -177,13 +177,13 @@ You can also use Storybook's API to configure your project with TypeScript. Unde
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stories`             | The array of globs that indicates the [location of your story files](#configure-story-loading), relative to `main.ts`                                                            |
 | `staticDirs`          | Sets a list of directories of [static files](./images-and-assets.md#serving-static-files-via-storybook-configuration) to be loaded by Storybook <br/> `staticDirs:['../public']` |
-| `addons`              | Sets the list of [addons](/addons) loaded by Storybook <br/> `addons:['@storybook/addon-essentials']`                                                                            |
+| `addons`              | Sets the list of [addons](/https://storybook.js.org/addons/) loaded by Storybook <br/> `addons:['@storybook/addon-essentials']`                                                                            |
 | `typescript`          | Configures how Storybook handles [TypeScript files](./typescript.md) <br/> `typescript: { check: false, checkOptions: {} }`                                                      |
 | `framework`           | Configures Storybook based on a set of framework-specific settings <br/> `framework:'@storybook/svelte'`                                                                         |
-| `core`                | Sets Storybook's Webpack configuration <br/> `core:{ builder: 'webpack5'}`                                                                                                       |
-| `features`            | Enables Storybook's additional features <br/>. See table below for a list of available features `features: { storyStoreV7: true }`                                               |
+| `core`                | Configures Storybook's internal features.<br/> `core: { builder: 'webpack5' }`                                                                                                   |
+| `features`            | Enables Storybook's additional features.<br/> See table below for a list of available features `features: { storyStoreV7: true }`                                                |
 | `refs`                | Configures [Storybook composition](../sharing/storybook-composition.md) <br/> `refs:{ example: { title: 'ExampleStorybook', url:'https://your-url.com' } }`                      |
-| `logLevel`            | Configures Storybook's logs in the browser terminal. Useful for debugging <br/> `logLevel: 'debug'`                                                                                      |
+| `logLevel`            | Configures Storybook's logs in the browser terminal. Useful for debugging <br/> `logLevel: 'debug'`                                                                              |
 | `webpackFinal`        | Customize Storybook's [Webpack](./webpack.md) setup <br/> `webpackFinal: async (config:any) => { return config; }`                                                               |
 
 ## Configure story rendering

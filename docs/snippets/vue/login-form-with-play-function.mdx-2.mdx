@@ -5,6 +5,8 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
 import { userEvent, within } from '@storybook/testing-library';
 
+import { expect } from '@storybook/jest';
+
 import LoginForm from './LoginForm.vue';
 
 <Meta title="Form" component={LoginForm} />
@@ -17,7 +19,7 @@ export const Template = (args, { argTypes }) => ({
 
 <Canvas>
   <Story name="Empty Form">
-   {Template.bind({})}
+    {Template.bind({})}
   </Story>
 
   <Story
@@ -26,15 +28,20 @@ export const Template = (args, { argTypes }) => ({
       // Starts querying the component from its root element
       const canvas = within(canvasElement);
 
-      await userEvent.type(canvas.getByTestId('email'), 'email@provider.com', {
-        delay: 100,
-      });
-      await userEvent.type(canvas.getByTestId('password'), 'a-random-password', {
-        delay: 100,
-      });
+      // 👇 Simulate interactions with the component
+      await userEvent.type(canvas.getByTestId('email'), 'email@provider.com');
+
+      await userEvent.type(canvas.getByTestId('password'), 'a-random-password');
 
       // See https://storybook.js.org/docs/vue/essentials/actions#automatically-matching-args to learn how to setup logging in the Actions panel
       await userEvent.click(canvas.getByRole('button'));
+
+      // 👇 Assert DOM structure
+      await expect(
+        canvas.getByText(
+          'Everything is perfect. Your account is ready and we should probably get you started!'
+        )
+      ).toBeInTheDocument();
     }}>
     {Template.bind({})}
   </Story>

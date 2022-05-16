@@ -76,12 +76,12 @@ A basic table:
 
 Let's throw in a crazy table, because why not?
 
-|                                   | [React](app/react) | [React Native](app/react-native) | [Vue](app/vue) | [Angular](app/angular) | [HTML](app/html) | [Svelte](app/svelte) | [Ember](app/ember) | [Preact](app/preact) |
-| --------------------------------- | :----------------: | :------------------------------: | :------------: | :--------------------: | :--------------: | :------------------: | :----------------: | :------------------: |
-| [a11y](addons/a11y)               |         +          |                                  |       +        |           +            |        +         |                      |         +          |          +           |
-| [actions](addons/actions)         |         +          |                +                 |       +        |           +            |        +         |          +           |         +          |          +           |
-| [backgrounds](addons/backgrounds) |         +          |                \*                |       +        |           +            |        +         |          +           |         +          |          +           |
-| [centered](addons/centered)       |         +          |                                  |       +        |           +            |        +         |          +           |         +          |          +           |
+|                                               | [React](../../../../app/react) | [React Native](https://github.com/storybookjs/react-native) | [Vue](../../../../app/vue) | [Angular](../../../../app/angular) | [HTML](../../../../app/html) | [Svelte](../../../../app/svelte) | [Ember](../../../../app/ember) | [Preact](../../../../app/preact) |
+|-----------------------------------------------|--------------------------------|----------------------------------|----------------------------|------------------------------------|------------------------------|----------------------------------|--------------------------------|----------------------------------|
+| [a11y](../../../../addons/a11y/)              | +                              |                                  | +                          | +                                  | +                            |                                  | +                              | +                                |
+| [actions](../../../../addons/actions)         | +                              | +                                | +                          | +                                  | +                            | +                                | +                              | +                                |
+| [backgrounds](../../../../addons/backgrounds) | +                              | \*                               | +                          | +                                  | +                            | +                                | +                              | +                                |
+| [measure](../../../../addons/measure)         | +                              |                                  | +                          | +                                  | +                            | +                                | +                              | +                                |
 
 ## Code
 

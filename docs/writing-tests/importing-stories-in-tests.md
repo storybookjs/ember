@@ -21,13 +21,22 @@ Storybook has test addons for core frameworks React, Vue (2,3), and Angular. Thi
 
 Run the following command to add Storybook's testing addon into your environment:
 
-```shell
-# With npm, don't forget to select only your framework
-npm install --save-dev @storybook/testing-( react | vue | vue3 | angular)
+<!-- prettier-ignore-start -->
 
-# With yarn, don't forget to select only your framework
-yarn add --dev @storybook/testing-( react | vue | vue3 | angular )
-```
+<CodeSnippets
+  paths={[
+    'common/storybook-testing-addon-install.yarn.js.mdx',
+    'common/storybook-testing-addon-install.npm.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+
+💡 When running the command to install the addon, don't forget to select **only** your framework.
+
+</div>
 
 ### Optional configuration
 
@@ -60,7 +69,7 @@ Update your test script to include the configuration file:
 
 ## Example with Testing Library
 
-[Testing Library](https://testing-library.com/) is a suite of helper libraries for browser-based interaction tests. With [Component Story Format](../api/csf.md), your stories are reusable with Testing Library. Each named export (i.e., a story) is renderable within your testing setup.
+[Testing Library](https://testing-library.com/) is a suite of helper libraries for browser-based interaction tests. With [Component Story Format](../api/csf.md), your stories are reusable with Testing Library. Each named export (story) is renderable within your testing setup.
 
 <div class="aside">
 
@@ -88,7 +97,7 @@ Once the test runs, it loads the story and renders it. [Testing Library](https:/
 
 ## Example with Cypress
 
-[Cypress](https://www.cypress.io/) is an end-to-end testing framework. It enables you to test a complete instance of your application by simulating user behavior. With Component Story Format, your stories are reusable with Cypress. Each named export (i.e., a story) is renderable within your testing setup.
+[Cypress](https://www.cypress.io/) is an end-to-end testing framework. It enables you to test a complete instance of your application by simulating user behavior. With Component Story Format, your stories are reusable with Cypress. Each named export (in other words, a story) is renderable within your testing setup.
 
 An example of an end-to-end test with Cypress and Storybook is testing a login component for the correct inputs. For example, if you had the following story:
 
@@ -130,7 +139,7 @@ When Cypress runs your test, it loads Storybook's isolated iframe and checks if 
 
 ## Example with Playwright
 
-[Playwright](https://playwright.dev/) is a browser automation tool and end-to-end testing framework from Microsoft. It offers cross-browser automation, mobile testing with device emulation, and headless testing. With Component Story Format, your stories are reusable with Playwright. Each named export (i.e., a story) is renderable within your testing setup.
+[Playwright](https://playwright.dev/) is a browser automation tool and end-to-end testing framework from Microsoft. It offers cross-browser automation, mobile testing with device emulation, and headless testing. With Component Story Format, your stories are reusable with Playwright. Each named export (in other words, a story) is renderable within your testing setup.
 
 A real-life scenario of user flow testing with Playwright would be how to test a login form for validity. For example, if you had the following story already created:
 
@@ -171,6 +180,7 @@ Once you execute Playwright, it opens a new browser window, loads Storybook's is
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - [Visual tests](./visual-testing.md) for appearance
 - [Accessibility tests](./accessibility-testing.md) for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation

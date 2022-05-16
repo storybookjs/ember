@@ -6,29 +6,37 @@ Accessibility is the practice of making websites inclusive to all. That means su
 
 Accessibility tests audit the rendered DOM against a set of heuristics based on [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) rules and other industry-accepted best practices. They act as the first line of QA to catch blatant accessibility violations.
 
-Storybook’s official [a11y addon](https://storybook.js.org/addons/@storybook/addon-a11y) runs accessibility audits while you’re developing components to give you a fast feedback loop. It's powered by Deque's [axe-core](https://github.com/dequelabs/axe-core), which automatically catches up to [57% of WCAG issues](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/).
-
 ![Accessibility testing](./accessibility-testing-storybook.gif)
 
-## Setup a11y addon
+## Accessibility checks with a11y addon
 
-To enable accessibility testing with Storybook, you'll need to install the [`@storybook/addon-a11y`](https://storybook.js.org/addons/@storybook/addon-a11y/) addon. Run the following command:
+Storybook provides an official [a11y addon](https://storybook.js.org/addons/@storybook/addon-a11y). Powered by Deque's [axe-core](https://github.com/dequelabs/axe-core), which automatically catches up to [57% of WCAG issues](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/).
 
-```shell
-# With npm
-npm install @storybook/addon-a11y --save-dev
+### Set up the a11y addon
 
-# With yarn
-yarn add --dev @storybook/addon-a11y
-```
+If you want to check accessibility for your stories using the [addon](https://storybook.js.org/addons/@storybook/addon-a11y/), you'll need to install it and add it to your Storybook.
 
-Update your Storybook configuration (in `.storybook/main.js`) to include the accessibility addon:
+Run the following command to install the addon.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-a11y-install.yarn.js.mdx',
+    'common/storybook-a11y-install.npm.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Update your Storybook configuration (in `.storybook/main.js|ts`) to include the accessibility addon.
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
     'common/storybook-a11y-register.js.mdx',
+    'common/storybook-a11y-register.ts.mdx',
   ]}
 />
 
@@ -73,7 +81,7 @@ Cycling through both stories, you will see that the `Inaccessible` story contain
 
 ### Configure
 
-Out of the box, Storybook's accessibility addon includes a set of accessibility rules that cover most issues. You can also fine tune the [addon configuration](https://github.com/storybookjs/storybook/tree/next/addons/a11y#parameters) or override [Axe's ruleset](https://github.com/storybookjs/storybook/tree/next/addons/a11y#handling-failing-rules) to best suit your needs.
+Out of the box, Storybook's accessibility addon includes a set of accessibility rules that cover most issues. You can also fine-tune the [addon configuration](https://github.com/storybookjs/storybook/tree/next/addons/a11y#parameters) or override [Axe's ruleset](https://github.com/storybookjs/storybook/tree/next/addons/a11y#handling-failing-rules) to best suit your needs.
 
 #### Global a11y configuration
 
@@ -148,35 +156,63 @@ Disable accessibility testing for stories or components by adding the following 
 
 <!-- prettier-ignore-end -->
 
-## Automate accessibility tests with Jest
+## Automate accessibility tests with test runner
 
-Accessibility testing with Storybook shortens the feedback loop which means you fix issues faster. Reuse stories in a Jest test and run an accessibility audit on them using the [jest-axe integration](https://github.com/nickcolley/jest-axe). That also unlocks the ability to integrate accessibility tests into your functional testing pipeline.
+The most accurate way to check accessibility is manually on real devices. However, you can use automated tools to catch common accessibility issues. For example, [Axe](https://www.deque.com/axe/), on average, catches upwards to [57% of WCAG issues](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/) automatically.
 
-For example, include the following test file to run an accessibility test on a story:
+These tools work by auditing the rendered DOM against heuristics based on [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) rules and other industry-accepted best practices. You can then integrate these tools into your test automation pipeline using the Storybook [test runner](./test-runner.md#test-hook-api-experimental) and [axe-playwright](https://github.com/abhinaba-ghosh/axe-playwright).
+
+### Setup
+
+To enable accessibility testing with the test runner, you will need to take additional steps to set it up properly. Detailed below is our recommendation to configure and execute them.
+
+Run the following command to install the required dependencies.
 
 <!-- prettier-ignore-start -->
 
 <CodeSnippets
   paths={[
-    'react/accessibility-testing-with-jest-axe.js.mdx',
-    'vue/accessibility-testing-with-jest-axe.js.mdx',
+    'common/storybook-test-runner-axe-playwright.yarn.js.mdx',
+    'common/storybook-test-runner-axe-playwright.npm.js.mdx',
   ]}
 />
 
 <!-- prettier-ignore-end -->
 
-When you execute your test script, it will run the accessibility audit along with any interaction tests you might have.
+Add a new [configuration file](./test-runner.md#test-hook-api-experimental) inside your Storybook directory with the following inside:
 
-![Accessibility testing with Jest Axe Core](./jest-accessibility-testing-optimized.png)
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-test-runner-a11y-config.js.mdx',
+    'common/storybook-test-runner-a11y-config.ts.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+
+💡 `preRender` and `postRender` are convenient hooks that allow you to extend the test runner's default configuration. They are **experimental** and subject to changes. Read more about them [here](./test-runner.md#test-hook-api-experimental).
+
+</div>
+
+When you execute the test runner (for example, with `yarn test-storybook`), it will run the accessibility audit and any [interaction tests](./interaction-testing.md) you might have configured for each component story.
+
+It starts checking for issues by traversing the DOM tree starting from the story's root element and generates a detailed report based on the issues it encountered.
+
+![Accessibility testing with the test runner](./test-runner-a11y-optimized.png)
 
 ---
 
 #### What’s the difference between browser-based and linter-based accessibility tests?
 
-Browser-based accessibility tests, like found in Storybook, evaluates the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing so you won't catch everything the user might experience.
+Browser-based accessibility tests, like those found in Storybook, evaluate the rendered DOM because that gives you the highest accuracy. Auditing code that hasn't been compiled yet is one step removed from the real thing, so you won't catch everything the user might experience.
 
 #### Learn about other UI tests
 
+- [Test runner](./test-runner.md) to automate test execution
 - [Visual tests](./visual-testing.md) for appearance
 - Accessibility tests for accessibility
 - [Interaction tests](./interaction-testing.md) for user behavior simulation

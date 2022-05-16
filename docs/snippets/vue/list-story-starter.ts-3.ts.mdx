@@ -1,0 +1,25 @@
+```ts
+// List.stories.ts
+
+import List from './ListComponent.vue';
+
+import { Meta, StoryFn } from '@storybook/vue3';
+
+export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
+  component: List,
+} as Meta<typeof LoginForm>;
+
+// Always an empty list, not super interesting
+const Template: StoryFn<typeof LoginForm> = (args) => ({
+  components: { List },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"/>',
+});
+```

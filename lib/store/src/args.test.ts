@@ -83,6 +83,25 @@ describe('mapArgsToTypes', () => {
     expect(mapArgsToTypes({ a: 'something' }, { a: { type: functionType } })).toStrictEqual({});
   });
 
+  it('includes functions if there is a mapping', () => {
+    expect(
+      mapArgsToTypes(
+        { a: 'something' },
+        { a: { type: functionType, mapping: { something: () => 'foo' } } }
+      )
+    ).toStrictEqual({
+      a: 'something',
+    });
+  });
+
+  it('skips default mapping if there is a user-specified mapping', () => {
+    expect(
+      mapArgsToTypes({ a: 'something' }, { a: { type: numberType, mapping: { something: 10 } } })
+    ).toStrictEqual({
+      a: 'something',
+    });
+  });
+
   it('omits unknown keys', () => {
     expect(mapArgsToTypes({ a: 'string' }, { b: { type: stringType } })).toStrictEqual({});
   });
@@ -205,6 +224,11 @@ describe('validateOptions', () => {
 
   it('includes arg if value is one of options', () => {
     expect(validateOptions({ a: 1 }, { a: { options: [1, 2] } })).toStrictEqual({ a: 1 });
+  });
+
+  // https://github.com/storybookjs/storybook/issues/17063
+  it('does not set args to `undefined` if they are unset and there are options', () => {
+    expect(validateOptions({}, { a: { options: [2, 3] } })).toStrictEqual({});
   });
 
   it('includes arg if value is undefined', () => {

@@ -22,7 +22,7 @@ const root = new Vue({
 });
 
 export const render: ArgsStoryFn<VueFramework> = (props, context) => {
-  const { id, component: Component } = context;
+  const { id, component: Component, argTypes } = context;
   const component = Component as VueFramework['component'] & {
     __docgenInfo?: { displayName: string };
     props: Record<string, any>;
@@ -49,7 +49,7 @@ export const render: ArgsStoryFn<VueFramework> = (props, context) => {
   }
 
   return {
-    props: component.props,
+    props: Object.keys(argTypes),
     components: { [componentName]: component },
     template: `<${componentName} v-bind="$props" />`,
   };

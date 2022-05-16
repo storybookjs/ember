@@ -6,7 +6,7 @@ import dedent from 'ts-dedent';
 import global from 'global';
 
 import { logger } from '@storybook/node-logger';
-
+import { telemetry } from '@storybook/telemetry';
 import type {
   LoadOptions,
   CLIOptions,
@@ -16,7 +16,7 @@ import type {
   StorybookConfig,
   CoreConfig,
 } from '@storybook/core-common';
-import { loadAllPresets, cache, normalizeStories, logConfig } from '@storybook/core-common';
+import { normalizeStories, loadAllPresets, cache, logConfig } from '@storybook/core-common';
 
 import { getProdCli } from './cli';
 import { outputStats } from './utils/output-stats';
@@ -27,6 +27,8 @@ import {
 import { getPreviewBuilder } from './utils/get-preview-builder';
 import { getManagerBuilder } from './utils/get-manager-builder';
 import { extractStoriesJson } from './utils/stories-json';
+import { extractStorybookMetadata } from './utils/metadata';
+import { StoryIndexGenerator } from './utils/StoryIndexGenerator';
 
 export async function buildStaticStandalone(options: CLIOptions & LoadOptions & BuilderOptions) {
   /* eslint-disable no-param-reassign */
@@ -92,17 +94,56 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
   const features = await presets.apply<StorybookConfig['features']>('features');
   global.FEATURES = features;
 
+  const extractTasks = [];
+
+  let initializedStoryIndexGenerator: Promise<StoryIndexGenerator> = Promise.resolve(undefined);
   if (features?.buildStoriesJson || features?.storyStoreV7) {
+    const workingDir = process.cwd();
     const directories = {
       configDir: options.configDir,
-      workingDir: process.cwd(),
+      workingDir,
     };
-    const stories = normalizeStories(await presets.apply('stories'), directories);
-    await extractStoriesJson(path.join(options.outputDir, 'stories.json'), stories, {
+    const normalizedStories = normalizeStories(await presets.apply('stories'), directories);
+
+    const generator = new StoryIndexGenerator(normalizedStories, {
       ...directories,
       storiesV2Compatibility: !features?.breakingChangesV7 && !features?.storyStoreV7,
       storyStoreV7: features?.storyStoreV7,
     });
+
+    initializedStoryIndexGenerator = generator.initialize().then(() => generator);
+    extractTasks.push(
+      extractStoriesJson(
+        path.join(options.outputDir, 'stories.json'),
+        initializedStoryIndexGenerator
+      )
+    );
+  }
+
+  const core = await presets.apply<CoreConfig>('core');
+  if (!core?.disableTelemetry) {
+    initializedStoryIndexGenerator.then(async (generator) => {
+      if (!generator) {
+        return;
+      }
+
+      const storyIndex = await generator.getIndex();
+      const payload = storyIndex
+        ? {
+            storyIndex: {
+              storyCount: Object.keys(storyIndex.stories).length,
+              version: storyIndex.v,
+            },
+          }
+        : undefined;
+      telemetry('build', payload, { configDir: options.configDir });
+    });
+  }
+
+  if (!core?.disableProjectJson) {
+    extractTasks.push(
+      extractStorybookMetadata(path.join(options.outputDir, 'project.json'), options.configDir)
+    );
   }
 
   const fullOptions: Options = {
@@ -116,7 +157,6 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
     logConfig('Manager webpack config', await managerBuilder.getConfig(fullOptions));
   }
 
-  const core = await presets.apply<CoreConfig | undefined>('core');
   const builderName = typeof core?.builder === 'string' ? core.builder : core?.builder?.name;
   const { getPrebuiltDir } =
     builderName === 'webpack5'
@@ -152,6 +192,7 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
       await managerBuilder.bail();
       throw err;
     }),
+    ...extractTasks,
   ]);
 
   if (options.webpackStatsJson) {
@@ -165,21 +206,43 @@ export async function buildStaticStandalone(options: CLIOptions & LoadOptions & 
 export async function buildStatic({ packageJson, ...loadOptions }: LoadOptions) {
   const cliOptions = getProdCli(packageJson);
 
+  const options: CLIOptions & LoadOptions & BuilderOptions = {
+    ...cliOptions,
+    ...loadOptions,
+    packageJson,
+    configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
+    outputDir: loadOptions.outputDir || cliOptions.outputDir || './storybook-static',
+    ignorePreview:
+      (!!loadOptions.ignorePreview || !!cliOptions.previewUrl) && !cliOptions.forceBuildPreview,
+    docsMode: !!cliOptions.docs,
+    configType: 'PRODUCTION',
+    cache,
+  };
+
   try {
-    await buildStaticStandalone({
-      ...cliOptions,
-      ...loadOptions,
-      packageJson,
-      configDir: loadOptions.configDir || cliOptions.configDir || './.storybook',
-      outputDir: loadOptions.outputDir || cliOptions.outputDir || './storybook-static',
-      ignorePreview:
-        (!!loadOptions.ignorePreview || !!cliOptions.previewUrl) && !cliOptions.forceBuildPreview,
-      docsMode: !!cliOptions.docs,
-      configType: 'PRODUCTION',
-      cache,
+    await buildStaticStandalone(options);
+  } catch (error) {
+    logger.error(error);
+
+    const presets = loadAllPresets({
+      corePresets: [require.resolve('./presets/common-preset')],
+      overridePresets: [],
+      ...options,
     });
-  } catch (e) {
-    logger.error(e);
+
+    const core = await presets.apply<CoreConfig>('core');
+    if (!core?.disableTelemetry) {
+      await telemetry(
+        'error-build',
+        { error },
+        {
+          immediate: true,
+          configDir: options.configDir,
+          enableCrashReports: options.enableCrashReports,
+        }
+      );
+    }
+
     process.exit(1);
   }
 }

@@ -1,7 +1,9 @@
 <template>
   <div class="button" :class="`size-${size}`">
     <!-- @slot Button content, e.g. label text -->
-    <slot></slot>
+    <slot>
+      {{label}}
+    </slot>
   </div>
 </template>
 
@@ -21,6 +23,11 @@ export default class Button extends Vue {
    * @values default,small,big
    */
   @Prop({ type: String, default: 'default' }) readonly size!: ButtonSize;
+  
+  /**
+   * Label of the button
+   */
+  @Prop({ type: String, default: '' }) readonly label!: string;
 }
 </script>
 

@@ -1,0 +1,47 @@
+```ts
+// List.stories.ts
+
+import List from './ListComponent.vue';
+import ListItem from './ListItem.vue';
+
+import { Meta, StoryFn } from '@storybook/vue3';
+
+export default {
+  /* 👇 The title prop is optional.
+   * See https://storybook.js.org/docs/vue/configure/overview#configure-story-loading
+   * to learn how to generate automatic titles
+   */
+  title: 'List',
+  component: List,
+} as Meta<typeof List>;
+
+export const Empty: StoryFn<typeof List> = (args) => ({
+  components: { List },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"/>',
+});
+
+export const OneItem: StoryFn<typeof List> = (args) => ({
+  components: { List, ListItem },
+  setup() {
+    return { args };
+  },
+  template: '<list v-bind="args"><list-item/></list>',
+});
+
+export const ManyItems: StoryFn<typeof List> = (args) => ({
+  components: { List, ListItem },
+  setup() {
+    return { args };
+  },
+  template: `
+    <list v-bind="args">
+      <list-item/>
+      <list-item/>
+      <list-item/>
+    </list>
+    `,
+});
+```

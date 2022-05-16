@@ -4,6 +4,10 @@ import type { StorybookConfig } from '@storybook/react/types';
 
 const config: StorybookConfig = {
   stories: [
+    {
+      directory: './stories/title',
+      titlePrefix: 'Custom Prefix',
+    },
     // FIXME: Breaks e2e tests './intro.stories.mdx',
     '../../lib/ui/src/**/*.stories.@(js|tsx|mdx)',
     '../../lib/components/src/**/*.stories.@(js|tsx|mdx)',
@@ -34,6 +38,8 @@ const config: StorybookConfig = {
   ],
   core: {
     builder: 'webpack4',
+    channelOptions: { allowFunction: false, maxDepth: 10 },
+    disableTelemetry: true,
   },
   logLevel: 'debug',
   features: {

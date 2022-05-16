@@ -40,7 +40,7 @@ const Shortcut: FunctionComponent<{ keys: string[] }> = ({ keys }) => (
 
 export const useMenu = (
   api: API,
-  isToolshown: boolean,
+  showToolbar: boolean,
   isFullscreen: boolean,
   showPanel: boolean,
   showNav: boolean,
@@ -101,9 +101,9 @@ export const useMenu = (
       title: 'Show toolbar',
       onClick: () => api.toggleToolbar(),
       right: enableShortcuts ? <Shortcut keys={shortcutKeys.toolbar} /> : null,
-      left: isToolshown ? <MenuItemIcon icon="check" /> : <MenuItemIcon />,
+      left: showToolbar ? <MenuItemIcon icon="check" /> : <MenuItemIcon />,
     }),
-    [api, enableShortcuts, shortcutKeys, isToolshown]
+    [api, enableShortcuts, shortcutKeys, showToolbar]
   );
 
   const addonsToggle = useMemo(

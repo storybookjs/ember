@@ -1,0 +1,24 @@
+```ts
+// index.ts
+
+import { createViteServer } from './vite-server';
+
+export const start: ViteBuilder['start'] = async ({ options, server: devServer }) => {
+  // Remainder implementation goes here
+
+  const server = await createViteServer(options as ExtendedOptions, devServer);
+  async function bail(e?: Error): Promise<void> {
+    try {
+      return await server.close();
+    } catch (err) {
+      console.warn('unable to close the server');
+    }
+    throw e;
+  }
+
+  return {
+    bail,
+    totalTime: process.hrtime(startTime),
+  };
+};
+```

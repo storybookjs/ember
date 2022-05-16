@@ -7,8 +7,10 @@ module.exports = {
   ],
   core: {
     builder: 'webpack4',
+    disableTelemetry: true,
   },
   features: {
     buildStoriesJson: true,
+    channelOptions: { allowFunction: false, maxDepth: 10 },
   },
 };

@@ -6,7 +6,7 @@ The frontend ecosystem is a fast-moving place. Regular dependency upgrades are a
 
 ## Upgrade script
 
-The most common upgrade is Storybook itself. [Storybook releases](/releases) follow [Semantic Versioning](https://semver.org/). We publish patch releases with bug fixes continuously, minor versions of Storybook with new features every few months, and major versions of Storybook with breaking changes roughly once per year.
+The most common upgrade is Storybook itself. [Storybook releases](https://storybook.js.org/releases) follow [Semantic Versioning](https://semver.org/). We publish patch releases with bug fixes continuously, minor versions of Storybook with new features every few months, and major versions of Storybook with breaking changes roughly once per year.
 
 To help ease the pain of keeping Storybook up-to-date, we provide a command-line script:
 
@@ -18,7 +18,7 @@ This upgrades all of the Storybook packages in your project to the latest stable
 
 <div class="aside">
 
-In addition to running the command, we also recommend checking the  [MIGRATION.md file](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md), for the detailed log of relevant changes and deprecations that might affect your upgrade.
+In addition to running the command, we also recommend checking the [MIGRATION.md file](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md), for the detailed log of relevant changes and deprecations that might affect your upgrade.
 
 </div>
 
@@ -43,3 +43,7 @@ npx sb@next upgrade --prerelease
 ```
 
 If you'd like to downgrade to a stable version, manually edit the package version numbers in your `package.json` and re-install.
+
+<div class="aside">
+Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+</div>
