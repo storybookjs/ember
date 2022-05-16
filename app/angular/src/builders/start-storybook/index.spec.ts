@@ -124,7 +124,7 @@ describe('Start Storybook Builder', () => {
   });
 
   it('should throw error', async () => {
-    buildStandaloneMock.mockRejectedValue(new Error());
+    buildStandaloneMock.mockRejectedValue(true);
 
     const run = await architect.scheduleBuilder('@storybook/angular:start-storybook', {
       browserTarget: 'angular-cli:build-2',

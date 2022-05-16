@@ -22,6 +22,7 @@ describe('RendererFactory', () => {
     rootTargetDOMNode = global.document.getElementById('root');
     rootDocstargetDOMNode = global.document.getElementById('root-docs');
     (platformBrowserDynamic as any).mockImplementation(platformBrowserDynamicTesting);
+    jest.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
