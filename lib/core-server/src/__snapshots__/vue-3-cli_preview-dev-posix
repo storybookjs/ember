@@ -208,12 +208,26 @@ Object {
         "test": "/\\\\.vue$/",
       },
       Object {
-        "test": "/\\\\.tsx?$/",
+        "test": "/\\\\.ts$/",
         "use": Array [
           Object {
             "loader": "NODE_MODULES/ts-loader/index.js",
             "options": Object {
               "appendTsSuffixTo": Array [
+                "/\\\\.vue$/",
+              ],
+              "transpileOnly": true,
+            },
+          },
+        ],
+      },
+      Object {
+        "test": "/\\\\.tsx$/",
+        "use": Array [
+          Object {
+            "loader": "NODE_MODULES/ts-loader/index.js",
+            "options": Object {
+              "appendTsxSuffixTo": Array [
                 "/\\\\.vue$/",
               ],
               "transpileOnly": true,
