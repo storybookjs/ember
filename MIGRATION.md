@@ -360,6 +360,7 @@ In 6.5, the final titles would be:
 - `NoTitle.stories.js` => `Custom/NoTitle`
 - `Title.stories.js` => `Custom/Bar`
 
+<!-- markdown-link-check-disable -->
 ## From version 6.3.x to 6.4.0
 
 ### Automigrate
@@ -2881,3 +2882,4 @@ If you **are** using these addons, it takes two steps to migrate:
   import { action } from '@storybook/addon-actions';
   import { linkTo } from '@storybook/addon-links';
   ```
+<!-- markdown-link-check-enable -->

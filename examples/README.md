@@ -22,6 +22,7 @@ Live examples of these:
 - [Ember](https://storybookjs.netlify.com/ember-cli/)
 - [Preact](https://storybookjs.netlify.com/preact-kitchen-sink/)
 
+<!-- markdown-link-check-disable -->
 ### 5.0
 
 - [React Official](https://release-5-0--storybooks-official.netlify.com/)
@@ -37,3 +38,4 @@ Live examples of these:
 - [React Official](https://release-3-4--storybooks-official.netlify.com)
 - [Vue](https://release-3-4--storybooks-vue.netlify.com/)
 - [Angular](https://release-3-4--storybooks-angular.netlify.com/)
+<!-- markdown-link-check-enable -->
