@@ -381,7 +381,7 @@ Although valid, it introduces additional boilerplate code to the story definitio
 
 ## Why is Storybook's source loader returning undefined with curried functions?
 
-This is a known issue with Storybook. If you're interested in getting it fixed, open an issue with a [working reproduction](./contribute/how-to-reproduce) so that it can be triaged and fixed in future releases.
+This is a known issue with Storybook. If you're interested in getting it fixed, open an issue with a [working reproduction](./contribute/how-to-reproduce.md) so that it can be triaged and fixed in future releases.
 
 ## Why are my args no longer displaying the default values?
 

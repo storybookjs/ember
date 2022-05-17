@@ -34,7 +34,7 @@ Specifically, we track the following information in our telemetry events:
   - Supported view layers (e.g., React, Vue, Angular, Svelte).
   - Builder (e.g., Webpack4, Webpack5, Vite).
   - Meta framework (e.g., [Next](https://nextjs.org/), [Gatsby](https://www.gatsbyjs.com/), [CRA](https://create-react-app.dev/)).
-  - [Addons](/addons) (e.g., [Essentials](../essentials/introduction), [Accessibility](https://storybook.js.org/addons/@storybook/addon-a11y/)).
+  - [Addons](https://storybook.js.org/addons/) (e.g., [Essentials](../essentials/introduction.md), [Accessibility](https://storybook.js.org/addons/@storybook/addon-a11y/)).
   - [Feature flags](./overview.md#feature-flags) (e.g., `buildStoriesJson`).
 - Package manager information (e.g., `npm`, `yarn`).
 - Monorepo information (e.g., [NX](https://nx.dev/), [Turborepo](https://turborepo.org/)).

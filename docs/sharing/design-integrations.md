@@ -123,7 +123,7 @@ Click the "Design" tab in the addon panel to view the embedded Figma design.
 
 ## Zeplin
 
-[Zeplin](https://zeplin.io/) is a design tool that generates styleguides from [Sketch](https://www.sketch.com/), [Figma](https://www.figma.com/), and [Adobe XD](https://www.adobe.com/en/products/xd.html).
+[Zeplin](https://zeplin.io/) is a design tool that generates styleguides from [Sketch](https://www.sketch.com/), [Figma](https://www.figma.com/), and [Adobe XD](https://www.adobe.com/products/xd.html).
 
 Use the [Zeplin addon](https://storybook.js.org/addons/storybook-zeplin) to connect Storybook. The addon displays designs from Zeplin alongside the currently selected story. It includes convenient tooling to overlay the design image atop the live component.
 
