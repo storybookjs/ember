@@ -29,6 +29,9 @@
     },
     {
       "pattern": "https://yoursite.com/*"
+    },
+    {
+      "pattern": "https://my-specific-domain.com"
     }
   ],
   "aliveStatusCodes": [429, 200]
