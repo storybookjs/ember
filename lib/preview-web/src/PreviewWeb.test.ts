@@ -1230,47 +1230,6 @@ describe('PreviewWeb', () => {
         updatedArgs: { foo: 'a' },
       });
     });
-
-    it('resets all args when one arg is not set initially', async () => {
-      document.location.search = '?id=component-one--a';
-      const preview = await createAndRenderPreview();
-      const onUpdateArgsSpy = jest.spyOn(preview, 'onUpdateArgs');
-
-      emitter.emit(Events.UPDATE_STORY_ARGS, {
-        storyId: 'component-one--a',
-        updatedArgs: { foo: 'new', notSetInitially: 'exampleValue' },
-      });
-      await waitForEvents([Events.STORY_ARGS_UPDATED]);
-
-      mockChannel.emit.mockClear();
-      emitter.emit(Events.RESET_STORY_ARGS, {
-        storyId: 'component-one--a',
-      });
-
-      await waitForRender();
-
-      expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
-        expect.objectContaining({
-          forceRemount: false,
-          storyContext: expect.objectContaining({
-            initialArgs: { foo: 'a' },
-            args: { foo: 'a' },
-          }),
-        }),
-        undefined // this is coming from view.prepareForStory, not super important
-      );
-
-      await waitForEvents([Events.STORY_ARGS_UPDATED]);
-      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
-        storyId: 'component-one--a',
-        args: { foo: 'a' },
-      });
-
-      expect(onUpdateArgsSpy).toHaveBeenCalledWith({
-        storyId: 'component-one--a',
-        updatedArgs: { foo: 'a', notSetInnately: undefined },
-      });
-    });
   });
 
   describe('on FORCE_RE_RENDER', () => {
