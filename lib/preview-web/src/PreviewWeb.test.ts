@@ -1067,7 +1067,8 @@ describe('PreviewWeb', () => {
 
     it('resets a single arg', async () => {
       document.location.search = '?id=component-one--a';
-      await createAndRenderPreview();
+      const preview = await createAndRenderPreview();
+      const onUpdateArgsSpy = jest.spyOn(preview, 'onUpdateArgs');
 
       mockChannel.emit.mockClear();
       emitter.emit(Events.UPDATE_STORY_ARGS, {
@@ -1100,11 +1101,58 @@ describe('PreviewWeb', () => {
         storyId: 'component-one--a',
         args: { foo: 'a', new: 'value' },
       });
+
+      expect(onUpdateArgsSpy).toHaveBeenCalledWith({
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'a' },
+      });
+    });
+
+    it('resets all args after one is updated', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+      const onUpdateArgsSpy = jest.spyOn(preview, 'onUpdateArgs');
+
+      emitter.emit(Events.UPDATE_STORY_ARGS, {
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'new' },
+      });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.RESET_STORY_ARGS, {
+        storyId: 'component-one--a',
+      });
+
+      await waitForRender();
+
+      expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({
+          forceRemount: false,
+          storyContext: expect.objectContaining({
+            initialArgs: { foo: 'a' },
+            args: { foo: 'a' },
+          }),
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a' },
+      });
+
+      expect(onUpdateArgsSpy).toHaveBeenCalledWith({
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'a' },
+      });
     });
 
     it('resets all args', async () => {
       document.location.search = '?id=component-one--a';
-      await createAndRenderPreview();
+      const preview = await createAndRenderPreview();
+      const onUpdateArgsSpy = jest.spyOn(preview, 'onUpdateArgs');
 
       emitter.emit(Events.UPDATE_STORY_ARGS, {
         storyId: 'component-one--a',
@@ -1134,6 +1182,52 @@ describe('PreviewWeb', () => {
       expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
         storyId: 'component-one--a',
         args: { foo: 'a' },
+      });
+
+      expect(onUpdateArgsSpy).toHaveBeenCalledWith({
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'a', new: undefined },
+      });
+    });
+
+    it('resets all args when one arg is undefined', async () => {
+      document.location.search = '?id=component-one--a';
+      const preview = await createAndRenderPreview();
+      const onUpdateArgsSpy = jest.spyOn(preview, 'onUpdateArgs');
+
+      emitter.emit(Events.UPDATE_STORY_ARGS, {
+        storyId: 'component-one--a',
+        updatedArgs: { foo: undefined },
+      });
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+
+      mockChannel.emit.mockClear();
+      emitter.emit(Events.RESET_STORY_ARGS, {
+        storyId: 'component-one--a',
+      });
+
+      await waitForRender();
+
+      expect(projectAnnotations.renderToDOM).toHaveBeenCalledWith(
+        expect.objectContaining({
+          forceRemount: false,
+          storyContext: expect.objectContaining({
+            initialArgs: { foo: 'a' },
+            args: { foo: 'a' },
+          }),
+        }),
+        undefined // this is coming from view.prepareForStory, not super important
+      );
+
+      await waitForEvents([Events.STORY_ARGS_UPDATED]);
+      expect(mockChannel.emit).toHaveBeenCalledWith(Events.STORY_ARGS_UPDATED, {
+        storyId: 'component-one--a',
+        args: { foo: 'a' },
+      });
+
+      expect(onUpdateArgsSpy).toHaveBeenCalledWith({
+        storyId: 'component-one--a',
+        updatedArgs: { foo: 'a' },
       });
     });
   });
