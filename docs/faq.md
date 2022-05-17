@@ -285,6 +285,78 @@ See our documentation on how to customize the [Storyshots configuration](./writi
 
 Currently there's an issue when using MDX stories with IE11. This issue does <strong>not</strong> apply to [DocsPage](./writing-docs/docs-page.md). If you're interested in helping us fix this issue, read our <a href="https://github.com/storybookjs/storybook/blob/next/CONTRIBUTING.md">Contribution guidelines</a> and submit a pull request.
 
+
+### Why aren't my code blocks highlighted with Storybook MDX
+
+Out of the box, Storybook provides syntax highlighting for a set of languages (e.g., Javascript, Markdown, CSS, HTML, Typescript, GraphQL) that you can use with your code blocks. If you're writing your custom code blocks with MDX, you'll need to import the syntax highlighter manually. For example, if you're adding a code block for SCSS, adjust your story to the following:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+   'common/my-component-with-custom-syntax-highlight.mdx.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+💡 Check <code>react-syntax-highlighter</code>'s <a href="https://github.com/react-syntax-highlighter/react-syntax-highlighter">documentation</a> for a list of available languages.
+</div>
+
+Applying this small change will enable you to add syntax highlight for SCSS or any other language available.
+
+### Why aren't my MDX 2 stories working in Storybook?
+
+MDX 2 introduced some changes to how the code is rendered. For example, if you enabled it in your Storybook and you have the following code block:
+
+```
+<style>{`
+  .class1 {
+    ...
+  }
+
+  .class2 {
+    ...
+  }
+`}</style>
+
+```
+
+You'll need to update it to make it compatible with MDX 2.
+
+```
+<style>
+  {`
+    .class1 {
+      ...
+    }
+
+    .class2 {
+      ...
+    }
+  `}
+</style>
+```
+
+See the following [issue](https://github.com/mdx-js/mdx/issues/1945) for more information.
+
+
+### Why can't I import my own stories into MDX 2?
+
+This is a known issue with MDX 2. We're working to fix it. For now you can apply the following workaround:
+
+```md
+<!-- Button.stories.mdx -->
+
+import { Story } from '@storybook/addon-docs';
+
+import * as stories from './Button.stories.jsx';
+
+<Story name="Basic" story={stories.Basic} />
+```
+
+
 ### Why are my mocked GraphQL queries failing with Storybook's MSW addon?
 
 If you're working with Vue 3, you'll need to install [`@vue/apollo-composable`](https://www.npmjs.com/package/@vue/apollo-composable). With Svelte, you'll need to install [`@rollup/plugin-replace`](https://www.npmjs.com/package/@rollup/plugin-replace) and update your `rollup.config` file to the following:
@@ -327,25 +399,7 @@ Yes, check the [addon's examples](https://github.com/mswjs/msw-storybook-addon/t
 
 No, currently, the MSW addon only has support for GraphQL queries. If you're interested in including this feature, open an issue in the [MSW addon repository](https://github.com/mswjs/msw-storybook-addon) and follow up with the maintainer.
 
-### Why aren't my code blocks highlighted with Storybook MDX
 
-Out of the box, Storybook provides syntax highlighting for a set of languages (e.g., Javascript, Markdown, CSS, HTML, Typescript, GraphQL) that you can use with your code blocks. If you're writing your custom code blocks with MDX, you'll need to import the syntax highlighter manually. For example, if you're adding a code block for SCSS, adjust your story to the following:
-
-<!-- prettier-ignore-start -->
-
-<CodeSnippets
-  paths={[
-   'common/my-component-with-custom-syntax-highlight.mdx.mdx',
-  ]}
-/>
-
-<!-- prettier-ignore-end -->
-
-<div class="aside">
-💡 Check <code>react-syntax-highlighter</code>'s <a href="https://github.com/react-syntax-highlighter/react-syntax-highlighter">documentation</a> for a list of available languages.
-</div>
-
-Applying this small change will enable you to add syntax highlight for SCSS or any other language available.
 
 ### How can my code detect if it is running in Storybook?
 
