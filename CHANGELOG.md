@@ -1,3 +1,24 @@
+## 6.5.0-rc.0 (May 17, 2022)
+
+### Features
+
+- Addon-a11y: Show % of users in toolbar menu ([#18003](https://github.com/storybookjs/storybook/pull/18003))
+
+### Bug Fixes
+
+- Web-components: Clean Lit Expression comments in story source ([#18108](https://github.com/storybookjs/storybook/pull/18108))
+- Vue: Map args correctly in CSF3 implicit render function ([#18209](https://github.com/storybookjs/storybook/pull/18209))
+- Vue3: Fix CSF3 implicit render function when storyStoreV7 is enabled ([#18208](https://github.com/storybookjs/storybook/pull/182)
+
+### Maintenance
+
+- CLI: Don't throw is Ctrl + C was pressed when selecting a package in the build command ([#18195](https://github.com/storybookjs/storybook/pull/18195))
+- Build: Cleanup noise from unit tests ([#18196](https://github.com/storybookjs/storybook/pull/18196))
+
+### Dependency Upgrades
+
+- Fixed PnP compatibility for bundled components package ([#18015](https://github.com/storybookjs/storybook/pull/18015))
+
 ## 6.5.0-beta.8 (May 11, 2022)
 
 ### Bug Fixes
