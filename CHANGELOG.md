@@ -1,3 +1,12 @@
+## 6.5.0-rc.1 (May 18, 2022)
+
+### Bug Fixes
+
+- CLI: Improve webpack version and add detection of nextjs ([#18220](https://github.com/storybookjs/storybook/pull/18220))
+- ArgsTable: Gracefully handle conditional args failures ([#18248](https://github.com/storybookjs/storybook/pull/18248))
+- Controls: Fix reset button broken for !undefined URL values ([#18231](https://github.com/storybookjs/storybook/pull/18231))
+- Vue3: Add support for TSX in single file components ([#18038](https://github.com/storybookjs/storybook/pull/18038))
+
 ## 6.5.0-rc.0 (May 17, 2022)
 
 ### Features
