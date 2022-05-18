@@ -14,6 +14,8 @@ import {
 } from './project_types';
 import { getBowerJson, paddedLog } from './helpers';
 import { PackageJson, readPackageJson, JsPackageManager } from './js-package-manager';
+import { detectWebpack } from './detect-webpack';
+import { detectNextJS } from './detect-nextjs';
 
 const viteConfigFiles = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
 
@@ -112,31 +114,21 @@ export function detectBuilder(packageManager: JsPackageManager) {
     return CoreBuilder.Vite;
   }
 
-  try {
-    let out = '';
-    if (packageManager.type === 'npm') {
-      try {
-        // npm <= v7
-        out = packageManager.executeCommand('npm', ['ls', 'webpack']);
-      } catch (e2) {
-        // npm >= v8
-        out = packageManager.executeCommand('npm', ['why', 'webpack']);
-      }
-    } else {
-      out = packageManager.executeCommand('yarn', ['why', 'webpack']);
-    }
-
-    // if the user has BOTH webpack 4 and 5 installed already, we'll pick the safest options (4)
-    if (out.includes('webpack@4') || out.includes('webpack@npm:4')) {
+  const nextJSVersion = detectNextJS(packageManager);
+  if (nextJSVersion) {
+    if (nextJSVersion >= 11) {
       return CoreBuilder.Webpack5;
     }
+  }
 
-    // the user has webpack 4 installed, but not 5
-    if (out.includes('webpack@5') || out.includes('webpack@npm:5')) {
+  const webpackVersion = detectWebpack(packageManager);
+  if (webpackVersion) {
+    if (webpackVersion <= 4) {
+      return CoreBuilder.Webpack4;
+    }
+    if (webpackVersion >= 5) {
       return CoreBuilder.Webpack5;
     }
-  } catch (err) {
-    //
   }
 
   // Fallback to webpack4
