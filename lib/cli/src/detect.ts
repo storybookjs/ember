@@ -114,19 +114,19 @@ export function detectBuilder(packageManager: JsPackageManager) {
     return CoreBuilder.Vite;
   }
 
+  const nextJSVersion = detectNextJS(packageManager);
+  if (nextJSVersion) {
+    if (nextJSVersion >= 11) {
+      return CoreBuilder.Webpack5;
+    }
+  }
+
   const webpackVersion = detectWebpack(packageManager);
   if (webpackVersion) {
     if (webpackVersion <= 4) {
       return CoreBuilder.Webpack4;
     }
     if (webpackVersion >= 5) {
-      return CoreBuilder.Webpack5;
-    }
-  }
-
-  const nextJSVersion = detectNextJS(packageManager);
-  if (nextJSVersion) {
-    if (nextJSVersion >= 11) {
       return CoreBuilder.Webpack5;
     }
   }
