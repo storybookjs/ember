@@ -217,17 +217,15 @@ One common use case for MDX-only docs stories is importing a project's `CHANGELO
 
 First, ensure that `transcludeMarkdown` is set to `true` in `main.js`:
 
-```js
-addons: [
-  "@storybook/addon-links",
-  "@storybook/addon-essentials",
-  // set transcludeMarkdown to true
-  {
-    name: "@storybook/addon-docs",
-    options: { transcludeMarkdown: true },
-  },
-]
-```
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-enable-transcludemarkdown.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 Then, import the markdown and treat the imported file as a component in the MDX file: 
 
