@@ -39,7 +39,6 @@
     "prepare": "node ../../scripts/prepare.js"
   },
   "dependencies": {
-    "@aw-web-design/x-default-browser": "1.4.0",
     "@discoveryjs/json-ext": "^0.5.3",
     "@storybook/builder-webpack4": "6.5.0-rc.1",
     "@storybook/core-client": "6.5.0-rc.1",
@@ -83,7 +82,8 @@
     "util-deprecate": "^1.0.2",
     "watchpack": "^2.2.0",
     "webpack": "4",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "x-default-browser": "^0.4.0"
   },
   "devDependencies": {
     "@storybook/builder-webpack5": "6.5.0-rc.1",
