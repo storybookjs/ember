@@ -27,6 +27,8 @@ export const getMonorepoType = (): MonorepoType => {
   if (monorepoType) {
     return monorepoType;
   }
+  
+  if (!fs.existsSync(path.join(projectRootPath, 'package.json'))) return undefined;
 
   const packageJson = fs.readJsonSync(path.join(projectRootPath, 'package.json')) as PackageJson;
 
