@@ -19,6 +19,7 @@ export async function babel(config: TransformOptions, options: Options) {
   return {
     ...config,
     overrides: [
+      ...(config?.overrides || []),
       {
         test: reactDocgen === 'react-docgen' ? /\.(mjs|tsx?|jsx?)$/ : /\.(mjs|jsx?)$/,
         plugins: [
