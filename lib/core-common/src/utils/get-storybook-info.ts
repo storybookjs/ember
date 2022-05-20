@@ -6,6 +6,7 @@ import { PackageJson } from '../types';
 interface StorybookInfo {
   framework: string;
   version: string;
+  frameworkPackage: string;
   configDir?: string;
   mainConfig?: string;
   previewConfig?: string;
@@ -57,7 +58,7 @@ const getFrameworkInfo = (packageJson: PackageJson) => {
     );
   }
 
-  return { framework, version };
+  return { framework, version, frameworkPackage: pkg };
 };
 
 const validConfigExtensions = ['ts', 'js', 'tsx', 'jsx', 'mjs', 'cjs'];

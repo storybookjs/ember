@@ -187,9 +187,13 @@ export const computeStorybookMetadata = async ({
   const hasStorybookEslint = !!allDependencies['eslint-plugin-storybook'];
 
   const storybookInfo = getStorybookInfo(packageJson);
+
+  const storybookVersion =
+    storybookPackages[storybookInfo.frameworkPackage]?.version || storybookInfo.version;
+
   return {
     ...metadata,
-    storybookVersion: storybookInfo.version,
+    storybookVersion,
     language,
     storybookPackages,
     framework: {
