@@ -14,6 +14,25 @@
     },
     {
       "pattern": "https://stackblitz.com/*"
+    },
+    {
+      "pattern": "https://*.chromatic.com"
+    },
+    {
+      "pattern": "https://www.chromatic.com/build?*"
+    },
+    {
+      "pattern": "http://*.nodeca.com"
+    },
+    {
+      "pattern": "http://definitelytyped.org/*"
+    },
+    {
+      "pattern": "https://yoursite.com/*"
+    },
+    {
+      "pattern": "https://my-specific-domain.com"
     }
-  ]
+  ],
+  "aliveStatusCodes": [429, 200]
 }
