@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 6.4.x to 6.5.0](#from-version-64x-to-650)
+  - [Vue 3 upgrade](#vue-3-upgrade)
   - [React18 new root API](#react18-new-root-api)
   - [Renamed isToolshown to showToolbar](#renamed-istoolshown-to-showtoolbar)
   - [Deprecated register.js](#deprecated-registerjs)
@@ -201,6 +202,10 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 6.4.x to 6.5.0
+
+### Vue 3 upgrade
+
+Storybook 6.5 supports Vue 3 out of the box when you install it fresh. However, if you're upgrading your project from a previous version, you'll need to [follow the steps for opting-in to webpack 5](#webpack-5).
 
 ### React18 new root API
 
@@ -748,7 +753,29 @@ The `--static-dir` flag has been deprecated and will be removed in Storybook 7.0
 
 ### Webpack 5
 
-Storybook 6.3 brings opt-in support for building both your project and the manager UI with webpack 5. To do so:
+Storybook 6.3 brings opt-in support for building both your project and the manager UI with webpack 5. To do so, there are two ways:
+
+1 - Upgrade command
+
+If you're upgrading your Storybook version, run this command, which will both upgrade your dependencies but also detect whether you should migrate to webpack5 builders and apply the changes automatically:
+
+```shell
+npx sb upgrade
+```
+
+2 - Automigrate command
+
+If you don't want to change your Storybook version but want Storybook to detect whether you should migrate to webpack5 builders and apply the changes automatically:
+
+```shell
+npx sb automigrate
+```
+
+3 - Manually
+
+If either methods did not work or you just want to proceed manually, do the following steps:
+
+Install the dependencies:
 
 ```shell
 yarn add @storybook/builder-webpack5 @storybook/manager-webpack5 --dev
