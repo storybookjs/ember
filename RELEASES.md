@@ -81,12 +81,11 @@ there gathering upvotes and "me too" comments. We need a way to make sure that
 these bugs get addressed.
 
 For every non-PATCH release, we nominate a small number of bugs that must be
-addressed before a release can go out by adding them to the milestone. For example, here's a list of blocking bugs [for the 3.2 milestone](https://github.com/storybookjs/storybook/milestone/3).
+addressed before a release can go out by adding them to the milestone. For example, here's a list of blocking bugs [for the 6.5 milestone](https://github.com/storybookjs/storybook/milestone/75).
 
 Adding bugs to the milestone helps people looking for good ways to contribute,
 or to understand what is blocking the release so they can actually do something
-about it. Discussion about which bugs are critical happens in the `#maintenance`
-channel [in our Slack](https://now-examples-slackin-rrirkqohko.now.sh/) [![Storybook Slack](https://now-examples-slackin-rrirkqohko.now.sh/badge.svg)](https://now-examples-slackin-rrirkqohko.now.sh/)
+about it. Discussion about which bugs are critical happens in the [`#maintenance` channel](https://discord.com/channels/486522875931656193/490070912448724992) in our Discord Server
 
 If you're experiencing a bug, the best way to make sure that it gets attention
 is to upvote it by adding a "thumbs-up" reaction in Github. This way important
