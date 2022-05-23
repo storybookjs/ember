@@ -4040,3 +4040,21 @@ exports[`Storyshots Demo/Examples / Emoji Button With Args 1`] = `
   With args
 </button>
 `;
+
+exports[`Storyshots Docs/ButtonMdx Basic 1`] = `
+<button
+  type="button"
+>
+   
+  Click me
+</button>
+`;
+
+exports[`Storyshots Docs/ButtonMdx Controls 1`] = `
+<button
+  type="button"
+>
+   
+  Hello
+</button>
+`;
