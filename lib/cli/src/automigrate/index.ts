@@ -18,11 +18,14 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions = {}) => {
   const packageManager = JsPackageManagerFactory.getPackageManager();
   const filtered = fixId ? fixes.filter((f) => f.id === fixId) : fixes;
 
+  logger.info('🔎 checking possible migrations..');
+
   for (let i = 0; i < filtered.length; i += 1) {
     const f = fixes[i] as Fix;
-    logger.info(`🔎 checking '${chalk.cyan(f.id)}'`);
     const result = await f.check({ packageManager });
     if (result) {
+      logger.info(`🔎 found a '${chalk.cyan(f.id)}' migration:`);
+      logger.info();
       const message = f.prompt(result);
 
       logger.info(
@@ -39,7 +42,7 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions = {}) => {
         runAnswer = await prompts({
           type: 'confirm',
           name: 'fix',
-          message: `Do you want to run the '${chalk.cyan(f.id)}' fix on your project?`,
+          message: `Do you want to run the '${chalk.cyan(f.id)}' migration on your project?`,
         });
       }
 
@@ -61,4 +64,8 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions = {}) => {
       }
     }
   }
+
+  logger.info();
+  logger.info('✅ migration check successfully ran');
+  logger.info();
 };
