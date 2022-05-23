@@ -6,7 +6,7 @@ import { vue3 } from './vue3';
 // eslint-disable-next-line global-require, jest/no-mocks-import
 jest.mock('fs-extra', () => require('../../../../../__mocks__/fs-extra'));
 
-const checkCra5 = async ({ packageJson, main }) => {
+const checkVue3 = async ({ packageJson, main }) => {
   // eslint-disable-next-line global-require
   require('fs-extra').__setMockFiles({
     [path.join('.storybook', 'main.js')]: `module.exports = ${JSON.stringify(main)};`,
@@ -25,7 +25,7 @@ describe('vue3 fix', () => {
       };
       it('should fail', async () => {
         await expect(
-          checkCra5({
+          checkVue3({
             packageJson,
             main: {},
           })
@@ -36,7 +36,7 @@ describe('vue3 fix', () => {
       const packageJson = { dependencies: { '@storybook/vue': '^6.2.0' } };
       it('should no-op', async () => {
         await expect(
-          checkCra5({
+          checkVue3({
             packageJson,
             main: {},
           })
@@ -52,7 +52,7 @@ describe('vue3 fix', () => {
       describe('webpack5 builder', () => {
         it('should no-op', async () => {
           await expect(
-            checkCra5({
+            checkVue3({
               packageJson,
               main: { core: { builder: 'webpack5' } },
             })
@@ -62,7 +62,7 @@ describe('vue3 fix', () => {
       describe('custom builder', () => {
         it('should no-op', async () => {
           await expect(
-            checkCra5({
+            checkVue3({
               packageJson,
               main: { core: { builder: 'storybook-builder-vite' } },
             })
@@ -72,7 +72,7 @@ describe('vue3 fix', () => {
       describe('webpack4 builder', () => {
         it('should add webpack5 builder', async () => {
           await expect(
-            checkCra5({
+            checkVue3({
               packageJson,
               main: { core: { builder: 'webpack4' } },
             })
@@ -85,7 +85,7 @@ describe('vue3 fix', () => {
       describe('no builder', () => {
         it('should add webpack5 builder', async () => {
           await expect(
-            checkCra5({
+            checkVue3({
               packageJson,
               main: {},
             })
@@ -99,7 +99,7 @@ describe('vue3 fix', () => {
     describe('no vue dependency', () => {
       it('should no-op', async () => {
         await expect(
-          checkCra5({
+          checkVue3({
             packageJson: {},
             main: {},
           })
@@ -109,7 +109,7 @@ describe('vue3 fix', () => {
     describe('vue2 dependency', () => {
       it('should no-op', async () => {
         await expect(
-          checkCra5({
+          checkVue3({
             packageJson: {
               dependencies: {
                 vue: '2',
@@ -128,7 +128,7 @@ describe('vue3 fix', () => {
       };
       it('should no-op', async () => {
         await expect(
-          checkCra5({
+          checkVue3({
             packageJson,
             main: {},
           })
