@@ -760,7 +760,7 @@ Storybook 6.3 brings opt-in support for building both your project and the manag
 If you're upgrading your Storybook version, run this command, which will both upgrade your dependencies but also detect whether you should migrate to webpack5 builders and apply the changes automatically:
 
 ```shell
-npx storybook upgrade
+npx sb upgrade
 ```
 
 2 - Automigrate command
@@ -768,7 +768,7 @@ npx storybook upgrade
 If you don't want to change your Storybook version but want Storybook to detect whether you should migrate to webpack5 builders and apply the changes automatically:
 
 ```shell
-npx storybook automigrate
+npx sb automigrate
 ```
 
 3 - Manually
