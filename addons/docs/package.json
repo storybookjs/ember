@@ -66,7 +66,7 @@
     "@storybook/core-events": "6.5.0-rc.1",
     "@storybook/csf": "0.0.2--canary.4566f4d.1",
     "@storybook/docs-tools": "6.5.0-rc.1",
-    "@storybook/mdx1-csf": "canary",
+    "@storybook/mdx1-csf": "^0.0.1",
     "@storybook/node-logger": "6.5.0-rc.1",
     "@storybook/postinstall": "6.5.0-rc.1",
     "@storybook/preview-web": "6.5.0-rc.1",
@@ -86,11 +86,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@storybook/mdx2-csf": "canary",
+    "@storybook/mdx2-csf": "^0.0.3",
     "@types/util-deprecate": "^1.0.0"
   },
   "peerDependencies": {
-    "@storybook/mdx2-csf": "*",
+    "@storybook/mdx2-csf": "^0.0.3",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
