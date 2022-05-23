@@ -6554,8 +6554,8 @@ __metadata:
     "@storybook/core-events": 6.5.0-rc.1
     "@storybook/csf": 0.0.2--canary.4566f4d.1
     "@storybook/docs-tools": 6.5.0-rc.1
-    "@storybook/mdx1-csf": canary
-    "@storybook/mdx2-csf": canary
+    "@storybook/mdx1-csf": ^0.0.1
+    "@storybook/mdx2-csf": ^0.0.3
     "@storybook/node-logger": 6.5.0-rc.1
     "@storybook/postinstall": 6.5.0-rc.1
     "@storybook/preview-web": 6.5.0-rc.1
@@ -6574,7 +6574,7 @@ __metadata:
     ts-dedent: ^2.0.0
     util-deprecate: ^1.0.2
   peerDependencies:
-    "@storybook/mdx2-csf": "*"
+    "@storybook/mdx2-csf": ^0.0.3
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   peerDependenciesMeta:
@@ -7751,8 +7751,8 @@ __metadata:
     "@babel/traverse": ^7.12.11
     "@babel/types": ^7.12.11
     "@storybook/csf": 0.0.2--canary.4566f4d.1
-    "@storybook/mdx1-csf": canary
-    "@storybook/mdx2-csf": canary
+    "@storybook/mdx1-csf": ^0.0.1
+    "@storybook/mdx2-csf": ^0.0.3
     "@types/fs-extra": ^9.0.6
     core-js: ^3.8.2
     fs-extra: ^9.0.1
@@ -7761,7 +7761,7 @@ __metadata:
     regenerator-runtime: ^0.13.7
     ts-dedent: ^2.0.0
   peerDependencies:
-    "@storybook/mdx2-csf": "*"
+    "@storybook/mdx2-csf": ^0.0.3
   peerDependenciesMeta:
     "@storybook/mdx2-csf":
       optional: true
@@ -8166,9 +8166,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storybook/mdx1-csf@npm:canary":
-  version: 0.0.1-canary.1.867dcd5.0
-  resolution: "@storybook/mdx1-csf@npm:0.0.1-canary.1.867dcd5.0"
+"@storybook/mdx1-csf@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@storybook/mdx1-csf@npm:0.0.1"
   dependencies:
     "@babel/generator": ^7.12.11
     "@babel/parser": ^7.12.11
@@ -8181,13 +8181,13 @@ __metadata:
     lodash: ^4.17.21
     prettier: ">=2.2.1 <=2.3.0"
     ts-dedent: ^2.0.0
-  checksum: bf3ea30731250cc945b9a3f18396ce308da6c29c7569ea5ae8eaf17a5b472255c1f618120f230d34e3013df3805f31fe2a254b2b2478f58c1472ae3288bd86a1
+  checksum: c25a4ad1356ce65950483bd85f37ba93237149fd782360e3548a86dafd9753674ddebb03a8665ed78f99bc1533e87ba2a0605c2fc984a5ad19662fd4b930db78
   languageName: node
   linkType: hard
 
-"@storybook/mdx2-csf@npm:canary":
-  version: 0.0.1-canary.1.357011b.0
-  resolution: "@storybook/mdx2-csf@npm:0.0.1-canary.1.357011b.0"
+"@storybook/mdx2-csf@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@storybook/mdx2-csf@npm:0.0.3"
   dependencies:
     "@babel/generator": ^7.12.11
     "@babel/parser": ^7.12.11
@@ -8197,7 +8197,7 @@ __metadata:
     js-string-escape: ^1.0.1
     loader-utils: ^2.0.0
     lodash: ^4.17.21
-  checksum: d478936e21773fdb7a182160d61aa951b71edde927c97e095a2557dce80f3f263ae91fe818491713ffe834034370189a2fa17d672275d881c841a2277bbf89d0
+  checksum: 0bbf5d537930c8a592a371012fb9cc3cd88a5184ff3a6a40a04ccf1c702e6f2c79a57c61b13c772b24c42c4a7f5820e9d7cf933d16a78e08f6e24a6bb2171efc
   languageName: node
   linkType: hard
 

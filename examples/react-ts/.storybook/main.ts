@@ -11,6 +11,10 @@ const config: StorybookConfig = {
       titlePrefix: 'Demo',
       files: '*.stories.(js|ts|tsx|mdx)',
     },
+    {
+      directory: '../src/addon-docs',
+      files: '*.stories.mdx',
+    },
   ],
   logLevel: 'debug',
   addons: [
