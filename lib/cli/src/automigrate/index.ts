@@ -29,28 +29,31 @@ export const automigrate = async ({ fixId, dryRun, yes }: FixOptions = {}) => {
         boxen(message, { borderStyle: 'round', padding: 1, borderColor: '#F1618C' } as any)
       );
 
-      const runAnswer =
-        yes || dryRun
-          ? { fix: false }
-          : await prompts([
-              {
-                type: 'confirm',
-                name: 'fix',
-                message: `Do you want to run the '${chalk.cyan(f.id)}' fix on your project?`,
-              },
-            ]);
+      let runAnswer: { fix: boolean };
+
+      if (dryRun) {
+        runAnswer = { fix: false };
+      } else if (yes) {
+        runAnswer = { fix: true };
+      } else {
+        runAnswer = await prompts({
+          type: 'confirm',
+          name: 'fix',
+          message: `Do you want to run the '${chalk.cyan(f.id)}' fix on your project?`,
+        });
+      }
 
       if (runAnswer.fix) {
         try {
           await f.run({ result, packageManager, dryRun });
-          logger.info(`✅ fixed ${chalk.cyan(f.id)}`);
+          logger.info(`✅ ran ${chalk.cyan(f.id)} migration`);
         } catch (error) {
-          logger.info(`❌ error in ${chalk.cyan(f.id)}:`);
+          logger.info(`❌ error when running ${chalk.cyan(f.id)} migration:`);
           logger.info(error.message);
           logger.info();
         }
       } else {
-        logger.info(`Skipping the ${chalk.cyan(f.id)} fix.`);
+        logger.info(`Skipping the ${chalk.cyan(f.id)} migration.`);
         logger.info();
         logger.info(
           `If you change your mind, run '${chalk.cyan('npx storybook@next automigrate')}'`
