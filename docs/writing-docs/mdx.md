@@ -238,7 +238,7 @@ import Changelog from "../CHANGELOG.md";
 
 <Changelog />
 ```
-![Changelog markdown in an MDX story](https://user-images.githubusercontent.com/9900326/168942693-b3954bed-0369-4eb5-a4ed-634ebb7575fa.png)
+![Changelog markdown in an MDX story](./changelog-mdx-md-transcludemarkdown-optimized.png)
 
 ## Linking to other stories and pages
 
