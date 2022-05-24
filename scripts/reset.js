@@ -11,8 +11,8 @@ const cleaningProcess = spawn('git', [
   'clean',
   '-xdf',
   '-n',
-  '--exclude=".vscode"',
-  '--exclude=".idea"',
+  '--exclude="/.vscode"',
+  '--exclude="/.idea"',
 ]);
 
 cleaningProcess.stdout.on('data', (data) => {
