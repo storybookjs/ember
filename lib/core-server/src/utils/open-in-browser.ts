@@ -7,7 +7,7 @@ import dedent from 'ts-dedent';
 export function openInBrowser(address: string) {
   getDefaultBrowser(async (err: any, res: any) => {
     try {
-      if (res.isChrome || res.isChromium) {
+      if (res && (res.isChrome || res.isChromium)) {
         // We use betterOpn for Chrome because it is better at handling which chrome tab
         // or window the preview loads in.
         betterOpn(address);
