@@ -203,7 +203,7 @@ function run() {
             if (sure) {
               return list;
             }
-            throw new Error('problem is between keyboard and chair');
+            throw new Error('Cleanup canceled');
           });
         }
         return list;
