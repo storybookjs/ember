@@ -211,6 +211,35 @@ Write your documentation as you usually would, and your existing SCSS code block
 
 <!-- prettier-ignore-end -->
 
+### Creating a Changelog story
+
+One common use case for MDX-only docs stories is importing a project's `CHANGELOG.md` into an MDX story, so that users can easily refer to the CHANGELOG via a documentation node in Storybook.
+
+First, ensure that `transcludeMarkdown` is set to `true` in `main.js`:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-enable-transcludemarkdown.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Then, import the markdown and treat the imported file as a component in the MDX file: 
+
+```mdx
+import { Meta } from "@storybook/addon-docs";
+
+import Changelog from "../CHANGELOG.md";
+
+<Meta title="Changelog" />
+
+<Changelog />
+```
+![Changelog markdown in an MDX story](./changelog-mdx-md-transcludemarkdown-optimized.png)
+
 ## Linking to other stories and pages
 
 When writing MDX, you may want to provide links to other stories or documentation pages and sections. You can use the `path` query string.
