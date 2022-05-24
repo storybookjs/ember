@@ -1,4 +1,6 @@
 import slash from 'slash';
+import dedent from 'ts-dedent';
+import { once } from '@storybook/client-logger';
 
 // FIXME: types duplicated type from `core-common', to be
 // removed when we remove v6 back-compat.
@@ -48,11 +50,24 @@ function pathJoin(paths: string[]): string {
   return paths.join('/').replace(slashes, '/');
 }
 
-export const userOrAutoTitleFromSpecifier = (fileName: string, entry: NormalizedStoriesSpecifier, userTitle?: string) => {
+export const userOrAutoTitleFromSpecifier = (
+  fileName: string | number,
+  entry: NormalizedStoriesSpecifier,
+  userTitle?: string
+) => {
   const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
-  const normalizedFileName = slash(fileName);
+
+  if (typeof fileName === 'number') {
+    once.warn(dedent`
+      CSF Auto-title received a numeric fileName. This typically happens when
+      webpack is mis-configured in production mode. To force webpack to produce
+      filenames, set optimization.moduleIds = "named" in your webpack config.
+    `);
+  }
+
+  const normalizedFileName = slash(String(fileName));
 
   if (importPathMatcher.exec(normalizedFileName)) {
     if (!userTitle) {
@@ -74,7 +89,11 @@ export const userOrAutoTitleFromSpecifier = (fileName: string, entry: Normalized
   return undefined;
 };
 
-export const userOrAutoTitle = (fileName: string, storiesEntries: NormalizedStoriesSpecifier[], userTitle?: string) => {
+export const userOrAutoTitle = (
+  fileName: string,
+  storiesEntries: NormalizedStoriesSpecifier[],
+  userTitle?: string
+) => {
   for (let i = 0; i < storiesEntries.length; i += 1) {
     const title = userOrAutoTitleFromSpecifier(fileName, storiesEntries[i], userTitle);
     if (title) return title;
