@@ -2,8 +2,8 @@
 // .storybook/main.js
 
 module.exports = {
-  stories: [],
-  addons: [],
-  staticDirs: ['../public'],
+  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  staticDirs: ['../public'], //👈 Configures the static asset folder in Storybook
 };
 ```

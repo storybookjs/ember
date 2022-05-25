@@ -2,7 +2,7 @@
 title: 'Building pages with Storybook'
 ---
 
-Storybook helps you build any component, from small “atomic” components to composed pages. But as you move up the component hierarchy toward the level of pages, you end up dealing with more complexity.
+Storybook helps you build any component, from small “atomic” components to composed pages. But as you move up the component hierarchy toward the page level, you deal with more complexity.
 
 There are many ways to build pages in Storybook. Here are common patterns and solutions.
 
@@ -47,7 +47,7 @@ When you are building screens in this way, it is typical that the inputs of a co
 
 <!-- prettier-ignore-end -->
 
-In such cases it is natural to use [args composition](./args.md#args-composition) to build the stories for the page based on the stories of the sub-components:
+In such cases, it is natural to use [args composition](./args.md#args-composition) to build the stories for the page based on the stories of the sub-components:
 
 <!-- prettier-ignore-start -->
 
@@ -72,13 +72,57 @@ If you need to render a connected component in Storybook, you can mock the netwo
 
 ### Mocking providers
 
-If you are using a provider that supplies data via the context, you can wrap your story in a decorator that provides a mocked version of that provider. For example, in the [Screens](https://storybook.js.org/tutorials/intro-to-storybook/react/en/screen/) chapter of the Intro to Storybook tutorial, we mock a Redux provider with mock data.
+Suppose you are using a provider that supplies data via the context. In that case, you can wrap your story in a decorator that provides a mocked version of that provider. For example, in the [Screens](https://storybook.js.org/tutorials/intro-to-storybook/react/en/screen/) chapter of the Intro to Storybook tutorial, we mock a Redux provider with mock data.
 
 ### Mocking API Services
 
-Connected applications such as Twitter, Instagram, amongst others, are everywhere, consuming data either from REST or GraphQL endpoints. If you're working in an application that relies on either of these data providers, you can add Mock Service Worker (MSW) via [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
+Connected applications such as Twitter, Instagram, amongst others, are everywhere, consuming data from REST or GraphQL endpoints. Suppose you're working in an application that relies on either of these data providers. In that case, you can add Mock Service Worker (MSW) via [Storybook's MSW addon](https://storybook.js.org/addons/msw-storybook-addon) to mock data alongside your app and stories.
 
-[Mock Service Worker](https://mswjs.io/) is an API mocking library. It relies on service workers to capture network requests and provides mocked data in response. The MSW addon adds this functionality into Storybook, allowing you to mock API requests in your stories.
+[Mock Service Worker](https://mswjs.io/) is an API mocking library. It relies on service workers to capture network requests and provides mocked data in response. The MSW addon adds this functionality into Storybook, allowing you to mock API requests in your stories. Below is an overview of how to set up and use the addon.
+
+Run the following commands to install MSW, the addon, and generate a mock service worker.
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-msw-install.yarn.js.mdx',
+    'common/storybook-msw-install.npm.js.mdx',
+    'common/storybook-msw-generate.msw.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+<div class="aside">
+
+💡 If you're working with Angular, you'll need to adjust the command to save the mock service worker file in a different directory (e.g., `src`).
+
+</div>
+
+Update your `.storybook/preview.js` file and enable the addon via a [global decorator](./decorators.md#global-decorators).
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-preview-register-msw-addon.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
+
+Finally, update your [`.storybook/main.js|ts`](../configure/overview.md#using-storybook-api) to allow Storybook to load the generated mock service worker file as follows:
+
+<!-- prettier-ignore-start -->
+
+<CodeSnippets
+  paths={[
+    'common/storybook-main-with-single-static-dir.js.mdx',
+  ]}
+/>
+
+<!-- prettier-ignore-end -->
 
 #### Mocking REST requests with MSW addon
 
@@ -157,7 +201,7 @@ To test your screen with the GraphQL mocked data, you could write the following 
 
 It is also possible to mock imports directly, as you might in a unit test, using Webpack’s aliasing. It's advantageous if your component makes network requests directly with third-party libraries.
 
-We're going to use [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) as an example.
+We'll use [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) as an example.
 
 Inside a directory called `__mocks__`, create a new file called
 `isomorphic-fetch.js` with the following code:
@@ -223,7 +267,7 @@ Like the [import mocking](##mocking-imports) above, once you have a mock, you’
 
 It's possible to avoid mocking the dependencies of connected "container" components entirely by passing them around via props or React context. However, it requires a strict split of the container and presentational component logic. For example, if you have a component responsible for data fetching logic and rendering DOM, it will need to be mocked as previously described.
 
-It’s common to import and embed container components amongst presentational components. However, as we discovered earlier, to render them within Storybook, we’ll likely have to mock their dependencies or the imports themselves.
+It’s common to import and embed container components amongst presentational components. However, as we discovered earlier, we’ll likely have to mock their dependencies or the imports to render them within Storybook.
 
 Not only can this quickly grow to become a tedious task, but it’s also challenging to mock container components that use local states. So, instead of importing containers directly, a solution to this problem is to create a React context that provides the container components. It allows you to freely embed container components as usual, at any level in the component hierarchy without worrying about subsequently mocking their dependencies; since we can swap out the containers themselves with their mocked presentational counterpart.
 
@@ -238,7 +282,7 @@ ProfilePageContext.js
 
 <div class="aside">
 
-It’s also often helpful to set up a “global” container context (perhaps named `GlobalContainerContext`) for container components that may be rendered on every page of your app and adding them to the top level of your application. While it’s possible to place every container within this global context, it should only provide globally required containers.
+It’s also often helpful to set up a “global” container context (perhaps named `GlobalContainerContext`) for container components that may be rendered on every page of your app and add them to the top level of your application. While it’s possible to place every container within this global context, it should only provide globally required containers.
 
 </div>
 
@@ -284,7 +328,7 @@ In the context of Storybook, instead of providing container components through c
 
 <div class="aside">
 
-If the same context applies to all `ProfilePage` stories, we can also use a [decorator](./decorators.md).
+If the same context applies to all `ProfilePage` stories, we can use a [decorator](./decorators.md).
 
 </div>
 
