@@ -5,7 +5,9 @@ title: 'CLI options'
 Storybook comes with two CLI utilities: `start-storybook` and `build-storybook`.
 
 <div class="aside">
+  
 Storybook collects completely anonymous data to help us improve user experience. Participation is optional, and you may [opt-out](../configure/telemetry.md#how-to-opt-out) if you'd not like to share any information.
+  
 </div>
 
 Pass these commands the following options to alter Storybook's behavior.
