@@ -59,7 +59,7 @@ function run() {
       command: () => {
         log.info(prefix, 'yarn workspace');
       },
-      pre: ['install', 'build', 'manager'],
+      pre: ['install', 'build'  ],
       order: 1,
     }),
     retry: createTask({
@@ -150,7 +150,7 @@ function run() {
 
   const groups = {
     main: ['core'],
-    buildtasks: ['install', 'build', 'manager'],
+    buildtasks: ['install', 'build'],
     devtasks: ['dev', 'registry', 'cleanup', 'reset'],
   };
 

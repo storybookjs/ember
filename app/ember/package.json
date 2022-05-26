@@ -54,6 +54,9 @@
     "regenerator-runtime": "^0.13.7",
     "ts-dedent": "^2.0.0"
   },
+  "devDependencies": {
+    "@storybook/react-docgen-typescript-plugin": "1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0"
+  },
   "peerDependencies": {
     "@babel/core": "*",
     "babel-plugin-ember-modules-api-polyfill": "^2.12.0",
